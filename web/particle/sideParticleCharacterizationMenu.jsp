@@ -127,17 +127,18 @@
 	</c:otherwise>
 </c:choose>
 
-<c:set var="physicalType" value="Physical" />
-<c:choose>
-	<c:when test="${!empty allCharacterizations[physicalType] || canCreateNanoparticle eq 'true'}">
+<c:set var="physicalType" value="Physical Characterization" />
+<%--<c:choose>--%>
+<%--	<c:when test="${!empty particleDataTree[physicalType] || canCreateNanoparticle eq 'true'}">--%>
+
 	<li class="controlList">
 	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 	<ul class="sublist_4" style="${phyDisplay}">
-		<c:forEach var="subCharType"
-			items="${allCharacterizations[physicalType]}">
+		<c:forEach var="physicalChara"
+			items="${physicalTypes[physicalType]}">
 			<li>
 				<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
-					<jsp:param name="charType" value="${subCharType}" />
+					<jsp:param name="charType" value="${physicalChara}" />
 					<jsp:param name="charTypeStyle" value="sublist_4" />
 					<jsp:param name="charTypeLabelStyle" value="titleCell2" />
 					<jsp:param name="noDataLabelStyle" value="titleCell2NoData" />
@@ -145,59 +146,63 @@
 					<jsp:param name="addLinkStyle" value="addCell" />
 					<jsp:param name="addAction" value="physicalCharacterization" />
 				</jsp:include>
-				<c:if test="${!empty charaLeafToCharacterizations[subCharType]}">
+				<c:if test="${!empty particleDataTree[physicalChara]}">
 					<ul class="sublist_5" style="${phyDisplay}">
+<%--						<logic:iterate name="leafCharBean"--%>
+<%--												property="${particleDataTree[physicalChara]}"--%>
+<%--												indexId="ind">--%>
 						<c:forEach var="leafCharBean"
-							items="${charaLeafToCharacterizations[subCharType]}">
+							items="${particleDataTree[physicalChara]}">
 							<c:url var="url" value="physicalCharacterization.do">
 								<c:param name="page" value="0" />
 								<c:param name="dispatch" value="detailView" />
-								<c:param name="particleId" value="${particleId}" />
-								<c:param name="characterizationId" value="${leafCharBean.id}" />
-								<c:param name="submitType" value="${leafCharBean.name}" />
+								<c:param name="particleId" value="${leafCharBean.dataId}" />
+								<c:param name="characterizationId" value="${leafCharBean.dataId}" />
+								<c:param name="submitType" value="${physicalChara}" />
 							</c:url>
-							<li id="${leafCharBean.id}">
-							<c:choose>
-								<c:when test="${leafCharBean.viewColor != null}">
-									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
-									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-								</c:when>
-								<c:otherwise>
-									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-								</c:otherwise>
-							</c:choose>
+							<li id="${leafCharBean.dataId}">
+<%--							<c:choose>--%>
+<%--								<c:when test="${leafCharBean.viewColor != null}">--%>
+<%--									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
+<%--									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--								</c:when>--%>
+<%--								<c:otherwise>--%>
+									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+<%--								</c:otherwise>--%>
+<%--							</c:choose>--%>
 							</li>
 						</c:forEach>
+<%--							</logic:iterate>--%>
 					</ul>
 				</c:if>
 			</li>
 		</c:forEach>
 	</ul>
 	</li>
-	</c:when>
-	<c:otherwise>
-		<li class="nodatali">
-			PHYSICAL CHARACTERIZATIONS
-		</li>
-	</c:otherwise>
-</c:choose>
+<%--	</c:when>--%>
+<%--	<c:otherwise>--%>
+<%--		<li class="nodatali">--%>
+<%--			PHYSICAL CHARACTERIZATIONS--%>
+<%--		</li>--%>
+<%--	</c:otherwise>--%>
+<%--</c:choose>--%>
 
-<c:set var="inVitroType" value="In Vitro" />
-<c:choose>
-	<c:when test="${!empty allCharacterizations[inVitroType] || canCreateNanoparticle eq 'true'}">
+<c:set var="inVitroType" value="In Vitro Characterization" />
+<%--<c:choose>--%>
+<%--	<c:when test="${!empty particleDataTree[inVitroType] || canCreateNanoparticle eq 'true'}">--%>
 	<li class="controlList">
 	<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 	<ul class="sublist_1" style="${invitroDisplay}">
 		<c:forEach var="secondLevelChar"
-			items="${allCharacterizations[inVitroType]}">
+			items="${invitroTypes[inVitroType]}">
 			<li>
 				<a href="#" class="sublist_1">${secondLevelChar}</a>
 				<ul class="sublist_2" style="${invitroDisplay}">
 					<c:forEach var="thirdLevelChar"
-						items="${allCharacterizations[secondLevelChar]}">
+						items="${invitroTypes[secondLevelChar]}">
 						<li class="controlList2">
 							<c:choose>
-								<c:when test="${!empty allCharacterizations[thirdLevelChar]}">
+								<c:when test="${!empty invitroTypes[thirdLevelChar]}">
 									<table class="subTitleTable">
 										<tr class="titleRowVitro">
 											<td class="titleCell2Vitro">
@@ -224,45 +229,45 @@
 							</c:choose>
 							<c:choose>
 								<c:when
-									test="${!empty charaLeafToCharacterizations[thirdLevelChar]}">
+									test="${!empty particleDataTree[thirdLevelChar]}">
 									<ul class="sublist_5_control"
-										id="${charaLeafActionName[thirdLevelChar]}">
+										id="${thirdLevelChar}">
 										<c:forEach var="leafCharBean"
-											items="${charaLeafToCharacterizations[thirdLevelChar]}">
+											items="${particleDataTree[thirdLevelChar]}">
 											<c:url var="url3" value="inVitroCharacterization.do">
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="detailView" />
-												<c:param name="particleId" value="${particleId}" />
+												<c:param name="particleId" value="${leafCharBean.dataId}" />
 												<c:param name="characterizationId"
-													value="${leafCharBean.id}" />
-												<c:param name="submitType" value="${leafCharBean.name}" />
+													value="${leafCharBean.dataId}" />
+												<c:param name="submitType" value="${thirdLevelChar}" />
 											</c:url>
 											<li>
-											<c:choose>
-												<c:when test="${leafCharBean.viewColor != null}">
-													<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
-													<a href="${url3}" class="sublist_5" style="${viewTitleDisplay}" >
-													<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-												</c:when>
-												<c:otherwise>
+<%--											<c:choose>--%>
+<%--												<c:when test="${leafCharBean.viewColor != null}">--%>
+<%--													<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
+<%--													<a href="${url3}" class="sublist_5" style="${viewTitleDisplay}" >--%>
+<%--													<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--												</c:when>--%>
+<%--												<c:otherwise>--%>
 													<a href="${url3}" class="sublist_5"><span
-													class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-												</c:otherwise>
-											</c:choose>
+													class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+<%--												</c:otherwise>--%>
+<%--											</c:choose>--%>
 											</li>
 										</c:forEach>
 									</ul>
 								</c:when>
 								<c:otherwise>
-									<c:if test="${!empty allCharacterizations[thirdLevelChar]}">
+									<c:if test="${!empty invitroTypes[thirdLevelChar]}">
 										<ul class="sublist_3_control"
-											id="${charaLeafActionName[thirdLevelChar]}">
+											id="${thirdLevelChar}">
 											<c:forEach var="fourthLevelChar"
-												items="${allCharacterizations[thirdLevelChar]}">
+												items="${invitroTypes[thirdLevelChar]}">
 												<li>
 													<c:choose>
 														<c:when
-															test="${!empty allCharacterizations[fourthLevelChar]}">
+															test="${!empty invitroTypes[fourthLevelChar]}">
 															<table class="charTitle">
 																<tr class="titleRow">
 																	<td class="titleCell3">
@@ -288,45 +293,45 @@
 													</c:choose>
 													<c:choose>
 														<c:when
-															test="${!empty charaLeafToCharacterizations[fourthLevelChar]}">
+															test="${!empty particleDataTree[fourthLevelChar]}">
 															<ul class="sublist_5">
 																<c:forEach var="leafCharBean"
-																	items="${charaLeafToCharacterizations[fourthLevelChar]}">
+																	items="${particleDataTree[fourthLevelChar]}">
 																	<c:url var="url4" value="inVitroCharacterization.do">
 																		<c:param name="page" value="0" />
 																		<c:param name="dispatch" value="detailView" />
-																		<c:param name="particleId" value="${particleId}" />
+																		<c:param name="particleId" value="${leafCharBean.dataId}" />
 																		<c:param name="characterizationId"
-																			value="${leafCharBean.id}" />
+																			value="${leafCharBean.dataId}" />
 																		<c:param name="submitType"
-																			value="${leafCharBean.name}" />
+																			value="${fourthLevelChar}" />
 																	</c:url>
 																	<li>
-																	<c:choose>
-																		<c:when test="${leafCharBean.viewColor != null}">
-																			<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
-																			<a href="${url4}" class="sublist_5" style="${viewTitleDisplay}" >
-																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-																		</c:when>
-																	<c:otherwise>
+<%--																	<c:choose>--%>
+<%--																		<c:when test="${leafCharBean.viewColor != null}">--%>
+<%--																			<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
+<%--																			<a href="${url4}" class="sublist_5" style="${viewTitleDisplay}" >--%>
+<%--																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--																		</c:when>--%>
+<%--																	<c:otherwise>--%>
 																		<a href="${url4}" class="sublist_5"><span
-																			class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-																	</c:otherwise>
-																	</c:choose>
+																			class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+<%--																	</c:otherwise>--%>
+<%--																	</c:choose>--%>
 																	</li>
 																</c:forEach>
 															</ul>
 														</c:when>
 														<c:otherwise>
 															<c:if
-																test="${!empty allCharacterizations[fourthLevelChar]}">
+																test="${!empty invitroTypes[fourthLevelChar]}">
 																<ul class="sublist_4" style="${invitroDisplay}">
 																	<c:forEach var="fifthLevelChar"
-																		items="${allCharacterizations[fourthLevelChar]}">
+																		items="${invitroTypes[fourthLevelChar]}">
 																		<li>
 																			<c:url var="submitUrl"
 																				value="inVitroCharacterization.do">
-																				<c:param name="particleId" value="${particleId}" />
+																				<c:param name="particleId" value="${leafCharBean.dataId}" />
 																				<c:param name="submitType" value="${fifthLevelChar}" />
 																				<c:param name="page" value="0" />
 																				<c:param name="dispatch" value="setup" />
@@ -345,32 +350,32 @@
 																					value="inVitroCharacterization" />
 																			</jsp:include>
 																			<c:if
-																				test="${!empty charaLeafToCharacterizations[fifthLevelChar]}">
+																				test="${!empty particleDataTree[fifthLevelChar]}">
 																				<ul class="sublist_5" style="${invitroDisplay}">
 																					<c:forEach var="leafCharBean"
-																						items="${charaLeafToCharacterizations[fifthLevelChar]}">
+																						items="${particleDataTree[fifthLevelChar]}">
 																						<c:url var="url5"
 																							value="inVitroCharacterization.do">
 																							<c:param name="page" value="0" />
 																							<c:param name="dispatch" value="detailView" />
-																							<c:param name="particleId" value="${particleId}" />
+																							<c:param name="particleId" value="${leafCharBean.dataId}" />
 																							<c:param name="characterizationId"
-																								value="${leafCharBean.id}" />
+																								value="${leafCharBean.dataId}" />
 																							<c:param name="submitType"
-																								value="${leafCharBean.name}" />
+																								value="${fifthLevelChar}" />
 																						</c:url>
 																						<li>
-																						<c:choose>
-																						<c:when test="${leafCharBean.viewColor != null}">
-																							<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
-																							<a href="${url5}" class="sublist_5" style="${viewTitleDisplay}" >
-																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-																						</c:when>
-																						<c:otherwise>
+<%--																						<c:choose>--%>
+<%--																						<c:when test="${leafCharBean.viewColor != null}">--%>
+<%--																							<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
+<%--																							<a href="${url5}" class="sublist_5" style="${viewTitleDisplay}" >--%>
+<%--																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--																						</c:when>--%>
+<%--																						<c:otherwise>--%>
 																							<a href="${url5}" class="sublist_5"><span
-																								class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
-																						</c:otherwise>
-																						</c:choose>
+																								class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+<%--																						</c:otherwise>--%>
+<%--																						</c:choose>--%>
 																						</li>
 																					</c:forEach>
 																				</ul>
@@ -394,10 +399,10 @@
 		</c:forEach>
 	</ul>
 </li>
-</c:when>
-	<c:otherwise>
-		<li class="nodatali">
-			IN VITRO CHARACTERIZATIONS
-		</li>
-	</c:otherwise>
-</c:choose>
+<%--</c:when>--%>
+<%--	<c:otherwise>--%>
+<%--		<li class="nodatali">--%>
+<%--			IN VITRO CHARACTERIZATIONS--%>
+<%--		</li>--%>
+<%--	</c:otherwise>--%>
+<%--</c:choose>--%>
