@@ -66,8 +66,8 @@
 								<tr>
 									<td></td>
 									<td>
-										<logic:iterate name="nanoparticleCompositionForm"
-											property="composition.composingElements"
+										<logic:iterate name="nanoparticleEntityForm"
+											property="entity.composingElements"
 											id="composingElement" indexId="ind">
 											<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 												width="100%" align="center" summary="" border="0">
@@ -155,8 +155,8 @@
 								<tr>
 									<td></td>
 									<td>
-										<logic:iterate name="nanoparticleCompositionForm"
-											property="composition.composingElements"
+										<logic:iterate name="nanoparticleEntityForm"
+											property="entity.composingElements"
 											id="composingElement" indexId="ind">
 											<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 												width="100%" align="center" summary="" border="0">
