@@ -17,13 +17,11 @@ import javax.servlet.http.HttpSession;
  * 
  */
 public class InitSecuritySetup {
-	private static LookupService lookupService;
-
 	private static AuthorizationService authorizationService;
 
 	private InitSecuritySetup() throws CaNanoLabSecurityException {
-		lookupService = new LookupService();
-		authorizationService = new AuthorizationService(CaNanoLabConstants.CSM_APP_NAME);
+		authorizationService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
 	}
 
 	public static InitSecuritySetup getInstance()
@@ -31,17 +29,7 @@ public class InitSecuritySetup {
 		return new InitSecuritySetup();
 	}
 
-	public void setAllUsers(HttpSession session)
-			throws CaNanoLabSecurityException {
-		List allUsers = authorizationService.getAllUsers();
-		session.setAttribute("allUsers", allUsers);
-	}
-
-	public static LookupService getLookupService() {
-		return lookupService;
-	}
-
-	public static AuthorizationService getUserService() {
+	public static AuthorizationService getAuthorizationService() {
 		return authorizationService;
 	}
 
@@ -89,6 +77,7 @@ public class InitSecuritySetup {
 	 * assign them with default protection groups and roles
 	 */
 	public void createDefaultCSMGroups() throws CaNanoLabSecurityException {
+		// create default groups
 		for (String groupName : CaNanoLabConstants.VISIBLE_GROUPS) {
 			authorizationService.createAGroup(groupName);
 		}
