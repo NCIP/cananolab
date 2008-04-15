@@ -12,6 +12,8 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -95,7 +97,6 @@ public class InitNanoparticleSetup {
 			return new ArrayList<String>((List<? extends String>) appContext
 					.getAttribute("defaultNanoparticleEntityTypes"));
 		}
-
 	}
 
 	public List<String> getDefaultFunctionalizingEntityTypes(
@@ -345,5 +346,63 @@ public class InitNanoparticleSetup {
 			cdataBeans.add(dataBean);
 		}
 		return dataTree;
+	}
+
+	public List<String> getDefaultComposingElementTypes(
+			ServletContext appContext) throws CaNanoLabException {
+		List<String> composingElementTypes = null;
+		if (appContext.getAttribute("defaultComposingElementsTypes") == null) {
+			composingElementTypes = new ArrayList<String>(LookupService
+					.getLookupValues("ComposingElements", "type"));
+			appContext.setAttribute("defaultComposingElementTypes",
+					composingElementTypes);
+		} else {
+			composingElementTypes = new ArrayList<String>(
+					(List<? extends String>) appContext
+							.getAttribute("defaultComposingElementsTypes"));
+		}
+		return composingElementTypes;
+	}
+
+	public List<String> getDefaultEmulsionComposingElementTypes(
+			ServletContext appContext) throws CaNanoLabException {
+		List<String> composingElementTypes = null;
+		if (appContext.getAttribute("defaultEmulsionComposingElementsTypes") == null) {
+			composingElementTypes = new ArrayList<String>(LookupService
+					.getLookupValues("ComposingElements", "type"));
+			appContext.setAttribute("defaultEmulsionComposingElementTypes",
+					composingElementTypes);
+		} else {
+			composingElementTypes = new ArrayList<String>(
+					(List<? extends String>) appContext
+							.getAttribute("defaultEmulsionComposingElementsTypes"));
+		}
+		return composingElementTypes;
+	}
+
+	public void setComposingElementTypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		List<String> composingElementTypes = getDefaultComposingElementTypes(request
+				.getSession().getServletContext());
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"ComposingElement", "otherType");
+		request.getSession().setAttribute("composingElementTypes",
+				composingElementTypes.addAll(otherTypes));
+	}
+
+	public void setEmulsionComposingElementTypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		List<String> composingElementTypes = getDefaultComposingElementTypes(request
+				.getSession().getServletContext());
+		List<String> emulsionComposingElementTypes = getDefaultEmulsionComposingElementTypes(request
+				.getSession().getServletContext());
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"ComposingElement", "otherType");
+		List<String> allTypes = new ArrayList<String>();
+		allTypes.addAll(composingElementTypes);
+		allTypes.addAll(emulsionComposingElementTypes);
+		allTypes.addAll(otherTypes);
+		request.getSession().setAttribute("emulsionComposingElementTypes",
+				allTypes);
 	}
 }
