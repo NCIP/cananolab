@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -50,6 +51,8 @@ public class FunctionalizingEntityBean {
 	private List<FunctionBean> functions = new ArrayList<FunctionBean>();
 
 	private Set<LabFile> files = new HashSet<LabFile>();
+	
+	private ActivationMethod activationMethod;
 
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
 		className = ClassUtils.getShortClassName(functionalizingEntity
@@ -191,5 +194,14 @@ public class FunctionalizingEntityBean {
 	public void setFiles(Set<LabFile> files) {
 		this.files = files;
 		domainEntity.setLabFileCollection(files);
+	}
+
+	public ActivationMethod getActivationMethod() {
+		return activationMethod;
+	}
+
+	public void setActivationMethod(ActivationMethod activationMethod) {
+		this.activationMethod = activationMethod;
+		domainEntity.setActivationMethod(activationMethod);
 	}
 }
