@@ -30,7 +30,7 @@ public class TargetBean {
 
 	private String className;
 
-	private Target domainTarget;
+	private Target domainTarget=new Target();
 
 	public TargetBean() {
 		
@@ -56,9 +56,7 @@ public class TargetBean {
 	}
 
 	public void setAntigen(Antigen antigen) {
-		this.antigen = antigen;
-		antigen.setDescription(description);
-		antigen.setName(name);
+		this.antigen = antigen;		
 		domainTarget = antigen;
 	}
 
@@ -68,6 +66,7 @@ public class TargetBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+		domainTarget.setDescription(description);
 	}
 
 	public Gene getGene() {
@@ -87,6 +86,7 @@ public class TargetBean {
 
 	public void setName(String name) {
 		this.name = name;
+		domainTarget.setName(name);
 	}
 
 	public Receptor getReceptor() {
@@ -94,9 +94,7 @@ public class TargetBean {
 	}
 
 	public void setReceptor(Receptor receptor) {
-		this.receptor = receptor;
-		receptor.setDescription(description);
-		receptor.setName(name);
+		this.receptor = receptor;	
 		domainTarget = receptor;
 	}
 
@@ -113,9 +111,7 @@ public class TargetBean {
 	}
 
 	public void setOtherTarget(OtherTarget otherTarget) {
-		this.otherTarget = otherTarget;
-		otherTarget.setDescription(description);
-		otherTarget.setName(name);
+		this.otherTarget = otherTarget;		
 		otherTarget.setType(type);
 		domainTarget = otherTarget;
 	}
@@ -130,6 +126,5 @@ public class TargetBean {
 
 	public Target getDomainTarget() {
 		return domainTarget;
-	}
-	
+	}	
 }

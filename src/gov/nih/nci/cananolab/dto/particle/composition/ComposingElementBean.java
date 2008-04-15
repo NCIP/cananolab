@@ -4,7 +4,9 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents the view bean for ComposingElement domain object
@@ -13,12 +15,12 @@ import java.util.List;
  * 
  */
 public class ComposingElementBean {
-	private ComposingElement composingElement=new ComposingElement();
+	private ComposingElement domainComposingElement=new ComposingElement();
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
 	public ComposingElementBean(ComposingElement composingElement) {
-		this.composingElement = composingElement;
+		this.domainComposingElement = composingElement;
 		for (Function function : composingElement
 				.getInherentFunctionCollection()) {
 			inherentFunctions.add(new FunctionBean(function));
@@ -28,12 +30,8 @@ public class ComposingElementBean {
 	public ComposingElementBean() {
 	}
 
-	public ComposingElement getComposingElement() {
-		return composingElement;
-	}
-
-	public void setComposingElement(ComposingElement composingElement) {
-		this.composingElement = composingElement;
+	public ComposingElement getDomainComposingElement() {
+		return domainComposingElement;
 	}
 
 	public List<FunctionBean> getInherentFunctions() {
@@ -42,10 +40,10 @@ public class ComposingElementBean {
 
 	public void setInherentFunctions(List<FunctionBean> inherentFunctions) {
 		this.inherentFunctions = inherentFunctions;
-		List<Function> domainFunctions = new ArrayList<Function>();
+		Set<Function> domainFunctions = new HashSet<Function>();
 		for (FunctionBean functionBean : inherentFunctions) {
 			domainFunctions.add(functionBean.getDomainFunction());
 		}
-		composingElement.setInherentFunctionCollection(domainFunctions);
+		domainComposingElement.setInherentFunctionCollection(domainFunctions);
 	}
 }
