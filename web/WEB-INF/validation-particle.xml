@@ -5,13 +5,14 @@
 <form-validation>
 	<formset>
 		<form name="nanoparticleSampleForm">
-			<field property="particleSampleBean.particleSample.name" page="1"
-				depends="required">
+			<field property="particleSampleBean.particleSample.name"
+				page="1" depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleName" bundle="particle" />
 			</field>
-			<field property="particleSampleBean.particleSample.source.organizationName" page="1"
-				depends="required">
+			<field
+				property="particleSampleBean.particleSample.source.organizationName"
+				page="1" depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleSource" bundle="particle" />
 			</field>
@@ -266,17 +267,9 @@
 			</field>
 		</form>
 		<form name="searchNanoparticleSampleForm">
-			<field property="keywords" page="1" depends="mask">
+			<field property="text" page="1" depends="mask">
 				<arg position="0" key="keywords" bundle="particle" />
 				<msg name="mask" key="keywords.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
-				</var>
-			</field>
-			<field property="summaries" page="1" depends="mask">
-				<arg position="0" key="summaries" bundle="particle" />
-				<msg name="mask" key="summaries.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
