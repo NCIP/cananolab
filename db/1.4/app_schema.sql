@@ -283,6 +283,8 @@ CREATE TABLE nanoparticle_entity
 	composition_pk_id BIGINT NOT NULL,
 	discriminator VARCHAR(200) NULL,
 	description TEXT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
 	PRIMARY KEY (nanoparticle_entity_pk_id),
 	KEY (composition_pk_id)
 ) TYPE=InnoDB
@@ -364,8 +366,6 @@ CREATE TABLE derived_datum
 CREATE TABLE composition
 (
 	composition_pk_id BIGINT NOT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
 	particle_sample_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (composition_pk_id),
 	UNIQUE (composition_pk_id),
