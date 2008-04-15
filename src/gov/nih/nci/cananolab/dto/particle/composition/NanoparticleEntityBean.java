@@ -18,6 +18,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Represents the view bean for the NanoparticleEntity domain object
+ * 
+ * @author pansu
+ *
+ */
 public class NanoparticleEntityBean {
 	private String type;
 

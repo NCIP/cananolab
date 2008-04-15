@@ -1,54 +1,195 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.SmallMolecule;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * Represents the view bean for the FunctionalizingEntity domain object
+ * 
+ * @author pansu
+ * 
+ */
 public class FunctionalizingEntityBean {
-	private String entityType;
+	private String type;
 
-	private FunctionalizingEntity functionalizingEntity;
+	private String description;
 
-	private Integer entityNumber;
+	private String molecularFormula;
 
-	private String entityClassName;
+	private String molecularFormulaType;
+
+	private String name;
+
+	private String value;
+
+	private String valueUnit;
+
+	private SmallMolecule smallMolecule;
+
+	private Antibody antibody;
+
+	private Biopolymer biopolymer;
+
+	private OtherFunctionalizingEntity otherEntity;
+
+	private FunctionalizingEntity domainEntity;
+
+	private String className;
+
+	private List<FunctionBean> functions = new ArrayList<FunctionBean>();
+
+	private Set<LabFile> files = new HashSet<LabFile>();
 
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
-		entityClassName = ClassUtils.getShortClassName(functionalizingEntity
+		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getCanonicalName());
-		this.functionalizingEntity = functionalizingEntity;
+		this.domainEntity = functionalizingEntity;
 	}
 
 	public int compareTo(FunctionalizingEntityBean other) {
-		return entityType.compareTo(other.getEntityType());
+		return type.compareTo(other.getType());
 	}
 
-	public Integer getEntityNumber() {
-		return entityNumber;
+	public FunctionalizingEntity getDomainEntity() {
+		return domainEntity;
 	}
 
-	public void setEntityNumber(Integer entityNumber) {
-		this.entityNumber = entityNumber;
+	public String getType() {
+		return type;
 	}
 
-	public FunctionalizingEntity getFunctionalizingEntity() {
-		return functionalizingEntity;
+	public String getClassName() {
+		return className;
 	}
 
-	public void setFunctionalizingEntity(
-			FunctionalizingEntity functionalizingEntity) {
-		this.functionalizingEntity = functionalizingEntity;
+	public void setType(String entityType) {
+		this.type = entityType;
 	}
 
-	public String getEntityType() {
-		return entityType;
+	public Antibody getAntibody() {
+		return antibody;
 	}
 
-	public String getEntityClassName() {
-		return entityClassName;
+	public void setAntibody(Antibody antibody) {
+		this.antibody = antibody;
+		domainEntity = antibody;
 	}
 
-	public void setEntityType(String entityType) {
-		this.entityType = entityType;
+	public Biopolymer getBiopolymer() {
+		return biopolymer;
 	}
 
+	public void setBiopolymer(Biopolymer biopolymer) {
+		this.biopolymer = biopolymer;
+		domainEntity = biopolymer;
+	}
+
+	public OtherFunctionalizingEntity getOtherEntity() {
+		return otherEntity;
+	}
+
+	public void setOtherEntity(OtherFunctionalizingEntity otherEntity) {
+		this.otherEntity = otherEntity;
+		domainEntity = otherEntity;
+	}
+
+	public SmallMolecule getSmallMolecule() {
+		return smallMolecule;
+	}
+
+	public void setSmallMolecule(SmallMolecule smallMolecule) {
+		this.smallMolecule = smallMolecule;
+		domainEntity = smallMolecule;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public List<FunctionBean> getFunctions() {
+		return functions;
+	}
+
+	public void setFunctions(List<FunctionBean> functions) {
+		this.functions = functions;
+		Set<Function> domainFunctions = new HashSet<Function>();
+		for (FunctionBean functionBean : functions) {
+			domainFunctions.add(functionBean.getDomainFunction());
+		}
+		domainEntity.setFunctionCollection(domainFunctions);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+		domainEntity.setDescription(description);
+	}
+
+	public String getMolecularFormula() {
+		return molecularFormula;
+	}
+
+	public void setMolecularFormula(String molecularFormula) {
+		this.molecularFormula = molecularFormula;
+		domainEntity.setMolecularFormula(molecularFormula);
+	}
+
+	public String getMolecularFormulaType() {
+		return molecularFormulaType;
+	}
+
+	public void setMolecularFormulaType(String molecularFormulaType) {
+		this.molecularFormulaType = molecularFormulaType;
+		domainEntity.setMolecularFormulaType(molecularFormulaType);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+		domainEntity.setName(name);
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+		domainEntity.setValue(new Float(value));
+	}
+
+	public String getValueUnit() {
+		return valueUnit;
+	}
+
+	public void setValueUnit(String valueUnit) {
+		this.valueUnit = valueUnit;
+		domainEntity.setValueUnit(valueUnit);
+	}
+
+	public Set<LabFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<LabFile> files) {
+		this.files = files;
+		domainEntity.setLabFileCollection(files);
+	}
 }
