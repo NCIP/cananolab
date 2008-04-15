@@ -39,6 +39,13 @@
 			<form-property name="particleSampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
 		</form-bean>
+		<form-bean name="functionalizingEntityForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="entity"
+				type="gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean" />
+			<form-property name="particleSampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action path="/manageParticle"
@@ -48,8 +55,12 @@
 			path="/submitNanoparticleSample"
 			type="gov.nih.nci.cananolab.ui.particle.SubmitNanoparticleAction"
 			input="input" scope="request">
-			<forward name="success"
-				path="particle.submitNanoparticleSample" />
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.duplicateNanoparticleSample"
+				path="particle.submitNanoparticleSample"
+				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
+			<forward name="success" path="particle.generalInfo" />
 			<forward name="view" path="particle.generalInfo" />
 			<forward name="update" path="particle.generalInfo" />
 			<forward name="input"
@@ -71,6 +82,15 @@
 				path="particle.composition.particleEntity" />
 			<forward name="success"
 				path="particle.composition.particleEntity" />
+		</action>
+		<action input="input" name="functionalizingEntityForm"
+			parameter="dispatch" path="/functionalizingEntity"
+			type="gov.nih.nci.cananolab.ui.particle.FunctionalizingEntityAction"
+			scope="request">
+			<forward name="input"
+				path="particle.composition.functionalizingEntity" />
+			<forward name="success"
+				path="particle.composition.functionalizingEntity" />
 		</action>
 	</action-mappings>
 </struts-config>
