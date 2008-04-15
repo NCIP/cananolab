@@ -3,7 +3,7 @@
 <table class="${param.tableStyle}">
 	<tr class="titleRow">
 		<c:choose>
-			<c:when test="${!empty charaLeafToCharacterizations[param.charType]}">
+			<c:when test="${!empty particleDataTree[param.charType]}">
 				<c:url var="url" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />

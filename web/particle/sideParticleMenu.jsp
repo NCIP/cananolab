@@ -6,7 +6,8 @@
 
 <link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
 <script type="text/javascript" src="javascript/sidemenu.js"></script>
-
+<script type="text/javascript" src="javascript/particleEntity.js"></script>
+<script type="text/javascript" src="javascript/functionalizingEntity.js"></script>
 <!-- submenu begins -->
 <c:choose>
 	<c:when test="${!empty param.submitType}">
@@ -95,8 +96,11 @@
 					</c:url>
 					<a href="${url}" class="subMenuSecondary">GENERAL INFORMATION</a>
 				</li>
-				<jsp:include page="sideParticleFunctionMenu.jsp"></jsp:include>
+				<li class="controlList">
+					<a href="${url}" class="subMenuSecondary">SAMPLE MANAGEMENT</a>
+				</li>
 				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
+				
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
 
 				<c:choose>
