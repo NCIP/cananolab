@@ -38,7 +38,7 @@
 										<td class="sidebarContent">
 											<a href="${createLink}"> <c:choose>
 													<c:when test="${item eq 'Nanoparticle'}">
-												Submit New <c:out value="${item}" /> Information
+												Submit a New <c:out value="${item}" /> Sample
 											</c:when>
 													<c:otherwise>
 												Submit a New <c:out value="${item}" />
@@ -48,7 +48,7 @@
 											Click to
 											<c:choose>
 												<c:when test="${item eq 'Nanoparticle'}">
-												submit new <c:out value="${fn:toLowerCase(item)}" /> information.
+												submit a new <c:out value="${fn:toLowerCase(item)}" /> Sample.
 											</c:when>
 												<c:otherwise>
 												submit a new <c:out value="${fn:toLowerCase(item)}" />.
