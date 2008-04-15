@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.6 2008-04-11 19:44:40 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.7 2008-04-15 14:22:40 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,10 +75,13 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			charaClassNames[i] = InitSetup.getInstance().getObjectName(
 					characterizations[i], session.getServletContext());
 		}
-		String texts = ((String) theForm.get("texts")).trim();
+		String texts = ((String) theForm.get("text")).trim();
 		List<String> wordList = StringUtils.parseToWords(texts);
-		String[] words = new String[wordList.size()];
-		wordList.toArray(words);
+		String[] words = null;
+		if (wordList != null) {
+			words = new String[wordList.size()];
+			wordList.toArray(words);
+		}
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
 				particleSource, nanoparticleEntityClassNames,
