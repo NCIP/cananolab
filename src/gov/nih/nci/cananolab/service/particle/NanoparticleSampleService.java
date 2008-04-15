@@ -496,7 +496,9 @@ public class NanoparticleSampleService {
 
 			return particleBean;
 		} catch (Exception e) {
-			logger.error("Problem finding the particle by id", e);
+			logger
+					.error("Problem finding the particle by id: " + particleId,
+							e);
 			throw new ParticleException();
 		}
 	}
