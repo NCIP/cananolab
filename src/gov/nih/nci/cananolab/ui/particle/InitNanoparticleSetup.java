@@ -168,7 +168,7 @@ public class InitNanoparticleSetup {
 				searchTreeMap,
 				"gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization",
 				indentLevel);
-
+		appContext.setAttribute("physicalTypes", physicalCharaMap);
 		return searchTreeMap;
 	}
 
@@ -186,7 +186,7 @@ public class InitNanoparticleSetup {
 				searchTreeMap,
 				"gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization",
 				indentLevel);
-
+		appContext.setAttribute("invitroTypes", invitroCharaMap);
 		return searchTreeMap;
 	}
 
