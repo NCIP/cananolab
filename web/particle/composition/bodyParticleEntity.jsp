@@ -5,10 +5,6 @@
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type='text/javascript'
-	src='/caNanoLab/dwr/interface/AddFileManager.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <script type="text/javascript" src="javascript/particleEntity.js"></script>
 
 <script type="text/javascript">
@@ -26,21 +22,21 @@ function confirmDeletion()
 
 //-->
 </script>
-<jsp:include page="/particle/submitMenu.jsp" />
+<%--<jsp:include page="/particle/submitMenu.jsp" />--%>
 <%-- turn off update when doing remote searches --%>
-<c:choose>
-	<c:when test="${!empty param.gridNodeHost}">
-		<c:set var="isRemote" value="true" scope="session" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="isRemote" value="false" scope="session" />
-	</c:otherwise>
-</c:choose>
-<c:choose>
-	<c:when	test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
+<%--<c:choose>--%>
+<%--	<c:when test="${!empty param.gridNodeHost}">--%>
+<%--		<c:set var="isRemote" value="true" scope="session" />--%>
+<%--	</c:when>--%>
+<%--	<c:otherwise>--%>
+<%--		<c:set var="isRemote" value="false" scope="session" />--%>
+<%--	</c:otherwise>--%>
+<%--</c:choose>--%>
+<%--<c:choose>--%>
+<%--	<c:when	test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">--%>
 		<%@ include file="bodyParticleEntityUpdate.jsp" %> 
-	</c:when>
-	<c:otherwise>
-		<%@ include file="bodyParticleEntityReadOnly.jsp" %> 
-	</c:otherwise>
-</c:choose>
+<%--	</c:when>--%>
+<%--	<c:otherwise>--%>
+<%--		<%@ include file="bodyParticleEntityReadOnly.jsp" %> --%>
+<%--	</c:otherwise>--%>
+<%--</c:choose>--%>

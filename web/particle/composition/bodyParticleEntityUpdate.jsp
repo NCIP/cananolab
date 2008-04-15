@@ -1,9 +1,9 @@
-<html:form action="/composition">
+<html:form action="/nanoparticleEntity">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h4>
-					Nanoparticle Sample Comosition - Particle Entity
+					Sample Comosition - Nanoparticle Entity
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -39,7 +39,7 @@
 						<td class="rightLabel">
 
 							<html:select styleId="peType"
-								property="entity.characterizationSource"
+								property="entity.type"
 								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); displayCompositionProperty(this);">
 								<option value=""></option>
 								<option value="biopolymer">
@@ -248,7 +248,7 @@
 									<strong>Type</strong>
 								</td>
 								<td class="rightLabel">
-									<input type="text" name="entity.emulsion.emulsionType" />
+									<input type="text" name="entity.emulsion.type" />
 								</td>
 							</tr>
 						</tbody>
@@ -284,7 +284,7 @@
 									<strong>Number of Carbons</strong>
 								</td>
 								<td class="rightLabel">
-									<input type="text" name="entity.fullerene.numberOfCarbons"
+									<input type="text" name="entity.fullerene.numberOfCarbon"
 										id="numberOfCarbon" />
 								</td>
 							</tr>
@@ -400,12 +400,8 @@
 															</td>
 															<td class="labelWithTop" valign="top">
 																<html:select styleId="compElemType"
-																	property="entity.composingElements[0].type">
-																	<html:options name="allComposingElementTypes" />
-																	<c:if
-																		test="${nanoparticleCompositionForm.map.particle.sampleType eq 'Complex Particle'}">
-																		<html:options name="allParticleElementTypes" />
-																	</c:if>
+																	property="entity.composingElements[0].domainComposingElement.type">
+<%--																	<html:options name="allComposingElementTypes" />--%>
 																	<option value="other">
 																		Other
 																	</option>
@@ -417,7 +413,7 @@
 															</td>
 															<td class="rightLabelWithTop" valign="top">
 																<html:text
-																	property="entity.composingElements[0].chemicalName"
+																	property="entity.composingElements[0].domainComposingElement.name"
 																	size="30" />
 															</td>
 														</tr>
@@ -427,7 +423,7 @@
 															</td>
 															<td class="label" valign="top">
 																<html:select styleId="molFormulaType"
-																	property="entity.composingElements[0].molecularFormulaType"
+																	property="entity.composingElements[0].domainComposingElement.molecularFormulaType"
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
 																	<option value="" />
 																	<option value="other">
@@ -440,7 +436,7 @@
 															</td>
 															<td class="rightLabel" valign="top">
 																<html:text
-																	property="entity.composingElements[0].molecularFormula"
+																	property="entity.composingElements[0].domainComposingElement.molecularFormula"
 																	size="30" />
 															</td>
 														</tr>
@@ -450,7 +446,7 @@
 															</td>
 															<td class="label" valign="top">
 																<html:text
-																	property="entity.composingElements[0].value"
+																	property="entity.composingElements[0].domainComposingElement.value"
 																	size="30" />
 															</td>
 															<td class="label" valign="top">
@@ -458,7 +454,7 @@
 															</td>
 															<td class="rightLabel" valign="top">
 																<html:select styleId="compEleUnit"
-																	property="entity.composingElements[0].valueUnit">
+																	property="entity.composingElements[0].domainComposingElement.valueUnit">
 																	<option value="" />
 																	<option value="other">
 																		Other
@@ -472,7 +468,7 @@
 															</td>
 															<td class="rightLabel" colspan="3">
 																<html:textarea
-																	property="entity.composingElements[0].description"
+																	property="entity.composingElements[0].domainComposingElement.description"
 																	rows="3" cols="65" />
 															</td>
 														</tr>
@@ -506,7 +502,7 @@
 																			</tr>
 																			<tr style="display: none">
 																				<td class="leftLabel" valign="top">
-																					<select name="entity.composingElements[0].inherentFunctionCollection[0].inherentFuncType" size="1"
+																					<select name="entity.composingElements[0].inherentFunctions[0].type" size="1"
 																						id="funcType0">
 																						<option value="imaging">
 																							Imaging
@@ -524,7 +520,7 @@
 																				</td>
 																				<td class="label">
 																					<html:textarea
-																						property="entity.composingElements[0].inherentFunctionCollection[0].description"
+																						property="entity.composingElements[0].inherentFunctions[0].description"
 																						rows="1" cols="30" />
 																				</td>
 																				<td class="rightLabel">
@@ -653,10 +649,10 @@
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<html:hidden property="particle.sampleId" />
-												<html:hidden property="particle.sampleName" />
-												<html:hidden property="particle.sampleSource" />
-												<html:hidden property="particle.sampleType" />
+<%--												<html:hidden property="particle.sampleId" />--%>
+<%--												<html:hidden property="particle.sampleName" />--%>
+<%--												<html:hidden property="particle.sampleSource" />--%>
+<%--												<html:hidden property="particle.sampleType" />--%>
 												<html:submit />
 											</div>
 										</div>
