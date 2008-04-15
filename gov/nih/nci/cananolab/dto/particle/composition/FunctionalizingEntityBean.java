@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 public class FunctionalizingEntityBean {
 	private String entityType;
@@ -9,8 +10,12 @@ public class FunctionalizingEntityBean {
 
 	private Integer entityNumber;
 
+	private String entityClassName;
+
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
-		entityType = functionalizingEntity.getClass().getCanonicalName();
+		entityClassName = ClassUtils.getShortClassName(functionalizingEntity
+				.getClass().getCanonicalName());
+		this.functionalizingEntity = functionalizingEntity;
 	}
 
 	public int compareTo(FunctionalizingEntityBean other) {
@@ -36,6 +41,14 @@ public class FunctionalizingEntityBean {
 
 	public String getEntityType() {
 		return entityType;
+	}
+
+	public String getEntityClassName() {
+		return entityClassName;
+	}
+
+	public void setEntityType(String entityType) {
+		this.entityType = entityType;
 	}
 
 }

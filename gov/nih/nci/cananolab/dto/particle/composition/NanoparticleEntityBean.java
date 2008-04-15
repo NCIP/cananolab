@@ -14,7 +14,9 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Polymer;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NanoparticleEntityBean {
 	private String type;
@@ -22,8 +24,6 @@ public class NanoparticleEntityBean {
 	private String description;
 
 	private String className;
-
-	private String id;
 
 	private Polymer polymer = new Polymer();
 
@@ -43,16 +43,18 @@ public class NanoparticleEntityBean {
 
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
 
-	private List<ComposingElement> domainComposingElements = new ArrayList<ComposingElement>();
+	private Set<ComposingElement> domainComposingElements = new HashSet<ComposingElement>();
 
-	private List<LabFile> files = new ArrayList<LabFile>();
+	private Set<LabFile> files = new HashSet<LabFile>();
+
+	private NanoparticleEntity domainEntity=new NanoparticleEntity();
 
 	public NanoparticleEntityBean() {
 	}
 
 	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
-		className = ClassUtils.getShortClassName(nanoparticleEntity
-				.getClass().getCanonicalName());
+		className = ClassUtils.getShortClassName(nanoparticleEntity.getClass()
+				.getCanonicalName());
 		if (nanoparticleEntity instanceof Dendrimer) {
 			dendrimer = (Dendrimer) nanoparticleEntity;
 		} else if (nanoparticleEntity instanceof CarbonNanotube) {
@@ -69,8 +71,8 @@ public class NanoparticleEntityBean {
 		for (ComposingElement composingElement : nanoparticleEntity
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
-		}
-		id = nanoparticleEntity.getId().toString();
+		}		
+		domainEntity = nanoparticleEntity;
 	}
 
 	public int compareTo(NanoparticleEntityBean other) {
@@ -95,8 +97,7 @@ public class NanoparticleEntityBean {
 
 	public void setDendrimer(Dendrimer dendrimer) {
 		this.dendrimer = dendrimer;
-		dendrimer.setComposingElementCollection(domainComposingElements);
-		dendrimer.setLabFileCollection(files);
+		domainEntity = dendrimer;
 	}
 
 	public Biopolymer getBiopolymer() {
@@ -105,9 +106,7 @@ public class NanoparticleEntityBean {
 
 	public void setBiopolymer(Biopolymer biopolymer) {
 		this.biopolymer = biopolymer;
-		biopolymer.setComposingElementCollection(domainComposingElements);
-		biopolymer.setLabFileCollection(files);
-		biopolymer.setDescription(description);
+		domainEntity = biopolymer;
 	}
 
 	public CarbonNanotube getCarbonNanotube() {
@@ -116,9 +115,7 @@ public class NanoparticleEntityBean {
 
 	public void setCarbonNanotube(CarbonNanotube carbonNanotube) {
 		this.carbonNanotube = carbonNanotube;
-		carbonNanotube.setComposingElementCollection(domainComposingElements);
-		carbonNanotube.setLabFileCollection(files);
-		carbonNanotube.setDescription(description);
+		domainEntity = carbonNanotube;
 	}
 
 	public List<ComposingElementBean> getComposingElements() {
@@ -129,9 +126,12 @@ public class NanoparticleEntityBean {
 			List<ComposingElementBean> composingElements) {
 		this.composingElements = composingElements;
 		for (ComposingElementBean composingElementBean : composingElements) {
-			domainComposingElements.add(composingElementBean
-					.getComposingElement());
+			ComposingElement domainComposingElement = composingElementBean
+					.getDomainComposingElement();
+			domainComposingElement.setNanoparticleEntity(domainEntity);
+			domainComposingElements.add(domainComposingElement);
 		}
+		domainEntity.setComposingElementCollection(domainComposingElements);
 	}
 
 	public Emulsion getEmulsion() {
@@ -140,17 +140,16 @@ public class NanoparticleEntityBean {
 
 	public void setEmulsion(Emulsion emulsion) {
 		this.emulsion = emulsion;
-		emulsion.setComposingElementCollection(domainComposingElements);
-		emulsion.setLabFileCollection(files);
-		emulsion.setDescription(description);
+		domainEntity = emulsion;
 	}
 
-	public List<LabFile> getFiles() {
+	public Set<LabFile> getFiles() {
 		return files;
 	}
 
-	public void setFiles(List<LabFile> files) {
+	public void setFiles(Set<LabFile> files) {
 		this.files = files;
+		domainEntity.setLabFileCollection(files);
 	}
 
 	public Fullerene getFullerene() {
@@ -159,9 +158,7 @@ public class NanoparticleEntityBean {
 
 	public void setFullerene(Fullerene fullerene) {
 		this.fullerene = fullerene;
-		fullerene.setComposingElementCollection(domainComposingElements);
-		fullerene.setLabFileCollection(files);
-		fullerene.setDescription(description);
+		domainEntity = fullerene;
 	}
 
 	public Liposome getLiposome() {
@@ -170,9 +167,7 @@ public class NanoparticleEntityBean {
 
 	public void setLiposome(Liposome liposome) {
 		this.liposome = liposome;
-		liposome.setComposingElementCollection(domainComposingElements);
-		liposome.setLabFileCollection(files);
-		liposome.setDescription(description);
+		domainEntity = liposome;
 	}
 
 	public Polymer getPolymer() {
@@ -181,9 +176,7 @@ public class NanoparticleEntityBean {
 
 	public void setPolymer(Polymer polymer) {
 		this.polymer = polymer;
-		polymer.setComposingElementCollection(domainComposingElements);
-		polymer.setLabFileCollection(files);
-		polymer.setDescription(description);
+		domainEntity = polymer;
 	}
 
 	public OtherNanoparticleEntity getOtherEntity() {
@@ -193,17 +186,7 @@ public class NanoparticleEntityBean {
 	public void setOtherEntity(OtherNanoparticleEntity otherEntity) {
 		this.otherEntity = otherEntity;
 		otherEntity.setType(type);
-		otherEntity.setComposingElementCollection(domainComposingElements);
-		otherEntity.setLabFileCollection(files);
-		otherEntity.setDescription(description);
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String entityId) {
-		this.id = entityId;
+		domainEntity = otherEntity;
 	}
 
 	public void setClassName(String entityClassName) {
@@ -216,5 +199,10 @@ public class NanoparticleEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+		domainEntity.setDescription(description);
+	}
+
+	public NanoparticleEntity getDomainEntity() {
+		return domainEntity;
 	}
 }

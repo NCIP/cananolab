@@ -9,7 +9,9 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.TherapeuticFuncti
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -34,7 +36,7 @@ public class FunctionBean {
 
 	private String className;
 
-	private Function domainFunction;
+	private Function domainFunction=new Function();
 
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
@@ -66,6 +68,7 @@ public class FunctionBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+		domainFunction.setDescription(description);
 	}
 
 	public ImagingFunction getImagingFunction() {
@@ -73,8 +76,7 @@ public class FunctionBean {
 	}
 
 	public void setImagingFunction(ImagingFunction imagingFunction) {
-		this.imagingFunction = imagingFunction;
-		imagingFunction.setDescription(description);
+		this.imagingFunction = imagingFunction;		
 		domainFunction = imagingFunction;
 	}
 
@@ -83,8 +85,7 @@ public class FunctionBean {
 	}
 
 	public void setOtherFunction(OtherFunction otherFunction) {
-		this.otherFunction = otherFunction;
-		otherFunction.setDescription(description);
+		this.otherFunction = otherFunction;		
 		domainFunction = otherFunction;
 	}
 
@@ -94,8 +95,7 @@ public class FunctionBean {
 
 	public void setTargetingFunction(TargetingFunction targetingFunction) {
 		this.targetingFunction = targetingFunction;
-		targetingFunction.setDescription(description);
-		List<Target> domainTargets = null;
+		Set<Target> domainTargets = new HashSet<Target>();
 		for (TargetBean targetBean : targets) {
 			domainTargets.add(targetBean.getDomainTarget());
 		}
@@ -109,7 +109,6 @@ public class FunctionBean {
 
 	public void setTherapeuticFunction(TherapeuticFunction therapeuticFunction) {
 		this.therapeuticFunction = therapeuticFunction;
-		therapeuticFunction.setDescription(description);
 		domainFunction = therapeuticFunction;
 	}
 
