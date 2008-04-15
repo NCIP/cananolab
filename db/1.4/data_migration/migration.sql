@@ -561,24 +561,26 @@ insert into canano.nanoparticle_entity
 (
 	nanoparticle_entity_pk_id,
 	composition_pk_id,
+	created_by,
+	created_date,
 	discriminator
 )
 SELECT c.cn_composition_pk_id,
 	c.cn_composition_pk_id,
+	ca.created_by,
+	ca.created_date,
 	'CarbonNanotube'
-FROM cananolab.carbon_nanotube_composition c
+FROM cananolab.carbon_nanotube_composition c,
+	cananolab.characterization ca
+WHERE c.cn_composition_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
 (
 	composition_pk_id,
-	created_by,
-	created_date,
 	particle_sample_pk_id
 )
 SELECT c.characterization_pk_id,
-	c.created_by,
-	c.created_date,
 	n.nanoparticle_pk_id
 FROM cananolab.nanoparticle_char n,
 	cananolab.characterization c,
@@ -607,24 +609,26 @@ insert into canano.nanoparticle_entity
 (
 	nanoparticle_entity_pk_id,
 	composition_pk_id,
+	created_by,
+	created_date,
 	discriminator
 )
 SELECT c.e_composition_pk_id,
 	c.e_composition_pk_id,
+	ca.created_by,
+	ca.created_date,
 	'Emulsion'
-FROM cananolab.emulsion_composition c
+FROM cananolab.emulsion_composition c,
+	cananolab.characterization ca
+WHERE c.e_composition_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
 (
 	composition_pk_id,
-	created_by,
-	created_date,
 	particle_sample_pk_id
 )
 SELECT c.characterization_pk_id,
-	c.created_by,
-	c.created_date,
 	n.nanoparticle_pk_id
 FROM cananolab.nanoparticle_char n,
 	cananolab.characterization c,
@@ -651,24 +655,26 @@ insert into canano.nanoparticle_entity
 (
 	nanoparticle_entity_pk_id,
 	composition_pk_id,
+	created_by,
+	created_date,
 	discriminator
 )
 SELECT c.d_composition_pk_id,
 	c.d_composition_pk_id,
+	ca.created_by,
+	ca.created_date,
 	'Dendrimer'
-FROM cananolab.dendrimer_composition c
+FROM cananolab.dendrimer_composition c,
+	cananolab.characterization ca
+WHERE c.d_composition_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
 (
 	composition_pk_id,
-	created_by,
-	created_date,
 	particle_sample_pk_id
 )
 SELECT c.characterization_pk_id,
-	c.created_by,
-	c.created_date,
 	n.nanoparticle_pk_id
 FROM cananolab.nanoparticle_char n,
 	cananolab.characterization c,
@@ -695,24 +701,26 @@ insert into canano.nanoparticle_entity
 (
 	nanoparticle_entity_pk_id,
 	composition_pk_id,
+	created_by,
+	created_date,
 	discriminator
 )
 SELECT c.l_composition_pk_id,
 	c.l_composition_pk_id,
+	ca.created_by,
+	ca.created_date,
 	'Liposome'
-FROM cananolab.liposome_composition c
+FROM cananolab.liposome_composition c,
+	cananolab.characterization ca
+WHERE c.l_composition_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
 (
 	composition_pk_id,
-	created_by,
-	created_date,
 	particle_sample_pk_id
 )
 SELECT c.characterization_pk_id,
-	c.created_by,
-	c.created_date,
 	n.nanoparticle_pk_id
 FROM cananolab.nanoparticle_char n,
 	cananolab.characterization c,
@@ -740,24 +748,26 @@ insert into canano.nanoparticle_entity
 (
 	nanoparticle_entity_pk_id,
 	composition_pk_id,
+	created_by,
+	created_date,
 	discriminator
 )
 SELECT c.p_composition_pk_id,
 	c.p_composition_pk_id,
+	ca.created_by,
+	ca.created_date,
 	'Polymer'
-FROM cananolab.polymer_composition c
+FROM cananolab.polymer_composition c,
+	cananolab.characterization ca
+WHERE c.p_composition_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
 (
 	composition_pk_id,
-	created_by,
-	created_date,
 	particle_sample_pk_id
 )
 SELECT c.characterization_pk_id,
-	c.created_by,
-	c.created_date,
 	n.nanoparticle_pk_id
 FROM cananolab.nanoparticle_char n,
 	cananolab.characterization c,
@@ -782,24 +792,26 @@ insert into canano.nanoparticle_entity
 (
 	nanoparticle_entity_pk_id,
 	composition_pk_id,
+	created_by,
+	created_date,
 	discriminator
 )
 SELECT c.f_composition_pk_id,
 	c.f_composition_pk_id,
+	ca.created_by,
+	ca.created_date,
 	'Fullerene'
-FROM cananolab.fullerene_composition c
+FROM cananolab.fullerene_composition c,
+	cananolab.characterization ca
+WHERE c.f_composition_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
 (
 	composition_pk_id,
-	created_by,
-	created_date,
 	particle_sample_pk_id
 )
 SELECT c.characterization_pk_id,
-	c.created_by,
-	c.created_date,
 	n.nanoparticle_pk_id
 FROM cananolab.nanoparticle_char n,
 	cananolab.characterization c,
