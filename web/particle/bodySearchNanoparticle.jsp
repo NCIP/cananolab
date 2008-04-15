@@ -33,14 +33,12 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Texts</strong>
+							<strong>Search by nanoparticle characterization keywords
+								and text in characterization descriptions</strong>
 							<br>
-							<em> (e.g. Keywords for nanoparticles or characterization
-								files. <br>Words/phrases in characterization descriptionor
-								characterization file description.)</em>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<html:textarea property="texts" rows="3" cols="60" />
+							<html:textarea property="text" rows="3" cols="60" />
 							<br>
 							<em>case insensitive</em>
 							<br>
