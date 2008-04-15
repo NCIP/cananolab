@@ -1,9 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Gene;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Receptor;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -22,27 +20,19 @@ public class TargetBean {
 
 	private Antigen antigen = new Antigen();
 
-	private Receptor receptor = new Receptor();
-
-	private Gene gene = new Gene();
-
 	private OtherTarget otherTarget = new OtherTarget();
 
 	private String className;
 
-	private Target domainTarget=new Target();
+	private Target domainTarget = new Target();
 
 	public TargetBean() {
-		
+
 	}
-	
+
 	public TargetBean(Target target) {
 		if (target instanceof Antigen) {
 			antigen = (Antigen) target;
-		} else if (target instanceof Receptor) {
-			receptor = (Receptor) target;
-		} else if (target instanceof Gene) {
-			gene = (Gene) target;
 		} else if (target instanceof OtherTarget) {
 			otherTarget = (OtherTarget) target;
 		}
@@ -56,7 +46,7 @@ public class TargetBean {
 	}
 
 	public void setAntigen(Antigen antigen) {
-		this.antigen = antigen;		
+		this.antigen = antigen;
 		domainTarget = antigen;
 	}
 
@@ -69,17 +59,6 @@ public class TargetBean {
 		domainTarget.setDescription(description);
 	}
 
-	public Gene getGene() {
-		return gene;
-	}
-
-	public void setGene(Gene gene) {
-		this.gene = gene;
-		gene.setDescription(description);
-		gene.setName(name);
-		domainTarget = gene;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -89,21 +68,13 @@ public class TargetBean {
 		domainTarget.setName(name);
 	}
 
-	public Receptor getReceptor() {
-		return receptor;
-	}
-
-	public void setReceptor(Receptor receptor) {
-		this.receptor = receptor;	
-		domainTarget = receptor;
-	}
-
 	public String getType() {
 		return type;
 	}
 
 	public void setType(String type) {
 		this.type = type;
+		otherTarget.setType(type);
 	}
 
 	public OtherTarget getOtherTarget() {
@@ -112,7 +83,6 @@ public class TargetBean {
 
 	public void setOtherTarget(OtherTarget otherTarget) {
 		this.otherTarget = otherTarget;		
-		otherTarget.setType(type);
 		domainTarget = otherTarget;
 	}
 
@@ -126,5 +96,5 @@ public class TargetBean {
 
 	public Target getDomainTarget() {
 		return domainTarget;
-	}	
+	}
 }
