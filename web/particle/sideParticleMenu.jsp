@@ -15,17 +15,13 @@
 	</c:when>
 </c:choose>
 <c:choose>
-	<c:when
-		test="${!empty submitType != 'none'}">
+	<c:when test="${!empty submitType != 'none'}">
 		<c:set var="displaytype" value="${submitType}" scope="request" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="displaytype" value="${param.displayType}" scope="request" />
 	</c:otherwise>
 </c:choose>
-<c:if test="${theParticle.sampleId != null && particleId != theParticle.sampleId }">
-	<c:set var="displaytype" value="" scope="request" />
-</c:if>
 <c:choose>
 	<c:when test="${canCreateNanoparticle eq 'true'}">
 		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
@@ -36,25 +32,12 @@
 </c:choose>
 <c:choose>
 	<c:when test="${!empty theParticle}">
-		<c:set var="particleName" value="${theParticle.sampleName}"
+		<c:set var="particleName" value="${theParticle.particleSample.name}"
 			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleType" value="${theParticle.sampleType}"
+		<c:set var="particleId" value="${theParticle.particleSample.id}"
 			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleSource" value="${theParticle.sampleSource}"
-			scope="session" />
-	</c:when>
-</c:choose>
-<c:choose>
-	<c:when test="${!empty theParticle}">
-		<c:set var="particleId" value="${theParticle.sampleId}"
+		<c:set var="particleSource"
+			value="${theParticle.particleSample.source.organizationName}"
 			scope="session" />
 	</c:when>
 </c:choose>
@@ -78,7 +61,7 @@
 	height="100%" width="250">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="21">
-			NAVIGATION TREE
+			NAVIGATION TREE ${form}
 		</td>
 	</tr>
 	<tr>
@@ -90,7 +73,7 @@
 					<c:out value="${particleName}" />
 				</li>
 				<li class="controlList">
-					<c:url var="url" value="nanoparticleGeneralInfo.do">
+					<c:url var="url" value="submitNanoparticleSample.do">
 						<c:param name="dispatch" value="${dispatchValue}" />
 						<c:param name="particleId" value="${particleId}" />
 					</c:url>
@@ -100,7 +83,7 @@
 					<a href="${url}" class="subMenuSecondary">SAMPLE MANAGEMENT</a>
 				</li>
 				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
-				
+
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
 
 				<c:choose>
