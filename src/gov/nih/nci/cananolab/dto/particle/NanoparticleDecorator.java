@@ -38,7 +38,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String particleId = particle.getParticleSample().getId().toString();
 		String particleName = particle.getParticleSample().getName();
-		String viewParticleURL = "nanoparticleGeneralInfo.do?dispatch=setupView&particleId="
+		String viewParticleURL = "submitNanoparticleSample.do?dispatch=setupView&particleId="
 				+ particleId;
 		;
 		String link = "<a href=" + viewParticleURL + ">" + particleName
