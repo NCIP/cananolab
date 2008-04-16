@@ -42,36 +42,7 @@
 								property="entity.type"
 								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); displayCompositionProperty(this);">
 								<option value=""></option>
-								<option value="biopolymer">
-									Biopolymer
-								</option>
-								<option value="carbonNanotube">
-									Carbon Nanotube
-								</option>
-								<option value="dendrimer">
-									Dendrimer
-								</option>
-								<option value="emulsion">
-									Emulsion
-								</option>
-								<option value="fullerene">
-									Fullerene
-								</option>
-								<option value="liposome">
-									Liposome
-								</option>
-								<option value="metalParticle">
-									Metal Particle
-								</option>
-								<option value="polymer">
-									Polymer
-								</option>
-								<option value="quantumDot">
-									Quantum Dot
-								</option>
-								<option value="other">
-									Other
-								</option>
+								<html:options name="nanoparticleEntityTypes" />
 							</html:select>
 						</td>
 					</tr>
@@ -401,9 +372,10 @@
 															<td class="labelWithTop" valign="top">
 																<html:select styleId="compElemType"
 																	property="entity.composingElements[0].domainComposingElement.type">
-<%--																	<html:options name="allComposingElementTypes" />--%>
+																	<option/>
+																	<html:options name="composingElementTypes" />
 																	<option value="other">
-																		Other
+																		[Other]
 																	</option>
 																</html:select>
 															</td>
@@ -455,9 +427,9 @@
 															<td class="rightLabel" valign="top">
 																<html:select styleId="compEleUnit"
 																	property="entity.composingElements[0].domainComposingElement.valueUnit">
-																	<option value="" />
+																	<option value="" />																																
 																	<option value="other">
-																		Other
+																		[Other]
 																	</option>
 																</html:select>
 															</td>
@@ -503,7 +475,7 @@
 																			<tr style="display: none">
 																				<td class="leftLabel" valign="top">
 																					<select name="entity.composingElements[0].inherentFunctions[0].type" size="1"
-																						id="funcType0">
+																						id="funcType0">																						
 																						<option value="imaging">
 																							Imaging
 																						</option>
