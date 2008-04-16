@@ -254,96 +254,113 @@ public class InitNanoparticleSetup {
 	}
 
 	public Map<String, List<ParticleDataLinkBean>> getDataTree(
-			ParticleBean particleBean, ServletContext appContext)
+			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
-		NanoparticleSample particleSample = particleBean.getParticleSample();
 		Map<String, List<ParticleDataLinkBean>> dataTree = new HashMap<String, List<ParticleDataLinkBean>>();
-		// composition
-		if (particleSample.getSampleComposition() != null) {
-			List<ParticleDataLinkBean> ndataBeans = new ArrayList<ParticleDataLinkBean>();
-			for (NanoparticleEntity entity : particleSample
-					.getSampleComposition().getNanoparticleEntityCollection()) {
-				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(entity
-						.getId().toString(), "composition");
-				dataBean.setDataClassName(ClassUtils.getShortClassName(entity
+		if (request.getAttribute("newParticleCreated").equals("true")) {
+			ServletContext appContext = request.getSession()
+					.getServletContext();
+			NanoparticleSample particleSample = particleBean
+					.getParticleSample();
+			// composition
+			if (particleSample.getSampleComposition() != null) {
+				List<ParticleDataLinkBean> ndataBeans = new ArrayList<ParticleDataLinkBean>();
+				for (NanoparticleEntity entity : particleSample
+						.getSampleComposition()
+						.getNanoparticleEntityCollection()) {
+					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+							entity.getId().toString(), "Composition",
+							"nanoparticleEntity.do");
+					dataBean.setDataClassName(ClassUtils
+							.getShortClassName(entity.getClass()
+									.getCanonicalName()));
+					dataBean.setDataDisplayType(InitSetup.getInstance()
+							.getDisplayName(dataBean.getDataClassName(),
+									appContext));
+					ndataBeans.add(dataBean);
+				}
+				dataTree.put("Nanoparticle Entity", ndataBeans);
+
+				List<ParticleDataLinkBean> fdataBeans = new ArrayList<ParticleDataLinkBean>();
+				for (FunctionalizingEntity entity : particleSample
+						.getSampleComposition()
+						.getFunctionalizingEntityCollection()) {
+					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+							entity.getId().toString(), "Composition",
+							"functionalizingEntity.do");
+					dataBean.setDataClassName(ClassUtils
+							.getShortClassName(entity.getClass()
+									.getCanonicalName()));
+					dataBean.setDataDisplayType(InitSetup.getInstance()
+							.getDisplayName(dataBean.getDataClassName(),
+									appContext));
+					fdataBeans.add(dataBean);
+				}
+				dataTree.put("Functionalizing Entity", fdataBeans);
+
+				List<ParticleDataLinkBean> adataBeans = new ArrayList<ParticleDataLinkBean>();
+				for (ChemicalAssociation association : particleSample
+						.getSampleComposition()
+						.getChemicalAssociationCollection()) {
+					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+							association.getId().toString(), "Composition",
+							"chemicalAssociation.do");
+					dataBean.setDataClassName(ClassUtils
+							.getShortClassName(association.getClass()
+									.getCanonicalName()));
+					dataBean.setDataDisplayType(InitSetup.getInstance()
+							.getDisplayName(dataBean.getDataClassName(),
+									appContext));
+					adataBeans.add(dataBean);
+				}
+				dataTree.put("Chemical Association", adataBeans);
+
+				List<ParticleDataLinkBean> ldataBeans = new ArrayList<ParticleDataLinkBean>();
+				for (LabFile file : particleSample.getSampleComposition()
+						.getLabFileCollection()) {
+					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+							file.getId().toString(), "Composition",
+							"compositionFile.do");
+					dataBean.setDataClassName("LabFile");
+					dataBean.setDataDisplayType(file.getType());
+					ldataBeans.add(dataBean);
+				}
+				dataTree.put("Composition File", ldataBeans);
+			}
+
+			// characterization
+			List<ParticleDataLinkBean> cdataBeans = null;
+			for (Characterization achar : particleSample
+					.getCharacterizationCollection()) {
+				String category = "";
+				String link = "";
+				if (achar instanceof PhysicalCharacterization) {
+					category = "Physical Characterization";
+					link = "physicalCharacterization.do";
+				} else if (achar instanceof InvitroCharacterization) {
+					category = "In Vitro Characterization";
+					link = "invitroCharacterization.do";
+				}
+				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(achar
+						.getId().toString(), category, link);
+				dataBean.setDataClassName(ClassUtils.getShortClassName(achar
 						.getClass().getCanonicalName()));
-				dataBean
-						.setDataDisplayType(InitSetup.getInstance()
-								.getDisplayName(dataBean.getDataClassName(),
-										appContext));
-				ndataBeans.add(dataBean);
+				String charName = InitSetup.getInstance().getDisplayName(
+						dataBean.getDataClassName(), appContext);
+				dataBean.setDataDisplayType(achar.getIdentificationName());
+				if (dataTree.get(charName) != null) {
+					cdataBeans = (List<ParticleDataLinkBean>) dataTree
+							.get(charName);
+				} else {
+					cdataBeans = new ArrayList<ParticleDataLinkBean>();
+					dataTree.put(charName, cdataBeans);
+				}
+				cdataBeans.add(dataBean);
 			}
-			dataTree.put("Nanoparticle Entity", ndataBeans);
-
-			List<ParticleDataLinkBean> fdataBeans = new ArrayList<ParticleDataLinkBean>();
-			for (FunctionalizingEntity entity : particleSample
-					.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
-				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(entity
-						.getId().toString(), "composition");
-				dataBean.setDataClassName(ClassUtils.getShortClassName(entity
-						.getClass().getCanonicalName()));
-				dataBean
-						.setDataDisplayType(InitSetup.getInstance()
-								.getDisplayName(dataBean.getDataClassName(),
-										appContext));
-				fdataBeans.add(dataBean);
-			}
-			dataTree.put("Functionalizing Entity", fdataBeans);
-
-			List<ParticleDataLinkBean> adataBeans = new ArrayList<ParticleDataLinkBean>();
-			for (ChemicalAssociation association : particleSample
-					.getSampleComposition().getChemicalAssociationCollection()) {
-				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-						association.getId().toString(), "composition");
-				dataBean.setDataClassName(ClassUtils
-						.getShortClassName(association.getClass()
-								.getCanonicalName()));
-				dataBean
-						.setDataDisplayType(InitSetup.getInstance()
-								.getDisplayName(dataBean.getDataClassName(),
-										appContext));
-				adataBeans.add(dataBean);
-			}
-			dataTree.put("Chemical Association", adataBeans);
-
-			List<ParticleDataLinkBean> ldataBeans = new ArrayList<ParticleDataLinkBean>();
-			for (LabFile file : particleSample.getSampleComposition()
-					.getLabFileCollection()) {
-				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(file
-						.getId().toString(), "Composition");
-				dataBean.setDataClassName("LabFile");
-				dataBean.setDataDisplayType(file.getType());
-				ldataBeans.add(dataBean);
-			}
-			dataTree.put("Composition File", ldataBeans);
-		}
-
-		// characterization
-		List<ParticleDataLinkBean> cdataBeans = null;
-		for (Characterization achar : particleSample
-				.getCharacterizationCollection()) {
-			String category = "";
-			if (achar instanceof PhysicalCharacterization) {
-				category = "Physical Characterization";
-			} else if (achar instanceof InvitroCharacterization) {
-				category = "In Vitro Characterization";
-			}
-			ParticleDataLinkBean dataBean = new ParticleDataLinkBean(achar
-					.getId().toString(), category);
-			dataBean.setDataClassName(ClassUtils.getShortClassName(achar
-					.getClass().getCanonicalName()));
-			String charName = InitSetup.getInstance().getDisplayName(
-					dataBean.getDataClassName(), appContext);
-			dataBean.setDataDisplayType(achar.getIdentificationName());
-			if (dataTree.get(charName) != null) {
-				cdataBeans = (List<ParticleDataLinkBean>) dataTree
-						.get(charName);
-			} else {
-				cdataBeans = new ArrayList<ParticleDataLinkBean>();
-				dataTree.put(charName, cdataBeans);
-			}
-			cdataBeans.add(dataBean);
+		} else {
+			dataTree = new HashMap<String, List<ParticleDataLinkBean>>(
+					(Map<? extends String, List<ParticleDataLinkBean>>) (request
+							.getSession().getAttribute("particleDataTree")));
 		}
 		return dataTree;
 	}
