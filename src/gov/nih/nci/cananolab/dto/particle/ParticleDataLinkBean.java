@@ -15,21 +15,22 @@ public class ParticleDataLinkBean {
 	//the id for the persisted data
 	private String dataId;
 
-	private String dataActionName;
+	private String dataLink;
 
+	//Composition, Physical Characterization, In Vitro Characterization
 	private String dataCategory;
 
-	public ParticleDataLinkBean(String dataId, String category) {
+	public ParticleDataLinkBean(String dataId, String category, String dataLink) {
 		this.dataId=dataId;
 		dataCategory = category;
 	}
 
-	public String getDataActionName() {
-		return dataActionName;
+	public String getDataLink() {
+		return dataLink;
 	}
 
-	public void setDataActionName(String dataActionName) {
-		this.dataActionName = dataActionName;
+	public void setDataLink(String dataLink) {
+		this.dataLink = dataLink;
 	}
 
 	public String getDataClassName() {
