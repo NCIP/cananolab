@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.7 2008-04-15 14:22:40 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.8 2008-04-16 13:45:55 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
