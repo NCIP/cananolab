@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.2 2008-04-16 13:45:55 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.3 2008-04-16 13:49:09 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Dendrimer;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -117,8 +117,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		theForm.set("particleSampleBean", particleBean);
 		request.setAttribute("newParticleCreated", "true");
 		session.setAttribute("particleDataTree", InitNanoparticleSetup
-				.getInstance().getDataTree(particleBean,
-						request));
+				.getInstance().getDataTree(particleBean, request));
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
 		InitNanoparticleSetup.getInstance().setEmulsionComposingElementTypes(
 				request);
@@ -139,7 +138,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 				particleId, user);
 
 		theForm.set("particleSampleBean", particleBean);
-
+		request.setAttribute("theParticle", particleBean);
 		String entityId = request.getParameter("entityId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		NanoparticleEntityBean entityBean = compService
@@ -150,8 +149,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		theForm.set("entity", entityBean);
 		request.setAttribute("newParticleCreated", "true");
 		session.setAttribute("particleDataTree", InitNanoparticleSetup
-				.getInstance().getDataTree(particleBean,
-						request));
+				.getInstance().getDataTree(particleBean, request));
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
 		InitNanoparticleSetup.getInstance().setEmulsionComposingElementTypes(
 				request);
