@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.5 2008-04-16 17:56:08 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.6 2008-04-16 18:17:15 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -36,7 +36,7 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
-		UserBean user = new UserBean("Test");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		particleSampleBean.getParticleSample()
 				.setCreatedBy(user.getLoginName());
 		particleSampleBean.getParticleSample().setCreatedDate(new Date());
