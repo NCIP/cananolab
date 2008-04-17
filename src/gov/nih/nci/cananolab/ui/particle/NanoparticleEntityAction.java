@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.5 2008-04-17 19:47:52 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.6 2008-04-17 21:30:23 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -67,6 +67,8 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		
 		compositionService.saveNanoparticleEntity(particleBean, entityBean);
 		ActionForward forward = mapping.findForward("success");
+		request.setAttribute("updateDataTree", "true");
+		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
 	}
 
