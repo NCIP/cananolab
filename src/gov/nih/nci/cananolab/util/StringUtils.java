@@ -24,7 +24,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.3 2008-04-15 14:20:40 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.4 2008-04-17 20:37:07 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -98,21 +98,15 @@ public class StringUtils {
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
 		}
-		// remove null and empty item from the list
-		for (String str : stringList) {
-			if (str == null) {
-				stringList.remove(str);
-			}
-			if (str.length() == 0) {
-				stringList.remove(str);
-			}
-		}
+
 		int i = 0;
 		for (String str : stringList) {
 			if (i < stringList.size() - 1) {
-				joinedStr += str + delimiter;
+				if (str != null && str.length() > 0)
+					joinedStr += str + delimiter;
 			} else {
-				joinedStr += str;
+				if (str != null && str.length() > 0)
+					joinedStr += str;
 			}
 			i++;
 		}
@@ -128,21 +122,16 @@ public class StringUtils {
 		if (sortableNames == null || sortableNames.isEmpty()) {
 			return joinedStr;
 		}
-		// remove null and empty item from the list
-		for (SortableName sortableName : sortableNames) {
-			if (sortableName == null) {
-				sortableNames.remove(sortableName);
-			}
-			if (sortableName.getName().length() == 0) {
-				sortableNames.remove(sortableName);
-			}
-		}
 		int i = 0;
 		for (SortableName sortableName : sortableNames) {
 			if (i < sortableNames.size() - 1) {
-				joinedStr += sortableName.getName() + delimiter;
+				if (sortableName.getName() != null
+						&& sortableName.getName().length() > 0)
+					joinedStr += sortableName.getName() + delimiter;
 			} else {
-				joinedStr += sortableName.getName();
+				if (sortableName.getName() != null
+						&& sortableName.getName().length() > 0)
+					joinedStr += sortableName.getName();
 			}
 			i++;
 		}
