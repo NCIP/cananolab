@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
@@ -51,6 +52,13 @@ public class InitNanoparticleSetup {
 		SortedSet<Source> sampleSources = particleService
 				.getAllParticleSources();
 		request.getSession().setAttribute("allParticleSources", sampleSources);
+	}
+
+	public void setNanoparticleSampleSources(HttpServletRequest request, UserBean user)
+			throws Exception {
+		SortedSet<Source> sampleSources = particleService
+				.getAllParticleSources(user);
+		request.getSession().setAttribute("allUserParticleSources", sampleSources);
 	}
 
 	public List<String> getDefaultFunctionTypes(ServletContext appContext)
@@ -406,12 +414,12 @@ public class InitNanoparticleSetup {
 		List<String> composingElementTypes = null;
 		if (request.getAttribute("composingElementTypes") == null) {
 			composingElementTypes = getDefaultComposingElementTypes(request
-				.getSession().getServletContext());
+					.getSession().getServletContext());
 			SortedSet<String> otherTypes = LookupService.getLookupValues(
-				"ComposingElement", "otherType");
+					"ComposingElement", "otherType");
 			composingElementTypes.addAll(otherTypes);
 			request.getSession().setAttribute("composingElementTypes",
-				composingElementTypes);
+					composingElementTypes);
 		} else {
 			composingElementTypes = new ArrayList<String>(
 					(List<? extends String>) request
@@ -420,26 +428,25 @@ public class InitNanoparticleSetup {
 		return composingElementTypes;
 	}
 
-	public List<String> getEmulsionComposingElementTypes(HttpServletRequest request)
-			throws CaNanoLabException {
+	public List<String> getEmulsionComposingElementTypes(
+			HttpServletRequest request) throws CaNanoLabException {
 		List<String> allTypes = null;
 		if (request.getAttribute("emulsionComposingElementTypes") == null) {
 			List<String> composingElementTypes = getDefaultComposingElementTypes(request
-				.getSession().getServletContext());
+					.getSession().getServletContext());
 			List<String> emulsionComposingElementTypes = getDefaultEmulsionComposingElementTypes(request
-				.getSession().getServletContext());
+					.getSession().getServletContext());
 			SortedSet<String> otherTypes = LookupService.getLookupValues(
-				"ComposingElement", "otherType");
+					"ComposingElement", "otherType");
 			allTypes = new ArrayList<String>();
 			allTypes.addAll(composingElementTypes);
 			allTypes.addAll(emulsionComposingElementTypes);
 			allTypes.addAll(otherTypes);
 			request.getSession().setAttribute("emulsionComposingElementTypes",
-				allTypes);
+					allTypes);
 		} else {
-			allTypes = new ArrayList<String>(
-					(List<? extends String>) request
-							.getAttribute("emulsionComposingElementTypes"));
+			allTypes = new ArrayList<String>((List<? extends String>) request
+					.getAttribute("emulsionComposingElementTypes"));
 		}
 		return allTypes;
 	}
