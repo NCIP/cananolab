@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.8 2008-04-16 13:45:55 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.9 2008-04-17 19:48:33 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -40,7 +40,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleSource = (String) theForm.get("particleSource");
+		String[] particleSources = (String[]) theForm.get("particleSources");
 
 		String[] nanoparticleEntityTypes = (String[]) theForm
 				.get("nanoparticleEntityTypes");
@@ -84,7 +84,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		}
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
-				particleSource, nanoparticleEntityClassNames,
+				particleSources, nanoparticleEntityClassNames,
 				functionalizingEntityClassNames, functionClassNames,
 				charaClassNames, words, user);
 
@@ -107,8 +107,9 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
-				request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		InitNanoparticleSetup.getInstance().setNanoparticleSampleSources(
+				request, user);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
 				request);

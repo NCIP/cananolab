@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.8 2008-04-17 17:30:20 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.9 2008-04-17 19:48:33 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -51,7 +51,7 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.setVisibility(particleSampleBean.getParticleSample()
 				.getName(), particleSampleBean.getVisibilityGroups());
-
+		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("success");
 		HttpSession session = request.getSession();
 		request.setAttribute("theParticle", particleSampleBean);
@@ -93,8 +93,9 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
-				request);
+		UserBean user = (UserBean) session.getAttribute("user");
+		InitNanoparticleSetup.getInstance().setNanoparticleSampleSources(
+				request, user);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(session);
 
 		return mapping.getInputForward();
