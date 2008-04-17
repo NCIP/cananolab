@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.9 2008-04-17 19:48:33 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.10 2008-04-17 21:30:23 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -53,11 +53,10 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 				.getName(), particleSampleBean.getVisibilityGroups());
 		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("success");
-		HttpSession session = request.getSession();
 		request.setAttribute("theParticle", particleSampleBean);
 		request.setAttribute("updateDataTree", "true");
-		session.setAttribute("particleDataTree", InitNanoparticleSetup
-				.getInstance().getDataTree(particleSampleBean, request));
+		InitNanoparticleSetup.getInstance().getDataTree(particleSampleBean,
+				request);
 		return forward;
 	}
 
@@ -77,8 +76,8 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		theForm.set("particleSampleBean", particleSampleBean);
 		request.setAttribute("theParticle", particleSampleBean);
 		request.setAttribute("updateDataTree", "true");
-		session.setAttribute("particleDataTree", InitNanoparticleSetup
-				.getInstance().getDataTree(particleSampleBean, request));
+		InitNanoparticleSetup.getInstance().getDataTree(particleSampleBean,
+				request);
 
 		return mapping.findForward("update");
 	}
