@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.6 2008-04-17 21:30:23 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.7 2008-04-17 22:16:11 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -31,6 +31,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class NanoparticleEntityAction extends AbstractDispatchAction {
@@ -66,6 +68,11 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		}
 		
 		compositionService.saveNanoparticleEntity(particleBean, entityBean);
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"message.addNanoparticleEntity");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
@@ -104,6 +111,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleBean = initSetup(theForm, request);
+		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
 		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
@@ -120,7 +128,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		ParticleBean particleBean = initSetup(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		String entityId = request.getParameter("entityId");
+		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		NanoparticleEntityBean entityBean = compService
 				.findNanoparticleEntityBy(entityId, user);
