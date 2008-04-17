@@ -2,27 +2,10 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
 <dwr>
 	<allow>
-		<create creator="new" javascript="ProtocolManager">
+		<create creator="new" javascript="CompositionEntityManager" scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.service.protocol.SearchProtocolService" />
-			<include method="getProtocolFileBean" />
-			<include method="getProtocolFiles" />
-			<include method="getProtocolNames" />
-			<include method="getProtocolFileUri"/>
+				value="gov.nih.nci.cananolab.ui.DWRManager" />
+			<include method="getEntityIncludePage" />
 		</create>
-		<create creator="new" javascript="ParticleManager">
-			<param name="class"
-				value="gov.nih.nci.cananolab.service.particle.NanoparticleService" />
-			<include method="getNewParticleNamesByType" />
-		</create>
-		<create creator="new" javascript="InstrumentManager">
-			<param name="class"
-				value="gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService" />
-			<include method="getInstrumentAbbreviation" />
-		</create>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">
-			<param name="include" value="id, name, title, uri, version" />
-		</convert>
 	</allow>
 </dwr>
