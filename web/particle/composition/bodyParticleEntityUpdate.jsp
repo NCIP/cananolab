@@ -57,10 +57,7 @@
 						</td>
 					</tr>
 				</table>
-
-				<br>
                 <div id="entityInclude"></div>
-                <br> 
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -356,6 +353,7 @@
 												<input type="reset" value="Reset" onclick="">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
+												<html:hidden property="particleId" value="${param.particleId}"/>
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
 <%--												<html:hidden property="particle.sampleId" />--%>
