@@ -6,12 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.7 2008-04-17 17:16:53 cais Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.8 2008-04-17 17:30:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -41,12 +42,20 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 				.setCreatedBy(user.getLoginName());
 		particleSampleBean.getParticleSample().setCreatedDate(new Date());
 
+		// persist in the database
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		service.saveNanoparticleSample(particleSampleBean);
+
+		// set CSM visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		authService.setVisibility(particleSampleBean.getParticleSample()
+				.getName(), particleSampleBean.getVisibilityGroups());
+
 		forward = mapping.findForward("success");
 		HttpSession session = request.getSession();
 		request.setAttribute("theParticle", particleSampleBean);
-		request.setAttribute("newParticleCreated", "true");
+		request.setAttribute("updateDataTree", "true");
 		session.setAttribute("particleDataTree", InitNanoparticleSetup
 				.getInstance().getDataTree(particleSampleBean, request));
 		return forward;
