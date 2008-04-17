@@ -37,15 +37,11 @@ public class ComposingElementBean {
 	}
 
 	public List<FunctionBean> getInherentFunctions() {
-		return inherentFunctions;
-	}
-
-	public void setInherentFunctions(List<FunctionBean> inherentFunctions) {
-		this.inherentFunctions = inherentFunctions;
 		Set<Function> domainFunctions = new HashSet<Function>();
 		for (FunctionBean functionBean : inherentFunctions) {
 			domainFunctions.add(functionBean.getDomainFunction());
 		}
 		domainComposingElement.setInherentFunctionCollection(domainFunctions);
+		return inherentFunctions;
 	}
 }
