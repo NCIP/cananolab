@@ -1,30 +1,35 @@
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<br>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3" width="100%" align="center" summary="" border="0">
+
+<table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
+	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
+			<td class="formTitle" colspan="6">
 				<div align="justify">
-					Composition Properties
+					Fullerene Properties
 				</div>
 			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel">
+				<strong>Average Diameter</strong>
+			</td>
+			<td class="label">
+				<input type="text" name="entity.fullerene.averageDiameter"
+					id="averageDiameter" />
+			</td>
+			<td class="label">
+				<strong>Average Diameter Unit</strong>
+			</td>
+			<td class="label">
+				<input type="text" name="entity.fullerene.averageDiameterUnit"
+					id="averageDiameter" />
+			</td>
+			<td class="label">
 				<strong>Number of Carbons</strong>
 			</td>
-			<td class="rightLabel" colspan="3">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">
-						<html:text property="fullerene.numberOfCarbons" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleCompositionForm.map.fullerene.numberOfCarbons}&nbsp;
-					</c:otherwise>
-				</c:choose>
+			<td class="rightLabel">
+				<input type="text" name="entity.fullerene.numberOfCarbon"
+					id="numberOfCarbon" />
 			</td>
 		</tr>
 	</tbody>
