@@ -13,13 +13,14 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ParticleException;
-import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -68,6 +69,49 @@ public class NanoparticleSampleService {
 		} catch (Exception e) {
 			logger.error("Error in retrieving all nanoparticle sample sources",
 					e);
+			throw new ParticleException();
+		}
+		return sampleSources;
+	}
+
+	/**
+	 * 
+	 * @return all particle sources visible to user
+	 */
+	public SortedSet<Source> getAllParticleSources(UserBean user)
+			throws ParticleException, CaNanoLabSecurityException {
+		SortedSet<Source> sampleSources = new TreeSet<Source>(
+				new CaNanoLabComparators.ParticleSourceComparator());
+		AuthorizationService auth = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Source.class);
+			crit.createAlias("nanoparticleSampleCollection", "particle");
+			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Source source = (Source) obj;
+				boolean status = false;
+				// if user can access at least one particle from the source, set
+				// access to true
+				for (NanoparticleSample particle : source
+						.getNanoparticleSampleCollection()) {
+					if (auth.checkReadPermission(user, particle.getName())) {
+						status = true;
+						break;
+					}
+				}
+				if (status) {
+					sampleSources.add((Source) obj);
+				}
+			}
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in retrieving all nanoparticle sample sources for a user",
+							e);
 			throw new ParticleException();
 		}
 
@@ -219,6 +263,8 @@ public class NanoparticleSampleService {
 			String[] wordList, UserBean user) throws ParticleException,
 			CaNanoLabSecurityException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+		AuthorizationService auth = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
 
 		try {
 			DetachedCriteria crit = DetachedCriteria
@@ -281,8 +327,12 @@ public class NanoparticleSampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				NanoparticleSample particle = (NanoparticleSample) obj;
-				ParticleBean particleBean = new ParticleBean(particle);
-				particles.add(particleBean);
+				// check if user can see the particle
+				boolean status = auth.checkReadPermission(user, particle
+						.getName());
+				if (status) {
+					particles.add(new ParticleBean(particle));
+				}
 			}
 			List<ParticleBean> functionFilteredParticles = filterByFunctions(
 					functionClassNames, particles);
@@ -294,7 +344,6 @@ public class NanoparticleSampleService {
 					characterizationFilteredParticles);
 
 			// TODO sort particles
-			// TODO add CSM
 			return compositionFilteredParticles;
 
 		} catch (Exception e) {
@@ -465,6 +514,8 @@ public class NanoparticleSampleService {
 	public ParticleBean findNanoparticleSampleBy(String particleId,
 			UserBean user) throws ParticleException, CaNanoLabSecurityException {
 		ParticleBean particleBean = null;
+		AuthorizationService auth = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -491,15 +542,68 @@ public class NanoparticleSampleService {
 			if (!result.isEmpty()) {
 				NanoparticleSample particleSample = (NanoparticleSample) result
 						.get(0);
-				particleBean = new ParticleBean(particleSample);
+				// check if user can see the particle
+				boolean status = auth.checkReadPermission(user, particleSample
+						.getName());
+				if (status) {
+					particleBean = new ParticleBean(particleSample);
+				} else {
+					throw new NoAccessException();
+				}
+				return particleBean;
+			} else {
+				return null;
 			}
 
-			return particleBean;
 		} catch (Exception e) {
 			logger
 					.error("Problem finding the particle by id: " + particleId,
 							e);
 			throw new ParticleException();
 		}
+	}
+
+	/**
+	 * Get other particles from the given particle source
+	 * 
+	 * @param particleSource
+	 * @param particleName
+	 * @param user
+	 * @return
+	 * @throws ParticleException
+	 * @throws CaNanoLabSecurityException
+	 */
+	public SortedSet<NanoparticleSample> getOtherParticles(
+			String particleSource, String particleName, UserBean user)
+			throws ParticleException, CaNanoLabSecurityException {
+		SortedSet<NanoparticleSample> otherParticles = new TreeSet<NanoparticleSample>();
+		AuthorizationService auth = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(NanoparticleSample.class);
+			crit.add(Restrictions.ne("name", particleName));
+			crit.createAlias("source", "source").add(
+					Restrictions.eq("source.organizationName", particleSource));
+
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				NanoparticleSample particle = (NanoparticleSample) obj;
+				// check if user can see the particle
+				boolean status = auth.checkReadPermission(user, particle
+						.getName());
+				if (status) {
+					otherParticles.add(particle);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in retrieving other particles from source "
+					+ particleSource;
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+		return otherParticles;
 	}
 }
