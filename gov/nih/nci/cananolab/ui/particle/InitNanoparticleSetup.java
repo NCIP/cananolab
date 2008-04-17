@@ -257,7 +257,8 @@ public class InitNanoparticleSetup {
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
 		Map<String, List<ParticleDataLinkBean>> dataTree = new HashMap<String, List<ParticleDataLinkBean>>();
-		if (request.getAttribute("newParticleCreated").equals("true")) {
+		if (request.getAttribute("updateDataTree") != null
+				&& request.getAttribute("updateDataTree").equals("true")) {
 			ServletContext appContext = request.getSession()
 					.getServletContext();
 			NanoparticleSample particleSample = particleBean
@@ -330,32 +331,35 @@ public class InitNanoparticleSetup {
 
 			// characterization
 			List<ParticleDataLinkBean> cdataBeans = null;
-			for (Characterization achar : particleSample
-					.getCharacterizationCollection()) {
-				String category = "";
-				String link = "";
-				if (achar instanceof PhysicalCharacterization) {
-					category = "Physical Characterization";
-					link = "physicalCharacterization.do";
-				} else if (achar instanceof InvitroCharacterization) {
-					category = "In Vitro Characterization";
-					link = "invitroCharacterization.do";
+			if (particleSample.getCharacterizationCollection() != null) {
+				for (Characterization achar : particleSample
+						.getCharacterizationCollection()) {
+					String category = "";
+					String link = "";
+					if (achar instanceof PhysicalCharacterization) {
+						category = "Physical Characterization";
+						link = "physicalCharacterization.do";
+					} else if (achar instanceof InvitroCharacterization) {
+						category = "In Vitro Characterization";
+						link = "invitroCharacterization.do";
+					}
+					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+							achar.getId().toString(), category, link);
+					dataBean.setDataClassName(ClassUtils
+							.getShortClassName(achar.getClass()
+									.getCanonicalName()));
+					String charName = InitSetup.getInstance().getDisplayName(
+							dataBean.getDataClassName(), appContext);
+					dataBean.setDataDisplayType(achar.getIdentificationName());
+					if (dataTree.get(charName) != null) {
+						cdataBeans = (List<ParticleDataLinkBean>) dataTree
+								.get(charName);
+					} else {
+						cdataBeans = new ArrayList<ParticleDataLinkBean>();
+						dataTree.put(charName, cdataBeans);
+					}
+					cdataBeans.add(dataBean);
 				}
-				ParticleDataLinkBean dataBean = new ParticleDataLinkBean(achar
-						.getId().toString(), category, link);
-				dataBean.setDataClassName(ClassUtils.getShortClassName(achar
-						.getClass().getCanonicalName()));
-				String charName = InitSetup.getInstance().getDisplayName(
-						dataBean.getDataClassName(), appContext);
-				dataBean.setDataDisplayType(achar.getIdentificationName());
-				if (dataTree.get(charName) != null) {
-					cdataBeans = (List<ParticleDataLinkBean>) dataTree
-							.get(charName);
-				} else {
-					cdataBeans = new ArrayList<ParticleDataLinkBean>();
-					dataTree.put(charName, cdataBeans);
-				}
-				cdataBeans.add(dataBean);
 			}
 		} else {
 			dataTree = new HashMap<String, List<ParticleDataLinkBean>>(
@@ -370,7 +374,7 @@ public class InitNanoparticleSetup {
 		List<String> composingElementTypes = null;
 		if (appContext.getAttribute("defaultComposingElementsTypes") == null) {
 			composingElementTypes = new ArrayList<String>(LookupService
-					.getLookupValues("ComposingElements", "type"));
+					.getLookupValues("ComposingElement", "type"));
 			appContext.setAttribute("defaultComposingElementTypes",
 					composingElementTypes);
 		} else {
@@ -386,7 +390,7 @@ public class InitNanoparticleSetup {
 		List<String> composingElementTypes = null;
 		if (appContext.getAttribute("defaultEmulsionComposingElementsTypes") == null) {
 			composingElementTypes = new ArrayList<String>(LookupService
-					.getLookupValues("ComposingElements", "type"));
+					.getLookupValues("Emulsion", "composingElementType"));
 			appContext.setAttribute("defaultEmulsionComposingElementTypes",
 					composingElementTypes);
 		} else {
@@ -403,8 +407,9 @@ public class InitNanoparticleSetup {
 				.getSession().getServletContext());
 		SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"ComposingElement", "otherType");
+		composingElementTypes.addAll(otherTypes);
 		request.getSession().setAttribute("composingElementTypes",
-				composingElementTypes.addAll(otherTypes));
+				composingElementTypes);
 	}
 
 	public void setEmulsionComposingElementTypes(HttpServletRequest request)
