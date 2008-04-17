@@ -15,7 +15,7 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					Entity#1:Dendrimer
+					Entity#2:Dendrimer
 				</h5>
 			</td>
 		</tr>
@@ -37,13 +37,14 @@
 							<strong>Nanoparticle Entity Type</strong>
 						</td>
 						<td class="rightLabel">
-
-							<html:select styleId="peType"
-								property="entity.type"
-								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); displayCompositionProperty(this);">
+							<html:select styleId="peType" property="entity.type"
+								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); 
+											setEntityInclude(); getComposingElementOptions('peType', 'compElemType');">
 								<option value=""></option>
 								<html:options name="nanoparticleEntityTypes" />
+								<option value="other">[Other]</option>
 							</html:select>
+							
 						</td>
 					</tr>
 					<tr>
@@ -58,275 +59,8 @@
 				</table>
 
 				<br>
-				<div style="display: none" id="carbonNanotubeTable">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="6">
-									<div align="justify">
-										Carbon Nanotube Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Average Length</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.carbonNanotube.averageLength" />
-								</td>
-								<td class="label">
-									<strong>Average Length Unit</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.carbonNanotube.averageLengthUnit" />
-								</td>
-								<td class="label">
-									<strong>Chirality</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.carbonNanotube.chirality" />
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Growth Diameter</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.carbonNanotube.growthDiameter" />
-								</td>
-								<td class="label">
-									<strong>Growth Diameter Unit</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.carbonNanotube.growthDiameterUnit" />
-								</td>
-								<td class="label">
-									<strong>Wall Type</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.carbonNanotube.wallType" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div id="biopolymerTable" style="display: none">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="4">
-									<div align="justify">
-										Biopolymer Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="LeftLabel">
-									<strong>Name</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.biopolymer.name" />
-								</td>
-								<td class="label">
-									<strong>Biopolymer Type</strong>
-								</td>
-								<td class="rightLabel">
-									<select name="entity.biopolymer.type" id="biopolymerType"
-										onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
-										<option value="dna">
-											DNA
-										</option>
-										<option value="peptide">
-											Peptide
-										</option>
-										<option value="protein">
-											Protein
-										</option>
-										<option value="other">
-											Other
-										</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Sequence</strong>
-								</td>
-								<td class="rightLabel" colspan="3">
-									<textarea name="entity.biopolymer.sequence" cols="80" rows="3"></textarea>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-
-				<div id="dendrimerTable" style="display: none">
-					<table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="4">
-									<div align="justify">
-										Dendrimer Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Branch</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.dendrimer.branch" />
-								</td>
-								<td class="label">
-									<strong>Generation</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.dendrimer.generation" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div id="emulsionTable" style="display: none">
-					<table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="6">
-									<div align="justify">
-										Emulsion Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Is Polymerized</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.emulsion.polymerized" id="initiator" />
-								</td>
-								<td class="label">
-									<strong>Polymer Name</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.emulsion.polymerName" />
-								</td>
-								<td class="label">
-									<strong>Type</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.emulsion.type" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div style="display: none" id="fullereneTable">
-					<table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="6">
-									<div align="justify">
-										Fullerene Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Average Diameter</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.fullerene.averageDiameter"
-										id="averageDiameter" />
-								</td>
-								<td class="label">
-									<strong>Average Diameter Unit</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.fullerene.averageDiameterUnit"
-										id="averageDiameter" />
-								</td>
-								<td class="label">
-									<strong>Number of Carbons</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.fullerene.numberOfCarbon"
-										id="numberOfCarbon" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div style="display: none" id="liposomeTable">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="4">
-									<div align="justify">
-										Liposome Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Polymer Name</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.liposome.polymerName" />
-								</td>
-								<td class="label">
-									<strong>Is Polymerized</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.liposome.polymerized" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-
-				<div style="display: none" id="polymerTable">
-					<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-						width="100%" align="center" summary="" border="0">
-						<tbody>
-							<tr class="topBorder">
-								<td class="formTitle" colspan="6">
-									<div align="justify">
-										Polymer Properties
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="leftLabel">
-									<strong>Initiator</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.polymer.initiator" />
-								</td>
-								<td class="label">
-									<strong>Cross Link Degree</strong>
-								</td>
-								<td class="label">
-									<input type="text" name="entity.polymer.crosslinkDegree" />
-								</td>
-								<td class="label">
-									<strong>Is Cross Linked</strong>
-								</td>
-								<td class="rightLabel">
-									<input type="text" name="entity.polymer.crosslinked" />
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-
-				<br>
+                <div id="entityInclude"></div>
+                <br> 
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -371,13 +105,14 @@
 															</td>
 															<td class="labelWithTop" valign="top">
 																<html:select styleId="compElemType"
-																	property="entity.composingElements[0].domainComposingElement.type">
-																	<option/>
-																	<html:options name="composingElementTypes" />
+																	property="entity.composingElements[0].domainComposingElement.type"
+																	onchange="javascript:callPrompt('Composing Element Type', 'compElemType');">
+																	<option />
 																	<option value="other">
 																		[Other]
 																	</option>
 																</html:select>
+																<%--																	<html:options name="defaultComposingElementTypes" />--%>
 															</td>
 
 															<td class="labelWithTop" valign="top">
@@ -399,7 +134,7 @@
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
 																	<option value="" />
 																	<option value="other">
-																		Other
+																		[Other]
 																	</option>
 																</html:select>
 															</td>
@@ -426,7 +161,8 @@
 															</td>
 															<td class="rightLabel" valign="top">
 																<html:select styleId="compEleUnit"
-																	property="entity.composingElements[0].domainComposingElement.valueUnit">
+																	property="entity.composingElements[0].domainComposingElement.valueUnit"
+																	onchange="javascript:callPrompt('Unit', 'compEleUnit');">
 																	<option value="" />																																
 																	<option value="other">
 																		[Other]
@@ -474,8 +210,9 @@
 																			</tr>
 																			<tr style="display: none">
 																				<td class="leftLabel" valign="top">
-																					<select name="entity.composingElements[0].inherentFunctions[0].type" size="1"
-																						id="funcType0">																						
+																					<html:select property="entity.composingElements[0].inherentFunctions[0].type" size="1"
+																						styleId="funcType"
+																						onchange="javascript:callPrompt('Function Type', 'functionType');">																						
 																						<option value="imaging">
 																							Imaging
 																						</option>
@@ -486,9 +223,9 @@
 																							Therapeutic
 																						</option>
 																						<option value="other">
-																							Other
+																							[Other]
 																						</option>
-																					</select>
+																					</html:select>
 																				</td>
 																				<td class="label">
 																					<html:textarea
