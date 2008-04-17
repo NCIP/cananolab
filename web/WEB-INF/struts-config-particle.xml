@@ -13,8 +13,8 @@
 
 		<form-bean name="searchNanoparticleSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleSource"
-				type="java.lang.String" />
+			<form-property name="particleSources"
+				type="java.lang.String[]" />
 			<form-property name="nanoparticleEntityTypes"
 				type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes"
@@ -36,8 +36,9 @@
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="entity"
 				type="gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean" />
-			<form-property name="particleSampleBean"
-				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
+			<form-property name="particleId" type="java.lang.String" />
+			<form-property name="otherParticles"
+				type="java.lang.String[]" />
 		</form-bean>
 		<form-bean name="functionalizingEntityForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
