@@ -13,17 +13,20 @@ import org.directwebremoting.WebContextFactory;
 
 public class DWRManager {
 	public DWRManager() {
-
 	}
 
 	public String getEntityIncludePage(String entityType)
 			throws ServletException, IOException, CaNanoLabException {
-		WebContext wctx = WebContextFactory.get();
-		ServletContext appContext = wctx.getServletContext();
-		String entityClassName = InitSetup.getInstance().getObjectName(
-				entityType, appContext);
-		String page = "/particle/composition/body" + entityClassName
-				+ "Info.jsp";
-		return wctx.forwardToString(page);
+		try {
+			WebContext wctx = WebContextFactory.get();
+			ServletContext appContext = wctx.getServletContext();
+			String entityClassName = InitSetup.getInstance().getObjectName(
+					entityType, appContext);
+			String page = "/particle/composition/body" + entityClassName
+					+ "Info.jsp";
+			return wctx.forwardToString(page);
+		} catch (Exception e) {
+			return "";
+		}
 	}
 }
