@@ -268,11 +268,11 @@
 		</form>
 		<form name="searchNanoparticleSampleForm">
 			<field property="text" page="1" depends="mask">
-				<arg position="0" key="keywords" bundle="particle" />
-				<msg name="mask" key="keywords.invalid" />
+				<arg position="0" key="text" bundle="particle" />
+				<msg name="mask" key="text.invalid" />
 				<var>
 					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
 				</var>
 			</field>
 		</form>
