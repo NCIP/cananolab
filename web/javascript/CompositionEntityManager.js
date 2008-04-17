@@ -1,6 +1,6 @@
 
 function setEntityInclude() {
-	var entityType = document.getElementById("entity.type").value;
+	var entityType = document.getElementById("peType").value;
 	CompositionEntityManager.getEntityIncludePage(entityType, populatePage);
 }
 function populatePage(pageData) {
