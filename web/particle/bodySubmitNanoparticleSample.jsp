@@ -6,7 +6,7 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <c:set var="action" value="Submit" scope="request" />
-<c:if test="${param.dispatch eq 'setupUpdate' || newParticleCreated eq 'true'}">
+<c:if test="${param.dispatch eq 'setupUpdate' || updateDataTree eq 'true'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 <html:form action="/submitNanoparticleSample">
@@ -59,7 +59,7 @@
 									styleId="sampleSource"
 									onchange="javascript:callPrompt('Nanoparticle Sample Source', 'sampleSource');">
 									<option />
-										<html:options collection="allParticleSources"
+										<html:options collection="allUserParticleSources"
 											labelProperty="organizationName" property="organizationName" />
 									<option value="other">
 										[Other]
