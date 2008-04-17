@@ -742,6 +742,24 @@ tr.gridTableHeader {
 	list-style: none;
 }
 
+#publicLinks h5 {
+	margin-top: 0.6em;
+	font-weight: normal;
+	font-size: 1em;
+	line-height: 1.3em;
+}
+
+#publicLinks h4 {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#publicLinks p {
+	margin: 0.6em, 0, 1em, 0;
+	text-align: left;
+	font-weight: normal;
+	line-height: 1.3em;
+}
 label.toplabel {  
 	display: block;
 	font-size: 0.9em;
