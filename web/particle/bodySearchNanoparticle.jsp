@@ -59,14 +59,14 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" width="20%">
+						<td class="leftLabel" width="20%" valign="top">
 							<strong> Nanoparticle Sample Source </strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<strong> <html:select property="particleSource">
-									<option value="" />
-										<html:options collection="allParticleSources"
-											labelProperty="organizationName" property="organizationName" />
+							<strong> <html:select property="particleSources"
+									multiple="3">
+									<html:options collection="allUserParticleSources"
+										labelProperty="organizationName" property="organizationName" />
 								</html:select> </strong>
 						</td>
 					</tr>
