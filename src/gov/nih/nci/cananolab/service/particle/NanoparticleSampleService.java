@@ -98,7 +98,7 @@ public class NanoparticleSampleService {
 				// access to true
 				for (NanoparticleSample particle : source
 						.getNanoparticleSampleCollection()) {
-					if (auth.checkReadPermission(user, particle.getName())) {
+					if (isAllowed(auth, particle.getName(), user)) {
 						status = true;
 						break;
 					}
@@ -256,8 +256,8 @@ public class NanoparticleSampleService {
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
-			String[] nanoparticleEntityClassNames,
+	public List<ParticleBean> findNanoparticleSamplesBy(
+			String[] particleSources, String[] nanoparticleEntityClassNames,
 			String[] functionalizingEntityClassNames,
 			String[] functionClassNames, String[] characterizationClassNames,
 			String[] wordList, UserBean user) throws ParticleException,
@@ -269,10 +269,10 @@ public class NanoparticleSampleService {
 		try {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
-			if (particleSource != null && particleSource.length() > 0) {
+			if (particleSources != null && particleSources.length > 0) {
 				crit.createAlias("source", "source").add(
-						Restrictions.eq("source.organizationName",
-								particleSource));
+						Restrictions.in("source.organizationName",
+								particleSources));
 			}
 
 			if (wordList != null && wordList.length > 0) {
@@ -281,12 +281,14 @@ public class NanoparticleSampleService {
 				for (int i = 0; i < wordList.length; i++) {
 					upperKeywords[i] = wordList[i].toUpperCase();
 				}
-
+				Disjunction disjunction = Restrictions.disjunction();
 				crit.createAlias("keywordCollection", "keyword1",
 						CriteriaSpecification.LEFT_JOIN);
-				Criterion keywordCrit1 = Restrictions.in("keyword1.name",
-						upperKeywords);
-
+				for (String keyword : upperKeywords) {
+					Criterion keywordCrit1 = Restrictions.like("keyword1.name",
+							keyword, MatchMode.ANYWHERE);
+					disjunction.add(keywordCrit1);
+				}
 				crit.createAlias("characterizationCollection", "chara",
 						CriteriaSpecification.LEFT_JOIN).createAlias(
 						"chara.derivedBioAssayDataCollection", "derived",
@@ -296,11 +298,11 @@ public class NanoparticleSampleService {
 						"charFile.keywordCollection", "keyword2",
 						CriteriaSpecification.LEFT_JOIN);
 				;
-				Criterion keywordCrit2 = Restrictions.in("keyword2.name",
-						upperKeywords);
-				Disjunction disjunction = Restrictions.disjunction();
-				disjunction.add(keywordCrit1).add(keywordCrit2);
-
+				for (String keyword : upperKeywords) {
+					Criterion keywordCrit2 = Restrictions.like("keyword2.name",
+							keyword, MatchMode.ANYWHERE);
+					disjunction.add(keywordCrit2);
+				}
 				for (String word : wordList) {
 					Criterion summaryCrit1 = Restrictions.ilike(
 							"chara.description", word, MatchMode.ANYWHERE);
@@ -327,25 +329,18 @@ public class NanoparticleSampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				NanoparticleSample particle = (NanoparticleSample) obj;
-				// check if user can see the particle
-				boolean status = auth.checkReadPermission(user, particle
-						.getName());
-				if (status) {
-					particles.add(new ParticleBean(particle));
-				}
+				particles.add(new ParticleBean(particle));
 			}
 			List<ParticleBean> functionFilteredParticles = filterByFunctions(
 					functionClassNames, particles);
 			List<ParticleBean> characterizationFilteredParticles = filterByCharacterizations(
 					characterizationClassNames, functionFilteredParticles);
-			List<ParticleBean> compositionFilteredParticles = filterByCompositions(
+			List<ParticleBean> theParticles = filterByCompositions(
 					nanoparticleEntityClassNames,
 					functionalizingEntityClassNames,
 					characterizationFilteredParticles);
-
 			// TODO sort particles
-			return compositionFilteredParticles;
-
+			return getAllowedParticles(auth, theParticles, user);
 		} catch (Exception e) {
 			logger
 					.error(
@@ -446,10 +441,12 @@ public class NanoparticleSampleService {
 	public SortedSet<String> getStoredCharacterizationClassNames(
 			ParticleBean particle) {
 		SortedSet<String> storedChars = new TreeSet<String>();
-		for (Characterization achar : particle.getParticleSample()
-				.getCharacterizationCollection()) {
-			storedChars.add(ClassUtils.getShortClassName(achar.getClass()
-					.getCanonicalName()));
+		if (particle.getParticleSample().getCharacterizationCollection() != null) {
+			for (Characterization achar : particle.getParticleSample()
+					.getCharacterizationCollection()) {
+				storedChars.add(ClassUtils.getShortClassName(achar.getClass()
+						.getCanonicalName()));
+			}
 		}
 		return storedChars;
 	}
@@ -458,7 +455,9 @@ public class NanoparticleSampleService {
 			ParticleBean particle) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particle.getParticleSample().getSampleComposition() != null) {
+		if (particle.getParticleSample().getSampleComposition() != null
+				&& particle.getParticleSample().getSampleComposition()
+						.getNanoparticleEntityCollection() != null) {
 			for (NanoparticleEntity entity : particle.getParticleSample()
 					.getSampleComposition().getNanoparticleEntityCollection()) {
 				storedEntities.add(ClassUtils.getShortClassName(entity
@@ -472,7 +471,9 @@ public class NanoparticleSampleService {
 			ParticleBean particle) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particle.getParticleSample().getSampleComposition() != null) {
+		if (particle.getParticleSample().getSampleComposition() != null
+				&& particle.getParticleSample().getSampleComposition()
+						.getFunctionalizingEntityCollection() != null) {
 			for (FunctionalizingEntity entity : particle.getParticleSample()
 					.getSampleComposition()
 					.getFunctionalizingEntityCollection()) {
@@ -487,24 +488,32 @@ public class NanoparticleSampleService {
 		SortedSet<String> storedFunctions = new TreeSet<String>();
 
 		if (particle.getParticleSample().getSampleComposition() != null) {
-			for (NanoparticleEntity entity : particle.getParticleSample()
-					.getSampleComposition().getNanoparticleEntityCollection()) {
-				for (ComposingElement element : entity
-						.getComposingElementCollection()) {
-					for (Function function : element
-							.getInherentFunctionCollection()) {
+			if (particle.getParticleSample().getSampleComposition()
+					.getNanoparticleEntityCollection() != null) {
+				for (NanoparticleEntity entity : particle.getParticleSample()
+						.getSampleComposition()
+						.getNanoparticleEntityCollection()) {
+					for (ComposingElement element : entity
+							.getComposingElementCollection()) {
+						for (Function function : element
+								.getInherentFunctionCollection()) {
+							storedFunctions.add(ClassUtils
+									.getShortClassName(function.getClass()
+											.getCanonicalName()));
+						}
+					}
+				}
+			}
+			if (particle.getParticleSample().getSampleComposition()
+					.getFunctionalizingEntityCollection() != null) {
+				for (FunctionalizingEntity entity : particle
+						.getParticleSample().getSampleComposition()
+						.getFunctionalizingEntityCollection()) {
+					for (Function function : entity.getFunctionCollection()) {
 						storedFunctions.add(ClassUtils
 								.getShortClassName(function.getClass()
 										.getCanonicalName()));
 					}
-				}
-			}
-			for (FunctionalizingEntity entity : particle.getParticleSample()
-					.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
-				for (Function function : entity.getFunctionCollection()) {
-					storedFunctions.add(ClassUtils.getShortClassName(function
-							.getClass().getCanonicalName()));
 				}
 			}
 		}
@@ -542,15 +551,12 @@ public class NanoparticleSampleService {
 			if (!result.isEmpty()) {
 				NanoparticleSample particleSample = (NanoparticleSample) result
 						.get(0);
-				// check if user can see the particle
-				boolean status = auth.checkReadPermission(user, particleSample
-						.getName());
-				if (status) {
-					particleBean = new ParticleBean(particleSample);
+				particleBean = new ParticleBean(particleSample);
+				if (isAllowed(auth, particleSample.getName(), user)) {
+					return particleBean;
 				} else {
 					throw new NoAccessException();
 				}
-				return particleBean;
 			} else {
 				return null;
 			}
@@ -591,10 +597,7 @@ public class NanoparticleSampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				NanoparticleSample particle = (NanoparticleSample) obj;
-				// check if user can see the particle
-				boolean status = auth.checkReadPermission(user, particle
-						.getName());
-				if (status) {
+				if (isAllowed(auth, particle.getName(), user)) {
 					otherParticles.add(particle);
 				}
 			}
@@ -605,5 +608,33 @@ public class NanoparticleSampleService {
 			throw new ParticleException(err, e);
 		}
 		return otherParticles;
+	}
+
+	public List<ParticleBean> getAllowedParticles(AuthorizationService auth,
+			List<ParticleBean> particles, UserBean user) throws Exception {
+		List<String> publicData = auth.getPublicData();
+		List<ParticleBean> allowedParticles = new ArrayList<ParticleBean>();
+		for (ParticleBean particle : particles) {
+			if (publicData.contains(particle.getParticleSample().getName())) {
+				allowedParticles.add(particle);
+			} else if (user != null) {
+				if (auth.checkReadPermission(user, particle.getParticleSample()
+						.getName())) {
+					allowedParticles.add(particle);
+				}
+			}
+		}
+		return allowedParticles;
+	}
+
+	public boolean isAllowed(AuthorizationService auth, String particleName,
+			UserBean user) throws Exception {
+		List<String> publicData = auth.getPublicData();
+		if (publicData.contains(particleName)) {
+			return true;
+		} else if (user != null && auth.checkReadPermission(user, particleName)) {
+			return true;
+		}
+		return false;
 	}
 }

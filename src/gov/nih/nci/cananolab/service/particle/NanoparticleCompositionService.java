@@ -42,7 +42,7 @@ public class NanoparticleCompositionService {
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		NanoparticleEntity entity = null;
+		
 		if (entityBean.getDomainEntity().getId() != null) {
 			try {
 				NanoparticleEntity dbEntity = (NanoparticleEntity) appService
@@ -53,9 +53,8 @@ public class NanoparticleCompositionService {
 				logger.error(err);
 				throw new ParticleCompositionException(err, e);
 			}
-		} else {
-			entity = entityBean.getDomainEntity();
 		}
+		NanoparticleEntity entity = entityBean.getDomainEntity();
 		SampleComposition composition = particleBean.getParticleSample()
 				.getSampleComposition();
 		if (composition != null) {
@@ -83,7 +82,7 @@ public class NanoparticleCompositionService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
-			crit.setFetchMode("labFileCollection", FetchMode.JOIN);			
+			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				NanoparticleEntity entity = (NanoparticleEntity) result.get(0);
@@ -96,7 +95,7 @@ public class NanoparticleCompositionService {
 			throw new ParticleException();
 		}
 	}
-	
+
 	public void saveFunctionalizingEntity(ParticleBean particleBean,
 			FunctionalizingEntityBean entityBean) throws Exception {
 
@@ -133,8 +132,9 @@ public class NanoparticleCompositionService {
 		appService.saveOrUpdate(entity);
 	}
 
-	public FunctionalizingEntityBean findFunctionalizingEntityBy(String entityId,
-			UserBean user) throws ParticleException, CaNanoLabSecurityException {
+	public FunctionalizingEntityBean findFunctionalizingEntityBy(
+			String entityId, UserBean user) throws ParticleException,
+			CaNanoLabSecurityException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -143,10 +143,11 @@ public class NanoparticleCompositionService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					FunctionalizingEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
-			crit.setFetchMode("labFileCollection", FetchMode.JOIN);	
+			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
-				FunctionalizingEntity entity = (FunctionalizingEntity) result.get(0);
+				FunctionalizingEntity entity = (FunctionalizingEntity) result
+						.get(0);
 				entityBean = new FunctionalizingEntityBean(entity);
 			}
 			return entityBean;
