@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.3 2008-04-16 13:49:09 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.4 2008-04-17 17:16:53 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Dendrimer;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -119,9 +119,9 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		session.setAttribute("particleDataTree", InitNanoparticleSetup
 				.getInstance().getDataTree(particleBean, request));
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
-		InitNanoparticleSetup.getInstance().setEmulsionComposingElementTypes(
+		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setComposingElementTypes(request);
+		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
 	}
@@ -151,9 +151,9 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		session.setAttribute("particleDataTree", InitNanoparticleSetup
 				.getInstance().getDataTree(particleBean, request));
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
-		InitNanoparticleSetup.getInstance().setEmulsionComposingElementTypes(
+		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setComposingElementTypes(request);
+		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
 	}
