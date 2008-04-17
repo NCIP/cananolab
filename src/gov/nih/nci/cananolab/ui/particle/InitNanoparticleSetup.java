@@ -401,30 +401,46 @@ public class InitNanoparticleSetup {
 		return composingElementTypes;
 	}
 
-	public void setComposingElementTypes(HttpServletRequest request)
+	public List<String> getComposingElementTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		List<String> composingElementTypes = getDefaultComposingElementTypes(request
+		List<String> composingElementTypes = null;
+		if (request.getAttribute("composingElementTypes") == null) {
+			composingElementTypes = getDefaultComposingElementTypes(request
 				.getSession().getServletContext());
-		SortedSet<String> otherTypes = LookupService.getLookupValues(
+			SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"ComposingElement", "otherType");
-		composingElementTypes.addAll(otherTypes);
-		request.getSession().setAttribute("composingElementTypes",
+			composingElementTypes.addAll(otherTypes);
+			request.getSession().setAttribute("composingElementTypes",
 				composingElementTypes);
+		} else {
+			composingElementTypes = new ArrayList<String>(
+					(List<? extends String>) request
+							.getAttribute("composingElementTypes"));
+		}
+		return composingElementTypes;
 	}
 
-	public void setEmulsionComposingElementTypes(HttpServletRequest request)
+	public List<String> getEmulsionComposingElementTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		List<String> composingElementTypes = getDefaultComposingElementTypes(request
+		List<String> allTypes = null;
+		if (request.getAttribute("emulsionComposingElementTypes") == null) {
+			List<String> composingElementTypes = getDefaultComposingElementTypes(request
 				.getSession().getServletContext());
-		List<String> emulsionComposingElementTypes = getDefaultEmulsionComposingElementTypes(request
+			List<String> emulsionComposingElementTypes = getDefaultEmulsionComposingElementTypes(request
 				.getSession().getServletContext());
-		SortedSet<String> otherTypes = LookupService.getLookupValues(
+			SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"ComposingElement", "otherType");
-		List<String> allTypes = new ArrayList<String>();
-		allTypes.addAll(composingElementTypes);
-		allTypes.addAll(emulsionComposingElementTypes);
-		allTypes.addAll(otherTypes);
-		request.getSession().setAttribute("emulsionComposingElementTypes",
+			allTypes = new ArrayList<String>();
+			allTypes.addAll(composingElementTypes);
+			allTypes.addAll(emulsionComposingElementTypes);
+			allTypes.addAll(otherTypes);
+			request.getSession().setAttribute("emulsionComposingElementTypes",
 				allTypes);
+		} else {
+			allTypes = new ArrayList<String>(
+					(List<? extends String>) request
+							.getAttribute("emulsionComposingElementTypes"));
+		}
+		return allTypes;
 	}
 }

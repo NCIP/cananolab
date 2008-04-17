@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.3 2008-04-16 13:49:09 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.4 2008-04-17 17:16:53 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
@@ -124,9 +124,9 @@ public class FunctionalizingEntityAction extends AbstractDispatchAction {
 				.getInstance().getDataTree(particleBean, request));
 		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setEmulsionComposingElementTypes(
+		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setComposingElementTypes(request);
+		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
 	}
@@ -157,9 +157,9 @@ public class FunctionalizingEntityAction extends AbstractDispatchAction {
 				.getInstance().getDataTree(particleBean, request));
 		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setEmulsionComposingElementTypes(
+		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setComposingElementTypes(request);
+		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
 	}
