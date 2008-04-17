@@ -19,9 +19,8 @@
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">COMPOSITION</a>
 			<ul class="sublist_4" style="${compDisplay}">
-				<c:url var="submitUrl" value="composition.do">
+				<c:url var="submitUrl" value="nanoparticleEntity.do">
 					<c:param name="particleId" value="${particleId}" />
-					<c:param name="submitType" value="Composition" />
 					<c:param name="page" value="0" />
 					<c:param name="dispatch" value="setup" />
 				</c:url>
@@ -74,15 +73,14 @@
 				<ul>
 				<c:set var="compType" value="Nanoparticle Entity"/>
 				<c:forEach var="dataLinkBean" items="${particleDataTree[compType]}">
-					<c:url var="url" value="composition.do">
+					<c:url var="url" value="nanoparticleEntity.do">
 						<c:param name="page" value="0" />
 						<c:param name="dispatch" value="${dispatchValue}" />
 						<c:param name="particleId" value="${particleId}" />
-						<c:param name="characterizationId" value="${leafCharBean.id}" />
-						<c:param name="submitType" value="${leafCharBean.name}" />
+						<c:param name="dataId" value="${dataLinkBean.dataId}"/>
 					</c:url>
 					<li id="complist">
-						<a href=${url } id="complink" class="sublist_5"><span
+						<a href=${url} id="complink" class="sublist_5"><span
 							class="data_anchar">>&nbsp;</span>${dataLinkBean.dataDisplayType}</a>
 					</li>
 				</c:forEach>
