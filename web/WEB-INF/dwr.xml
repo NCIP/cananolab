@@ -6,6 +6,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.DWRManager" />
 			<include method="getEntityIncludePage" />
+			<include method="getComposingElementTypeOptions" />
 		</create>
 	</allow>
 </dwr>
