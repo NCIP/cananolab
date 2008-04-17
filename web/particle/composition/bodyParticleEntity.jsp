@@ -6,6 +6,11 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript" src="javascript/particleEntity.js"></script>
+<script type="text/javascript" src="javascript/CompositionEntityManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/CompositionEntityManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
 <script type="text/javascript">
 <!--//
