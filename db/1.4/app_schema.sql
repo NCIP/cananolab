@@ -14,8 +14,7 @@ CREATE TABLE target
 ) TYPE=InnoDB
 ;
 
-
-CREATE TABLE function
+CREATE TABLE nano_function
 (
 	function_pk_id BIGINT NOT NULL,
 	description TEXT NULL,
@@ -670,14 +669,14 @@ CREATE TABLE hibernate_unique_key (
 
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function 
-	FOREIGN KEY (targeting_function_pk_id) REFERENCES function (function_pk_id)
+	FOREIGN KEY (targeting_function_pk_id) REFERENCES nano_function (function_pk_id)
 ;
 
-ALTER TABLE function ADD CONSTRAINT FK_function_composing_element 
+ALTER TABLE nano_function ADD CONSTRAINT FK_function_composing_element 
 	FOREIGN KEY (composing_element_pk_id) REFERENCES composing_element (composing_element_pk_id)
 ;
 
-ALTER TABLE function ADD CONSTRAINT FK_function_functionalizing_entity 
+ALTER TABLE nano_function ADD CONSTRAINT FK_function_functionalizing_entity 
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 

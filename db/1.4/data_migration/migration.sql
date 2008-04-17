@@ -974,7 +974,7 @@ and pf.activation_method != ""
 ;
 
 -- OtherFunction
-insert into canano.function
+insert into canano.nano_function
 (
 	function_pk_id,
 	description,
@@ -1004,7 +1004,7 @@ AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
 
 -- duplicated functionalizing_entity_pk_id
 -- ImagingFunction
-insert into canano.function
+insert into canano.nano_function
 (
 	function_pk_id,
 	description,
@@ -1031,7 +1031,7 @@ AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
 ;
 
 -- TargetingFunction
-insert into canano.function
+insert into canano.nano_function
 (
 	function_pk_id,
 	description,
@@ -1058,7 +1058,7 @@ AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
 ;
 
 -- TherapeuticFunction
-insert into canano.function
+insert into canano.nano_function
 (
 	function_pk_id,
 	description,
