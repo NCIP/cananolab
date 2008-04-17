@@ -19,6 +19,7 @@ function displayCompositionProperty(selectEle) {
 	var selectedPeType = selectEle.options[selectEle.options.selectedIndex].text;
 	document.getElementById("peFileTitle").firstChild.nodeValue = selectedPeType + " File Information";
 	document.getElementById("compEleInfoTitle").firstChild.nodeValue = selectedPeType + " Composing Element Information";
+	return false;
 }
 
 // get the select element that have triggered the onchange event
@@ -296,4 +297,17 @@ function removeInherentFunction(e) {
 	tbodyEle.removeChild(ifTr);
 	ifCountEle.firstChild.nodeValue = --inherentFuncCount;
 	return false;
+}
+
+function getComposingElementOptions(particleEntityTypeId,
+									compEleTypeId) {
+	var compFuncTypeValue = dwr.util.getValue(particleEntityTypeId);
+	
+	CompositionEntityManager.getComposingElementTypeOptions(compFuncTypeValue, function(data) {
+			
+			dwr.util.removeAllOptions(compEleTypeId);
+			dwr.util.addOptions(compEleTypeId, ['']);
+    		dwr.util.addOptions(compEleTypeId, data);
+    		dwr.util.addOptions(compEleTypeId, ['[Other]']);
+  	});
 }
