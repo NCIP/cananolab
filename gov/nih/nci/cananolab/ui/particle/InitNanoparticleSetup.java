@@ -275,65 +275,77 @@ public class InitNanoparticleSetup {
 			// composition
 			if (particleSample.getSampleComposition() != null) {
 				List<ParticleDataLinkBean> ndataBeans = new ArrayList<ParticleDataLinkBean>();
-				for (NanoparticleEntity entity : particleSample
-						.getSampleComposition()
-						.getNanoparticleEntityCollection()) {
-					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							entity.getId().toString(), "Composition",
-							"nanoparticleEntity.do");
-					dataBean.setDataClassName(ClassUtils
-							.getShortClassName(entity.getClass()
-									.getCanonicalName()));
-					dataBean.setDataDisplayType(InitSetup.getInstance()
-							.getDisplayName(dataBean.getDataClassName(),
-									appContext));
-					ndataBeans.add(dataBean);
+				if (particleSample.getSampleComposition()
+						.getNanoparticleEntityCollection() != null) {
+					for (NanoparticleEntity entity : particleSample
+							.getSampleComposition()
+							.getNanoparticleEntityCollection()) {
+						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+								entity.getId().toString(), "Composition",
+								"nanoparticleEntity.do");
+						dataBean.setDataClassName(ClassUtils
+								.getShortClassName(entity.getClass()
+										.getCanonicalName()));
+						dataBean.setDataDisplayType(InitSetup.getInstance()
+								.getDisplayName(dataBean.getDataClassName(),
+										appContext));
+						ndataBeans.add(dataBean);
+					}
 				}
 				dataTree.put("Nanoparticle Entity", ndataBeans);
 
 				List<ParticleDataLinkBean> fdataBeans = new ArrayList<ParticleDataLinkBean>();
-				for (FunctionalizingEntity entity : particleSample
-						.getSampleComposition()
-						.getFunctionalizingEntityCollection()) {
-					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							entity.getId().toString(), "Composition",
-							"functionalizingEntity.do");
-					dataBean.setDataClassName(ClassUtils
-							.getShortClassName(entity.getClass()
-									.getCanonicalName()));
-					dataBean.setDataDisplayType(InitSetup.getInstance()
-							.getDisplayName(dataBean.getDataClassName(),
-									appContext));
-					fdataBeans.add(dataBean);
+				if (particleSample.getSampleComposition()
+						.getFunctionalizingEntityCollection() != null) {
+					for (FunctionalizingEntity entity : particleSample
+							.getSampleComposition()
+							.getFunctionalizingEntityCollection()) {
+						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+								entity.getId().toString(), "Composition",
+								"functionalizingEntity.do");
+						dataBean.setDataClassName(ClassUtils
+								.getShortClassName(entity.getClass()
+										.getCanonicalName()));
+						dataBean.setDataDisplayType(InitSetup.getInstance()
+								.getDisplayName(dataBean.getDataClassName(),
+										appContext));
+						fdataBeans.add(dataBean);
+					}
 				}
 				dataTree.put("Functionalizing Entity", fdataBeans);
 
 				List<ParticleDataLinkBean> adataBeans = new ArrayList<ParticleDataLinkBean>();
-				for (ChemicalAssociation association : particleSample
-						.getSampleComposition()
-						.getChemicalAssociationCollection()) {
-					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							association.getId().toString(), "Composition",
-							"chemicalAssociation.do");
-					dataBean.setDataClassName(ClassUtils
-							.getShortClassName(association.getClass()
-									.getCanonicalName()));
-					dataBean.setDataDisplayType(InitSetup.getInstance()
-							.getDisplayName(dataBean.getDataClassName(),
-									appContext));
-					adataBeans.add(dataBean);
+				if (particleSample.getSampleComposition()
+						.getChemicalAssociationCollection() != null) {
+					for (ChemicalAssociation association : particleSample
+							.getSampleComposition()
+							.getChemicalAssociationCollection()) {
+						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+								association.getId().toString(), "Composition",
+								"chemicalAssociation.do");
+						dataBean.setDataClassName(ClassUtils
+								.getShortClassName(association.getClass()
+										.getCanonicalName()));
+						dataBean.setDataDisplayType(InitSetup.getInstance()
+								.getDisplayName(dataBean.getDataClassName(),
+										appContext));
+						adataBeans.add(dataBean);
+					}
 				}
 				dataTree.put("Chemical Association", adataBeans);
 
 				List<ParticleDataLinkBean> ldataBeans = new ArrayList<ParticleDataLinkBean>();
-				for (LabFile file : particleSample.getSampleComposition()
-						.getLabFileCollection()) {
-					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							file.getId().toString(), "Composition",
-							"compositionFile.do");
-					dataBean.setDataClassName("LabFile");
-					dataBean.setDataDisplayType(file.getType());
-					ldataBeans.add(dataBean);
+				if (particleSample.getSampleComposition()
+						.getLabFileCollection() != null) {
+					for (LabFile file : particleSample.getSampleComposition()
+							.getLabFileCollection()) {
+						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+								file.getId().toString(), "Composition",
+								"compositionFile.do");
+						dataBean.setDataClassName("LabFile");
+						dataBean.setDataDisplayType(file.getType());
+						ldataBeans.add(dataBean);
+					}
 				}
 				dataTree.put("Composition File", ldataBeans);
 			}
