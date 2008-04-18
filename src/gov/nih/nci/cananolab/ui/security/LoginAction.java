@@ -100,9 +100,9 @@ public class LoginAction extends AbstractBaseAction {
 		boolean canDelete = authorizationService.checkDeletePermission(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 		if (canDelete && isAdmin) {
-			session.setAttribute("canUserDeleteChars", "true");
+			session.setAttribute("canUserDelete", "true");
 		} else {
-			session.setAttribute("canUserDeleteChars", "false");
+			session.setAttribute("canUserDelete", "false");
 		}
 	}
 
