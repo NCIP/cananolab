@@ -54,11 +54,12 @@ public class InitNanoparticleSetup {
 		request.getSession().setAttribute("allParticleSources", sampleSources);
 	}
 
-	public void setNanoparticleSampleSources(HttpServletRequest request, UserBean user)
-			throws Exception {
+	public void setNanoparticleSampleSources(HttpServletRequest request,
+			UserBean user) throws Exception {
 		SortedSet<Source> sampleSources = particleService
 				.getAllParticleSources(user);
-		request.getSession().setAttribute("allUserParticleSources", sampleSources);
+		request.getSession().setAttribute("allUserParticleSources",
+				sampleSources);
 	}
 
 	public List<String> getDefaultFunctionTypes(ServletContext appContext)
@@ -369,6 +370,7 @@ public class InitNanoparticleSetup {
 					cdataBeans.add(dataBean);
 				}
 			}
+			request.getSession().setAttribute("particleDataTree", dataTree);
 		} else {
 			dataTree = new HashMap<String, List<ParticleDataLinkBean>>(
 					(Map<? extends String, List<ParticleDataLinkBean>>) (request
@@ -449,5 +451,16 @@ public class InitNanoparticleSetup {
 					.getAttribute("emulsionComposingElementTypes"));
 		}
 		return allTypes;
+	}
+
+	public SortedSet<String> getBiopolymerTypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("Biopolymer",
+				"type");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"Biopolymer", "otherType");
+		types.addAll(otherTypes);
+		request.getSession().setAttribute("biopolymerTypes", types);
+		return types;
 	}
 }
