@@ -20,11 +20,11 @@
 		<property name="receivedDate" type="java.util.Date" column="received_date"/>
 		<property name="sourceSampleId" type="string" column="source_sample_id"/>
 		<!-- Associations mapping for the SampleManagement class -->
+		<many-to-one name="nanoparticleSample" class="gov.nih.nci.cananolab.domain.particle.NanoparticleSample" column="particle_sample_pk_id" unique="true" lazy="proxy" />
 		<set name="sampleContainerCollection" lazy="true">
 			<cache usage="read-write" />
 			<key column="sample_management_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.SampleContainer"/>
 		</set>
-		<many-to-one name="nanoparticleSample" class="gov.nih.nci.cananolab.domain.particle.NanoparticleSample" column="particle_sample_pk_id" unique="true" lazy="proxy" />
 	</class>
 </hibernate-mapping>

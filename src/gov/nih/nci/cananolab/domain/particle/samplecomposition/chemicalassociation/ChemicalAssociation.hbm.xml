@@ -15,13 +15,13 @@
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="description" type="string" column="description"/>
 		<!-- Associations mapping for the ChemicalAssociation class -->
-		<many-to-one name="associatedElementB" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement" column="associated_element_b_pk_id" lazy="proxy" />
-		<many-to-one name="associatedElementA" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement" column="associated_element_a_pk_id" lazy="proxy" />
 		<set name="labFileCollection" table="chemical_association_lab_file" lazy="true" inverse="false">
 			<cache usage="read-write" />
 			<key column="chemical_association_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.LabFile" column="file_pk_id" />
 		</set>
+		<many-to-one name="associatedElementA" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement" column="associated_element_a_pk_id" lazy="proxy" />
+		<many-to-one name="associatedElementB" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement" column="associated_element_b_pk_id" lazy="proxy" />
 		<subclass name="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation" discriminator-value="OtherChemicalAssociation">
 			<!-- Attributes mapping for the OtherChemicalAssociation class -->
 			<property name="type" type="string" column="other_chemical_association_type"/>
