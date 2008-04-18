@@ -45,7 +45,7 @@
 	</definition>
 
 	<definition name="particle.annotationMessage"
-		extends="particle.characterization">
+		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/bodyMessage.jsp?bundle=particle" />
 	</definition>
