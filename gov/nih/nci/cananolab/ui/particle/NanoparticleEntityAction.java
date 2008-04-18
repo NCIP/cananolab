@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.7 2008-04-17 22:16:11 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.8 2008-04-18 14:17:28 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -136,6 +136,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
 		theForm.set("entity", entityBean);
+		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
 		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
