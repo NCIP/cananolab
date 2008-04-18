@@ -38,8 +38,8 @@
 				</td>
 			</c:when>
 		</c:choose>
-		<c:if test="${canUserDeleteChars eq 'true' &&
-						!empty charaLeafToCharacterizations[param.charType]}">
+		<c:if test="${canUserDelete eq 'true' &&
+				!empty particleDataTree[param.charType]}">
 				<c:url var="deleteUrl" value="deleteAction.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
