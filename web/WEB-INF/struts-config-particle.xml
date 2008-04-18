@@ -82,7 +82,7 @@
 			<forward name="input"
 				path="particle.composition.particleEntity" />
 			<forward name="success"
-				path="particle.annotatioMessage" />
+				path="particle.annotationMessage" />
 		</action>
 		<action input="input" name="functionalizingEntityForm"
 			parameter="dispatch" path="/functionalizingEntity"
