@@ -20,16 +20,16 @@
 		<!-- Associations mapping for the NanoparticleEntity class -->
 		<many-to-one name="sampleComposition"
 			class="gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition"
-			column="composition_pk_id" lazy="proxy" cascade="save-update"/>
+			column="composition_pk_id" lazy="proxy" cascade="save-update, delete"/>
 		<set name="labFileCollection"
-			table="nanoparticle_entity_lab_file" lazy="true" inverse="false" cascade="save-update">
+			table="nanoparticle_entity_lab_file" lazy="true" inverse="false" cascade="save-update, delete">
 			<cache usage="read-write" />
 			<key column="nanoparticle_entity_pk_id" />
 			<many-to-many
 				class="gov.nih.nci.cananolab.domain.common.LabFile"
 				column="file_pk_id" />
 		</set>
-		<set name="composingElementCollection" lazy="false" cascade="save-update">
+		<set name="composingElementCollection" lazy="false" cascade="save-update,delete,delete-orphan" inverse="true">
 			<cache usage="read-write" />
 			<key column="nanoparticle_entity_pk_id" />
 			<one-to-many
