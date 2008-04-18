@@ -65,10 +65,18 @@
 				</table>
 				<div id="entityInclude">
 					<c:choose>
-						<c:when
-							test="${!empty nanoparticleEntityForm.map.entity.className}">
+						<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
+							<c:set var="entityType"
+								value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
+							<%
+										String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+										.getInstance().getObjectName(
+										(String) pageContext.getAttribute("entityType"),
+										application);
+								pageContext.setAttribute("entityClass", entityClass);
+							%>
 							<jsp:include
-								page="/particle/composition/body${nanoparticleEntityForm.map.entity.className}Info.jsp" />
+								page="/particle/composition/body${entityClass}Info.jsp" />
 						</c:when>
 						<c:otherwise>
 							<br>
@@ -91,26 +99,27 @@
 									<tr>
 										<td valign="bottom">
 											<a href="#"
-												onclick="javascript:addComposingElement(); return false;">
+												onclick="javascript:addComponent(nanoparticleEntityForm, 'nanoparticleEntity', 'addComposingElement'); return false;">
 												<span class="addLink">Add Composing Element</span> </a>
 										</td>
 										<td id="compEleTd">
-											<span id="compEleCount" style="display:none">1</span>
-											<div id="compEle1">
+											<logic:iterate name="nanoparticleEntityForm"
+												property="entity.composingElements" id="composingElement"
+												indexId="ind">
+
 												<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 													width="100%" align="center" summary="" border="0">
 													<tbody>
 														<tr>
 															<td class="formSubTitleNoRight" colspan="3">
-																<span>Composing Element #1</span>
+																<span>Composing Element #${ind + 1}</span>
 															</td>
 															<td class="formSubTitleNoLeft" align="right">
 																<a href="#" id="removeCE1"
-																	onclick="removeComposingElement();"> <img
-																		src="images/delete.gif" border="0"
+																	onclick="removeComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'removeComposingElement');return false;">
+																	<img src="images/delete.gif" border="0"
 																		alt="remove this composing element"> </a>
 															</td>
-
 														</tr>
 														<tr>
 															<td class="leftLabelWithTop" valign="top">
@@ -118,14 +127,21 @@
 															</td>
 															<td class="labelWithTop" valign="top">
 																<html:select styleId="compElemType"
-																	property="entity.composingElements[0].domainComposingElement.type"
+																	property="entity.composingElements[${ind}].domainComposingElement.type"
 																	onchange="javascript:callPrompt('Composing Element Type', 'compElemType');">
 																	<option />
+																		<c:choose>
+																			<c:when test="${entityType ne 'emulsion'}">
+																				<html:options name="composingElementTypes" />
+																			</c:when>
+																			<c:otherwise>
+																				<html:options name="emulsionComposingElementTypes" />
+																			</c:otherwise>
+																		</c:choose>
 																	<option value="other">
 																		[Other]
 																	</option>
 																</html:select>
-																<%--																	<html:options name="defaultComposingElementTypes" />--%>
 															</td>
 
 															<td class="labelWithTop" valign="top">
@@ -133,7 +149,7 @@
 															</td>
 															<td class="rightLabelWithTop" valign="top">
 																<html:text
-																	property="entity.composingElements[0].domainComposingElement.name"
+																	property="entity.composingElements[${ind}].domainComposingElement.name"
 																	size="30" />
 															</td>
 														</tr>
@@ -143,7 +159,7 @@
 															</td>
 															<td class="label" valign="top">
 																<html:select styleId="molFormulaType"
-																	property="entity.composingElements[0].domainComposingElement.molecularFormulaType"
+																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
 																	<option value="" />
 																	<option value="other">
@@ -156,7 +172,7 @@
 															</td>
 															<td class="rightLabel" valign="top">
 																<html:text
-																	property="entity.composingElements[0].domainComposingElement.molecularFormula"
+																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormula"
 																	size="30" />
 															</td>
 														</tr>
@@ -166,7 +182,7 @@
 															</td>
 															<td class="label" valign="top">
 																<html:text
-																	property="entity.composingElements[0].domainComposingElement.value"
+																	property="entity.composingElements[${ind}].domainComposingElement.value"
 																	size="30" />
 															</td>
 															<td class="label" valign="top">
@@ -174,7 +190,7 @@
 															</td>
 															<td class="rightLabel" valign="top">
 																<html:select styleId="compEleUnit"
-																	property="entity.composingElements[0].domainComposingElement.valueUnit"
+																	property="entity.composingElements[${ind}].domainComposingElement.valueUnit"
 																	onchange="javascript:callPrompt('Unit', 'compEleUnit');">
 																	<option value="" />
 																	<option value="other">
@@ -189,10 +205,11 @@
 															</td>
 															<td class="rightLabel" colspan="3">
 																<html:textarea
-																	property="entity.composingElements[0].domainComposingElement.description"
+																	property="entity.composingElements[${ind}].domainComposingElement.description"
 																	rows="3" cols="65" />
 															</td>
 														</tr>
+														<%--
 														<tr>
 															<td valign="bottom" class="leftLabel">
 																<a href="#" id="inherentFuncLink1"><span
@@ -200,66 +217,17 @@
 																		Inherent Function</span> </a>
 															</td>
 															<td colspan="3" class="rightLabel">
-																&nbsp;
-																<span style="display: none">0</span>
-																<input type="hidden" name="inherentFunctionNumbers"
-																	value="1" id="inherentFuncNum" />
-
-																<div style="display: none">
-																	<table class="topBorderOnly" cellspacing="0"
-																		cellpadding="3" width="100%" align="center" summary=""
-																		border="0">
-																		<tbody>
-																			<tr>
-																				<td class="leftLabelWithTop" valign="top">
-																					<strong>Function Type</strong>
-																				</td>
-																				<td class="labelWithTop" valign="top">
-																					<strong>Description</strong>
-																				</td>
-																				<td class="rightLabelWithTop">
-																					<Strong>&nbsp;</Strong>
-																				</td>
-																			</tr>
-																			<tr style="display: none">
-																				<td class="leftLabel" valign="top">
-																					<html:select
-																						property="entity.composingElements[0].inherentFunctions[0].type"
-																						size="1" styleId="funcType"
-																						onchange="javascript:callPrompt('Function Type', 'functionType');">
-																						<option value="imaging">
-																							Imaging
-																						</option>
-																						<option value="targeting">
-																							Targeting
-																						</option>
-																						<option value="therapeutic">
-																							Therapeutic
-																						</option>
-																						<option value="other">
-																							[Other]
-																						</option>
-																					</html:select>
-																				</td>
-																				<td class="label">
-																					<html:textarea
-																						property="entity.composingElements[0].inherentFunctions[0].description"
-																						rows="1" cols="30" />
-																				</td>
-																				<td class="rightLabel">
-																					<a href="#"><span class="addLink2">remove</span>
-																					</a>
-																				</td>
-																			</tr>
-																		</tbody>
-																	</table>
-																</div>
+																<jsp:include
+																	page="/particle/composition/bodyFunctionUpdate.jsp">
+																	<jsp:param name="compEleInd" value="${ind}" />
+																</jsp:include>
 															</td>
 														</tr>
+											            --%>
 													</tbody>
 												</table>
 												<br>
-											</div>
+											</logic:iterate>
 										</td>
 									</tr>
 								</table>
@@ -339,7 +307,7 @@
 						</tr>
 				</table>
 				<br>
-				<jsp:include page="/particle/shared/bodyCharacterizationCopy.jsp" />
+				<jsp:include page="/particle/shared/bodyAnnotationCopy.jsp" />
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="">
@@ -371,6 +339,8 @@
 													value="${param.particleId}" />
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
+												<html:hidden property="entity.className"
+													value="${entityClass}" />
 												<%--												<html:hidden property="particle.sampleId" />--%>
 												<%--												<html:hidden property="particle.sampleName" />--%>
 												<%--												<html:hidden property="particle.sampleSource" />--%>

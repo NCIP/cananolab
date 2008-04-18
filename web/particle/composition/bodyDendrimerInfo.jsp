@@ -14,15 +14,16 @@
 				<strong>Branch</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.dendrimer.branch" />
+				<input type="text" name="entity.dendrimer.branch" value="${nanoparticleEntityForm.map.entity.dendrimer.branch}"/>
 			</td>
 			<td class="label">
 				<strong>Generation</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.dendrimer.generation" />
+				<input type="text" name="entity.dendrimer.generation" value="${nanoparticleEntityForm.map.entity.dendrimer.generation}"/>
 			</td>
 		</tr>
 	</tbody>
 </table>
+<input type="hidden" name="entity.dendrimer.id" value="${nanoparticleEntityForm.map.entity.dendrimer.id}"/>
 <br>

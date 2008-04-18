@@ -6,7 +6,8 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript" src="javascript/particleEntity.js"></script>
-<script type="text/javascript" src="javascript/CompositionEntityManager.js"></script>
+<script type="text/javascript"
+	src="javascript/CompositionEntityManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CompositionEntityManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
@@ -39,7 +40,7 @@ function confirmDeletion()
 <%--</c:choose>--%>
 <%--<c:choose>--%>
 <%--	<c:when	test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">--%>
-		<%@ include file="bodyParticleEntityUpdate.jsp" %> 
+<%@ include file="bodyParticleEntityUpdate.jsp"%>
 <%--	</c:when>--%>
 <%--	<c:otherwise>--%>
 <%--		<%@ include file="bodyParticleEntityReadOnly.jsp" %> --%>
