@@ -59,7 +59,7 @@
 									styleId="sampleSource"
 									onchange="javascript:callPrompt('Nanoparticle Sample Source', 'sampleSource');">
 									<option />
-										<html:options collection="allUserParticleSources"
+										<html:options collection="allParticleSources"
 											labelProperty="organizationName" property="organizationName" />
 									<option value="other">
 										[Other]
@@ -69,7 +69,7 @@
 						</tr>
 						<tr>
 							<td class="leftLabel" valign="top">
-								<strong>Keywords <em>(one word per line)</em> </strong>
+								<strong>Keywords <em>(one keyword per line)</em> </strong>
 							</td>
 							<td class="rightLabel">
 								<html:textarea property="particleSampleBean.keywordsStr"
