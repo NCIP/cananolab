@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.8 2008-04-18 14:17:28 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.9 2008-04-18 23:45:48 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -22,7 +22,9 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,21 +58,23 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		ParticleBean particleBean = initSetup(theForm, request);
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
-		
 		Date now = new Date();
-		entityBean.getDomainEntity().setCreatedBy(user.getLoginName());
-		entityBean.getDomainEntity().setCreatedDate(now);
+		if (entityBean.getDomainEntity().getId() == null) {
+			entityBean.getDomainEntity().setCreatedBy(user.getLoginName());
+			entityBean.getDomainEntity().setCreatedDate(now);
+		}
 		for (ComposingElementBean compElementBean : entityBean
 				.getComposingElements()) {
-			compElementBean.getDomainComposingElement().setCreatedBy(
-					user.getLoginName());
-			compElementBean.getDomainComposingElement().setCreatedDate(now);
+			if (compElementBean.getDomainComposingElement().getId() == null) {
+				compElementBean.getDomainComposingElement().setCreatedBy(
+						user.getLoginName());
+				compElementBean.getDomainComposingElement().setCreatedDate(now);
+			}
 		}
-		
+
 		compositionService.saveNanoparticleEntity(particleBean, entityBean);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.addNanoparticleEntity");
+		ActionMessage msg = new ActionMessage("message.addNanoparticleEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
@@ -109,8 +113,10 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleBean = initSetup(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
@@ -118,6 +124,12 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 				request);
 		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
+		InitNanoparticleSetup.getInstance().setOtherParticleNames(
+				request,
+				particleBean.getParticleSample().getName(),
+				particleBean.getParticleSample().getSource()
+						.getOrganizationName(), user);
+
 		return mapping.getInputForward();
 	}
 
@@ -144,6 +156,67 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
 		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
+	}
+
+	public ActionForward addComposingElement(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+				.get("entity");
+		List<ComposingElementBean> origElements = entity.getComposingElements();
+		int origNum = (origElements == null) ? 0 : origElements.size();
+		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
+		for (int i = 0; i < origNum; i++) {
+			elements.add(origElements.get(i));
+		}
+		// add a new one
+		elements.add(new ComposingElementBean());
+		entity.setComposingElements(elements);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeComposingElement(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("compInd");
+		int ind = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+				.get("entity");
+		List<ComposingElementBean> origElements = entity.getComposingElements();
+		int origNum = (origElements == null) ? 0 : origElements.size();
+
+		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
+		for (int i = 0; i < origNum; i++) {
+			elements.add(origElements.get(i));
+		}
+		// remove the one at the index
+		if (origNum > 0) {
+			elements.remove(ind);
+		}
+		entity.setComposingElements(elements);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		/*
+		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
+		 * NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		 * .get("entity"); // update editable dropdowns HttpSession session =
+		 * request.getSession();
+		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
+		 * composition.getCharacterizationSource(), "characterizationSources");
+		 * 
+		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
+		 * updatePolymerEditable(session, polymer);
+		 * 
+		 * DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
+		 * updateDendrimerEditable(session, dendrimer);
+		 */
+		return mapping.findForward("setup");
 	}
 
 	public boolean loginRequired() {
