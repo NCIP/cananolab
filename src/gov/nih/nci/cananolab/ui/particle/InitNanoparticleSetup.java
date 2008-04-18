@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalC
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -474,5 +475,13 @@ public class InitNanoparticleSetup {
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("biopolymerTypes", types);
 		return types;
+	}
+
+	public void setOtherParticleNames(HttpServletRequest request,
+			String particleName, String particleSource, UserBean user)
+			throws CaNanoLabException {
+		SortedSet<SortableName> names = particleService.getOtherParticles(
+				particleSource, particleName, user);
+		request.getSession().setAttribute("otherParticleNames", names);
 	}
 }
