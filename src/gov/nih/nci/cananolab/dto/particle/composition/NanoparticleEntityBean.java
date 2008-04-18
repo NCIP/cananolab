@@ -56,12 +56,11 @@ public class NanoparticleEntityBean {
 	private NanoparticleEntity domainEntity = new NanoparticleEntity();
 
 	public NanoparticleEntityBean() {
-		ComposingElementBean ceb = new ComposingElementBean();
-		composingElements.add(ceb);
 	}
 
 	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
-		if (nanoparticleEntity instanceof Dendrimer) {			
+		description = nanoparticleEntity.getDescription();
+		if (nanoparticleEntity instanceof Dendrimer) {
 			dendrimer = (Dendrimer) nanoparticleEntity;
 			domainEntity = dendrimer;
 			className = ClassUtils.getShortClassName(Dendrimer.class.getName());
@@ -96,7 +95,12 @@ public class NanoparticleEntityBean {
 	}
 
 	public int compareTo(NanoparticleEntityBean other) {
-		return type.compareTo(other.getType());
+		if (type.equals(other.getType())) {
+			return domainEntity.getCreatedDate().compareTo(
+					other.getDomainEntity().getCreatedDate());
+		} else {
+			return type.compareTo(other.getType());
+		}
 	}
 
 	public String getType() {
@@ -163,7 +167,7 @@ public class NanoparticleEntityBean {
 	}
 
 	public OtherNanoparticleEntity getOtherEntity() {
-		domainEntity=otherEntity;
+		domainEntity = otherEntity;
 		setSharedInfo();
 		return otherEntity;
 	}
@@ -178,14 +182,16 @@ public class NanoparticleEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
-		domainEntity.setDescription(description);
+
 	}
 
 	public NanoparticleEntity getDomainEntity() {
 		return domainEntity;
 	}
 
-	public void setSharedInfo() {		
+	public void setSharedInfo() {
+		domainEntity.setDescription(description);
+		domainComposingElements=new HashSet<ComposingElement>();
 		for (ComposingElementBean composingElementBean : composingElements) {
 			ComposingElement domainComposingElement = composingElementBean
 					.getDomainComposingElement();
@@ -194,5 +200,14 @@ public class NanoparticleEntityBean {
 		}
 		domainEntity.setComposingElementCollection(domainComposingElements);
 		domainEntity.setLabFileCollection(files);
+		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
+			domainEntity.setId(null);
+		}
+	}
+
+	public void setComposingElements(
+			List<ComposingElementBean> composingElements) {
+		this.composingElements = composingElements;
+		setSharedInfo();
 	}
 }

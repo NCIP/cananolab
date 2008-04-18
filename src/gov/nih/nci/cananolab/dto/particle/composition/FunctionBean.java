@@ -66,6 +66,7 @@ public class FunctionBean {
 
 	public ImagingFunction getImagingFunction() {
 		domainFunction = imagingFunction;
+		domainFunction.setDescription(description);
 		return imagingFunction;
 	}
 
@@ -74,8 +75,7 @@ public class FunctionBean {
 	}
 
 	public void setType(String type) {
-		this.type = type;
-		otherFunction.setType(type);
+		this.type = type;		
 	}
 
 	public String getClassName() {
@@ -99,13 +99,13 @@ public class FunctionBean {
 		return domainFunction;
 	}
 
-	public OtherFunction getOtherFunction() {
+	public OtherFunction getOtherFunction() {		
 		domainFunction = otherFunction;
+		otherFunction.setType(type);
 		return otherFunction;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
-		domainFunction.setDescription(description);
+		this.description = description;		
 	}
 }

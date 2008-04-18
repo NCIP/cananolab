@@ -14,7 +14,8 @@
 				<strong>Name</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.biopolymer.name" />
+				<input type="text" name="entity.biopolymer.name"
+					value="${nanoparticleEntityForm.map.entity.biopolymer.name}" />
 			</td>
 			<td class="label">
 				<strong>Biopolymer Type</strong>
@@ -22,17 +23,10 @@
 			<td class="rightLabel">
 				<select name="entity.biopolymer.type" id="biopolymerType"
 					onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
-					<option value="dna">
-						DNA
-					</option>
-					<option value="peptide">
-						Peptide
-					</option>
-					<option value="protein">
-						Protein
-					</option>
+					<option value=""></option>
+					<html:options name="biopolymerTypes" />
 					<option value="other">
-						Other
+						[Other]
 					</option>
 				</select>
 			</td>
@@ -42,7 +36,7 @@
 				<strong>Sequence</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<textarea name="entity.biopolymer.sequence" cols="80" rows="3"></textarea>
+				<textarea name="entity.biopolymer.sequence" cols="80" rows="3">${nanoparticleEntityForm.map.entity.biopolymer.sequence}</textarea>
 			</td>
 		</tr>
 	</tbody>

@@ -14,19 +14,19 @@
 				<strong>Average Length</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLength" />
+				<input type="text" name="entity.carbonNanotube.averageLength" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}"/>
 			</td>
 			<td class="label">
 				<strong>Average Length Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLengthUnit" />
+				<input type="text" name="entity.carbonNanotube.averageLengthUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}"/>
 			</td>
 			<td class="label">
 				<strong>Chirality</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.carbonNanotube.chirality" />
+				<input type="text" name="entity.carbonNanotube.chirality" value="${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}"/>
 			</td>
 		</tr>
 		<tr>
@@ -34,13 +34,13 @@
 				<strong>Growth Diameter</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.growthDiameter" />
+				<input type="text" name="entity.carbonNanotube.growthDiameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}"/>
 			</td>
 			<td class="label">
 				<strong>Growth Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.growthDiameterUnit" />
+				<input type="text" name="entity.carbonNanotube.growthDiameterUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}"/>
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>
