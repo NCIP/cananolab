@@ -36,41 +36,37 @@ public class FunctionBean {
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
 	public FunctionBean() {
-
 	}
 
 	public FunctionBean(Function function) {
-		className = ClassUtils.getShortClassName(function.getClass()
-				.getCanonicalName());
 		if (function instanceof ImagingFunction) {
 			imagingFunction = (ImagingFunction) function;
+			domainFunction = imagingFunction;
+			className = ClassUtils.getShortClassName(ImagingFunction.class
+					.getCanonicalName());
 		} else if (function instanceof TargetingFunction) {
 			for (Target target : ((TargetingFunction) function)
 					.getTargetCollection()) {
 				targets.add(new TargetBean(target));
 			}
+			domainFunction = (TargetingFunction) function;
+			className = ClassUtils.getShortClassName(TargetingFunction.class
+					.getCanonicalName());
 		} else if (function instanceof OtherFunction) {
 			otherFunction = (OtherFunction) function;
+			domainFunction = otherFunction;
+			className = ClassUtils.getShortClassName(OtherFunction.class
+					.getCanonicalName());
 		}
-		domainFunction = function;
 	}
 
-	public String getDescription() {
+	public String getDescription() {		
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-		domainFunction.setDescription(description);
-	}
-
 	public ImagingFunction getImagingFunction() {
-		return imagingFunction;
-	}
-
-	public void setImagingFunction(ImagingFunction imagingFunction) {
-		this.imagingFunction = imagingFunction;
 		domainFunction = imagingFunction;
+		return imagingFunction;
 	}
 
 	public String getType() {
@@ -91,16 +87,12 @@ public class FunctionBean {
 	}
 
 	public List<TargetBean> getTargets() {
-		return targets;
-	}
-
-	public void setTargets(List<TargetBean> targets) {
-		this.targets = targets;
 		Set<Target> domainTargets = new HashSet<Target>();
 		for (TargetBean targetBean : targets) {
 			domainTargets.add(targetBean.getDomainTarget());
 		}
 		((TargetingFunction) domainFunction).setTargetCollection(domainTargets);
+		return targets;
 	}
 
 	public Function getDomainFunction() {
@@ -108,11 +100,12 @@ public class FunctionBean {
 	}
 
 	public OtherFunction getOtherFunction() {
+		domainFunction = otherFunction;
 		return otherFunction;
 	}
 
-	public void setOtherFunction(OtherFunction otherFunction) {
-		this.otherFunction = otherFunction;
-		domainFunction = otherFunction;
+	public void setDescription(String description) {
+		this.description = description;
+		domainFunction.setDescription(description);
 	}
 }
