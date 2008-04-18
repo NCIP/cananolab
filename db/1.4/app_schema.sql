@@ -97,8 +97,8 @@ CREATE TABLE liposome
 CREATE TABLE fullerene
 (
 	fullerene_pk_id BIGINT NOT NULL,
-	number_of_carbon DECIMAL(5) NULL,
-	average_diameter DECIMAL(5,2) NULL,
+	number_of_carbon DECIMAL(22) NULL,
+	average_diameter DECIMAL(22,3) NULL,
 	average_diameter_unit VARCHAR(200) NULL,
 	PRIMARY KEY (fullerene_pk_id),
 	KEY (fullerene_pk_id)
@@ -121,7 +121,7 @@ CREATE TABLE emulsion
 CREATE TABLE dendrimer
 (
 	dendrimer_pk_id BIGINT NOT NULL,
-	generation NUMERIC(3,2) NULL,
+	generation DECIMAL(22,3) NULL,
 	branch VARCHAR(200) NULL,
 	PRIMARY KEY (dendrimer_pk_id),
 	KEY (dendrimer_pk_id)
@@ -247,7 +247,7 @@ CREATE TABLE sample_container
 	quantity_unit VARCHAR(200) NULL,
 	concentration DECIMAL(22,3) NULL,
 	concentration_unit VARCHAR(200) NULL,
-	volume DECIMAL(22) NULL,
+	volume DECIMAL(22,3) NULL,
 	volume_unit VARCHAR(200) NULL,
 	diluents_solvent TEXT NULL,
 	safety_precautions TEXT NULL,
