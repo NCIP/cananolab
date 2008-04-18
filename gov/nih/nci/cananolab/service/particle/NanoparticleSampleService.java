@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -88,7 +89,6 @@ public class NanoparticleSampleService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Source.class);
-			crit.createAlias("nanoparticleSampleCollection", "particle");
 			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
 			List results = appService.query(crit);
 			for (Object obj : results) {
@@ -314,7 +314,7 @@ public class NanoparticleSampleService {
 				}
 				crit.add(disjunction);
 			}
-
+			crit.setFetchMode("source", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
@@ -532,7 +532,7 @@ public class NanoparticleSampleService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleSample.class).add(
 					Property.forName("id").eq(new Long(particleId)));
-
+			crit.setFetchMode("source", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
@@ -579,10 +579,10 @@ public class NanoparticleSampleService {
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<NanoparticleSample> getOtherParticles(
-			String particleSource, String particleName, UserBean user)
-			throws ParticleException, CaNanoLabSecurityException {
-		SortedSet<NanoparticleSample> otherParticles = new TreeSet<NanoparticleSample>();
+	public SortedSet<SortableName> getOtherParticles(String particleSource,
+			String particleName, UserBean user) throws ParticleException,
+			CaNanoLabSecurityException {
+		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
 		AuthorizationService auth = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		try {
@@ -598,7 +598,7 @@ public class NanoparticleSampleService {
 			for (Object obj : results) {
 				NanoparticleSample particle = (NanoparticleSample) obj;
 				if (isAllowed(auth, particle.getName(), user)) {
-					otherParticles.add(particle);
+					otherParticles.add(new SortableName(particle.getName()));
 				}
 			}
 		} catch (Exception e) {
