@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -183,6 +182,36 @@ public class AuthorizationService {
 				CaNanoLabConstants.CSM_READ_PRIVILEGE);
 	}
 
+	public List<String> getPublicData() throws CaNanoLabSecurityException {
+	List<String> publicData = new ArrayList<String>();
+		try {
+			Group publicGroup = getGroup(CaNanoLabConstants.CSM_PUBLIC_GROUP);
+			try {
+				Set ctxs = userManager
+						.getProtectionGroupRoleContextForGroup(publicGroup
+								.getGroupId().toString());
+				for (Object obj : ctxs) {
+					ProtectionGroupRoleContext ctx = (ProtectionGroupRoleContext) obj;
+					for (Object r : ctx.getRoles()) {
+						if (((Role) r).getName().equals(
+								CaNanoLabConstants.CSM_READ_ROLE)) {
+							publicData.add(ctx.getProtectionGroup()
+									.getProtectionGroupName());
+							break;
+						}
+					}
+				}
+				return publicData;
+
+			} catch (Exception e) {
+				return publicData;
+			}
+
+		} catch (Exception e) {
+			throw new CaNanoLabSecurityException();
+		}
+	}
+
 	/**
 	 * Check whether the given user has delete privilege on the given protection
 	 * element
@@ -261,6 +290,24 @@ public class AuthorizationService {
 			for (Object obj : results) {
 				Group doGroup = (Group) obj;
 				groups.add(doGroup.getGroupName());
+			}
+			return groups;
+		} catch (Exception e) {
+			logger.error("Error in getting all groups.", e);
+			throw new CaNanoLabSecurityException();
+		}
+	}
+
+	public List<Group> getGroups() throws CaNanoLabSecurityException {
+		try {
+			List<Group> groups = new ArrayList<Group>();
+			Group dummy = new Group();
+			dummy.setGroupName("*");
+			SearchCriteria sc = new GroupSearchCriteria(dummy);
+			List results = this.userManager.getObjects(sc);
+			for (Object obj : results) {
+				Group doGroup = (Group) obj;
+				groups.add(doGroup);
 			}
 			return groups;
 		} catch (Exception e) {
@@ -579,16 +626,13 @@ public class AuthorizationService {
 			throw new CaNanoLabSecurityException(
 					"No such role defined in CSM: " + roleName);
 		}
-
-		List<String> existingRoleIds = getExistingRoleIds(pg, group);
-		List<String> allRoleIds = new ArrayList<String>(existingRoleIds);
-		if (!existingRoleIds.contains(role.getId().toString())) {
-			allRoleIds.add(role.getId().toString());
-		}
+		// this will remove exising roles assigned. In caNanoLab, this is not an
+		// issue since
+		// only the R role has been assigned from the application.
 		try {
 			this.userManager.assignGroupRoleToProtectionGroup(pg
 					.getProtectionGroupId().toString(), group.getGroupId()
-					.toString(), allRoleIds.toArray(new String[0]));
+					.toString(), new String[] { role.getId().toString() });
 		} catch (Exception e) {
 			logger.error("Error in securing objects", e);
 			throw new CaNanoLabSecurityException();
@@ -807,72 +851,37 @@ public class AuthorizationService {
 		}
 	}
 
-	/**
-	 * Direct CSM schema query to improve performance
-	 * 
-	 * @param objectName
-	 * @param groupName
-	 * @param roleName
-	 * @throws CaNanoLabSecurityException
-	 */
-	public void removeAllAccessibleGroups(String objectName, String roleName,
-			String[] exceptionGroupNames) throws CaNanoLabSecurityException {
-		Session session = null;
-		Transaction tx = null;
-
+	public void removeExistingVisibleGroups(String objectName, String roleName)
+			throws CaNanoLabSecurityException {
 		try {
-
-			ProtectionGroup pg = this.getProtectionGroup(objectName);
-			Role role = this.getRole(roleName);
-			List<String> exceptionGroupIds = new ArrayList<String>();
-			if (exceptionGroupNames != null) {
-				for (String groupName : exceptionGroupNames) {
-					Group group = getGroup(groupName);
-					exceptionGroupIds.add(group.getGroupId().toString());
-				}
+			List<Group> groups = getGroups();
+			ProtectionGroup pg = getProtectionGroup(objectName);
+			Role role = getRole(roleName);
+			for (Group group : groups) {
+				userManager.removeGroupRoleFromProtectionGroup(pg
+						.getProtectionGroupId().toString(), group.getGroupId()
+						.toString(), new String[] { role.getId().toString() });
 			}
-
-			String query = "delete from csm_user_group_role_pg "
-					+ "where protection_group_id=" + pg.getProtectionGroupId()
-					+ " and role_id=" + role.getId();
-			if (!exceptionGroupIds.isEmpty()) {
-				query += " and group_id not in ("
-						+ StringUtils.join(exceptionGroupIds, ",") + ")";
-			}
-			session = appService.getCurrentSession();
-			tx = session.beginTransaction();
-			Connection connection = session.connection();
-			Statement stmt = connection.createStatement();
-			stmt.execute(query);
-			tx.commit();
 		} catch (Exception e) {
-			tx.rollback();
-			logger.error("Error removing accessible groups from CSM database",
-					e);
 			throw new CaNanoLabSecurityException();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
 		}
 	}
 
-	public void setVisiblity(String dataToProtect, String[] visibilities)
+	public void setVisibility(String dataToProtect, String[] visibleGroups)
 			throws CaNanoLabSecurityException {
 		try {
-
-			removeAllAccessibleGroups(dataToProtect,
-					CaNanoLabConstants.CSM_READ_ROLE, null);
+			removeExistingVisibleGroups(dataToProtect,
+					CaNanoLabConstants.CSM_READ_ROLE);
 
 			// set new visibilities
-			for (String visibility : visibilities) {
-				secureObject(dataToProtect, visibility,
+			for (String group : visibleGroups) {
+				secureObject(dataToProtect, group,
 						CaNanoLabConstants.CSM_READ_ROLE);
 			}
 
 			// set default visibilities
-			for (String visibility : CaNanoLabConstants.VISIBLE_GROUPS) {
-				secureObject(dataToProtect, visibility,
+			for (String group : CaNanoLabConstants.VISIBLE_GROUPS) {
+				secureObject(dataToProtect, group,
 						CaNanoLabConstants.CSM_READ_ROLE);
 			}
 		} catch (Exception e) {
