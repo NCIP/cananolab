@@ -8,11 +8,13 @@ import gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl;
 import gov.nih.nci.system.util.ClassCache;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.springframework.aop.framework.Advised;
 
 /**
  * Customized to contain more CRUD operations.
@@ -49,9 +51,9 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 	}
 
 	public void saveOrUpdate(Object object) throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
-				.getDAOForClass(object.getClass().getCanonicalName());
 		try {
+			CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+					.getDAOForClass(object.getClass().getCanonicalName());
 			dao.saveOrUpdate(object);
 		} catch (Exception e) {
 			String err = "Could not save or update for class "
@@ -62,9 +64,9 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 	}
 
 	public void delete(Object object) throws ApplicationException {
-		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
-				.getDAOForClass(object.getClass().getCanonicalName());
 		try {
+			CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+					.getDAOForClass(object.getClass().getCanonicalName());
 			dao.delete(object);
 		} catch (Exception e) {
 			String err = "Could not delete for class "
@@ -126,4 +128,30 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 			throw new ApplicationException(err, e);
 		}
 	}
+
+	private Object unwrap(Object proxy) throws Exception {
+		try {
+			Object interceptor = null;
+			int i = 0;
+			while (true) {
+				Field field = proxy.getClass().getDeclaredField(
+						"CGLIB$CALLBACK_" + i);
+				field.setAccessible(true);
+				Object value = field.get(proxy);
+				if (value.getClass().getName().contains("EqualsInterceptor")) {
+					interceptor = value;
+					break;
+				}
+				i++;
+			}
+			Field field = interceptor.getClass().getDeclaredField("advised");
+			field.setAccessible(true);
+			Advised advised = (Advised) field.get(interceptor);
+			Object realObject = advised.getTargetSource().getTarget();
+			return realObject;
+		} catch (Exception e) {
+			return proxy;
+		}
+	}
+
 }
