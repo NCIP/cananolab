@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Gene;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Receptor;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -27,27 +29,33 @@ public class TargetBean {
 	private Target domainTarget = new Target();
 
 	public TargetBean() {
-
 	}
 
 	public TargetBean(Target target) {
 		if (target instanceof Antigen) {
 			antigen = (Antigen) target;
+			domainTarget = antigen;
+			className = ClassUtils.getShortClassName(Antigen.class
+					.getCanonicalName());
+		} else if (target instanceof Receptor) {
+			domainTarget = (Receptor) target;
+			className = ClassUtils.getShortClassName(Receptor.class
+					.getCanonicalName());
+		} else if (target instanceof Gene) {
+			domainTarget = (Gene) target;
+			className = ClassUtils.getShortClassName(Gene.class
+					.getCanonicalName());
 		} else if (target instanceof OtherTarget) {
 			otherTarget = (OtherTarget) target;
+			domainTarget = otherTarget;
+			className = ClassUtils.getShortClassName(OtherTarget.class
+					.getCanonicalName());
 		}
-		className = ClassUtils.getShortClassName(target.getClass()
-				.getCanonicalName());
-		domainTarget = target;
 	}
 
 	public Antigen getAntigen() {
-		return antigen;
-	}
-
-	public void setAntigen(Antigen antigen) {
-		this.antigen = antigen;
 		domainTarget = antigen;
+		return antigen;
 	}
 
 	public String getDescription() {
@@ -78,12 +86,8 @@ public class TargetBean {
 	}
 
 	public OtherTarget getOtherTarget() {
-		return otherTarget;
-	}
-
-	public void setOtherTarget(OtherTarget otherTarget) {
-		this.otherTarget = otherTarget;		
 		domainTarget = otherTarget;
+		return otherTarget;
 	}
 
 	public String getClassName() {

@@ -105,6 +105,7 @@ public class NanoparticleEntityBean {
 
 	public void setType(String entityType) {
 		this.type = entityType;
+		otherEntity.setType(entityType);
 	}
 
 	public String getClassName() {
@@ -177,14 +178,14 @@ public class NanoparticleEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+		domainEntity.setDescription(description);
 	}
 
 	public NanoparticleEntity getDomainEntity() {
 		return domainEntity;
 	}
 
-	public void setSharedInfo() {
-		domainEntity.setDescription(description);
+	public void setSharedInfo() {		
 		for (ComposingElementBean composingElementBean : composingElements) {
 			ComposingElement domainComposingElement = composingElementBean
 					.getDomainComposingElement();
