@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.particle;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Dendrimer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -42,7 +43,7 @@ public class NanoparticleCompositionService {
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		
+
 		if (entityBean.getDomainEntity().getId() != null) {
 			try {
 				NanoparticleEntity dbEntity = (NanoparticleEntity) appService
@@ -57,10 +58,7 @@ public class NanoparticleCompositionService {
 		NanoparticleEntity entity = entityBean.getDomainEntity();
 		SampleComposition composition = particleBean.getParticleSample()
 				.getSampleComposition();
-		if (composition != null) {
-			entity.setSampleComposition(composition);
-			composition.getNanoparticleEntityCollection().add(entity);
-		} else {
+		if (composition == null) {
 			composition = new SampleComposition();
 			entity.setSampleComposition(composition);
 			particleBean.getParticleSample().setSampleComposition(composition);
@@ -68,6 +66,8 @@ public class NanoparticleCompositionService {
 			entityCollection.add(entity);
 			composition.setNanoparticleEntityCollection(entityCollection);
 			composition.setNanoparticleSample(particleBean.getParticleSample());
+		} else {
+			entity.setSampleComposition(composition);
 		}
 		appService.saveOrUpdate(entity);
 	}
