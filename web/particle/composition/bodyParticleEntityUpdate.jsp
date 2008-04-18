@@ -1,3 +1,8 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <html:form action="/nanoparticleEntity">
 	<table width="100%" align="center">
 		<tr>
@@ -42,9 +47,11 @@
 											setEntityInclude(); getComposingElementOptions('peType', 'compElemType');">
 								<option value=""></option>
 								<html:options name="nanoparticleEntityTypes" />
-								<option value="other">[Other]</option>
+								<option value="other">
+									[Other]
+								</option>
 							</html:select>
-							
+
 						</td>
 					</tr>
 					<tr>
@@ -52,12 +59,22 @@
 							<strong>Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<html:textarea property="entity.description" rows="3"
-								cols="80" />
+							<html:textarea property="entity.description" rows="3" cols="80" />
 						</td>
 					</tr>
 				</table>
-                <div id="entityInclude"></div>
+				<div id="entityInclude">
+					<c:choose>
+						<c:when
+							test="${!empty nanoparticleEntityForm.map.entity.className}">
+							<jsp:include
+								page="/particle/composition/body${nanoparticleEntityForm.map.entity.className}Info.jsp" />
+						</c:when>
+						<c:otherwise>
+							<br>
+						</c:otherwise>
+					</c:choose>
+				</div>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -75,8 +92,7 @@
 										<td valign="bottom">
 											<a href="#"
 												onclick="javascript:addComposingElement(); return false;">
-												<span class="addLink">Add Composing Element</span>
-											</a>
+												<span class="addLink">Add Composing Element</span> </a>
 										</td>
 										<td id="compEleTd">
 											<span id="compEleCount" style="display:none">1</span>
@@ -160,7 +176,7 @@
 																<html:select styleId="compEleUnit"
 																	property="entity.composingElements[0].domainComposingElement.valueUnit"
 																	onchange="javascript:callPrompt('Unit', 'compEleUnit');">
-																	<option value="" />																																
+																	<option value="" />
 																	<option value="other">
 																		[Other]
 																	</option>
@@ -179,8 +195,8 @@
 														</tr>
 														<tr>
 															<td valign="bottom" class="leftLabel">
-																<a href="#" id="inherentFuncLink1"><span style="display:none">1</span>
-																<span class="addLink2">Add
+																<a href="#" id="inherentFuncLink1"><span
+																	style="display:none">1</span> <span class="addLink2">Add
 																		Inherent Function</span> </a>
 															</td>
 															<td colspan="3" class="rightLabel">
@@ -207,9 +223,10 @@
 																			</tr>
 																			<tr style="display: none">
 																				<td class="leftLabel" valign="top">
-																					<html:select property="entity.composingElements[0].inherentFunctions[0].type" size="1"
-																						styleId="funcType"
-																						onchange="javascript:callPrompt('Function Type', 'functionType');">																						
+																					<html:select
+																						property="entity.composingElements[0].inherentFunctions[0].type"
+																						size="1" styleId="funcType"
+																						onchange="javascript:callPrompt('Function Type', 'functionType');">
 																						<option value="imaging">
 																							Imaging
 																						</option>
@@ -249,11 +266,8 @@
 							</td>
 						</tr>
 				</table>
-
-
-
-				<%--Particle Entity File Information --%>
 				<br>
+				<%--Particle Entity File Information --%>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -333,17 +347,17 @@
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-									<table height="32" border="0" align="left" cellpadding="4"
-										cellspacing="0">
-										<tr>
-											<td height="32">
-												<div align="left">
-													<input type="button" value="Delete"
-														onclick="confirmDeletion();">
-												</div>
-											</td>
-										</tr>
-									</table>
+							<table height="32" border="0" align="left" cellpadding="4"
+								cellspacing="0">
+								<tr>
+									<td height="32">
+										<div align="left">
+											<input type="button" value="Delete"
+												onclick="confirmDeletion();">
+										</div>
+									</td>
+								</tr>
+							</table>
 							<table width="498" height="32" border="0" align="right"
 								cellpadding="4" cellspacing="0">
 								<tr>
@@ -353,13 +367,14 @@
 												<input type="reset" value="Reset" onclick="">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
-												<html:hidden property="particleId" value="${param.particleId}"/>
+												<html:hidden property="particleId"
+													value="${param.particleId}" />
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-<%--												<html:hidden property="particle.sampleId" />--%>
-<%--												<html:hidden property="particle.sampleName" />--%>
-<%--												<html:hidden property="particle.sampleSource" />--%>
-<%--												<html:hidden property="particle.sampleType" />--%>
+												<%--												<html:hidden property="particle.sampleId" />--%>
+												<%--												<html:hidden property="particle.sampleName" />--%>
+												<%--												<html:hidden property="particle.sampleSource" />--%>
+												<%--												<html:hidden property="particle.sampleType" />--%>
 												<html:submit />
 											</div>
 										</div>
