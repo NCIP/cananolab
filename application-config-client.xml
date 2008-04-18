@@ -26,7 +26,9 @@
 		<property name="target">
 			<ref bean="ApplicationServiceImpl"/>
 		</property>
+		<!-- 
 		<property name="interceptorNames" value="interceptor"/>
+		-->
 		<property name="interfaces" value="gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService"/>
 	</bean>	
 	
