@@ -164,6 +164,20 @@ public class InitNanoparticleSetup {
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
 	}
 
+	public Map<String, List<String>> getDefaultCompositionTypes(
+			ServletContext appContext) throws Exception {
+
+		Map<String, List<String>> compositionMap = new HashMap<String, List<String>>();
+		List<String> compList = new ArrayList<String>(4);
+		compList.add("Nanoparticle Entity");
+		compList.add("Functionalizing Entity");
+		compList.add("Chemical Association");
+		compList.add("Composition File");
+		compositionMap.put("Composition", compList);
+		appContext.setAttribute("compositionTypes", compositionMap);
+		return compositionMap;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
 			ServletContext appContext) throws Exception {
@@ -349,9 +363,16 @@ public class InitNanoparticleSetup {
 					}
 				}
 				dataTree.put("Composition File", ldataBeans);
+				
+				request.getSession().setAttribute("hasCompositionData", "true");
+			} else {
+				request.getSession().setAttribute("hasCompositionData", "false");
 			}
-
+			
+			
 			// characterization
+			boolean hasPhysicalData = false;
+			boolean hasInVitroData = false;
 			List<ParticleDataLinkBean> cdataBeans = null;
 			if (particleSample.getCharacterizationCollection() != null) {
 				for (Characterization achar : particleSample
@@ -361,9 +382,12 @@ public class InitNanoparticleSetup {
 					if (achar instanceof PhysicalCharacterization) {
 						category = "Physical Characterization";
 						link = "physicalCharacterization.do";
+						hasPhysicalData = true;
 					} else if (achar instanceof InvitroCharacterization) {
 						category = "In Vitro Characterization";
 						link = "invitroCharacterization.do";
+						hasInVitroData = true;
+						
 					}
 					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 							achar.getId().toString(), category, link);
@@ -384,6 +408,17 @@ public class InitNanoparticleSetup {
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
+			
+			if(hasPhysicalData)
+				request.getSession().setAttribute("hasPhysicalData", "true");
+			else
+				request.getSession().setAttribute("hasPhysicalData", "false");
+			
+			if(hasInVitroData)
+				request.getSession().setAttribute("hasInVitroData", "true");
+			else
+				request.getSession().setAttribute("hasInVitroData", "false");
+			
 		} else {
 			dataTree = new HashMap<String, List<ParticleDataLinkBean>>(
 					(Map<? extends String, List<ParticleDataLinkBean>>) (request

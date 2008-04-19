@@ -128,8 +128,8 @@
 </c:choose>
 
 <c:set var="physicalType" value="Physical Characterization" />
-<%--<c:choose>--%>
-<%--	<c:when test="${!empty particleDataTree[physicalType] || canCreateNanoparticle eq 'true'}">--%>
+<c:choose>
+	<c:when test="${hasPhysicalData eq 'true' || canCreateNanoparticle eq 'true'}">
 
 	<li class="controlList">
 	<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
@@ -148,9 +148,6 @@
 				</jsp:include>
 				<c:if test="${!empty particleDataTree[physicalChara]}">
 					<ul class="sublist_5" style="${phyDisplay}">
-<%--						<logic:iterate name="leafCharBean"--%>
-<%--												property="${particleDataTree[physicalChara]}"--%>
-<%--												indexId="ind">--%>
 						<c:forEach var="leafCharBean"
 							items="${particleDataTree[physicalChara]}">
 							<c:url var="url" value="physicalCharacterization.do">
@@ -164,32 +161,31 @@
 <%--							<c:choose>--%>
 <%--								<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
-<%--									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
 <%--								</c:when>--%>
 <%--								<c:otherwise>--%>
-									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
 <%--								</c:otherwise>--%>
 <%--							</c:choose>--%>
 							</li>
 						</c:forEach>
-<%--							</logic:iterate>--%>
 					</ul>
 				</c:if>
 			</li>
 		</c:forEach>
 	</ul>
 	</li>
-<%--	</c:when>--%>
-<%--	<c:otherwise>--%>
-<%--		<li class="nodatali">--%>
-<%--			PHYSICAL CHARACTERIZATIONS--%>
-<%--		</li>--%>
-<%--	</c:otherwise>--%>
-<%--</c:choose>--%>
+	</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			PHYSICAL CHARACTERIZATIONS
+		</li>
+	</c:otherwise>
+</c:choose>
 
 <c:set var="inVitroType" value="In Vitro Characterization" />
-<%--<c:choose>--%>
-<%--	<c:when test="${!empty particleDataTree[inVitroType] || canCreateNanoparticle eq 'true'}">--%>
+<c:choose>
+	<c:when test="${hasInVitroData eq 'true' || canCreateNanoparticle eq 'true'}">
 	<li class="controlList">
 	<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 	<ul class="sublist_1" style="${invitroDisplay}">
@@ -247,11 +243,11 @@
 <%--												<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--													<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
 <%--													<a href="${url3}" class="sublist_5" style="${viewTitleDisplay}" >--%>
-<%--													<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--													<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
 <%--												</c:when>--%>
 <%--												<c:otherwise>--%>
 													<a href="${url3}" class="sublist_5"><span
-													class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+													class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
 <%--												</c:otherwise>--%>
 <%--											</c:choose>--%>
 											</li>
@@ -311,11 +307,11 @@
 <%--																		<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--																			<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
 <%--																			<a href="${url4}" class="sublist_5" style="${viewTitleDisplay}" >--%>
-<%--																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
 <%--																		</c:when>--%>
 <%--																	<c:otherwise>--%>
 																		<a href="${url4}" class="sublist_5"><span
-																			class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+																			class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
 <%--																	</c:otherwise>--%>
 <%--																	</c:choose>--%>
 																	</li>
@@ -369,11 +365,11 @@
 <%--																						<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--																							<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
 <%--																							<a href="${url5}" class="sublist_5" style="${viewTitleDisplay}" >--%>
-<%--																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
+<%--																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
 <%--																						</c:when>--%>
 <%--																						<c:otherwise>--%>
 																							<a href="${url5}" class="sublist_5"><span
-																								class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+																								class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
 <%--																						</c:otherwise>--%>
 <%--																						</c:choose>--%>
 																						</li>
@@ -399,10 +395,10 @@
 		</c:forEach>
 	</ul>
 </li>
-<%--</c:when>--%>
-<%--	<c:otherwise>--%>
-<%--		<li class="nodatali">--%>
-<%--			IN VITRO CHARACTERIZATIONS--%>
-<%--		</li>--%>
-<%--	</c:otherwise>--%>
-<%--</c:choose>--%>
+</c:when>
+	<c:otherwise>
+		<li class="nodatali">
+			IN VITRO CHARACTERIZATIONS
+		</li>
+	</c:otherwise>
+</c:choose>
