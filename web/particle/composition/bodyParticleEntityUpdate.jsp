@@ -44,7 +44,7 @@
 						<td class="rightLabel">
 							<html:select styleId="peType" property="entity.type"
 								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); 
-											setEntityInclude(); getComposingElementOptions('peType', 'compElemType');">
+											setEntityInclude(); getComposingElementOptions(); getBiopolymerOptions();">
 								<option value=""></option>
 								<html:options name="nanoparticleEntityTypes" />
 								<option value="other">
