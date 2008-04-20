@@ -164,15 +164,18 @@ public class InitNanoparticleSetup {
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
 	}
 
-	public Map<String, List<String>> getDefaultCompositionTypes(
+	public Map<String, List<ParticleDataLinkBean>> getDefaultCompositionTypes(
 			ServletContext appContext) throws Exception {
 
-		Map<String, List<String>> compositionMap = new HashMap<String, List<String>>();
-		List<String> compList = new ArrayList<String>(4);
-		compList.add("Nanoparticle Entity");
-		compList.add("Functionalizing Entity");
-		compList.add("Chemical Association");
-		compList.add("Composition File");
+		Map<String, List<ParticleDataLinkBean>> compositionMap = new HashMap<String, List<ParticleDataLinkBean>>();
+		List<ParticleDataLinkBean> compList = new ArrayList<ParticleDataLinkBean>(4);
+		
+		compList.add(new ParticleDataLinkBean("Nanoparticle Entity", "NanoparticleEntity",
+				"nanoparticleEntity", "composition"));
+		compList.add(new ParticleDataLinkBean("Functionalizing Entity", "FunctionalizingEntity", "functionalizingEntity", "composition"));
+		compList.add(new ParticleDataLinkBean("Chemical Association", "ChemicalAssociation", "chemicalAssociation", "composition"));
+		compList.add(new ParticleDataLinkBean("Composition File", "CompositionFile", "compositionFile", "composition"));
+		
 		compositionMap.put("Composition", compList);
 		appContext.setAttribute("compositionTypes", compositionMap);
 		return compositionMap;
