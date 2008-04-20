@@ -61,4 +61,12 @@ public class DWRManager {
         }
         return null;
     }
+	
+	public String [] getBiopolymerTypeOptions(String nanoparticleEntityType) {
+		if(nanoparticleEntityType.equals("biopolymer")) {
+			return new String[] {"DNA", "RNA", "protein" };
+		}
+		
+		return new String[] {""};
+	}
 }

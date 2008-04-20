@@ -7,6 +7,7 @@
 				value="gov.nih.nci.cananolab.ui.DWRManager" />
 			<include method="getEntityIncludePage" />
 			<include method="getComposingElementTypeOptions" />
+			<include method="getBiopolymerTypeOptions" />
 		</create>
 	</allow>
 </dwr>
