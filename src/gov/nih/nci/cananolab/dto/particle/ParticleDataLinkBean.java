@@ -20,6 +20,14 @@ public class ParticleDataLinkBean {
 	//Composition, Physical Characterization, In Vitro Characterization
 	private String dataCategory;
 
+	public ParticleDataLinkBean(String dataDisplayType, String dataClassName,
+			String dataLink, String dataCategory) {
+		this.dataDisplayType = dataDisplayType;
+		this.dataClassName = dataClassName;
+		this.dataLink = dataLink;
+		this.dataCategory = dataCategory;
+	}
+
 	public ParticleDataLinkBean(String dataId, String category, String dataLink) {
 		this.dataId=dataId;
 		dataCategory = category;

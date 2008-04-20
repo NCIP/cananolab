@@ -21,7 +21,7 @@
 			<a href="#" class="subMenuSecondary">COMPOSITION</a>
 
 			<ul class="sublist_4" style="">
-				<c:forEach var="compoType"
+				<c:forEach var="compoDataBean"
 					items="${compositionTypes[compositionType]}">
 					<%--				<c:url var="submitUrl" value="nanoparticleEntity.do">--%>
 					<%--					<c:param name="particleId" value="${particleId}" />--%>
@@ -31,20 +31,20 @@
 
 					<li>
 						<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
-							<jsp:param name="charType" value="${compoType}" />
+							<jsp:param name="charType" value="${compoDataBean.dataDisplayType}" />
 							<jsp:param name="charTypeStyle" value="sublist_4" />
 							<jsp:param name="charTypeLabelStyle" value="titleCell2" />
 							<jsp:param name="noDataLabelStyle" value="titleCell2NoData" />
 							<jsp:param name="tableStyle" value="charTitle" />
 							<jsp:param name="addLinkStyle" value="addCell" />
-							<jsp:param name="addAction" value="nanoparticleEntity" />
+							<jsp:param name="addAction" value="${compoDataBean.dataLink}" />
 						</jsp:include>
 						<ul>
-							<c:set var="compType" value="Nanoparticle Entity" />
+							
 							<c:set var="pindex" value="1" />
 							<c:forEach var="dataLinkBean"
-								items="${particleDataTree[compType]}">
-								<c:url var="url" value="nanoparticleEntity.do">
+								items="${particleDataTree[compoDataBean.dataDisplayType]}">
+								<c:url var="url" value="${dataLinkBean.dataLink}.do">
 									<c:param name="page" value="0" />
 									<c:param name="dispatch" value="${dispatchValue}" />
 									<c:param name="particleId" value="${particleId}" />
@@ -52,7 +52,7 @@
 								</c:url>
 								<li id="complist">
 									<a href=${url } id="complink" class="sublist_5"><span
-										class="data_anchar">>&nbsp;</span>${pindex}:${dataLinkBean.dataLink}</a>
+										class="data_anchar">>&nbsp;</span>${pindex}:${dataLinkBean.dataDisplayType}</a>
 								</li>
 								<c:set var="pindex" value="${pindex} + 1" />
 							</c:forEach>
