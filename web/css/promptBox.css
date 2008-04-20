@@ -34,7 +34,7 @@ td.titlebar {
 }
 
 table.promptbox {
-	border: 1 solid #ccccff;
+	border: 1px solid #ccccff;
 	background-color: #F4F4F5;
 	color: black;
 	padding-left: 2px;
@@ -45,7 +45,7 @@ table.promptbox {
 }
 
 input.promptbox {
-	border: 1 solid #7F9DB9;
+	border: 1px solid #7F9DB9;
 	background-color: white;
 	width: 100%;
 	font-family: arial;
