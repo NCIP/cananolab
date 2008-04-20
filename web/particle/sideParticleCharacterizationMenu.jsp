@@ -161,10 +161,10 @@
 <%--							<c:choose>--%>
 <%--								<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
-<%--									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
+<%--									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
 <%--								</c:when>--%>
 <%--								<c:otherwise>--%>
-									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
+									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
 <%--								</c:otherwise>--%>
 <%--							</c:choose>--%>
 							</li>
@@ -243,11 +243,11 @@
 <%--												<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--													<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
 <%--													<a href="${url3}" class="sublist_5" style="${viewTitleDisplay}" >--%>
-<%--													<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
+<%--													<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
 <%--												</c:when>--%>
 <%--												<c:otherwise>--%>
 													<a href="${url3}" class="sublist_5"><span
-													class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
+													class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
 <%--												</c:otherwise>--%>
 <%--											</c:choose>--%>
 											</li>
@@ -307,11 +307,11 @@
 <%--																		<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--																			<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
 <%--																			<a href="${url4}" class="sublist_5" style="${viewTitleDisplay}" >--%>
-<%--																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
+<%--																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
 <%--																		</c:when>--%>
 <%--																	<c:otherwise>--%>
 																		<a href="${url4}" class="sublist_5"><span
-																			class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
+																			class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
 <%--																	</c:otherwise>--%>
 <%--																	</c:choose>--%>
 																	</li>
@@ -365,11 +365,11 @@
 <%--																						<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--																							<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
 <%--																							<a href="${url5}" class="sublist_5" style="${viewTitleDisplay}" >--%>
-<%--																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>--%>
+<%--																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>--%>
 <%--																						</c:when>--%>
 <%--																						<c:otherwise>--%>
 																							<a href="${url5}" class="sublist_5"><span
-																								class="data_anchar">>&nbsp;</span>${leafCharBean.dataLink}</a>
+																								class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
 <%--																						</c:otherwise>--%>
 <%--																						</c:choose>--%>
 																						</li>
