@@ -168,19 +168,25 @@ public class InitNanoparticleSetup {
 			ServletContext appContext) throws Exception {
 
 		Map<String, List<ParticleDataLinkBean>> compositionMap = new HashMap<String, List<ParticleDataLinkBean>>();
-		List<ParticleDataLinkBean> compList = new ArrayList<ParticleDataLinkBean>(4);
-		
-		compList.add(new ParticleDataLinkBean("Nanoparticle Entity", "NanoparticleEntity",
-				"nanoparticleEntity", "composition"));
-		compList.add(new ParticleDataLinkBean("Functionalizing Entity", "FunctionalizingEntity", "functionalizingEntity", "composition"));
-		compList.add(new ParticleDataLinkBean("Chemical Association", "ChemicalAssociation", "chemicalAssociation", "composition"));
-		compList.add(new ParticleDataLinkBean("Composition File", "CompositionFile", "compositionFile", "composition"));
-		
+		List<ParticleDataLinkBean> compList = new ArrayList<ParticleDataLinkBean>(
+				4);
+
+		compList.add(new ParticleDataLinkBean("Nanoparticle Entity",
+				"NanoparticleEntity", "nanoparticleEntity", "composition"));
+		compList
+				.add(new ParticleDataLinkBean("Functionalizing Entity",
+						"FunctionalizingEntity", "functionalizingEntity",
+						"composition"));
+		compList.add(new ParticleDataLinkBean("Chemical Association",
+				"ChemicalAssociation", "chemicalAssociation", "composition"));
+		compList.add(new ParticleDataLinkBean("Composition File",
+				"CompositionFile", "compositionFile", "composition"));
+
 		compositionMap.put("Composition", compList);
 		appContext.setAttribute("compositionTypes", compositionMap);
 		return compositionMap;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
 			ServletContext appContext) throws Exception {
@@ -300,7 +306,7 @@ public class InitNanoparticleSetup {
 							.getNanoparticleEntityCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								entity.getId().toString(), "Composition",
-								"nanoparticleEntity");
+								"nanoparticleEntity", entity.getCreatedDate());
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(entity.getClass()
 										.getCanonicalName()));
@@ -320,7 +326,8 @@ public class InitNanoparticleSetup {
 							.getFunctionalizingEntityCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								entity.getId().toString(), "Composition",
-								"functionalizingEntity");
+								"functionalizingEntity", entity
+										.getCreatedDate());
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(entity.getClass()
 										.getCanonicalName()));
@@ -340,7 +347,8 @@ public class InitNanoparticleSetup {
 							.getChemicalAssociationCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								association.getId().toString(), "Composition",
-								"chemicalAssociation");
+								"chemicalAssociation", association
+										.getCreatedDate());
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(association.getClass()
 										.getCanonicalName()));
@@ -359,20 +367,20 @@ public class InitNanoparticleSetup {
 							.getLabFileCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								file.getId().toString(), "Composition",
-								"compositionFile");
+								"compositionFile", file.getCreatedDate());
 						dataBean.setDataClassName("LabFile");
 						dataBean.setDataDisplayType(file.getType());
 						ldataBeans.add(dataBean);
 					}
 				}
 				dataTree.put("Composition File", ldataBeans);
-				
+
 				request.getSession().setAttribute("hasCompositionData", "true");
 			} else {
-				request.getSession().setAttribute("hasCompositionData", "false");
+				request.getSession()
+						.setAttribute("hasCompositionData", "false");
 			}
-			
-			
+
 			// characterization
 			boolean hasPhysicalData = false;
 			boolean hasInVitroData = false;
@@ -390,10 +398,11 @@ public class InitNanoparticleSetup {
 						category = "In Vitro Characterization";
 						link = "invitroCharacterization";
 						hasInVitroData = true;
-						
+
 					}
 					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							achar.getId().toString(), category, link);
+							achar.getId().toString(), category, link, achar
+									.getCreatedDate());
 					dataBean.setDataClassName(ClassUtils
 							.getShortClassName(achar.getClass()
 									.getCanonicalName()));
@@ -411,17 +420,17 @@ public class InitNanoparticleSetup {
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
-			
-			if(hasPhysicalData)
+
+			if (hasPhysicalData)
 				request.getSession().setAttribute("hasPhysicalData", "true");
 			else
 				request.getSession().setAttribute("hasPhysicalData", "false");
-			
-			if(hasInVitroData)
+
+			if (hasInVitroData)
 				request.getSession().setAttribute("hasInVitroData", "true");
 			else
 				request.getSession().setAttribute("hasInVitroData", "false");
-			
+
 		} else {
 			dataTree = new HashMap<String, List<ParticleDataLinkBean>>(
 					(Map<? extends String, List<ParticleDataLinkBean>>) (request
