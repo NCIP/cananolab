@@ -520,7 +520,7 @@ public class NanoparticleSampleService {
 		return storedFunctions;
 	}
 
-	public ParticleBean findNanoparticleSampleBy(String particleId,
+	public ParticleBean findNanoparticleSampleById(String particleId,
 			UserBean user) throws ParticleException, CaNanoLabSecurityException {
 		ParticleBean particleBean = null;
 		AuthorizationService auth = new AuthorizationService(
@@ -565,6 +565,54 @@ public class NanoparticleSampleService {
 			logger
 					.error("Problem finding the particle by id: " + particleId,
 							e);
+			throw new ParticleException();
+		}
+	}
+
+	public ParticleBean findNanoparticleSampleByName(String particleName,
+			UserBean user) throws ParticleException, CaNanoLabSecurityException {
+		ParticleBean particleBean = null;
+		AuthorizationService auth = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					NanoparticleSample.class).add(
+					Property.forName("name").eq(new Long(particleName)));
+			crit.setFetchMode("source", FetchMode.JOIN);
+			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.chemicalAssociationCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.functionalizingEntityCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.labFileCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				NanoparticleSample particleSample = (NanoparticleSample) result
+						.get(0);
+				particleBean = new ParticleBean(particleSample);
+				if (isAllowed(auth, particleSample.getName(), user)) {
+					return particleBean;
+				} else {
+					throw new NoAccessException();
+				}
+			} else {
+				return null;
+			}
+
+		} catch (Exception e) {
+			logger.error("Problem finding the particle by name: "
+					+ particleName, e);
 			throw new ParticleException();
 		}
 	}
