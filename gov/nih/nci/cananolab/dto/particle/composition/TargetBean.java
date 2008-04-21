@@ -63,8 +63,7 @@ public class TargetBean {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
-		domainTarget.setDescription(description);
+		this.description = description;		
 	}
 
 	public String getName() {
