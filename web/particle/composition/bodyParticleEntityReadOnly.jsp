@@ -1,3 +1,5 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<html:form action="/nanoparticleEntity">
 <table width="100%" align="center">
 	<tr>
 		<td>
@@ -33,11 +35,10 @@
 				</tr>
 				<tr>
 					<td class="leftLabel">
-						<strong>Particle Entity Type*</strong>
+						<strong>Particle Entity Type</strong>
 					</td>
 					<td class="rightLabel">
-
-						particle entity test
+						${nanoparticleEntityForm.map.entity.type}&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -45,7 +46,7 @@
 						<strong>Description</strong>
 					</td>
 					<td class="rightLabel" colspan="3">
-						description test
+						${nanoparticleEntityForm.map.entity.description}&nbsp;
 					</td>
 				</tr>
 			</table>
@@ -79,16 +80,16 @@
 													</tr>
 													<tr>
 														<td class="leftLabelWithTop" valign="top">
-															<strong>Composing Element Type*</strong>
+															<strong>Composing Element Type</strong>
 														</td>
 														<td class="labelWithTop">
-															composing element type test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.type}
 														</td>
 														<td class="labelWithTop" valign="top">
 															<strong>Chemical Name</strong>
 														</td>
 														<td class="rightLabelWithTop">
-															chemical name test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.name}
 														</td>
 													</tr>
 													<tr>
@@ -96,13 +97,13 @@
 															<strong>Molecular Formula Type</strong>
 														</td>
 														<td class="labelWithTop" valign="top">
-															molecular formula type test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}
 														</td>
 														<td class="labelWithTop" valign="top">
 															<strong>Molecular Formula</strong>
 														</td>
 														<td class="rightLabelWithTop" valign="top">
-															molecular formula test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}
 														</td>
 													</tr>
 													<tr>
@@ -110,13 +111,13 @@
 															<strong>Value</strong>
 														</td>
 														<td class="labelWithTop" valign="top">
-															value test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}
 														</td>
 														<td class="labelWithTop" valign="top">
 															<strong>Unit</strong>
 														</td>
 														<td class="rightLabelWithTop" valign="top">
-															unit test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}
 														</td>
 													</tr>
 													<tr>
@@ -124,7 +125,7 @@
 															<strong>Description</strong>
 														</td>
 														<td class="rightLabel" colspan="3">
-															description test
+															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.description}
 														</td>
 													</tr>
 												</tbody>
@@ -195,3 +196,4 @@
 		</td>
 	</tr>
 </table>
+</html:form>
