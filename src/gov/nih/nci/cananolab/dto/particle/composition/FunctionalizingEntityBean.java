@@ -32,7 +32,7 @@ public class FunctionalizingEntityBean {
 
 	private String name;
 
-	private String value;
+	private Float value;
 
 	private String valueUnit;
 
@@ -51,20 +51,45 @@ public class FunctionalizingEntityBean {
 	private List<FunctionBean> functions = new ArrayList<FunctionBean>();
 
 	private Set<LabFile> files = new HashSet<LabFile>();
-	
+
 	private ActivationMethod activationMethod = new ActivationMethod();
 
 	public FunctionalizingEntityBean() {
+
 	}
 
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
-		className = ClassUtils.getShortClassName(functionalizingEntity
-				.getClass().getCanonicalName());
-		this.domainEntity = functionalizingEntity;
-	}
-
-	public int compareTo(FunctionalizingEntityBean other) {
-		return type.compareTo(other.getType());
+		description = functionalizingEntity.getDescription();
+		name = functionalizingEntity.getName();
+		molecularFormula = functionalizingEntity.getMolecularFormula();
+		molecularFormulaType = functionalizingEntity.getMolecularFormulaType();
+		value = functionalizingEntity.getValue();
+		valueUnit = functionalizingEntity.getValueUnit();
+		if (functionalizingEntity instanceof Antibody) {
+			antibody = (Antibody) functionalizingEntity;
+			domainEntity = antibody;
+			className = ClassUtils.getShortClassName(Antibody.class.getName());
+		} else if (functionalizingEntity instanceof SmallMolecule) {
+			smallMolecule = (SmallMolecule) functionalizingEntity;
+			domainEntity = smallMolecule;
+			className = ClassUtils.getShortClassName(SmallMolecule.class
+					.getName());
+		} else if (functionalizingEntity instanceof Biopolymer) {
+			biopolymer = (Biopolymer) functionalizingEntity;
+			domainEntity = biopolymer;
+			className = ClassUtils
+					.getShortClassName(Biopolymer.class.getName());
+		} else if (functionalizingEntity instanceof OtherFunctionalizingEntity) {
+			otherEntity = (OtherFunctionalizingEntity) functionalizingEntity;
+			domainEntity = otherEntity;
+			className = ClassUtils
+					.getShortClassName(OtherFunctionalizingEntity.class
+							.getName());
+		}
+		for (Function function : functionalizingEntity.getFunctionCollection()) {
+			functions.add(new FunctionBean(function));
+		}
+		activationMethod = functionalizingEntity.getActivationMethod();
 	}
 
 	public FunctionalizingEntity getDomainEntity() {
@@ -84,39 +109,27 @@ public class FunctionalizingEntityBean {
 	}
 
 	public Antibody getAntibody() {
+		domainEntity = antibody;
+		setSharedInfo();
 		return antibody;
 	}
 
-	public void setAntibody(Antibody antibody) {
-		this.antibody = antibody;
-		domainEntity = antibody;
-	}
-
 	public Biopolymer getBiopolymer() {
+		domainEntity = biopolymer;
+		setSharedInfo();
 		return biopolymer;
 	}
 
-	public void setBiopolymer(Biopolymer biopolymer) {
-		this.biopolymer = biopolymer;
-		domainEntity = biopolymer;
-	}
-
 	public OtherFunctionalizingEntity getOtherEntity() {
+		domainEntity = otherEntity;
+		setSharedInfo();
 		return otherEntity;
 	}
 
-	public void setOtherEntity(OtherFunctionalizingEntity otherEntity) {
-		this.otherEntity = otherEntity;
-		domainEntity = otherEntity;
-	}
-
 	public SmallMolecule getSmallMolecule() {
-		return smallMolecule;
-	}
-
-	public void setSmallMolecule(SmallMolecule smallMolecule) {
-		this.smallMolecule = smallMolecule;
 		domainEntity = smallMolecule;
+		setSharedInfo();
+		return smallMolecule;
 	}
 
 	public void setClassName(String className) {
@@ -127,22 +140,12 @@ public class FunctionalizingEntityBean {
 		return functions;
 	}
 
-	public void setFunctions(List<FunctionBean> functions) {
-		this.functions = functions;
-		Set<Function> domainFunctions = new HashSet<Function>();
-		for (FunctionBean functionBean : functions) {
-			domainFunctions.add(functionBean.getDomainFunction());
-		}
-		domainEntity.setFunctionCollection(domainFunctions);
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-		domainEntity.setDescription(description);
 	}
 
 	public String getMolecularFormula() {
@@ -151,7 +154,6 @@ public class FunctionalizingEntityBean {
 
 	public void setMolecularFormula(String molecularFormula) {
 		this.molecularFormula = molecularFormula;
-		domainEntity.setMolecularFormula(molecularFormula);
 	}
 
 	public String getMolecularFormulaType() {
@@ -160,7 +162,6 @@ public class FunctionalizingEntityBean {
 
 	public void setMolecularFormulaType(String molecularFormulaType) {
 		this.molecularFormulaType = molecularFormulaType;
-		domainEntity.setMolecularFormulaType(molecularFormulaType);
 	}
 
 	public String getName() {
@@ -169,16 +170,14 @@ public class FunctionalizingEntityBean {
 
 	public void setName(String name) {
 		this.name = name;
-		domainEntity.setName(name);
 	}
 
-	public String getValue() {
+	public Float getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Float value) {
 		this.value = value;
-		domainEntity.setValue(new Float(value));
 	}
 
 	public String getValueUnit() {
@@ -187,24 +186,42 @@ public class FunctionalizingEntityBean {
 
 	public void setValueUnit(String valueUnit) {
 		this.valueUnit = valueUnit;
-		domainEntity.setValueUnit(valueUnit);
 	}
 
 	public Set<LabFile> getFiles() {
 		return files;
 	}
 
-	public void setFiles(Set<LabFile> files) {
-		this.files = files;
-		domainEntity.setLabFileCollection(files);
-	}
-
 	public ActivationMethod getActivationMethod() {
 		return activationMethod;
 	}
 
-	public void setActivationMethod(ActivationMethod activationMethod) {
-		this.activationMethod = activationMethod;
+	public void setSharedInfo() {
+		domainEntity.setDescription(description);
 		domainEntity.setActivationMethod(activationMethod);
+		domainEntity.setMolecularFormula(molecularFormula);
+		domainEntity.setMolecularFormulaType(molecularFormulaType);
+		domainEntity.setValue(value);
+		domainEntity.setValueUnit(valueUnit);
+		domainEntity.setName(name);
+		
+		domainEntity.getFunctionCollection().clear();
+		for (FunctionBean functionBean : functions) {
+			domainEntity.getFunctionCollection().add(
+					functionBean.getDomainFunction());
+		}
+
+		domainEntity.setLabFileCollection(files);
+		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
+			domainEntity.setId(null);
+		}
+	}
+	
+	public void addFunction() {
+		functions.add(new FunctionBean());
+	}
+	
+	public void removeFunction(int ind) {
+		functions.remove(ind);
 	}
 }
