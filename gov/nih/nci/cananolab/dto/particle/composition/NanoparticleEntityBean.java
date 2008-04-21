@@ -49,8 +49,6 @@ public class NanoparticleEntityBean {
 
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
 
-	private Set<ComposingElement> domainComposingElements = new HashSet<ComposingElement>();
-
 	private Set<LabFile> files = new HashSet<LabFile>();
 
 	private NanoparticleEntity domainEntity = new NanoparticleEntity();
@@ -91,15 +89,6 @@ public class NanoparticleEntityBean {
 		for (ComposingElement composingElement : nanoparticleEntity
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
-		}
-	}
-
-	public int compareTo(NanoparticleEntityBean other) {
-		if (type.equals(other.getType())) {
-			return domainEntity.getCreatedDate().compareTo(
-					other.getDomainEntity().getCreatedDate());
-		} else {
-			return type.compareTo(other.getType());
 		}
 	}
 
@@ -191,7 +180,6 @@ public class NanoparticleEntityBean {
 
 	public void setSharedInfo() {
 		domainEntity.setDescription(description);
-		domainComposingElements = new HashSet<ComposingElement>();
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
 		} else {
@@ -211,37 +199,22 @@ public class NanoparticleEntityBean {
 		}
 	}
 
-	public void setComposingElements(
-			List<ComposingElementBean> composingElements) {
-		this.composingElements = composingElements;
-		setSharedInfo();
-	}
-
 	public void addComposingElement() {
-		List<ComposingElementBean> origElements = this.getComposingElements();
-		int origNum = (origElements == null) ? 0 : origElements.size();
-		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
-		for (int i = 0; i < origNum; i++) {
-			elements.add(origElements.get(i));
-		}
-		// add a new one
-		elements.add(new ComposingElementBean());
-		this.setComposingElements(elements);
+		composingElements.add(new ComposingElementBean());
 	}
 
 	public void removeComposingElement(int ind) {
-		List<ComposingElementBean> origElements = this.getComposingElements();
-		int origNum = (origElements == null) ? 0 : origElements.size();
-		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
-		for (int i = 0; i < origNum; i++) {
-			elements.add(origElements.get(i));
-		}
-		ComposingElementBean elementToRemove = elements.get(ind);
+		ComposingElementBean elementToRemove = composingElements.get(ind);
 		elementToRemove.getDomainComposingElement().setNanoparticleEntity(null);
-		// remove the one at the index		
-		if (origNum > 0) {
-			elements.remove(elementToRemove);
-		}		
-		setComposingElements(elements);
+		// remove the one at the index
+		composingElements.remove(elementToRemove);
+	}
+
+	public NanoparticleEntityBean copy() {
+		NanoparticleEntityBean copiedEntity = new NanoparticleEntityBean();
+		copiedEntity.setType(type);
+		copiedEntity.setDescription(description);
+		copiedEntity.setClassName(className);		
+		return copiedEntity;
 	}
 }
