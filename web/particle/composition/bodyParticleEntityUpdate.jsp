@@ -209,12 +209,11 @@
 																	rows="3" cols="65" />
 															</td>
 														</tr>
-														<%--
+														
 														<tr>
 															<td valign="bottom" class="leftLabel">
-																<a href="#" id="inherentFuncLink1"><span
-																	style="display:none">1</span> <span class="addLink2">Add
-																		Inherent Function</span> </a>
+																<a href="#" onclick="javascript:addChildComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'addInherentFunction'); return false;">
+																<span class="addLink2">Add Inherent Function</span></a>
 															</td>
 															<td colspan="3" class="rightLabel">
 																<jsp:include
@@ -223,7 +222,7 @@
 																</jsp:include>
 															</td>
 														</tr>
-											            --%>
+
 													</tbody>
 												</table>
 												<br>
