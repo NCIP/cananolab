@@ -1,2 +1,2 @@
-<input type="hidden" name="entity.otherEntity.if" value="${nanoparticleEntityForm.map.otherEntity.id}"/>
+<input type="hidden" name="entity.otherEntity.id" value="${nanoparticleEntityForm.map.otherEntity.id}"/>
 <br>
