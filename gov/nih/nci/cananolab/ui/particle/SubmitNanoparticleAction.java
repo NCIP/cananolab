@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.11 2008-04-18 23:46:10 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.12 2008-04-21 23:12:02 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -71,7 +71,7 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		String particleId = request.getParameter("particleId");
 		UserBean user = (UserBean) session.getAttribute("user");
 		NanoparticleSampleService service = new NanoparticleSampleService();
-		ParticleBean particleSampleBean = service.findNanoparticleSampleBy(
+		ParticleBean particleSampleBean = service.findNanoparticleSampleById(
 				particleId, user);
 		theForm.set("particleSampleBean", particleSampleBean);
 		request.setAttribute("theParticle", particleSampleBean);
