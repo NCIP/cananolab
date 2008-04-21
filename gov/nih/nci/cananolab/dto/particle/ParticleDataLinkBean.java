@@ -30,7 +30,8 @@ public class ParticleDataLinkBean {
 
 	public ParticleDataLinkBean(String dataId, String category, String dataLink) {
 		this.dataId=dataId;
-		dataCategory = category;
+		this.dataCategory = category;
+		this.dataLink = dataLink;
 	}
 
 	public String getDataLink() {
