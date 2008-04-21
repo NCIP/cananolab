@@ -8,7 +8,7 @@
 		<tr>
 			<td>
 				<h4>
-					Sample Comosition - Nanoparticle Entity
+					${particleName} Sample Comosition - Nanoparticle Entity
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -20,7 +20,7 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					Entity#2:Dendrimer
+					Dendrimer
 				</h5>
 			</td>
 		</tr>
