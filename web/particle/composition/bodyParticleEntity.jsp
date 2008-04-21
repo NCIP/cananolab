@@ -38,11 +38,13 @@ function confirmDeletion()
 <%--		<c:set var="isRemote" value="false" scope="session" />--%>
 <%--	</c:otherwise>--%>
 <%--</c:choose>--%>
-<%--<c:choose>--%>
-<%--	<c:when	test="${canCreateNanoparticle eq 'true' && isRemote eq 'false'}">--%>
-<%@ include file="bodyParticleEntityUpdate.jsp"%>
-<%--	</c:when>--%>
-<%--	<c:otherwise>--%>
-<%--		<%@ include file="bodyParticleEntityReadOnly.jsp" %> --%>
-<%--	</c:otherwise>--%>
-<%--</c:choose>--%>
+
+
+<c:choose>
+	<c:when	test="${canCreateNanoparticle eq 'true'}">
+		<%@ include file="bodyParticleEntityUpdate.jsp"%>
+	</c:when>
+	<c:otherwise>
+		<%@ include file="bodyParticleEntityReadOnly.jsp" %> 
+	</c:otherwise>
+</c:choose>

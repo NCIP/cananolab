@@ -40,4 +40,14 @@ public class ComposingElementBean {
 		}
 		return inherentFunctions;
 	}
+
+	public void addFunction() {
+		inherentFunctions.add(new FunctionBean());
+
+	}
+
+	public void removeFunction(int ind) {
+		inherentFunctions.remove(ind);
+
+	}
 }
