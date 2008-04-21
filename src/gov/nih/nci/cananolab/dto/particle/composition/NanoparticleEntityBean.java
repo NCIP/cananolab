@@ -191,14 +191,20 @@ public class NanoparticleEntityBean {
 
 	public void setSharedInfo() {
 		domainEntity.setDescription(description);
-		domainComposingElements=new HashSet<ComposingElement>();
+		domainComposingElements = new HashSet<ComposingElement>();
+		if (domainEntity.getComposingElementCollection() != null) {
+			domainEntity.getComposingElementCollection().clear();
+		} else {
+			domainEntity
+					.setComposingElementCollection(new HashSet<ComposingElement>());
+		}
 		for (ComposingElementBean composingElementBean : composingElements) {
 			ComposingElement domainComposingElement = composingElementBean
 					.getDomainComposingElement();
 			domainComposingElement.setNanoparticleEntity(domainEntity);
-			domainComposingElements.add(domainComposingElement);
+			domainEntity.getComposingElementCollection().add(
+					domainComposingElement);
 		}
-		domainEntity.setComposingElementCollection(domainComposingElements);
 		domainEntity.setLabFileCollection(files);
 		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
 			domainEntity.setId(null);
@@ -209,5 +215,33 @@ public class NanoparticleEntityBean {
 			List<ComposingElementBean> composingElements) {
 		this.composingElements = composingElements;
 		setSharedInfo();
+	}
+
+	public void addComposingElement() {
+		List<ComposingElementBean> origElements = this.getComposingElements();
+		int origNum = (origElements == null) ? 0 : origElements.size();
+		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
+		for (int i = 0; i < origNum; i++) {
+			elements.add(origElements.get(i));
+		}
+		// add a new one
+		elements.add(new ComposingElementBean());
+		this.setComposingElements(elements);
+	}
+
+	public void removeComposingElement(int ind) {
+		List<ComposingElementBean> origElements = this.getComposingElements();
+		int origNum = (origElements == null) ? 0 : origElements.size();
+		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
+		for (int i = 0; i < origNum; i++) {
+			elements.add(origElements.get(i));
+		}
+		ComposingElementBean elementToRemove = elements.get(ind);
+		elementToRemove.getDomainComposingElement().setNanoparticleEntity(null);
+		// remove the one at the index		
+		if (origNum > 0) {
+			elements.remove(elementToRemove);
+		}		
+		setComposingElements(elements);
 	}
 }
