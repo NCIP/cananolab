@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.13 2008-04-21 23:11:39 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.14 2008-04-21 23:33:30 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -57,6 +57,9 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		Date now = new Date();
+		if (entityBean.getDomainEntity().getId() != null && entityBean.getDomainEntity().getId() == 0) {
+			entityBean.getDomainEntity().setId(null);
+		}
 		if (entityBean.getDomainEntity().getId() == null) {
 			entityBean.getDomainEntity().setCreatedBy(user.getLoginName());
 			entityBean.getDomainEntity().setCreatedDate(now);
