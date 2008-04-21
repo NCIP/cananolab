@@ -300,7 +300,7 @@ public class InitNanoparticleSetup {
 							.getNanoparticleEntityCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								entity.getId().toString(), "Composition",
-								"nanoparticleEntity.do");
+								"nanoparticleEntity");
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(entity.getClass()
 										.getCanonicalName()));
@@ -320,7 +320,7 @@ public class InitNanoparticleSetup {
 							.getFunctionalizingEntityCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								entity.getId().toString(), "Composition",
-								"functionalizingEntity.do");
+								"functionalizingEntity");
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(entity.getClass()
 										.getCanonicalName()));
@@ -340,7 +340,7 @@ public class InitNanoparticleSetup {
 							.getChemicalAssociationCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								association.getId().toString(), "Composition",
-								"chemicalAssociation.do");
+								"chemicalAssociation");
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(association.getClass()
 										.getCanonicalName()));
@@ -359,7 +359,7 @@ public class InitNanoparticleSetup {
 							.getLabFileCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								file.getId().toString(), "Composition",
-								"compositionFile.do");
+								"compositionFile");
 						dataBean.setDataClassName("LabFile");
 						dataBean.setDataDisplayType(file.getType());
 						ldataBeans.add(dataBean);
@@ -384,11 +384,11 @@ public class InitNanoparticleSetup {
 					String link = "";
 					if (achar instanceof PhysicalCharacterization) {
 						category = "Physical Characterization";
-						link = "physicalCharacterization.do";
+						link = "physicalCharacterization";
 						hasPhysicalData = true;
 					} else if (achar instanceof InvitroCharacterization) {
 						category = "In Vitro Characterization";
-						link = "invitroCharacterization.do";
+						link = "invitroCharacterization";
 						hasInVitroData = true;
 						
 					}
