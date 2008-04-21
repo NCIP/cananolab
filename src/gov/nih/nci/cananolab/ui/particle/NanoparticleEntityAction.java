@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.9 2008-04-18 23:45:48 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.10 2008-04-21 17:55:00 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -22,9 +22,7 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +76,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		request.setAttribute("updateDataTree", "true");
+		request.setAttribute("updateDataTree", "true");		
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
 	}
@@ -96,6 +94,8 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		ParticleBean particleBean = service.findNanoparticleSampleBy(
 				particleId, user);
 		request.setAttribute("theParticle", particleBean);
+		//to remember where to open the tree menu
+		session.setAttribute("submitType", "Nanoparticle Entity");
 		theForm.set("particleId", particleId);
 		return particleBean;
 	}
@@ -164,15 +164,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
-		List<ComposingElementBean> origElements = entity.getComposingElements();
-		int origNum = (origElements == null) ? 0 : origElements.size();
-		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
-		for (int i = 0; i < origNum; i++) {
-			elements.add(origElements.get(i));
-		}
-		// add a new one
-		elements.add(new ComposingElementBean());
-		entity.setComposingElements(elements);
+		entity.addComposingElement();
 		return mapping.getInputForward();
 	}
 
@@ -184,18 +176,7 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
-		List<ComposingElementBean> origElements = entity.getComposingElements();
-		int origNum = (origElements == null) ? 0 : origElements.size();
-
-		List<ComposingElementBean> elements = new ArrayList<ComposingElementBean>();
-		for (int i = 0; i < origNum; i++) {
-			elements.add(origElements.get(i));
-		}
-		// remove the one at the index
-		if (origNum > 0) {
-			elements.remove(ind);
-		}
-		entity.setComposingElements(elements);
+		entity.removeComposingElement(ind);
 		return mapping.getInputForward();
 	}
 
