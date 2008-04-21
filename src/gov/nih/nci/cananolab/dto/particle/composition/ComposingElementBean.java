@@ -4,9 +4,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents the view bean for ComposingElement domain object
@@ -15,7 +13,7 @@ import java.util.Set;
  * 
  */
 public class ComposingElementBean {
-	private ComposingElement domainComposingElement=new ComposingElement();
+	private ComposingElement domainComposingElement = new ComposingElement();
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
@@ -28,8 +26,6 @@ public class ComposingElementBean {
 	}
 
 	public ComposingElementBean() {
-		FunctionBean fb = new FunctionBean();
-		inherentFunctions.add(fb);
 	}
 
 	public ComposingElement getDomainComposingElement() {
@@ -37,11 +33,11 @@ public class ComposingElementBean {
 	}
 
 	public List<FunctionBean> getInherentFunctions() {
-		Set<Function> domainFunctions = new HashSet<Function>();
+		domainComposingElement.getInherentFunctionCollection().clear();
 		for (FunctionBean functionBean : inherentFunctions) {
-			domainFunctions.add(functionBean.getDomainFunction());
+			domainComposingElement.getInherentFunctionCollection().add(
+					functionBean.getDomainFunction());
 		}
-		domainComposingElement.setInherentFunctionCollection(domainFunctions);
 		return inherentFunctions;
 	}
 }
