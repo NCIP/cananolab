@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.11 2008-04-21 18:01:10 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.12 2008-04-21 22:23:28 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -178,6 +178,39 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		return mapping.getInputForward();
 	}
 
+	public ActionForward addInherentFunction(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+				.get("entity");
+		
+		String compEleIndexStr = (String) request.getParameter("compInd");
+		int compEleIndex = Integer.parseInt(compEleIndexStr);
+		ComposingElementBean compElement = (ComposingElementBean) entity.getComposingElements()
+				.get(compEleIndex);
+		
+		compElement.addFunction();
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeInherentFunction(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String compEleIndexStr = (String) request.getParameter("compInd");
+		int compEleIndex = Integer.parseInt(compEleIndexStr);
+		
+		String functionIndexStr = (String) request.getParameter("childCompInd");
+		int functionIndex = Integer.parseInt(functionIndexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+					.get("entity");
+		ComposingElementBean compElement = (ComposingElementBean) 
+					entity.getComposingElements().get(compEleIndex);
+		compElement.removeFunction(functionIndex);
+		return mapping.getInputForward();
+	}
+	
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
