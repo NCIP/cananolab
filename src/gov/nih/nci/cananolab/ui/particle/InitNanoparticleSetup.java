@@ -515,6 +515,28 @@ public class InitNanoparticleSetup {
 		return types;
 	}
 
+	public SortedSet<String> getModalityTypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("ImagingFunction",
+				"modality");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"ImagingFunction", "otherModality");
+		types.addAll(otherTypes);
+		request.getSession().setAttribute("modalityTypes", types);
+		return types;
+	}
+	
+	public SortedSet<String> getFileTypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues(
+				"LabFile", "type");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"LabFile", "otherType");
+		types.addAll(otherTypes);
+		request.getSession().setAttribute("fileTypes", types);
+		return types;
+	}
+	
 	public void setOtherParticleNames(HttpServletRequest request,
 			String particleName, String particleSource, UserBean user)
 			throws CaNanoLabException {
