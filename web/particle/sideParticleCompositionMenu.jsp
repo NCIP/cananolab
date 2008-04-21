@@ -46,15 +46,16 @@
 								items="${particleDataTree[compoDataBean.dataDisplayType]}">
 								<c:url var="url" value="${dataLinkBean.dataLink}.do">
 									<c:param name="page" value="0" />
-									<c:param name="dispatch" value="${dispatchValue}" />
+									<c:param name="dispatch" value="setup" />
 									<c:param name="particleId" value="${particleId}" />
 									<c:param name="dataId" value="${dataLinkBean.dataId}" />
+									<c:param name="submitType" value="${compoDataBean.dataDisplayType}" />
 								</c:url>
 								<li id="complist">
 									<a href=${url } id="complink" class="sublist_5"><span
-										class="data_anchar">>&nbsp;</span>${pindex}:${dataLinkBean.dataDisplayType}</a>
+										class="data_anchar">>&nbsp;</span>#${pindex}:&nbsp;${dataLinkBean.dataDisplayType}</a>
 								</li>
-								<c:set var="pindex" value="${pindex} + 1" />
+								<c:set var="pindex" value="${pindex + 1}" />
 							</c:forEach>
 						</ul>
 					</li>
