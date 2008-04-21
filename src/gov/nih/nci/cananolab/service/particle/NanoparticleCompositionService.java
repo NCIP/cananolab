@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.service.particle;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Dendrimer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -56,6 +56,7 @@ public class NanoparticleCompositionService {
 			}
 		}
 		NanoparticleEntity entity = entityBean.getDomainEntity();
+	
 		SampleComposition composition = particleBean.getParticleSample()
 				.getSampleComposition();
 		if (composition == null) {
@@ -70,6 +71,9 @@ public class NanoparticleCompositionService {
 			entity.setSampleComposition(composition);
 		}
 		appService.saveOrUpdate(entity);
+		if (entity instanceof OtherNanoparticleEntity) {
+			//save other entity type
+		}
 	}
 
 	public NanoparticleEntityBean findNanoparticleEntityBy(String entityId,
