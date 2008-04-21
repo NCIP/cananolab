@@ -29,7 +29,7 @@
 				class="gov.nih.nci.cananolab.domain.common.LabFile"
 				column="file_pk_id" />
 		</set>
-		<set name="composingElementCollection" lazy="false" cascade="save-update,delete,delete-orphan" inverse="true">
+		<set name="composingElementCollection" lazy="false" cascade="all-delete-orphan" inverse="false">
 			<cache usage="read-write" />
 			<key column="nanoparticle_entity_pk_id" />
 			<one-to-many
