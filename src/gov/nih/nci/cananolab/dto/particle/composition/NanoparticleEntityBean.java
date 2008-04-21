@@ -208,10 +208,7 @@ public class NanoparticleEntityBean {
 	}
 
 	public void setSharedInfo() {
-		domainEntity.setDescription(description);
-		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
-			domainEntity.setId(null);
-		}
+		domainEntity.setDescription(description);		
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
 		} else {
