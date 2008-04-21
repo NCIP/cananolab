@@ -52,7 +52,10 @@ public class FunctionalizingEntityBean {
 
 	private Set<LabFile> files = new HashSet<LabFile>();
 	
-	private ActivationMethod activationMethod;
+	private ActivationMethod activationMethod = new ActivationMethod();
+
+	public FunctionalizingEntityBean() {
+	}
 
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
 		className = ClassUtils.getShortClassName(functionalizingEntity
