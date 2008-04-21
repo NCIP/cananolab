@@ -46,7 +46,7 @@
 								items="${particleDataTree[compoDataBean.dataDisplayType]}">
 								<c:url var="url" value="${dataLinkBean.dataLink}.do">
 									<c:param name="page" value="0" />
-									<c:param name="dispatch" value="setup" />
+									<c:param name="dispatch" value="${dispatchValue}" />
 									<c:param name="particleId" value="${particleId}" />
 									<c:param name="dataId" value="${dataLinkBean.dataId}" />
 									<c:param name="submitType" value="${compoDataBean.dataDisplayType}" />
