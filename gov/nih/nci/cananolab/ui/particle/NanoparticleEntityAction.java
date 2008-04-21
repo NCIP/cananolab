@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.10 2008-04-21 17:55:00 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.11 2008-04-21 18:01:10 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -94,8 +94,6 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		ParticleBean particleBean = service.findNanoparticleSampleBy(
 				particleId, user);
 		request.setAttribute("theParticle", particleBean);
-		//to remember where to open the tree menu
-		session.setAttribute("submitType", "Nanoparticle Entity");
 		theForm.set("particleId", particleId);
 		return particleBean;
 	}
