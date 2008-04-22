@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class InitSetup {
 			throws CaNanoLabException {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameLookup") == null) {
-			lookup = LookupService.getDisplayNameLookup();
+			lookup = LookupService.getSingleAttributeLookupMap("displayName");
 			appContext.setAttribute("displayNameLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
@@ -56,7 +57,7 @@ public class InitSetup {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameReverseLookup") == null) {
 			Map<String, String> displayLookup = LookupService
-					.getDisplayNameLookup();
+					.getSingleAttributeLookupMap("displayName");
 			lookup = new HashMap<String, String>();
 			for (Map.Entry entry : displayLookup.entrySet()) {
 				lookup.put(entry.getValue().toString(), entry.getKey()
@@ -89,5 +90,12 @@ public class InitSetup {
 		} else {
 			return "";
 		}
+	}
+
+	public void setSharedDropdowns(ServletContext appContext) {
+		// set static boolean yes or no and characterization source choices
+		appContext.setAttribute("booleanChoices",
+				CaNanoLabConstants.BOOLEAN_CHOICES);
+
 	}
 }
