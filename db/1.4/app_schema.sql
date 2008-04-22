@@ -133,7 +133,7 @@ CREATE TABLE composing_element
 (
 	composing_element_pk_id BIGINT NOT NULL,
 	element_type VARCHAR(100) NOT NULL,
-	nanoparticle_entity_pk_id BIGINT NOT NULL,
+	nanoparticle_entity_pk_id BIGINT NULL,
 	PRIMARY KEY (composing_element_pk_id),
 	KEY (composing_element_pk_id),
 	KEY (nanoparticle_entity_pk_id)
@@ -294,7 +294,7 @@ CREATE TABLE functionalizing_entity
 (
 	functionalizing_entity_pk_id BIGINT NOT NULL,
 	activation_method_pk_id BIGINT NULL,
-	composition_pk_id BIGINT NOT NULL,
+	composition_pk_id BIGINT NULL,
 	PRIMARY KEY (functionalizing_entity_pk_id),
 	KEY (activation_method_pk_id),
 	KEY (functionalizing_entity_pk_id),
@@ -354,7 +354,7 @@ CREATE TABLE derived_datum
 	description TEXT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
-	derived_bioassay_data_pk_id BIGINT NOT NULL,
+	derived_bioassay_data_pk_id BIGINT NULL,
 	PRIMARY KEY (datum_pk_id),
 	UNIQUE (datum_pk_id),
 	KEY (derived_bioassay_data_pk_id)
@@ -365,9 +365,8 @@ CREATE TABLE derived_datum
 CREATE TABLE composition
 (
 	composition_pk_id BIGINT NOT NULL,
-	particle_sample_pk_id BIGINT NOT NULL,
+	particle_sample_pk_id BIGINT NULL,
 	PRIMARY KEY (composition_pk_id),
-	UNIQUE (composition_pk_id),
 	UNIQUE (composition_pk_id),
 	UNIQUE (particle_sample_pk_id),
 	KEY (particle_sample_pk_id)
@@ -396,7 +395,7 @@ CREATE TABLE characterization
 	created_by VARCHAR(200) NULL,
 	protocol_file_pk_id BIGINT NULL,
 	instrument_config_pk_id BIGINT NULL,
-	particle_sample_pk_id BIGINT NOT NULL,
+	particle_sample_pk_id BIGINT NULL,
 	discriminator VARCHAR(50) NOT NULL,
 	cytotoxicity_cell_line VARCHAR(200) NULL,
 	cytotoxicity_cell_death_method VARCHAR(200) NULL,
