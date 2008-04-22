@@ -200,7 +200,7 @@ public class NanoparticleEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
-
+		domainEntity.setDescription(description);	
 	}
 
 	public NanoparticleEntity getDomainEntity() {
@@ -208,7 +208,7 @@ public class NanoparticleEntityBean {
 	}
 
 	public void setSharedInfo() {
-		domainEntity.setDescription(description);		
+		//domainEntity.setDescription(description);		
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
 		} else {
