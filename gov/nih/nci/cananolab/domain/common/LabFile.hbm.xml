@@ -42,7 +42,6 @@
 			<key column="protocol_file_pk_id" />
 			<!-- Associations mapping for the ProtocolFile class -->
 			<many-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" column="protocol_pk_id" lazy="false" />
-
 		</joined-subclass>
 	</class>
 </hibernate-mapping>
