@@ -1,9 +1,13 @@
 package gov.nih.nci.cananolab.service.particle;
 
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
@@ -12,11 +16,14 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -56,7 +63,7 @@ public class NanoparticleCompositionService {
 			}
 		}
 		NanoparticleEntity entity = entityBean.getDomainEntity();
-	
+
 		SampleComposition composition = particleBean.getParticleSample()
 				.getSampleComposition();
 		if (composition == null) {
@@ -72,7 +79,7 @@ public class NanoparticleCompositionService {
 		}
 		appService.saveOrUpdate(entity);
 		if (entity instanceof OtherNanoparticleEntity) {
-			//save other entity type
+			// save other entity type
 		}
 	}
 
@@ -161,4 +168,85 @@ public class NanoparticleCompositionService {
 			throw new ParticleException();
 		}
 	}
+
+	/**
+	 * Return user-defined functionalizing entity types
+	 * 
+	 * @return
+	 * @throws ParticleException
+	 */
+	public SortedSet<String> getAllOtherFunctionalizingEntityTypes()
+			throws ParticleException {
+		SortedSet<String> types = new TreeSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			List results = appService.getAll(OtherFunctionalizingEntity.class);
+			for (Object obj : results) {
+				OtherFunctionalizingEntity other = (OtherFunctionalizingEntity) obj;
+				types.add(other.getType());
+			}
+		} catch (Exception e) {
+			logger
+					.error(
+							"Error in retrieving other values for functionalizing entity",
+							e);
+			throw new ParticleException();
+		}
+		return types;
+	}
+
+	/**
+	 * Return user-defined function types
+	 * 
+	 * @return
+	 * @throws ParticleException
+	 */
+	public SortedSet<String> getAllOtherFunctionTypes()
+			throws ParticleException {
+		SortedSet<String> types = new TreeSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			List results = appService.getAll(OtherFunction.class);
+			for (Object obj : results) {
+				OtherFunction other = (OtherFunction) obj;
+				types.add(other.getType());
+			}
+		} catch (Exception e) {
+			logger.error("Error in retrieving other function types", e);
+			throw new ParticleException();
+		}
+		return types;
+	}
+
+	/**
+	 * Return user-defined functionalizing entity types
+	 * 
+	 * @return
+	 * @throws ParticleException
+	 */
+	public SortedSet<String> getAllOtherNanoparticleEntityTypes()
+			throws ParticleException {
+		SortedSet<String> types = new TreeSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			List results = appService.getAll(OtherNanoparticleEntity.class);
+			for (Object obj : results) {
+				OtherNanoparticleEntity other = (OtherNanoparticleEntity) obj;
+				types.add(other.getType());
+			}
+		} catch (Exception e) {
+			logger.error(
+					"Error in retrieving other values for nanoparticle entity",
+					e);
+			throw new ParticleException();
+		}
+		return types;
+	}
+
 }
