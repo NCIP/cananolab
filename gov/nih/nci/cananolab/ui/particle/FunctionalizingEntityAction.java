@@ -8,29 +8,16 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.5 2008-04-22 06:59:30 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.6 2008-04-22 15:25:09 pansu Exp $ */
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +30,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class FunctionalizingEntityAction extends AbstractDispatchAction {
+public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -72,23 +59,6 @@ public class FunctionalizingEntityAction extends AbstractDispatchAction {
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
-	}
-
-	public ParticleBean initSetup(DynaValidatorForm theForm,
-			HttpServletRequest request) throws Exception {
-		String particleId = request.getParameter("particleId");
-		if (particleId == null) {
-			particleId = theForm.getString("particleId");
-		}
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-
-		NanoparticleSampleService service = new NanoparticleSampleService();
-		ParticleBean particleBean = service.findNanoparticleSampleById(
-				particleId, user);
-		request.setAttribute("theParticle", particleBean);
-		theForm.set("particleId", particleId);
-		return particleBean;
 	}
 
 	/**
@@ -192,8 +162,9 @@ public class FunctionalizingEntityAction extends AbstractDispatchAction {
 		return mapping.findForward("setup");
 	}
 
-	protected FunctionalizingEntityBean[] prepareCopy(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
+	protected FunctionalizingEntityBean[] prepareCopy(
+			HttpServletRequest request, DynaValidatorForm theForm)
+			throws Exception {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 
@@ -241,15 +212,5 @@ public class FunctionalizingEntityAction extends AbstractDispatchAction {
 		// i++;
 		// }
 		return entityBeans;
-	}
-
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 }
