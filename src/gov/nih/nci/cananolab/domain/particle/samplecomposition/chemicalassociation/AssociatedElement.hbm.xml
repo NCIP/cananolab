@@ -24,7 +24,7 @@
 			<!-- Attributes mapping for the ComposingElement class -->
 			<property name="type" type="string" column="element_type"/>
 			<!-- Associations mapping for the ComposingElement class -->
-			<set name="inherentFunctionCollection" lazy="false" cascade="save-update, delete">
+			<set name="inherentFunctionCollection" lazy="false" cascade="all-delete-orphan">
 				<cache usage="read-write" />
 				<key column="composing_element_pk_id" />
 				<one-to-many class="gov.nih.nci.cananolab.domain.particle.samplecomposition.Function"/>
@@ -34,7 +34,7 @@
 		<joined-subclass name="gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity" table="functionalizing_entity" lazy="true">
 			<key column="functionalizing_entity_pk_id" />
 			<!-- Associations mapping for the FunctionalizingEntity class -->
-			<set name="functionCollection" lazy="false" cascade="save-update, delete">
+			<set name="functionCollection" lazy="false" cascade="all-delete-orphan">
 				<cache usage="read-write" />
 				<key column="functionalizing_entity_pk_id" />
 				<one-to-many class="gov.nih.nci.cananolab.domain.particle.samplecomposition.Function"/>
