@@ -8,11 +8,12 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.14 2008-04-21 23:33:30 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.15 2008-04-22 06:58:56 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
@@ -57,7 +58,8 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		Date now = new Date();
-		if (entityBean.getDomainEntity().getId() != null && entityBean.getDomainEntity().getId() == 0) {
+		if (entityBean.getDomainEntity().getId() != null
+				&& entityBean.getDomainEntity().getId() == 0) {
 			entityBean.getDomainEntity().setId(null);
 		}
 		if (entityBean.getDomainEntity().getId() == null) {
@@ -148,6 +150,17 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
+		// set composing element function type
+		for (ComposingElementBean compElementBean : entityBean
+				.getComposingElements()) {
+			for (FunctionBean functionBean : compElementBean
+					.getInherentFunctions()) {
+				String functionType = InitSetup.getInstance().getDisplayName(
+						functionBean.getClassName(),
+						session.getServletContext());
+				functionBean.setType(functionType);
+			}
+		}
 		theForm.set("entity", entityBean);
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
@@ -187,12 +200,12 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
-		
+
 		String compEleIndexStr = (String) request.getParameter("compInd");
 		int compEleIndex = Integer.parseInt(compEleIndexStr);
-		ComposingElementBean compElement = (ComposingElementBean) entity.getComposingElements()
-				.get(compEleIndex);
-		
+		ComposingElementBean compElement = (ComposingElementBean) entity
+				.getComposingElements().get(compEleIndex);
+
 		compElement.addFunction();
 		return mapping.getInputForward();
 	}
@@ -202,18 +215,18 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 			HttpServletResponse response) throws Exception {
 		String compEleIndexStr = (String) request.getParameter("compInd");
 		int compEleIndex = Integer.parseInt(compEleIndexStr);
-		
+
 		String functionIndexStr = (String) request.getParameter("childCompInd");
 		int functionIndex = Integer.parseInt(functionIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
-					.get("entity");
-		ComposingElementBean compElement = (ComposingElementBean) 
-					entity.getComposingElements().get(compEleIndex);
+				.get("entity");
+		ComposingElementBean compElement = (ComposingElementBean) entity
+				.getComposingElements().get(compEleIndex);
 		compElement.removeFunction(functionIndex);
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -240,47 +253,48 @@ public class NanoparticleEntityAction extends AbstractDispatchAction {
 				.get("entity");
 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		String[] otherParticles = (String[]) theForm.get("otherParticles");		
+		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		NanoparticleEntityBean[] entityBeans = new NanoparticleEntityBean[otherParticles.length];
 		if (otherParticles.length == 0) {
 			return entityBeans;
 		}
 		// retrieve file contents
-		
-//		FileService fileService = new FileService();
-//		for (DerivedBioAssayDataBean file : entityBean.getFiles()) {
-//			byte[] content = fileService.getFileContent(new Long(file.getId()));
-//			file.setFileContent(content);
-//		}
-//
-//		NanoparticleSampleService service = new NanoparticleSampleService();
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		int i = 0;
-//		for (String particleName : otherParticles) {
-//			NanoparticleEntityBean newEntityBean = entityBean.copy();
-//			// overwrite particle
-//			ParticleBean otherParticle = service.findNanoparticleSampleByName(
-//					particleName, user);
-//			newrBean.setParticle(otherParticle);
-//			// reset view title
-//			String timeStamp = StringUtils.convertDateToString(new Date(),
-//					"MMddyyHHmmssSSS");
-//			String autoTitle = CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
-//					+ timeStamp;
-//
-//			newCharBean.setViewTitle(autoTitle);
-//			List<DerivedBioAssayDataBean> dataList = newCharBean
-//					.getDerivedBioAssayDataList();
-//			// replace particleName in path and uri with new particleName
-//			for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
-//				String origUri = derivedBioAssayData.getUri();
-//				if (origUri != null)
-//					derivedBioAssayData.setUri(origUri.replace(particle
-//							.getSampleName(), particleName));
-//			}
-//			charBeans[i] = newCharBean;
-//			i++;
-//		}
+
+		// FileService fileService = new FileService();
+		// for (DerivedBioAssayDataBean file : entityBean.getFiles()) {
+		// byte[] content = fileService.getFileContent(new Long(file.getId()));
+		// file.setFileContent(content);
+		// }
+		//
+		// NanoparticleSampleService service = new NanoparticleSampleService();
+		// UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// int i = 0;
+		// for (String particleName : otherParticles) {
+		// NanoparticleEntityBean newEntityBean = entityBean.copy();
+		// // overwrite particle
+		// ParticleBean otherParticle = service.findNanoparticleSampleByName(
+		// particleName, user);
+		// newrBean.setParticle(otherParticle);
+		// // reset view title
+		// String timeStamp = StringUtils.convertDateToString(new Date(),
+		// "MMddyyHHmmssSSS");
+		// String autoTitle =
+		// CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
+		// + timeStamp;
+		//
+		// newCharBean.setViewTitle(autoTitle);
+		// List<DerivedBioAssayDataBean> dataList = newCharBean
+		// .getDerivedBioAssayDataList();
+		// // replace particleName in path and uri with new particleName
+		// for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
+		// String origUri = derivedBioAssayData.getUri();
+		// if (origUri != null)
+		// derivedBioAssayData.setUri(origUri.replace(particle
+		// .getSampleName(), particleName));
+		// }
+		// charBeans[i] = newCharBean;
+		// i++;
+		// }
 		return entityBeans;
 	}
 
