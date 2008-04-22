@@ -163,86 +163,6 @@ public class NanoparticleSampleService {
 	}
 
 	/**
-	 * Return user-defined function types
-	 * 
-	 * @return
-	 * @throws ParticleException
-	 */
-	public SortedSet<String> getAllOtherFunctionTypes()
-			throws ParticleException {
-		SortedSet<String> types = new TreeSet<String>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
-			List results = appService.getAll(OtherFunction.class);
-			for (Object obj : results) {
-				OtherFunction other = (OtherFunction) obj;
-				types.add(other.getType());
-			}
-		} catch (Exception e) {
-			logger.error("Error in retrieving other function types", e);
-			throw new ParticleException();
-		}
-		return types;
-	}
-
-	/**
-	 * Return user-defined functionalizing entity types
-	 * 
-	 * @return
-	 * @throws ParticleException
-	 */
-	public SortedSet<String> getAllOtherNanoparticleEntityTypes()
-			throws ParticleException {
-		SortedSet<String> types = new TreeSet<String>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
-			List results = appService.getAll(OtherNanoparticleEntity.class);
-			for (Object obj : results) {
-				OtherNanoparticleEntity other = (OtherNanoparticleEntity) obj;
-				types.add(other.getType());
-			}
-		} catch (Exception e) {
-			logger.error(
-					"Error in retrieving other values for nanoparticle entity",
-					e);
-			throw new ParticleException();
-		}
-		return types;
-	}
-
-	/**
-	 * Return user-defined functionalizing entity types
-	 * 
-	 * @return
-	 * @throws ParticleException
-	 */
-	public SortedSet<String> getAllOtherFunctionalizingEntityTypes()
-			throws ParticleException {
-		SortedSet<String> types = new TreeSet<String>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
-			List results = appService.getAll(OtherFunctionalizingEntity.class);
-			for (Object obj : results) {
-				OtherFunctionalizingEntity other = (OtherFunctionalizingEntity) obj;
-				types.add(other.getType());
-			}
-		} catch (Exception e) {
-			logger
-					.error(
-							"Error in retrieving other values for functionalizing entity",
-							e);
-			throw new ParticleException();
-		}
-		return types;
-	}
-
-	/**
 	 * 
 	 * @param particleSource
 	 * @param nanoparticleEntityClassNames
@@ -438,88 +358,6 @@ public class NanoparticleSampleService {
 		}
 	}
 
-	public SortedSet<String> getStoredCharacterizationClassNames(
-			ParticleBean particle) {
-		SortedSet<String> storedChars = new TreeSet<String>();
-		if (particle.getParticleSample().getCharacterizationCollection() != null) {
-			for (Characterization achar : particle.getParticleSample()
-					.getCharacterizationCollection()) {
-				storedChars.add(ClassUtils.getShortClassName(achar.getClass()
-						.getCanonicalName()));
-			}
-		}
-		return storedChars;
-	}
-
-	public SortedSet<String> getStoredNanoparticleEntityClassNames(
-			ParticleBean particle) {
-		SortedSet<String> storedEntities = new TreeSet<String>();
-
-		if (particle.getParticleSample().getSampleComposition() != null
-				&& particle.getParticleSample().getSampleComposition()
-						.getNanoparticleEntityCollection() != null) {
-			for (NanoparticleEntity entity : particle.getParticleSample()
-					.getSampleComposition().getNanoparticleEntityCollection()) {
-				storedEntities.add(ClassUtils.getShortClassName(entity
-						.getClass().getCanonicalName()));
-			}
-		}
-		return storedEntities;
-	}
-
-	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
-			ParticleBean particle) {
-		SortedSet<String> storedEntities = new TreeSet<String>();
-
-		if (particle.getParticleSample().getSampleComposition() != null
-				&& particle.getParticleSample().getSampleComposition()
-						.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : particle.getParticleSample()
-					.getSampleComposition()
-					.getFunctionalizingEntityCollection()) {
-				storedEntities.add(ClassUtils.getShortClassName(entity
-						.getClass().getCanonicalName()));
-			}
-		}
-		return storedEntities;
-	}
-
-	public SortedSet<String> getStoredFunctionClassNames(ParticleBean particle) {
-		SortedSet<String> storedFunctions = new TreeSet<String>();
-
-		if (particle.getParticleSample().getSampleComposition() != null) {
-			if (particle.getParticleSample().getSampleComposition()
-					.getNanoparticleEntityCollection() != null) {
-				for (NanoparticleEntity entity : particle.getParticleSample()
-						.getSampleComposition()
-						.getNanoparticleEntityCollection()) {
-					for (ComposingElement element : entity
-							.getComposingElementCollection()) {
-						for (Function function : element
-								.getInherentFunctionCollection()) {
-							storedFunctions.add(ClassUtils
-									.getShortClassName(function.getClass()
-											.getCanonicalName()));
-						}
-					}
-				}
-			}
-			if (particle.getParticleSample().getSampleComposition()
-					.getFunctionalizingEntityCollection() != null) {
-				for (FunctionalizingEntity entity : particle
-						.getParticleSample().getSampleComposition()
-						.getFunctionalizingEntityCollection()) {
-					for (Function function : entity.getFunctionCollection()) {
-						storedFunctions.add(ClassUtils
-								.getShortClassName(function.getClass()
-										.getCanonicalName()));
-					}
-				}
-			}
-		}
-		return storedFunctions;
-	}
-
 	public ParticleBean findNanoparticleSampleById(String particleId,
 			UserBean user) throws ParticleException, CaNanoLabSecurityException {
 		ParticleBean particleBean = null;
@@ -685,4 +523,87 @@ public class NanoparticleSampleService {
 		}
 		return false;
 	}
+
+	public SortedSet<String> getStoredCharacterizationClassNames(
+			ParticleBean particle) {
+		SortedSet<String> storedChars = new TreeSet<String>();
+		if (particle.getParticleSample().getCharacterizationCollection() != null) {
+			for (Characterization achar : particle.getParticleSample()
+					.getCharacterizationCollection()) {
+				storedChars.add(ClassUtils.getShortClassName(achar.getClass()
+						.getCanonicalName()));
+			}
+		}
+		return storedChars;
+	}
+
+	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
+			ParticleBean particle) {
+		SortedSet<String> storedEntities = new TreeSet<String>();
+
+		if (particle.getParticleSample().getSampleComposition() != null
+				&& particle.getParticleSample().getSampleComposition()
+						.getFunctionalizingEntityCollection() != null) {
+			for (FunctionalizingEntity entity : particle.getParticleSample()
+					.getSampleComposition()
+					.getFunctionalizingEntityCollection()) {
+				storedEntities.add(ClassUtils.getShortClassName(entity
+						.getClass().getCanonicalName()));
+			}
+		}
+		return storedEntities;
+	}
+
+	public SortedSet<String> getStoredFunctionClassNames(ParticleBean particle) {
+		SortedSet<String> storedFunctions = new TreeSet<String>();
+
+		if (particle.getParticleSample().getSampleComposition() != null) {
+			if (particle.getParticleSample().getSampleComposition()
+					.getNanoparticleEntityCollection() != null) {
+				for (NanoparticleEntity entity : particle.getParticleSample()
+						.getSampleComposition()
+						.getNanoparticleEntityCollection()) {
+					for (ComposingElement element : entity
+							.getComposingElementCollection()) {
+						for (Function function : element
+								.getInherentFunctionCollection()) {
+							storedFunctions.add(ClassUtils
+									.getShortClassName(function.getClass()
+											.getCanonicalName()));
+						}
+					}
+				}
+			}
+			if (particle.getParticleSample().getSampleComposition()
+					.getFunctionalizingEntityCollection() != null) {
+				for (FunctionalizingEntity entity : particle
+						.getParticleSample().getSampleComposition()
+						.getFunctionalizingEntityCollection()) {
+					for (Function function : entity.getFunctionCollection()) {
+						storedFunctions.add(ClassUtils
+								.getShortClassName(function.getClass()
+										.getCanonicalName()));
+					}
+				}
+			}
+		}
+		return storedFunctions;
+	}
+
+	public SortedSet<String> getStoredNanoparticleEntityClassNames(
+			ParticleBean particle) {
+		SortedSet<String> storedEntities = new TreeSet<String>();
+
+		if (particle.getParticleSample().getSampleComposition() != null
+				&& particle.getParticleSample().getSampleComposition()
+						.getNanoparticleEntityCollection() != null) {
+			for (NanoparticleEntity entity : particle.getParticleSample()
+					.getSampleComposition().getNanoparticleEntityCollection()) {
+				storedEntities.add(ClassUtils.getShortClassName(entity
+						.getClass().getCanonicalName()));
+			}
+		}
+		return storedEntities;
+	}
+
 }
