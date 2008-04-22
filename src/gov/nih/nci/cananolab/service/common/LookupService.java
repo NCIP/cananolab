@@ -22,7 +22,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.3 2008-04-08 20:21:38 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.4 2008-04-22 22:54:32 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -49,29 +49,23 @@ public class LookupService {
 		return lookupValues;
 	}
 
-	/**
-	 * Return a map all of display names stored in CommonLookup
-	 * 
-	 * @return
-	 * @throws CaNanoLabException
-	 */
-	public static Map<String, String> getDisplayNameLookup()
-			throws CaNanoLabException {
+	public static Map<String, String> getSingleAttributeLookupMap(
+			String attribute) throws CaNanoLabException {
 		Map<String, String> lookup = new HashMap<String, String>();
 		try {
 			ApplicationService appService = ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
-			crit.add(Property.forName("attribute").eq("displayName"));
+			crit.add(Property.forName("attribute").eq(attribute));
 			Collection results = appService.query(crit);
 			for (Object obj : results) {
 				lookup.put(((CommonLookup) obj).getName(), ((CommonLookup) obj)
 						.getValue());
 			}
 		} catch (Exception e) {
-			logger.error("Error in retrieving display names from CommonLookup",
-					e);
+			logger.error("Error in retrieving " + attribute
+					+ " from CommonLookup", e);
 			throw new CaNanoLabException();
 		}
 		return lookup;
