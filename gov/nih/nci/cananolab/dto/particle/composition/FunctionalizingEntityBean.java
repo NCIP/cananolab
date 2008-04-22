@@ -110,25 +110,25 @@ public class FunctionalizingEntityBean {
 
 	public Antibody getAntibody() {
 		domainEntity = antibody;
-		setSharedInfo();
+		setDomainEntity();
 		return antibody;
 	}
 
 	public Biopolymer getBiopolymer() {
 		domainEntity = biopolymer;
-		setSharedInfo();
+		setDomainEntity();
 		return biopolymer;
 	}
 
 	public OtherFunctionalizingEntity getOtherEntity() {
 		domainEntity = otherEntity;
-		setSharedInfo();
+		setDomainEntity();
 		return otherEntity;
 	}
 
 	public SmallMolecule getSmallMolecule() {
 		domainEntity = smallMolecule;
-		setSharedInfo();
+		setDomainEntity();
 		return smallMolecule;
 	}
 
@@ -146,6 +146,7 @@ public class FunctionalizingEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+		domainEntity.setDescription(description);
 	}
 
 	public String getMolecularFormula() {
@@ -154,6 +155,7 @@ public class FunctionalizingEntityBean {
 
 	public void setMolecularFormula(String molecularFormula) {
 		this.molecularFormula = molecularFormula;
+		domainEntity.setMolecularFormula(molecularFormula);
 	}
 
 	public String getMolecularFormulaType() {
@@ -162,6 +164,7 @@ public class FunctionalizingEntityBean {
 
 	public void setMolecularFormulaType(String molecularFormulaType) {
 		this.molecularFormulaType = molecularFormulaType;
+		domainEntity.setMolecularFormulaType(molecularFormulaType);
 	}
 
 	public String getName() {
@@ -170,6 +173,7 @@ public class FunctionalizingEntityBean {
 
 	public void setName(String name) {
 		this.name = name;
+		domainEntity.setName(name);
 	}
 
 	public Float getValue() {
@@ -178,6 +182,7 @@ public class FunctionalizingEntityBean {
 
 	public void setValue(Float value) {
 		this.value = value;
+		domainEntity.setValue(value);
 	}
 
 	public String getValueUnit() {
@@ -186,6 +191,7 @@ public class FunctionalizingEntityBean {
 
 	public void setValueUnit(String valueUnit) {
 		this.valueUnit = valueUnit;
+		domainEntity.setValueUnit(valueUnit);
 	}
 
 	public Set<LabFile> getFiles() {
@@ -196,31 +202,28 @@ public class FunctionalizingEntityBean {
 		return activationMethod;
 	}
 
-	public void setSharedInfo() {
-		domainEntity.setDescription(description);
+	public void setDomainEntity() {
 		domainEntity.setActivationMethod(activationMethod);
-		domainEntity.setMolecularFormula(molecularFormula);
-		domainEntity.setMolecularFormulaType(molecularFormulaType);
-		domainEntity.setValue(value);
-		domainEntity.setValueUnit(valueUnit);
-		domainEntity.setName(name);
-		
-		domainEntity.getFunctionCollection().clear();
+		if (domainEntity.getFunctionCollection() != null) {
+			domainEntity.getFunctionCollection().clear();
+		} else {
+			domainEntity.setFunctionCollection(new HashSet<Function>());
+		}
 		for (FunctionBean functionBean : functions) {
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
 		}
-
-		domainEntity.setLabFileCollection(files);
-		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
-			domainEntity.setId(null);
+		if (domainEntity.getLabFileCollection() != null) {
+			domainEntity.getLabFileCollection().clear();
+		} else {
+			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
 	}
-	
+
 	public void addFunction() {
 		functions.add(new FunctionBean());
 	}
-	
+
 	public void removeFunction(int ind) {
 		functions.remove(ind);
 	}

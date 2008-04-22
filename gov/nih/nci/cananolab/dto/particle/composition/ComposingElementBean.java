@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -33,7 +34,12 @@ public class ComposingElementBean {
 	}
 
 	public List<FunctionBean> getInherentFunctions() {
-		domainComposingElement.getInherentFunctionCollection().clear();
+		if (domainComposingElement.getInherentFunctionCollection() != null) {
+			domainComposingElement.getInherentFunctionCollection().clear();
+		} else {
+			domainComposingElement
+					.setInherentFunctionCollection(new HashSet<Function>());
+		}
 		for (FunctionBean functionBean : inherentFunctions) {
 			domainComposingElement.getInherentFunctionCollection().add(
 					functionBean.getDomainFunction());
@@ -43,11 +49,9 @@ public class ComposingElementBean {
 
 	public void addFunction() {
 		inherentFunctions.add(new FunctionBean());
-
 	}
 
 	public void removeFunction(int ind) {
 		inherentFunctions.remove(ind);
-
 	}
 }

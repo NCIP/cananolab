@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -37,6 +38,8 @@ public class FunctionBean {
 	}
 
 	public FunctionBean(Function function) {
+		description = function.getDescription();
+
 		if (function instanceof ImagingFunction) {
 			imagingFunction = (ImagingFunction) function;
 			domainFunction = imagingFunction;
@@ -63,8 +66,7 @@ public class FunctionBean {
 	}
 
 	public ImagingFunction getImagingFunction() {
-		domainFunction=imagingFunction;
-		domainFunction.setDescription(description);
+		domainFunction = imagingFunction;
 		return imagingFunction;
 	}
 
@@ -85,7 +87,12 @@ public class FunctionBean {
 	}
 
 	public List<TargetBean> getTargets() {
-		((TargetingFunction) domainFunction).getTargetCollection().clear();
+		if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
+			((TargetingFunction) domainFunction).getTargetCollection().clear();
+		} else {
+			((TargetingFunction) domainFunction)
+					.setTargetCollection(new HashSet<Target>());
+		}
 		for (TargetBean targetBean : targets) {
 			((TargetingFunction) domainFunction).getTargetCollection().add(
 					targetBean.getDomainTarget());
@@ -98,18 +105,19 @@ public class FunctionBean {
 	}
 
 	public OtherFunction getOtherFunction() {
-		domainFunction=otherFunction;
+		domainFunction = otherFunction;
 		return otherFunction;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+		domainFunction.setDescription(description);
 	}
-	
+
 	public void addTarget() {
 		targets.add(new TargetBean());
 	}
-	
+
 	public void removeTarget(int ind) {
 		targets.remove(ind);
 	}
