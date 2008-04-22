@@ -63,105 +63,25 @@ public class InitNanoparticleSetup {
 				sampleSources);
 	}
 
-	public List<String> getDefaultFunctionTypes(ServletContext appContext)
-			throws Exception {
-		if (appContext.getAttribute("defaultFunctionTypes") == null) {
-			List<String> functionTypes = new ArrayList<String>();
-			List<String> functionClassNames = ClassUtils
-					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-			for (String name : functionClassNames) {
-				if (!name.contains("Other")) {
-					String displayName = InitSetup.getInstance()
-							.getDisplayName(ClassUtils.getShortClassName(name),
-									appContext);
-					functionTypes.add(displayName);
-				}
-			}
-			appContext.setAttribute("defaultFunctionTypes", functionTypes);
-			return functionTypes;
-		} else {
-			return new ArrayList<String>((List<? extends String>) appContext
-					.getAttribute("defaultFunctionTypes"));
-		}
-
-	}
-
-	public List<String> getDefaultNanoparticleEntityTypes(
+	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
 			ServletContext appContext) throws Exception {
-		if (appContext.getAttribute("defaultNanoparticleEntityTypes") == null) {
-			List<String> nanoparticleEntityTypes = new ArrayList<String>();
-			List<String> classNames = ClassUtils
-					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-			for (String name : classNames) {
-				if (!name.contains("Other")) {
-					String displayName = InitSetup.getInstance()
-							.getDisplayName(ClassUtils.getShortClassName(name),
-									appContext);
-					nanoparticleEntityTypes.add(displayName);
-				}
-			}
-			appContext.setAttribute("defaultNanoparticleEntityTypes",
-					nanoparticleEntityTypes);
-			return nanoparticleEntityTypes;
+		if (appContext.getAttribute("characterizationTypes") == null) {
+
+			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
+			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
+			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
+
+			charaMap.putAll(physicalMap);
+			charaMap.putAll(invitroMap);
+
+			appContext.setAttribute("characterizationTypes", charaMap);
+			return charaMap;
+
 		} else {
-			return new ArrayList<String>((List<? extends String>) appContext
-					.getAttribute("defaultNanoparticleEntityTypes"));
+			return new TreeMap<TreeNodeBean, List<String>>(
+					(SortedMap<? extends TreeNodeBean, List<String>>) appContext
+							.getAttribute("characterizationTypes"));
 		}
-	}
-
-	public List<String> getDefaultFunctionalizingEntityTypes(
-			ServletContext appContext) throws Exception {
-		if (appContext.getAttribute("defaultFunctionalizingEntityTypes") == null) {
-			List<String> functionalizingEntityTypes = new ArrayList<String>();
-			List<String> classNames = ClassUtils
-					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-			for (String name : classNames) {
-				if (!name.contains("Other")) {
-					String displayName = InitSetup.getInstance()
-							.getDisplayName(ClassUtils.getShortClassName(name),
-									appContext);
-					functionalizingEntityTypes.add(displayName);
-				}
-			}
-			appContext.setAttribute("defaultFunctionalizingEntityTypes",
-					functionalizingEntityTypes);
-			return functionalizingEntityTypes;
-		} else {
-			return new ArrayList<String>((List<? extends String>) appContext
-					.getAttribute("defaultFunctionalizingEntityTypes"));
-		}
-	}
-
-	public void setFunctionTypes(HttpServletRequest request) throws Exception {
-		List<String> defaultTypes = getDefaultFunctionTypes(request
-				.getSession().getServletContext());
-		SortedSet<String> otherTypes = particleService
-				.getAllOtherFunctionTypes();
-		List<String> types = new ArrayList<String>(defaultTypes);
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("functionTypes", types);
-	}
-
-	public void setNanoparticleEntityTypes(HttpServletRequest request)
-			throws Exception {
-		List<String> defaultTypes = getDefaultNanoparticleEntityTypes(request
-				.getSession().getServletContext());
-		SortedSet<String> otherTypes = particleService
-				.getAllOtherNanoparticleEntityTypes();
-		List<String> types = new ArrayList<String>(defaultTypes);
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("nanoparticleEntityTypes", types);
-	}
-
-	public void setFunctionalizingEntityTypes(HttpServletRequest request)
-			throws Exception {
-		List<String> defaultTypes = getDefaultFunctionalizingEntityTypes(request
-				.getSession().getServletContext());
-		SortedSet<String> otherTypes = particleService
-				.getAllOtherFunctionalizingEntityTypes();
-		List<String> types = new ArrayList<String>(defaultTypes);
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("functionalizingEntityTypes", types);
 	}
 
 	public Map<String, List<ParticleDataLinkBean>> getDefaultCompositionTypes(
@@ -221,27 +141,6 @@ public class InitNanoparticleSetup {
 				indentLevel);
 		appContext.setAttribute("invitroTypes", invitroCharaMap);
 		return searchTreeMap;
-	}
-
-	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
-			ServletContext appContext) throws Exception {
-		if (appContext.getAttribute("characterizationTypes") == null) {
-
-			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
-			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
-			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
-
-			charaMap.putAll(physicalMap);
-			charaMap.putAll(invitroMap);
-
-			appContext.setAttribute("characterizationTypes", charaMap);
-			return charaMap;
-
-		} else {
-			return new TreeMap<TreeNodeBean, List<String>>(
-					(SortedMap<? extends TreeNodeBean, List<String>>) appContext
-							.getAttribute("characterizationTypes"));
-		}
 	}
 
 	private static void setSubclassMap(ServletContext appContext,
@@ -439,113 +338,17 @@ public class InitNanoparticleSetup {
 		return dataTree;
 	}
 
-	public List<String> getDefaultComposingElementTypes(
-			ServletContext appContext) throws CaNanoLabException {
-		List<String> composingElementTypes = null;
-		if (appContext.getAttribute("defaultComposingElementsTypes") == null) {
-			composingElementTypes = new ArrayList<String>(LookupService
-					.getLookupValues("ComposingElement", "type"));
-			appContext.setAttribute("defaultComposingElementTypes",
-					composingElementTypes);
-		} else {
-			composingElementTypes = new ArrayList<String>(
-					(List<? extends String>) appContext
-							.getAttribute("defaultComposingElementsTypes"));
-		}
-		return composingElementTypes;
-	}
-
-	public List<String> getDefaultEmulsionComposingElementTypes(
-			ServletContext appContext) throws CaNanoLabException {
-		List<String> composingElementTypes = null;
-		if (appContext.getAttribute("defaultEmulsionComposingElementsTypes") == null) {
-			composingElementTypes = new ArrayList<String>(LookupService
-					.getLookupValues("Emulsion", "composingElementType"));
-			appContext.setAttribute("defaultEmulsionComposingElementTypes",
-					composingElementTypes);
-		} else {
-			composingElementTypes = new ArrayList<String>(
-					(List<? extends String>) appContext
-							.getAttribute("defaultEmulsionComposingElementsTypes"));
-		}
-		return composingElementTypes;
-	}
-
-	public List<String> getComposingElementTypes(HttpServletRequest request)
-			throws CaNanoLabException {
-		List<String> composingElementTypes = null;
-		if (request.getAttribute("composingElementTypes") == null) {
-			composingElementTypes = getDefaultComposingElementTypes(request
-					.getSession().getServletContext());
-			SortedSet<String> otherTypes = LookupService.getLookupValues(
-					"ComposingElement", "otherType");
-			composingElementTypes.addAll(otherTypes);
-			request.getSession().setAttribute("composingElementTypes",
-					composingElementTypes);
-		} else {
-			composingElementTypes = new ArrayList<String>(
-					(List<? extends String>) request
-							.getAttribute("composingElementTypes"));
-		}
-		return composingElementTypes;
-	}
-
-	public List<String> getEmulsionComposingElementTypes(
-			HttpServletRequest request) throws CaNanoLabException {
-		List<String> allTypes = null;
-		if (request.getAttribute("emulsionComposingElementTypes") == null) {
-			List<String> composingElementTypes = getDefaultComposingElementTypes(request
-					.getSession().getServletContext());
-			List<String> emulsionComposingElementTypes = getDefaultEmulsionComposingElementTypes(request
-					.getSession().getServletContext());
-			SortedSet<String> otherTypes = LookupService.getLookupValues(
-					"ComposingElement", "otherType");
-			allTypes = new ArrayList<String>();
-			allTypes.addAll(composingElementTypes);
-			allTypes.addAll(emulsionComposingElementTypes);
-			allTypes.addAll(otherTypes);
-			request.getSession().setAttribute("emulsionComposingElementTypes",
-					allTypes);
-		} else {
-			allTypes = new ArrayList<String>((List<? extends String>) request
-					.getAttribute("emulsionComposingElementTypes"));
-		}
-		return allTypes;
-	}
-
-	public SortedSet<String> getBiopolymerTypes(HttpServletRequest request)
-			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("Biopolymer",
-				"type");
-		SortedSet<String> otherTypes = LookupService.getLookupValues(
-				"Biopolymer", "otherType");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("biopolymerTypes", types);
-		return types;
-	}
-
-	public SortedSet<String> getModalityTypes(HttpServletRequest request)
-			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("ImagingFunction",
-				"modality");
-		SortedSet<String> otherTypes = LookupService.getLookupValues(
-				"ImagingFunction", "otherModality");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("modalityTypes", types);
-		return types;
-	}
-	
 	public SortedSet<String> getFileTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues(
-				"LabFile", "type");
-		SortedSet<String> otherTypes = LookupService.getLookupValues(
-				"LabFile", "otherType");
+		SortedSet<String> types = LookupService.getLookupValues("LabFile",
+				"type");
+		SortedSet<String> otherTypes = LookupService.getLookupValues("LabFile",
+				"otherType");
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("fileTypes", types);
 		return types;
 	}
-	
+
 	public void setOtherParticleNames(HttpServletRequest request,
 			String particleName, String particleSource, UserBean user)
 			throws CaNanoLabException {
@@ -553,4 +356,26 @@ public class InitNanoparticleSetup {
 				particleSource, particleName, user);
 		request.getSession().setAttribute("otherParticleNames", names);
 	}
+
+	// public void setProtocolFilesByCharType(HttpSession session, String
+	// charType)
+	// throws ParticleCharacterizationException,
+	// CaNanoLabSecurityException, ProtocolException {
+	// String protocolType = null;
+	// if (charType != null
+	// && charType
+	// .equalsIgnoreCase(Characterization.PHYSICAL_CHARACTERIZATION)) {
+	// protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
+	// } else if (charType != null
+	// && charType
+	// .equalsIgnoreCase(Characterization.INVITRO_CHARACTERIZATION)) {
+	// protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
+	// } else {
+	// protocolType = null; // update if in vivo is implemented
+	// }
+	// List<ProtocolFileBean> protocolFiles = null;
+	// protocolFiles = searchProtocolService
+	// .getProtocolFileBeans(protocolType);
+	// session.setAttribute("submitTypeProtocolFiles", protocolFiles);
+	// }
 }
