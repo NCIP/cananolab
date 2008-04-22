@@ -1,7 +1,13 @@
 package gov.nih.nci.cananolab.util;
 
+import gov.nih.nci.cananolab.domain.common.DerivedDatum;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 
 import java.util.Comparator;
 
@@ -12,7 +18,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.1 2008-04-07 20:13:36 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.2 2008-04-22 22:56:25 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -90,6 +96,83 @@ public class CaNanoLabComparators {
 			return new SortableNameComparator().compare(particle1
 					.getParticleSample().getName(), particle2
 					.getParticleSample().getName());
+		}
+	}
+
+	public static class ParticleDataLinkTypeDateComparator implements
+			Comparator<ParticleDataLinkBean> {
+		public int compare(ParticleDataLinkBean link1,
+				ParticleDataLinkBean link2) {
+			if (link1.getDataDisplayType().equals(link2.getDataDisplayType())) {
+				return link1.getCreatedDate().compareTo(link2.getCreatedDate());
+			} else {
+				return link1.getDataDisplayType().compareTo(
+						link2.getDataDisplayType());
+			}
+		}
+	}
+
+	public static class NanoparticleEntityTypeDateComparator implements
+			Comparator<NanoparticleEntity> {
+		public int compare(NanoparticleEntity entity1,
+				NanoparticleEntity entity2) {
+			if (entity1.getClass().getCanonicalName().equals(
+					entity2.getClass().getCanonicalName())) {
+				return entity1.getCreatedDate().compareTo(
+						entity2.getCreatedDate());
+			} else {
+				return entity1.getClass().getCanonicalName().compareTo(
+						entity2.getClass().getCanonicalName());
+			}
+		}
+	}
+
+	public static class FunctionalizingEntityTypeDateComparator implements
+			Comparator<FunctionalizingEntity> {
+		public int compare(FunctionalizingEntity entity1,
+				FunctionalizingEntity entity2) {
+			if (entity1.getClass().getCanonicalName().equals(
+					entity2.getClass().getCanonicalName())) {
+				return entity1.getCreatedDate().compareTo(
+						entity2.getCreatedDate());
+			} else {
+				return entity1.getClass().getCanonicalName().compareTo(
+						entity2.getClass().getCanonicalName());
+			}
+		}
+	}
+
+	public static class ChemicalAssociationTypeDateComparator implements
+			Comparator<ChemicalAssociation> {
+		public int compare(ChemicalAssociation assoc1,
+				ChemicalAssociation assoc2) {
+			if (assoc1.getClass().getCanonicalName().equals(
+					assoc2.getClass().getCanonicalName())) {
+				return assoc1.getCreatedDate().compareTo(
+						assoc2.getCreatedDate());
+			} else {
+				return assoc1.getClass().getCanonicalName().compareTo(
+						assoc2.getClass().getCanonicalName());
+			}
+		}
+	}
+
+	public static class LabFileTypeDateComparator implements
+			Comparator<LabFile> {
+		public int compare(LabFile file1, LabFile file2) {
+			if (file1.getType().equals(file2.getType())) {
+				return file1.getCreatedDate().compareTo(file2.getCreatedDate());
+			} else {
+				return file1.getClass().getCanonicalName().compareTo(
+						file2.getClass().getCanonicalName());
+			}
+		}
+	}
+
+	public static class DerivedDatumDateComparator implements
+			Comparator<DerivedDatum> {
+		public int compare(DerivedDatum data1, DerivedDatum data2) {
+			return data1.getCreatedDate().compareTo(data2.getCreatedDate());
 		}
 	}
 }
