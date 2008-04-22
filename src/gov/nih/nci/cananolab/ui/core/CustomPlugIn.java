@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -29,12 +30,12 @@ public class CustomPlugIn implements PlugIn {
 			// set servlet context variables
 			InitSetup.getInstance().getDisplayNameLookup(
 					actionServlet.getServletContext());
-			InitNanoparticleSetup.getInstance().getDefaultFunctionTypes(
+			InitCompositionSetup.getInstance().getDefaultFunctionTypes(
 					actionServlet.getServletContext());
-			InitNanoparticleSetup.getInstance()
+			InitCompositionSetup.getInstance()
 					.getDefaultNanoparticleEntityTypes(
 							actionServlet.getServletContext());
-			InitNanoparticleSetup.getInstance()
+			InitCompositionSetup.getInstance()
 					.getDefaultFunctionalizingEntityTypes(
 							actionServlet.getServletContext());
 			actionServlet.getServletContext().setAttribute("applicationOwner",

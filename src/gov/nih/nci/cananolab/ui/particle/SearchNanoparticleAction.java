@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.9 2008-04-17 19:48:33 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.10 2008-04-22 17:38:34 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -110,10 +110,10 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitNanoparticleSetup.getInstance().setNanoparticleSampleSources(
 				request, user);
-		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
-		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
+		InitCompositionSetup.getInstance().setFunctionTypes(request);
+		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
+		InitCompositionSetup.getInstance().setNanoparticleEntityTypes(request);
 		return mapping.getInputForward();
 	}
 

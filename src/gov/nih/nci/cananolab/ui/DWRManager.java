@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui;
 
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
+import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +42,7 @@ public class DWRManager {
 	     
         if(nanoparticleEntityType.equals("emulsion")) {
         	try {
-        		List<String> emulsionCompList = InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(request);
+        		List<String> emulsionCompList = InitCompositionSetup.getInstance().getEmulsionComposingElementTypes(request);
         		String [] eleArray = new String [ emulsionCompList.size()];
         		return emulsionCompList.toArray(eleArray);
         	} catch (Exception e) {
@@ -51,7 +51,7 @@ public class DWRManager {
         	}
         } else {
         	try {
-        		List<String> compList = InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
+        		List<String> compList = InitCompositionSetup.getInstance().getComposingElementTypes(request);
         		String [] eleArray = new String [ compList.size()];
         		return compList.toArray(eleArray);
         	} catch (Exception e) {
