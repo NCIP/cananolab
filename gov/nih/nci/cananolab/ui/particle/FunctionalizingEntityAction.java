@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.6 2008-04-22 15:25:09 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.7 2008-04-22 17:38:34 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -80,7 +80,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
+		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
 				request);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
@@ -114,9 +114,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		theForm.set("entity", entityBean);
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitNanoparticleSetup.getInstance().setFunctionalizingEntityTypes(
+		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
 				request);
-		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
+		InitCompositionSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
 	}
 
