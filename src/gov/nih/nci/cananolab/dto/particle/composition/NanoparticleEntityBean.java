@@ -121,32 +121,32 @@ public class NanoparticleEntityBean {
 
 	public Dendrimer getDendrimer() {
 		domainEntity = dendrimer;
-		setSharedInfo();
+		setDomainEntity();
 		return dendrimer;
 	}
 
 	public Biopolymer getBiopolymer() {
 		domainEntity = biopolymer;
-		setSharedInfo();
+		setDomainEntity();
 		return biopolymer;
 	}
 
 	public CarbonNanotube getCarbonNanotube() {
 		domainEntity = carbonNanotube;
-		setSharedInfo();
+		setDomainEntity();
 		return carbonNanotube;
 	}
 
 	public QuantumDot getQuantumDot() {
 		domainEntity = quantumDot;
 		metalParticle.setDescription(description);
-		setSharedInfo();
+		setDomainEntity();
 		return quantumDot;
 	}
 
 	public MetalParticle getMetalParticle() {
 		domainEntity = metalParticle;		
-		setSharedInfo();
+		setDomainEntity();
 		return metalParticle;
 	}
 
@@ -154,7 +154,7 @@ public class NanoparticleEntityBean {
 		domainEntity = otherEntity;
 		((OtherNanoparticleEntity) domainEntity).setType(type);
 		metalParticle.setDescription(description);
-		setSharedInfo();
+		setDomainEntity();
 		return metalParticle;
 	}
 
@@ -164,7 +164,7 @@ public class NanoparticleEntityBean {
 
 	public Emulsion getEmulsion() {
 		domainEntity = emulsion;
-		setSharedInfo();
+		setDomainEntity();
 		return emulsion;
 	}
 
@@ -174,19 +174,19 @@ public class NanoparticleEntityBean {
 
 	public Fullerene getFullerene() {
 		domainEntity = fullerene;
-		setSharedInfo();
+		setDomainEntity();
 		return fullerene;
 	}
 
 	public Liposome getLiposome() {
 		domainEntity = liposome;
-		setSharedInfo();
+		setDomainEntity();
 		return liposome;
 	}
 
 	public Polymer getPolymer() {
 		domainEntity = polymer;
-		setSharedInfo();
+		setDomainEntity();
 		return polymer;
 	}
 
@@ -207,8 +207,7 @@ public class NanoparticleEntityBean {
 		return domainEntity;
 	}
 
-	public void setSharedInfo() {
-		//domainEntity.setDescription(description);		
+	public void setDomainEntity() {		
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
 		} else {
