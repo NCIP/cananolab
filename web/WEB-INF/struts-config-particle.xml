@@ -48,6 +48,14 @@
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
 		</form-bean>
+		<form-bean name="characterizationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="achar"
+				type="gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean" />
+			<form-property name="particleId" type="java.lang.String" />
+			<form-property name="otherParticles"
+				type="java.lang.String[]" />
+		</form-bean>
 	</form-beans>
 	<action-mappings>
 		<action path="/manageParticle"
@@ -85,12 +93,17 @@
 		</action>
 		<action input="input" name="functionalizingEntityForm"
 			parameter="dispatch" path="/functionalizingEntity"
-			type="gov.nih.nci.cananolab.ui.particle.FunctionalizingEntityAction"
-			scope="request">
+			type="gov.nih.nci.cananolab.ui.particle.FunctionalizingEntityAction">
 			<forward name="input"
 				path="particle.composition.functionalizingEntity" />
-			<forward name="success"
-				path="particle.annotationMessage" />
+			<forward name="success" path="particle.annotationMessage" />
+		</action>
+		<action input="input" name="characterizationForm"
+			parameter="dispatch" path="/physicalCharacterization"
+			type="gov.nih.nci.cananolab.ui.particle.PhysicalCharacterizationAction">
+			<forward name="input"
+				path="particle.physicalCharacterization" />
+			<forward name="success" path="particle.annotationMessage" />
 		</action>
 	</action-mappings>
 </struts-config>
