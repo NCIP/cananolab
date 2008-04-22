@@ -44,8 +44,9 @@
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="entity"
 				type="gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean" />
-			<form-property name="particleSampleBean"
-				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
+			<form-property name="particleId" type="java.lang.String" />
+			<form-property name="otherParticles"
+				type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
 	<action-mappings>
@@ -89,7 +90,7 @@
 			<forward name="input"
 				path="particle.composition.functionalizingEntity" />
 			<forward name="success"
-				path="particle.composition.functionalizingEntity" />
+				path="particle.annotationMessage" />
 		</action>
 	</action-mappings>
 </struts-config>
