@@ -14,6 +14,7 @@ CREATE TABLE target
 ) TYPE=InnoDB
 ;
 
+
 CREATE TABLE nano_function
 (
 	function_pk_id BIGINT NOT NULL,
@@ -23,6 +24,8 @@ CREATE TABLE nano_function
 	composing_element_pk_id BIGINT NULL,
 	imaging_function_modality VARCHAR(200) NULL,
 	other_function_type VARCHAR(200) NULL,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
 	PRIMARY KEY (function_pk_id),
 	KEY (composing_element_pk_id),
 	KEY (functionalizing_entity_pk_id)
@@ -368,7 +371,6 @@ CREATE TABLE composition
 	particle_sample_pk_id BIGINT NULL,
 	PRIMARY KEY (composition_pk_id),
 	UNIQUE (composition_pk_id),
-	UNIQUE (particle_sample_pk_id),
 	KEY (particle_sample_pk_id)
 ) TYPE=InnoDB
 ;
@@ -453,7 +455,7 @@ CREATE TABLE nanoparticle_entity_lab_file
 	PRIMARY KEY (nanoparticle_entity_pk_id, file_pk_id),
 	KEY (file_pk_id),
 	KEY (nanoparticle_entity_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 
@@ -506,7 +508,7 @@ CREATE TABLE functionalizing_entity_lab_file
 CREATE TABLE derived_bioassay_data
 (
 	derived_bioassay_data_pk_id BIGINT NOT NULL,
-	characterization_pk_id BIGINT NOT NULL,
+	characterization_pk_id BIGINT NULL,
 	file_pk_id BIGINT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
@@ -660,12 +662,11 @@ CREATE TABLE activation_method
 ) TYPE=InnoDB
 ;
 
+
 CREATE TABLE hibernate_unique_key (
   next_hi BIGINT NOT NULL
 ) TYPE=InnoDB
 ;
-
-
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function 
 	FOREIGN KEY (targeting_function_pk_id) REFERENCES nano_function (function_pk_id)
@@ -768,24 +769,12 @@ ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization
 	FOREIGN KEY (physical_state_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE nanoparticle_entity ADD CONSTRAINT FK_nanoparticle_entity_composition 
-	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
-;
-
 ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method 
 	FOREIGN KEY (activation_method_pk_id) REFERENCES activation_method (activation_method_pk_id)
 ;
 
 ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element 
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
-;
-
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_composition 
-	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
-;
-
-ALTER TABLE composition_lab_file ADD CONSTRAINT FK_composition_lab_file_composition 
-	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
 ;
 
 ALTER TABLE composition_lab_file ADD CONSTRAINT FK_composition_lab_file_lab_file 
@@ -898,10 +887,6 @@ ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associat
 
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b 
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
-;
-
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_composition 
-	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
 ;
 
 ALTER TABLE associated_file ADD CONSTRAINT FK_associated_file_lab_file 
