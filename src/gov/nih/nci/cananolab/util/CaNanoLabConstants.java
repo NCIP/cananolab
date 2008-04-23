@@ -101,7 +101,7 @@ public class CaNanoLabConstants {
 
 	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX = "copy_";
 
-	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_COLOR = "red";
+	public static final String AUTO_COPY_ANNNOTATION_VIEW_COLOR = "red";
 
 	public static final String CSM_READ_ROLE = "R";
 
