@@ -28,7 +28,7 @@ import org.hibernate.criterion.Restrictions;
 
 public class NanoparticleCharacterizationService {
 	private static Logger logger = Logger
-			.getLogger(CopyOfNanoparticleCharacterizationService.class);
+			.getLogger(NanoparticleCharacterizationService.class);
 
 	public NanoparticleCharacterizationService() {
 	}
