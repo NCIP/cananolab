@@ -336,6 +336,7 @@
 												<input type="hidden" name="page" value="2">
 												<html:hidden property="particleId"
 													value="${param.particleId}" />
+												<html:hidden property="createdBy" value="${user.loginName}"/>
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
 												<html:hidden property="entity.className"
