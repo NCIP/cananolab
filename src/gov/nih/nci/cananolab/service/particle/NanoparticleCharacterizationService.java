@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -17,7 +15,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -62,39 +59,7 @@ public class NanoparticleCharacterizationService {
 		achar.setNanoparticleSample(particleSample);
 		particleSample.getCharacterizationCollection().add(achar);
 
-		if (achar.getId() != null && achar.getId() == 0) {
-			achar.setId(null);
-		}
-		// set createdDate and createdBy
-		if (achar.getId() == null) {
-			achar.setCreatedBy(createdBy);
-			achar.setCreatedDate(new Date());
-			if (achar.getInstrumentConfiguration() != null
-					&& achar.getInstrumentConfiguration().getId() == null) {
-				achar.getInstrumentConfiguration().setCreatedBy(createdBy);
-				achar.getInstrumentConfiguration().setCreatedDate(new Date());
-			}
-		}
-		for (DerivedBioAssayData bioAssayData : achar
-				.getDerivedBioAssayDataCollection()) {
-			if (bioAssayData.getId() == null) {
-				bioAssayData.setCreatedBy(createdBy);
-				bioAssayData.setCreatedDate(createdDate);
-				if (bioAssayData.getLabFile().getId() != null) {
-					bioAssayData.getLabFile().setCreatedBy(createdBy);
-					bioAssayData.getLabFile().setCreatedDate(createdDate);
-				}
-				if (bioAssayData.getDerivedDatumCollection() != null) {
-					for (DerivedDatum datum : bioAssayData
-							.getDerivedDatumCollection()) {
-						if (datum.getId() != null) {
-							datum.setCreatedBy(createdBy);
-							datum.setCreatedDate(createdDate);
-						}
-					}
-				}
-			}
-		}
+
 		appService.saveOrUpdate(achar);
 	}
 
