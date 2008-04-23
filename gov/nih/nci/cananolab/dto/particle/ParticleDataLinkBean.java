@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle;
 
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
 import java.util.Date;
 
 /**
@@ -12,18 +14,25 @@ public class ParticleDataLinkBean {
 	// the data type displayed in the tree, e.g. Carbon Nanotube
 	private String dataDisplayType;
 
+	// e.g. #1: Dendrimer
+	private String viewTitle;
+
 	// the short class name representing the data, e.g. CarbonNanotube
 	private String dataClassName;
 
 	// the id for the persisted data
 	private String dataId;
 
+	// e.g. physicalCharacterization
 	private String dataLink;
 
 	// Composition, Physical Characterization, In Vitro Characterization
 	private String dataCategory;
 
 	private Date createdDate;
+
+	// used for link color on the side menu
+	private String viewColor;
 
 	public ParticleDataLinkBean(String dataDisplayType, String dataClassName,
 			String dataLink, String dataCategory) {
@@ -114,5 +123,20 @@ public class ParticleDataLinkBean {
 		} else {
 			return getDataDisplayType().compareTo(link2.getDataDisplayType());
 		}
+	}
+
+	public String getViewColor() {
+		if (this.viewTitle != null && this.viewTitle.matches("^copy_\\d{15}?")) {
+			this.viewColor = CaNanoLabConstants.AUTO_COPY_ANNNOTATION_VIEW_COLOR;
+		}
+		return this.viewColor;
+	}
+
+	public String getViewTitle() {
+		return viewTitle;
+	}
+
+	public void setViewTitle(String viewTitle) {
+		this.viewTitle = viewTitle;
 	}
 }
