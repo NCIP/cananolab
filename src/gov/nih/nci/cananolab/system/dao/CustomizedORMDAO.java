@@ -5,8 +5,6 @@ import gov.nih.nci.system.dao.DAO;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.Session;
-
 /**
  * Customized to contain generic CRUD operations.
  * 
@@ -30,5 +28,6 @@ public interface CustomizedORMDAO extends DAO {
 	public Object getObject(Class domainClass, String uniqueKeyName,
 			Object uniqueKeyValue);
 
-	public Session getCurrentSession();
+	public List directQuery(String directSQL, String[] columns,
+			Object[] columnTypes);
 }

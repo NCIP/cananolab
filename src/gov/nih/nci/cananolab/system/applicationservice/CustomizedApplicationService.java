@@ -6,8 +6,6 @@ import gov.nih.nci.system.applicationservice.ApplicationService;
 import java.io.Serializable;
 import java.util.List;
 
-import org.hibernate.Session;
-
 /**
  * Customized to contain more CRUD operations.
  * 
@@ -34,7 +32,6 @@ public interface CustomizedApplicationService extends ApplicationService {
 	public Object getObject(Class domainClass, String uniqueKeyName,
 			Object uniqueKeyValue) throws ApplicationException;
 
-	// used to execute native SQL queries for CSM, up for removal in next
-	// release
-	public Session getCurrentSession() throws ApplicationException;
+	public List directQuery(String directSQL, String[] columns,
+			Object[] columnTypes) throws ApplicationException;
 }

@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.type.NullableType;
 import org.springframework.aop.framework.Advised;
 
 /**
@@ -117,13 +118,14 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 		}
 	}
 
-	public Session getCurrentSession() throws ApplicationException {
+	public List directQuery(String directSQL, String[] columns,
+			Object[] columnTypes) throws ApplicationException {
+		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
+				.getDAOForClass(NanoparticleSample.class.getCanonicalName());
 		try {
-			CustomizedORMDAO dao = (CustomizedORMDAO) classCache
-					.getDAOForClass(NanoparticleSample.class.getCanonicalName());
-			return dao.getCurrentSession();
+			return dao.directQuery(directSQL, columns, columnTypes);
 		} catch (Exception e) {
-			String err = "Could not get current session.";
+			String err = "Could not execute direct sql query ";
 			logger.error(err);
 			throw new ApplicationException(err, e);
 		}
