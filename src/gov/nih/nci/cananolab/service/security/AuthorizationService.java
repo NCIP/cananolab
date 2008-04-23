@@ -183,7 +183,7 @@ public class AuthorizationService {
 	}
 
 	public List<String> getPublicData() throws CaNanoLabSecurityException {
-	List<String> publicData = new ArrayList<String>();
+		List<String> publicData = new ArrayList<String>();
 		try {
 			Group publicGroup = getGroup(CaNanoLabConstants.CSM_PUBLIC_GROUP);
 			try {
@@ -530,27 +530,21 @@ public class AuthorizationService {
 		String query = "select distinct role_id from csm_user_group_role_pg "
 				+ "where protection_group_id=" + pg.getProtectionGroupId()
 				+ " and group_id=" + group.getGroupId();
-		Session session = null;
 		try {
-			session = appService.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			SQLQuery queryObj = session.createSQLQuery(query);
-			queryObj.addScalar("role_id", Hibernate.STRING);
-			List results = queryObj.list();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "role_id" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directQuery(query, columns, columnTypes);
 			for (Object obj : results) {
 				String roleId = (String) obj;
 				roleIds.add(roleId);
 			}
-			tx.commit();
 		} catch (Exception e) {
 			logger
 					.error("Error in getting existing roles from CSM database",
 							e);
 			throw new CaNanoLabSecurityException();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
 		}
 
 		return roleIds;
@@ -618,18 +612,20 @@ public class AuthorizationService {
 		Group group = getGroup(groupName);
 		Role role = getRole(roleName);
 
-		if (group == null) {
-			throw new CaNanoLabSecurityException(
-					"No such group defined in CSM: " + groupName);
-		}
-		if (role == null) {
-			throw new CaNanoLabSecurityException(
-					"No such role defined in CSM: " + roleName);
-		}
 		// this will remove exising roles assigned. In caNanoLab, this is not an
 		// issue since
 		// only the R role has been assigned from the application.
 		try {
+			if (group == null) {
+				group = new Group();
+				group.setGroupName(groupName);
+				userManager.createGroup(group);
+			}
+			if (role == null) {
+				role = new Role();
+				role.setName(roleName);
+				userManager.createRole(role);
+			}
 			this.userManager.assignGroupRoleToProtectionGroup(pg
 					.getProtectionGroupId().toString(), group.getGroupId()
 					.toString(), new String[] { role.getId().toString() });
@@ -725,25 +721,19 @@ public class AuthorizationService {
 				+ "a.protection_group_name='"
 				+ objectName
 				+ "' and b.role_name='" + roleName + "'";
-		Session session = null;
 		try {
-			session = appService.getCurrentSession();
-			Transaction tx = session.beginTransaction();
-			SQLQuery queryObj = session.createSQLQuery(query);
-			queryObj.addScalar("group_name", Hibernate.STRING);
-			List results = queryObj.list();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "group_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directQuery(query, columns, columnTypes);
 			for (Object obj : results) {
 				String group = (String) obj;
 				groups.add(group);
 			}
-			tx.commit();
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
 			throw new CaNanoLabSecurityException();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
 		}
 		return groups;
 	}
@@ -808,47 +798,6 @@ public class AuthorizationService {
 			throw new CaNanoLabSecurityException();
 		}
 
-	}
-
-	/**
-	 * Direct CSM schema query to improve performance
-	 * 
-	 * @param objectName
-	 * @param groupName
-	 * @param roleName
-	 * @throws CaNanoLabSecurityException
-	 */
-	public void removeAccessibleGroup(String objectName, String groupName,
-			String roleName) throws CaNanoLabSecurityException {
-		Session session = null;
-		Transaction tx = null;
-		try {
-			ProtectionGroup pg = this.getProtectionGroup(objectName);
-			Role role = this.getRole(roleName);
-			Group group = this.getGroup(groupName);
-
-			String query = "delete from csm_user_group_role_pg "
-					+ "where protection_group_id=" + pg.getProtectionGroupId()
-					+ "and role_id=" + role.getId() + " and group_id="
-					+ group.getGroupId();
-
-			session = appService.getCurrentSession();
-			tx = session.beginTransaction();
-			Connection connection = session.connection();
-			Statement stmt = connection.createStatement();
-			stmt.execute(query);
-			tx.commit();
-		} catch (Exception e) {
-			tx.rollback();
-			logger
-					.error("Error getting accessible groups from CSM database",
-							e);
-			throw new CaNanoLabSecurityException();
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
 	}
 
 	public void removeExistingVisibleGroups(String objectName, String roleName)
