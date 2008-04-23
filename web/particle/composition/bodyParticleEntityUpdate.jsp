@@ -219,7 +219,7 @@
 																<jsp:include
 																	page="/particle/composition/bodyFunctionUpdate.jsp">
 																	<jsp:param name="compEleInd" value="${ind}" />
-																</jsp:include>
+																</jsp:include>&nbsp;
 															</td>
 														</tr>
 
@@ -252,53 +252,21 @@
 									<tr>
 										<td valign="bottom">
 											<a href="#"
-												onclick="javascript:addFileClone(); return false;"> <span
+												onclick="javascript:addComponent(nanoparticleEntityForm, 'nanoparticleEntity', 'addFile'); return false;"> <span
 												class="addLink">Add File</span> </a>
 										</td>
 										<td id="fileTd">
-											<div id="filePatternDiv" style="display: none;">
-												<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-													width="100%" align="center" summary="" border="0">
-													<tbody>
-														<tr>
-															<td class="formSubTitleNoRight">
-																<span id="fileCount">0</span>
-															</td>
-															<td class="formSubTitleNoLeft" align="right">
-																<a href="#"> <img src="images/delete.gif" border="0"
-																		alt="remove this file table"> </a>
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabelWithTop" valign="top">
-																<strong>File Name</strong>
-
-															</td>
-															<td class="rightLabelWithTop" valign="top">
-																&nbsp;&nbsp;Click on "Load File" button
-																&nbsp;&nbsp;&nbsp;&nbsp;
-																<input type="button"
-																	onclick="javascript:loadFile(this.form, 'particleEntity', 0)"
-																	value="Load File">
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabel" valign="top">
-																<strong>File Type</strong>
-															</td>
-															<td class="rightLabel" valign="rightLabelWithtop">
-																<select name="fileType" id="fileType">
-																	<option value="" />
-																	<option value="other">
-																		Other
-																	</option>
-																</select>
-															</td>
-														</tr>
-													</tbody>
-												</table>
+											
+											<logic:iterate name="nanoparticleEntityForm"
+												property="entity.files"
+												id="entityFile" indexId="fileInd">
+												<jsp:include
+													page="/particle/composition/bodyCompositionFileInfo.jsp">
+													<jsp:param name="fileInd" value="${fileInd}" />
+												</jsp:include>
 												<br>
-											</div>
+											</logic:iterate>
+										
 										</td>
 									</tr>
 								</table>
@@ -336,7 +304,6 @@
 												<input type="hidden" name="page" value="2">
 												<html:hidden property="particleId"
 													value="${param.particleId}" />
-												<html:hidden property="entity.createdBy" value="${user.loginName}"/>
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
 												<html:hidden property="entity.className"
