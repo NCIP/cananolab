@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -21,24 +22,25 @@ import java.util.TreeSet;
 public class ParticleBean {
 	private String keywordsStr;
 
-	private Collection<Keyword> keywords = new HashSet<Keyword>();
-
 	private String[] visibilityGroups = new String[0];
 
 	private String gridNode;
 
-	private NanoparticleSample particleSample = new NanoparticleSample();
+	private NanoparticleSample domainParticleSample = new NanoparticleSample();
 
-	public ParticleBean() {		
-		particleSample.setSource(new Source());
+	private String createdBy;
+
+	public ParticleBean() {
+		domainParticleSample.setSource(new Source());
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
-		this.particleSample = particleSample;
-		keywords = particleSample.getKeywordCollection();
+		this.domainParticleSample = particleSample;
 		SortedSet<String> keywordStrs = new TreeSet<String>();
-		for (Keyword keyword : keywords) {
-			keywordStrs.add(keyword.getName());
+		if (particleSample.getKeywordCollection() != null) {
+			for (Keyword keyword : particleSample.getKeywordCollection()) {
+				keywordStrs.add(keyword.getName());
+			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
 	}
@@ -63,33 +65,39 @@ public class ParticleBean {
 		return this.keywordsStr;
 	}
 
-	public void setKeywordsStr(String keywordsStr) {
-		this.keywordsStr = keywordsStr;
+	public NanoparticleSample getDomainParticleSample() {
+		return domainParticleSample;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public void setDomainParticleSample() {
+		//always update createdBy and createdDate
+		domainParticleSample.setCreatedBy(createdBy);
+		domainParticleSample.setCreatedDate(new Date());
+		if (domainParticleSample.getKeywordCollection() != null) {
+			domainParticleSample.getKeywordCollection().clear();
+		} else {
+			domainParticleSample.setKeywordCollection(new HashSet<Keyword>());
+		}
 		if (keywordsStr.length() > 0) {
 			String[] strs = keywordsStr.split("\r\n");
 			for (String str : strs) {
 				// change to upper case
 				Keyword keyword = new Keyword();
 				keyword.setName(str.toUpperCase());
-				keywords.add(keyword);
+				domainParticleSample.getKeywordCollection().add(keyword);
 			}
 		}
-		particleSample.setKeywordCollection(keywords);
 	}
 
-	public Collection<Keyword> getKeywords() {
-		return keywords;
-	}
-
-	public void setKeywords(Set<Keyword> keywords) {
-		this.keywords = keywords;
-	}
-
-	public NanoparticleSample getParticleSample() {
-		return particleSample;
-	}
-
-	public void setParticleSample(NanoparticleSample particleSample) {
-		this.particleSample = particleSample;
+	public void setKeywordsStr(String keywordsStr) {
+		this.keywordsStr = keywordsStr;
 	}
 }

@@ -6,8 +6,9 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.12 2008-04-21 23:12:02 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.13 2008-04-23 13:48:03 pansu Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -37,19 +38,16 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		particleSampleBean.getParticleSample()
-				.setCreatedBy(user.getLoginName());
-		particleSampleBean.getParticleSample().setCreatedDate(new Date());
-
+		particleSampleBean.setDomainParticleSample();
 		// persist in the database
 		NanoparticleSampleService service = new NanoparticleSampleService();
-		service.saveNanoparticleSample(particleSampleBean);
+		service.saveNanoparticleSample(particleSampleBean
+				.getDomainParticleSample());
 
 		// set CSM visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
-		authService.setVisibility(particleSampleBean.getParticleSample()
+		authService.setVisibility(particleSampleBean.getDomainParticleSample()
 				.getName(), particleSampleBean.getVisibilityGroups());
 		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("success");

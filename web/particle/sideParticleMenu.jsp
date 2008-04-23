@@ -32,12 +32,12 @@
 </c:choose>
 <c:choose>
 	<c:when test="${!empty theParticle}">
-		<c:set var="particleName" value="${theParticle.particleSample.name}"
+		<c:set var="particleName" value="${theParticle.domainParticleSample.name}"
 			scope="session" />
-		<c:set var="particleId" value="${theParticle.particleSample.id}"
+		<c:set var="particleId" value="${theParticle.domainParticleSample.id}"
 			scope="session" />
 		<c:set var="particleSource"
-			value="${theParticle.particleSample.source.organizationName}"
+			value="${theParticle.domainParticleSample.source.organizationName}"
 			scope="session" />
 	</c:when>
 </c:choose>

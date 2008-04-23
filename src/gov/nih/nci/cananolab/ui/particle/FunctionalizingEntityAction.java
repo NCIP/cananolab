@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.7 2008-04-22 17:38:34 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.8 2008-04-23 13:48:03 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -16,8 +16,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,21 +33,13 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
 		ParticleBean particleBean = initSetup(theForm, request);
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
-		Date now = new Date();
-		if (entityBean.getDomainEntity().getId() != null
-				&& entityBean.getDomainEntity().getId() == 0) {
-			entityBean.getDomainEntity().setId(null);
-		}
-		if (entityBean.getDomainEntity().getId() == null) {
-			entityBean.getDomainEntity().setCreatedBy(user.getLoginName());
-			entityBean.getDomainEntity().setCreatedDate(now);
-		}
-		compositionService.saveFunctionalizingEntity(particleBean, entityBean);
+		entityBean.setDomainEntity();
+		compositionService.saveFunctionalizingEntity(particleBean
+				.getDomainParticleSample(), entityBean.getDomainEntity());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addFunctionalizingEntity");
@@ -84,8 +74,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				request);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
-				particleBean.getParticleSample().getName(),
-				particleBean.getParticleSample().getSource()
+				particleBean.getDomainParticleSample().getName(),
+				particleBean.getDomainParticleSample().getSource()
 						.getOrganizationName(), user);
 
 		return mapping.getInputForward();
