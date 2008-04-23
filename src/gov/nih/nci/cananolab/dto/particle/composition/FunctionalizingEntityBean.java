@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,6 +54,8 @@ public class FunctionalizingEntityBean {
 	private Set<LabFile> files = new HashSet<LabFile>();
 
 	private ActivationMethod activationMethod = new ActivationMethod();
+
+	private String createdBy;
 
 	public FunctionalizingEntityBean() {
 
@@ -110,25 +113,21 @@ public class FunctionalizingEntityBean {
 
 	public Antibody getAntibody() {
 		domainEntity = antibody;
-		setDomainEntity();
 		return antibody;
 	}
 
 	public Biopolymer getBiopolymer() {
 		domainEntity = biopolymer;
-		setDomainEntity();
 		return biopolymer;
 	}
 
 	public OtherFunctionalizingEntity getOtherEntity() {
 		domainEntity = otherEntity;
-		setDomainEntity();
 		return otherEntity;
 	}
 
 	public SmallMolecule getSmallMolecule() {
 		domainEntity = smallMolecule;
-		setDomainEntity();
 		return smallMolecule;
 	}
 
@@ -146,7 +145,6 @@ public class FunctionalizingEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
-		domainEntity.setDescription(description);
 	}
 
 	public String getMolecularFormula() {
@@ -155,7 +153,6 @@ public class FunctionalizingEntityBean {
 
 	public void setMolecularFormula(String molecularFormula) {
 		this.molecularFormula = molecularFormula;
-		domainEntity.setMolecularFormula(molecularFormula);
 	}
 
 	public String getMolecularFormulaType() {
@@ -164,7 +161,6 @@ public class FunctionalizingEntityBean {
 
 	public void setMolecularFormulaType(String molecularFormulaType) {
 		this.molecularFormulaType = molecularFormulaType;
-		domainEntity.setMolecularFormulaType(molecularFormulaType);
 	}
 
 	public String getName() {
@@ -173,7 +169,6 @@ public class FunctionalizingEntityBean {
 
 	public void setName(String name) {
 		this.name = name;
-		domainEntity.setName(name);
 	}
 
 	public Float getValue() {
@@ -182,7 +177,6 @@ public class FunctionalizingEntityBean {
 
 	public void setValue(Float value) {
 		this.value = value;
-		domainEntity.setValue(value);
 	}
 
 	public String getValueUnit() {
@@ -191,7 +185,6 @@ public class FunctionalizingEntityBean {
 
 	public void setValueUnit(String valueUnit) {
 		this.valueUnit = valueUnit;
-		domainEntity.setValueUnit(valueUnit);
 	}
 
 	public Set<LabFile> getFiles() {
@@ -203,7 +196,22 @@ public class FunctionalizingEntityBean {
 	}
 
 	public void setDomainEntity() {
+		domainEntity.setDescription(description);
+		domainEntity.setMolecularFormula(molecularFormula);
+		domainEntity.setMolecularFormulaType(molecularFormulaType);
+		domainEntity.setName(name);
+		domainEntity.setValue(value);
+		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setActivationMethod(activationMethod);
+
+		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
+			domainEntity.setId(null);
+		}
+		if (domainEntity.getId() == null) {
+			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(new Date());
+		}
+
 		if (domainEntity.getFunctionCollection() != null) {
 			domainEntity.getFunctionCollection().clear();
 		} else {
@@ -212,11 +220,17 @@ public class FunctionalizingEntityBean {
 		for (FunctionBean functionBean : functions) {
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
+			// TODO set function date
 		}
 		if (domainEntity.getLabFileCollection() != null) {
 			domainEntity.getLabFileCollection().clear();
 		} else {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
+		}
+		for (LabFile file : files) {
+			file.setCreatedBy(createdBy);
+			file.setCreatedDate(new Date());
+			domainEntity.getLabFileCollection().add(file);
 		}
 	}
 
@@ -226,5 +240,21 @@ public class FunctionalizingEntityBean {
 
 	public void removeFunction(int ind) {
 		functions.remove(ind);
+	}
+
+	public void addFile() {
+		files.add(new LabFile());
+	}
+
+	public void removeFile(int ind) {
+		files.remove(ind);
+	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

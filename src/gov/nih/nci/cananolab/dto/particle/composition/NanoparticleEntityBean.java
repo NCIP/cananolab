@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.QuantumDot;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -57,6 +58,8 @@ public class NanoparticleEntityBean {
 	private List<LabFile> files = new ArrayList<LabFile>();
 
 	private NanoparticleEntity domainEntity = new NanoparticleEntity();
+
+	private String createdBy;
 
 	public NanoparticleEntityBean() {
 	}
@@ -121,40 +124,31 @@ public class NanoparticleEntityBean {
 
 	public Dendrimer getDendrimer() {
 		domainEntity = dendrimer;
-		setDomainEntity();
 		return dendrimer;
 	}
 
 	public Biopolymer getBiopolymer() {
 		domainEntity = biopolymer;
-		setDomainEntity();
 		return biopolymer;
 	}
 
 	public CarbonNanotube getCarbonNanotube() {
 		domainEntity = carbonNanotube;
-		setDomainEntity();
 		return carbonNanotube;
 	}
 
 	public QuantumDot getQuantumDot() {
 		domainEntity = quantumDot;
-		metalParticle.setDescription(description);
-		setDomainEntity();
 		return quantumDot;
 	}
 
 	public MetalParticle getMetalParticle() {
-		domainEntity = metalParticle;		
-		setDomainEntity();
+		domainEntity = metalParticle;
 		return metalParticle;
 	}
 
 	public MetalParticle getOtherNanoparticle() {
 		domainEntity = otherEntity;
-		((OtherNanoparticleEntity) domainEntity).setType(type);
-		metalParticle.setDescription(description);
-		setDomainEntity();
 		return metalParticle;
 	}
 
@@ -164,7 +158,6 @@ public class NanoparticleEntityBean {
 
 	public Emulsion getEmulsion() {
 		domainEntity = emulsion;
-		setDomainEntity();
 		return emulsion;
 	}
 
@@ -174,19 +167,16 @@ public class NanoparticleEntityBean {
 
 	public Fullerene getFullerene() {
 		domainEntity = fullerene;
-		setDomainEntity();
 		return fullerene;
 	}
 
 	public Liposome getLiposome() {
 		domainEntity = liposome;
-		setDomainEntity();
 		return liposome;
 	}
 
 	public Polymer getPolymer() {
 		domainEntity = polymer;
-		setDomainEntity();
 		return polymer;
 	}
 
@@ -200,14 +190,22 @@ public class NanoparticleEntityBean {
 
 	public void setDescription(String description) {
 		this.description = description;
-		domainEntity.setDescription(description);	
+		domainEntity.setDescription(description);
 	}
 
 	public NanoparticleEntity getDomainEntity() {
 		return domainEntity;
 	}
 
-	public void setDomainEntity() {		
+	public void setDomainEntity() {
+		domainEntity.setDescription(description);
+		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
+			domainEntity.setId(null);
+		}
+		if (domainEntity.getId() == null) {
+			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(new Date());
+		}
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
 		} else {
@@ -217,6 +215,10 @@ public class NanoparticleEntityBean {
 		for (ComposingElementBean composingElementBean : composingElements) {
 			ComposingElement domainComposingElement = composingElementBean
 					.getDomainComposingElement();
+			if (domainComposingElement.getId() == null) {
+				domainComposingElement.setCreatedBy(createdBy);
+				domainComposingElement.setCreatedDate(new Date());
+			}
 			domainComposingElement.setNanoparticleEntity(domainEntity);
 			domainEntity.getComposingElementCollection().add(
 					domainComposingElement);
@@ -227,6 +229,8 @@ public class NanoparticleEntityBean {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
 		for (LabFile file : files) {
+			file.setCreatedBy(createdBy);
+			file.setCreatedDate(new Date());
 			domainEntity.getLabFileCollection().add(file);
 		}
 	}
@@ -242,11 +246,27 @@ public class NanoparticleEntityBean {
 		composingElements.remove(elementToRemove);
 	}
 
+	public void addFile() {
+		files.add(new LabFile());
+	}
+
+	public void removeFile(int ind) {
+		files.remove(ind);
+	}
+
 	public NanoparticleEntityBean copy() {
 		NanoparticleEntityBean copiedEntity = new NanoparticleEntityBean();
 		copiedEntity.setType(type);
 		copiedEntity.setDescription(description);
 		copiedEntity.setClassName(className);
 		return copiedEntity;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }
