@@ -43,6 +43,7 @@ public class ComposingElementBean {
 		for (FunctionBean functionBean : inherentFunctions) {
 			domainComposingElement.getInherentFunctionCollection().add(
 					functionBean.getDomainFunction());
+			//TODO add date to function
 		}
 		return inherentFunctions;
 	}
