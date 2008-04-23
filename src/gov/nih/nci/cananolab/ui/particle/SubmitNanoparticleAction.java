@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.13 2008-04-23 13:48:03 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.14 2008-04-23 19:47:06 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -53,6 +53,8 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		forward = mapping.findForward("success");
 		request.setAttribute("theParticle", particleSampleBean);
 		request.setAttribute("updateDataTree", "true");
+		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
+				request);
 		InitNanoparticleSetup.getInstance().getDataTree(particleSampleBean,
 				request);
 		return forward;
