@@ -654,7 +654,7 @@ public class AuthorizationService {
 
 		for (ParticleBean particle : particles) {
 			boolean status = checkReadPermission(user, particle
-					.getParticleSample().getName());
+					.getDomainParticleSample().getName());
 			if (status)
 				filteredParticles.add(particle);
 		}

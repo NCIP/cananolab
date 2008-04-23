@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
@@ -16,10 +16,10 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -45,41 +45,37 @@ public class NanoparticleCompositionService {
 	public NanoparticleCompositionService() {
 	}
 
-	public void saveNanoparticleEntity(ParticleBean particleBean,
-			NanoparticleEntityBean entityBean) throws Exception {
+	public void saveNanoparticleEntity(NanoparticleSample particleSample,
+			NanoparticleEntity entity) throws Exception {
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		if (entityBean.getDomainEntity().getId() != null) {
+		if (entity.getId() != null) {
 			try {
 				NanoparticleEntity dbEntity = (NanoparticleEntity) appService
-						.load(NanoparticleEntity.class, entityBean
-								.getDomainEntity().getId());
+						.load(NanoparticleEntity.class, entity.getId());
 			} catch (Exception e) {
 				String err = "Object doesn't exist in the database anymore.  Please log in again.";
 				logger.error(err);
 				throw new ParticleCompositionException(err, e);
 			}
 		}
-		NanoparticleEntity entity = entityBean.getDomainEntity();
-
-		SampleComposition composition = particleBean.getParticleSample()
-				.getSampleComposition();
+		SampleComposition composition = particleSample.getSampleComposition();
 		if (composition == null) {
 			composition = new SampleComposition();
 			entity.setSampleComposition(composition);
-			particleBean.getParticleSample().setSampleComposition(composition);
+			particleSample.setSampleComposition(composition);
 			Collection<NanoparticleEntity> entityCollection = new HashSet<NanoparticleEntity>();
 			entityCollection.add(entity);
 			composition.setNanoparticleEntityCollection(entityCollection);
-			composition.setNanoparticleSample(particleBean.getParticleSample());
+			composition.setNanoparticleSample(particleSample);
 		} else {
 			entity.setSampleComposition(composition);
 		}
 		appService.saveOrUpdate(entity);
 		if (entity instanceof OtherNanoparticleEntity) {
-			// save other entity type
+			//TODO save other entity type
 		}
 	}
 
@@ -107,40 +103,38 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public void saveFunctionalizingEntity(ParticleBean particleBean,
-			FunctionalizingEntityBean entityBean) throws Exception {
+	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
+			FunctionalizingEntity entity) throws Exception {
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		FunctionalizingEntity entity = null;
-		if (entityBean.getDomainEntity().getId() != null) {
+		if (entity.getId() != null) {
 			try {
 				FunctionalizingEntity dbEntity = (FunctionalizingEntity) appService
-						.load(FunctionalizingEntity.class, entityBean
-								.getDomainEntity().getId());
+						.load(FunctionalizingEntity.class, entity.getId());
 			} catch (Exception e) {
 				String err = "Object doesn't exist in the database anymore.  Please log in again.";
 				logger.error(err);
 				throw new ParticleCompositionException(err, e);
 			}
-		} else {
-			entity = entityBean.getDomainEntity();
 		}
-		SampleComposition composition = particleBean.getParticleSample()
-				.getSampleComposition();
+		SampleComposition composition = particleSample.getSampleComposition();
 		if (composition != null) {
 			entity.setSampleComposition(composition);
 			composition.getFunctionalizingEntityCollection().add(entity);
 		} else {
 			composition = new SampleComposition();
 			entity.setSampleComposition(composition);
-			particleBean.getParticleSample().setSampleComposition(composition);
+			particleSample.setSampleComposition(composition);
 			Collection<FunctionalizingEntity> entityCollection = new HashSet<FunctionalizingEntity>();
 			entityCollection.add(entity);
 			composition.setFunctionalizingEntityCollection(entityCollection);
-			composition.setNanoparticleSample(particleBean.getParticleSample());
+			composition.setNanoparticleSample(particleSample);
 		}
 		appService.saveOrUpdate(entity);
+		if (entity instanceof OtherFunctionalizingEntity) {
+			//TODO save other entity type
+		}
 	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityBy(
