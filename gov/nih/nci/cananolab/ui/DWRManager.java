@@ -3,8 +3,10 @@ package gov.nih.nci.cananolab.ui;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
+import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -63,10 +65,22 @@ public class DWRManager {
     }
 	
 	public String [] getBiopolymerTypeOptions(String nanoparticleEntityType) {
-		if(nanoparticleEntityType.equals("biopolymer")) {
-			return new String[] {"DNA", "RNA", "protein" };
+		if (nanoparticleEntityType.equals("biopolymer")) {
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			HttpServletRequest request = webContext.getHttpServletRequest();
+			try {
+				List<String> typeList = new ArrayList<String>(
+						InitCompositionSetup.getInstance().getBiopolymerTypes(
+								request));
+				String[] eleArray = new String[typeList.size()];
+				return typeList.toArray(eleArray);
+
+			} catch (Exception e) {
+				System.out.println("getBiopolymerTypeOptions exception.");
+				e.printStackTrace();
+			}
 		}
-		
 		return new String[] {""};
 	}
 }
