@@ -22,12 +22,14 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.JDBCException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
+import org.hibernate.type.NullableType;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
@@ -315,7 +317,7 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 	public Object load(Class domainClass, Serializable id) {
 		return getHibernateTemplate().load(domainClass, id);
 	}
-	
+
 	public Object get(Class domainClass, Serializable id) {
 		return getHibernateTemplate().get(domainClass, id);
 	}
@@ -351,8 +353,15 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 		}
 	}
 
-	public Session getCurrentSession() {
-		Session session = getSessionFactory().getCurrentSession();
-		return session;
+	public List directQuery(String directSQL, String[] columns,
+			Object[] columnTypes) {
+		Session session = getSession();
+		SQLQuery query = session.createSQLQuery(directSQL);
+		for (int i = 0; i < columns.length; i++) {
+			query.addScalar(columns[i], (NullableType) columnTypes[i]);
+		}
+		List results = query.list();
+		session.close();
+		return results;
 	}
 }
