@@ -194,7 +194,7 @@ public class InitNanoparticleSetup {
 			ServletContext appContext = request.getSession()
 					.getServletContext();
 			NanoparticleSample particleSample = particleBean
-					.getParticleSample();
+					.getDomainParticleSample();
 			// composition
 			if (particleSample.getSampleComposition() != null) {
 				List<ParticleDataLinkBean> ndataBeans = new ArrayList<ParticleDataLinkBean>();

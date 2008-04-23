@@ -18,7 +18,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.2 2008-04-22 22:56:25 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.3 2008-04-23 13:48:03 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -94,8 +94,8 @@ public class CaNanoLabComparators {
 			Comparator<ParticleBean> {
 		public int compare(ParticleBean particle1, ParticleBean particle2) {
 			return new SortableNameComparator().compare(particle1
-					.getParticleSample().getName(), particle2
-					.getParticleSample().getName());
+					.getDomainParticleSample().getName(), particle2
+					.getDomainParticleSample().getName());
 		}
 	}
 

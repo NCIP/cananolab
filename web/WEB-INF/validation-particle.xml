@@ -5,13 +5,13 @@
 <form-validation>
 	<formset>
 		<form name="nanoparticleSampleForm">
-			<field property="particleSampleBean.particleSample.name"
+			<field property="particleSampleBean.domainParticleSample.name"
 				page="1" depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleName" bundle="particle" />
 			</field>
 			<field
-				property="particleSampleBean.particleSample.source.organizationName"
+				property="particleSampleBean.domainParticleSample.source.organizationName"
 				page="1" depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleSource" bundle="particle" />

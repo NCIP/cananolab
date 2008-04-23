@@ -6,11 +6,12 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.1 2008-04-22 22:55:43 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.2 2008-04-23 13:48:03 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
@@ -52,46 +53,8 @@ public class PhysicalCharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particleBean = initSetup(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		charService.savePhysicalCharacterization(particleBean, charBean);
-
-		// set createdDate and createdBy
-		Date createdDate = new Date();
-		String createdBy = user.getLoginName();
-		Characterization domainChara = charBean.getDomainChar();
-		if (domainChara.getId() != null && domainChara.getId() == 0) {
-			domainChara.setId(null);
-		}
-		if (domainChara.getId() == null) {
-			domainChara.setCreatedBy(createdBy);
-			domainChara.setCreatedDate(createdDate);
-			if (domainChara.getInstrumentConfiguration() != null
-					&& domainChara.getInstrumentConfiguration().getId() == null) {
-				domainChara.getInstrumentConfiguration()
-						.setCreatedBy(createdBy);
-				domainChara.getInstrumentConfiguration().setCreatedDate(
-						createdDate);
-			}
-		}
-		for (DerivedBioAssayData bioAssayData : charBean
-				.getDerivedBioAssayDataList()) {
-			if (bioAssayData.getId() == null) {
-				bioAssayData.setCreatedBy(createdBy);
-				bioAssayData.setCreatedDate(createdDate);
-				if (bioAssayData.getLabFile().getId() != null) {
-					bioAssayData.getLabFile().setCreatedBy(createdBy);
-					bioAssayData.getLabFile().setCreatedDate(createdDate);
-				}
-				if (bioAssayData.getDerivedDatumCollection() != null) {
-					for (DerivedDatum datum : bioAssayData
-							.getDerivedDatumCollection()) {
-						if (datum.getId() != null) {
-							datum.setCreatedBy(createdBy);
-							datum.setCreatedDate(createdDate);
-						}
-					}
-				}
-			}
-		}
+		charService.saveCharacterization(particleBean.getDomainParticleSample(),
+				charBean.getDomainChar(), user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addPhysicalCharacterization");
@@ -124,8 +87,8 @@ public class PhysicalCharacterizationAction extends BaseAnnotationAction {
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
-				particleBean.getParticleSample().getName(),
-				particleBean.getParticleSample().getSource()
+				particleBean.getDomainParticleSample().getName(),
+				particleBean.getDomainParticleSample().getSource()
 						.getOrganizationName(), user);
 		ServletContext appContext = request.getSession().getServletContext();
 		String submitType = request.getParameter("submitType");

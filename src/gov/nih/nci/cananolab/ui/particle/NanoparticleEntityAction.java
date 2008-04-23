@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.17 2008-04-22 17:38:34 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.18 2008-04-23 13:48:03 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -17,8 +17,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,30 +45,13 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
 		ParticleBean particleBean = initSetup(theForm, request);
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
-		Date now = new Date();
-		if (entityBean.getDomainEntity().getId() != null
-				&& entityBean.getDomainEntity().getId() == 0) {
-			entityBean.getDomainEntity().setId(null);
-		}
-		if (entityBean.getDomainEntity().getId() == null) {
-			entityBean.getDomainEntity().setCreatedBy(user.getLoginName());
-			entityBean.getDomainEntity().setCreatedDate(now);
-		}
-		for (ComposingElementBean compElementBean : entityBean
-				.getComposingElements()) {
-			if (compElementBean.getDomainComposingElement().getId() == null) {
-				compElementBean.getDomainComposingElement().setCreatedBy(
-						user.getLoginName());
-				compElementBean.getDomainComposingElement().setCreatedDate(now);
-			}
-		}
-
-		compositionService.saveNanoparticleEntity(particleBean, entityBean);
+		entityBean.setDomainEntity();
+		compositionService.saveNanoparticleEntity(particleBean
+				.getDomainParticleSample(), entityBean.getDomainEntity());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanoparticleEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -107,8 +88,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance().setFunctionTypes(request);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
-				particleBean.getParticleSample().getName(),
-				particleBean.getParticleSample().getSource()
+				particleBean.getDomainParticleSample().getName(),
+				particleBean.getDomainParticleSample().getSource()
 						.getOrganizationName(), user);
 
 		return mapping.getInputForward();

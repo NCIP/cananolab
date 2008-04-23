@@ -6,7 +6,8 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 
 <c:set var="action" value="Submit" scope="request" />
-<c:if test="${param.dispatch eq 'setupUpdate' || updateDataTree eq 'true'}">
+<c:if
+	test="${param.dispatch eq 'setupUpdate' || updateDataTree eq 'true'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 <html:form action="/submitNanoparticleSample">
@@ -41,11 +42,13 @@
 								<strong>Nanoparticle Sample Name *</strong>
 							</td>
 							<td class="rightLabel">
-								<html:text property="particleSampleBean.particleSample.name" />
+								<html:text
+									property="particleSampleBean.domainParticleSample.name" />
 								<c:if
-									test="${!empty nanoparticleSampleForm.map.particleSampleBean.particleSample.id}">
-									<html:hidden property="particleSampleBean.particleSample.id"
-										value="${nanoparticleSampleForm.map.particleSampleBean.particleSample.id}" />
+									test="${!empty nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}">
+									<html:hidden
+										property="particleSampleBean.domainParticleSample.id"
+										value="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}" />
 								</c:if>
 							</td>
 						</tr>
@@ -55,7 +58,7 @@
 							</td>
 							<td class="rightLabel">
 								<html:select
-									property="particleSampleBean.particleSample.source.organizationName"
+									property="particleSampleBean.domainParticleSample.source.organizationName"
 									styleId="sampleSource"
 									onchange="javascript:callPrompt('Nanoparticle Sample Source', 'sampleSource');">
 									<option />
@@ -109,6 +112,8 @@
 												<input type="reset" value="Reset" onclick="">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
+												<html:hidden property="particleSampleBean.createdBy"
+													value="${user.loginName }" />
 												<html:submit value="${action}" />
 											</div>
 										</div>

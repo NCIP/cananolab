@@ -5,12 +5,9 @@ import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -125,10 +122,8 @@ public class NanoparticleSampleService {
 	 * @param particleSampleBean
 	 * @throws Exception
 	 */
-	public void saveNanoparticleSample(ParticleBean particleBean)
+	public void saveNanoparticleSample(NanoparticleSample particleSample)
 			throws Exception {
-		NanoparticleSample particleSample = particleBean.getParticleSample();
-
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -140,25 +135,20 @@ public class NanoparticleSampleService {
 			throw new DuplicateEntriesException(
 					"This nanoparticle sample ID has already been used.  Please use a different one");
 		}
-
 		Source dbSource = (Source) appService.getObject(Source.class,
 				"organizationName", particleSample.getSource()
 						.getOrganizationName());
 		if (dbSource != null) {
-			particleSample.setSource(dbSource);
+			particleSample.getSource().setId(dbSource.getId());
 		}
 
-		Collection<Keyword> keywords = new HashSet<Keyword>();
 		for (Keyword keyword : particleSample.getKeywordCollection()) {
 			Keyword dbKeyword = (Keyword) appService.getObject(Keyword.class,
 					"name", keyword.getName());
 			if (dbKeyword != null) {
-				keywords.add(dbKeyword);
-			} else {
-				keywords.add(keyword);
+				keyword.setId(dbKeyword.getId());
 			}
 		}
-		particleSample.setKeywordCollection(keywords);
 		appService.saveOrUpdate(particleSample);
 	}
 
@@ -501,11 +491,12 @@ public class NanoparticleSampleService {
 		List<String> publicData = auth.getPublicData();
 		List<ParticleBean> allowedParticles = new ArrayList<ParticleBean>();
 		for (ParticleBean particle : particles) {
-			if (publicData.contains(particle.getParticleSample().getName())) {
+			if (publicData.contains(particle.getDomainParticleSample()
+					.getName())) {
 				allowedParticles.add(particle);
 			} else if (user != null) {
-				if (auth.checkReadPermission(user, particle.getParticleSample()
-						.getName())) {
+				if (auth.checkReadPermission(user, particle
+						.getDomainParticleSample().getName())) {
 					allowedParticles.add(particle);
 				}
 			}
@@ -527,8 +518,8 @@ public class NanoparticleSampleService {
 	public SortedSet<String> getStoredCharacterizationClassNames(
 			ParticleBean particle) {
 		SortedSet<String> storedChars = new TreeSet<String>();
-		if (particle.getParticleSample().getCharacterizationCollection() != null) {
-			for (Characterization achar : particle.getParticleSample()
+		if (particle.getDomainParticleSample().getCharacterizationCollection() != null) {
+			for (Characterization achar : particle.getDomainParticleSample()
 					.getCharacterizationCollection()) {
 				storedChars.add(ClassUtils.getShortClassName(achar.getClass()
 						.getCanonicalName()));
@@ -541,11 +532,11 @@ public class NanoparticleSampleService {
 			ParticleBean particle) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particle.getParticleSample().getSampleComposition() != null
-				&& particle.getParticleSample().getSampleComposition()
+		if (particle.getDomainParticleSample().getSampleComposition() != null
+				&& particle.getDomainParticleSample().getSampleComposition()
 						.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : particle.getParticleSample()
-					.getSampleComposition()
+			for (FunctionalizingEntity entity : particle
+					.getDomainParticleSample().getSampleComposition()
 					.getFunctionalizingEntityCollection()) {
 				storedEntities.add(ClassUtils.getShortClassName(entity
 						.getClass().getCanonicalName()));
@@ -557,11 +548,11 @@ public class NanoparticleSampleService {
 	public SortedSet<String> getStoredFunctionClassNames(ParticleBean particle) {
 		SortedSet<String> storedFunctions = new TreeSet<String>();
 
-		if (particle.getParticleSample().getSampleComposition() != null) {
-			if (particle.getParticleSample().getSampleComposition()
+		if (particle.getDomainParticleSample().getSampleComposition() != null) {
+			if (particle.getDomainParticleSample().getSampleComposition()
 					.getNanoparticleEntityCollection() != null) {
-				for (NanoparticleEntity entity : particle.getParticleSample()
-						.getSampleComposition()
+				for (NanoparticleEntity entity : particle
+						.getDomainParticleSample().getSampleComposition()
 						.getNanoparticleEntityCollection()) {
 					for (ComposingElement element : entity
 							.getComposingElementCollection()) {
@@ -574,10 +565,10 @@ public class NanoparticleSampleService {
 					}
 				}
 			}
-			if (particle.getParticleSample().getSampleComposition()
+			if (particle.getDomainParticleSample().getSampleComposition()
 					.getFunctionalizingEntityCollection() != null) {
 				for (FunctionalizingEntity entity : particle
-						.getParticleSample().getSampleComposition()
+						.getDomainParticleSample().getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
 					for (Function function : entity.getFunctionCollection()) {
 						storedFunctions.add(ClassUtils
@@ -594,10 +585,10 @@ public class NanoparticleSampleService {
 			ParticleBean particle) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particle.getParticleSample().getSampleComposition() != null
-				&& particle.getParticleSample().getSampleComposition()
+		if (particle.getDomainParticleSample().getSampleComposition() != null
+				&& particle.getDomainParticleSample().getSampleComposition()
 						.getNanoparticleEntityCollection() != null) {
-			for (NanoparticleEntity entity : particle.getParticleSample()
+			for (NanoparticleEntity entity : particle.getDomainParticleSample()
 					.getSampleComposition().getNanoparticleEntityCollection()) {
 				storedEntities.add(ClassUtils.getShortClassName(entity
 						.getClass().getCanonicalName()));
