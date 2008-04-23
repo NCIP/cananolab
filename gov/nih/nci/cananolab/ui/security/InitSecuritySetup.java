@@ -2,12 +2,12 @@ package gov.nih.nci.cananolab.ui.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -59,10 +59,10 @@ public class InitSecuritySetup {
 		return status;
 	}
 
-	public void setAllVisibilityGroups(HttpSession session)
+	public void setAllVisibilityGroups(HttpServletRequest request)
 			throws CaNanoLabSecurityException {
 		List<String> groupNames = authorizationService.getAllVisibilityGroups();
-		session.setAttribute("allVisibilityGroups", groupNames);
+		request.getSession().setAttribute("allVisibilityGroups", groupNames);
 	}
 
 	public void setApplicationOwner(HttpSession session) {
