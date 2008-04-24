@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -58,7 +59,6 @@ public class NanoparticleCharacterizationService {
 		}
 		achar.setNanoparticleSample(particleSample);
 		particleSample.getCharacterizationCollection().add(achar);
-
 
 		appService.saveOrUpdate(achar);
 	}
@@ -159,5 +159,18 @@ public class NanoparticleCharacterizationService {
 			throw new ParticleCharacterizationException(err);
 		}
 		return instrumentAbbreviation;
+	}
+
+	public String[] getDerivedDatumValueUnits(String derivedDatumName)
+			throws ParticleCharacterizationException {
+		try {
+			SortedSet<String> units = LookupService.getLookupValues(
+					derivedDatumName, "unit");
+			return units.toArray(new String[0]);
+		} catch (Exception e) {
+			String err = "Error getting value unit for " + derivedDatumName;
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err, e);
+		}
 	}
 }
