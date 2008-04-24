@@ -1,10 +1,9 @@
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<html:form action="/nanoparticleEntity">
+
 <table width="100%" align="center">
 	<tr>
 		<td>
 			<h4>
-				${particleName} Sample Comosition - Nanoparticle Entity
+				${particleName} Sample Comosition - Functionalizing Entity
 			</h4>
 		</td>
 		<td align="right" width="15%">
@@ -35,10 +34,11 @@
 				</tr>
 				<tr>
 					<td class="leftLabel">
-						<strong>Particle Entity Type</strong>
+						<strong>Particle Entity Type*</strong>
 					</td>
 					<td class="rightLabel">
-						${nanoparticleEntityForm.map.entity.type}&nbsp;
+
+						particle entity test
 					</td>
 				</tr>
 				<tr>
@@ -46,7 +46,7 @@
 						<strong>Description</strong>
 					</td>
 					<td class="rightLabel" colspan="3">
-						${nanoparticleEntityForm.map.entity.description}&nbsp;
+						description test
 					</td>
 				</tr>
 			</table>
@@ -67,8 +67,8 @@
 								<tr>
 									<td></td>
 									<td>
-										<logic:iterate name="nanoparticleEntityForm"
-											property="entity.composingElements"
+										<logic:iterate name="nanoparticleCompositionForm"
+											property="composition.composingElements"
 											id="composingElement" indexId="ind">
 											<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 												width="100%" align="center" summary="" border="0">
@@ -80,16 +80,16 @@
 													</tr>
 													<tr>
 														<td class="leftLabelWithTop" valign="top">
-															<strong>Composing Element Type</strong>
+															<strong>Composing Element Type*</strong>
 														</td>
 														<td class="labelWithTop">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.type}
+															composing element type test
 														</td>
 														<td class="labelWithTop" valign="top">
 															<strong>Chemical Name</strong>
 														</td>
 														<td class="rightLabelWithTop">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.name}
+															chemical name test
 														</td>
 													</tr>
 													<tr>
@@ -97,13 +97,13 @@
 															<strong>Molecular Formula Type</strong>
 														</td>
 														<td class="labelWithTop" valign="top">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}
+															molecular formula type test
 														</td>
 														<td class="labelWithTop" valign="top">
 															<strong>Molecular Formula</strong>
 														</td>
 														<td class="rightLabelWithTop" valign="top">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}
+															molecular formula test
 														</td>
 													</tr>
 													<tr>
@@ -111,13 +111,13 @@
 															<strong>Value</strong>
 														</td>
 														<td class="labelWithTop" valign="top">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}
+															value test
 														</td>
 														<td class="labelWithTop" valign="top">
 															<strong>Unit</strong>
 														</td>
 														<td class="rightLabelWithTop" valign="top">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}
+															unit test
 														</td>
 													</tr>
 													<tr>
@@ -125,7 +125,7 @@
 															<strong>Description</strong>
 														</td>
 														<td class="rightLabel" colspan="3">
-															${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.description}
+															description test
 														</td>
 													</tr>
 												</tbody>
@@ -156,8 +156,8 @@
 								<tr>
 									<td></td>
 									<td>
-										<logic:iterate name="nanoparticleEntityForm"
-											property="entity.composingElements"
+										<logic:iterate name="nanoparticleCompositionForm"
+											property="composition.composingElements"
 											id="composingElement" indexId="ind">
 											<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 												width="100%" align="center" summary="" border="0">
@@ -196,4 +196,3 @@
 		</td>
 	</tr>
 </table>
-</html:form>

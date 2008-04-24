@@ -35,7 +35,7 @@
 						onchange="javascript:callPrompt('Function Type', 'funcType_${param.compEleInd}_${ifInd}');
 									displayModality(${param.compEleInd}, ${ifInd}); ">
 						<option value="" />
-							<html:options name="functionTypes" />
+						<html:options name="functionTypes" />
 						<option value="other">
 							[Other]
 						</option>

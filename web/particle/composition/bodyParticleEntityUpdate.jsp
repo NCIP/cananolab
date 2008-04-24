@@ -44,7 +44,7 @@
 						<td class="rightLabel">
 							<html:select styleId="peType" property="entity.type"
 								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); 
-											setEntityInclude(); getComposingElementOptions(); getBiopolymerOptions();">
+											setEntityInclude('peType'); getComposingElementOptions(); getBiopolymerOptions('peType');">
 								<option value=""></option>
 								<html:options name="nanoparticleEntityTypes" />
 								<option value="other">
@@ -63,26 +63,23 @@
 						</td>
 					</tr>
 				</table>
+				<br>
 				<div id="entityInclude">
-					<c:choose>
-						<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
-							<c:set var="entityType"
-								value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
-							<%
-										String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-										.getInstance().getObjectName(
-										(String) pageContext.getAttribute("entityType"),
-										application);
-								pageContext.setAttribute("entityClass", entityClass);
-							%>
-							<jsp:include
-								page="/particle/composition/body${entityClass}Info.jsp" />
-						</c:when>
-						<c:otherwise>
-							<br>
-						</c:otherwise>
-					</c:choose>
+					<c:if test="${!empty nanoparticleEntityForm.map.entity.type}">
+						<c:set var="entityType"
+							value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
+						<%
+									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+									.getInstance().getObjectName(
+									(String) pageContext.getAttribute("entityType"),
+									application);
+							pageContext.setAttribute("entityClass", entityClass);
+						%>
+						<jsp:include
+							page="/particle/composition/body${entityClass}Info.jsp" />
+					</c:if>
 				</div>
+				<br>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -115,7 +112,7 @@
 																<span>Composing Element #${ind + 1}</span>
 															</td>
 															<td class="formSubTitleNoLeft" align="right">
-																<a href="#" id="removeCE1"
+																<a href="#" 
 																	onclick="removeComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'removeComposingElement');return false;">
 																	<img src="images/delete.gif" border="0"
 																		alt="remove this composing element"> </a>
@@ -209,17 +206,20 @@
 																	rows="3" cols="65" />
 															</td>
 														</tr>
-														
+
 														<tr>
 															<td valign="bottom" class="leftLabel">
-																<a href="#" onclick="javascript:addChildComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'addInherentFunction'); return false;">
-																<span class="addLink2">Add Inherent Function</span></a>
+																<a href="#"
+																	onclick="javascript:addChildComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'addInherentFunction'); return false;">
+																	<span class="addLink2">Add Inherent Function</span>
+																</a>
 															</td>
 															<td colspan="3" class="rightLabel">
 																<jsp:include
 																	page="/particle/composition/bodyFunctionUpdate.jsp">
 																	<jsp:param name="compEleInd" value="${ind}" />
-																</jsp:include>&nbsp;
+																</jsp:include>
+																&nbsp;
 															</td>
 														</tr>
 
@@ -247,26 +247,24 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-
 								<table border="0" width="100%">
 									<tr>
 										<td valign="bottom">
 											<a href="#"
-												onclick="javascript:addComponent(nanoparticleEntityForm, 'nanoparticleEntity', 'addFile'); return false;"> <span
-												class="addLink">Add File</span> </a>
+												onclick="javascript:addComponent(nanoparticleEntityForm, 'nanoparticleEntity', 'addFile'); return false;">
+												<span class="addLink">Add File</span> </a>
 										</td>
 										<td id="fileTd">
-											
 											<logic:iterate name="nanoparticleEntityForm"
-												property="entity.files"
-												id="entityFile" indexId="fileInd">
+												property="entity.files" id="entityFile" indexId="fileInd">
 												<jsp:include
 													page="/particle/composition/bodyCompositionFileInfo.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
+													<jsp:param name="form" value="nanoparticleEntityForm" />
+													<jsp:param name="action" value="nanoparticleEntity" />
 												</jsp:include>
 												<br>
 											</logic:iterate>
-										
 										</td>
 									</tr>
 								</table>
