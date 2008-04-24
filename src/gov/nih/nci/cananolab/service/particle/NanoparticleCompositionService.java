@@ -3,23 +3,18 @@ package gov.nih.nci.cananolab.service.particle;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
-import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -46,41 +41,47 @@ public class NanoparticleCompositionService {
 	}
 
 	public void saveNanoparticleEntity(NanoparticleSample particleSample,
-			NanoparticleEntity entity) throws Exception {
+			NanoparticleEntity entity) throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		if (entity.getId() != null) {
-			try {
-				NanoparticleEntity dbEntity = (NanoparticleEntity) appService
-						.load(NanoparticleEntity.class, entity.getId());
-			} catch (Exception e) {
-				String err = "Object doesn't exist in the database anymore.  Please log in again.";
-				logger.error(err);
-				throw new ParticleCompositionException(err, e);
+			if (entity.getId() != null) {
+				try {
+					NanoparticleEntity dbEntity = (NanoparticleEntity) appService
+							.load(NanoparticleEntity.class, entity.getId());
+				} catch (Exception e) {
+					String err = "Object doesn't exist in the database anymore.  Please log in again.";
+					logger.error(err);
+					throw new ParticleCompositionException(err, e);
+				}
 			}
-		}
-		SampleComposition composition = particleSample.getSampleComposition();
-		if (composition == null) {
-			composition = new SampleComposition();
-			entity.setSampleComposition(composition);
-			particleSample.setSampleComposition(composition);
-			Collection<NanoparticleEntity> entityCollection = new HashSet<NanoparticleEntity>();
-			entityCollection.add(entity);
-			composition.setNanoparticleEntityCollection(entityCollection);
-			composition.setNanoparticleSample(particleSample);
-		} else {
-			entity.setSampleComposition(composition);
-		}
-		appService.saveOrUpdate(entity);
-		if (entity instanceof OtherNanoparticleEntity) {
-			//TODO save other entity type
+			SampleComposition composition = particleSample
+					.getSampleComposition();
+			if (composition == null) {
+				composition = new SampleComposition();
+				entity.setSampleComposition(composition);
+				particleSample.setSampleComposition(composition);
+				Collection<NanoparticleEntity> entityCollection = new HashSet<NanoparticleEntity>();
+				entityCollection.add(entity);
+				composition.setNanoparticleEntityCollection(entityCollection);
+				composition.setNanoparticleSample(particleSample);
+			} else {
+				entity.setSampleComposition(composition);
+			}
+			appService.saveOrUpdate(entity);
+			if (entity instanceof OtherNanoparticleEntity) {
+				// TODO save other entity type
+			}
+		} catch (Exception e) {
+			String err = "Error in saving a nanoparticle entity.";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 	}
 
 	public NanoparticleEntityBean findNanoparticleEntityBy(String entityId,
-			UserBean user) throws ParticleException, CaNanoLabSecurityException {
+			UserBean user) throws ParticleCompositionException {
 		NanoparticleEntityBean entityBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -97,49 +98,56 @@ public class NanoparticleCompositionService {
 			}
 			return entityBean;
 		} catch (Exception e) {
-			logger.error("Problem finding the nanoparticle entity by id: "
-					+ entityId, e);
-			throw new ParticleException();
+			String err = "Problem finding the nanoparticle entity by id: "
+					+ entityId;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 	}
 
 	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
-			FunctionalizingEntity entity) throws Exception {
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		if (entity.getId() != null) {
-			try {
-				FunctionalizingEntity dbEntity = (FunctionalizingEntity) appService
-						.load(FunctionalizingEntity.class, entity.getId());
-			} catch (Exception e) {
-				String err = "Object doesn't exist in the database anymore.  Please log in again.";
-				logger.error(err);
-				throw new ParticleCompositionException(err, e);
+			FunctionalizingEntity entity) throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			if (entity.getId() != null) {
+				try {
+					FunctionalizingEntity dbEntity = (FunctionalizingEntity) appService
+							.load(FunctionalizingEntity.class, entity.getId());
+				} catch (Exception e) {
+					String err = "Object doesn't exist in the database anymore.  Please log in again.";
+					logger.error(err);
+					throw new ParticleCompositionException(err, e);
+				}
 			}
-		}
-		SampleComposition composition = particleSample.getSampleComposition();
-		if (composition != null) {
-			entity.setSampleComposition(composition);
-			composition.getFunctionalizingEntityCollection().add(entity);
-		} else {
-			composition = new SampleComposition();
-			entity.setSampleComposition(composition);
-			particleSample.setSampleComposition(composition);
-			Collection<FunctionalizingEntity> entityCollection = new HashSet<FunctionalizingEntity>();
-			entityCollection.add(entity);
-			composition.setFunctionalizingEntityCollection(entityCollection);
-			composition.setNanoparticleSample(particleSample);
-		}
-		appService.saveOrUpdate(entity);
-		if (entity instanceof OtherFunctionalizingEntity) {
-			//TODO save other entity type
+			SampleComposition composition = particleSample
+					.getSampleComposition();
+			if (composition != null) {
+				entity.setSampleComposition(composition);
+				composition.getFunctionalizingEntityCollection().add(entity);
+			} else {
+				composition = new SampleComposition();
+				entity.setSampleComposition(composition);
+				particleSample.setSampleComposition(composition);
+				Collection<FunctionalizingEntity> entityCollection = new HashSet<FunctionalizingEntity>();
+				entityCollection.add(entity);
+				composition
+						.setFunctionalizingEntityCollection(entityCollection);
+				composition.setNanoparticleSample(particleSample);
+			}
+			appService.saveOrUpdate(entity);
+			if (entity instanceof OtherFunctionalizingEntity) {
+				// TODO save other entity type
+			}
+		} catch (Exception e) {
+			String err = "Problem saving the functionalizing entity.";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityBy(
-			String entityId, UserBean user) throws ParticleException,
-			CaNanoLabSecurityException {
+			String entityId, UserBean user) throws ParticleCompositionException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -157,9 +165,10 @@ public class NanoparticleCompositionService {
 			}
 			return entityBean;
 		} catch (Exception e) {
-			logger.error("Problem finding the functionalizing entity by id: "
-					+ entityId, e);
-			throw new ParticleException();
+			String err = "Problem finding the functionalizing entity by id: "
+					+ entityId;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 	}
 
@@ -167,10 +176,10 @@ public class NanoparticleCompositionService {
 	 * Return user-defined functionalizing entity types
 	 * 
 	 * @return
-	 * @throws ParticleException
+	 * @throws ParticleCompositionException
 	 */
 	public SortedSet<String> getAllOtherFunctionalizingEntityTypes()
-			throws ParticleException {
+			throws ParticleCompositionException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -181,24 +190,22 @@ public class NanoparticleCompositionService {
 				OtherFunctionalizingEntity other = (OtherFunctionalizingEntity) obj;
 				types.add(other.getType());
 			}
+			return types;
 		} catch (Exception e) {
-			logger
-					.error(
-							"Error in retrieving other values for functionalizing entity",
-							e);
-			throw new ParticleException();
+			String err = "Error in retrieving other values for functionalizing entity";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
-		return types;
 	}
 
 	/**
 	 * Return user-defined function types
 	 * 
 	 * @return
-	 * @throws ParticleException
+	 * @throws ParticleCompositionException
 	 */
 	public SortedSet<String> getAllOtherFunctionTypes()
-			throws ParticleException {
+			throws ParticleCompositionException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -209,21 +216,22 @@ public class NanoparticleCompositionService {
 				OtherFunction other = (OtherFunction) obj;
 				types.add(other.getType());
 			}
+			return types;
 		} catch (Exception e) {
-			logger.error("Error in retrieving other function types", e);
-			throw new ParticleException();
+			String err = "Error in retrieving other function types";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
-		return types;
 	}
 
 	/**
 	 * Return user-defined functionalizing entity types
 	 * 
 	 * @return
-	 * @throws ParticleException
+	 * @throws ParticleCompositionException
 	 */
 	public SortedSet<String> getAllOtherNanoparticleEntityTypes()
-			throws ParticleException {
+			throws ParticleCompositionException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -235,12 +243,10 @@ public class NanoparticleCompositionService {
 				types.add(other.getType());
 			}
 		} catch (Exception e) {
-			logger.error(
-					"Error in retrieving other values for nanoparticle entity",
-					e);
-			throw new ParticleException();
+			String err = "Error in retrieving other values for nanoparticle entity";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 		return types;
 	}
-
 }
