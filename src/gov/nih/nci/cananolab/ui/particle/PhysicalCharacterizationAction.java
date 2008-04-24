@@ -6,19 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.2 2008-04-23 13:48:03 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.3 2008-04-24 08:08:17 pansu Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-
-import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -49,12 +43,13 @@ public class PhysicalCharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
-
+		charBean.setDomainChar();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particleBean = initSetup(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		charService.saveCharacterization(particleBean.getDomainParticleSample(),
-				charBean.getDomainChar(), user.getLoginName());
+		charService.saveCharacterization(
+				particleBean.getDomainParticleSample(), charBean
+						.getDomainChar(), user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addPhysicalCharacterization");
