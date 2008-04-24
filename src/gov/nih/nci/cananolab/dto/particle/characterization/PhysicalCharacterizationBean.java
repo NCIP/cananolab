@@ -22,35 +22,35 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 	public PhysicalCharacterizationBean() {
 	}
 
-	public PhysicalCharacterizationBean(PhysicalCharacterization achar) {
-		super(achar);
-		if (achar instanceof MolecularWeight) {
-			domainChar = (MolecularWeight) achar; 
+	public PhysicalCharacterizationBean(PhysicalCharacterization chara) {
+		super(chara);
+		if (chara instanceof MolecularWeight) {
+			domainChar = (MolecularWeight) chara; 
 			setClassName(ClassUtils.getShortClassName(MolecularWeight.class
 					.getName()));
-		} else if (achar instanceof Size) {
-			domainChar = (Size) achar;
+		} else if (chara instanceof Size) {
+			domainChar = (Size) chara;
 			setClassName(ClassUtils.getShortClassName(Size.class.getName()));
-		} else if (achar instanceof PhysicalState) {
-			physicalState = (PhysicalState) achar;
+		} else if (chara instanceof PhysicalState) {
+			physicalState = (PhysicalState) chara;
 			domainChar = physicalState;
 			setClassName(ClassUtils.getShortClassName(PhysicalState.class
 					.getName()));
-		} else if (achar instanceof Shape) {
-			shape = (Shape) achar;
+		} else if (chara instanceof Shape) {
+			shape = (Shape) chara;
 			domainChar = shape;
 			setClassName(ClassUtils.getShortClassName(Shape.class.getName()));
-		} else if (achar instanceof Solubility) {
-			solubility = (Solubility) achar;
+		} else if (chara instanceof Solubility) {
+			solubility = (Solubility) chara;
 			domainChar = solubility;
 			setClassName(ClassUtils.getShortClassName(Solubility.class
 					.getName()));
-		} else if (achar instanceof Surface) {
-			domainChar = (Surface) achar;
+		} else if (chara instanceof Surface) {
+			domainChar = (Surface) chara;
 			surfaceBean = new SurfaceBean((Surface) domainChar);
 			setClassName(ClassUtils.getShortClassName(Surface.class.getName()));
-		} else if (achar instanceof Purity) {
-			domainChar = (Purity) achar;
+		} else if (chara instanceof Purity) {
+			domainChar = (Purity) chara;
 			setClassName(ClassUtils.getShortClassName(Purity.class.getName()));
 		}
 	}
