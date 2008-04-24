@@ -26,7 +26,6 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 	private SurfaceBean surfaceBean = new SurfaceBean();
 
 	public PhysicalCharacterizationBean() {
-		domainChar = new PhysicalCharacterization();
 	}
 
 	public PhysicalCharacterizationBean(PhysicalCharacterization achar) {
@@ -67,43 +66,36 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 
 	public MolecularWeight getMolecularWeight() {
 		domainChar = molecularWeight;
-		setDomainChar();
 		return molecularWeight;
 	}
 
 	public PhysicalState getPhysicalState() {
 		domainChar = physicalState;
-		setDomainChar();
 		return physicalState;
 	}
 
 	public Purity getPurity() {
 		domainChar = purity;
-		setDomainChar();
 		return purity;
 	}
 
 	public Shape getShape() {
 		domainChar = shape;
-		setDomainChar();
 		return shape;
 	}
 
 	public Size getSize() {
 		domainChar = size;
-		setDomainChar();
 		return size;
 	}
 
 	public Solubility getSolubility() {
 		domainChar = solubility;
-		setDomainChar();
 		return solubility;
 	}
 
 	public SurfaceBean getSurfaceBean() {
 		domainChar = surfaceBean.getDomainSurface();
-		setDomainChar();
 		return surfaceBean;
 	}
 }
