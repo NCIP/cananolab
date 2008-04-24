@@ -8,12 +8,14 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.8 2008-04-23 13:48:03 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.9 2008-04-24 15:49:52 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
@@ -132,12 +134,67 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
+	public ActionForward addFile(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+				.get("entity");
+		entity.addFile();
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeFile(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("compInd");
+		int ind = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+				.get("entity");
+		entity.removeFile(ind);
+		return mapping.getInputForward();
+	}
+	
+	public ActionForward addTarget(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+				.get("entity");
+
+		String funcIndexStr = (String) request.getParameter("compInd");
+		int funcIndex = Integer.parseInt(funcIndexStr);
+		FunctionBean function = (FunctionBean) entity
+				.getFunctions().get(funcIndex);
+
+		function.addTarget();
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeTarget(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String funcIndexStr = (String) request.getParameter("compInd");
+		int funcIndex = Integer.parseInt(funcIndexStr);
+
+		String targetIndexStr = (String) request.getParameter("childCompInd");
+		int targetIndex = Integer.parseInt(targetIndexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+				.get("entity");
+		FunctionBean function = (FunctionBean) entity
+						.getFunctions().get(funcIndex);
+		function.removeTarget(targetIndex);
+		return mapping.getInputForward();
+	}
+	
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
-		 * NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 		 * .get("entity"); // update editable dropdowns HttpSession session =
 		 * request.getSession();
 		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
