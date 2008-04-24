@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.3 2008-04-24 08:08:17 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.4 2008-04-24 22:30:22 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -78,8 +78,6 @@ public class PhysicalCharacterizationAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("characterizationForm");
 		ParticleBean particleBean = initSetup(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
 				particleBean.getDomainParticleSample().getName(),
@@ -89,13 +87,16 @@ public class PhysicalCharacterizationAction extends BaseAnnotationAction {
 		String submitType = request.getParameter("submitType");
 		String charClass = InitSetup.getInstance().getObjectName(submitType,
 				appContext);
-		request.setAttribute("charClass", charClass);
+		request.getSession().setAttribute("charClass", charClass);
 		InitSetup.getInstance().setSharedDropdowns(appContext);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, charClass);
 		InitCharacterizationSetup.getInstance()
 				.setPhysicalCharacterizationDropdowns(request, charClass);
-
+		request.setAttribute("updateDataTree", "true");
+		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
+		InitNanoparticleSetup.getInstance().getFileTypes(request);
+		
 		// ParticleBean particleBean = initSetup(theForm, request);
 		// InitParticleSetup.getInstance()
 		// .setAllCharacterizationMeasureUnitsTypes(session, submitType);
