@@ -18,7 +18,7 @@
 		test="${hasCompositionData eq 'true' || canCreateNanoparticle eq 'true'}">
 		<c:set var="compositionType" value="Composition" />
 		<li class="controlList">
-			<a href="#" class="subMenuSecondary">COMPOSITION</a>
+			<a href="#" class="subMenuSecondary">SAMPLE COMPOSITION</a>
 
 			<ul class="sublist_4" style="">
 				<c:forEach var="compoDataBean"
