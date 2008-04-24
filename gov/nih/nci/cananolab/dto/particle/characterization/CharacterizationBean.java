@@ -51,26 +51,28 @@ public class CharacterizationBean {
 		instrumentConfig.setInstrument(new Instrument());
 	}
 
-	public CharacterizationBean(Characterization achar) {
-		this.description = achar.getDescription();
-		this.viewTitle = achar.getIdentificationName();
-		instrumentConfig = achar.getInstrumentConfiguration();
-		for (DerivedBioAssayData bioassayData : achar
+	public CharacterizationBean(Characterization chara) {
+		this.description = chara.getDescription();
+		this.viewTitle = chara.getIdentificationName();
+		instrumentConfig = chara.getInstrumentConfiguration();
+		for (DerivedBioAssayData bioassayData : chara
 				.getDerivedBioAssayDataCollection()) {
 			derivedBioAssayDataList.add(bioassayData);
 		}
-		protocolFileBean = new ProtocolFileBean(achar.getProtocolFile());
+		protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
 	}
 
 	public void setDomainChar() {
 		try {
+			// take care of characterizations that don't have any special
+			// properties shown in the form
 			if (domainChar == null) {
 				Class clazz = ClassUtils.getFullClass(className);
 				domainChar = (Characterization) clazz.newInstance();
 				domainChar.setDescription(description);
 				domainChar.setIdentificationName(viewTitle);
 			}
-			if (domainChar.getId()==null) {
+			if (domainChar.getId() == null) {
 				domainChar.setCreatedBy(createdBy);
 				domainChar.setCreatedDate(new Date());
 			}
