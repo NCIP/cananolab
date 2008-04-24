@@ -63,12 +63,12 @@ public class NanoparticleSampleService {
 			for (Object obj : results) {
 				sampleSources.add((Source) obj);
 			}
+			return sampleSources;
 		} catch (Exception e) {
-			logger.error("Error in retrieving all nanoparticle sample sources",
-					e);
-			throw new ParticleException();
+			String err = "Error in retrieving all nanoparticle sample sources";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
-		return sampleSources;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class NanoparticleSampleService {
 	 * @return all particle sources visible to user
 	 */
 	public SortedSet<Source> getAllParticleSources(UserBean user)
-			throws ParticleException, CaNanoLabSecurityException {
+			throws ParticleException {
 		SortedSet<Source> sampleSources = new TreeSet<Source>(
 				new CaNanoLabComparators.ParticleSourceComparator());
 		try {
@@ -96,15 +96,12 @@ public class NanoparticleSampleService {
 					sampleSources.add((Source) obj);
 				}
 			}
+			return sampleSources;
 		} catch (Exception e) {
-			logger
-					.error(
-							"Error in retrieving all nanoparticle sample sources for a user",
-							e);
-			throw new ParticleException();
+			String err = "Error in retrieving all nanoparticle sample sources for a user";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
-
-		return sampleSources;
 	}
 
 	/**
@@ -115,33 +112,39 @@ public class NanoparticleSampleService {
 	 * @throws Exception
 	 */
 	public void saveNanoparticleSample(NanoparticleSample particleSample)
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
+			throws ParticleException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 
-		NanoparticleSample dbParticle = (NanoparticleSample) appService
-				.getObject(NanoparticleSample.class, "name", particleSample
-						.getName());
-		if (dbParticle != null
-				&& !dbParticle.getId().equals(particleSample.getId())) {
-			throw new DuplicateEntriesException(
-					"This nanoparticle sample ID has already been used.  Please use a different one");
-		}
-		Source dbSource = (Source) appService.getObject(Source.class,
-				"organizationName", particleSample.getSource()
-						.getOrganizationName());
-		if (dbSource != null) {
-			particleSample.getSource().setId(dbSource.getId());
-		}
-
-		for (Keyword keyword : particleSample.getKeywordCollection()) {
-			Keyword dbKeyword = (Keyword) appService.getObject(Keyword.class,
-					"name", keyword.getName());
-			if (dbKeyword != null) {
-				keyword.setId(dbKeyword.getId());
+			NanoparticleSample dbParticle = (NanoparticleSample) appService
+					.getObject(NanoparticleSample.class, "name", particleSample
+							.getName());
+			if (dbParticle != null
+					&& !dbParticle.getId().equals(particleSample.getId())) {
+				throw new DuplicateEntriesException(
+						"This nanoparticle sample ID has already been used.  Please use a different one");
 			}
+			Source dbSource = (Source) appService.getObject(Source.class,
+					"organizationName", particleSample.getSource()
+							.getOrganizationName());
+			if (dbSource != null) {
+				particleSample.getSource().setId(dbSource.getId());
+			}
+
+			for (Keyword keyword : particleSample.getKeywordCollection()) {
+				Keyword dbKeyword = (Keyword) appService.getObject(
+						Keyword.class, "name", keyword.getName());
+				if (dbKeyword != null) {
+					keyword.setId(dbKeyword.getId());
+				}
+			}
+			appService.saveOrUpdate(particleSample);
+		} catch (Exception e) {
+			String err = "Error in saving the nanoparticle sample.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
-		appService.saveOrUpdate(particleSample);
 	}
 
 	/**
@@ -162,13 +165,12 @@ public class NanoparticleSampleService {
 			String[] particleSources, String[] nanoparticleEntityClassNames,
 			String[] functionalizingEntityClassNames,
 			String[] functionClassNames, String[] characterizationClassNames,
-			String[] wordList, UserBean user) throws ParticleException,
-			CaNanoLabSecurityException {
+			String[] wordList, UserBean user) throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-
 		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			if (particleSources != null && particleSources.length > 0) {
@@ -244,11 +246,9 @@ public class NanoparticleSampleService {
 			// TODO sort particles
 			return getAllowedParticles(auth, theParticles, user);
 		} catch (Exception e) {
-			logger
-					.error(
-							"Problem finding particles with the given search parameters ",
-							e);
-			throw new ParticleException();
+			String err = "Problem finding particles with the given search parameters.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
 	}
 
@@ -341,11 +341,12 @@ public class NanoparticleSampleService {
 	}
 
 	public ParticleBean findNanoparticleSampleById(String particleId,
-			UserBean user) throws ParticleException, CaNanoLabSecurityException {
+			UserBean user) throws ParticleException {
 		ParticleBean particleBean = null;
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
 		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
@@ -382,19 +383,19 @@ public class NanoparticleSampleService {
 			}
 
 		} catch (Exception e) {
-			logger
-					.error("Problem finding the particle by id: " + particleId,
-							e);
-			throw new ParticleException();
+			String err = "Problem finding the particle by id: " + particleId;
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
 	}
 
 	public ParticleBean findNanoparticleSampleByName(String particleName,
-			UserBean user) throws ParticleException, CaNanoLabSecurityException {
+			UserBean user) throws ParticleException {
 		ParticleBean particleBean = null;
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
 		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
@@ -429,11 +430,11 @@ public class NanoparticleSampleService {
 			} else {
 				return null;
 			}
-
 		} catch (Exception e) {
-			logger.error("Problem finding the particle by name: "
-					+ particleName, e);
-			throw new ParticleException();
+			String err = "Problem finding the particle by name: "
+					+ particleName;
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
 	}
 
@@ -448,12 +449,12 @@ public class NanoparticleSampleService {
 	 * @throws CaNanoLabSecurityException
 	 */
 	public SortedSet<SortableName> getOtherParticles(String particleSource,
-			String particleName, UserBean user) throws ParticleException,
-			CaNanoLabSecurityException {
+			String particleName, UserBean user) throws ParticleException {
 		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
 		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
@@ -469,31 +470,38 @@ public class NanoparticleSampleService {
 					otherParticles.add(new SortableName(particle.getName()));
 				}
 			}
+			return otherParticles;
 		} catch (Exception e) {
 			String err = "Error in retrieving other particles from source "
 					+ particleSource;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
-		return otherParticles;
 	}
 
 	public List<ParticleBean> getAllowedParticles(AuthorizationService auth,
-			List<ParticleBean> particles, UserBean user) throws Exception {
-		List<String> publicData = auth.getPublicData();
-		List<ParticleBean> allowedParticles = new ArrayList<ParticleBean>();
-		for (ParticleBean particle : particles) {
-			if (publicData.contains(particle.getDomainParticleSample()
-					.getName())) {
-				allowedParticles.add(particle);
-			} else if (user != null) {
-				if (auth.checkReadPermission(user, particle
-						.getDomainParticleSample().getName())) {
+			List<ParticleBean> particles, UserBean user)
+			throws ParticleException {
+		try {
+			List<String> publicData = auth.getPublicData();
+			List<ParticleBean> allowedParticles = new ArrayList<ParticleBean>();
+			for (ParticleBean particle : particles) {
+				if (publicData.contains(particle.getDomainParticleSample()
+						.getName())) {
 					allowedParticles.add(particle);
+				} else if (user != null) {
+					if (auth.checkReadPermission(user, particle
+							.getDomainParticleSample().getName())) {
+						allowedParticles.add(particle);
+					}
 				}
 			}
+			return allowedParticles;
+		} catch (Exception e) {
+			String err = "Error in retrieving allowed particles for a user.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		}
-		return allowedParticles;
 	}
 
 	public boolean isAllowed(AuthorizationService auth, String particleName,
@@ -610,5 +618,4 @@ public class NanoparticleSampleService {
 		}
 		return storedEntities;
 	}
-
 }
