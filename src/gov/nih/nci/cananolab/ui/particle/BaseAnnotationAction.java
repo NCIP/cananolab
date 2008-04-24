@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
@@ -68,7 +69,7 @@ public class BaseAnnotationAction extends AbstractDispatchAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addDerivedData(ActionMapping mapping, ActionForm form,
+	public ActionForward addDerivedDatum(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// if user pressed cancel in load characterization file
@@ -81,11 +82,12 @@ public class BaseAnnotationAction extends AbstractDispatchAction {
 				.get("achar");
 		String fileIndexStr = (String) request.getParameter("compInd");
 		int fileInd = Integer.parseInt(fileIndexStr);
-		achar.addDerivedDatum(fileInd);
+		DerivedBioAssayDataBean derivedBioAssayData=achar.getDerivedBioAssayDataList().get(fileInd);
+		derivedBioAssayData.addDerivedDatum();
 		return mapping.getInputForward();
 	}
 
-	public ActionForward removeDerivedData(ActionMapping mapping,
+	public ActionForward removeDerivedDatum(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		// if user pressed cancel in load characterization file
@@ -100,7 +102,8 @@ public class BaseAnnotationAction extends AbstractDispatchAction {
 		int fileInd = Integer.parseInt(fileIndexStr);
 		String dataIndexStr = (String) request.getParameter("childCompInd");
 		int dataInd = Integer.parseInt(dataIndexStr);
-		achar.removeDerivedDatum(fileInd, dataInd);
+		DerivedBioAssayDataBean derivedBioAssayData=achar.getDerivedBioAssayDataList().get(fileInd);
+		derivedBioAssayData.removeDerivedDatum(dataInd);
 		return mapping.getInputForward();
 		// return mapping.getInputForward(); this gives an
 		// IndexOutOfBoundException in the jsp page
