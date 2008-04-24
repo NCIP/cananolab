@@ -12,7 +12,7 @@
 			</td>
 			<td class="formSubTitleNoLeft" align="right">
 				<a href="#"
-					onclick="removeComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${param.fileInd}, 'removeFile');return false;">
+					onclick="removeComponent(${param.form}, '${param.action}', ${param.fileInd}, 'removeFile');return false;">
 							<img src="images/delete.gif" border="0" alt="remove this file">
 						</a>
 			</td>

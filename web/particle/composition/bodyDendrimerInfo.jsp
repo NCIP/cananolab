@@ -1,4 +1,3 @@
-<br>
 <table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -26,4 +25,3 @@
 	</tbody>
 </table>
 <input type="hidden" name="entity.dendrimer.id" value="${nanoparticleEntityForm.map.entity.dendrimer.id}"/>
-<br>
