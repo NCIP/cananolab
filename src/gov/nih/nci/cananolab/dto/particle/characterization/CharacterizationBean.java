@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class CharacterizationBean {
 
 	private String className;
 
+	private String createdBy;
+
 	public CharacterizationBean() {
 		instrumentConfig.setInstrument(new Instrument());
 	}
@@ -61,10 +64,16 @@ public class CharacterizationBean {
 
 	public void setDomainChar() {
 		try {
-			Class clazz = ClassUtils.getFullClass(className);
-			domainChar = (Characterization) clazz.newInstance();
-			domainChar.setDescription(description);
-			domainChar.setIdentificationName(viewTitle);
+			if (domainChar == null) {
+				Class clazz = ClassUtils.getFullClass(className);
+				domainChar = (Characterization) clazz.newInstance();
+				domainChar.setDescription(description);
+				domainChar.setIdentificationName(viewTitle);
+			}
+			if (domainChar.getId()==null) {
+				domainChar.setCreatedBy(createdBy);
+				domainChar.setCreatedDate(new Date());
+			}
 			if (instrumentConfig.getInstrument() != null
 					&& instrumentConfig.getInstrument().getType() != null
 					&& instrumentConfig.getInstrument().getType().length() > 0)
@@ -290,5 +299,13 @@ public class CharacterizationBean {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }
