@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 
 import java.io.IOException;
 import java.util.ArrayList;
