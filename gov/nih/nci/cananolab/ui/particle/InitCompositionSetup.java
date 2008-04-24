@@ -141,6 +141,79 @@ public class InitCompositionSetup {
 		return types;
 	}
 
+	public SortedSet<String> getAntibodySpecies(ServletContext appContext)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("Antibody",
+				"species");
+		appContext.setAttribute("antibodySpecies", types);
+		return types;
+	}
+
+	public SortedSet<String> getMolecularFormulaTypes(ServletContext appContext)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues(
+				"ComposingElement", "molecularFormulaType");
+		appContext.setAttribute("molecularFormulaTypes", types);
+		return types;
+	}
+
+	public SortedSet<String> getFunctionalizingEntityUnits(
+			HttpServletRequest request) throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("FunctionalizingEntity",
+				"valueUnit");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"FunctionalizingEntity", "otherValueUnit");
+		types.addAll(otherTypes);
+		request.setAttribute("functionalizingEntityUnits", types);
+		return types;
+	}
+
+	public SortedSet<String> getComposingElementUnits(
+			HttpServletRequest request) throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("ComposingElement",
+				"valueUnit");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"ComposingElement", "otherValueUnit");
+		types.addAll(otherTypes);
+		request.setAttribute("composingElementUnits", types);
+		return types;
+	}
+	
+	public SortedSet<String> getAntibodyTypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("Antibody",
+				"type");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"Antibody", "otherType");
+		types.addAll(otherTypes);
+		request.setAttribute("antibodyTypes", types);
+		return types;
+	}
+
+	public SortedSet<String> getAntibodyIsotypes(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("Antibody",
+				"species");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"Antibody", "otherIsotype");
+		types.addAll(otherTypes);
+
+		request.setAttribute("antibodyIsotypes", types);
+		return types;
+	}
+
+	public SortedSet<String> getActivationMethods(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues(
+				"ActivationMethod", "type");
+		SortedSet<String> otherTypes = LookupService.getLookupValues(
+				"ActivationMethod", "otherType");
+		types.addAll(otherTypes);
+
+		request.setAttribute("activationMethod", types);
+		return types;
+	}
+
 	public SortedSet<String> getBiopolymerTypes(HttpServletRequest request)
 			throws CaNanoLabException {
 		SortedSet<String> types = LookupService.getLookupValues("Biopolymer",
@@ -232,4 +305,35 @@ public class InitCompositionSetup {
 
 	}
 
+	public List<String> getDefaultTargetTypes(ServletContext appContext)
+			throws Exception {
+		if (appContext.getAttribute("defaultTargetTypes") == null) {
+			List<String> targetTypes = new ArrayList<String>();
+			List<String> targetClassNames = ClassUtils
+					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.Target");
+			for (String name : targetClassNames) {
+				if (!name.contains("Other")) {
+					String displayName = InitSetup.getInstance()
+							.getDisplayName(ClassUtils.getShortClassName(name),
+									appContext);
+					targetTypes.add(displayName);
+				}
+			}
+			appContext.setAttribute("defaultTargetTypes", targetTypes);
+			return targetTypes;
+		} else {
+			return new ArrayList<String>((List<? extends String>) appContext
+					.getAttribute("defaultTargetTypes"));
+		}
+
+	}
+
+	public void getTargetTypes(HttpServletRequest request) throws Exception {
+		List<String> defaultTypes = getDefaultTargetTypes(request.getSession()
+				.getServletContext());
+		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
+		List<String> types = new ArrayList<String>(defaultTypes);
+		types.addAll(otherTypes);
+		request.getSession().setAttribute("targetTypes", types);
+	}
 }

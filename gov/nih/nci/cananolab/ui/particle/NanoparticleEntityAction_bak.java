@@ -8,16 +8,22 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.10 2008-04-24 21:51:06 cais Exp $ */
+/* CVS $Id: NanoparticleEntityAction_bak.java,v 1.1 2008-04-24 21:51:06 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,27 +36,75 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class FunctionalizingEntityAction extends BaseAnnotationAction {
+public class NanoparticleEntityAction extends AbstractDispatchAction {
+
+	/**
+	 * Add or update the data to database
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
 		ParticleBean particleBean = initSetup(theForm, request);
-		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
-		entityBean.setDomainEntity();
-		compositionService.saveFunctionalizingEntity(particleBean
-				.getDomainParticleSample(), entityBean.getDomainEntity());
+		Date now = new Date();
+		if (entityBean.getDomainEntity().getId() != null
+				&& entityBean.getDomainEntity().getId() == 0) {
+			entityBean.getDomainEntity().setId(null);
+		}
+		if (entityBean.getDomainEntity().getId() == null) {
+			entityBean.getDomainEntity().setCreatedBy(user.getLoginName());
+			entityBean.getDomainEntity().setCreatedDate(now);
+		}
+		for (ComposingElementBean compElementBean : entityBean
+				.getComposingElements()) {
+			if (compElementBean.getDomainComposingElement().getId() == null) {
+				compElementBean.getDomainComposingElement().setCreatedBy(
+						user.getLoginName());
+				compElementBean.getDomainComposingElement().setCreatedDate(now);
+			}
+		}
+
+		compositionService.saveNanoparticleEntity(particleBean, entityBean);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.addFunctionalizingEntity");
+		ActionMessage msg = new ActionMessage("message.addNanoparticleEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
+	}
+
+	public ParticleBean initSetup(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		String particleId = request.getParameter("particleId");
+		if (particleId == null) {
+			particleId = theForm.getString("particleId");
+		}
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+
+		NanoparticleSampleService service = new NanoparticleSampleService();
+		ParticleBean particleBean = service.findNanoparticleSampleById(
+				particleId, user);
+		request.setAttribute("theParticle", particleBean);
+		theForm.set("particleId", particleId);
+		
+		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
+		InitCompositionSetup.getInstance().getModalityTypes(request);
+		InitNanoparticleSetup.getInstance().getFileTypes(request);
+		return particleBean;
 	}
 
 	/**
@@ -66,32 +120,24 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("functionalizingEntityForm");
+		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleBean = initSetup(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
+		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
+		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
 				request);
+		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
+		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
-				particleBean.getDomainParticleSample().getName(),
-				particleBean.getDomainParticleSample().getSource()
+				particleBean.getParticleSample().getName(),
+				particleBean.getParticleSample().getSource()
 						.getOrganizationName(), user);
 
-		setLookups(request);
-		
 		return mapping.getInputForward();
-	}
-	
-	private void setLookups(HttpServletRequest request) throws Exception {
-		InitCompositionSetup.getInstance().getTargetTypes(request);
-		InitCompositionSetup.getInstance().getAntibodyTypes(request);
-		InitCompositionSetup.getInstance().getAntibodyIsotypes(request);
-		InitCompositionSetup.getInstance().getActivationMethods(request);
-		InitCompositionSetup.getInstance().setFunctionTypes(request);
-		InitCompositionSetup.getInstance().getFunctionalizingEntityUnits(request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -103,47 +149,52 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
-		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityBy(entityId, user);
+		NanoparticleEntityBean entityBean = compService
+				.findNanoparticleEntityBy(entityId, user);
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
-		// set function type
-		for (FunctionBean functionBean : entityBean.getFunctions()) {
-			String functionType = InitSetup.getInstance().getDisplayName(
-					functionBean.getClassName(), session.getServletContext());
-			functionBean.setType(functionType);
+		// set composing element function type
+		for (ComposingElementBean compElementBean : entityBean
+				.getComposingElements()) {
+			for (FunctionBean functionBean : compElementBean
+					.getInherentFunctions()) {
+				String functionType = InitSetup.getInstance().getDisplayName(
+						functionBean.getClassName(),
+						session.getServletContext());
+				functionBean.setType(functionType);
+			}
 		}
 		theForm.set("entity", entityBean);
 		request.setAttribute("updateDataTree", "true");
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
+		InitNanoparticleSetup.getInstance().setNanoparticleEntityTypes(request);
+		InitNanoparticleSetup.getInstance().getEmulsionComposingElementTypes(
 				request);
-		
-		setLookups(request);
-		
+		InitNanoparticleSetup.getInstance().getComposingElementTypes(request);
+		InitNanoparticleSetup.getInstance().setFunctionTypes(request);
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addFunction(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward addComposingElement(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
-		entity.addFunction();
+		entity.addComposingElement();
 		return mapping.getInputForward();
 	}
 
-	public ActionForward removeFunction(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward removeComposingElement(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
-		entity.removeFunction(ind);
+		entity.removeComposingElement(ind);
 		return mapping.getInputForward();
 	}
 
@@ -151,7 +202,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
 		entity.addFile();
 		return mapping.getInputForward();
@@ -163,51 +214,50 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
 		entity.removeFile(ind);
 		return mapping.getInputForward();
 	}
-	
-	public ActionForward addTarget(ActionMapping mapping,
+	public ActionForward addInherentFunction(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
 
-		String funcIndexStr = (String) request.getParameter("compInd");
-		int funcIndex = Integer.parseInt(funcIndexStr);
-		FunctionBean function = (FunctionBean) entity
-				.getFunctions().get(funcIndex);
+		String compEleIndexStr = (String) request.getParameter("compInd");
+		int compEleIndex = Integer.parseInt(compEleIndexStr);
+		ComposingElementBean compElement = (ComposingElementBean) entity
+				.getComposingElements().get(compEleIndex);
 
-		function.addTarget();
+		compElement.addFunction();
 		return mapping.getInputForward();
 	}
 
-	public ActionForward removeTarget(ActionMapping mapping,
+	public ActionForward removeInherentFunction(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String funcIndexStr = (String) request.getParameter("compInd");
-		int funcIndex = Integer.parseInt(funcIndexStr);
+		String compEleIndexStr = (String) request.getParameter("compInd");
+		int compEleIndex = Integer.parseInt(compEleIndexStr);
 
-		String targetIndexStr = (String) request.getParameter("childCompInd");
-		int targetIndex = Integer.parseInt(targetIndexStr);
+		String functionIndexStr = (String) request.getParameter("childCompInd");
+		int functionIndex = Integer.parseInt(functionIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
-		FunctionBean function = (FunctionBean) entity
-						.getFunctions().get(funcIndex);
-		function.removeTarget(targetIndex);
+		ComposingElementBean compElement = (ComposingElementBean) entity
+				.getComposingElements().get(compEleIndex);
+		compElement.removeFunction(functionIndex);
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
-		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
+		 * NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 		 * .get("entity"); // update editable dropdowns HttpSession session =
 		 * request.getSession();
 		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
@@ -222,15 +272,14 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return mapping.findForward("setup");
 	}
 
-	protected FunctionalizingEntityBean[] prepareCopy(
-			HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
+	protected NanoparticleEntityBean[] prepareCopy(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
-		FunctionalizingEntityBean[] entityBeans = new FunctionalizingEntityBean[otherParticles.length];
+		NanoparticleEntityBean[] entityBeans = new NanoparticleEntityBean[otherParticles.length];
 		if (otherParticles.length == 0) {
 			return entityBeans;
 		}
@@ -272,5 +321,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// i++;
 		// }
 		return entityBeans;
+	}
+
+	public boolean loginRequired() {
+		return false;
+	}
+
+	public boolean canUserExecute(UserBean user)
+			throws CaNanoLabSecurityException {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 }

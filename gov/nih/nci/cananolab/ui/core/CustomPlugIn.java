@@ -51,6 +51,13 @@ public class CustomPlugIn implements PlugIn {
 			
 			InitCompositionSetup.getInstance().getAntigenSpecies(
 					actionServlet.getServletContext());
+			
+			InitCompositionSetup.getInstance().getAntibodySpecies(
+					actionServlet.getServletContext());
+			
+			InitCompositionSetup.getInstance().getMolecularFormulaTypes(
+					actionServlet.getServletContext());
+			
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
