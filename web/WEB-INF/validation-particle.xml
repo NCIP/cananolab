@@ -17,18 +17,6 @@
 					key="nanoparticleSampleForm.sampleSource" bundle="particle" />
 			</field>
 		</form>
-		<form name="nanoparticleGeneralInfoForm">
-			<field property="particle.sampleType" page="1"
-				depends="required">
-				<arg position="0"
-					key="nanoparticleGeneralInfoForm.particleType" bundle="particle" />
-			</field>
-			<field property="particle.sampleName" page="1"
-				depends="required">
-				<arg position="0"
-					key="nanoparticleGeneralInfoForm.particleID" bundle="particle" />
-			</field>
-		</form>
 		<form name="nanoparticleCompositionForm">
 			<field property="composition.characterizationSource"
 				page="2" depends="required">
@@ -39,10 +27,10 @@
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
-			<field property="carbonNanotube.growthDiameter" page="2"
+			<field property="carbonNanotube.diameter" page="2"
 				depends="float">
 				<arg position="0"
-					key="nanoparticleCompositionForm.carbonNanotube.growthDiameter"
+					key="nanoparticleCompositionForm.carbonNanotube.diameter"
 					bundle="particle" />
 			</field>
 			<field property="carbonNanotube.averageLength" page="2"
@@ -114,36 +102,6 @@
 				</var>
 			</field>
 		</form>
-		<form name="nanoparticleFunctionForm">
-			<field property="function.viewTitle" page="2"
-				depends="required">
-				<arg position="0" key="viewTitle" bundle="particle" />
-			</field>
-			<field property="type" page="2" depends="validwhen"
-				indexedListProperty="function.linkages">
-				<arg position="0" key="function.linkageType"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((function.numberOfLinkages==0) or
-						(*this*!=null))
-					</var-value>
-				</var>
-			</field>
-			<field property="agent.type" page="2" depends="validwhen"
-				indexedListProperty="function.linkages">
-				<arg position="0" key="function.linkage.agentType"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((function.numberOfLinkages==0) or
-						(*this*!=null))
-					</var-value>
-				</var>
-			</field>
-		</form>
 		<form name="loadDerivedBioAssayDataForm">
 			<field property="uploadedFile" page="2"
 				depends="validwhen">
@@ -172,20 +130,20 @@
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
 			<field
-				property="achar.instrumentConfigBean.instrumentBean.type" page="2"
+				property="achar.instrumentConfiguration.instrument.type" page="2"
 				depends="validwhen">
 				<arg position="0" key="achar.instrument.type"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfigBean.description==null)
+						((achar.instrumentConfiguration.description==null)
 						or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
 			<field
-				property="achar.instrumentConfigBean.instrumentBean.manufacturer"
+				property="achar.instrumentConfiguration.instrument.manufacturer"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.instrument.manufacturer"
 					bundle="particle" />
@@ -273,16 +231,6 @@
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
-				</var>
-			</field>
-		</form>
-		<form name="remoteSearchNanoparticleForm">
-			<field property="particleType" page="1" depends="mask">
-				<arg position="0" key="particleType" bundle="particle" />
-				<msg name="mask" key="particleType.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
 		</form>
