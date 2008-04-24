@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer;
@@ -37,13 +38,11 @@ public class FunctionalizingEntityBean {
 
 	private String valueUnit;
 
-	private SmallMolecule smallMolecule;
+	private SmallMolecule smallMolecule = new SmallMolecule();
 
-	private Antibody antibody;
+	private Antibody antibody = new Antibody();
 
-	private Biopolymer biopolymer;
-
-	private OtherFunctionalizingEntity otherEntity;
+	private Biopolymer biopolymer = new Biopolymer();
 
 	private FunctionalizingEntity domainEntity;
 
@@ -68,27 +67,9 @@ public class FunctionalizingEntityBean {
 		molecularFormulaType = functionalizingEntity.getMolecularFormulaType();
 		value = functionalizingEntity.getValue();
 		valueUnit = functionalizingEntity.getValueUnit();
-		if (functionalizingEntity instanceof Antibody) {
-			antibody = (Antibody) functionalizingEntity;
-			domainEntity = antibody;
-			className = ClassUtils.getShortClassName(Antibody.class.getName());
-		} else if (functionalizingEntity instanceof SmallMolecule) {
-			smallMolecule = (SmallMolecule) functionalizingEntity;
-			domainEntity = smallMolecule;
-			className = ClassUtils.getShortClassName(SmallMolecule.class
-					.getName());
-		} else if (functionalizingEntity instanceof Biopolymer) {
-			biopolymer = (Biopolymer) functionalizingEntity;
-			domainEntity = biopolymer;
-			className = ClassUtils
-					.getShortClassName(Biopolymer.class.getName());
-		} else if (functionalizingEntity instanceof OtherFunctionalizingEntity) {
-			otherEntity = (OtherFunctionalizingEntity) functionalizingEntity;
-			domainEntity = otherEntity;
-			className = ClassUtils
-					.getShortClassName(OtherFunctionalizingEntity.class
-							.getName());
-		}
+		domainEntity = functionalizingEntity;
+		className = ClassUtils.getShortClassName(functionalizingEntity
+				.getClass().getName());
 		for (Function function : functionalizingEntity.getFunctionCollection()) {
 			functions.add(new FunctionBean(function));
 		}
@@ -119,11 +100,6 @@ public class FunctionalizingEntityBean {
 	public Biopolymer getBiopolymer() {
 		domainEntity = biopolymer;
 		return biopolymer;
-	}
-
-	public OtherFunctionalizingEntity getOtherEntity() {
-		domainEntity = otherEntity;
-		return otherEntity;
 	}
 
 	public SmallMolecule getSmallMolecule() {
@@ -196,41 +172,55 @@ public class FunctionalizingEntityBean {
 	}
 
 	public void setDomainEntity() {
-		domainEntity.setDescription(description);
-		domainEntity.setMolecularFormula(molecularFormula);
-		domainEntity.setMolecularFormulaType(molecularFormulaType);
-		domainEntity.setName(name);
-		domainEntity.setValue(value);
-		domainEntity.setValueUnit(valueUnit);
-		domainEntity.setActivationMethod(activationMethod);
+		try {
+			// take care of nanoparticle entities that don't have any special
+			// properties shown in the form, e.g. OtherFunctionalizingEntity
+			if (domainEntity == null) {
+				Class clazz = ClassUtils.getFullClass(className);
+				domainEntity = (FunctionalizingEntity) clazz.newInstance();
+			}
+			if (domainEntity.getId() == null) {
+				domainEntity.setCreatedBy(createdBy);
+				domainEntity.setCreatedDate(new Date());
+			}
+			if (domainEntity instanceof OtherFunctionalizingEntity) {
+				((OtherFunctionalizingEntity)domainEntity).setType(type);
+			}
+			domainEntity.setDescription(description);
+			domainEntity.setMolecularFormula(molecularFormula);
+			domainEntity.setMolecularFormulaType(molecularFormulaType);
+			domainEntity.setName(name);
+			domainEntity.setValue(value);
+			domainEntity.setValueUnit(valueUnit);
+			domainEntity.setActivationMethod(activationMethod);
 
-		if (domainEntity.getId() != null && domainEntity.getId() == 0) {
-			domainEntity.setId(null);
-		}
-		if (domainEntity.getId() == null) {
-			domainEntity.setCreatedBy(createdBy);
-			domainEntity.setCreatedDate(new Date());
-		}
+			if (domainEntity.getId() == null) {
+				domainEntity.setCreatedBy(createdBy);
+				domainEntity.setCreatedDate(new Date());
+			}
 
-		if (domainEntity.getFunctionCollection() != null) {
-			domainEntity.getFunctionCollection().clear();
-		} else {
-			domainEntity.setFunctionCollection(new HashSet<Function>());
-		}
-		for (FunctionBean functionBean : functions) {
-			domainEntity.getFunctionCollection().add(
-					functionBean.getDomainFunction());
-			// TODO set function date
-		}
-		if (domainEntity.getLabFileCollection() != null) {
-			domainEntity.getLabFileCollection().clear();
-		} else {
-			domainEntity.setLabFileCollection(new HashSet<LabFile>());
-		}
-		for (LabFile file : files) {
-			file.setCreatedBy(createdBy);
-			file.setCreatedDate(new Date());
-			domainEntity.getLabFileCollection().add(file);
+			if (domainEntity.getFunctionCollection() != null) {
+				domainEntity.getFunctionCollection().clear();
+			} else {
+				domainEntity.setFunctionCollection(new HashSet<Function>());
+			}
+			for (FunctionBean functionBean : functions) {
+				domainEntity.getFunctionCollection().add(
+						functionBean.getDomainFunction());
+				// TODO set function date
+			}
+			if (domainEntity.getLabFileCollection() != null) {
+				domainEntity.getLabFileCollection().clear();
+			} else {
+				domainEntity.setLabFileCollection(new HashSet<LabFile>());
+			}
+			for (LabFile file : files) {
+				file.setCreatedBy(createdBy);
+				file.setCreatedDate(new Date());
+				domainEntity.getLabFileCollection().add(file);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -249,7 +239,7 @@ public class FunctionalizingEntityBean {
 	public void removeFile(int ind) {
 		files.remove(ind);
 	}
-	
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
