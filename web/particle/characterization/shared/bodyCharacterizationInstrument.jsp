@@ -2,11 +2,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<script type="text/javascript" src="javascript/editableDropDown.js"></script>
-<script type='text/javascript' src='javascript/InstrumentManager.js'></script>
-<script type='text/javascript' src='dwr/interface/InstrumentManager.js'></script>
-<script type='text/javascript' src='dwr/engine.js'></script>
-
 <table border="0" align="center" cellpadding="3" cellspacing="0"
 	class="topBorderOnly" summary="">
 	<tr>
@@ -26,7 +21,7 @@
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<html:select styleId="instrumentType"
 						property="achar.instrumentConfiguration.instrument.type"
-						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');">
+						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');retrieveInstrumentAbbreviation();">
 						<option value=""></option>
 						<html:options name="instrumentTypes" />
 						<option value="other">
