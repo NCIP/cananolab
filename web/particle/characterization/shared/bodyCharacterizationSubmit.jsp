@@ -53,7 +53,7 @@ function confirmDeletion()
 													value="${param.particleId}" />
 									<input type="hidden" name="submitType"
 										value="${param.submitType}" />
-									<html:hidden property="achar.className" value="${acharClass}" />
+									<html:hidden property="achar.className" value="${charClass}" />
 									<html:submit />
 								</div>
 							</td>
