@@ -24,7 +24,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -80,9 +79,9 @@ public class NanoparticleSampleService {
 			throws ParticleException, CaNanoLabSecurityException {
 		SortedSet<Source> sampleSources = new TreeSet<Source>(
 				new CaNanoLabComparators.ParticleSourceComparator());
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
 		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Source.class);
@@ -90,17 +89,10 @@ public class NanoparticleSampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				Source source = (Source) obj;
-				boolean status = false;
 				// if user can access at least one particle from the source, set
 				// access to true
-				for (NanoparticleSample particle : source
-						.getNanoparticleSampleCollection()) {
-					if (isAllowed(auth, particle.getName(), user)) {
-						status = true;
-						break;
-					}
-				}
-				if (status) {
+				if (isAllowed(auth, source.getNanoparticleSampleCollection(),
+						user)) {
 					sampleSources.add((Source) obj);
 				}
 			}
@@ -511,6 +503,28 @@ public class NanoparticleSampleService {
 			return true;
 		} else if (user != null && auth.checkReadPermission(user, particleName)) {
 			return true;
+		}
+		return false;
+	}
+
+	public boolean isAllowed(AuthorizationService auth,
+			Collection<NanoparticleSample> particleSamples, UserBean user)
+			throws Exception {
+		List<String> publicData = auth.getPublicData();
+		List<String> particleNames = new ArrayList<String>();
+		for (NanoparticleSample sample : particleSamples) {
+			particleNames.add(sample.getName());
+		}
+		particleNames.removeAll(publicData);
+		if (particleSamples.size() == 0) {
+			return true;
+		} else if (user != null) {
+
+			for (NanoparticleSample sample : particleSamples) {
+				if (auth.checkReadPermission(user, sample.getName())) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
