@@ -1,5 +1,29 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-public class InvitroCharacterizationBean extends CharacterizationBean{
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.Caspase3Activation;
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.CellViability;
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 
+public class InvitroCharacterizationBean extends CharacterizationBean {
+	private Caspase3Activation caspase3Activation = new Caspase3Activation();
+
+	private CellViability cellViability = new CellViability();
+
+	public InvitroCharacterizationBean() {
+		super();
+	}
+
+	public InvitroCharacterizationBean(InvitroCharacterization chara) {
+		super(chara);
+	}
+
+	public Caspase3Activation getCaspase3Activation() {
+		domainChar = caspase3Activation;
+		return caspase3Activation;
+	}
+
+	public CellViability getCellViability() {
+		domainChar = cellViability;
+		return cellViability;
+	}
 }
