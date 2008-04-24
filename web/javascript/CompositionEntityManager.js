@@ -1,8 +1,9 @@
 
-function setEntityInclude() {
-	var entityType = document.getElementById("peType").value;
+function setEntityInclude(selectEleId) {
+	var entityType = document.getElementById(selectEleId).value;
 	CompositionEntityManager.getEntityIncludePage(entityType, populatePage);
 }
+
 function populatePage(pageData) {
 	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
 }
@@ -19,8 +20,8 @@ function getComposingElementOptions() {
   	});
 }
 
-function getBiopolymerOptions() {
-	var compFuncTypeValue = dwr.util.getValue("peType");
+function getBiopolymerOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	
 	CompositionEntityManager.getBiopolymerTypeOptions(compFuncTypeValue, function(data) {
 			
@@ -42,7 +43,34 @@ function displayModality(compEleIndex, functionIndex) {
 	return false;
 }
 
+function displayFEModality(functionIndex) {
+	var functionType = document.getElementById("funcType_" + functionIndex).value;
+	var modalityDiv = document.getElementById("modalityDiv_" + functionIndex);
+	var modalityStrong = document.getElementById("modalityStrong_" + functionIndex);
+	if(functionType == "imaging") {
+		modalityDiv.style.display = "inline";
+		modalityStrong.style.display = "inline";
+	} else {
+		modalityDiv.style.display = "none";
+		modalityStrong.style.display = "none";
+	}
+	return false;
+}
 
+function displayTarget(functionIndex) {
+	var functionType = document.getElementById("funcType_" + functionIndex).value;
+	var targetSpan = document.getElementById("targetSpan_" + functionIndex);
+	var targetDiv = document.getElementById("targetDiv_" + functionIndex);
+	if(functionType == "targeting") {
+		targetSpan.style.display = "block";
+		targetDiv.style.display = "block";
+	} else {
+		targetSpan.style.display = "none";
+		targetDiv.style.display = "none";
+	}
+	return false;
+}
+	
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp
