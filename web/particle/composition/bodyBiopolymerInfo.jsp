@@ -1,3 +1,8 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -13,21 +18,20 @@
 				<strong>Name</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.biopolymer.name"
-					value="${nanoparticleEntityForm.map.entity.biopolymer.name}" />
+				<html:text property="entity.biopolymer.name"/>
 			</td>
 			<td class="label">
 				<strong>Biopolymer Type</strong>
 			</td>
 			<td class="rightLabel">
-				<select name="entity.biopolymer.type" id="biopolymerType"
+				<html:select property="entity.biopolymer.type" styleId="biopolymerType"
 					onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
 					<option value=""></option>
 					<html:options name="biopolymerTypes" />
 					<option value="other">
 						[Other]
 					</option>
-				</select>
+				</html:select>
 			</td>
 		</tr>
 		<tr>
@@ -35,7 +39,7 @@
 				<strong>Sequence</strong>
 			</td>
 			<td class="rightLabel" colspan="3">
-				<textarea name="entity.biopolymer.sequence" cols="80" rows="3">${nanoparticleEntityForm.map.entity.biopolymer.sequence}</textarea>
+				<html:textarea property="entity.biopolymer.sequence" cols="80" rows="3"/>
 			</td>
 		</tr>
 	</tbody>
