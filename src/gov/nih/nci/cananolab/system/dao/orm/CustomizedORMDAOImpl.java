@@ -353,15 +353,35 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 		}
 	}
 
-	public List directQuery(String directSQL, String[] columns,
-			Object[] columnTypes) {
+	public List directSQL(String directSQL, String[] columns,
+			Object[] columnTypes) throws DAOException {
 		Session session = getSession();
-		SQLQuery query = session.createSQLQuery(directSQL);
-		for (int i = 0; i < columns.length; i++) {
-			query.addScalar(columns[i], (NullableType) columnTypes[i]);
+		try {
+			SQLQuery query = session.createSQLQuery(directSQL);
+			for (int i = 0; i < columns.length; i++) {
+				query.addScalar(columns[i], (NullableType) columnTypes[i]);
+			}
+			List results = query.list();
+			return results;
+		} catch (JDBCException ex) {
+			log.error("JDBC Exception in CustomORMDAOImpl ", ex);
+			throw new DAOException("JDBC Exception in CustomORMDAOImpl ", ex);
+		} catch (org.hibernate.HibernateException hbmEx) {
+			log.error(hbmEx.getMessage());
+			throw new DAOException("Hibernate problem ", hbmEx);
+		} catch (Exception e) {
+			log.error("Exception ", e);
+			throw new DAOException("Exception in CustomORMDAOImpl ", e);
+		} finally {
+			try {
+				session.clear();
+				session.close();
+			} catch (Exception eSession) {
+				log.error("Could not close the session - "
+						+ eSession.getMessage());
+				throw new DAOException("Could not close the session  "
+						+ eSession);
+			}
 		}
-		List results = query.list();
-		session.close();
-		return results;
 	}
 }

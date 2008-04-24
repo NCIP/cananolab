@@ -118,12 +118,12 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 		}
 	}
 
-	public List directQuery(String directSQL, String[] columns,
+	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws ApplicationException {
 		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
 				.getDAOForClass(NanoparticleSample.class.getCanonicalName());
 		try {
-			return dao.directQuery(directSQL, columns, columnTypes);
+			return dao.directSQL(directSQL, columns, columnTypes);
 		} catch (Exception e) {
 			String err = "Could not execute direct sql query ";
 			logger.error(err);
