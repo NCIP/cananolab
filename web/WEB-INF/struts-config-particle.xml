@@ -57,6 +57,16 @@
 				type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.composition" path="particle.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.ParticleCompositionException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.particle" path="particle.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.ParticleException" />
+	</global-exceptions>
 	<action-mappings>
 		<action path="/manageParticle"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
