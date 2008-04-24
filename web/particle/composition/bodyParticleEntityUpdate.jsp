@@ -62,8 +62,7 @@
 							<html:textarea property="entity.description" rows="3" cols="80" />
 						</td>
 					</tr>
-				</table>
-				<br>
+				</table>				
 				<div id="entityInclude">
 					<c:if test="${!empty nanoparticleEntityForm.map.entity.type}">
 						<c:set var="entityType"
@@ -79,7 +78,6 @@
 							page="/particle/composition/body${entityClass}Info.jsp" />
 					</c:if>
 				</div>
-				<br>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -112,7 +110,7 @@
 																<span>Composing Element #${ind + 1}</span>
 															</td>
 															<td class="formSubTitleNoLeft" align="right">
-																<a href="#" 
+																<a href="#"
 																	onclick="removeComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'removeComposingElement');return false;">
 																	<img src="images/delete.gif" border="0"
 																		alt="remove this composing element"> </a>
@@ -211,8 +209,7 @@
 															<td valign="bottom" class="leftLabel">
 																<a href="#"
 																	onclick="javascript:addChildComponent(nanoparticleEntityForm, 'nanoparticleEntity', ${ind}, 'addInherentFunction'); return false;">
-																	<span class="addLink2">Add Inherent Function</span>
-																</a>
+																	<span class="addLink2">Add Inherent Function</span> </a>
 															</td>
 															<td colspan="3" class="rightLabel">
 																<jsp:include
@@ -306,10 +303,7 @@
 													value="${param.submitType}" />
 												<html:hidden property="entity.className"
 													value="${entityClass}" />
-												<%--												<html:hidden property="particle.sampleId" />--%>
-												<%--												<html:hidden property="particle.sampleName" />--%>
-												<%--												<html:hidden property="particle.sampleSource" />--%>
-												<%--												<html:hidden property="particle.sampleType" />--%>
+												<html:hidden property="entity.createdBy" value="${user.loginName}" />
 												<html:submit />
 											</div>
 										</div>

@@ -260,7 +260,9 @@
 																<span id="targetSpan_${ind }" style="${targetDisplay }">
 																	<a href="#"
 																	onclick="javascript:addChildComponent(functionalizingEntityForm, 'functionalizingEntity', ${ind}, 'addTarget'); return false;">
-																		<span class="addLink2">Add Target</span></a></span>&nbsp;
+																		<span class="addLink2">Add Target</span>
+																</a>
+																</span>&nbsp;
 															</td>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
@@ -354,10 +356,8 @@
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<%--												<html:hidden property="particle.sampleId" />--%>
-												<%--												<html:hidden property="particle.sampleName" />--%>
-												<%--												<html:hidden property="particle.sampleSource" />--%>
-												<%--												<html:hidden property="particle.sampleType" />--%>
+												<html:hidden property="entity.createdBy"
+													value="${user.loginName}" />
 												<html:submit />
 											</div>
 										</div>
