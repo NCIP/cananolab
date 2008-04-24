@@ -981,7 +981,9 @@ insert into canano.nano_function
 	discriminator,
 	functionalizing_entity_pk_id,
 	composing_element_pk_id,
-	other_function_type
+	other_function_type,
+	created_by,
+	created_date
 )
 SELECT 
 	pf.particle_function_pk_id,
@@ -989,7 +991,10 @@ SELECT
 	'OtherFunction',
 	l.linkage_pk_id,
 	ce14.composing_element_pk_id,
-	lcase(pf.type)
+	lcase(pf.type),
+	'DATA_MIGRATION',
+	SYSDATE()
+	
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.composition c14,
@@ -1010,14 +1015,18 @@ insert into canano.nano_function
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id
+	composing_element_pk_id,
+	created_by,
+	created_date
 )
 SELECT 
 	pf.particle_function_pk_id,
 	pf.description,
 	'ImagingFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id
+	ce14.composing_element_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.composition c14,
@@ -1037,14 +1046,18 @@ insert into canano.nano_function
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id
+	composing_element_pk_id,
+	created_by,
+	created_date
 )
 SELECT 
 	pf.particle_function_pk_id,
 	pf.description,
 	'TargetingFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id
+	ce14.composing_element_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.composition c14,
@@ -1064,14 +1077,18 @@ insert into canano.nano_function
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id
+	composing_element_pk_id,
+	created_by,
+	created_date
 )
 SELECT 
 	pf.particle_function_pk_id,
 	pf.description,
 	'TherapeuticFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id
+	ce14.composing_element_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.composition c14,
