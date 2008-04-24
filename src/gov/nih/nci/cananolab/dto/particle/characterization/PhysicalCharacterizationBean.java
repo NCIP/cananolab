@@ -15,13 +15,7 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 
 	private Shape shape = new Shape();
 
-	private MolecularWeight molecularWeight = new MolecularWeight();
-
-	private Size size = new Size();
-
 	private Solubility solubility = new Solubility();
-
-	private Purity purity = new Purity();
 
 	private SurfaceBean surfaceBean = new SurfaceBean();
 
@@ -31,13 +25,11 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 	public PhysicalCharacterizationBean(PhysicalCharacterization achar) {
 		super(achar);
 		if (achar instanceof MolecularWeight) {
-			molecularWeight = (MolecularWeight) achar;
-			domainChar = molecularWeight;
+			domainChar = (MolecularWeight) achar; 
 			setClassName(ClassUtils.getShortClassName(MolecularWeight.class
 					.getName()));
 		} else if (achar instanceof Size) {
-			size = (Size) achar;
-			domainChar = size;
+			domainChar = (Size) achar;
 			setClassName(ClassUtils.getShortClassName(Size.class.getName()));
 		} else if (achar instanceof PhysicalState) {
 			physicalState = (PhysicalState) achar;
@@ -58,15 +50,9 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 			surfaceBean = new SurfaceBean((Surface) domainChar);
 			setClassName(ClassUtils.getShortClassName(Surface.class.getName()));
 		} else if (achar instanceof Purity) {
-			purity = (Purity) achar;
-			domainChar = purity;
+			domainChar = (Purity) achar;
 			setClassName(ClassUtils.getShortClassName(Purity.class.getName()));
 		}
-	}
-
-	public MolecularWeight getMolecularWeight() {
-		domainChar = molecularWeight;
-		return molecularWeight;
 	}
 
 	public PhysicalState getPhysicalState() {
@@ -74,19 +60,9 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 		return physicalState;
 	}
 
-	public Purity getPurity() {
-		domainChar = purity;
-		return purity;
-	}
-
 	public Shape getShape() {
 		domainChar = shape;
 		return shape;
-	}
-
-	public Size getSize() {
-		domainChar = size;
-		return size;
 	}
 
 	public Solubility getSolubility() {
