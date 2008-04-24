@@ -44,11 +44,11 @@
 						</td>
 						<td class="label">
 							<html:select styleId="feType" property="entity.type"
-								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType'); getBiopolymerOptions('feType');">
+								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType'); getFETypesOptions('feType');">
 								<option value=""></option>
 								<html:options name="functionalizingEntityTypes" />
 								<option value="other">
-									Other
+									[Other]
 								</option>
 							</html:select>
 						</td>
@@ -68,8 +68,9 @@
 								property="entity.molecularFormulaType"
 								onchange="javascript:callPrompt('Molecular Formula Type', 'mfType'); ">
 								<option value=""></option>
+								<html:options name="molecularFormulaTypes" />
 								<option value="other">
-									Other
+									[Other]
 								</option>
 							</html:select>
 						</td>
@@ -94,8 +95,9 @@
 							<html:select styleId="feUnit" property="entity.valueUnit"
 								onchange="javascript:callPrompt('Value Unit', 'feUnit');">
 								<option value=""></option>
+								<html:options name="functionalizingEntityUnits" />
 								<option value="other">
-									Other
+									[Other]
 								</option>
 							</html:select>
 						</td>
@@ -117,8 +119,9 @@
 								property="entity.activationMethod.type"
 								onchange="javascript:callPrompt('Activation Method', 'feaMethod');">
 								<option value=""></option>
+								<html:options name="activationMethod" />
 								<option value="other">
-									Other
+									[Other]
 								</option>
 							</html:select>
 						</td>
