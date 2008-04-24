@@ -133,6 +133,14 @@ public class InitCompositionSetup {
 		return allTypes;
 	}
 
+	public SortedSet<String> getAntigenSpecies(ServletContext appContext)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues("Antigen",
+				"species");
+		appContext.setAttribute("antigenSpecies", types);
+		return types;
+	}
+
 	public SortedSet<String> getBiopolymerTypes(HttpServletRequest request)
 			throws CaNanoLabException {
 		SortedSet<String> types = LookupService.getLookupValues("Biopolymer",
