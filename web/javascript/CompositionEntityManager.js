@@ -5,6 +5,7 @@ function setEntityInclude(selectEleId) {
 }
 
 function populatePage(pageData) {
+
 	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
 }
 
@@ -22,15 +23,49 @@ function getComposingElementOptions() {
 
 function getBiopolymerOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	
-	CompositionEntityManager.getBiopolymerTypeOptions(compFuncTypeValue, function(data) {
+	if(compFuncTypeValue == 'biopolymer') {
+		CompositionEntityManager.getBiopolymerTypeOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("biopolymerType");
 			dwr.util.addOptions("biopolymerType", ['']);
     		dwr.util.addOptions("biopolymerType", data);
     		dwr.util.addOptions("biopolymerType", ['[Other]']);
-  	});
+  		});
+  	}
 }
+
+function getAntibodyTypeOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if(compFuncTypeValue == 'antibody') {
+		CompositionEntityManager.getAntibodyTypeOptions(compFuncTypeValue, function(data) {
+			
+			dwr.util.removeAllOptions("antibodyType");
+			dwr.util.addOptions("antibodyType", ['']);
+    		dwr.util.addOptions("antibodyType", data);
+    		dwr.util.addOptions("antibodyType", ['[Other]']);
+  		});
+  	}
+}
+
+function getAntibodyIsotypeOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if(compFuncTypeValue == 'antibody') {
+		CompositionEntityManager.getAntibodyIsotypeOptions(compFuncTypeValue, function(data) {
+			
+			dwr.util.removeAllOptions("antibodyIsotype");
+			dwr.util.addOptions("antibodyIsotype", ['']);
+    		dwr.util.addOptions("antibodyIsotype", data);
+    		dwr.util.addOptions("antibodyIsotype", ['[Other]']);
+  		});
+  	}
+}
+
+function getFETypesOptions(selectEleId) {
+	getBiopolymerOptions(selectEleId);
+	getAntibodyTypeOptions(selectEleId);
+	getAntibodyIsotypeOptions(selectEleId);
+}
+	
 
 function displayModality(compEleIndex, functionIndex) {
 	var functionType = document.getElementById("funcType_" + compEleIndex + "_" + functionIndex).value;
@@ -70,7 +105,29 @@ function displayTarget(functionIndex) {
 	}
 	return false;
 }
-	
+
+function displayModality(compEleIndex, functionIndex) {
+	var functionType = document.getElementById("targetType_" + compEleIndex + "_" + functionIndex).value;
+	var modalityTd = document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex);
+	if(functionType == "imaging") {
+		modalityTd.style.display = "inline";
+	} else {
+		modalityTd.style.display = "none";
+	}
+	return false;
+}
+
+function displayAntigenSpecies(parentIndex, childIndex) {
+	var type = document.getElementById("targetType_" + parentIndex + "_" + childIndex).value;
+	var sdiv = document.getElementById("speciesDiv_" + parentIndex + "_" + childIndex);
+	var removeSpan = document.getElementById("removeSpan_" + parentIndex + "_" + childIndex);
+	if(type == "antigen") {
+		sdiv.style.display = "inline";
+	} else {
+		sdiv.style.display = "none";
+	}
+	return false;
+}
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp
