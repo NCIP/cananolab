@@ -8,14 +8,12 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.10 2008-04-24 21:51:06 cais Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.11 2008-04-24 22:36:51 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
