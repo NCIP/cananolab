@@ -49,6 +49,8 @@ public class CustomPlugIn implements PlugIn {
 				.getDefaultCompositionTypes(
 					actionServlet.getServletContext());
 			
+			InitCompositionSetup.getInstance().getAntigenSpecies(
+					actionServlet.getServletContext());
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
