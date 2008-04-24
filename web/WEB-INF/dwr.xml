@@ -10,10 +10,12 @@
 			<include method="getComposingElementTypeOptions" />
 			<include method="getBiopolymerTypeOptions" />
 		</create>
-		<create creator="new" javascript="InstrumentManager">
+		<create creator="new" javascript="CharacterizationManager"
+			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService" />
 			<include method="getInstrumentAbbreviation" />
+			<include method="getDerivedDatumValueUnits" />
 		</create>
 	</allow>
 </dwr>
