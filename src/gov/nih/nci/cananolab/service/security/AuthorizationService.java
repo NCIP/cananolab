@@ -24,8 +24,6 @@ import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,9 +32,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  * This class takes care of authentication and authorization of a user and group
@@ -182,7 +177,7 @@ public class AuthorizationService {
 				CaNanoLabConstants.CSM_READ_PRIVILEGE);
 	}
 
-	public List<String> getPublicData() throws CaNanoLabSecurityException {
+	public List<String> getPublicDataSlow() throws CaNanoLabSecurityException {
 		List<String> publicData = new ArrayList<String>();
 		try {
 			Group publicGroup = getGroup(CaNanoLabConstants.CSM_PUBLIC_GROUP);
@@ -210,6 +205,31 @@ public class AuthorizationService {
 		} catch (Exception e) {
 			throw new CaNanoLabSecurityException();
 		}
+	}
+
+	public List<String> getPublicData() throws CaNanoLabSecurityException {
+		List<String> publicData = new ArrayList<String>();
+		try {
+			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
+					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
+					+ "d.group_name='"
+					+ CaNanoLabConstants.CSM_PUBLIC_GROUP
+					+ "' and b.role_name='"
+					+ CaNanoLabConstants.CSM_READ_ROLE
+					+ "'";
+
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String[] columns = new String[] { "protection_group_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				publicData.add((String) obj);
+			}
+		} catch (Exception e) {
+			throw new CaNanoLabSecurityException();
+		}
+		return publicData;
 	}
 
 	/**
@@ -535,7 +555,7 @@ public class AuthorizationService {
 					.getApplicationService();
 			String[] columns = new String[] { "role_id" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
-			List results = appService.directQuery(query, columns, columnTypes);
+			List results = appService.directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
 				String roleId = (String) obj;
 				roleIds.add(roleId);
@@ -726,7 +746,7 @@ public class AuthorizationService {
 					.getApplicationService();
 			String[] columns = new String[] { "group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
-			List results = appService.directQuery(query, columns, columnTypes);
+			List results = appService.directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
 				String group = (String) obj;
 				groups.add(group);
