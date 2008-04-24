@@ -32,6 +32,6 @@ public interface CustomizedApplicationService extends ApplicationService {
 	public Object getObject(Class domainClass, String uniqueKeyName,
 			Object uniqueKeyValue) throws ApplicationException;
 
-	public List directQuery(String directSQL, String[] columns,
+	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws ApplicationException;
 }

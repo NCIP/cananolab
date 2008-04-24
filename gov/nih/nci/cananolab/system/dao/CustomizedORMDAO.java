@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.system.dao;
 
 import gov.nih.nci.system.dao.DAO;
+import gov.nih.nci.system.dao.DAOException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +29,6 @@ public interface CustomizedORMDAO extends DAO {
 	public Object getObject(Class domainClass, String uniqueKeyName,
 			Object uniqueKeyValue);
 
-	public List directQuery(String directSQL, String[] columns,
-			Object[] columnTypes);
+	public List directSQL(String directSQL, String[] columns,
+			Object[] columnTypes) throws DAOException;
 }
