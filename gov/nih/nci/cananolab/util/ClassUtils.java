@@ -1,15 +1,11 @@
 package gov.nih.nci.cananolab.util;
 
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.service.common.LookupService;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.SortedSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -31,9 +27,10 @@ public class ClassUtils {
 		JarFile file = null;
 		URL url = Thread.currentThread().getContextClassLoader().getResource(
 				"application-config.xml");
-		
-		File webinfDirect= (new File(url.getPath())).getParentFile().getParentFile();
-		
+
+		File webinfDirect = (new File(url.getPath())).getParentFile()
+				.getParentFile();
+
 		String fullJarFilePath = webinfDirect + File.separator + "lib"
 				+ File.separatorChar + CaNanoLabConstants.SDK_BEAN_JAR;
 		file = new JarFile(fullJarFilePath);
@@ -93,6 +90,7 @@ public class ClassUtils {
 
 	/**
 	 * get the short class name without fully qualified path
+	 * 
 	 * @param className
 	 * @return
 	 */
@@ -103,24 +101,37 @@ public class ClassUtils {
 
 	/**
 	 * check if a class has children classes
-	 * @param parent class name
+	 * 
+	 * @param parent
+	 *            class name
 	 * @return
 	 */
-	public static boolean hasChildrenClasses(String parentClassName) throws Exception {
+	public static boolean hasChildrenClasses(String parentClassName)
+			throws Exception {
 		boolean hasChildernFlag = false;
-		if(parentClassName == null) {
+		if (parentClassName == null) {
 			return hasChildernFlag;
 		}
 		List<String> subclassList = ClassUtils
-			.getChildClassNames(parentClassName);
-		if(subclassList == null || subclassList.size() == 0)
+				.getChildClassNames(parentClassName);
+		if (subclassList == null || subclassList.size() == 0)
 			hasChildernFlag = false;
 		else
 			hasChildernFlag = true;
-		
+
 		return hasChildernFlag;
 	}
-	
+
+	public static Class getFullClass(String shortClassName) throws Exception {
+		Collection<Class> classes = getDomainClasses();
+		for (Class clazz : classes) {
+			if (clazz.getCanonicalName().endsWith(shortClassName)) {
+				return clazz;
+			}
+		}
+		return Object.class;
+	}
+
 	public static void main(String[] args) {
 		try {
 			List<String> names = ClassUtils
@@ -128,6 +139,7 @@ public class ClassUtils {
 			for (String name : names) {
 				System.out.println(name);
 			}
+			System.out.println("MolecularWeight");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
