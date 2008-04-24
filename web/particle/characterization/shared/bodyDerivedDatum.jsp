@@ -14,13 +14,16 @@
 						<strong>Name*</strong>
 					</td>
 					<td>
-						<strong>Statistics Type</strong>
+						<strong>Value Type</strong>
 					</td>
 					<td>
 						<strong>Value*</strong>
 					</td>
 					<td>
 						<strong>Unit</strong>
+					</td>
+					<td>
+						<strong>Description</strong>
 					</td>
 					<td></td>
 				</tr>
@@ -30,14 +33,14 @@
 			property="achar.derivedBioAssayDataList[${param.fileInd}].datumList"
 			indexId="dInd">
 			<tr>
-				<td class="leftLabel">
+				<td class="leftLabel" valign="top">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
-							<html:select styleId="assayName${param.fileInd}${dInd}"
+							<html:select styleId="datumName${param.fileInd}-${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
-								onchange="javascript:callPrompt('Name', 'assayName' + ${param.fileInd} + ${dInd});">
-								<html:options name="datumNames" />
+								onchange="javascript:callPrompt('Name', 'datumName' + ${param.fileInd} + '-'+ ${dInd});getUnit(${param.fileInd}, ${dInd});">								
 								<option value=""></option>
+								<html:options name="derivedDatumNames" />
 								<option value="other">
 									[Other]
 								</option>
@@ -48,24 +51,25 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="label">
+				<td class="label" valign="top">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
-							<html:select styleId="statisticsType${param.fileInd}${dInd}"
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].statisticsType"
-								onchange="javascript:callPrompt('Statistics Type', 'statisticsType' + ${param.fileInd} + ${dInd});">
-								<html:options name="charMeasureTypes" />
+							<html:select styleId="valueType${param.fileInd}-${dInd}"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueType"
+								onchange="javascript:callPrompt('Value Type', 'valueType' + ${param.fileInd} + '-'+${dInd});">
+								<option value=""></option>
+								<html:options name="derivedDatumValueTypes" />
 								<option value="other">
 									[Other]
 								</option>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.statisticsType}&nbsp;
+							${ddata.valueType}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="label">
+				<td class="label" valign="top">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
 							<html:text
@@ -77,20 +81,31 @@
 						</c:otherwise>
 					</c:choose>
 				</td>
-				<td class="label">
+				<td class="label" valign="top">
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true'}">
-							<html:select styleId="unit${param.fileInd}${dInd}"
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].unit"
-								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + ${dInd});">
-								<html:options name="charMeasureUnits" />
+							<html:select styleId="unit${param.fileInd}-${dInd}"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueUnit"
+								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + '-'+${dInd});">
+								<option value=""></option>
 								<option value="other">
 									[Other]
 								</option>
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.unit}&nbsp;
+							${ddata.valueUnit}&nbsp;
+						</c:otherwise>
+					</c:choose>
+				</td>
+				<td class="label" valign="top">
+					<c:choose>
+						<c:when test="${canCreateNanoparticle eq 'true'}">
+							<html:textarea styleId="description${param.fileInd}-${dInd}"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].description" />&nbsp; 												
+						</c:when>
+						<c:otherwise>
+							${ddata.description}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -99,7 +114,7 @@
 
 						<td class="rightLabel">
 							<a href="#" class="removeLink"
-								onclick="javascript:removeChildComponent(characterizationForm, '${actionName}', ${param.fileInd}, ${dInd}, 'removeDerivedData')">remove</a>
+								onclick="javascript:removeChildComponent(characterizationForm, '${actionName}', ${param.fileInd}, ${dInd}, 'removeDerivedDatum')">remove</a>
 						</td>
 					</c:when>
 					<c:otherwise>
@@ -112,32 +127,3 @@
 </table>
 <br>
 
-
-<script language="JavaScript">
-<!--//
-  function filterDatumCategories(fileInd, datumCount) {            
-    var categorySelection=getElement(characterizationForm, 'achar.derivedBioAssayDataList['+fileInd+'].categories');
-	var categories = new Array();
-	for (var i = 0; i<categorySelection.options.length; i++) {
-		if (categorySelection.options[i].selected) {
-			categories.push(categorySelection[i].value);
-		}
-	}
-	for (var i=0; i<datumCount; i++) {
-	  var datumCategorySelection=getElement(characterizationForm, 'achar.derivedBioAssayDataList['+fileInd+'].datumList['+i+'].category');	    	  
-	  datumCategorySelection.length=0;
-   	  if (categories.length>1) {
-		datumCategorySelection.options[0]=new Option("", "");
-	    for (var j = 0; j < categories.length; j++) {
-		  datumCategorySelection.options[j+1] = new Option(categories[j], categories[j]);
-	    }
-	  }	  
-	  else {	  
-		for (var j = 0; j < categories.length; j++) {
-		  datumCategorySelection.options[j] = new Option(categories[j], categories[j]);
-		}	
-	  }	  
-	}
-  }
-//-->
-</script>

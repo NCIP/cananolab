@@ -38,11 +38,12 @@
 			</td>
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
-					<td class="labelWithTop" valign="top">
+					<td class="completeLabelWithTop" valign="top" colspan="4">
 						<html:select styleId="fileType${param.fileInd}"
-							property="achar.derivedBioAssayDataList[${param.fileInd}].type"
+							property="achar.derivedBioAssayDataList[${param.fileInd}].labFileBean.domainFile.type"
 							onchange="javascript:callPrompt('File Type', 'fileType' + ${param.fileInd});">
-							<html:options name="allDerivedDataFileTypes" />
+							<option value=""></option>
+							<html:options name="fileTypes" />
 							<option value="other">
 								[Other]
 							</option>
@@ -50,8 +51,8 @@
 					</td>
 				</c:when>
 				<c:otherwise>
-					<td class="labelWithTop">
-						${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].type}&nbsp;
+					<td class="completeLabelWithTop" colspan="4">
+						${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].labFileBean.domainFile.type}&nbsp;
 					</td>
 				</c:otherwise>
 			</c:choose>
@@ -61,13 +62,13 @@
 				<strong>File Name</strong> &nbsp;&nbsp;&nbsp;
 				<c:choose>
 					<c:when
-						test="${!empty characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">
+						test="${!empty characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].labFileBean.domainFile.uri}">
 						<c:choose>
 							<c:when
-								test="${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].hidden==false}">
+								test="${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].labFileBean.hidden==false}">
 								<html:link
 									page="/${actionName}.do?page=0&dispatch=loadFile&fileNumber=${param.fileInd}">
-								${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].displayName}
+								${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].labFileBean.displayName}
 							</html:link>
 							</c:when>
 							<c:otherwise>
@@ -80,7 +81,7 @@
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<c:choose>
 							<c:when
-								test="${empty characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].uri}">	
+								test="${empty characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].labFileBean.domainFile.uri}">	
 								Click on "Load File" button 	
 									&nbsp;&nbsp;&nbsp;&nbsp;<input type="button"
 									onclick="javascript:loadFile(this.form, '${actionName}', ${param.fileInd})"
@@ -92,25 +93,6 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="leftLabel" valign="top" colspan="1">
-				<strong>File/Derived Data Description</strong>
-			</td>
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
-					<td class="rightLabel" colspan="3">
-						<html:textarea
-							property="achar.derivedBioAssayDataList[${param.fileInd}].description"
-							rows="3" cols="65" />
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td class="rightLabel" colspan="3">
-						${characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].description}&nbsp;
-					</td>
-				</c:otherwise>
-			</c:choose>
-		</tr>
-		<tr>
 			<td class="completeLabel" colspan="4">
 				<table border="0" width="100%">
 					<tr>
@@ -118,7 +100,7 @@
 							<c:when test="${canCreateNanoparticle eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addChildComponent(characterizationForm, '${actionName}', ${param.fileInd}, 'addDerivedData')"><span
+										onclick="javascript:addChildComponent(characterizationForm, '${actionName}', ${param.fileInd}, 'addDerivedDatum')"><span
 										class="addLink">Add Derived Data</span> </a>
 								</td>
 							</c:when>
@@ -127,7 +109,8 @@
 							</c:otherwise>
 						</c:choose>
 						<td>
-							<jsp:include page="/particle/shared/characterization/bodyDerivedDatum.jsp">
+							<jsp:include
+								page="/particle/characterization/shared/bodyDerivedDatum.jsp">
 								<jsp:param name="fileInd" value="${param.fileInd}" />
 							</jsp:include>
 						</td>
@@ -140,6 +123,6 @@
 
 <logic:present name="characterizationFile${param.fileInd}">
 	<html:hidden
-		property="achar.derivedBioAssayDataList[${param.fileInd}].fileId"
+		property="achar.derivedBioAssayDataList[${param.fileInd}].labFileBean.domainFile.id"
 		value="${fileId}" />
 </logic:present>

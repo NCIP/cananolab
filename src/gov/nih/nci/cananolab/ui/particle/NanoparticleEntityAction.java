@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.19 2008-04-23 17:31:16 cais Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.20 2008-04-24 22:30:05 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -131,7 +131,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				request);
 		InitCompositionSetup.getInstance().getComposingElementTypes(request);
 		InitCompositionSetup.getInstance().setFunctionTypes(request);
-		
+
 		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
 		InitCompositionSetup.getInstance().getModalityTypes(request);
 		InitNanoparticleSetup.getInstance().getFileTypes(request);
@@ -193,9 +193,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addFile(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
@@ -203,9 +203,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward removeFile(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -214,6 +214,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		entity.removeFile(ind);
 		return mapping.getInputForward();
 	}
+
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

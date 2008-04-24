@@ -37,7 +37,7 @@ public class CharacterizationBean {
 
 	private InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
 
-	private List<DerivedBioAssayData> derivedBioAssayDataList = new ArrayList<DerivedBioAssayData>();
+	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
@@ -49,15 +49,23 @@ public class CharacterizationBean {
 
 	public CharacterizationBean() {
 		instrumentConfig.setInstrument(new Instrument());
+		
+//		DerivedBioAssayDataBean bioAssayData = new DerivedBioAssayDataBean();
+//		bioAssayData.getDomainBioAssayData().setDerivedDatumCollection(
+//				new HashSet<DerivedDatum>());
+//		derivedBioAssayDataList.add(bioAssayData);
 	}
 
 	public CharacterizationBean(Characterization chara) {
+		domainChar = chara;
+		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
 		instrumentConfig = chara.getInstrumentConfiguration();
 		for (DerivedBioAssayData bioassayData : chara
 				.getDerivedBioAssayDataCollection()) {
-			derivedBioAssayDataList.add(bioassayData);
+			derivedBioAssayDataList.add(new DerivedBioAssayDataBean(
+					bioassayData));
 		}
 		protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
 	}
@@ -65,7 +73,7 @@ public class CharacterizationBean {
 	public void setDomainChar() {
 		try {
 			// take care of characterizations that don't have any special
-			// properties shown in the form
+			// properties shown in the form, e.g. Size
 			if (domainChar == null) {
 				Class clazz = ClassUtils.getFullClass(className);
 				domainChar = (Characterization) clazz.newInstance();
@@ -79,59 +87,45 @@ public class CharacterizationBean {
 			if (instrumentConfig.getInstrument() != null
 					&& instrumentConfig.getInstrument().getType() != null
 					&& instrumentConfig.getInstrument().getType().length() > 0)
-				domainChar.setInstrumentConfiguration(instrumentConfig);
-			domainChar
-					.setProtocolFile(protocolFileBean.getDomainProtocolFile());
+				if (instrumentConfig.getId() == null) {
+					instrumentConfig.setCreatedBy(createdBy);
+					instrumentConfig.setCreatedDate(new Date());
+				}
+			domainChar.setInstrumentConfiguration(instrumentConfig);
+			// domainChar
+			// .setProtocolFile(protocolFileBean.getDomainProtocolFile());
 			if (domainChar.getDerivedBioAssayDataCollection() != null) {
 				domainChar.getDerivedBioAssayDataCollection().clear();
 			} else {
 				domainChar
 						.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 			}
-			for (DerivedBioAssayData bioAssayData : derivedBioAssayDataList) {
-				domainChar.getDerivedBioAssayDataCollection().add(bioAssayData);
+			// set createdBy and createdDate
+			for (DerivedBioAssayDataBean bioAssayData : derivedBioAssayDataList) {
+				if (bioAssayData.getDomainBioAssayData().getId() == null) {
+					bioAssayData.getDomainBioAssayData()
+							.setCreatedBy(createdBy);
+					bioAssayData.getDomainBioAssayData().setCreatedDate(
+							new Date());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Copy constructor
-	 * 
-	 * @param charBean
-	 */
-	public CharacterizationBean(CharacterizationBean charBean) {
-		this.viewTitle = charBean.getViewTitle();
-		this.characterizationSource = charBean.getCharacterizationSource();
-		this.derivedBioAssayDataList = charBean.getDerivedBioAssayDataList();
-		this.description = charBean.getDescription();
-		this.instrumentConfig = charBean.getInstrumentConfiguration();
-		this.protocolFileBean = charBean.getProtocolFileBean();
-	}
-
-	// public CharacterizationBean(Characterization characterization) {
-	// this.setViewTitle(characterization.getIdentificationName());
-	// this.setCharacterizationSource(characterization.getSource());
-	// this.setCreatedBy(characterization.getCreatedBy());
-	// this.setCreatedDate(characterization.getCreatedDate());
-	//		
-	// this.setDescription(characterization.getDescription());
-	// InstrumentConfiguration instrumentConfigObj = characterization
-	// .getInstrumentConfiguration();
-	// if (instrumentConfigObj != null) {
-	// this.instrumentConfigBean = new InstrumentConfigBean(
-	// instrumentConfigObj);
-	// }
-	// for (DerivedBioAssayData table : characterization
-	// .getDerivedBioAssayDataCollection()) {
-	// DerivedBioAssayDataBean ctBean = new DerivedBioAssayDataBean(table);
-	// this.getDerivedBioAssayDataList().add(ctBean);
-	// }
-	// ProtocolFile protocolFile = characterization.getProtocolFile();
-	// if (protocolFile != null) {
-	// this.protocolFileBean = new ProtocolFileBean(protocolFile);
-	// }
+	// /**
+	// * Copy constructor
+	// *
+	// * @param charBean
+	// */
+	// public CharacterizationBean(CharacterizationBean charBean) {
+	// this.viewTitle = charBean.getViewTitle();
+	// this.characterizationSource = charBean.getCharacterizationSource();
+	// this.derivedBioAssayDataList = charBean.getDerivedBioAssayDataList();
+	// this.description = charBean.getDescription();
+	// this.instrumentConfig = charBean.getInstrumentConfiguration();
+	// this.protocolFileBean = charBean.getProtocolFileBean();
 	// }
 
 	public String getCharacterizationSource() {
@@ -157,71 +151,13 @@ public class CharacterizationBean {
 	}
 
 	public void addDerivedBioAssayData() {
-		derivedBioAssayDataList.add(new DerivedBioAssayData());
+		derivedBioAssayDataList.add(new DerivedBioAssayDataBean());
 	}
 
 	public void removeDerivedBioAssayData(int ind) {
 		derivedBioAssayDataList.remove(ind);
 	}
 
-	public void addDerivedDatum(int ind) {
-		DerivedBioAssayData bioAssayData = derivedBioAssayDataList.get(ind);
-		bioAssayData.getDerivedDatumCollection().add(new DerivedDatum());
-	}
-
-	public void removeDerivedDatum(int ind, int dataInd) {
-		DerivedBioAssayData bioAssayData = derivedBioAssayDataList.get(ind);
-		List<DerivedDatum> sortedDatumList = new ArrayList<DerivedDatum>(
-				bioAssayData.getDerivedDatumCollection());
-		Collections.sort(sortedDatumList,
-				new CaNanoLabComparators.DerivedDatumDateComparator());
-		DerivedDatum datum = sortedDatumList.remove(dataInd);
-		bioAssayData.getDerivedDatumCollection().remove(datum);
-	}
-
-	/**
-	 * Update the domain characterization object from the dto bean properties
-	 * 
-	 * @return
-	 */
-	// public void updateDomainObj(Characterization doChar) {
-	// doChar.setSource(getCharacterizationSource());
-	// doChar.setIdentificationName(getViewTitle());
-	// doChar.setDescription(getDescription());
-	// doChar.setCreatedBy(getCreatedBy());
-	// doChar.setCreatedDate(getCreatedDate());
-	// updateDerivedBioAssayData(doChar);
-	// }
-	// update domain object's derivedBioAssayData collection
-	// private void updateDerivedBioAssayData(Characterization doChar) {
-	// // copy collection
-	// List<DerivedBioAssayData> doDerivedDataList = new
-	// ArrayList<DerivedBioAssayData>(
-	// doChar.getDerivedBioAssayDataCollection());
-	// // clear the existing collection
-	// doChar.getDerivedBioAssayDataCollection().clear();
-	// for (DerivedBioAssayDataBean derivedBioAssayDataBean :
-	// getDerivedBioAssayDataList()) {
-	// DerivedBioAssayData doDerivedBioAssayData = null;
-	// // if no id, add new domain object
-	// if (derivedBioAssayDataBean.getId() == null) {
-	// doDerivedBioAssayData = new DerivedBioAssayData();
-	// } else {
-	// // find domain object with the same ID and add the updated
-	// // domain object
-	// for (DerivedBioAssayData doData : doDerivedDataList) {
-	// if (doData.getId().equals(
-	// new Long(derivedBioAssayDataBean.getId()))) {
-	// doDerivedBioAssayData = doData;
-	// break;
-	// }
-	// }
-	// }
-	// derivedBioAssayDataBean.updateDomainObj(doDerivedBioAssayData);
-	// doChar.getDerivedBioAssayDataCollection()
-	// .add(doDerivedBioAssayData);
-	// }
-	// }
 	public String getDescription() {
 		return this.description;
 	}
@@ -230,7 +166,7 @@ public class CharacterizationBean {
 		this.description = description;
 	}
 
-	public List<DerivedBioAssayData> getDerivedBioAssayDataList() {
+	public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
 		return this.derivedBioAssayDataList;
 	}
 
