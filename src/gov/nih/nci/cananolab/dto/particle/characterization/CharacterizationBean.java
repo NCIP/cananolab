@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,21 +60,28 @@ public class CharacterizationBean {
 	}
 
 	public void setDomainChar() {
-		domainChar.setDescription(description);
-		domainChar.setIdentificationName(viewTitle);
-		if (instrumentConfig.getInstrument() != null
-				&& instrumentConfig.getInstrument().getType() != null
-				&& instrumentConfig.getInstrument().getType().length() > 0)
-			domainChar.setInstrumentConfiguration(instrumentConfig);
-		domainChar.setProtocolFile(protocolFileBean.getDomainProtocolFile());
-		if (domainChar.getDerivedBioAssayDataCollection() != null) {
-			domainChar.getDerivedBioAssayDataCollection().clear();
-		} else {
+		try {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainChar = (Characterization) clazz.newInstance();
+			domainChar.setDescription(description);
+			domainChar.setIdentificationName(viewTitle);
+			if (instrumentConfig.getInstrument() != null
+					&& instrumentConfig.getInstrument().getType() != null
+					&& instrumentConfig.getInstrument().getType().length() > 0)
+				domainChar.setInstrumentConfiguration(instrumentConfig);
 			domainChar
-					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
-		}
-		for (DerivedBioAssayData bioAssayData : derivedBioAssayDataList) {
-			domainChar.getDerivedBioAssayDataCollection().add(bioAssayData);
+					.setProtocolFile(protocolFileBean.getDomainProtocolFile());
+			if (domainChar.getDerivedBioAssayDataCollection() != null) {
+				domainChar.getDerivedBioAssayDataCollection().clear();
+			} else {
+				domainChar
+						.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+			}
+			for (DerivedBioAssayData bioAssayData : derivedBioAssayDataList) {
+				domainChar.getDerivedBioAssayDataCollection().add(bioAssayData);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
