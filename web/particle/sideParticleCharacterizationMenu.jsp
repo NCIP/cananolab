@@ -153,7 +153,7 @@
 							<c:url var="url" value="${leafCharABean.link}.do">
 								<c:param name="page" value="0" />
 								<c:param name="dispatch" value="detailView" />
-								<c:param name="particleId" value="${leafCharBean.dataId}" />
+								<c:param name="particleId" value="${particleId}" />
 								<c:param name="dataId" value="${leafCharBean.dataId}" />
 								<c:param name="submitType" value="${leafCharBean.dataDisplayType}" />
 							</c:url>
@@ -233,7 +233,7 @@
 											<c:url var="url3" value="${leafCharBean.dataLink}.do">
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="detailView" />
-												<c:param name="particleId" value="${leafCharBean.dataId}" />
+												<c:param name="particleId" value="${particleId}" />
 												<c:param name="dataId"
 													value="${leafCharBean.dataId}" />
 												<c:param name="submitType" value="${leafCharBean.dataDisplayType}" />
@@ -296,7 +296,7 @@
 																	<c:url var="url4" value="${leafCharBean.dataLink}.do">
 																		<c:param name="page" value="0" />
 																		<c:param name="dispatch" value="detailView" />
-																		<c:param name="particleId" value="${leafCharBean.dataId}" />
+																		<c:param name="particleId" value="${particleId}" />
 																		<c:param name="dataId"
 																			value="${leafCharBean.dataId}" />
 																		<c:param name="submitType"
@@ -327,7 +327,7 @@
 																		<li>
 																			<c:url var="submitUrl"
 																				value="${leafCharBean.dataLink}.do">
-																				<c:param name="particleId" value="${leafCharBean.dataId}" />
+																				<c:param name="particleId" value="${particleId}" />
 																				<c:param name="submitType" value="${fifthLevelChar}" />
 																				<c:param name="page" value="0" />
 																				<c:param name="dispatch" value="setup" />
@@ -354,7 +354,7 @@
 																							value="${leafCharBean.dataLink}.do">
 																							<c:param name="page" value="0" />
 																							<c:param name="dispatch" value="detailView" />
-																							<c:param name="particleId" value="${leafCharBean.dataId}" />
+																							<c:param name="particleId" value="${particleId}" />
 																							<c:param name="dataId"
 																								value="${leafCharBean.dataId}" />
 																							<c:param name="submitType"
