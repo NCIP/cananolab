@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -26,6 +25,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -656,28 +656,6 @@ public class AuthorizationService {
 	}
 
 	/**
-	 * Get a list of particle the user has read permission on.
-	 * 
-	 * @param user
-	 * @param particles
-	 * @return
-	 * @throws CaNanoLabSecurityException
-	 */
-	public List<ParticleBean> getFilteredParticles(UserBean user,
-			List<ParticleBean> particles) throws Exception {
-
-		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
-
-		for (ParticleBean particle : particles) {
-			boolean status = checkReadPermission(user, particle
-					.getDomainParticleSample().getName());
-			if (status)
-				filteredParticles.add(particle);
-		}
-		return filteredParticles;
-	}
-
-	/**
 	 * Get a list of groups the given object is assgined to with the given role
 	 * 
 	 * @param objectName
@@ -877,4 +855,48 @@ public class AuthorizationService {
 			throw new CaNanoLabSecurityException();
 		}
 	}
+
+	/**
+	 * Check whether user has read access to the data
+	 * 
+	 * @param data
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean isUserAllowed(String data, UserBean user) throws Exception {
+		List<String> publicData = getPublicData();
+		if (publicData.contains(data)) {
+			return true;
+		} else if (user != null && checkReadPermission(user, data)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check whether user is allowed to at least one data in the collection of data.  
+	 * 
+	 * @param auth
+	 * @param dataCollection
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean isAllowedAtLeastOne(AuthorizationService auth,
+			Collection<String> dataCollection, UserBean user) throws Exception {
+		List<String> publicData = auth.getPublicData();
+		dataCollection.removeAll(publicData);
+		if (dataCollection.size() == 0) {
+			return true;
+		} else if (user != null) {
+			for (String data : dataCollection) {
+				if (auth.checkReadPermission(user, data)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 }
