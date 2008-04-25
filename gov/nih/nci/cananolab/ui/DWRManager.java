@@ -126,4 +126,24 @@ public class DWRManager {
 		}
 		return new String[] {""};
 	}
+	
+	public String [] getAntibodySpeciesOptions(String nanoparticleEntityType) {
+		if (nanoparticleEntityType.equals("antibody")) {
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			HttpServletRequest request = webContext.getHttpServletRequest();
+			ServletContext sc = request.getSession().getServletContext();
+			try {
+				List<String> typeList = new ArrayList<String>(
+						InitCompositionSetup.getInstance().getAntibodySpecies(sc));
+				String[] eleArray = new String[typeList.size()];
+				return typeList.toArray(eleArray);
+
+			} catch (Exception e) {
+				System.out.println("getAntibodySpeciesOptions exception.");
+				e.printStackTrace();
+			}
+		}
+		return new String[] {""};
+	}
 }
