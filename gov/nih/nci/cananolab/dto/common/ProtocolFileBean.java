@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
  * @author pansu
  * 
  */
-public class ProtocolFileBean {
+public class ProtocolFileBean extends LabFileBean{
 	private String displayName;
 
 	private ProtocolFile domainProtocolFile;
@@ -19,9 +19,11 @@ public class ProtocolFileBean {
 	 * 
 	 */
 	public ProtocolFileBean() {
+		super();
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
+		super(protocolFile);
 		this.domainProtocolFile = protocolFile;
 	}
 
