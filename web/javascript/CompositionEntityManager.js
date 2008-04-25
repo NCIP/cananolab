@@ -5,7 +5,6 @@ function setEntityInclude(selectEleId) {
 }
 
 function populatePage(pageData) {
-
 	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
 }
 
@@ -60,10 +59,30 @@ function getAntibodyIsotypeOptions(selectEleId) {
   	}
 }
 
-function getFETypesOptions(selectEleId) {
+function getAntibodySpeciesOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if(compFuncTypeValue == 'antibody') {
+		CompositionEntityManager.getAntibodySpeciesOptions(compFuncTypeValue, function(data) {
+			
+			dwr.util.removeAllOptions("antibodySpecies");
+			dwr.util.addOptions("antibodySpecies", ['']);
+    		dwr.util.addOptions("antibodySpecies", data);
+  		});
+  	}
+}
+
+function setEntityTypeTitle(selectEleId) {
+	var selectEle = document.getElementById(selectEleId);
+	document.getElementById("entityTypeTitle").innerHTML = 
+			selectEle.options[selectEle.options.selectedIndex].text;
+}
+
+function getFETypeOptions(selectEleId) {
 	getBiopolymerOptions(selectEleId);
 	getAntibodyTypeOptions(selectEleId);
 	getAntibodyIsotypeOptions(selectEleId);
+	getAntibodySpeciesOptions(selectEleId);
+	setEntityTypeTitle(selectEleId);
 }
 	
 
