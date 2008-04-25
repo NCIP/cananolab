@@ -1,7 +1,7 @@
 
-function setEntityInclude(selectEleId) {
+function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
-	CompositionEntityManager.getEntityIncludePage(entityType, populatePage);
+	CompositionEntityManager.getEntityIncludePage(entityType, pagePath, populatePage);
 }
 
 function populatePage(pageData) {
