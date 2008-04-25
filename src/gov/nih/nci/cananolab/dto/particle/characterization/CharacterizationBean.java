@@ -6,12 +6,10 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -49,11 +47,11 @@ public class CharacterizationBean {
 
 	public CharacterizationBean() {
 		instrumentConfig.setInstrument(new Instrument());
-		
-//		DerivedBioAssayDataBean bioAssayData = new DerivedBioAssayDataBean();
-//		bioAssayData.getDomainBioAssayData().setDerivedDatumCollection(
-//				new HashSet<DerivedDatum>());
-//		derivedBioAssayDataList.add(bioAssayData);
+
+		// DerivedBioAssayDataBean bioAssayData = new DerivedBioAssayDataBean();
+		// bioAssayData.getDomainBioAssayData().setDerivedDatumCollection(
+		// new HashSet<DerivedDatum>());
+		// derivedBioAssayDataList.add(bioAssayData);
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -77,21 +75,23 @@ public class CharacterizationBean {
 			if (domainChar == null) {
 				Class clazz = ClassUtils.getFullClass(className);
 				domainChar = (Characterization) clazz.newInstance();
-				domainChar.setDescription(description);
-				domainChar.setIdentificationName(viewTitle);
 			}
 			if (domainChar.getId() == null) {
 				domainChar.setCreatedBy(createdBy);
 				domainChar.setCreatedDate(new Date());
 			}
+			domainChar.setDescription(description);
+			domainChar.setIdentificationName(viewTitle);
+
 			if (instrumentConfig.getInstrument() != null
 					&& instrumentConfig.getInstrument().getType() != null
-					&& instrumentConfig.getInstrument().getType().length() > 0)
+					&& instrumentConfig.getInstrument().getType().length() > 0) {
 				if (instrumentConfig.getId() == null) {
 					instrumentConfig.setCreatedBy(createdBy);
 					instrumentConfig.setCreatedDate(new Date());
 				}
-			domainChar.setInstrumentConfiguration(instrumentConfig);
+				domainChar.setInstrumentConfiguration(instrumentConfig);
+			}
 			// domainChar
 			// .setProtocolFile(protocolFileBean.getDomainProtocolFile());
 			if (domainChar.getDerivedBioAssayDataCollection() != null) {
@@ -107,6 +107,14 @@ public class CharacterizationBean {
 							.setCreatedBy(createdBy);
 					bioAssayData.getDomainBioAssayData().setCreatedDate(
 							new Date());
+					domainChar.getDerivedBioAssayDataCollection().add(
+							bioAssayData.getDomainBioAssayData());
+					for (DerivedDatum datum: bioAssayData.getDatumList()) {
+						if (datum.getId()==null) {
+							datum.setCreatedBy(createdBy);
+							datum.setCreatedDate(new Date());
+						}
+					}
 				}
 			}
 		} catch (Exception e) {
