@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -135,32 +136,49 @@ public class InitCompositionSetup {
 
 	public SortedSet<String> getAntigenSpecies(ServletContext appContext)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("Antigen",
-				"species");
-		appContext.setAttribute("antigenSpecies", types);
-		return types;
+		
+		return getServletContextLookupTypes(appContext, 
+				"antigenSpecies", "Antigen", "species");
+		
 	}
 
 	public SortedSet<String> getAntibodySpecies(ServletContext appContext)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("Antibody",
-				"species");
-		appContext.setAttribute("antibodySpecies", types);
-		return types;
+		
+		return getServletContextLookupTypes(appContext, 
+				"antibodySpecies", "Antibody", "species");
 	}
 
 	public SortedSet<String> getMolecularFormulaTypes(ServletContext appContext)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues(
-				"ComposingElement", "molecularFormulaType");
-		appContext.setAttribute("molecularFormulaTypes", types);
+		
+		return getServletContextLookupTypes(appContext, 
+				"molecularFormulaTypes", "ComposingElement",
+				"molecularFormulaType");
+	}
+
+	public SortedSet<String> getServletContextLookupTypes(
+			ServletContext appContext, String contextAttribute,
+			String lookupNmae, String lookupAttribute)
+			throws CaNanoLabException {
+		SortedSet<String> types = null;
+		if (appContext.getAttribute(contextAttribute) == null) {
+			types = LookupService.getLookupValues(lookupNmae,
+					lookupAttribute);
+			appContext.setAttribute(contextAttribute, types);
+			return types;
+		} else {
+			types = new TreeSet<String>(
+					(SortedSet<? extends String>) appContext
+							.getAttribute(contextAttribute));
+		}
 		return types;
 	}
 
 	public SortedSet<String> getFunctionalizingEntityUnits(
 			HttpServletRequest request) throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("FunctionalizingEntity",
-				"valueUnit");
+		SortedSet<String> types = LookupService.getLookupValues(
+				"FunctionalizingEntity", "valueUnit");
 		SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"FunctionalizingEntity", "otherValueUnit");
 		types.addAll(otherTypes);
@@ -168,17 +186,17 @@ public class InitCompositionSetup {
 		return types;
 	}
 
-	public SortedSet<String> getComposingElementUnits(
-			HttpServletRequest request) throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("ComposingElement",
-				"valueUnit");
+	public SortedSet<String> getComposingElementUnits(HttpServletRequest request)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.getLookupValues(
+				"ComposingElement", "valueUnit");
 		SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"ComposingElement", "otherValueUnit");
 		types.addAll(otherTypes);
 		request.setAttribute("composingElementUnits", types);
 		return types;
 	}
-	
+
 	public SortedSet<String> getAntibodyTypes(HttpServletRequest request)
 			throws CaNanoLabException {
 		SortedSet<String> types = LookupService.getLookupValues("Antibody",
