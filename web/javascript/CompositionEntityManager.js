@@ -147,6 +147,22 @@ function displayAntigenSpecies(parentIndex, childIndex) {
 	}
 	return false;
 }
+
+function radLinkOrUpload(radioIndex, fileIndex) {
+	var linkEle = document.getElementById("linkEle_" + fileIndex);
+	var loadEle = document.getElementById("loadEle_" + fileIndex);
+	var titleEle = document.getElementById("lutitle_" + fileIndex);
+	if(radioIndex == 0) {
+		loadEle.style.display = "inline";
+		linkEle.style.display = "none";
+		titleEle.innerHTML = "Upload New File";
+	} else {
+		loadEle.style.display = "none";
+		linkEle.style.display = "inline";
+		titleEle.innerHTML = "Input File URL";
+	}
+}
+
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp
