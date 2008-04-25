@@ -56,9 +56,23 @@ public class NanoparticleEntityBean {
 	public NanoparticleEntityBean() {
 	}
 
-	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
+	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity)
+			throws Exception {
 		description = nanoparticleEntity.getDescription();
 		domainEntity = nanoparticleEntity;
+		if (domainEntity instanceof Biopolymer) {
+			biopolymer = (Biopolymer) domainEntity;
+		} else if (domainEntity instanceof CarbonNanotube) {
+			carbonNanotube = (CarbonNanotube) domainEntity;
+		} else if (domainEntity instanceof Liposome) {
+			liposome = (Liposome) domainEntity;
+		} else if (domainEntity instanceof Emulsion) {
+			emulsion = (Emulsion) domainEntity;
+		} else if (domainEntity instanceof Fullerene) {
+			fullerene = (Fullerene) domainEntity;
+		} else if (domainEntity instanceof OtherNanoparticleEntity) {
+			type = ((OtherNanoparticleEntity) domainEntity).getType();
+		}
 		className = ClassUtils.getShortClassName(nanoparticleEntity.getClass()
 				.getName());
 		for (ComposingElement composingElement : nanoparticleEntity
@@ -152,7 +166,7 @@ public class NanoparticleEntityBean {
 			}
 			domainEntity.setDescription(description);
 			if (domainEntity instanceof OtherNanoparticleEntity) {
-				((OtherNanoparticleEntity)domainEntity).setType(type);
+				((OtherNanoparticleEntity) domainEntity).setType(type);
 			}
 			if (domainEntity.getComposingElementCollection() != null) {
 				domainEntity.getComposingElementCollection().clear();
