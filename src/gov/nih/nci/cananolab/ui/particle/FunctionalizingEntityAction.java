@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.11 2008-04-24 22:36:51 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.12 2008-04-25 12:21:48 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -67,29 +67,20 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("functionalizingEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleBean = initSetup(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
-				request);
-		InitNanoparticleSetup.getInstance().setOtherParticleNames(
-				request,
-				particleBean.getDomainParticleSample().getName(),
-				particleBean.getDomainParticleSample().getSource()
-						.getOrganizationName(), user);
-
 		setLookups(request);
-		
 		return mapping.getInputForward();
 	}
-	
+
 	private void setLookups(HttpServletRequest request) throws Exception {
+		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
+				request);
 		InitCompositionSetup.getInstance().getTargetTypes(request);
 		InitCompositionSetup.getInstance().getAntibodyTypes(request);
 		InitCompositionSetup.getInstance().getAntibodyIsotypes(request);
 		InitCompositionSetup.getInstance().getActivationMethods(request);
 		InitCompositionSetup.getInstance().setFunctionTypes(request);
-		InitCompositionSetup.getInstance().getFunctionalizingEntityUnits(request);
+		InitCompositionSetup.getInstance().getFunctionalizingEntityUnits(
+				request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -113,13 +104,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			functionBean.setType(functionType);
 		}
 		theForm.set("entity", entityBean);
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
-				request);
-		
 		setLookups(request);
-		
 		return mapping.getInputForward();
 	}
 
@@ -145,9 +130,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addFile(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
@@ -155,9 +140,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward removeFile(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -166,26 +151,26 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		entity.removeFile(ind);
 		return mapping.getInputForward();
 	}
-	
-	public ActionForward addTarget(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+
+	public ActionForward addTarget(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 
 		String funcIndexStr = (String) request.getParameter("compInd");
 		int funcIndex = Integer.parseInt(funcIndexStr);
-		FunctionBean function = (FunctionBean) entity
-				.getFunctions().get(funcIndex);
+		FunctionBean function = (FunctionBean) entity.getFunctions().get(
+				funcIndex);
 
 		function.addTarget();
 		return mapping.getInputForward();
 	}
 
-	public ActionForward removeTarget(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward removeTarget(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		String funcIndexStr = (String) request.getParameter("compInd");
 		int funcIndex = Integer.parseInt(funcIndexStr);
 
@@ -194,20 +179,20 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
-		FunctionBean function = (FunctionBean) entity
-						.getFunctions().get(funcIndex);
+		FunctionBean function = (FunctionBean) entity.getFunctions().get(
+				funcIndex);
 		function.removeTarget(targetIndex);
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
-		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-		 * .get("entity"); // update editable dropdowns HttpSession session =
-		 * request.getSession();
+		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean)
+		 * theForm .get("entity"); // update editable dropdowns HttpSession
+		 * session = request.getSession();
 		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
 		 * 

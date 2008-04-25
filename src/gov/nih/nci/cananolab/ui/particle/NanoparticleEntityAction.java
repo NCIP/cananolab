@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.20 2008-04-24 22:30:05 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.21 2008-04-25 12:21:48 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -62,6 +62,17 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		return forward;
 	}
 
+	private void setLookups(HttpServletRequest request) throws Exception {
+		InitCompositionSetup.getInstance().setNanoparticleEntityTypes(request);
+		InitCompositionSetup.getInstance().getEmulsionComposingElementTypes(
+				request);
+		InitCompositionSetup.getInstance().getComposingElementTypes(request);
+		InitCompositionSetup.getInstance().setFunctionTypes(request);
+		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
+		InitCompositionSetup.getInstance().getModalityTypes(request);
+		InitNanoparticleSetup.getInstance().getFileTypes(request);
+	}
+
 	/**
 	 * Set up the input form for adding new nanoparticle entity
 	 * 
@@ -78,23 +89,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleBean = initSetup(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitCompositionSetup.getInstance().setNanoparticleEntityTypes(request);
-		InitCompositionSetup.getInstance().getEmulsionComposingElementTypes(
-				request);
-		InitCompositionSetup.getInstance().getComposingElementTypes(request);
-		InitCompositionSetup.getInstance().setFunctionTypes(request);
-		InitNanoparticleSetup.getInstance().setOtherParticleNames(
-				request,
-				particleBean.getDomainParticleSample().getName(),
-				particleBean.getDomainParticleSample().getSource()
-						.getOrganizationName(), user);
-
-		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
-		InitCompositionSetup.getInstance().getModalityTypes(request);
-		InitNanoparticleSetup.getInstance().getFileTypes(request);
+		setLookups(request);
 		return mapping.getInputForward();
 	}
 
@@ -124,17 +119,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			}
 		}
 		theForm.set("entity", entityBean);
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
-		InitCompositionSetup.getInstance().setNanoparticleEntityTypes(request);
-		InitCompositionSetup.getInstance().getEmulsionComposingElementTypes(
-				request);
-		InitCompositionSetup.getInstance().getComposingElementTypes(request);
-		InitCompositionSetup.getInstance().setFunctionTypes(request);
-
-		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
-		InitCompositionSetup.getInstance().getModalityTypes(request);
-		InitNanoparticleSetup.getInstance().getFileTypes(request);
+		setLookups(request);
 		return mapping.getInputForward();
 	}
 
