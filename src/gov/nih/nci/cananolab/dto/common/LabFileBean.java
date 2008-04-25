@@ -14,8 +14,8 @@ import gov.nih.nci.cananolab.util.StringUtils;
  * 
  */
 public class LabFileBean {
-	private LabFile domainFile=new LabFile();
-	
+	private LabFile domainFile = new LabFile();
+
 	private String[] visibilityGroups = new String[0];
 
 	private String visibilityStr;
@@ -30,12 +30,14 @@ public class LabFileBean {
 	private String displayName;
 
 	private String instanceType; // type of instance, protocol, output,
+
 	// report, associatedFile, etc
 
 	private String timeStampedName;
 
-	private boolean hidden=true;
+	private boolean hidden = true;
 
+	private boolean image = false;
 	private boolean image=false;
 	
 	private String uploadedFile;
@@ -69,7 +71,6 @@ public class LabFileBean {
 		this.gridNode = gridNodeHost;
 	}
 
-	
 	public String[] getVisibilityGroups() {
 		return this.visibilityGroups;
 	}
@@ -80,7 +81,8 @@ public class LabFileBean {
 
 	public String getDisplayName() {
 		if (this.domainFile.getUri() != null) {
-			this.displayName = this.domainFile.getUri().replaceAll("/decompressedFiles", "");
+			this.displayName = this.domainFile.getUri().replaceAll(
+					"/decompressedFiles", "");
 		} else {
 			this.displayName = "";
 		}
@@ -133,11 +135,13 @@ public class LabFileBean {
 	}
 
 	public boolean isImage() {
+		if (getDomainFile().getName() != null) {
+			if (getDomainFile().getType().equalsIgnoreCase("image")
+					|| getDomainFile().getType().equalsIgnoreCase("graph")) {
+				image = StringUtils.isImgFileExt(getDomainFile().getName());				
+			}
+		}		
 		return image;
-	}
-
-	public void setImage(boolean image) {
-		this.image = image;
 	}
 
 	public LabFile getDomainFile() {
