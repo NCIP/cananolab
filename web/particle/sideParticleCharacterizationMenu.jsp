@@ -157,7 +157,7 @@
 								<c:param name="dataId" value="${leafCharBean.dataId}" />
 								<c:param name="submitType" value="${leafCharBean.dataDisplayType}" />
 							</c:url>
-							<li id="${leafCharBean.dataId}">
+						<li id="${leafCharBean.dataId}">
 <%--							<c:choose>--%>
 <%--								<c:when test="${leafCharBean.viewColor != null}">--%>
 <%--									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />--%>
@@ -230,7 +230,7 @@
 										id="${thirdLevelChar}">
 										<c:forEach var="leafCharBean"
 											items="${particleDataTree[thirdLevelChar]}">
-											<c:url var="url3" value="${leafCharABean.link}.do">
+											<c:url var="url3" value="${leafCharBean.dataLink}.do">
 												<c:param name="page" value="0" />
 												<c:param name="dispatch" value="detailView" />
 												<c:param name="particleId" value="${leafCharBean.dataId}" />
@@ -293,7 +293,7 @@
 															<ul class="sublist_5">
 																<c:forEach var="leafCharBean"
 																	items="${particleDataTree[fourthLevelChar]}">
-																	<c:url var="url4" value="${leafCharABean.link}.do">
+																	<c:url var="url4" value="${leafCharBean.dataLink}.do">
 																		<c:param name="page" value="0" />
 																		<c:param name="dispatch" value="detailView" />
 																		<c:param name="particleId" value="${leafCharBean.dataId}" />
@@ -326,7 +326,7 @@
 																		items="${invitroTypes[fourthLevelChar]}">
 																		<li>
 																			<c:url var="submitUrl"
-																				value="${leafCharABean.link}.do">
+																				value="${leafCharBean.dataLink}.do">
 																				<c:param name="particleId" value="${leafCharBean.dataId}" />
 																				<c:param name="submitType" value="${fifthLevelChar}" />
 																				<c:param name="page" value="0" />
@@ -351,7 +351,7 @@
 																					<c:forEach var="leafCharBean"
 																						items="${particleDataTree[fifthLevelChar]}">
 																						<c:url var="url5"
-																							value="${leafCharABean.link}.do">
+																							value="${leafCharBean.dataLink}.do">
 																							<c:param name="page" value="0" />
 																							<c:param name="dispatch" value="detailView" />
 																							<c:param name="particleId" value="${leafCharBean.dataId}" />
