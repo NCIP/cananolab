@@ -182,7 +182,7 @@ public class InitCompositionSetup {
 		SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"FunctionalizingEntity", "otherValueUnit");
 		types.addAll(otherTypes);
-		request.setAttribute("functionalizingEntityUnits", types);
+		request.getSession().setAttribute("functionalizingEntityUnits", types);
 		return types;
 	}
 
@@ -193,7 +193,7 @@ public class InitCompositionSetup {
 		SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"ComposingElement", "otherValueUnit");
 		types.addAll(otherTypes);
-		request.setAttribute("composingElementUnits", types);
+		request.getSession().setAttribute("composingElementUnits", types);
 		return types;
 	}
 
@@ -204,7 +204,7 @@ public class InitCompositionSetup {
 		SortedSet<String> otherTypes = LookupService.getLookupValues(
 				"Antibody", "otherType");
 		types.addAll(otherTypes);
-		request.setAttribute("antibodyTypes", types);
+		request.getSession().setAttribute("antibodyTypes", types);
 		return types;
 	}
 
@@ -216,7 +216,7 @@ public class InitCompositionSetup {
 				"Antibody", "otherIsotype");
 		types.addAll(otherTypes);
 
-		request.setAttribute("antibodyIsotypes", types);
+		request.getSession().setAttribute("antibodyIsotypes", types);
 		return types;
 	}
 
@@ -228,7 +228,7 @@ public class InitCompositionSetup {
 				"ActivationMethod", "otherType");
 		types.addAll(otherTypes);
 
-		request.setAttribute("activationMethod", types);
+		request.getSession().setAttribute("activationMethod", types);
 		return types;
 	}
 
