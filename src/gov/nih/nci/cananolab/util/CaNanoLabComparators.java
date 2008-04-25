@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.util;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -18,7 +19,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.3 2008-04-23 13:48:03 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.4 2008-04-25 23:36:47 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -90,8 +91,7 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class ParticleBeanComparator implements
-			Comparator<ParticleBean> {
+	public static class ParticleBeanComparator implements Comparator<ParticleBean> {
 		public int compare(ParticleBean particle1, ParticleBean particle2) {
 			return new SortableNameComparator().compare(particle1
 					.getDomainParticleSample().getName(), particle2
@@ -173,6 +173,13 @@ public class CaNanoLabComparators {
 			Comparator<DerivedDatum> {
 		public int compare(DerivedDatum data1, DerivedDatum data2) {
 			return data1.getCreatedDate().compareTo(data2.getCreatedDate());
+		}
+	}
+
+	public static class CharacterizationDateComparator implements
+			Comparator<Characterization> {
+		public int compare(Characterization chara1, Characterization chara2) {
+			return chara1.getCreatedDate().compareTo(chara2.getCreatedDate());
 		}
 	}
 }
