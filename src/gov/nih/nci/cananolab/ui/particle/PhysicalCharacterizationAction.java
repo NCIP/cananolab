@@ -6,8 +6,10 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.5 2008-04-25 12:21:48 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.6 2008-04-25 19:35:22 pansu Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
@@ -61,49 +63,14 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	/**
-	 * Set up the input form for adding new characterization
-	 * 
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		request.getSession().removeAttribute("characterizationForm");
-		ParticleBean particleBean = initSetup(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ServletContext appContext = request.getSession().getServletContext();
-		String submitType = request.getParameter("submitType");
-		String charClass = InitSetup.getInstance().getObjectName(submitType,
-				appContext);
-		setLookups(request, charClass);
-		return mapping.getInputForward();
+	protected void setCharacterizationBean(DynaValidatorForm theForm,
+			Characterization chara) throws Exception {
+		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
+				(PhysicalCharacterization) chara);
+		theForm.set("achar", charBean);		
 	}
 
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		request.getSession().removeAttribute("characterizationForm");
-		ParticleBean particleBean = initSetup(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String charId = request.getParameter("dataId");
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		PhysicalCharacterizationBean charBean = charService
-				.findPhysicalCharacterizationBy(charId, user);
-		theForm.set("achar", charBean);
-		String charClass = charBean.getClassName();
-		setLookups(request, charClass);
-		return mapping.getInputForward();
-	}
-
-	private void setLookups(HttpServletRequest request, String charClass)
+	protected void setLookups(HttpServletRequest request, String charClass)
 			throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
 		request.getSession().setAttribute("charClass", charClass);
