@@ -20,9 +20,8 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center">
-					Entity#1:Antibody
-				</h5>
+				<h5 align="center" id="entityTypeTitle"></h5>
+				<br>
 			</td>
 		</tr>
 		<tr>
@@ -292,7 +291,7 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify" id="peFileTitle">
-									Particle Entity File Information
+									Functionalizing Entity File Information
 								</div>
 							</td>
 						</tr>
