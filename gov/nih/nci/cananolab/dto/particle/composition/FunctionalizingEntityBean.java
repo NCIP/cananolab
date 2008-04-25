@@ -2,20 +2,19 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.SmallMolecule;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
@@ -50,7 +49,7 @@ public class FunctionalizingEntityBean {
 
 	private List<FunctionBean> functions = new ArrayList<FunctionBean>();
 
-	private Set<LabFile> files = new HashSet<LabFile>();
+	private List<LabFileBean> files = new ArrayList<LabFileBean>();
 
 	private ActivationMethod activationMethod = new ActivationMethod();
 
@@ -173,7 +172,7 @@ public class FunctionalizingEntityBean {
 		this.valueUnit = valueUnit;
 	}
 
-	public Set<LabFile> getFiles() {
+	public List<LabFileBean> getFiles() {
 		return files;
 	}
 
@@ -224,10 +223,10 @@ public class FunctionalizingEntityBean {
 			} else {
 				domainEntity.setLabFileCollection(new HashSet<LabFile>());
 			}
-			for (LabFile file : files) {
-				file.setCreatedBy(createdBy);
-				file.setCreatedDate(new Date());
-				domainEntity.getLabFileCollection().add(file);
+			for (LabFileBean file : files) {
+				file.getDomainFile().setCreatedBy(createdBy);
+				file.getDomainFile().setCreatedDate(new Date());
+				domainEntity.getLabFileCollection().add(file.getDomainFile());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -243,7 +242,7 @@ public class FunctionalizingEntityBean {
 	}
 
 	public void addFile() {
-		files.add(new LabFile());
+		files.add(new LabFileBean());
 	}
 
 	public void removeFile(int ind) {
