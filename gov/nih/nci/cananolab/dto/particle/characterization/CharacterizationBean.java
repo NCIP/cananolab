@@ -59,13 +59,22 @@ public class CharacterizationBean {
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
-		instrumentConfig = chara.getInstrumentConfiguration();
-		for (DerivedBioAssayData bioassayData : chara
-				.getDerivedBioAssayDataCollection()) {
-			derivedBioAssayDataList.add(new DerivedBioAssayDataBean(
-					bioassayData));
+		if (chara.getInstrumentConfiguration() != null) {
+			instrumentConfig = chara.getInstrumentConfiguration();
 		}
-		protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
+		if (instrumentConfig.getInstrument() == null) {
+			instrumentConfig.setInstrument(new Instrument());
+		}
+		if (chara.getDerivedBioAssayDataCollection() != null) {
+			for (DerivedBioAssayData bioassayData : chara
+					.getDerivedBioAssayDataCollection()) {
+				derivedBioAssayDataList.add(new DerivedBioAssayDataBean(
+						bioassayData));
+			}
+		}
+		if (chara.getProtocolFile() != null) {
+			protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
+		}
 	}
 
 	public void setDomainChar() {
@@ -109,8 +118,8 @@ public class CharacterizationBean {
 							new Date());
 					domainChar.getDerivedBioAssayDataCollection().add(
 							bioAssayData.getDomainBioAssayData());
-					for (DerivedDatum datum: bioAssayData.getDatumList()) {
-						if (datum.getId()==null) {
+					for (DerivedDatum datum : bioAssayData.getDatumList()) {
+						if (datum.getId() == null) {
 							datum.setCreatedBy(createdBy);
 							datum.setCreatedDate(new Date());
 						}
