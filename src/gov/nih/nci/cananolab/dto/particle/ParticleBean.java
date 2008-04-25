@@ -5,10 +5,8 @@ import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -29,6 +27,8 @@ public class ParticleBean {
 	private NanoparticleSample domainParticleSample = new NanoparticleSample();
 
 	private String createdBy;
+
+	private boolean hidden;
 
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
@@ -78,7 +78,7 @@ public class ParticleBean {
 	}
 
 	public void setDomainParticleSample() {
-		//always update createdBy and createdDate
+		// always update createdBy and createdDate
 		domainParticleSample.setCreatedBy(createdBy);
 		domainParticleSample.setCreatedDate(new Date());
 		if (domainParticleSample.getKeywordCollection() != null) {
@@ -99,5 +99,13 @@ public class ParticleBean {
 
 	public void setKeywordsStr(String keywordsStr) {
 		this.keywordsStr = keywordsStr;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }
