@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -63,11 +62,10 @@ public class NanoparticleCharacterizationService {
 		appService.saveOrUpdate(achar);
 	}
 
-	public PhysicalCharacterizationBean findPhysicalCharacterizationBy(
-			String charId, UserBean user)
+	public Characterization findCharacterizationBy(String charId, UserBean user)
 			throws ParticleCharacterizationException,
 			CaNanoLabSecurityException {
-		PhysicalCharacterizationBean charBean = null;
+		Characterization achar = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -78,15 +76,12 @@ public class NanoparticleCharacterizationService {
 			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
-				PhysicalCharacterization achar = (PhysicalCharacterization) result
-						.get(0);
-				charBean = new PhysicalCharacterizationBean(achar);
+				achar = (Characterization) result.get(0);
 			}
-			return charBean;
+			return achar;
 		} catch (Exception e) {
-			logger.error(
-					"Problem finding the physical characterization by id: "
-							+ charId, e);
+			logger.error("Problem finding the characterization by id: "
+					+ charId, e);
 			throw new ParticleCharacterizationException();
 		}
 	}
