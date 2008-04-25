@@ -59,7 +59,7 @@ public class NanoparticleCompositionService {
 			SampleComposition composition = particleSample
 					.getSampleComposition();
 			if (composition == null) {
-				composition = new SampleComposition();
+				particleSample.setSampleComposition(new SampleComposition());
 				entity.setSampleComposition(composition);
 				particleSample.setSampleComposition(composition);
 				Collection<NanoparticleEntity> entityCollection = new HashSet<NanoparticleEntity>();
