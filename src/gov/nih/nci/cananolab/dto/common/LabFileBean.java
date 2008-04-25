@@ -1,5 +1,9 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -33,6 +37,10 @@ public class LabFileBean {
 	private boolean hidden=true;
 
 	private boolean image=false;
+	
+	private String uploadedFile;
+	
+	private String keywordsStr;
 
 	public String getInstanceType() {
 		return this.instanceType;
@@ -46,7 +54,14 @@ public class LabFileBean {
 	}
 
 	public LabFileBean(LabFile labFile) {
-		domainFile=labFile;
+		this.domainFile=labFile;
+		SortedSet<String> keywordStrs = new TreeSet<String>();
+		if (domainFile.getKeywordCollection() != null) {
+			for (Keyword keyword : domainFile.getKeywordCollection()) {
+				keywordStrs.add(keyword.getName());
+			}
+		}
+		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
 	}
 
 	public LabFileBean(LabFile charFile, String gridNodeHost) {
@@ -127,5 +142,21 @@ public class LabFileBean {
 
 	public LabFile getDomainFile() {
 		return domainFile;
+	}
+
+	public String getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(String uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public String getKeywordsStr() {
+		return keywordsStr;
+	}
+
+	public void setKeywordsStr(String keywordsStr) {
+		this.keywordsStr = keywordsStr;
 	}
 }
