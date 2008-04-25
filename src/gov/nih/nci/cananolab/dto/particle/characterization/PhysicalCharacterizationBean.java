@@ -20,10 +20,14 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 	}
 
 	public PhysicalCharacterizationBean(PhysicalCharacterization chara) {
-		super(chara);		
+		super(chara);
 		if (chara instanceof Surface) {
-			surfaceBean = new SurfaceBean((Surface) domainChar);
-		}		
+			surfaceBean = new SurfaceBean((Surface) chara);
+		} else if (chara instanceof Shape) {
+			shape = (Shape) chara;
+		} else if (chara instanceof PhysicalState) {
+			physicalState = (PhysicalState) chara;
+		}
 	}
 
 	public PhysicalState getPhysicalState() {
