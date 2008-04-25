@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.12 2008-04-25 12:21:48 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.13 2008-04-25 23:33:30 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -34,7 +34,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entityBean.setDomainEntity();
@@ -66,7 +66,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("functionalizingEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -87,13 +87,13 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityBy(entityId, user);
+				.findFunctionalizingEntityBy(entityId);
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
@@ -211,7 +211,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
+		String particle = (String) theForm.get("particle");
 		String[] otherParticles = (String[]) theForm.get("otherParticles");
 		FunctionalizingEntityBean[] entityBeans = new FunctionalizingEntityBean[otherParticles.length];
 		if (otherParticles.length == 0) {
@@ -231,7 +231,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		// for (String particleName : otherParticles) {
 		// NanoparticleEntityBean newEntityBean = entityBean.copy();
 		// // overwrite particle
-		// ParticleBean otherParticle = service.findNanoparticleSampleByName(
+		// String otherParticle = service.findNanoparticleSampleByName(
 		// particleName, user);
 		// newrBean.setParticle(otherParticle);
 		// // reset view title
