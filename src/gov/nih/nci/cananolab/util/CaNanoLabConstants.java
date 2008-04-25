@@ -3,8 +3,6 @@ package gov.nih.nci.cananolab.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import gov.nih.nci.cananolab.util.PropertyReader;
-
 public class CaNanoLabConstants {
 	public static final String DOMAIN_MODEL_NAME = "caNanoLab";
 
