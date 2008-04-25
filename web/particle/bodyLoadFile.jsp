@@ -60,7 +60,7 @@
 										<c:choose>
 											<c:when test="${!empty file.id}">
 												<a
-													href="${characterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>																						
+													href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>																						
 												<html:hidden property="file.id" />
 												<html:hidden property="file.name" />
 												<html:hidden property="file.uri" /><br>
@@ -70,7 +70,7 @@
 									</c:when>
 									<c:otherwise>
 										<a
-											href="${characterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
+											href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
 										<html:hidden property="file.id" />
 										<html:hidden property="file.name" />
 										<html:hidden property="file.uri" />
