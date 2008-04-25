@@ -150,7 +150,7 @@
 					<ul class="sublist_5" style="${phyDisplay}">
 						<c:forEach var="leafCharBean"
 							items="${particleDataTree[physicalChara]}">
-							<c:url var="url" value="${leafCharABean.link}.do">
+							<c:url var="url" value="${leafCharBean.dataLink}.do">
 								<c:param name="page" value="0" />
 								<c:param name="dispatch" value="detailView" />
 								<c:param name="particleId" value="${particleId}" />
@@ -358,7 +358,7 @@
 																							<c:param name="dataId"
 																								value="${leafCharBean.dataId}" />
 																							<c:param name="submitType"
-																								value="${leafCharABean.dataDisplayType}" />
+																								value="${leafCharBean.dataDisplayType}" />
 																						</c:url>
 																						<li>
 <%--																						<c:choose>--%>
