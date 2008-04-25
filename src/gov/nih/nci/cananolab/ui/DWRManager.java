@@ -20,14 +20,14 @@ public class DWRManager {
 	public DWRManager() {
 	}
 
-	public String getEntityIncludePage(String entityType)
+	public String getEntityIncludePage(String entityType, String pagePath)
 			throws ServletException, IOException, CaNanoLabException {
 		try {
 			WebContext wctx = WebContextFactory.get();
 			ServletContext appContext = wctx.getServletContext();
 			String entityClassName = InitSetup.getInstance().getObjectName(
 					entityType, appContext);
-			String page = "/particle/composition/bodyNew" + entityClassName
+			String page = pagePath+"/bodyNew" + entityClassName
 					+ "Info.jsp";
 			return wctx.forwardToString(page);
 		} catch (Exception e) {
