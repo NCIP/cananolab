@@ -44,7 +44,7 @@
 						</td>
 						<td class="label">
 							<html:select styleId="feType" property="entity.type"
-								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType'); getFETypesOptions('feType');">
+								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypesOptions('feType');">
 								<option value=""></option>
 								<html:options name="functionalizingEntityTypes" />
 								<option value="other">
@@ -146,10 +146,9 @@
 							pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
-							page="body${entityClass}Info.jsp" />
+							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />						
 					</c:if>
-				</div>
-				<br>
+				</div>				
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>

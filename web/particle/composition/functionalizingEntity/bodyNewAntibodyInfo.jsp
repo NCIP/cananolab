@@ -13,40 +13,37 @@
 				<strong>Species</strong>
 			</td>
 			<td class="label">
-				<html:select property="entity.antibody.species" styleId="species"
+				<select name="entity.antibody.species" id="species"
 					onchange="javascript:callPrompt('Species', 'species');">
 					<option value="" />
-					<html:options name="antibodySpecies" />
 					<option value="other">
 						[Other]
 					</option>
-				</html:select>
+				</select>
 			</td>
 			<td class="label">
 				<strong>Isotype</strong>
 			</td>
 			<td class="label">
-				<html:select property="entity.antibody.isotype" styleId="antibodyIsotype"
+				<select name="entity.antibody.isotype" id="antibodyIsotype"
 					onchange="javascript:callPrompt('Isotype', 'antibodyIsotype');">
 					<option value="" />
-					<html:options name="antibodyIsotypes" />
 					<option value="other">
 						[Other]
 					</option>
-				</html:select>
+				</select>
 			</td>
 			<td class="label">
 				<strong>Type</strong>
 			</td>
 			<td class="rightLabel">
-				<html:select property="entity.antibody.type" styleId="antibodyType"
+				<select name="entity.antibody.type" id="antibodyType"
 					onchange="javascript:callPrompt('Type', 'antibodyType');">
 					<option value="" />
-					<html:options name="antibodyTypes" />
 					<option value="other">
 						[Other]
 					</option>
-				</html:select>
+				</select>
 			</td>
 		</tr>
 	</tbody>
