@@ -13,7 +13,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -23,7 +22,6 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,7 +37,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
- * This class includes service calls involved around a nanoparticle sample
+ * Service methods involving nanoparticle samples
  * 
  * @author pansu
  * 
@@ -52,7 +50,7 @@ public class NanoparticleSampleService {
 	 * 
 	 * @return all particle sources
 	 */
-	public SortedSet<Source> getAllParticleSources() throws ParticleException {
+	public SortedSet<Source> findAllParticleSources() throws ParticleException {
 		SortedSet<Source> sampleSources = new TreeSet<Source>(
 				new CaNanoLabComparators.ParticleSourceComparator());
 		try {
@@ -75,7 +73,7 @@ public class NanoparticleSampleService {
 	 * 
 	 * @return all particle sources visible to user
 	 */
-	public SortedSet<Source> getAllParticleSources(UserBean user)
+	public SortedSet<Source> findAllParticleSources(UserBean user)
 			throws ParticleException {
 		SortedSet<Source> sampleSources = new TreeSet<Source>(
 				new CaNanoLabComparators.ParticleSourceComparator());
@@ -91,8 +89,12 @@ public class NanoparticleSampleService {
 				Source source = (Source) obj;
 				// if user can access at least one particle from the source, set
 				// access to true
-				if (isAllowed(auth, source.getNanoparticleSampleCollection(),
-						user)) {
+				List<String> particleNames = new ArrayList<String>();
+				for (NanoparticleSample sample : source
+						.getNanoparticleSampleCollection()) {
+					particleNames.add(sample.getName());
+				}
+				if (auth.isAllowedAtLeastOne(auth, particleNames, user)) {
 					sampleSources.add((Source) obj);
 				}
 			}
@@ -165,7 +167,7 @@ public class NanoparticleSampleService {
 			String[] particleSources, String[] nanoparticleEntityClassNames,
 			String[] functionalizingEntityClassNames,
 			String[] functionClassNames, String[] characterizationClassNames,
-			String[] wordList, UserBean user) throws ParticleException {
+			String[] wordList) throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
 			AuthorizationService auth = new AuthorizationService(
@@ -244,7 +246,7 @@ public class NanoparticleSampleService {
 					functionalizingEntityClassNames,
 					characterizationFilteredParticles);
 			// TODO sort particles
-			return getAllowedParticles(auth, theParticles, user);
+			return theParticles;
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
 			logger.error(err, e);
@@ -340,8 +342,8 @@ public class NanoparticleSampleService {
 		}
 	}
 
-	public ParticleBean findNanoparticleSampleById(String particleId,
-			UserBean user) throws ParticleException {
+	public ParticleBean findNanoparticleSampleById(String particleId)
+			throws ParticleException {
 		ParticleBean particleBean = null;
 		try {
 			AuthorizationService auth = new AuthorizationService(
@@ -373,15 +375,8 @@ public class NanoparticleSampleService {
 				NanoparticleSample particleSample = (NanoparticleSample) result
 						.get(0);
 				particleBean = new ParticleBean(particleSample);
-				if (isAllowed(auth, particleSample.getName(), user)) {
-					return particleBean;
-				} else {
-					throw new NoAccessException();
-				}
-			} else {
-				return null;
 			}
-
+			return particleBean;
 		} catch (Exception e) {
 			String err = "Problem finding the particle by id: " + particleId;
 			logger.error(err, e);
@@ -389,8 +384,8 @@ public class NanoparticleSampleService {
 		}
 	}
 
-	public ParticleBean findNanoparticleSampleByName(String particleName,
-			UserBean user) throws ParticleException {
+	public ParticleBean findNanoparticleSampleByName(String particleName)
+			throws ParticleException {
 		ParticleBean particleBean = null;
 		try {
 			AuthorizationService auth = new AuthorizationService(
@@ -422,14 +417,8 @@ public class NanoparticleSampleService {
 				NanoparticleSample particleSample = (NanoparticleSample) result
 						.get(0);
 				particleBean = new ParticleBean(particleSample);
-				if (isAllowed(auth, particleSample.getName(), user)) {
-					return particleBean;
-				} else {
-					throw new NoAccessException();
-				}
-			} else {
-				return null;
 			}
+			return particleBean;
 		} catch (Exception e) {
 			String err = "Problem finding the particle by name: "
 					+ particleName;
@@ -448,7 +437,7 @@ public class NanoparticleSampleService {
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> getOtherParticles(String particleSource,
+	public SortedSet<SortableName> findOtherParticles(String particleSource,
 			String particleName, UserBean user) throws ParticleException {
 		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
 		try {
@@ -466,7 +455,7 @@ public class NanoparticleSampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				NanoparticleSample particle = (NanoparticleSample) obj;
-				if (isAllowed(auth, particle.getName(), user)) {
+				if (auth.isUserAllowed(particle.getName(), user)) {
 					otherParticles.add(new SortableName(particle.getName()));
 				}
 			}
@@ -502,39 +491,6 @@ public class NanoparticleSampleService {
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
-	}
-
-	public boolean isAllowed(AuthorizationService auth, String particleName,
-			UserBean user) throws Exception {
-		List<String> publicData = auth.getPublicData();
-		if (publicData.contains(particleName)) {
-			return true;
-		} else if (user != null && auth.checkReadPermission(user, particleName)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isAllowed(AuthorizationService auth,
-			Collection<NanoparticleSample> particleSamples, UserBean user)
-			throws Exception {
-		List<String> publicData = auth.getPublicData();
-		List<String> particleNames = new ArrayList<String>();
-		for (NanoparticleSample sample : particleSamples) {
-			particleNames.add(sample.getName());
-		}
-		particleNames.removeAll(publicData);
-		if (particleSamples.size() == 0) {
-			return true;
-		} else if (user != null) {
-
-			for (NanoparticleSample sample : particleSamples) {
-				if (auth.checkReadPermission(user, sample.getName())) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	public SortedSet<String> getStoredCharacterizationClassNames(
@@ -617,5 +573,31 @@ public class NanoparticleSampleService {
 			}
 		}
 		return storedEntities;
+	}
+
+	public void setVisibility(ParticleBean particleBean, UserBean user)
+			throws ParticleException {
+		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			if (auth.isUserAllowed(particleBean.getDomainParticleSample()
+					.getName(), user)) {
+				particleBean.setHidden(false);
+				// get assigned visible groups
+				List<String> accessibleGroups = auth.getAccessibleGroups(
+						particleBean.getDomainParticleSample().getName(),
+						CaNanoLabConstants.CSM_READ_ROLE);
+				String[] visibilityGroups = accessibleGroups
+						.toArray(new String[0]);
+				particleBean.setVisibilityGroups(visibilityGroups);
+			} else {
+				particleBean.setHidden(true);
+			}
+		} catch (Exception e) {
+			String err = "Error in setting visibility groups for particle sample "
+					+ particleBean.getDomainParticleSample().getName();
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
 	}
 }
