@@ -2,8 +2,6 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
@@ -11,16 +9,12 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class BaseAnnotationAction extends AbstractDispatchAction {
-	public ParticleBean initSetup(DynaValidatorForm theForm,
+public abstract class BaseAnnotationAction extends AbstractDispatchAction {
+	public ParticleBean setupParticle(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
 		String particleId = request.getParameter("particleId");
 		if (particleId == null) {
@@ -30,8 +24,8 @@ public class BaseAnnotationAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		NanoparticleSampleService service = new NanoparticleSampleService();
-		ParticleBean particleBean = service.findNanoparticleSampleById(
-				particleId, user);
+		ParticleBean particleBean = service
+				.findNanoparticleSampleById(particleId);
 		request.setAttribute("theParticle", particleBean);
 		theForm.set("particleId", particleId);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(

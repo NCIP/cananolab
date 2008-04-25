@@ -23,7 +23,6 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,14 +53,14 @@ public class InitNanoparticleSetup {
 	public void setAllNanoparticleSampleSources(HttpServletRequest request)
 			throws Exception {
 		SortedSet<Source> sampleSources = particleService
-				.getAllParticleSources();
+				.findAllParticleSources();
 		request.getSession().setAttribute("allParticleSources", sampleSources);
 	}
 
 	public void setNanoparticleSampleSources(HttpServletRequest request,
 			UserBean user) throws Exception {
 		SortedSet<Source> sampleSources = particleService
-				.getAllParticleSources(user);
+				.findAllParticleSources(user);
 		request.getSession().setAttribute("allUserParticleSources",
 				sampleSources);
 	}
@@ -354,9 +353,9 @@ public class InitNanoparticleSetup {
 
 	public SortedSet<String> getFileTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getLookupValues("LabFile",
+		SortedSet<String> types = LookupService.findLookupValues("LabFile",
 				"type");
-		SortedSet<String> otherTypes = LookupService.getLookupValues("LabFile",
+		SortedSet<String> otherTypes = LookupService.findLookupValues("LabFile",
 				"otherType");
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("fileTypes", types);
@@ -366,7 +365,7 @@ public class InitNanoparticleSetup {
 	public void setOtherParticleNames(HttpServletRequest request,
 			String particleName, String particleSource, UserBean user)
 			throws CaNanoLabException {
-		SortedSet<SortableName> names = particleService.getOtherParticles(
+		SortedSet<SortableName> names = particleService.findOtherParticles(
 				particleSource, particleName, user);
 		request.getSession().setAttribute("otherParticleNames", names);
 	}
