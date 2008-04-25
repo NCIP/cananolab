@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.6 2008-04-25 19:35:22 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.7 2008-04-25 23:35:38 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -14,9 +14,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -47,7 +45,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 				.get("achar");
 		charBean.setDomainChar();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
@@ -67,18 +65,13 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			Characterization chara) throws Exception {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
 				(PhysicalCharacterization) chara);
-		theForm.set("achar", charBean);		
+		theForm.set("achar", charBean);
 	}
 
 	protected void setLookups(HttpServletRequest request, String charClass)
 			throws Exception {
-		ServletContext appContext = request.getSession().getServletContext();
-		request.getSession().setAttribute("charClass", charClass);
-		InitSetup.getInstance().setSharedDropdowns(appContext);
-		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
-				request, charClass);
+		super.setLookups(request, charClass);
 		InitCharacterizationSetup.getInstance()
 				.setPhysicalCharacterizationDropdowns(request, charClass);
-		InitNanoparticleSetup.getInstance().getFileTypes(request);
 	}
 }
