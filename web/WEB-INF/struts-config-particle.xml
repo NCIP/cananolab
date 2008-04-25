@@ -115,6 +115,7 @@
 				path="particle.physicalCharacterization" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="detailView" path="particle.physicalDetailView"/>
+			<forward name="summaryView" path="particle.physicalSummaryView"/>
 		</action>
 	</action-mappings>
 </struts-config>
