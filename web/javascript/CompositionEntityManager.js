@@ -159,7 +159,7 @@ function radLinkOrUpload(radioIndex, fileIndex) {
 	} else {
 		loadEle.style.display = "none";
 		linkEle.style.display = "inline";
-		titleEle.innerHTML = "Input File URL";
+		titleEle.innerHTML = "Enter File URL";
 	}
 }
 
