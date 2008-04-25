@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.21 2008-04-25 12:21:48 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.22 2008-04-25 23:34:29 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -46,7 +46,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		entityBean.setDomainEntity();
@@ -88,7 +88,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -97,13 +97,13 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = initSetup(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityBy(entityId, user);
+				.findNanoparticleEntityBy(entityId);
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
@@ -226,7 +226,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.get("entity");
 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		String[] otherParticles = (String[]) theForm.get("otherParticles");
+		ParticleBean[] otherParticles = (ParticleBean[]) theForm.get("otherParticles");
 		NanoparticleEntityBean[] entityBeans = new NanoparticleEntityBean[otherParticles.length];
 		if (otherParticles.length == 0) {
 			return entityBeans;
