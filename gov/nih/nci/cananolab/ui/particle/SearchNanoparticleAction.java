@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.10 2008-04-22 17:38:34 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.11 2008-04-25 23:34:12 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -86,10 +87,17 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
 				particleSources, nanoparticleEntityClassNames,
 				functionalizingEntityClassNames, functionClassNames,
-				charaClassNames, words, user);
-
-		if (particles != null && !particles.isEmpty()) {
-			request.setAttribute("particles", particles);
+				charaClassNames, words);
+		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
+		// set visibility
+		for (ParticleBean particle : particles) {
+			service.setVisibility(particle, user);
+			if (!particle.isHidden()) {
+				filteredParticles.add(particle);
+			}
+		}
+		if (filteredParticles != null && !filteredParticles.isEmpty()) {
+			request.setAttribute("particles", filteredParticles);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();

@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.15 2008-04-23 21:31:01 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.16 2008-04-25 23:34:12 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -16,8 +16,6 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -80,17 +78,10 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		NanoparticleSampleService service = new NanoparticleSampleService();
-		ParticleBean particleSampleBean = service.findNanoparticleSampleById(
-				particleId, user);
-		
-		// get assigned visible groups
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		List<String> accessibleGroups = auth.getAccessibleGroups(
-				particleSampleBean.getDomainParticleSample().getName(),
-				CaNanoLabConstants.CSM_READ_ROLE);
-		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
-		particleSampleBean.setVisibilityGroups(visibilityGroups);
+		ParticleBean particleSampleBean = service
+				.findNanoparticleSampleById(particleId);
+		// set visibility
+		service.setVisibility(particleSampleBean, user);
 
 		theForm.set("particleSampleBean", particleSampleBean);
 		request.setAttribute("theParticle", particleSampleBean);
