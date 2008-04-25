@@ -37,7 +37,8 @@
 											Summary </a>
 									</li>
 									<li>
-										<a href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
+										<a
+											href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
 											Full Summary </a>
 									</li>
 								</ul>
@@ -46,15 +47,13 @@
 					</td>
 					<td></td>
 					<td>
-						<c:url var="sumUrl"
-							value="${characterizationForm.map.charSummary.actionName}.do">
+						<c:url var="sumUrl" value="${actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportSummary" />
 						</c:url>
-						<c:url var="fullSumUrl"
-							value="${characterizationForm.map.charSummary.actionName}.do">
+						<c:url var="fullSumUrl" value="${actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
@@ -87,9 +86,7 @@
 					<td class="formTitle"
 						colspan="${3+fn:length(characterizationForm.map.charSummary.columnLabels)}">
 						<div align="justify">
-							${characterizationForm.map.particle.sampleName}
-							${characterizationForm.map.particle.sampleType} - ${
-							submitType} Characterizations
+							${particleName} - ${ submitType} Characterizations
 						</div>
 					</td>
 				</tr>
@@ -99,7 +96,8 @@
 						<br>
 						Description
 					</th>
-					<c:forEach var="label" items="${characterizationForm.map.charSummary.columnLabels}">
+					<c:forEach var="label"
+						items="${characterizationForm.map.charSummary.columnLabels}">
 						<th class="label">
 							${label}
 						</th>
@@ -115,13 +113,12 @@
 					items="${characterizationForm.map.charSummary.summaryRows}">
 					<tr>
 						<td class="leftLabel" valign="top" width="15%">
-							<c:url var="url"
-								value="${characterizationForm.map.charSummary.actionName}.do">
+							<c:url var="url" value="${actionName}.do">
 								<c:param name="page" value="0" />
 								<c:param name="dispatch" value="detailView" />
 								<c:param name="particleId" value="${particleId}" />
-								<c:param name="characterizationId"
-									value="${summaryRow.charBean.id}" />
+								<c:param name="dataId"
+									value="${summaryRow.charBean.domainChar.id}" />
 								<c:param name="submitType" value="${submitType}" />
 							</c:url>
 							<a href="${url}">${summaryRow.charBean.viewTitle}</a>
@@ -139,24 +136,26 @@
 						</c:forEach>
 						<td class="label" valign="top">
 							<c:if
-								test="${!empty summaryRow.charFile && !empty summaryRow.charFile.uri}">
+								test="${!empty summaryRow.charFile && !empty summaryRow.derivedBioAssayData.labFileBean.domainFile.uri}">
 								<c:choose>
-									<c:when test="${summaryRow.charFile.hidden eq 'true' }">
+									<c:when
+										test="${summaryRow.derivedBioAssayData.labFileBean.hidden eq 'true' }">
 										Private file
 									</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${summaryRow.charFile.image eq 'true'}">
-												${summaryRow.charFile.title}<br>
+											<c:when
+												test="${summaryRow.derivedBioAssayData.labFileBean.image eq 'true'}">
+												${summaryRow.derivedBioAssayData.labFileBean.domainFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event,'${characterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${summaryRow.charFile.id}', ${summaryRow.charFile.id})"><img
-														src="${characterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${summaryRow.charFile.id}"
+													onclick="popImage(event,'${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayData.labFileBean.domainFile.id}', ${summaryRow.derivedBioAssayData.labFileBean.domainFile.id})"><img
+														src="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayData.labFileBean.domainFile.id}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${characterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${summaryRow.charFile.id}">${summaryRow.charFile.title}</a>
+													href="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayData.labFileBean.domainFile.id}">${summaryRow.derivedBioAssayData.labFileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
@@ -166,19 +165,19 @@
 						</td>
 						<td class="RightLabel" valign="top">
 							<c:if
-								test="${!empty summaryRow.charBean.instrumentConfigBean && !empty summaryRow.charBean.instrumentConfigBean.instrumentBean.type}">						
-									${summaryRow.charBean.instrumentConfigBean.instrumentBean.type}-
-									${summaryRow.charBean.instrumentConfigBean.instrumentBean.manufacturer}
+								test="${!empty summaryRow.charBean.instrumentConfiguration && !empty summaryRow.charBean.instrumentConfiguration.instrument.type}">						
+									${summaryRow.charBean.instrumentConfiguration.instrument.type}-
+									${summaryRow.charBean.instrumentConfiguration.instrument.manufacturer}
 									&nbsp;
 								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
-									(${summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation})
+									test="${!empty summaryRow.charBean.instrumentConfiguration.instrument.abbreviation}">
+									(${summaryRow.charBean.instrumentConfiguration.instrument.abbreviation})
 								</c:if>
 								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfigBean.description}">
+									test="${!empty summaryRow.charBean.instrumentConfiguration.description}">
 									<br>
 									<br>
-									${summaryRow.charBean.instrumentConfigBean.description}
+									${summaryRow.charBean.instrumentConfiguration.description}
 								</c:if>
 							</c:if>
 							&nbsp;
