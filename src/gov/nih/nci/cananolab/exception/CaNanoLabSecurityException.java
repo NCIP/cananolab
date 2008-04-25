@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.exception;
 
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
 
 /**
  * @author pansu

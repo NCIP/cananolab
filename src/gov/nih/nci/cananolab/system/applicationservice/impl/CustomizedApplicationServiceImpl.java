@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.type.NullableType;
 import org.springframework.aop.framework.Advised;
 
 /**
