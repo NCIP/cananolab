@@ -22,12 +22,12 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.4 2008-04-22 22:54:32 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.5 2008-04-25 23:30:32 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
 
-	public static SortedSet<String> getLookupValues(String name,
+	public static SortedSet<String> findLookupValues(String name,
 			String attribute) throws CaNanoLabException {
 		SortedSet<String> lookupValues = new TreeSet<String>();
 		try {
@@ -49,7 +49,7 @@ public class LookupService {
 		return lookupValues;
 	}
 
-	public static Map<String, String> getSingleAttributeLookupMap(
+	public static Map<String, String> findSingleAttributeLookupMap(
 			String attribute) throws CaNanoLabException {
 		Map<String, String> lookup = new HashMap<String, String>();
 		try {

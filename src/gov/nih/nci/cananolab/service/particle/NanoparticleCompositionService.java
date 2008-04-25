@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
@@ -26,9 +25,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
 /**
- * This class includes service calls involved in creating nanoparticle general
- * info and adding functions and characterizations for nanoparticles, as well as
- * creating reports.
+ * Service methods involving composition.
  * 
  * @author pansu
  * 
@@ -80,8 +77,8 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public NanoparticleEntityBean findNanoparticleEntityBy(String entityId,
-			UserBean user) throws ParticleCompositionException {
+	public NanoparticleEntityBean findNanoparticleEntityBy(String entityId)
+			throws ParticleCompositionException {
 		NanoparticleEntityBean entityBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -146,8 +143,8 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public FunctionalizingEntityBean findFunctionalizingEntityBy(
-			String entityId, UserBean user) throws ParticleCompositionException {
+	public FunctionalizingEntityBean findFunctionalizingEntityBy(String entityId)
+			throws ParticleCompositionException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider

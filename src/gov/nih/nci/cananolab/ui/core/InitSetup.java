@@ -35,7 +35,7 @@ public class InitSetup {
 			throws CaNanoLabException {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameLookup") == null) {
-			lookup = LookupService.getSingleAttributeLookupMap("displayName");
+			lookup = LookupService.findSingleAttributeLookupMap("displayName");
 			appContext.setAttribute("displayNameLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
@@ -57,7 +57,7 @@ public class InitSetup {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameReverseLookup") == null) {
 			Map<String, String> displayLookup = LookupService
-					.getSingleAttributeLookupMap("displayName");
+					.findSingleAttributeLookupMap("displayName");
 			lookup = new HashMap<String, String>();
 			for (Map.Entry entry : displayLookup.entrySet()) {
 				lookup.put(entry.getValue().toString(), entry.getKey()
