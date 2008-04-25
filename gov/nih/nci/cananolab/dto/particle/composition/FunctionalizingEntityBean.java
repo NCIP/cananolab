@@ -68,6 +68,16 @@ public class FunctionalizingEntityBean {
 		value = functionalizingEntity.getValue();
 		valueUnit = functionalizingEntity.getValueUnit();
 		domainEntity = functionalizingEntity;
+		if (functionalizingEntity instanceof Antibody) {
+			antibody = (Antibody) functionalizingEntity;
+		} else if (functionalizingEntity instanceof SmallMolecule) {
+			smallMolecule = (SmallMolecule) functionalizingEntity;
+		} else if (functionalizingEntity instanceof Biopolymer) {
+			biopolymer = (Biopolymer) functionalizingEntity;
+		} else if (functionalizingEntity instanceof OtherFunctionalizingEntity) {
+			type = ((OtherFunctionalizingEntity) functionalizingEntity)
+					.getType();
+		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
 		for (Function function : functionalizingEntity.getFunctionCollection()) {
@@ -184,7 +194,7 @@ public class FunctionalizingEntityBean {
 				domainEntity.setCreatedDate(new Date());
 			}
 			if (domainEntity instanceof OtherFunctionalizingEntity) {
-				((OtherFunctionalizingEntity)domainEntity).setType(type);
+				((OtherFunctionalizingEntity) domainEntity).setType(type);
 			}
 			domainEntity.setDescription(description);
 			domainEntity.setMolecularFormula(molecularFormula);
