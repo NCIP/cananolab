@@ -13,13 +13,27 @@
 				<strong>Polymer Name</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.liposome.polymerName" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.liposome.polymerName" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.liposome.polymerName}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Is Polymerized</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.liposome.polymerized" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.liposome.polymerized" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.liposome.polymerized}
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>

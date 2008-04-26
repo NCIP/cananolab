@@ -13,19 +13,41 @@
 				<strong>Is Polymerized</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.emulsion.polymerized" id="initiator" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.emulsion.polymerized"
+							styleId="initiator" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.emulsion.polymerized}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Polymer Name</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.emulsion.polymerName" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.emulsion.polymerName" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.emulsion.polymerName}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Type</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.emulsion.type" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.emulsion.type" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.emulsion.type}
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>

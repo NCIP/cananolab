@@ -13,14 +13,7 @@
 				<strong>Alternate Name</strong>
 			</td>
 			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.smallMolecule.alternateName" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.smallMolecule.alternateName}
-					</c:otherwise>
-				</c:choose>
+				<input type="text" name="entity.smallMolecule.alternateName" />
 			</td>
 		</tr>
 	</tbody>

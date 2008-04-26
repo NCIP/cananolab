@@ -43,7 +43,7 @@
 						</td>
 						<td class="label">
 							<html:select styleId="feType" property="entity.type"
-								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypesOptions('feType');">
+								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypeOptions('feType');">
 								<option value=""></option>
 								<html:options name="functionalizingEntityTypes" />
 								<option value="other">

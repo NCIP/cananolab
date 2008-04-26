@@ -13,40 +13,64 @@
 				<strong>Species</strong>
 			</td>
 			<td class="label">
-				<html:select property="entity.antibody.species" styleId="species"
-					onchange="javascript:callPrompt('Species', 'species');">
-					<option value="" />
-					<html:options name="antibodySpecies" />
-					<option value="other">
-						[Other]
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:select property="entity.antibody.species"
+							styleId="antibodySpecies"
+							onchange="javascript:callPrompt('Species', 'species');">
+							<option value="" />
+								<html:options name="antibodySpecies" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.antibody.species}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Isotype</strong>
 			</td>
 			<td class="label">
-				<html:select property="entity.antibody.isotype" styleId="antibodyIsotype"
-					onchange="javascript:callPrompt('Isotype', 'antibodyIsotype');">
-					<option value="" />
-					<html:options name="antibodyIsotypes" />
-					<option value="other">
-						[Other]
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:select property="entity.antibody.isotype"
+							styleId="antibodyIsotype"
+							onchange="javascript:callPrompt('Isotype', 'antibodyIsotype');">
+							<option value="" />
+								<html:options name="antibodyIsotypes" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.antibody.isotype}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Type</strong>
 			</td>
 			<td class="rightLabel">
-				<html:select property="entity.antibody.type" styleId="antibodyType"
-					onchange="javascript:callPrompt('Type', 'antibodyType');">
-					<option value="" />
-					<html:options name="antibodyTypes" />
-					<option value="other">
-						[Other]
-					</option>
-				</html:select>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:select property="entity.antibody.type"
+							styleId="antibodyType"
+							onchange="javascript:callPrompt('Type', 'antibodyType');">
+							<option value="" />
+								<html:options name="antibodyTypes" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.antibody.type}
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>

@@ -13,22 +13,40 @@
 				<strong>Average Diameter</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.fullerene.averageDiameter"
-					id="averageDiameter" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.fullerene.averageDiameter"
+							styleId="averageDiameter" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.fullerene.averageDiameter}
+					</c:otherwise>
 			</td>
 			<td class="label">
 				<strong>Average Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.fullerene.averageDiameterUnit"
-					id="averageDiameter" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.fullerene.averageDiameterUnit"
+							styleId="averageDiameter" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.fullerene.averageDiameterUnit}
+					</c:otherwise>
 			</td>
 			<td class="label">
 				<strong>Number of Carbons</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.fullerene.numberOfCarbon"
-					id="numberOfCarbon" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.fullerene.numberOfCarbon"
+							styleId="numberOfCarbon" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.fullerene.numberOfCarbon}
+					</c:otherwise>
 			</td>
 		</tr>
 	</tbody>
