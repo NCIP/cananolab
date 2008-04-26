@@ -258,10 +258,12 @@
 											<logic:iterate name="nanoparticleEntityForm"
 												property="entity.files" id="entityFile" indexId="fileInd">
 												<jsp:include
-													page="/particle/composition/bodyCompositionFileInfo.jsp">
+													page="/particle/bodyLoadFileUpdate.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="nanoparticleEntityForm" />
 													<jsp:param name="action" value="nanoparticleEntity" />
+													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
+													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
 												</jsp:include>
 												<br>
 											</logic:iterate>
