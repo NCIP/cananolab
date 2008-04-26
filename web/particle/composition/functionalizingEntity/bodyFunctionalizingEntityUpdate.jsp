@@ -266,7 +266,7 @@
 																&nbsp;
 																<div id="targetDiv_${ind }" style="${targetDisplay }">
 																	<jsp:include
-																		page="/particle/composition/bodyTargetInfo.jsp">
+																		page="/particle/composition/functionalizingEntity/bodyTargetInfo.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
 																	</jsp:include>
 																</div>
@@ -315,6 +315,9 @@
 													<jsp:param name="action" value="functionalizingEntity" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
 													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName" value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
 												</jsp:include>
 												
 												<br>

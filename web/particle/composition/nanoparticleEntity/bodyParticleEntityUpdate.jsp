@@ -215,7 +215,7 @@
 															</td>
 															<td colspan="3" class="rightLabel">
 																<jsp:include
-																	page="/particle/composition/bodyFunctionUpdate.jsp">
+																	page="/particle/composition/nanoparticleEntity/bodyFunctionUpdate.jsp">
 																	<jsp:param name="compEleInd" value="${ind}" />
 																</jsp:include>
 																&nbsp;
@@ -263,6 +263,9 @@
 													<jsp:param name="action" value="nanoparticleEntity" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
 													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId" value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri" value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName" value="${nanoparticleEntityForm.map.entity.files[fileInd].displayName}" />
 												</jsp:include>
 												<br>
 											</logic:iterate>
