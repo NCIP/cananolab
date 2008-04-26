@@ -20,20 +20,20 @@
 		<tr>
 			<td class="leftLabel">
 				<input type="radio" name="linkOrUpload_${param.fileInd}" value="upload" checked onclick="radLinkOrUpload(0, ${param.fileInd })"/>Upload File
-				<input type="radio" name="linkOrUpload_${param.fileInd}" value="link" onclick="radLinkOrUpload(1, ${param.fileInd })" />Input URL
+				<input type="radio" name="linkOrUpload_${param.fileInd}" value="link" onclick="radLinkOrUpload(1, ${param.fileInd })" />Enter URL
 			</td>
 			<td class="label" align="right">
 				<strong id="lutitle_${param.fileInd }">Upload New File</strong>
 			</td>
 			<td class="rightLabel" align="left">
-				<c:set var="formUri" value="${param.form}.map.entity.files[param.fileInd].domainFile.uri"/>
-				<c:set var="formId" value="${param.form}.map.entity.files[param.fileInd].domainFile.id"/>
+				<c:set var="formUri" value="${param.form}.map.${param.domainFile}.uri"/>
+				<c:set var="formId" value="${param.form}.map.${param.domainFile}.id"/>
 				<c:choose>
 					<c:when test="${!empty formUri && 
 									empty formId}">
 									    	${file.displayName} 
-									    	<html:hidden property="entity.files[${param.fileInd}].domainFile.name" />
-						<html:hidden property="entity.files[${param.fileInd}].uri" />
+									    	<html:hidden property="${param.domainFile}.name" />
+						<html:hidden property="${param.domainFile}.uri" />
 						<br>
 					</c:when>
 				</c:choose>
@@ -41,14 +41,14 @@
 					<c:when test="${!empty formId}">
 						<a
 							href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${file.id}">${file.displayName}</a>
-						<html:hidden property="entity.files[${param.fileInd}].domainFile.id" />
-						<html:hidden property="entity.files[${param.fileInd}].domainFile.name" />
-						<html:hidden property="entity.files[${param.fileInd}].domainFile.uri" />
+						<html:hidden property="${param.domainFile}.id" />
+						<html:hidden property="${param.domainFile}.name" />
+						<html:hidden property="${param.domainFile}.uri" />
 						<br>
 					</c:when>
 				</c:choose>
-				<span id="loadEle_${param.fileInd }"><html:file property="entity.files[${param.fileInd}].uploadedFile" /></span>
-				<span id="linkEle_${param.fileInd }" style="display: none;"><html:text property="entity.files[${param.fileInd}].domainFile.uri" size="60" /></span>
+				<span id="loadEle_${param.fileInd }"><html:file property="${param.fileBean}.uploadedFile" /></span>
+				<span id="linkEle_${param.fileInd }" style="display: none;"><html:text property="${param.domainFile}.uri" size="60" /></span>
 					&nbsp;
 			</td>
 		</tr>
@@ -57,7 +57,7 @@
 				<strong>File Title*</strong>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<html:text property="entity.files[${param.fileInd}].domainFile.title" size="60" />
+				<html:text property="${param.domainFile}.title" size="60" />
 			</td>
 		</tr>
 		<tr>
@@ -65,7 +65,7 @@
 				<strong>Keywords <em>(one word per line)</em> </strong>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<html:textarea property="entity.files[${param.fileInd}].keywordsStr" rows="2" />
+				<html:textarea property="${param.fileBean}.keywordsStr" rows="2" />
 					&nbsp;
 			</td>
 		</tr>
@@ -74,7 +74,7 @@
 				<strong>Visibility</strong>
 			</td>
 			<td class="rightLabel" colspan="2">
-				<html:select property="entity.files[${param.fileInd}].visibilityGroups" multiple="true"
+				<html:select property="${param.fileBean}.visibilityGroups" multiple="true"
 					size="3">
 <%--					<html:options name="allVisibilityGroups" />--%>
 				</html:select>
