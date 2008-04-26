@@ -13,19 +13,40 @@
 				<strong>Initiator</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.polymer.initiator" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.polymer.initiator" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.polymer.initiator}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Cross Link Degree</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.polymer.crosslinkDegree" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.polymer.crosslinkDegree" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.polymer.crosslinkDegree}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Is Cross Linked</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.polymer.crosslinked" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.polymer.crosslinked" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.polymer.crosslinked}
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>

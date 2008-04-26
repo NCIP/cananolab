@@ -13,12 +13,9 @@
 				<strong>Species</strong>
 			</td>
 			<td class="label">
-				<select name="entity.antibody.species" id="species"
+				<select name="entity.antibody.species" id="antibodySpecies"
 					onchange="javascript:callPrompt('Species', 'species');">
 					<option value="" />
-					<option value="other">
-						[Other]
-					</option>
 				</select>
 			</td>
 			<td class="label">

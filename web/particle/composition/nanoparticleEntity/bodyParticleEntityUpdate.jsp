@@ -19,9 +19,8 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center">
-					Dendrimer
-				</h5>
+				<h5 align="center" id="entityTypeTitle"></h5>
+				<br>
 			</td>
 		</tr>
 		<tr>
@@ -44,7 +43,7 @@
 						<td class="rightLabel">
 							<html:select styleId="peType" property="entity.type"
 								onchange="javascript:callPrompt('Particle Entity Type', 'peType'); 
-											setEntityInclude('peType', '/particle/composition/nanoparticleEntity'); getComposingElementOptions(); getBiopolymerOptions('peType');">
+										setEntityInclude('peType', '/particle/composition/nanoparticleEntity'); getNETypeOptions('peType');">
 								<option value=""></option>
 								<html:options name="nanoparticleEntityTypes" />
 								<option value="other">

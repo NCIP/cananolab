@@ -13,19 +13,40 @@
 				<strong>Average Length</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLength" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}"/>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.carbonNanotube.averageLength" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Average Length Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLengthUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}"/>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.carbonNanotube.averageLengthUnit" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Chirality</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.carbonNanotube.chirality" value="${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}"/>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.carbonNanotube.chirality" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		<tr>
@@ -33,19 +54,40 @@
 				<strong>Growth Diameter</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.growthDiameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}"/>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.carbonNanotube.growthDiameter" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Growth Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.growthDiameterUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}"/>
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.carbonNanotube.growthDiameterUnit" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.carbonNanotube.wallType" />
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true'}">
+						<html:text property="entity.carbonNanotube.wallType" />
+					</c:when>
+					<c:otherwise>
+						${nanoparticleEntityForm.map.entity.carbonNanotube.wallType}
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>
