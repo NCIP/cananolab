@@ -38,7 +38,6 @@ public class LabFileBean {
 	private boolean hidden = true;
 
 	private boolean image = false;
-	private boolean image=false;
 	
 	private String uploadedFile;
 	
