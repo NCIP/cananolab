@@ -10,12 +10,6 @@
 			<td class="formSubTitleNoRight" colspan="2">
 				File #${param.fileInd+1}
 			</td>
-			<td class="formSubTitleNoLeft" align="right">
-				<a href="#"
-					onclick="removeComponent(${param.form}, '${param.action}', ${param.fileInd}, 'removeFile');return false;">
-							<img src="images/delete.gif" border="0" alt="remove this file">
-						</a>
-			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel">
@@ -26,20 +20,21 @@
 				<strong id="lutitle_${param.fileInd }">Upload New File</strong>
 			</td>
 			<td class="rightLabel" align="left">
-<%--				<c:set var="formUri" value="${param.form}.map.${param.domainFile}.uri"/>--%>
-<%--				<c:set var="formId" value="${param.form}.map.${param.domainFile}.id"/>--%>
-<%--				<c:set var="formDisplayName" value="${param.form}.map.${param.fileBean}.displayName"/>--%>
+				<c:set var="formUri" value="${param.form}.map.${param.domainFile}.uri"/>
+				<c:set var="formId" value="${param.form}.map.${param.domainFile}.id"/>
 				<c:choose>
-					<c:when test="${!empty param.fileUri && empty param.fileId }">
-						<html:hidden property="${param.domainFile}.name" />
+					<c:when test="${!empty formUri && 
+									empty formId}">
+									    	${param.fileBean}.displayName 
+									    	<html:hidden property="${param.domainFile}.name" />
 						<html:hidden property="${param.domainFile}.uri" />
 						<br>
 					</c:when>
 				</c:choose>
 				<c:choose>
-					<c:when test="${!empty param.fileId}">
+					<c:when test="${!empty formId}">
 						<a
-							href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">${param.fileDisplayName}</a>
+							href="${nanoparticleCharacterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${param.fileBean.id}">${param.fileBean.displayName}</a>
 						<html:hidden property="${param.domainFile}.id" />
 						<html:hidden property="${param.domainFile}.name" />
 						<html:hidden property="${param.domainFile}.uri" />
