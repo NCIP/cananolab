@@ -9,6 +9,9 @@
 			<include method="getEntityIncludePage" />
 			<include method="getComposingElementTypeOptions" />
 			<include method="getBiopolymerTypeOptions" />
+			<include method="getAntibodySpeciesOptions" />
+			<include method="getAntibodyTypeOptions" />
+			<include method="getAntibodyIsotypeOptions" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">

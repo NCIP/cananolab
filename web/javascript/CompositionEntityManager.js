@@ -8,8 +8,8 @@ function populatePage(pageData) {
 	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
 }
 
-function getComposingElementOptions() {
-	var compFuncTypeValue = dwr.util.getValue("peType");
+function getComposingElementOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	
 	CompositionEntityManager.getComposingElementTypeOptions(compFuncTypeValue, function(data) {
 			
@@ -31,6 +31,12 @@ function getBiopolymerOptions(selectEleId) {
     		dwr.util.addOptions("biopolymerType", ['[Other]']);
   		});
   	}
+}
+
+function getNETypeOptions(selectEleId) {
+	getBiopolymerOptions(selectEleId);
+	getComposingElementOptions(selectEleId);
+	setEntityTypeTitle(selectEleId);
 }
 
 function getAntibodyTypeOptions(selectEleId) {
