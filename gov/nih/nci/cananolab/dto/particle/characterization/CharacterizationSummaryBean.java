@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class represents summary view characterization properties to be shown in
@@ -19,11 +20,11 @@ public class CharacterizationSummaryBean {
 
 	private String characterizationType; // physical or in vitro
 
-	private List<CharacterizationSummaryRowBean> summaryRows;
+	private List<CharacterizationSummaryRowBean> summaryRows = new ArrayList<CharacterizationSummaryRowBean>();
 
-	private SortedSet<String> columnLabels;
+	private SortedSet<String> columnLabels = new TreeSet<String>();
 
-	private List<CharacterizationBean> charBeans;
+	private List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 
 	private String characterizationClassName; // e.g. MolecularWeight
 
