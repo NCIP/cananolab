@@ -103,13 +103,13 @@
 																<strong>Composing Element Type</strong>
 															</td>
 															<td class="labelWithTop">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.type}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.type}&nbsp;
 															</td>
 															<td class="labelWithTop" valign="top">
 																<strong>Chemical Name</strong>
 															</td>
 															<td class="rightLabelWithTop">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.name}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.name}&nbsp;
 															</td>
 														</tr>
 														<tr>
@@ -117,13 +117,13 @@
 																<strong>Molecular Formula Type</strong>
 															</td>
 															<td class="labelWithTop" valign="top">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}&nbsp;
 															</td>
 															<td class="labelWithTop" valign="top">
 																<strong>Molecular Formula</strong>
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}&nbsp;
 															</td>
 														</tr>
 														<tr>
@@ -131,13 +131,13 @@
 																<strong>Value</strong>
 															</td>
 															<td class="labelWithTop" valign="top">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}&nbsp;
 															</td>
 															<td class="labelWithTop" valign="top">
 																<strong>Unit</strong>
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}&nbsp;
 															</td>
 														</tr>
 														<tr>
@@ -145,7 +145,7 @@
 																<strong>Description</strong>
 															</td>
 															<td class="rightLabel" colspan="3">
-																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.description}
+																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.description}&nbsp;
 															</td>
 														</tr>
 														<tr>

@@ -1,3 +1,7 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -26,7 +30,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.species}
+						${nanoparticleEntityForm.map.entity.antibody.species}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -47,7 +51,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.isotype}
+						${nanoparticleEntityForm.map.entity.antibody.isotype}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -68,7 +72,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.type}
+						${nanoparticleEntityForm.map.entity.antibody.type}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

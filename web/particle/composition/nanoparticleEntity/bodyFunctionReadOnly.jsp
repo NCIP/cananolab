@@ -29,10 +29,10 @@
 			</c:if>
 			<tr>
 				<td class="leftLabel" valign="top" width="85">
-					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].type}
+					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].type}&nbsp;
 				</td>
 				<td class="label">
-					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].description}
+					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].description}&nbsp;
 					&nbsp;
 				</td>
 				<td class="label">
@@ -46,7 +46,7 @@
 						</c:otherwise>
 					</c:choose>
 					<div id="modalityTypeTd_${param.compEleInd}_${ifInd}" style="">
-						${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality}
+						${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality}&nbsp;
 					</div>
 					&nbsp;
 				</td>

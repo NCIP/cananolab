@@ -1,3 +1,7 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -19,7 +23,7 @@
 							styleId="averageDiameter" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.fullerene.averageDiameter}
+						${nanoparticleEntityForm.map.entity.fullerene.averageDiameter}&nbsp;
 					</c:otherwise>
 			</td>
 			<td class="label">
@@ -32,7 +36,7 @@
 							styleId="averageDiameter" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.fullerene.averageDiameterUnit}
+						${nanoparticleEntityForm.map.entity.fullerene.averageDiameterUnit}&nbsp;
 					</c:otherwise>
 			</td>
 			<td class="label">
@@ -45,7 +49,7 @@
 							styleId="numberOfCarbon" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.fullerene.numberOfCarbon}
+						${nanoparticleEntityForm.map.entity.fullerene.numberOfCarbon}&nbsp;
 					</c:otherwise>
 			</td>
 		</tr>
