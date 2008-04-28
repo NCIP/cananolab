@@ -272,8 +272,9 @@ public class FileService {
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			if (auth.isUserAllowed(fileBean.getDomainFile().getId().toString(),
-					user)) {
+			if (fileBean.getDomainFile().getId() != null
+					&& auth.isUserAllowed(fileBean.getDomainFile().getId()
+							.toString(), user)) {
 				fileBean.setHidden(false);
 				// get assigned visible groups
 				List<String> accessibleGroups = auth.getAccessibleGroups(
