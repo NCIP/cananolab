@@ -169,7 +169,8 @@ public class LabFileBean {
 	}
 
 	public boolean isExternal() {
-		if (getDomainFile().getUri().startsWith("http")) {
+		if (getDomainFile().getUri() != null
+				&& getDomainFile().getUri().startsWith("http")) {
 			external = true;
 		} else {
 			external = false;
