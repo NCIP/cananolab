@@ -204,16 +204,16 @@ public class NanoparticleCharacterizationService {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Class
 					.forName(className));
-			crit.setFetchMode("protocolFile", FetchMode.JOIN);
+			crit.createAlias("nanoparticleSample", "sample",
+					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("derivedBioAssayDataCollection", "bioassay",
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("bioassay.labFile", "file",
 					CriteriaSpecification.LEFT_JOIN);
+			crit.add(Restrictions.eq("sample.name", particleName));
+			crit.setFetchMode("protocolFile", FetchMode.JOIN);
 			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
 			crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -241,12 +241,10 @@ public class NanoparticleCharacterizationService {
 			if (charas.isEmpty()) {
 				return null;
 			}
-			List<CharacterizationSummaryRowBean> charSummaryRows = new ArrayList<CharacterizationSummaryRowBean>();
-			List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 			FileService fileService = new FileService();
 			for (Characterization chara : charas) {
 				CharacterizationBean charBean = new CharacterizationBean(chara);
-				charBeans.add(charBean);
+				charSummary.getCharBeans().add(charBean);
 				if (charBean.getDerivedBioAssayDataList() != null
 						&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
 					for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
@@ -269,12 +267,12 @@ public class NanoparticleCharacterizationService {
 						charSummaryRow.setDatumMap(datumMap);
 						charSummaryRow
 								.setDerivedBioAssayDataBean(derivedBioAssayDataBean);
-						charSummaryRows.add(charSummaryRow);
+						charSummary.getSummaryRows().add(charSummaryRow);
 					}
 				} else {
 					CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
 					charSummaryRow.setCharBean(charBean);
-					charSummaryRows.add(charSummaryRow);
+					charSummary.getSummaryRows().add(charSummaryRow);
 				}
 			}
 			return charSummary;
@@ -286,4 +284,20 @@ public class NanoparticleCharacterizationService {
 		}
 	}
 
+	// set lab file visibility of a characterization
+	public void setVisiblity(CharacterizationBean charBean, UserBean user)
+			throws ParticleCharacterizationException {
+		try {
+			FileService fileService = new FileService();
+			for (DerivedBioAssayDataBean bioAssayData : charBean
+					.getDerivedBioAssayDataList()) {
+				fileService.setVisiblity(bioAssayData.getLabFileBean(), user);
+			}
+		} catch (Exception e) {
+			String err = "Error setting visiblity for characterization "
+					+ charBean.getViewTitle();
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err, e);
+		}
+	}
 }
