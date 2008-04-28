@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.13 2008-04-25 23:33:30 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.14 2008-04-28 14:37:01 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -81,6 +81,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance().setFunctionTypes(request);
 		InitCompositionSetup.getInstance().getFunctionalizingEntityUnits(
 				request);
+		InitCompositionSetup.getInstance().getModalityTypes(request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
