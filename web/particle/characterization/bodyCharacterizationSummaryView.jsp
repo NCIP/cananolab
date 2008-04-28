@@ -96,8 +96,7 @@
 						<br>
 						Description
 					</th>
-					<c:forEach var="label"
-						items="${charSummary.columnLabels}">
+					<c:forEach var="label" items="${charSummary.columnLabels}">
 						<th class="label">
 							${label}
 						</th>
@@ -109,8 +108,7 @@
 						Instrument Info
 					</th>
 				</tr>
-				<c:forEach var="summaryRow"
-					items="${charSummary.summaryRows}">
+				<c:forEach var="summaryRow" items="${charSummary.summaryRows}">
 					<tr>
 						<td class="leftLabel" valign="top" width="15%">
 							<c:url var="url" value="${actionName}.do">
@@ -128,8 +126,7 @@
 							</c:if>
 						</td>
 
-						<c:forEach var="label"
-							items="${charSummary.columnLabels}">
+						<c:forEach var="label" items="${charSummary.columnLabels}">
 							<td class="label" valign="top">
 								${summaryRow.datumMap[label]}&nbsp;
 							</td>

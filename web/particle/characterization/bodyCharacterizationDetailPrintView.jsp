@@ -15,8 +15,7 @@
 						cellspacing="0" class="topBorderOnly" summary="">
 						<tr>
 							<th class="formTitle" colspan="2" align="center">
-								${characterizationForm.map.particle.sampleName}
-								${characterizationForm.map.particle.sampleType}
+								${particleName}
 							</th>
 						</tr>
 						<tr>
@@ -40,7 +39,7 @@
 							</tr>
 						</c:if>
 						<c:if
-							test="${!empty characterizationForm.map.achar.protocolFileBean.id}">
+							test="${!empty characterizationForm.map.achar.protocolFileBean.domainFile.id}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Protocol
@@ -48,36 +47,36 @@
 								<td class="rightLabel" valign="top">
 									<c:choose>
 										<c:when
-											test="${characterizationForm.map.achar.protocolFileBean.hidden eq 'true'}">
+											test="${characterizationForm.map.achar.protocolFileBean.domainFile.hidden eq 'true'}">
 									Private protocol
 								</c:when>
 										<c:otherwise>
 							${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
-			${characterizationForm.map.achar.protocolFileBean.uri}
+			${characterizationForm.map.achar.protocolFileBean.domainFile.uri}
 								</c:otherwise>
 									</c:choose>
 								</td>
 							</tr>
 						</c:if>
 						<c:if
-							test="${!empty characterizationForm.map.achar.instrumentConfigBean && !empty characterizationForm.map.achar.instrumentConfigBean.instrumentBean.type}">
+							test="${!empty characterizationForm.map.achar.instrumentConfiguration && !empty characterizationForm.map.achar.instrumentConfiguration.instrument.type}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Instrument
 								</th>
 								<td class="rightLabel" valign="top">
-									${characterizationForm.map.achar.instrumentConfigBean.instrumentBean.type}-
-									${characterizationForm.map.achar.instrumentConfigBean.instrumentBean.manufacturer}
+									${characterizationForm.map.achar.instrumentConfiguration.instrument.type}-
+									${characterizationForm.map.achar.instrumentConfiguration.instrument.manufacturer}
 									&nbsp;
 									<c:if
-										test="${!empty characterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation}">
-							(${characterizationForm.map.achar.instrumentConfigBean.instrumentBean.abbreviation})
+										test="${!empty characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation}">
+							(${characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation})
 							</c:if>
 									<c:if
-										test="${!empty characterizationForm.map.achar.instrumentConfigBean.description}">
+										test="${!empty characterizationForm.map.achar.instrumentConfiguration.description}">
 										<br>
 										<br>
-							${characterizationForm.map.achar.instrumentConfigBean.description}
+							${characterizationForm.map.achar.instrumentConfiguration.description}
 							</c:if>
 								</td>
 							</tr>
@@ -85,39 +84,39 @@
 						<logic:iterate name="characterizationForm"
 							property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 							indexId="fileInd">
-							<c:if test="${!empty derivedBioAssayData.description}">
+							<c:if test="${!empty derivedBioAssayData.labFileBean.domainFile.description}">
 								<tr>
 									<th class="leftLabel" valign="top">
 										Characterization File #${fileInd+1} Description
 									</th>
 									<td class="rightLabel" valign="top">
-										${derivedBioAssayData.description}&nbsp;
+										${derivedBioAssayData.labFileBean.domainFile.description}&nbsp;
 									</td>
 								</tr>
 							</c:if>
 							<c:if
-								test="${!empty derivedBioAssayData && !empty derivedBioAssayData.uri}">
+								test="${!empty derivedBioAssayData && !empty derivedBioAssayData.labFileBean.domainFile.uri}">
 								<tr>
 									<th class="leftLabel" valign="top">
 										Characterization File #${fileInd+1}
 									</th>
 									<td class="rightLabel" valign="top">
-										<c:if test="${!empty derivedBioAssayData.type}">
+										<c:if test="${!empty derivedBioAssayData.labFileBean.domainFile.type}">
 								${derivedBioAssayData.type}
 								<br>
 										</c:if>
 										<c:choose>
-											<c:when test="${derivedBioAssayData.hidden eq 'true'}">
+											<c:when test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
 											<c:otherwise>
 												<c:choose>
-													<c:when test="${derivedBioAssayData.image eq 'true'}">
+													<c:when test="${derivedBioAssayData.labFileBean.image eq 'true'}">
 														<img
-															src="${characterizationForm.map.achar.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+															src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}"
 															border="0">
 													</c:when>
-													<c:otherwise>${derivedBioAssayData.title}
+													<c:otherwise>${derivedBioAssayData.labFileBean.domainFile.title}
 											</c:otherwise>
 												</c:choose>
 											</c:otherwise>
@@ -140,7 +139,7 @@
 													indexId="datumInd">
 													<th class="whiteBorderLessLabel">
 														${datum.name}
-														<c:if test="${!empty datum.unit}">(${datum.unit})</c:if>
+														<c:if test="${!empty datum.unit}">(${datum.valueUnit})</c:if>
 													</th>
 												</logic:iterate>
 											</tr>

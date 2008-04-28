@@ -11,8 +11,7 @@
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<th class="formTitle"
-						colspan="${3+fn:length(characterizationForm.map.charSummary.columnLabels)}"
-						align="center">
+						colspan="${3+fn:length(charSummary.columnLabels)}" align="center">
 						${particleName} - ${ submitType} Characterizations
 					</th>
 				</tr>
@@ -22,8 +21,7 @@
 						<br>
 						Description
 					</th>
-					<c:forEach var="label"
-						items="${characterizationForm.map.charSummary.columnLabels}">
+					<c:forEach var="label" items="${charSummary.columnLabels}">
 						<th class="label">
 							${label}
 						</th>
@@ -32,8 +30,7 @@
 						Characterization File / Instrument Info
 					</th>
 				</tr>
-				<c:forEach var="summaryRow"
-					items="${characterizationForm.map.charSummary.summaryRows}">
+				<c:forEach var="summaryRow" items="${charSummary.summaryRows}">
 					<tr>
 						<td class="leftLabel" valign="top" width="15%">
 							${summaryRow.charBean.viewTitle}
@@ -42,45 +39,45 @@
 								<br>${summaryRow.charBean.description}
 							</c:if>
 						</td>
-						<c:forEach var="label"
-							items="${characterizationForm.map.charSummary.columnLabels}">
+						<c:forEach var="label" items="${charSummary.columnLabels}">
 							<td class="label" valign="top">
 								${summaryRow.datumMap[label]}&nbsp;
 							</td>
 						</c:forEach>
 
 						<td class="RightLabel" valign="top">
-							<c:if test="${!empty summaryRow.charFile.type}">
-								${summaryRow.charFile.type}
+							<c:if
+								test="${!empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.type}">
+								${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.type}
 								<br>
 							</c:if>
 							<c:if
-								test="${!empty summaryRow.charFile && !empty summaryRow.charFile.uri}">
+								test="${!empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile && !empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.uri}">
 								<c:choose>
-									<c:when test="${summaryRow.charFile.hidden eq 'true' }">
+									<c:when
+										test="${summaryRow.derivedBioAssayDataBean.labFileBean.hidden eq 'true' }">
 										Private file
 									</c:when>
 									<c:otherwise>
-										${summaryRow.charFile.title}
+										${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}
 									</c:otherwise>
 								</c:choose>
 								<br>
 								<br>
 							</c:if>
 							<c:if
-								test="${!empty summaryRow.charBean.instrumentConfigBean && !empty summaryRow.charBean.instrumentConfigBean.instrumentBean.type}">						
-									${summaryRow.charBean.instrumentConfigBean.instrumentBean.type}-
-									${summaryRow.charBean.instrumentConfigBean.instrumentBean.manufacturer}
+								test="${!empty summaryRow.charBean.instrumentConfiguration && !empty summaryRow.charBean.instrumentConfiguration.instrument.type}">	${summaryRow.charBean.instrumentConfiguration.instrument.type}-
+									${summaryRow.charBean.instrumentConfiguration.instrument.manufacturer}
 									&nbsp;
 								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation}">
-									(${summaryRow.charBean.instrumentConfigBean.instrumentBean.abbreviation})
+									test="${!empty summaryRow.charBean.instrumentConfiguration.instrument.abbreviation}">
+									(${summaryRow.charBean.instrumentConfiguration.instrument.abbreviation})
 								</c:if>
 								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfigBean.description}">
+									test="${!empty summaryRow.charBean.instrumentConfiguration.description}">
 									<br>
 									<br>
-									${summaryRow.charBean.instrumentConfigBean.description}
+									${summaryRow.charBean.instrumentConfiguration.description}
 								</c:if>
 							</c:if>
 							&nbsp;
