@@ -149,7 +149,9 @@
 															</td>
 														</tr>
 														<tr>
-															<td class="leftLabel">&nbsp;</td>
+															<td class="leftLabel">
+																&nbsp;
+															</td>
 															<td colspan="3" class="rightLabel">
 																<jsp:include
 																	page="/particle/composition/nanoparticleEntity/bodyFunctionReadOnly.jsp">
@@ -158,7 +160,7 @@
 																&nbsp;
 															</td>
 														</tr>
-														
+
 													</tbody>
 												</table>
 												<br>
@@ -182,40 +184,36 @@
 						</tr>
 						<tr>
 							<td class="completeLabel" colspan="4">
-
 								<table border="0" width="100%">
 									<tr>
-										<td></td>
-										<td>
+										<td valign="bottom">
+											<a href="#"
+												onclick="javascript:addComponent(functionalizingEntityForm, 'functionalizingEntity', 'addFile'); return false;">
+												<span class="addLink">Add File</span> </a>
+										</td>
+										<td id="fileTd">
+
 											<logic:iterate name="nanoparticleEntityForm"
-												property="entity.composingElements" id="composingElement"
-												indexId="ind">
-												<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-													width="100%" align="center" summary="" border="0">
-													<tbody>
-														<tr>
-															<td class="formSubTitle" colspan="4">
-																Composing Element #${ind+1}
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabelWithTop" valign="top">
-																<strong>File Name</strong>
-															</td>
-															<td class="rightLabelWithTop">
-																test file
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabel" valign="top">
-																<strong>File Type</strong>
-															</td>
-															<td class="rightLabel" valign="top">
-																image test
-															</td>
-														</tr>
-													</tbody>
-												</table>
+												property="entity.files" id="entityFile" indexId="fileInd">
+												<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
+													<jsp:param name="fileInd" value="${fileInd}" />
+													<jsp:param name="action" value="nanoparticleEntity" />
+													<jsp:param name="domainFile"
+														value="entity.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileTitle"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.title}" />
+													<jsp:param name="fileKeyword"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].keywordsStr}" />
+													<jsp:param name="fileVisibilityGroups"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].visibilityGroups}" />
+												</jsp:include>
+
 												<br>
 											</logic:iterate>
 										</td>
@@ -223,6 +221,7 @@
 								</table>
 							</td>
 						</tr>
+					</tbody>
 				</table>
 			</td>
 		</tr>
