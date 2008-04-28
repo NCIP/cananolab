@@ -57,7 +57,7 @@ ${charBean.protocolFileBean.domainFile.uri}
 						</th>
 						<td class="rightLabel" valign="top">
 							${charBean.instrumentConfiguration.instrument.type}-
-							${charBean.iinstrumentConfiguration.instrument.manufacturer}
+							${charBean.instrumentConfiguration.instrument.manufacturer}
 							&nbsp;
 							<c:if
 								test="${!empty charBean.instrumentConfiguration.instrument.abbreviation}">
