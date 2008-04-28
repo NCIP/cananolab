@@ -12,13 +12,12 @@
 		<jsp:include
 			page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />		
 		<p style="page-break-before: always"> 
-		<c:forEach var="charBean" items="${characterizationForm.map.charSummary.charBeans}">
+		<c:forEach var="charBean" items="${charSummary.charBeans}">
 			<table width="100%" border="1" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<th class="formTitle" colspan="2" align="center">
-						${characterizationForm.map.particle.sampleName}
-						${characterizationForm.map.particle.sampleType} -
+						${particleName} -
 						${charBean.viewTitle} - ${ charBean.characterizationSource}
 					</th>
 				</tr>
@@ -32,7 +31,7 @@
 						</td>
 					</tr>
 				</c:if>
-				<c:if test="${!empty charBean.protocolFileBean.id}">
+				<c:if test="${!empty charBean.protocolFileBean.domainFile.id}">
 					<tr>
 						<th class="leftLabel" valign="top">
 							Protocol
@@ -44,69 +43,69 @@
 								</c:when>
 								<c:otherwise>
 							${charBean.protocolFileBean.displayName}&nbsp;
-${charBean.protocolFileBean.uri}
+${charBean.protocolFileBean.domainFile.uri}
 									</c:otherwise>
 							</c:choose>
 						</td>
 					</tr>
 				</c:if>
 				<c:if
-					test="${!empty charBean.instrumentConfigBean && !empty charBean.instrumentConfigBean.instrumentBean.type}">
+					test="${!empty charBean.instrumentConfiguration && !empty charBean.instrumentConfiguration.instrument.type}">
 					<tr>
 						<th class="leftLabel" valign="top">
 							Instrument
 						</th>
 						<td class="rightLabel" valign="top">
-							${charBean.instrumentConfigBean.instrumentBean.type}-
-							${charBean.instrumentConfigBean.instrumentBean.manufacturer}
+							${charBean.instrumentConfiguration.instrument.type}-
+							${charBean.iinstrumentConfiguration.instrument.manufacturer}
 							&nbsp;
 							<c:if
-								test="${!empty charBean.instrumentConfigBean.instrumentBean.abbreviation}">
-							(${charBean.instrumentConfigBean.instrumentBean.abbreviation})
+								test="${!empty charBean.instrumentConfiguration.instrument.abbreviation}">
+							(${charBean.instrumentConfiguration.instrument.abbreviation})
 							</c:if>
-							<c:if test="${!empty charBean.instrumentConfigBean.description}">
+							<c:if test="${!empty charBean.instrumentConfiguration.description}">
 								<br>
 								<br>
-							${charBean.instrumentConfigBean.description}
+							${charBean.instrumentConfiguration.description}
 							</c:if>
 						</td>
 					</tr>
 				</c:if>
 				<c:forEach var="derivedBioAssayData"
 					items="${charBean.derivedBioAssayDataList}" varStatus="fileInd">
-					<c:if test="${!empty derivedBioAssayData.description}">
+					<c:if test="${!empty derivedBioAssayData.labFileBean.domainFile.description}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd.index+1} Description
 							</th>
 							<td class="rightLabel" valign="top">
-								${derivedBioAssayData.description}&nbsp;
+								${derivedBioAssayData.labFileBean.domainFile.description}&nbsp;
 							</td>
 						</tr>
 					</c:if>
 					<c:if
-						test="${!empty derivedBioAssayData && !empty derivedBioAssayData.uri}">
+						test="${!empty derivedBioAssayData && !empty derivedBioAssayData.labFileBean.domainFile.uri}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd.index+1}
 							</th>
 							<td class="rightLabel" valign="top">
-								<c:if test="${!empty derivedBioAssayData.type}">
+								<c:if test="${!empty derivedBioAssayData.labFileBean.domainFile.type}">
 								${derivedBioAssayData.type}
 								<br>
 								</c:if>
 								<c:choose>
-									<c:when test="${derivedBioAssayData.hidden eq 'true'}">
+									<c:when test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${derivedBioAssayData.image eq 'true'}">
-											<img src="${characterizationForm.map.charSummary.actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.id}"
+											<c:when test="${derivedBioAssayData.labFileBean.image eq 'true'}">
+											<img src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}"
 															border="0">
 											
 											</c:when>
-											<c:otherwise>${derivedBioAssayData.title}
+											<c:otherwise>${derivedBioAssayData.labFileBean.domainFile.title}
 												</c:otherwise>
 										</c:choose>
 									</c:otherwise>
@@ -127,7 +126,7 @@ ${charBean.protocolFileBean.uri}
 											items="${derivedBioAssayData.datumList}">
 											<th class="whiteBorderLessLabel">
 												${datum.name}
-												<c:if test="${!empty datum.unit}">(${datum.unit})</c:if>
+												<c:if test="${!empty datum.valueUnit}">(${datum.valueUnit})</c:if>
 											</th>
 										</c:forEach>
 									</tr>
