@@ -6,12 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.8 2008-04-28 15:36:51 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.9 2008-04-28 18:40:23 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 
@@ -61,7 +62,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected void setCharacterizationBean(DynaValidatorForm theForm,
+	protected CharacterizationBean setCharacterizationBean(DynaValidatorForm theForm,
 			Characterization chara, UserBean user) throws Exception {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
 				(PhysicalCharacterization) chara);
@@ -69,6 +70,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();		
 		charService.setVisiblity(charBean, user);
 		theForm.set("achar", charBean);
+		return charBean;
 	}
 
 	protected void setLookups(HttpServletRequest request, String charClass)
