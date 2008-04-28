@@ -6,30 +6,17 @@
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
+			<td class="formTitle" colspan="3">
 				<div align="justify">
 					Biopolymer Properties
 				</div>
 			</td>
 		</tr>
 		<tr>
-			<td class="LeftLabel">
-				<strong>Name</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.biopolymer.name" />
-					</c:when>
-					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.biopolymer.name}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
+			<td class="leftLabel">
 				<strong>Biopolymer Type</strong>
 			</td>
-			<td class="rightLabel">
+			<td class="rightLabel" colspan="2">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:select property="entity.biopolymer.type"
@@ -52,7 +39,7 @@
 			<td class="leftLabel">
 				<strong>Sequence</strong>
 			</td>
-			<td class="rightLabel" colspan="3">
+			<td class="rightLabel" colspan="2">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:textarea property="entity.biopolymer.sequence" cols="80"
