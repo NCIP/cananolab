@@ -7,56 +7,55 @@
 <logic:iterate id="ifdata" name="nanoparticleEntityForm"
 	property="entity.composingElements[${param.compEleInd}].inherentFunctions"
 	indexId="ifInd">
+	<c:choose>
+		<c:when
+			test="${nanoparticleEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
+			<c:set var="modalityDisplay" value="display: block;" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="modalityDisplay" value="display: none;" />
+		</c:otherwise>
+	</c:choose>
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
-			<c:if test="${ifInd == 0 }">
-				<tr>
-					<td class="leftLabelWithTop" valign="top">
-						<strong>Function Type</strong>
-					</td>
-					<td class="labelWithTop" valign="top">
-						<strong>Description</strong>
-					</td>
-					<td class="labelWithTop" valign="top"
-						id="modalityTitle_${param.compEleInd}_${ifInd}">
-						<strong>Modality Type</strong>
-					</td>
-					<td class="rightLabelWithTop">
-						<Strong>&nbsp;</Strong>
-					</td>
-				</tr>
-			</c:if>
 			<tr>
-				<td class="leftLabel" valign="top" width="85">
+				<td class="formSubTitleNoRight" colspan="3">
+					<span>Inherent Function #${ifInd + 1}</span>
+				</td>
+				<td class="formSubTitleNoLeft" align="right">
+					<a href="#"
+						onclick="javascript:removeChildComponent(nanoparticleEntityForm, 
+					'nanoparticleEntity', ${param.compEleInd}, ${ifInd}, 'removeInherentFunction');">
+						<img src="images/delete.gif" border="0" alt="remove this function">
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="leftLabelWithTop" valign="top">
+					<strong>Function Type</strong>
+				</td>
+				<td class="labelWithTop" valign="top">
 					<html:select
 						property="entity.composingElements[${param.compEleInd}].inherentFunctions[${ifInd}].type"
 						size="1" styleId="funcType_${param.compEleInd}_${ifInd}"
 						onchange="javascript:callPrompt('Function Type', 'funcType_${param.compEleInd}_${ifInd}');
 									displayModality(${param.compEleInd}, ${ifInd}); ">
 						<option value="" />
-						<html:options name="functionTypes" />
+							<html:options name="functionTypes" />
 						<option value="other">
 							[Other]
 						</option>
 					</html:select>
-				</td>
-				<td class="label">
-					<html:textarea
-						property="entity.composingElements[${param.compEleInd}].inherentFunctions[${ifInd}].description"
-						rows="1" cols="30" />
 					&nbsp;
 				</td>
-				<td class="label">
-					<c:choose>
-						<c:when
-							test="${nanoparticleEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
-							<c:set var="modalityDisplay" value="display: block;" />
-						</c:when>
-						<c:otherwise>
-							<c:set var="modalityDisplay" value="display: none;" />
-						</c:otherwise>
-					</c:choose>
+				<td class="labelWithTop" valign="top" align="right">
+					<strong style="${modalityDisplay}"
+						id="modalityTitle_${param.compEleInd}_${ifInd}">Modality
+						Type</strong>&nbsp;
+				</td>
+				<td class="rightLabelWithTop" valign="top" align="left">
+
 					<div id="modalityTypeTd_${param.compEleInd}_${ifInd}"
 						style="${modalityDisplay}">
 						<html:select
@@ -73,13 +72,21 @@
 					</div>
 					&nbsp;
 				</td>
-				<td class="rightLabel" width="20">
-					<a href="#"
-						onclick="javascript:removeChildComponent(nanoparticleEntityForm, 
-					'nanoparticleEntity', ${param.compEleInd}, ${ifInd}, 'removeInherentFunction');"><span
-						class="addLink2">remove</span> </a>
+			</tr>
+
+			<tr>
+				<td class="leftLabel" valign="top">
+					<strong>Description</strong>
 				</td>
+				<td class="rightLabel" valign="top" colspan="3">
+					<html:textarea
+						property="entity.composingElements[${param.compEleInd}].inherentFunctions[${ifInd}].description"
+						rows="1" cols="30" />
+					&nbsp;
+				</td>
+
 			</tr>
 		</tbody>
 	</table>
+	<br>
 </logic:iterate>
