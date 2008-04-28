@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.14 2008-04-28 14:37:01 cais Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.15 2008-04-28 20:16:18 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -66,7 +66,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("functionalizingEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request);
+		setupParticle(theForm, request);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -88,13 +88,14 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request);
+		setupParticle(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityBy(entityId);
+		compService.setVisibility(entityBean, user);
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
