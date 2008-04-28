@@ -85,35 +85,6 @@
 				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
 
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
-
-				<c:choose>
-					<c:when test="${!empty particleAssociatedFiles}">
-						<li class="controlList">
-							<a href="#" class="subMenuSecondary">ASSOCIATED FILES</a>
-							<ul class="sublist_5" style="${fileDisplay}">
-								<c:forEach var="aReport" items="${particleAssociatedFiles}">
-									<c:url var="url" value="updateReportForParticle.do">
-										<c:param name="page" value="0" />
-										<c:param name="dispatch" value="${dispatchValue}" />
-										<c:param name="fileId" value="${aReport.id}" />
-										<c:param name="fileType" value="${aReport.type}" />
-										<c:param name="submitType" value="associatedFile" />
-									</c:url>
-									<li>
-										<a href="${url}" title="${aReport.displayName}"><span
-											class="data_anchar">>&nbsp;</span>${aReport.name}</a>
-									</li>
-								</c:forEach>
-							</ul>
-						</li>
-					</c:when>
-					<c:otherwise>
-						<li class="nodatali">
-							ASSOCIATED FILES
-						</li>
-					</c:otherwise>
-				</c:choose>
-
 				<c:choose>
 					<c:when test="${!empty particleReports}">
 						<li class="controlList">
