@@ -5,7 +5,7 @@
 	<c:when
 		test="${displaytype == 'Physical' ||
 			  displaytype == 'Molecular Weight' ||
-			  displaytype == 'Morphology' ||
+			  displaytype == 'Physical State' ||
 			  displaytype == 'Purity' ||
 			  displaytype == 'Size' ||
 			  displaytype == 'Surface' ||
@@ -300,7 +300,7 @@
 																		<c:param name="dataId"
 																			value="${leafCharBean.dataId}" />
 																		<c:param name="submitType"
-																			value="${leafCharBean.dataDislpayType}" />
+																			value="${leafCharBean.dataDisplayType}" />
 																	</c:url>
 																	<li>
 <%--																	<c:choose>--%>
