@@ -60,10 +60,10 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.growthDiameter" />
+						<html:text property="entity.carbonNanotube.diameter" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}&nbsp;
+						${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -73,10 +73,10 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.growthDiameterUnit" />
+						<html:text property="entity.carbonNanotube.diameterUnit" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}&nbsp;
+						${nanoparticleEntityForm.map.entity.carbonNanotube.diameterUnit}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

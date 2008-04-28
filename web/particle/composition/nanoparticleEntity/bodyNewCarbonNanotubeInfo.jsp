@@ -33,13 +33,13 @@
 				<strong>Growth Diameter</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.growthDiameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}"/>
+				<input type="text" name="entity.carbonNanotube.diameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}"/>
 			</td>
 			<td class="label">
 				<strong>Growth Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.growthDiameterUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}"/>
+				<input type="text" name="entity.carbonNanotube.diameterUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameterUnit}"/>
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>
