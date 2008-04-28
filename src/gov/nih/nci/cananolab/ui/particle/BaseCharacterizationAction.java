@@ -82,7 +82,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String charId = request.getParameter("dataId");
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		Characterization chara = charService.findCharacterizationBy(charId);
+		Characterization chara = charService.findCharacterizationById(charId);
 		return chara;
 	}
 
@@ -207,6 +207,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				printLinkURL);
 		request.getSession().setAttribute("printFullSummaryViewLinkURL",
 				printAllLinkURL);
+		request.getSession().setAttribute("charSummary", charSummary);
 		return mapping.findForward("summaryView");
 	}
 }
