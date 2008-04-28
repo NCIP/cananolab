@@ -7,11 +7,11 @@ package gov.nih.nci.cananolab.ui.particle;
  */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,11 +59,16 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected void setCharacterizationBean(DynaValidatorForm theForm,
-			Characterization chara) throws Exception {
-		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
-				(PhysicalCharacterization) chara);
+	protected CharacterizationBean setCharacterizationBean(
+			DynaValidatorForm theForm, Characterization chara, UserBean user)
+			throws Exception {
+		InvitroCharacterizationBean charBean = new InvitroCharacterizationBean(
+				(InvitroCharacterization) chara);
+		// set file visibility
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+		charService.setVisiblity(charBean, user);
 		theForm.set("achar", charBean);
+		return charBean;
 	}
 
 	protected void setLookups(HttpServletRequest request, String charClass)
