@@ -219,7 +219,7 @@
 											value="titleCell2VitroNoData" />
 										<jsp:param name="tableStyle" value="subTitleTable" />
 										<jsp:param name="addLinkStyle" value="addCellVitro" />
-										<jsp:param name="addAction" value="inVitroCharacterization" />
+										<jsp:param name="addAction" value="invitroCharacterization" />
 									</jsp:include>
 								</c:otherwise>
 							</c:choose>
@@ -283,7 +283,7 @@
 																<jsp:param name="tableStyle" value="charTitle" />
 																<jsp:param name="addLinkStyle" value="addCell" />
 																<jsp:param name="addAction"
-																	value="inVitroCharacterization" />
+																	value="invitroCharacterization" />
 															</jsp:include>
 														</c:otherwise>
 													</c:choose>
@@ -343,7 +343,7 @@
 																				<jsp:param name="tableStyle" value="charTitle" />
 																				<jsp:param name="addLinkStyle" value="addCellVitro" />
 																				<jsp:param name="addAction"
-																					value="inVitroCharacterization" />
+																					value="invitroCharacterization" />
 																			</jsp:include>
 																			<c:if
 																				test="${!empty particleDataTree[fifthLevelChar]}">
