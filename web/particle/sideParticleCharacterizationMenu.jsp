@@ -34,7 +34,7 @@
 		test="${displaytype == 'Coagulation' ||
 				displaytype == 'Hemolysis' ||
 				displaytype == 'Plasma Protein Binding' ||
-				displaytype == 'CFU_GM' ||
+				displaytype == 'CFU GM' ||
 				displaytype == 'Chemotaxis' ||
 				displaytype == 'Complement Activation' ||
 				displaytype == 'Cytokine Induction' ||
