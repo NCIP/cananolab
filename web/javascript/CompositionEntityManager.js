@@ -92,16 +92,6 @@ function getFETypeOptions(selectEleId) {
 }
 	
 
-function displayModality(compEleIndex, functionIndex) {
-	var functionType = document.getElementById("funcType_" + compEleIndex + "_" + functionIndex).value;
-	var modalityTd = document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex);
-	if(functionType == "imaging") {
-		modalityTd.style.display = "inline";
-	} else {
-		modalityTd.style.display = "none";
-	}
-	return false;
-}
 
 function displayFEModality(functionIndex) {
 	var functionType = document.getElementById("funcType_" + functionIndex).value;
@@ -132,15 +122,19 @@ function displayTarget(functionIndex) {
 }
 
 function displayModality(compEleIndex, functionIndex) {
-	var functionType = document.getElementById("targetType_" + compEleIndex + "_" + functionIndex).value;
+	var functionType = document.getElementById("funcType_" + compEleIndex + "_" + functionIndex).value;
 	var modalityTd = document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex);
+	var modalityTitle = document.getElementById("modalityTitle_" + compEleIndex + "_" + functionIndex);
 	if(functionType == "imaging") {
 		modalityTd.style.display = "inline";
+		modalityTitle.style.display = "inline";
 	} else {
 		modalityTd.style.display = "none";
+		modalityTitle.style.display = "none";
 	}
 	return false;
 }
+
 
 function displayAntigenSpecies(parentIndex, childIndex) {
 	var type = document.getElementById("targetType_" + parentIndex + "_" + childIndex).value;
