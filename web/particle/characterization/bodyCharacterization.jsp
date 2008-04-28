@@ -4,11 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type='text/javascript' src='javascript/CharacterizationManager.js'></script>
-<script type='text/javascript' src='dwr/interface/CharacterizationManager.js'></script>
+<script type='text/javascript'
+	src='javascript/CharacterizationManager.js'></script>
+<script type='text/javascript'
+	src='dwr/interface/CharacterizationManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
+<bean:define id="characterizationForm" name="${formName}"
+	type="org.apache.struts.validator.DynaValidatorForm" />
 <html:form action="/${actionName}">
 	<table width="100%" align="center">
 		<tr>
@@ -82,8 +86,7 @@
 						</tr>
 				</table>
 				<br>
-				<jsp:include
-					page="/particle/bodyAnnotationCopy.jsp" />
+				<jsp:include page="/particle/bodyAnnotationCopy.jsp" />
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationSubmit.jsp" />
 			</td>
