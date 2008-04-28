@@ -13,9 +13,13 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.PropertyReader;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +48,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		request.getSession().removeAttribute("characterizationForm");
-		ParticleBean particleBean = setupParticle(theForm, request);
+		setupParticle(theForm, request);
 		ServletContext appContext = request.getSession().getServletContext();
 		String submitType = request.getParameter("submitType");
 		String charClass = InitSetup.getInstance().getObjectName(submitType,
@@ -63,13 +67,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		InitNanoparticleSetup.getInstance().getFileTypes(request);
 	}
 
-	protected abstract void setCharacterizationBean(DynaValidatorForm theForm,
-			Characterization chara, UserBean user) throws Exception;
+	protected abstract CharacterizationBean setCharacterizationBean(
+			DynaValidatorForm theForm, Characterization chara, UserBean user)
+			throws Exception;
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupParticle(theForm, request);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		setCharacterizationBean(theForm, chara, user);
@@ -88,7 +94,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	protected Characterization prepareCharacterization(
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
-		ParticleBean particleBean = setupParticle(theForm, request);
 		String charId = request.getParameter("dataId");
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		Characterization chara = charService.findCharacterizationById(charId);
@@ -169,58 +174,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		// IndexOutOfBoundException in the jsp page
 	}
 
-	public ActionForward detailView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		Characterization chara = prepareCharacterization(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		setCharacterizationBean(theForm, chara, user);
-		String particleId = request.getParameter("particleId");
-		String characterizationId = request.getParameter("dataId");
-		String submitType = request.getParameter("submitType");
-		String requestUrl = request.getRequestURL().toString();
-		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
-				+ "&dataId=" + characterizationId + "&submitType=" + submitType;
-		request.getSession().setAttribute("printDetailViewLinkURL",
-				printLinkURL);
-		return mapping.findForward("detailView");
-	}
-
-	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = request.getParameter("particleId");
-		String submitType = request.getParameter("submitType");
-		String className = InitSetup.getInstance().getObjectName(submitType,
-				request.getSession().getServletContext());
-		String fullClassName = ClassUtils.getFullClass(className)
-				.getCanonicalName();
-		String requestUrl = request.getRequestURL().toString();
-		ParticleBean particleBean = setupParticle(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-		CharacterizationSummaryBean charSummary = service
-				.getParticleCharacterizationSummaryByClass(particleBean
-						.getDomainParticleSample().getName(), fullClassName,
-						user);
-
-		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printSummaryView&particleId=" + particleId
-				+ "&submitType=" + submitType;
-		String printAllLinkURL = requestUrl
-				+ ".do?page=0&dispatch=printFullSummaryView&particleId="
-				+ particleId + "&submitType=" + submitType;
-		request.getSession().setAttribute("printSummaryViewLinkURL",
-				printLinkURL);
-		request.getSession().setAttribute("printFullSummaryViewLinkURL",
-				printAllLinkURL);
-		request.getSession().setAttribute("charSummary", charSummary);
-		return mapping.findForward("summaryView");
-	}
-
 	/**
 	 * Download action to handle characterization file download and viewing
 	 * 
@@ -264,5 +217,167 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			return mapping.findForward("particleMessage");
 		}
 		return null;
+	}
+
+	public ActionForward detailView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupParticle(theForm, request);
+		Characterization chara = prepareCharacterization(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		setCharacterizationBean(theForm, chara, user);
+		String particleId = request.getParameter("particleId");
+		String characterizationId = request.getParameter("dataId");
+		String submitType = request.getParameter("submitType");
+		String requestUrl = request.getRequestURL().toString();
+		String printLinkURL = requestUrl
+				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+				+ "&dataId=" + characterizationId + "&submitType=" + submitType;
+		request.getSession().setAttribute("printDetailViewLinkURL",
+				printLinkURL);
+		return mapping.findForward("detailView");
+	}
+
+	public ActionForward printDetailView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		Characterization chara = prepareCharacterization(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		setCharacterizationBean(theForm, chara, user);
+		return mapping.findForward("detailPrintView");
+	}
+
+	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleBean = setupParticle(theForm, request);
+		Characterization chara = prepareCharacterization(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		CharacterizationBean charBean = setCharacterizationBean(theForm, chara,
+				user);
+		String fileName = this.getExportFileName(particleBean
+				.getDomainParticleSample().getName(), "detailView", charBean
+				.getClassName());
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ fileName + ".xls");
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+		service.exportDetail(charBean, response.getOutputStream());
+
+		return null;
+	}
+
+	private CharacterizationSummaryBean setupCharSummary(
+			DynaValidatorForm theForm, HttpServletRequest request)
+			throws Exception {
+
+		String submitType = request.getParameter("submitType");
+		String className = InitSetup.getInstance().getObjectName(submitType,
+				request.getSession().getServletContext());
+		String fullClassName = ClassUtils.getFullClass(className)
+				.getCanonicalName();
+		ParticleBean particleBean = setupParticle(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+		CharacterizationSummaryBean charSummary = service
+				.getParticleCharacterizationSummaryByClass(particleBean
+						.getDomainParticleSample().getName(), fullClassName,
+						user);
+		request.setAttribute("charSummary", charSummary);
+		return charSummary;
+
+	}
+
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		String submitType = request.getParameter("submitType");
+		setupCharSummary(theForm, request);
+		String requestUrl = request.getRequestURL().toString();
+
+		String printLinkURL = requestUrl
+				+ "?page=0&dispatch=printSummaryView&particleId=" + particleId
+				+ "&submitType=" + submitType;
+		String printAllLinkURL = requestUrl
+				+ ".do?page=0&dispatch=printFullSummaryView&particleId="
+				+ particleId + "&submitType=" + submitType;
+		request.getSession().setAttribute("printSummaryViewLinkURL",
+				printLinkURL);
+		request.getSession().setAttribute("printFullSummaryViewLinkURL",
+				printAllLinkURL);
+		return mapping.findForward("summaryView");
+	}
+
+	public ActionForward printSummaryView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupCharSummary(theForm, request);
+		return mapping.findForward("summaryPrintView");
+	}
+
+	public ActionForward printFullSummaryView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupCharSummary(theForm, request);
+		return mapping.findForward("summaryPrintAllView");
+	}
+
+	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleBean = setupParticle(theForm, request);
+		CharacterizationSummaryBean charSummaryBean = setupCharSummary(theForm,
+				request);
+		String fileName = getExportFileName(particleBean
+				.getDomainParticleSample().getName(), "summaryView",
+				charSummaryBean.getCharBeans().get(0).getClassName());
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ fileName + ".xls");
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+		service.exportSummary(charSummaryBean, response.getOutputStream());
+		return null;
+	}
+
+	public ActionForward exportFullSummary(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleBean = setupParticle(theForm, request);
+		CharacterizationSummaryBean charSummaryBean = setupCharSummary(theForm,
+				request);
+		String fileName = getExportFileName(particleBean
+				.getDomainParticleSample().getName(), "summaryView",
+				charSummaryBean.getCharBeans().get(0).getClassName());
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ fileName + ".xls");
+
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
+		service.exportFullSummary(charSummaryBean, response.getOutputStream());
+		return null;
+	}
+
+	private String getExportFileName(String particleName, String viewType,
+			String charClass) {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(particleName);
+		nameParts.add(charClass);
+		nameParts.add(viewType);
+		nameParts.add(StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS"));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
 	}
 }
