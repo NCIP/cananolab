@@ -1,14 +1,21 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.PropertyReader;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
@@ -55,14 +64,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	}
 
 	protected abstract void setCharacterizationBean(DynaValidatorForm theForm,
-			Characterization chara) throws Exception;
+			Characterization chara, UserBean user) throws Exception;
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		Characterization chara = prepareCharacterization(theForm, request);
-		setCharacterizationBean(theForm, chara);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		setCharacterizationBean(theForm, chara, user);
 		String className = ClassUtils.getShortClassName(chara.getClass()
 				.getCanonicalName());
 		setLookups(request, className);
@@ -79,7 +89,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
 		ParticleBean particleBean = setupParticle(theForm, request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String charId = request.getParameter("dataId");
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		Characterization chara = charService.findCharacterizationById(charId);
@@ -165,7 +174,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		Characterization chara = prepareCharacterization(theForm, request);
-		setCharacterizationBean(theForm, chara);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		setCharacterizationBean(theForm, chara, user);
 		String particleId = request.getParameter("particleId");
 		String characterizationId = request.getParameter("dataId");
 		String submitType = request.getParameter("submitType");
@@ -209,5 +219,50 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				printAllLinkURL);
 		request.getSession().setAttribute("charSummary", charSummary);
 		return mapping.findForward("summaryView");
+	}
+
+	/**
+	 * Download action to handle characterization file download and viewing
+	 * 
+	 * @param
+	 * @return
+	 */
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		String fileId = request.getParameter("fileId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		FileService service = new FileService();
+		LabFileBean fileBean = service.findFile(fileId, user);
+		String fileRoot = PropertyReader.getProperty(
+				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+		File dFile = new File(fileRoot + File.separator
+				+ fileBean.getDomainFile().getUri());
+		if (dFile.exists()) {
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment;filename="
+					+ fileBean.getDomainFile().getName());
+			response.setHeader("cache-control", "Private");
+
+			java.io.InputStream in = new FileInputStream(dFile);
+			java.io.OutputStream out = response.getOutputStream();
+
+			byte[] bytes = new byte[32768];
+
+			int numRead = 0;
+			while ((numRead = in.read(bytes)) > 0) {
+				out.write(bytes, 0, numRead);
+			}
+			out.close();
+		} else {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"error.noCharacterizationFile");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			return mapping.findForward("particleMessage");
+		}
+		return null;
 	}
 }
