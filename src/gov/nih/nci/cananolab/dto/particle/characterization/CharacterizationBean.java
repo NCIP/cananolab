@@ -59,6 +59,7 @@ public class CharacterizationBean {
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
+		this.characterizationSource=chara.getSource();
 		if (chara.getInstrumentConfiguration() != null) {
 			instrumentConfig = chara.getInstrumentConfiguration();
 		}
