@@ -1,11 +1,14 @@
 package gov.nih.nci.cananolab.dto.common;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
+
+import java.io.File;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
@@ -44,6 +47,8 @@ public class LabFileBean {
 	private String keywordsStr;
 
 	private boolean external = false;
+
+	private String fullPath;
 
 	public String getInstanceType() {
 		return this.instanceType;
@@ -136,7 +141,7 @@ public class LabFileBean {
 	}
 
 	public boolean isImage() {
-		//if file is external don't show image either
+		// if file is external don't show image either
 		if (getDomainFile().getName() != null && !isExternal()) {
 			image = StringUtils.isImgFileExt(getDomainFile().getName());
 		}
@@ -170,5 +175,17 @@ public class LabFileBean {
 			external = false;
 		}
 		return external;
+	}
+
+	public String getFullPath() {
+		if (!isExternal()) {
+			String fileRoot = PropertyReader
+					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+							"fileRepositoryDir");
+			fullPath = fileRoot + File.separator + getDomainFile().getUri();
+		} else {
+			fullPath = null;
+		}
+		return fullPath;
 	}
 }
