@@ -15,6 +15,12 @@ public class InvitroCharacterizationBean extends CharacterizationBean {
 
 	public InvitroCharacterizationBean(InvitroCharacterization chara) {
 		super(chara);
+		if (chara instanceof Caspase3Activation) {
+			caspase3Activation=(Caspase3Activation)chara;
+		}
+		else if (chara instanceof CellViability) {
+			cellViability=(CellViability)chara;
+		}
 	}
 
 	public Caspase3Activation getCaspase3Activation() {
