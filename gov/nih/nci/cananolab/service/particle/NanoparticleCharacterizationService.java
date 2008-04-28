@@ -31,6 +31,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
@@ -77,7 +78,7 @@ public class NanoparticleCharacterizationService {
 		appService.saveOrUpdate(achar);
 	}
 
-	public Characterization findCharacterizationBy(String charId)
+	public Characterization findCharacterizationById(String charId)
 			throws ParticleCharacterizationException,
 			CaNanoLabSecurityException {
 		Characterization achar = null;
@@ -88,7 +89,16 @@ public class NanoparticleCharacterizationService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					PhysicalCharacterization.class).add(
 					Property.forName("id").eq(new Long(charId)));
+			crit.createAlias("derivedBioAssayDataCollection", "bioassay",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("bioassay.labFile", "file",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.setFetchMode("protocolFile", FetchMode.JOIN);
 			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
+			crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				achar = (Characterization) result.get(0);
@@ -112,8 +122,8 @@ public class NanoparticleCharacterizationService {
 					"select distinct achar.source from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.source is not null");
 			List results = appService.query(crit);
 			for (Object obj : results) {
-				Characterization achar = (Characterization) obj;
-				sources.add(achar.getSource());
+				String source = (String) obj;
+				sources.add(source);
 			}
 		} catch (Exception e) {
 			logger
@@ -194,10 +204,19 @@ public class NanoparticleCharacterizationService {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Class
 					.forName(className));
-
-			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
-			crit.setFetchMode("instrumentConfigration", FetchMode.JOIN);
 			crit.setFetchMode("protocolFile", FetchMode.JOIN);
+			crit.createAlias("derivedBioAssayDataCollection", "bioassay",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("bioassay.labFile", "file",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
+			crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
 			List result = appService.query(crit);
 			for (Object obj : result) {
 				charas.add((Characterization) obj);
