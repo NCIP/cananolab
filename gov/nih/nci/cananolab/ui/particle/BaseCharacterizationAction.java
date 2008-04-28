@@ -47,7 +47,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		request.getSession().removeAttribute("characterizationForm");
+		clearForm(theForm);
+		request.getSession().setAttribute("characterizationForm", theForm);
 		setupParticle(theForm, request);
 		ServletContext appContext = request.getSession().getServletContext();
 		String submitType = request.getParameter("submitType");
@@ -56,6 +57,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		setLookups(request, charClass);
 		return mapping.getInputForward();
 	}
+
+	abstract protected void clearForm(DynaValidatorForm theForm);
 
 	protected void setLookups(HttpServletRequest request, String charClass)
 			throws Exception {
@@ -97,6 +100,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		String charId = request.getParameter("dataId");
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		Characterization chara = charService.findCharacterizationById(charId);
+		request.getSession().setAttribute("characterizationForm", theForm);
 		return chara;
 	}
 
