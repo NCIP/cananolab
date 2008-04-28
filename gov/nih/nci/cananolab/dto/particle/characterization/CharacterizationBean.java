@@ -47,11 +47,6 @@ public class CharacterizationBean {
 
 	public CharacterizationBean() {
 		instrumentConfig.setInstrument(new Instrument());
-
-		// DerivedBioAssayDataBean bioAssayData = new DerivedBioAssayDataBean();
-		// bioAssayData.getDomainBioAssayData().setDerivedDatumCollection(
-		// new HashSet<DerivedDatum>());
-		// derivedBioAssayDataList.add(bioAssayData);
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -59,7 +54,7 @@ public class CharacterizationBean {
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
-		this.characterizationSource=chara.getSource();
+		this.characterizationSource = chara.getSource();
 		if (chara.getInstrumentConfiguration() != null) {
 			instrumentConfig = chara.getInstrumentConfiguration();
 		}
@@ -237,17 +232,6 @@ public class CharacterizationBean {
 	public Characterization getDomainChar() {
 		return domainChar;
 	}
-
-	// public String getExportFileName() {
-	// List<String> nameParts = new ArrayList<String>();
-	// nameParts.add(particle.getSampleName());
-	// nameParts.add(getDispatchActionName());
-	// nameParts.add("detailView");
-	// nameParts.add(StringUtils.convertDateToString(new Date(),
-	// "yyyyMMdd_HH-mm-ss-SSS"));
-	// exportFileName = StringUtils.join(nameParts, "_");
-	// return exportFileName;
-	// }
 
 	public String getClassName() {
 		return className;
