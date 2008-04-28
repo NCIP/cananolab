@@ -38,10 +38,12 @@ public class LabFileBean {
 	private boolean hidden = true;
 
 	private boolean image = false;
-	
+
 	private String uploadedFile;
-	
+
 	private String keywordsStr;
+
+	private boolean external = false;
 
 	public String getInstanceType() {
 		return this.instanceType;
@@ -55,7 +57,7 @@ public class LabFileBean {
 	}
 
 	public LabFileBean(LabFile labFile) {
-		this.domainFile=labFile;
+		this.domainFile = labFile;
 		SortedSet<String> keywordStrs = new TreeSet<String>();
 		if (domainFile.getKeywordCollection() != null) {
 			for (Keyword keyword : domainFile.getKeywordCollection()) {
@@ -134,12 +136,10 @@ public class LabFileBean {
 	}
 
 	public boolean isImage() {
-		if (getDomainFile().getName() != null) {
-			if (getDomainFile().getType().equalsIgnoreCase("image")
-					|| getDomainFile().getType().equalsIgnoreCase("graph")) {
-				image = StringUtils.isImgFileExt(getDomainFile().getName());				
-			}
-		}		
+		//if file is external don't show image either
+		if (getDomainFile().getName() != null && !isExternal()) {
+			image = StringUtils.isImgFileExt(getDomainFile().getName());
+		}
 		return image;
 	}
 
@@ -161,5 +161,14 @@ public class LabFileBean {
 
 	public void setKeywordsStr(String keywordsStr) {
 		this.keywordsStr = keywordsStr;
+	}
+
+	public boolean isExternal() {
+		if (getDomainFile().getUri().startsWith("http")) {
+			external = true;
+		} else {
+			external = false;
+		}
+		return external;
 	}
 }
