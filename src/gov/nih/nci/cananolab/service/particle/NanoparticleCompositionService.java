@@ -21,6 +21,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
@@ -88,6 +89,8 @@ public class NanoparticleCompositionService {
 					NanoparticleEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				NanoparticleEntity entity = (NanoparticleEntity) result.get(0);
@@ -154,6 +157,9 @@ public class NanoparticleCompositionService {
 					FunctionalizingEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				FunctionalizingEntity entity = (FunctionalizingEntity) result
