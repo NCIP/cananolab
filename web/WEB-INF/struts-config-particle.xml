@@ -10,7 +10,6 @@
 			<form-property name="particleSampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
 		</form-bean>
-
 		<form-bean name="searchNanoparticleSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleSources"
@@ -48,10 +47,18 @@
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
 		</form-bean>
-		<form-bean name="characterizationForm"
+		<form-bean name="physicalCharacterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean" />
+			<form-property name="particleId" type="java.lang.String" />
+			<form-property name="otherParticles"
+				type="java.lang.String[]" />
+		</form-bean>
+		<form-bean name="invitroCharacterizationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="achar"
+				type="gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
@@ -67,6 +74,16 @@
 			key="error.particle" path="particle.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ParticleException" />
 	</global-exceptions>
+	<global-forwards>
+		<forward name="particleMessage"
+			path="particle.annotationMessage" />
+		<forward name="detailPrintView"
+			path="/particle/characterization/bodyCharacterizationDetailPrintView.jsp" />
+		<forward name="summaryPrintView"
+			path="/particle/characterization/bodyCharacterizationSummaryPrintView.jsp" />
+		<forward name="summaryPrintAllView"
+			path="/particle/characterization/bodyCharacterizationSummaryPrintAllView.jsp" />
+	</global-forwards>
 	<action-mappings>
 		<action path="/manageParticle"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
@@ -108,14 +125,27 @@
 				path="particle.composition.functionalizingEntity" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action input="input" name="characterizationForm"
+		<action input="input" name="physicalCharacterizationForm"
 			parameter="dispatch" path="/physicalCharacterization"
 			type="gov.nih.nci.cananolab.ui.particle.PhysicalCharacterizationAction">
 			<forward name="input"
 				path="particle.physicalCharacterization" />
 			<forward name="success" path="particle.annotationMessage" />
-			<forward name="detailView" path="particle.physicalDetailView"/>
-			<forward name="summaryView" path="particle.physicalSummaryView"/>
+			<forward name="detailView"
+				path="particle.physicalDetailView" />
+			<forward name="summaryView"
+				path="particle.physicalSummaryView" />
+		</action>
+		<action input="input" name="invitroCharacterizationForm"
+			parameter="dispatch" path="/invitroCharacterization"
+			type="gov.nih.nci.cananolab.ui.particle.InvitroCharacterizationAction">
+			<forward name="input"
+				path="particle.invitroCharacterization" />
+			<forward name="success" path="particle.annotationMessage" />
+			<forward name="detailView"
+				path="particle.invitroDetailView" />
+			<forward name="summaryView"
+				path="particle.invitroSummaryView" />
 		</action>
 	</action-mappings>
 </struts-config>

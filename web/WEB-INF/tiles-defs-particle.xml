@@ -91,6 +91,7 @@
 		extends="particle.characterization">
 		<put name="pageTitle" value="Physical Characterization" />
 		<put name="actionName" value="physicalCharacterization" />
+		<put name="formName" value="physicalCharacterizationForm"/>
 		<put name="subfolder" value="physical" />
 	</definition>
 
@@ -98,6 +99,7 @@
 		extends="particle.characterization">
 		<put name="pageTitle" value="In Vitro Characterization" />
 		<put name="actionName" value="invitroCharacterization" />
+		<put name="formName" value="invitroCharacterizationForm"/>
 		<put name="subfolder" value="invitro" />
 	</definition>
 
@@ -123,41 +125,6 @@
 		extends="particle.invitroCharacterization">
 		<put name="calabContent"
 			value="/particle/characterization/bodyCharacterizationSummaryView.jsp" />
-	</definition>
-
-	<!-- definition for the nanoparticle surface page -->
-	<definition name="particle.surface"
-		extends="particle.physicalCharacterization">
-		<put name="detailPage"
-			value="/particle/physical/bodySurfaceInfo.jsp" />
-	</definition>
-
-	<!-- definition for the nanoparticle morphology page -->
-	<definition name="particle.morphology"
-		extends="particle.physicalCharacterization">
-		<put name="detailPage"
-			value="/particle/physical/bodyMorphologyInfo.jsp" />
-	</definition>
-
-	<!-- definition for the nanoparticle shape page -->
-	<definition name="particle.shape"
-		extends="particle.physicalCharacterization">
-		<put name="detailPage"
-			value="/particle/physical/bodyShapeInfo.jsp" />
-	</definition>
-
-	<!-- definition for the nanoparticle solubility page -->
-	<definition name="particle.solubility"
-		extends="particle.physicalCharacterization">
-		<put name="detailPage"
-			value="/particle/physical/bodySolubilityInfo.jsp" />
-	</definition>
-
-	<!-- definition for the invitro cytotoxicity cellviability page -->
-	<definition name="particle.cytotoxicity"
-		extends="particle.invitroCharacterization">
-		<put name="detailPage"
-			value="/particle/invitro/bodyCytotoxicityInfo.jsp" />
 	</definition>
 
 	<!-- definition for the load characterization file page -->
