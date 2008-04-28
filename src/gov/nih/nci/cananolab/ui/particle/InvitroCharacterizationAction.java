@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,5 +75,9 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 	protected void setLookups(HttpServletRequest request, String charClass)
 			throws Exception {
 		super.setLookups(request, charClass);
+	}
+	
+	protected void clearForm(DynaValidatorForm theForm) {
+		theForm.set("achar", new InvitroCharacterizationBean());
 	}
 }
