@@ -1,3 +1,7 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -19,7 +23,7 @@
 							styleId="initiator" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.emulsion.polymerized}
+						${nanoparticleEntityForm.map.entity.emulsion.polymerized}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -32,7 +36,7 @@
 						<html:text property="entity.emulsion.polymerName" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.emulsion.polymerName}
+						${nanoparticleEntityForm.map.entity.emulsion.polymerName}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -45,7 +49,7 @@
 						<html:text property="entity.emulsion.type" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.emulsion.type}
+						${nanoparticleEntityForm.map.entity.emulsion.type}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

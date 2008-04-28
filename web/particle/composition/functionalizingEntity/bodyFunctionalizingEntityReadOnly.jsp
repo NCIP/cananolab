@@ -42,13 +42,13 @@
 							<strong>Functionalizing Entity Type</strong>
 						</td>
 						<td class="label">
-							${functionalizingEntityForm.map.entity.type}
+							${functionalizingEntityForm.map.entity.type}&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Chemical Name</strong>
 						</td>
 						<td class="rightLabel">
-							${functionalizingEntityForm.map.entity.name}
+							${functionalizingEntityForm.map.entity.name}&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -56,13 +56,13 @@
 							<strong>Molecular Formula Type</strong>
 						</td>
 						<td class="label">
-							${functionalizingEntityForm.map.entity.type.molecularFormulaType}
+							${functionalizingEntityForm.map.entity.type.molecularFormulaType}&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Molecular Formula</strong>
 						</td>
 						<td class="rightLabel">
-							${functionalizingEntityForm.map.entity.molecularFormula}
+							${functionalizingEntityForm.map.entity.molecularFormula}&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -76,7 +76,7 @@
 							<strong>Value Unit</strong>
 						</td>
 						<td class="rightLabel">
-							${functionalizingEntityForm.map.entity.valueUnit}
+							${functionalizingEntityForm.map.entity.valueUnit}&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -84,7 +84,7 @@
 							<strong>Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							${functionalizingEntityForm.map.entity.description}
+							${functionalizingEntityForm.map.entity.description}&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -92,13 +92,13 @@
 							<strong>Activation Method</strong>
 						</td>
 						<td class="label">
-							${functionalizingEntityForm.map.entity.activationMethod.type}
+							${functionalizingEntityForm.map.entity.activationMethod.type}&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Activation Effect</strong>
 						</td>
 						<td class="rightLabel">
-							${functionalizingEntityForm.map.entity.activationMethod.activationEffect}
+							${functionalizingEntityForm.map.entity.activationMethod.activationEffect}&nbsp;
 						</td>
 					</tr>
 				</table>
@@ -168,7 +168,7 @@
 																<strong>Function Type</strong>
 															</td>
 															<td class="labelWithTop" valign="top">
-																${functionalizingEntityForm.map.entity.functions[ind].type}
+																${functionalizingEntityForm.map.entity.functions[ind].type}&nbsp;
 																
 															</td>
 															<td class="labelWithTop" valign="top">
@@ -178,7 +178,7 @@
 															</td>
 															<td class="rightLabelWithTop" valign="top">
 																<div id="modalityDiv_${ind}" style="${modalityDisplay}">
-																${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}
+																${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}&nbsp;
 																	
 																</div>
 																&nbsp;
@@ -189,7 +189,7 @@
 																<strong>Description</strong>
 															</td>
 															<td class="rightLabel" colspan="3">
-																${functionalizingEntityForm.map.entity.functions[ind].description}
+																${functionalizingEntityForm.map.entity.functions[ind].description}&nbsp;
 															</td>
 														</tr>
 														<tr>

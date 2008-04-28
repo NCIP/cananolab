@@ -1,3 +1,7 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
@@ -18,7 +22,7 @@
 						<html:text property="entity.carbonNanotube.averageLength" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}
+						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -31,7 +35,7 @@
 						<html:text property="entity.carbonNanotube.averageLengthUnit" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}
+						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -44,7 +48,7 @@
 						<html:text property="entity.carbonNanotube.chirality" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}
+						${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -59,7 +63,7 @@
 						<html:text property="entity.carbonNanotube.growthDiameter" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}
+						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameter}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -72,7 +76,7 @@
 						<html:text property="entity.carbonNanotube.growthDiameterUnit" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}
+						${nanoparticleEntityForm.map.entity.carbonNanotube.growthDiameterUnit}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -85,7 +89,7 @@
 						<html:text property="entity.carbonNanotube.wallType" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.wallType}
+						${nanoparticleEntityForm.map.entity.carbonNanotube.wallType}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
