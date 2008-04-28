@@ -268,6 +268,10 @@ public class NanoparticleCharacterizationService {
 						charSummaryRow
 								.setDerivedBioAssayDataBean(derivedBioAssayDataBean);
 						charSummary.getSummaryRows().add(charSummaryRow);
+						if (datumMap != null && !datumMap.isEmpty()) {
+							charSummary.getColumnLabels().addAll(
+									datumMap.keySet());
+						}
 					}
 				} else {
 					CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
