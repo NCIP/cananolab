@@ -12,7 +12,6 @@
 		<c:set var="compDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-
 <c:choose>
 	<c:when
 		test="${hasCompositionData eq 'true' || canCreateNanoparticle eq 'true'}">
@@ -20,7 +19,7 @@
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">SAMPLE COMPOSITION</a>
 
-			<ul class="sublist_4" style="">
+			<ul class="sublist_4" style="${compDisplay}">
 				<c:forEach var="compoDataBean"
 					items="${compositionTypes[compositionType]}">
 					<%--				<c:url var="submitUrl" value="nanoparticleEntity.do">--%>
