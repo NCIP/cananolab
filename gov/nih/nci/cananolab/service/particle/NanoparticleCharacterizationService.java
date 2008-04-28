@@ -101,7 +101,7 @@ public class NanoparticleCharacterizationService {
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(
-					PhysicalCharacterization.class).add(
+					Characterization.class).add(
 					Property.forName("id").eq(new Long(charId)));
 			crit.createAlias("derivedBioAssayDataCollection", "bioassay",
 					CriteriaSpecification.LEFT_JOIN);
