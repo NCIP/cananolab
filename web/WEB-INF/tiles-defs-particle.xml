@@ -91,7 +91,6 @@
 		extends="particle.characterization">
 		<put name="pageTitle" value="Physical Characterization" />
 		<put name="actionName" value="physicalCharacterization" />
-		<put name="formName" value="physicalCharacterizationForm"/>
 		<put name="subfolder" value="physical" />
 	</definition>
 
@@ -99,7 +98,6 @@
 		extends="particle.characterization">
 		<put name="pageTitle" value="In Vitro Characterization" />
 		<put name="actionName" value="invitroCharacterization" />
-		<put name="formName" value="invitroCharacterizationForm"/>
 		<put name="subfolder" value="invitro" />
 	</definition>
 
