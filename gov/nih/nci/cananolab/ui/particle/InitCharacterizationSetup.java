@@ -31,25 +31,25 @@ public class InitCharacterizationSetup {
 			String className) throws CaNanoLabException {
 		HttpSession session = request.getSession();
 		SortedSet<String> charSources = charService
-				.getAllCharacterizationSources();
+				.findAllCharacterizationSources();
 		session.setAttribute("characterizationSources", charSources);
-		SortedSet<String> names = LookupService.getLookupValues(className,
+		SortedSet<String> names = LookupService.findLookupValues(className,
 				"derivedDatumName");
 		session.setAttribute("derivedDatumNames", names);
 
 		Map<String, SortedSet<String>> unitMap = new HashMap<String, SortedSet<String>>();
 		for (String name : names) {
-			SortedSet<String> units = LookupService.getLookupValues(name,
+			SortedSet<String> units = LookupService.findLookupValues(name,
 					"unit");
 			unitMap.put(name, units);
 		}
 		session.setAttribute("unitMap", unitMap);
 
-		SortedSet<String> valueTypes = LookupService.getLookupValues(
+		SortedSet<String> valueTypes = LookupService.findLookupValues(
 				"DerivedDatum", "valueType");
 		session.setAttribute("derivedDatumValueTypes", valueTypes);
 
-		List<Instrument> instruments = charService.getAllInstruments();
+		List<Instrument> instruments = charService.findAllInstruments();
 		SortedSet<String> manufacturers = new TreeSet<String>();
 		SortedSet<String> instrumentTypes = new TreeSet<String>();
 		for (Instrument instrument : instruments) {
@@ -66,24 +66,24 @@ public class InitCharacterizationSetup {
 		HttpSession session = request.getSession();
 
 		// solubility
-		SortedSet<String> solventTypes = LookupService.getLookupValues(
+		SortedSet<String> solventTypes = LookupService.findLookupValues(
 				"Solubility", "solvent");
 		session.setAttribute("solventTypes", solventTypes);
-		SortedSet<String> concentrationUnits = LookupService.getLookupValues(
+		SortedSet<String> concentrationUnits = LookupService.findLookupValues(
 				"SampleContainer", "concentrationUnit");
 		session.setAttribute("concentrationUnits", concentrationUnits);
 		// shape
-		SortedSet<String> shapeTypes = LookupService.getLookupValues("Shape",
+		SortedSet<String> shapeTypes = LookupService.findLookupValues("Shape",
 				"type");
 		session.setAttribute("shapeTypes", shapeTypes);
 		// physical state
-		SortedSet<String> physicalStateTypes = LookupService.getLookupValues(
+		SortedSet<String> physicalStateTypes = LookupService.findLookupValues(
 				"PhysicalState", "type");
 		session.setAttribute("physicalStateTypes", physicalStateTypes);
 
 		// surface chemistry
 		SortedSet<String> molecularFormulaTypes = LookupService
-				.getLookupValues("SurfaceChemistry", "molecularFormulaType");
+				.findLookupValues("SurfaceChemistry", "molecularFormulaType");
 		session.setAttribute("molecularFormulaTypes", molecularFormulaTypes);
 	}
 }
