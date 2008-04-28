@@ -7,9 +7,12 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -251,5 +254,35 @@ public class NanoparticleCompositionService {
 			throw new ParticleCompositionException(err, e);
 		}
 		return types;
+	}
+
+	public void setVisibility(NanoparticleEntityBean entity, UserBean user)
+			throws ParticleCompositionException {
+		try {
+			FileService fileService = new FileService();
+			for (LabFileBean file : entity.getFiles()) {
+				fileService.setVisiblity(file, user);
+			}
+		} catch (Exception e) {
+			String err = "Error setting visiblity for nanoparticle entity "
+					+ entity.getType();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public void setVisibility(FunctionalizingEntityBean entity, UserBean user)
+			throws ParticleCompositionException {
+		try {
+			FileService fileService = new FileService();
+			for (LabFileBean file : entity.getFiles()) {
+				fileService.setVisiblity(file, user);
+			}
+		} catch (Exception e) {
+			String err = "Error setting visiblity for functionalizing entity "
+					+ entity.getType();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
 	}
 }
