@@ -84,7 +84,7 @@
 				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
 					<td class="formTitle"
-						colspan="${3+fn:length(characterizationForm.map.charSummary.columnLabels)}">
+						colspan="${3+fn:length(charSummary.columnLabels)}">
 						<div align="justify">
 							${particleName} - ${ submitType} Characterizations
 						</div>
@@ -97,7 +97,7 @@
 						Description
 					</th>
 					<c:forEach var="label"
-						items="${characterizationForm.map.charSummary.columnLabels}">
+						items="${charSummary.columnLabels}">
 						<th class="label">
 							${label}
 						</th>
@@ -110,7 +110,7 @@
 					</th>
 				</tr>
 				<c:forEach var="summaryRow"
-					items="${characterizationForm.map.charSummary.summaryRows}">
+					items="${charSummary.summaryRows}">
 					<tr>
 						<td class="leftLabel" valign="top" width="15%">
 							<c:url var="url" value="${actionName}.do">
@@ -129,7 +129,7 @@
 						</td>
 
 						<c:forEach var="label"
-							items="${characterizationForm.map.charSummary.columnLabels}">
+							items="${charSummary.columnLabels}">
 							<td class="label" valign="top">
 								${summaryRow.datumMap[label]}&nbsp;
 							</td>
