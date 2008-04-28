@@ -240,12 +240,16 @@
 											<logic:iterate name="functionalizingEntityForm"
 												property="entity.files" id="entityFile" indexId="fileInd">
 												<jsp:include
-													page="/particle/bodyLoadFileUpdate.jsp">
+													page="/particle/bodyLoadFileReadOnly.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
-													<jsp:param name="form" value="functionalizingEntityForm" />
 													<jsp:param name="action" value="functionalizingEntity" />
-													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
 													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName" value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileTitle" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
+													<jsp:param name="fileKeyword" value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
+													<jsp:param name="fileVisibilityGroups" value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
 												</jsp:include>
 												
 												<br>
@@ -255,6 +259,7 @@
 								</table>
 							</td>
 						</tr>
+						</tbody>
 				</table>
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
