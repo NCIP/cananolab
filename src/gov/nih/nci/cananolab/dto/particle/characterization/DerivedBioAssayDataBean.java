@@ -27,8 +27,12 @@ public class DerivedBioAssayDataBean {
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData derivedBioAssayData) {
 		domainBioAssayData = derivedBioAssayData;
-		labFileBean = new LabFileBean(domainBioAssayData.getLabFile());
-		datumList.addAll(domainBioAssayData.getDerivedDatumCollection());
+		if (domainBioAssayData.getLabFile() != null) {
+			labFileBean = new LabFileBean(domainBioAssayData.getLabFile());
+		}
+		if (domainBioAssayData.getDerivedDatumCollection() != null) {
+			datumList.addAll(domainBioAssayData.getDerivedDatumCollection());
+		}
 		// TODO sort the datum list
 	}
 
