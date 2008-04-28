@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.9 2008-04-28 18:40:23 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.10 2008-04-28 23:21:41 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -78,5 +78,9 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		super.setLookups(request, charClass);
 		InitCharacterizationSetup.getInstance()
 				.setPhysicalCharacterizationDropdowns(request, charClass);
+	}
+	
+	protected void clearForm(DynaValidatorForm theForm) {
+		theForm.set("achar", new PhysicalCharacterizationBean());
 	}
 }
