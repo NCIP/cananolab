@@ -300,13 +300,11 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		String submitType = request.getParameter("submitType");
 		setupCharSummary(theForm, request);
 		String requestUrl = request.getRequestURL().toString();
-
-		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printSummaryView&particleId=" + particleId
-				+ "&submitType=" + submitType;
-		String printAllLinkURL = requestUrl
-				+ ".do?page=0&dispatch=printFullSummaryView&particleId="
-				+ particleId + "&submitType=" + submitType;
+		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
+				+ "&submitType=" + submitType + "&dispatch=printSummaryView";
+		String printAllLinkURL = requestUrl + "?page=0&particleId="
+				+ particleId + "&submitType=" + submitType
+				+ "&dispatch=printFullSummaryView";
 		request.getSession().setAttribute("printSummaryViewLinkURL",
 				printLinkURL);
 		request.getSession().setAttribute("printFullSummaryViewLinkURL",
