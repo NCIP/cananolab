@@ -63,6 +63,8 @@ public class NanoparticleEntityBean {
 		domainEntity = nanoparticleEntity;
 		if (domainEntity instanceof Biopolymer) {
 			biopolymer = (Biopolymer) domainEntity;
+		} else if (domainEntity instanceof Dendrimer) {
+			dendrimer = (Dendrimer) domainEntity;
 		} else if (domainEntity instanceof CarbonNanotube) {
 			carbonNanotube = (CarbonNanotube) domainEntity;
 		} else if (domainEntity instanceof Liposome) {
