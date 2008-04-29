@@ -86,7 +86,6 @@
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-
 	<definition name="particle.physicalCharacterization"
 		extends="particle.characterization">
 		<put name="pageTitle" value="Physical Characterization" />
@@ -125,6 +124,12 @@
 			value="/particle/characterization/bodyCharacterizationSummaryView.jsp" />
 	</definition>
 
+	<definition name="particle.annotationDeleteView"
+		extends="particle.annotationMessage">
+		<put name="calabContent"
+			value="/particle/bodyDeleteAnnotations.jsp" />
+	</definition>
+
 	<!-- definition for the load characterization file page -->
 	<definition name="particle.loadCharacterizationFile"
 		extends="particle.annotationHome">
@@ -144,20 +149,6 @@
 		extends="particle.annotationHome">
 		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
 		<put name="reportActionName" value="updateReportForParticle" />
-	</definition>
-
-	<!-- definition for the multiple characterization deletion page -->
-	<definition name="particle.deletePhysicalCharacterization"
-		extends="particle.annotationHome">
-		<put name="calabContent"
-			value="/particle/characterization/bodyDeleteCharacterizations.jsp" />
-		<put name="actionName" value="physicalCharacterization" />
-	</definition>
-	<definition name="particle.deleteInvitroCharacterization"
-		extends="particle.annotationHome">
-		<put name="calabContent"
-			value="/particle/characterization/bodyDeleteCharacterizations.jsp" />
-		<put name="actionName" value="invitroCharacterization" />
 	</definition>
 
 	<!-- definition for the search nanoparticle page -->
