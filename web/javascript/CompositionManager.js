@@ -1,7 +1,7 @@
 
 function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
-	CompositionEntityManager.getEntityIncludePage(entityType, pagePath, populatePage);
+	CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
 }
 
 function populatePage(pageData) {
@@ -11,7 +11,7 @@ function populatePage(pageData) {
 function getComposingElementOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	
-	CompositionEntityManager.getComposingElementTypeOptions(compFuncTypeValue, function(data) {
+	CompositionManager.getComposingElementTypeOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("compElemType");
 			dwr.util.addOptions("compElemType", ['']);
@@ -23,7 +23,7 @@ function getComposingElementOptions(selectEleId) {
 function getBiopolymerOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if(compFuncTypeValue == 'biopolymer') {
-		CompositionEntityManager.getBiopolymerTypeOptions(compFuncTypeValue, function(data) {
+		CompositionManager.getBiopolymerTypeOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("biopolymerType");
 			dwr.util.addOptions("biopolymerType", ['']);
@@ -36,7 +36,7 @@ function getBiopolymerOptions(selectEleId) {
 function getWallTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if(compFuncTypeValue == 'carbon nanotube') {
-		CompositionEntityManager.getWallTypeOptions(compFuncTypeValue, function(data) {
+		CompositionManager.getWallTypeOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("wallType");
 			dwr.util.addOptions("wallType", ['']);
@@ -55,7 +55,7 @@ function getNETypeOptions(selectEleId) {
 function getAntibodyTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if(compFuncTypeValue == 'antibody') {
-		CompositionEntityManager.getAntibodyTypeOptions(compFuncTypeValue, function(data) {
+		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("antibodyType");
 			dwr.util.addOptions("antibodyType", ['']);
@@ -68,7 +68,7 @@ function getAntibodyTypeOptions(selectEleId) {
 function getAntibodyIsotypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if(compFuncTypeValue == 'antibody') {
-		CompositionEntityManager.getAntibodyIsotypeOptions(compFuncTypeValue, function(data) {
+		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("antibodyIsotype");
 			dwr.util.addOptions("antibodyIsotype", ['']);
@@ -81,7 +81,7 @@ function getAntibodyIsotypeOptions(selectEleId) {
 function getAntibodySpeciesOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if(compFuncTypeValue == 'antibody') {
-		CompositionEntityManager.getAntibodySpeciesOptions(compFuncTypeValue, function(data) {
+		CompositionManager.getAntibodySpeciesOptions(compFuncTypeValue, function(data) {
 			
 			dwr.util.removeAllOptions("antibodySpecies");
 			dwr.util.addOptions("antibodySpecies", ['']);
@@ -184,7 +184,7 @@ function radLinkOrUpload(radioIndex, fileIndex) {
 /*
 function setModalityTypeOptions(compEleIndex, functionIndex) {
 	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
-	CompositionEntityManager.getModalityTypeOptions(functionType, function(data) {
+	CompositionManager.getModalityTypeOptions(functionType, function(data) {
 			
 			dwr.util.removeAllOptions("modalityType_" + compEleIndex + "_" + functionIndex);
 			dwr.util.addOptions("modalityType_" + compEleIndex + "_" + functionIndex, ['']);
@@ -196,7 +196,7 @@ function setModalityTypeOptions(compEleIndex, functionIndex) {
 function setModalityInclude(compEleIndex, functionIndex) {
 	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
 	
-	CompositionEntityManager.getModalityIncludePage(compEleIndex, functionIndex, functionType, function(pageData) {
+	CompositionManager.getModalityIncludePage(compEleIndex, functionIndex, functionType, function(pageData) {
 	
 		document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex).innerHTML = "";
 		dwr.util.setValue("modalityTypeTd_" + compEleIndex + "_" + functionIndex, pageData, {escapeHtml:false});
