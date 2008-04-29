@@ -39,7 +39,7 @@
 							<jsp:param name="addLinkStyle" value="addCell" />
 							<jsp:param name="addAction" value="${compoDataBean.dataLink}" />
 						</jsp:include>
-						<ul>
+						<ul class="sublist_5" style="${compDisplay}">
 							<c:forEach var="dataLinkBean"
 								items="${particleDataTree[compoDataBean.dataDisplayType]}">
 								<c:url var="url" value="${dataLinkBean.dataLink}.do">
