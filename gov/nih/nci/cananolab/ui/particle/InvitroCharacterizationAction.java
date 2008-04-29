@@ -56,7 +56,8 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
+		String particleId = theForm.getString("particleId");
+		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
 		return forward;
 	}
 
@@ -76,7 +77,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 			throws Exception {
 		super.setLookups(request, charClass);
 	}
-	
+
 	protected void clearForm(DynaValidatorForm theForm) {
 		theForm.set("achar", new InvitroCharacterizationBean());
 	}
