@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.11 2008-04-29 06:32:15 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.12 2008-04-29 21:16:40 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -57,9 +57,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		request.setAttribute("updateDataTree", "true");
-		String particleId = theForm.getString("particleId");
-		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
+		setupDataTree(theForm, request);
 		return forward;
 	}
 
