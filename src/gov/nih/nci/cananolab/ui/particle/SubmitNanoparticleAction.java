@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.18 2008-04-29 21:16:31 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.19 2008-04-29 23:12:58 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -64,7 +64,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				.getDataTree(
 						particleSampleBean.getDomainParticleSample().getId()
 								.toString(), request);
-		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
+		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
 				request);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
 		return forward;
@@ -80,7 +80,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		service.setVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
-		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
+		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
 				request);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
 		setupDataTree(theForm, request);
@@ -96,7 +96,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
+		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
 				request);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
 		return mapping.getInputForward();
