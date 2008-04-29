@@ -54,6 +54,8 @@
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
+			<form-property name="charIdsToDelete"
+				type="java.lang.String[]" />
 		</form-bean>
 		<form-bean name="invitroCharacterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -61,6 +63,8 @@
 				type="gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="otherParticles"
+				type="java.lang.String[]" />
+			<form-property name="charIdsToDelete"
 				type="java.lang.String[]" />
 		</form-bean>
 	</form-beans>
@@ -135,6 +139,8 @@
 				path="particle.physicalDetailView" />
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
+			<forward name="deleteView"
+				path="particle.deletePhysicalCharacterization" />
 		</action>
 		<action input="input" name="invitroCharacterizationForm"
 			parameter="dispatch" path="/invitroCharacterization"
@@ -146,6 +152,8 @@
 				path="particle.invitroDetailView" />
 			<forward name="summaryView"
 				path="particle.invitroSummaryView" />
+			<forward name="deleteView"
+				path="particle.deleteInvitroCharacterization" />
 		</action>
 	</action-mappings>
 </struts-config>
