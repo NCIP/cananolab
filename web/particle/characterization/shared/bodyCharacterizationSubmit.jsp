@@ -9,7 +9,7 @@ function confirmDeletion()
 	answer = confirm("Are you sure you want to delete the characterization?")
 	if (answer !=0)
 	{
-		this.document.forms[0].dispatch.value="deleteConfirmed";
+		this.document.forms[0].dispatch.value="delete";
 		this.document.forms[0].submit(); 
 		return true;
 	}

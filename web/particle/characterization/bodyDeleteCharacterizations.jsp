@@ -9,20 +9,20 @@ function confirmDeletion()
 	answer = confirm("Are you sure you want to delete the characterization?")
 	if (answer !=0)
 	{
-		this.document.forms[0].dispatch.value="deleteConfirmed";
+		this.document.forms[0].dispatch.value="deleteAll";
 		this.document.forms[0].submit(); 
 		return true;
 	}
 }
 //-->
 </script>
-<html:form action="/deleteAction">
+<html:form action="/${actionName}">
 	<table width="100%" align="center" border="0">
 		<tr>
 			<td>
 				<h3>
 					<br>
-					Delete Characterizations
+					Delete ${submitType} Characterizations
 					<br>
 				</h3>
 			</td>
@@ -43,15 +43,14 @@ function confirmDeletion()
 								Please select characterizations you wish to delete:
 							</td>
 						</tr>
-						<logic:iterate name="charBeans" id="achar" indexId="charInd">
+						<logic:iterate name="characterizationsToDelete" id="chara"
+							indexId="charInd">
 							<tr>
 								<td class="leftBorderedFormFieldWhite">
-									<html:multibox property="charIds">
-										${achar.id}
+									<html:multibox property="charIdsToDelete">
+										${chara.id}
 									</html:multibox>
-									<bean:write name="achar" property="name" />
-									--
-									<bean:write name="achar" property="viewTitle" />
+									<bean:write name="chara" property="identificationName" />
 								</td>
 							</tr>
 						</logic:iterate>
@@ -71,13 +70,12 @@ function confirmDeletion()
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick=""/>
-												<input type="hidden" name="dispatch" value="delete"/>
-												<html:hidden property="particleId"/>
-												<input type="hidden" name="submitType"
-													value="${submitType}"/>
+												<input type="reset" value="Reset" onclick="" />
+												<input type="hidden" name="dispatch" value="deleteAll" />
+												<html:hidden property="particleId" />
+												<input type="hidden" name="submitType" value="${submitType}" />
 												<input type="hidden" name="diaplayType"
-														value="${param.displayType}" />
+													value="${param.displayType}" />
 												<input type="button" value="Delete"
 													onclick="confirmDeletion();" />
 												<input type="hidden" name="page" value="2">
