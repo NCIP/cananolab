@@ -188,13 +188,16 @@ public class InitNanoparticleSetup {
 	}
 
 	public Map<String, SortedSet<ParticleDataLinkBean>> getDataTree(
-			ParticleBean particleBean, HttpServletRequest request)
-			throws Exception {
+			String particleId, HttpServletRequest request) throws Exception {
 		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = new HashMap<String, SortedSet<ParticleDataLinkBean>>();
 		if (request.getAttribute("updateDataTree") != null
 				&& request.getAttribute("updateDataTree").equals("true")) {
 			ServletContext appContext = request.getSession()
 					.getServletContext();
+			// reload nanoparticle sample
+			NanoparticleSampleService particleService = new NanoparticleSampleService();
+			ParticleBean particleBean = particleService
+					.findNanoparticleSampleById(particleId);
 			NanoparticleSample particleSample = particleBean
 					.getDomainParticleSample();
 			// composition
@@ -355,8 +358,8 @@ public class InitNanoparticleSetup {
 			throws CaNanoLabException {
 		SortedSet<String> types = LookupService.findLookupValues("LabFile",
 				"type");
-		SortedSet<String> otherTypes = LookupService.findLookupValues("LabFile",
-				"otherType");
+		SortedSet<String> otherTypes = LookupService.findLookupValues(
+				"LabFile", "otherType");
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("fileTypes", types);
 		return types;
