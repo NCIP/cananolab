@@ -33,8 +33,21 @@ function getBiopolymerOptions(selectEleId) {
   	}
 }
 
+function getWallTypeOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if(compFuncTypeValue == 'carbon nanotube') {
+		CompositionEntityManager.getWallTypeOptions(compFuncTypeValue, function(data) {
+			
+			dwr.util.removeAllOptions("wallType");
+			dwr.util.addOptions("wallType", ['']);
+    		dwr.util.addOptions("wallType", data);
+  		});
+  	}
+}
+
 function getNETypeOptions(selectEleId) {
 	getBiopolymerOptions(selectEleId);
+	getWallTypeOptions(selectEleId);
 	getComposingElementOptions(selectEleId);
 	setEntityTypeTitle(selectEleId);
 }
