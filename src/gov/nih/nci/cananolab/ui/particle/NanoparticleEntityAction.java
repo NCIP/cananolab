@@ -8,15 +8,21 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.24 2008-04-29 06:31:13 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.25 2008-04-29 21:16:49 pansu Exp $ */
 
+import java.util.SortedSet;
+
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
+import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -270,5 +276,24 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		// i++;
 		// }
 		return entityBeans;
+	}
+
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
+		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
+				.get("entity");
+		entityBean.setDomainEntity();
+		compositionService.deleteNanoparticleEntity(entityBean
+				.getDomainEntity());		
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.deleteNanoparticleEntity");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		ActionForward forward = mapping.findForward("success");
+		setupDataTree(theForm, request);
+		return forward;
 	}
 }
