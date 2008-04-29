@@ -1,12 +1,16 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -30,6 +34,8 @@ public class ParticleBean {
 
 	private boolean hidden;
 
+	private List<ReportBean> reports = new ArrayList<ReportBean>();
+
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
 	}
@@ -43,6 +49,11 @@ public class ParticleBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
+		if (particleSample.getReportCollection() != null) {
+			for (Report report : particleSample.getReportCollection()) {
+				reports.add(new ReportBean(report));
+			}
+		}
 	}
 
 	public String[] getVisibilityGroups() {
@@ -107,5 +118,9 @@ public class ParticleBean {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+	}
+
+	public List<ReportBean> getReports() {
+		return reports;
 	}
 }
