@@ -20,9 +20,9 @@
 		<!-- Associations mapping for the NanoparticleEntity class -->
 		<many-to-one name="sampleComposition"
 			class="gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition"
-			column="composition_pk_id" lazy="proxy" cascade="save-update, delete"/>
+			column="composition_pk_id" lazy="proxy" cascade="save-update"/>
 		<set name="labFileCollection"
-			table="nanoparticle_entity_lab_file" lazy="true" inverse="false" cascade="save-update, delete">
+			table="nanoparticle_entity_lab_file" lazy="true" inverse="false" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="nanoparticle_entity_pk_id" />
 			<many-to-many
