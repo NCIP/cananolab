@@ -134,16 +134,24 @@ public class InitSetup {
 	 * @param lookupName
 	 * @param lookupAttribute
 	 * @param otherTypeAttribute
+	 * @aparam updateSession
 	 * @return
 	 * @throws CaNanoLabException
 	 */
 	public SortedSet<String> getDefaultAndOtherLookupTypes(
 			HttpServletRequest request, String sessionAttribute,
-			String lookupName, String lookupAttribute, String otherTypeAttribute)
+			String lookupName, String lookupAttribute,
+			String otherTypeAttribute, boolean updateSession)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.getDefaultAndOtherLookupTypes(
-				lookupName, lookupAttribute, otherTypeAttribute);
-		request.getSession().setAttribute(sessionAttribute, types);
+		SortedSet<String> types = null;
+		if (updateSession) {
+			types = LookupService.getDefaultAndOtherLookupTypes(lookupName,
+					lookupAttribute, otherTypeAttribute);
+			request.getSession().setAttribute(sessionAttribute, types);
+		} else {
+			types = new TreeSet<String>((SortedSet<? extends String>) (request
+					.getSession().getAttribute(sessionAttribute)));
+		}
 		return types;
 	}
 

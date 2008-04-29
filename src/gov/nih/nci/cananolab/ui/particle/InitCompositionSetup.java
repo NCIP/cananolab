@@ -31,16 +31,16 @@ public class InitCompositionSetup {
 		getEmulsionComposingElementTypes(request);
 		getFunctionTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"biopolymerTypes", "Biopolymer", "type", "otherType");
-		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "modalityTypes",
-						"ImagingFunction", "modality", "otherModality");
+				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"modalityTypes", "ImagingFunction", "modality",
+				"otherModality", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"composingElementTypes", "ComposingElement", "type",
-				"otherType");
+				"otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"composingElementUnits", "ComposingElement", "valueUnit",
-				"otherValueUnit");
+				"otherValueUnit", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");
@@ -51,17 +51,19 @@ public class InitCompositionSetup {
 		getFunctionalizingEntityTypes(request);
 		getTargetTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"antibodyTypes", "Antibody", "type", "otherType");
+				"antibodyTypes", "Antibody", "type", "otherType", true);
+		InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "antibodyIsotypes",
+						"Antibody", "isotype", "otherIsotype", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"antibodyIsotypes", "Antibody", "isotype", "otherIsotype");
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"activationMethods", "ActivationMethod", "type", "otherType");
+				"activationMethods", "ActivationMethod", "type", "otherType",
+				true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"functionalizingEntityUnits", "FunctionalizingEntity",
-				"valueUnit", "otherValueUnit");
-		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "modalityTypes",
-						"ImagingFunction", "modality", "otherModality");
+				"valueUnit", "otherValueUnit", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"modalityTypes", "ImagingFunction", "modality",
+				"otherModality", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"antigenSpecies", "Antigen", "species");
