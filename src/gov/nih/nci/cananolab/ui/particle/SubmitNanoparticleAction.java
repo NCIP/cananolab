@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.17 2008-04-29 06:32:02 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.18 2008-04-29 21:16:31 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -80,7 +80,6 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		service.setVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
-		request.setAttribute("theParticle", particleSampleBean);
 		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
 				request);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
