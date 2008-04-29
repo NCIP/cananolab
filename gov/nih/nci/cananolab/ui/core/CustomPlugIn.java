@@ -58,6 +58,9 @@ public class CustomPlugIn implements PlugIn {
 			InitCompositionSetup.getInstance().getMolecularFormulaTypes(
 					actionServlet.getServletContext());
 			
+			InitCompositionSetup.getInstance().getWallTypes(
+					actionServlet.getServletContext());
+			
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
