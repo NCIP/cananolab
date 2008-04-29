@@ -285,4 +285,30 @@ public class NanoparticleCompositionService {
 			throw new ParticleCompositionException(err, e);
 		}
 	}
+
+	public void deleteNanoparticleEntity(NanoparticleEntity entity)
+			throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.delete(entity);
+		} catch (Exception e) {
+			String err = "Error deleting nanoparticle entity " + entity.getId();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public void deleteFunctionalizingEntity(FunctionalizingEntity entity)
+			throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.delete(entity);
+		} catch (Exception e) {
+			String err = "Error deleting functionalizing entity " + entity.getId();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
 }
