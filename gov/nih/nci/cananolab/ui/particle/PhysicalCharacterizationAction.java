@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.10 2008-04-28 23:21:41 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.11 2008-04-29 06:32:15 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -58,16 +58,18 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
+		String particleId = theForm.getString("particleId");
+		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
 		return forward;
 	}
 
-	protected CharacterizationBean setCharacterizationBean(DynaValidatorForm theForm,
-			Characterization chara, UserBean user) throws Exception {
+	protected CharacterizationBean setCharacterizationBean(
+			DynaValidatorForm theForm, Characterization chara, UserBean user)
+			throws Exception {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
 				(PhysicalCharacterization) chara);
 		// set file visibility
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();		
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.setVisiblity(charBean, user);
 		theForm.set("achar", charBean);
 		return charBean;
@@ -79,8 +81,29 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		InitCharacterizationSetup.getInstance()
 				.setPhysicalCharacterizationDropdowns(request, charClass);
 	}
-	
+
 	protected void clearForm(DynaValidatorForm theForm) {
 		theForm.set("achar", new PhysicalCharacterizationBean());
+	}
+
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
+				.get("achar");
+		charBean.setDomainChar();
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+		charService.deleteCharacterization(charBean.getDomainChar());
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"message.deletePhysicalCharacterization");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		ActionForward forward = mapping.findForward("success");
+		request.setAttribute("updateDataTree", "true");
+		String particleId = theForm.getString("particleId");
+		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
+		return forward;
 	}
 }
