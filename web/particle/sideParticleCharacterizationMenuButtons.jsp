@@ -40,11 +40,11 @@
 		</c:choose>
 		<c:if test="${canUserDelete eq 'true' &&
 				!empty particleDataTree[param.charType]}">
-				<c:url var="deleteUrl" value="deleteAction.do">
+				<c:url var="deleteUrl" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
-					<c:param name="dispatch" value="setup" />
+					<c:param name="dispatch" value="setupDeleteAll" />
 				</c:url>
 				<td>
 					&nbsp;
