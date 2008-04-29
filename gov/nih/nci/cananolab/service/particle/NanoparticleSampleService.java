@@ -227,6 +227,7 @@ public class NanoparticleSampleService {
 			crit.setFetchMode(
 					"sampleComposition.functionalizingEntityCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -367,6 +368,7 @@ public class NanoparticleSampleService {
 					FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.labFileCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -596,6 +598,20 @@ public class NanoparticleSampleService {
 		} catch (Exception e) {
 			String err = "Error in setting visibility groups for particle sample "
 					+ particleBean.getDomainParticleSample().getName();
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
+
+	public void deleteAnnotationById(String className, Long dataId)
+			throws ParticleException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.deleteById(Class.forName(className), dataId);
+		} catch (Exception e) {
+			String err = "Error deleting annotation of class " + className
+					+ "by ID " + dataId;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
