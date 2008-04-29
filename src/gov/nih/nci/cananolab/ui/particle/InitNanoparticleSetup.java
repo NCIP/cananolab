@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalC
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -200,6 +201,7 @@ public class InitNanoparticleSetup {
 					.findNanoparticleSampleById(particleId);
 			NanoparticleSample particleSample = particleBean
 					.getDomainParticleSample();
+			request.getSession().setAttribute("theParticle", particleBean);
 			// composition
 			if (particleSample.getSampleComposition() != null) {
 				SortedSet<ParticleDataLinkBean> ndataBeans = new TreeSet<ParticleDataLinkBean>(
@@ -332,6 +334,29 @@ public class InitNanoparticleSetup {
 						dataTree.put(charName, cdataBeans);
 					}
 					cdataBeans.add(dataBean);
+				}
+
+				// report
+				SortedSet<ParticleDataLinkBean> rdataBeans = new TreeSet<ParticleDataLinkBean>(
+						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+				for (ReportBean reportBean : particleBean.getReports()) {
+					String reportCategory = reportBean.getDomainReport()
+							.getCategory();
+					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+							reportBean.getDomainReport().getId().toString(),
+							"Report", "submitReport", reportBean
+									.getDomainReport().getCreatedDate());
+					dataBean.setDataDisplayType(reportCategory);
+					dataBean.setViewTitle(reportBean.getDisplayName());
+					if (dataTree.get(reportCategory) != null) {
+						rdataBeans = (TreeSet<ParticleDataLinkBean>) dataTree
+								.get(reportCategory);
+					} else {
+						rdataBeans = new TreeSet<ParticleDataLinkBean>(
+								new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+						dataTree.put(reportCategory, rdataBeans);
+					}
+					rdataBeans.add(dataBean);
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
