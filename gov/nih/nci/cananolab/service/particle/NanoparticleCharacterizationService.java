@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -689,5 +688,32 @@ public class NanoparticleCharacterizationService {
 
 		} // for sbean
 		return rowCount;
+	}
+
+	public void deleteCharacterization(Characterization chara)
+			throws ParticleCharacterizationException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.delete(chara);
+		} catch (Exception e) {
+			String err = "Error deleting characterization "
+					+ chara.getIdentificationName();
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err, e);
+		}
+	}
+
+	public void deleteCharacterizationById(Long charId)
+			throws ParticleCharacterizationException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.deleteById(Characterization.class, charId);
+		} catch (Exception e) {
+			String err = "Error deleting characterization of ID ";
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err, e);
+		}
 	}
 }
