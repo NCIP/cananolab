@@ -61,7 +61,7 @@ public class DWRCompositionManager {
 				SortedSet<String> compList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
 								"composingElementTypes", "ComposingElement",
-								"type", "otherType");
+								"type", "otherType", false);
 				String[] eleArray = new String[compList.size()];
 				return compList.toArray(eleArray);
 			} catch (Exception e) {
@@ -81,7 +81,7 @@ public class DWRCompositionManager {
 				SortedSet<String> typeList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
 								"biopolymerTypes", "Biopolymer", "type",
-								"otherType");
+								"otherType", false);
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 
@@ -124,7 +124,7 @@ public class DWRCompositionManager {
 				SortedSet<String> typeList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
 								"antibodyTypes", "Antibody", "type",
-								"otherType");
+								"otherType", false);
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 
@@ -145,7 +145,7 @@ public class DWRCompositionManager {
 				SortedSet<String> typeList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
 								"antibodyIsotypes", "Antibody", "isotype",
-								"otherIsotype");
+								"otherIsotype", false);
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 
@@ -187,7 +187,7 @@ public class DWRCompositionManager {
 				SortedSet<String> typeList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
 								"modalityTypes", "ImagingFunction", "modality",
-								"otherModality");
+								"otherModality", true);
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 			} catch (Exception e) {
