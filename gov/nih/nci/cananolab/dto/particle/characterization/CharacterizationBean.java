@@ -87,6 +87,7 @@ public class CharacterizationBean {
 			}
 			domainChar.setDescription(description);
 			domainChar.setIdentificationName(viewTitle);
+			domainChar.setSource(characterizationSource);
 
 			if (instrumentConfig.getInstrument() != null
 					&& instrumentConfig.getInstrument().getType() != null
