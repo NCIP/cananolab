@@ -27,7 +27,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		ParticleBean particleBean = service
 				.findNanoparticleSampleById(particleId);
 		request.setAttribute("theParticle", particleBean);
-		theForm.set("particleId", particleId);
 		InitNanoparticleSetup.getInstance().setOtherParticleNames(
 				request,
 				particleBean.getDomainParticleSample().getName(),
@@ -45,5 +44,15 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
+	}
+
+	public void setupDataTree(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
+		request.setAttribute("updateDataTree", "true");
+		String particleId = request.getParameter("particleId");
+		if (particleId == null) {
+			particleId = theForm.getString("particleId");
+		}
+		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
 	}
 }
