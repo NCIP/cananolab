@@ -159,6 +159,7 @@
 																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
 																	<option value="" />
+																	<html:options name="molecularFormulaTypes" />
 																	<option value="other">
 																		[Other]
 																	</option>
@@ -190,6 +191,7 @@
 																	property="entity.composingElements[${ind}].domainComposingElement.valueUnit"
 																	onchange="javascript:callPrompt('Unit', 'compEleUnit');">
 																	<option value="" />
+																	<html:options name="composingElementUnits" />
 																	<option value="other">
 																		[Other]
 																	</option>

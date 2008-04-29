@@ -118,7 +118,7 @@
 								property="entity.activationMethod.type"
 								onchange="javascript:callPrompt('Activation Method', 'feaMethod');">
 								<option value=""></option>
-								<html:options name="activationMethod" />
+								<html:options name="activationMethods" />
 								<option value="other">
 									[Other]
 								</option>
@@ -318,6 +318,9 @@
 													<jsp:param name="fileId" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
 													<jsp:param name="fileDisplayName" value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileHidden" value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
+													<jsp:param name="fileExternal" value="${functionalizingEntityForm.map.entity.files[fileInd].external}" />
+													<jsp:param name="fileImage" value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
 												</jsp:include>
 												
 												<br>

@@ -206,6 +206,8 @@
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
 													<jsp:param name="fileDisplayName"
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileType"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.type}" />
 													<jsp:param name="fileTitle"
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.title}" />
 													<jsp:param name="fileKeyword"

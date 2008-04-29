@@ -23,7 +23,7 @@
 					<c:set var="linkFileDisplay" value="display: none;" />
 				</c:otherwise>
 			</c:choose>
-				
+
 			<td class="label" align="right">
 				<strong style="${loadFileDisplay }">Uploaded File</strong>
 				<strong style="${linkFileDisplay }">File URL</strong>
@@ -31,18 +31,24 @@
 			<td class="rightLabel" align="left">
 				<span style="${loadFileDisplay }"><a
 					href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">${param.fileDisplayName}</a>
-				<html:hidden property="${param.domainFile}.id" />
-				<html:hidden property="${param.domainFile}.name" />
-				<html:hidden property="${param.domainFile}.uri" />
-				</span>
+					<html:hidden property="${param.domainFile}.id" /> <html:hidden
+						property="${param.domainFile}.name" /> <html:hidden
+						property="${param.domainFile}.uri" /> </span>
 
-				<span style="${linkFileDisplay }">${param.fileUri }</span>
-				&nbsp;
+				<span style="${linkFileDisplay }">${param.fileUri }</span> &nbsp;
 			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>File Title*</strong>
+				<strong>File Type</strong>
+			</td>
+			<td class="rightLabel" colspan="2">
+				${param.fileType}&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td class="leftLabel">
+				<strong>File Title</strong>
 			</td>
 			<td class="rightLabel" colspan="2">
 				${param.fileTitle}&nbsp;
