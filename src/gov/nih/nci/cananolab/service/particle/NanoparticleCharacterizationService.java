@@ -703,17 +703,4 @@ public class NanoparticleCharacterizationService {
 			throw new ParticleCharacterizationException(err, e);
 		}
 	}
-
-	public void deleteCharacterizationById(Long charId)
-			throws ParticleCharacterizationException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			appService.deleteById(Characterization.class, charId);
-		} catch (Exception e) {
-			String err = "Error deleting characterization of ID ";
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
-		}
-	}
 }
