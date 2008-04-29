@@ -114,7 +114,7 @@
 
 						<td class="rightLabel">
 							<a href="#" class="removeLink"
-								onclick="javascript:removeChildComponent(characterizationForm, '${actionName}', ${param.fileInd}, ${dInd}, 'removeDerivedDatum')">remove</a>
+								onclick="javascript:removeChildComponent(document.forms[0], '${actionName}', ${param.fileInd}, ${dInd}, 'removeDerivedDatum')">remove</a>
 						</td>
 					</c:when>
 					<c:otherwise>
