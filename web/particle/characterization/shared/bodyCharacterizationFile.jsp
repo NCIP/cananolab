@@ -20,7 +20,7 @@
 					</td>
 					<td class="formSubTitleNoLeft" align="right">
 						<a href="#"
-							onclick="javascript:removeComponent(characterizationForm, '${actionName}', ${param.fileInd}, 'removeDerivedBioAssayData')">
+							onclick="javascript:removeComponent(document.forms[0], '${actionName}', ${param.fileInd}, 'removeDerivedBioAssayData')">
 							<img src="images/delete.gif" border="0" alt="remove this file">
 						</a>
 					</td>
@@ -100,7 +100,7 @@
 							<c:when test="${canCreateNanoparticle eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addChildComponent(characterizationForm, '${actionName}', ${param.fileInd}, 'addDerivedDatum')"><span
+										onclick="javascript:addChildComponent(document.forms[0], '${actionName}', ${param.fileInd}, 'addDerivedDatum')"><span
 										class="addLink">Add Derived Data</span> </a>
 								</td>
 							</c:when>

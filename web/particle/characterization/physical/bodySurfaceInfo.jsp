@@ -57,7 +57,7 @@
 							<c:when test="${canCreateNanoparticle eq 'true'}">
 								<td valign="bottom">
 									<a href="#"
-										onclick="javascript:addComponent(characterizationForm,'${actionName}', 'addSurfaceChemistry')"><span
+										onclick="javascript:addComponent(document.forms[0],'${actionName}', 'addSurfaceChemistry')"><span
 										class="addLink">Add Surface Chemistry</span> </a>
 								</td>
 							</c:when>

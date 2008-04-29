@@ -59,7 +59,7 @@
 											<c:when test="${canCreateNanoparticle eq 'true'}">
 												<td valign="bottom">
 													<a href="#"
-														onclick="javascript:addComponent(characterizationForm, '${actionName}', 'addDerivedBioAssayData')"><span
+														onclick="javascript:addComponent(document.forms[0], '${actionName}', 'addDerivedBioAssayData')"><span
 														class="addLink">Add File/Derived Data</span> </a>
 												</td>
 											</c:when>
