@@ -62,8 +62,7 @@
 						<c:choose>
 							<c:when test="${!empty param.fileId}">
 								<c:choose>
-									<c:when
-										test="${param.fileImage eq 'true'}">
+									<c:when test="${param.fileImage eq 'true'}">
  												${param.fileDisplayName}<br>
 										<br>
 										<a href="#"
@@ -87,6 +86,22 @@
 								property="${param.fileBean}.uploadedFile" /> </span>
 						<span id="linkEle_${param.fileInd }" style="${linkStyle}"><html:text
 								property="${param.domainFile}.uri" size="60" /> </span> &nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="leftLabel">
+						<strong>File Type*</strong>
+					</td>
+					<td class="rightLabel" colspan="2">
+						<html:select styleId="fileType${param.fileInd}"
+							property="${param.domainFile}.type"
+							onchange="javascript:callPrompt('File Type', 'fileType' + ${param.fileInd});">
+							<option value="" />
+								<html:options name="fileTypes" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
 					</td>
 				</tr>
 				<tr>
@@ -122,13 +137,13 @@
 				</tr>
 			</c:when>
 			<c:otherwise>
-			<tr>
-				<td class="leftLabel">
-					The file is private.
-				</td>
-				<td class="rightLabel" colspan="2">
-					&nbsp;
-				</td>
+				<tr>
+					<td class="leftLabel">
+						The file is private.
+					</td>
+					<td class="rightLabel" colspan="2">
+						&nbsp;
+					</td>
 				</tr>
 			</c:otherwise>
 		</c:choose>
