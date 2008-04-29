@@ -6,9 +6,6 @@
 
 <link rel="StyleSheet" type="text/css" href="css/printExport.css">
 <script type="text/javascript" src="javascript/printExport.js"></script>
-<bean:define id="characterizationForm" name="${formName}"
-	type="org.apache.struts.validator.DynaValidatorForm" />
-
 <table width="100%" align="center">
 	<tr>
 		<td>

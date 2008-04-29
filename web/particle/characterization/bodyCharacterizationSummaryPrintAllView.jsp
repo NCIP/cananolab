@@ -12,9 +12,6 @@
 		<jsp:include
 			page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />
 		<p style="page-break-before: always">
-			<bean:define id="characterizationForm" name="${formName}"
-				type="org.apache.struts.validator.DynaValidatorForm" />
-
 			<c:forEach var="charBean" items="${charSummary.charBeans}">
 				<table width="100%" border="1" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="">

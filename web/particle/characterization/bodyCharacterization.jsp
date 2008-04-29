@@ -11,8 +11,6 @@
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
-<bean:define id="characterizationForm" name="${formName}"
-	type="org.apache.struts.validator.DynaValidatorForm" />
 <html:form action="/${actionName}">
 	<table width="100%" align="center">
 		<tr>
