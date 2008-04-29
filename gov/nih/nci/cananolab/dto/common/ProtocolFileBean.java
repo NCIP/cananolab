@@ -7,12 +7,11 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 
 /**
  * Protocol File view bean
+ * 
  * @author pansu
  * 
  */
-public class ProtocolFileBean extends LabFileBean{
-	private String displayName;
-
+public class ProtocolFileBean extends LabFileBean {
 	private ProtocolFile domainProtocolFile;
 
 	/**
@@ -28,9 +27,8 @@ public class ProtocolFileBean extends LabFileBean{
 	}
 
 	public String getDisplayName() {
-		displayName = domainProtocolFile.getProtocol().getName() + "-"
+		return domainProtocolFile.getProtocol().getName() + "-"
 				+ domainProtocolFile.getVersion();
-		return displayName;
 	}
 
 	public ProtocolFile getDomainProtocolFile() {
