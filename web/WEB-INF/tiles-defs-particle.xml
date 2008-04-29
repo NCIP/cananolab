@@ -147,10 +147,17 @@
 	</definition>
 
 	<!-- definition for the multiple characterization deletion page -->
-	<definition name="particle.deleteCharacterization"
+	<definition name="particle.deletePhysicalCharacterization"
 		extends="particle.annotationHome">
 		<put name="calabContent"
-			value="/particle/bodyDeleteCharacterizations.jsp" />
+			value="/particle/characterization/bodyDeleteCharacterizations.jsp" />
+		<put name="actionName" value="physicalCharacterization" />
+	</definition>
+	<definition name="particle.deleteInvitroCharacterization"
+		extends="particle.annotationHome">
+		<put name="calabContent"
+			value="/particle/characterization/bodyDeleteCharacterizations.jsp" />
+		<put name="actionName" value="invitroCharacterization" />
 	</definition>
 
 	<!-- definition for the search nanoparticle page -->
