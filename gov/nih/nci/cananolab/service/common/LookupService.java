@@ -22,7 +22,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.5 2008-04-25 23:30:32 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.6 2008-04-29 23:13:23 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -69,5 +69,24 @@ public class LookupService {
 			throw new CaNanoLabException();
 		}
 		return lookup;
+	}
+
+	/**
+	 * Retrieve lookup values from database based type and otherType
+	 * @param lookupName
+	 * @param lookupAttribute
+	 * @param otherTypeAttribute
+	 * @return
+	 * @throws CaNanoLabException
+	 */
+	public static SortedSet<String> getDefaultAndOtherLookupTypes(
+			String lookupName, String lookupAttribute, String otherTypeAttribute)
+			throws CaNanoLabException {
+		SortedSet<String> types = LookupService.findLookupValues(lookupName,
+				lookupAttribute);
+		SortedSet<String> otherTypes = LookupService.findLookupValues(
+				lookupName, otherTypeAttribute);
+		types.addAll(otherTypes);
+		return types;
 	}
 }
