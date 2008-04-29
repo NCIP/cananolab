@@ -32,7 +32,7 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.averageLengthUnit" />
+						<html:text property="entity.carbonNanotube.averageLengthUnit" value="nm" size="6" />
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}&nbsp;
@@ -55,7 +55,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Growth Diameter</strong>
+				<strong>Diameter</strong>
 			</td>
 			<td class="label">
 				<c:choose>
@@ -68,12 +68,12 @@
 				</c:choose>
 			</td>
 			<td class="label">
-				<strong>Growth Diameter Unit</strong>
+				<strong>Diameter Unit</strong>
 			</td>
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.diameterUnit" />
+						<html:text property="entity.carbonNanotube.diameterUnit" size="6" value="nm"/>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.carbonNanotube.diameterUnit}&nbsp;
@@ -86,7 +86,11 @@
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.wallType" />
+						<html:select property="entity.carbonNanotube.wallType"
+							styleId="wallType" >
+							<option value=""></option>
+							<html:options name="wallTypes" />
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.carbonNanotube.wallType}&nbsp;
