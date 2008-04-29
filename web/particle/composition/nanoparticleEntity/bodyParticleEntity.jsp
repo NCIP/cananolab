@@ -6,9 +6,9 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript"
-	src="javascript/CompositionEntityManager.js"></script>
+	src="javascript/CompositionManager.js"></script>
 <script type='text/javascript'
-	src='/caNanoLab/dwr/interface/CompositionEntityManager.js'></script>
+	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
