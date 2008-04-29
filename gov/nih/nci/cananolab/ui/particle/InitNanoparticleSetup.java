@@ -15,8 +15,6 @@ import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
@@ -38,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * This class sets up information required for nanoparticle forms.
  * 
- * @author pansu
+ * @author pansu, cais
  * 
  */
 public class InitNanoparticleSetup {
@@ -51,19 +49,21 @@ public class InitNanoparticleSetup {
 		return new InitNanoparticleSetup();
 	}
 
-	public void setAllNanoparticleSampleSources(HttpServletRequest request)
-			throws Exception {
+	public SortedSet<Source> getAllNanoparticleSampleSources(
+			HttpServletRequest request) throws Exception {
 		SortedSet<Source> sampleSources = particleService
 				.findAllParticleSources();
 		request.getSession().setAttribute("allParticleSources", sampleSources);
+		return sampleSources;
 	}
 
-	public void setNanoparticleSampleSources(HttpServletRequest request,
-			UserBean user) throws Exception {
+	public SortedSet<Source> getNanoparticleSampleSources(
+			HttpServletRequest request, UserBean user) throws Exception {
 		SortedSet<Source> sampleSources = particleService
 				.findAllParticleSources(user);
 		request.getSession().setAttribute("allUserParticleSources",
 				sampleSources);
+		return sampleSources;
 	}
 
 	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
@@ -379,23 +379,25 @@ public class InitNanoparticleSetup {
 		return dataTree;
 	}
 
-	public SortedSet<String> getFileTypes(HttpServletRequest request)
-			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues("LabFile",
-				"type");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"LabFile", "otherType");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("fileTypes", types);
-		return types;
-	}
-
-	public void setOtherParticleNames(HttpServletRequest request,
-			String particleName, String particleSource, UserBean user)
-			throws CaNanoLabException {
+	public SortedSet<SortableName> getOtherParticleNames(
+			HttpServletRequest request, String particleName,
+			String particleSource, UserBean user) throws Exception {
 		SortedSet<SortableName> names = particleService.findOtherParticles(
 				particleSource, particleName, user);
 		request.getSession().setAttribute("otherParticleNames", names);
+		return names;
+	}
+
+	public void setSharedDropdowns(HttpServletRequest request) throws Exception {
+		// set static boolean yes or no and characterization source choices
+		ServletContext appContext = request.getSession().getServletContext();
+		appContext.setAttribute("booleanChoices",
+				CaNanoLabConstants.BOOLEAN_CHOICES);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"fileTypes", "LabFile", "type", "otherType");
+		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
+				"molecularFormulaTypes", "ComposingElement",
+				"molecularFormulaType");
 	}
 
 	// public void setProtocolFilesByCharType(HttpSession session, String

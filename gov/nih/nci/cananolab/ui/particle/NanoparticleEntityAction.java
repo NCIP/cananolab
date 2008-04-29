@@ -8,21 +8,15 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.26 2008-04-29 21:32:58 cais Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.27 2008-04-29 23:12:58 pansu Exp $ */
 
-import java.util.SortedSet;
-
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,16 +62,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
-		InitCompositionSetup.getInstance().setNanoparticleEntityTypes(request);
-		InitCompositionSetup.getInstance().getEmulsionComposingElementTypes(
-				request);
-		InitCompositionSetup.getInstance().getComposingElementTypes(request);
-		InitCompositionSetup.getInstance().setFunctionTypes(request);
-		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
-		InitCompositionSetup.getInstance().getModalityTypes(request);
-		InitCompositionSetup.getInstance().getComposingElementUnits(request);
-		
-		InitNanoparticleSetup.getInstance().getFileTypes(request);
+		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitCompositionSetup.getInstance().setNanoparticleEntityDropdowns(request);		
 	}
 
 	/**

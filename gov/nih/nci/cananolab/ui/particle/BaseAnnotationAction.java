@@ -39,7 +39,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		ParticleBean particleBean = service
 				.findNanoparticleSampleById(particleId);
 		request.setAttribute("theParticle", particleBean);
-		InitNanoparticleSetup.getInstance().setOtherParticleNames(
+		InitNanoparticleSetup.getInstance().getOtherParticleNames(
 				request,
 				particleBean.getDomainParticleSample().getName(),
 				particleBean.getDomainParticleSample().getSource()
