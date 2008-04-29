@@ -5,7 +5,6 @@
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type="text/javascript" src="javascript/particleEntity.js"></script>
 <script type="text/javascript"
 	src="javascript/CompositionEntityManager.js"></script>
 <script type='text/javascript'
