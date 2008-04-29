@@ -158,11 +158,11 @@ public class InitCompositionSetup {
 
 	public SortedSet<String> getServletContextLookupTypes(
 			ServletContext appContext, String contextAttribute,
-			String lookupNmae, String lookupAttribute)
+			String lookupName, String lookupAttribute)
 			throws CaNanoLabException {
 		SortedSet<String> types = null;
 		if (appContext.getAttribute(contextAttribute) == null) {
-			types = LookupService.findLookupValues(lookupNmae,
+			types = LookupService.findLookupValues(lookupName,
 					lookupAttribute);
 			appContext.setAttribute(contextAttribute, types);
 			return types;
@@ -174,83 +174,73 @@ public class InitCompositionSetup {
 		return types;
 	}
 
+	public SortedSet<String> getDefaultAndOtherLookupTypes(
+			HttpServletRequest request, String sessionAttribute,
+			String lookupName, String lookupAttribute,
+			String otherTypeAttribute) throws CaNanoLabException {
+		SortedSet<String> types = LookupService.findLookupValues(
+				lookupName, lookupAttribute);
+		SortedSet<String> otherTypes = LookupService.findLookupValues(
+				lookupName, otherTypeAttribute);
+		types.addAll(otherTypes);
+		request.getSession().setAttribute(sessionAttribute, types);
+		return types;
+	}
+	
 	public SortedSet<String> getFunctionalizingEntityUnits(
 			HttpServletRequest request) throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues(
-				"FunctionalizingEntity", "valueUnit");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"FunctionalizingEntity", "otherValueUnit");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("functionalizingEntityUnits", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"functionalizingEntityUnits",
+				"FunctionalizingEntity", "valueUnit", "otherValueUnit");
 	}
 
 	public SortedSet<String> getComposingElementUnits(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues(
-				"ComposingElement", "valueUnit");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"ComposingElement", "otherValueUnit");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("composingElementUnits", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"composingElementUnits",
+				"ComposingElement", "valueUnit", "otherValueUnit");
 	}
 
 	public SortedSet<String> getAntibodyTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues("Antibody",
-				"type");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"Antibody", "otherType");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("antibodyTypes", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"antibodyTypes",
+				"Antibody", "type", "otherType");
 	}
 
 	public SortedSet<String> getAntibodyIsotypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues("Antibody",
-				"species");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"Antibody", "otherIsotype");
-		types.addAll(otherTypes);
-
-		request.getSession().setAttribute("antibodyIsotypes", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"antibodyIsotypes",
+				"Antibody", "isotype", "otherIsotype");
 	}
 
 	public SortedSet<String> getActivationMethods(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues(
-				"ActivationMethod", "type");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"ActivationMethod", "otherType");
-		types.addAll(otherTypes);
-
-		request.getSession().setAttribute("activationMethod", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"activationMethods",
+				"ActivationMethod", "type", "otherType");
 	}
 
 	public SortedSet<String> getBiopolymerTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues("Biopolymer",
-				"type");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"Biopolymer", "otherType");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("biopolymerTypes", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"biopolymerTypes",
+				"Biopolymer", "type", "otherType");
 	}
 
 	public SortedSet<String> getModalityTypes(HttpServletRequest request)
 			throws CaNanoLabException {
-		SortedSet<String> types = LookupService.findLookupValues(
-				"ImagingFunction", "modality");
-		SortedSet<String> otherTypes = LookupService.findLookupValues(
-				"ImagingFunction", "otherModality");
-		types.addAll(otherTypes);
-		request.getSession().setAttribute("modalityTypes", types);
-		return types;
+		
+		return getDefaultAndOtherLookupTypes(request,
+				"modalityTypes",
+				"ImagingFunction", "modality", "otherModality");
 	}
 
 	public List<String> getDefaultNanoparticleEntityTypes(
