@@ -55,9 +55,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		request.setAttribute("updateDataTree", "true");
-		String particleId = theForm.getString("particleId");
-		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
+		setupDataTree(theForm, request);
 		return forward;
 	}
 
