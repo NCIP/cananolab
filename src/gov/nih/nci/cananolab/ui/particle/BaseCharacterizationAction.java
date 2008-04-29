@@ -20,7 +20,6 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -63,12 +62,10 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 
 	protected void setLookups(HttpServletRequest request, String charClass)
 			throws Exception {
-		ServletContext appContext = request.getSession().getServletContext();
 		request.getSession().setAttribute("charClass", charClass);
-		InitSetup.getInstance().setSharedDropdowns(appContext);
+		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, charClass);
-		InitNanoparticleSetup.getInstance().getFileTypes(request);
 	}
 
 	protected abstract CharacterizationBean setCharacterizationBean(

@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.16 2008-04-29 06:30:13 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.17 2008-04-29 23:12:58 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -71,16 +71,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
-		InitCompositionSetup.getInstance().setFunctionalizingEntityTypes(
+		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitCompositionSetup.getInstance().setFunctionalizingEntityDropdowns(
 				request);
-		InitCompositionSetup.getInstance().getTargetTypes(request);
-		InitCompositionSetup.getInstance().getAntibodyTypes(request);
-		InitCompositionSetup.getInstance().getAntibodyIsotypes(request);
-		InitCompositionSetup.getInstance().getActivationMethods(request);
-		InitCompositionSetup.getInstance().setFunctionTypes(request);
-		InitCompositionSetup.getInstance().getFunctionalizingEntityUnits(
-				request);
-		InitCompositionSetup.getInstance().getModalityTypes(request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
