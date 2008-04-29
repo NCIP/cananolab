@@ -383,40 +383,4 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
-
-	public ActionForward setupDeleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String submitType = request.getParameter("submitType");
-		String className = InitSetup.getInstance().getObjectName(submitType,
-				request.getSession().getServletContext());
-		String fullClassName = ClassUtils.getFullClass(className)
-				.getCanonicalName();
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request);
-		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-		SortedSet<Characterization> charas = service
-				.findParticleCharacterizationsByClass(particleBean
-						.getDomainParticleSample().getName(), fullClassName);
-		request.getSession().setAttribute("characterizationsToDelete", charas);
-		return mapping.findForward("deleteView");
-	}
-
-	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String[] charIds = (String[]) theForm.get("charIdsToDelete");
-		ParticleBean particleBean = setupParticle(theForm, request);
-		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
-		for (String id : charIds) {
-			service.deleteCharacterizationById(new Long(id));
-		}
-		setupDataTree(theForm, request);
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.deleteCharacterization");
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		return mapping.findForward("particleMessage");
-	}
 }
