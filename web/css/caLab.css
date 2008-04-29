@@ -974,10 +974,18 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	text-transform: uppercase
 }
 
+
 .addLink {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
 	font-size: 0.7em;	
+}
+
+
+.addLink2 {
+	color: #a90101; /* constant: red */
+	font-weight: bold;
+	font-size: 1em;	
 }
 
 .removeLink {
