@@ -123,6 +123,9 @@ public class ClassUtils {
 	}
 
 	public static Class getFullClass(String shortClassName) throws Exception {
+		if (shortClassName == null || shortClassName.length() == 0) {
+			return null;
+		}
 		Collection<Class> classes = getDomainClasses();
 		for (Class clazz : classes) {
 			if (clazz.getCanonicalName().endsWith(shortClassName)) {
