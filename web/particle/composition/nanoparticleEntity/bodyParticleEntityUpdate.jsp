@@ -2,7 +2,20 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<script type="text/javascript">
+<!--//
+function confirmDeletion()
+{
+	answer = confirm("Are you sure you want to delete the nanoparticle entity?")
+	if (answer !=0)
+	{
+		this.document.forms[0].dispatch.value="delete";
+		this.document.forms[0].submit(); 
+		return true;
+	}
+}
+//-->
+</script>
 <html:form action="/nanoparticleEntity">
 	<table width="100%" align="center">
 		<tr>
