@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.25 2008-04-29 21:16:49 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.26 2008-04-29 21:32:58 cais Exp $ */
 
 import java.util.SortedSet;
 
@@ -75,6 +75,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance().setFunctionTypes(request);
 		InitCompositionSetup.getInstance().getBiopolymerTypes(request);
 		InitCompositionSetup.getInstance().getModalityTypes(request);
+		InitCompositionSetup.getInstance().getComposingElementUnits(request);
+		
 		InitNanoparticleSetup.getInstance().getFileTypes(request);
 	}
 
