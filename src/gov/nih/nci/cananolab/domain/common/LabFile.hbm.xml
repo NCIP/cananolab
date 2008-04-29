@@ -33,8 +33,8 @@
 			<!-- Associations mapping for the Report class -->
 			<set name="nanoparticleSampleCollection" table="nanoparticle_sample_report" lazy="true" inverse="true">
 				<cache usage="read-write" />
-				<key column="particle_sample_pk_id" />
-				<many-to-many class="gov.nih.nci.cananolab.domain.particle.NanoparticleSample" column="file_pk_id" />
+				<key column="file_pk_id" />
+				<many-to-many class="gov.nih.nci.cananolab.domain.particle.NanoparticleSample" column="particle_sample_pk_id" />
 			</set>
 
 		</joined-subclass>
