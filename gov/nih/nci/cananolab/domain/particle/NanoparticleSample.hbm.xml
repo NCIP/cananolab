@@ -27,8 +27,8 @@
 		<one-to-one name="sampleManagement" class="gov.nih.nci.cananolab.domain.common.SampleManagement" property-ref="nanoparticleSample" />
 		<set name="reportCollection" table="nanoparticle_sample_report" lazy="true" inverse="true">
 			<cache usage="read-write" />
-			<key column="file_pk_id" />
-			<many-to-many class="gov.nih.nci.cananolab.domain.common.Report" column="particle_sample_pk_id" />
+			<key column="particle_sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Report" column="file_pk_id" />
 		</set>
 		<many-to-one name="source" class="gov.nih.nci.cananolab.domain.common.Source" column="source_pk_id" lazy="proxy" cascade="save-update"/>
 		<one-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition" property-ref="nanoparticleSample" />
