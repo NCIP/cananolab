@@ -6,27 +6,25 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.16 2008-04-25 23:34:12 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.17 2008-04-29 06:32:02 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SubmitNanoparticleAction extends AbstractDispatchAction {
+public class SubmitNanoparticleAction extends BaseAnnotationAction {
 
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -62,8 +60,10 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 		forward = mapping.findForward("success");
 		request.setAttribute("theParticle", particleSampleBean);
 		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleSampleBean,
-				request);
+		InitNanoparticleSetup.getInstance()
+				.getDataTree(
+						particleSampleBean.getDomainParticleSample().getId()
+								.toString(), request);
 		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
 				request);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
@@ -74,23 +74,17 @@ public class SubmitNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = request.getParameter("particleId");
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		NanoparticleSampleService service = new NanoparticleSampleService();
-		ParticleBean particleSampleBean = service
-				.findNanoparticleSampleById(particleId);
+		ParticleBean particleSampleBean = setupParticle(theForm, request);
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		// set visibility
+		NanoparticleSampleService service = new NanoparticleSampleService();
 		service.setVisibility(particleSampleBean, user);
-
 		theForm.set("particleSampleBean", particleSampleBean);
 		request.setAttribute("theParticle", particleSampleBean);
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleSampleBean,
-				request);
 		InitNanoparticleSetup.getInstance().setAllNanoparticleSampleSources(
 				request);
 		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
+		setupDataTree(theForm, request);
 		return mapping.findForward("update");
 	}
 
