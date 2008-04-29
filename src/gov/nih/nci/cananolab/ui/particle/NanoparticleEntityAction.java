@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.23 2008-04-28 20:16:18 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.24 2008-04-29 06:31:13 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -57,8 +57,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
+		setupDataTree(theForm, request);
 		return forward;
 	}
 
@@ -227,7 +226,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.get("entity");
 
 		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		ParticleBean[] otherParticles = (ParticleBean[]) theForm.get("otherParticles");
+		ParticleBean[] otherParticles = (ParticleBean[]) theForm
+				.get("otherParticles");
 		NanoparticleEntityBean[] entityBeans = new NanoparticleEntityBean[otherParticles.length];
 		if (otherParticles.length == 0) {
 			return entityBeans;
