@@ -2,8 +2,8 @@ package gov.nih.nci.cananolab.ui.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
-import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.ui.core.AbstractBaseAction;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
