@@ -19,7 +19,7 @@
 				<strong>Average Length Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLengthUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}"/>
+				<input type="text" name="entity.carbonNanotube.averageLengthUnit" value="nm" size="6" />
 			</td>
 			<td class="label">
 				<strong>Chirality</strong>
@@ -30,22 +30,24 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Growth Diameter</strong>
+				<strong>Diameter</strong>
 			</td>
 			<td class="label">
 				<input type="text" name="entity.carbonNanotube.diameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}"/>
 			</td>
 			<td class="label">
-				<strong>Growth Diameter Unit</strong>
+				<strong>Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.diameterUnit" value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameterUnit}"/>
+				<input type="text" name="entity.carbonNanotube.diameterUnit" value="nm" size="6" />
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.carbonNanotube.wallType" />
+				<select name="entity.carbonNanotube.wallType" id="wallType">
+					<option value=""></option>
+				</select>
 			</td>
 		</tr>
 	</tbody>

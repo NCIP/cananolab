@@ -28,8 +28,7 @@ public class DWRManager {
 			ServletContext appContext = wctx.getServletContext();
 			String entityClassName = InitSetup.getInstance().getObjectName(
 					entityType, appContext);
-			String page = pagePath+"/bodyNew" + entityClassName
-					+ "Info.jsp";
+			String page = pagePath + "/bodyNew" + entityClassName + "Info.jsp";
 			return wctx.forwardToString(page);
 		} catch (Exception e) {
 			return "";
@@ -88,7 +87,28 @@ public class DWRManager {
 		return new String[] { "" };
 	}
 
-	public String [] getAntibodyTypeOptions(String nanoparticleEntityType) {
+	public String[] getWallTypeOptions(String nanoparticleEntityType) {
+		if (nanoparticleEntityType.equals("carbon nanotube")) {
+
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			HttpServletRequest request = webContext.getHttpServletRequest();
+			ServletContext sc = request.getSession().getServletContext();
+			try {
+				List<String> typeList = new ArrayList<String>(
+						InitCompositionSetup.getInstance().getWallTypes(sc));
+				String[] eleArray = new String[typeList.size()];
+				return typeList.toArray(eleArray);
+
+			} catch (Exception e) {
+				System.out.println("getWallTypeOptions exception.");
+				e.printStackTrace();
+			}
+		}
+		return new String[] { "" };
+	}
+
+	public String[] getAntibodyTypeOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -105,10 +125,10 @@ public class DWRManager {
 				e.printStackTrace();
 			}
 		}
-		return new String[] {""};
+		return new String[] { "" };
 	}
-	
-	public String [] getAntibodyIsotypeOptions(String nanoparticleEntityType) {
+
+	public String[] getAntibodyIsotypeOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -125,10 +145,10 @@ public class DWRManager {
 				e.printStackTrace();
 			}
 		}
-		return new String[] {""};
+		return new String[] { "" };
 	}
-	
-	public String [] getAntibodySpeciesOptions(String nanoparticleEntityType) {
+
+	public String[] getAntibodySpeciesOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -136,7 +156,8 @@ public class DWRManager {
 			ServletContext sc = request.getSession().getServletContext();
 			try {
 				List<String> typeList = new ArrayList<String>(
-						InitCompositionSetup.getInstance().getAntibodySpecies(sc));
+						InitCompositionSetup.getInstance().getAntibodySpecies(
+								sc));
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 
@@ -145,9 +166,9 @@ public class DWRManager {
 				e.printStackTrace();
 			}
 		}
-		return new String[] {""};
+		return new String[] { "" };
 	}
-	
+
 	public String[] getModalityTypeOptions(String functionType) {
 		if (functionType.equals("imaging")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
