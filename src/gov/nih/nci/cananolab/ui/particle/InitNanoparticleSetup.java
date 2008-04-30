@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -64,6 +65,14 @@ public class InitNanoparticleSetup {
 		request.getSession().setAttribute("allUserParticleSources",
 				sampleSources);
 		return sampleSources;
+	}
+
+	public SortedSet<String> getAllNanoparticleSampleNames(
+			HttpServletRequest request, UserBean user) throws Exception {
+		SortedSet<String> sampleNames = particleService
+				.findAllNanoparticleSampleNames(user);
+		request.getSession().setAttribute("allUserParticleNames", sampleNames);
+		return sampleNames;
 	}
 
 	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
@@ -340,12 +349,12 @@ public class InitNanoparticleSetup {
 				SortedSet<ParticleDataLinkBean> rdataBeans = new TreeSet<ParticleDataLinkBean>(
 						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
 				for (ReportBean reportBean : particleBean.getReports()) {
-					String reportCategory = reportBean.getDomainReport()
-							.getCategory();
+					Report domainReport = (Report) reportBean.getDomainFile();
+					String reportCategory = domainReport.getCategory();
 					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							reportBean.getDomainReport().getId().toString(),
+							reportBean.getDomainFile().getId().toString(),
 							"Report", "submitReport", reportBean
-									.getDomainReport().getCreatedDate());
+									.getDomainFile().getCreatedDate());
 					dataBean.setDataDisplayType(reportCategory);
 					dataBean.setViewTitle(reportBean.getDisplayName());
 					if (dataTree.get(reportCategory) != null) {
@@ -422,9 +431,4 @@ public class InitNanoparticleSetup {
 	// session.setAttribute("submitTypeProtocolFiles", protocolFiles);
 	// }
 
-	public SortedSet<String> getReportTypes(HttpServletRequest request)
-			throws Exception {
-		return InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"reportTypes", "Report", "category", "otherCategory", false);
-	}
 }
