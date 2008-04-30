@@ -7,8 +7,7 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>
-				<br>
+			<h3>			
 				Nanoparticle Report Search Results
 			</h3>
 		</td>
@@ -32,16 +31,16 @@
 			</c:choose>
 			<display:table name="sessionScope.reports" id="report"
 				requestURI="searchReport.do" pagesize="25" class="displaytable"
-				decorator="gov.nih.nci.calab.dto.common.ReportDecorator">
+				decorator="gov.nih.nci.cananolab.dto.common.ReportDecorator">
 				<display:column title="Report Title" property="${link}"
 					sortable="true" />
-				<display:column title="Report Type" property="instanceType"
+				<display:column title="Report Category" property="domainFile.category"
 					sortable="true" />
-				<display:column title="Report Description" property="description"
+				<display:column title="Report Description" property="domainFile.description"
 					sortable="true" />
-				<display:column title="Associated Particle IDs"
-					property="particleIds" sortable="true" />
-				<display:column title="Report Submit Date" property="createdDate"
+				<display:column title="Associated <br>Particle Sample Names"
+					property="particleNames" sortable="true" />
+				<display:column title="Report Submit Date" property="domainFile.createdDate"
 					sortable="true" format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Location" >Local</display:column>
 			</display:table>
