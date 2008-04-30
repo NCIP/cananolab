@@ -23,7 +23,8 @@ import org.displaytag.decorator.TableDecorator;
 public class NanoparticleDecorator extends TableDecorator {
 	public SortableName getEditParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleId = particle.getDomainParticleSample().getId().toString();
+		String particleId = particle.getDomainParticleSample().getId()
+				.toString();
 		String particleName = particle.getDomainParticleSample().getName();
 		String editParticleURL = "submitNanoparticleSample.do?dispatch=setupUpdate&particleId="
 				+ particleId;
@@ -36,7 +37,8 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public SortableName getViewParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		String particleId = particle.getDomainParticleSample().getId().toString();
+		String particleId = particle.getDomainParticleSample().getId()
+				.toString();
 		String particleName = particle.getDomainParticleSample().getName();
 		String viewParticleURL = "submitNanoparticleSample.do?dispatch=setupView&particleId="
 				+ particleId;
@@ -50,8 +52,8 @@ public class NanoparticleDecorator extends TableDecorator {
 	public SortableName getRemoteViewURL() throws UnsupportedEncodingException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 
-		String particleName = URLEncoder.encode(particle.getDomainParticleSample()
-				.getName(), "UTF-8");
+		String particleName = URLEncoder.encode(particle
+				.getDomainParticleSample().getName(), "UTF-8");
 		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view"
 				+ "&particleName=" + particleName + "&gridNodeHost="
 				+ particle.getGridNode();
@@ -59,7 +61,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		SortableName sortableLink = new SortableName(particleName, link);
 		return sortableLink;
 	}
-	
+
 	public String getKeywordStr() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String keywordsStr = particle.getKeywordsStr();
@@ -72,15 +74,17 @@ public class NanoparticleDecorator extends TableDecorator {
 		SortedSet<String> compEntityNames = new TreeSet<String>();
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		SortedSet<String> nanoparticleEntityClassNames = service
-				.getStoredNanoparticleEntityClassNames(particle);
+				.getStoredNanoparticleEntityClassNames(particle
+						.getDomainParticleSample());
 		SortedSet<String> functionalizingEntityClassNames = service
-				.getStoredFunctionalizingEntityClassNames(particle);
-		for (String name: functionalizingEntityClassNames) {
+				.getStoredFunctionalizingEntityClassNames(particle
+						.getDomainParticleSample());
+		for (String name : functionalizingEntityClassNames) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
 			compEntityNames.add(displayName);
 		}
-		for (String name: nanoparticleEntityClassNames) {
+		for (String name : nanoparticleEntityClassNames) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
 			compEntityNames.add(displayName);
@@ -93,7 +97,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		SortedSet<String> functionNames = new TreeSet<String>();
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		SortedSet<String> functionClassNames = service
-				.getStoredFunctionClassNames(particle);
+				.getStoredFunctionClassNames(particle.getDomainParticleSample());
 		for (String name : functionClassNames) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
