@@ -4,6 +4,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 
 /**
  * Report view bean
@@ -12,21 +13,28 @@ import gov.nih.nci.cananolab.domain.common.Report;
  * 
  */
 public class ReportBean extends LabFileBean {
-	private Report domainReport;
+	private String[] particleNames;
+	private Report domainReport=new Report();
 	/**
 	 * 
 	 */
 	public ReportBean() {
 		super();
+		domainReport = new Report();
 	}
 
 	public ReportBean(Report report) {
 		super(report);
-		this.domainReport = report;
-	}
-
-	public Report getDomainReport() {
-		return domainReport;
+		this.domainFile = report;
+		particleNames = new String[report.getNanoparticleSampleCollection()
+				.size()];
+		int i = 0;
+		for (NanoparticleSample particle : report
+				.getNanoparticleSampleCollection()) {
+			particleNames[i] = particle.getName();
+			i++;
+		}
+		domainReport=(Report)domainFile;
 	}
 
 	public boolean equals(Object obj) {
@@ -39,5 +47,17 @@ public class ReportBean extends LabFileBean {
 			}
 		}
 		return eq;
+	}
+
+	public String[] getParticleNames() {
+		return particleNames;
+	}
+
+	public void setParticleNames(String[] particleNames) {
+		this.particleNames = particleNames;
+	}
+
+	public Report getDomainReport() {
+		return domainReport;
 	}
 }
