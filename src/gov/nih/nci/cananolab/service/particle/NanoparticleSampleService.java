@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +111,7 @@ public class NanoparticleSampleService {
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
 	 * 
-	 * @param particleSampleBean
+	 * @param particleSample
 	 * @throws Exception
 	 */
 	public void saveNanoparticleSample(NanoparticleSample particleSample)
@@ -170,9 +171,6 @@ public class NanoparticleSampleService {
 			String[] wordList) throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			if (particleSources != null && particleSources.length > 0) {
@@ -260,7 +258,8 @@ public class NanoparticleSampleService {
 		if (functionClassNames != null && functionClassNames.length > 0) {
 			List<ParticleBean> filteredList = new ArrayList<ParticleBean>();
 			for (ParticleBean particle : particles) {
-				SortedSet<String> storedFunctions = getStoredFunctionClassNames(particle);
+				SortedSet<String> storedFunctions = getStoredFunctionClassNames(particle
+						.getDomainParticleSample());
 				for (String func : functionClassNames) {
 					// if at least one function type matches, keep the particle
 					if (storedFunctions.contains(func)) {
@@ -306,7 +305,8 @@ public class NanoparticleSampleService {
 		if (nanoparticleEntityClassNames != null
 				&& nanoparticleEntityClassNames.length > 0) {
 			for (ParticleBean particle : particles) {
-				SortedSet<String> storedEntities = getStoredNanoparticleEntityClassNames(particle);
+				SortedSet<String> storedEntities = getStoredNanoparticleEntityClassNames(particle
+						.getDomainParticleSample());
 				for (String entity : nanoparticleEntityClassNames) {
 					// if at least one function type matches, keep the particle
 					if (storedEntities.contains(entity)) {
@@ -322,7 +322,8 @@ public class NanoparticleSampleService {
 		if (functionalizingEntityClassNames != null
 				&& functionalizingEntityClassNames.length > 0) {
 			for (ParticleBean particle : particles) {
-				SortedSet<String> storedEntities = getStoredFunctionalizingEntityClassNames(particle);
+				SortedSet<String> storedEntities = getStoredFunctionalizingEntityClassNames(particle
+						.getDomainParticleSample());
 				for (String entity : functionalizingEntityClassNames) {
 					// if at least one function type matches, keep the particle
 					if (storedEntities.contains(entity)) {
@@ -386,9 +387,9 @@ public class NanoparticleSampleService {
 		}
 	}
 
-	public ParticleBean findNanoparticleSampleByName(String particleName)
+	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws ParticleException {
-		ParticleBean particleBean = null;
+		NanoparticleSample particleSample = null;
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
@@ -398,7 +399,7 @@ public class NanoparticleSampleService {
 
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleSample.class).add(
-					Property.forName("name").eq(new Long(particleName)));
+					Property.forName("name").eq(particleName));
 			crit.setFetchMode("source", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -411,16 +412,16 @@ public class NanoparticleSampleService {
 					FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.labFileCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode("reportCollection",
+					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
-				NanoparticleSample particleSample = (NanoparticleSample) result
-						.get(0);
-				particleBean = new ParticleBean(particleSample);
+				particleSample = (NanoparticleSample) result.get(0);
 			}
-			return particleBean;
+			return particleSample;
 		} catch (Exception e) {
 			String err = "Problem finding the particle by name: "
 					+ particleName;
@@ -509,14 +510,14 @@ public class NanoparticleSampleService {
 	}
 
 	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
-			ParticleBean particle) {
+			NanoparticleSample particleSample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particle.getDomainParticleSample().getSampleComposition() != null
-				&& particle.getDomainParticleSample().getSampleComposition()
+		if (particleSample.getSampleComposition() != null
+				&& particleSample.getSampleComposition()
 						.getFunctionalizingEntityCollection() != null) {
-			for (FunctionalizingEntity entity : particle
-					.getDomainParticleSample().getSampleComposition()
+			for (FunctionalizingEntity entity : particleSample
+					.getSampleComposition()
 					.getFunctionalizingEntityCollection()) {
 				storedEntities.add(ClassUtils.getShortClassName(entity
 						.getClass().getCanonicalName()));
@@ -525,14 +526,15 @@ public class NanoparticleSampleService {
 		return storedEntities;
 	}
 
-	public SortedSet<String> getStoredFunctionClassNames(ParticleBean particle) {
+	public SortedSet<String> getStoredFunctionClassNames(
+			NanoparticleSample particleSample) {
 		SortedSet<String> storedFunctions = new TreeSet<String>();
 
-		if (particle.getDomainParticleSample().getSampleComposition() != null) {
-			if (particle.getDomainParticleSample().getSampleComposition()
+		if (particleSample.getSampleComposition() != null) {
+			if (particleSample.getSampleComposition()
 					.getNanoparticleEntityCollection() != null) {
-				for (NanoparticleEntity entity : particle
-						.getDomainParticleSample().getSampleComposition()
+				for (NanoparticleEntity entity : particleSample
+						.getSampleComposition()
 						.getNanoparticleEntityCollection()) {
 					for (ComposingElement element : entity
 							.getComposingElementCollection()) {
@@ -545,10 +547,10 @@ public class NanoparticleSampleService {
 					}
 				}
 			}
-			if (particle.getDomainParticleSample().getSampleComposition()
+			if (particleSample.getSampleComposition()
 					.getFunctionalizingEntityCollection() != null) {
-				for (FunctionalizingEntity entity : particle
-						.getDomainParticleSample().getSampleComposition()
+				for (FunctionalizingEntity entity : particleSample
+						.getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
 					for (Function function : entity.getFunctionCollection()) {
 						storedFunctions.add(ClassUtils
@@ -562,13 +564,13 @@ public class NanoparticleSampleService {
 	}
 
 	public SortedSet<String> getStoredNanoparticleEntityClassNames(
-			ParticleBean particle) {
+			NanoparticleSample particleSample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
-		if (particle.getDomainParticleSample().getSampleComposition() != null
-				&& particle.getDomainParticleSample().getSampleComposition()
+		if (particleSample.getSampleComposition() != null
+				&& particleSample.getSampleComposition()
 						.getNanoparticleEntityCollection() != null) {
-			for (NanoparticleEntity entity : particle.getDomainParticleSample()
+			for (NanoparticleEntity entity : particleSample
 					.getSampleComposition().getNanoparticleEntityCollection()) {
 				storedEntities.add(ClassUtils.getShortClassName(entity
 						.getClass().getCanonicalName()));
@@ -612,6 +614,32 @@ public class NanoparticleSampleService {
 		} catch (Exception e) {
 			String err = "Error deleting annotation of class " + className
 					+ "by ID " + dataId;
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
+
+	public SortedSet<String> findAllNanoparticleSampleNames(UserBean user)
+			throws ParticleException {
+		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+
+			SortedSet<String> names = new TreeSet<String>();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select sample.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample sample");
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				String name = (String) obj;
+				if (auth.isUserAllowed(name, user)) {
+					names.add(name);
+				}
+			}
+			return names;
+		} catch (Exception e) {
+			String err = "Error finding samples for " + user.getLoginName();
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
