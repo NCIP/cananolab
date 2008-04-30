@@ -2,9 +2,13 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +17,8 @@ import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts.upload.FormFile;
 
 /**
  * This class sets up information required for all forms.
@@ -210,5 +216,20 @@ public class InitSetup {
 			return new TreeSet<String>((SortedSet<? extends String>) appContext
 					.getAttribute(contextAttribute));
 		}
+	}
+
+	public String getFileUriFromFormFile(FormFile file, String folderType,
+			String particleName, String submitType) {
+		String prefix = folderType;
+
+		if (particleName != null && submitType != null
+				&& folderType.equals(CaNanoLabConstants.FOLDER_PARTICLE)) {
+			prefix += particleName + File.separator;
+			prefix += StringUtils.getOneWordLowerCaseFirstLetter(submitType);
+		}
+		String timestamp = StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS");
+
+		return prefix + File.separator + timestamp + "_" + file.getFileName();
 	}
 }
