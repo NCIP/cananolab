@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
  * 
  */
 public class ProtocolFileBean extends LabFileBean {
-	private ProtocolFile domainProtocolFile;
+	private ProtocolFile domainProtocolFile = new ProtocolFile();
 
 	/**
 	 * 
@@ -23,7 +23,7 @@ public class ProtocolFileBean extends LabFileBean {
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
 		super(protocolFile);
-		this.domainProtocolFile = protocolFile;
+		this.domainProtocolFile = (ProtocolFile) domainFile;
 	}
 
 	public String getDisplayName() {

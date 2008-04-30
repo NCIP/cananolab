@@ -17,13 +17,11 @@ import java.util.TreeSet;
  * 
  */
 public class LabFileBean {
-	private LabFile domainFile = new LabFile();
+	protected LabFile domainFile = new LabFile();
 
 	private String[] visibilityGroups = new String[0];
 
 	private String visibilityStr;
-
-	private String gridNode;
 
 	private byte[] fileContent;
 
@@ -32,31 +30,17 @@ public class LabFileBean {
 	 */
 	private String displayName;
 
-	private String instanceType; // type of instance, protocol, output,
-
-	// report, associatedFile, etc
-
 	private String timeStampedName;
 
-	private boolean hidden = true;
+	private boolean hidden = false;
 
 	private boolean image = false;
-
-	private String uploadedFile;
 
 	private String keywordsStr;
 
 	private boolean external = false;
 
 	private String fullPath;
-
-	public String getInstanceType() {
-		return this.instanceType;
-	}
-
-	public void setInstanceType(String instanceType) {
-		this.instanceType = instanceType;
-	}
 
 	public LabFileBean() {
 	}
@@ -70,11 +54,6 @@ public class LabFileBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-	}
-
-	public LabFileBean(LabFile charFile, String gridNodeHost) {
-		this(charFile);
-		this.gridNode = gridNodeHost;
 	}
 
 	public String[] getVisibilityGroups() {
@@ -98,14 +77,6 @@ public class LabFileBean {
 	public String getVisibilityStr() {
 		this.visibilityStr = StringUtils.join(this.visibilityGroups, "<br>");
 		return this.visibilityStr;
-	}
-
-	public String getGridNode() {
-		return this.gridNode;
-	}
-
-	public void setGridNode(String gridNode) {
-		this.gridNode = gridNode;
 	}
 
 	public void setDisplayName(String displayName) {
@@ -150,14 +121,6 @@ public class LabFileBean {
 
 	public LabFile getDomainFile() {
 		return domainFile;
-	}
-
-	public String getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(String uploadedFile) {
-		this.uploadedFile = uploadedFile;
 	}
 
 	public String getKeywordsStr() {
