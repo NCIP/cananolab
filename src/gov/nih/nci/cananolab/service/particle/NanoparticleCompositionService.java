@@ -5,10 +5,13 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
@@ -81,7 +84,7 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public NanoparticleEntityBean findNanoparticleEntityBy(String entityId)
+	public NanoparticleEntityBean findNanoparticleEntityById(String entityId)
 			throws ParticleCompositionException {
 		NanoparticleEntityBean entityBean = null;
 		try {
@@ -149,8 +152,47 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public FunctionalizingEntityBean findFunctionalizingEntityBy(String entityId)
-			throws ParticleCompositionException {
+	public void saveChemicalAssociation(NanoparticleSample particleSample,
+			ChemicalAssociation assoc) throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			if (assoc.getId() != null) {
+				try {
+					ChemicalAssociation dbAssoc = (ChemicalAssociation) appService
+							.load(ChemicalAssociation.class, assoc.getId());
+				} catch (Exception e) {
+					String err = "Object doesn't exist in the database anymore.  Please log in again.";
+					logger.error(err);
+					throw new ParticleCompositionException(err, e);
+				}
+			}
+			SampleComposition composition = particleSample
+					.getSampleComposition();
+			if (composition != null) {
+				composition.getChemicalAssociationCollection().add(assoc);
+			} else {
+				composition = new SampleComposition();
+				particleSample.setSampleComposition(composition);
+				Collection<ChemicalAssociation> asssocCollection = new HashSet<ChemicalAssociation>();
+				asssocCollection.add(assoc);
+				composition
+						.setChemicalAssociationCollection(asssocCollection);
+				composition.setNanoparticleSample(particleSample);
+			}
+			appService.saveOrUpdate(assoc);
+			if (assoc instanceof OtherChemicalAssociation) {
+				// TODO save other chemical association type
+			}
+		} catch (Exception e) {
+			String err = "Problem saving the chemical assocation.";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public FunctionalizingEntityBean findFunctionalizingEntityById(
+			String entityId) throws ParticleCompositionException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -173,6 +215,34 @@ public class NanoparticleCompositionService {
 		} catch (Exception e) {
 			String err = "Problem finding the functionalizing entity by id: "
 					+ entityId;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public ChemicalAssociationBean findChemicalAssocationById(String assocId)
+			throws ParticleCompositionException {
+		ChemicalAssociationBean assocBean = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					ChemicalAssociation.class).add(
+					Property.forName("id").eq(new Long(assocId)));
+			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				ChemicalAssociation assoc = (ChemicalAssociation) result.get(0);
+				assocBean = new ChemicalAssociationBean(assoc);
+			}
+			return assocBean;
+		} catch (Exception e) {
+			String err = "Problem finding the chemical association by id: "
+					+ assocId;
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
@@ -286,6 +356,21 @@ public class NanoparticleCompositionService {
 		}
 	}
 
+	public void setVisibility(ChemicalAssociationBean assoc, UserBean user)
+			throws ParticleCompositionException {
+		try {
+			FileService fileService = new FileService();
+			for (LabFileBean file : assoc.getFiles()) {
+				fileService.setVisiblity(file, user);
+			}
+		} catch (Exception e) {
+			String err = "Error setting visiblity for chemical association "
+					+ assoc.getType();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
 	public void deleteNanoparticleEntity(NanoparticleEntity entity)
 			throws ParticleCompositionException {
 		try {
@@ -306,7 +391,8 @@ public class NanoparticleCompositionService {
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
-			String err = "Error deleting functionalizing entity " + entity.getId();
+			String err = "Error deleting functionalizing entity "
+					+ entity.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
