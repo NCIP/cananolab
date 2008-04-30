@@ -52,7 +52,7 @@
 		<form-bean name="chemicalAssociationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="assoc"
-				type="gov.nih.nci.cananolab.dto.particle.ChemicalAssociationBean" />
+				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 		</form-bean>
@@ -138,7 +138,7 @@
 				path="particle.composition.functionalizingEntity" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action input="input" name="chemicalAssocationForm"
+		<action input="input" name="chemicalAssociationForm"
 			parameter="dispatch" path="/chemicalAssociation"
 			type="gov.nih.nci.cananolab.ui.particle.ChemicalAssociationAction">
 			<forward name="input" path="particle.composition.chemicalAssociation" />

@@ -888,6 +888,35 @@ img.img { /* for images that need a border */
 	border-right: 1px solid #5c5c5c;
 }
 
+.completeLabelNoTopBottom {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-left: 1px solid #5c5c5c;
+	border-right: 1px solid #5c5c5c;
+}
+
+.completeLabelNoTop {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-left: 1px solid #5c5c5c;
+	border-right: 1px solid #5c5c5c;
+	border-bottom: 1px solid #5c5c5c;
+}
+
+.completeLabelNoBottom {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-top: 1px solid #5c5c5c;
+	border-left: 1px solid #5c5c5c;
+	border-right: 1px solid #5c5c5c;
+}
+
 .completeLabelWithTop {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;

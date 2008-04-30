@@ -1,3 +1,8 @@
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <html:form action="/chemicalAssociation">
 	<table width="100%" align="center">
 		<tr>
@@ -38,15 +43,10 @@
 						</td>
 						<td class="label">
 							<html:select styleId="assoType"
-								property="composition.characterizationSource"
+								property="assoc.type"
 								onchange="javascript:callPrompt('Association Type', 'assoType');">
 								<option value=""></option>
-								<option value="attachment">
-									attachment
-								</option>
-								<option value="encapsulation">
-									encapsulation
-								</option>
+								<html:options name="chemicalAssociationTypes"/>
 								<option value="other">
 									[Other]
 								</option>
@@ -59,12 +59,10 @@
 						<td class="rightLabel">
 							&nbsp;
 							<html:select styleId="bondType" style="display:none"
-								property="composition.characterizationSource"
+								property="assoc.attachment.bondType"
 								onchange="javascript:callPrompt('Bond Type', 'bondType');">
 								<option value=""></option>
-								<option value="covalent">
-									covalent
-								</option>
+<%--								<html:options name="bondTypes"/>--%>
 								<option value="other">
 									[Other]
 								</option>
@@ -72,40 +70,47 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" valign="top">
+						<td class="leftLabel" width="%33">
 							<table width="100%" border="0" align="center" cellpadding="3"
-								cellspacing="0" class="topBorderOnly">
+								cellspacing="0" >
 								<tr>
-
-									<td class="label">
-										<html:select styleId="particleFuncEntityTypeA"
-											property="composition.characterizationSource"
-											onchange="selectEntityTypeOptionsA()">
+									<td class="completeLabelNoBottom">
+										<strong>Element</strong>
+									</td>
+								</tr>
+								<tr>
+									<td class="completeLabelNoTopBottom">
+										<html:select styleId="compositionTypeA"
+											property="assoc.associatedElementA.compositionType"
+											onchange="getAssociatedElementOptions('compositionTypeA', 'entityTypeA')">
 											<option value=""></option>
-											<option value="nanoparticleEntity">
-												nanoparticle entity
+											<option value="Nanoparticle Entity">
+												Nanoparticle Entity
 											</option>
-											<option value="functionalizingEntity">
-												functionalizing entity
+											<option value="Functionalizing Entity">
+												Functionalizing Entity
 											</option>
 										</html:select>
 									</td>
-									<td class="label" valign="top">
+								</tr>
+								<tr>
+									<td class="completeLabelNoTopBottom">
 										&nbsp;
-										<html:select styleId="entityTypeA" style="display:none"
-											property="composition.characterizationSource">
+										<html:select styleId="entityTypeA"
+											property="assoc.associatedElementA.entityId">
 											<option value="">
-												- Select Entity Type First -
 											</option>
 										</html:select>
 									</td>
-									<td class="rightLabel">
+								</tr>
+								<tr>
+									<td class=completeLabelNoTop>
 										&nbsp;
 										<html:select styleId="compEleTypeA" style="display:none"
-											property="composition.characterizationSource"
+											property="assoc.associatedElementA.composingElement.type"
 											onchange="javascript:callPrompt('Composing Element A', 'compEleTypeA');">
 											<option value=""></option>
-											<html:options name="allComposingElementTypes" />
+<%--											<html:options name="allComposingElementTypes" />--%>
 											<option value="other">
 												[Other]
 											</option>
@@ -113,44 +118,52 @@
 									</td>
 								</tr>
 							</table>
+							&nbsp;
 						</td>
-						<td>
-							<strong>Associated With</strong>
+						<td class="label" colspan="2" align="center">
+							<strong style="padding-left:20px">Associated With</strong>
 						</td>
-						<td>
-							<table width="100%" border="0" align="center" cellpadding="3"
-								cellspacing="0" class="topBorderOnly">
+						<td class="rightLabel">
+							<table width="100%" border="1" align="center" cellpadding="3"
+								cellspacing="0" >
 								<tr>
-
-									<td class="label">
-										<html:select styleId="particleFuncEntityTypeB"
-											property="composition.characterizationSource"
-											onchange="selectEntityTypeOptionsB()">
-											<option value=""></option>
-											<option value="nanoparticleEntity">
-												nanoparticle entity
+									<td class="completeLabel">
+										<strong>Element</strong>
+									</td>
+								</tr>
+								<tr>
+									<td class="completeLabel">
+										<html:select styleId="compositionTypeB"
+											property="assoc.associatedElementB.compositionType"
+											onchange="getAssociatedElementOptions('compositionTypeB', 'entityTypeB')">
+											<option value="" />
+											<option value="Nanoparticle Entity">
+												Nanoparticle Entity
 											</option>
-											<option value="functionalizingEntity">
-												functionalizing entity
+											<option value="Functionalizing Entity">
+												Functionalizing Entity
 											</option>
 										</html:select>
 									</td>
-									<td class="label">
+								</tr>
+								<tr>
+									<td class="completeLabel">
 										&nbsp;
-										<html:select styleId="entityTypeB" style="display:none"
-											property="composition.characterizationSource">
+										<html:select styleId="entityTypeB"
+											property="assoc.associatedElementB.entityId">
 											<option value="">
-												- Select Entity Type First -
 											</option>
 										</html:select>
 									</td>
-									<td class="rightLabel">
+								</tr>
+								<tr>
+									<td class="completeLabel">
 										&nbsp;
 										<html:select styleId="compEleTypeB" style="display:none"
-											property="composition.characterizationSource"
+											property="assoc.associatedElementB.composingElement.type"
 											onchange="javascript:callPrompt('Composing Element B', 'compEleTypeB');">
 											<option value=""></option>
-											<html:options name="allComposingElementTypes" />
+<%--											<html:options name="allComposingElementTypes" />--%>
 											<option value="other">
 												[Other]
 											</option>
@@ -158,6 +171,7 @@
 									</td>
 								</tr>
 							</table>
+							&nbsp;
 						</td>
 					</tr>
 
@@ -166,82 +180,82 @@
 							<strong>Association Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<html:textarea property="composition.description" rows="2"
+							<html:textarea property="assoc.description" rows="2"
 								cols="60" />
 						</td>
 					</tr>
 				</table>
 				<br>
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-					width="100%" align="center" summary="" border="0">
-					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
-								<div align="justify" id="peFileTitle">
-									Chemical Association File Information
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="completeLabel" colspan="4">
-
-								<table border="0" width="100%">
-									<tr>
-										<td valign="bottom">
-											<a href="#"
-												onclick="javascript:addFileClone(); return false;"> <span
-												class="addLink">Add File</span> </a>
-										</td>
-										<td id="fileTd">
-											<div id="filePatternDiv" style="display: none;">
-												<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-													width="100%" align="center" summary="" border="0">
-													<tbody>
-														<tr>
-															<td class="formSubTitleNoRight">
-																<span id="fileCount">0</span>
-															</td>
-															<td class="formSubTitleNoLeft" align="right">
-																<a href="#"> <img src="images/delete.gif" border="0"
-																		alt="remove this file table"> </a>
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabelWithTop" valign="top">
-																<strong>File Name</strong>
-
-															</td>
-															<td class="rightLabelWithTop" valign="top">
-																&nbsp;&nbsp;Click on "Load File" button
-																&nbsp;&nbsp;&nbsp;&nbsp;
-																<input type="button"
-																	onclick="javascript:loadFile(this.form, 'particleEntity', 0)"
-																	value="Load File">
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabel" valign="top">
-																<strong>File Type</strong>
-															</td>
-															<td class="rightLabel" valign="rightLabelWithtop">
-																<select name="fileType" id="fileType">
-																	<option value="" />
-																	<option value="other">
-																		[Other]
-																	</option>
-																</select>
-															</td>
-														</tr>
-													</tbody>
-												</table>
-												<br>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-				</table>
+<%--				<table class="topBorderOnly" cellspacing="0" cellpadding="3"--%>
+<%--					width="100%" align="center" summary="" border="0">--%>
+<%--					<tbody>--%>
+<%--						<tr class="topBorder">--%>
+<%--							<td class="formTitle" colspan="4">--%>
+<%--								<div align="justify" id="peFileTitle">--%>
+<%--									Chemical Association File Information--%>
+<%--								</div>--%>
+<%--							</td>--%>
+<%--						</tr>--%>
+<%--						<tr>--%>
+<%--							<td class="completeLabel" colspan="4">--%>
+<%----%>
+<%--								<table border="0" width="100%">--%>
+<%--									<tr>--%>
+<%--										<td valign="bottom">--%>
+<%--											<a href="#"--%>
+<%--												onclick="javascript:addFileClone(); return false;"> <span--%>
+<%--												class="addLink">Add File</span> </a>--%>
+<%--										</td>--%>
+<%--										<td id="fileTd">--%>
+<%--											<div id="filePatternDiv" style="display: none;">--%>
+<%--												<table class="topBorderOnly" cellspacing="0" cellpadding="3"--%>
+<%--													width="100%" align="center" summary="" border="0">--%>
+<%--													<tbody>--%>
+<%--														<tr>--%>
+<%--															<td class="formSubTitleNoRight">--%>
+<%--																<span id="fileCount">0</span>--%>
+<%--															</td>--%>
+<%--															<td class="formSubTitleNoLeft" align="right">--%>
+<%--																<a href="#"> <img src="images/delete.gif" border="0"--%>
+<%--																		alt="remove this file table"> </a>--%>
+<%--															</td>--%>
+<%--														</tr>--%>
+<%--														<tr>--%>
+<%--															<td class="leftLabelWithTop" valign="top">--%>
+<%--																<strong>File Name</strong>--%>
+<%----%>
+<%--															</td>--%>
+<%--															<td class="rightLabelWithTop" valign="top">--%>
+<%--																&nbsp;&nbsp;Click on "Load File" button--%>
+<%--																&nbsp;&nbsp;&nbsp;&nbsp;--%>
+<%--																<input type="button"--%>
+<%--																	onclick="javascript:loadFile(this.form, 'particleEntity', 0)"--%>
+<%--																	value="Load File">--%>
+<%--															</td>--%>
+<%--														</tr>--%>
+<%--														<tr>--%>
+<%--															<td class="leftLabel" valign="top">--%>
+<%--																<strong>File Type</strong>--%>
+<%--															</td>--%>
+<%--															<td class="rightLabel" valign="rightLabelWithtop">--%>
+<%--																<select name="fileType" id="fileType">--%>
+<%--																	<option value="" />--%>
+<%--																	<option value="other">--%>
+<%--																		[Other]--%>
+<%--																	</option>--%>
+<%--																</select>--%>
+<%--															</td>--%>
+<%--														</tr>--%>
+<%--													</tbody>--%>
+<%--												</table>--%>
+<%--												<br>--%>
+<%--											</div>--%>
+<%--										</td>--%>
+<%--									</tr>--%>
+<%--								</table>--%>
+<%--							</td>--%>
+<%--						</tr>--%>
+<%--				</table>--%>
 
 
 				<br>
@@ -278,10 +292,10 @@
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<html:hidden property="particle.sampleId" />
-												<html:hidden property="particle.sampleName" />
-												<html:hidden property="particle.sampleSource" />
-												<html:hidden property="particle.sampleType" />
+<%--												<html:hidden property="particle.sampleId" />--%>
+<%--												<html:hidden property="particle.sampleName" />--%>
+<%--												<html:hidden property="particle.sampleSource" />--%>
+<%--												<html:hidden property="particle.sampleType" />--%>
 												<html:submit />
 											</div>
 										</div>

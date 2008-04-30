@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
@@ -196,5 +197,26 @@ public class DWRCompositionManager {
 			}
 		}
 		return new String[] { "" };
+	}
+	
+	public ParticleDataLinkBean[] getAssociatedElementOptions(String entityType) {
+		
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		HttpServletRequest request = webContext.getHttpServletRequest();
+		SortedSet<ParticleDataLinkBean> particleEntitites = null;
+		
+		if (entityType.equals("Nanoparticle Entity")) {
+			particleEntitites = 
+				(SortedSet<ParticleDataLinkBean>) request.getSession()
+					.getAttribute("particleEntities");
+			
+		} else if(entityType.equals("Functionalizing Entity")) {
+			particleEntitites = 
+				(SortedSet<ParticleDataLinkBean>) request.getSession()
+					.getAttribute("functionalizingEntitites");
+		}
+		
+		return particleEntitites.toArray(new ParticleDataLinkBean [particleEntitites.size()]);
 	}
 }
