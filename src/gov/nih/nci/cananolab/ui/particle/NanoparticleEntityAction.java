@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.27 2008-04-29 23:12:58 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.28 2008-04-30 04:33:35 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -96,7 +96,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityBy(entityId);
+				.findNanoparticleEntityById(entityId);
 		compService.setVisibility(entityBean, user);
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
