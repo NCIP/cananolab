@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.19 2008-04-29 23:12:58 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.20 2008-04-30 22:11:25 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -64,9 +64,10 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				.getDataTree(
 						particleSampleBean.getDomainParticleSample().getId()
 								.toString(), request);
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
-				request);
-		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		InitNanoparticleSetup.getInstance().getNanoparticleSampleSources(
+				request, user);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		return forward;
 	}
 
@@ -82,7 +83,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		theForm.set("particleSampleBean", particleSampleBean);
 		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
 				request);
-		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		setupDataTree(theForm, request);
 		return mapping.findForward("update");
 	}
@@ -96,14 +97,14 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
-				request);
-		InitSecuritySetup.getInstance().setAllVisibilityGroups(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		InitNanoparticleSetup.getInstance().getNanoparticleSampleSources(request, user);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		return mapping.getInputForward();
 	}
 
 	public boolean loginRequired() {
-		return false;
+		return true;
 	}
 
 	public boolean canUserExecute(UserBean user)
