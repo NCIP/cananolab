@@ -216,6 +216,21 @@ public class FileService {
 		return fileName;
 	}
 
+	public String writeFile(byte[] fileContent, String fileName,
+			String filePath, boolean addTimeStampPrefix) throws IOException {
+		File pathDir = new File(filePath);
+		if (!pathDir.exists())
+			pathDir.mkdirs();
+
+		if (addTimeStampPrefix) {
+			fileName = prefixFileNameWithTimeStamp(fileName);
+		}
+		String fullFileName = filePath + File.separator + fileName;
+		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
+		oStream.write(fileContent);
+		return fileName;
+	}
+
 	public void writeFile(byte[] fileContent, String fullFileName)
 			throws IOException {
 		String path = fullFileName.substring(0, fullFileName
