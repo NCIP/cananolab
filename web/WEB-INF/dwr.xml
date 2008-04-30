@@ -13,6 +13,7 @@
 			<include method="getAntibodyTypeOptions" />
 			<include method="getAntibodyIsotypeOptions" />
 			<include method="getWallTypeOptions" />
+			<include method="getAssociatedElementOptions" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">

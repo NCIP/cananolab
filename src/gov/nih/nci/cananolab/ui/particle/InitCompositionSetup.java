@@ -71,6 +71,14 @@ public class InitCompositionSetup {
 				"antibodySpecies", "Antibody", "species");
 	}
 
+	public void setChemicalAssociationDropdowns(HttpServletRequest request)
+			throws Exception {
+		
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"bondTypes", "Attachment", "bondType", "otherBondType", true);
+		
+	}
+
 	public SortedSet<String> getFunctionTypes(HttpServletRequest request)
 			throws Exception {
 		SortedSet<String> defaultTypes = InitSetup
@@ -115,6 +123,22 @@ public class InitCompositionSetup {
 		SortedSet<String> types = new TreeSet<String>(defaultTypes);
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
+		return types;
+	}
+
+	public SortedSet<String> getChemicalAssociationTypes(
+			HttpServletRequest request) throws Exception {
+		SortedSet<String> defaultTypes = InitSetup
+				.getInstance()
+				.getServletContextDefaultTypesByReflection(
+						request.getSession().getServletContext(),
+						"defaultAssociationTypes",
+						"gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation");
+		SortedSet<String> otherTypes = compService
+				.getAllOtherChemicalAssociationTypes();
+		SortedSet<String> types = new TreeSet<String>(defaultTypes);
+		types.addAll(otherTypes);
+		request.getSession().setAttribute("chemicalAssociationTypes", types);
 		return types;
 	}
 

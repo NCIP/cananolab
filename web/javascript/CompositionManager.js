@@ -176,6 +176,16 @@ function radLinkOrUpload(radioIndex, fileIndex) {
 	}
 }
 
+function getAssociatedElementOptions(entityTypeEleId, elementDropdownId) {
+	var entityTypeValue = dwr.util.getValue(entityTypeEleId);
+	
+		CompositionManager.getAntibodySpeciesOptions(entityTypeValue, function(data) {
+			
+			dwr.util.removeAllOptions(elementDropdownId);
+    		dwr.util.addOptions(elementDropdownId, data, "dataId", "dataDisplayType");
+  		});
+}
+
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp

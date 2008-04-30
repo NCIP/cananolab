@@ -5,12 +5,13 @@
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+
+<script type="text/javascript"
+	src="javascript/CompositionManager.js"></script>
 <script type='text/javascript'
-	src='/caNanoLab/dwr/interface/AddFileManager.js'></script>
+	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-<script type="text/javascript" src="javascript/addFile.js"></script>
-<script type="text/javascript" src="javascript/chemAssociation.js"></script>
 
 <script type="text/javascript">
 <!--//
@@ -27,7 +28,7 @@ function confirmDeletion()
 
 //-->
 </script>
-<jsp:include page="/particle/submitMenu.jsp" />
+<%--<jsp:include page="/particle/submitMenu.jsp" />--%>
 <%-- turn off update when doing remote searches --%>
 <%--<c:choose>--%>
 <%--	<c:when test="${!empty param.gridNodeHost}">--%>
