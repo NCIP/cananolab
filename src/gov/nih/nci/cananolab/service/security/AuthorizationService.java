@@ -29,6 +29,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -343,11 +345,11 @@ public class AuthorizationService {
 	 * @return
 	 * @throws CaNanoLabSecurityException
 	 */
-	public List<String> getAllVisibilityGroups()
+	public SortedSet<String> getAllVisibilityGroups()
 			throws CaNanoLabSecurityException {
 		List<String> groups = getAllGroups();
 		// filter out the ones starting with APP_OWNER
-		List<String> filteredGroups = new ArrayList<String>();
+		SortedSet<String> filteredGroups = new TreeSet<String>();
 		List<String> notShownGroups = Arrays
 				.asList(CaNanoLabConstants.VISIBLE_GROUPS);
 		for (String groupName : groups) {
@@ -875,7 +877,8 @@ public class AuthorizationService {
 	}
 
 	/**
-	 * Check whether user is allowed to at least one data in the collection of data.  
+	 * Check whether user is allowed to at least one data in the collection of
+	 * data.
 	 * 
 	 * @param auth
 	 * @param dataCollection
