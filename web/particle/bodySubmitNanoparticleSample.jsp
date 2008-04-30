@@ -62,7 +62,7 @@
 									styleId="sampleSource"
 									onchange="javascript:callPrompt('Nanoparticle Sample Source', 'sampleSource');">
 									<option />
-										<html:options collection="allParticleSources"
+										<html:options collection="allUserParticleSources"
 											labelProperty="organizationName" property="organizationName" />
 									<option value="other">
 										[Other]
