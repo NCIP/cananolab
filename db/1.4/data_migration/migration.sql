@@ -309,7 +309,7 @@ insert into canano.report
 	category
 )
 SELECT report_pk_id,
-	'reprot file'
+	'report file'
 FROM cananolab.report;
 
 insert into canano.report
