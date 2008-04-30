@@ -7,87 +7,64 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="particleNames"
-				type="java.lang.String[]" />
 			<form-property name="uploadedFile"
 				type="org.apache.struts.upload.FormFile" />
 			<form-property name="file"
-				type="gov.nih.nci.calab.dto.common.LabFileBean" />
+				type="gov.nih.nci.cananolab.dto.common.ReportBean" />
 		</form-bean>
 		<form-bean name="searchReportForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleType" type="java.lang.String" />
+			<form-property name="nanoparticleEntityTypes"
+				type="java.lang.String[]" />
+			<form-property name="functionalizingEntityTypes"
+				type="java.lang.String[]" />
 			<form-property name="functionTypes"
 				type="java.lang.String[]" />
 			<form-property name="reportTitle" type="java.lang.String" />
-			<form-property name="reportType" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-		</form-bean>
-		<form-bean name="remoteSearchReportForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleType" type="java.lang.String" />
-			<form-property name="functionTypes"
+			<form-property name="reportCategory"
+				type="java.lang.String" />
+			<form-property name="searchLocations"
 				type="java.lang.String[]" />
-			<form-property name="reportTitle" type="java.lang.String" />
-			<form-property name="reportType" type="java.lang.String" />
-			<form-property name="gridNodes" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			bundle="report" key="error.reportException" path="report.message"
-			type="gov.nih.nci.calab.exception.ReportException" />
+			type="gov.nih.nci.cananolab.exception.ReportException" />
 	</global-exceptions>
 	<global-forwards>
 		<forward name="reportMessage" path="report.message" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageReport"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="report.manageReport" scope="request" />
 		<action name="submitReportForm" parameter="dispatch"
 			path="/submitReport"
-			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
-			scope="request">
+			type="gov.nih.nci.cananolab.ui.report.SubmitReportAction"
+			input="input" scope="request">
 			<forward name="success" path="report.message" />
 			<forward name="input" path="report.submitReport" />
 		</action>
 		<action name="submitReportForm" parameter="dispatch"
 			path="/updateReport"
-			type="gov.nih.nci.calab.ui.report.SubmitReportAction" input="input"
-			scope="request">
+			type="gov.nih.nci.cananolab.ui.report.SubmitReportAction"
+			input="input" scope="request">
 			<forward name="input" path="report.viewReport" />
 			<forward name="success" path="report.message" />
 		</action>
 		<action path="/reportResults"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="report.searchReportResult" scope="request" />
 		<action input="input" name="searchReportForm"
 			parameter="dispatch" path="/searchReport"
-			type="gov.nih.nci.calab.ui.report.SearchReportAction"
+			type="gov.nih.nci.cananolab.ui.report.SearchReportAction"
 			scope="request">
 			<forward name="input" path="report.searchReport" />
 			<forward name="success" path="report.searchReportResult" />
-		</action>
-		<action input="input" name="remoteSearchReportForm"
-			parameter="dispatch" path="/remoteSearchReport"
-			type="gov.nih.nci.calab.ui.report.RemoteSearchReportAction"
-			scope="request">
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.discovery" path="report.remoteSearchReport"
-				type="gov.nih.nci.calab.exception.GridAutoDiscoveryException" />
-			<exception
-				handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-				key="error.grid.notAvailable" path="report.remoteSearchReportResult"
-				type="gov.nih.nci.calab.exception.GridQueryException" />
-			<forward name="input" path="report.remoteSearchReport" />
-			<forward name="success"
-				path="report.remoteSearchReportResult" />
 		</action>
 	</action-mappings>
 </struts-config>

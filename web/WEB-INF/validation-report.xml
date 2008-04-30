@@ -5,23 +5,24 @@
 <form-validation>
 	<formset>
 		<form name="submitReportForm">
-			<field property="particleNames" page="2"
+			<field property="file.particleNames" page="2"
 				depends="required">
-				<arg position="0" key="submitReportForm.particleID"
+				<arg position="0" key="submitReportForm.particleNames"
 					bundle="report" />
 			</field>
-			<field property="file.type" page="2" depends="required">
-				<arg position="0" key="submitReportForm.reportType"
-					bundle="report" />
+			<field property="file.domainReport.category" page="2" depends="required">
+				<arg position="0"
+					key="submitReportForm.file.category" bundle="report" />
 			</field>
 			<field property="uploadedFile" page="2"
 				depends="required">
 				<arg position="0" key="submitReportForm.reportFile"
 					bundle="report" />
 			</field>
-			<field property="file.title" page="1"
+			<field property="file.domainReport.title" page="1"
 				depends="required,mask">
-				<arg position="0" key="report.title" bundle="report" />
+				<arg position="0" key="report.title"
+					bundle="report" />
 				<msg name="mask" key="report.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
@@ -31,39 +32,22 @@
 		</form>
 		<form name="searchReportForm">
 			<field property="reportTitle" page="1" depends="mask">
-				<arg position="0" key="report.title" bundle="report" />
-				<msg name="mask" key="report.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
-				</var>
-			</field>
-			<field property="particleType" page="1" depends="mask">
-				<arg position="0" key="report.particleType"
+				<arg position="0" key="report.title"
 					bundle="report" />
-				<msg name="mask" key="report.particleType.invalid" />
+				<msg name="mask"
+					key="report.domainReport.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
 				</var>
 			</field>
-		</form>
-		<form name="remoteSearchReportForm">
-			<field property="reportTitle" page="1" depends="mask">
-				<arg position="0" key="report.title" bundle="report" />
-				<msg name="mask" key="report.title.invalid" />
+			<field property="reportcategroy" page="1"
+				depends="mask">
+				<arg position="0" key="report.category" bundle="report" />
+				<msg name="mask" key="report.category.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
-				</var>
-			</field>
-			<field property="particleType" page="1" depends="mask">
-				<arg position="0" key="report.particleType"
-					bundle="report" />
-				<msg name="mask" key="report.particleType.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
 		</form>

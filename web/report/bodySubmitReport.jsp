@@ -2,14 +2,20 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+
+<c:set var="action" value="Submit" scope="request" />
+<c:if test="${param.dispatch eq 'setupUpdate'}">
+	<c:set var="action" value="Update" scope="request" />
+</c:if>
 
 <html:form action="/submitReport" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h3>
-					<br>
-					Submit Nanoparticle Report
+					${action} Report
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -19,10 +25,13 @@
 			</td>
 		</tr>
 		<c:choose>
-			<c:when test="${empty allSampleNames && param.dispatch eq 'setup'}">
+			<c:when
+				test="${empty allUserParticleNames && param.dispatch eq 'setup'}">
 				<tr>
 					<td colspan="2">
-						<font color="blue" size="-1"><b>MESSAGE: </b>There are no samples in the database. Please make sure to create a new sample first. </font>
+						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
+							nanoparticle samples in the database. Please make sure to create
+							a new nanoparticle sample first. </font>
 					</td>
 				</tr>
 			</c:when>
@@ -41,22 +50,28 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel" valign="top">
-										<strong>Particle ID*</strong>
+									<td class="leftLabel" valign="top" width="20%">
+										<strong>Nanoparticle Sample Name*</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:select property="particleNames" multiple="true" size="5">
-											<html:options name="allSampleNames" />
+										<html:select property="file.particleNames" multiple="true"
+											size="5">
+											<html:options name="allUserParticleNames" />
 										</html:select>
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Report Type*</strong>
+										<strong>Report Category*</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:select property="file.type">
-											<html:options name="allReportTypes" />
+										<html:select property="file.domainReport.category"
+											onchange="javascript:callPrompt('Report Category', 'file.domainReport.category');">
+											<option value=""></option>
+											<html:options name="reportCategories" />
+											<option value="other">
+												[Other]
+											</option>
 										</html:select>
 									</td>
 								</tr>
@@ -66,6 +81,14 @@
 									</td>
 									<td class="rightLabel"">
 										<html:file property="uploadedFile" />
+										&nbsp;&nbsp;
+										<c:if
+											test="${!empty submitReportForm.map.file.domainReport.uri }">
+											<a
+												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}">
+												<bean:write name="submitReportForm"
+													property="file.displayName" /> </a> ">${submitReportForm.map.file.domainReport.uri}</a>
+										</c:if>
 									</td>
 								</tr>
 								<tr>
@@ -73,7 +96,7 @@
 										<strong>Report File Title*</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:text property="file.title" size="80" />
+										<html:text property="file.domainReport.title" size="80" />
 									</td>
 								</tr>
 								<tr>
@@ -81,7 +104,8 @@
 										<strong>Report File Description</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:textarea property="file.description" rows="3" cols="80" />
+										<html:textarea property="file.domainReport.description"
+											rows="3" cols="60" />
 									</td>
 								</tr>
 								<tr>
@@ -89,7 +113,8 @@
 										<strong>Comments</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:textarea property="file.comments" rows="3" cols="80" />
+										<html:textarea property="file.domainReport.comments" rows="3"
+											cols="60" />
 									</td>
 								</tr>
 								<tr>
@@ -124,7 +149,7 @@
 													<div align="right">
 														<input type="reset" value="Reset"
 															onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
-														<input type="hidden" name="dispatch" value="submit">
+														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<html:submit />
 													</div>
