@@ -421,4 +421,10 @@ public class InitNanoparticleSetup {
 	// .getProtocolFileBeans(protocolType);
 	// session.setAttribute("submitTypeProtocolFiles", protocolFiles);
 	// }
+
+	public SortedSet<String> getReportTypes(HttpServletRequest request)
+			throws Exception {
+		return InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"reportTypes", "Report", "category", "otherCategory", false);
+	}
 }
