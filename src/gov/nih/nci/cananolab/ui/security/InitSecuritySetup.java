@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,17 +60,12 @@ public class InitSecuritySetup {
 		return status;
 	}
 
-	public void setAllVisibilityGroups(HttpServletRequest request)
+	public SortedSet<String> getAllVisibilityGroups(HttpServletRequest request)
 			throws CaNanoLabSecurityException {
-		List<String> groupNames = authorizationService.getAllVisibilityGroups();
+		SortedSet<String> groupNames = authorizationService
+				.getAllVisibilityGroups();
 		request.getSession().setAttribute("allVisibilityGroups", groupNames);
-	}
-
-	public void setApplicationOwner(HttpSession session) {
-		if (session.getServletContext().getAttribute("applicationOwner") == null) {
-			session.getServletContext().setAttribute("applicationOwner",
-					CaNanoLabConstants.APP_OWNER);
-		}
+		return groupNames;
 	}
 
 	/**
