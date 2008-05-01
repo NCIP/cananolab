@@ -132,6 +132,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		LabFileBean fileBean = service.findFile(fileId, user);
 		if (fileBean.getDomainFile().getUriExternal()) {
 			response.sendRedirect(fileBean.getDomainFile().getUri());
+			return null;
 		}
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
