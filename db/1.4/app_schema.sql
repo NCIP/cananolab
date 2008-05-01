@@ -600,6 +600,7 @@ CREATE TABLE lab_file
 	description TEXT NULL,
 	comments VARCHAR(2000) NULL,
 	file_type VARCHAR(200) NULL,
+	is_uri_external TINYINT NOT NULL,
 	PRIMARY KEY (file_pk_id)
 ) TYPE=InnoDB
 ;
