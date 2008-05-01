@@ -331,9 +331,20 @@ function cancel(parameter) {
 	var url = document.referrer;
 	if (url != null) {
 		if (parameter != null) {
-			url = url + "&"+parameter+"=true";
-		}		
+			url = url + "&" + parameter + "=true";
+		}
 		gotoPage(url);
+	}
+}
+function radLinkOrUpload() {
+	var linkEle = document.getElementById("link");
+	var loadEle = document.getElementById("load");
+	if (document.getElementById("external0").checked) {
+		loadEle.style.display = "inline";
+		linkEle.style.display = "none";
+	} else {
+		loadEle.style.display = "none";
+		linkEle.style.display = "inline";
 	}
 }
 
