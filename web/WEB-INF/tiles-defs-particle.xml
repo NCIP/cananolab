@@ -145,10 +145,13 @@
 	</definition>
 
 	<!-- definition for the view report/associated file page -->
+	<definition name="particle.submitReport"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/report/bodySubmitReport.jsp" />
+	</definition>
 	<definition name="particle.viewReport"
 		extends="particle.annotationHome">
 		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
-		<put name="reportActionName" value="updateReportForParticle" />
 	</definition>
 
 	<!-- definition for the search nanoparticle page -->
