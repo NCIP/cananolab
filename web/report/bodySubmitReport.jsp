@@ -45,21 +45,59 @@
 								<tr class="topBorder">
 									<td class="formTitle" colspan="4">
 										<div align="justify">
-											Description
+											Report Information
 										</div>
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel" valign="top" width="20%">
-										<strong>Nanoparticle Sample Name*</strong>
+									<td class="leftLabel">
+										<html:radio styleId="external0"
+											property="file.domainReport.uriExternal" value="false"
+											onclick="radLinkOrUpload()" />
+										<strong>Upload Report File</strong>
+										<br>
+										&nbsp;&nbsp;or
+										<br>
+										<html:radio styleId="external1"
+											property="file.domainReport.uriExternal" value="true"
+											onclick="radLinkOrUpload()" />
+										<strong>Enter Report URL</strong>
 									</td>
-									<td class="rightLabel"">
-										<html:select property="file.particleNames" multiple="true"
-											size="5">
-											<html:options name="allUserParticleNames" />
-										</html:select>
+									<td class="rightLabel" colspan="3">
+										<span id="load" style="display:none"> <html:file
+												property="uploadedFile" size="60" /> &nbsp;&nbsp; </span>
+										<br>
+										<br>
+										<span id="link" style="display:none"><html:text
+												property="file.externalUrl" size="60" /> </span>&nbsp;
 									</td>
 								</tr>
+								<c:if
+									test="${!empty submitReportForm.map.file.domainReport.uri }">
+									<c:choose>
+										<c:when
+											test="${submitReportForm.map.file.domainReport.uriExternal}">
+											<c:set var="target" value="pop" />
+										</c:when>
+										<c:otherwise>
+											<c:set var="target" value="_self" />
+										</c:otherwise>
+									</c:choose>
+									<tr>
+										<td class="completeLabel" colspan="4">
+											<strong>Submitted Report</strong> &nbsp;&nbsp;
+											<a
+												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}"
+												target="${target}">
+												${submitReportForm.map.file.domainReport.uri}</a>
+											<html:hidden property="file.domainReport.uri" />
+										</td>
+									</tr>
+								</c:if>
+								<c:if
+									test="${!empty submitReportForm.map.file.domainReport.id }">
+									<html:hidden property="file.domainReport.id" />
+								</c:if>
 								<tr>
 									<td class="leftLabel">
 										<strong>Report Category*</strong>
@@ -77,25 +115,21 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Report File*</strong>
-									</td>
-									<td class="rightLabel"">
-										<html:file property="uploadedFile" />
-										&nbsp;&nbsp;
-										<c:if
-											test="${!empty submitReportForm.map.file.domainReport.uri }">
-											<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}">
-												${submitReportForm.map.file.domainReport.uri}</a>
-										</c:if>
-									</td>
-								</tr>
-								<tr>
-									<td class="leftLabel">
 										<strong>Report File Title*</strong>
 									</td>
 									<td class="rightLabel"">
 										<html:text property="file.domainReport.title" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top" width="20%">
+										<strong>Nanoparticle Sample Name*</strong>
+									</td>
+									<td class="rightLabel"">
+										<html:select property="file.particleNames" multiple="true"
+											size="5">
+											<html:options name="allUserParticleNames" />
+										</html:select>
 									</td>
 								</tr>
 								<tr>
@@ -111,7 +145,7 @@
 									<td class="leftLabel">
 										<strong>Comments</strong>
 									</td>
-									<td class="rightLabel"">
+									<td class="rightLabel">
 										<html:textarea property="file.domainReport.comments" rows="3"
 											cols="60" />
 									</td>
@@ -127,8 +161,7 @@
 										</html:select>
 										<br>
 										<i>(${applicationOwner}_Researcher and
-											${applicationOwner}_PI are defaults if none of above is
-											selected.)</i>
+											${applicationOwner}_PI are always selected by default.)</i>
 									</td>
 								</tr>
 							</tbody>
