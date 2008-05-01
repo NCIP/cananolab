@@ -54,53 +54,6 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		}
 	}
 
-	/**
-	 * Download action to handle file downloading and viewing
-	 * 
-	 * @param
-	 * @return
-	 */
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		String fileId = request.getParameter("fileId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService service = new FileService();
-		LabFileBean fileBean = service.findFile(fileId, user);
-		if (fileBean.getDomainFile().getUriExternal()) {
-			response.sendRedirect(fileBean.getDomainFile().getUri());
-		}
-		String fileRoot = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File dFile = new File(fileRoot + File.separator
-				+ fileBean.getDomainFile().getUri());
-		if (dFile.exists()) {
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename="
-					+ fileBean.getDomainFile().getName());
-			response.setHeader("cache-control", "Private");
-
-			java.io.InputStream in = new FileInputStream(dFile);
-			java.io.OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[32768];
-
-			int numRead = 0;
-			while ((numRead = in.read(bytes)) > 0) {
-				out.write(bytes, 0, numRead);
-			}
-			out.close();
-		} else {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("error.noFile");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			return mapping.findForward("fileMessage");
-		}
-		return null;
-	}
-
 	public abstract boolean loginRequired();
 
 	/**
