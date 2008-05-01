@@ -325,6 +325,32 @@ public class NanoparticleCompositionService {
 		}
 		return types;
 	}
+	
+	/**
+	 * Return user-defined chemical association types
+	 * 
+	 * @return
+	 * @throws ParticleCompositionException
+	 */
+	public SortedSet<String> getAllOtherChemicalAssociationTypes()
+			throws ParticleCompositionException {
+		SortedSet<String> types = new TreeSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			List results = appService.getAll(OtherChemicalAssociation.class);
+			for (Object obj : results) {
+				OtherChemicalAssociation other = (OtherChemicalAssociation) obj;
+				types.add(other.getType());
+			}
+		} catch (Exception e) {
+			String err = "Error in retrieving other values for chemical association";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+		return types;
+	}
 
 	public void setVisibility(NanoparticleEntityBean entity, UserBean user)
 			throws ParticleCompositionException {
