@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
@@ -94,6 +95,28 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		assocBean.setType(assocType);
 		theForm.set("assoc", assocBean);
 		setLookups(theForm, request);
+		return mapping.getInputForward();
+	}
+	
+	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ChemicalAssociationBean entity = (ChemicalAssociationBean) theForm
+				.get("assoc");
+		entity.addFile();
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String indexStr = request.getParameter("compInd");
+		int ind = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ChemicalAssociationBean entity = (ChemicalAssociationBean) theForm
+				.get("assoc");
+		entity.removeFile(ind);
 		return mapping.getInputForward();
 	}
 }

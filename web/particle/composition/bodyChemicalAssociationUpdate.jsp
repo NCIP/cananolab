@@ -8,7 +8,7 @@
 		<tr>
 			<td>
 				<h4>
-					Nanoparticle Sample Comosition - Chemical Association
+					${particleName} Sample Composition - Chemical Association
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -127,12 +127,12 @@
 							<table width="100%" border="1" align="center" cellpadding="3"
 								cellspacing="0" >
 								<tr>
-									<td class="completeLabel">
+									<td class="completeLabelNoBottom">
 										<strong>Element</strong>
 									</td>
 								</tr>
 								<tr>
-									<td class="completeLabel">
+									<td class="completeLabelNoTopBottom">
 										<html:select styleId="compositionTypeB"
 											property="assoc.associatedElementB.compositionType"
 											onchange="getAssociatedElementOptions('compositionTypeB', 'entityTypeB')">
@@ -147,7 +147,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="completeLabel">
+									<td class="completeLabelNoTopBottom">
 										&nbsp;
 										<html:select styleId="entityTypeB"
 											property="assoc.associatedElementB.entityId">
@@ -157,7 +157,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="completeLabel">
+									<td class="completeLabelNoTop">
 										&nbsp;
 										<html:select styleId="compEleTypeB" style="display:none"
 											property="assoc.associatedElementB.composingElement.type"
@@ -185,78 +185,54 @@
 						</td>
 					</tr>
 				</table>
+				<%-- File Information --%>
 				<br>
-<%--				<table class="topBorderOnly" cellspacing="0" cellpadding="3"--%>
-<%--					width="100%" align="center" summary="" border="0">--%>
-<%--					<tbody>--%>
-<%--						<tr class="topBorder">--%>
-<%--							<td class="formTitle" colspan="4">--%>
-<%--								<div align="justify" id="peFileTitle">--%>
-<%--									Chemical Association File Information--%>
-<%--								</div>--%>
-<%--							</td>--%>
-<%--						</tr>--%>
-<%--						<tr>--%>
-<%--							<td class="completeLabel" colspan="4">--%>
-<%----%>
-<%--								<table border="0" width="100%">--%>
-<%--									<tr>--%>
-<%--										<td valign="bottom">--%>
-<%--											<a href="#"--%>
-<%--												onclick="javascript:addFileClone(); return false;"> <span--%>
-<%--												class="addLink">Add File</span> </a>--%>
-<%--										</td>--%>
-<%--										<td id="fileTd">--%>
-<%--											<div id="filePatternDiv" style="display: none;">--%>
-<%--												<table class="topBorderOnly" cellspacing="0" cellpadding="3"--%>
-<%--													width="100%" align="center" summary="" border="0">--%>
-<%--													<tbody>--%>
-<%--														<tr>--%>
-<%--															<td class="formSubTitleNoRight">--%>
-<%--																<span id="fileCount">0</span>--%>
-<%--															</td>--%>
-<%--															<td class="formSubTitleNoLeft" align="right">--%>
-<%--																<a href="#"> <img src="images/delete.gif" border="0"--%>
-<%--																		alt="remove this file table"> </a>--%>
-<%--															</td>--%>
-<%--														</tr>--%>
-<%--														<tr>--%>
-<%--															<td class="leftLabelWithTop" valign="top">--%>
-<%--																<strong>File Name</strong>--%>
-<%----%>
-<%--															</td>--%>
-<%--															<td class="rightLabelWithTop" valign="top">--%>
-<%--																&nbsp;&nbsp;Click on "Load File" button--%>
-<%--																&nbsp;&nbsp;&nbsp;&nbsp;--%>
-<%--																<input type="button"--%>
-<%--																	onclick="javascript:loadFile(this.form, 'particleEntity', 0)"--%>
-<%--																	value="Load File">--%>
-<%--															</td>--%>
-<%--														</tr>--%>
-<%--														<tr>--%>
-<%--															<td class="leftLabel" valign="top">--%>
-<%--																<strong>File Type</strong>--%>
-<%--															</td>--%>
-<%--															<td class="rightLabel" valign="rightLabelWithtop">--%>
-<%--																<select name="fileType" id="fileType">--%>
-<%--																	<option value="" />--%>
-<%--																	<option value="other">--%>
-<%--																		[Other]--%>
-<%--																	</option>--%>
-<%--																</select>--%>
-<%--															</td>--%>
-<%--														</tr>--%>
-<%--													</tbody>--%>
-<%--												</table>--%>
-<%--												<br>--%>
-<%--											</div>--%>
-<%--										</td>--%>
-<%--									</tr>--%>
-<%--								</table>--%>
-<%--							</td>--%>
-<%--						</tr>--%>
-<%--				</table>--%>
+				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+					width="100%" align="center" summary="" border="0">
+					<tbody>
+						<tr class="topBorder">
+							<td class="formTitle" colspan="4">
+								<div align="justify" id="peFileTitle">
+									Chemical Association File Information
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="completeLabel" colspan="4">
+								<table border="0" width="100%">
+									<tr>
+										<td valign="bottom">
+											<a href="#"
+												onclick="javascript:addComponent(chemicalAssociationForm, 'chemicalAssociation', 'addFile'); return false;">
+												<span class="addLink">Add File</span> </a>
+										</td>
+										<td id="fileTd">
 
+											<logic:iterate name="chemicalAssociationForm"
+												property="assoc.files" id="assocFile" indexId="fileInd">
+												<jsp:include
+													page="/particle/bodyLoadFileUpdate.jsp">
+													<jsp:param name="fileInd" value="${fileInd}" />
+													<jsp:param name="form" value="chemicalAssociationForm" />
+													<jsp:param name="action" value="chemicalAssociation" />
+													<jsp:param name="fileBean" value="assoc.files[${fileInd}]" />
+													<jsp:param name="domainFile" value="assoc.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId" value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri" value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName" value="${chemicalAssociationForm.map.assoc.files[fileInd].displayName}" />
+													<jsp:param name="fileHidden" value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
+													<jsp:param name="fileExternal" value="${chemicalAssociationForm.map.assoc.files[fileInd].external}" />
+													<jsp:param name="fileImage" value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
+												</jsp:include>
+												
+												<br>
+											</logic:iterate>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+				</table>
 
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
