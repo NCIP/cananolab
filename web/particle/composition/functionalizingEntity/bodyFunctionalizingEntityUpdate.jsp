@@ -9,7 +9,7 @@
 		<tr>
 			<td>
 				<h4>
-					${particleName} Sample Comosition - Functionalizing Entity
+					${particleName} Sample Composition - Functionalizing Entity
 				</h4>
 			</td>
 			<td align="right" width="15%">

@@ -21,7 +21,7 @@ function confirmDeletion()
 		<tr>
 			<td>
 				<h4>
-					${particleName} Sample Comosition - Nanoparticle Entity
+					${particleName} Sample Composition - Nanoparticle Entity
 				</h4>
 			</td>
 			<td align="right" width="15%">
