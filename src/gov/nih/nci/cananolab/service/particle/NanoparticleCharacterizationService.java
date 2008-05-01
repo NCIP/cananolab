@@ -63,7 +63,7 @@ public class NanoparticleCharacterizationService {
 	}
 
 	public void saveCharacterization(NanoparticleSample particleSample,
-			Characterization achar, String createdBy) throws Exception {
+			Characterization achar) throws Exception {
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -262,7 +262,7 @@ public class NanoparticleCharacterizationService {
 						&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
 					for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 							.getDerivedBioAssayDataList()) {
-						fileService.setVisiblity(derivedBioAssayDataBean
+						fileService.retrieveVisiblity(derivedBioAssayDataBean
 								.getLabFileBean(), user);
 						Map<String, String> datumMap = new HashMap<String, String>();
 						for (DerivedDatum data : derivedBioAssayDataBean
@@ -302,13 +302,13 @@ public class NanoparticleCharacterizationService {
 	}
 
 	// set lab file visibility of a characterization
-	public void setVisiblity(CharacterizationBean charBean, UserBean user)
+	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException {
 		try {
 			FileService fileService = new FileService();
 			for (DerivedBioAssayDataBean bioAssayData : charBean
 					.getDerivedBioAssayDataList()) {
-				fileService.setVisiblity(bioAssayData.getLabFileBean(), user);
+				fileService.retrieveVisiblity(bioAssayData.getLabFileBean(), user);
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "

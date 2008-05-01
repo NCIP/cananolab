@@ -579,7 +579,7 @@ public class NanoparticleSampleService {
 		return storedEntities;
 	}
 
-	public void setVisibility(ParticleBean particleBean, UserBean user)
+	public void retrieveVisibility(ParticleBean particleBean, UserBean user)
 			throws ParticleException {
 		try {
 			AuthorizationService auth = new AuthorizationService(

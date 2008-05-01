@@ -89,7 +89,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssocationById(assocId);
-		compService.setVisibility(assocBean, user);
+		compService.retrieveVisibility(assocBean, user);
 		String assocType = InitSetup.getInstance().getDisplayName(
 				assocBean.getClassName(), session.getServletContext());
 		assocBean.setType(assocType);

@@ -816,7 +816,7 @@ public class AuthorizationService {
 		}
 	}
 
-	public void setVisibility(String dataToProtect, String[] visibleGroups)
+	public void assignVisibility(String dataToProtect, String[] visibleGroups)
 			throws CaNanoLabSecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,

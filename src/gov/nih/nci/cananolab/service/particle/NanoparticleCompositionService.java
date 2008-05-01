@@ -352,12 +352,12 @@ public class NanoparticleCompositionService {
 		return types;
 	}
 
-	public void setVisibility(NanoparticleEntityBean entity, UserBean user)
+	public void retrieveVisibility(NanoparticleEntityBean entity, UserBean user)
 			throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileService();
 			for (LabFileBean file : entity.getFiles()) {
-				fileService.setVisiblity(file, user);
+				fileService.retrieveVisiblity(file, user);
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for nanoparticle entity "
@@ -367,12 +367,12 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public void setVisibility(FunctionalizingEntityBean entity, UserBean user)
+	public void retrieveVisibility(FunctionalizingEntityBean entity, UserBean user)
 			throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileService();
 			for (LabFileBean file : entity.getFiles()) {
-				fileService.setVisiblity(file, user);
+				fileService.retrieveVisiblity(file, user);
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for functionalizing entity "
@@ -382,12 +382,12 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public void setVisibility(ChemicalAssociationBean assoc, UserBean user)
+	public void retrieveVisibility(ChemicalAssociationBean assoc, UserBean user)
 			throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileService();
 			for (LabFileBean file : assoc.getFiles()) {
-				fileService.setVisiblity(file, user);
+				fileService.retrieveVisiblity(file, user);
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for chemical association "
