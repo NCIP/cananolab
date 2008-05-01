@@ -953,6 +953,36 @@ img.img { /* for images that need a border */
 	border-left: 1px solid #5c5c5c;	
 }
 
+.assocEleBlock {
+	border: 1px solid #5c5c5c;
+	width: 240px;
+	background-color: white;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.assocEleBlock ul li {
+	margin: 10px 10px 10px 10px;
+}
+
+#assocEleBlockA {
+	float: left;
+	margin-left: 15px;
+}
+
+#assocEleBlockB {
+	float: left;
+}
+
+#assocEleLinkBlock {
+	float: left;
+	width: 150px;
+	margin: 50px 20px 0 20px;
+	text-align: center;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
 .indented0 {
 	padding-left: 3pt;
 }

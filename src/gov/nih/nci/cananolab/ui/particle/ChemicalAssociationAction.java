@@ -77,6 +77,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.setAttribute("particleEntities", particleEntitites);
 		request.getSession().setAttribute("functionalizingEntitites",
 				functionalizingEntitites);
+		
+		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,

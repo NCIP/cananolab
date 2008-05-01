@@ -14,6 +14,7 @@
 			<include method="getAntibodyIsotypeOptions" />
 			<include method="getWallTypeOptions" />
 			<include method="getAssociatedElementOptions" />
+			<include method="getAssociatedComposingElements" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">
@@ -22,5 +23,13 @@
 			<include method="getInstrumentAbbreviation" />
 			<include method="getDerivedDatumValueUnits" />
 		</create>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean">
+			<param name="include" value="dataId, dataDisplayType" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
+			<param name="include" value="displayName, domainComposingElementId" />
+		</convert>
 	</allow>
 </dwr>
