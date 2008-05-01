@@ -73,22 +73,13 @@
 									</td>
 								</tr>
 								<c:if
-									test="${!empty submitReportForm.map.file.domainReport.uri }">
-									<c:choose>
-										<c:when
-											test="${submitReportForm.map.file.domainReport.uriExternal}">
-											<c:set var="target" value="pop" />
-										</c:when>
-										<c:otherwise>
-											<c:set var="target" value="_self" />
-										</c:otherwise>
-									</c:choose>
+									test="${!empty submitReportForm.map.file.domainReport.uri }">								
 									<tr>
 										<td class="completeLabel" colspan="4">
 											<strong>Submitted Report</strong> &nbsp;&nbsp;
 											<a
 												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}"
-												target="${target}">
+												target="${submitReportForm.map.file.urlTarget}">
 												${submitReportForm.map.file.domainReport.uri}</a>
 											<html:hidden property="file.domainReport.uri" />
 										</td>
@@ -183,7 +174,11 @@
 															onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
-														<html:submit />
+														<c:if test="${!empty particleId}">
+															<input type="hidden" name="particleId"
+																value="${particleId}">
+														</c:if>
+														<html:submit/>
 													</div>
 												</div>
 											</td>

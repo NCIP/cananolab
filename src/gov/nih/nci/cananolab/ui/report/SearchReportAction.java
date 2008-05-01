@@ -1,19 +1,13 @@
 package gov.nih.nci.cananolab.ui.report;
 
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.PropertyReader;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +27,9 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.2 2008-05-01 19:32:21 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.3 2008-05-01 20:46:09 pansu Exp $ */
 
-public class SearchReportAction extends AbstractDispatchAction {
+public class SearchReportAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
