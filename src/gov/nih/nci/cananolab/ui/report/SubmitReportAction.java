@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.5 2008-05-01 20:46:09 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.6 2008-05-01 22:22:13 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -114,7 +114,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		ReportService reportService = new ReportService();
 		ReportBean reportBean = reportService.findReportById(reportId);
 		FileService fileService = new FileService();
-		fileService.retrieveVisiblity(reportBean, user);
+		fileService.retrieveVisibility(reportBean, user);
 		theForm.set("file", reportBean);
 		setLookups(request);
 		// if particleId is available direct to particle specific page
@@ -136,7 +136,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		ReportService reportService = new ReportService();
 		ReportBean reportBean = reportService.findReportById(reportId);
 		FileService fileService = new FileService();
-		fileService.retrieveVisiblity(reportBean, user);
+		fileService.retrieveVisibility(reportBean, user);
 		theForm.set("file", reportBean);
 		setLookups(request);
 		// if particleId is available direct to particle specific page

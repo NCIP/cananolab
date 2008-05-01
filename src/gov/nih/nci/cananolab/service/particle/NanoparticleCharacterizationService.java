@@ -262,7 +262,7 @@ public class NanoparticleCharacterizationService {
 						&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
 					for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 							.getDerivedBioAssayDataList()) {
-						fileService.retrieveVisiblity(derivedBioAssayDataBean
+						fileService.retrieveVisibility(derivedBioAssayDataBean
 								.getLabFileBean(), user);
 						Map<String, String> datumMap = new HashMap<String, String>();
 						for (DerivedDatum data : derivedBioAssayDataBean
@@ -308,7 +308,7 @@ public class NanoparticleCharacterizationService {
 			FileService fileService = new FileService();
 			for (DerivedBioAssayDataBean bioAssayData : charBean
 					.getDerivedBioAssayDataList()) {
-				fileService.retrieveVisiblity(bioAssayData.getLabFileBean(), user);
+				fileService.retrieveVisibility(bioAssayData.getLabFileBean(), user);
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "
