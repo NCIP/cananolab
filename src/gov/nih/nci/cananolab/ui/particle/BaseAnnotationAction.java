@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.report.InitReportSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -66,6 +67,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (particleId == null) {
 			particleId = theForm.getString("particleId");
 		}
+		InitReportSetup.getInstance().getReportCategories(request);
 		return InitNanoparticleSetup.getInstance().getDataTree(particleId,
 				request);
 	}
