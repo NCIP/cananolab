@@ -45,7 +45,10 @@
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.polymer.crosslinked" />
+						<html:select property="entity.polymer.crosslinked">
+							<option value=""></option>
+							<html:options name="booleanChoices" />
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.polymer.crosslinked}&nbsp;

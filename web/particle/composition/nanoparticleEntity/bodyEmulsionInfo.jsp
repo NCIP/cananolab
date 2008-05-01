@@ -19,8 +19,10 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.emulsion.polymerized"
-							styleId="initiator" />
+						<html:select property="entity.emulsion.polymerized">
+							<option value=""></option>
+							<html:options name="booleanChoices" />
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.emulsion.polymerized}&nbsp;

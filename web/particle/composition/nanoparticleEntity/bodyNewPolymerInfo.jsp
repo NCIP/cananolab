@@ -25,7 +25,15 @@
 				<strong>Is Cross Linked</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.polymer.crosslinked" />
+				<select name="entity.polymer.crosslinked">
+					<option value=""></option>
+					<option value="true">
+						true
+					</option>
+					<option value="false">
+						false
+					</option>
+				</select>
 			</td>
 		</tr>
 	</tbody>

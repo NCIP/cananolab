@@ -81,7 +81,7 @@
 				<td class="rightLabel" valign="top" colspan="3">
 					<html:textarea
 						property="entity.composingElements[${param.compEleInd}].inherentFunctions[${ifInd}].description"
-						rows="1" cols="30" />
+						rows="1" cols="50" />
 					&nbsp;
 				</td>
 

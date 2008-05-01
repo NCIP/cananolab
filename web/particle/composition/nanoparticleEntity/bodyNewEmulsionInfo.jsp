@@ -13,7 +13,11 @@
 				<strong>Is Polymerized</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.emulsion.polymerized" id="initiator" />
+				<select name="entity.emulsion.polymerized">
+							<option value=""></option>
+							<option value="true">true</option>
+							<option value="false">false</option>
+				</select>
 			</td>
 			<td class="label">
 				<strong>Polymer Name</strong>

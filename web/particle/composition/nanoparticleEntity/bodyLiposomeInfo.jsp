@@ -32,7 +32,10 @@
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.liposome.polymerized" />
+						<html:select property="entity.liposome.polymerized">
+							<option value=""></option>
+							<html:options name="booleanChoices" />
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.liposome.polymerized}&nbsp;

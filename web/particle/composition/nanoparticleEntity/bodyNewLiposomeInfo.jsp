@@ -19,7 +19,15 @@
 				<strong>Is Polymerized</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.liposome.polymerized" />
+				<select name="entity.liposome.polymerized">
+					<option value=""></option>
+					<option value="true">
+						true
+					</option>
+					<option value="false">
+						false
+					</option>
+				</select>
 			</td>
 		</tr>
 	</tbody>
