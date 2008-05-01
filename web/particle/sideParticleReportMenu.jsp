@@ -16,10 +16,8 @@
 		
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">REPORTS</a>
-
 			<ul class="sublist_4" style="${reportDisplay}">
-				<c:forEach var="reportDisplayType" items="${reportTypes}">
-					
+				<c:forEach var="reportDisplayType" items="${reportCategories}">					
 					<li>
 						<a href="#" class="sublist_4">${reportDisplayType}</a>
 						<ul class="sublist_5" style="${reportDisplay}">
@@ -29,7 +27,7 @@
 									<c:param name="page" value="0" />
 									<c:param name="dispatch" value="${dispatchValue}" />
 									<c:param name="particleId" value="${particleId}" />
-									<c:param name="dataId" value="${dataLinkBean.dataId}" />
+									<c:param name="fileId" value="${dataLinkBean.dataId}" />
 									<c:param name="submitType"
 										value="${reportDisplayType}" />
 								</c:url>
