@@ -9,7 +9,7 @@
 		<tr>
 			<td>
 				<h4>
-					${particleName} Sample Comosition - Functionalizing Entity
+					${particleName} Sample Composition - Functionalizing Entity
 				</h4>
 			</td>
 			<td align="right" width="15%">
@@ -230,13 +230,7 @@
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
 									<tr>
-										<td valign="bottom">
-											<a href="#"
-												onclick="javascript:addComponent(functionalizingEntityForm, 'functionalizingEntity', 'addFile'); return false;">
-												<span class="addLink">Add File</span> </a>
-										</td>
 										<td id="fileTd">
-
 											<logic:iterate name="functionalizingEntityForm"
 												property="entity.files" id="entityFile" indexId="fileInd">
 												<jsp:include
