@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.2 2008-05-01 05:32:45 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.3 2008-05-01 06:25:41 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -54,10 +54,11 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		ReportService service = new ReportService();
 
 		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-		byte[] fileData = null;
-		if (uploadedFile != null) {
+		fileName = uploadedFile.getFileName();
+		//if no report has been uploaded
+		byte[] fileData=null;
+		if (fileName.length() > 0) {
 			fileData = uploadedFile.getFileData();
-			fileName = uploadedFile.getFileName();
 			String fileUri = InitSetup.getInstance().getFileUriFromFormFile(
 					uploadedFile, CaNanoLabConstants.FOLDER_REPORT, null, null);
 			reportBean.getDomainReport().setName(fileName);
