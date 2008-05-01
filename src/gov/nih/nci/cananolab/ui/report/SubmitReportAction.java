@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.1 2008-04-30 22:11:37 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.2 2008-05-01 05:32:45 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.report.ReportService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
@@ -64,10 +65,11 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		}
 		service.saveReport((Report) reportBean.getDomainReport(), reportBean
 				.getParticleNames(), fileData);
-		// display default visible groups
-		if (reportBean.getVisibilityGroups().length == 0) {
-			reportBean.setVisibilityGroups(CaNanoLabConstants.VISIBLE_GROUPS);
-		}
+		// set visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		authService.assignVisibility(reportBean.getDomainReport().getId()
+				.toString(), reportBean.getVisibilityGroups());
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg1 = new ActionMessage("message.submitReport.secure",
@@ -105,7 +107,7 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		ReportService reportService = new ReportService();
 		ReportBean reportBean = reportService.findReportById(reportId);
 		FileService fileService = new FileService();
-		fileService.setVisiblity(reportBean, user);
+		fileService.retrieveVisiblity(reportBean, user);
 		theForm.set("file", reportBean);
 		setLookups(request);
 		return mapping.getInputForward();

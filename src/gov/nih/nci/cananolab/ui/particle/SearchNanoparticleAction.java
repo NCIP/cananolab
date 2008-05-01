@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.13 2008-04-30 22:32:29 cais Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.14 2008-05-01 05:32:45 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -91,7 +91,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
 		// set visibility
 		for (ParticleBean particle : particles) {
-			service.setVisibility(particle, user);
+			service.retrieveVisibility(particle, user);
 			if (!particle.isHidden()) {
 				filteredParticles.add(particle);
 			}
