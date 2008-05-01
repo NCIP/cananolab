@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.30 2008-05-01 20:46:40 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.31 2008-05-01 22:21:13 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -64,7 +64,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 
 	private void setLookups(HttpServletRequest request) throws Exception {
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
-		InitCompositionSetup.getInstance().setNanoparticleEntityDropdowns(request);		
+		InitCompositionSetup.getInstance().setNanoparticleEntityDropdowns(
+				request);
 	}
 
 	/**
@@ -85,6 +86,35 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		setupParticle(theForm, request);
 		setLookups(request);
 		return mapping.getInputForward();
+	}
+
+	private void setupAnnotation(ActionForm form, HttpServletRequest request)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupParticle(theForm, request);
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+		String entityId = request.getParameter("dataId");
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleEntityBean entityBean = compService
+				.findNanoparticleEntityById(entityId);
+		compService.retrieveVisibility(entityBean, user);
+		String entityType = InitSetup.getInstance().getDisplayName(
+				entityBean.getClassName(), session.getServletContext());
+		entityBean.setType(entityType);
+		// set composing element function type
+		for (ComposingElementBean compElementBean : entityBean
+				.getComposingElements()) {
+			for (FunctionBean functionBean : compElementBean
+					.getInherentFunctions()) {
+				String functionType = InitSetup.getInstance().getDisplayName(
+						functionBean.getClassName(),
+						session.getServletContext());
+				functionBean.setType(functionType);
+			}
+		}
+		theForm.set("entity", entityBean);
+		setLookups(request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -116,6 +146,12 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		theForm.set("entity", entityBean);
 		setLookups(request);
 		return mapping.getInputForward();
+	}
+
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward addComposingElement(ActionMapping mapping,
@@ -276,9 +312,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.get("entity");
 		entityBean.setDomainEntity();
 		compositionService.deleteNanoparticleEntity(entityBean
-				.getDomainEntity());		
+				.getDomainEntity());
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.deleteNanoparticleEntity");
+		ActionMessage msg = new ActionMessage(
+				"message.deleteNanoparticleEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
