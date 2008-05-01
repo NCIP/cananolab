@@ -25,6 +25,7 @@
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.fullerene.averageDiameter}&nbsp;
 					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Average Diameter Unit</strong>
@@ -33,11 +34,12 @@
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:text property="entity.fullerene.averageDiameterUnit"
-							styleId="averageDiameter" />
+							styleId="averageDiameter" value="nm" size="6" />
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.fullerene.averageDiameterUnit}&nbsp;
 					</c:otherwise>
+				</c:choose>
 			</td>
 			<td class="label">
 				<strong>Number of Carbons</strong>
@@ -51,6 +53,7 @@
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.fullerene.numberOfCarbon}&nbsp;
 					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 	</tbody>
