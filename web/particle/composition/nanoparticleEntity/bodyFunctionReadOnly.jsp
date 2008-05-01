@@ -35,7 +35,7 @@
 					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].description}&nbsp;
 					&nbsp;
 				</td>
-				<td class="label">
+				<td class="rightLabel" colspan="2">
 					<c:choose>
 						<c:when
 							test="${nanoparticleEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">

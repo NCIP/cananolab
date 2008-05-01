@@ -116,13 +116,13 @@
 															<td class="leftLabel" valign="top">
 																<strong>Molecular Formula Type</strong>
 															</td>
-															<td class="labelWithTop" valign="top">
+															<td class="label" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}&nbsp;
 															</td>
-															<td class="labelWithTop" valign="top">
+															<td class="label" valign="top">
 																<strong>Molecular Formula</strong>
 															</td>
-															<td class="rightLabelWithTop" valign="top">
+															<td class="rightLabel" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}&nbsp;
 															</td>
 														</tr>
@@ -130,13 +130,13 @@
 															<td class="leftLabel" valign="top">
 																<strong>Value</strong>
 															</td>
-															<td class="labelWithTop" valign="top">
+															<td class="label" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}&nbsp;
 															</td>
-															<td class="labelWithTop" valign="top">
+															<td class="label" valign="top">
 																<strong>Unit</strong>
 															</td>
-															<td class="rightLabelWithTop" valign="top">
+															<td class="rightLabel" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}&nbsp;
 															</td>
 														</tr>
