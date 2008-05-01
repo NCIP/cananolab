@@ -19,6 +19,8 @@ public class ProtocolFileBean extends LabFileBean {
 	 */
 	public ProtocolFileBean() {
 		super();
+		domainProtocolFile.setUriExternal(domainFile.getUriExternal());
+		domainProtocolFile.setProtocol(new Protocol());
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {

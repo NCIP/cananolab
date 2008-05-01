@@ -22,7 +22,7 @@ public class ReportBean extends LabFileBean {
 	 */
 	public ReportBean() {
 		super();
-		domainReport = new Report();
+		domainReport.setUriExternal(domainFile.getUriExternal());
 	}
 
 	public ReportBean(Report report) {
