@@ -8,7 +8,7 @@
 		<td>
 			<h3>
 				<br>
-				Report File
+				Report
 			</h3>
 		</td>
 		<td align="right" width="15%">
@@ -42,13 +42,13 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>File Name</strong>
+							<strong>File URL</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<a
 								href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}"
-								target="{submitReportForm.map.file.urlTarget}"> <bean:write
-									name="submitReportForm" property="file.displayName" /> </a>&nbsp;
+								target="${submitReportForm.map.file.urlTarget}"> <bean:write
+									name="submitReportForm" property="file.domainReport.uri" /> </a>&nbsp;
 						</td>
 					</tr>
 					<tr>
