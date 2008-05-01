@@ -130,4 +130,11 @@ public class ChemicalAssociationBean {
 		this.createdBy = createdBy;
 	}
 
+	public void addFile() {
+		files.add(new LabFileBean());
+	}
+
+	public void removeFile(int ind) {
+		files.remove(ind);
+	}
 }
