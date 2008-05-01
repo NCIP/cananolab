@@ -176,14 +176,61 @@ function radLinkOrUpload(radioIndex, fileIndex) {
 	}
 }
 
-function getAssociatedElementOptions(entityTypeEleId, elementDropdownId) {
-	var entityTypeValue = dwr.util.getValue(entityTypeEleId);
-	
-		CompositionManager.getAntibodySpeciesOptions(entityTypeValue, function(data) {
-			
-			dwr.util.removeAllOptions(elementDropdownId);
-    		dwr.util.addOptions(elementDropdownId, data, "dataId", "dataDisplayType");
+function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId) {
+	var compositionType = dwr.util.getValue(compositionTypeId);
+	var compEle = document.getElementById(compEleId);
+	if(compositionType != "") {
+		CompositionManager.getAssociatedElementOptions(compositionType, function(data) {
+			dwr.util.removeAllOptions(entityTypeId);
+			if(data != null) {
+				dwr.util.addOptions(entityTypeId, ['']);
+				dwr.util.addOptions(entityTypeId, data, "dataId", "dataDisplayType");
+			}
   		});
+  	} else {
+  		dwr.util.removeAllOptions(entityTypeId);
+  	}
+  	
+  	if(compositionType != 'Nanoparticle Entity') {
+  		compEle.style.display = "none";
+  	}
+}
+
+function getAssociatedComposingElements(compositionTypeId, 
+	entityTypeId, compEleTypeId, compEleId) {
+	
+	var compositionType = dwr.util.getValue(compositionTypeId);
+	var compEle = document.getElementById(compEleId);
+	if(compositionType == 'Nanoparticle Entity') {
+		var entityId = dwr.util.getValue(entityTypeId);
+		if(entityId != "") {
+			CompositionManager.getAssociatedComposingElements(entityId, function(data) {
+				dwr.util.removeAllOptions(compEleTypeId);
+				if(data != null) {
+					dwr.util.addOptions(compEleTypeId, data, "domainComposingElementId", "displayName");
+				}
+  			});
+  		}
+  		compEle.style.display = "inline";
+  	} else {
+  		dwr.util.removeAllOptions(compEleTypeId);
+  		compEle.style.display = "none";
+  	}
+  	
+  	return false;
+}
+
+function displayBondType() {
+	var type = document.getElementById("assoType").value;
+	var btTitleEle = document.getElementById("bondTypeTitle");
+	var btLineEle = document.getElementById("bondTypeLine");
+	if(type == "attachment") {
+		btTitleEle.style.display = "inline";
+		btLineEle.style.display = "inline";
+	} else {
+		btTitleEle.style.display = "none";
+		btLineEle.style.display = "none";
+	}
 }
 
 /*

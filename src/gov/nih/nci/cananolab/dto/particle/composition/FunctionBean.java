@@ -86,7 +86,10 @@ public class FunctionBean {
 		this.className = className;
 	}
 
+	private TargetingFunction domainTargetingFunction = new TargetingFunction();
 	public List<TargetBean> getTargets() {
+		
+		/*
 		if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
 			((TargetingFunction) domainFunction).getTargetCollection().clear();
 		} else {
@@ -95,6 +98,18 @@ public class FunctionBean {
 		}
 		for (TargetBean targetBean : targets) {
 			((TargetingFunction) domainFunction).getTargetCollection().add(
+					targetBean.getDomainTarget());
+		}
+		*/
+		
+		if (domainTargetingFunction.getTargetCollection() != null) {
+			domainTargetingFunction.getTargetCollection().clear();
+		} else {
+			domainTargetingFunction
+					.setTargetCollection(new HashSet<Target>());
+		}
+		for (TargetBean targetBean : targets) {
+			domainTargetingFunction.getTargetCollection().add(
 					targetBean.getDomainTarget());
 		}
 		return targets;

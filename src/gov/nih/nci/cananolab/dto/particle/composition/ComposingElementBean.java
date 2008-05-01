@@ -17,6 +17,9 @@ public class ComposingElementBean {
 	private ComposingElement domainComposingElement = new ComposingElement();
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
+	
+	private String displayName;
+	private String domainComposingElementId; // for bodyChemicalAssociation.jsp
 
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domainComposingElement = composingElement;
@@ -55,4 +58,22 @@ public class ComposingElementBean {
 	public void removeFunction(int ind) {
 		inherentFunctions.remove(ind);
 	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getDomainComposingElementId() {
+		return domainComposingElementId;
+	}
+
+	public void setDomainComposingElementId(String domainComposingElementId) {
+		this.domainComposingElementId = domainComposingElementId;
+	}
+
+	
 }

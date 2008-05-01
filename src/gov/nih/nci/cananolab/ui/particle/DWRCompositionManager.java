@@ -1,10 +1,16 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -198,25 +204,52 @@ public class DWRCompositionManager {
 		}
 		return new String[] { "" };
 	}
-	
+
 	public ParticleDataLinkBean[] getAssociatedElementOptions(String entityType) {
-		
+
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		SortedSet<ParticleDataLinkBean> particleEntitites = null;
-		
+
 		if (entityType.equals("Nanoparticle Entity")) {
-			particleEntitites = 
-				(SortedSet<ParticleDataLinkBean>) request.getSession()
-					.getAttribute("particleEntities");
-			
-		} else if(entityType.equals("Functionalizing Entity")) {
-			particleEntitites = 
-				(SortedSet<ParticleDataLinkBean>) request.getSession()
-					.getAttribute("functionalizingEntitites");
+			particleEntitites = (SortedSet<ParticleDataLinkBean>) request
+					.getSession().getAttribute("particleEntities");
+
+		} else if (entityType.equals("Functionalizing Entity")) {
+			particleEntitites = (SortedSet<ParticleDataLinkBean>) request
+					.getSession().getAttribute("functionalizingEntitites");
 		}
-		
-		return particleEntitites.toArray(new ParticleDataLinkBean [particleEntitites.size()]);
+
+		if (particleEntitites != null && particleEntitites.size() > 0)
+			return particleEntitites
+					.toArray(new ParticleDataLinkBean[particleEntitites.size()]);
+
+		else
+			return null;
+	}
+	
+	public ComposingElementBean [] getAssociatedComposingElements(String nanoparticleEntityId) {
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		try {
+			NanoparticleEntityBean entityBean = compService
+				.findNanoparticleEntityById(nanoparticleEntityId);
+			if(entityBean != null) {
+				List<ComposingElementBean> compBeanList = entityBean.getComposingElements();
+				if(compBeanList != null && compBeanList.size() > 0) {
+					//List<ComposingElement> domainCEList = new ArrayList<ComposingElement>(compBeanList.size());
+					for(ComposingElementBean ce: compBeanList) {
+						ce.setDisplayName(ce.getDomainComposingElement().getType() + ":" +
+								ce.getDomainComposingElement().getName());
+						ce.setDomainComposingElementId(ce.getDomainComposingElement().getId().toString());
+					}
+					return compBeanList.toArray(new ComposingElementBean[compBeanList.size()]);
+				}
+			}
+		} catch(Exception e) {
+			System.out.println("getAssociatedComposingElements exception.");
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

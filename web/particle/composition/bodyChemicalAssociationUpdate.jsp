@@ -29,7 +29,6 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="" id="summary">
-					<tr>
 					<tr class="topBorder">
 						<td class="formTitle" colspan="4">
 							<div align="justify">
@@ -42,11 +41,11 @@
 							<strong>Association Type</strong>
 						</td>
 						<td class="label">
-							<html:select styleId="assoType"
-								property="assoc.type"
-								onchange="javascript:callPrompt('Association Type', 'assoType');">
+							<html:select styleId="assoType" property="assoc.type"
+								onchange="javascript:callPrompt('Association Type', 'assoType');
+											displayBondType();">
 								<option value=""></option>
-								<html:options name="chemicalAssociationTypes"/>
+								<html:options name="chemicalAssociationTypes" />
 								<option value="other">
 									[Other]
 								</option>
@@ -54,35 +53,33 @@
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong style="display:none">Bond Type</Strong>
+							<Strong id="bondTypeTitle" style="display:none">Bond Type</Strong>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							<html:select styleId="bondType" style="display:none"
+							<span id="bondTypeLine" style="display:none"><html:select styleId="bondType"
 								property="assoc.attachment.bondType"
 								onchange="javascript:callPrompt('Bond Type', 'bondType');">
 								<option value=""></option>
-<%--								<html:options name="bondTypes"/>--%>
+								<html:options name="bondTypes"/>
 								<option value="other">
 									[Other]
 								</option>
 							</html:select>
+							</span>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" width="%33">
-							<table width="100%" border="0" align="center" cellpadding="3"
-								cellspacing="0" >
-								<tr>
-									<td class="completeLabelNoBottom">
+						<td class="completeLabel" colspan="4">
+							<div id="assocEleBlockA" class="assocEleBlock">
+								<ul>
+									<li>
 										<strong>Element</strong>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
+									</li>
+									<li>
 										<html:select styleId="compositionTypeA"
 											property="assoc.associatedElementA.compositionType"
-											onchange="getAssociatedElementOptions('compositionTypeA', 'entityTypeA')">
+											onchange="getAssociatedElementOptions('compositionTypeA', 'entityTypeA', 'compEleA')">
 											<option value=""></option>
 											<option value="Nanoparticle Entity">
 												Nanoparticle Entity
@@ -91,51 +88,37 @@
 												Functionalizing Entity
 											</option>
 										</html:select>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
-										&nbsp;
-										<html:select styleId="entityTypeA"
-											property="assoc.associatedElementA.entityId">
-											<option value="">
-											</option>
-										</html:select>
-									</td>
-								</tr>
-								<tr>
-									<td class=completeLabelNoTop>
-										&nbsp;
-										<html:select styleId="compEleTypeA" style="display:none"
-											property="assoc.associatedElementA.composingElement.type"
-											onchange="javascript:callPrompt('Composing Element A', 'compEleTypeA');">
-											<option value=""></option>
-<%--											<html:options name="allComposingElementTypes" />--%>
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
-									</td>
-								</tr>
-							</table>
-							&nbsp;
-						</td>
-						<td class="label" colspan="2" align="center">
-							<strong style="padding-left:20px">Associated With</strong>
-						</td>
-						<td class="rightLabel">
-							<table width="100%" border="1" align="center" cellpadding="3"
-								cellspacing="0" >
-								<tr>
-									<td class="completeLabelNoBottom">
+									</li>
+									<li>
+										<span class="indented1" id="entityA"><html:select
+												styleId="entityTypeA"
+												property="assoc.associatedElementA.entityId"
+												onchange="getAssociatedComposingElements('compositionTypeA', 'entityTypeA', 'compEleTypeA', 'compEleA')">
+												<option value="">
+												</option>
+											</html:select> </span>
+									</li>
+									<li>
+										<span class="indented3" id="compEleA" style="display:none">
+											<html:select styleId="compEleTypeA"
+												property="assoc.associatedElementA.composingElement.id">
+												<option value=""></option>
+											</html:select> </span>
+									</li>
+								</ul>
+							</div>
+							<div id="assocEleLinkBlock" class="assocEleBlock">
+								<strong>associated with</strong>
+							</div>
+							<div id="assocEleBlockB" class="assocEleBlock">
+								<ul>
+									<li>
 										<strong>Element</strong>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
+									</li>
+									<li>
 										<html:select styleId="compositionTypeB"
 											property="assoc.associatedElementB.compositionType"
-											onchange="getAssociatedElementOptions('compositionTypeB', 'entityTypeB')">
+											onchange="getAssociatedElementOptions('compositionTypeB', 'entityTypeB', 'compEleB')">
 											<option value="" />
 											<option value="Nanoparticle Entity">
 												Nanoparticle Entity
@@ -144,34 +127,25 @@
 												Functionalizing Entity
 											</option>
 										</html:select>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
-										&nbsp;
-										<html:select styleId="entityTypeB"
-											property="assoc.associatedElementB.entityId">
-											<option value="">
-											</option>
-										</html:select>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTop">
-										&nbsp;
-										<html:select styleId="compEleTypeB" style="display:none"
-											property="assoc.associatedElementB.composingElement.type"
-											onchange="javascript:callPrompt('Composing Element B', 'compEleTypeB');">
-											<option value=""></option>
-<%--											<html:options name="allComposingElementTypes" />--%>
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
-									</td>
-								</tr>
-							</table>
-							&nbsp;
+									</li>
+									<li>
+										<span class="indented1" id="entityB"><html:select
+												styleId="entityTypeB"
+												property="assoc.associatedElementB.entityId"
+												onchange="getAssociatedComposingElements('compositionTypeB', 'entityTypeB', 'compEleTypeB', 'compEleB')">
+												<option value="">
+												</option>
+											</html:select> </span>
+									</li>
+									<li>
+										<span class="indented3" id="compEleB" style="display:none"><html:select
+												styleId="compEleTypeB"
+												property="assoc.associatedElementB.composingElement.id">
+												<option value=""></option>
+											</html:select> </span>
+									</li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 
@@ -180,8 +154,7 @@
 							<strong>Association Description</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<html:textarea property="assoc.description" rows="2"
-								cols="60" />
+							<html:textarea property="assoc.description" rows="2" cols="60" />
 						</td>
 					</tr>
 				</table>
@@ -210,21 +183,27 @@
 
 											<logic:iterate name="chemicalAssociationForm"
 												property="assoc.files" id="assocFile" indexId="fileInd">
-												<jsp:include
-													page="/particle/bodyLoadFileUpdate.jsp">
+												<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="chemicalAssociationForm" />
 													<jsp:param name="action" value="chemicalAssociation" />
 													<jsp:param name="fileBean" value="assoc.files[${fileInd}]" />
-													<jsp:param name="domainFile" value="assoc.files[${fileInd}].domainFile" />
-													<jsp:param name="fileId" value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
-													<jsp:param name="fileUri" value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName" value="${chemicalAssociationForm.map.assoc.files[fileInd].displayName}" />
-													<jsp:param name="fileHidden" value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
-													<jsp:param name="fileExternal" value="${chemicalAssociationForm.map.assoc.files[fileInd].external}" />
-													<jsp:param name="fileImage" value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
+													<jsp:param name="domainFile"
+														value="assoc.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].displayName}" />
+													<jsp:param name="fileHidden"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
+													<jsp:param name="fileExternal"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].external}" />
+													<jsp:param name="fileImage"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
 												</jsp:include>
-												
+
 												<br>
 											</logic:iterate>
 										</td>
@@ -268,10 +247,10 @@
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-<%--												<html:hidden property="particle.sampleId" />--%>
-<%--												<html:hidden property="particle.sampleName" />--%>
-<%--												<html:hidden property="particle.sampleSource" />--%>
-<%--												<html:hidden property="particle.sampleType" />--%>
+												<%--												<html:hidden property="particle.sampleId" />--%>
+												<%--												<html:hidden property="particle.sampleName" />--%>
+												<%--												<html:hidden property="particle.sampleSource" />--%>
+												<%--												<html:hidden property="particle.sampleType" />--%>
 												<html:submit />
 											</div>
 										</div>
@@ -282,7 +261,6 @@
 						</td>
 					</tr>
 				</table>
-
 			</td>
 		</tr>
 	</table>
