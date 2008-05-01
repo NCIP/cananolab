@@ -3,11 +3,13 @@ package gov.nih.nci.cananolab.ui.report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +29,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.3 2008-05-01 20:46:09 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.4 2008-05-01 22:22:21 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -71,9 +73,17 @@ public class SearchReportAction extends BaseAnnotationAction {
 		List<ReportBean> reports = service.findReportsBy(reportTitle,
 				reportCategory, nanoparticleEntityClassNames,
 				functionalizingEntityClassNames, functionClassNames);
-
-		if (reports != null && !reports.isEmpty()) {
-			request.getSession().setAttribute("reports", reports);
+		List<ReportBean> filteredReports = new ArrayList<ReportBean>();
+		// retrieve visibility
+		FileService fileService = new FileService();
+		for (ReportBean report : reports) {
+			fileService.retrieveVisibility(report, user);
+			if (!report.isHidden()) {
+				filteredReports.add(report);
+			}
+		}
+		if (filteredReports != null && !filteredReports.isEmpty()) {
+			request.getSession().setAttribute("reports", filteredReports);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
