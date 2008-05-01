@@ -36,19 +36,21 @@ public class ParticleBean {
 
 	private List<ReportBean> reports = new ArrayList<ReportBean>();
 
+	private SortedSet<String>keywordSet=new TreeSet<String>();
+	
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
 		this.domainParticleSample = particleSample;
-		SortedSet<String> keywordStrs = new TreeSet<String>();
+		
 		if (particleSample.getKeywordCollection() != null) {
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
-				keywordStrs.add(keyword.getName());
+				keywordSet.add(keyword.getName());
 			}
 		}
-		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
+		keywordsStr = StringUtils.join(keywordSet, "\r\n");
 		if (particleSample.getReportCollection() != null) {
 			for (Report report : particleSample.getReportCollection()) {
 				reports.add(new ReportBean(report, false));
@@ -122,5 +124,9 @@ public class ParticleBean {
 
 	public List<ReportBean> getReports() {
 		return reports;
+	}
+
+	public SortedSet<String> getKeywordSet() {
+		return keywordSet;
 	}
 }
