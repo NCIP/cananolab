@@ -14,7 +14,9 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
  */
 public class ReportBean extends LabFileBean {
 	private String[] particleNames;
-	private Report domainReport=new Report();
+
+	private Report domainReport = new Report();
+
 	/**
 	 * 
 	 */
@@ -34,7 +36,23 @@ public class ReportBean extends LabFileBean {
 			particleNames[i] = particle.getName();
 			i++;
 		}
-		domainReport=(Report)domainFile;
+		domainReport = (Report) domainFile;
+	}
+
+	public ReportBean(Report report, boolean loadSamples) {
+		super(report);
+		this.domainFile = report;
+		if (loadSamples) {
+			particleNames = new String[report.getNanoparticleSampleCollection()
+					.size()];
+			int i = 0;
+			for (NanoparticleSample particle : report
+					.getNanoparticleSampleCollection()) {
+				particleNames[i] = particle.getName();
+				i++;
+			}
+		}
+		domainReport = (Report) domainFile;
 	}
 
 	public boolean equals(Object obj) {
