@@ -15,6 +15,20 @@
 				<arg position="0" key="submitReportForm.file.category"
 					bundle="report" />
 			</field>
+			<field property="file.externalUrl" page="2"
+				depends="validwhen">
+				<arg position="0" key="submitReportForm.externalUrl"
+					bundle="report" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((file.domainReport.uri!=null) or
+						((*this*!=null) and
+						(file.domainReport.uriExternal=="true"))) or
+						(file.domainReport.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
 			<field property="uploadedFile" page="2"
 				depends="validwhen">
 				<arg position="0" key="submitReportForm.reportFile"
@@ -22,7 +36,10 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((file.domainReport.uri!=null) or (*this*!=null))
+						(((file.domainReport.uri!=null) or
+						((*this*!=null) and
+						(file.domainReport.uriExternal=="false"))) or
+						(file.domainReport.uriExternal=="true"))
 					</var-value>
 				</var>
 			</field>
