@@ -19,6 +19,7 @@
 		<property name="title" type="string" column="title"/>
 		<property name="type" type="string" column="file_type"/>
 		<property name="uri" type="string" column="file_uri"/>
+		<property name="uriExternal" type="boolean" column="is_uri_external"/>		
 		<property name="version" type="string" column="version"/>
 		<!-- Associations mapping for the LabFile class -->
 		<set name="keywordCollection" table="keyword_lab_file" lazy="false" inverse="false">
