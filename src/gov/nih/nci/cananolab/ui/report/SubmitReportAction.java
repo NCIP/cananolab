@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.4 2008-05-01 19:32:21 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.5 2008-05-01 20:46:09 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -14,12 +14,11 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
 
@@ -34,7 +33,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SubmitReportAction extends AbstractDispatchAction {
+public class SubmitReportAction extends BaseAnnotationAction {
 
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -84,6 +83,10 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
+		if (request.getParameter("particleId") != null) {
+			setupDataTree(theForm, request);
+			forward = mapping.findForward("particleSuccess");
+		}
 		return forward;
 	}
 
@@ -114,13 +117,35 @@ public class SubmitReportAction extends AbstractDispatchAction {
 		fileService.retrieveVisiblity(reportBean, user);
 		theForm.set("file", reportBean);
 		setLookups(request);
-		return mapping.getInputForward();
+		// if particleId is available direct to particle specific page
+		String particleId = request.getParameter("particleId");
+		ActionForward forward = mapping.getInputForward();
+		if (particleId != null) {
+			forward = mapping.findForward("particleSubmitReport");
+			request.setAttribute("particleId", particleId);
+		}
+		return forward;
 	}
 
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return setupUpdate(mapping, form, request, response);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String reportId = request.getParameter("fileId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ReportService reportService = new ReportService();
+		ReportBean reportBean = reportService.findReportById(reportId);
+		FileService fileService = new FileService();
+		fileService.retrieveVisiblity(reportBean, user);
+		theForm.set("file", reportBean);
+		setLookups(request);
+		// if particleId is available direct to particle specific page
+		String particleId = request.getParameter("particleId");
+		ActionForward forward = mapping.findForward("view");
+		if (particleId != null) {
+			forward = mapping.findForward("particleViewReport");
+		}
+		return forward;
 	}
 
 	public boolean loginRequired() {
