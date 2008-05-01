@@ -71,6 +71,7 @@ public class ReportService {
 				try {
 					Report dbReport = (Report) appService.load(Report.class,
 							report.getId());
+					//TODO get values from this.
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
