@@ -25,12 +25,14 @@ public class ChemicalAssociationBean {
 
 	private List<LabFileBean> files = new ArrayList<LabFileBean>();
 
-	private AssociatedElementBean associatedElementA;
+	private AssociatedElementBean associatedElementA = new AssociatedElementBean();
 
-	private AssociatedElementBean associatedElementB;
+	private AssociatedElementBean associatedElementB = new AssociatedElementBean();
 
 	private String createdBy;
 
+	public ChemicalAssociationBean() {}
+	
 	public ChemicalAssociationBean(ChemicalAssociation chemicalAssociation) {
 		domainAssociation = chemicalAssociation;
 		if (chemicalAssociation instanceof Attachment) {
