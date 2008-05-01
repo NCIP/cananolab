@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.3 2008-05-01 06:25:41 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.4 2008-05-01 19:32:21 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -43,27 +43,33 @@ public class SubmitReportAction extends AbstractDispatchAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ReportBean reportBean = (ReportBean) theForm.get("file");
+
 		String fileName = null;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (reportBean.getDomainReport().getId() == null) {
 			reportBean.getDomainReport().setCreatedBy(user.getLoginName());
 			reportBean.getDomainReport().setCreatedDate(new Date());
+		}
+		byte[] fileData = null;
+		// if entered external url
+		if (reportBean.getDomainReport().getUriExternal()
+				&& reportBean.getExternalUrl().length() > 0) {
+			reportBean.getDomainReport().setUri(reportBean.getExternalUrl());
+			reportBean.getDomainReport().setName(reportBean.getExternalUrl());
 		} else {
-			fileName = reportBean.getDomainReport().getName();
+			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
+			fileName = uploadedFile.getFileName();
+			// if new report has been uploaded
+			if (fileName.length() > 0) {
+				fileData = uploadedFile.getFileData();
+				String fileUri = InitSetup.getInstance()
+						.getFileUriFromFormFile(uploadedFile,
+								CaNanoLabConstants.FOLDER_REPORT, null, null);
+				reportBean.getDomainReport().setName(fileName);
+				reportBean.getDomainReport().setUri(fileUri);
+			}
 		}
 		ReportService service = new ReportService();
-
-		FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-		fileName = uploadedFile.getFileName();
-		//if no report has been uploaded
-		byte[] fileData=null;
-		if (fileName.length() > 0) {
-			fileData = uploadedFile.getFileData();
-			String fileUri = InitSetup.getInstance().getFileUriFromFormFile(
-					uploadedFile, CaNanoLabConstants.FOLDER_REPORT, null, null);
-			reportBean.getDomainReport().setName(fileName);
-			reportBean.getDomainReport().setUri(fileUri);
-		}
 		service.saveReport((Report) reportBean.getDomainReport(), reportBean
 				.getParticleNames(), fileData);
 		// set visibility
@@ -73,12 +79,9 @@ public class SubmitReportAction extends AbstractDispatchAction {
 				.toString(), reportBean.getVisibilityGroups());
 
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg1 = new ActionMessage("message.submitReport.secure",
-				StringUtils.join(reportBean.getVisibilityGroups(), ", "));
-		ActionMessage msg2 = new ActionMessage("message.submitReport.file",
-				uploadedFile.getFileName());
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg1);
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg2);
+		ActionMessage msg = new ActionMessage("message.submitReport.file",
+				reportBean.getDomainReport().getTitle());
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
 		return forward;
