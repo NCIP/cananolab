@@ -8,18 +8,20 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.Date;
 
 public class AssociatedElementBean {
-	private String childType;
+	private String compositionType; // eg. Nanoparticle Entity, Functionalizing Entity, ...
 
-	private String entityType;
+	private String entityId;
 
 	private String entityClassName;
 
-	private ComposingElement composingElement;
+	private ComposingElement composingElement = new ComposingElement();
 
 	private AssociatedElement domainElement;
 
 	private String createdBy;
 
+	public AssociatedElementBean() {}
+	
 	public AssociatedElementBean(AssociatedElement element) {
 		domainElement = element;
 		if (element instanceof ComposingElement) {
@@ -29,21 +31,25 @@ public class AssociatedElementBean {
 				.getName());
 	}
 
-	public String getChildType() {
-		return childType;
+	public String getCompositionType() {
+		return compositionType;
 	}
 
-	public void setChildType(String childType) {
-		this.childType = childType;
+	public void setCompositionType(String compositionType) {
+		this.compositionType = compositionType;
 	}
 
-	public String getEntityType() {
-		return entityType;
+	public String getEntityId() {
+		return entityId;
 	}
 
-	public void setEntityType(String entityType) {
-		this.entityType = entityType;
+
+
+	public void setEntityId(String entityId) {
+		this.entityId = entityId;
 	}
+
+
 
 	public ComposingElement getComposingElement() {
 		domainElement = composingElement;
