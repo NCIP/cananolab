@@ -53,9 +53,9 @@ public class ReportService {
 				String rootPath = PropertyReader.getProperty(
 						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 						"fileRepositoryDir");
-				String filePath = rootPath + File.separator+report.getUri();
-				fileService.writeFile(fileData, report.getName(), filePath,
-						true);
+				String fullFileName = rootPath + File.separator
+						+ report.getUri();
+				fileService.writeFile(fileData, fullFileName);
 			}
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
