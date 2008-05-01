@@ -86,8 +86,7 @@
 											test="${!empty submitReportForm.map.file.domainReport.uri }">
 											<a
 												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}">
-												<bean:write name="submitReportForm"
-													property="file.displayName" /> </a> ">${submitReportForm.map.file.domainReport.uri}</a>
+												${submitReportForm.map.file.domainReport.uri}</a>
 										</c:if>
 									</td>
 								</tr>
