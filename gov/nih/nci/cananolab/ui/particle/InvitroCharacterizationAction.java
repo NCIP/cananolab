@@ -42,12 +42,11 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
 		charBean.setDomainChar();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
-						.getDomainChar(), user.getLoginName());
+						.getDomainChar());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addInvitroCharacterization");
@@ -65,7 +64,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 				(InvitroCharacterization) chara);
 		// set file visibility
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		charService.setVisiblity(charBean, user);
+		charService.retrieveVisiblity(charBean, user);
 		theForm.set("achar", charBean);
 		return charBean;
 	}

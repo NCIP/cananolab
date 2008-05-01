@@ -281,8 +281,8 @@ public class FileService {
 		}
 	}
 
-	// set file visibility
-	public void setVisiblity(LabFileBean fileBean, UserBean user)
+	// retrieve file visibility
+	public void retrieveVisiblity(LabFileBean fileBean, UserBean user)
 			throws FileException {
 		try {
 			AuthorizationService auth = new AuthorizationService(

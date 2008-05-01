@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -224,12 +223,12 @@ public class InitSetup {
 
 		if (particleName != null && submitType != null
 				&& folderType.equals(CaNanoLabConstants.FOLDER_PARTICLE)) {
-			prefix += particleName + File.separator;
+			prefix += particleName + "/";
 			prefix += StringUtils.getOneWordLowerCaseFirstLetter(submitType);
 		}
 		String timestamp = StringUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS");
 
-		return prefix + File.separator + timestamp + "_" + file.getFileName();
+		return prefix + "/" + timestamp + "_" + file.getFileName();
 	}
 }
