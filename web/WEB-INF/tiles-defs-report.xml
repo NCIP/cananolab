@@ -23,6 +23,7 @@
 	<definition name="report.submitReport" extends="calab.home">
 		<put name="calabContent" value="/report/bodySubmitReport.jsp" />
 		<put name="menu" value="reports" />
+		<put name="onloadJavascript" value="radLinkOrUpload()"/>
 	</definition>
 	<!-- definition for the search report page -->
 	<definition name="report.searchReport" extends="calab.home">
