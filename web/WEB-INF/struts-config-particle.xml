@@ -110,9 +110,8 @@
 				key="error.duplicateNanoparticleSample"
 				path="particle.submitNanoparticleSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
-			<forward name="success" path="particle.generalInfo" />
 			<forward name="view" path="particle.generalInfo" />
-			<forward name="update" path="particle.generalInfo" />
+			<forward name="update" path="particle.updateNanoparticleSample" />
 			<forward name="input"
 				path="particle.submitNanoparticleSample" />
 		</action>
@@ -141,7 +140,8 @@
 		<action input="input" name="chemicalAssociationForm"
 			parameter="dispatch" path="/chemicalAssociation"
 			type="gov.nih.nci.cananolab.ui.particle.ChemicalAssociationAction">
-			<forward name="input" path="particle.composition.chemicalAssociation" />
+			<forward name="input"
+				path="particle.composition.chemicalAssociation" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
 		<action input="input" name="physicalCharacterizationForm"
