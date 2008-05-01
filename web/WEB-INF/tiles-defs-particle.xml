@@ -23,7 +23,7 @@
 			value="searchNanoparticle.do?dispatch=setup" />
 	</definition>
 
-	<!-- definition for the submit a new nanoparticle sample page -->
+	<!-- definition for submit a new nanoparticle sample page -->
 	<definition name="particle.submitNanoparticleSample"
 		extends="calab.home">
 		<put name="calabContent"
@@ -34,6 +34,21 @@
 	<definition name="particle.annotationHome" extends="calab.home">
 		<put name="calabSidemenu"
 			value="/particle/sideParticleMenu.jsp" />
+		<put name="menu" value="nanoparticles" />
+	</definition>
+
+	<!-- definition for the particle general info page -->
+	<definition name="particle.updateNanoparticleSample"
+		extends="particle.annotationHome">
+		<put name="calabContent"
+			value="/particle/bodySubmitNanoparticleSample.jsp" />
+		<put name="menu" value="nanoparticles" />
+	</definition>
+
+	<definition name="particle.generalInfo"
+		extends="particle.annotationHome">
+		<put name="calabContent"
+			value="/particle/bodyNanoparticleSampleGeneralInfo.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
@@ -76,14 +91,6 @@
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/composition/compositionFile.jsp" />
-	</definition>
-
-	<!-- definition for the particle general info view page -->
-	<definition name="particle.generalInfo"
-		extends="particle.annotationHome">
-		<put name="calabContent"
-			value="/particle/bodySubmitNanoparticleSample.jsp" />
-		<put name="menu" value="nanoparticles" />
 	</definition>
 
 	<definition name="particle.physicalCharacterization"
