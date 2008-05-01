@@ -21,7 +21,7 @@
 			</td>
 			<td class="label">
 				<input type="text" name="entity.fullerene.averageDiameterUnit"
-					id="averageDiameter" />
+					value="nm" size="6" id="averageDiameter" />
 			</td>
 			<td class="label">
 				<strong>Number of Carbons</strong>
