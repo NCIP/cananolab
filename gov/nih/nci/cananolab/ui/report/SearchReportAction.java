@@ -33,7 +33,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.1 2008-04-30 22:11:37 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.2 2008-05-01 19:32:21 pansu Exp $ */
 
 public class SearchReportAction extends AbstractDispatchAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -105,50 +105,6 @@ public class SearchReportAction extends AbstractDispatchAction {
 
 	public boolean loginRequired() {
 		return false;
-	}
-
-	/**
-	 * Download action to handle report downloading and viewing
-	 * 
-	 * @param
-	 * @return
-	 */
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-
-		String fileId = request.getParameter("fileId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService service = new FileService();
-		LabFileBean fileBean = service.findFile(fileId, user);
-		String fileRoot = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File dFile = new File(fileRoot + File.separator
-				+ fileBean.getDomainFile().getUri());
-		if (dFile.exists()) {
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename="
-					+ fileBean.getDomainFile().getName());
-			response.setHeader("cache-control", "Private");
-
-			java.io.InputStream in = new FileInputStream(dFile);
-			java.io.OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[32768];
-
-			int numRead = 0;
-			while ((numRead = in.read(bytes)) > 0) {
-				out.write(bytes, 0, numRead);
-			}
-			out.close();
-		} else {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("error.noReportFile");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			return mapping.findForward("reportMessage");
-		}
-		return null;
 	}
 
 	public boolean canUserExecute(UserBean user)
