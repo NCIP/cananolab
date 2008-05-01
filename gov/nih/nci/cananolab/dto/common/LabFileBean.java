@@ -38,11 +38,12 @@ public class LabFileBean {
 
 	private String keywordsStr;
 
-	private boolean external = false;
-
 	private String fullPath;
 
+	private String externalUrl;
+	
 	public LabFileBean() {
+		domainFile.setUriExternal(false);
 	}
 
 	public LabFileBean(LabFile labFile) {
@@ -54,6 +55,9 @@ public class LabFileBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
+		if (labFile.getUriExternal()) {
+			externalUrl=labFile.getUri();
+		}
 	}
 
 	public String[] getVisibilityGroups() {
@@ -112,10 +116,7 @@ public class LabFileBean {
 	}
 
 	public boolean isImage() {
-		// if file is external don't show image either
-		if (getDomainFile().getName() != null && !isExternal()) {
-			image = StringUtils.isImgFileExt(getDomainFile().getName());
-		}
+		image = StringUtils.isImgFileExt(getDomainFile().getUri());
 		return image;
 	}
 
@@ -131,25 +132,23 @@ public class LabFileBean {
 		this.keywordsStr = keywordsStr;
 	}
 
-	public boolean isExternal() {
-		if (getDomainFile().getUri() != null
-				&& getDomainFile().getUri().startsWith("http")) {
-			external = true;
-		} else {
-			external = false;
-		}
-		return external;
-	}
-
 	public String getFullPath() {
-		if (!isExternal()) {
+		if (!getDomainFile().getUriExternal()) {
 			String fileRoot = PropertyReader
 					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
 			fullPath = fileRoot + File.separator + getDomainFile().getUri();
 		} else {
-			fullPath = null;
+			fullPath = getDomainFile().getUri();
 		}
 		return fullPath;
+	}
+
+	public String getExternalUrl() {
+		return externalUrl;
+	}
+
+	public void setExternalUrl(String externalUrl) {
+		this.externalUrl = externalUrl;
 	}
 }
