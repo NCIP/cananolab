@@ -121,7 +121,8 @@ INSERT INTO canano.lab_file
 	title,
 	description,
 	comments,
-	file_type
+	file_type,
+	is_uri_external
 )
 SELECT file_pk_id,
 	file_name,
@@ -133,7 +134,8 @@ SELECT file_pk_id,
 	title,
 	description,
 	comments,
-	type
+	type,
+	0
 FROM cananolab.lab_file
 ;
 
