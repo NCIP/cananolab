@@ -69,9 +69,16 @@ public class ReportService {
 			}
 			if (report.getId() != null) {
 				try {
-					Report dbReport = (Report) appService.load(Report.class,
+					Report dbReport = (Report) appService.get(Report.class,
 							report.getId());
-					//TODO get values from this.
+					// don't change createdBy and createdDate it is already
+					// persisted
+					report.setCreatedBy(dbReport.getCreatedBy());
+					report.setCreatedDate(dbReport.getCreatedDate());
+					// load fileName and uri if no new data has been uploaded or no new url has been entered
+					if (fileData == null || !report.getUriExternal()) {
+						report.setName(dbReport.getName());						
+					}
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
