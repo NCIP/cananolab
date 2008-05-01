@@ -23,25 +23,14 @@ public class LabFileBean {
 
 	private String visibilityStr;
 
-	private byte[] fileContent;
-
-	/*
-	 * name to be displayed as a part of the drop-down list
-	 */
-	private String displayName;
-
-	private String timeStampedName;
-
 	private boolean hidden = false;
 
 	private boolean image = false;
 
 	private String keywordsStr;
 
-	private String fullPath;
-
 	private String externalUrl;
-	
+
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
 	}
@@ -56,7 +45,7 @@ public class LabFileBean {
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
 		if (labFile.getUriExternal()) {
-			externalUrl=labFile.getUri();
+			externalUrl = labFile.getUri();
 		}
 	}
 
@@ -69,13 +58,7 @@ public class LabFileBean {
 	}
 
 	public String getDisplayName() {
-		if (this.domainFile.getUri() != null) {
-			this.displayName = this.domainFile.getUri().replaceAll(
-					"/decompressedFiles", "");
-		} else {
-			this.displayName = "";
-		}
-		return this.displayName;
+		return getDomainFile().getTitle();
 	}
 
 	public String getVisibilityStr() {
@@ -83,28 +66,8 @@ public class LabFileBean {
 		return this.visibilityStr;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
 	public void setVisibilityStr(String visibilityStr) {
 		this.visibilityStr = visibilityStr;
-	}
-
-	public byte[] getFileContent() {
-		return this.fileContent;
-	}
-
-	public void setFileContent(byte[] fileContent) {
-		this.fileContent = fileContent;
-	}
-
-	public String getTimeStampedName() {
-		return this.timeStampedName;
-	}
-
-	public void setTimeStampedName(String timeStampedName) {
-		this.timeStampedName = timeStampedName;
 	}
 
 	public boolean isHidden() {
@@ -137,11 +100,10 @@ public class LabFileBean {
 			String fileRoot = PropertyReader
 					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
-			fullPath = fileRoot + File.separator + getDomainFile().getUri();
+			return fileRoot + File.separator + getDomainFile().getUri();
 		} else {
-			fullPath = getDomainFile().getUri();
+			return getDomainFile().getUri();
 		}
-		return fullPath;
 	}
 
 	public String getExternalUrl() {
@@ -150,5 +112,12 @@ public class LabFileBean {
 
 	public void setExternalUrl(String externalUrl) {
 		this.externalUrl = externalUrl;
+	}
+
+	public String getUrlTarget() {
+		if (getDomainFile().getUriExternal()) {
+			return "pop";
+		}
+		return "_self";
 	}
 }
