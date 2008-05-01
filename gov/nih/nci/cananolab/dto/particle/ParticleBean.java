@@ -51,7 +51,7 @@ public class ParticleBean {
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
 		if (particleSample.getReportCollection() != null) {
 			for (Report report : particleSample.getReportCollection()) {
-				reports.add(new ReportBean(report));
+				reports.add(new ReportBean(report, false));
 			}
 		}
 	}
