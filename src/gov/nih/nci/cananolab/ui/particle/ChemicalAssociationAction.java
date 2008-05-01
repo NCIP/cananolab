@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.Map;
