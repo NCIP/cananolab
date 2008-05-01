@@ -56,7 +56,7 @@
 							<strong>Molecular Formula Type</strong>
 						</td>
 						<td class="label">
-							${functionalizingEntityForm.map.entity.type.molecularFormulaType}&nbsp;
+							${functionalizingEntityForm.map.entity.molecularFormulaType}&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Molecular Formula</strong>
