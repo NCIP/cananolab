@@ -175,9 +175,8 @@ public class NanoparticleSampleService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			if (particleSources != null && particleSources.length > 0) {
-				crit.createAlias("source", "source").add(
-						Restrictions.in("source.organizationName",
-								particleSources));
+				crit.add(Restrictions.in("source.organizationName",
+						particleSources));
 			}
 
 			if (wordList != null && wordList.length > 0) {
@@ -219,7 +218,6 @@ public class NanoparticleSampleService {
 				}
 				crit.add(disjunction);
 			}
-			crit.setFetchMode("source", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
@@ -356,7 +354,6 @@ public class NanoparticleSampleService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleSample.class).add(
 					Property.forName("id").eq(new Long(particleId)));
-			crit.setFetchMode("source", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
@@ -399,7 +396,6 @@ public class NanoparticleSampleService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleSample.class).add(
 					Property.forName("name").eq(particleName));
-			crit.setFetchMode("source", FetchMode.JOIN);
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
