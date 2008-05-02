@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -167,6 +168,20 @@ public class NanoparticleCompositionService {
 					throw new ParticleCompositionException(err, e);
 				}
 			}
+			// load the full associated element by ID
+			AssociatedElement elementA = (AssociatedElement) appService.get(
+					assoc.getAssociatedElementA().getClass(), assoc
+							.getAssociatedElementA().getId());
+			AssociatedElement elementB = (AssociatedElement) appService.get(
+					assoc.getAssociatedElementB().getClass(), assoc
+							.getAssociatedElementA().getId());
+			if (elementA == null || elementB == null) {
+				String err = "Object doesn't exist in the database anymore.  Please log in again.";
+				logger.error(err);
+				throw new ParticleCompositionException(err);
+			}
+			assoc.setAssociatedElementA(elementA);
+			assoc.setAssociatedElementB(elementB);
 			SampleComposition composition = particleSample
 					.getSampleComposition();
 			if (composition != null) {
@@ -176,8 +191,7 @@ public class NanoparticleCompositionService {
 				particleSample.setSampleComposition(composition);
 				Collection<ChemicalAssociation> asssocCollection = new HashSet<ChemicalAssociation>();
 				asssocCollection.add(assoc);
-				composition
-						.setChemicalAssociationCollection(asssocCollection);
+				composition.setChemicalAssociationCollection(asssocCollection);
 				composition.setNanoparticleSample(particleSample);
 			}
 			appService.saveOrUpdate(assoc);
@@ -325,7 +339,7 @@ public class NanoparticleCompositionService {
 		}
 		return types;
 	}
-	
+
 	/**
 	 * Return user-defined chemical association types
 	 * 
@@ -367,8 +381,8 @@ public class NanoparticleCompositionService {
 		}
 	}
 
-	public void retrieveVisibility(FunctionalizingEntityBean entity, UserBean user)
-			throws ParticleCompositionException {
+	public void retrieveVisibility(FunctionalizingEntityBean entity,
+			UserBean user) throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileService();
 			for (LabFileBean file : entity.getFiles()) {
