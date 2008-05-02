@@ -953,13 +953,6 @@ img.img { /* for images that need a border */
 	border-left: 1px solid #5c5c5c;	
 }
 
-.arrowBlock {
-	border: none;
-	width: 50px;
-	margin-left: 0px;
-	margin-right: 0px;
-}
-
 .assocEleBlock {
 	border: 1px solid #5c5c5c;
 	width: 240px;
@@ -983,8 +976,8 @@ img.img { /* for images that need a border */
 
 #assocEleLinkBlock {
 	float: left;
-	width: 150px;
-	margin: 50px 20px 0 20px;
+	width: 120px;
+	margin: 50px 0 0 0;
 	text-align: center;
 	padding-top: 3px;
 	padding-bottom: 3px;
