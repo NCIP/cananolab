@@ -596,12 +596,10 @@ AND cnc.cn_composition_pk_id = n.characterization_pk_id
 insert into canano.emulsion
 (
 	emulsion_pk_id,
-	emulsion_type,
 	polymer_name,
 	is_polymerized
 )
 SELECT e_composition_pk_id,
-	emulsion_type,
 	polymer_name,
 	is_polymerized
 FROM cananolab.emulsion_composition
