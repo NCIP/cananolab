@@ -338,7 +338,7 @@
 						</tr>
 				</table>
 				<br>
-				<jsp:include page="/particle/shared/bodyCharacterizationCopy.jsp" />
+				<jsp:include page="/particle/bodyCharacterizationCopy.jsp" />
 
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
