@@ -202,9 +202,6 @@ public class NanoparticleCompositionService {
 					FunctionalizingEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
-			crit.createAlias("activationMethod", "activation",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.setFetchMode("activationMethod", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
