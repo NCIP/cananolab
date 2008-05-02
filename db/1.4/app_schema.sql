@@ -112,7 +112,6 @@ CREATE TABLE fullerene
 CREATE TABLE emulsion
 (
 	emulsion_pk_id BIGINT NOT NULL,
-	emulsion_type VARCHAR(200) NULL,
 	polymer_name VARCHAR(200) NULL,
 	is_polymerized TINYINT NULL,
 	PRIMARY KEY (emulsion_pk_id),
