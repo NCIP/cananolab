@@ -162,43 +162,49 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<strong>caNanoLab 1.3 is now available!</strong>
+										<strong>caNanoLab 1.4 is now available!</strong>
 										<br>
 										<br>
-										caNanoLab 1.3 contains the following primary features:
+										caNanoLab 1.4 contains the following primary features:
 										<br>
 										<ul>
 											<li>
-												New navigation and usability enhancements
+												New composition structure to include nanoparticle and functionalizing entities, chemical associations, and composition files
 											</li>
 											<li>
-												Public Browse for Protocols, Nanoparticles, and Reports
+												New metadata constraints for composition and physical characterizations
 											</li>
 											<li>
-												Summary Views of Nanoparticle Information
+												Additional grid services and seamless local/remote search
 											</li>
 											<li>
-												Print and Export of Nanoparticle Information
+												Disabled sample management functionality and combined with nanoparticle submission
+											</li>
+											<li>
+												New glossary of terms
+											</li>
+											<li>
+												Product upgrades to the caCORE SDK 4.0 and caGrid 1.2
 											</li>
 										</ul>
-										caNanoLab 1.3 expands upon existing caNanoLab functionality
+										caNanoLab 1.4 expands upon existing caNanoLab functionality
 										including:
 										<br>
 										<ul>
 											<li>
-												Sample and Aliquot Management
+												Support for nanoparticle protocols, characterizations, and reports
 											</li>
 											<li>
-												Protocol Management
+												Support for physical and in vitro nanoparticle characterizations
 											</li>
 											<li>
 												Nanoparticle Information (Characterizations) Management
 											</li>
 											<li>
-												Report Management
+												Summary views of nanoparticle information with print and export feature
 											</li>
 											<li>
-												Remote Grid Search (Reports and Physical Composition Data)
+												Basic local and caBIGä grid (caGrid) search functionality
 											</li>
 											<li>
 												Role-based Security
