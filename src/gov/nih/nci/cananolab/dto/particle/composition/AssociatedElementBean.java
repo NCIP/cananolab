@@ -2,25 +2,23 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
-import java.util.Date;
 import java.util.Map;
 
 public class AssociatedElementBean {
 	// eg. Nanoparticle Entity, Functionalizing Entity
 	private String compositionType;
 
-	private String entityId;
+	private String entityId; // dendrimer id, small molecule id
 
-	private String entityClassName;
+	private String entityDisplayName; // dendrimer, small molecule
+
+	private String entityClassName; // SmallMolecule
 
 	private ComposingElement composingElement = new ComposingElement();
 
 	private AssociatedElement domainElement;
-
-	private String className;
 
 	public AssociatedElementBean() {
 	}
@@ -29,9 +27,10 @@ public class AssociatedElementBean {
 		domainElement = element;
 		if (element instanceof ComposingElement) {
 			composingElement = (ComposingElement) element;
+		} else {
+			entityClassName = ClassUtils.getShortClassName(element.getClass()
+					.getName());
 		}
-		entityClassName = ClassUtils.getShortClassName(element.getClass()
-				.getName());
 	}
 
 	public String getCompositionType() {
@@ -61,23 +60,20 @@ public class AssociatedElementBean {
 
 	public void setupDomainElement(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
-		//className = typeToClass.get(type);
-		if (domainElement == null) {
+		//domain element is a functionalizing entity
+		if (composingElement.getId() == null) {
+			entityClassName = typeToClass.get(entityDisplayName);
 			Class clazz = ClassUtils.getFullClass(entityClassName);
-			domainElement = (FunctionalizingEntity) clazz.newInstance();
-		}
-		if (domainElement.getId() == null) {
-			domainElement.setCreatedBy(createdBy);
-			domainElement.setCreatedDate(new Date());
+			domainElement = (AssociatedElement) clazz.newInstance();
+			domainElement.setId(new Long(entityId));
 		}
 	}
 
-	public String getEntityClassName() {
-		return entityClassName;
+	public String getEntityDisplayName() {
+		return entityDisplayName;
 	}
 
-	public void setEntityClassName(String entityClassName) {
-		this.entityClassName = entityClassName;
+	public void setEntityDisplayName(String entityDisplayName) {
+		this.entityDisplayName = entityDisplayName;
 	}
-
 }
