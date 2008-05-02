@@ -16,11 +16,11 @@
 		
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">REPORTS</a>
-			<ul class="sublist_4" style="${reportDisplay}">
+			<ul class="sublist_4_report" style="${reportDisplay}">
 				<c:forEach var="reportDisplayType" items="${reportCategories}">					
 					<li>
 						<a href="#" class="sublist_4">${reportDisplayType}</a>
-						<ul class="sublist_5" style="${reportDisplay}">
+						<ul class="sublist_5_report" style="${reportDisplay}">
 							<c:forEach var="dataLinkBean"
 								items="${particleDataTree[reportDisplayType]}">
 								<c:url var="url" value="${dataLinkBean.dataLink}.do">
@@ -31,8 +31,8 @@
 									<c:param name="submitType"
 										value="${reportDisplayType}" />
 								</c:url>
-								<li id="complist">
-									<a href=${url } id="complink" class="sublist_5"><span
+								<li>
+									<a href=${url } class="sublist_5_report"><span
 										class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
 								</li>
 							</c:forEach>
