@@ -350,9 +350,6 @@ public class NanoparticleSampleService {
 			throws ParticleException {
 		ParticleBean particleBean = null;
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
