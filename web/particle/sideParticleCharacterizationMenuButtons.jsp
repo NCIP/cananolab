@@ -12,9 +12,9 @@
 									param.charType eq 'Functionalizing Entity' ||
 									param.charType eq 'Chemical Association' ||
 									param.charType eq 'Composition File' }">
-
-							<a href="#" class="${param.charTypeStyle}">${param.charType}</a>
-
+							<td class="${param.noDataLabelStyle}">
+								<c:out value="${param.charType}" />
+							</td>
 						</c:when>
 						<c:otherwise>
 						

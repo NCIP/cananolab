@@ -22,12 +22,6 @@
 			<ul class="sublist_4" style="${compDisplay}">
 				<c:forEach var="compoDataBean"
 					items="${compositionTypes[compositionType]}">
-					<%--				<c:url var="submitUrl" value="nanoparticleEntity.do">--%>
-					<%--					<c:param name="particleId" value="${particleId}" />--%>
-					<%--					<c:param name="page" value="0" />--%>
-					<%--					<c:param name="dispatch" value="setup" />--%>
-					<%--				</c:url>--%>
-
 					<li>
 						<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 							<jsp:param name="charType"
@@ -39,6 +33,7 @@
 							<jsp:param name="addLinkStyle" value="addCell" />
 							<jsp:param name="addAction" value="${compoDataBean.dataLink}" />
 						</jsp:include>
+						<c:if test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
 						<ul class="sublist_5" style="${compDisplay}">
 							<c:forEach var="dataLinkBean"
 								items="${particleDataTree[compoDataBean.dataDisplayType]}">
@@ -56,6 +51,7 @@
 								</li>
 							</c:forEach>
 						</ul>
+						</c:if>
 					</li>
 				</c:forEach>
 			</ul>
