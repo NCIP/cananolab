@@ -66,7 +66,7 @@
 										${chemicalAssociationForm.map.assoc.associatedElementA.entityId}
 									</li>
 									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.type}
+										${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name}
 									</li>
 								</ul>
 							</div>
@@ -88,7 +88,7 @@
 										${chemicalAssociationForm.map.assoc.associatedElementB.entityId}
 									</li>
 									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}
+										${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.name}
 									</li>
 								</ul>
 							</div>
