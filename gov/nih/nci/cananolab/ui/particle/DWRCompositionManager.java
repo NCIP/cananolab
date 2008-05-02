@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
@@ -9,7 +8,6 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -39,7 +37,8 @@ public class DWRCompositionManager {
 			String entityClassName = InitSetup.getInstance().getObjectName(
 					entityType, appContext);
 			String page = pagePath + "/bodyNew" + entityClassName + "Info.jsp";
-			return wctx.forwardToString(page);
+			String content=wctx.forwardToString(page);
+			return content;
 		} catch (Exception e) {
 			return "";
 		}
