@@ -323,10 +323,6 @@ function confirmDeletion()
 													value="${param.particleId}" />
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<html:hidden property="entity.className"
-													value="${entityClass}" />
-												<html:hidden property="entity.createdBy"
-													value="${user.loginName}" />
 												<html:submit />
 											</div>
 										</div>
