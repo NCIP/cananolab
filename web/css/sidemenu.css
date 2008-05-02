@@ -49,15 +49,15 @@ ul.slidingmenu li {
 	background-color: #98B7B7; /* constant: dark gray */
 }
 
-ul.sublist_1 li {
-	background-color: #F4F4F5;
-}
-
 li.controlList {
 	background-color: #F4F4F5;
 }
 
 li.controlList a {
+	background-color: #F4F4F5;
+}
+
+ul.sublist_1 li {
 	background-color: #F4F4F5;
 }
 
@@ -86,6 +86,13 @@ ul.sublist_2 a:link.sublist_2, a:visited.sublist_2, a:active.sublist_2 {
 ul.sublist_5 a:link.sublist_5, a:visited.sublist_5, a:active.sublist_5 {
 	color: black;
 }
+
+li.clickedLi {
+	background-color: #98B7B7;
+	color: #FFFFFF;
+}
+
+
 
 ul.sublist_2 a {
 	background-color: #F4F4F5; /* light gray */
@@ -153,7 +160,30 @@ ul.sublist_4 li {
 	border-bottom: 0;
 	color: #400080;
 }
-	
+
+ul.sublist_4_report {
+	background-color: #FFFFFF; /* #D3DDE7; */
+	color: #400080;
+	border-bottom: 0;
+}
+
+ul.sublist_4_report a {
+	color: #400080;
+	background-color: #FFFFFF;
+	font-size: 0.8em;
+	font-weight: bold;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	text-indent: 1em;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+ul.sublist_4_report li {
+	background-color: #FFFFFF; /* #D3DDE7; */
+	border-bottom: 0;
+	color: #400080;
+}
+
 li.sublist_4_func {
 	background-color: #FFFFFF; /* #D3DDE7; */
 	border-bottom: 0;
@@ -176,10 +206,6 @@ ul.sublist_5_clicked a {
 	padding-bottom: 0.1em;
 }
 
-li.clickedLi {
-	background-color: #98B7B7;
-	color: #FFFFFF;
-}
 
 ul.sublist_5 a {
 	background-color: #FFFFFF;
@@ -204,6 +230,22 @@ ul.sublist_5_control a {
 }
 
 ul.sublist_5 li {
+	background-color: #FFFFFF;
+	border-bottom: 0;
+}
+
+ul.sublist_5_report a {
+	background-color: #FFFFFF;
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+	font-weight: normal;
+	text-indent: 2em;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+ul.sublist_5_report li {
 	background-color: #FFFFFF;
 	border-bottom: 0;
 }
