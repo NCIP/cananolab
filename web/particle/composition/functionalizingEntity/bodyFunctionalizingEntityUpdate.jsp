@@ -145,9 +145,9 @@
 							pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
-							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />						
+							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />
 					</c:if>
-				</div>				
+				</div>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -258,9 +258,7 @@
 																<span id="targetSpan_${ind }" style="${targetDisplay }">
 																	<a href="#"
 																	onclick="javascript:addChildComponent(functionalizingEntityForm, 'functionalizingEntity', ${ind}, 'addTarget'); return false;">
-																		<span class="addLink2">Add Target</span>
-																</a>
-																</span>&nbsp;
+																		<span class="addLink2">Add Target</span> </a> </span>&nbsp;
 															</td>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
@@ -308,21 +306,27 @@
 
 											<logic:iterate name="functionalizingEntityForm"
 												property="entity.files" id="entityFile" indexId="fileInd">
-												<jsp:include
-													page="/particle/bodyLoadFileUpdate.jsp">
+												<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="functionalizingEntityForm" />
 													<jsp:param name="action" value="functionalizingEntity" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
-													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
-													<jsp:param name="fileId" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
-													<jsp:param name="fileUri" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName" value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
-													<jsp:param name="fileHidden" value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
-													<jsp:param name="fileExternal" value="${functionalizingEntityForm.map.entity.files[fileInd].external}" />
-													<jsp:param name="fileImage" value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
+													<jsp:param name="domainFile"
+														value="entity.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileHidden"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
+													<jsp:param name="fileExternal"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].external}" />
+													<jsp:param name="fileImage"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
 												</jsp:include>
-												
+
 												<br>
 											</logic:iterate>
 										</td>
@@ -363,8 +367,6 @@
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<html:hidden property="entity.createdBy"
-													value="${user.loginName}" />
 												<html:submit />
 											</div>
 										</div>
