@@ -101,22 +101,23 @@ public class FunctionBean {
 	public void setupDomainFunction(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
-		if (domainFunction == null) {
-			Class clazz = ClassUtils.getFullClass(className);
+		Class clazz = ClassUtils.getFullClass(className);
+		// if new function entry or switch function type
+		if (domainFunction == null
+				|| !clazz.getCanonicalName().equals(
+						domainFunction.getClass().getCanonicalName())) {
 			domainFunction = (Function) clazz.newInstance();
 		}
 		if (domainFunction.getId() == null) {
 			domainFunction.setCreatedBy(createdBy);
 			domainFunction.setCreatedDate(new Date());
 		}
-		else {
-			imagingFunction.setCreatedBy(domainFunction.getCreatedBy());
-			imagingFunction.setCreatedDate(domainFunction.getCreatedDate());
-		}
-		if (className.equals("ImagingFunction")) {			
+		imagingFunction.setCreatedBy(domainFunction.getCreatedBy());
+		imagingFunction.setCreatedDate(domainFunction.getCreatedDate());
+
+		if (className.equals("ImagingFunction")) {
 			domainFunction = imagingFunction;
 		} else if (className.equals("TargetingFunction")) {
-
 			if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
 				((TargetingFunction) domainFunction).getTargetCollection()
 						.clear();
