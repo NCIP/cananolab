@@ -176,7 +176,7 @@
 														<input type="hidden" name="page" value="2">
 														<c:if test="${!empty particleId}">
 															<input type="hidden" name="particleId"
-																value="${particleId}">
+																value="${param.particleId}">
 														</c:if>
 														<html:submit/>
 													</div>
