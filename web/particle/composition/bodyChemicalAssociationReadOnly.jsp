@@ -19,13 +19,6 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center">
-					<%--					Entity#1:Dendrimer--%>
-				</h5>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="" id="summary">
@@ -46,72 +39,54 @@
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong style="display:none">Bond Type</Strong>
+							<c:if test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
+								<Strong>Bond Type</Strong>
+							</c:if>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							${chemicalAssociationForm.map.assoc.attachment.bondType}
+							<c:if test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
+								${chemicalAssociationForm.map.assoc.attachment.bondType}
+							</c:if>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" width="%33">
-							<table width="100%" border="0" align="center" cellpadding="3"
-								cellspacing="0" >
-								<tr>
-									<td class="completeLabelNoBottom">
+						<td class="completeLabel" colspan="4">
+							<div id="assocEleBlockA" class="assocEleBlock">
+								<ul>
+									<li>
 										<strong>Element</strong>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
-										${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
-										&nbsp;
-										${chemicalAssociationForm.map.assoc.associatedElementA.entityId}&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td class=completeLabelNoTop>
-										&nbsp;
+									</li>
+									<li>
+										${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
+									</li>
+									<li>
+										${chemicalAssociationForm.map.assoc.associatedElementA.entityId}
+									</li>
+									<li>
 										${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.type}
-									</td>
-								</tr>
-							</table>
-							&nbsp;
-						</td>
-						<td class="label" colspan="2" align="center">
-							<strong style="padding-left:20px">Associated With</strong>
-						</td>
-						<td class="rightLabel">
-							<table width="100%" border="1" align="center" cellpadding="3"
-								cellspacing="0" >
-								<tr>
-									<td class="completeLabelNoBottom">
+									</li>
+								</ul>
+							</div>
+							<div id="assocEleLinkBlock" class="assocEleBlock">
+								<strong>associated with</strong>
+							</div>
+							<div id="assocEleBlockB" class="assocEleBlock">
+								<ul>
+									<li>
 										<strong>Element</strong>
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
-										${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}&nbsp;
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTopBottom">
-										&nbsp;
+									</li>
+									<li>
+										${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
+									</li>
+									<li>
 										${chemicalAssociationForm.map.assoc.associatedElementB.entityId}
-									</td>
-								</tr>
-								<tr>
-									<td class="completeLabelNoTop">
-										&nbsp;
+									</li>
+									<li>
 										${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}
-									</td>
-								</tr>
-							</table>
-							&nbsp;
+									</li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 
