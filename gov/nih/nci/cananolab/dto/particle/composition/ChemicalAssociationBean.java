@@ -68,6 +68,12 @@ public class ChemicalAssociationBean {
 		if (domainAssociation.getId() == null) {
 			domainAssociation.setCreatedBy(createdBy);
 			domainAssociation.setCreatedDate(new Date());
+		} else {
+			attachment.setCreatedBy(domainAssociation.getCreatedBy());
+			attachment.setCreatedDate(domainAssociation.getCreatedDate());
+		}
+		if (className.equals("Attachment")) {
+			domainAssociation=attachment;
 		}
 		domainAssociation.setDescription(description);
 		associatedElementA.setupDomainElement(typeToClass, createdBy);
