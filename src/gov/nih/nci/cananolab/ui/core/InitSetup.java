@@ -41,8 +41,8 @@ public class InitSetup {
 	 * @return
 	 * @throws CaNanoLabException
 	 */
-	public Map<String, String> getDisplayNameLookup(ServletContext appContext)
-			throws CaNanoLabException {
+	public Map<String, String> getClassNameToDisplayNameLookup(
+			ServletContext appContext) throws CaNanoLabException {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameLookup") == null) {
 			lookup = LookupService.findSingleAttributeLookupMap("displayName");
@@ -62,8 +62,8 @@ public class InitSetup {
 	 * @return
 	 * @throws CaNanoLabException
 	 */
-	public Map<String, String> getDisplayNameReverseLookup(
-			ServletContext appContext) throws CaNanoLabException {
+	public Map<String, String> getDisplayNameToClassNameLookup(
+			ServletContext appContext) throws Exception {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameReverseLookup") == null) {
 			Map<String, String> displayLookup = LookupService
@@ -82,9 +82,39 @@ public class InitSetup {
 		return lookup;
 	}
 
+	/**
+	 * Returns a map between a display name and its corresponding full class
+	 * name
+	 * 
+	 * @param appContext
+	 * @return
+	 * @throws CaNanoLabException
+	 */
+	public Map<String, String> getDisplayNameToFullClassNameLookup(
+			ServletContext appContext) throws Exception {
+		Map<String, String> lookup = null;
+		if (appContext.getAttribute("displayNameReverseLookup") == null) {
+			Map<String, String> displayLookup = LookupService
+					.findSingleAttributeLookupMap("displayName");
+			lookup = new HashMap<String, String>();
+			for (Map.Entry entry : displayLookup.entrySet()) {
+				String className = entry.getKey().toString();
+				String fullClassName = ClassUtils.getFullClass(className)
+						.getCanonicalName();
+				lookup.put(entry.getValue().toString(), fullClassName);
+			}
+			appContext.setAttribute("displayNameReverseLookup", lookup);
+		} else {
+			lookup = new HashMap<String, String>(
+					(HashMap<? extends String, String>) (appContext
+							.getAttribute("displayNameReverseLookup")));
+		}
+		return lookup;
+	}
+
 	public String getDisplayName(String objectName, ServletContext appContext)
 			throws CaNanoLabException {
-		Map<String, String> lookup = getDisplayNameLookup(appContext);
+		Map<String, String> lookup = getClassNameToDisplayNameLookup(appContext);
 		if (lookup.get(objectName) != null) {
 			return lookup.get(objectName);
 		} else {
@@ -93,8 +123,8 @@ public class InitSetup {
 	}
 
 	public String getObjectName(String displayName, ServletContext appContext)
-			throws CaNanoLabException {
-		Map<String, String> lookup = getDisplayNameReverseLookup(appContext);
+			throws Exception {
+		Map<String, String> lookup = getDisplayNameToClassNameLookup(appContext);
 		if (lookup.get(displayName) != null) {
 			return lookup.get(displayName);
 		} else {

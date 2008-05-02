@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.21 2008-05-01 22:21:13 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.22 2008-05-02 06:03:10 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -38,7 +38,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ParticleBean particleBean = setupParticle(theForm, request);
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
-		entityBean.setDomainEntity();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		entityBean.setupDomainEntity(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
 		compositionService.saveFunctionalizingEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
 		ActionMessages msgs = new ActionMessages();
@@ -92,12 +96,6 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
-		// set function type
-		for (FunctionBean functionBean : entityBean.getFunctions()) {
-			String functionType = InitSetup.getInstance().getDisplayName(
-					functionBean.getClassName(), session.getServletContext());
-			functionBean.setType(functionType);
-		}
 		theForm.set("entity", entityBean);
 		setLookups(request);
 		return mapping.getInputForward();
@@ -204,6 +202,30 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		 * updateDendrimerEditable(session, dendrimer);
 		 */
 		return mapping.findForward("setup");
+	}
+
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
+		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
+				.get("entity");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		entityBean.setupDomainEntity(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
+		compositionService.deleteFunctionalizingEntity(entityBean
+				.getDomainEntity());
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"message.deleteFunctionalizingEntity");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		ActionForward forward = mapping.findForward("success");
+		setupDataTree(theForm, request);
+		return forward;
 	}
 
 	protected FunctionalizingEntityBean[] prepareCopy(

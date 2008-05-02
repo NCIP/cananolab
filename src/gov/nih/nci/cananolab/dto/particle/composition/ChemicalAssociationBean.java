@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 public class ChemicalAssociationBean {
 	private String type;
@@ -29,10 +30,9 @@ public class ChemicalAssociationBean {
 
 	private AssociatedElementBean associatedElementB = new AssociatedElementBean();
 
-	private String createdBy;
+	public ChemicalAssociationBean() {
+	}
 
-	public ChemicalAssociationBean() {}
-	
 	public ChemicalAssociationBean(ChemicalAssociation chemicalAssociation) {
 		domainAssociation = chemicalAssociation;
 		if (chemicalAssociation instanceof Attachment) {
@@ -58,7 +58,9 @@ public class ChemicalAssociationBean {
 		return domainAssociation;
 	}
 
-	public void setDomainAssociation() throws Exception {
+	public void setupDomainAssociation(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
+		className = typeToClass.get(type);
 		if (domainAssociation == null) {
 			Class clazz = ClassUtils.getFullClass(className);
 			domainAssociation = (ChemicalAssociation) clazz.newInstance();
@@ -68,6 +70,8 @@ public class ChemicalAssociationBean {
 			domainAssociation.setCreatedDate(new Date());
 		}
 		domainAssociation.setDescription(description);
+		associatedElementA.setupDomainElement(typeToClass, createdBy);
+		associatedElementB.setupDomainElement(typeToClass, createdBy);
 		domainAssociation.setAssociatedElementA(associatedElementA
 				.getDomainElement());
 		domainAssociation.setAssociatedElementB(associatedElementB
@@ -122,14 +126,6 @@ public class ChemicalAssociationBean {
 
 	public AssociatedElementBean getAssociatedElementB() {
 		return associatedElementB;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
 	}
 
 	public void addFile() {

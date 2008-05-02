@@ -90,7 +90,7 @@ public class ParticleBean {
 		this.createdBy = createdBy;
 	}
 
-	public void setDomainParticleSample() {
+	public void setupDomainParticleSample() {
 		// always update createdBy and createdDate
 		domainParticleSample.setCreatedBy(createdBy);
 		domainParticleSample.setCreatedDate(new Date());
