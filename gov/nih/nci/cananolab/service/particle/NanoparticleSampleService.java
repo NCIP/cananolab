@@ -23,6 +23,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -244,7 +245,8 @@ public class NanoparticleSampleService {
 					nanoparticleEntityClassNames,
 					functionalizingEntityClassNames,
 					characterizationFilteredParticles);
-			// TODO sort particles
+			Collections.sort(theParticles,
+					new CaNanoLabComparators.ParticleBeanComparator());
 			return theParticles;
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
@@ -412,8 +414,7 @@ public class NanoparticleSampleService {
 					FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.labFileCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode("reportCollection",
-					FetchMode.JOIN);
+			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
