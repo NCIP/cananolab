@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.6 2008-05-01 22:22:13 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.7 2008-05-02 21:13:45 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -83,7 +83,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-		if (request.getParameter("particleId") != null) {
+		if (request.getParameter("particleId").length()>0) {
 			setupDataTree(theForm, request);
 			forward = mapping.findForward("particleSuccess");
 		}
