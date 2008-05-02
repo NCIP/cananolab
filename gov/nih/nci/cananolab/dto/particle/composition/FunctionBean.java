@@ -50,7 +50,7 @@ public class FunctionBean {
 		} else if (function instanceof OtherFunction) {
 			type = ((OtherFunction) function).getType();
 		}
-		className = ClassUtils.getShortClassName(ImagingFunction.class
+		className = ClassUtils.getShortClassName(function.getClass()
 				.getCanonicalName());
 	}
 
@@ -109,9 +109,13 @@ public class FunctionBean {
 			domainFunction.setCreatedBy(createdBy);
 			domainFunction.setCreatedDate(new Date());
 		}
-		if (domainFunction instanceof ImagingFunction) {
+		else {
+			imagingFunction.setCreatedBy(domainFunction.getCreatedBy());
+			imagingFunction.setCreatedDate(domainFunction.getCreatedDate());
+		}
+		if (className.equals("ImagingFunction")) {			
 			domainFunction = imagingFunction;
-		} else if (domainFunction instanceof TargetingFunction) {
+		} else if (className.equals("TargetingFunction")) {
 
 			if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
 				((TargetingFunction) domainFunction).getTargetCollection()
@@ -125,7 +129,7 @@ public class FunctionBean {
 				((TargetingFunction) domainFunction).getTargetCollection().add(
 						targetBean.getDomainTarget());
 			}
-		} else if (domainFunction instanceof OtherFunction) {
+		} else if (className.equals("OtherFunction")) {
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);
