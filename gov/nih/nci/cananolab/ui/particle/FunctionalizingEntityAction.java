@@ -8,12 +8,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.22 2008-05-02 06:03:10 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.23 2008-05-02 15:42:47 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -96,6 +97,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String entityType = InitSetup.getInstance().getDisplayName(
 				entityBean.getClassName(), session.getServletContext());
 		entityBean.setType(entityType);
+		// set function type and target type
+		for (FunctionBean functionBean : entityBean.getFunctions()) {
+			String functionType = InitSetup.getInstance().getDisplayName(
+					functionBean.getClassName(), session.getServletContext());
+			functionBean.setType(functionType);
+			for (TargetBean targetBean : functionBean.getTargets()) {
+				String targetType = InitSetup.getInstance().getDisplayName(
+						targetBean.getClassName(), session.getServletContext());
+				targetBean.setType(targetType);
+			}
+		}
 		theForm.set("entity", entityBean);
 		setLookups(request);
 		return mapping.getInputForward();
