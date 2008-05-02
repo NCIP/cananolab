@@ -44,7 +44,7 @@
 				<key column="functionalizing_entity_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.LabFile" column="file_pk_id" />
 			</set>
-			<many-to-one name="activationMethod" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod" column="activation_method_pk_id" unique="true" lazy="proxy" cascade="save-update,delete"/>
+			<many-to-one name="activationMethod" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod" column="activation_method_pk_id" unique="true" lazy="false" cascade="save-update,delete"/>
 			<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition" column="composition_pk_id" lazy="proxy" cascade="save-update"/>
 			<joined-subclass name="gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer" table="biopolymer_f" lazy="true">
 				<key column="biopolymer_pk_id" />
