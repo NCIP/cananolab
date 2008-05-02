@@ -20,7 +20,9 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center" id="entityTypeTitle">Functionalizing Entity</h5>
+				<h5 align="center" id="entityTypeTitle">
+					Functionalizing Entity
+				</h5>
 				<br>
 			</td>
 		</tr>
@@ -368,6 +370,8 @@
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
 												<html:submit />
+												<html:hidden property="particleId"
+													value="${param.particleId}" />
 											</div>
 										</div>
 									</td>
