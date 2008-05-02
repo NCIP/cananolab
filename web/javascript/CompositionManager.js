@@ -178,6 +178,7 @@ function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEle
 			CompositionManager.getAssociatedComposingElements(entityId, function (data) {
 				dwr.util.removeAllOptions(compEleTypeId);
 				if (data != null) {
+					dwr.util.addOptions(compEleTypeId, [""]);
 					dwr.util.addOptions(compEleTypeId, data, "domainComposingElementId", "displayName");
 				}
 			});
