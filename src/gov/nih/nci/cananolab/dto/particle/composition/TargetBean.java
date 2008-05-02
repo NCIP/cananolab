@@ -32,6 +32,8 @@ public class TargetBean {
 
 	public TargetBean(Target target) {
 		domainTarget = target;
+		name=target.getName();
+		description=target.getDescription();
 		className = ClassUtils.getShortClassName(target.getClass()
 				.getCanonicalName());
 		if (target instanceof Antigen) {
@@ -84,8 +86,10 @@ public class TargetBean {
 	public void setupDomainTarget(Map<String, String> typeToClass)
 			throws Exception {
 		className = typeToClass.get(type);
-		if (domainTarget == null) {
-			Class clazz = ClassUtils.getFullClass(className);
+		Class clazz = ClassUtils.getFullClass(className);
+		if (domainTarget == null
+				|| !clazz.getCanonicalName().equals(
+						domainTarget.getClass().getCanonicalName())) {
 			domainTarget = (Target) clazz.newInstance();
 		}
 		if (domainTarget instanceof OtherTarget) {
