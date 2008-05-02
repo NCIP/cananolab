@@ -858,9 +858,11 @@ ORDER BY ce.composing_element_pk_id, ce.list_index
 ;
 
 -- functionalizing entity
+/*
 ALTER TABLE canano.functionalizing_entity
-  CHANGE activation_method_pk_id activation_method_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
-  
+  CHANGE activation_method_pk_id activation_method_pk_id BIGINT(20) AUTO_INCREMENT;
+ */
+ 
 insert into canano.functionalizing_entity
 (
 	functionalizing_entity_pk_id,
@@ -877,8 +879,10 @@ AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 ;
 
+/*
 ALTER TABLE canano.functionalizing_entity
-  CHANGE activation_method_pk_id activation_method_pk_id BIGINT(20) NOT NULL;
+  CHANGE activation_method_pk_id activation_method_pk_id BIGINT(20);
+*/
 
 insert into canano.antibody
 (
