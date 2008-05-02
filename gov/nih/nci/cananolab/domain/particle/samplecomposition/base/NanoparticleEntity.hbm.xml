@@ -120,9 +120,6 @@
 					column="is_polymerized" />
 				<property name="polymerName" type="string"
 					column="polymer_name" />
-				<property name="type" type="string"
-					column="emulsion_type" />
-
 			</join>
 		</subclass>
 		<subclass
