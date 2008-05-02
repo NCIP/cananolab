@@ -151,6 +151,10 @@ function radLinkOrUpload(radioIndex, fileIndex) {
 		titleEle.innerHTML = "Enter File URL";
 	}
 }
+
+/* 
+ * for chemical association 
+ */
 function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId) {
 	var compositionType = dwr.util.getValue(compositionTypeId);
 	var compEle = document.getElementById(compEleId);
@@ -202,6 +206,15 @@ function displayBondType() {
 		btLineEle.style.display = "none";
 	}
 }
+
+function setEntityDisplayName(entityTypeId, displayNameEleId) {
+	var selectEle = document.getElementById(entityTypeId);
+	var selectedName = selectEle.options[selectEle.options.selectedIndex].text;
+	document.getElementById(displayNameEleId).value = selectedName;
+	// alert(document.getElementById(displayNameEleId).value);
+}
+
+
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp

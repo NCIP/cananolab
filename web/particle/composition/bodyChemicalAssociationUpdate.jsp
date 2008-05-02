@@ -93,10 +93,12 @@
 										<span class="indented1" id="entityA"><html:select
 												styleId="entityTypeA"
 												property="assoc.associatedElementA.entityId"
-												onchange="getAssociatedComposingElements('compositionTypeA', 'entityTypeA', 'compEleTypeA', 'compEleA')">
+												onchange="getAssociatedComposingElements('compositionTypeA', 'entityTypeA', 'compEleTypeA', 'compEleA');
+														setEntityDisplayName('entityTypeA', 'entityDisplayA');">
 												<option value="">
 												</option>
 											</html:select> </span>
+										<input type="hidden" id="entityDisplayA" name="entityDisplayNameA" value="" />
 									</li>
 									<li>
 										<span class="indented3" id="compEleA" style="display:none">
@@ -135,10 +137,12 @@
 										<span class="indented1" id="entityB"><html:select
 												styleId="entityTypeB"
 												property="assoc.associatedElementB.entityId"
-												onchange="getAssociatedComposingElements('compositionTypeB', 'entityTypeB', 'compEleTypeB', 'compEleB')">
+												onchange="getAssociatedComposingElements('compositionTypeB', 'entityTypeB', 'compEleTypeB', 'compEleB');
+															setEntityDisplayName('entityTypeB', 'entityDisplayB');">
 												<option value="">
 												</option>
 											</html:select> </span>
+										<input type="hidden" id="entityDisplayB" name="entityDisplayNameB" value="" />
 									</li>
 									<li>
 										<span class="indented3" id="compEleB" style="display:none"><html:select
