@@ -953,6 +953,13 @@ img.img { /* for images that need a border */
 	border-left: 1px solid #5c5c5c;	
 }
 
+.arrowBlock {
+	border: none;
+	width: 50px;
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
 .assocEleBlock {
 	border: 1px solid #5c5c5c;
 	width: 240px;
