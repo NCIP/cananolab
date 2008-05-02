@@ -41,7 +41,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
-		charBean.setDomainChar();
+		charBean.setupDomainChar();
 		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(

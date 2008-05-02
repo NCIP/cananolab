@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.23 2008-05-01 22:21:13 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.24 2008-05-02 06:03:10 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -34,7 +34,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
-		particleSampleBean.setDomainParticleSample();
+		particleSampleBean.setupDomainParticleSample();
 		// persist in the database
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		service.saveNanoparticleSample(particleSampleBean

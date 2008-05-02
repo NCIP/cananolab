@@ -8,8 +8,10 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -26,11 +28,9 @@ public class FunctionBean {
 
 	private ImagingFunction imagingFunction = new ImagingFunction();
 
-	private OtherFunction otherFunction = new OtherFunction();
-
 	private String className;
 
-	private Function domainFunction = new Function();
+	private Function domainFunction;
 
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
@@ -39,26 +39,19 @@ public class FunctionBean {
 
 	public FunctionBean(Function function) {
 		description = function.getDescription();
-
+		domainFunction = function;
 		if (function instanceof ImagingFunction) {
 			imagingFunction = (ImagingFunction) function;
-			domainFunction = imagingFunction;
-			className = ClassUtils.getShortClassName(ImagingFunction.class
-					.getCanonicalName());
 		} else if (function instanceof TargetingFunction) {
 			for (Target target : ((TargetingFunction) function)
 					.getTargetCollection()) {
 				targets.add(new TargetBean(target));
 			}
-			domainFunction = (TargetingFunction) function;
-			className = ClassUtils.getShortClassName(TargetingFunction.class
-					.getCanonicalName());
 		} else if (function instanceof OtherFunction) {
-			otherFunction = (OtherFunction) function;
-			domainFunction = otherFunction;
-			className = ClassUtils.getShortClassName(OtherFunction.class
-					.getCanonicalName());
+			type = ((OtherFunction) function).getType();
 		}
+		className = ClassUtils.getShortClassName(ImagingFunction.class
+				.getCanonicalName());
 	}
 
 	public String getDescription() {
@@ -66,7 +59,6 @@ public class FunctionBean {
 	}
 
 	public ImagingFunction getImagingFunction() {
-		domainFunction = imagingFunction;
 		return imagingFunction;
 	}
 
@@ -86,32 +78,7 @@ public class FunctionBean {
 		this.className = className;
 	}
 
-	private TargetingFunction domainTargetingFunction = new TargetingFunction();
 	public List<TargetBean> getTargets() {
-		
-		/*
-		if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
-			((TargetingFunction) domainFunction).getTargetCollection().clear();
-		} else {
-			((TargetingFunction) domainFunction)
-					.setTargetCollection(new HashSet<Target>());
-		}
-		for (TargetBean targetBean : targets) {
-			((TargetingFunction) domainFunction).getTargetCollection().add(
-					targetBean.getDomainTarget());
-		}
-		*/
-		
-		if (domainTargetingFunction.getTargetCollection() != null) {
-			domainTargetingFunction.getTargetCollection().clear();
-		} else {
-			domainTargetingFunction
-					.setTargetCollection(new HashSet<Target>());
-		}
-		for (TargetBean targetBean : targets) {
-			domainTargetingFunction.getTargetCollection().add(
-					targetBean.getDomainTarget());
-		}
 		return targets;
 	}
 
@@ -119,14 +86,8 @@ public class FunctionBean {
 		return domainFunction;
 	}
 
-	public OtherFunction getOtherFunction() {
-		domainFunction = otherFunction;
-		return otherFunction;
-	}
-
 	public void setDescription(String description) {
 		this.description = description;
-		domainFunction.setDescription(description);
 	}
 
 	public void addTarget() {
@@ -135,5 +96,38 @@ public class FunctionBean {
 
 	public void removeTarget(int ind) {
 		targets.remove(ind);
+	}
+
+	public void setupDomainFunction(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
+		className = typeToClass.get(type);
+		if (domainFunction == null) {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainFunction = (Function) clazz.newInstance();
+		}
+		if (domainFunction.getId() == null) {
+			domainFunction.setCreatedBy(createdBy);
+			domainFunction.setCreatedDate(new Date());
+		}
+		if (domainFunction instanceof ImagingFunction) {
+			domainFunction = imagingFunction;
+		} else if (domainFunction instanceof TargetingFunction) {
+
+			if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
+				((TargetingFunction) domainFunction).getTargetCollection()
+						.clear();
+			} else {
+				((TargetingFunction) domainFunction)
+						.setTargetCollection(new HashSet<Target>());
+			}
+			for (TargetBean targetBean : targets) {
+				targetBean.setupDomainTarget(typeToClass);
+				((TargetingFunction) domainFunction).getTargetCollection().add(
+						targetBean.getDomainTarget());
+			}
+		} else if (domainFunction instanceof OtherFunction) {
+			((OtherFunction) domainFunction).setType(type);
+		}
+		domainFunction.setDescription(description);
 	}
 }
