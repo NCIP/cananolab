@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the view bean for the NanoparticleEntity domain object
@@ -51,8 +52,6 @@ public class NanoparticleEntityBean {
 	private List<LabFileBean> files = new ArrayList<LabFileBean>();
 
 	private NanoparticleEntity domainEntity;
-
-	private String createdBy;
 
 	public NanoparticleEntityBean() {
 	}
@@ -155,51 +154,50 @@ public class NanoparticleEntityBean {
 		return domainEntity;
 	}
 
-	public void setDomainEntity() {
-		try {
-			// take care of nanoparticle entities that don't have any special
-			// properties shown in the form, e.g. Metal Particle
-			if (domainEntity == null) {
-				Class clazz = ClassUtils.getFullClass(className);
-				domainEntity = (NanoparticleEntity) clazz.newInstance();
+	public void setupDomainEntity(Map<String, String> typeToClass, String createdBy)
+			throws Exception {
+		// take care of nanoparticle entities that don't have any special
+		// properties shown in the form, e.g. Metal Particle
+		className = typeToClass.get(type);
+		if (domainEntity == null) {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainEntity = (NanoparticleEntity) clazz.newInstance();
+		}
+		if (domainEntity.getId() == null) {
+			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(new Date());
+		}
+		domainEntity.setDescription(description);
+		if (domainEntity instanceof OtherNanoparticleEntity) {
+			((OtherNanoparticleEntity) domainEntity).setType(type);
+		}
+		if (domainEntity.getComposingElementCollection() != null) {
+			domainEntity.getComposingElementCollection().clear();
+		} else {
+			domainEntity
+					.setComposingElementCollection(new HashSet<ComposingElement>());
+		}
+		for (ComposingElementBean composingElementBean : composingElements) {
+			composingElementBean.setupDomainComposingElement(typeToClass, createdBy);
+			ComposingElement domainComposingElement = composingElementBean
+					.getDomainComposingElement();
+			if (domainComposingElement.getId() == null) {
+				domainComposingElement.setCreatedBy(createdBy);
+				domainComposingElement.setCreatedDate(new Date());
 			}
-			if (domainEntity.getId() == null) {
-				domainEntity.setCreatedBy(createdBy);
-				domainEntity.setCreatedDate(new Date());
-			}
-			domainEntity.setDescription(description);
-			if (domainEntity instanceof OtherNanoparticleEntity) {
-				((OtherNanoparticleEntity) domainEntity).setType(type);
-			}
-			if (domainEntity.getComposingElementCollection() != null) {
-				domainEntity.getComposingElementCollection().clear();
-			} else {
-				domainEntity
-						.setComposingElementCollection(new HashSet<ComposingElement>());
-			}
-			for (ComposingElementBean composingElementBean : composingElements) {
-				ComposingElement domainComposingElement = composingElementBean
-						.getDomainComposingElement();
-				if (domainComposingElement.getId() == null) {
-					domainComposingElement.setCreatedBy(createdBy);
-					domainComposingElement.setCreatedDate(new Date());
-				}
-				domainComposingElement.setNanoparticleEntity(domainEntity);
-				domainEntity.getComposingElementCollection().add(
-						domainComposingElement);
-			}
-			if (domainEntity.getLabFileCollection() != null) {
-				domainEntity.getLabFileCollection().clear();
-			} else {
-				domainEntity.setLabFileCollection(new HashSet<LabFile>());
-			}
-			for (LabFileBean file : files) {
-				file.getDomainFile().setCreatedBy(createdBy);
-				file.getDomainFile().setCreatedDate(new Date());
-				domainEntity.getLabFileCollection().add(file.getDomainFile());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			domainComposingElement.setNanoparticleEntity(domainEntity);
+			domainEntity.getComposingElementCollection().add(
+					domainComposingElement);
+		}
+		if (domainEntity.getLabFileCollection() != null) {
+			domainEntity.getLabFileCollection().clear();
+		} else {
+			domainEntity.setLabFileCollection(new HashSet<LabFile>());
+		}
+		for (LabFileBean file : files) {
+			file.getDomainFile().setCreatedBy(createdBy);
+			file.getDomainFile().setCreatedDate(new Date());
+			domainEntity.getLabFileCollection().add(file.getDomainFile());
 		}
 	}
 
@@ -228,13 +226,5 @@ public class NanoparticleEntityBean {
 		copiedEntity.setDescription(description);
 		copiedEntity.setClassName(className);
 		return copiedEntity;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
 	}
 }

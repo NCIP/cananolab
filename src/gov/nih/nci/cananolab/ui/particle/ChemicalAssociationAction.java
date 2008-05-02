@@ -30,7 +30,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		assocBean.setDomainAssociation();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		assocBean.setupDomainAssociation(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
 		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		compService.saveChemicalAssociation(particleBean
@@ -76,8 +80,9 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.setAttribute("particleEntities", particleEntitites);
 		request.getSession().setAttribute("functionalizingEntitites",
 				functionalizingEntitites);
-		
-		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(request);
+
+		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
+				request);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,

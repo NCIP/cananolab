@@ -1,11 +1,12 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Gene;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Receptor;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.util.ClassUtils;
+
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Represents the view bean for the Target domain object
@@ -22,39 +23,25 @@ public class TargetBean {
 
 	private Antigen antigen = new Antigen();
 
-	private OtherTarget otherTarget = new OtherTarget();
-
 	private String className;
 
-	private Target domainTarget = new Target();
+	private Target domainTarget;
 
 	public TargetBean() {
 	}
 
 	public TargetBean(Target target) {
+		domainTarget = target;
+		className = ClassUtils.getShortClassName(target.getClass()
+				.getCanonicalName());
 		if (target instanceof Antigen) {
 			antigen = (Antigen) target;
-			domainTarget = antigen;
-			className = ClassUtils.getShortClassName(Antigen.class
-					.getCanonicalName());
-		} else if (target instanceof Receptor) {
-			domainTarget = (Receptor) target;
-			className = ClassUtils.getShortClassName(Receptor.class
-					.getCanonicalName());
-		} else if (target instanceof Gene) {
-			domainTarget = (Gene) target;
-			className = ClassUtils.getShortClassName(Gene.class
-					.getCanonicalName());
 		} else if (target instanceof OtherTarget) {
-			otherTarget = (OtherTarget) target;
-			domainTarget = otherTarget;
-			className = ClassUtils.getShortClassName(OtherTarget.class
-					.getCanonicalName());
+			type = ((OtherTarget) target).getType();
 		}
 	}
 
 	public Antigen getAntigen() {
-		domainTarget = antigen;
 		return antigen;
 	}
 
@@ -63,7 +50,7 @@ public class TargetBean {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;		
+		this.description = description;
 	}
 
 	public String getName() {
@@ -72,7 +59,6 @@ public class TargetBean {
 
 	public void setName(String name) {
 		this.name = name;
-		domainTarget.setName(name);
 	}
 
 	public String getType() {
@@ -81,12 +67,6 @@ public class TargetBean {
 
 	public void setType(String type) {
 		this.type = type;
-		otherTarget.setType(type);
-	}
-
-	public OtherTarget getOtherTarget() {
-		domainTarget = otherTarget;
-		return otherTarget;
 	}
 
 	public String getClassName() {
@@ -99,5 +79,21 @@ public class TargetBean {
 
 	public Target getDomainTarget() {
 		return domainTarget;
+	}
+
+	public void setupDomainTarget(Map<String, String> typeToClass)
+			throws Exception {
+		className = typeToClass.get(type);
+		if (domainTarget == null) {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainTarget = (Target) clazz.newInstance();
+		}
+		if (domainTarget instanceof OtherTarget) {
+			((OtherTarget) domainTarget).setType(type);
+		} else if (domainTarget instanceof Antigen) {
+			domainTarget = antigen;
+		}
+		domainTarget.setName(name);
+		domainTarget.setDescription(description);
 	}
 }

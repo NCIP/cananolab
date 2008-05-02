@@ -29,7 +29,7 @@ public class CustomPlugIn implements PlugIn {
 		try {
 			// set default lookup valules in the servlet context
 			ServletContext appContext = actionServlet.getServletContext();
-			InitSetup.getInstance().getDisplayNameLookup(appContext);
+			InitSetup.getInstance().getClassNameToDisplayNameLookup(appContext);
 			InitSetup
 					.getInstance()
 					.getServletContextDefaultTypesByReflection(

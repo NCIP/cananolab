@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
@@ -53,8 +54,6 @@ public class FunctionalizingEntityBean {
 
 	private ActivationMethod activationMethod = new ActivationMethod();
 
-	private String createdBy;
-
 	public FunctionalizingEntityBean() {
 
 	}
@@ -82,7 +81,9 @@ public class FunctionalizingEntityBean {
 		for (Function function : functionalizingEntity.getFunctionCollection()) {
 			functions.add(new FunctionBean(function));
 		}
-		activationMethod = functionalizingEntity.getActivationMethod();
+		if (functionalizingEntity.getActivationMethod() != null) {
+			activationMethod = functionalizingEntity.getActivationMethod();
+		}
 	}
 
 	public FunctionalizingEntity getDomainEntity() {
@@ -180,56 +181,50 @@ public class FunctionalizingEntityBean {
 		return activationMethod;
 	}
 
-	public void setDomainEntity() {
-		try {
-			// take care of nanoparticle entities that don't have any special
-			// properties shown in the form, e.g. OtherFunctionalizingEntity
-			if (domainEntity == null) {
-				Class clazz = ClassUtils.getFullClass(className);
-				domainEntity = (FunctionalizingEntity) clazz.newInstance();
-			}
-			if (domainEntity.getId() == null) {
-				domainEntity.setCreatedBy(createdBy);
-				domainEntity.setCreatedDate(new Date());
-			}
-			if (domainEntity instanceof OtherFunctionalizingEntity) {
-				((OtherFunctionalizingEntity) domainEntity).setType(type);
-			}
-			domainEntity.setDescription(description);
-			domainEntity.setMolecularFormula(molecularFormula);
-			domainEntity.setMolecularFormulaType(molecularFormulaType);
-			domainEntity.setName(name);
-			domainEntity.setValue(value);
-			domainEntity.setValueUnit(valueUnit);
-			domainEntity.setActivationMethod(activationMethod);
+	public void setupDomainEntity(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
+		className = typeToClass.get(type);
+		// take care of nanoparticle entities that don't have any special
+		// properties shown in the form, e.g. OtherFunctionalizingEntity
+		if (domainEntity == null) {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainEntity = (FunctionalizingEntity) clazz.newInstance();
+		}
+		if (domainEntity.getId() == null) {
+			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(new Date());
+		}
+		if (domainEntity instanceof OtherFunctionalizingEntity) {
+			((OtherFunctionalizingEntity) domainEntity).setType(type);
+		}
+		domainEntity.setDescription(description);
+		domainEntity.setMolecularFormula(molecularFormula);
+		domainEntity.setMolecularFormulaType(molecularFormulaType);
+		domainEntity.setName(name);
+		domainEntity.setValue(value);
+		domainEntity.setValueUnit(valueUnit);
+		domainEntity.setActivationMethod(activationMethod);
 
-			if (domainEntity.getId() == null) {
-				domainEntity.setCreatedBy(createdBy);
-				domainEntity.setCreatedDate(new Date());
-			}
-
-			if (domainEntity.getFunctionCollection() != null) {
-				domainEntity.getFunctionCollection().clear();
-			} else {
-				domainEntity.setFunctionCollection(new HashSet<Function>());
-			}
-			for (FunctionBean functionBean : functions) {
-				domainEntity.getFunctionCollection().add(
-						functionBean.getDomainFunction());
-				// TODO set function date
-			}
-			if (domainEntity.getLabFileCollection() != null) {
-				domainEntity.getLabFileCollection().clear();
-			} else {
-				domainEntity.setLabFileCollection(new HashSet<LabFile>());
-			}
-			for (LabFileBean file : files) {
-				file.getDomainFile().setCreatedBy(createdBy);
-				file.getDomainFile().setCreatedDate(new Date());
-				domainEntity.getLabFileCollection().add(file.getDomainFile());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (domainEntity.getFunctionCollection() != null) {
+			domainEntity.getFunctionCollection().clear();
+		} else {
+			domainEntity.setFunctionCollection(new HashSet<Function>());
+		}
+		for (FunctionBean functionBean : functions) {
+			functionBean.setupDomainFunction(typeToClass, createdBy);
+			domainEntity.getFunctionCollection().add(
+					functionBean.getDomainFunction());
+			// TODO set function date
+		}
+		if (domainEntity.getLabFileCollection() != null) {
+			domainEntity.getLabFileCollection().clear();
+		} else {
+			domainEntity.setLabFileCollection(new HashSet<LabFile>());
+		}
+		for (LabFileBean file : files) {
+			file.getDomainFile().setCreatedBy(createdBy);
+			file.getDomainFile().setCreatedDate(new Date());
+			domainEntity.getLabFileCollection().add(file.getDomainFile());
 		}
 	}
 
@@ -247,13 +242,5 @@ public class FunctionalizingEntityBean {
 
 	public void removeFile(int ind) {
 		files.remove(ind);
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
 	}
 }

@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.13 2008-05-01 05:32:45 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.14 2008-05-02 06:03:10 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -44,7 +44,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
-		charBean.setDomainChar();
+		charBean.setupDomainChar();
 		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(
@@ -89,7 +89,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
-		charBean.setDomainChar();
+		charBean.setupDomainChar();
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.deleteCharacterization(charBean.getDomainChar());
 		ActionMessages msgs = new ActionMessages();

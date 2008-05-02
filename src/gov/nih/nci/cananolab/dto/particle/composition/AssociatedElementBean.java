@@ -6,9 +6,11 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Date;
+import java.util.Map;
 
 public class AssociatedElementBean {
-	private String compositionType; // eg. Nanoparticle Entity, Functionalizing Entity, ...
+	// eg. Nanoparticle Entity, Functionalizing Entity
+	private String compositionType;
 
 	private String entityId;
 
@@ -18,10 +20,11 @@ public class AssociatedElementBean {
 
 	private AssociatedElement domainElement;
 
-	private String createdBy;
+	private String className;
 
-	public AssociatedElementBean() {}
-	
+	public AssociatedElementBean() {
+	}
+
 	public AssociatedElementBean(AssociatedElement element) {
 		domainElement = element;
 		if (element instanceof ComposingElement) {
@@ -43,13 +46,9 @@ public class AssociatedElementBean {
 		return entityId;
 	}
 
-
-
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
-
-
 
 	public ComposingElement getComposingElement() {
 		domainElement = composingElement;
@@ -60,7 +59,9 @@ public class AssociatedElementBean {
 		return domainElement;
 	}
 
-	public void setDomainElement() throws Exception {
+	public void setupDomainElement(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
+		//className = typeToClass.get(type);
 		if (domainElement == null) {
 			Class clazz = ClassUtils.getFullClass(entityClassName);
 			domainElement = (FunctionalizingEntity) clazz.newInstance();

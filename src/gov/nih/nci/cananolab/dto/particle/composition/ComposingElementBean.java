@@ -4,8 +4,10 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the view bean for ComposingElement domain object
@@ -17,9 +19,12 @@ public class ComposingElementBean {
 	private ComposingElement domainComposingElement = new ComposingElement();
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
-	
+
 	private String displayName;
-	private String domainComposingElementId; // for bodyChemicalAssociation.jsp
+
+	private String domainComposingElementId; // for
+
+	// bodyChemicalAssociation.jsp
 
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domainComposingElement = composingElement;
@@ -27,6 +32,7 @@ public class ComposingElementBean {
 				.getInherentFunctionCollection()) {
 			inherentFunctions.add(new FunctionBean(function));
 		}
+		// TODO sort functions
 	}
 
 	public ComposingElementBean() {
@@ -37,17 +43,6 @@ public class ComposingElementBean {
 	}
 
 	public List<FunctionBean> getInherentFunctions() {
-		if (domainComposingElement.getInherentFunctionCollection() != null) {
-			domainComposingElement.getInherentFunctionCollection().clear();
-		} else {
-			domainComposingElement
-					.setInherentFunctionCollection(new HashSet<Function>());
-		}
-		for (FunctionBean functionBean : inherentFunctions) {
-			domainComposingElement.getInherentFunctionCollection().add(
-					functionBean.getDomainFunction());
-			//TODO add date to function
-		}
 		return inherentFunctions;
 	}
 
@@ -75,5 +70,23 @@ public class ComposingElementBean {
 		this.domainComposingElementId = domainComposingElementId;
 	}
 
-	
+	public void setupDomainComposingElement(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
+		if (domainComposingElement.getId() == null) {
+			domainComposingElement.setCreatedBy(createdBy);
+			domainComposingElement.setCreatedDate(new Date());
+		}
+		if (domainComposingElement.getInherentFunctionCollection() != null) {
+			domainComposingElement.getInherentFunctionCollection().clear();
+		} else {
+			domainComposingElement
+					.setInherentFunctionCollection(new HashSet<Function>());
+		}
+		for (FunctionBean functionBean : inherentFunctions) {
+			functionBean.setupDomainFunction(typeToClass, createdBy);
+			domainComposingElement.getInherentFunctionCollection().add(
+					functionBean.getDomainFunction());
+			// TODO add date to function
+		}
+	}
 }

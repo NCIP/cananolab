@@ -73,7 +73,7 @@ public class CharacterizationBean {
 		}
 	}
 
-	public void setDomainChar() {
+	public void setupDomainChar() {
 		try {
 			// take care of characterizations that don't have any special
 			// properties shown in the form, e.g. Size
