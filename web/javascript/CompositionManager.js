@@ -3,99 +3,83 @@ function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
 	CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
 }
-
 function populatePage(pageData) {
-	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
+	if (pageData.length > 0) {
+		dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
+	}
 }
-
 function getComposingElementOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	
-	CompositionManager.getComposingElementTypeOptions(compFuncTypeValue, function(data) {
-			
-			dwr.util.removeAllOptions("compElemType");
-			dwr.util.addOptions("compElemType", ['']);
-    		dwr.util.addOptions("compElemType", data);
-    		dwr.util.addOptions("compElemType", ['[Other]']);
-  	});
+	CompositionManager.getComposingElementTypeOptions(compFuncTypeValue, function (data) {
+		dwr.util.removeAllOptions("compElemType");
+		dwr.util.addOptions("compElemType", [""]);
+		dwr.util.addOptions("compElemType", data);
+		dwr.util.addOptions("compElemType", ["[Other]"]);
+	});
 }
-
 function getBiopolymerOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	if(compFuncTypeValue == 'biopolymer') {
-		CompositionManager.getBiopolymerTypeOptions(compFuncTypeValue, function(data) {
-			
+	if (compFuncTypeValue == "biopolymer") {
+		CompositionManager.getBiopolymerTypeOptions(compFuncTypeValue, function (data) {
 			dwr.util.removeAllOptions("biopolymerType");
-			dwr.util.addOptions("biopolymerType", ['']);
-    		dwr.util.addOptions("biopolymerType", data);
-    		dwr.util.addOptions("biopolymerType", ['[Other]']);
-  		});
-  	}
+			dwr.util.addOptions("biopolymerType", [""]);
+			dwr.util.addOptions("biopolymerType", data);
+			dwr.util.addOptions("biopolymerType", ["[Other]"]);
+		});
+	}
 }
-
 function getWallTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	if(compFuncTypeValue == 'carbon nanotube') {
-		CompositionManager.getWallTypeOptions(compFuncTypeValue, function(data) {
-			
+	if (compFuncTypeValue == "carbon nanotube") {
+		CompositionManager.getWallTypeOptions(compFuncTypeValue, function (data) {
 			dwr.util.removeAllOptions("wallType");
-			dwr.util.addOptions("wallType", ['']);
-    		dwr.util.addOptions("wallType", data);
-  		});
-  	}
+			dwr.util.addOptions("wallType", [""]);
+			dwr.util.addOptions("wallType", data);
+		});
+	}
 }
-
 function getNETypeOptions(selectEleId) {
 	getBiopolymerOptions(selectEleId);
 	getWallTypeOptions(selectEleId);
 	getComposingElementOptions(selectEleId);
 	setEntityTypeTitle(selectEleId);
 }
-
 function getAntibodyTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	if(compFuncTypeValue == 'antibody') {
-		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, function(data) {
-			
+	if (compFuncTypeValue == "antibody") {
+		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, function (data) {
 			dwr.util.removeAllOptions("antibodyType");
-			dwr.util.addOptions("antibodyType", ['']);
-    		dwr.util.addOptions("antibodyType", data);
-    		dwr.util.addOptions("antibodyType", ['[Other]']);
-  		});
-  	}
+			dwr.util.addOptions("antibodyType", [""]);
+			dwr.util.addOptions("antibodyType", data);
+			dwr.util.addOptions("antibodyType", ["[Other]"]);
+		});
+	}
 }
-
 function getAntibodyIsotypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	if(compFuncTypeValue == 'antibody') {
-		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, function(data) {
-			
+	if (compFuncTypeValue == "antibody") {
+		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, function (data) {
 			dwr.util.removeAllOptions("antibodyIsotype");
-			dwr.util.addOptions("antibodyIsotype", ['']);
-    		dwr.util.addOptions("antibodyIsotype", data);
-    		dwr.util.addOptions("antibodyIsotype", ['[Other]']);
-  		});
-  	}
+			dwr.util.addOptions("antibodyIsotype", [""]);
+			dwr.util.addOptions("antibodyIsotype", data);
+			dwr.util.addOptions("antibodyIsotype", ["[Other]"]);
+		});
+	}
 }
-
 function getAntibodySpeciesOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-	if(compFuncTypeValue == 'antibody') {
-		CompositionManager.getAntibodySpeciesOptions(compFuncTypeValue, function(data) {
-			
+	if (compFuncTypeValue == "antibody") {
+		CompositionManager.getAntibodySpeciesOptions(compFuncTypeValue, function (data) {
 			dwr.util.removeAllOptions("antibodySpecies");
-			dwr.util.addOptions("antibodySpecies", ['']);
-    		dwr.util.addOptions("antibodySpecies", data);
-  		});
-  	}
+			dwr.util.addOptions("antibodySpecies", [""]);
+			dwr.util.addOptions("antibodySpecies", data);
+		});
+	}
 }
-
 function setEntityTypeTitle(selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
-	document.getElementById("entityTypeTitle").innerHTML = 
-			selectEle.options[selectEle.options.selectedIndex].text;
+	document.getElementById("entityTypeTitle").innerHTML = selectEle.options[selectEle.options.selectedIndex].text;
 }
-
 function getFETypeOptions(selectEleId) {
 	getBiopolymerOptions(selectEleId);
 	getAntibodyTypeOptions(selectEleId);
@@ -103,14 +87,11 @@ function getFETypeOptions(selectEleId) {
 	getAntibodySpeciesOptions(selectEleId);
 	setEntityTypeTitle(selectEleId);
 }
-	
-
-
 function displayFEModality(functionIndex) {
 	var functionType = document.getElementById("funcType_" + functionIndex).value;
 	var modalityDiv = document.getElementById("modalityDiv_" + functionIndex);
 	var modalityStrong = document.getElementById("modalityStrong_" + functionIndex);
-	if(functionType == "imaging") {
+	if (functionType == "imaging") {
 		modalityDiv.style.display = "inline";
 		modalityStrong.style.display = "inline";
 	} else {
@@ -119,12 +100,11 @@ function displayFEModality(functionIndex) {
 	}
 	return false;
 }
-
 function displayTarget(functionIndex) {
 	var functionType = document.getElementById("funcType_" + functionIndex).value;
 	var targetSpan = document.getElementById("targetSpan_" + functionIndex);
 	var targetDiv = document.getElementById("targetDiv_" + functionIndex);
-	if(functionType == "targeting") {
+	if (functionType == "targeting") {
 		targetSpan.style.display = "block";
 		targetDiv.style.display = "block";
 	} else {
@@ -133,12 +113,11 @@ function displayTarget(functionIndex) {
 	}
 	return false;
 }
-
 function displayModality(compEleIndex, functionIndex) {
 	var functionType = document.getElementById("funcType_" + compEleIndex + "_" + functionIndex).value;
 	var modalityTd = document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex);
 	var modalityTitle = document.getElementById("modalityTitle_" + compEleIndex + "_" + functionIndex);
-	if(functionType == "imaging") {
+	if (functionType == "imaging") {
 		modalityTd.style.display = "inline";
 		modalityTitle.style.display = "inline";
 	} else {
@@ -147,25 +126,22 @@ function displayModality(compEleIndex, functionIndex) {
 	}
 	return false;
 }
-
-
 function displayAntigenSpecies(parentIndex, childIndex) {
 	var type = document.getElementById("targetType_" + parentIndex + "_" + childIndex).value;
 	var sdiv = document.getElementById("speciesDiv_" + parentIndex + "_" + childIndex);
 	var removeSpan = document.getElementById("removeSpan_" + parentIndex + "_" + childIndex);
-	if(type == "antigen") {
+	if (type == "antigen") {
 		sdiv.style.display = "inline";
 	} else {
 		sdiv.style.display = "none";
 	}
 	return false;
 }
-
 function radLinkOrUpload(radioIndex, fileIndex) {
 	var linkEle = document.getElementById("linkEle_" + fileIndex);
 	var loadEle = document.getElementById("loadEle_" + fileIndex);
 	var titleEle = document.getElementById("lutitle_" + fileIndex);
-	if(radioIndex == 0) {
+	if (radioIndex == 0) {
 		loadEle.style.display = "inline";
 		linkEle.style.display = "none";
 		titleEle.innerHTML = "Upload New File";
@@ -175,56 +151,49 @@ function radLinkOrUpload(radioIndex, fileIndex) {
 		titleEle.innerHTML = "Enter File URL";
 	}
 }
-
 function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId) {
 	var compositionType = dwr.util.getValue(compositionTypeId);
 	var compEle = document.getElementById(compEleId);
-	if(compositionType != "") {
-		CompositionManager.getAssociatedElementOptions(compositionType, function(data) {
+	if (compositionType != "") {
+		CompositionManager.getAssociatedElementOptions(compositionType, function (data) {
 			dwr.util.removeAllOptions(entityTypeId);
-			if(data != null) {
-				dwr.util.addOptions(entityTypeId, ['']);
+			if (data != null) {
+				dwr.util.addOptions(entityTypeId, [""]);
 				dwr.util.addOptions(entityTypeId, data, "dataId", "dataDisplayType");
 			}
-  		});
-  	} else {
-  		dwr.util.removeAllOptions(entityTypeId);
-  	}
-  	
-  	if(compositionType != 'Nanoparticle Entity') {
-  		compEle.style.display = "none";
-  	}
+		});
+	} else {
+		dwr.util.removeAllOptions(entityTypeId);
+	}
+	if (compositionType != "Nanoparticle Entity") {
+		compEle.style.display = "none";
+	}
 }
-
-function getAssociatedComposingElements(compositionTypeId, 
-	entityTypeId, compEleTypeId, compEleId) {
-	
+function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEleTypeId, compEleId) {
 	var compositionType = dwr.util.getValue(compositionTypeId);
 	var compEle = document.getElementById(compEleId);
-	if(compositionType == 'Nanoparticle Entity') {
+	if (compositionType == "Nanoparticle Entity") {
 		var entityId = dwr.util.getValue(entityTypeId);
-		if(entityId != "") {
-			CompositionManager.getAssociatedComposingElements(entityId, function(data) {
+		if (entityId != "") {
+			CompositionManager.getAssociatedComposingElements(entityId, function (data) {
 				dwr.util.removeAllOptions(compEleTypeId);
-				if(data != null) {
+				if (data != null) {
 					dwr.util.addOptions(compEleTypeId, data, "domainComposingElementId", "displayName");
 				}
-  			});
-  		}
-  		compEle.style.display = "inline";
-  	} else {
-  		dwr.util.removeAllOptions(compEleTypeId);
-  		compEle.style.display = "none";
-  	}
-  	
-  	return false;
+			});
+		}
+		compEle.style.display = "inline";
+	} else {
+		dwr.util.removeAllOptions(compEleTypeId);
+		compEle.style.display = "none";
+	}
+	return false;
 }
-
 function displayBondType() {
 	var type = document.getElementById("assoType").value;
 	var btTitleEle = document.getElementById("bondTypeTitle");
 	var btLineEle = document.getElementById("bondTypeLine");
-	if(type == "attachment") {
+	if (type == "attachment") {
 		btTitleEle.style.display = "inline";
 		btLineEle.style.display = "inline";
 	} else {
@@ -232,7 +201,6 @@ function displayBondType() {
 		btLineEle.style.display = "none";
 	}
 }
-
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp
@@ -266,3 +234,4 @@ function setModalityInclude(compEleIndex, functionIndex) {
   	}
 }
 */
+
