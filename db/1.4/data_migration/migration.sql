@@ -858,10 +858,6 @@ ORDER BY ce.composing_element_pk_id, ce.list_index
 ;
 
 -- functionalizing entity
-/*
-ALTER TABLE canano.functionalizing_entity
-  CHANGE activation_method_pk_id activation_method_pk_id BIGINT(20) AUTO_INCREMENT;
- */
  
 insert into canano.functionalizing_entity
 (
@@ -878,11 +874,6 @@ WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 ;
-
-/*
-ALTER TABLE canano.functionalizing_entity
-  CHANGE activation_method_pk_id activation_method_pk_id BIGINT(20);
-*/
 
 insert into canano.antibody
 (
@@ -968,7 +959,7 @@ insert into canano.activation_method
 	activation_method_pk_id,
 	type
 )
-SELECT fe14.activation_method_pk_id,
+SELECT pf.particle_function_pk_id,
 	pf.activation_method
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
@@ -977,6 +968,14 @@ Where fe14.functionalizing_entity_pk_id = l.linkage_pk_id
 and l.function_pk_id = pf.particle_function_pk_id
 and pf.activation_method is not null
 and pf.activation_method != ""
+;	
+	
+update canano.functionalizing_entity fe14,
+	canano.activation_method am14,
+	cananolab.linkage l
+set fe14.activation_method_pk_id = am14.activation_method_pk_id
+where fe14.functionalizing_entity_pk_id = l.linkage_pk_id
+and am14.activation_method_pk_id = l.function_pk_id
 ;
 
 -- OtherFunction
