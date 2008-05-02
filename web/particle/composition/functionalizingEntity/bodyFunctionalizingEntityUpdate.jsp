@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center" id="entityTypeTitle"></h5>
+				<h5 align="center" id="entityTypeTitle">Functionalizing Entity</h5>
 				<br>
 			</td>
 		</tr>

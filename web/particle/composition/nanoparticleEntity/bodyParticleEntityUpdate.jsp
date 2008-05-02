@@ -32,7 +32,7 @@ function confirmDeletion()
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center" id="entityTypeTitle"></h5>
+				<h5 align="center" id="entityTypeTitle">Nanoparticle Entity</h5>
 				<br>
 			</td>
 		</tr>
@@ -75,7 +75,7 @@ function confirmDeletion()
 						</td>
 					</tr>
 				</table>
-				<br>
+				<br>				
 				<div id="entityInclude">
 					<c:choose>
 						<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
