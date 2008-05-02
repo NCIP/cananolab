@@ -53,20 +53,20 @@
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong id="bondTypeTitle" style="display:none">Bond Type</Strong>
+							<Strong id="bondTypeTitle" style="display:none">Bond
+								Type</Strong>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							<span id="bondTypeLine" style="display:none"><html:select styleId="bondType"
-								property="assoc.attachment.bondType"
-								onchange="javascript:callPrompt('Bond Type', 'bondType');">
-								<option value=""></option>
-								<html:options name="bondTypes"/>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-							</span>
+							<span id="bondTypeLine" style="display:none"><html:select
+									styleId="bondType" property="assoc.attachment.bondType"
+									onchange="javascript:callPrompt('Bond Type', 'bondType');">
+									<option value=""></option>
+									<html:options name="bondTypes" />
+									<option value="other">
+										[Other]
+									</option>
+								</html:select> </span>
 						</td>
 					</tr>
 					<tr>
@@ -107,7 +107,10 @@
 									</li>
 								</ul>
 							</div>
-							<div id="assocEleLinkBlock" class="assocEleBlock">
+							<div id="assocEleLinkBlock" class="arrowBlock">
+								<img src="images/arrow.small.left.gif" />
+								<img src="images/arrow.small.right.gif" />
+								<br>
 								<strong>associated with</strong>
 							</div>
 							<div id="assocEleBlockB" class="assocEleBlock">

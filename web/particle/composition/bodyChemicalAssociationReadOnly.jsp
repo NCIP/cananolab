@@ -39,13 +39,15 @@
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<c:if test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
+							<c:if
+								test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
 								<Strong>Bond Type</Strong>
 							</c:if>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							<c:if test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
+							<c:if
+								test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
 								${chemicalAssociationForm.map.assoc.attachment.bondType}
 							</c:if>
 						</td>
@@ -68,7 +70,10 @@
 									</li>
 								</ul>
 							</div>
-							<div id="assocEleLinkBlock" class="assocEleBlock">
+							<div id="assocEleLinkBlock" class="arrowBlock">
+								<img src="images/arrow.small.left.gif" />
+								<img src="images/arrow.small.right.gif" />
+								<br>
 								<strong>associated with</strong>
 							</div>
 							<div id="assocEleBlockB" class="assocEleBlock">
