@@ -61,7 +61,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("chemicalAssocationForm");
+		request.getSession().removeAttribute("chemicalAssociationForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
 		setLookups(theForm, request);
