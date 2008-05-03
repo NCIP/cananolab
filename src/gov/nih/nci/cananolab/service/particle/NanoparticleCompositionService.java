@@ -174,7 +174,7 @@ public class NanoparticleCompositionService {
 							.getAssociatedElementA().getId());
 			AssociatedElement elementB = (AssociatedElement) appService.get(
 					assoc.getAssociatedElementB().getClass(), assoc
-							.getAssociatedElementA().getId());
+							.getAssociatedElementB().getId());
 			if (elementA == null || elementB == null) {
 				String err = "Object doesn't exist in the database anymore.  Please log in again.";
 				logger.error(err);
@@ -184,17 +184,8 @@ public class NanoparticleCompositionService {
 			assoc.setAssociatedElementB(elementB);
 			SampleComposition composition = particleSample
 					.getSampleComposition();
-			if (composition != null) {
-				composition.getChemicalAssociationCollection().add(assoc);
-			} else {
-				composition = new SampleComposition();
-				particleSample.setSampleComposition(composition);
-				Collection<ChemicalAssociation> asssocCollection = new HashSet<ChemicalAssociation>();
-				asssocCollection.add(assoc);
-				composition.setChemicalAssociationCollection(asssocCollection);
-				composition.setNanoparticleSample(particleSample);
-			}
-			appService.saveOrUpdate(assoc);
+			composition.getChemicalAssociationCollection().add(assoc);
+			appService.saveOrUpdate(composition);
 			if (assoc instanceof OtherChemicalAssociation) {
 				// TODO save other chemical association type
 			}
