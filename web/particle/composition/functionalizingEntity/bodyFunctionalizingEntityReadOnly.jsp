@@ -173,11 +173,11 @@
 
 															</td>
 															<td class="labelWithTop" valign="top">
-																<strong style="" id="modalityStrong_${ind}">Modality
+																<strong style="${modalityDisplay }" id="modalityStrong_${ind}">Modality
 																	Type </strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="">
+																<div id="modalityDiv_${ind}" style="${modalityDisplay }">
 																	${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}&nbsp;
 
 																</div>
@@ -195,7 +195,7 @@
 														<tr>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
-																<div id="targetDiv_${ind }" style="">
+																<div id="targetDiv_${ind }" style="${targetDisplay }">
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoReadOnly.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
