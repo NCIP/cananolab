@@ -137,18 +137,16 @@ function displayAntigenSpecies(parentIndex, childIndex) {
 	}
 	return false;
 }
-function radLinkOrUpload(radioIndex, fileIndex) {
-	var linkEle = document.getElementById("linkEle_" + fileIndex);
-	var loadEle = document.getElementById("loadEle_" + fileIndex);
-	var titleEle = document.getElementById("lutitle_" + fileIndex);
-	if (radioIndex == 0) {
+
+function radLinkOrUpload(fileIndex) {
+	var linkEle = document.getElementById("link_" + fileIndex);
+	var loadEle = document.getElementById("load_" + fileIndex);
+	if (document.getElementById("external_" + fileIndex).checked) {
 		loadEle.style.display = "inline";
 		linkEle.style.display = "none";
-		titleEle.innerHTML = "Upload New File";
 	} else {
 		loadEle.style.display = "none";
 		linkEle.style.display = "inline";
-		titleEle.innerHTML = "Enter File URL";
 	}
 }
 
