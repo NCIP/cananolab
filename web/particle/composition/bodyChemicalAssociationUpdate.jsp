@@ -199,8 +199,6 @@
 													<jsp:param name="form" value="chemicalAssociationForm" />
 													<jsp:param name="action" value="chemicalAssociation" />
 													<jsp:param name="fileBean" value="assoc.files[${fileInd}]" />
-													<jsp:param name="domainFile"
-														value="assoc.files[${fileInd}].domainFile" />
 													<jsp:param name="fileId"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri"
@@ -209,12 +207,9 @@
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].displayName}" />
 													<jsp:param name="fileHidden"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
-													<jsp:param name="fileExternal"
-														value="${chemicalAssociationForm.map.assoc.files[fileInd].external}" />
-													<jsp:param name="fileImage"
-														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
 												</jsp:include>
-
+<%--													<jsp:param name="fileImage"--%>
+<%--														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />--%>
 												<br>
 											</logic:iterate>
 										</td>

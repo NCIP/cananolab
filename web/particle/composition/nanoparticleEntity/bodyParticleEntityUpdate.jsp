@@ -277,10 +277,11 @@ function confirmDeletion()
 													<jsp:param name="form" value="nanoparticleEntityForm" />
 													<jsp:param name="action" value="nanoparticleEntity" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
-													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
 													<jsp:param name="fileId" value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri" value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
 													<jsp:param name="fileDisplayName" value="${nanoparticleEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileHidden"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
 												</jsp:include>
 												<br>
 											</logic:iterate>
