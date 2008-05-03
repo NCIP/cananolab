@@ -313,8 +313,6 @@
 													<jsp:param name="form" value="functionalizingEntityForm" />
 													<jsp:param name="action" value="functionalizingEntity" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
-													<jsp:param name="domainFile"
-														value="entity.files[${fileInd}].domainFile" />
 													<jsp:param name="fileId"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri"
@@ -323,11 +321,10 @@
 														value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
 													<jsp:param name="fileHidden"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
-													<jsp:param name="fileExternal"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].external}" />
-													<jsp:param name="fileImage"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
 												</jsp:include>
+<%--													<jsp:param name="fileImage"--%>
+<%--														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />--%>
+												
 
 												<br>
 											</logic:iterate>

@@ -108,16 +108,17 @@
 						<c:set var="entityType"
 							value="${functionalizingEntityForm.map.entity.type}" scope="page" />
 						<%
-									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-									.getInstance().getObjectName(
-									(String) pageContext.getAttribute("entityType"),
-									application);
-							pageContext.setAttribute("entityClass", entityClass);
+							String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+											.getInstance().getObjectName(
+													(String) pageContext
+															.getAttribute("entityType"),
+													application);
+									pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
-							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />						
+							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />
 					</c:if>
-				</div>				
+				</div>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -132,7 +133,7 @@
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
 									<tr>
-										
+
 										<td id="functionTd">
 											<logic:iterate name="functionalizingEntityForm"
 												property="entity.functions" id="function" indexId="ind">
@@ -161,7 +162,7 @@
 															<td class="formSubTitleNoRight" colspan="3">
 																<span>Function #${ind + 1}</span>
 															</td>
-															
+
 														</tr>
 														<tr>
 															<td class="leftLabelWithTop" valign="top">
@@ -169,17 +170,16 @@
 															</td>
 															<td class="labelWithTop" valign="top">
 																${functionalizingEntityForm.map.entity.functions[ind].type}&nbsp;
-																
+
 															</td>
 															<td class="labelWithTop" valign="top">
-																<strong style="${modalityDisplay}"
-																	id="modalityStrong_${ind}">Modality Type
-																</strong>&nbsp;
+																<strong style="" id="modalityStrong_${ind}">Modality
+																	Type </strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="${modalityDisplay}">
-																${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}&nbsp;
-																	
+																<div id="modalityDiv_${ind}" style="">
+																	${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}&nbsp;
+
 																</div>
 																&nbsp;
 															</td>
@@ -195,7 +195,7 @@
 														<tr>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
-																<div id="targetDiv_${ind }" style="${targetDisplay }">
+																<div id="targetDiv_${ind }" style="">
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoReadOnly.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
@@ -233,20 +233,29 @@
 										<td id="fileTd">
 											<logic:iterate name="functionalizingEntityForm"
 												property="entity.files" id="entityFile" indexId="fileInd">
-												<jsp:include
-													page="/particle/bodyLoadFileReadOnly.jsp">
+												<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="action" value="functionalizingEntity" />
-													<jsp:param name="domainFile" value="entity.files[${fileInd}].domainFile" />
-													<jsp:param name="fileId" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
-													<jsp:param name="fileUri" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName" value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
-													<jsp:param name="fileType" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.type}" />
-													<jsp:param name="fileTitle" value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
-													<jsp:param name="fileKeyword" value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
-													<jsp:param name="fileVisibilityGroups" value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
+													<jsp:param name="domainFile"
+														value="entity.files[${fileInd}].domainFile" />
+													<jsp:param name="fileId"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileDisplayName"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileType"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.type}" />
+													<jsp:param name="fileTitle"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
+													<jsp:param name="fileKeywords"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
+													<jsp:param name="fileVisibilityGroups"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
+													<jsp:param name="uriExternal"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
 												</jsp:include>
-												
+
 												<br>
 											</logic:iterate>
 										</td>
@@ -254,50 +263,8 @@
 								</table>
 							</td>
 						</tr>
-						</tbody>
+					</tbody>
 				</table>
-				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-						<td width="30%">
-							<span class="formMessage"> </span>
-							<br>
-							<table height="32" border="0" align="left" cellpadding="4"
-								cellspacing="0">
-								<tr>
-									<td height="32">
-										<div align="left">
-											<input type="button" value="Delete"
-												onclick="confirmDeletion();">
-										</div>
-									</td>
-								</tr>
-							</table>
-							<table width="498" height="32" border="0" align="right"
-								cellpadding="4" cellspacing="0">
-								<tr>
-									<td width="490" height="32">
-										<div align="right">
-											<div align="right">
-												<input type="reset" value="Reset" onclick="">
-												<input type="hidden" name="dispatch" value="create">
-												<input type="hidden" name="page" value="2">
-												<input type="hidden" name="submitType"
-													value="${param.submitType}" />
-												<html:hidden property="entity.createdBy"
-													value="${user.loginName}" />
-												<html:submit />
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-							<div align="right"></div>
-						</td>
-					</tr>
-				</table>
-
 			</td>
 		</tr>
 	</table>

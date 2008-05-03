@@ -20,81 +20,73 @@
 		<c:choose>
 			<c:when test="${param.fileHidden eq 'false' }">
 
-				<c:choose>
-					<c:when test="${param.fileExternal eq 'true'}">
-						<c:set var="uploadCheck" value="" />
-						<c:set var="linkCheck" value="checked" />
-						<c:set var="upladStyle" value="display: none" />
-						<c:set var="linkStyle" value="display: inline" />
-					</c:when>
-					<c:otherwise>
-						<c:set var="uploadCheck" value="checked" />
-						<c:set var="linkCheck" value="" />
-						<c:set var="upladStyle" value="display: inline" />
-						<c:set var="linkStyle" value="display: none" />
-					</c:otherwise>
-				</c:choose>
-
 				<tr>
 					<td class="leftLabel">
-						<input type="radio" name="linkOrUpload_${param.fileInd}"
-							value="upload"
-							${uploadCheck}
-							onclick="radLinkOrUpload(0, ${param.fileInd })" />
-						Upload File
-						<input type="radio" name="linkOrUpload_${param.fileInd}"
-							${linkCheck}
-							value="link"
-							onclick="radLinkOrUpload(1, ${param.fileInd })" />
-						Enter URL
+						<html:radio styleId="external_${param.fileInd }"
+							property="${param.fileBean}.domainFile.uriExternal" value="false"
+							onclick="radLinkOrUpload(${param.fileInd })" />
+						<strong>Upload File</strong>
+						<br>
+						&nbsp;&nbsp;or
+						<br>
+						<html:radio property="${param.fileBean}.domainFile.uriExternal"
+							value="true" onclick="radLinkOrUpload(${param.fileInd })" />
+						<strong>Enter Report URL</strong>
 					</td>
-					<td class="label" align="right">
-						<strong id="lutitle_${param.fileInd }">Upload New File</strong>
+					<td class="rightLabel" colspan="3">
+						<span id="load_${param.fileInd }"> <html:file
+								property="${param.fileBean}.uploadedFile" size="60" />
+							&nbsp;&nbsp; </span>
+						<br>
+						<br>
+						<span id="link_${param.fileInd }" style="display: none"><html:text
+								property="${param.fileBean}.externalUrl" size="60" /> </span>&nbsp;
 					</td>
-					<td class="rightLabel" align="left">
-						<c:choose>
-							<c:when test="${!empty param.fileUri && empty param.fileId }">
-								<html:hidden property="${param.domainFile}.name" />
-								<html:hidden property="${param.domainFile}.uri" />
-								<br>
-							</c:when>
-						</c:choose>
-						<c:choose>
-							<c:when test="${!empty param.fileId}">
-								<c:choose>
-									<c:when test="${param.fileImage eq 'true'}">
- 												${param.fileDisplayName}<br>
-										<br>
-										<a href="#"
-											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img
-												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
-												border="0" width="150"> </a>
-									</c:when>
-									<c:otherwise>
-										<a
-											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">${param.fileDisplayName}</a>
-										<html:hidden property="${param.domainFile}.id" />
-										<html:hidden property="${param.domainFile}.name" />
-										<html:hidden property="${param.domainFile}.uri" />
-										<br>
-									</c:otherwise>
-								</c:choose>
+					<c:if test="${!empty param.fileUri }">
+							<tr>
+								<td class="completeLabel" colspan="3">
+									<strong>Uploaded File</strong> &nbsp;&nbsp;
+									<a
+										href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
+<%--										target="${submitReportForm.map.file.urlTarget}">--%>
+										${param.fileUri}</a>
+									<html:hidden property="${param.fileUri}" />
+								</td>
+							</tr>
+					</c:if>
+					
+						
+						<%--						<c:choose>--%>
+						<%--							<c:when test="${!empty param.fileId}">--%>
+						<%--								<c:choose>--%>
+						<%--									<c:when test="${param.fileImage eq 'true'}">--%>
+						<%-- 												${param.fileDisplayName}<br>--%>
+						<%--										<br>--%>
+						<%--										<a href="#"--%>
+						<%--											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img--%>
+						<%--												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"--%>
+						<%--												border="0" width="150"> </a>--%>
+						<%--									</c:when>--%>
+						<%--									<c:otherwise>--%>
+						<%--										<a--%>
+						<%--											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">${param.fileDisplayName}</a>--%>
+						<%--										<html:hidden property="${param.fileBean}.domainFile.id" />--%>
+						<%--										<html:hidden property="${param.fileBean}.domainFile.name" />--%>
+						<%--										<html:hidden property="${param.fileBean}.domainFile.uri" />--%>
+						<%--										<br>--%>
+						<%--									</c:otherwise>--%>
+						<%--								</c:choose>--%>
 
-							</c:when>
-						</c:choose>
-						<span id="loadEle_${param.fileInd }" style="${uploadStyle}"><html:file
-								property="${param.fileBean}.uploadedFile" /> </span>
-						<span id="linkEle_${param.fileInd }" style="${linkStyle}"><html:text
-								property="${param.domainFile}.uri" size="60" /> </span> &nbsp;
-					</td>
-				</tr>
+						<%--							</c:when>--%>
+						<%--						</c:choose>--%>
+					
 				<tr>
 					<td class="leftLabel">
 						<strong>File Type*</strong>
 					</td>
 					<td class="rightLabel" colspan="2">
 						<html:select styleId="fileType${param.fileInd}"
-							property="${param.domainFile}.type"
+							property="${param.fileBean}.domainFile.type"
 							onchange="javascript:callPrompt('File Type', 'fileType' + ${param.fileInd});">
 							<option value="" />
 								<html:options name="fileTypes" />
@@ -109,7 +101,7 @@
 						<strong>File Title*</strong>
 					</td>
 					<td class="rightLabel" colspan="2">
-						<html:text property="${param.domainFile}.title" size="60" />
+						<html:text property="${param.fileBean}.domainFile.title" size="60" />
 					</td>
 				</tr>
 				<tr>
