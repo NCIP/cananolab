@@ -98,7 +98,9 @@
 												<option value="">
 												</option>
 											</html:select> </span>
-										<input type="hidden" id="entityDisplayA" name="entityDisplayNameA" value="" />
+										<html:hidden styleId="entityDisplayA"
+											property="assoc.associatedElementA.entityDisplayName"
+											value="" />
 									</li>
 									<li>
 										<span class="indented3" id="compEleA" style="display:none">
@@ -142,7 +144,9 @@
 												<option value="">
 												</option>
 											</html:select> </span>
-										<input type="hidden" id="entityDisplayB" name="entityDisplayNameB" value="" />
+										<html:hidden styleId="entityDisplayB"
+											property="assoc.associatedElementB.entityDisplayName"
+											value="" />
 									</li>
 									<li>
 										<span class="indented3" id="compEleB" style="display:none"><html:select
@@ -254,10 +258,8 @@
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<%--												<html:hidden property="particle.sampleId" />--%>
-												<%--												<html:hidden property="particle.sampleName" />--%>
-												<%--												<html:hidden property="particle.sampleSource" />--%>
-												<%--												<html:hidden property="particle.sampleType" />--%>
+												<html:hidden property="particleId"
+													value="${param.particleId}" />
 												<html:submit />
 											</div>
 										</div>
