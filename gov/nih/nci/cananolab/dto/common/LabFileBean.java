@@ -31,6 +31,16 @@ public class LabFileBean {
 
 	private String externalUrl;
 
+	private String uploadedFile;
+	
+	public String getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(String uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
 	}
