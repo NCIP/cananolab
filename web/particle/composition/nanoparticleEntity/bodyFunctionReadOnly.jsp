@@ -45,8 +45,8 @@
 							<c:set var="modalityDisplay" value="display: none;" />
 						</c:otherwise>
 					</c:choose>
-					<div id="modalityTypeTd_${param.compEleInd}_${ifInd}" style="">
-						${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality}&nbsp;
+					<div id="modalityTypeTd_${param.compEleInd}_${ifInd}" style="${modalityDisplay}">
+						${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality}
 					</div>
 					&nbsp;
 				</td>
