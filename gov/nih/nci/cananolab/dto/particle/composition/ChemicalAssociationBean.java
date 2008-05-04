@@ -30,11 +30,14 @@ public class ChemicalAssociationBean {
 
 	private AssociatedElementBean associatedElementB = new AssociatedElementBean();
 
+	private Long assocId;
+	
 	public ChemicalAssociationBean() {
 	}
 
 	public ChemicalAssociationBean(ChemicalAssociation chemicalAssociation) {
 		domainAssociation = chemicalAssociation;
+		assocId=domainAssociation.getId();
 		if (chemicalAssociation instanceof Attachment) {
 			attachment = (Attachment) chemicalAssociation;
 		}
@@ -59,19 +62,23 @@ public class ChemicalAssociationBean {
 	public void setupDomainAssociation(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
-		if (domainAssociation == null) {
-			Class clazz = ClassUtils.getFullClass(className);
+		Class clazz = ClassUtils.getFullClass(className);
+		if (domainAssociation == null || !clazz.equals(domainAssociation.getClass())) {	
 			domainAssociation = (ChemicalAssociation) clazz.newInstance();
 		}
 		if (domainAssociation.getId() == null) {
 			domainAssociation.setCreatedBy(createdBy);
 			domainAssociation.setCreatedDate(new Date());
 		}
+		
 		attachment.setCreatedBy(domainAssociation.getCreatedBy());
 		attachment.setCreatedDate(domainAssociation.getCreatedDate());
 
 		if (className.equals("Attachment")) {
 			domainAssociation = attachment;
+		}
+		if (assocId!=null) {
+			domainAssociation.setId(assocId);
 		}
 		domainAssociation.setDescription(description);
 		associatedElementA.setupDomainElement(typeToClass, createdBy);
