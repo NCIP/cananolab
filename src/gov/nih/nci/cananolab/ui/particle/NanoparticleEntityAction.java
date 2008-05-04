@@ -8,12 +8,11 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.32 2008-05-02 06:03:10 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.33 2008-05-04 09:47:45 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -104,20 +103,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entityBean = compService
 				.findNanoparticleEntityById(entityId);
 		compService.retrieveVisibility(entityBean, user);
-		String entityType = InitSetup.getInstance().getDisplayName(
-				entityBean.getClassName(), session.getServletContext());
-		entityBean.setType(entityType);
-		// set composing element function type
-		for (ComposingElementBean compElementBean : entityBean
-				.getComposingElements()) {
-			for (FunctionBean functionBean : compElementBean
-					.getInherentFunctions()) {
-				String functionType = InitSetup.getInstance().getDisplayName(
-						functionBean.getClassName(),
-						session.getServletContext());
-				functionBean.setType(functionType);
-			}
-		}
+		entityBean.updateType(InitSetup.getInstance()
+				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("entity", entityBean);
 		setLookups(request);
 		return mapping.getInputForward();

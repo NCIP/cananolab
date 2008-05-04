@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.particle;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
@@ -64,7 +65,8 @@ public class NanoparticleCompositionService {
 			SampleComposition composition = particleSample
 					.getSampleComposition();
 			if (composition == null) {
-				particleSample.setSampleComposition(new SampleComposition());
+				composition=new SampleComposition();
+				particleSample.setSampleComposition(composition);
 				entity.setSampleComposition(composition);
 				particleSample.setSampleComposition(composition);
 				Collection<NanoparticleEntity> entityCollection = new HashSet<NanoparticleEntity>();
@@ -96,6 +98,10 @@ public class NanoparticleCompositionService {
 					NanoparticleEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+			crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
+			crit.setFetchMode(
+					"composingElementCollection.inherentFunctionCollection",
+					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List result = appService.query(crit);
@@ -207,6 +213,7 @@ public class NanoparticleCompositionService {
 					FunctionalizingEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+			crit.setFetchMode("functionCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -236,12 +243,29 @@ public class NanoparticleCompositionService {
 					ChemicalAssociation.class).add(
 					Property.forName("id").eq(new Long(assocId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+			crit.setFetchMode("associatedElementA", FetchMode.JOIN);
+			crit.setFetchMode("associatedElementB", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				ChemicalAssociation assoc = (ChemicalAssociation) result.get(0);
+				//load nanoparticle entity associated with composing element in an association
+				if (assoc.getAssociatedElementA() instanceof ComposingElement) {
+					NanoparticleEntityBean entityBean = findNanoparticleEntityById(((ComposingElement) assoc
+							.getAssociatedElementA()).getNanoparticleEntity()
+							.getId().toString());
+					((ComposingElement) assoc.getAssociatedElementA())
+							.setNanoparticleEntity(entityBean.getDomainEntity());
+				}
+				if (assoc.getAssociatedElementB() instanceof ComposingElement) {
+					NanoparticleEntityBean entityBean = findNanoparticleEntityById(((ComposingElement) assoc
+							.getAssociatedElementB()).getNanoparticleEntity()
+							.getId().toString());
+					((ComposingElement) assoc.getAssociatedElementB())
+							.setNanoparticleEntity(entityBean.getDomainEntity());
+				}
 				assocBean = new ChemicalAssociationBean(assoc);
 			}
 			return assocBean;

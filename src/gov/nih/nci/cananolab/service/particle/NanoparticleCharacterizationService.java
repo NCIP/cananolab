@@ -246,8 +246,7 @@ public class NanoparticleCharacterizationService {
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
 			String particleName, String className, UserBean user)
 			throws ParticleCharacterizationException {
-		CharacterizationSummaryBean charSummary = new CharacterizationSummaryBean();
-		charSummary.setCharacterizationClassName(className);
+		CharacterizationSummaryBean charSummary = new CharacterizationSummaryBean(className);
 		try {
 			SortedSet<Characterization> charas = findParticleCharacterizationsByClass(
 					particleName, className);
