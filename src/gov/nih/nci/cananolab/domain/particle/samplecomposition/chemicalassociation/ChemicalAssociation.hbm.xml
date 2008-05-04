@@ -30,11 +30,11 @@
 		<many-to-one name="associatedElementA"
 			class="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement"
 			column="associated_element_a_pk_id" lazy="proxy"
-			cascade="save-update, delete" />
+			cascade="save-update" />
 		<many-to-one name="associatedElementB"
 			class="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement"
 			column="associated_element_b_pk_id" lazy="proxy"
-			cascade="save-update, delete" />
+			cascade="save-update" />
 		<subclass
 			name="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation"
 			discriminator-value="OtherChemicalAssociation">
