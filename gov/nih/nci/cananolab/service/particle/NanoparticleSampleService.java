@@ -175,8 +175,10 @@ public class NanoparticleSampleService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			if (particleSources != null && particleSources.length > 0) {
-				crit.add(Restrictions.in("source.organizationName",
-						particleSources));
+				crit.createAlias("source", "source",
+						CriteriaSpecification.LEFT_JOIN).add(
+						Restrictions.in("source.organizationName",
+								particleSources));
 			}
 
 			if (wordList != null && wordList.length > 0) {
