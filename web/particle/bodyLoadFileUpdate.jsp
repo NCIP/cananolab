@@ -31,7 +31,7 @@
 						<br>
 						<html:radio property="${param.fileBean}.domainFile.uriExternal"
 							value="true" onclick="radLinkOrUpload(${param.fileInd })" />
-						<strong>Enter Report URL</strong>
+						<strong>Enter File URL</strong>
 					</td>
 					<td class="rightLabel" colspan="3">
 						<span id="load_${param.fileInd }"> <html:file
@@ -47,7 +47,7 @@
 							<td class="completeLabel" colspan="3">
 								<c:choose>
 									<c:when test="${param.fileImage eq 'true'}">
-						 				${param.fileDisplayName}<br>
+						 				${param.fileTitle}<br>
 										<br>
 										<a href="#"
 											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img

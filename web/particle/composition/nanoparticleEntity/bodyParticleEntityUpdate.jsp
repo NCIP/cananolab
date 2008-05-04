@@ -32,7 +32,9 @@ function confirmDeletion()
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center" id="entityTypeTitle">Nanoparticle Entity</h5>
+				<h5 align="center" id="entityTypeTitle">
+					Nanoparticle Entity
+				</h5>
 				<br>
 			</td>
 		</tr>
@@ -75,18 +77,19 @@ function confirmDeletion()
 						</td>
 					</tr>
 				</table>
-				<br>				
+				<br>
 				<div id="entityInclude">
 					<c:choose>
 						<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
 							<c:set var="entityType"
 								value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
 							<%
-										String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-										.getInstance().getObjectName(
-										(String) pageContext.getAttribute("entityType"),
-										application);
-								pageContext.setAttribute("entityClass", entityClass);
+								String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+													.getInstance().getObjectName(
+															(String) pageContext
+																	.getAttribute("entityType"),
+															application);
+											pageContext.setAttribute("entityClass", entityClass);
 							%>
 							<jsp:include
 								page="/particle/composition/nanoparticleEntity/body${entityClass}Info.jsp" />
@@ -172,7 +175,7 @@ function confirmDeletion()
 																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
 																	<option value="" />
-																	<html:options name="molecularFormulaTypes" />
+																		<html:options name="molecularFormulaTypes" />
 																	<option value="other">
 																		[Other]
 																	</option>
@@ -204,7 +207,7 @@ function confirmDeletion()
 																	property="entity.composingElements[${ind}].domainComposingElement.valueUnit"
 																	onchange="javascript:callPrompt('Unit', 'compEleUnit');">
 																	<option value="" />
-																	<html:options name="composingElementUnits" />
+																		<html:options name="composingElementUnits" />
 																	<option value="other">
 																		[Other]
 																	</option>
@@ -271,15 +274,17 @@ function confirmDeletion()
 										<td id="fileTd">
 											<logic:iterate name="nanoparticleEntityForm"
 												property="entity.files" id="entityFile" indexId="fileInd">
-												<jsp:include
-													page="/particle/bodyLoadFileUpdate.jsp">
+												<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="nanoparticleEntityForm" />
 													<jsp:param name="action" value="nanoparticleEntity" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
-													<jsp:param name="fileId" value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
-													<jsp:param name="fileUri" value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName" value="${nanoparticleEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileId"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
+													<jsp:param name="fileUri"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+													<jsp:param name="fileTitle"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.title}" />
 													<jsp:param name="fileHidden"
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"

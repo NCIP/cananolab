@@ -287,8 +287,8 @@
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName"
-														value="${chemicalAssociationForm.map.assoc.files[fileInd].displayName}" />
+													<jsp:param name="fileTitle"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.title}" />
 													<jsp:param name="fileHidden"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"

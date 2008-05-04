@@ -242,13 +242,11 @@
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
 													<jsp:param name="fileType"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.type}" />
 													<jsp:param name="fileTitle"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
-													<jsp:param name="fileKeywords"
+													<jsp:param name="fileKeywordsStr"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
 													<jsp:param name="fileVisibilityGroups"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
