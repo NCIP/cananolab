@@ -47,8 +47,6 @@ public class FunctionBean {
 					.getTargetCollection()) {
 				targets.add(new TargetBean(target));
 			}
-		} else if (function instanceof OtherFunction) {
-			type = ((OtherFunction) function).getType();
 		}
 		className = ClassUtils.getShortClassName(function.getClass()
 				.getCanonicalName());
@@ -66,16 +64,8 @@ public class FunctionBean {
 		return type;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getClassName() {
 		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public List<TargetBean> getTargets() {
@@ -135,4 +125,22 @@ public class FunctionBean {
 		}
 		domainFunction.setDescription(description);
 	}
+
+	public void updateType(Map<String, String> classToType) {
+		if (domainFunction instanceof OtherFunction) {
+			type = ((OtherFunction) domainFunction).getType();
+		} else {
+			type = classToType.get(className);
+		}
+		if (domainFunction instanceof TargetingFunction) {
+			for (TargetBean targetBean : getTargets()) {
+				targetBean.updateType(classToType);
+			}
+		}
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }
