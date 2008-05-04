@@ -25,13 +25,12 @@ public class AssociatedElementBean {
 
 	public AssociatedElementBean(AssociatedElement element) {
 		domainElement = element;
+		className = ClassUtils.getShortClassName(element.getClass().getName());
 		if (element instanceof ComposingElement) {
 			composingElement = (ComposingElement) element;
 			entityId = composingElement.getNanoparticleEntity().getId()
 					.toString();
 		} else {
-			className = ClassUtils.getShortClassName(element.getClass()
-					.getName());
 			entityId = element.getId().toString();
 		}
 	}
@@ -45,7 +44,6 @@ public class AssociatedElementBean {
 	}
 
 	public ComposingElement getComposingElement() {
-		domainElement = composingElement;
 		return composingElement;
 	}
 
@@ -56,16 +54,14 @@ public class AssociatedElementBean {
 	public void setupDomainElement(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		// domain element is a functionalizing entity
-		if (composingElement.getId() == null) {
+		if (compositionType.equals("Functionalizing Entity")) {
 			className = typeToClass.get(entityDisplayName);
 			Class clazz = ClassUtils.getFullClass(className);
 			domainElement = (AssociatedElement) clazz.newInstance();
 			domainElement.setId(new Long(entityId));
-		} else if (composingElement.getId() != null
-				&& !className.equals("ComposingElement")) {
+		} else {
 			domainElement = composingElement;
 		}
-
 	}
 
 	public String getEntityDisplayName() {
@@ -95,5 +91,9 @@ public class AssociatedElementBean {
 			compositionType = classToType.get("FunctionalizingEntity");
 			entityDisplayName = classToType.get(className);
 		}
+	}
+
+	public void setCompositionType(String compositionType) {
+		this.compositionType = compositionType;
 	}
 }
