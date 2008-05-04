@@ -317,8 +317,8 @@
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
 													<jsp:param name="fileUri"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileDisplayName"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
+													<jsp:param name="fileTitle"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
 													<jsp:param name="fileHidden"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"

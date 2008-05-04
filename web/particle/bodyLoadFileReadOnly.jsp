@@ -31,7 +31,7 @@
 							<td class="rightLabel" colspan="2">
 								<c:choose>
 									<c:when test="${param.fileImage eq 'true'}">
-						 				${param.fileDisplayName}<br>
+						 				${param.fileTitle}<br>>
 										<br>
 										<a href="#"
 											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img
@@ -63,7 +63,7 @@
 						<strong>File Title</strong>
 					</td>
 					<td class="rightLabel" colspan="2">
-						${param.fileType }&nbsp;
+						${param.fileTitle }&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -71,7 +71,7 @@
 						<strong>Keywords <em>(one word per line)</em> </strong>
 					</td>
 					<td class="rightLabel" colspan="2">
-						${param.fileKeywords }&nbsp;
+						${param.fileKeywordsStr }&nbsp;
 					</td>
 				</tr>
 				<tr>
