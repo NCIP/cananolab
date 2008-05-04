@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
