@@ -18,9 +18,9 @@
 					<c:choose>
 						<c:when test="${param.uriExternal eq 'true' }">
 							<td class="leftLabel">
-								<strong>Enter Report URL</strong>
+								<strong>File URL</strong>
 							</td>
-							<td class="rightLabel" colspan="3">
+							<td class="rightLabel" colspan="2">
 								${param.externalUrl}&nbsp;
 							</td>
 						</c:when>
@@ -28,40 +28,28 @@
 							<td class="leftLabel">
 								<strong>Uploaded File</strong>
 							</td>
-							<td class="rightLabel" colspan="3">
-								<a
-									href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
-									<%--										target="${submitReportForm.map.file.urlTarget}">--%>
-									${param.fileUri}</a>
-								<html:hidden property="${param.fileUri}" />&nbsp;
+							<td class="rightLabel" colspan="2">
+								<c:choose>
+									<c:when test="${param.fileImage eq 'true'}">
+						 				${param.fileDisplayName}<br>
+										<br>
+										<a href="#"
+											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img
+												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
+												border="0" width="150"> </a>
+									</c:when>
+									<c:otherwise>
+										<strong>Uploaded File</strong> &nbsp;&nbsp;
+										<a
+											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
+											<%--			target="${submitReportForm.map.file.urlTarget}">--%>
+											${param.fileUri}</a>
+									</c:otherwise>
+								</c:choose>
 							</td>
 						</c:otherwise>
 					</c:choose>
-					
-
-					<%--						<c:choose>--%>
-					<%--							<c:when test="${!empty param.fileId}">--%>
-					<%--								<c:choose>--%>
-					<%--									<c:when test="${param.fileImage eq 'true'}">--%>
-					<%-- 												${param.fileDisplayName}<br>--%>
-					<%--										<br>--%>
-					<%--										<a href="#"--%>
-					<%--											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img--%>
-					<%--												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"--%>
-					<%--												border="0" width="150"> </a>--%>
-					<%--									</c:when>--%>
-					<%--									<c:otherwise>--%>
-					<%--										<a--%>
-					<%--											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">${param.fileDisplayName}</a>--%>
-					<%--										<html:hidden property="${param.domainFile}.id" />--%>
-					<%--										<html:hidden property="${param.domainFile}.name" />--%>
-					<%--										<html:hidden property="${param.domainFile}.uri" />--%>
-					<%--										<br>--%>
-					<%--									</c:otherwise>--%>
-					<%--								</c:choose>--%>
-
-					<%--							</c:when>--%>
-					<%--						</c:choose>--%>
+				</tr>
 				<tr>
 					<td class="leftLabel">
 						<strong>File Type</strong>

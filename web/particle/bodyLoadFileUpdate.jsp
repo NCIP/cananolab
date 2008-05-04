@@ -43,43 +43,31 @@
 								property="${param.fileBean}.externalUrl" size="60" /> </span>&nbsp;
 					</td>
 					<c:if test="${!empty param.fileUri }">
-							<tr>
-								<td class="completeLabel" colspan="3">
-									<strong>Uploaded File</strong> &nbsp;&nbsp;
-									<a
-										href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
-<%--										target="${submitReportForm.map.file.urlTarget}">--%>
-										${param.fileUri}</a>
-									<html:hidden property="${param.fileUri}" />
-								</td>
-							</tr>
-					</c:if>
-					
-						
-						<%--						<c:choose>--%>
-						<%--							<c:when test="${!empty param.fileId}">--%>
-						<%--								<c:choose>--%>
-						<%--									<c:when test="${param.fileImage eq 'true'}">--%>
-						<%-- 												${param.fileDisplayName}<br>--%>
-						<%--										<br>--%>
-						<%--										<a href="#"--%>
-						<%--											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img--%>
-						<%--												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"--%>
-						<%--												border="0" width="150"> </a>--%>
-						<%--									</c:when>--%>
-						<%--									<c:otherwise>--%>
-						<%--										<a--%>
-						<%--											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">${param.fileDisplayName}</a>--%>
-						<%--										<html:hidden property="${param.fileBean}.domainFile.id" />--%>
-						<%--										<html:hidden property="${param.fileBean}.domainFile.name" />--%>
-						<%--										<html:hidden property="${param.fileBean}.domainFile.uri" />--%>
-						<%--										<br>--%>
-						<%--									</c:otherwise>--%>
-						<%--								</c:choose>--%>
+						<tr>
+							<td class="completeLabel" colspan="3">
+								<c:choose>
+									<c:when test="${param.fileImage eq 'true'}">
+						 				${param.fileDisplayName}<br>
+										<br>
+										<a href="#"
+											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img
+												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
+												border="0" width="150"> </a>
+									</c:when>
+									<c:otherwise>
+										<strong>Uploaded File</strong> &nbsp;&nbsp;
+										<a
+											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
+											<%--			target="${submitReportForm.map.file.urlTarget}">--%>
+											${param.fileUri}</a>
 
-						<%--							</c:when>--%>
-						<%--						</c:choose>--%>
-					
+										<html:hidden property="${param.fileBean}.domainFile.uri" />
+										<br>
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+					</c:if>
 				<tr>
 					<td class="leftLabel">
 						<strong>File Type*</strong>

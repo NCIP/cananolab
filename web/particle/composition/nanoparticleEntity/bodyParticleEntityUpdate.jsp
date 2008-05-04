@@ -282,6 +282,8 @@ function confirmDeletion()
 													<jsp:param name="fileDisplayName" value="${nanoparticleEntityForm.map.entity.files[fileInd].displayName}" />
 													<jsp:param name="fileHidden"
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
+													<jsp:param name="fileImage"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].image}" />
 												</jsp:include>
 												<br>
 											</logic:iterate>
