@@ -19,13 +19,13 @@
 				<strong>Cross Link Degree</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.polymer.crosslinkDegree" />
+				<input type="text" name="entity.polymer.crossLinkDegree" />
 			</td>
 			<td class="label">
 				<strong>Is Cross Linked</strong>
 			</td>
 			<td class="rightLabel">
-				<select name="entity.polymer.crosslinked">
+				<select name="entity.polymer.crossLinked">
 					<option value=""></option>
 					<option value="true">
 						true
