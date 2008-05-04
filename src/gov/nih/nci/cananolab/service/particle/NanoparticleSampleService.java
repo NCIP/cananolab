@@ -221,9 +221,21 @@ public class NanoparticleSampleService {
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.nanoparticleEntityCollection.composingElementCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.nanoparticleEntityCollection.composingElementCollection.inherentFunctionCollection",
+							FetchMode.JOIN);
 			crit.setFetchMode(
 					"sampleComposition.functionalizingEntityCollection",
 					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.functionalizingEntityCollection.functionCollection",
+							FetchMode.JOIN);
 			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
