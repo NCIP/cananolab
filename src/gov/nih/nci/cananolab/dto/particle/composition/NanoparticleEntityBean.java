@@ -56,8 +56,7 @@ public class NanoparticleEntityBean {
 	public NanoparticleEntityBean() {
 	}
 
-	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity)
-			throws Exception {
+	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
 		description = nanoparticleEntity.getDescription();
 		domainEntity = nanoparticleEntity;
 		if (domainEntity instanceof Biopolymer) {
@@ -72,8 +71,6 @@ public class NanoparticleEntityBean {
 			emulsion = (Emulsion) domainEntity;
 		} else if (domainEntity instanceof Fullerene) {
 			fullerene = (Fullerene) domainEntity;
-		} else if (domainEntity instanceof OtherNanoparticleEntity) {
-			type = ((OtherNanoparticleEntity) domainEntity).getType();
 		}
 		className = ClassUtils.getShortClassName(nanoparticleEntity.getClass()
 				.getName());
@@ -85,10 +82,6 @@ public class NanoparticleEntityBean {
 
 	public String getType() {
 		return type;
-	}
-
-	public void setType(String entityType) {
-		this.type = entityType;
 	}
 
 	public String getClassName() {
@@ -138,10 +131,6 @@ public class NanoparticleEntityBean {
 		return polymer;
 	}
 
-	public void setClassName(String entityClassName) {
-		this.className = entityClassName;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -154,8 +143,8 @@ public class NanoparticleEntityBean {
 		return domainEntity;
 	}
 
-	public void setupDomainEntity(Map<String, String> typeToClass, String createdBy)
-			throws Exception {
+	public void setupDomainEntity(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
 		// take care of nanoparticle entities that don't have any special
 		// properties shown in the form, e.g. Metal Particle
 		className = typeToClass.get(type);
@@ -178,7 +167,8 @@ public class NanoparticleEntityBean {
 					.setComposingElementCollection(new HashSet<ComposingElement>());
 		}
 		for (ComposingElementBean composingElementBean : composingElements) {
-			composingElementBean.setupDomainComposingElement(typeToClass, createdBy);
+			composingElementBean.setupDomainComposingElement(typeToClass,
+					createdBy);
 			ComposingElement domainComposingElement = composingElementBean
 					.getDomainComposingElement();
 			if (domainComposingElement.getId() == null) {
@@ -222,9 +212,29 @@ public class NanoparticleEntityBean {
 
 	public NanoparticleEntityBean copy() {
 		NanoparticleEntityBean copiedEntity = new NanoparticleEntityBean();
-		copiedEntity.setType(type);
+		copiedEntity.type = type;
 		copiedEntity.setDescription(description);
-		copiedEntity.setClassName(className);
+		copiedEntity.className = className;
 		return copiedEntity;
 	}
+
+	public void updateType(Map<String, String> classToType) {
+		if (domainEntity instanceof OtherNanoparticleEntity) {
+			type = ((OtherNanoparticleEntity) domainEntity).getType();
+		} else {
+			type = classToType.get(className);
+		}
+		// set composing element function type
+		for (ComposingElementBean compElementBean : getComposingElements()) {
+			for (FunctionBean functionBean : compElementBean
+					.getInherentFunctions()) {
+				functionBean.updateType(classToType);
+			}
+		}
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

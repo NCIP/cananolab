@@ -37,8 +37,6 @@ public class ChemicalAssociationBean {
 		domainAssociation = chemicalAssociation;
 		if (chemicalAssociation instanceof Attachment) {
 			attachment = (Attachment) chemicalAssociation;
-		} else if (chemicalAssociation instanceof OtherChemicalAssociation) {
-			type = ((OtherChemicalAssociation) chemicalAssociation).getType();
 		}
 		description = chemicalAssociation.getDescription();
 		className = ClassUtils.getShortClassName(chemicalAssociation.getClass()
@@ -114,16 +112,8 @@ public class ChemicalAssociationBean {
 		this.description = description;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getClassName() {
 		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public AssociatedElementBean getAssociatedElementA() {
@@ -140,5 +130,19 @@ public class ChemicalAssociationBean {
 
 	public void removeFile(int ind) {
 		files.remove(ind);
+	}
+	
+	public void setType(String type) {
+		this.type=type;
+	}
+
+	public void updateType(Map<String, String> classToType) {
+		if (domainAssociation instanceof OtherChemicalAssociation) {
+			type = ((OtherChemicalAssociation) domainAssociation).getType();
+		} else {
+			type = classToType.get(className);
+		}
+		associatedElementA.updateType(classToType);
+		associatedElementB.updateType(classToType);
 	}
 }
