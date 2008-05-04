@@ -3,6 +3,34 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<c:choose>
+	<c:when
+		test="${! empty chemicalAssociationForm.map.assoc.attachment.id }">
+		<c:set var="style" value="" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="style" value="display:none" />
+	</c:otherwise>
+</c:choose>
+<c:choose>
+	<c:when
+		test="${! empty chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
+		<c:set var="ceStyleA" value="" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="ceStyleA" value="display:none" />
+
+	</c:otherwise>
+</c:choose>
+<c:choose>
+	<c:when
+		test="${! empty chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
+		<c:set var="ceStyleB" value="" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="ceStyleB" value="display:none" />
+	</c:otherwise>
+</c:choose>
 <html:form action="/chemicalAssociation">
 	<table width="100%" align="center">
 		<tr>
@@ -53,12 +81,11 @@
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong id="bondTypeTitle" style="display:none">Bond
-								Type</Strong>
+							<Strong id="bondTypeTitle" style="${style }">Bond Type</Strong>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							<span id="bondTypeLine" style="display:none"><html:select
+							<span id="bondTypeLine" style="${style}"><html:select
 									styleId="bondType" property="assoc.attachment.bondType"
 									onchange="javascript:callPrompt('Bond Type', 'bondType');">
 									<option value=""></option>
@@ -81,12 +108,7 @@
 											property="assoc.associatedElementA.compositionType"
 											onchange="getAssociatedElementOptions('compositionTypeA', 'entityTypeA', 'compEleA')">
 											<option value=""></option>
-											<option value="Nanoparticle Entity">
-												Nanoparticle Entity
-											</option>
-											<option value="Functionalizing Entity">
-												Functionalizing Entity
-											</option>
+											<html:options name="associationCompositionTypes" />
 										</html:select>
 									</li>
 									<li>
@@ -95,18 +117,51 @@
 												property="assoc.associatedElementA.entityId"
 												onchange="getAssociatedComposingElements('compositionTypeA', 'entityTypeA', 'compEleTypeA', 'compEleA');
 														setEntityDisplayName('entityTypeA', 'entityDisplayA');">
-												<option value="">
-												</option>
+												<c:if
+													test="${! empty chemicalAssociationForm.map.assoc.domainAssociation.id }">
+													<c:forEach var="dataLink" items="${entityListA}">
+														<c:choose>
+															<c:when
+																test="${dataLink.dataId eq chemicalAssociationForm.map.assoc.associatedElementA.entityId }">
+																<option value="${dataLink.dataId }" selected>
+																	${dataLink.dataDisplayType}
+																</option>
+															</c:when>
+															<c:otherwise>
+																<option value="${dataLink.dataId }">
+																	${dataLink.dataDisplayType}
+																</option>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+												</c:if>
 											</html:select> </span>
 										<html:hidden styleId="entityDisplayA"
 											property="assoc.associatedElementA.entityDisplayName"
-											value="" />
+											value="${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName}" />
 									</li>
 									<li>
-										<span class="indented3" id="compEleA" style="display:none">
+										<span class="indented3" id="compEleA" style="${ceStyleA}">
 											<html:select styleId="compEleTypeA"
 												property="assoc.associatedElementA.composingElement.id">
-												<option value=""></option>
+												<c:if test="${!empty ceListA}">
+													<c:forEach var="ce" items="${ceListA}">
+														<c:choose>
+															<c:when
+																test="${ce.domainComposingElement.id eq chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
+																<option value="${ce.domainComposingElement.id }"
+																	selected>
+																	${ce.displayName }
+																</option>
+															</c:when>
+															<c:otherwise>
+																<option value="${ce.domainComposingElement.id }">
+																	${ce.displayName }
+																</option>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+												</c:if>
 											</html:select> </span>
 									</li>
 								</ul>
@@ -127,12 +182,7 @@
 											property="assoc.associatedElementB.compositionType"
 											onchange="getAssociatedElementOptions('compositionTypeB', 'entityTypeB', 'compEleB')">
 											<option value="" />
-											<option value="Nanoparticle Entity">
-												Nanoparticle Entity
-											</option>
-											<option value="Functionalizing Entity">
-												Functionalizing Entity
-											</option>
+												<html:options name="associationCompositionTypes" />
 										</html:select>
 									</li>
 									<li>
@@ -141,18 +191,52 @@
 												property="assoc.associatedElementB.entityId"
 												onchange="getAssociatedComposingElements('compositionTypeB', 'entityTypeB', 'compEleTypeB', 'compEleB');
 															setEntityDisplayName('entityTypeB', 'entityDisplayB');">
-												<option value="">
-												</option>
+												<c:if
+													test="${! empty chemicalAssociationForm.map.assoc.domainAssociation.id }">
+													<c:forEach var="dataLink" items="${entityListB}">
+														<c:choose>
+															<c:when
+																test="${dataLink.dataId eq chemicalAssociationForm.map.assoc.associatedElementB.entityId }">
+																<option value="${dataLink.dataId }" selected>
+																	${dataLink.dataDisplayType}
+																</option>
+															</c:when>
+															<c:otherwise>
+																<option value="${dataLink.dataId }">
+																	${dataLink.dataDisplayType}
+																</option>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+												</c:if>
 											</html:select> </span>
 										<html:hidden styleId="entityDisplayB"
 											property="assoc.associatedElementB.entityDisplayName"
-											value="" />
+											value="${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName}" />
 									</li>
 									<li>
-										<span class="indented3" id="compEleB" style="display:none"><html:select
+										<span class="indented3" id="compEleB" style="${ceStyleB}"><html:select
 												styleId="compEleTypeB"
 												property="assoc.associatedElementB.composingElement.id">
-												<option value=""></option>
+
+												<c:if test="${!empty ceListB}">
+													<c:forEach var="ce" items="${ceListB}">
+														<c:choose>
+															<c:when
+																test="${ce.domainComposingElement.id eq chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
+																<option value="${ce.domainComposingElement.id }"
+																	selected>
+																	${ce.displayName }
+																</option>
+															</c:when>
+															<c:otherwise>
+																<option value="${ce.domainComposingElement.id }">
+																	${ce.displayName }
+																</option>
+															</c:otherwise>
+														</c:choose>
+													</c:forEach>
+												</c:if>
 											</html:select> </span>
 									</li>
 								</ul>
