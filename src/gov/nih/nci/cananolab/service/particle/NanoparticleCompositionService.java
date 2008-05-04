@@ -65,7 +65,7 @@ public class NanoparticleCompositionService {
 			SampleComposition composition = particleSample
 					.getSampleComposition();
 			if (composition == null) {
-				composition=new SampleComposition();
+				composition = new SampleComposition();
 				particleSample.setSampleComposition(composition);
 				entity.setSampleComposition(composition);
 				particleSample.setSampleComposition(composition);
@@ -97,6 +97,18 @@ public class NanoparticleCompositionService {
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleEntity.class).add(
 					Property.forName("id").eq(new Long(entityId)));
+			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.chemicalAssociationCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementA",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementB",
+							FetchMode.JOIN);
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
 			crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
 			crit.setFetchMode(
@@ -220,6 +232,18 @@ public class NanoparticleCompositionService {
 					Property.forName("id").eq(new Long(entityId)));
 			crit.setFetchMode("labFileCollection", FetchMode.JOIN);
 			crit.setFetchMode("functionCollection", FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.chemicalAssociationCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementA",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementB",
+							FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -438,6 +462,20 @@ public class NanoparticleCompositionService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			// need to delete chemical associations first if associated elements
+			// are composing elements
+			Collection<ChemicalAssociation> assocSet = entity
+					.getSampleComposition().getChemicalAssociationCollection();
+			if (assocSet != null) {
+				for (ChemicalAssociation assoc : assocSet) {
+					if (entity.getComposingElementCollection().contains(
+							assoc.getAssociatedElementA())
+							|| entity.getComposingElementCollection().contains(
+									assoc.getAssociatedElementB())) {
+						appService.delete(assoc);
+					}
+				}
+			}
 			appService.delete(entity);
 		} catch (Exception e) {
 			String err = "Error deleting nanoparticle entity " + entity.getId();
@@ -451,6 +489,19 @@ public class NanoparticleCompositionService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			// need to delete chemical associations first if associated elements
+			// are functionalizing entities
+			Collection<ChemicalAssociation> assocSet = entity
+					.getSampleComposition().getChemicalAssociationCollection();
+			if (assocSet != null) {
+				for (ChemicalAssociation assoc : assocSet) {
+					if (entity.equals(assoc.getAssociatedElementA())
+							|| entity.equals(assoc.getAssociatedElementB())) {
+						appService.delete(assoc);
+					}
+				}
+			}
+
 			appService.delete(entity);
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity "
