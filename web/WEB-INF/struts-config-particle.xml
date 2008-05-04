@@ -65,6 +65,13 @@
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 		</form-bean>
+		<form-bean name="compositionFileForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="compFile"
+				type="gov.nih.nci.cananolab.dto.common.LabFileBean" />
+			<form-property name="particleId" type="java.lang.String" />
+			<form-property name="idsToDelete" type="java.lang.String[]" />
+		</form-bean>
 		<form-bean name="invitroCharacterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="achar"
