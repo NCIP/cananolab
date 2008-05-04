@@ -164,15 +164,17 @@ public class NanoparticleCompositionService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			ChemicalAssociation dbAssoc = null;
 			if (assoc.getId() != null) {
-				try {
-					ChemicalAssociation dbAssoc = (ChemicalAssociation) appService
-							.load(ChemicalAssociation.class, assoc.getId());
-				} catch (Exception e) {
+				dbAssoc = (ChemicalAssociation) appService.get(
+						ChemicalAssociation.class, assoc.getId());
+				if (dbAssoc == null) {
+
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ParticleCompositionException(err, e);
+					throw new ParticleCompositionException(err);
 				}
+				assoc.setId(null);
 			}
 			// load the full associated element by ID
 			AssociatedElement elementA = (AssociatedElement) appService.get(
@@ -186,10 +188,14 @@ public class NanoparticleCompositionService {
 				logger.error(err);
 				throw new ParticleCompositionException(err);
 			}
+
 			assoc.setAssociatedElementA(elementA);
 			assoc.setAssociatedElementB(elementB);
 			SampleComposition composition = particleSample
 					.getSampleComposition();
+			if (dbAssoc != null) {
+				composition.getChemicalAssociationCollection().remove(dbAssoc);
+			}
 			composition.getChemicalAssociationCollection().add(assoc);
 			appService.saveOrUpdate(composition);
 			if (assoc instanceof OtherChemicalAssociation) {
@@ -251,7 +257,8 @@ public class NanoparticleCompositionService {
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
 				ChemicalAssociation assoc = (ChemicalAssociation) result.get(0);
-				//load nanoparticle entity associated with composing element in an association
+				// load nanoparticle entity associated with composing element in
+				// an association
 				if (assoc.getAssociatedElementA() instanceof ComposingElement) {
 					NanoparticleEntityBean entityBean = findNanoparticleEntityById(((ComposingElement) assoc
 							.getAssociatedElementA()).getNanoparticleEntity()
