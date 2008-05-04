@@ -145,6 +145,8 @@
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].visibilityGroups}" />
 													<jsp:param name="uriExternal"
 														value="${chemicalAssociationForm.map.entity.files[fileInd].domainFile.uriExternal}" />
+													<jsp:param name="fileImage"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
 												</jsp:include>
 
 												<br>

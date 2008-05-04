@@ -24,12 +24,15 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.4 2008-04-17 20:37:07 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.5 2008-05-04 01:50:36 cais Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
 	public static boolean isImgFileExt(String fileName) {
+		if(fileName == null || fileName.length() == 0)
+			return false;
+		
 		boolean isImgFileExt = false;
 		for (int i = 0; i < CaNanoLabConstants.IMAGE_FILE_EXTENSIONS.length; i++) {
 			if (fileName.toUpperCase().endsWith(

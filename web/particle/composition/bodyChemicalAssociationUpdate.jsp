@@ -207,9 +207,10 @@
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].displayName}" />
 													<jsp:param name="fileHidden"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
+													<jsp:param name="fileImage"
+														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
 												</jsp:include>
-<%--													<jsp:param name="fileImage"--%>
-<%--														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />--%>
+													
 												<br>
 											</logic:iterate>
 										</td>

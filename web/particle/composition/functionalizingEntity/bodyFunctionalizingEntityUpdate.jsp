@@ -321,10 +321,9 @@
 														value="${functionalizingEntityForm.map.entity.files[fileInd].displayName}" />
 													<jsp:param name="fileHidden"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
-												</jsp:include>
-<%--													<jsp:param name="fileImage"--%>
-<%--														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />--%>
-												
+													<jsp:param name="fileImage"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
+												</jsp:include>					
 
 												<br>
 											</logic:iterate>
