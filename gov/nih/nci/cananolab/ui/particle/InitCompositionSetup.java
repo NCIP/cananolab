@@ -5,6 +5,8 @@ import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -73,10 +75,15 @@ public class InitCompositionSetup {
 
 	public void setChemicalAssociationDropdowns(HttpServletRequest request)
 			throws Exception {
-		
+		ServletContext appContext = request.getSession().getServletContext();
+		List<String> compositionTypes = new ArrayList<String>();
+		compositionTypes.add("Nanoparticle Entity");
+		compositionTypes.add("Functionalizing Entity");
+		appContext
+				.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "Attachment", "bondType", "otherBondType", true);
-		
+
 	}
 
 	public SortedSet<String> getFunctionTypes(HttpServletRequest request)
@@ -151,6 +158,8 @@ public class InitCompositionSetup {
 				.getDefaultAndOtherLookupTypes("ComposingElement", "type",
 						"otherType");
 		emulsionCETypes.addAll(ceTypes);
+		request.getSession().setAttribute("emulsionComposingElementTypes",
+				emulsionCETypes);
 		return emulsionCETypes;
 	}
 

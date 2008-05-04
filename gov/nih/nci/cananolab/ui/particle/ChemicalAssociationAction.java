@@ -4,10 +4,13 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -74,13 +77,13 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				theForm, request);
 		SortedSet<ParticleDataLinkBean> particleEntitites = dataTree
 				.get("Nanoparticle Entity");
-		SortedSet<ParticleDataLinkBean> functionalizingEntitites = dataTree
+		SortedSet<ParticleDataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
 		request.getSession()
 				.setAttribute("particleEntities", particleEntitites);
-		request.getSession().setAttribute("functionalizingEntitites",
-				functionalizingEntitites);
-
+		request.getSession().setAttribute("functionalizingEntities",
+				functionalizingEntities);
+		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
 				request);
 	}
@@ -90,6 +93,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
+		setLookups(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
@@ -97,18 +101,81 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssocationById(assocId);
 		compService.retrieveVisibility(assocBean, user);
-		String assocType = InitSetup.getInstance().getDisplayName(
-				assocBean.getClassName(), session.getServletContext());
-		assocBean.setType(assocType);
+		assocBean.updateType(InitSetup.getInstance()
+				.getClassNameToDisplayNameLookup(session.getServletContext()));
+		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
+				theForm, request);
+		SortedSet<ParticleDataLinkBean> particleEntitites = dataTree
+				.get("Nanoparticle Entity");
+		SortedSet<ParticleDataLinkBean> functionalizingEntities = dataTree
+				.get("Functionalizing Entity");
+
+		// associated element A
+		SortedSet<ParticleDataLinkBean> entityListA = null;
+
+		if (assocBean.getAssociatedElementA().getComposingElement().getId() != null) {
+			entityListA = particleEntitites;
+			for (ParticleDataLinkBean dataLink : particleEntitites) {
+				if (assocBean.getAssociatedElementA().getComposingElement()
+						.getNanoparticleEntity().getId().toString().equals(
+								dataLink.getDataId())) {
+					NanoparticleEntityBean entityBean = new NanoparticleEntityBean(
+							assocBean.getAssociatedElementA()
+									.getComposingElement()
+									.getNanoparticleEntity());
+					List<ComposingElementBean> ceListA = entityBean
+							.getComposingElements();
+					session.setAttribute("ceListA", ceListA);
+				}
+			}
+		} else {
+			entityListA = functionalizingEntities;
+		}
+		// associated element B
+		SortedSet<ParticleDataLinkBean> entityListB = null;
+		if (assocBean.getAssociatedElementB().getComposingElement().getId() != null) {
+			entityListB = particleEntitites;
+			for (ParticleDataLinkBean dataLink : particleEntitites) {
+				if (assocBean.getAssociatedElementB().getComposingElement()
+						.getNanoparticleEntity().getId().toString().equals(
+								dataLink.getDataId())) {
+					NanoparticleEntityBean entityBean = new NanoparticleEntityBean(
+							assocBean.getAssociatedElementB()
+									.getComposingElement()
+									.getNanoparticleEntity());
+					List<ComposingElementBean> ceListB = entityBean
+							.getComposingElements();
+					session.setAttribute("ceListB", ceListB);
+				}
+			}
+		} else {
+			entityListB = functionalizingEntities;
+		}
+		session.setAttribute("entityListA", entityListA);
+		session.setAttribute("entityListB", entityListB);
 		theForm.set("assoc", assocBean);
-		setLookups(theForm, request);
+
 		return mapping.getInputForward();
 	}
 
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return setupUpdate(mapping, form, request, response);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupParticle(theForm, request);
+		setLookups(theForm, request);
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+		String assocId = request.getParameter("dataId");
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		ChemicalAssociationBean assocBean = compService
+				.findChemicalAssocationById(assocId);
+		compService.retrieveVisibility(assocBean, user);
+		assocBean.updateType(InitSetup.getInstance()
+				.getClassNameToDisplayNameLookup(session.getServletContext()));
+		theForm.set("assoc", assocBean);
+
+		return mapping.getInputForward();
 	}
 
 	public ActionForward addFile(ActionMapping mapping, ActionForm form,
