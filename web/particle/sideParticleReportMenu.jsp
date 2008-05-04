@@ -20,6 +20,7 @@
 				<c:forEach var="reportDisplayType" items="${reportCategories}">					
 					<li>
 						<a href="#" class="sublist_4">${reportDisplayType}</a>
+						<c:if test="${!empty particleDataTree[reportDisplayType] }">
 						<ul class="sublist_5_report" style="${reportDisplay}">
 							<c:forEach var="dataLinkBean"
 								items="${particleDataTree[reportDisplayType]}">
@@ -37,6 +38,7 @@
 								</li>
 							</c:forEach>
 						</ul>
+						</c:if>
 					</li>
 				</c:forEach>
 			</ul>
