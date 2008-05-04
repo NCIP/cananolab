@@ -4,9 +4,7 @@ function setEntityInclude(selectEleId, pagePath) {
 	CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
 }
 function populatePage(pageData) {
-	if (pageData.length > 0) {
-		dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
-	}
+	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
 }
 function getComposingElementOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
@@ -137,7 +135,6 @@ function displayAntigenSpecies(parentIndex, childIndex) {
 	}
 	return false;
 }
-
 function radLinkOrUpload(fileIndex) {
 	var linkEle = document.getElementById("link_" + fileIndex);
 	var loadEle = document.getElementById("load_" + fileIndex);
@@ -149,7 +146,6 @@ function radLinkOrUpload(fileIndex) {
 		linkEle.style.display = "inline";
 	}
 }
-
 /* 
  * for chemical association 
  */
@@ -204,15 +200,18 @@ function displayBondType() {
 		btLineEle.style.display = "none";
 	}
 }
-
+function setCompositionType(entityTypeId, displayNameEleId) {
+	var selectEle = document.getElementById(entityTypeId);
+	var selectedName = selectEle.options[selectEle.options.selectedIndex].text;
+	document.getElementById(displayNameEleId).value = selectedName;
+	// alert(document.getElementById(displayNameEleId).value);
+}
 function setEntityDisplayName(entityTypeId, displayNameEleId) {
 	var selectEle = document.getElementById(entityTypeId);
 	var selectedName = selectEle.options[selectEle.options.selectedIndex].text;
 	document.getElementById(displayNameEleId).value = selectedName;
 	// alert(document.getElementById(displayNameEleId).value);
 }
-
-
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
  * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp
