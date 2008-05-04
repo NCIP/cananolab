@@ -55,8 +55,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		String particleName = URLEncoder.encode(particle
 				.getDomainParticleSample().getName(), "UTF-8");
 		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view"
-				+ "&particleName=" + particleName + "&gridNodeHost="
-				+ particle.getGridNode();
+				+ "&particleName=" + particleName + "&gridNodeHost=";
 		String link = "<a href=" + remoteViewURL + ">" + particleName + "</a>";
 		SortableName sortableLink = new SortableName(particleName, link);
 		return sortableLink;
