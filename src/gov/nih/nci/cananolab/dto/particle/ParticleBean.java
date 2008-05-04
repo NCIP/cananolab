@@ -26,8 +26,6 @@ public class ParticleBean {
 
 	private String[] visibilityGroups = new String[0];
 
-	private String gridNode;
-
 	private NanoparticleSample domainParticleSample = new NanoparticleSample();
 
 	private String createdBy;
@@ -64,14 +62,6 @@ public class ParticleBean {
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
 		this.visibilityGroups = visibilityGroups;
-	}
-
-	public String getGridNode() {
-		return this.gridNode;
-	}
-
-	public void setGridNode(String gridNode) {
-		this.gridNode = gridNode;
 	}
 
 	public String getKeywordsStr() {
