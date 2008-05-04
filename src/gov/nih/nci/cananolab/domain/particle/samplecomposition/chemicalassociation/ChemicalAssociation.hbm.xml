@@ -41,7 +41,6 @@
 			<!-- Attributes mapping for the OtherChemicalAssociation class -->
 			<property name="type" type="string"
 				column="other_chemical_association_type" />
-
 		</subclass>
 		<subclass
 			name="gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.Encapsulation"
