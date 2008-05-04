@@ -20,12 +20,6 @@ public class ComposingElementBean {
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
-	private String displayName;
-
-	private String domainComposingElementId; // for
-
-	// bodyChemicalAssociation.jsp
-
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domainComposingElement = composingElement;
 		for (Function function : composingElement
@@ -55,19 +49,13 @@ public class ComposingElementBean {
 	}
 
 	public String getDisplayName() {
-		return displayName;
+		return getDomainComposingElement().getType() + ":"
+				+ getDomainComposingElement().getName();
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
+	// for bodyChemicalAssociation.jsp
 	public String getDomainComposingElementId() {
-		return domainComposingElementId;
-	}
-
-	public void setDomainComposingElementId(String domainComposingElementId) {
-		this.domainComposingElementId = domainComposingElementId;
+		return getDomainComposingElement().getId().toString();
 	}
 
 	public void setupDomainComposingElement(Map<String, String> typeToClass,

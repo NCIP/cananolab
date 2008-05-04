@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -32,14 +31,12 @@ public class TargetBean {
 
 	public TargetBean(Target target) {
 		domainTarget = target;
-		name=target.getName();
-		description=target.getDescription();
+		name = target.getName();
+		description = target.getDescription();
 		className = ClassUtils.getShortClassName(target.getClass()
 				.getCanonicalName());
 		if (target instanceof Antigen) {
 			antigen = (Antigen) target;
-		} else if (target instanceof OtherTarget) {
-			type = ((OtherTarget) target).getType();
 		}
 	}
 
@@ -67,16 +64,8 @@ public class TargetBean {
 		return type;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public String getClassName() {
 		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public Target getDomainTarget() {
@@ -100,4 +89,17 @@ public class TargetBean {
 		domainTarget.setName(name);
 		domainTarget.setDescription(description);
 	}
+
+	public void updateType(Map<String, String> classToType) {
+		if (domainTarget instanceof OtherTarget) {
+			type = ((OtherTarget) domainTarget).getType();
+		} else {
+			type = classToType.get(className);
+		}
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

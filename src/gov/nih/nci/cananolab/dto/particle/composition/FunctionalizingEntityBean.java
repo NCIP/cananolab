@@ -72,9 +72,6 @@ public class FunctionalizingEntityBean {
 			smallMolecule = (SmallMolecule) functionalizingEntity;
 		} else if (functionalizingEntity instanceof Biopolymer) {
 			biopolymer = (Biopolymer) functionalizingEntity;
-		} else if (functionalizingEntity instanceof OtherFunctionalizingEntity) {
-			type = ((OtherFunctionalizingEntity) functionalizingEntity)
-					.getType();
 		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
@@ -98,10 +95,6 @@ public class FunctionalizingEntityBean {
 		return className;
 	}
 
-	public void setType(String entityType) {
-		this.type = entityType;
-	}
-
 	public Antibody getAntibody() {
 		domainEntity = antibody;
 		return antibody;
@@ -115,10 +108,6 @@ public class FunctionalizingEntityBean {
 	public SmallMolecule getSmallMolecule() {
 		domainEntity = smallMolecule;
 		return smallMolecule;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public List<FunctionBean> getFunctions() {
@@ -243,4 +232,21 @@ public class FunctionalizingEntityBean {
 	public void removeFile(int ind) {
 		files.remove(ind);
 	}
+
+	public void updateType(Map<String, String> classToType) {
+		if (domainEntity instanceof OtherFunctionalizingEntity) {
+			type = ((OtherFunctionalizingEntity) domainEntity).getType();
+		} else {
+			type = classToType.get(className);
+			// set function type and target type
+			for (FunctionBean functionBean : getFunctions()) {
+				functionBean.updateType(classToType);
+			}
+		}
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }
