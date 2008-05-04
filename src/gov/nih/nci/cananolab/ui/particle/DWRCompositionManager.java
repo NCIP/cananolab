@@ -37,7 +37,7 @@ public class DWRCompositionManager {
 			String entityClassName = InitSetup.getInstance().getObjectName(
 					entityType, appContext);
 			String page = pagePath + "/bodyNew" + entityClassName + "Info.jsp";
-			String content=wctx.forwardToString(page);
+			String content = wctx.forwardToString(page);
 			return content;
 		} catch (Exception e) {
 			return "";
@@ -217,7 +217,7 @@ public class DWRCompositionManager {
 
 		} else if (entityType.equals("Functionalizing Entity")) {
 			particleEntitites = (SortedSet<ParticleDataLinkBean>) request
-					.getSession().getAttribute("functionalizingEntitites");
+					.getSession().getAttribute("functionalizingEntities");
 		}
 
 		if (particleEntitites != null && particleEntitites.size() > 0)
@@ -227,25 +227,23 @@ public class DWRCompositionManager {
 		else
 			return null;
 	}
-	
-	public ComposingElementBean [] getAssociatedComposingElements(String nanoparticleEntityId) {
+
+	public ComposingElementBean[] getAssociatedComposingElements(
+			String nanoparticleEntityId) {
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		try {
 			NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityById(nanoparticleEntityId);
-			if(entityBean != null) {
-				List<ComposingElementBean> compBeanList = entityBean.getComposingElements();
-				if(compBeanList != null && compBeanList.size() > 0) {
-					//List<ComposingElement> domainCEList = new ArrayList<ComposingElement>(compBeanList.size());
-					for(ComposingElementBean ce: compBeanList) {
-						ce.setDisplayName(ce.getDomainComposingElement().getType() + ":" +
-								ce.getDomainComposingElement().getName());
-						ce.setDomainComposingElementId(ce.getDomainComposingElement().getId().toString());
-					}
-					return compBeanList.toArray(new ComposingElementBean[compBeanList.size()]);
+					.findNanoparticleEntityById(nanoparticleEntityId);
+			if (entityBean != null) {
+				List<ComposingElementBean> compBeanList = entityBean
+						.getComposingElements();
+				if (compBeanList != null && compBeanList.size() > 0) {
+					return compBeanList
+							.toArray(new ComposingElementBean[compBeanList
+									.size()]);
 				}
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("getAssociatedComposingElements exception.");
 			e.printStackTrace();
 		}
