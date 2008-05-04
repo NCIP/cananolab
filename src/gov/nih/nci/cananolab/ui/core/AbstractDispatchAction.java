@@ -1,16 +1,11 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.PropertyReader;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +15,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
