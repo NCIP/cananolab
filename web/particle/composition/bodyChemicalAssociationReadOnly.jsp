@@ -40,14 +40,14 @@
 						<td class="label" valign="top">
 							&nbsp;
 							<c:if
-								test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
+								test="${! empty chemicalAssociationForm.map.assoc.attachment.id}">
 								<Strong>Bond Type</Strong>
 							</c:if>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
 							<c:if
-								test="${chemicalAssociationForm.map.assoc.type eq 'attchment'}">
+								test="${! empty chemicalAssociationForm.map.assoc.attachment.id}">
 								${chemicalAssociationForm.map.assoc.attachment.bondType}
 							</c:if>
 						</td>
@@ -60,14 +60,17 @@
 										<strong>Element</strong>
 									</li>
 									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
+										&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
 									</li>
 									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementA.entityId}
+										&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName}
 									</li>
-									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name}
-									</li>
+									<c:if
+										test="${! empty chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
+										<li>
+											&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name}
+										</li>
+									</c:if>
 								</ul>
 							</div>
 							<div id="assocEleLinkBlock" class="arrowBlock">
@@ -82,14 +85,17 @@
 										<strong>Element</strong>
 									</li>
 									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
+										&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
 									</li>
 									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementB.entityId}
+										&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName}
 									</li>
-									<li>
-										${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.name}
-									</li>
+									<c:if
+										test="${! empty chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
+										<li>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.name}
+										</li>
+									</c:if>
 								</ul>
 							</div>
 						</td>
