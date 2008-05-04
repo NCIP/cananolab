@@ -47,7 +47,7 @@
 								</c:url>
 								<li id="complist">
 									<a href=${url } id="complink" class="sublist_5"><span
-										class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
+										class="data_anchar">&nbsp;</span>${dataLinkBean.viewTitle}</a>
 								</li>
 							</c:forEach>
 						</ul>
