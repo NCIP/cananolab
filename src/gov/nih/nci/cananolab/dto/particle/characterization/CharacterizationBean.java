@@ -226,20 +226,12 @@ public class CharacterizationBean {
 		return protocolFileBean;
 	}
 
-	public void setViewColor(String viewColor) {
-		this.viewColor = viewColor;
-	}
-
 	public Characterization getDomainChar() {
 		return domainChar;
 	}
 
 	public String getClassName() {
 		return className;
-	}
-
-	public void setClassName(String className) {
-		this.className = className;
 	}
 
 	public String getCreatedBy() {

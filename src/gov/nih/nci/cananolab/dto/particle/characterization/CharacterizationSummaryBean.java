@@ -13,8 +13,6 @@ import java.util.TreeSet;
  * 
  */
 public class CharacterizationSummaryBean {
-	private String particleName;
-
 	private List<CharacterizationSummaryRowBean> summaryRows = new ArrayList<CharacterizationSummaryRowBean>();
 
 	private SortedSet<String> columnLabels = new TreeSet<String>();
@@ -26,20 +24,12 @@ public class CharacterizationSummaryBean {
 	public CharacterizationSummaryBean() {
 	}
 
-	public String getCharacterizationClassName() {
-		return characterizationClassName;
-	}
-
-	public void setCharacterizationClassName(String characterizationClassName) {
+	public CharacterizationSummaryBean(String characterizationClassName) {
 		this.characterizationClassName = characterizationClassName;
 	}
 
-	public String getParticleName() {
-		return particleName;
-	}
-
-	public void setParticleName(String particleName) {
-		this.particleName = particleName;
+	public String getCharacterizationClassName() {
+		return characterizationClassName;
 	}
 
 	public List<CharacterizationSummaryRowBean> getSummaryRows() {
