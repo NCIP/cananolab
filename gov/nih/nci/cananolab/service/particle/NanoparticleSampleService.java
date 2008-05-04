@@ -11,6 +11,8 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
@@ -618,7 +620,22 @@ public class NanoparticleSampleService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			appService.deleteById(Class.forName(className), dataId);
+			if (className.endsWith("NanoparticleEntity")) {
+				NanoparticleCompositionService compService = new NanoparticleCompositionService();
+				NanoparticleEntityBean entityBean = compService
+						.findNanoparticleEntityById(dataId.toString());
+				compService.deleteNanoparticleEntity(entityBean
+						.getDomainEntity());
+			} else if (className.endsWith("FunctionalizingEntity")) {
+				NanoparticleCompositionService compService = new NanoparticleCompositionService();
+				FunctionalizingEntityBean entityBean = compService
+						.findFunctionalizingEntityById(dataId.toString());
+				compService.deleteFunctionalizingEntity(entityBean
+						.getDomainEntity());
+
+			} else {
+				appService.deleteById(Class.forName(className), dataId);
+			}
 		} catch (Exception e) {
 			String err = "Error deleting annotation of class " + className
 					+ "by ID " + dataId;
