@@ -63,20 +63,17 @@ public class NanoparticleCompositionService {
 					throw new ParticleCompositionException(err, e);
 				}
 			}
-			SampleComposition composition = particleSample
-					.getSampleComposition();
-			if (composition == null) {
-				composition = new SampleComposition();
-				particleSample.setSampleComposition(composition);
-				entity.setSampleComposition(composition);
-				particleSample.setSampleComposition(composition);
-				Collection<NanoparticleEntity> entityCollection = new HashSet<NanoparticleEntity>();
-				entityCollection.add(entity);
-				composition.setNanoparticleEntityCollection(entityCollection);
-				composition.setNanoparticleSample(particleSample);
-			} else {
-				entity.setSampleComposition(composition);
+			if (particleSample.getSampleComposition() == null) {
+				particleSample.setSampleComposition(new SampleComposition());
+				particleSample.getSampleComposition().setNanoparticleSample(
+						particleSample);
+				particleSample.getSampleComposition()
+						.setNanoparticleEntityCollection(
+								new HashSet<NanoparticleEntity>());
 			}
+			entity.setSampleComposition(particleSample.getSampleComposition());
+			particleSample.getSampleComposition()
+					.getNanoparticleEntityCollection().add(entity);
 			appService.saveOrUpdate(entity);
 			if (entity instanceof OtherNanoparticleEntity) {
 				// TODO save other entity type
@@ -146,21 +143,17 @@ public class NanoparticleCompositionService {
 					throw new ParticleCompositionException(err, e);
 				}
 			}
-			SampleComposition composition = particleSample
-					.getSampleComposition();
-			if (composition != null) {
-				entity.setSampleComposition(composition);
-				composition.getFunctionalizingEntityCollection().add(entity);
-			} else {
-				composition = new SampleComposition();
-				entity.setSampleComposition(composition);
-				particleSample.setSampleComposition(composition);
-				Collection<FunctionalizingEntity> entityCollection = new HashSet<FunctionalizingEntity>();
-				entityCollection.add(entity);
-				composition
-						.setFunctionalizingEntityCollection(entityCollection);
-				composition.setNanoparticleSample(particleSample);
+			if (particleSample.getSampleComposition() == null) {
+				particleSample.setSampleComposition(new SampleComposition());
+				particleSample.getSampleComposition().setNanoparticleSample(
+						particleSample);
+				particleSample.getSampleComposition()
+						.setFunctionalizingEntityCollection(
+								new HashSet<FunctionalizingEntity>());
 			}
+			entity.setSampleComposition(particleSample.getSampleComposition());
+			particleSample.getSampleComposition()
+					.getFunctionalizingEntityCollection().add(entity);
 			appService.saveOrUpdate(entity);
 			if (entity instanceof OtherFunctionalizingEntity) {
 				// TODO save other entity type
@@ -186,8 +179,7 @@ public class NanoparticleCompositionService {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
 					throw new ParticleCompositionException(err);
-				}
-				assoc.setId(null);
+				}				
 			}
 			// load the full associated element by ID
 			AssociatedElement elementA = (AssociatedElement) appService.get(
@@ -201,14 +193,10 @@ public class NanoparticleCompositionService {
 				logger.error(err);
 				throw new ParticleCompositionException(err);
 			}
-
 			assoc.setAssociatedElementA(elementA);
 			assoc.setAssociatedElementB(elementB);
 			SampleComposition composition = particleSample
 					.getSampleComposition();
-			if (dbAssoc != null) {
-				composition.getChemicalAssociationCollection().remove(dbAssoc);
-			}
 			composition.getChemicalAssociationCollection().add(assoc);
 			appService.saveOrUpdate(composition);
 			if (assoc instanceof OtherChemicalAssociation) {
