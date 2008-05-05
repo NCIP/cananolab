@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.34 2008-05-05 14:20:07 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.35 2008-05-05 15:43:06 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -305,7 +305,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
-					"error.deleteNanoparticleEntityWithChemicalAssociation");
+					"error.deleteNanoparticleEntityWithChemicalAssociation",
+					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			return mapping.getInputForward();

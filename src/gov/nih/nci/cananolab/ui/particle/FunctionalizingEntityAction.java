@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.25 2008-05-05 14:20:07 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.26 2008-05-05 15:42:57 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -229,7 +229,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
-					"error.deleteFunctionalizingEntityWithChemicalAssociation");
+					"error.deleteFunctionalizingEntityWithChemicalAssociation", entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			setupDataTree(theForm, request);
