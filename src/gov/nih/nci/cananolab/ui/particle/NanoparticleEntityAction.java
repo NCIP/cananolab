@@ -8,8 +8,10 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.35 2008-05-05 15:43:06 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.36 2008-05-05 20:35:50 pansu Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -56,6 +58,15 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.getLoginName());
 		compositionService.saveNanoparticleEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
+
+		// save to other particles
+		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		if (otherSamples != null) {
+			NanoparticleEntity copy = entityBean.getDomainCopy();
+			for (NanoparticleSample sample : otherSamples) {
+				compositionService.saveNanoparticleEntity(sample, copy);
+			}
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanoparticleEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -225,58 +236,6 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		 * updateDendrimerEditable(session, dendrimer);
 		 */
 		return mapping.findForward("setup");
-	}
-
-	protected NanoparticleEntityBean[] prepareCopy(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
-		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
-				.get("entity");
-
-		ParticleBean particle = (ParticleBean) theForm.get("particle");
-		ParticleBean[] otherParticles = (ParticleBean[]) theForm
-				.get("otherParticles");
-		NanoparticleEntityBean[] entityBeans = new NanoparticleEntityBean[otherParticles.length];
-		if (otherParticles.length == 0) {
-			return entityBeans;
-		}
-		// retrieve file contents
-
-		// FileService fileService = new FileService();
-		// for (DerivedBioAssayDataBean file : entityBean.getFiles()) {
-		// byte[] content = fileService.getFileContent(new Long(file.getId()));
-		// file.setFileContent(content);
-		// }
-		//
-		// NanoparticleSampleService service = new NanoparticleSampleService();
-		// UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// int i = 0;
-		// for (String particleName : otherParticles) {
-		// NanoparticleEntityBean newEntityBean = entityBean.copy();
-		// // overwrite particle
-		// ParticleBean otherParticle = service.findNanoparticleSampleByName(
-		// particleName, user);
-		// newrBean.setParticle(otherParticle);
-		// // reset view title
-		// String timeStamp = StringUtils.convertDateToString(new Date(),
-		// "MMddyyHHmmssSSS");
-		// String autoTitle =
-		// CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
-		// + timeStamp;
-		//
-		// newCharBean.setViewTitle(autoTitle);
-		// List<DerivedBioAssayDataBean> dataList = newCharBean
-		// .getDerivedBioAssayDataList();
-		// // replace particleName in path and uri with new particleName
-		// for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
-		// String origUri = derivedBioAssayData.getUri();
-		// if (origUri != null)
-		// derivedBioAssayData.setUri(origUri.replace(particle
-		// .getSampleName(), particleName));
-		// }
-		// charBeans[i] = newCharBean;
-		// i++;
-		// }
-		return entityBeans;
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
