@@ -150,7 +150,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
-		//setLookups(theForm, request);
+		setLookups(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
