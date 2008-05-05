@@ -33,24 +33,35 @@
 							<jsp:param name="addLinkStyle" value="addCell" />
 							<jsp:param name="addAction" value="${compoDataBean.dataLink}" />
 						</jsp:include>
-						<c:if test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
-						<ul class="sublist_5" style="${compDisplay}">
-							<c:forEach var="dataLinkBean"
-								items="${particleDataTree[compoDataBean.dataDisplayType]}">
-								<c:url var="url" value="${dataLinkBean.dataLink}.do">
-									<c:param name="page" value="0" />
-									<c:param name="dispatch" value="${dispatchValue}" />
-									<c:param name="particleId" value="${particleId}" />
-									<c:param name="dataId" value="${dataLinkBean.dataId}" />
-									<c:param name="submitType"
-										value="${compoDataBean.dataDisplayType}" />
-								</c:url>
-								<li id="complist">
-									<a href=${url } id="complink" class="sublist_5"><span
-										class="data_anchar">&nbsp;</span>${dataLinkBean.viewTitle}</a>
-								</li>
-							</c:forEach>
-						</ul>
+						<c:if
+							test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
+							<ul class="sublist_5" style="${compDisplay}">
+								<c:forEach var="dataLinkBean"
+									items="${particleDataTree[compoDataBean.dataDisplayType]}">
+									<c:url var="url" value="${dataLinkBean.dataLink}.do">
+										<c:param name="page" value="0" />
+										<c:param name="dispatch" value="${dispatchValue}" />
+										<c:param name="particleId" value="${particleId}" />
+										<c:param name="dataId" value="${dataLinkBean.dataId}" />
+										<c:param name="submitType"
+											value="${compoDataBean.dataDisplayType}" />
+									</c:url>
+									<li id="complist">
+										<c:choose>
+											<c:when test="${dataLinkBean.viewColor != null}">
+												<c:set var="viewTitleDisplay"
+													value="color: ${dataLinkBean.viewColor};" />
+												<a href="${url}" class="sublist_5"
+													style="${viewTitleDisplay}"> <span class="data_anchar">>&nbsp;</span>${dataLinkBean.dataDisplayType}</a>
+											</c:when>
+											<c:otherwise>
+												<a href="${url}" class="sublist_5"><span
+													class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
+											</c:otherwise>
+										</c:choose>
+									</li>
+								</c:forEach>
+							</ul>
 						</c:if>
 					</li>
 				</c:forEach>
