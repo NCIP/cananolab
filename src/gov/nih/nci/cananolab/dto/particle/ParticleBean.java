@@ -32,28 +32,21 @@ public class ParticleBean {
 
 	private boolean hidden;
 
-	private List<ReportBean> reports = new ArrayList<ReportBean>();
+	private SortedSet<String> keywordSet = new TreeSet<String>();
 
-	private SortedSet<String>keywordSet=new TreeSet<String>();
-	
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
 		this.domainParticleSample = particleSample;
-		
+
 		if (particleSample.getKeywordCollection() != null) {
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
 				keywordSet.add(keyword.getName());
 			}
 		}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
-		if (particleSample.getReportCollection() != null) {
-			for (Report report : particleSample.getReportCollection()) {
-				reports.add(new ReportBean(report, false));
-			}
-		}
 	}
 
 	public String[] getVisibilityGroups() {
@@ -110,10 +103,6 @@ public class ParticleBean {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
-	}
-
-	public List<ReportBean> getReports() {
-		return reports;
 	}
 
 	public SortedSet<String> getKeywordSet() {
