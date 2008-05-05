@@ -3,12 +3,15 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.File;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
@@ -31,15 +34,7 @@ public class LabFileBean {
 
 	private String externalUrl;
 
-	private String uploadedFile;
-	
-	public String getUploadedFile() {
-		return uploadedFile;
-	}
-
-	public void setUploadedFile(String uploadedFile) {
-		this.uploadedFile = uploadedFile;
-	}
+	private FormFile uploadedFile;
 
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
@@ -129,5 +124,13 @@ public class LabFileBean {
 			return "pop";
 		}
 		return "_self";
+	}
+
+	public FormFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(FormFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
 	}
 }
