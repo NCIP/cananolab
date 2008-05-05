@@ -50,6 +50,8 @@ function confirmDeletion()
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
 									<html:hidden property="particleId" value="${param.particleId}" />
+									<input type="hidden" name="achar.type"
+										value="${param.submitType}" />
 									<input type="hidden" name="submitType"
 										value="${param.submitType}" />
 									<html:hidden property="achar.className" value="${charClass}" />
