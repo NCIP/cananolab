@@ -2,7 +2,20 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<script type="text/javascript">
+<!--//
+function confirmDeletion()
+{
+	answer = confirm("Are you sure you want to delete the chemical association?")
+	if (answer !=0)
+	{
+		this.document.forms[0].dispatch.value="delete";
+		this.document.forms[0].submit(); 
+		return true;
+	}
+}
+//-->
+</script>
 <c:choose>
 	<c:when
 		test="${! empty chemicalAssociationForm.map.assoc.attachment.id }">
@@ -69,15 +82,22 @@
 							<strong>Association Type</strong>
 						</td>
 						<td class="label">
-							<html:select styleId="assoType" property="assoc.type"
-								onchange="javascript:callPrompt('Association Type', 'assoType');
+							<c:choose>
+								<c:when test="${param.dispatch eq 'setup'}">
+									<html:select styleId="assoType" property="assoc.type"
+										onchange="javascript:callPrompt('Association Type', 'assoType');
 											displayBondType();">
-								<option value=""></option>
-								<html:options name="chemicalAssociationTypes" />
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
+										<option value=""></option>
+										<html:options name="chemicalAssociationTypes" />
+										<option value="other">
+											[Other]
+										</option>
+									</html:select>
+								</c:when>
+								<c:otherwise>
+									${chemicalAssociationForm.map.assoc.type}
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
@@ -294,7 +314,7 @@
 													<jsp:param name="fileImage"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
 												</jsp:include>
-													
+
 												<br>
 											</logic:iterate>
 										</td>
