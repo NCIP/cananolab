@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer;
@@ -9,9 +11,11 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.SmallMolecule;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -81,6 +85,61 @@ public class FunctionalizingEntityBean {
 		if (functionalizingEntity.getActivationMethod() != null) {
 			activationMethod = functionalizingEntity.getActivationMethod();
 		}
+	}
+
+	public FunctionalizingEntity getDomainCopy() {
+		FunctionalizingEntity copy = (FunctionalizingEntity) ClassUtils
+				.deepCopy(domainEntity);
+		// clear Id
+		copy.setId(null);
+		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedDate(new Date());
+		copy.getActivationMethod().setId(null);
+		if (copy.getFunctionCollection().isEmpty()) {
+			copy.setFunctionCollection(null);
+		} else {
+			Collection<Function> functions = copy.getFunctionCollection();
+			copy.setFunctionCollection(new HashSet<Function>());
+			copy.getFunctionCollection().addAll(functions);
+			for (Function function : copy.getFunctionCollection()) {
+				function.setId(null);
+				function
+						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				function.setCreatedDate(new Date());
+				if (function instanceof TargetingFunction) {
+					if (((TargetingFunction) function).getTargetCollection()
+							.isEmpty()) {
+						((TargetingFunction) function)
+								.setTargetCollection(null);
+					} else {
+						Collection<Target> targets = ((TargetingFunction) function)
+								.getTargetCollection();
+						((TargetingFunction) function)
+								.setTargetCollection(new HashSet<Target>());
+						((TargetingFunction) function).getTargetCollection()
+								.addAll(targets);
+						for (Target target : ((TargetingFunction) function)
+								.getTargetCollection()) {
+							target.setId(null);
+						}
+					}
+				}
+			}
+		}
+		if (copy.getLabFileCollection().isEmpty()) {
+			copy.setLabFileCollection(null);
+		} else {
+			Collection<LabFile> files = copy.getLabFileCollection();
+			copy.setLabFileCollection(new HashSet<LabFile>());
+			copy.getLabFileCollection().addAll(files);
+			for (LabFile file : copy.getLabFileCollection()) {
+				file.setId(null);
+				file
+						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				file.setCreatedDate(new Date());
+			}
+		}
+		return copy;
 	}
 
 	public FunctionalizingEntity getDomainEntity() {
