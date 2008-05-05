@@ -6,15 +6,18 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.14 2008-05-02 06:03:10 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.15 2008-05-05 23:27:19 pansu Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,12 +47,26 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
-		charBean.setupDomainChar();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		charBean.setupDomainChar(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
 		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
 						.getDomainChar());
+
+		// save to other particles
+		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		if (otherSamples != null) {
+			Boolean copyData = (Boolean) theForm.get("copyData");
+			Characterization copy = charBean.getDomainCopy(copyData);
+			for (NanoparticleSample sample : otherSamples) {
+				charService.saveCharacterization(sample, copy);
+			}
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addPhysicalCharacterization");
@@ -89,7 +106,11 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
-		charBean.setupDomainChar();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		charBean.setupDomainChar(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.deleteCharacterization(charBean.getDomainChar());
 		ActionMessages msgs = new ActionMessages();
