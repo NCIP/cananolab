@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,11 +39,21 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName());
+		ActionMessages msgs = new ActionMessages();
+		if (assocBean.getAssociatedElementA().getDomainElement().getId()
+				.equals(
+						assocBean.getAssociatedElementB().getDomainElement()
+								.getId())) {
+			ActionMessage msg = new ActionMessage("error.duplicateAssociatedElementsInAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
 		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		compService.saveChemicalAssociation(particleBean
 				.getDomainParticleSample(), assocBean.getDomainAssociation());
-		ActionMessages msgs = new ActionMessages();
+
 		ActionMessage msg = new ActionMessage("message.addChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
@@ -67,25 +78,71 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("chemicalAssociationForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
-		setLookups(theForm, request);
+		if (!setLookups(theForm, request)) {
+			return mapping.findForward("particleMessage");
+		}
 		return mapping.getInputForward();
 	}
 
-	private void setLookups(DynaValidatorForm theForm,
+	private boolean setLookups(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
 		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
 				theForm, request);
-		SortedSet<ParticleDataLinkBean> particleEntitites = dataTree
+		SortedSet<ParticleDataLinkBean> particleEntities = dataTree
 				.get("Nanoparticle Entity");
 		SortedSet<ParticleDataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
-		request.getSession()
-				.setAttribute("particleEntities", particleEntitites);
+		ActionMessages msgs = new ActionMessages();
+		if (particleEntities.isEmpty()) {
+			ActionMessage msg = new ActionMessage(
+					"empty.particleEntitiesInAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+
+		// check where particle entities has composing elements
+		int numberOfCE = 0;
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		SortedSet<ParticleDataLinkBean> particleEntitiesWithComposingElements = new TreeSet<ParticleDataLinkBean>();
+		for (ParticleDataLinkBean dataLink : particleEntities) {
+			NanoparticleEntityBean entityBean = compService
+					.findNanoparticleEntityById(dataLink.getDataId());
+			if (entityBean.getComposingElements().size() > 0) {
+				particleEntitiesWithComposingElements.add(dataLink);
+				numberOfCE += entityBean.getComposingElements().size();
+			}
+		}
+		if (particleEntitiesWithComposingElements.isEmpty()) {
+			ActionMessage msg = new ActionMessage(
+					"empty.composingElementsInAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+		if (functionalizingEntities.isEmpty() && numberOfCE == 1) {
+			ActionMessage msg = new ActionMessage(
+					"one.composingElementsInAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+		boolean hasFunctionalizingEntity = true;
+		if (functionalizingEntities.isEmpty()) {
+			hasFunctionalizingEntity = false;
+			ActionMessage msg = new ActionMessage(
+					"empty.functionalizingEntityInAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+		}
+		request.getSession().setAttribute("particleEntities",
+				particleEntitiesWithComposingElements);
 		request.getSession().setAttribute("functionalizingEntities",
 				functionalizingEntities);
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
-				request);
+				request, hasFunctionalizingEntity);
+		return true;
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -93,7 +150,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
-		setLookups(theForm, request);
+		//setLookups(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
@@ -198,5 +255,28 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.get("assoc");
 		entity.removeFile(ind);
 		return mapping.getInputForward();
+	}
+
+	public ActionForward delete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
+				.get("assoc");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		assocBean.setupDomainAssociation(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		compService.deleteChemicalAssociation(assocBean.getDomainAssociation());
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"message.deleteChemicalAssociation");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		ActionForward forward = mapping.findForward("success");
+		setupDataTree(theForm, request);
+		return forward;
 	}
 }
