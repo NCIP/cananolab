@@ -348,24 +348,24 @@ public class InitNanoparticleSetup {
 				// report
 				SortedSet<ParticleDataLinkBean> rdataBeans = new TreeSet<ParticleDataLinkBean>(
 						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
-				for (ReportBean reportBean : particleBean.getReports()) {
-					Report domainReport = (Report) reportBean.getDomainFile();
-					String reportCategory = domainReport.getCategory();
-					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
-							reportBean.getDomainFile().getId().toString(),
-							"Report", "submitReport", reportBean
-									.getDomainFile().getCreatedDate());
-					dataBean.setDataDisplayType(reportCategory);
-					dataBean.setViewTitle(reportBean.getDisplayName());
-					if (dataTree.get(reportCategory) != null) {
-						rdataBeans = (TreeSet<ParticleDataLinkBean>) dataTree
-								.get(reportCategory);
-					} else {
-						rdataBeans = new TreeSet<ParticleDataLinkBean>(
-								new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
-						dataTree.put(reportCategory, rdataBeans);
+				if (particleSample.getReportCollection() != null) {
+					for (Report report : particleSample.getReportCollection()) {
+						String reportCategory = report.getCategory();
+						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+								report.getId().toString(), "Report",
+								"submitReport", report.getCreatedDate());
+						dataBean.setDataDisplayType(reportCategory);
+						dataBean.setViewTitle(report.getUri());
+						if (dataTree.get(reportCategory) != null) {
+							rdataBeans = (TreeSet<ParticleDataLinkBean>) dataTree
+									.get(reportCategory);
+						} else {
+							rdataBeans = new TreeSet<ParticleDataLinkBean>(
+									new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+							dataTree.put(reportCategory, rdataBeans);
+						}
+						rdataBeans.add(dataBean);
 					}
-					rdataBeans.add(dataBean);
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
