@@ -170,35 +170,25 @@ public class NanoparticleCompositionService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			ChemicalAssociation dbAssoc = null;
 			if (assoc.getId() != null) {
-				dbAssoc = (ChemicalAssociation) appService.get(
-						ChemicalAssociation.class, assoc.getId());
-				if (dbAssoc == null) {
-
+				try {
+					ChemicalAssociation dbAssoc = (ChemicalAssociation) appService
+							.load(ChemicalAssociation.class, assoc.getId());
+				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ParticleCompositionException(err);
-				}				
+					throw new ParticleCompositionException(err, e);
+				}
 			}
-			// load the full associated element by ID
-			AssociatedElement elementA = (AssociatedElement) appService.get(
-					assoc.getAssociatedElementA().getClass(), assoc
-							.getAssociatedElementA().getId());
-			AssociatedElement elementB = (AssociatedElement) appService.get(
-					assoc.getAssociatedElementB().getClass(), assoc
-							.getAssociatedElementB().getId());
-			if (elementA == null || elementB == null) {
-				String err = "Object doesn't exist in the database anymore.  Please log in again.";
-				logger.error(err);
-				throw new ParticleCompositionException(err);
-			}
-			assoc.setAssociatedElementA(elementA);
-			assoc.setAssociatedElementB(elementB);
 			SampleComposition composition = particleSample
 					.getSampleComposition();
+
 			composition.getChemicalAssociationCollection().add(assoc);
-			appService.saveOrUpdate(composition);
+			if (assoc.getId() == null) { //because of unidirectional relationship between composition and chemical associations
+				appService.saveOrUpdate(composition);
+			} else {
+				appService.saveOrUpdate(assoc);
+			}
 			if (assoc instanceof OtherChemicalAssociation) {
 				// TODO save other chemical association type
 			}
@@ -468,6 +458,19 @@ public class NanoparticleCompositionService {
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity "
 					+ entity.getId();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public void deleteChemicalAssociation(ChemicalAssociation assoc)
+			throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.delete(assoc);
+		} catch (Exception e) {
+			String err = "Error deleting chemical association " + assoc.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
