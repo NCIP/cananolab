@@ -5,6 +5,7 @@ function setEntityInclude(selectEleId, pagePath) {
 }
 function populatePage(pageData) {
 	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
+	async:false
 }
 function getComposingElementOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
@@ -15,28 +16,44 @@ function getComposingElementOptions(selectEleId) {
 		dwr.util.addOptions("compElemType", ["[Other]"]);
 	});
 }
+
+
 function getBiopolymerOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+
 	if (compFuncTypeValue == "biopolymer") {
-		CompositionManager.getBiopolymerTypeOptions(compFuncTypeValue, function (data) {
-			dwr.util.removeAllOptions("biopolymerType");
-			dwr.util.addOptions("biopolymerType", [""]);
-			dwr.util.addOptions("biopolymerType", data);
-			dwr.util.addOptions("biopolymerType", ["[Other]"]);
+		CompositionManager.getBiopolymerTypeOptions(compFuncTypeValue, {callback:function (data) {
+			dwr.util.removeAllOptions('biopolymerType');
+			dwr.util.addOptions('biopolymerType', ['']);
+			dwr.util.addOptions('biopolymerType', data);
+			dwr.util.addOptions('biopolymerType', ['[Other]']);
+
+			}, async:false
 		});
 	}
 }
 function getWallTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if (compFuncTypeValue == "carbon nanotube") {
-		CompositionManager.getWallTypeOptions(compFuncTypeValue, function (data) {
+		CompositionManager.getWallTypeOptions(compFuncTypeValue, {
+			callback:function (data) {
+			var ele = document.getElementById("wallType");
+			
 			dwr.util.removeAllOptions("wallType");
 			dwr.util.addOptions("wallType", [""]);
 			dwr.util.addOptions("wallType", data);
-		});
+		}, async:false
+		} );
+		
 	}
 }
-function getNETypeOptions(selectEleId) {
+
+var timeoutInterval = 500;
+function getNETypeOptions() {
+	window.setTimeout("getNETypes()", timeoutInterval);
+}
+function getNETypes() {
+	var selectEleId = "peType";
 	getBiopolymerOptions(selectEleId);
 	getWallTypeOptions(selectEleId);
 	getComposingElementOptions(selectEleId);
@@ -45,22 +62,27 @@ function getNETypeOptions(selectEleId) {
 function getAntibodyTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if (compFuncTypeValue == "antibody") {
-		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, function (data) {
-			dwr.util.removeAllOptions("antibodyType");
-			dwr.util.addOptions("antibodyType", [""]);
-			dwr.util.addOptions("antibodyType", data);
-			dwr.util.addOptions("antibodyType", ["[Other]"]);
+		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, { 
+			callback:function (data) {
+				dwr.util.removeAllOptions("antibodyType");
+				dwr.util.addOptions("antibodyType", [""]);
+				dwr.util.addOptions("antibodyType", data);
+				dwr.util.addOptions("antibodyType", ["[Other]"]);
+			}, async:false
 		});
 	}
 }
 function getAntibodyIsotypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if (compFuncTypeValue == "antibody") {
-		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, function (data) {
-			dwr.util.removeAllOptions("antibodyIsotype");
-			dwr.util.addOptions("antibodyIsotype", [""]);
-			dwr.util.addOptions("antibodyIsotype", data);
-			dwr.util.addOptions("antibodyIsotype", ["[Other]"]);
+		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, { 
+			callback:function (data) {
+			
+				dwr.util.removeAllOptions("antibodyIsotype");
+				dwr.util.addOptions("antibodyIsotype", [""]);
+				dwr.util.addOptions("antibodyIsotype", data);
+				dwr.util.addOptions("antibodyIsotype", ["[Other]"]);
+			}, async:false
 		});
 	}
 }
@@ -78,7 +100,12 @@ function setEntityTypeTitle(selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
 	document.getElementById("entityTypeTitle").innerHTML = selectEle.options[selectEle.options.selectedIndex].text;
 }
-function getFETypeOptions(selectEleId) {
+function getFETypeOptions() {
+	window.setTimeout("getFETypes()", timeoutInterval);
+}
+
+function getFETypes() {
+	var selectEleId = "feType";
 	getBiopolymerOptions(selectEleId);
 	getAntibodyTypeOptions(selectEleId);
 	getAntibodyIsotypeOptions(selectEleId);

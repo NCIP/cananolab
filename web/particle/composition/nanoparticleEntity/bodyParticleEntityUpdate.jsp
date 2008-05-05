@@ -60,7 +60,7 @@ function confirmDeletion()
 								<c:when test="${param.dispatch eq 'setup'}">
 									<html:select styleId="peType" property="entity.type"
 										onchange="javascript:callPrompt('Particle Entity Type', 'peType'); 
-										setEntityInclude('peType', '/particle/composition/nanoparticleEntity'); getNETypeOptions('peType');">
+										setEntityInclude('peType', '/particle/composition/nanoparticleEntity'); getNETypeOptions();">
 										<option value=""></option>
 										<html:options name="nanoparticleEntityTypes" />
 										<option value="other">
