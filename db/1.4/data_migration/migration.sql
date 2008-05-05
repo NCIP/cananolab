@@ -1132,6 +1132,24 @@ and cnc.repeat_unit != ""
 ALTER TABLE canano.composing_element
  CHANGE composing_element_pk_id composing_element_pk_id BIGINT(20) NOT NULL;
 
+insert into canano.associated_element
+(
+	associated_element_pk_id,
+	created_by,
+	created_date,
+	name
+)
+SELECT ce14.composing_element_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE(),
+	cnc.repeat_unit
+FROM cananolab.dendrimer_composition cnc,
+	canano.composing_element ce14
+WHERE ce14.element_type = 'repeat unit'
+AND	cnc.d_composition_pk_id = ce14.nanoparticle_entity_pk_id
+;
+
+
 insert into canano.target
 (
 	target_pk_id,
