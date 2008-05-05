@@ -56,7 +56,7 @@ public class AssociatedElementBean {
 		// domain element is a functionalizing entity
 		if (compositionType.equals("Functionalizing Entity")) {
 			className = typeToClass.get(entityDisplayName);
-			Class clazz = ClassUtils.getFullClass(className);
+			Class clazz = ClassUtils.getFullClass("functionalization."+className);
 			domainElement = (AssociatedElement) clazz.newInstance();
 			domainElement.setId(new Long(entityId));
 		} else {
