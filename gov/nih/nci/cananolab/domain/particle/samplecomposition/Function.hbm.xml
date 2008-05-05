@@ -31,7 +31,7 @@
 			discriminator-value="TargetingFunction">
 			<!-- Associations mapping for the TargetingFunction class -->
 			<set name="targetCollection" lazy="false"
-				cascade="save-update, delete">
+				cascade="all-delete-orphan" inverse="false">
 				<cache usage="read-write" />
 				<key column="targeting_function_pk_id" />
 				<one-to-many
