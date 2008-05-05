@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -191,4 +192,60 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		return null;
 	}
+
+	protected NanoparticleSample[] prepareCopy(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
+		String[] otherParticles = (String[]) theForm.get("otherParticles");
+		if (otherParticles.length == 0) {
+			return null;
+		}
+		NanoparticleSample[] particleSamples = new NanoparticleSample[otherParticles.length];
+		NanoparticleSampleService sampleService = new NanoparticleSampleService();
+		int i = 0;
+		for (String other : otherParticles) {
+			NanoparticleSample particleSample = sampleService
+					.findNanoparticleSampleByName(other);
+			particleSamples[i] = particleSample;
+			i++;
+		}
+		// retrieve file contents
+
+		// FileService fileService = new FileService();
+		// for (DerivedBioAssayDataBean file : entityBean.getFiles()) {
+		// byte[] content = fileService.getFileContent(new Long(file.getId()));
+		// file.setFileContent(content);
+		// }
+		//
+		// NanoparticleSampleService service = new NanoparticleSampleService();
+		// UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// int i = 0;
+		// for (String particleName : otherParticles) {
+		// NanoparticleEntityBean newEntityBean = entityBean.copy();
+		// // overwrite particle
+		// ParticleBean otherParticle = service.findNanoparticleSampleByName(
+		// particleName, user);
+		// newrBean.setParticle(otherParticle);
+		// // reset view title
+		// String timeStamp = StringUtils.convertDateToString(new Date(),
+		// "MMddyyHHmmssSSS");
+		// String autoTitle =
+		// CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
+		// + timeStamp;
+		//
+		// newCharBean.setViewTitle(autoTitle);
+		// List<DerivedBioAssayDataBean> dataList = newCharBean
+		// .getDerivedBioAssayDataList();
+		// // replace particleName in path and uri with new particleName
+		// for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
+		// String origUri = derivedBioAssayData.getUri();
+		// if (origUri != null)
+		// derivedBioAssayData.setUri(origUri.replace(particle
+		// .getSampleName(), particleName));
+		// }
+		// charBeans[i] = newCharBean;
+		// i++;
+		// }
+		return particleSamples;
+	}
+
 }
