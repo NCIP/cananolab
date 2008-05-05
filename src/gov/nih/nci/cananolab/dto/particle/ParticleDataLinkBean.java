@@ -31,6 +31,8 @@ public class ParticleDataLinkBean {
 
 	private Date createdDate;
 
+	private String createdBy;
+
 	// used for link color on the side menu
 	private String viewColor;
 
@@ -49,8 +51,9 @@ public class ParticleDataLinkBean {
 	}
 
 	public ParticleDataLinkBean(String dataId, String category,
-			String dataLink, Date createdDate) {
+			String dataLink, String createdBy, Date createdDate) {
 		this(dataId, category, dataLink);
+		this.createdBy = createdBy;
 		this.createdDate = createdDate;
 	}
 
@@ -126,7 +129,9 @@ public class ParticleDataLinkBean {
 	}
 
 	public String getViewColor() {
-		if (this.viewTitle != null && this.viewTitle.matches("^copy_\\d{15}?")) {
+		if (createdBy.equals(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)
+				|| this.viewTitle != null
+				&& this.viewTitle.matches("^copy_\\d{15}?")) {
 			this.viewColor = CaNanoLabConstants.AUTO_COPY_ANNNOTATION_VIEW_COLOR;
 		}
 		return this.viewColor;
