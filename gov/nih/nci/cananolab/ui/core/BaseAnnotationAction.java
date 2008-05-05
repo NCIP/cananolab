@@ -4,8 +4,11 @@ import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.report.InitReportSetup;
@@ -102,13 +105,38 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
 		NanoparticleSampleService sampleService = new NanoparticleSampleService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		ActionMessages msgs = new ActionMessages();
 		for (String id : dataIds) {
+			if (className.equals("NanoparticleEntity")) {
+				NanoparticleEntityBean entityBean = compService
+						.findNanoparticleEntityById(id);
+				if (!compService
+						.checkChemicalAssociationBeforeDelete(entityBean)) {
+					ActionMessage msg = new ActionMessage(
+							"error.deleteNanoparticleEntityWithChemicalAssociation",
+							entityBean.getClassName());
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					saveErrors(request, msgs);
+					return mapping.findForward("annotationDeleteView");
+				}
+			} else if (className.equals("FunctionalizingEntity")) {
+				FunctionalizingEntityBean entityBean = compService
+						.findFunctionalizingEntityById(id);
+				if (!compService
+						.checkChemicalAssociationBeforeDelete(entityBean)) {
+					ActionMessage msg = new ActionMessage(
+							"error.deleteFunctionalizingEntityWithChemicalAssociation",
+							entityBean.getClassName());
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					saveErrors(request, msgs);
+					return mapping.findForward("annotationDeleteView");
+				}
+			}
 			sampleService.deleteAnnotationById(fullClassName, new Long(id));
 		}
 
 		setupDataTree(theForm, request);
-
-		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
