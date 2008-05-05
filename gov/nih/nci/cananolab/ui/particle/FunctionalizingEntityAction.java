@@ -8,8 +8,10 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.26 2008-05-05 15:42:57 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.27 2008-05-05 22:28:45 pansu Exp $ */
 
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
@@ -45,6 +47,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getLoginName());
 		compositionService.saveFunctionalizingEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
+
+		// save to other particles
+		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		if (otherSamples != null) {
+			FunctionalizingEntity copy = entityBean.getDomainCopy();
+			for (NanoparticleSample sample : otherSamples) {
+				compositionService.saveFunctionalizingEntity(sample, copy);
+			}
+		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addFunctionalizingEntity");
@@ -97,6 +108,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("entity", entityBean);
 		setLookups(request);
+		// clear copy to otherParticles
+		theForm.set("otherParticles", new String[0]);
 		return mapping.getInputForward();
 	}
 
@@ -229,63 +242,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
-					"error.deleteFunctionalizingEntityWithChemicalAssociation", entityBean.getClassName());
+					"error.deleteFunctionalizingEntityWithChemicalAssociation",
+					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			setupDataTree(theForm, request);
 			return mapping.getInputForward();
 		}
-	}
-
-	protected FunctionalizingEntityBean[] prepareCopy(
-			HttpServletRequest request, DynaValidatorForm theForm)
-			throws Exception {
-		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
-				.get("entity");
-
-		String particle = (String) theForm.get("particle");
-		String[] otherParticles = (String[]) theForm.get("otherParticles");
-		FunctionalizingEntityBean[] entityBeans = new FunctionalizingEntityBean[otherParticles.length];
-		if (otherParticles.length == 0) {
-			return entityBeans;
-		}
-		// retrieve file contents
-
-		// FileService fileService = new FileService();
-		// for (DerivedBioAssayDataBean file : entityBean.getFiles()) {
-		// byte[] content = fileService.getFileContent(new Long(file.getId()));
-		// file.setFileContent(content);
-		// }
-		//
-		// NanoparticleSampleService service = new NanoparticleSampleService();
-		// UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// int i = 0;
-		// for (String particleName : otherParticles) {
-		// NanoparticleEntityBean newEntityBean = entityBean.copy();
-		// // overwrite particle
-		// String otherParticle = service.findNanoparticleSampleByName(
-		// particleName, user);
-		// newrBean.setParticle(otherParticle);
-		// // reset view title
-		// String timeStamp = StringUtils.convertDateToString(new Date(),
-		// "MMddyyHHmmssSSS");
-		// String autoTitle =
-		// CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
-		// + timeStamp;
-		//
-		// newCharBean.setViewTitle(autoTitle);
-		// List<DerivedBioAssayDataBean> dataList = newCharBean
-		// .getDerivedBioAssayDataList();
-		// // replace particleName in path and uri with new particleName
-		// for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
-		// String origUri = derivedBioAssayData.getUri();
-		// if (origUri != null)
-		// derivedBioAssayData.setUri(origUri.replace(particle
-		// .getSampleName(), particleName));
-		// }
-		// charBeans[i] = newCharBean;
-		// i++;
-		// }
-		return entityBeans;
 	}
 }
