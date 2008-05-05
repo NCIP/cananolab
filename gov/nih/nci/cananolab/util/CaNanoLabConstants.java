@@ -97,7 +97,7 @@ public class CaNanoLabConstants {
 	public static final String[] VISIBLE_GROUPS = new String[] { CSM_PI,
 			CSM_RESEARCHER };
 
-	public static final String AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX = "copy_";
+	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 
 	public static final String AUTO_COPY_ANNNOTATION_VIEW_COLOR = "red";
 
