@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalC
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -222,7 +221,8 @@ public class InitNanoparticleSetup {
 							.getNanoparticleEntityCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								entity.getId().toString(), "Composition",
-								"nanoparticleEntity", entity.getCreatedDate());
+								"nanoparticleEntity", entity.getCreatedBy(),
+								entity.getCreatedDate());
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(entity.getClass()
 										.getCanonicalName()));
@@ -244,8 +244,8 @@ public class InitNanoparticleSetup {
 							.getFunctionalizingEntityCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								entity.getId().toString(), "Composition",
-								"functionalizingEntity", entity
-										.getCreatedDate());
+								"functionalizingEntity", entity.getCreatedBy(),
+								entity.getCreatedDate());
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(entity.getClass()
 										.getCanonicalName()));
@@ -269,6 +269,7 @@ public class InitNanoparticleSetup {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								association.getId().toString(), "Composition",
 								"chemicalAssociation", association
+										.getCreatedBy(), association
 										.getCreatedDate());
 						dataBean.setDataClassName(ClassUtils
 								.getShortClassName(association.getClass()
@@ -290,7 +291,8 @@ public class InitNanoparticleSetup {
 							.getLabFileCollection()) {
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								file.getId().toString(), "Composition",
-								"compositionFile", file.getCreatedDate());
+								"compositionFile", file.getCreatedBy(), file
+										.getCreatedDate());
 						dataBean.setDataClassName("LabFile");
 						dataBean.setDataDisplayType(file.getType());
 						dataBean.setViewTitle(dataBean.getDataDisplayType());
@@ -326,7 +328,7 @@ public class InitNanoparticleSetup {
 					}
 					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 							achar.getId().toString(), category, link, achar
-									.getCreatedDate());
+									.getCreatedBy(), achar.getCreatedDate());
 					dataBean.setDataClassName(ClassUtils
 							.getShortClassName(achar.getClass()
 									.getCanonicalName()));
@@ -353,7 +355,8 @@ public class InitNanoparticleSetup {
 						String reportCategory = report.getCategory();
 						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
 								report.getId().toString(), "Report",
-								"submitReport", report.getCreatedDate());
+								"submitReport", report.getCreatedBy(), report
+										.getCreatedDate());
 						dataBean.setDataDisplayType(reportCategory);
 						dataBean.setViewTitle(report.getUri());
 						if (dataTree.get(reportCategory) != null) {
