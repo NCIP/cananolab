@@ -6,7 +6,7 @@
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr>
-			<td class="formTitle" colspan="2">
+			<td class="formTitle" colspan="3">
 				<div align="justify">
 					&nbsp;
 				</div>
@@ -16,13 +16,21 @@
 			<c:when test="${!empty otherParticleNames}">
 				<tr>
 					<td class="leftLabel" valign="top" width="30%">
-						<strong>Copy to other ${particleSource} nanoparticle sampless</strong>
+						<strong>Copy to other ${particleSource} nanoparticle
+							sampless</strong>
 					</td>
-					<td class="rightLabel">
+					<td class="label">
 						<html:select property="otherParticles" size="5" multiple="true">
 							<html:options collection="otherParticleNames" property="name"
 								labelProperty="name" />
 						</html:select>
+					</td>
+					<td class="rightLabel" valign="top">
+						<c:if test="${param.submitType ne 'Nanoparticle Entity' and param.submitType ne 'Functionalizing Entity'}">
+							<html:checkbox property="copyData" />
+							<strong>Also copy derived data?</strong>
+						</c:if>
+						&nbsp;
 					</td>
 				</tr>
 			</c:when>
