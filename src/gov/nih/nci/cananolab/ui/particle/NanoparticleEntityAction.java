@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.33 2008-05-04 09:47:45 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.34 2008-05-05 14:20:07 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -134,7 +134,21 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
+
+		ComposingElementBean ceBean = entity.getComposingElements().get(ind);
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		boolean canRemove = compService
+				.checkChemicalAssociationBeforeDelete(ceBean);
+		if (!canRemove) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"error.removeComposingElementWithChemicalAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
 		entity.removeComposingElement(ind);
+
 		return mapping.getInputForward();
 	}
 
@@ -277,15 +291,24 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName());
-		compositionService.deleteNanoparticleEntity(entityBean
-				.getDomainEntity());
+		boolean canDelete = compositionService
+				.checkChemicalAssociationBeforeDelete(entityBean);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.deleteNanoparticleEntity");
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		setupDataTree(theForm, request);
-		return forward;
+		if (canDelete) {
+			compositionService.deleteNanoparticleEntity(entityBean
+					.getDomainEntity());
+			ActionMessage msg = new ActionMessage(
+					"message.deleteNanoparticleEntity");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			setupDataTree(theForm, request);
+			return mapping.findForward("success");
+		} else {
+			ActionMessage msg = new ActionMessage(
+					"error.deleteNanoparticleEntityWithChemicalAssociation");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return mapping.getInputForward();
+		}
 	}
 }
