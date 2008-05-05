@@ -3,7 +3,20 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-
+<script type="text/javascript">
+<!--//
+function confirmDeletion()
+{
+	answer = confirm("Are you sure you want to delete the functionalizing entity?")
+	if (answer !=0)
+	{
+		this.document.forms[0].dispatch.value="delete";
+		this.document.forms[0].submit(); 
+		return true;
+	}
+}
+//-->
+</script>
 <html:form action="/functionalizingEntity">
 	<table width="100%" align="center">
 		<tr>
@@ -44,14 +57,21 @@
 							<strong>Functionalizing Entity Type</strong>
 						</td>
 						<td class="label">
-							<html:select styleId="feType" property="entity.type"
-								onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypeOptions('feType');">
-								<option value=""></option>
-								<html:options name="functionalizingEntityTypes" />
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
+							<c:choose>
+								<c:when test="${param.dispatch eq 'setup'}">
+									<html:select styleId="feType" property="entity.type"
+										onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypeOptions('feType');">
+										<option value=""></option>
+										<html:options name="functionalizingEntityTypes" />
+										<option value="other">
+											[Other]
+										</option>
+									</html:select>
+								</c:when>
+								<c:otherwise>
+								${functionalizingEntityForm.map.entity.type}
+								</c:otherwise>
+							</c:choose>
 						</td>
 						<td class="label" valign="top">
 							<strong>Chemical Name</strong>
@@ -323,7 +343,7 @@
 														value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
-												</jsp:include>					
+												</jsp:include>
 
 												<br>
 											</logic:iterate>
