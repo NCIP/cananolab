@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
@@ -12,9 +13,11 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Polymer;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -78,6 +81,57 @@ public class NanoparticleEntityBean {
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
 		}
+	}
+
+	public NanoparticleEntity getDomainCopy() {
+		NanoparticleEntity copy = (NanoparticleEntity) ClassUtils.deepCopy(this
+				.getDomainEntity());
+		// clear Ids, reset createdBy and createdDate, add prefix to
+		copy.setId(null);
+		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedDate(new Date());
+		if (copy.getComposingElementCollection().isEmpty()) {
+			copy.setComposingElementCollection(null);
+		} else {
+			// have to create a new collection otherwise Hibernate complains
+			Collection<ComposingElement> ces = copy
+					.getComposingElementCollection();
+			copy.setComposingElementCollection(new HashSet<ComposingElement>());
+			copy.getComposingElementCollection().addAll(ces);
+			for (ComposingElement ce : copy.getComposingElementCollection()) {
+				ce.setId(null);
+				ce.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				ce.setCreatedDate(new Date());
+				if (ce.getInherentFunctionCollection().isEmpty()) {
+					ce.setInherentFunctionCollection(null);
+				} else {
+					Collection<Function> functions = ce
+							.getInherentFunctionCollection();
+					ce.setInherentFunctionCollection(new HashSet<Function>());
+					ce.getInherentFunctionCollection().addAll(functions);
+					for (Function function : ce.getInherentFunctionCollection()) {
+						function.setId(null);
+						function
+								.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						function.setCreatedDate(new Date());
+					}
+				}
+			}
+		}
+		if (copy.getLabFileCollection().isEmpty()) {
+			copy.setLabFileCollection(null);
+		} else {
+			Collection<LabFile> files = copy.getLabFileCollection();
+			copy.setLabFileCollection(new HashSet<LabFile>());
+			copy.getLabFileCollection().addAll(files);
+			for (LabFile file : copy.getLabFileCollection()) {
+				file.setId(null);
+				file
+						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				file.setCreatedDate(new Date());
+			}
+		}
+		return copy;
 	}
 
 	public String getType() {
@@ -152,7 +206,9 @@ public class NanoparticleEntityBean {
 			Class clazz = ClassUtils.getFullClass(className);
 			domainEntity = (NanoparticleEntity) clazz.newInstance();
 		}
-		if (domainEntity.getId() == null) {
+		if (domainEntity.getId() == null
+				|| domainEntity.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(new Date());
 		}
@@ -210,11 +266,9 @@ public class NanoparticleEntityBean {
 		files.remove(ind);
 	}
 
-	public NanoparticleEntityBean copy() {
-		NanoparticleEntityBean copiedEntity = new NanoparticleEntityBean();
-		copiedEntity.type = type;
-		copiedEntity.setDescription(description);
-		copiedEntity.className = className;
+	public NanoparticleEntityBean copy() throws Exception {
+		NanoparticleEntityBean copiedEntity = (NanoparticleEntityBean) ClassUtils
+				.deepCopy(this);
 		return copiedEntity;
 	}
 
