@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +61,9 @@ public class ComposingElementBean {
 
 	public void setupDomainComposingElement(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
-		if (domainComposingElement.getId() == null) {
+		if (domainComposingElement.getId() == null
+				|| domainComposingElement.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainComposingElement.setCreatedBy(createdBy);
 			domainComposingElement.setCreatedDate(new Date());
 		}
