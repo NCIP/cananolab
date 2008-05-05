@@ -71,6 +71,9 @@ public class InitCompositionSetup {
 				"antigenSpecies", "Antigen", "species");
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"antibodySpecies", "Antibody", "species");
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"biopolymerTypes", "Biopolymer",
+				"type", "otherType", true);
 	}
 
 	public void setChemicalAssociationDropdowns(HttpServletRequest request)
