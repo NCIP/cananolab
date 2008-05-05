@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -25,6 +26,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
@@ -118,7 +120,7 @@ public class NanoparticleSampleService {
 	 * @throws Exception
 	 */
 	public void saveNanoparticleSample(NanoparticleSample particleSample)
-			throws ParticleException {
+			throws ParticleException, DuplicateEntriesException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -146,6 +148,8 @@ public class NanoparticleSampleService {
 				}
 			}
 			appService.saveOrUpdate(particleSample);
+		} catch (DuplicateEntriesException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving the nanoparticle sample.";
 			logger.error(err, e);
@@ -240,7 +244,6 @@ public class NanoparticleSampleService {
 					.setFetchMode(
 							"sampleComposition.functionalizingEntityCollection.functionCollection",
 							FetchMode.JOIN);
-			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -373,13 +376,21 @@ public class NanoparticleSampleService {
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.labFileCollection",
+					FetchMode.JOIN);
 			crit.setFetchMode(
 					"sampleComposition.chemicalAssociationCollection",
 					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementA",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementB",
+							FetchMode.JOIN);
 			crit.setFetchMode(
 					"sampleComposition.functionalizingEntityCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition.labFileCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
@@ -415,13 +426,21 @@ public class NanoparticleSampleService {
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.labFileCollection",
+					FetchMode.JOIN);
 			crit.setFetchMode(
 					"sampleComposition.chemicalAssociationCollection",
 					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementA",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementB",
+							FetchMode.JOIN);
 			crit.setFetchMode(
 					"sampleComposition.functionalizingEntityCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition.labFileCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("reportCollection", FetchMode.JOIN);
 			crit
@@ -620,22 +639,7 @@ public class NanoparticleSampleService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			if (className.endsWith("NanoparticleEntity")) {
-				NanoparticleCompositionService compService = new NanoparticleCompositionService();
-				NanoparticleEntityBean entityBean = compService
-						.findNanoparticleEntityById(dataId.toString());
-				compService.deleteNanoparticleEntity(entityBean
-						.getDomainEntity());
-			} else if (className.endsWith("FunctionalizingEntity")) {
-				NanoparticleCompositionService compService = new NanoparticleCompositionService();
-				FunctionalizingEntityBean entityBean = compService
-						.findFunctionalizingEntityById(dataId.toString());
-				compService.deleteFunctionalizingEntity(entityBean
-						.getDomainEntity());
-
-			} else {
-				appService.deleteById(Class.forName(className), dataId);
-			}
+			appService.deleteById(Class.forName(className), dataId);
 		} catch (Exception e) {
 			String err = "Error deleting annotation of class " + className
 					+ "by ID " + dataId;
