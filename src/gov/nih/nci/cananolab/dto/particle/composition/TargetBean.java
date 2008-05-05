@@ -101,5 +101,4 @@ public class TargetBean {
 	public void setType(String type) {
 		this.type = type;
 	}
-
 }

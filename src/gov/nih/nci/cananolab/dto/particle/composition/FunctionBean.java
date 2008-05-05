@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.ImagingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
@@ -98,7 +99,9 @@ public class FunctionBean {
 						domainFunction.getClass().getCanonicalName())) {
 			domainFunction = (Function) clazz.newInstance();
 		}
-		if (domainFunction.getId() == null) {
+		if (domainFunction.getId() == null
+				|| domainFunction.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFunction.setCreatedBy(createdBy);
 			domainFunction.setCreatedDate(new Date());
 		}
