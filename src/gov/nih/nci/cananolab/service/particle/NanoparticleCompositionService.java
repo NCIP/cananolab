@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
@@ -462,20 +463,6 @@ public class NanoparticleCompositionService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			// need to delete chemical associations first if associated elements
-			// are composing elements
-			Collection<ChemicalAssociation> assocSet = entity
-					.getSampleComposition().getChemicalAssociationCollection();
-			if (assocSet != null) {
-				for (ChemicalAssociation assoc : assocSet) {
-					if (entity.getComposingElementCollection().contains(
-							assoc.getAssociatedElementA())
-							|| entity.getComposingElementCollection().contains(
-									assoc.getAssociatedElementB())) {
-						appService.delete(assoc);
-					}
-				}
-			}
 			appService.delete(entity);
 		} catch (Exception e) {
 			String err = "Error deleting nanoparticle entity " + entity.getId();
@@ -489,19 +476,6 @@ public class NanoparticleCompositionService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			// need to delete chemical associations first if associated elements
-			// are functionalizing entities
-			Collection<ChemicalAssociation> assocSet = entity
-					.getSampleComposition().getChemicalAssociationCollection();
-			if (assocSet != null) {
-				for (ChemicalAssociation assoc : assocSet) {
-					if (entity.equals(assoc.getAssociatedElementA())
-							|| entity.equals(assoc.getAssociatedElementB())) {
-						appService.delete(assoc);
-					}
-				}
-			}
-
 			appService.delete(entity);
 		} catch (Exception e) {
 			String err = "Error deleting functionalizing entity "
@@ -509,5 +483,71 @@ public class NanoparticleCompositionService {
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
+	}
+
+	// check if any composing elements of the nanoparticle entity is invovled in
+	// the chemical association
+	public boolean checkChemicalAssociationBeforeDelete(
+			NanoparticleEntityBean entityBean) {
+		// need to delete chemical associations first if associated elements
+		// are composing elements
+		Collection<ChemicalAssociation> assocSet = entityBean.getDomainEntity()
+				.getSampleComposition().getChemicalAssociationCollection();
+		if (assocSet != null) {
+			for (ChemicalAssociation assoc : assocSet) {
+				if (entityBean.getDomainEntity()
+						.getComposingElementCollection().contains(
+								assoc.getAssociatedElementA())
+						|| entityBean.getDomainEntity()
+								.getComposingElementCollection().contains(
+										assoc.getAssociatedElementB())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	// check if the composing element is invovled in the chemical
+	// association
+	public boolean checkChemicalAssociationBeforeDelete(
+			ComposingElementBean ceBean) {
+		if (ceBean.getDomainComposingElement().getId() != null) {
+			Collection<ChemicalAssociation> assocSet = ceBean
+					.getDomainComposingElement().getNanoparticleEntity()
+					.getSampleComposition().getChemicalAssociationCollection();
+			if (assocSet != null) {
+				for (ChemicalAssociation assoc : assocSet) {
+					if (ceBean.getDomainComposingElement().equals(
+							assoc.getAssociatedElementA())
+							|| ceBean.getDomainComposingElement().equals(
+									assoc.getAssociatedElementB())) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	// check if the composing element is invovled in the chemical
+	// association
+	public boolean checkChemicalAssociationBeforeDelete(
+			FunctionalizingEntityBean entityBean) {
+		// need to delete chemical associations first if associated elements
+		// are functionalizing entities
+		Collection<ChemicalAssociation> assocSet = entityBean.getDomainEntity()
+				.getSampleComposition().getChemicalAssociationCollection();
+		if (assocSet != null) {
+			for (ChemicalAssociation assoc : assocSet) {
+				if (entityBean.getDomainEntity().equals(
+						assoc.getAssociatedElementA())
+						|| entityBean.getDomainEntity().equals(
+								assoc.getAssociatedElementB())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }
