@@ -72,16 +72,17 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"antibodySpecies", "Antibody", "species");
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"biopolymerTypes", "Biopolymer",
-				"type", "otherType", true);
+				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
 	}
 
-	public void setChemicalAssociationDropdowns(HttpServletRequest request)
-			throws Exception {
+	public void setChemicalAssociationDropdowns(HttpServletRequest request,
+			boolean hasFunctionalizingEntity) throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
 		List<String> compositionTypes = new ArrayList<String>();
 		compositionTypes.add("Nanoparticle Entity");
-		compositionTypes.add("Functionalizing Entity");
+		if (hasFunctionalizingEntity) {
+			compositionTypes.add("Functionalizing Entity");
+		}
 		appContext
 				.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
