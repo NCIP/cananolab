@@ -60,7 +60,7 @@ function confirmDeletion()
 							<c:choose>
 								<c:when test="${param.dispatch eq 'setup'}">
 									<html:select styleId="feType" property="entity.type"
-										onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypeOptions('feType');">
+										onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypeOptions();">
 										<option value=""></option>
 										<html:options name="functionalizingEntityTypes" />
 										<option value="other">
@@ -116,7 +116,7 @@ function confirmDeletion()
 							<html:select styleId="feUnit" property="entity.valueUnit"
 								onchange="javascript:callPrompt('Value Unit', 'feUnit');">
 								<option value=""></option>
-								<html:options name="functionalizingEntityUnits" />
+								<html:options name="composingElementUnits" />
 								<option value="other">
 									[Other]
 								</option>
