@@ -8,7 +8,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.36 2008-05-05 20:35:50 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.37 2008-05-05 22:29:04 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -118,6 +118,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("entity", entityBean);
 		setLookups(request);
+		theForm.set("otherParticles", new String[0]);
 		return mapping.getInputForward();
 	}
 
