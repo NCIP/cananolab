@@ -58,9 +58,9 @@ public class ChemicalAssociationBean {
 
 	public void setupDomainAssociation(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
-		className = typeToClass.get(type);
-		Class clazz = ClassUtils.getFullClass(className);
-		if (domainAssociation == null || !clazz.equals(domainAssociation.getClass())) {	
+		if (domainAssociation == null) {
+			className = typeToClass.get(type);
+			Class clazz = ClassUtils.getFullClass(className);
 			domainAssociation = (ChemicalAssociation) clazz.newInstance();
 		}
 		if (domainAssociation.getId() == null) {
@@ -131,9 +131,9 @@ public class ChemicalAssociationBean {
 	public void removeFile(int ind) {
 		files.remove(ind);
 	}
-	
+
 	public void setType(String type) {
-		this.type=type;
+		this.type = type;
 	}
 
 	public void updateType(Map<String, String> classToType) {
