@@ -8,11 +8,14 @@ import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -28,10 +31,9 @@ public class CharacterizationBean {
 	// shown as different links on the view pages.
 	private String viewTitle;
 
-	// used for link color on the side menu
-	private String viewColor;
-
 	private String description;
+
+	private String type; // e.g. Molecular Weight, Size
 
 	private InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
 
@@ -42,8 +44,6 @@ public class CharacterizationBean {
 	protected Characterization domainChar;
 
 	private String className;
-
-	private String createdBy;
 
 	public CharacterizationBean() {
 		instrumentConfig.setInstrument(new Instrument());
@@ -73,15 +73,68 @@ public class CharacterizationBean {
 		}
 	}
 
-	public void setupDomainChar() {
+	public Characterization getDomainCopy(boolean copyDerivedDatum) {
+		Characterization copy = (Characterization) ClassUtils
+				.deepCopy(domainChar);
+		// clear Ids, reset createdBy and createdDate, add prefix to
+		copy.setId(null);
+		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedDate(new Date());
+		copy
+				.setIdentificationName(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX
+						+ "_"
+						+ StringUtils.convertDateToString(new Date(),
+								"yyyyMMdd_HH-mm-ss-SSS"));
+		copy.getInstrumentConfiguration().setId(null);
+		if (copy.getDerivedBioAssayDataCollection().isEmpty()) {
+			copy.setDerivedBioAssayDataCollection(null);
+		} else {
+			Collection<DerivedBioAssayData> bioassays = copy
+					.getDerivedBioAssayDataCollection();
+			copy
+					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+			copy.getDerivedBioAssayDataCollection().addAll(bioassays);
+			for (DerivedBioAssayData bioassay : copy
+					.getDerivedBioAssayDataCollection()) {
+				bioassay.setId(null);
+				bioassay
+						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				bioassay.setCreatedDate(new Date());
+				if (bioassay.getDerivedDatumCollection().isEmpty()
+						|| !copyDerivedDatum) {
+					bioassay.setDerivedDatumCollection(null);
+				} else {
+					Collection<DerivedDatum> data = bioassay
+							.getDerivedDatumCollection();
+					bioassay
+							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
+					bioassay.getDerivedDatumCollection().addAll(data);
+					for (DerivedDatum datum : bioassay
+							.getDerivedDatumCollection()) {
+						datum.setId(null);
+						datum
+								.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						datum.setCreatedDate(new Date());
+					}
+				}
+			}
+		}
+		return copy;
+	}
+
+	public void setupDomainChar(Map<String, String> typeToClass,
+			String createdBy) {
 		try {
 			// take care of characterizations that don't have any special
 			// properties shown in the form, e.g. Size
+			className = typeToClass.get(type);
 			if (domainChar == null) {
 				Class clazz = ClassUtils.getFullClass(className);
 				domainChar = (Characterization) clazz.newInstance();
 			}
-			if (domainChar.getId() == null) {
+			if (domainChar.getId() == null
+					|| domainChar.getCreatedBy().equals(
+							CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 				domainChar.setCreatedBy(createdBy);
 				domainChar.setCreatedDate(new Date());
 			}
@@ -128,20 +181,6 @@ public class CharacterizationBean {
 		}
 	}
 
-	// /**
-	// * Copy constructor
-	// *
-	// * @param charBean
-	// */
-	// public CharacterizationBean(CharacterizationBean charBean) {
-	// this.viewTitle = charBean.getViewTitle();
-	// this.characterizationSource = charBean.getCharacterizationSource();
-	// this.derivedBioAssayDataList = charBean.getDerivedBioAssayDataList();
-	// this.description = charBean.getDescription();
-	// this.instrumentConfig = charBean.getInstrumentConfiguration();
-	// this.protocolFileBean = charBean.getProtocolFileBean();
-	// }
-
 	public String getCharacterizationSource() {
 		return this.characterizationSource;
 	}
@@ -184,40 +223,6 @@ public class CharacterizationBean {
 		return this.derivedBioAssayDataList;
 	}
 
-	public String getViewColor() {
-		if (this.viewTitle != null && this.viewTitle.matches("^copy_\\d{15}?")) {
-			this.viewColor = CaNanoLabConstants.AUTO_COPY_ANNNOTATION_VIEW_COLOR;
-		}
-		return this.viewColor;
-	}
-
-	/**
-	 * Create a new instance of CharacterizationBean with the same metadata
-	 * except DerivedBioAssayDataList and InstrumentConfig.
-	 * 
-	 * @return
-	 */
-	// public CharacterizationBean copy(boolean copyData) {
-	// CharacterizationBean newCharBean = new CharacterizationBean(this);
-	// // unset id
-	// newCharBean.setId(null);
-	// // set InstrumentConfig, DerivedBioAssayDataList
-	// InstrumentConfigBean newInstrumentConfigBean = this.instrumentConfigBean
-	// .copy();
-	// newCharBean.setInstrumentConfigBean(newInstrumentConfigBean);
-	//
-	// List<DerivedBioAssayDataBean> newDerivedBioAssayDataList = new
-	// ArrayList<DerivedBioAssayDataBean>();
-	// for (DerivedBioAssayDataBean derivedBioAssayDataBean :
-	// this.derivedBioAssayDataList) {
-	// DerivedBioAssayDataBean newDerivedBioAssayDataBean =
-	// derivedBioAssayDataBean
-	// .copy(copyData);
-	// newDerivedBioAssayDataList.add(newDerivedBioAssayDataBean);
-	// }
-	// newCharBean.setDerivedBioAssayDataList(newDerivedBioAssayDataList);
-	// return newCharBean;
-	// }
 	public InstrumentConfiguration getInstrumentConfiguration() {
 		return instrumentConfig;
 	}
@@ -234,11 +239,11 @@ public class CharacterizationBean {
 		return className;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
+	public String getType() {
+		return type;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setType(String type) {
+		this.type = type;
 	}
 }
