@@ -3,10 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table border="0" align="center" cellpadding="3" cellspacing="0"
-	class="topBorderOnly" summary="">
+	width="100%" class="topBorderOnly" summary="">
 	<tr>
 	<tr class="topBorder">
-		<td class="formTitle" colspan="4">
+		<td class="formTitle" colspan="3">
 			<div align="justify">
 				Instrument Information
 			</div>
@@ -59,7 +59,7 @@
 		<td class="leftLabel">
 			<strong>Instrument Manufacturer </strong>
 		</td>
-		<td class="rightLabel" colspan="3">
+		<td class="rightLabel" colspan="2">
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<html:select styleId="instrumentManufacturer"
@@ -82,7 +82,7 @@
 		<td class="leftLabel" valign="top">
 			<strong>Description</strong>
 		</td>
-		<td class="rightLabel" colspan="3">
+		<td class="rightLabel" colspan="2">
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true'}">
 					<html:textarea property="achar.instrumentConfiguration.description"
