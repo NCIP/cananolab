@@ -1,8 +1,12 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
+import java.util.Map;
+import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -29,6 +33,7 @@ public class CustomPlugIn implements PlugIn {
 		try {
 			// set default lookup valules in the servlet context
 			ServletContext appContext = actionServlet.getServletContext();
+			InitSetup.getInstance().getDefaultLookupTable(appContext);
 			InitSetup.getInstance().getClassNameToDisplayNameLookup(appContext);
 			InitSetup
 					.getInstance()
