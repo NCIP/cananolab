@@ -182,5 +182,12 @@
 			<forward name="summaryView"
 				path="particle.invitroSummaryView" />
 		</action>
+		<action input="input" name="compositionFileForm"
+			parameter="dispatch" path="/compositionFile"
+			type="gov.nih.nci.cananolab.ui.particle.CompositionFileAction">
+			<forward name="input"
+				path="particle.composition.compositionFile" />
+			<forward name="success" path="particle.annotationMessage" />
+		</action>
 	</action-mappings>
 </struts-config>
