@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.8 2008-05-06 17:14:53 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.9 2008-05-06 22:59:59 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -54,6 +54,8 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		authService.assignVisibility(reportBean.getDomainFile().getId()
 				.toString(), reportBean.getVisibilityGroups());
 
+		InitReportSetup.getInstance().persistReportDropdowns(request,
+				reportBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitReport.file",
 				reportBean.getDomainFile().getTitle());
