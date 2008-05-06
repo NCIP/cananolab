@@ -2,8 +2,21 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<html:form action="/compositionFile">
+<script type="text/javascript">
+<!--//
+function confirmDeletion()
+{
+	answer = confirm("Are you sure you want to delete the composition file?")
+	if (answer !=0)
+	{
+		this.document.forms[0].dispatch.value="delete";
+		this.document.forms[0].submit(); 
+		return true;
+	}
+}
+//-->
+</script>
+<html:form action="/compositionFile" enctype="multipart/form-data">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
@@ -15,35 +28,38 @@
 				</td>
 			</tr>
 			<c:choose>
-				<c:when test="${compositionFileForm.map.compFile.hidden eq 'false' }">
+				<c:when
+					test="${compositionFileForm.map.compFile.hidden eq 'false' }">
 
 					<tr>
 						<td class="leftLabel">
-							<html:radio styleId="external"
-								property="compFile.domainFile.uriExternal"
-								value="false" onclick="radLinkOrUpload()" />
+							<html:radio styleId="external0"
+								property="compFile.domainFile.uriExternal" value="false"
+								onclick="radLinkOrUpload()" />
 							<strong>Upload File</strong>
 							<br>
 							&nbsp;&nbsp;or
 							<br>
-							<html:radio property="compFile.domainFile.uriExternal"
-								value="true" onclick="radLinkOrUpload()" />
+							<html:radio styleId="external1"
+								property="compFile.domainFile.uriExternal" value="true"
+								onclick="radLinkOrUpload()" />
 							<strong>Enter File URL</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
 							<span id="load"> <html:file
-									property="compFile.uploadedFile" size="60" />
-								&nbsp;&nbsp; </span>
+									property="compFile.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 							<br>
 							<br>
 							<span id="link" style="display: none"><html:text
 									property="compFile.externalUrl" size="60" /> </span>&nbsp;
 						</td>
-						<c:if test="${!empty compositionFileForm.map.compFile.domainFile.uri }">
+						<c:if
+							test="${!empty compositionFileForm.map.compFile.domainFile.uri }">
 							<tr>
 								<td class="completeLabel" colspan="3">
 									<c:choose>
-										<c:when test="${compositionFileForm.map.compFile.image eq 'true'}">
+										<c:when
+											test="${compositionFileForm.map.compFile.image eq 'true'}">
 						 				${compositionFileForm.map.compFile.domainFile.title}<br>
 											<br>
 											<a href="#"
@@ -55,8 +71,8 @@
 										<c:otherwise>
 											<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
-												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}">
-												<%--			target="${submitReportForm.map.file.urlTarget}">--%>
+												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}"
+												target="${submitReportForm.map.file.urlTarget}">
 												${compositionFileForm.map.compFile.domainFile.uri}</a>
 
 											<html:hidden property="compFile.domainFile.uri" />
@@ -87,8 +103,7 @@
 							<strong>File Title*</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							<html:text property="compFile.domainFile.title"
-								size="60" />
+							<html:text property="compFile.domainFile.title" size="60" />
 						</td>
 					</tr>
 					<tr>
@@ -96,7 +111,7 @@
 							<strong>Keywords <em>(one word per line)</em> </strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							<html:textarea property="compFile.keywordsStr" rows="2" />
+							<html:textarea property="compFile.keywordsStr" rows="3" />
 							&nbsp;
 						</td>
 					</tr>
@@ -105,9 +120,9 @@
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							<html:select property="compFile.visibilityGroups"
-								multiple="true" size="3">
-								<%--					<html:options name="allVisibilityGroups" />--%>
+							<html:select property="compFile.visibilityGroups" multiple="true"
+								size="6">
+								<html:options name="allVisibilityGroups" />
 							</html:select>
 							<br>
 							<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI

@@ -44,7 +44,7 @@ function confirmDeletion()
 		<c:set var="ceStyleB" value="display:none" />
 	</c:otherwise>
 </c:choose>
-<html:form action="/chemicalAssociation">
+<html:form action="/chemicalAssociation" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
