@@ -3,8 +3,10 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -72,8 +74,8 @@ public class TargetBean {
 		return domainTarget;
 	}
 
-	public void setupDomainTarget(Map<String, String> typeToClass)
-			throws Exception {
+	public void setupDomainTarget(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
 		className = typeToClass.get(type);
 		Class clazz = ClassUtils.getFullClass(className);
 		if (domainTarget == null
@@ -81,6 +83,13 @@ public class TargetBean {
 						domainTarget.getClass().getCanonicalName())) {
 			domainTarget = (Target) clazz.newInstance();
 		}
+		if (domainTarget.getId() == null
+				|| domainTarget.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainTarget.setCreatedBy(createdBy);
+			domainTarget.setCreatedDate(new Date());
+		}
+
 		if (domainTarget instanceof OtherTarget) {
 			((OtherTarget) domainTarget).setType(type);
 		} else if (domainTarget instanceof Antigen) {

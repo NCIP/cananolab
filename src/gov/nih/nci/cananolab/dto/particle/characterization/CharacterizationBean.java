@@ -6,12 +6,14 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -67,6 +69,10 @@ public class CharacterizationBean {
 				derivedBioAssayDataList.add(new DerivedBioAssayDataBean(
 						bioassayData));
 			}
+			Collections
+					.sort(
+							derivedBioAssayDataList,
+							new CaNanoLabComparators.DerivedBioAssayDataBeanDateComparator());
 		}
 		if (chara.getProtocolFile() != null) {
 			protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
