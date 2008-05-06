@@ -16,7 +16,7 @@ function confirmDeletion()
 }
 //-->
 </script>
-<html:form action="/nanoparticleEntity">
+<html:form action="/nanoparticleEntity" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>

@@ -17,7 +17,7 @@ function confirmDeletion()
 }
 //-->
 </script>
-<html:form action="/functionalizingEntity">
+<html:form action="/functionalizingEntity" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>

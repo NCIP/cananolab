@@ -13,8 +13,8 @@
 			<td class="formSubTitleNoLeft" align="right">
 				<a href="#"
 					onclick="removeComponent(${param.form}, '${param.action}', ${param.fileInd}, 'removeFile');return false;">
-							<img src="images/delete.gif" border="0" alt="remove this file">
-						</a>
+					<img src="images/delete.gif" border="0" alt="remove this file">
+				</a>
 			</td>
 		</tr>
 		<tr>
@@ -59,13 +59,15 @@
 					property="entity.files[${param.fileInd}].type"
 					onchange="javascript:callPrompt('File Type', 'fileType' + ${param.fileInd});">
 					<option value="" />
-					<html:options name="fileTypes" />
+						<html:options name="fileTypes" />
 					<option value="other">
 						[Other]
 					</option>
 				</html:select>
 			</td>
-			<td class="rightLabel" colspan="2">&nbsp;</td>
+			<td class="rightLabel" colspan="2">
+				&nbsp;
+			</td>
 		</tr>
 	</tbody>
 </table>

@@ -8,7 +8,7 @@
 		width="100%" align="center" summary="" border="0">
 		<tbody>
 			<tr class="topBorder">
-				<td class="formTitle" colspan="2">
+				<td class="formTitle" colspan="3">
 					<div align="justify">
 						Composition File Information
 					</div>
@@ -82,7 +82,7 @@
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							${compositionFileForm.map.compFile.visibilityGroup }&nbsp;
+							${compositionFileForm.map.compFile.visibilityStr }&nbsp;
 						</td>
 					</tr>
 				</c:when>
