@@ -9,6 +9,8 @@ CREATE TABLE target
 	targeting_function_pk_id BIGINT NULL,
 	antigen_species VARCHAR(200) NULL,
 	other_target_type VARCHAR(200) NULL,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
 	PRIMARY KEY (target_pk_id),
 	KEY (targeting_function_pk_id)
 ) TYPE=InnoDB
