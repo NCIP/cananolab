@@ -61,7 +61,8 @@ table.displaytable tr.tableRowEven,table.displaytable tr.even {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
 	color: #000000; /* constant: black */
-	background-color: #ffffff; /* constant: white*/
+	/* background-color: #ffffff; */ /* constant: white*/
+	background-color: #eeeeee;
 }
 
 div.exportlinks {
