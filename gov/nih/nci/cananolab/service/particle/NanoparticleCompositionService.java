@@ -207,16 +207,6 @@ public class NanoparticleCompositionService {
 	public void saveCompositionFile(NanoparticleSample particleSample,
 			LabFile file, byte[] fileData) throws ParticleCompositionException {
 		try {
-			// save to the file system fileData is not empty
-			if (fileData != null) {
-				FileService fileService = new FileService();
-				String rootPath = PropertyReader.getProperty(
-						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-						"fileRepositoryDir");
-				String fullFileName = rootPath + "/" + file.getUri();
-				fileService.writeFile(fileData, fullFileName);
-			}
-
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (file.getId() != null) {
@@ -254,6 +244,10 @@ public class NanoparticleCompositionService {
 			} else {
 				appService.saveOrUpdate(file);
 			}
+			// save to the file system fileData is not empty
+
+			FileService fileService = new FileService();
+			fileService.writeFile(file, fileData);
 			// TODO save other file type
 
 		} catch (Exception e) {
