@@ -60,13 +60,6 @@ function confirmDeletion()
 		</tr>
 		<tr>
 			<td colspan="2">
-				<h5 align="center">
-					<%--					Entity#1:Dendrimer--%>
-				</h5>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="" id="summary">
@@ -79,7 +72,7 @@ function confirmDeletion()
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Association Type</strong>
+							<strong>Association Type*</strong>
 						</td>
 						<td class="label">
 							<c:choose>
@@ -101,7 +94,7 @@ function confirmDeletion()
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong id="bondTypeTitle" style="${style }">Bond Type</Strong>
+							<Strong id="bondTypeTitle" style="${style }">Bond Type*</Strong>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
@@ -121,7 +114,7 @@ function confirmDeletion()
 							<div id="assocEleBlockA" class="assocEleBlock">
 								<ul>
 									<li>
-										<strong>Element</strong>
+										<strong>Element*</strong>
 									</li>
 									<li>
 										<html:select styleId="compositionTypeA"
@@ -195,7 +188,7 @@ function confirmDeletion()
 							<div id="assocEleBlockB" class="assocEleBlock">
 								<ul>
 									<li>
-										<strong>Element</strong>
+										<strong>Element*</strong>
 									</li>
 									<li>
 										<html:select styleId="compositionTypeB"

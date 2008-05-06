@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Biopolymer Type</strong>
+				<strong>Biopolymer Type*</strong>
 			</td>
 			<td class="rightLabel" colspan="2">
 				<select name="entity.biopolymer.type" id="biopolymerType"

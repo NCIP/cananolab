@@ -10,12 +10,15 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Species</strong>
+				<strong>Type</strong>
 			</td>
 			<td class="label">
-				<select name="entity.antibody.species" id="antibodySpecies"
-					onchange="javascript:callPrompt('Species', 'species');">
+				<select name="entity.antibody.type" id="antibodyType"
+					onchange="javascript:callPrompt('Type', 'antibodyType');">
 					<option value="" />
+					<option value="other">
+						[Other]
+					</option>
 				</select>
 			</td>
 			<td class="label">
@@ -31,15 +34,12 @@
 				</select>
 			</td>
 			<td class="label">
-				<strong>Type</strong>
+				<strong>Species</strong>
 			</td>
 			<td class="rightLabel">
-				<select name="entity.antibody.type" id="antibodyType"
-					onchange="javascript:callPrompt('Type', 'antibodyType');">
+				<select name="entity.antibody.species" id="antibodySpecies"
+					onchange="javascript:callPrompt('Species', 'species');">
 					<option value="" />
-					<option value="other">
-						[Other]
-					</option>
 				</select>
 			</td>
 		</tr>
