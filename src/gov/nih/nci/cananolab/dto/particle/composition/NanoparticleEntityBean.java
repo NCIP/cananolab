@@ -81,6 +81,9 @@ public class NanoparticleEntityBean {
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
 		}
+		for (LabFile file: nanoparticleEntity.getLabFileCollection()) {
+			files.add(new LabFileBean(file));
+		}
 	}
 
 	public NanoparticleEntity getDomainCopy() {
@@ -241,8 +244,7 @@ public class NanoparticleEntityBean {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
 		for (LabFileBean file : files) {
-			file.getDomainFile().setCreatedBy(createdBy);
-			file.getDomainFile().setCreatedDate(new Date());
+			file.setupDomainFile(createdBy);
 			domainEntity.getLabFileCollection().add(file.getDomainFile());
 		}
 	}
