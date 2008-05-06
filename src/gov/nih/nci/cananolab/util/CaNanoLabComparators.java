@@ -4,11 +4,17 @@ import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
+import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 
 import java.util.Comparator;
 
@@ -19,7 +25,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.4 2008-04-25 23:36:47 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.5 2008-05-06 18:43:48 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -91,7 +97,8 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class ParticleBeanComparator implements Comparator<ParticleBean> {
+	public static class ParticleBeanComparator implements
+			Comparator<ParticleBean> {
 		public int compare(ParticleBean particle1, ParticleBean particle2) {
 			return new SortableNameComparator().compare(particle1
 					.getDomainParticleSample().getName(), particle2
@@ -169,6 +176,24 @@ public class CaNanoLabComparators {
 		}
 	}
 
+	public static class DerivedBioAssayDataBeanDateComparator implements
+			Comparator<DerivedBioAssayDataBean> {
+		public int compare(DerivedBioAssayDataBean bioassay1,
+				DerivedBioAssayDataBean bioassay2) {
+			return bioassay1.getDomainBioAssayData().getCreatedDate()
+					.compareTo(
+							bioassay2.getDomainBioAssayData().getCreatedDate());
+		}
+	}
+
+	public static class LabFileBeanDateComparator implements
+			Comparator<LabFileBean> {
+		public int compare(LabFileBean file1, LabFileBean file2) {
+			return file1.getDomainFile().getCreatedDate().compareTo(
+					file2.getDomainFile().getCreatedDate());
+		}
+	}
+
 	public static class DerivedDatumDateComparator implements
 			Comparator<DerivedDatum> {
 		public int compare(DerivedDatum data1, DerivedDatum data2) {
@@ -176,10 +201,44 @@ public class CaNanoLabComparators {
 		}
 	}
 
+	public static class FunctionBeanDateComparator implements
+			Comparator<FunctionBean> {
+		public int compare(FunctionBean function1, FunctionBean function2) {
+			return function1.getDomainFunction().getCreatedDate().compareTo(
+					function2.getDomainFunction().getCreatedDate());
+		}
+	}
+
+	public static class ComposingElementBeanDateComparator implements
+			Comparator<ComposingElementBean> {
+		public int compare(ComposingElementBean element1,
+				ComposingElementBean element2) {
+			return element1.getDomainComposingElement().getCreatedDate()
+					.compareTo(
+							element2.getDomainComposingElement()
+									.getCreatedDate());
+		}
+	}
+
+	public static class TargetBeanDateComparator implements
+			Comparator<TargetBean> {
+		public int compare(TargetBean target1, TargetBean target2) {
+			return target1.getDomainTarget().getCreatedDate().compareTo(
+					target2.getDomainTarget().getCreatedDate());
+		}
+	}
+
 	public static class CharacterizationDateComparator implements
 			Comparator<Characterization> {
 		public int compare(Characterization chara1, Characterization chara2) {
 			return chara1.getCreatedDate().compareTo(chara2.getCreatedDate());
+		}
+	}
+
+	public static class SurfaceChemistryDateComparator implements
+			Comparator<SurfaceChemistry> {
+		public int compare(SurfaceChemistry chem1, SurfaceChemistry chem2) {
+			return chem1.getCreatedDate().compareTo(chem2.getCreatedDate());
 		}
 	}
 }

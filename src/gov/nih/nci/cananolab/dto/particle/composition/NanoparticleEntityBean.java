@@ -13,11 +13,13 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Polymer;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -81,9 +83,13 @@ public class NanoparticleEntityBean {
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
 		}
-		for (LabFile file: nanoparticleEntity.getLabFileCollection()) {
+		Collections.sort(composingElements,
+				new CaNanoLabComparators.ComposingElementBeanDateComparator());
+		for (LabFile file : nanoparticleEntity.getLabFileCollection()) {
 			files.add(new LabFileBean(file));
 		}
+		Collections.sort(files,
+				new CaNanoLabComparators.LabFileBeanDateComparator());
 	}
 
 	public NanoparticleEntity getDomainCopy() {

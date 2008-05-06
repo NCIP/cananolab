@@ -5,10 +5,12 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.ImagingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +50,8 @@ public class FunctionBean {
 					.getTargetCollection()) {
 				targets.add(new TargetBean(target));
 			}
+			Collections.sort(targets,
+					new CaNanoLabComparators.TargetBeanDateComparator());
 		}
 		className = ClassUtils.getShortClassName(function.getClass()
 				.getCanonicalName());
@@ -119,7 +123,7 @@ public class FunctionBean {
 						.setTargetCollection(new HashSet<Target>());
 			}
 			for (TargetBean targetBean : targets) {
-				targetBean.setupDomainTarget(typeToClass);
+				targetBean.setupDomainTarget(typeToClass, createdBy);
 				((TargetingFunction) domainFunction).getTargetCollection().add(
 						targetBean.getDomainTarget());
 			}

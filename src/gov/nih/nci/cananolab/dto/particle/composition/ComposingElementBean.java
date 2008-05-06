@@ -2,9 +2,11 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +29,8 @@ public class ComposingElementBean {
 				.getInherentFunctionCollection()) {
 			inherentFunctions.add(new FunctionBean(function));
 		}
-		// TODO sort functions
+		Collections.sort(inherentFunctions,
+				new CaNanoLabComparators.FunctionBeanDateComparator());
 	}
 
 	public ComposingElementBean() {
