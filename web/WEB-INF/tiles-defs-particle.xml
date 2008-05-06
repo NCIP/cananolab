@@ -90,7 +90,7 @@
 	<definition name="particle.composition.compositionFile"
 		extends="particle.annotationHome">
 		<put name="calabContent"
-			value="/particle/composition/compositionFile.jsp" />
+			value="/particle/composition/bodyCompositionFile.jsp" />
 	</definition>
 
 	<definition name="particle.physicalCharacterization"
