@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.39 2008-05-06 17:14:40 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.40 2008-05-06 22:57:51 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -89,6 +89,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				compositionService.saveNanoparticleEntity(sample, copy);
 			}
 		}
+
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entityBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanoparticleEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -157,6 +160,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
 		entity.addComposingElement();
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -199,6 +205,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.getComposingElements().get(compEleIndex);
 
 		compElement.addFunction();
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -226,6 +235,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
 		entity.addFile();
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 

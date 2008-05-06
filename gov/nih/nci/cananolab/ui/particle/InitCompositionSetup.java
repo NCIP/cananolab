@@ -1,5 +1,12 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Emulsion;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
@@ -48,6 +55,43 @@ public class InitCompositionSetup {
 				"wallTypes", "CarbonNanotube", "wallType");
 	}
 
+	public void persistNanoparticleEntityDropdowns(HttpServletRequest request,
+			NanoparticleEntityBean entityBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
+				"otherType", entityBean.getBiopolymer().getType());
+		for (ComposingElementBean elementBean : entityBean
+				.getComposingElements()) {
+			if (entityBean.getDomainEntity() instanceof Emulsion) {
+				InitSetup.getInstance().persistLookup(request, "Emulsion",
+						"composingElementType", "otherComposingElementType",
+						elementBean.getDomainComposingElement().getType());
+			} else {
+				InitSetup.getInstance().persistLookup(request,
+						"ComposingElement", "type", "otherType",
+						elementBean.getDomainComposingElement().getType());
+			}
+			InitSetup.getInstance().persistLookup(request, "ComposingElement",
+					"valueUnit", "otherValueUnit",
+					elementBean.getDomainComposingElement().getValueUnit());
+			InitSetup.getInstance().persistLookup(
+					request,
+					"ComposingElement",
+					"molecularFormulaType",
+					"otherMolecularFormulaType",
+					elementBean.getDomainComposingElement()
+							.getMolecularFormulaType());
+			for (FunctionBean functionBean : elementBean.getInherentFunctions()) {
+				InitSetup.getInstance().persistLookup(request,
+						"ImagingFunction", "modality", "otherModality",
+						functionBean.getImagingFunction().getModality());
+			}
+		}
+		for (LabFileBean fileBean : entityBean.getFiles()) {
+			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+					"otherType", fileBean.getDomainFile().getType());
+		}
+	}
+
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
 			throws Exception {
 		getFunctionalizingEntityTypes(request);
@@ -61,8 +105,8 @@ public class InitCompositionSetup {
 				"activationMethods", "ActivationMethod", "type", "otherType",
 				true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"composingElementUnits", "ComposingElement",
-				"valueUnit", "otherValueUnit", true);
+				"composingElementUnits", "ComposingElement", "valueUnit",
+				"otherValueUnit", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"functionalizingEntityUnits", "FunctionalizingEntity",
 				"valueUnit", "otherValueUnit", true);
@@ -78,6 +122,36 @@ public class InitCompositionSetup {
 				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
 	}
 
+	public void persistFunctionalizingEntityDropdowns(
+			HttpServletRequest request, FunctionalizingEntityBean entityBean)
+			throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Antibody", "type",
+				"otherType", entityBean.getAntibody().getType());
+		InitSetup.getInstance().persistLookup(request, "Antibody", "isotype",
+				"otherIsoType", entityBean.getAntibody().getIsotype());
+		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
+				"otherType", entityBean.getBiopolymer().getType());
+		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
+				"valueUnit", "otherValueUnit",
+				entityBean.getDomainEntity().getValueUnit());
+		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
+				"molecularFormulaType", "otherMolecularFormulaType",
+				entityBean.getDomainEntity().getMolecularFormulaType());
+		InitSetup.getInstance().persistLookup(request, "ActivationMethod",
+				"type", "otherType",
+				entityBean.getDomainEntity().getActivationMethod().getType());
+
+		for (FunctionBean functionBean : entityBean.getFunctions()) {
+			InitSetup.getInstance().persistLookup(request, "ImagingFunction",
+					"modality", "otherModality",
+					functionBean.getImagingFunction().getModality());
+		}
+		for (LabFileBean fileBean : entityBean.getFiles()) {
+			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+					"otherType", fileBean.getDomainFile().getType());
+		}
+	}
+
 	public void setChemicalAssociationDropdowns(HttpServletRequest request,
 			boolean hasFunctionalizingEntity) throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
@@ -91,6 +165,23 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "Attachment", "bondType", "otherBondType", true);
 
+	}
+
+	public void persistChemicalAssociationDropdowns(HttpServletRequest request,
+			ChemicalAssociationBean assocBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Attachment",
+				"bondType", "otherBondType",
+				assocBean.getAttachment().getBondType());
+		for (LabFileBean fileBean : assocBean.getFiles()) {
+			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+					"otherType", fileBean.getDomainFile().getType());
+		}
+	}
+
+	public void persistCompositionFileDropdowns(HttpServletRequest request,
+			LabFileBean fileBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+				"otherType", fileBean.getDomainFile().getType());
 	}
 
 	public SortedSet<String> getFunctionTypes(HttpServletRequest request)
