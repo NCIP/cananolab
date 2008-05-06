@@ -295,7 +295,8 @@ public class InitNanoparticleSetup {
 										.getCreatedDate());
 						dataBean.setDataClassName("LabFile");
 						dataBean.setDataDisplayType(file.getType());
-						dataBean.setViewTitle(dataBean.getDataDisplayType());
+						dataBean.setViewTitle(dataBean.getDataDisplayType()
+								+ ": " + file.getName());
 						ldataBeans.add(dataBean);
 					}
 				}

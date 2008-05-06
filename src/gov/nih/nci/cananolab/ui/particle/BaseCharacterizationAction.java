@@ -25,6 +25,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
+/**
+ * Base action for characterization actions
+ * @author pansu
+ *
+ */
 public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Set up the input form for adding new characterization
