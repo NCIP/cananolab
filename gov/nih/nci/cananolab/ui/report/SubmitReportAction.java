@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.7 2008-05-02 21:13:45 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.8 2008-05-06 17:14:53 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -20,8 +20,6 @@ import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +28,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitReportAction extends BaseAnnotationAction {
@@ -42,48 +39,29 @@ public class SubmitReportAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ReportBean reportBean = (ReportBean) theForm.get("file");
-
-		String fileName = null;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (reportBean.getDomainReport().getId() == null) {
-			reportBean.getDomainReport().setCreatedBy(user.getLoginName());
-			reportBean.getDomainReport().setCreatedDate(new Date());
-		}
-		byte[] fileData = null;
-		// if entered external url
-		if (reportBean.getDomainReport().getUriExternal()
-				&& reportBean.getExternalUrl().length() > 0) {
-			reportBean.getDomainReport().setUri(reportBean.getExternalUrl());
-			reportBean.getDomainReport().setName(reportBean.getExternalUrl());
-		} else {
-			FormFile uploadedFile = (FormFile) theForm.get("uploadedFile");
-			fileName = uploadedFile.getFileName();
-			// if new report has been uploaded
-			if (fileName.length() > 0) {
-				fileData = uploadedFile.getFileData();
-				String fileUri = InitSetup.getInstance()
-						.getFileUriFromFormFile(uploadedFile,
-								CaNanoLabConstants.FOLDER_REPORT, null, null);
-				reportBean.getDomainReport().setName(fileName);
-				reportBean.getDomainReport().setUri(fileUri);
-			}
-		}
+		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
+				reportBean.getUploadedFile(), CaNanoLabConstants.FOLDER_REPORT,
+				null, null);
+		reportBean.setInternalUri(internalUri);
+		reportBean.setupDomainFile(user.getLoginName());
 		ReportService service = new ReportService();
-		service.saveReport((Report) reportBean.getDomainReport(), reportBean
-				.getParticleNames(), fileData);
+		service.saveReport((Report) reportBean.getDomainFile(), reportBean
+				.getParticleNames(), reportBean.getFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
-		authService.assignVisibility(reportBean.getDomainReport().getId()
+		authService.assignVisibility(reportBean.getDomainFile().getId()
 				.toString(), reportBean.getVisibilityGroups());
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitReport.file",
-				reportBean.getDomainReport().getTitle());
+				reportBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-		if (request.getParameter("particleId").length()>0) {
+		if (request.getParameter("particleId") != null
+				&& request.getParameter("particleId").length() > 0) {
 			setupDataTree(theForm, request);
 			forward = mapping.findForward("particleSuccess");
 		}
