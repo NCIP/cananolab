@@ -61,13 +61,13 @@
 					<c:choose>
 						<c:when test="${!empty submitTypeProtocolFiles}">
 							<html:select styleId="protocolId"
-								property="achar.protocolFileBean.domainProtocolFile.id"
+								property="achar.protocolFileBean.domainFile.id"
 								onchange="retrieveProtocolFile()">
 								<option />
 									<html:options collection="submitTypeProtocolFiles"
 										property="id" labelProperty="displayName" />
 							</html:select> &nbsp;<span id="protocolLink"><a
-								href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainProtocolFile.id}">${characterizationForm.map.achar.protocolFileBean.domainProtocolFile.uri}</a>
+								href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 							</span>
 						</c:when>
 						<c:otherwise>
@@ -80,7 +80,7 @@
 				<td class="rightLabel" colspan="3">
 					<c:choose>
 						<c:when
-							test="${empty characterizationForm.map.achar.protocolFileBean.domainProtocolFile.id}">
+							test="${empty characterizationForm.map.achar.protocolFileBean.domainFile.id}">
 									No protocol loaded
 						</c:when>
 						<c:otherwise>
