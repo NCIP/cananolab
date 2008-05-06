@@ -1,11 +1,15 @@
 package gov.nih.nci.cananolab.service.common;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ReportException;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -20,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
@@ -234,7 +240,7 @@ public class FileService {
 	public void writeFile(byte[] fileContent, String fullFileName)
 			throws IOException {
 		String path = fullFileName.substring(0, fullFileName
-				.lastIndexOf(File.separator));
+				.lastIndexOf("/"));
 		File pathDir = new File(path);
 		if (!pathDir.exists())
 			pathDir.mkdirs();
