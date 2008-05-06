@@ -2,11 +2,12 @@ package gov.nih.nci.cananolab.service.common;
 
 import gov.nih.nci.cananolab.domain.common.CommonLookup;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.system.applicationservice.ApplicationService;
+import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -22,16 +23,61 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.6 2008-04-29 23:13:23 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.7 2008-05-06 22:58:15 pansu Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
+
+	/**
+	 * get all lookup name, attribute, values and stored it in a map of map of
+	 * ordered list of strings.
+	 * 
+	 * @return
+	 * @throws CaNanoLabException
+	 */
+	public static Map<String, Map<String, SortedSet<String>>> findAllLookups()
+			throws CaNanoLabException {
+		Map<String, Map<String, SortedSet<String>>> lookupMap = new HashMap<String, Map<String, SortedSet<String>>>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(CommonLookup.class);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				CommonLookup lookup = (CommonLookup) obj;
+				String name = lookup.getName();
+				String attribute = lookup.getAttribute();
+				String value = lookup.getValue();
+				Map<String, SortedSet<String>> nameLookup = null;
+				if (lookupMap.get(name) != null) {
+					nameLookup = lookupMap.get(name);
+				} else {
+					nameLookup = new HashMap<String, SortedSet<String>>();
+					lookupMap.put(lookup.getName(), nameLookup);
+				}
+				SortedSet<String> values = null;
+				if (nameLookup.get(attribute) != null) {
+					values = nameLookup.get(attribute);
+				} else {
+					values = new TreeSet<String>();
+					nameLookup.put(attribute, values);
+				}
+				values.add(value);
+			}
+			return lookupMap;
+		} catch (Exception e) {
+			String err = "Error in retrieving all common lookup values .";
+			logger.error(err, e);
+			throw new CaNanoLabException(err, e);
+		}
+	}
 
 	public static SortedSet<String> findLookupValues(String name,
 			String attribute) throws CaNanoLabException {
 		SortedSet<String> lookupValues = new TreeSet<String>();
 		try {
-			ApplicationService appService = ApplicationServiceProvider
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
@@ -53,7 +99,7 @@ public class LookupService {
 			String attribute) throws CaNanoLabException {
 		Map<String, String> lookup = new HashMap<String, String>();
 		try {
-			ApplicationService appService = ApplicationServiceProvider
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(CommonLookup.class);
@@ -73,6 +119,7 @@ public class LookupService {
 
 	/**
 	 * Retrieve lookup values from database based type and otherType
+	 * 
 	 * @param lookupName
 	 * @param lookupAttribute
 	 * @param otherTypeAttribute
@@ -88,5 +135,33 @@ public class LookupService {
 				lookupName, otherTypeAttribute);
 		types.addAll(otherTypes);
 		return types;
+	}
+
+	public static void saveOtherType(String lookupName, String otherAttribute,
+			String otherAttributeValue) throws CaNanoLabException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(CommonLookup.class);
+			crit.add(Property.forName("name").eq(lookupName)).add(
+					Property.forName("attribute").eq(otherAttribute)).add(
+					Property.forName("value").eq(otherAttributeValue));
+			Integer number = appService.getQueryRowCount(crit,
+					CommonLookup.class.getCanonicalName());
+			if (number == 0) {
+				CommonLookup lookup = new CommonLookup();
+				lookup.setName(lookupName);
+				lookup.setAttribute(otherAttribute);
+				lookup.setValue(otherAttributeValue);
+				appService.saveOrUpdate(lookup);
+			}
+
+		} catch (Exception e) {
+			String err = "Error in saving other attribute types for "
+					+ lookupName;
+			logger.error(err, e);
+			throw new CaNanoLabException(err, e);
+		}
 	}
 }
