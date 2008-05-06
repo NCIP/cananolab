@@ -6,17 +6,21 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.28 2008-05-06 06:03:47 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.29 2008-05-06 17:14:40 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,15 +40,36 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
 		ParticleBean particleBean = setupParticle(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// setup domainFile for fileBeans
+		for (LabFileBean fileBean : entityBean.getFiles()) {
+			String internalUri = InitSetup.getInstance()
+					.getFileUriFromFormFile(fileBean.getUploadedFile(),
+							CaNanoLabConstants.FOLDER_PARTICLE,
+							particleBean.getDomainParticleSample().getName(),
+							"Functionalizing Entity");
+			fileBean.setInternalUri(internalUri);
+			fileBean.setupDomainFile(user.getLoginName());
+		}
 		entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName());
 		compositionService.saveFunctionalizingEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+
+		// save file data to file system and set visibility
+		FileService fileService = new FileService();
+		for (LabFileBean fileBean : entityBean.getFiles()) {
+			fileService.writeFile(fileBean.getDomainFile(), fileBean
+					.getFileData());
+			authService.assignVisibility(fileBean.getDomainFile().getId()
+					.toString(), fileBean.getVisibilityGroups());
+		}
 
 		// save to other particles
 		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);

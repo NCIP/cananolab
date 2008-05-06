@@ -12,8 +12,6 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +20,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.upload.FormFile;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -38,38 +35,16 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		LabFileBean fileBean = (LabFileBean) theForm.get("compFile");
 		ParticleBean particleBean = setupParticle(theForm, request);
-		String fileName = null;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (fileBean.getDomainFile().getId() == null) {
-			fileBean.getDomainFile().setCreatedBy(user.getLoginName());
-			fileBean.getDomainFile().setCreatedDate(new Date());
-		}
-		byte[] fileData = null;
-		// if entered external url
-		if (fileBean.getDomainFile().getUriExternal()
-				&& fileBean.getExternalUrl().length() > 0) {
-			fileBean.getDomainFile().setUri(fileBean.getExternalUrl());
-			fileBean.getDomainFile().setName(fileBean.getExternalUrl());
-		} else {
-			FormFile uploadedFile = fileBean.getUploadedFile();
-			fileName = uploadedFile.getFileName();
-			// if new report has been uploaded
-			if (fileName.length() > 0) {
-				fileData = uploadedFile.getFileData();
-				String fileUri = InitSetup.getInstance()
-						.getFileUriFromFormFile(
-								uploadedFile,
-								CaNanoLabConstants.FOLDER_PARTICLE,
-								particleBean.getDomainParticleSample()
-										.getName(), "Sample Composition");
-				fileBean.getDomainFile().setName(fileName);
-				fileBean.getDomainFile().setUri(fileUri);
-			}
-		}
-
+		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
+				fileBean.getUploadedFile(), CaNanoLabConstants.FOLDER_PARTICLE,
+				particleBean.getDomainParticleSample().getName(),
+				"Sample Composition");
+		fileBean.setInternalUri(internalUri);
+		fileBean.setupDomainFile(user.getLoginName());
 		NanoparticleCompositionService service = new NanoparticleCompositionService();
 		service.saveCompositionFile(particleBean.getDomainParticleSample(),
-				fileBean.getDomainFile(), fileData);
+				fileBean.getDomainFile(), fileBean.getFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
@@ -156,7 +131,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 					.getDomainParticleSample(), fileBean.getDomainFile());
 		}
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.deleteAnnotations", submitType);
+		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
+				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
