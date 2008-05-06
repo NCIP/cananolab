@@ -1,15 +1,11 @@
 package gov.nih.nci.cananolab.service.common;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
-import gov.nih.nci.cananolab.domain.common.Report;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.ReportException;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -24,12 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.apache.struts.upload.FormFile;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -72,7 +65,7 @@ public class FileService {
 	}
 
 	/**
-	 * Load the file for the given fileId from the database
+	 * Load the file for the given fileId from the database.  Also check whether user can do it.
 	 * 
 	 * @param fileId
 	 * @return
@@ -206,22 +199,6 @@ public class FileService {
 		}
 	}
 
-	public String writeUploadedFile(FormFile uploadedFile, String filePath,
-			boolean addTimeStampPrefix) throws IOException {
-		File pathDir = new File(filePath);
-		if (!pathDir.exists())
-			pathDir.mkdirs();
-
-		String fileName = uploadedFile.getFileName();
-		if (addTimeStampPrefix) {
-			fileName = prefixFileNameWithTimeStamp(fileName);
-		}
-		String fullFileName = filePath + File.separator + fileName;
-		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
-		writeFile(uploadedFile.getInputStream(), oStream);
-		return fileName;
-	}
-
 	public String writeFile(byte[] fileContent, String fileName,
 			String filePath, boolean addTimeStampPrefix) throws IOException {
 		File pathDir = new File(filePath);
@@ -237,10 +214,9 @@ public class FileService {
 		return fileName;
 	}
 
-	public void writeFile(byte[] fileContent, String fullFileName)
+	private void writeFile(byte[] fileContent, String fullFileName)
 			throws IOException {
-		String path = fullFileName.substring(0, fullFileName
-				.lastIndexOf("/"));
+		String path = fullFileName.substring(0, fullFileName.lastIndexOf("/"));
 		File pathDir = new File(path);
 		if (!pathDir.exists())
 			pathDir.mkdirs();
@@ -268,6 +244,24 @@ public class FileService {
 				"yyyyMMdd_HH-mm-ss-SSS")
 				+ "_" + fileName;
 		return newFileName;
+	}
+
+	// save to the file system fileData is not empty
+	public void writeFile(LabFile file, byte[] fileData) throws FileException {
+		try {
+			if (fileData != null) {
+				FileService fileService = new FileService();
+				String rootPath = PropertyReader.getProperty(
+						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						"fileRepositoryDir");
+				String fullFileName = rootPath + "/" + file.getUri();
+				fileService.writeFile(fileData, fullFileName);
+			}
+		} catch (Exception e) {
+			logger.error("Problem writing file " + file.getUri()
+					+ " to the file system.");
+			throw new FileException();
+		}
 	}
 
 	/**
