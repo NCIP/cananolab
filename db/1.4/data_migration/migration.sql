@@ -1157,7 +1157,9 @@ insert into canano.target
 	name,
 	description,
 	targeting_function_pk_id,
-	other_target_type
+	other_target_type,
+	created_by,
+	created_date
 )
 SELECT
 	at.agent_target_pk_id,
@@ -1165,13 +1167,16 @@ SELECT
 	at.name,
 	at.description,
 	l.function_pk_id,
-	'other'
+	'other',
+	'DATA_MIGRATION',
+	SYSDATE()
 FROM cananolab.agent_target at,
 	cananolab.agent a,
 	cananolab.linkage l
 WHERE at.agent_pk_id = a.agent_pk_id
 and a.agent_pk_id = l.linkage_pk_id
 and lcase(at.discriminator) = 'other'
+order by at.list_index
 ;
 
 insert into canano.target
@@ -1180,20 +1185,25 @@ insert into canano.target
 	discriminator,
 	name,
 	description,
-	targeting_function_pk_id
+	targeting_function_pk_id,
+	created_by,
+	created_date
 )
 SELECT
 	at.agent_target_pk_id,
 	at.discriminator,
 	at.name,
 	at.description,
-	l.function_pk_id
+	l.function_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
 FROM cananolab.agent_target at,
 	cananolab.agent a,
 	cananolab.linkage l
 WHERE at.agent_pk_id = a.agent_pk_id
 and a.agent_pk_id = l.linkage_pk_id
 and lcase(at.discriminator) != 'other'
+order by at.list_index
 ;
 
 insert into canano.hibernate_unique_key (
