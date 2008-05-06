@@ -71,7 +71,7 @@ function confirmDeletion()
 								<c:otherwise>
 								${functionalizingEntityForm.map.entity.type}
 								</c:otherwise>
-							</c:choose>
+							</c:choose>&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Chemical Name*</strong>
@@ -93,13 +93,13 @@ function confirmDeletion()
 								<option value="other">
 									[Other]
 								</option>
-							</html:select>
+							</html:select>&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Molecular Formula</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="entity.molecularFormula" />
+							<html:text property="entity.molecularFormula" />&nbsp;
 						</td>
 					</tr>
 					<tr>
