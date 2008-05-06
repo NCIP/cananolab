@@ -253,7 +253,7 @@ public class InitSetup {
 
 		if (particleName != null && submitType != null
 				&& folderType.equals(CaNanoLabConstants.FOLDER_PARTICLE)) {
-			prefix += particleName + "/";
+			prefix += "/"+particleName + "/";
 			prefix += StringUtils.getOneWordLowerCaseFirstLetter(submitType);
 		}
 		String timestamp = StringUtils.convertDateToString(new Date(),
