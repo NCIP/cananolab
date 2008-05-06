@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 
