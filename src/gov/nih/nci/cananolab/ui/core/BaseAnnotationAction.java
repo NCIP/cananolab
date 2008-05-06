@@ -34,6 +34,12 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
+/**
+ * Base action for all annotation actions
+ * 
+ * @author pansu
+ * 
+ */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	public ParticleBean setupParticle(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
@@ -94,6 +100,12 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return mapping.findForward("annotationDeleteView");
 	}
 
+	// check for cases where delete can't happen
+	protected boolean checkDelete(HttpServletRequest request,
+			ActionMessages msgs, String id) throws Exception {
+		return true;
+	}
+
 	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -106,37 +118,13 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
 		NanoparticleSampleService sampleService = new NanoparticleSampleService();
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		ActionMessages msgs = new ActionMessages();
 		for (String id : dataIds) {
-			if (className.equals("NanoparticleEntity")) {
-				NanoparticleEntityBean entityBean = compService
-						.findNanoparticleEntityById(id);
-				if (!compService
-						.checkChemicalAssociationBeforeDelete(entityBean)) {
-					ActionMessage msg = new ActionMessage(
-							"error.deleteNanoparticleEntityWithChemicalAssociation",
-							entityBean.getClassName());
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					saveErrors(request, msgs);
-					return mapping.findForward("annotationDeleteView");
-				}
-			} else if (className.equals("FunctionalizingEntity")) {
-				FunctionalizingEntityBean entityBean = compService
-						.findFunctionalizingEntityById(id);
-				if (!compService
-						.checkChemicalAssociationBeforeDelete(entityBean)) {
-					ActionMessage msg = new ActionMessage(
-							"error.deleteFunctionalizingEntityWithChemicalAssociation",
-							entityBean.getClassName());
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					saveErrors(request, msgs);
-					return mapping.findForward("annotationDeleteView");
-				}
+			if (!checkDelete(request, msgs, id)) {
+				return mapping.findForward("annotationDeleteView");
 			}
 			sampleService.deleteAnnotationById(fullClassName, new Long(id));
 		}
-
 		setupDataTree(theForm, request);
 		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
 				submitType);
