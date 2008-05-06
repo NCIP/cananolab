@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.29 2008-05-06 17:14:40 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.30 2008-05-06 22:57:51 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -79,6 +79,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				compositionService.saveFunctionalizingEntity(sample, copy);
 			}
 		}
+		
+		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(
+				request, entityBean);
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addFunctionalizingEntity");
@@ -149,6 +153,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entity.addFunction();
+		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -171,6 +178,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entity.addFile();
+		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 
