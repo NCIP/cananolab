@@ -113,7 +113,7 @@
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 
 						<td class="rightLabel">
-							<a href="#" class="removeLink"
+							<a href="#" class="removeLink2"
 								onclick="javascript:removeChildComponent(document.forms[0], '${actionName}', ${param.fileInd}, ${dInd}, 'removeDerivedDatum')">remove</a>
 						</td>
 					</c:when>

@@ -1052,6 +1052,11 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	font-size: 0.8em;
 }
 
+.removeLink2 {
+	color: #a90101; /* constant: red */
+	font-size: 1em;
+}
+
 .formSubTitle { /* for header cells (top) of forms */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
