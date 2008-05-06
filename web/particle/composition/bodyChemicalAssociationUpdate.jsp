@@ -302,6 +302,7 @@ function confirmDeletion()
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="chemicalAssociationForm" />
 													<jsp:param name="action" value="chemicalAssociation" />
+													<jsp:param name="removeCmd" value="\'removeFile\'" />
 													<jsp:param name="fileBean" value="assoc.files[${fileInd}]" />
 													<jsp:param name="fileId"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
