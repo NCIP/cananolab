@@ -1,12 +1,12 @@
 package gov.nih.nci.cananolab.service.particle;
 
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -18,8 +18,11 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
+import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
@@ -184,7 +187,9 @@ public class NanoparticleCompositionService {
 					.getSampleComposition();
 
 			composition.getChemicalAssociationCollection().add(assoc);
-			if (assoc.getId() == null) { //because of unidirectional relationship between composition and chemical associations
+			if (assoc.getId() == null) { // because of unidirectional
+				// relationship between composition
+				// and chemical associations
 				appService.saveOrUpdate(composition);
 			} else {
 				appService.saveOrUpdate(assoc);
@@ -194,6 +199,65 @@ public class NanoparticleCompositionService {
 			}
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public void saveCompositionFile(NanoparticleSample particleSample,
+			LabFile file, byte[] fileData) throws ParticleCompositionException {
+		try {
+			// save to the file system fileData is not empty
+			if (fileData != null) {
+				FileService fileService = new FileService();
+				String rootPath = PropertyReader.getProperty(
+						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						"fileRepositoryDir");
+				String fullFileName = rootPath + "/" + file.getUri();
+				fileService.writeFile(fileData, fullFileName);
+			}
+
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			if (file.getId() != null) {
+				try {
+					LabFile dbFile = (LabFile) appService.get(LabFile.class,
+							file.getId());
+					// don't change createdBy and createdDate it is already
+					// persisted
+					file.setCreatedBy(dbFile.getCreatedBy());
+					file.setCreatedDate(dbFile.getCreatedDate());
+					// load fileName and uri if no new data has been uploaded or
+					// no new url has been entered
+					if (fileData == null || !file.getUriExternal()) {
+						file.setName(dbFile.getName());
+					}
+				} catch (Exception e) {
+					String err = "Object doesn't exist in the database anymore.  Please log in again.";
+					logger.error(err);
+					throw new ReportException(err, e);
+				}
+			}
+			if (particleSample.getSampleComposition() == null) {
+				particleSample.setSampleComposition(new SampleComposition());
+				particleSample.getSampleComposition().setNanoparticleSample(
+						particleSample);
+				particleSample.getSampleComposition().setLabFileCollection(
+						new HashSet<LabFile>());
+			}
+			particleSample.getSampleComposition().getLabFileCollection().add(
+					file);
+			if (file.getId() == null) { // because of unidirectional
+				// relationship between composition
+				// and lab files
+				appService.saveOrUpdate(particleSample.getSampleComposition());
+			} else {
+				appService.saveOrUpdate(file);
+			}
+			// TODO save other file type
+
+		} catch (Exception e) {
+			String err = "Error in saving the composition file.";
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
@@ -471,6 +535,21 @@ public class NanoparticleCompositionService {
 			appService.delete(assoc);
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public void deleteCompositionFile(NanoparticleSample particleSample,
+			LabFile file) throws ParticleCompositionException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			particleSample.getSampleComposition().getLabFileCollection()
+					.remove(file);
+			appService.saveOrUpdate(particleSample.getSampleComposition());
+		} catch (Exception e) {
+			String err = "Error deleting composition file " + file.getUri();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
