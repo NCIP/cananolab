@@ -90,7 +90,7 @@
 					</tr>
 				</c:if>
 				<c:if
-					test="${!empty characterizationForm.map.achar.protocolFileBean.domainProtocolFile.id}">
+					test="${!empty characterizationForm.map.achar.protocolFileBean.domainFile.id}">
 					<tr>
 						<th class="leftLabel" valign="top">
 							Protocol
@@ -104,7 +104,7 @@
 								<c:otherwise>
 							${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 							<a
-										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainProtocolFile.id}">${characterizationForm.map.achar.protocolFileBean.domainProtocolFile.uri}</a>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 								</c:otherwise>
 							</c:choose>
 						</td>
