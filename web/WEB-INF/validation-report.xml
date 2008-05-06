@@ -10,7 +10,7 @@
 				<arg position="0" key="submitReportForm.particleNames"
 					bundle="report" />
 			</field>
-			<field property="file.domainReport.category" page="2"
+			<field property="file.domainFile.category" page="2"
 				depends="required">
 				<arg position="0" key="submitReportForm.file.category"
 					bundle="report" />
@@ -22,28 +22,28 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((file.domainReport.uri!=null) or
+						(((file.domainFile.uri!=null) or
 						((*this*!=null) and
-						(file.domainReport.uriExternal=="true"))) or
-						(file.domainReport.uriExternal=="false"))
+						(file.domainFile.uriExternal=="true"))) or
+						(file.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
 			</field>
-			<field property="uploadedFile" page="2"
+			<field property="file.uploadedFile" page="2"
 				depends="validwhen">
 				<arg position="0" key="submitReportForm.reportFile"
 					bundle="report" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((file.domainReport.uri!=null) or
+						(((file.domainFile.uri!=null) or
 						((*this*!=null) and
-						(file.domainReport.uriExternal=="false"))) or
-						(file.domainReport.uriExternal=="true"))
+						(file.domainFile.uriExternal=="false"))) or
+						(file.domainFile.uriExternal=="true"))
 					</var-value>
 				</var>
 			</field>
-			<field property="file.domainReport.title" page="1"
+			<field property="file.domainFile.title" page="1"
 				depends="required,mask">
 				<arg position="0" key="report.title" bundle="report" />
 				<msg name="mask" key="report.title.invalid" />
@@ -57,7 +57,7 @@
 			<field property="reportTitle" page="1" depends="mask">
 				<arg position="0" key="report.title" bundle="report" />
 				<msg name="mask"
-					key="report.domainReport.title.invalid" />
+					key="report.domainFile.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
