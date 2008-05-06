@@ -34,6 +34,20 @@ public class InitSetup {
 		return new InitSetup();
 	}
 
+	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(
+			ServletContext appContext) throws CaNanoLabException {
+		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = null;
+		if (appContext.getAttribute("defaultLookupTable") == null) {
+			defaultLookupTable = LookupService.findAllLookups();
+			appContext.setAttribute("defaultLookupTable", defaultLookupTable);
+		} else {
+			defaultLookupTable = new HashMap<String, Map<String, SortedSet<String>>>(
+					(Map<? extends String, Map<String, SortedSet<String>>>) appContext
+							.getAttribute("defaultLookupTable"));
+		}
+		return defaultLookupTable;
+	}
+
 	/**
 	 * Returns a map between an object name and its display name
 	 * 
@@ -49,7 +63,7 @@ public class InitSetup {
 			appContext.setAttribute("displayNameLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
-					(HashMap<? extends String, String>) (appContext
+					(Map<? extends String, String>) (appContext
 							.getAttribute("displayNameLookup")));
 		}
 		return lookup;
@@ -76,7 +90,7 @@ public class InitSetup {
 			appContext.setAttribute("displayNameReverseLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
-					(HashMap<? extends String, String>) (appContext
+					(Map<? extends String, String>) (appContext
 							.getAttribute("displayNameReverseLookup")));
 		}
 		return lookup;
@@ -106,7 +120,7 @@ public class InitSetup {
 			appContext.setAttribute("displayNameReverseLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
-					(HashMap<? extends String, String>) (appContext
+					(Map<? extends String, String>) (appContext
 							.getAttribute("displayNameReverseLookup")));
 		}
 		return lookup;
@@ -147,16 +161,10 @@ public class InitSetup {
 			ServletContext appContext, String contextAttribute,
 			String lookupName, String lookupAttribute)
 			throws CaNanoLabException {
-		SortedSet<String> types = null;
-		if (appContext.getAttribute(contextAttribute) == null) {
-			types = LookupService.findLookupValues(lookupName, lookupAttribute);
-			appContext.setAttribute(contextAttribute, types);
-			return types;
-		} else {
-			types = new TreeSet<String>(
-					(SortedSet<? extends String>) appContext
-							.getAttribute(contextAttribute));
-		}
+		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
+		SortedSet<String> types = defaultLookupTable.get(lookupName).get(
+				lookupAttribute);
+		appContext.setAttribute(contextAttribute, types);
 		return types;
 	}
 
@@ -264,6 +272,45 @@ public class InitSetup {
 			return prefix + "/" + timestamp + "_" + file.getFileName();
 		} else {
 			return null;
+		}
+	}
+
+	// check whether the value is already stored in context
+	private Boolean isLookupInContext(HttpServletRequest request,
+			String lookupName, String attribute, String otherAttribute,
+			String value) throws CaNanoLabException {
+		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(request
+				.getSession().getServletContext());
+		SortedSet<String> defaultValues = null;
+		if (defaultLookupTable.get(lookupName) != null) {
+			defaultValues = defaultLookupTable.get(lookupName).get(attribute);
+		}
+		if (defaultValues != null && defaultValues.contains(value)) {
+			return true;
+		} else {
+			SortedSet<String> otherValues = null;
+			if (defaultLookupTable.get(lookupName) != null) {
+				otherValues = defaultLookupTable.get(lookupName).get(
+						otherAttribute);
+			}
+			if (otherValues != null && otherValues.contains(value)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void persistLookup(HttpServletRequest request, String lookupName,
+			String attribute, String otherAttribute, String value)
+			throws CaNanoLabException {
+		if (value == null || value.length() == 0) {
+			return;
+		}
+		if (isLookupInContext(request, lookupName, attribute, otherAttribute,
+				value)) {
+			return;
+		} else {
+			LookupService.saveOtherType(lookupName, otherAttribute, value);
 		}
 	}
 }
