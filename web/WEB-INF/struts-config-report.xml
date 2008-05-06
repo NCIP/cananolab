@@ -7,8 +7,6 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="uploadedFile"
-				type="org.apache.struts.upload.FormFile" />
 			<form-property name="file"
 				type="gov.nih.nci.cananolab.dto.common.ReportBean" />
 		</form-bean>

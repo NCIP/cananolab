@@ -70,6 +70,7 @@
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/composition/nanoparticleEntity/bodyParticleEntity.jsp" />
+		<put name="actionName" value="nanoparticleEntity" />
 	</definition>
 
 	<!-- definition for the nanoparticle composition functionalizing entity page -->
@@ -77,6 +78,7 @@
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/composition/functionalizingEntity/bodyFunctionalizingEntity.jsp" />
+		<put name="actionName" value="functionalizingEntity" />
 	</definition>
 
 	<!-- definition for the nanoparticle composition chemical association page -->
@@ -84,6 +86,7 @@
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/composition/bodyChemicalAssociation.jsp" />
+		<put name="actionName" value="chemicalAssociation" />
 	</definition>
 
 	<!-- definition for the nanoparticle composition file page -->
@@ -91,6 +94,7 @@
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/particle/composition/bodyCompositionFile.jsp" />
+		<put name="actionName" value="compositionFile" />
 	</definition>
 
 	<definition name="particle.physicalCharacterization"
@@ -155,7 +159,7 @@
 	<definition name="particle.submitReport"
 		extends="particle.annotationHome">
 		<put name="calabContent" value="/report/bodySubmitReport.jsp" />
-		<put name="onloadJavascript" value="radLinkOrUpload()"/>
+		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 	<definition name="particle.viewReport"
 		extends="particle.annotationHome">
