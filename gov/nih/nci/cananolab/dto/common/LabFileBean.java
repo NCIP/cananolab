@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.File;
+import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -31,9 +32,13 @@ public class LabFileBean {
 
 	private String keywordsStr;
 
-	private String externalUrl;
+	private String externalUrl; // url as an external link
 
 	private FormFile uploadedFile;
+
+	private String internalUri; // uri saved in the file system
+
+	private byte[] fileData;
 
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
@@ -119,7 +124,7 @@ public class LabFileBean {
 	}
 
 	public String getUrlTarget() {
-		if (getDomainFile().getUriExternal()) {
+		if (domainFile.getUriExternal()) {
 			return "pop";
 		}
 		return "_self";
@@ -131,5 +136,34 @@ public class LabFileBean {
 
 	public void setUploadedFile(FormFile uploadedFile) {
 		this.uploadedFile = uploadedFile;
+	}
+
+	public void setupDomainFile(String createdBy) throws Exception {
+		if (domainFile.getId() == null) {
+			domainFile.setCreatedBy(createdBy);
+			domainFile.setCreatedDate(new Date());
+		}
+		String uri = null;
+		String name = null;
+		// if entered external url
+		if (domainFile.getUriExternal() && externalUrl.length() > 0) {
+			uri = externalUrl;
+			name = externalUrl;
+			fileData = null;
+		} else {
+			uri = internalUri;
+			name = uploadedFile.getFileName();
+			fileData = uploadedFile.getFileData();
+		}
+		domainFile.setUri(uri);
+		domainFile.setName(name);
+	}
+
+	public void setInternalUri(String internalUri) {
+		this.internalUri = internalUri;
+	}
+
+	public byte[] getFileData() {
+		return fileData;
 	}
 }

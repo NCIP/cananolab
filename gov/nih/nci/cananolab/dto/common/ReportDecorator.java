@@ -17,24 +17,24 @@ import org.displaytag.decorator.TableDecorator;
 public class ReportDecorator extends TableDecorator {
 	public SortableName getEditReportURL() throws UnsupportedEncodingException {
 		ReportBean file = (ReportBean) getCurrentRowObject();
-		String fileId = file.getDomainReport().getId().toString();
+		String fileId = file.getDomainFile().getId().toString();
 		String editReportURL = "submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId="
 				+ fileId;
 		String link = "<a href=" + editReportURL + ">"
-				+ file.getDomainReport().getTitle() + "</a>";
-		SortableName sortableLink = new SortableName(file.getDomainReport()
+				+ file.getDomainFile().getTitle() + "</a>";
+		SortableName sortableLink = new SortableName(file.getDomainFile()
 				.getTitle(), link);
 		return sortableLink;
 	}
 
 	public SortableName getViewReportURL() throws UnsupportedEncodingException {
 		ReportBean file = (ReportBean) getCurrentRowObject();
-		String fileId = file.getDomainReport().getId().toString();
+		String fileId = file.getDomainFile().getId().toString();
 		String editReportURL = "submitReport.do?submitType=none&page=0&dispatch=setupView&fileId="
 				+ fileId;
 		String link = "<a href=" + editReportURL + ">"
-				+ file.getDomainReport().getTitle() + "</a>";
-		SortableName sortableLink = new SortableName(file.getDomainReport()
+				+ file.getDomainFile().getTitle() + "</a>";
+		SortableName sortableLink = new SortableName(file.getDomainFile()
 				.getTitle(), link);
 		return sortableLink;
 	}
