@@ -11,11 +11,13 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.SmallMolecule;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -82,12 +84,18 @@ public class FunctionalizingEntityBean {
 		for (Function function : functionalizingEntity.getFunctionCollection()) {
 			functions.add(new FunctionBean(function));
 		}
+		Collections.sort(functions,
+				new CaNanoLabComparators.FunctionBeanDateComparator());
+
 		if (functionalizingEntity.getActivationMethod() != null) {
 			activationMethod = functionalizingEntity.getActivationMethod();
 		}
-		for (LabFile file: functionalizingEntity.getLabFileCollection()) {
+		for (LabFile file : functionalizingEntity.getLabFileCollection()) {
 			files.add(new LabFileBean(file));
 		}
+		Collections.sort(files,
+				new CaNanoLabComparators.LabFileBeanDateComparator());
+
 	}
 
 	public FunctionalizingEntity getDomainCopy() {
@@ -124,6 +132,9 @@ public class FunctionalizingEntityBean {
 						for (Target target : ((TargetingFunction) function)
 								.getTargetCollection()) {
 							target.setId(null);
+							target
+									.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+							target.setCreatedDate(new Date());
 						}
 					}
 				}

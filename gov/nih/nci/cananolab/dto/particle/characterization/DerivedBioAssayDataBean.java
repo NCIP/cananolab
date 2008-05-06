@@ -3,8 +3,10 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class DerivedBioAssayDataBean {
 		if (domainBioAssayData.getDerivedDatumCollection() != null) {
 			datumList.addAll(domainBioAssayData.getDerivedDatumCollection());
 		}
+		Collections.sort(datumList,
+				new CaNanoLabComparators.DerivedDatumDateComparator());
+
 		// TODO sort the datum list
 	}
 

@@ -2,8 +2,10 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SurfaceBean {
@@ -19,6 +21,8 @@ public class SurfaceBean {
 		for (SurfaceChemistry chem : surface.getSurfaceChemistryCollection()) {
 			surfaceChemistryList.add(chem);
 		}
+		Collections.sort(surfaceChemistryList,
+				new CaNanoLabComparators.SurfaceChemistryDateComparator());
 	}
 
 	public Surface getDomainSurface() {

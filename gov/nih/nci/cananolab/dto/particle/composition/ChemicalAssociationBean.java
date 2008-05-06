@@ -5,9 +5,11 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -45,6 +47,8 @@ public class ChemicalAssociationBean {
 			for (LabFile file : chemicalAssociation.getLabFileCollection()) {
 				files.add(new LabFileBean(file));
 			}
+			Collections.sort(files,
+					new CaNanoLabComparators.LabFileBeanDateComparator());
 		}
 		associatedElementA = new AssociatedElementBean(chemicalAssociation
 				.getAssociatedElementA());
