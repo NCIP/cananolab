@@ -386,8 +386,15 @@ function confirmDeletion()
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
 												<html:submit />
-												<html:hidden property="particleId"
-													value="${param.particleId}" />
+												<c:choose>
+													<c:when test="${!empty param.particleId }">
+														<html:hidden property="particleId"
+															value="${param.particleId }" />
+													</c:when>
+													<c:otherwise>
+														<html:hidden property="particleId" />
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</div>
 									</td>

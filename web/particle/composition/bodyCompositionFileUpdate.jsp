@@ -72,7 +72,7 @@ function confirmDeletion()
 											<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
 												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}"
-												target="${submitReportForm.map.file.urlTarget}">
+												target="${compositionFileForm.map.compFile.urlTarget}">
 												${compositionFileForm.map.compFile.domainFile.uri}</a>
 
 											<html:hidden property="compFile.domainFile.uri" />
@@ -172,7 +172,15 @@ function confirmDeletion()
 									<input type="hidden" name="submitType"
 										value="${param.submitType}" />
 									<html:submit />
-									<html:hidden property="particleId" value="${param.particleId}" />
+									<c:choose>
+										<c:when test="${!empty param.particleId }">
+											<html:hidden property="particleId"
+												value="${param.particleId }" />
+										</c:when>
+										<c:otherwise>
+											<html:hidden property="particleId" />
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</td>

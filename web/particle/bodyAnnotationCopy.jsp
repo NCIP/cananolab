@@ -26,7 +26,7 @@
 						</html:select>
 					</td>
 					<td class="rightLabel" valign="top">
-						<c:if test="${param.submitType ne 'Nanoparticle Entity' and param.submitType ne 'Functionalizing Entity'}">
+						<c:if test="${actionName ne 'nanoparticleEntity' and actionName ne 'functionalizingEntity'}">
 							<html:checkbox property="copyData" />
 							<strong>Also copy derived data?</strong>
 						</c:if>

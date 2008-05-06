@@ -52,50 +52,48 @@
 								<tr>
 									<td class="leftLabel">
 										<html:radio styleId="external0"
-											property="file.domainReport.uriExternal" value="false"
+											property="file.domainFile.uriExternal" value="false"
 											onclick="radLinkOrUpload()" />
 										<strong>Upload Report File</strong>
 										<br>
 										&nbsp;&nbsp;or
 										<br>
 										<html:radio styleId="external1"
-											property="file.domainReport.uriExternal" value="true"
+											property="file.domainFile.uriExternal" value="true"
 											onclick="radLinkOrUpload()" />
 										<strong>Enter Report URL</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
 										<span id="load" style="display:none"> <html:file
-												property="uploadedFile" size="60" /> &nbsp;&nbsp; </span>
+												property="file.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 										<br>
 										<br>
 										<span id="link" style="display:none"><html:text
 												property="file.externalUrl" size="60" /> </span>&nbsp;
 									</td>
 								</tr>
-								<c:if
-									test="${!empty submitReportForm.map.file.domainReport.uri }">								
+								<c:if test="${!empty submitReportForm.map.file.domainFile.uri }">
 									<tr>
 										<td class="completeLabel" colspan="4">
 											<strong>Submitted Report</strong> &nbsp;&nbsp;
 											<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}"
+												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}"
 												target="${submitReportForm.map.file.urlTarget}">
-												${submitReportForm.map.file.domainReport.uri}</a>
-											<html:hidden property="file.domainReport.uri" />
+												${submitReportForm.map.file.domainFile.uri}</a>
+											<html:hidden property="file.domainFile.uri" />
 										</td>
 									</tr>
 								</c:if>
-								<c:if
-									test="${!empty submitReportForm.map.file.domainReport.id }">
-									<html:hidden property="file.domainReport.id" />
+								<c:if test="${!empty submitReportForm.map.file.domainFile.id }">
+									<html:hidden property="file.domainFile.id" />
 								</c:if>
 								<tr>
 									<td class="leftLabel">
 										<strong>Report Category*</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:select property="file.domainReport.category"
-											onchange="javascript:callPrompt('Report Category', 'file.domainReport.category');">
+										<html:select property="file.domainFile.category"
+											onchange="javascript:callPrompt('Report Category', 'file.domainFile.category');">
 											<option value=""></option>
 											<html:options name="reportCategories" />
 											<option value="other">
@@ -109,7 +107,7 @@
 										<strong>Report File Title*</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:text property="file.domainReport.title" size="80" />
+										<html:text property="file.domainFile.title" size="80" />
 									</td>
 								</tr>
 								<tr>
@@ -128,8 +126,8 @@
 										<strong>Report File Description</strong>
 									</td>
 									<td class="rightLabel"">
-										<html:textarea property="file.domainReport.description"
-											rows="3" cols="60" />
+										<html:textarea property="file.domainFile.description" rows="3"
+											cols="60" />
 									</td>
 								</tr>
 								<tr>
@@ -137,7 +135,7 @@
 										<strong>Comments</strong>
 									</td>
 									<td class="rightLabel">
-										<html:textarea property="file.domainReport.comments" rows="3"
+										<html:textarea property="file.domainFile.comments" rows="3"
 											cols="60" />
 									</td>
 								</tr>
@@ -174,11 +172,11 @@
 															onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
-														<c:if test="${!empty particleId}">
+														<c:if test="${!empty param.particleId}">
 															<input type="hidden" name="particleId"
 																value="${param.particleId}">
 														</c:if>
-														<html:submit/>
+														<html:submit />
 													</div>
 												</div>
 											</td>

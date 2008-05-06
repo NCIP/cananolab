@@ -56,9 +56,11 @@
 									</c:when>
 									<c:otherwise>
 										<strong>Uploaded File</strong> &nbsp;&nbsp;
+										<c:set var="target" value="${param.fileBean}.urlTarget" />
+
 										<a
-											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
-											<%--			target="${submitReportForm.map.file.urlTarget}">--%>
+											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
+											target="<bean:write name="${param.form }" property="${target }"/>">
 											${param.fileUri}</a>
 
 										<html:hidden property="${param.fileBean}.domainFile.uri" />
@@ -108,7 +110,7 @@
 					<td class="rightLabel" colspan="2">
 						<html:select property="${param.fileBean}.visibilityGroups"
 							multiple="true" size="3">
-							<%--					<html:options name="allVisibilityGroups" />--%>
+							<html:options name="allVisibilityGroups" />
 						</html:select>
 						<br>
 						<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI
