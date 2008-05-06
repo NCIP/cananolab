@@ -283,6 +283,7 @@ function confirmDeletion()
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="nanoparticleEntityForm" />
 													<jsp:param name="action" value="nanoparticleEntity" />
+													<jsp:param name="removeCmd" value="\'removeFile\'" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
 													<jsp:param name="fileId"
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />

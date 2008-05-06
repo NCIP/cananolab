@@ -332,6 +332,7 @@ function confirmDeletion()
 													<jsp:param name="fileInd" value="${fileInd}" />
 													<jsp:param name="form" value="functionalizingEntityForm" />
 													<jsp:param name="action" value="functionalizingEntity" />
+													<jsp:param name="removeCmd" value="\'removeFile\'" />
 													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
 													<jsp:param name="fileId"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />

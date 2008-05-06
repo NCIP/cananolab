@@ -12,7 +12,7 @@
 			</td>
 			<td class="formSubTitleNoLeft" align="right">
 				<a href="#"
-					onclick="removeComponent(${param.form}, '${param.action}', ${param.fileInd}, 'removeFile');return false;">
+					onclick="removeComponent(${param.form}, '${param.action}', ${param.fileInd}, ${param.removeCmd });return false;">
 					<img src="images/delete.gif" border="0" alt="remove this file">
 				</a>
 			</td>
@@ -129,6 +129,30 @@
 				</tr>
 			</c:otherwise>
 		</c:choose>
+		<c:if
+			test="${param.action ne 'nanoparticleEntity' and param.action ne 'functionalizingEntity'}">
+			<tr>
+				<td class="completeLabel" colspan="4">
+					<table border="0" width="100%">
+						<tr>
+
+							<td valign="bottom">
+								<a href="#"
+									onclick="javascript:addChildComponent(document.forms[0], '${param.action}', ${param.fileInd}, 'addDerivedDatum')"><span
+									class="addLink">Add Derived Data</span> </a>
+							</td>
+
+							<td>
+								<jsp:include
+									page="/particle/characterization/shared/bodyDerivedDatum.jsp">
+									<jsp:param name="fileInd" value="${param.fileInd}" />
+								</jsp:include>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</c:if>
 	</tbody>
 </table>
 
