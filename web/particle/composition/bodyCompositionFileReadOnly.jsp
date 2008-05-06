@@ -15,10 +15,12 @@
 				</td>
 			</tr>
 			<c:choose>
-				<c:when test="${compositionFileForm.map.compFile.hidden eq 'false' }">
+				<c:when
+					test="${compositionFileForm.map.compFile.hidden eq 'false' }">
 					<tr>
 						<c:choose>
-							<c:when test="${compositionFileForm.map.compFile.domainFile.uriExternal eq 'true' }">
+							<c:when
+								test="${compositionFileForm.map.compFile.domainFile.uriExternal eq 'true' }">
 								<td class="leftLabel">
 									<strong>File URL</strong>
 								</td>
@@ -32,7 +34,8 @@
 								</td>
 								<td class="rightLabel" colspan="2">
 									<c:choose>
-										<c:when test="${compositionFileForm.map.compFile.image eq 'true'}">
+										<c:when
+											test="${compositionFileForm.map.compFile.image eq 'true'}">
 						 				${compositionFileForm.map.compFile.domainFile.uri}<br>
 											<br>
 											<a href="#"
@@ -44,8 +47,8 @@
 										<c:otherwise>
 											<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
-												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}">
-												<%--			target="${submitReportForm.map.file.urlTarget}">--%>
+												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}"
+												target="${compositionFileForm.map.file.urlTarget}">
 												${compositionFileForm.map.compFile.domainFile.uri}</a>
 										</c:otherwise>
 									</c:choose>

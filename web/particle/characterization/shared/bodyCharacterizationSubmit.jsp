@@ -49,7 +49,15 @@ function confirmDeletion()
 									<input type="reset" value="Reset" onclick="">
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
-									<html:hidden property="particleId" value="${param.particleId}" />
+									<c:choose>
+										<c:when test="${!empty param.particleId }">
+											<html:hidden property="particleId"
+												value="${param.particleId }" />
+										</c:when>
+										<c:otherwise>
+											<html:hidden property="particleId" />
+										</c:otherwise>
+									</c:choose>
 									<input type="hidden" name="achar.type"
 										value="${param.submitType}" />
 									<input type="hidden" name="submitType"

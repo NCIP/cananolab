@@ -36,7 +36,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="submitReportForm"
-								property="file.domainReport.category" />
+								property="file.domainFile.category" />
 							&nbsp;
 						</td>
 					</tr>
@@ -46,9 +46,9 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<a
-								href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainReport.id}"
+								href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}"
 								target="${submitReportForm.map.file.urlTarget}"> <bean:write
-									name="submitReportForm" property="file.domainReport.uri" /> </a>&nbsp;
+									name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -57,7 +57,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="submitReportForm"
-								property="file.domainReport.title" />
+								property="file.domainFile.title" />
 							&nbsp;
 						</td>
 					</tr>
@@ -67,7 +67,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="submitReportForm"
-								property="file.domainReport.description" />
+								property="file.domainFile.description" />
 							&nbsp;
 						</td>
 					</tr>
@@ -77,7 +77,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<bean:write name="submitReportForm"
-								property="file.domainReport.comments" />
+								property="file.domainFile.comments" />
 							&nbsp;
 						</td>
 					</tr>
