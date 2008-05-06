@@ -13,39 +13,32 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
  * 
  */
 public class ProtocolFileBean extends LabFileBean {
-	private ProtocolFile domainProtocolFile = new ProtocolFile();
-
 	/**
 	 * 
 	 */
 	public ProtocolFileBean() {
 		super();
-		domainProtocolFile.setUriExternal(domainFile.getUriExternal());
-		domainProtocolFile.setProtocol(new Protocol());
+		domainFile = new ProtocolFile();
+		((ProtocolFile) domainFile).setProtocol(new Protocol());
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
 		super(protocolFile);
-		this.domainProtocolFile = (ProtocolFile) domainFile;
 	}
 
 	public String getDisplayName() {
-		return domainProtocolFile.getProtocol().getName() + "-"
-				+ domainProtocolFile.getVersion();
-	}
-
-	public ProtocolFile getDomainProtocolFile() {
-		return domainProtocolFile;
+		return ((ProtocolFile) domainFile).getProtocol().getName() + "-"
+				+ domainFile.getVersion();
 	}
 
 	public boolean equals(Object obj) {
 		boolean eq = false;
 		if (obj instanceof ProtocolFileBean) {
 			ProtocolFileBean c = (ProtocolFileBean) obj;
-			Long thisId = domainProtocolFile.getId();
+			Long thisId = domainFile.getId();
 			// String name = this.getName();
 			if (thisId != null
-					&& thisId.equals(c.getDomainProtocolFile().getId())) { // &&
+					&& thisId.equals(c.getDomainFile().getId())) { // &&
 				// name != null && name.equals(c.getName())) {
 				eq = true;
 			}
