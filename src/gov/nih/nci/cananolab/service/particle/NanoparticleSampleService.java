@@ -638,7 +638,7 @@ public class NanoparticleSampleService {
 			appService.deleteById(Class.forName(className), dataId);
 		} catch (Exception e) {
 			String err = "Error deleting annotation of class " + className
-					+ "by ID " + dataId;
+					+ " by ID " + dataId;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
