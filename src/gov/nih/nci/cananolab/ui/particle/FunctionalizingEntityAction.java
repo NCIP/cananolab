@@ -1,14 +1,12 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class sets up different input forms for different types of physical composition,
- * and allow users to submit data for physical compositions and update composing elements of each
- * physical composition.
+ * This class allows users to submit functionalizing entity data under sample composition.
  *  
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.27 2008-05-05 22:28:45 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.28 2008-05-06 06:03:47 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -249,5 +247,21 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			setupDataTree(theForm, request);
 			return mapping.getInputForward();
 		}
+	}
+
+	protected boolean checkDelete(HttpServletRequest request,
+			ActionMessages msgs, String id) throws Exception {
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		FunctionalizingEntityBean entityBean = compService
+				.findFunctionalizingEntityById(id);
+		if (!compService.checkChemicalAssociationBeforeDelete(entityBean)) {
+			ActionMessage msg = new ActionMessage(
+					"error.deleteFunctionalizingEntityWithChemicalAssociation",
+					entityBean.getClassName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+		return true;
 	}
 }

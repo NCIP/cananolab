@@ -1,17 +1,16 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class sets up input form for size characterization. 
+ * This class allows user to submit physical characterization data. 
  *  
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.15 2008-05-05 23:27:19 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.16 2008-05-06 06:03:47 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;

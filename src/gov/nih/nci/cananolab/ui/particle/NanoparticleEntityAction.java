@@ -1,14 +1,12 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class sets up different input forms for different types of physical composition,
- * and allow users to submit data for physical compositions and update composing elements of each
- * physical composition.
+ * This class allows users to submit nanoparticle entity data under sample composition.
  *  
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.37 2008-05-05 22:29:04 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.38 2008-05-06 06:03:47 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -271,5 +269,21 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			saveErrors(request, msgs);
 			return mapping.getInputForward();
 		}
+	}
+
+	protected boolean checkDelete(HttpServletRequest request,
+			ActionMessages msgs, String id) throws Exception {
+		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleEntityBean entityBean = compService
+				.findNanoparticleEntityById(id);
+		if (!compService.checkChemicalAssociationBeforeDelete(entityBean)) {
+			ActionMessage msg = new ActionMessage(
+					"error.deleteNanoparticleEntityWithChemicalAssociation",
+					entityBean.getClassName());
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveErrors(request, msgs);
+			return false;
+		}
+		return true;
 	}
 }

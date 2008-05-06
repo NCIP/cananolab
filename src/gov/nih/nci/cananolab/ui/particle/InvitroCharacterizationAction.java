@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class sets up input form for Invitro characterization. 
+ * This class allows user to submit invitro characterization data. 
  *  
  * @author pansu
  */
@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
