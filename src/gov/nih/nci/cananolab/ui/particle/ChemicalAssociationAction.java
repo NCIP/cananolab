@@ -1,14 +1,18 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -41,6 +45,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ParticleBean particleBean = setupParticle(theForm, request);
 		assocBean.setupDomainAssociation(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
@@ -56,10 +61,32 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			saveErrors(request, msgs);
 			return mapping.getInputForward();
 		}
-		ParticleBean particleBean = setupParticle(theForm, request);
+
+		// setup domainFile for fileBeans
+		for (LabFileBean fileBean : assocBean.getFiles()) {
+			String internalUri = InitSetup.getInstance()
+					.getFileUriFromFormFile(fileBean.getUploadedFile(),
+							CaNanoLabConstants.FOLDER_PARTICLE,
+							particleBean.getDomainParticleSample().getName(),
+							"Chemical Association");
+			fileBean.setInternalUri(internalUri);
+			fileBean.setupDomainFile(user.getLoginName());
+		}
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		compService.saveChemicalAssociation(particleBean
 				.getDomainParticleSample(), assocBean.getDomainAssociation());
+
+		// save file data to file system and set visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+
+		FileService fileService = new FileService();
+		for (LabFileBean fileBean : assocBean.getFiles()) {
+			fileService.writeFile(fileBean.getDomainFile(), fileBean
+					.getFileData());
+			authService.assignVisibility(fileBean.getDomainFile().getId()
+					.toString(), fileBean.getVisibilityGroups());
+		}
 
 		ActionMessage msg = new ActionMessage("message.addChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

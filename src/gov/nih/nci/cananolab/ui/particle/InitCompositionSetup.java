@@ -61,6 +61,9 @@ public class InitCompositionSetup {
 				"activationMethods", "ActivationMethod", "type", "otherType",
 				true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"composingElementUnits", "ComposingElement",
+				"valueUnit", "otherValueUnit", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"functionalizingEntityUnits", "FunctionalizingEntity",
 				"valueUnit", "otherValueUnit", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
