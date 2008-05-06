@@ -10,10 +10,8 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,17 +45,6 @@ public class ReportService {
 	public void saveReport(Report report, String[] particleNames,
 			byte[] fileData) throws ReportException {
 		try {
-			// save to the file system fileData is not empty
-			if (fileData != null) {
-				FileService fileService = new FileService();
-				String rootPath = PropertyReader.getProperty(
-						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-						"fileRepositoryDir");
-				String fullFileName = rootPath + File.separator
-						+ report.getUri();
-				fileService.writeFile(fileData, fullFileName);
-			}
-
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			NanoparticleSampleService sampleService = new NanoparticleSampleService();
@@ -75,9 +62,10 @@ public class ReportService {
 					// persisted
 					report.setCreatedBy(dbReport.getCreatedBy());
 					report.setCreatedDate(dbReport.getCreatedDate());
-					// load fileName and uri if no new data has been uploaded or no new url has been entered
+					// load fileName and uri if no new data has been uploaded or
+					// no new url has been entered
 					if (fileData == null || !report.getUriExternal()) {
-						report.setName(dbReport.getName());						
+						report.setName(dbReport.getName());
 					}
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
@@ -94,6 +82,11 @@ public class ReportService {
 				sample.getReportCollection().add(report);
 			}
 			appService.saveOrUpdate(report);
+
+			// save to the file system fileData is not empty
+			FileService fileService = new FileService();
+			fileService.writeFile(report, fileData);
+
 			// TODO save other report type
 
 		} catch (Exception e) {
