@@ -26,6 +26,12 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
+/**
+ * This class allows users to submit chemical association data under sample
+ * composition.
+ * 
+ * @author pansu
+ */
 public class ChemicalAssociationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -44,7 +50,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.equals(
 						assocBean.getAssociatedElementB().getDomainElement()
 								.getId())) {
-			ActionMessage msg = new ActionMessage("error.duplicateAssociatedElementsInAssociation");
+			ActionMessage msg = new ActionMessage(
+					"error.duplicateAssociatedElementsInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			return mapping.getInputForward();
