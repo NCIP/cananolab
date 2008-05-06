@@ -249,16 +249,21 @@ public class InitSetup {
 
 	public String getFileUriFromFormFile(FormFile file, String folderType,
 			String particleName, String submitType) {
-		String prefix = folderType;
+		if (file != null && file.getFileName().length() > 0) {
+			String prefix = folderType;
 
-		if (particleName != null && submitType != null
-				&& folderType.equals(CaNanoLabConstants.FOLDER_PARTICLE)) {
-			prefix += "/"+particleName + "/";
-			prefix += StringUtils.getOneWordLowerCaseFirstLetter(submitType);
+			if (particleName != null && submitType != null
+					&& folderType.equals(CaNanoLabConstants.FOLDER_PARTICLE)) {
+				prefix += "/" + particleName + "/";
+				prefix += StringUtils
+						.getOneWordLowerCaseFirstLetter(submitType);
+			}
+			String timestamp = StringUtils.convertDateToString(new Date(),
+					"yyyyMMdd_HH-mm-ss-SSS");
+
+			return prefix + "/" + timestamp + "_" + file.getFileName();
+		} else {
+			return null;
 		}
-		String timestamp = StringUtils.convertDateToString(new Date(),
-				"yyyyMMdd_HH-mm-ss-SSS");
-
-		return prefix + "/" + timestamp + "_" + file.getFileName();
 	}
 }
