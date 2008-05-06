@@ -54,7 +54,7 @@ function confirmDeletion()
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Functionalizing Entity Type</strong>
+							<strong>Functionalizing Entity Type*</strong>
 						</td>
 						<td class="label">
 							<c:choose>
@@ -74,7 +74,7 @@ function confirmDeletion()
 							</c:choose>
 						</td>
 						<td class="label" valign="top">
-							<strong>Chemical Name</strong>
+							<strong>Chemical Name*</strong>
 						</td>
 						<td class="rightLabel">
 							<html:text property="entity.name" />
@@ -228,7 +228,7 @@ function confirmDeletion()
 														</tr>
 														<tr>
 															<td class="leftLabelWithTop" valign="top">
-																<strong>Function Type</strong>
+																<strong>Function Type*</strong>
 															</td>
 															<td class="labelWithTop" valign="top">
 																<html:select styleId="funcType_${ind}"
@@ -286,7 +286,7 @@ function confirmDeletion()
 																&nbsp;
 																<div id="targetDiv_${ind }" style="${targetDisplay }">
 																	<jsp:include
-																		page="/particle/composition/functionalizingEntity/bodyTargetInfo.jsp">
+																		page="/particle/composition/functionalizingEntity/bodyTargetInfoUpdate.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
 																	</jsp:include>
 																</div>

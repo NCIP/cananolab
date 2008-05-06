@@ -13,10 +13,10 @@
 			<c:if test="${targetInd == 0 }">
 				<tr>
 					<td class="leftLabelWithTop" valign="top">
-						<strong>Target Type</strong>
+						<strong>Target Type*</strong>
 					</td>
 					<td class="labelWithTop" valign="top">
-						<strong>Target Name</strong>
+						<strong>Target Name*</strong>
 					</td>
 					<td class="labelWithTop" valign="top">
 						<strong>Description</strong>

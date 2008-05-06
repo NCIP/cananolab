@@ -14,23 +14,23 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Species</strong>
+				<strong>Type</strong>
 			</td>
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:select property="entity.antibody.species"
-							styleId="antibodySpecies"
-							onchange="javascript:callPrompt('Species', 'species');">
+						<html:select property="entity.antibody.type"
+							styleId="antibodyType"
+							onchange="javascript:callPrompt('Type', 'antibodyType');">
 							<option value="" />
-								<html:options name="antibodySpecies" />
+								<html:options name="antibodyTypes" />
 							<option value="other">
 								[Other]
 							</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.species}&nbsp;
+						${nanoparticleEntityForm.map.entity.antibody.type}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -56,23 +56,23 @@
 				</c:choose>
 			</td>
 			<td class="label">
-				<strong>Type</strong>
+				<strong>Species</strong>
 			</td>
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:select property="entity.antibody.type"
-							styleId="antibodyType"
-							onchange="javascript:callPrompt('Type', 'antibodyType');">
+						<html:select property="entity.antibody.species"
+							styleId="antibodySpecies"
+							onchange="javascript:callPrompt('Species', 'species');">
 							<option value="" />
-								<html:options name="antibodyTypes" />
+								<html:options name="antibodySpecies" />
 							<option value="other">
 								[Other]
 							</option>
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.type}&nbsp;
+						${nanoparticleEntityForm.map.entity.antibody.species}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

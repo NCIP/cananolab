@@ -53,7 +53,7 @@ function confirmDeletion()
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Nanoparticle Entity Type</strong>
+							<strong>Nanoparticle Entity Type*</strong>
 						</td>
 						<td class="rightLabel">
 							<c:choose>
@@ -84,8 +84,7 @@ function confirmDeletion()
 					</tr>
 				</table>
 				<br>
-				<div id="entityInclude">
-					<c:choose>
+				<c:choose>
 						<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
 							<c:set var="entityType"
 								value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
@@ -100,7 +99,7 @@ function confirmDeletion()
 								page="/particle/composition/nanoparticleEntity/body${entityClass}Info.jsp" />
 						</c:when>
 					</c:choose>
-				</div>
+				<div id="entityInclude"></div>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>

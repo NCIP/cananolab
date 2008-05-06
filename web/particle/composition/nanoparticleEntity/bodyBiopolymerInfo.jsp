@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<td class="LeftLabel">
-				<strong>Name</strong>
+				<strong>Name*</strong>
 			</td>
 			<td class="label">
 				<c:choose>
@@ -27,7 +27,7 @@
 				</c:choose>
 			</td>
 			<td class="label">
-				<strong>Biopolymer Type</strong>
+				<strong>Biopolymer Type*</strong>
 			</td>
 			<td class="rightLabel">
 				<c:choose>

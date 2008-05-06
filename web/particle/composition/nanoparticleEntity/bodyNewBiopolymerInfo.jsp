@@ -10,13 +10,13 @@
 		</tr>
 		<tr>
 			<td class="LeftLabel">
-				<strong>Name</strong>
+				<strong>Name*</strong>
 			</td>
 			<td class="label">
 				<input type="text" name="entity.biopolymer.name">
 			</td>
 			<td class="label">
-				<strong>Biopolymer Type</strong>
+				<strong>Biopolymer Type*</strong>
 			</td>
 			<td class="rightLabel">
 				<select name="entity.biopolymer.type" id="biopolymerType"
