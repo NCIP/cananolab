@@ -27,11 +27,11 @@
 			<td class="rightLabel">
 				<select name="entity.polymer.crossLinked">
 					<option value=""></option>
-					<option value="true">
-						true
+					<option value="Yes">
+						Yes
 					</option>
-					<option value="false">
-						false
+					<option value="No">
+						No
 					</option>
 				</select>
 			</td>
