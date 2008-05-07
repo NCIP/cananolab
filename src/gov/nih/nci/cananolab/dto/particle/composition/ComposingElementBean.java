@@ -57,7 +57,7 @@ public class ComposingElementBean {
 				+ getDomainComposingElement().getName();
 	}
 
-	// for bodyChemicalAssociation.jsp
+	// for dwr ajax in bodyChemicalAssociation.jsp
 	public String getDomainComposingElementId() {
 		return getDomainComposingElement().getId().toString();
 	}
