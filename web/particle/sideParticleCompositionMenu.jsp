@@ -52,7 +52,7 @@
 												<c:set var="viewTitleDisplay"
 													value="color: ${dataLinkBean.viewColor};" />
 												<a href="${url}" class="sublist_5"
-													style="${viewTitleDisplay}"> <span class="data_anchar">>&nbsp;</span>${dataLinkBean.dataDisplayType}</a>
+													style="${viewTitleDisplay}"> <span class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
 											</c:when>
 											<c:otherwise>
 												<a href="${url}" class="sublist_5"><span
