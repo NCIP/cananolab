@@ -162,7 +162,7 @@
 							<c:choose>
 								<c:when test="${leafCharBean.viewColor != null}">
 									<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
-									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+									<a href="${url}" class="sublist_5" style="${viewTitleDisplay}" ><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 								</c:when>
 								<c:otherwise>
 									<a href="${url}" class="sublist_5"><span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
@@ -245,7 +245,7 @@
 												<c:when test="${leafCharBean.viewColor != null}">
 													<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
 													<a href="${url3}" class="sublist_5" style="${viewTitleDisplay}" >
-													<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+													<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 												</c:when>
 												<c:otherwise>
 													<a href="${url3}" class="sublist_5"><span
@@ -309,7 +309,7 @@
 																		<c:when test="${leafCharBean.viewColor != null}">
 																			<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
 																			<a href="${url4}" class="sublist_5" style="${viewTitleDisplay}" >
-																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+																			<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 																		</c:when>
 																	<c:otherwise>
 																		<a href="${url4}" class="sublist_5"><span
@@ -367,7 +367,7 @@
 																						<c:when test="${leafCharBean.viewColor != null}">
 																							<c:set var="viewTitleDisplay" value="color: ${leafCharBean.viewColor};" />
 																							<a href="${url5}" class="sublist_5" style="${viewTitleDisplay}" >
-																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.dataDisplayType}</a>
+																							<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 																						</c:when>
 																						<c:otherwise>
 																							<a href="${url5}" class="sublist_5"><span
