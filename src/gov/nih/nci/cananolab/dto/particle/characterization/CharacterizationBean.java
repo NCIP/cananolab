@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
@@ -34,8 +35,6 @@ public class CharacterizationBean {
 	private String viewTitle;
 
 	private String description;
-
-	private String type; // e.g. Molecular Weight, Size
 
 	private InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
 
@@ -133,7 +132,6 @@ public class CharacterizationBean {
 		try {
 			// take care of characterizations that don't have any special
 			// properties shown in the form, e.g. Size
-			className = typeToClass.get(type);
 			if (domainChar == null) {
 				Class clazz = ClassUtils.getFullClass(className);
 				domainChar = (Characterization) clazz.newInstance();
@@ -181,6 +179,10 @@ public class CharacterizationBean {
 						}
 					}
 				}
+			}
+			if (protocolFileBean.getDomainFile().getId() != null) {
+				domainChar.setProtocolFile((ProtocolFile) protocolFileBean
+						.getDomainFile());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -245,11 +247,8 @@ public class CharacterizationBean {
 		return className;
 	}
 
-	public String getType() {
-		return type;
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
 }
