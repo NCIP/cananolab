@@ -70,7 +70,7 @@
 							<strong>Value</strong>
 						</td>
 						<td class="label">
-							<html:text property="entity.value" />
+							${functionalizingEntityForm.map.entity.value}&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Value Unit</strong>
@@ -108,12 +108,11 @@
 						<c:set var="entityType"
 							value="${functionalizingEntityForm.map.entity.type}" scope="page" />
 						<%
-							String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-											.getInstance().getObjectName(
-													(String) pageContext
-															.getAttribute("entityType"),
-													application);
-									pageContext.setAttribute("entityClass", entityClass);
+									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+									.getInstance().getObjectName(
+									(String) pageContext.getAttribute("entityType"),
+									application);
+							pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
 							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />
@@ -133,33 +132,24 @@
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
 									<tr>
-
 										<td id="functionTd">
 											<logic:iterate name="functionalizingEntityForm"
 												property="entity.functions" id="function" indexId="ind">
 												<c:choose>
 													<c:when
 														test="${functionalizingEntityForm.map.entity.functions[ind].type == 'imaging'}">
-														<c:set var="modalityDisplay" value="display: block;" />
+														<c:set var="modalityDisplay" value="display: inline;" />
 													</c:when>
 													<c:otherwise>
 														<c:set var="modalityDisplay" value="display: none;" />
 													</c:otherwise>
 												</c:choose>
-												<c:choose>
-													<c:when
-														test="${functionalizingEntityForm.map.entity.functions[ind].type == 'targeting'}">
-														<c:set var="targetDisplay" value="display: block;" />
-													</c:when>
-													<c:otherwise>
-														<c:set var="targetDisplay" value="display: none;" />
-													</c:otherwise>
-												</c:choose>
+
 												<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 													width="100%" align="center" summary="" border="0">
 													<tbody>
 														<tr>
-															<td class="formSubTitleNoRight" colspan="3">
+															<td class="formSubTitleNoRight" colspan="4">
 																<span>Function #${ind + 1}</span>
 															</td>
 
@@ -173,8 +163,8 @@
 
 															</td>
 															<td class="labelWithTop" valign="top">
-																<strong style="${modalityDisplay }" id="modalityStrong_${ind}">Modality
-																	Type </strong>&nbsp;
+																<strong style="${modalityDisplay }"
+																	id="modalityStrong_${ind}">Modality Type </strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
 																<div id="modalityDiv_${ind}" style="${modalityDisplay }">
@@ -192,17 +182,17 @@
 																${functionalizingEntityForm.map.entity.functions[ind].description}&nbsp;
 															</td>
 														</tr>
-														<tr>
-															<td colspan="4" class="rightLabel">
-																&nbsp;
-																<div id="targetDiv_${ind }" style="${targetDisplay }">
+														<c:if
+															test="${functionalizingEntityForm.map.entity.functions[ind].type == 'targeting'}">
+															<tr>
+																<td colspan="4" class="completeLabel">
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoReadOnly.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
 																	</jsp:include>
-																</div>
-															</td>
-														</tr>
+																</td>
+															</tr>
+														</c:if>
 													</tbody>
 												</table>
 												<br>
