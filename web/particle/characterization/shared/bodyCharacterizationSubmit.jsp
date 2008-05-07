@@ -58,11 +58,8 @@ function confirmDeletion()
 											<html:hidden property="particleId" />
 										</c:otherwise>
 									</c:choose>
-									<input type="hidden" name="achar.type"
-										value="${param.submitType}" />
 									<input type="hidden" name="submitType"
 										value="${param.submitType}" />
-									<html:hidden property="achar.className" value="${charClass}" />
 									<html:hidden property="achar.createdBy"
 										value="${user.loginName }" />
 									<html:submit />

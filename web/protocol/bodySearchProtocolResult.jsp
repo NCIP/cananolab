@@ -13,7 +13,10 @@
 			</h3>
 		</td>
 		<td align="right" width="15%">
-			<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=protocol_search_results_help')" class="helpText">Help</a>&nbsp;&nbsp; <a href="searchProtocol.do?dispatch=setup" class="helpText">Back</a>
+			<a
+				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=protocol_search_results_help')"
+				class="helpText">Help</a>&nbsp;&nbsp;
+			<a href="searchProtocol.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
 	<tr>
@@ -21,22 +24,30 @@
 			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 			<c:choose>
 				<c:when test="${canCreateProtocol eq 'true'}">
-					<!-- c:set var="link" value="editProtocolURL" /-->
-					<c:set var="link" value="editProtocolURL" />
+					<c:set var="link" value="editURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="link" value="viewProtocolURL" />
+					<c:set var="link" value="viewURL" />
 				</c:otherwise>
 			</c:choose>
-			<display:table name="sessionScope.protocols" id="protocol" requestURI="searchProtocol.do" pagesize="25" class="displaytable" decorator="gov.nih.nci.calab.dto.common.ProtocolDecorator">
+			<display:table name="sessionScope.protocolFiles" id="protocolFile"
+				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
+				decorator="gov.nih.nci.cananolab.dto.common.ProtocolFileDecorator">
 				<!-- display:column title="Protocol Name" property="${link}" sortable="true" /-->
-				<display:column title="Protocol Name" property="${link}" sortable="true" />
-				<display:column title="Protocol Type" property="protocolBean.type" sortable="true" />
-				<display:column title="Version" property="version" sortable="false" />
-				<display:column title="File Title" property="title" sortable="true" />
-				<display:column title="Description" property="description" sortable="false" />
-				<display:column title="Protocol Submit Date" property="createdDate" sortable="true" format="{0,date,MM-dd-yyyy}" />
-				<display:column title="Location" >Local</display:column>
+				<display:column title="Protocol Name" property="${link}"
+					sortable="true" />
+				<display:column title="Protocol Type"
+					property="domainFile.protocol.type" sortable="true" />
+				<display:column title="Version" property="domainFile.version"
+					sortable="false" />
+				<display:column title="File Title" property="domainFile.title"
+					sortable="true" />
+				<display:column title="Description"
+					property="domainFile.description" sortable="false" />
+				<display:column title="Protocol Submit Date"
+					property="domainFile.createdDate" sortable="true"
+					format="{0,date,MM-dd-yyyy}" />
+				<display:column title="Location">Local</display:column>
 			</display:table>
 		</td>
 	</tr>

@@ -44,10 +44,14 @@
 								<strong>Protocol Type*</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select styleId="protocolType" property="protocolType"
+								<html:select styleId="protocolType"
+									property="file.domainFile.protocol.type"
 									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); resetProtocols(); retrieveProtocols();">
+									<option value=""/>
 									<html:options name="protocolTypes" />
-									<option value="other">[Other]</option>
+									<option value="other">
+										[Other]
+									</option>
 								</html:select>
 							</td>
 						</tr>
@@ -56,18 +60,25 @@
 								<strong>Protocol Name* </strong>
 							</td>
 							<td class="rightLabel">
-								<html:select styleId="protocolName" property="protocolName"
+								<html:select styleId="protocolName"
+									property="file.domainFile.protocol.name"
 									onchange="javascript:callPrompt('Protocol Name', 'protocolName'); resetProtocolFiles(); retrieveProtocolFileVersions();">
-									<c:if test="${! empty submitProtocolForm.map.protocolName}">
-									<html:option value="${submitProtocolForm.map.protocolName}">${submitProtocolForm.map.protocolName}</html:option>
+									<c:if test="${! empty submitProtocolForm.map.file.domainFile.protocol.name}">
+										<html:option value="${submitProtocolForm.map.file.domainFile.protocol.name}">${submitProtocolForm.map.protocolName}</html:option>
 									</c:if>
-									<option value="other">[Other]</option>
+									<option value=""/>
+									<option value="other">
+										[Other]
+									</option>
 								</html:select>
 								&nbsp; &nbsp;
 								<strong>Protocol Version* </strong>&nbsp;
-								<html:select styleId="protocolId" property="file.id"
-									onfocus="javascript:callPrompt('Protocol Version', 'protocolId');">
-									<option value="other">[Other]</option>
+								<html:select styleId="protocolFileId" property="file.domainFile.id"
+									onfocus="javascript:callPrompt('Protocol Version', 'protocolFileId');">
+									<option value=""/>
+									<option value="other">
+										[Other]
+									</option>
 								</html:select>
 								&nbsp; &nbsp;
 							</td>
@@ -77,8 +88,8 @@
 								<strong>Protocol File</strong>
 							</td>
 							<td class="rightLabel">
-								<span id="protocolLink"> </span>&nbsp;
-								<html:file property="uploadedFile" />
+								<span id="protocolFileLink"> </span>&nbsp;
+								<html:file property="file.uploadedFile" />
 							</td>
 						</tr>
 						<tr>
@@ -86,7 +97,8 @@
 								<strong>File Title</strong>
 							</td>
 							<td class="rightLabel">
-								<html:text styleId="fileTitle" property="file.title" size="80" />
+								<html:text styleId="fileTitle" property="file.domainFile.title"
+									size="80" />
 							</td>
 						</tr>
 						<tr>
@@ -94,8 +106,8 @@
 								<strong>Description</strong>
 							</td>
 							<td class="rightLabel">
-								<br>
-
+								<html:textarea styleId="fileDescription"
+									property="file.domainFile.description" rows="3" />
 							</td>
 						</tr>
 						<tr>
@@ -109,8 +121,7 @@
 								</html:select>
 								<br>
 								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_PI are defaults if none of above is
-									selected.)</i>
+									${applicationOwner}_PI are always selected by default.)</i>
 							</td>
 						</tr>
 					</tbody>
@@ -130,7 +141,7 @@
 											<div align="right">
 												<input type="reset" value="Reset"
 													onclick="javascript:location.href='submitProtocol.do?dispatch=setup&page=0'">
-												<input type="hidden" name="dispatch" value="submit">
+												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<html:submit />
 											</div>
