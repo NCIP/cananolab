@@ -47,7 +47,7 @@
 								<td class="rightLabel" valign="top">
 									<c:choose>
 										<c:when
-											test="${characterizationForm.map.achar.protocolFileBean.domainFile.hidden eq 'true'}">
+											test="${characterizationForm.map.achar.protocolFileBean.hidden eq 'true'}">
 									Private protocol
 								</c:when>
 										<c:otherwise>
