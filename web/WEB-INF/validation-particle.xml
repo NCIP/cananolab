@@ -17,38 +17,33 @@
 					key="nanoparticleSampleForm.sampleSource" bundle="particle" />
 			</field>
 		</form>
-		<form name="nanoparticleCompositionForm">
-			<field property="composition.characterizationSource"
-				page="2" depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="particle" />
-			</field>
-			<field property="composition.viewTitle" page="2"
+		<form name="nanoparticleEntityForm">
+			<field property="entity.type" page="2"
 				depends="required">
-				<arg position="0" key="viewTitle" bundle="particle" />
+				<arg position="0" key="nanoparticleEntityType" bundle="particle" />
 			</field>
-			<field property="carbonNanotube.diameter" page="2"
+			<field property="entity.carbonNanotube.diameter" page="2"
 				depends="float">
 				<arg position="0"
-					key="nanoparticleCompositionForm.carbonNanotube.diameter"
+					key="nanoparticleEntityForm.carbonNanotube.diameter"
 					bundle="particle" />
 			</field>
-			<field property="carbonNanotube.averageLength" page="2"
+			<field property="entity.carbonNanotube.averageLength" page="2"
 				depends="float">
 				<arg position="0"
-					key="nanoparticleCompositionForm.carbonNanotube.averageLength"
+					key="nanoparticleEntityForm.carbonNanotube.averageLength"
 					bundle="particle" />
 			</field>
-			<field property="fullerene.numberOfCarbons" page="2"
+			<field property="entity.fullerene.numberOfCarbon" page="2"
 				depends="integer">
 				<arg position="0"
-					key="nanoparticleCompositionForm.fullerene.numberOfCarbon"
+					key="nanoparticleEntityForm.fullerene.numberOfCarbon"
 					bundle="particle" />
 			</field>
-			<field property="liposome.polymerName" page="2"
+			<field property="entity.liposome.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleCompositionForm.liposome.polymerName"
+					key="nanoparticleEntityForm.liposome.polymerName"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -57,10 +52,10 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="emulsion.polymerName" page="2"
+			<field property="entity.emulsion.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleCompositionForm.emulsion.polymerName"
+					key="nanoparticleEntityForm.emulsion.polymerName"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -69,10 +64,10 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="polymer.crosslinkDegree" page="2"
+			<field property="entity.polymer.crosslinkDegree" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleCompositionForm.polymer.crosslinkDegree"
+					key="nanoparticleEntityForm.polymer.crosslinkDegree"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -81,20 +76,36 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="elementType" page="2" depends="validwhen"
-				indexedListProperty="composition.composingElements">
+			<field property="domainComposingElement.type" page="2" depends="validwhen"
+				indexedListProperty="entity.composingElements">
 				<arg position="0"
-					key="nanoparticleComposition.composition.elementType"
+					key="nanoparticleEntity.elementType"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
 				</var>
 			</field>
-			<field property="name" page="2" depends="validwhen"
-				indexedListProperty="dendrimer.surfaceGroups">
+		</form>
+		<form name="functionalizingEntityForm">
+			<field property="entity.type" page="2"
+				depends="required">
+				<arg position="0" key="functionalizingEntityType" bundle="particle" />
+			</field>
+			<field property="entity.name" page="2"
+				depends="required">
+				<arg position="0" key="functionalizingEntityName" bundle="particle" />
+			</field>
+			<field property="entity.value" page="2"
+				depends="float">
 				<arg position="0"
-					key="nanoparticleComposition.dendrimer.surfaceGroup"
+					key="functionalizingEntityForm.value"
+					bundle="particle" />
+			</field>
+			<field property="type" page="2" depends="validwhen"
+				indexedListProperty="entity.functions">
+				<arg position="0"
+					key="functionalizingEntity.functionType"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
