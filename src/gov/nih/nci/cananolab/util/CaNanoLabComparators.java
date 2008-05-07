@@ -25,7 +25,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.5 2008-05-06 18:43:48 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.6 2008-05-07 10:31:53 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -173,6 +173,12 @@ public class CaNanoLabComparators {
 				return file1.getClass().getCanonicalName().compareTo(
 						file2.getClass().getCanonicalName());
 			}
+		}
+	}
+
+	public static class LabFileDateComparator implements Comparator<LabFile> {
+		public int compare(LabFile file1, LabFile file2) {
+			return file1.getCreatedDate().compareTo(file2.getCreatedDate());
 		}
 	}
 
