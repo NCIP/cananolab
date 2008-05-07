@@ -6,8 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.30 2008-05-06 22:57:51 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.31 2008-05-07 10:31:16 pansu Exp $ */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -20,6 +25,7 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,11 +83,29 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			FunctionalizingEntity copy = entityBean.getDomainCopy();
 			for (NanoparticleSample sample : otherSamples) {
 				compositionService.saveFunctionalizingEntity(sample, copy);
+				// update copied filename and save content and set visibility
+				List<LabFile> files = new ArrayList<LabFile>(copy
+						.getLabFileCollection());
+				Collections.sort(files,
+						new CaNanoLabComparators.LabFileDateComparator());
+				int i = 0;
+				for (LabFile file : files) {
+					LabFileBean origFileBean = entityBean.getFiles().get(i);
+					String origUri = origFileBean.getDomainFile().getUri();
+					file.setUri(origUri.replaceAll(particleBean
+							.getDomainParticleSample().getName(), sample
+							.getName()));
+
+					fileService.writeFile(file, origFileBean.getFileData());
+					authService.assignVisibility(file.getId().toString(),
+							origFileBean.getVisibilityGroups());
+					i++;
+				}
 			}
 		}
-		
-		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(
-				request, entityBean);
+
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
@@ -153,8 +177,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entity.addFunction();
-		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(
-				request, entity);
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
 
 		return mapping.getInputForward();
 	}
@@ -168,6 +192,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entity.removeFunction(ind);
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -178,8 +205,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entity.addFile();
-		InitCompositionSetup.getInstance().persistFunctionalizingEntityDropdowns(
-				request, entity);
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
 
 		return mapping.getInputForward();
 	}
@@ -193,6 +220,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		entity.removeFile(ind);
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -209,6 +239,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				funcIndex);
 
 		function.addTarget();
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -226,6 +259,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionBean function = (FunctionBean) entity.getFunctions().get(
 				funcIndex);
 		function.removeTarget(targetIndex);
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entity);
+
 		return mapping.getInputForward();
 	}
 

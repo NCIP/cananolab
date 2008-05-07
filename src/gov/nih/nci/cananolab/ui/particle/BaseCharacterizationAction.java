@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBe
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -27,8 +28,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
+ * 
  * @author pansu
- *
+ * 
  */
 public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	/**
@@ -48,25 +50,29 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		clearForm(theForm);
 		request.getSession().setAttribute("characterizationForm", theForm);
 		setupParticle(theForm, request);
+		// set charclass
 		ServletContext appContext = request.getSession().getServletContext();
+		CharacterizationBean charBean = (CharacterizationBean) theForm
+				.get("achar");
 		String submitType = request.getParameter("submitType");
 		String charClass = InitSetup.getInstance().getObjectName(submitType,
 				appContext);
-		setLookups(request, charClass);
+		charBean.setClassName(charClass);
+		setLookups(request, charBean);
 		return mapping.getInputForward();
 	}
 
 	abstract protected void clearForm(DynaValidatorForm theForm);
 
-	protected void setLookups(HttpServletRequest request, String charClass)
+	protected void setLookups(HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		request.getSession().setAttribute("charClass", charClass);
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
-				request, charClass);
+				request, charBean.getClassName());
+		InitProtocolSetup.getInstance().getProtocolFilesByChar(request, charBean);
 	}
 
-	protected abstract CharacterizationBean setCharacterizationBean(
+	protected abstract CharacterizationBean getCharacterizationBean(
 			DynaValidatorForm theForm, Characterization chara, UserBean user)
 			throws Exception;
 
@@ -77,16 +83,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		setupParticle(theForm, request);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		setCharacterizationBean(theForm, chara, user);
-		String className = ClassUtils.getShortClassName(chara.getClass()
-				.getCanonicalName());
-		setLookups(request, className);
+		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
+				user);
+		setLookups(request, charBean);
 		return mapping.getInputForward();
 	}
 
-	protected Characterization prepareCharacterization(
-			DynaValidatorForm theForm, HttpServletRequest request)
-			throws Exception {
+	// used in many dispatch methods
+	private Characterization prepareCharacterization(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
 		String charId = request.getParameter("dataId");
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		Characterization chara = charService.findCharacterizationById(charId);
@@ -106,6 +111,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.addDerivedBioAssayData();
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
 	}
 
@@ -123,6 +130,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.removeDerivedBioAssayData(fileInd);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
+
 		return mapping.getInputForward();
 	}
 
@@ -142,6 +152,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		DerivedBioAssayDataBean derivedBioAssayData = achar
 				.getDerivedBioAssayDataList().get(fileInd);
 		derivedBioAssayData.addDerivedDatum();
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
+
 		return mapping.getInputForward();
 	}
 
@@ -163,6 +176,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		DerivedBioAssayDataBean derivedBioAssayData = achar
 				.getDerivedBioAssayDataList().get(fileInd);
 		derivedBioAssayData.removeDerivedDatum(dataInd);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
+
 		return mapping.getInputForward();
 		// return mapping.getInputForward(); this gives an
 		// IndexOutOfBoundException in the jsp page
@@ -175,7 +191,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		setupParticle(theForm, request);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		setCharacterizationBean(theForm, chara, user);
+		getCharacterizationBean(theForm, chara, user);
 		String particleId = request.getParameter("particleId");
 		String characterizationId = request.getParameter("dataId");
 		String submitType = request.getParameter("submitType");
@@ -194,7 +210,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		setCharacterizationBean(theForm, chara, user);
+		getCharacterizationBean(theForm, chara, user);
 		return mapping.findForward("detailPrintView");
 	}
 
@@ -205,7 +221,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		ParticleBean particleBean = setupParticle(theForm, request);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CharacterizationBean charBean = setCharacterizationBean(theForm, chara,
+		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user);
 		String fileName = this.getExportFileName(particleBean
 				.getDomainParticleSample().getName(), "detailView", charBean

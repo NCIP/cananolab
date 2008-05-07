@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.16 2008-05-06 06:03:47 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.17 2008-05-07 10:31:16 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -66,6 +66,11 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 				charService.saveCharacterization(sample, copy);
 			}
 		}
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		InitCharacterizationSetup.getInstance()
+				.persistPhysicalCharacterizationDropdowns(request, charBean);
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addPhysicalCharacterization");
@@ -76,7 +81,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected CharacterizationBean setCharacterizationBean(
+	protected CharacterizationBean getCharacterizationBean(
 			DynaValidatorForm theForm, Characterization chara, UserBean user)
 			throws Exception {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
@@ -88,11 +93,11 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		return charBean;
 	}
 
-	protected void setLookups(HttpServletRequest request, String charClass)
+	protected void setLookups(HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		super.setLookups(request, charClass);
+		super.setLookups(request, charBean);
 		InitCharacterizationSetup.getInstance()
-				.setPhysicalCharacterizationDropdowns(request, charClass);
+				.setPhysicalCharacterizationDropdowns(request);
 	}
 
 	protected void clearForm(DynaValidatorForm theForm) {
