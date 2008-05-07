@@ -7,9 +7,7 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -87,10 +85,8 @@ public class ReportService {
 			FileService fileService = new FileService();
 			fileService.writeFile(report, fileData);
 
-			// TODO save other report type
-
 		} catch (Exception e) {
-			String err = "Error in saving the nanoparticle sample.";
+			String err = "Error in saving the report.";
 			logger.error(err, e);
 			throw new ReportException(err, e);
 		}
@@ -225,9 +221,6 @@ public class ReportService {
 	public ReportBean findReportById(String reportId) throws ReportException {
 		ReportBean reportBean = null;
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
