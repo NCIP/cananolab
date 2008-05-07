@@ -163,4 +163,7 @@ public class CaNanoLabConstants {
 			"setupView", "summaryView", "detailView", "printDetailView",
 			"exportDetail", "printSummaryView", "printFullSummaryView",
 			"exportSummary", "exportFullSummary", "download", "loadFile" };
+	
+	public static final String PHYSICAL_ASSAY_PROTOCOL="physical assay";
+	public static final String INVITRO_ASSAY_PROTOCOL="in vitro assay";
 }
