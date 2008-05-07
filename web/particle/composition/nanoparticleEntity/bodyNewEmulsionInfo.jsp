@@ -15,8 +15,8 @@
 			<td class="label">
 				<select name="entity.emulsion.polymerized">
 							<option value=""></option>
-							<option value="true">true</option>
-							<option value="false">false</option>
+							<option value="Yes">Yes</option>
+							<option value="No">No</option>
 				</select>
 			</td>
 			<td class="label">
