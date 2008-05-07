@@ -129,7 +129,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		SortedSet<ParticleDataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
 		ActionMessages msgs = new ActionMessages();
-		if (particleEntities.isEmpty()) {
+		if (particleEntities == null || particleEntities.isEmpty()) {
 			ActionMessage msg = new ActionMessage(
 					"empty.particleEntitiesInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -141,6 +141,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		int numberOfCE = 0;
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		SortedSet<ParticleDataLinkBean> particleEntitiesWithComposingElements = new TreeSet<ParticleDataLinkBean>();
+		//particleEntitiesWithComposingElements = particleEntities;
 		for (ParticleDataLinkBean dataLink : particleEntities) {
 			NanoparticleEntityBean entityBean = compService
 					.findNanoparticleEntityById(dataLink.getDataId());
@@ -156,7 +157,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			saveErrors(request, msgs);
 			return false;
 		}
-		if (functionalizingEntities.isEmpty() && numberOfCE == 1) {
+		if (functionalizingEntities == null
+				|| functionalizingEntities.isEmpty() && numberOfCE == 1) {
 			ActionMessage msg = new ActionMessage(
 					"one.composingElementsInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
