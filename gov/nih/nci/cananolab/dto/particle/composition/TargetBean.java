@@ -83,12 +83,6 @@ public class TargetBean {
 						domainTarget.getClass().getCanonicalName())) {
 			domainTarget = (Target) clazz.newInstance();
 		}
-		if (domainTarget.getId() == null
-				|| domainTarget.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
-			domainTarget.setCreatedBy(createdBy);
-			domainTarget.setCreatedDate(new Date());
-		}
 
 		if (domainTarget instanceof OtherTarget) {
 			((OtherTarget) domainTarget).setType(type);
@@ -97,6 +91,13 @@ public class TargetBean {
 		}
 		domainTarget.setName(name);
 		domainTarget.setDescription(description);
+		if (domainTarget.getId() == null
+				|| (domainTarget.getCreatedBy() != null && domainTarget
+						.getCreatedBy().equals(
+								CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX))) {
+			domainTarget.setCreatedBy(createdBy);
+			domainTarget.setCreatedDate(new Date());
+		}
 	}
 
 	public void updateType(Map<String, String> classToType) {

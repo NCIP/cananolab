@@ -103,12 +103,6 @@ public class FunctionBean {
 						domainFunction.getClass().getCanonicalName())) {
 			domainFunction = (Function) clazz.newInstance();
 		}
-		if (domainFunction.getId() == null
-				|| domainFunction.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
-			domainFunction.setCreatedBy(createdBy);
-			domainFunction.setCreatedDate(new Date());
-		}
 		imagingFunction.setCreatedBy(domainFunction.getCreatedBy());
 		imagingFunction.setCreatedDate(domainFunction.getCreatedDate());
 
@@ -131,6 +125,12 @@ public class FunctionBean {
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);
+		if (domainFunction.getId() == null
+				|| domainFunction.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainFunction.setCreatedBy(createdBy);
+			domainFunction.setCreatedDate(new Date());
+		}
 	}
 
 	public void updateType(Map<String, String> classToType) {
