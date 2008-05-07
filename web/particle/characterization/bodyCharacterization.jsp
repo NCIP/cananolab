@@ -4,11 +4,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript"
+	src="javascript/CharacterizationManager.js"></script>
 <script type='text/javascript'
-	src='javascript/CharacterizationManager.js'></script>
-<script type="text/javascript" src="javascript/CompositionManager.js"></script>
+	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
+<script type="text/javascript"
+	src="javascript/ProtocolManager.js"></script>
 <script type='text/javascript'
-	src='dwr/interface/CharacterizationManager.js'></script>
+	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
+
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 

@@ -12,14 +12,16 @@
 				</h3>
 			</td>
 			<td align="right" width="25%">
-				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-				<a href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_protocol_help')" class="helpText">Help</a>
+				<a
+					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_protocol_help')"
+					class="helpText">Help</a>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
 					<tr class="topBorder">
 						<td class="formTitle">
 							<div align="justify">
@@ -38,10 +40,10 @@
 							<strong>Protocol Type</strong>
 						</td>
 						<td class="rightLabel"">
-								<html:select property="protocolType" >
-									<option/>
+							<html:select property="protocolType">
+								<option />
 									<html:options name="protocolTypes" />
-								</html:select>
+							</html:select>
 						</td>
 					</tr>
 					<tr>
@@ -62,7 +64,8 @@
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td>
 							<span class="formMessage"> </span>
@@ -71,7 +74,7 @@
 								<tr>
 									<td>
 										<div align="right">
-											<input type="reset" value="Reset" >
+											<input type="reset" value="Reset">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />

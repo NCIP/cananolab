@@ -50,7 +50,6 @@
 			</c:choose>
 		</td>
 	</tr>
-	<%--
 	<tr>
 		<td class="leftLabel">
 			<strong>Protocol Name - Version</strong>
@@ -59,14 +58,14 @@
 			<c:when test="${canCreateNanoparticle eq 'true'}">
 				<td class="rightLabel" colspan="3">
 					<c:choose>
-						<c:when test="${!empty submitTypeProtocolFiles}">
-							<html:select styleId="protocolId"
+						<c:when test="${!empty characterizationProtocolFiles}">
+							<html:select styleId="protocolFileId"
 								property="achar.protocolFileBean.domainFile.id"
 								onchange="retrieveProtocolFile()">
 								<option />
-									<html:options collection="submitTypeProtocolFiles"
-										property="id" labelProperty="displayName" />
-							</html:select> &nbsp;<span id="protocolLink"><a
+									<html:options collection="characterizationProtocolFiles"
+										property="domainFile.id" labelProperty="displayName" />
+							</html:select> &nbsp;<span id="protocolFileLink"><a
 								href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 							</span>
 						</c:when>
@@ -86,10 +85,10 @@
 						<c:otherwise>
 							<c:choose>
 								<c:when
-									test="${characterizationForm.map.achar.protocolFile.hidden eq 'false'}">
+									test="${characterizationForm.map.achar.protocolFileBean.hidden eq 'false'}">
 						${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 						<a
-										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainProtocol.id}">${characterizationForm.map.achar.protocolFileBean.domainProtocol.uri}</a>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 								</c:when>
 								<c:otherwise>
 									The protocol file is private
@@ -100,7 +99,7 @@
 				</td>
 			</c:otherwise>
 		</c:choose>
-	</tr>--%>
+	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">
 			<strong>Description</strong>
