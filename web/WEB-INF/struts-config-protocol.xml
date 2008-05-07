@@ -7,24 +7,8 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="protocolName" type="java.lang.String" />
-			<form-property name="protocolType" type="java.lang.String" />
-			<form-property name="uploadedFile"
-				type="org.apache.struts.upload.FormFile" />
 			<form-property name="file"
-				type="gov.nih.nci.calab.dto.common.ProtocolFileBean" />
-		</form-bean>
-		<form-bean name="updateProtocolForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="protocolName" type="java.lang.String" />
-			<form-property name="protocolType" type="java.lang.String" />
-			<form-property name="uploadedFile"
-				type="org.apache.struts.upload.FormFile" />
-			<form-property name="file"
-				type="gov.nih.nci.calab.dto.common.ProtocolFileBean" />
+				type="gov.nih.nci.cananolab.dto.common.ProtocolFileBean" />
 		</form-bean>
 		<form-bean name="searchProtocolForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -37,50 +21,35 @@
 	</form-beans>
 	<global-exceptions>
 		<exception
-			handler="gov.nih.nci.calab.ui.core.BaseExceptionHandler"
-			bundle="protocol" key="error.protocolException" path="protocol.message"
-			type="gov.nih.nci.calab.exception.ProtocolException" />
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			bundle="protocol" key="error.protocolException"
+			path="protocol.message"
+			type="gov.nih.nci.cananolab.exception.ProtocolException" />
 	</global-exceptions>
 	<global-forwards>
-		<forward name="protocolMessage"
-			path="protocol.message" />
+		<forward name="protocolMessage" path="protocol.message" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageProtocol"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="protocol.manageProtocol" scope="request" />
 		<action name="submitProtocolForm" parameter="dispatch"
 			path="/submitProtocol"
-			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
+			type="gov.nih.nci.cananolab.ui.protocol.SubmitProtocolAction"
 			input="input" scope="request">
 			<forward name="success" path="protocol.message" />
-			<forward name="input"
-				path="/submitProtocol.do?dispatch=reSetup&amp;page=0" />
-			<forward name="setup" path="protocol.submitProtocol" />
-			<forward name="resetProtocolPage"
-				path="protocol.submitProtocol" />
-		</action>
-		<action name="updateProtocolForm" parameter="dispatch"
-			path="/updateProtocol"
-			type="gov.nih.nci.calab.ui.protocol.SubmitProtocolAction"
-			input="input" scope="request">
-			<forward name="success" path="protocol.message" />
-			<forward name="input"
-				path="/updateProtocol.do?dispatch=setupUpdate&amp;page=0" />
-			<forward name="failure"
-				path="/updateProtocol.do?dispatch=setupUpdate" />
-			<forward name="setup" path="protocol.updateProtocol" />
+			<forward name="input" path="protocol.submitProtocol" />
 		</action>
 		<action input="input" name="searchProtocolForm"
 			parameter="dispatch" path="/searchProtocol"
-			type="gov.nih.nci.calab.ui.protocol.SearchProtocolAction"
+			type="gov.nih.nci.cananolab.ui.protocol.SearchProtocolAction"
 			scope="request">
 			<forward name="input" path="protocol.searchProtocol" />
 			<forward name="success"
 				path="protocol.searchProtocolResult" />
 		</action>
 		<action path="/protocolResults"
-			type="gov.nih.nci.calab.ui.core.BaseForwardAction"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="protocol.searchProtocolResult" scope="request" />
 	</action-mappings>
 </struts-config>
