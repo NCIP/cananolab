@@ -6,8 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.40 2008-05-06 22:57:51 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.41 2008-05-07 10:31:16 pansu Exp $ */
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -20,6 +25,7 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,6 +93,24 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			NanoparticleEntity copy = entityBean.getDomainCopy();
 			for (NanoparticleSample sample : otherSamples) {
 				compositionService.saveNanoparticleEntity(sample, copy);
+				// update copied filename and save content and set visibility
+				List<LabFile> files = new ArrayList<LabFile>(copy
+						.getLabFileCollection());
+				Collections.sort(files,
+						new CaNanoLabComparators.LabFileDateComparator());
+				int i = 0;
+				for (LabFile file : files) {
+					LabFileBean origFileBean = entityBean.getFiles().get(i);
+					String origUri = origFileBean.getDomainFile().getUri();
+					file.setUri(origUri.replaceAll(particleBean
+							.getDomainParticleSample().getName(), sample
+							.getName()));
+
+					fileService.writeFile(file, origFileBean.getFileData());
+					authService.assignVisibility(file.getId().toString(),
+							origFileBean.getVisibilityGroups());
+					i++;
+				}
 			}
 		}
 
@@ -179,6 +203,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		boolean canRemove = compService
 				.checkChemicalAssociationBeforeDelete(ceBean);
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entity);
+
 		if (!canRemove) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
@@ -187,6 +214,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			saveErrors(request, msgs);
 			return mapping.getInputForward();
 		}
+
 		entity.removeComposingElement(ind);
 
 		return mapping.getInputForward();
@@ -225,6 +253,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		ComposingElementBean compElement = (ComposingElementBean) entity
 				.getComposingElements().get(compEleIndex);
 		compElement.removeFunction(functionIndex);
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 
@@ -250,6 +281,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
 				.get("entity");
 		entity.removeFile(ind);
+		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+				request, entity);
+
 		return mapping.getInputForward();
 	}
 

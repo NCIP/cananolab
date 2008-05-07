@@ -1,9 +1,15 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,26 +34,27 @@ public class InitCharacterizationSetup {
 	}
 
 	public void setCharactierizationDropDowns(HttpServletRequest request,
-			String className) throws CaNanoLabException {
+			String className) throws Exception {
 		HttpSession session = request.getSession();
 		SortedSet<String> charSources = charService
 				.findAllCharacterizationSources();
 		session.setAttribute("characterizationSources", charSources);
-		SortedSet<String> names = LookupService.findLookupValues(className,
-				"derivedDatumName");
-		session.setAttribute("derivedDatumNames", names);
-
+		SortedSet<String> derivedDatumNames = InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "derivedDatumNames",
+						className, "derivedDatumName", "otherDerivedDatumName",
+						true);
 		Map<String, SortedSet<String>> unitMap = new HashMap<String, SortedSet<String>>();
-		for (String name : names) {
-			SortedSet<String> units = LookupService.findLookupValues(name,
-					"unit");
+		for (String name : derivedDatumNames) {
+			SortedSet<String> units = InitSetup.getInstance()
+					.getDefaultAndOtherLookupTypes(request,
+							"derivedDatumUnits", name, "unit", "otherUnits",
+							true);
 			unitMap.put(name, units);
 		}
 		session.setAttribute("unitMap", unitMap);
-
-		SortedSet<String> valueTypes = LookupService.findLookupValues(
-				"DerivedDatum", "valueType");
-		session.setAttribute("derivedDatumValueTypes", valueTypes);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"derivedDatumValueTypes", "DerivedDatum", "valueType",
+				"otherValueType", true);
 
 		List<Instrument> instruments = charService.findAllInstruments();
 		SortedSet<String> manufacturers = new TreeSet<String>();
@@ -60,30 +67,91 @@ public class InitCharacterizationSetup {
 		session.setAttribute("instrumentTypes", instrumentTypes);
 	}
 
-	public void setPhysicalCharacterizationDropdowns(
-			HttpServletRequest request, String className)
-			throws CaNanoLabException {
-		HttpSession session = request.getSession();
-
+	public void setPhysicalCharacterizationDropdowns(HttpServletRequest request)
+			throws Exception {
 		// solubility
-		SortedSet<String> solventTypes = LookupService.findLookupValues(
-				"Solubility", "solvent");
-		session.setAttribute("solventTypes", solventTypes);
-		SortedSet<String> concentrationUnits = LookupService.findLookupValues(
-				"SampleContainer", "concentrationUnit");
-		session.setAttribute("concentrationUnits", concentrationUnits);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"solventTypes", "Solubility", "solvent", "otherSolvent", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"concentrationUnits", "SampleContainer", "concentrationUnit",
+				"otherConcentrationUnit", true);
 		// shape
-		SortedSet<String> shapeTypes = LookupService.findLookupValues("Shape",
-				"type");
-		session.setAttribute("shapeTypes", shapeTypes);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"shapeTypes", "Shape", "type", "otherType", true);
+
 		// physical state
-		SortedSet<String> physicalStateTypes = LookupService.findLookupValues(
-				"PhysicalState", "type");
-		session.setAttribute("physicalStateTypes", physicalStateTypes);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"physicalStateTypes", "PhysicalState", "type", "otherType",
+				true);
 
 		// surface chemistry
-		SortedSet<String> molecularFormulaTypes = LookupService
-				.findLookupValues("SurfaceChemistry", "molecularFormulaType");
-		session.setAttribute("molecularFormulaTypes", molecularFormulaTypes);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"molecularFormulaTypes", "SurfaceChemistry",
+				"molecularFormulaType", "otherMolecularFormulaType", true);
+	}
+
+	public void setInvitroCharacterizationDropdowns(HttpServletRequest request)
+			throws Exception {
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"cellLines", "Cytotoxicity", "cellLine", "otherCellLine", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"cellDeathMethods", "Cytotoxicity", "cellDeathMethod",
+				"otherCellDeathMethod", true);
+	}
+
+	public void persistPhysicalCharacterizationDropdowns(
+			HttpServletRequest request, PhysicalCharacterizationBean charBean)
+			throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Shape", "type",
+				"otherType", charBean.getShape().getType());
+		InitSetup.getInstance().persistLookup(request, "PhysicalState", "type",
+				"otherType", charBean.getShape().getType());
+		InitSetup.getInstance().persistLookup(request, "Solubility", "solvent",
+				"otherSolvent", charBean.getShape().getType());
+		for (SurfaceChemistry chem : charBean.getSurfaceBean()
+				.getSurfaceChemistryList()) {
+			InitSetup.getInstance().persistLookup(request, "SurfaceChemistry",
+					"molecularFormulaType", "otherMolecularFormulaType",
+					chem.getMolecularFormulaType());
+		}
+		setPhysicalCharacterizationDropdowns(request);
+	}
+
+	public void persistInvitroCharacterizationDropdowns(
+			HttpServletRequest request, InvitroCharacterizationBean charBean)
+			throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+				"cellDeathMethod", "otherCellDeathMethod",
+				charBean.getCellViability().getCellDeathMethod());
+		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+				"cellDeathMethod", "otherCellDeathMethod",
+				charBean.getCaspase3Activation().getCellDeathMethod());
+		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+				"cellLine", "otherCellLine",
+				charBean.getCellViability().getCellLine());
+		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+				"cellLine", "otherCellLine",
+				charBean.getCaspase3Activation().getCellLine());
+		setInvitroCharacterizationDropdowns(request);
+	}
+
+	public void persistCharacterizationDropdowns(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
+		for (DerivedBioAssayDataBean bioassay : charBean
+				.getDerivedBioAssayDataList()) {
+			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+					"otherType",
+					bioassay.getLabFileBean().getDomainFile().getType());
+			for (DerivedDatum datum : bioassay.getDatumList()) {
+				InitSetup.getInstance().persistLookup(request, datum.getName(),
+						"unit", "otherUnit", datum.getValueUnit());
+				InitSetup.getInstance().persistLookup(request, "DerivedDatum",
+						"valueType", "otherValueType", datum.getValueType());
+				InitSetup.getInstance().persistLookup(request,
+						charBean.getClassName(), "derivedDatumName",
+						"otherDerivedDatumName", datum.getName());
+			}
+		}
+		setCharactierizationDropDowns(request, charBean.getClassName());
 	}
 }

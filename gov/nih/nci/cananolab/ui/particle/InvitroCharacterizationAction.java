@@ -52,6 +52,11 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
 						.getDomainChar());
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		InitCharacterizationSetup.getInstance()
+				.persistInvitroCharacterizationDropdowns(request, charBean);
+
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addInvitroCharacterization");
@@ -62,7 +67,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		return forward;
 	}
 
-	protected CharacterizationBean setCharacterizationBean(
+	protected CharacterizationBean getCharacterizationBean(
 			DynaValidatorForm theForm, Characterization chara, UserBean user)
 			throws Exception {
 		InvitroCharacterizationBean charBean = new InvitroCharacterizationBean(
@@ -74,9 +79,11 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		return charBean;
 	}
 
-	protected void setLookups(HttpServletRequest request, String charClass)
+	protected void setLookups(HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		super.setLookups(request, charClass);
+		super.setLookups(request, charBean);
+		InitCharacterizationSetup.getInstance()
+				.setInvitroCharacterizationDropdowns(request);
 	}
 
 	protected void clearForm(DynaValidatorForm theForm) {

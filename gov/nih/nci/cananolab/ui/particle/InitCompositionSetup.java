@@ -90,6 +90,7 @@ public class InitCompositionSetup {
 			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
+		setNanoparticleEntityDropdowns(request);
 	}
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
@@ -150,6 +151,7 @@ public class InitCompositionSetup {
 			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
+		setFunctionalizingEntityDropdowns(request);
 	}
 
 	public void setChemicalAssociationDropdowns(HttpServletRequest request,
@@ -168,7 +170,8 @@ public class InitCompositionSetup {
 	}
 
 	public void persistChemicalAssociationDropdowns(HttpServletRequest request,
-			ChemicalAssociationBean assocBean) throws Exception {
+			ChemicalAssociationBean assocBean, Boolean hasFunctionalizingEntity)
+			throws Exception {
 		InitSetup.getInstance().persistLookup(request, "Attachment",
 				"bondType", "otherBondType",
 				assocBean.getAttachment().getBondType());
@@ -176,12 +179,15 @@ public class InitCompositionSetup {
 			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
+		setChemicalAssociationDropdowns(request, hasFunctionalizingEntity);
 	}
 
 	public void persistCompositionFileDropdowns(HttpServletRequest request,
 			LabFileBean fileBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 				"otherType", fileBean.getDomainFile().getType());
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"fileTypes", "LabFile", "type", "otherType", true);
 	}
 
 	public SortedSet<String> getFunctionTypes(HttpServletRequest request)
