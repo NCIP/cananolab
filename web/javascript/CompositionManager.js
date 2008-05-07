@@ -1,11 +1,17 @@
 
 function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
-	CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
+	var inclueBlock = document.getElementById("entityInclude");
+	if(entityType == 'metal particle' ||
+		entityType == 'quantum dot') {
+		inclueBlock.style.display = "none";
+	} else {
+		inclueBlock.style.display = "inline";
+		CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
+	}
 }
 function populatePage(pageData) {
 	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
-	async:false
 }
 function getComposingElementOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
@@ -28,7 +34,7 @@ function getBiopolymerOptions(selectEleId) {
 			dwr.util.addOptions('biopolymerType', data);
 			dwr.util.addOptions('biopolymerType', ['[Other]']);
 
-			}, async:false
+			}, async:true
 		});
 	}
 }
@@ -42,7 +48,7 @@ function getWallTypeOptions(selectEleId) {
 			dwr.util.removeAllOptions("wallType");
 			dwr.util.addOptions("wallType", [""]);
 			dwr.util.addOptions("wallType", data);
-		}, async:false
+		}, async:true
 		} );
 		
 	}
@@ -68,7 +74,7 @@ function getAntibodyTypeOptions(selectEleId) {
 				dwr.util.addOptions("antibodyType", [""]);
 				dwr.util.addOptions("antibodyType", data);
 				dwr.util.addOptions("antibodyType", ["[Other]"]);
-			}, async:false
+			}, async:true
 		});
 	}
 }
@@ -82,7 +88,7 @@ function getAntibodyIsotypeOptions(selectEleId) {
 				dwr.util.addOptions("antibodyIsotype", [""]);
 				dwr.util.addOptions("antibodyIsotype", data);
 				dwr.util.addOptions("antibodyIsotype", ["[Other]"]);
-			}, async:false
+			}, async:true
 		});
 	}
 }
