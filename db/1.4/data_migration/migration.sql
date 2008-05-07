@@ -103,7 +103,7 @@ INSERT INTO canano.protocol
 )
 SELECT protocol_pk_id,
 	protocol_name,
-	protocol_type,
+	LOWER(protocol_type),
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.protocol
@@ -1267,7 +1267,17 @@ SELECT distinct keyword_pk_id, name FROM keyword_temp;
 DROP TABLE keyword_file_temp;
 DROP TABLE keyword_temp;
 
+
+-- remove the leading '/' if there is one in the file_uri
+update canano.lab_file
+set file_uri = substring(file_uri, 2)
+where left(file_uri, 1) = '/'
+;
+
+
 SET FOREIGN_KEY_CHECKS = 1;
+
+
 
 -- csm tables
 INSERT INTO canano.csm_application ( 
