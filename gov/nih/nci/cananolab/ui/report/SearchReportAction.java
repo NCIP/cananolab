@@ -29,7 +29,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.4 2008-05-01 22:22:21 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.5 2008-05-07 10:30:03 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -99,7 +99,7 @@ public class SearchReportAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitReportSetup.getInstance().getReportCategories(request);
+		InitReportSetup.getInstance().setReportDropdowns(request);
 		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);

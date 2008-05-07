@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.9 2008-05-06 22:59:59 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.10 2008-05-07 10:30:02 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -70,18 +69,10 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		return forward;
 	}
 
-	private void setLookups(HttpServletRequest request) throws Exception {
-		InitReportSetup.getInstance().getReportCategories(request);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
-				request, user);
-	}
-
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setLookups(request);
+		InitReportSetup.getInstance().setReportDropdowns(request);
 		return mapping.getInputForward();
 	}
 
@@ -96,7 +87,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		FileService fileService = new FileService();
 		fileService.retrieveVisibility(reportBean, user);
 		theForm.set("file", reportBean);
-		setLookups(request);
+		InitReportSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.getInputForward();
@@ -118,7 +109,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		FileService fileService = new FileService();
 		fileService.retrieveVisibility(reportBean, user);
 		theForm.set("file", reportBean);
-		setLookups(request);
+		InitReportSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.findForward("view");
