@@ -23,13 +23,27 @@
 			<include method="getInstrumentAbbreviation" />
 			<include method="getDerivedDatumValueUnits" />
 		</create>
+		<create creator="new" javascript="ProtocolManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.service.protocol.ProtocolService" />
+			<include method="findProtocolFilesBy" />
+			<include method="findProtocolNames" />
+			<include method="findProtocolFileUriById" />
+		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean">
 			<param name="include" value="dataId, dataDisplayType" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
-			<param name="include" value="displayName, domainComposingElementId" />
+			<param name="include"
+				value="displayName, domainComposingElementId" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">
+			<param name="include"
+				value="domainFileId, domainFileVersion" />
 		</convert>
 	</allow>
 </dwr>
