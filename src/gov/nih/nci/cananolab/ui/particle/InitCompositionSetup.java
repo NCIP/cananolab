@@ -138,9 +138,15 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
 				"molecularFormulaType", "otherMolecularFormulaType",
 				entityBean.getDomainEntity().getMolecularFormulaType());
-		InitSetup.getInstance().persistLookup(request, "ActivationMethod",
-				"type", "otherType",
-				entityBean.getDomainEntity().getActivationMethod().getType());
+		if (entityBean.getDomainEntity().getActivationMethod() != null) {
+			InitSetup.getInstance().persistLookup(
+					request,
+					"ActivationMethod",
+					"type",
+					"otherType",
+					entityBean.getDomainEntity().getActivationMethod()
+							.getType());
+		}
 
 		for (FunctionBean functionBean : entityBean.getFunctions()) {
 			InitSetup.getInstance().persistLookup(request, "ImagingFunction",
