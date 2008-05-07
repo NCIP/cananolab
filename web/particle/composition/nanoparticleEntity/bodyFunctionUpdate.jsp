@@ -33,7 +33,7 @@
 			</tr>
 			<tr>
 				<td class="leftLabelWithTop" valign="top">
-					<strong>Function Type</strong>
+					<strong>Function Type*</strong>
 				</td>
 				<td class="labelWithTop" valign="top">
 					<html:select
