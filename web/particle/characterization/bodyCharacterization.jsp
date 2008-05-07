@@ -8,14 +8,15 @@
 	src="javascript/CharacterizationManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
-<script type="text/javascript"
-	src="javascript/ProtocolManager.js"></script>
+<script type="text/javascript" src="javascript/ProtocolManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
+<script type="text/javascript" src="javascript/CompositionManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
 
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-
 <html:form action="/${actionName}" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
@@ -150,4 +151,3 @@
 		</tr>
 	</table>
 </html:form>
-
