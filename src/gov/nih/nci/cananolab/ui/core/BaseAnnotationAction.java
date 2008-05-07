@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
-import gov.nih.nci.cananolab.ui.report.InitReportSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -76,9 +75,16 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		request.setAttribute("updateDataTree", "true");
 		String particleId = request.getParameter("particleId");
 		if (particleId == null) {
-			particleId = theForm.getString("particleId");
+			if (theForm.getMap().containsKey("particleSampleBean")) {
+				particleId = ((ParticleBean) theForm.get("particleSampleBean"))
+						.getDomainParticleSample().getId().toString();
+			} else {
+				particleId = theForm.getString("particleId");
+			}
 		}
-		InitReportSetup.getInstance().getReportCategories(request);
+		InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "reportCategories",
+						"Report", "category", "otherCategory", true);
 		return InitNanoparticleSetup.getInstance().getDataTree(particleId,
 				request);
 	}
