@@ -22,7 +22,7 @@
 						<html:text property="entity.smallMolecule.alternateName" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.smallMolecule.alternateName}&nbsp;
+						${functionalizingEntityForm.map.entity.smallMolecule.alternateName}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

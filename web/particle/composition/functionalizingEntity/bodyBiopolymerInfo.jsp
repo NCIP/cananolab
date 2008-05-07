@@ -30,7 +30,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.biopolymer.type}&nbsp;
+						${functionalizingEntityForm.map.entity.biopolymer.type}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -46,7 +46,7 @@
 							rows="3" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.biopolymer.sequence}&nbsp;
+						${functionalizingEntityForm.map.entity.biopolymer.sequence}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

@@ -30,7 +30,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.type}&nbsp;
+						${functionalizingEntityForm.map.entity.antibody.type}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -51,7 +51,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.isotype}&nbsp;
+						${functionalizingEntityForm.map.entity.antibody.isotype}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -72,7 +72,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.antibody.species}&nbsp;
+						${functionalizingEntityForm.map.entity.antibody.species}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
