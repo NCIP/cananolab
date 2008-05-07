@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.25 2008-05-02 21:13:34 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.26 2008-05-07 10:31:16 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.report.InitReportSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -62,13 +61,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		forward = mapping.findForward("update");
 		request.setAttribute("theParticle", particleSampleBean);
 		setupLookups(request);
-		// setupDataTree(theForm, request);
-		InitReportSetup.getInstance().getReportCategories(request);
-		request.setAttribute("updateDataTree", "true");
-		InitNanoparticleSetup.getInstance()
-				.getDataTree(
-						particleSampleBean.getDomainParticleSample().getId()
-								.toString(), request);
+		setupDataTree(theForm, request);
 		return forward;
 	}
 
