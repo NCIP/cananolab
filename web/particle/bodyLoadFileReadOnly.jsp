@@ -20,7 +20,7 @@
 							<td class="leftLabel">
 								<strong>File URL</strong>
 							</td>
-							<td class="rightLabel" colspan="2">
+							<td class="rightLabel" >
 								${param.externalUrl}&nbsp;
 							</td>
 						</c:when>
@@ -28,7 +28,7 @@
 							<td class="leftLabel">
 								<strong>Uploaded File</strong>
 							</td>
-							<td class="rightLabel" colspan="2">
+							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${param.fileImage eq 'true'}">
 						 				${param.fileTitle}<br>>
@@ -54,7 +54,7 @@
 					<td class="leftLabel">
 						<strong>File Type</strong>
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td class="rightLabel" >
 						${param.fileType }&nbsp;
 					</td>
 				</tr>
@@ -62,7 +62,7 @@
 					<td class="leftLabel">
 						<strong>File Title</strong>
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td class="rightLabel" >
 						${param.fileTitle }&nbsp;
 					</td>
 				</tr>
@@ -70,7 +70,7 @@
 					<td class="leftLabel" valign="top">
 						<strong>Keywords <em>(one word per line)</em> </strong>
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td class="rightLabel" >
 						${param.fileKeywordsStr }&nbsp;
 					</td>
 				</tr>
@@ -78,7 +78,7 @@
 					<td class="leftLabel" valign="top">
 						<strong>Visibility</strong>
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td class="rightLabel" >
 						${param.visibilityGroup }&nbsp;
 					</td>
 				</tr>
@@ -88,7 +88,7 @@
 					<td class="leftLabel">
 						The file is private.
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td class="rightLabel" >
 						&nbsp;
 					</td>
 				</tr>
