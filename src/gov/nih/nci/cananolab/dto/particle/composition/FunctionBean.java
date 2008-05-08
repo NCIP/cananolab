@@ -96,6 +96,9 @@ public class FunctionBean {
 	public void setupDomainFunction(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
+		if (className==null) {
+			domainFunction=new OtherFunction();
+		}
 		Class clazz = ClassUtils.getFullClass(className);
 		// if new function entry or switch function type
 		if (domainFunction == null
