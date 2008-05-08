@@ -6,17 +6,29 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.17 2008-05-07 10:31:16 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.18 2008-05-08 20:14:02 pansu Exp $ */
 
+import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,16 +58,46 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
+		ParticleBean particleBean = setupParticle(theForm, request);
+
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// setup domainFile for fileBeans
+		for (DerivedBioAssayDataBean bioassay : charBean
+				.getDerivedBioAssayDataList()) {
+			LabFileBean fileBean = bioassay.getLabFileBean();
+			String internalUri = InitSetup.getInstance()
+					.getFileUriFromFormFile(
+							fileBean.getUploadedFile(),
+							CaNanoLabConstants.FOLDER_PARTICLE,
+							particleBean.getDomainParticleSample().getName(),
+							InitSetup.getInstance().getDisplayName(
+									charBean.getClassName(),
+									request.getSession().getServletContext()));
+			fileBean.setInternalUri(internalUri);
+			fileBean.setupDomainFile(user.getLoginName());
+		}
 		charBean.setupDomainChar(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName());
-		ParticleBean particleBean = setupParticle(theForm, request);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
 						.getDomainChar());
+
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+
+		// save file data to file system and set visibility
+		FileService fileService = new FileService();
+		for (DerivedBioAssayDataBean bioassay : charBean
+				.getDerivedBioAssayDataList()) {
+			LabFileBean fileBean = bioassay.getLabFileBean();
+			fileService.writeFile(fileBean.getDomainFile(), fileBean
+					.getFileData());
+			authService.assignVisibility(fileBean.getDomainFile().getId()
+					.toString(), fileBean.getVisibilityGroups());
+		}
 
 		// save to other particles
 		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
@@ -64,8 +106,33 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			Characterization copy = charBean.getDomainCopy(copyData);
 			for (NanoparticleSample sample : otherSamples) {
 				charService.saveCharacterization(sample, copy);
+				// update copied filename and save content and set visibility
+
+				List<LabFile> files = new ArrayList<LabFile>();
+				for (DerivedBioAssayData bioassay : copy
+						.getDerivedBioAssayDataCollection()) {
+					files.add(bioassay.getLabFile());
+				}
+				Collections.sort(files,
+						new CaNanoLabComparators.LabFileDateComparator());
+				int i = 0;
+				for (LabFile file : files) {
+					LabFileBean origFileBean = charBean
+							.getDerivedBioAssayDataList().get(i)
+							.getLabFileBean();
+					String origUri = origFileBean.getDomainFile().getUri();
+					file.setUri(origUri.replaceAll(particleBean
+							.getDomainParticleSample().getName(), sample
+							.getName()));
+
+					fileService.writeFile(file, origFileBean.getFileData());
+					authService.assignVisibility(file.getId().toString(),
+							origFileBean.getVisibilityGroups());
+					i++;
+				}
 			}
 		}
+		
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
 		InitCharacterizationSetup.getInstance()
@@ -93,8 +160,8 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		return charBean;
 	}
 
-	protected void setLookups(HttpServletRequest request, CharacterizationBean charBean)
-			throws Exception {
+	protected void setLookups(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
 		super.setLookups(request, charBean);
 		InitCharacterizationSetup.getInstance()
 				.setPhysicalCharacterizationDropdowns(request);
