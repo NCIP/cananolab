@@ -169,17 +169,14 @@ public class FunctionalizingEntityBean {
 	}
 
 	public Antibody getAntibody() {
-		domainEntity = antibody;
 		return antibody;
 	}
 
 	public Biopolymer getBiopolymer() {
-		domainEntity = biopolymer;
 		return biopolymer;
 	}
 
 	public SmallMolecule getSmallMolecule() {
-		domainEntity = smallMolecule;
 		return smallMolecule;
 	}
 
@@ -246,8 +243,9 @@ public class FunctionalizingEntityBean {
 	public void setupDomainEntity(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
-		// take care of nanoparticle entities that don't have any special
-		// properties shown in the form, e.g. OtherFunctionalizingEntity
+		if (className == null) {
+			domainEntity = new OtherFunctionalizingEntity();
+		}
 		if (domainEntity == null) {
 			Class clazz = ClassUtils.getFullClass(className);
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
@@ -258,6 +256,12 @@ public class FunctionalizingEntityBean {
 		}
 		if (domainEntity instanceof OtherFunctionalizingEntity) {
 			((OtherFunctionalizingEntity) domainEntity).setType(type);
+		} else if (domainEntity instanceof Antibody) {
+			domainEntity = antibody;
+		} else if (domainEntity instanceof SmallMolecule) {
+			domainEntity = smallMolecule;
+		} else if (domainEntity instanceof Biopolymer) {
+			domainEntity = biopolymer;
 		}
 		domainEntity.setDescription(description);
 		domainEntity.setMolecularFormula(molecularFormula);

@@ -152,17 +152,14 @@ public class NanoparticleEntityBean {
 	}
 
 	public Dendrimer getDendrimer() {
-		domainEntity = dendrimer;
 		return dendrimer;
 	}
 
 	public Biopolymer getBiopolymer() {
-		domainEntity = biopolymer;
 		return biopolymer;
 	}
 
 	public CarbonNanotube getCarbonNanotube() {
-		domainEntity = carbonNanotube;
 		return carbonNanotube;
 	}
 
@@ -171,7 +168,6 @@ public class NanoparticleEntityBean {
 	}
 
 	public Emulsion getEmulsion() {
-		domainEntity = emulsion;
 		return emulsion;
 	}
 
@@ -180,17 +176,14 @@ public class NanoparticleEntityBean {
 	}
 
 	public Fullerene getFullerene() {
-		domainEntity = fullerene;
 		return fullerene;
 	}
 
 	public Liposome getLiposome() {
-		domainEntity = liposome;
 		return liposome;
 	}
 
 	public Polymer getPolymer() {
-		domainEntity = polymer;
 		return polymer;
 	}
 
@@ -208,9 +201,10 @@ public class NanoparticleEntityBean {
 
 	public void setupDomainEntity(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
-		// take care of nanoparticle entities that don't have any special
-		// properties shown in the form, e.g. Metal Particle
 		className = typeToClass.get(type);
+		if (className == null) {
+			domainEntity = new OtherNanoparticleEntity();
+		}
 		if (domainEntity == null) {
 			Class clazz = ClassUtils.getFullClass(className);
 			domainEntity = (NanoparticleEntity) clazz.newInstance();
@@ -224,6 +218,18 @@ public class NanoparticleEntityBean {
 		domainEntity.setDescription(description);
 		if (domainEntity instanceof OtherNanoparticleEntity) {
 			((OtherNanoparticleEntity) domainEntity).setType(type);
+		} else if (domainEntity instanceof Biopolymer) {
+			domainEntity=biopolymer;
+		} else if (domainEntity instanceof Dendrimer) {
+			domainEntity=dendrimer;
+		} else if (domainEntity instanceof CarbonNanotube) {
+			domainEntity=carbonNanotube;
+		} else if (domainEntity instanceof Liposome) {
+			domainEntity=liposome;
+		} else if (domainEntity instanceof Emulsion) {
+			domainEntity=emulsion;
+		} else if (domainEntity instanceof Fullerene) {
+			domainEntity=fullerene;
 		}
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
