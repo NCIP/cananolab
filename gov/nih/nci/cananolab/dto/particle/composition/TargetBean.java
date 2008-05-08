@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -77,16 +79,18 @@ public class TargetBean {
 	public void setupDomainTarget(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
-		if (className==null) {
-			domainTarget=new OtherTarget();
+		Class clazz = null;
+		if (className != null) {
+			clazz = ClassUtils.getFullClass(className);
+		} else {
+			clazz = OtherTarget.class;
 		}
-		Class clazz = ClassUtils.getFullClass(className);
 		if (domainTarget == null
-				|| !clazz.getCanonicalName().equals(
+				|| domainTarget != null
+				&& !clazz.getCanonicalName().equals(
 						domainTarget.getClass().getCanonicalName())) {
 			domainTarget = (Target) clazz.newInstance();
 		}
-
 		if (domainTarget instanceof OtherTarget) {
 			((OtherTarget) domainTarget).setType(type);
 		} else if (domainTarget instanceof Antigen) {

@@ -243,16 +243,14 @@ public class FunctionalizingEntityBean {
 	public void setupDomainEntity(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
+		Class clazz = null;
 		if (className == null) {
-			domainEntity = new OtherFunctionalizingEntity();
+			clazz = OtherFunctionalizingEntity.class;
+		} else {
+			clazz = ClassUtils.getFullClass(className);
 		}
 		if (domainEntity == null) {
-			Class clazz = ClassUtils.getFullClass(className);
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
-		}
-		if (domainEntity.getId() == null) {
-			domainEntity.setCreatedBy(createdBy);
-			domainEntity.setCreatedDate(new Date());
 		}
 		if (domainEntity instanceof OtherFunctionalizingEntity) {
 			((OtherFunctionalizingEntity) domainEntity).setType(type);
@@ -270,7 +268,10 @@ public class FunctionalizingEntityBean {
 		domainEntity.setValue(value);
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setActivationMethod(activationMethod);
-
+		if (domainEntity.getId() == null) {
+			domainEntity.setCreatedBy(createdBy);
+			domainEntity.setCreatedDate(new Date());
+		}
 		if (domainEntity.getFunctionCollection() != null) {
 			domainEntity.getFunctionCollection().clear();
 		} else {

@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.Attachment;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -62,20 +63,23 @@ public class ChemicalAssociationBean {
 
 	public void setupDomainAssociation(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
+		className = typeToClass.get(type);
+		className = typeToClass.get(type);
+		Class clazz = null;
+		if (className == null) {
+			clazz = OtherChemicalAssociation.class;
+		} else {
+			clazz = ClassUtils.getFullClass(className);
+		}
 		if (domainAssociation == null) {
-			className = typeToClass.get(type);
-			Class clazz = ClassUtils.getFullClass(className);
 			domainAssociation = (ChemicalAssociation) clazz.newInstance();
+		}
+		if (domainAssociation instanceof Attachment) {
+			domainAssociation = attachment;
 		}
 		if (domainAssociation.getId() == null) {
 			domainAssociation.setCreatedBy(createdBy);
 			domainAssociation.setCreatedDate(new Date());
-		}
-		attachment.setCreatedBy(domainAssociation.getCreatedBy());
-		attachment.setCreatedDate(domainAssociation.getCreatedDate());
-
-		if (className.equals("Attachment")) {
-			domainAssociation = attachment;
 		}
 		domainAssociation.setDescription(description);
 		associatedElementA.setupDomainElement(typeToClass, createdBy);
