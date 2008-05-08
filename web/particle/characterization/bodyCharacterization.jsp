@@ -46,7 +46,7 @@
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationInstrument.jsp" />
 				<jsp:include
-					page="/particle/characterization/physical/body${charClass}Info.jsp" />
+					page="/particle/characterization/physical/body${characterizationForm.map.achar.className}Info.jsp" />
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
@@ -68,24 +68,13 @@
 														onclick="javascript:addComponent(document.forms[0], '${actionName}', 'addDerivedBioAssayData')"><span
 														class="addLink">Add File/Derived Data</span> </a>
 												</td>
-
 												<td>
-													<c:choose>
-														<c:when
-															test="${actionName == 'physicalCharacterization' }">
-															<c:set var="formName"
-																value="physicalCharacterizationForm" />
-														</c:when>
-														<c:otherwise>
-															<c:set var="formName" value="invitroCharacterizationForm" />
-														</c:otherwise>
-													</c:choose>
 													<logic:iterate name="characterizationForm"
 														property="achar.derivedBioAssayDataList"
 														id="derivedBioAssayData" indexId="fileInd">
 														<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
 															<jsp:param name="fileInd" value="${fileInd}" />
-															<jsp:param name="form" value="${formName}" />
+															<jsp:param name="form" value="characterizationForm" />
 															<jsp:param name="action" value="${actionName}" />
 															<jsp:param name="removeCmd"
 																value="\'removeDerivedBioAssayData\'" />

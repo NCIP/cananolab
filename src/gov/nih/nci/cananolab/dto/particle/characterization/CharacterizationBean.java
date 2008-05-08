@@ -90,7 +90,9 @@ public class CharacterizationBean {
 						+ "_"
 						+ StringUtils.convertDateToString(new Date(),
 								"yyyyMMdd_HH-mm-ss-SSS"));
-		copy.getInstrumentConfiguration().setId(null);
+		if (copy.getInstrumentConfiguration() != null) {
+			copy.getInstrumentConfiguration().setId(null);
+		}
 		if (copy.getDerivedBioAssayDataCollection().isEmpty()) {
 			copy.setDerivedBioAssayDataCollection(null);
 		} else {
@@ -128,64 +130,53 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomainChar(Map<String, String> typeToClass,
-			String createdBy) {
-		try {
-			// take care of characterizations that don't have any special
-			// properties shown in the form, e.g. Size
-			if (domainChar == null) {
-				Class clazz = ClassUtils.getFullClass(className);
-				domainChar = (Characterization) clazz.newInstance();
-			}
-			if (domainChar.getId() == null
-					|| domainChar.getCreatedBy().equals(
-							CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
-				domainChar.setCreatedBy(createdBy);
-				domainChar.setCreatedDate(new Date());
-			}
-			domainChar.setDescription(description);
-			domainChar.setIdentificationName(viewTitle);
-			domainChar.setSource(characterizationSource);
+			String createdBy) throws Exception {
+		// take care of characterizations that don't have any special
+		// properties shown in the form, e.g. Size
+		if (domainChar == null) {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainChar = (Characterization) clazz.newInstance();
+		}
+		if (domainChar.getId() == null
+				|| domainChar.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainChar.setCreatedBy(createdBy);
+			domainChar.setCreatedDate(new Date());
+		}
+		domainChar.setDescription(description);
+		domainChar.setIdentificationName(viewTitle);
+		domainChar.setSource(characterizationSource);
 
-			if (instrumentConfig.getInstrument() != null
-					&& instrumentConfig.getInstrument().getType() != null
-					&& instrumentConfig.getInstrument().getType().length() > 0) {
-				if (instrumentConfig.getId() == null) {
-					instrumentConfig.setCreatedBy(createdBy);
-					instrumentConfig.setCreatedDate(new Date());
-				}
-				domainChar.setInstrumentConfiguration(instrumentConfig);
+		if (instrumentConfig.getInstrument() != null
+				&& instrumentConfig.getInstrument().getType() != null
+				&& instrumentConfig.getInstrument().getType().length() > 0) {
+			if (instrumentConfig.getId() == null) {
+				instrumentConfig.setCreatedBy(createdBy);
+				instrumentConfig.setCreatedDate(new Date());
 			}
-			// domainChar
-			// .setProtocolFile(protocolFileBean.getDomainProtocolFile());
-			if (domainChar.getDerivedBioAssayDataCollection() != null) {
-				domainChar.getDerivedBioAssayDataCollection().clear();
-			} else {
-				domainChar
-						.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+			domainChar.setInstrumentConfiguration(instrumentConfig);
+		}
+		// domainChar
+		// .setProtocolFile(protocolFileBean.getDomainProtocolFile());
+		if (domainChar.getDerivedBioAssayDataCollection() != null) {
+			domainChar.getDerivedBioAssayDataCollection().clear();
+		} else {
+			domainChar
+					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+		}
+		// set createdBy and createdDate
+		for (DerivedBioAssayDataBean bioAssayData : derivedBioAssayDataList) {
+			if (bioAssayData.getDomainBioAssayData().getId() == null) {
+				bioAssayData.getDomainBioAssayData().setCreatedBy(createdBy);
+				bioAssayData.getDomainBioAssayData().setCreatedDate(new Date());
 			}
-			// set createdBy and createdDate
-			for (DerivedBioAssayDataBean bioAssayData : derivedBioAssayDataList) {
-				if (bioAssayData.getDomainBioAssayData().getId() == null) {
-					bioAssayData.getDomainBioAssayData()
-							.setCreatedBy(createdBy);
-					bioAssayData.getDomainBioAssayData().setCreatedDate(
-							new Date());
-					domainChar.getDerivedBioAssayDataCollection().add(
-							bioAssayData.getDomainBioAssayData());
-					for (DerivedDatum datum : bioAssayData.getDatumList()) {
-						if (datum.getId() == null) {
-							datum.setCreatedBy(createdBy);
-							datum.setCreatedDate(new Date());
-						}
-					}
-				}
-			}
-			if (protocolFileBean.getDomainFile().getId() != null) {
-				domainChar.setProtocolFile((ProtocolFile) protocolFileBean
-						.getDomainFile());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			bioAssayData.setupDomainBioAssayData(typeToClass, createdBy);
+			domainChar.getDerivedBioAssayDataCollection().add(
+					bioAssayData.getDomainBioAssayData());
+		}
+		if (protocolFileBean.getDomainFile().getId() != null) {
+			domainChar.setProtocolFile((ProtocolFile) protocolFileBean
+					.getDomainFile());
 		}
 	}
 
