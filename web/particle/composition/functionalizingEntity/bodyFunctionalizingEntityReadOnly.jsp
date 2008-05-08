@@ -108,11 +108,12 @@
 						<c:set var="entityType"
 							value="${functionalizingEntityForm.map.entity.type}" scope="page" />
 						<%
-									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-									.getInstance().getObjectName(
-									(String) pageContext.getAttribute("entityType"),
-									application);
-							pageContext.setAttribute("entityClass", entityClass);
+							String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+											.getInstance().getObjectName(
+													(String) pageContext
+															.getAttribute("entityType"),
+													application);
+									pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
 							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />
@@ -163,11 +164,11 @@
 
 															</td>
 															<td class="labelWithTop" valign="top">
-																<strong style="${modalityDisplay }"
-																	id="modalityStrong_${ind}">Modality Type </strong>&nbsp;
+																<strong style="" id="modalityStrong_${ind}">Modality
+																	Type </strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="${modalityDisplay }">
+																<div id="modalityDiv_${ind}" style="">
 																	${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}&nbsp;
 
 																</div>
@@ -210,47 +211,41 @@
 					width="100%" align="center" summary="" border="0">
 					<tbody>
 						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
+							<td class="formTitle" >
 								<div align="justify" id="peFileTitle">
 									Functionalizing Entity File Information
 								</div>
 							</td>
 						</tr>
 						<tr>
-							<td class="completeLabel" colspan="4">
-								<table border="0" width="100%">
-									<tr>
-										<td id="fileTd">
-											<logic:iterate name="functionalizingEntityForm"
-												property="entity.files" id="entityFile" indexId="fileInd">
-												<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
-													<jsp:param name="fileInd" value="${fileInd}" />
-													<jsp:param name="action" value="functionalizingEntity" />
-													<jsp:param name="domainFile"
-														value="entity.files[${fileInd}].domainFile" />
-													<jsp:param name="fileId"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
-													<jsp:param name="fileUri"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileType"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.type}" />
-													<jsp:param name="fileTitle"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
-													<jsp:param name="fileKeywordsStr"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
-													<jsp:param name="fileVisibilityGroups"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
-													<jsp:param name="uriExternal"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
-													<jsp:param name="fileImage"
-														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
-												</jsp:include>
+							<td class="completeLabel" >
+								<logic:iterate name="functionalizingEntityForm"
+									property="entity.files" id="entityFile" indexId="fileInd">
+									<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
+										<jsp:param name="fileInd" value="${fileInd}" />
+										<jsp:param name="action" value="functionalizingEntity" />
+										<jsp:param name="domainFile"
+											value="entity.files[${fileInd}].domainFile" />
+										<jsp:param name="fileId"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.id}" />
+										<jsp:param name="fileUri"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+										<jsp:param name="fileType"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.type}" />
+										<jsp:param name="fileTitle"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
+										<jsp:param name="fileKeywordsStr"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
+										<jsp:param name="fileVisibilityGroups"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
+										<jsp:param name="uriExternal"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
+										<jsp:param name="fileImage"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
+									</jsp:include>
 
-												<br>
-											</logic:iterate>
-										</td>
-									</tr>
-								</table>
+									<br>
+								</logic:iterate>
 							</td>
 						</tr>
 					</tbody>
