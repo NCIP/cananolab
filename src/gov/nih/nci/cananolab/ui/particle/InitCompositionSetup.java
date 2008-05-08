@@ -50,6 +50,10 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"composingElementUnits", "ComposingElement", "valueUnit",
 				"otherValueUnit", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"ceMolecularFormulaTypes",
+				"ComposingElement", "molecularFormulaType",
+				"otherMolecularFormulaType", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");
@@ -106,14 +110,16 @@ public class InitCompositionSetup {
 				"activationMethods", "ActivationMethod", "type", "otherType",
 				true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"composingElementUnits", "ComposingElement", "valueUnit",
-				"otherValueUnit", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"functionalizingEntityUnits", "FunctionalizingEntity",
 				"valueUnit", "otherValueUnit", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"modalityTypes", "ImagingFunction", "modality",
 				"otherModality", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"feMolecularFormulaTypes",
+				"FunctionalizingEntity", "molecularFormulaType",
+				"otherMolecularFormulaType", true);
+
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"antigenSpecies", "Antigen", "species");
@@ -133,20 +139,14 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
 		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
-				"valueUnit", "otherValueUnit",
-				entityBean.getDomainEntity().getValueUnit());
+				"valueUnit", "otherValueUnit", entityBean.getValueUnit());
 		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
 				"molecularFormulaType", "otherMolecularFormulaType",
-				entityBean.getDomainEntity().getMolecularFormulaType());
-		if (entityBean.getDomainEntity().getActivationMethod() != null) {
-			InitSetup.getInstance().persistLookup(
-					request,
-					"ActivationMethod",
-					"type",
-					"otherType",
-					entityBean.getDomainEntity().getActivationMethod()
-							.getType());
-		}
+				entityBean.getMolecularFormulaType());
+		InitSetup
+				.getInstance()
+				.persistLookup(request, "ActivationMethod", "type",
+						"otherType", entityBean.getActivationMethod().getType());
 
 		for (FunctionBean functionBean : entityBean.getFunctions()) {
 			InitSetup.getInstance().persistLookup(request, "ImagingFunction",
