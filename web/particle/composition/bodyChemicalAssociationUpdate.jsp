@@ -307,6 +307,8 @@ function confirmDeletion()
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"
 														value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
+													<jsp:param name="fileUriExternal"
+														value="${chemicalAssociationForm.map.entity.files[fileInd].domainFile.uriExternal}" />
 												</jsp:include>
 
 												<br>

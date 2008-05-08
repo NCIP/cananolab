@@ -344,6 +344,8 @@ function confirmDeletion()
 														value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"
 														value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
+													<jsp:param name="fileUriExternal"
+														value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
 												</jsp:include>
 
 												<br>

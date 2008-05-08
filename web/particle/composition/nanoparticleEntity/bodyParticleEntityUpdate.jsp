@@ -294,6 +294,8 @@ function confirmDeletion()
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
 													<jsp:param name="fileImage"
 														value="${nanoparticleEntityForm.map.entity.files[fileInd].image}" />
+													<jsp:param name="fileUriExternal"
+														value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
 												</jsp:include>
 												<br>
 											</logic:iterate>

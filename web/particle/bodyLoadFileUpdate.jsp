@@ -19,7 +19,16 @@
 		</tr>
 		<c:choose>
 			<c:when test="${param.fileHidden eq 'false' }">
-
+				<c:choose>
+					<c:when test="${param.fileUriExternal eq 'true' }">
+						<c:set var="linkDisplay" value="display: inline" />
+						<c:set var="loadDisplay" value="display: none" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="linkDisplay" value="display: none" />
+						<c:set var="loadDisplay" value="display: inline" />
+					</c:otherwise>
+				</c:choose>
 				<tr>
 					<td class="leftLabel">
 						<html:radio styleId="external_${param.fileInd }"
@@ -34,12 +43,12 @@
 						<strong>Enter File URL</strong>
 					</td>
 					<td class="rightLabel" colspan="3">
-						<span id="load_${param.fileInd }"> <html:file
+						<span id="load_${param.fileInd }" style="${loadDisplay }"> <html:file
 								property="${param.fileBean}.uploadedFile" size="60" />
 							&nbsp;&nbsp; </span>
 						<br>
 						<br>
-						<span id="link_${param.fileInd }" style="display: none"><html:text
+						<span id="link_${param.fileInd }" style="${linkDisplay }"><html:text
 								property="${param.fileBean}.externalUrl" size="60" /> </span>&nbsp;
 					</td>
 					<c:if test="${!empty param.fileUri }">
