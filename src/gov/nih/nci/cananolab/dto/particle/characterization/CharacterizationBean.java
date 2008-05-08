@@ -247,8 +247,11 @@ public class CharacterizationBean {
 		return className;
 	}
 
-	public void setClassName(String className) {
+	public void setClassName(String className) throws Exception {
 		this.className = className;
+		if (domainChar == null) {
+			Class clazz = ClassUtils.getFullClass(className);
+			domainChar = (Characterization) clazz.newInstance();
+		}
 	}
-
 }
