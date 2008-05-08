@@ -424,9 +424,6 @@ public class InitNanoparticleSetup {
 				CaNanoLabConstants.BOOLEAN_CHOICES);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "LabFile", "type", "otherType", true);
-		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
-				"molecularFormulaTypes", "ComposingElement",
-				"molecularFormulaType");
 	}
 
 	// public void setProtocolFilesByCharType(HttpSession session, String
