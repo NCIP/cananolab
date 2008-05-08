@@ -889,10 +889,13 @@ public class AuthorizationService {
 	public boolean isAllowedAtLeastOne(AuthorizationService auth,
 			Collection<String> dataCollection, UserBean user) throws Exception {
 		List<String> publicData = auth.getPublicData();
-		dataCollection.removeAll(publicData);
-		if (dataCollection.size() == 0) {
-			return true;
-		} else if (user != null) {
+		for (String data : publicData) {
+			if (dataCollection.contains(data)) {
+				return true;
+			}
+		}
+
+		if (user != null) {
 			for (String data : dataCollection) {
 				if (auth.checkReadPermission(user, data)) {
 					return true;
@@ -901,5 +904,4 @@ public class AuthorizationService {
 		}
 		return false;
 	}
-
 }
