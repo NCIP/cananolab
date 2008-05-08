@@ -88,6 +88,17 @@ public class NanoparticleCharacterizationService {
 		achar.setNanoparticleSample(particleSample);
 		particleSample.getCharacterizationCollection().add(achar);
 
+		// load existing instrument
+		if (achar.getInstrumentConfiguration() != null
+				&& achar.getInstrumentConfiguration().getInstrument() != null) {
+			Instrument dbInstrument = findInstrumentBy(achar
+					.getInstrumentConfiguration().getInstrument().getType(),
+					achar.getInstrumentConfiguration().getInstrument()
+							.getManufacturer());
+			if (dbInstrument != null) {
+				achar.getInstrumentConfiguration().setInstrument(dbInstrument);
+			}
+		}
 		appService.saveOrUpdate(achar);
 	}
 
@@ -173,6 +184,31 @@ public class NanoparticleCharacterizationService {
 		return instruments;
 	}
 
+	public Instrument findInstrumentBy(String instrumentType,
+			String manufacturer) throws ParticleCharacterizationException {
+		Instrument instrument = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
+					.add(Property.forName("type").eq(instrumentType)).add(
+							Property.forName("manufacturer").eq(manufacturer));
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				instrument = (Instrument) obj;
+
+			}
+			return instrument;
+		} catch (Exception e) {
+			String err = "Problem to retrieve instrument.";
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err);
+		}
+	}
+
+	// for dwr ajax
 	public String getInstrumentAbbreviation(String instrumentType)
 			throws ParticleCharacterizationException {
 		String instrumentAbbreviation = null;
@@ -181,7 +217,8 @@ public class NanoparticleCharacterizationService {
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
 					"select distinct instrument.abbreviation from gov.nih.nci.cananolab.domain.common.Instrument instrument where instrument.type='"
-							+ instrumentType + "'");
+							+ instrumentType
+							+ "' and instrument.abbreviation!=null");
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				instrumentAbbreviation = (String) obj;
@@ -246,7 +283,8 @@ public class NanoparticleCharacterizationService {
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
 			String particleName, String className, UserBean user)
 			throws ParticleCharacterizationException {
-		CharacterizationSummaryBean charSummary = new CharacterizationSummaryBean(className);
+		CharacterizationSummaryBean charSummary = new CharacterizationSummaryBean(
+				className);
 		try {
 			SortedSet<Characterization> charas = findParticleCharacterizationsByClass(
 					particleName, className);
@@ -307,7 +345,8 @@ public class NanoparticleCharacterizationService {
 			FileService fileService = new FileService();
 			for (DerivedBioAssayDataBean bioAssayData : charBean
 					.getDerivedBioAssayDataList()) {
-				fileService.retrieveVisibility(bioAssayData.getLabFileBean(), user);
+				fileService.retrieveVisibility(bioAssayData.getLabFileBean(),
+						user);
 			}
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "
