@@ -37,7 +37,7 @@
 		</set>
 		<subclass
 			name="gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity"
-			discriminator-value="OtherParticleEntity">
+			discriminator-value="OtherNanoparticleEntity">
 			<join table="other_nanoparticle_entity">
 				<key column="other_nanoparticle_entity_pk_id" />
 				<!-- Attributes mapping for the OtherNanoparticleEntity class -->
