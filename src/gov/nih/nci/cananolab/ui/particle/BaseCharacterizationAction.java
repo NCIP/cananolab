@@ -48,6 +48,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		clearForm(theForm);
+		// characterizationForm is either physicalCharacterizationForm or
+		// invitroCharacterizationForm to use in bodyCharacterization.jsp
 		request.getSession().setAttribute("characterizationForm", theForm);
 		setupParticle(theForm, request);
 		// set charclass
@@ -64,12 +66,13 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 
 	abstract protected void clearForm(DynaValidatorForm theForm);
 
-	protected void setLookups(HttpServletRequest request, CharacterizationBean charBean)
-			throws Exception {
+	protected void setLookups(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, charBean.getClassName());
-		InitProtocolSetup.getInstance().getProtocolFilesByChar(request, charBean);
+		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
+				charBean);
 	}
 
 	protected abstract CharacterizationBean getCharacterizationBean(
@@ -81,11 +84,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
+		request.getSession().setAttribute("characterizationForm", theForm);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user);
 		setLookups(request, charBean);
+		// clear copy to otherParticles
+		theForm.set("otherParticles", new String[0]);
+
 		return mapping.getInputForward();
 	}
 
