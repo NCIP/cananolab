@@ -5,9 +5,12 @@ import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -113,7 +116,8 @@ public class NanoparticleSampleService {
 	 * sample
 	 * 
 	 * @param particleSample
-	 * @throws Exception
+	 * @throws ParticleException,
+	 *             DuplicateEntriesException
 	 */
 	public void saveNanoparticleSample(NanoparticleSample particleSample)
 			throws ParticleException, DuplicateEntriesException {
@@ -155,23 +159,26 @@ public class NanoparticleSampleService {
 
 	/**
 	 * 
-	 * @param particleSource
+	 * @param particleSources
 	 * @param nanoparticleEntityClassNames
+	 * @param otherNanoparticleTypes
 	 * @param functionalizingEntityClassNames
+	 * @param otherFunctionalizingEntityTypes
 	 * @param functionClassNames
+	 * @param otherFunctionTypes
 	 * @param characterizationClassNames
-	 * @param keywords
-	 * @param summaries
-	 * @param user
+	 * @param wordList
 	 * @return
 	 * @throws ParticleException
-	 * @throws CaNanoLabSecurityException
 	 */
 	public List<ParticleBean> findNanoparticleSamplesBy(
 			String[] particleSources, String[] nanoparticleEntityClassNames,
+			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
-			String[] functionClassNames, String[] characterizationClassNames,
-			String[] wordList) throws ParticleException {
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes,
+			String[] characterizationClassNames, String[] wordList)
+			throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
 			DetachedCriteria crit = DetachedCriteria
@@ -251,12 +258,13 @@ public class NanoparticleSampleService {
 				particles.add(new ParticleBean(particle));
 			}
 			List<ParticleBean> functionFilteredParticles = filterByFunctions(
-					functionClassNames, particles);
+					functionClassNames, otherFunctionTypes, particles);
 			List<ParticleBean> characterizationFilteredParticles = filterByCharacterizations(
 					characterizationClassNames, functionFilteredParticles);
 			List<ParticleBean> theParticles = filterByCompositions(
-					nanoparticleEntityClassNames,
+					nanoparticleEntityClassNames, otherNanoparticleTypes,
 					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes,
 					characterizationFilteredParticles);
 			Collections.sort(theParticles,
 					new CaNanoLabComparators.ParticleBeanComparator());
@@ -269,7 +277,7 @@ public class NanoparticleSampleService {
 	}
 
 	private List<ParticleBean> filterByFunctions(String[] functionClassNames,
-			List<ParticleBean> particles) {
+			String[] otherFunctionTypes, List<ParticleBean> particles) {
 		if (functionClassNames != null && functionClassNames.length > 0) {
 			List<ParticleBean> filteredList = new ArrayList<ParticleBean>();
 			for (ParticleBean particle : particles) {
@@ -278,6 +286,12 @@ public class NanoparticleSampleService {
 				for (String func : functionClassNames) {
 					// if at least one function type matches, keep the particle
 					if (storedFunctions.contains(func)) {
+						filteredList.add(particle);
+						break;
+					}
+				}
+				for (String other : otherFunctionTypes) {
+					if (storedFunctions.contains(other)) {
 						filteredList.add(particle);
 						break;
 					}
@@ -313,7 +327,9 @@ public class NanoparticleSampleService {
 
 	private List<ParticleBean> filterByCompositions(
 			String[] nanoparticleEntityClassNames,
+			String[] otherNanoparticleEntityTypes,
 			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
 			List<ParticleBean> particles) {
 
 		List<ParticleBean> filteredList1 = new ArrayList<ParticleBean>();
@@ -325,6 +341,13 @@ public class NanoparticleSampleService {
 				for (String entity : nanoparticleEntityClassNames) {
 					// if at least one function type matches, keep the particle
 					if (storedEntities.contains(entity)) {
+						filteredList1.add(particle);
+						break;
+					}
+				}
+				for (String other : otherNanoparticleEntityTypes) {
+					// if at least one function type matches, keep the particle
+					if (storedEntities.contains(other)) {
 						filteredList1.add(particle);
 						break;
 					}
@@ -342,6 +365,13 @@ public class NanoparticleSampleService {
 				for (String entity : functionalizingEntityClassNames) {
 					// if at least one function type matches, keep the particle
 					if (storedEntities.contains(entity)) {
+						filteredList2.add(particle);
+						break;
+					}
+				}
+				for (String other : otherFunctionalizingEntityTypes) {
+					// if at least one function type matches, keep the particle
+					if (storedEntities.contains(other)) {
 						filteredList2.add(particle);
 						break;
 					}
@@ -534,6 +564,12 @@ public class NanoparticleSampleService {
 		return storedChars;
 	}
 
+	/**
+	 * Return all stored functionalizing entity class names.  In case of OtherFunctionalizingEntity,
+	 * store the OtherFunctionalizingEntity type
+	 * @param particleSample
+	 * @return
+	 */
 	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
 			NanoparticleSample particleSample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
@@ -544,13 +580,24 @@ public class NanoparticleSampleService {
 			for (FunctionalizingEntity entity : particleSample
 					.getSampleComposition()
 					.getFunctionalizingEntityCollection()) {
-				storedEntities.add(ClassUtils.getShortClassName(entity
-						.getClass().getCanonicalName()));
+				if (entity instanceof OtherFunctionalizingEntity) {
+					storedEntities.add(((OtherFunctionalizingEntity) entity)
+							.getType());
+				} else {
+					storedEntities.add(ClassUtils.getShortClassName(entity
+							.getClass().getCanonicalName()));
+				}
 			}
 		}
 		return storedEntities;
 	}
 
+	/**
+	 * Return all stored function class names.  In case of OtherFunction,
+	 * store the otherFunction type
+	 * @param particleSample
+	 * @return
+	 */
 	public SortedSet<String> getStoredFunctionClassNames(
 			NanoparticleSample particleSample) {
 		SortedSet<String> storedFunctions = new TreeSet<String>();
@@ -565,9 +612,14 @@ public class NanoparticleSampleService {
 							.getComposingElementCollection()) {
 						for (Function function : element
 								.getInherentFunctionCollection()) {
-							storedFunctions.add(ClassUtils
-									.getShortClassName(function.getClass()
-											.getCanonicalName()));
+							if (function instanceof OtherFunction) {
+								storedFunctions.add(((OtherFunction) function)
+										.getType());
+							} else {
+								storedFunctions.add(ClassUtils
+										.getShortClassName(function.getClass()
+												.getCanonicalName()));
+							}
 						}
 					}
 				}
@@ -578,9 +630,14 @@ public class NanoparticleSampleService {
 						.getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
 					for (Function function : entity.getFunctionCollection()) {
-						storedFunctions.add(ClassUtils
-								.getShortClassName(function.getClass()
-										.getCanonicalName()));
+						if (function instanceof OtherFunction) {
+							storedFunctions.add(((OtherFunction) function)
+									.getType());
+						} else {
+							storedFunctions.add(ClassUtils
+									.getShortClassName(function.getClass()
+											.getCanonicalName()));
+						}
 					}
 				}
 			}
@@ -588,6 +645,12 @@ public class NanoparticleSampleService {
 		return storedFunctions;
 	}
 
+	/**
+	 * Return all stored nanoparticle entity class names.  In case of OtherNanoparticleEntity,
+	 * store the otherNanoparticleEntity type
+	 * @param particleSample
+	 * @return
+	 */
 	public SortedSet<String> getStoredNanoparticleEntityClassNames(
 			NanoparticleSample particleSample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
@@ -597,8 +660,13 @@ public class NanoparticleSampleService {
 						.getNanoparticleEntityCollection() != null) {
 			for (NanoparticleEntity entity : particleSample
 					.getSampleComposition().getNanoparticleEntityCollection()) {
-				storedEntities.add(ClassUtils.getShortClassName(entity
-						.getClass().getCanonicalName()));
+				if (entity instanceof OtherNanoparticleEntity) {
+					storedEntities.add(((OtherNanoparticleEntity) entity)
+							.getType());
+				} else {
+					storedEntities.add(ClassUtils.getShortClassName(entity
+							.getClass().getCanonicalName()));
+				}
 			}
 		}
 		return storedEntities;
