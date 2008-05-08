@@ -54,17 +54,17 @@
 				</c:if>
 				<c:if test="${canCreateProtocol eq 'true'}">
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
-						coords="270,65,330,100" alt="rectangle" />
+						coords="275,70,370,105" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateSample eq 'true'}">
 					<area href="createSample.do?dispatch=setup&page=0" shape="rect"
-						coords="270,120,330,150" alt="rectangle" />
+						coords="275,110,370,160" alt="rectangle" />
 					<area href="createAliquot.do?dispatch=setup&page=0" shape="rect"
-						coords="370,120,430,150" alt="rectangle" />
+						coords="360,460,460,490" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateReport eq 'true'}">
 					<area href="submitReport.do?dispatch=setup&page=0" shape="rect"
-						coords="330,170,400,200" alt="rectangle" />
+						coords="330,170,460,490" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
 					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
