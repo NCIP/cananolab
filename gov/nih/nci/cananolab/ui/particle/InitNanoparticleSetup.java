@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalC
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.SortableName;
@@ -287,12 +288,19 @@ public class InitNanoparticleSetup {
 								"chemicalAssociation", association
 										.getCreatedBy(), association
 										.getCreatedDate());
-						dataBean.setDataClassName(ClassUtils
-								.getShortClassName(association.getClass()
-										.getCanonicalName()));
-						dataBean.setDataDisplayType(InitSetup.getInstance()
-								.getDisplayName(dataBean.getDataClassName(),
-										appContext));
+						if (association instanceof OtherChemicalAssociation) {
+							dataBean
+									.setDataDisplayType(((OtherChemicalAssociation) association)
+											.getType());
+						} else {
+							dataBean.setDataClassName(ClassUtils
+									.getShortClassName(association.getClass()
+											.getCanonicalName()));
+							dataBean.setDataDisplayType(InitSetup.getInstance()
+									.getDisplayName(
+											dataBean.getDataClassName(),
+											appContext));
+						}
 						dataBean.setViewTitle(dataBean.getDataDisplayType());
 						adataBeans.add(dataBean);
 					}
