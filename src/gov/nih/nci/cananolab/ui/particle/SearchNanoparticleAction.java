@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.14 2008-05-01 05:32:45 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.15 2008-05-08 10:55:53 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -17,7 +17,9 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,28 +47,46 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 		String[] nanoparticleEntityTypes = (String[]) theForm
 				.get("nanoparticleEntityTypes");
-		// convert nanoparticle entity display names into short class names
+		// convert nanoparticle entity display names into short class names and
+		// other types
 		String[] nanoparticleEntityClassNames = new String[nanoparticleEntityTypes.length];
+		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
-			nanoparticleEntityClassNames[i] = InitSetup.getInstance()
-					.getObjectName(nanoparticleEntityTypes[i],
-							session.getServletContext());
+			String className = InitSetup.getInstance().getObjectName(
+					nanoparticleEntityTypes[i], session.getServletContext());
+			if (className.length() == 0) {
+				className = "OtherNanoparticleEntity";
+				otherNanoparticleEntityTypes.add(nanoparticleEntityTypes[i]);
+			}
+			nanoparticleEntityClassNames[i] = className;
 		}
 		String[] functionalizingEntityTypes = (String[]) theForm
 				.get("functionalizingEntityTypes");
 		// convert functionalizing entity display names into short class names
+		// and other types
 		String[] functionalizingEntityClassNames = new String[functionalizingEntityTypes.length];
+		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-			functionalizingEntityClassNames[i] = InitSetup.getInstance()
-					.getObjectName(functionalizingEntityTypes[i],
-							session.getServletContext());
+			String className = InitSetup.getInstance().getObjectName(
+					functionalizingEntityTypes[i], session.getServletContext());
+			if (className.length() == 0) {
+				className = "OtherFunctionalizingEntity";
+				otherFunctionalizingTypes.add(functionalizingEntityTypes[i]);
+			}
+			functionalizingEntityClassNames[i] = className;
 		}
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
-		// convert function display names into short class names
+		// convert function display names into short class names and other types
 		String[] functionClassNames = new String[functionTypes.length];
+		List<String> otherFunctionTypes = new ArrayList<String>();
 		for (int i = 0; i < functionTypes.length; i++) {
-			functionClassNames[i] = InitSetup.getInstance().getObjectName(
+			String className = InitSetup.getInstance().getObjectName(
 					functionTypes[i], session.getServletContext());
+			if (className.length() == 0) {
+				className = "OtherFunction";
+				otherFunctionTypes.add(functionTypes[i]);
+			}
+			functionClassNames[i] = className;
 		}
 		String[] characterizations = (String[]) theForm
 				.get("characterizations");
@@ -86,8 +106,11 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
 				particleSources, nanoparticleEntityClassNames,
-				functionalizingEntityClassNames, functionClassNames,
-				charaClassNames, words);
+				otherNanoparticleEntityTypes.toArray(new String[0]),
+				functionalizingEntityClassNames, otherFunctionalizingTypes
+						.toArray(new String[0]), functionClassNames,
+				otherFunctionTypes.toArray(new String[0]), charaClassNames,
+				words);
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
 		// set visibility
 		for (ParticleBean particle : particles) {
@@ -122,7 +145,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);
 		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
-		InitCompositionSetup.getInstance().getChemicalAssociationTypes(request);
 		return mapping.getInputForward();
 	}
 
