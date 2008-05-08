@@ -81,12 +81,20 @@ public class NanoparticleDecorator extends TableDecorator {
 		for (String name : functionalizingEntityClassNames) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
-			compEntityNames.add(displayName);
+			if (displayName.length() == 0) {
+				compEntityNames.add(name);
+			} else {
+				compEntityNames.add(displayName);
+			}
 		}
 		for (String name : nanoparticleEntityClassNames) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
-			compEntityNames.add(displayName);
+			if (displayName.length() == 0) {
+				compEntityNames.add(name);
+			} else {
+				compEntityNames.add(displayName);
+			}
 		}
 		return StringUtils.join(compEntityNames, "<br>");
 	}
