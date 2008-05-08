@@ -21,6 +21,7 @@ public class ReportBean extends LabFileBean {
 	public ReportBean() {
 		super();
 		domainFile = new Report();
+		domainFile.setUriExternal(false);
 	}
 
 	public ReportBean(Report report) {
