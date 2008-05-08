@@ -89,7 +89,7 @@ function confirmDeletion()
 								property="entity.molecularFormulaType"
 								onchange="javascript:callPrompt('Molecular Formula Type', 'mfType'); ">
 								<option value=""></option>
-								<html:options name="molecularFormulaTypes" />
+								<html:options name="feMolecularFormulaTypes" />
 								<option value="other">
 									[Other]
 								</option>
@@ -116,7 +116,7 @@ function confirmDeletion()
 							<html:select styleId="feUnit" property="entity.valueUnit"
 								onchange="javascript:callPrompt('Value Unit', 'feUnit');">
 								<option value=""></option>
-								<html:options name="composingElementUnits" />
+								<html:options name="functionalizingEntityUnits" />
 								<option value="other">
 									[Other]
 								</option>
