@@ -96,22 +96,22 @@ public class FunctionBean {
 	public void setupDomainFunction(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
-		if (className==null) {
-			domainFunction=new OtherFunction();
+		Class clazz = null;
+		if (className != null) {
+			clazz = ClassUtils.getFullClass(className);
+		} else {
+			clazz = OtherFunction.class;
 		}
-		Class clazz = ClassUtils.getFullClass(className);
-		// if new function entry or switch function type
 		if (domainFunction == null
-				|| !clazz.getCanonicalName().equals(
+				|| domainFunction != null
+				&& !clazz.getCanonicalName().equals(
 						domainFunction.getClass().getCanonicalName())) {
 			domainFunction = (Function) clazz.newInstance();
 		}
-		imagingFunction.setCreatedBy(domainFunction.getCreatedBy());
-		imagingFunction.setCreatedDate(domainFunction.getCreatedDate());
 
-		if (className.equals("ImagingFunction")) {
+		if (domainFunction instanceof ImagingFunction) {
 			domainFunction = imagingFunction;
-		} else if (className.equals("TargetingFunction")) {
+		} else if (domainFunction instanceof TargetingFunction) {
 			if (((TargetingFunction) domainFunction).getTargetCollection() != null) {
 				((TargetingFunction) domainFunction).getTargetCollection()
 						.clear();
@@ -124,7 +124,7 @@ public class FunctionBean {
 				((TargetingFunction) domainFunction).getTargetCollection().add(
 						targetBean.getDomainTarget());
 			}
-		} else if (className.equals("OtherFunction")) {
+		} else if (domainFunction instanceof OtherFunction) {
 			((OtherFunction) domainFunction).setType(type);
 		}
 		domainFunction.setDescription(description);

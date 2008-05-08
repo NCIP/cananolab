@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Liposome;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Polymer;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -202,12 +203,29 @@ public class NanoparticleEntityBean {
 	public void setupDomainEntity(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
+		Class clazz = null;
 		if (className == null) {
-			domainEntity = new OtherNanoparticleEntity();
+			clazz = OtherNanoparticleEntity.class;
+		} else {
+			clazz = ClassUtils.getFullClass(className);
 		}
 		if (domainEntity == null) {
-			Class clazz = ClassUtils.getFullClass(className);
 			domainEntity = (NanoparticleEntity) clazz.newInstance();
+		}
+		if (domainEntity instanceof OtherNanoparticleEntity) {
+			((OtherNanoparticleEntity) domainEntity).setType(type);
+		} else if (domainEntity instanceof Biopolymer) {
+			domainEntity = biopolymer;
+		} else if (domainEntity instanceof Dendrimer) {
+			domainEntity = dendrimer;
+		} else if (domainEntity instanceof CarbonNanotube) {
+			domainEntity = carbonNanotube;
+		} else if (domainEntity instanceof Liposome) {
+			domainEntity = liposome;
+		} else if (domainEntity instanceof Emulsion) {
+			domainEntity = emulsion;
+		} else if (domainEntity instanceof Fullerene) {
+			domainEntity = fullerene;
 		}
 		if (domainEntity.getId() == null
 				|| domainEntity.getCreatedBy().equals(
@@ -216,21 +234,6 @@ public class NanoparticleEntityBean {
 			domainEntity.setCreatedDate(new Date());
 		}
 		domainEntity.setDescription(description);
-		if (domainEntity instanceof OtherNanoparticleEntity) {
-			((OtherNanoparticleEntity) domainEntity).setType(type);
-		} else if (domainEntity instanceof Biopolymer) {
-			domainEntity=biopolymer;
-		} else if (domainEntity instanceof Dendrimer) {
-			domainEntity=dendrimer;
-		} else if (domainEntity instanceof CarbonNanotube) {
-			domainEntity=carbonNanotube;
-		} else if (domainEntity instanceof Liposome) {
-			domainEntity=liposome;
-		} else if (domainEntity instanceof Emulsion) {
-			domainEntity=emulsion;
-		} else if (domainEntity instanceof Fullerene) {
-			domainEntity=fullerene;
-		}
 		if (domainEntity.getComposingElementCollection() != null) {
 			domainEntity.getComposingElementCollection().clear();
 		} else {
