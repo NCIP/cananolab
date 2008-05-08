@@ -172,7 +172,7 @@ public class InitCompositionSetup {
 				.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "Attachment", "bondType", "otherBondType", true);
-
+		InitCompositionSetup.getInstance().getChemicalAssociationTypes(request);
 	}
 
 	public void persistChemicalAssociationDropdowns(HttpServletRequest request,
