@@ -77,6 +77,9 @@ public class TargetBean {
 	public void setupDomainTarget(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		className = typeToClass.get(type);
+		if (className==null) {
+			domainTarget=new OtherTarget();
+		}
 		Class clazz = ClassUtils.getFullClass(className);
 		if (domainTarget == null
 				|| !clazz.getCanonicalName().equals(
