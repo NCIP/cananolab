@@ -17,6 +17,16 @@
 					key="nanoparticleSampleForm.sampleSource" bundle="particle" />
 			</field>
 		</form>
+		<form name="chemicalAssociationForm">
+			<field property="assoc.type" page="2"
+				depends="required">
+				<arg position="0" key="chemicalAssociationType" bundle="particle" />
+			</field>
+			<field property="entity.name" page="2"
+				depends="required">
+				<arg position="0" key="chemicalAssociationBondType" bundle="particle" />
+			</field>
+		</form>
 		<form name="nanoparticleEntityForm">
 			<field property="entity.type" page="2"
 				depends="required">
@@ -40,6 +50,32 @@
 					key="nanoparticleEntityForm.fullerene.numberOfCarbon"
 					bundle="particle" />
 			</field>
+			<field property="entity.biopolymer.name" page="2"
+				depends="validwhen">
+				<arg position="0"
+					key="nanoparticleEntityForm.biopolymer.name"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((entity.type!='biopolymer') or
+						 (*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field property="entity.biopolymer.type" page="2"
+				depends="validwhen">
+				<arg position="0"
+					key="nanoparticleEntityForm.biopolymer.type"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((entity.type!='biopolymer') or
+						 (*this*!=null))
+					</var-value>
+				</var>
+			</field>
 			<field property="entity.liposome.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
@@ -48,7 +84,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((liposome.polymerized=="No") or (*this*!=null))
+						((entity.type!='liposome') or
+						 ((entity.liposome.polymerized=="No") or
+						 (*this*!=null)))
 					</var-value>
 				</var>
 			</field>
@@ -60,26 +98,38 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((emulsion.polymerized=="No") or (*this*!=null))
+						((entity.type!='emulsion') or
+						((entity.emulsion.polymerized=="No") or (*this*!=null)))
 					</var-value>
 				</var>
 			</field>
-			<field property="entity.polymer.crosslinkDegree" page="2"
+			<field property="entity.polymer.crossLinkDegree" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleEntityForm.polymer.crosslinkDegree"
+					key="nanoparticleEntityForm.polymer.crossLinkDegree"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((polymer.crosslinked=="No") or (*this*!=null))
+						((entity.type!='polymer') or
+						((entity.polymer.crossLinkDegree=="No") or (*this*!=null)))
 					</var-value>
 				</var>
 			</field>
 			<field property="domainComposingElement.type" page="2" depends="validwhen"
 				indexedListProperty="entity.composingElements">
 				<arg position="0"
-					key="nanoparticleEntity.elementType"
+					key="nanoparticleEntityForm.elementType"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>(*this*!=null)</var-value>
+				</var>
+			</field>
+			<field property="domainComposingElement.name" page="2" depends="validwhen"
+				indexedListProperty="entity.composingElements">
+				<arg position="0"
+					key="nanoparticleEntityForm.elementName"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -130,7 +180,7 @@
 					key="loadDerivedBioAssayDataForm.title" bundle="particle" />
 			</field>
 		</form>
-		<form name="nanoparticleCharacterizationForm">
+		<form name="physicalCharacterizationForm">
 			<field property="achar.characterizationSource" page="2"
 				depends="required">
 				<arg position="0" key="characterizationSource"
@@ -141,69 +191,69 @@
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
 			<field
-				property="achar.instrumentConfiguration.instrument.type" page="2"
+				property="achar.instrumentConfig.instrument.type" page="2"
 				depends="validwhen">
 				<arg position="0" key="achar.instrument.type"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfiguration.description==null)
+						((achar.instrumentConfig.description==null)
 						or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
 			<field
-				property="achar.instrumentConfiguration.instrument.manufacturer"
+				property="achar.instrumentConfig.instrument.manufacturer"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.instrument.manufacturer"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfigBean.instrumentBean.type==null)
+						((achar.instrumentConfig.instrument.type==null)
 						or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="shape.maxDimension" page="2"
+			<field property="achar.shape.maxDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.maxDimension"
 					bundle="particle" />
 			</field>
-			<field property="shape.minDimension" page="2"
+			<field property="achar.shape.minDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.minDimension"
 					bundle="particle" />
 			</field>
-			<field property="surface.surfaceArea" page="2"
+			<field property="achar.surfaceBean.domainSurface.surfaceArea" page="2"
 				depends="float">
 				<arg position="0" key="surface.surfaceAreaValue"
 					bundle="particle" />
 			</field>
-			<field property="surface.zetaPotential" page="2"
+			<field property="achar.surfaceBean.domainSurface.zetaPotential" page="2"
 				depends="float">
 				<arg position="0" key="surface.zetaPotentialValue"
 					bundle="particle" />
 			</field>
-			<field property="surface.charge" page="2" depends="float">
+			<field property="achar.surfaceBean.domainSurface.charge" page="2" depends="float">
 				<arg position="0" key="surface.chargeValue"
 					bundle="particle" />
 			</field>
-			<field property="surface.chargeUnit" page="2"
+			<field property="achar.surfaceBean.domainSurface.chargeUnit" page="2"
 				depends="validwhen">
 				<arg position="0" key="surface.chargeUnit"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((surface.charge==null) or (*this*!=null))
+						((achar.surfaceBean.domainSurface.charge==null) or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
 			<field property="numberOfMolecules" page="2"
 				depends="integer, validwhen"
-				indexedListProperty="surface.surfaceChemistries">
+				indexedListProperty="achar.surfaceBean.domainSurface.surfaceChemistryCollection">
 				<arg position="0" key="surface.numberOfMolecules"
 					bundle="particle" />
 				<var>
@@ -211,20 +261,57 @@
 					<var-value>(*this*!=null)</var-value>
 				</var>
 			</field>
-			<field property="solubility.criticalConcentration" page="2"
+			<field property="achar.solubility.criticalConcentration" page="2"
 				depends="float">
 				<arg position="0"
 					key="solubility.criticalConcentrationValue" bundle="particle" />
 			</field>
-			<field property="solubility.criticalConcentrationUnit"
+			<field property="achar.solubility.criticalConcentrationUnit"
 				page="2" depends="validwhen">
 				<arg position="0"
 					key="solubility.criticalConcentrationUnit" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((solubility.criticalConcentration==null) or
+						((achar.solubility.criticalConcentration==null) or
 						(*this*!=null))
+					</var-value>
+				</var>
+			</field>
+		</form>
+		<form name="invitroCharacterizationForm">
+			<field property="achar.characterizationSource" page="2"
+				depends="required">
+				<arg position="0" key="characterizationSource"
+					bundle="particle" />
+			</field>
+			<field property="achar.viewTitle" page="2"
+				depends="required">
+				<arg position="0" key="viewTitle" bundle="particle" />
+			</field>
+			<field
+				property="achar.instrumentConfig.instrument.type" page="2"
+				depends="validwhen">
+				<arg position="0" key="achar.instrument.type"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((achar.instrumentConfig.description==null)
+						or (*this*!=null))
+					</var-value>
+				</var>
+			</field>
+			<field
+				property="achar.instrumentConfig.instrument.manufacturer"
+				page="2" depends="validwhen">
+				<arg position="0" key="achar.instrument.manufacturer"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((achar.instrumentConfig.instrument.type==null)
+						or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
