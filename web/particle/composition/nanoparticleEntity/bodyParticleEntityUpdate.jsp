@@ -162,7 +162,7 @@ function confirmDeletion()
 															</td>
 
 															<td class="labelWithTop" valign="top">
-																<strong>Chemical Name</strong>
+																<strong>Chemical Name*</strong>
 															</td>
 															<td class="rightLabelWithTop" valign="top">
 																<html:text
