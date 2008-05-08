@@ -122,8 +122,6 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 	private boolean setLookups(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
-		InitCompositionSetup.getInstance().getChemicalAssociationTypes(request);
-
 		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
 				theForm, request);
 		SortedSet<ParticleDataLinkBean> particleEntities = dataTree
