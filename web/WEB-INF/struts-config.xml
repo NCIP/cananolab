@@ -42,6 +42,9 @@
 			key="error.generalException" path="home.error"
 			type="java.lang.Exception" />
 	</global-exceptions>
+	<global-forwards>
+		<forward name="fileMessage" path="/bodyMessage.jsp" />
+	</global-forwards>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LoginAction" input="input">
