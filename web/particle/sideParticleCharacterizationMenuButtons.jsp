@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<table class="${param.tableStyle}">
+<table class="${param.tableStyle}" >
 	<tr class="titleRow">
 		
 			<c:choose>
@@ -50,7 +50,7 @@
 				</td>
 				<td class="${param.addLinkStyle }">
 					<a href="${submitUrl}" class="addlink"><img
-							src="images/btn_add.gif" border="0" /> </a>
+							src="images/btn_add.gif" border="0" /></a>
 				</td>
 			</c:when>
 			<c:otherwise>
@@ -74,12 +74,11 @@
 				</td>
 				<td class="${param.addLinkStyle}">
 					<a href="${deleteUrl}" class="addlink"><img
-							src="images/btn_delete.gif" border="0" /> </a>
+							src="images/btn_delete.gif" border="0" /></a>
 				</td>
 			</c:when>
 			<c:otherwise>
 				<td>
-					&nbsp;
 				</td>
 			</c:otherwise>
 		</c:choose>
