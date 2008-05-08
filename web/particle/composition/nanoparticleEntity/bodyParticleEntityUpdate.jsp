@@ -179,7 +179,7 @@ function confirmDeletion()
 																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
 																	<option value="" />
-																		<html:options name="molecularFormulaTypes" />
+																		<html:options name="ceMolecularFormulaTypes" />
 																	<option value="other">
 																		[Other]
 																	</option>
