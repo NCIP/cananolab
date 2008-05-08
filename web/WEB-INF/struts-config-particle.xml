@@ -39,6 +39,8 @@
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="functionalizingEntityForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -48,6 +50,8 @@
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="chemicalAssociationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -55,6 +59,8 @@
 				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="physicalCharacterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -66,6 +72,8 @@
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="compositionFileForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -73,6 +81,8 @@
 				type="gov.nih.nci.cananolab.dto.common.LabFileBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 		<form-bean name="invitroCharacterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -84,6 +94,8 @@
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
@@ -139,30 +151,34 @@
 			<forward name="success"
 				path="particle.searchNanoparticleResult" />
 		</action>
-		<action input="input" name="nanoparticleEntityForm"
+		<action name="nanoparticleEntityForm"
 			parameter="dispatch" path="/nanoparticleEntity"
-			type="gov.nih.nci.cananolab.ui.particle.NanoparticleEntityAction">
+			type="gov.nih.nci.cananolab.ui.particle.NanoparticleEntityAction"
+			input="input" >
 			<forward name="input"
 				path="particle.composition.particleEntity" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action input="input" name="functionalizingEntityForm"
+		<action name="functionalizingEntityForm"
 			parameter="dispatch" path="/functionalizingEntity"
-			type="gov.nih.nci.cananolab.ui.particle.FunctionalizingEntityAction">
+			type="gov.nih.nci.cananolab.ui.particle.FunctionalizingEntityAction"
+			input="input" >
 			<forward name="input"
 				path="particle.composition.functionalizingEntity" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action input="input" name="chemicalAssociationForm"
+		<action name="chemicalAssociationForm"
 			parameter="dispatch" path="/chemicalAssociation"
-			type="gov.nih.nci.cananolab.ui.particle.ChemicalAssociationAction">
+			type="gov.nih.nci.cananolab.ui.particle.ChemicalAssociationAction"
+			input="input" >
 			<forward name="input"
 				path="particle.composition.chemicalAssociation" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action input="input" name="physicalCharacterizationForm"
+		<action name="physicalCharacterizationForm"
 			parameter="dispatch" path="/physicalCharacterization"
-			type="gov.nih.nci.cananolab.ui.particle.PhysicalCharacterizationAction">
+			type="gov.nih.nci.cananolab.ui.particle.PhysicalCharacterizationAction"
+			input="input" validate="true" >
 			<forward name="input"
 				path="particle.physicalCharacterization" />
 			<forward name="success" path="particle.annotationMessage" />
@@ -171,9 +187,10 @@
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
 		</action>
-		<action input="input" name="invitroCharacterizationForm"
+		<action name="invitroCharacterizationForm"
 			parameter="dispatch" path="/invitroCharacterization"
-			type="gov.nih.nci.cananolab.ui.particle.InvitroCharacterizationAction">
+			type="gov.nih.nci.cananolab.ui.particle.InvitroCharacterizationAction"
+			input="input" >
 			<forward name="input"
 				path="particle.invitroCharacterization" />
 			<forward name="success" path="particle.annotationMessage" />
@@ -182,9 +199,10 @@
 			<forward name="summaryView"
 				path="particle.invitroSummaryView" />
 		</action>
-		<action input="input" name="compositionFileForm"
+		<action name="compositionFileForm"
 			parameter="dispatch" path="/compositionFile"
-			type="gov.nih.nci.cananolab.ui.particle.CompositionFileAction">
+			type="gov.nih.nci.cananolab.ui.particle.CompositionFileAction"
+			input="input" >
 			<forward name="input"
 				path="particle.composition.compositionFile" />
 			<forward name="success" path="particle.annotationMessage" />
