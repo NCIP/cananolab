@@ -24,7 +24,7 @@
 			<key column="characterization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.DerivedBioAssayData"/>
 		</set>
-		<many-to-one name="protocolFile" class="gov.nih.nci.cananolab.domain.common.ProtocolFile" column="protocol_file_pk_id" lazy="proxy" cascade="save-update"/>
+		<many-to-one name="protocolFile" class="gov.nih.nci.cananolab.domain.common.ProtocolFile" column="protocol_file_pk_id" lazy="proxy"/>
 		<many-to-one name="instrumentConfiguration" class="gov.nih.nci.cananolab.domain.common.InstrumentConfiguration" column="instrument_config_pk_id" lazy="proxy" cascade="save-update, delete"/>
 		<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization" discriminator-value="InvitroCharacterization">
 			<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.Toxicity" discriminator-value="Toxicity">
