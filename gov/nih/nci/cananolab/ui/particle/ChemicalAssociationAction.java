@@ -114,14 +114,16 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("chemicalAssociationForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
-		if (!seLookups(theForm, request)) {
+		if (!setLookups(theForm, request)) {
 			return mapping.findForward("particleMessage");
 		}
 		return mapping.getInputForward();
 	}
 
-	private boolean seLookups(DynaValidatorForm theForm,
+	private boolean setLookups(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
+		InitCompositionSetup.getInstance().getChemicalAssociationTypes(request);
+
 		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
 				theForm, request);
 		SortedSet<ParticleDataLinkBean> particleEntities = dataTree
@@ -141,7 +143,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		int numberOfCE = 0;
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
 		SortedSet<ParticleDataLinkBean> particleEntitiesWithComposingElements = new TreeSet<ParticleDataLinkBean>();
-		//particleEntitiesWithComposingElements = particleEntities;
+		// particleEntitiesWithComposingElements = particleEntities;
 		for (ParticleDataLinkBean dataLink : particleEntities) {
 			NanoparticleEntityBean entityBean = compService
 					.findNanoparticleEntityById(dataLink.getDataId());
@@ -245,7 +247,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
-		seLookups(theForm, request);
+		setLookups(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
@@ -265,7 +267,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request);
-		seLookups(theForm, request);
+		setLookups(theForm, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
