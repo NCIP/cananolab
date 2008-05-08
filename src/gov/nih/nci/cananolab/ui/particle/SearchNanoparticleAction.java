@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.15 2008-05-08 10:55:53 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.16 2008-05-08 11:02:58 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -49,7 +49,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				.get("nanoparticleEntityTypes");
 		// convert nanoparticle entity display names into short class names and
 		// other types
-		String[] nanoparticleEntityClassNames = new String[nanoparticleEntityTypes.length];
+		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
 		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
 			String className = InitSetup.getInstance().getObjectName(
@@ -57,14 +57,15 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			if (className.length() == 0) {
 				className = "OtherNanoparticleEntity";
 				otherNanoparticleEntityTypes.add(nanoparticleEntityTypes[i]);
+			} else {
+				nanoparticleEntityClassNames.add(className);
 			}
-			nanoparticleEntityClassNames[i] = className;
 		}
 		String[] functionalizingEntityTypes = (String[]) theForm
 				.get("functionalizingEntityTypes");
 		// convert functionalizing entity display names into short class names
 		// and other types
-		String[] functionalizingEntityClassNames = new String[functionalizingEntityTypes.length];
+		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
 			String className = InitSetup.getInstance().getObjectName(
@@ -72,12 +73,13 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			if (className.length() == 0) {
 				className = "OtherFunctionalizingEntity";
 				otherFunctionalizingTypes.add(functionalizingEntityTypes[i]);
+			} else {
+				functionalizingEntityClassNames.add(className);
 			}
-			functionalizingEntityClassNames[i] = className;
 		}
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 		// convert function display names into short class names and other types
-		String[] functionClassNames = new String[functionTypes.length];
+		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		for (int i = 0; i < functionTypes.length; i++) {
 			String className = InitSetup.getInstance().getObjectName(
@@ -85,8 +87,9 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			if (className.length() == 0) {
 				className = "OtherFunction";
 				otherFunctionTypes.add(functionTypes[i]);
+			} else {
+				functionClassNames.add(className);
 			}
-			functionClassNames[i] = className;
 		}
 		String[] characterizations = (String[]) theForm
 				.get("characterizations");
@@ -105,12 +108,13 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		}
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
-				particleSources, nanoparticleEntityClassNames,
-				otherNanoparticleEntityTypes.toArray(new String[0]),
-				functionalizingEntityClassNames, otherFunctionalizingTypes
-						.toArray(new String[0]), functionClassNames,
-				otherFunctionTypes.toArray(new String[0]), charaClassNames,
-				words);
+				particleSources, nanoparticleEntityClassNames
+						.toArray(new String[0]), otherNanoparticleEntityTypes
+						.toArray(new String[0]),
+				functionalizingEntityClassNames.toArray(new String[0]),
+				otherFunctionalizingTypes.toArray(new String[0]),
+				functionClassNames.toArray(new String[0]), otherFunctionTypes
+						.toArray(new String[0]), charaClassNames, words);
 		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
 		// set visibility
 		for (ParticleBean particle : particles) {

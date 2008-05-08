@@ -8,8 +8,10 @@ import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -223,12 +225,19 @@ public class InitNanoparticleSetup {
 								entity.getId().toString(), "Composition",
 								"nanoparticleEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
-						dataBean.setDataClassName(ClassUtils
-								.getShortClassName(entity.getClass()
-										.getCanonicalName()));
-						dataBean.setDataDisplayType(InitSetup.getInstance()
-								.getDisplayName(dataBean.getDataClassName(),
-										appContext));
+						if (entity instanceof OtherNanoparticleEntity) {
+							dataBean
+									.setDataDisplayType(((OtherNanoparticleEntity) entity)
+											.getType());
+						} else {
+							dataBean.setDataClassName(ClassUtils
+									.getShortClassName(entity.getClass()
+											.getCanonicalName()));
+							dataBean.setDataDisplayType(InitSetup.getInstance()
+									.getDisplayName(
+											dataBean.getDataClassName(),
+											appContext));
+						}
 						dataBean.setViewTitle(dataBean.getDataDisplayType());
 						ndataBeans.add(dataBean);
 					}
@@ -246,12 +255,19 @@ public class InitNanoparticleSetup {
 								entity.getId().toString(), "Composition",
 								"functionalizingEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
-						dataBean.setDataClassName(ClassUtils
-								.getShortClassName(entity.getClass()
-										.getCanonicalName()));
-						dataBean.setDataDisplayType(InitSetup.getInstance()
-								.getDisplayName(dataBean.getDataClassName(),
-										appContext));
+						if (entity instanceof OtherFunctionalizingEntity) {
+							dataBean
+									.setDataDisplayType(((OtherFunctionalizingEntity) entity)
+											.getType());
+						} else {
+							dataBean.setDataClassName(ClassUtils
+									.getShortClassName(entity.getClass()
+											.getCanonicalName()));
+							dataBean.setDataDisplayType(InitSetup.getInstance()
+									.getDisplayName(
+											dataBean.getDataClassName(),
+											appContext));
+						}
 						fdataBeans.add(dataBean);
 						dataBean.setViewTitle(dataBean.getDataDisplayType());
 					}
