@@ -4,11 +4,14 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * View bean for DerivedBioAssayData
@@ -68,5 +71,29 @@ public class DerivedBioAssayDataBean {
 
 	public void removeDerivedDatum(int ind) {
 		datumList.remove(ind);
+	}
+
+	public void setupDomainBioAssayData(Map<String, String> typeToClass,
+			String createdBy) throws Exception {
+		if (domainBioAssayData.getId() == null
+				|| domainBioAssayData.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainBioAssayData.setCreatedBy(createdBy);
+			domainBioAssayData.setCreatedDate(new Date());
+		}
+		if (domainBioAssayData.getDerivedDatumCollection() != null) {
+			domainBioAssayData.getDerivedDatumCollection().clear();
+		} else {
+			domainBioAssayData
+					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
+		}
+		domainBioAssayData.setLabFile(labFileBean.getDomainFile());
+		for (DerivedDatum datum : datumList) {
+			if (datum.getId() == null) {
+				datum.setCreatedBy(createdBy);
+				datum.setCreatedDate(new Date());
+			}
+			domainBioAssayData.getDerivedDatumCollection().add(datum);
+		}
 	}
 }

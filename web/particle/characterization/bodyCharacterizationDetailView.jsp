@@ -169,7 +169,7 @@
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}">${derivedBioAssayData.labFileBean.domainFile.title}</a>
+													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}" target="${derivedBioAssayData.labFileBean.urlTarget}">${derivedBioAssayData.labFileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
