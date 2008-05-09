@@ -57,26 +57,22 @@
 						coords="275,70,370,105" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateSample eq 'true'}">
-					<area href="createSample.do?dispatch=setup&page=0" shape="rect"
+					<area href="submitNanoparticleSample.do?dispatch=setup&page=0" shape="rect"
 						coords="275,110,370,160" alt="rectangle" />
-					<area href="createAliquot.do?dispatch=setup&page=0" shape="rect"
-						coords="360,460,460,490" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateReport eq 'true'}">
 					<area href="submitReport.do?dispatch=setup&page=0" shape="rect"
-						coords="330,170,460,490" alt="rectangle" />
+						coords="365,450,460,490" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
-					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
-						shape="rect" coords="330,310,400,350" alt="rectangle" />
-					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
-						shape="rect" coords="455,243,545,277" alt="rectangle" />
-					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
-						shape="rect" coords="455,287,545,321" alt="rectangle" />
-					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
-						shape="rect" coords="455,332,545,368" alt="rectangle" />
-					<area href="nanoparticleGeneralInfo.do?dispatch=setup&page=0"
-						shape="rect" coords="455,381,545,417" alt="rectangle" />
+					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+						shape="rect" coords="365,190,460,225" alt="rectangle" />
+					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+						shape="rect" coords="365,285,460,320" alt="rectangle" />
+					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+						shape="rect" coords="370,370,465,410" alt="rectangle" />
+					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+						shape="rect" coords="490,170,640,425" alt="rectangle" />
 				</c:if>
 			</map>
 			<img align="middle" src="images/Home_Page_Workflow.gif"
