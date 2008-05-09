@@ -32,4 +32,12 @@ public class SurfaceBean {
 	public List<SurfaceChemistry> getSurfaceChemistryList() {
 		return surfaceChemistryList;
 	}
+	
+	public void addSurfaceChemistry() {
+		surfaceChemistryList.add(new SurfaceChemistry());
+	}
+	
+	public void removeSurfaceChemistry(int ind) {
+		surfaceChemistryList.remove(ind);
+	}
 }
