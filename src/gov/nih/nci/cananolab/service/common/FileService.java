@@ -65,7 +65,8 @@ public class FileService {
 	}
 
 	/**
-	 * Load the file for the given fileId from the database.  Also check whether user can do it.
+	 * Load the file for the given fileId from the database. Also check whether
+	 * user can do it.
 	 * 
 	 * @param fileId
 	 * @return
@@ -94,6 +95,47 @@ public class FileService {
 		} catch (Exception e) {
 			logger.error("Problem finding the file by id: " + fileId, e);
 			throw new FileException();
+		}
+	}
+
+	public void saveCopiedFileAndSetVisibility(LabFile copy, UserBean user,
+			String oldSampleName, String newSampleName) throws Exception {
+		// the copied file has been persisted with the same URI but createdBy is
+		// COPY
+		LabFile file = findFileByUri(copy.getUri());
+		copy.setUri(copy.getUri().replaceFirst(oldSampleName, newSampleName));
+		saveFile(copy);
+		byte[] content = this.getFileContent(file.getId());
+		this.writeFile(copy, content);
+		AuthorizationService auth = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		LabFileBean fileBean = new LabFileBean(file);
+		this.retrieveVisibility(fileBean, user);
+		auth.assignVisibility(copy.getId().toString(), fileBean
+				.getVisibilityGroups());
+	}
+
+	public LabFile findFileByUri(String uri) throws FileException {
+		LabFile file = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(LabFile.class)
+					.add(Property.forName("uri").eq(uri))
+					.add(
+							Property
+									.forName("createdBy")
+									.ne(
+											CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX));
+			List results = appService.query(crit);
+			file = (LabFile) results.get(0);
+			return file;
+		} catch (Exception e) {
+			String err = "Could not find the file by uri";
+			logger.error(err, e);
+			throw new FileException(err, e);
 		}
 	}
 
