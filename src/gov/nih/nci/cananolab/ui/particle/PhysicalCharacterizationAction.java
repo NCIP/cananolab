@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.19 2008-05-09 04:42:55 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.20 2008-05-09 21:20:29 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.LabFile;
@@ -107,28 +107,31 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			for (NanoparticleSample sample : otherSamples) {
 				charService.saveCharacterization(sample, copy);
 				// update copied filename and save content and set visibility
+				if (copy.getDerivedBioAssayDataCollection() != null) {
+					List<LabFile> files = new ArrayList<LabFile>();
+					for (DerivedBioAssayData bioassay : copy
+							.getDerivedBioAssayDataCollection()) {
+						if (bioassay.getLabFile() != null) {
+							files.add(bioassay.getLabFile());
+						}
+					}
+					Collections.sort(files,
+							new CaNanoLabComparators.LabFileDateComparator());
+					int i = 0;
+					for (LabFile file : files) {
+						LabFileBean origFileBean = charBean
+								.getDerivedBioAssayDataList().get(i)
+								.getLabFileBean();
+						String origUri = origFileBean.getDomainFile().getUri();
+						file.setUri(origUri.replaceAll(particleBean
+								.getDomainParticleSample().getName(), sample
+								.getName()));
 
-				List<LabFile> files = new ArrayList<LabFile>();
-				for (DerivedBioAssayData bioassay : copy
-						.getDerivedBioAssayDataCollection()) {
-					files.add(bioassay.getLabFile());
-				}
-				Collections.sort(files,
-						new CaNanoLabComparators.LabFileDateComparator());
-				int i = 0;
-				for (LabFile file : files) {
-					LabFileBean origFileBean = charBean
-							.getDerivedBioAssayDataList().get(i)
-							.getLabFileBean();
-					String origUri = origFileBean.getDomainFile().getUri();
-					file.setUri(origUri.replaceAll(particleBean
-							.getDomainParticleSample().getName(), sample
-							.getName()));
-
-					fileService.writeFile(file, origFileBean.getFileData());
-					authService.assignVisibility(file.getId().toString(),
-							origFileBean.getVisibilityGroups());
-					i++;
+						fileService.writeFile(file, origFileBean.getFileData());
+						authService.assignVisibility(file.getId().toString(),
+								origFileBean.getVisibilityGroups());
+						i++;
+					}
 				}
 			}
 		}
