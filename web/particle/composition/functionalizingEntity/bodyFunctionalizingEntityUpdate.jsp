@@ -58,7 +58,8 @@ function confirmDeletion()
 						</td>
 						<td class="label">
 							<c:choose>
-								<c:when test="${param.dispatch eq 'setup'}">
+								<c:when
+									test="${param.dispatch eq 'setup'||empty functionalizingEntityForm.map.entity.type}">
 									<html:select styleId="feType" property="entity.type"
 										onchange="javascript:callPrompt('Functionalizing Entity Type', 'feType'); setEntityInclude('feType', '/particle/composition/functionalizingEntity'); getFETypeOptions();">
 										<option value=""></option>
@@ -71,7 +72,8 @@ function confirmDeletion()
 								<c:otherwise>
 								${functionalizingEntityForm.map.entity.type}
 								</c:otherwise>
-							</c:choose>&nbsp;
+							</c:choose>
+							&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Chemical Name*</strong>
@@ -93,13 +95,15 @@ function confirmDeletion()
 								<option value="other">
 									[Other]
 								</option>
-							</html:select>&nbsp;
+							</html:select>
+							&nbsp;
 						</td>
 						<td class="label" valign="top">
 							<strong>Molecular Formula</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="entity.molecularFormula" />&nbsp;
+							<html:text property="entity.molecularFormula" />
+							&nbsp;
 						</td>
 					</tr>
 					<tr>

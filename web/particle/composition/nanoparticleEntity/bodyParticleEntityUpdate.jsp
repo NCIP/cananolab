@@ -57,7 +57,8 @@ function confirmDeletion()
 						</td>
 						<td class="rightLabel">
 							<c:choose>
-								<c:when test="${param.dispatch eq 'setup'}">
+								<c:when
+									test="${param.dispatch eq 'setup' || empty nanoparticleEntityForm.map.entity.type}">
 									<html:select styleId="peType" property="entity.type"
 										onchange="javascript:callPrompt('Particle Entity Type', 'peType'); 
 										setEntityInclude('peType', '/particle/composition/nanoparticleEntity'); getNETypeOptions();">
@@ -85,20 +86,20 @@ function confirmDeletion()
 				</table>
 				<br>
 				<c:choose>
-						<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
-							<c:set var="entityType"
-								value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
-							<%
-										String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-										.getInstance().getObjectName(
-										(String) pageContext.getAttribute("entityType"),
-										application);
-								pageContext.setAttribute("entityClass", entityClass);
-							%>
-							<jsp:include
-								page="/particle/composition/nanoparticleEntity/body${entityClass}Info.jsp" />
-						</c:when>
-					</c:choose>
+					<c:when test="${!empty nanoparticleEntityForm.map.entity.type}">
+						<c:set var="entityType"
+							value="${nanoparticleEntityForm.map.entity.type}" scope="page" />
+						<%
+									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+									.getInstance().getObjectName(
+									(String) pageContext.getAttribute("entityType"),
+									application);
+							pageContext.setAttribute("entityClass", entityClass);
+						%>
+						<jsp:include
+							page="/particle/composition/nanoparticleEntity/body${entityClass}Info.jsp" />
+					</c:when>
+				</c:choose>
 				<div id="entityInclude"></div>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
