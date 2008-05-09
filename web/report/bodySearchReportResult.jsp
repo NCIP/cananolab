@@ -7,7 +7,7 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>			
+			<h3>
 				Nanoparticle Report Search Results
 			</h3>
 		</td>
@@ -26,7 +26,7 @@
 					<c:set var="link" value="editReportURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="link" value="viewReportURL" />
+					<c:set var="link" value="domainFile.title" />
 				</c:otherwise>
 			</c:choose>
 			<display:table name="sessionScope.reports" id="report"
@@ -34,15 +34,18 @@
 				decorator="gov.nih.nci.cananolab.dto.common.ReportDecorator">
 				<display:column title="Report Title" property="${link}"
 					sortable="true" />
-				<display:column title="Report Category" property="domainFile.category"
-					sortable="true" />
-				<display:column title="Report Description" property="domainFile.description"
-					sortable="true" />
+				<display:column title="Report Category"
+					property="domainFile.category" sortable="true" />
+				<display:column title="Report Link"
+					property="downloadURL" sortable="true" />
+				<display:column title="Report Description"
+					property="domainFile.description" sortable="true" />
 				<display:column title="Associated <br>Particle Sample Names"
 					property="particleNames" sortable="true" />
-				<display:column title="Report Submit Date" property="domainFile.createdDate"
-					sortable="true" format="{0,date,MM-dd-yyyy}" />
-				<display:column title="Location" >Local</display:column>
+				<display:column title="Report Submit Date"
+					property="domainFile.createdDate" sortable="true"
+					format="{0,date,MM-dd-yyyy}" />
+				<display:column title="Location">Local</display:column>
 			</display:table>
 		</td>
 	</tr>
