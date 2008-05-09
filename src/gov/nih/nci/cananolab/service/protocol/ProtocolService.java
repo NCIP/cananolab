@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
-import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -54,7 +53,7 @@ public class ProtocolService {
 	}
 
 	// for ajax on linux
-	public String findProtocolFileUriById(String fileId)
+	public String getProtocolFileUriById(String fileId)
 			throws ProtocolException {
 		String uri = null;
 		try {
@@ -71,9 +70,7 @@ public class ProtocolService {
 			}
 			return uri;
 		} catch (Exception e) {
-			String err = "Problem finding the protocol file by id: " + fileId;
-			logger.error(err, e);
-			throw new ProtocolException(err, e);
+			return "";
 		}
 	}
 
@@ -88,25 +85,29 @@ public class ProtocolService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			ProtocolFile dbProtocolFile = null;
 			if (protocolFile.getId() != null) {
-				try {
-					ProtocolFile dbProtocolFile = (ProtocolFile) appService
-							.get(ProtocolFile.class, protocolFile.getId());
-					// don't change createdBy and createdDate it is already
-					// persisted
+				dbProtocolFile = (ProtocolFile) appService.get(
+						ProtocolFile.class, protocolFile.getId());
+				// don't change createdBy, createdDate and it is already
+				// persisted
+				if (dbProtocolFile != null) {
 					protocolFile.setCreatedBy(dbProtocolFile.getCreatedBy());
 					protocolFile
 							.setCreatedDate(dbProtocolFile.getCreatedDate());
-					// load fileName and uri if no new data has been uploaded or
-					// no new url has been entered
-					if (fileData == null) {
-						protocolFile.setName(dbProtocolFile.getName());
-					}
-				} catch (Exception e) {
-					String err = "Object doesn't exist in the database anymore.  Please log in again.";
-					logger.error(err);
-					throw new ReportException(err, e);
+					protocolFile.setVersion(dbProtocolFile.getVersion());
 				}
+				// load fileName and uri if no new data has been uploaded or
+				// no new url has been entered
+				if (fileData == null) {
+					protocolFile.setName(dbProtocolFile.getName());
+					protocolFile.setUri(dbProtocolFile.getUri());
+				}
+			}
+			Protocol dbProtocol = findProtocolBy(protocolFile.getProtocol()
+					.getType(), protocolFile.getProtocol().getName());
+			if (dbProtocol != null) {
+				protocolFile.setProtocol(dbProtocol);
 			}
 
 			appService.saveOrUpdate(protocolFile);
@@ -123,7 +124,7 @@ public class ProtocolService {
 	}
 
 	// used for Ajax
-	public SortedSet<String> findProtocolNames(String protocolType)
+	public SortedSet<String> getProtocolNames(String protocolType)
 			throws ProtocolException {
 		if (protocolType == null || protocolType.length() == 0) {
 			return null;
@@ -147,8 +148,32 @@ public class ProtocolService {
 		}
 	}
 
+	public Protocol findProtocolBy(String protocolType, String protocolName)
+			throws ProtocolException {
+		Protocol protocol = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+					.add(Property.forName("type").eq(protocolType)).add(
+							Property.forName("name").eq(protocolName));
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				protocol = (Protocol) obj;
+			}
+			return protocol;
+		} catch (Exception e) {
+			String err = "Problem finding protocol by name and type.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+	}
+
 	public List<ProtocolFileBean> findProtocolFilesBy(String protocolType,
-			String fileTitle, String protocolName) throws ProtocolException {
+			String protocolName, String fileTitle, Boolean useWildCard)
+			throws ProtocolException {
 		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -163,13 +188,60 @@ public class ProtocolService {
 					crit.add(Restrictions.eq("protocol.type", protocolType));
 				}
 				if (protocolName != null && protocolName.length() > 0) {
-					crit.add(Restrictions.ilike("protocol.name", protocolName,
-							MatchMode.ANYWHERE));
+					if (useWildCard) {
+						crit.add(Restrictions.ilike("protocol.name",
+								protocolName, MatchMode.ANYWHERE));
+					} else {
+						crit
+								.add(Restrictions.eq("protocol.name",
+										protocolName));
+					}
 				}
 			}
 			if (fileTitle != null && fileTitle.length() > 0) {
-				crit.add(Restrictions.ilike("title", fileTitle,
-						MatchMode.ANYWHERE));
+				if (useWildCard) {
+					crit.add(Restrictions.ilike("title", fileTitle,
+							MatchMode.ANYWHERE));
+				} else {
+					crit.add(Restrictions.eq("title", fileTitle));
+				}
+			}
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				ProtocolFile pf = (ProtocolFile) obj;
+				ProtocolFileBean pfb = new ProtocolFileBean(pf);
+				protocolFiles.add(pfb);
+			}
+			return protocolFiles;
+		} catch (Exception e) {
+			String err = "Problem finding protocol files.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+	}
+
+	// for dwr ajax
+	public List<ProtocolFileBean> getProtocolFiles(String protocolType,
+			String protocolName) throws ProtocolException {
+		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(ProtocolFile.class);
+			if (protocolType != null && protocolType.length() > 0
+					|| protocolName != null && protocolName.length() > 0) {
+				crit.createAlias("protocol", "protocol",
+						CriteriaSpecification.LEFT_JOIN);
+				if (protocolType != null && protocolType.length() > 0) {
+					crit.add(Restrictions.eq("protocol.type", protocolType));
+				}
+				if (protocolName != null && protocolName.length() > 0) {
+
+					crit.add(Restrictions.eq("protocol.name", protocolName));
+				}
 			}
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
