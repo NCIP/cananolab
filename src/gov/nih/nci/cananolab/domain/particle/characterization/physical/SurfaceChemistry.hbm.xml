@@ -13,7 +13,7 @@
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="molecularFormulaType" type="string" column="molecular_formula_type"/>
-		<property name="molecularForumula" type="string" column="molecular_formula"/>
+		<property name="molecularFormula" type="string" column="molecular_formula"/>
 		<property name="moleculeName" type="string" column="molecule_name"/>
 		<property name="numberOfMolecule" type="integer" column="number_molecule"/>
 		<!-- Associations mapping for the SurfaceChemistry class -->
