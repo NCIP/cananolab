@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.18 2008-05-08 20:14:02 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.19 2008-05-09 04:42:55 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.LabFile;
@@ -132,7 +132,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 				}
 			}
 		}
-		
+
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
 		InitCharacterizationSetup.getInstance()
@@ -195,4 +195,32 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
 		return forward;
 	}
+
+	public ActionForward addSurfaceChemistry(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PhysicalCharacterizationBean achar = (PhysicalCharacterizationBean) theForm
+				.get("achar");
+		achar.getSurfaceBean().addSurfaceChemistry();
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removeSurfaceChemistry(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String chemIndexStr = (String) request.getParameter("compInd");
+		int chemInd = Integer.parseInt(chemIndexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PhysicalCharacterizationBean achar = (PhysicalCharacterizationBean) theForm
+				.get("achar");
+		achar.getSurfaceBean().removeSurfaceChemistry(chemInd);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
+
+		return mapping.getInputForward();
+	}
+
 }
