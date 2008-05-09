@@ -348,6 +348,8 @@ public class NanoparticleCharacterizationService {
 				fileService.retrieveVisibility(bioAssayData.getLabFileBean(),
 						user);
 			}
+			fileService
+					.retrieveVisibility(charBean.getProtocolFileBean(), user);
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "
 					+ charBean.getViewTitle();
