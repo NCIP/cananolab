@@ -31,19 +31,27 @@ public class ProtocolFileDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getViewURL() {
+	public SortableName getViewName() {
 		ProtocolFileBean file = (ProtocolFileBean) getCurrentRowObject();
-		// replace space with special char
-		String fileId = file.getDomainFile().getId().toString();
-		String editProtocolURL = "submitProtocol.do?dispatch=setupView&fileId="
-				+ fileId;
-		String link = "<a href="
-				+ editProtocolURL
-				+ ">"
-				+ ((ProtocolFile) (file.getDomainFile())).getProtocol()
-						.getName() + "</a>";
-		SortableName sortableLink = new SortableName(((ProtocolFile) (file
-				.getDomainFile())).getProtocol().getName(), link);
+		String protocolName = ((ProtocolFile) (file.getDomainFile()))
+				.getProtocol().getName();
+		SortableName sortableLink = new SortableName(protocolName);
+		return sortableLink;
+	}
+
+	public SortableName getDownloadURL() throws UnsupportedEncodingException {
+		SortableName sortableLink = null;
+		ProtocolFileBean file = (ProtocolFileBean) getCurrentRowObject();
+		if (file.getDomainFile().getName() != null) {
+			String downloadURL = "searchProtocol.do?dispatch=download"
+					+ "&fileId=" + file.getDomainFile().getId();
+			String link = "<a href=" + downloadURL + ">"
+					+ file.getDomainFile().getName() + "</a>";
+			sortableLink = new SortableName(file.getDomainFile().getName(),
+					link);
+		} else {
+			sortableLink = new SortableName("");
+		}
 		return sortableLink;
 	}
 
@@ -58,8 +66,10 @@ public class ProtocolFileDecorator extends TableDecorator {
 				+ file.getDomainFile().getId()
 				+ "&fileName="
 				+ fileName;
-		String link = "<a href=" + downloadURL + ">" + file.getDomainFile().getTitle() + "</a>";
-		SortableName sortableLink = new SortableName(file.getDomainFile().getTitle(), link);
+		String link = "<a href=" + downloadURL + ">"
+				+ file.getDomainFile().getTitle() + "</a>";
+		SortableName sortableLink = new SortableName(file.getDomainFile()
+				.getTitle(), link);
 		return sortableLink;
 	}
 }
