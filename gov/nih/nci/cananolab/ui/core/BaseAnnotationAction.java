@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -17,6 +18,7 @@ import gov.nih.nci.cananolab.util.PropertyReader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -58,6 +60,35 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 						.getOrganizationName(), user);
 
 		return particleBean;
+	}
+
+	protected void setupDomainFiles(HttpServletRequest request,
+			List<LabFileBean> files, String particleSampleName,
+			String createdBy, String submitType) throws Exception {
+		// setup domainFile for fileBeans
+		for (LabFileBean fileBean : files) {
+			String internalUri = InitSetup.getInstance()
+					.getFileUriFromFormFile(fileBean.getUploadedFile(),
+							CaNanoLabConstants.FOLDER_PARTICLE,
+							particleSampleName, submitType);
+			fileBean.setInternalUri(internalUri);
+			fileBean.setupDomainFile(createdBy);
+		}
+	}
+
+	protected void saveFilesToFileSystem(List<LabFileBean> files)
+			throws Exception {
+		// save file data to file system and set visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+
+		FileService fileService = new FileService();
+		for (LabFileBean fileBean : files) {
+			fileService.writeFile(fileBean.getDomainFile(), fileBean
+					.getFileData());
+			authService.assignVisibility(fileBean.getDomainFile().getId()
+					.toString(), fileBean.getVisibilityGroups());
+		}
 	}
 
 	public boolean loginRequired() {
@@ -180,7 +211,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage("error.noFile");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
-			throw new FileException("File "+ fileBean.getDomainFile().getUri()+" doesn't exist on the server");
+			throw new FileException("File " + fileBean.getDomainFile().getUri()
+					+ " doesn't exist on the server");
 		}
 		return null;
 	}
