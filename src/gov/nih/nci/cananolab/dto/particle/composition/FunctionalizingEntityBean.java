@@ -281,7 +281,6 @@ public class FunctionalizingEntityBean {
 			functionBean.setupDomainFunction(typeToClass, createdBy);
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
-			// TODO set function date
 		}
 		if (domainEntity.getLabFileCollection() != null) {
 			domainEntity.getLabFileCollection().clear();
