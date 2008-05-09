@@ -10,6 +10,10 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<c:set var="action" value="Submit" scope="request" />
+<c:if test="${param.dispatch eq 'setupUpdate'}">
+	<c:set var="action" value="Update" scope="request" />
+</c:if>
 
 <html:form action="/submitProtocol" enctype="multipart/form-data">
 	<table width="100%" align="center">
@@ -17,7 +21,7 @@
 			<td>
 				<h3>
 					<br>
-					Submit Protocol
+					${action } Protocol
 				</h3>
 			</td>
 			<td align="right" width="15%">
@@ -46,9 +50,9 @@
 							<td class="rightLabel">
 								<html:select styleId="protocolType"
 									property="file.domainFile.protocol.type"
-									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); resetProtocols(); retrieveProtocols();">
-									<option value=""/>
-									<html:options name="protocolTypes" />
+									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); retrieveProtocols();">
+									<option value="" />
+										<html:options name="protocolTypes" />
 									<option value="other">
 										[Other]
 									</option>
@@ -62,23 +66,27 @@
 							<td class="rightLabel">
 								<html:select styleId="protocolName"
 									property="file.domainFile.protocol.name"
-									onchange="javascript:callPrompt('Protocol Name', 'protocolName'); resetProtocolFiles(); retrieveProtocolFileVersions();">
-									<c:if test="${! empty submitProtocolForm.map.file.domainFile.protocol.name}">
-										<html:option value="${submitProtocolForm.map.file.domainFile.protocol.name}">${submitProtocolForm.map.protocolName}</html:option>
+									onchange="javascript:callPrompt('Protocol Name', 'protocolName'); retrieveProtocolFileVersions();">
+									<c:if test="${!empty protocolNamesByType}">
+										<option value="" />
+											<html:options name="protocolNamesByType" />
+										<option value="other">
+											[Other]
+										</option>
 									</c:if>
-									<option value=""/>
-									<option value="other">
-										[Other]
-									</option>
 								</html:select>
 								&nbsp; &nbsp;
 								<strong>Protocol Version* </strong>&nbsp;
-								<html:select styleId="protocolFileId" property="file.domainFile.id"
-									onfocus="javascript:callPrompt('Protocol Version', 'protocolFileId');">
-									<option value=""/>
-									<option value="other">
-										[Other]
-									</option>
+								<html:select styleId="protocolFileId"
+									property="file.domainFileId"
+									onchange="javascript:callPrompt('Protocol Version', 'protocolFileId');retrieveProtocolFile();">
+									<c:if test="${!empty protocolNamesByType}">
+										<html:optionsCollection name="protocolFilesByTypeName"
+											label="domainFile.version" value="domainFile.id" />
+										<option value="other">
+											[Other]
+										</option>
+									</c:if>
 								</html:select>
 								&nbsp; &nbsp;
 							</td>
@@ -88,8 +96,15 @@
 								<strong>Protocol File</strong>
 							</td>
 							<td class="rightLabel">
-								<span id="protocolFileLink"> </span>&nbsp;
 								<html:file property="file.uploadedFile" />
+								&nbsp;&nbsp;
+								<span id="protocolFileLink"> <c:if
+										test="${!empty submitProtocolForm.map.file.domainFile.uri }">&nbsp;&nbsp;
+									<a
+											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.file.domainFile.id}">
+											${submitProtocolForm.map.file.domainFile.uri }</a>
+									</c:if>
+								</span>&nbsp;
 							</td>
 						</tr>
 						<tr>
