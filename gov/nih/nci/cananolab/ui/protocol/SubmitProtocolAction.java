@@ -12,6 +12,9 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.util.List;
+import java.util.SortedSet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -40,7 +43,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
 				pfileBean.getUploadedFile(),
 				CaNanoLabConstants.FOLDER_PROTOCOL, null, null);
-		pfileBean.setInternalUri(internalUri);
+		if (internalUri != null)
+			pfileBean.setInternalUri(internalUri);
 		pfileBean.setupDomainFile(user.getLoginName());
 		ProtocolService service = new ProtocolService();
 		service.saveProtocolFile((ProtocolFile) pfileBean.getDomainFile(),
@@ -54,7 +58,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				pfileBean);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.submitProtocl.file",
+		ActionMessage msg = new ActionMessage("message.submitProtocol.file",
 				pfileBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
@@ -79,15 +83,19 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ProtocolService service = new ProtocolService();
 		ProtocolFileBean pfileBean = service.findProtocolFileById(fileId);
 		theForm.set("file", pfileBean);
+		String selectedProtocolType = ((ProtocolFile) pfileBean.getDomainFile())
+				.getProtocol().getType();
+		String selectedProtocolName = ((ProtocolFile) pfileBean.getDomainFile())
+				.getProtocol().getName();
+		SortedSet<String> protocolNames = service
+				.getProtocolNames(selectedProtocolType);
+		request.getSession().setAttribute("protocolNamesByType", protocolNames);
+		List<ProtocolFileBean> pFiles = service.getProtocolFiles(
+				selectedProtocolType, selectedProtocolName);
+		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
 		FileService fileService = new FileService();
 		fileService.retrieveVisibility(pfileBean, user);
 		return mapping.getInputForward();
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return setupUpdate(mapping, form, request, response);
 	}
 
 	public boolean loginRequired() {
