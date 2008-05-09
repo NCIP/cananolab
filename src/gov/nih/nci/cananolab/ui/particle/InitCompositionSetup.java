@@ -51,9 +51,8 @@ public class InitCompositionSetup {
 				"composingElementUnits", "ComposingElement", "valueUnit",
 				"otherValueUnit", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"ceMolecularFormulaTypes",
-				"ComposingElement", "molecularFormulaType",
-				"otherMolecularFormulaType", true);
+				"ceMolecularFormulaTypes", "ComposingElement",
+				"molecularFormulaType", "otherMolecularFormulaType", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");
@@ -116,9 +115,8 @@ public class InitCompositionSetup {
 				"modalityTypes", "ImagingFunction", "modality",
 				"otherModality", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"feMolecularFormulaTypes",
-				"FunctionalizingEntity", "molecularFormulaType",
-				"otherMolecularFormulaType", true);
+				"feMolecularFormulaTypes", "FunctionalizingEntity",
+				"molecularFormulaType", "otherMolecularFormulaType", true);
 
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
@@ -181,9 +179,12 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().persistLookup(request, "Attachment",
 				"bondType", "otherBondType",
 				assocBean.getAttachment().getBondType());
-		for (LabFileBean fileBean : assocBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
-					"otherType", fileBean.getDomainFile().getType());
+		if (assocBean.getFiles() != null) {
+			for (LabFileBean fileBean : assocBean.getFiles()) {
+				InitSetup.getInstance()
+						.persistLookup(request, "LabFile", "type", "otherType",
+								fileBean.getDomainFile().getType());
+			}
 		}
 		setChemicalAssociationDropdowns(request, hasFunctionalizingEntity);
 	}
