@@ -5,7 +5,7 @@
 <form-validation>
 	<formset>
 		<form name="submitProtocolForm">
-			<field property="protocolName" page="1"
+			<field property="file.domainFile.protocol.name" page="1"
 				depends="required, mask">
 				<arg position="0" key="protocol.name" bundle="protocol" />
 				<msg name="mask" key="protocol.name.invalid" />
@@ -14,15 +14,15 @@
 					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
 				</var>
 			</field>
-			<field property="protocolType" page="1"
+			<field property="file.domainFile.protocol.type" page="1"
 				depends="required">
 				<arg position="0" key="protocol.type" bundle="protocol" />
 			</field>
-			<field property="file.id" page="1" depends="required">
+			<field property="file.domainFileId" page="1" depends="required">
 				<arg position="0" key="protocol.version"
 					bundle="protocol" />
 			</field>
-			<field property="file.title" page="1" depends="mask">
+			<field property="file.domainFile.title" page="1" depends="mask">
 				<arg position="0" key="protocol.title"
 					bundle="protocol" />
 				<msg name="mask" key="protocol.title.invalid" />

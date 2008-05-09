@@ -12,8 +12,7 @@
 			value="/protocol/bodyProtocolDescription.jsp" />
 		<put name="createLink"
 			value="submitProtocol.do?dispatch=setup&amp;page=0" />
-		<put name="searchLink"
-			value="searchProtocol.do?dispatch=setup" />
+		<put name="searchLink" value="searchProtocol.do?dispatch=setup" />
 	</definition>
 
 	<!-- definition for the submit protocol page -->
@@ -21,11 +20,11 @@
 		<put name="calabContent"
 			value="/protocol/bodySubmitProtocol.jsp" />
 		<put name="menu" value="protocols" />
-		<put name="onloadJavascript" value="retrieveProtocols();retrieveProtocolFileVersions();"/>
 	</definition>
 
 	<definition name="protocol.message" extends="calab.home">
-		<put name="calabContent" value="/bodyMessage.jsp?bundle=protocol" />
+		<put name="calabContent"
+			value="/bodyMessage.jsp?bundle=protocol" />
 		<put name="menu" value="protocols" />
 	</definition>
 
@@ -39,7 +38,8 @@
 
 	<!-- definition for the search protocol page -->
 	<definition name="protocol.searchProtocol" extends="calab.home">
-		<put name="calabContent" value="/protocol/bodySearchProtocol.jsp" />
+		<put name="calabContent"
+			value="/protocol/bodySearchProtocol.jsp" />
 		<put name="menu" value="protocols" />
 	</definition>
 

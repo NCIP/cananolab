@@ -24,7 +24,8 @@
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:select property="achar.surfaceBean.domainSurface.isHydrophobic">
+						<html:select
+							property="achar.surfaceBean.domainSurface.isHydrophobic">
 							<option value=""></option>
 							<html:options name="booleanChoices" />
 						</html:select>
@@ -66,7 +67,7 @@
 							</c:otherwise>
 						</c:choose>
 						<td>
-							<c:forEach var="achar.surfaceBean.surfaceChemistryList"
+							<c:forEach var="chemistry"
 								items="${characterizationForm.map.achar.surfaceBean.surfaceChemistryList}"
 								varStatus="status">
 								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
@@ -80,7 +81,7 @@
 													</td>
 													<td class="formSubTitleNoLeft" align="right">
 														<a href="#"
-															onclick="javascript:removeComponent(characterizationForm, '${actionName}', ${status.index}, 'removeSurfaceChemistry')">
+															onclick="javascript:removeComponent(document.forms[0], '${actionName}', ${status.index}, 'removeSurfaceChemistry')">
 															<img src="images/delete.gif" border="0"
 																alt="remove this file"> </a>
 													</td>
@@ -100,11 +101,12 @@
 												&nbsp;
 												<c:choose>
 													<c:when test="${canCreateNanoparticle eq 'true'}">
-														<html:text name="achar.surfaceBean.surfaceChemistryList"
-															indexed="true" property="numberOfMolecules" /> &nbsp;															
+														<html:text
+															property="achar.surfaceBean.surfaceChemistryList[${status.index}].numberOfMolecule" />
+															&nbsp;															
 														</c:when>
 													<c:otherwise>
-															${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].numberOfMolecules}&nbsp;
+															${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].numberOfMolecule}&nbsp;
 														</c:otherwise>
 												</c:choose>
 											</td>
@@ -115,8 +117,8 @@
 												&nbsp;
 												<c:choose>
 													<c:when test="${canCreateNanoparticle eq 'true'}">
-														<html:text name="achar.surfaceBean.surfaceChemistryList"
-															indexed="true" property="moleculeName" /> &nbsp;															
+														<html:text
+															property="achar.surfaceBean.surfaceChemistryList[${status.index}].moleculeName" /> &nbsp;															
 														</c:when>
 													<c:otherwise>
 															${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].moleculeName}&nbsp;
@@ -129,10 +131,10 @@
 												<strong>Molecular Formula Type</strong>
 											</td>
 											<td class="label">
-												<html:select name="achar.surfaceBean.surfaceChemistryList"
-													indexed="true" property="molecularFormulaType">
+												<html:select
+													property="achar.surfaceBean.surfaceChemistryList[${status.index}].molecularFormulaType">
 													<option />
-														<html:options name="allMolecularFormulaTypes" />
+														<html:options name="scMolecularFormulaTypes" />
 												</html:select>
 											</td>
 											<td class="label">
@@ -141,11 +143,12 @@
 											<td class="rightLabel">
 												<c:choose>
 													<c:when test="${canCreateNanoparticle eq 'true'}">
-														<html:text name="achar.surfaceBean.surfaceChemistryList"
-															indexed="true" property="moleculeName" size="30" />
+														<html:text
+															property="achar.surfaceBean.surfaceChemistryList[${status.index}].molecularForumula"
+															size="30" />
 													</c:when>
 													<c:otherwise>
-						${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].moleculeName}&nbsp;
+						${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].molecularForumula}&nbsp;
 														</c:otherwise>
 												</c:choose>
 											</td>

@@ -27,21 +27,21 @@
 					<c:set var="link" value="editURL" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="link" value="viewURL" />
+					<c:set var="link" value="viewName" />
 				</c:otherwise>
 			</c:choose>
 			<display:table name="sessionScope.protocolFiles" id="protocolFile"
 				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolFileDecorator">
-				<!-- display:column title="Protocol Name" property="${link}" sortable="true" /-->
-				<display:column title="Protocol Name" property="${link}"
-					sortable="true" />
 				<display:column title="Protocol Type"
 					property="domainFile.protocol.type" sortable="true" />
+				<display:column title="Protocol Name" property="${link}"
+					sortable="true" />
 				<display:column title="Version" property="domainFile.version"
 					sortable="false" />
 				<display:column title="File Title" property="domainFile.title"
 					sortable="true" />
+				<display:column title="File Link" property="downloadURL" sortable="true"/>
 				<display:column title="Description"
 					property="domainFile.description" sortable="false" />
 				<display:column title="Protocol Submit Date"

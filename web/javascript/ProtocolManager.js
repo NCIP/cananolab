@@ -2,23 +2,23 @@
 var emptyOption = [{label:"", value:""}];
 function retrieveProtocols() {
 	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.findProtocolNames(protocolType, populateProtocolNames);
+	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
 }
 function resetProtocols() {
 	dwr.util.removeAllOptions("protocolName");
 	dwr.util.addOptions("protocolName", emptyOption, "value", "label");
-	dwr.util.removeAllOptions("protocolFileId");
-	dwr.util.addOptions("protocolFileId", emptyOption, "value", "label");
-	writeLink(null);
+	resetProtocolFiles();
 }
 function populateProtocolNames(protocolNames) {
+	resetProtocols();
 	dwr.util.addOptions("protocolName", protocolNames);
 	dwr.util.addOptions("protocolName", ["[Other]"]);
 }
 function retrieveProtocolFileVersions() {
+	resetProtocolFiles();
 	var protocolName = document.getElementById("protocolName").value;
 	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.findProtocolFilesBy(protocolType, null, protocolName, populateProtocolFileVersions);
+	ProtocolManager.getProtocolFiles(protocolType, protocolName, populateProtocolFileVersions);
 }
 function resetProtocolFiles() {
 	dwr.util.removeAllOptions("protocolFileId");
@@ -32,7 +32,12 @@ function populateProtocolFileVersions(protocolFiles) {
 function retrieveProtocolFile() {
 	var fileId = document.getElementById("protocolFileId").value;
 	//ProtocolManager.findProtocolFileById(fileId, writeLink); //not working on linux
-	ProtocolManager.findProtocolFileUriById(fileId, writeLink);
+	ProtocolManager.getProtocolFileUriById(fileId, writeLink);
+}
+function setProtocolVersion() {
+	var versionSelect = document.getElementById("protocolFileId");
+	var version = versionSelect[versionSelect.options.selectedIndex].text;
+	document.getElementById("selectedProtocolVersion").value = version;
 }
 function writeLink(uri) {
 	var fileId = document.getElementById("protocolFileId").value;
