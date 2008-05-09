@@ -6,8 +6,10 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +44,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		ProtocolService protocolService = new ProtocolService();
 		List<ProtocolFileBean> protocolFiles = protocolService
-				.findProtocolFilesBy(fileTitle, protocolType, protocolName);
+				.findProtocolFilesBy(protocolType, protocolName, fileTitle,
+						true);
 		List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
 		// retrieve visibility
 		FileService fileService = new FileService();
@@ -53,6 +56,10 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			}
 		}
 		if (filteredProtocolFiles != null && !filteredProtocolFiles.isEmpty()) {
+			Collections
+					.sort(
+							filteredProtocolFiles,
+							new CaNanoLabComparators.ProtocolFileBeanNameVersionComparator());
 			request.getSession().setAttribute("protocolFiles",
 					filteredProtocolFiles);
 			forward = mapping.findForward("success");
