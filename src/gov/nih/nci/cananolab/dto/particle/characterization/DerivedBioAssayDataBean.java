@@ -40,8 +40,6 @@ public class DerivedBioAssayDataBean {
 		}
 		Collections.sort(datumList,
 				new CaNanoLabComparators.DerivedDatumDateComparator());
-
-		// TODO sort the datum list
 	}
 
 	public DerivedBioAssayData getDomainBioAssayData() {
