@@ -1,12 +1,8 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-
-import java.util.Map;
-import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
