@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
@@ -179,7 +180,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			ActionMessage msg = new ActionMessage("error.noFile");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
-			return mapping.findForward("fileMessage");
+			throw new FileException("File "+ fileBean.getDomainFile().getUri()+" doesn't exist on the server");
 		}
 		return null;
 	}
