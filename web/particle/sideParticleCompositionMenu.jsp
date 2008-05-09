@@ -70,7 +70,7 @@
 	</c:when>
 	<c:otherwise>
 		<li class="nodatali">
-			COMPOSITION
+			SAMPLE COMPOSITION
 		</li>
 	</c:otherwise>
 </c:choose>

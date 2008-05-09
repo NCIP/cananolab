@@ -18,7 +18,7 @@ function confirmDeletion()
 </script>
 <c:choose>
 	<c:when
-		test="${! empty chemicalAssociationForm.map.assoc.attachment.id }">
+		test="${chemicalAssociationForm.map.assoc.type eq 'attachment'}">
 		<c:set var="style" value="" />
 	</c:when>
 	<c:otherwise>
@@ -76,7 +76,7 @@ function confirmDeletion()
 						</td>
 						<td class="label">
 							<c:choose>
-								<c:when test="${param.dispatch eq 'setup'}">
+								<c:when test="${param.dispatch eq 'setup'||empty chemicalAssociationForm.map.assoc.type}">
 									<html:select styleId="assoType" property="assoc.type"
 										onchange="javascript:callPrompt('Association Type', 'assoType');
 											displayBondType();">
@@ -90,7 +90,7 @@ function confirmDeletion()
 								<c:otherwise>
 									${chemicalAssociationForm.map.assoc.type}
 								</c:otherwise>
-							</c:choose>
+							</c:choose>&nbsp;
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
