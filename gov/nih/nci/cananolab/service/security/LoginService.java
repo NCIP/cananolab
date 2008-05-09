@@ -23,8 +23,6 @@ public class LoginService {
 
 	AuthenticationManager am = null;
 
-	// TODO Make a singleton
-
 	/**
 	 * LoginService Constructor
 	 * 

@@ -80,7 +80,6 @@ public class ComposingElementBean {
 			functionBean.setupDomainFunction(typeToClass, createdBy);
 			domainComposingElement.getInherentFunctionCollection().add(
 					functionBean.getDomainFunction());
-			// TODO add date to function
 		}
 	}
 }

@@ -76,9 +76,6 @@ public class NanoparticleCompositionService {
 			particleSample.getSampleComposition()
 					.getNanoparticleEntityCollection().add(entity);
 			appService.saveOrUpdate(entity);
-			if (entity instanceof OtherNanoparticleEntity) {
-				// TODO save other entity type
-			}
 		} catch (Exception e) {
 			String err = "Error in saving a nanoparticle entity.";
 			logger.error(err, e);
@@ -156,9 +153,6 @@ public class NanoparticleCompositionService {
 			particleSample.getSampleComposition()
 					.getFunctionalizingEntityCollection().add(entity);
 			appService.saveOrUpdate(entity);
-			if (entity instanceof OtherFunctionalizingEntity) {
-				// TODO save other entity type
-			}
 		} catch (Exception e) {
 			String err = "Problem saving the functionalizing entity.";
 			logger.error(err, e);
@@ -191,9 +185,6 @@ public class NanoparticleCompositionService {
 				appService.saveOrUpdate(composition);
 			} else {
 				appService.saveOrUpdate(assoc);
-			}
-			if (assoc instanceof OtherChemicalAssociation) {
-				// TODO save other chemical association type
 			}
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
@@ -246,7 +237,6 @@ public class NanoparticleCompositionService {
 
 			FileService fileService = new FileService();
 			fileService.writeFile(file, fileData);
-			// TODO save other file type
 
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";

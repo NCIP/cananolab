@@ -32,7 +32,6 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 			Properties systemProperties) {
 		super(classCache, systemProperties);
 		this.classCache = classCache;
-		// TODO Auto-generated constructor stub
 	}
 
 	public Object load(Class domainClass, Serializable id)
