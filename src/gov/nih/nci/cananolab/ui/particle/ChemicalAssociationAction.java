@@ -177,7 +177,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				particleEntitiesWithComposingElements);
 		request.getSession().setAttribute("functionalizingEntities",
 				functionalizingEntities);
-		request.getSession().setAttribute("hasNanoparticleEntity",
+		request.getSession().setAttribute("hasFunctionalizingEntity",
 				hasFunctionalizingEntity);
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
