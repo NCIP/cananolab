@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
@@ -86,7 +85,7 @@ public class InitCharacterizationSetup {
 
 		// surface chemistry
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"molecularFormulaTypes", "SurfaceChemistry",
+				"scMolecularFormulaTypes", "SurfaceChemistry",
 				"molecularFormulaType", "otherMolecularFormulaType", true);
 	}
 
