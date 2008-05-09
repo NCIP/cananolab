@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.util;
 
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
@@ -25,7 +27,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.6 2008-05-07 10:31:53 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.7 2008-05-09 04:44:06 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -247,4 +249,27 @@ public class CaNanoLabComparators {
 			return chem1.getCreatedDate().compareTo(chem2.getCreatedDate());
 		}
 	}
+
+	public static class ProtocolFileBeanNameVersionComparator implements
+			Comparator<ProtocolFileBean> {
+		public int compare(ProtocolFileBean protocolFile1,
+				ProtocolFileBean protocolFile2) {
+			String name1 = ((ProtocolFile) protocolFile1.getDomainFile())
+					.getProtocol().getName();
+			String name2 = ((ProtocolFile) protocolFile2.getDomainFile())
+					.getProtocol().getName();
+			int nameComp = new SortableNameComparator().compare(name1, name2);
+			if (nameComp == 0) {
+				String version1 = protocolFile1.getDomainFile().getVersion();
+				String version2 = protocolFile2.getDomainFile().getVersion();
+				if (version1 == null || version2 == null) {
+					return 0;
+				}
+				return version1.compareTo(version2);
+			} else {
+				return nameComp;
+			}
+		}
+	}
+
 }
