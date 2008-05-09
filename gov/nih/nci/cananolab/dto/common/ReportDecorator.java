@@ -27,17 +27,22 @@ public class ReportDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getViewReportURL() throws UnsupportedEncodingException {
+	public SortableName getDownloadURL() throws UnsupportedEncodingException {
+		SortableName sortableLink = null;
 		ReportBean file = (ReportBean) getCurrentRowObject();
-		String fileId = file.getDomainFile().getId().toString();
-		String editReportURL = "submitReport.do?submitType=none&page=0&dispatch=setupView&fileId="
-				+ fileId;
-		String link = "<a href=" + editReportURL + ">"
-				+ file.getDomainFile().getTitle() + "</a>";
-		SortableName sortableLink = new SortableName(file.getDomainFile()
-				.getTitle(), link);
+		if (file.getDomainFile().getName() != null) {
+			String downloadURL = "searchProtocol.do?dispatch=download"
+					+ "&fileId=" + file.getDomainFile().getId();
+			String link = "<a href=" + downloadURL + ">"
+					+ file.getDomainFile().getName() + "</a>";
+			sortableLink = new SortableName(file.getDomainFile().getName(),
+					link);
+		} else {
+			sortableLink = new SortableName("");
+		}
 		return sortableLink;
 	}
+
 
 	public String getParticleNames() {
 		ReportBean file = (ReportBean) getCurrentRowObject();
