@@ -144,11 +144,11 @@
 												<c:choose>
 													<c:when test="${canCreateNanoparticle eq 'true'}">
 														<html:text
-															property="achar.surfaceBean.surfaceChemistryList[${status.index}].molecularForumula"
+															property="achar.surfaceBean.surfaceChemistryList[${status.index}].molecularFormula"
 															size="30" />
 													</c:when>
 													<c:otherwise>
-						${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].molecularForumula}&nbsp;
+						${characterizationForm.map.achar.surfaceBean.surfaceChemistryList[status.index].molecularFormula}&nbsp;
 														</c:otherwise>
 												</c:choose>
 											</td>
