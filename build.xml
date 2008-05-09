@@ -22,7 +22,7 @@
 		<mkdir dir="${build.classes.dir}" />
 		<mkdir dir="${build.webinf.dir}/lib" />
 		<mkdir dir="${build.war.dir}" />
-		<mkdir dir="${build.classes.dir}/gov/nih/nci/calab/resources" />
+		<mkdir dir="${build.classes.dir}/gov/nih/nci/cananolab/resources" />
 
 	</target>
 
@@ -58,8 +58,8 @@
 			</fileset>
 		</copy>
 
-		<copy todir="${build.classes.dir}/gov/nih/nci/calab/resources">
-			<fileset dir="${src.java.dir}/gov/nih/nci/calab/resources">
+		<copy todir="${build.classes.dir}/gov/nih/nci/cananolab/resources">
+			<fileset dir="${src.java.dir}/gov/nih/nci/cananolab/resources">
 				<include name="*.properties" />
 			</fileset>
 		</copy>
@@ -72,7 +72,6 @@
 			</fileset>
 			<filterset>
 				<filter token="FILE_REPOSITORY_DIR" value="${file.repository.dir}" />				
-				<filter token="SAMPLE_PREFIX" value="${sample.prefix}" />
 				<filter token="APP_OWNER" value="${application.owner}" />	
 				<filter token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
 				<filter token="DATABASE" value="${database}" />
@@ -84,9 +83,6 @@
 		<war destfile="${build.webroot.dir}/war/caNanoLab.war" webxml="${build.webinf.dir}/web.xml" basedir="${build.webroot.dir}" compress="true" />
 		<copy todir="${build.webroot.dir}/war">
 			<fileset dir="conf/csm/">
-				<include name="*.war" />
-			</fileset>
-			<fileset dir="conf/sdk/${database}">
 				<include name="*.war" />
 			</fileset>
 		</copy>
