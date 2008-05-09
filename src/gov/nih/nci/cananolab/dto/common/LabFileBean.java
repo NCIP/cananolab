@@ -134,8 +134,15 @@ public class LabFileBean {
 		return uploadedFile;
 	}
 
-	public void setUploadedFile(FormFile uploadedFile) {
+	public void setUploadedFile(FormFile uploadedFile) throws Exception {
 		this.uploadedFile = uploadedFile;
+		fileData = uploadedFile.getFileData();
+		if (uploadedFile.getFileName().length()>0) {
+			domainFile.setName(uploadedFile.getFileName());
+		}
+		else {
+			fileData=null;
+		}
 	}
 
 	public void setupDomainFile(String createdBy) throws Exception {
@@ -143,24 +150,20 @@ public class LabFileBean {
 			domainFile.setCreatedBy(createdBy);
 			domainFile.setCreatedDate(new Date());
 		}
-		String uri = null;
-		String name = null;
 		// if entered external url
-		if (domainFile.getUriExternal() && externalUrl.length() > 0) {
-			uri = externalUrl;
-			name = externalUrl;
+		if (domainFile.getUriExternal() != null && externalUrl != null
+				&& externalUrl.length() > 0) {
+			domainFile.setUri(externalUrl);
+			domainFile.setName(externalUrl);
 			fileData = null;
-		} else {
-			uri = internalUri;
-			name = uploadedFile.getFileName();
-			fileData = uploadedFile.getFileData();
-		}
-		domainFile.setUri(uri);
-		domainFile.setName(name);
+		} 
 	}
 
 	public void setInternalUri(String internalUri) {
 		this.internalUri = internalUri;
+		if (internalUri.length()>0) {
+			domainFile.setUri(internalUri);
+		}
 	}
 
 	public byte[] getFileData() {

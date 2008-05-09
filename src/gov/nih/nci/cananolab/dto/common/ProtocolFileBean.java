@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 
 import java.util.Date;
-import java.util.HashSet;
 
 /**
  * Protocol File view bean
@@ -19,14 +18,18 @@ public class ProtocolFileBean extends LabFileBean {
 	/**
 	 * 
 	 */
+	String domainFileId;
+
 	public ProtocolFileBean() {
 		super();
 		domainFile = new ProtocolFile();
 		((ProtocolFile) domainFile).setProtocol(new Protocol());
+		domainFile.setUriExternal(false);
 	}
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
 		super(protocolFile);
+		domainFileId = protocolFile.getId().toString();
 	}
 
 	public String getDisplayName() {
@@ -34,9 +37,18 @@ public class ProtocolFileBean extends LabFileBean {
 				+ domainFile.getVersion();
 	}
 
-	// for dwr ajax in bodySubmitProtocol.jsp
 	public String getDomainFileId() {
-		return domainFile.getId().toString();
+		return domainFileId;
+	}
+
+	public void setDomainFileId(String domainFileId) {
+		try {
+			Long id = new Long(domainFileId);
+			domainFile.setId(id);
+		} catch (Exception e) {
+			domainFile.setVersion(domainFileId);
+		}
+		this.domainFileId = domainFileId;
 	}
 
 	// for dwr ajax in bodySubmitProtocol.jsp
@@ -65,12 +77,12 @@ public class ProtocolFileBean extends LabFileBean {
 			protocol.setCreatedBy(createdBy);
 			protocol.setCreatedDate(new Date());
 		}
-		if (protocol.getProtocolFileCollection() == null) {
-			protocol.setProtocolFileCollection(new HashSet<ProtocolFile>());
-		}
-		protocol.getProtocolFileCollection().add((ProtocolFile) domainFile);
-		if (((ProtocolFile) domainFile).getProtocol() == null) {
-			((ProtocolFile) domainFile).setProtocol(protocol);
-		}
+//		if (protocol.getProtocolFileCollection() == null) {
+//			protocol.setProtocolFileCollection(new HashSet<ProtocolFile>());
+//		}
+//		protocol.getProtocolFileCollection().add((ProtocolFile) domainFile);
+//		if (((ProtocolFile) domainFile).getProtocol() == null) {
+//			((ProtocolFile) domainFile).setProtocol(protocol);
+//		}
 	}
 }
