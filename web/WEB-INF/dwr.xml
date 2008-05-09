@@ -27,9 +27,9 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.service.protocol.ProtocolService" />
-			<include method="findProtocolFilesBy" />
-			<include method="findProtocolNames" />
-			<include method="findProtocolFileUriById" />
+			<include method="getProtocolFiles" />
+			<include method="getProtocolNames" />
+			<include method="getProtocolFileUriById" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean">
