@@ -43,7 +43,7 @@
 			type="java.lang.Exception" />
 	</global-exceptions>
 	<global-forwards>
-		<forward name="fileMessage" path="home.err" />
+		<forward name="fileMessage" path="home.error" />
 	</global-forwards>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
