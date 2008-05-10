@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle;
 
-import gov.nih.nci.cananolab.dto.common.SortableName;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
