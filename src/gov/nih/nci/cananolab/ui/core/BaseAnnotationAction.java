@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.PropertyReader;
 
 import java.io.File;
@@ -62,9 +62,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return particleBean;
 	}
 
-	protected void setupDomainFiles(HttpServletRequest request,
-			List<LabFileBean> files, String particleSampleName,
-			String createdBy, String submitType) throws Exception {
+	protected void setupDomainFiles(List<LabFileBean> files,
+			String particleSampleName, String createdBy, String submitType)
+			throws Exception {
 		// setup domainFile for fileBeans
 		for (LabFileBean fileBean : files) {
 			String internalUri = InitSetup.getInstance()
@@ -101,7 +101,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 
-	public Map<String, SortedSet<ParticleDataLinkBean>> setupDataTree(
+	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
 		request.setAttribute("updateDataTree", "true");
@@ -126,9 +126,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throws Exception {
 		String submitType = request.getParameter("submitType");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
 				theForm, request);
-		SortedSet<ParticleDataLinkBean> dataToDelete = dataTree.get(submitType);
+		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
 		request.getSession().setAttribute("actionName",
 				dataToDelete.first().getDataLink());
 		request.getSession().setAttribute("dataToDelete", dataToDelete);
