@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.util;
 
-import gov.nih.nci.cananolab.dto.common.SortableName;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -24,15 +23,15 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.5 2008-05-04 01:50:36 cais Exp $ */
+/* CVS $Id: StringUtils.java,v 1.6 2008-05-10 22:47:59 pansu Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
 	public static boolean isImgFileExt(String fileName) {
-		if(fileName == null || fileName.length() == 0)
+		if (fileName == null || fileName.length() == 0)
 			return false;
-		
+
 		boolean isImgFileExt = false;
 		for (int i = 0; i < CaNanoLabConstants.IMAGE_FILE_EXTENSIONS.length; i++) {
 			if (fileName.toUpperCase().endsWith(
