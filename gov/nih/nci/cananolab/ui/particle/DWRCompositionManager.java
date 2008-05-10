@@ -1,11 +1,11 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.DataLinkBean;
 
 import java.io.IOException;
 import java.util.List;
@@ -204,25 +204,25 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public ParticleDataLinkBean[] getAssociatedElementOptions(String entityType) {
+	public DataLinkBean[] getAssociatedElementOptions(String entityType) {
 
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
-		SortedSet<ParticleDataLinkBean> particleEntitites = null;
+		SortedSet<DataLinkBean> particleEntitites = null;
 
 		if (entityType.equals("Nanoparticle Entity")) {
-			particleEntitites = (SortedSet<ParticleDataLinkBean>) request
+			particleEntitites = (SortedSet<DataLinkBean>) request
 					.getSession().getAttribute("particleEntities");
 
 		} else if (entityType.equals("Functionalizing Entity")) {
-			particleEntitites = (SortedSet<ParticleDataLinkBean>) request
+			particleEntitites = (SortedSet<DataLinkBean>) request
 					.getSession().getAttribute("functionalizingEntities");
 		}
 
 		if (particleEntitites != null && particleEntitites.size() > 0)
 			return particleEntitites
-					.toArray(new ParticleDataLinkBean[particleEntitites.size()]);
+					.toArray(new DataLinkBean[particleEntitites.size()]);
 
 		else
 			return null;

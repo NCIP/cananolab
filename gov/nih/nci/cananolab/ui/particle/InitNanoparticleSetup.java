@@ -13,16 +13,16 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.dto.common.SortableName;
-import gov.nih.nci.cananolab.dto.common.TreeNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.DataLinkBean;
+import gov.nih.nci.cananolab.util.SortableName;
+import gov.nih.nci.cananolab.util.TreeNodeBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,22 +98,22 @@ public class InitNanoparticleSetup {
 		}
 	}
 
-	public Map<String, List<ParticleDataLinkBean>> getDefaultCompositionTypes(
+	public Map<String, List<DataLinkBean>> getDefaultCompositionTypes(
 			ServletContext appContext) throws Exception {
 
-		Map<String, List<ParticleDataLinkBean>> compositionMap = new HashMap<String, List<ParticleDataLinkBean>>();
-		List<ParticleDataLinkBean> compList = new ArrayList<ParticleDataLinkBean>(
+		Map<String, List<DataLinkBean>> compositionMap = new HashMap<String, List<DataLinkBean>>();
+		List<DataLinkBean> compList = new ArrayList<DataLinkBean>(
 				4);
 
-		compList.add(new ParticleDataLinkBean("Nanoparticle Entity",
+		compList.add(new DataLinkBean("Nanoparticle Entity",
 				"NanoparticleEntity", "nanoparticleEntity", "composition"));
 		compList
-				.add(new ParticleDataLinkBean("Functionalizing Entity",
+				.add(new DataLinkBean("Functionalizing Entity",
 						"FunctionalizingEntity", "functionalizingEntity",
 						"composition"));
-		compList.add(new ParticleDataLinkBean("Chemical Association",
+		compList.add(new DataLinkBean("Chemical Association",
 				"ChemicalAssociation", "chemicalAssociation", "composition"));
-		compList.add(new ParticleDataLinkBean("Composition File",
+		compList.add(new DataLinkBean("Composition File",
 				"CompositionFile", "compositionFile", "composition"));
 
 		compositionMap.put("Composition", compList);
@@ -199,9 +199,9 @@ public class InitNanoparticleSetup {
 		}
 	}
 
-	public Map<String, SortedSet<ParticleDataLinkBean>> getDataTree(
+	public Map<String, SortedSet<DataLinkBean>> getDataTree(
 			String particleId, HttpServletRequest request) throws Exception {
-		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = new HashMap<String, SortedSet<ParticleDataLinkBean>>();
+		Map<String, SortedSet<DataLinkBean>> dataTree = new HashMap<String, SortedSet<DataLinkBean>>();
 		if (request.getAttribute("updateDataTree") != null
 				&& request.getAttribute("updateDataTree").equals("true")) {
 			ServletContext appContext = request.getSession()
@@ -215,14 +215,14 @@ public class InitNanoparticleSetup {
 			request.getSession().setAttribute("theParticle", particleBean);
 			// composition
 			if (particleSample.getSampleComposition() != null) {
-				SortedSet<ParticleDataLinkBean> ndataBeans = new TreeSet<ParticleDataLinkBean>(
-						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+				SortedSet<DataLinkBean> ndataBeans = new TreeSet<DataLinkBean>(
+						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getNanoparticleEntityCollection() != null) {
 					for (NanoparticleEntity entity : particleSample
 							.getSampleComposition()
 							.getNanoparticleEntityCollection()) {
-						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+						DataLinkBean dataBean = new DataLinkBean(
 								entity.getId().toString(), "Composition",
 								"nanoparticleEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
@@ -245,14 +245,14 @@ public class InitNanoparticleSetup {
 				}
 				dataTree.put("Nanoparticle Entity", ndataBeans);
 
-				SortedSet<ParticleDataLinkBean> fdataBeans = new TreeSet<ParticleDataLinkBean>(
-						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+				SortedSet<DataLinkBean> fdataBeans = new TreeSet<DataLinkBean>(
+						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getFunctionalizingEntityCollection() != null) {
 					for (FunctionalizingEntity entity : particleSample
 							.getSampleComposition()
 							.getFunctionalizingEntityCollection()) {
-						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+						DataLinkBean dataBean = new DataLinkBean(
 								entity.getId().toString(), "Composition",
 								"functionalizingEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
@@ -275,15 +275,15 @@ public class InitNanoparticleSetup {
 				}
 				dataTree.put("Functionalizing Entity", fdataBeans);
 
-				SortedSet<ParticleDataLinkBean> adataBeans = new TreeSet<ParticleDataLinkBean>(
-						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+				SortedSet<DataLinkBean> adataBeans = new TreeSet<DataLinkBean>(
+						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getChemicalAssociationCollection() != null) {
 					int i = 1;
 					for (ChemicalAssociation association : particleSample
 							.getSampleComposition()
 							.getChemicalAssociationCollection()) {
-						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+						DataLinkBean dataBean = new DataLinkBean(
 								association.getId().toString(), "Composition",
 								"chemicalAssociation", association
 										.getCreatedBy(), association
@@ -307,13 +307,13 @@ public class InitNanoparticleSetup {
 				}
 				dataTree.put("Chemical Association", adataBeans);
 
-				SortedSet<ParticleDataLinkBean> ldataBeans = new TreeSet<ParticleDataLinkBean>(
-						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+				SortedSet<DataLinkBean> ldataBeans = new TreeSet<DataLinkBean>(
+						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getLabFileCollection() != null) {
 					for (LabFile file : particleSample.getSampleComposition()
 							.getLabFileCollection()) {
-						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+						DataLinkBean dataBean = new DataLinkBean(
 								file.getId().toString(), "Composition",
 								"compositionFile", file.getCreatedBy(), file
 										.getCreatedDate());
@@ -335,7 +335,7 @@ public class InitNanoparticleSetup {
 			// characterization
 			boolean hasPhysicalData = false;
 			boolean hasInVitroData = false;
-			SortedSet<ParticleDataLinkBean> cdataBeans = null;
+			SortedSet<DataLinkBean> cdataBeans = null;
 			if (particleSample.getCharacterizationCollection() != null) {
 				for (Characterization achar : particleSample
 						.getCharacterizationCollection()) {
@@ -351,7 +351,7 @@ public class InitNanoparticleSetup {
 						hasInVitroData = true;
 
 					}
-					ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+					DataLinkBean dataBean = new DataLinkBean(
 							achar.getId().toString(), category, link, achar
 									.getCreatedBy(), achar.getCreatedDate());
 					dataBean.setDataClassName(ClassUtils
@@ -362,34 +362,34 @@ public class InitNanoparticleSetup {
 					dataBean.setDataDisplayType(charName);
 					dataBean.setViewTitle(achar.getIdentificationName());
 					if (dataTree.get(charName) != null) {
-						cdataBeans = (TreeSet<ParticleDataLinkBean>) dataTree
+						cdataBeans = (TreeSet<DataLinkBean>) dataTree
 								.get(charName);
 					} else {
-						cdataBeans = new TreeSet<ParticleDataLinkBean>(
-								new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+						cdataBeans = new TreeSet<DataLinkBean>(
+								new CaNanoLabComparators.DataLinkTypeDateComparator());
 						dataTree.put(charName, cdataBeans);
 					}
 					cdataBeans.add(dataBean);
 				}
 
 				// report
-				SortedSet<ParticleDataLinkBean> rdataBeans = new TreeSet<ParticleDataLinkBean>(
-						new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+				SortedSet<DataLinkBean> rdataBeans = new TreeSet<DataLinkBean>(
+						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getReportCollection() != null) {
 					for (Report report : particleSample.getReportCollection()) {
 						String reportCategory = report.getCategory();
-						ParticleDataLinkBean dataBean = new ParticleDataLinkBean(
+						DataLinkBean dataBean = new DataLinkBean(
 								report.getId().toString(), "Report",
 								"submitReport", report.getCreatedBy(), report
 										.getCreatedDate());
 						dataBean.setDataDisplayType(reportCategory);
 						dataBean.setViewTitle(report.getUri());
 						if (dataTree.get(reportCategory) != null) {
-							rdataBeans = (TreeSet<ParticleDataLinkBean>) dataTree
+							rdataBeans = (TreeSet<DataLinkBean>) dataTree
 									.get(reportCategory);
 						} else {
-							rdataBeans = new TreeSet<ParticleDataLinkBean>(
-									new CaNanoLabComparators.ParticleDataLinkTypeDateComparator());
+							rdataBeans = new TreeSet<DataLinkBean>(
+									new CaNanoLabComparators.DataLinkTypeDateComparator());
 							dataTree.put(reportCategory, rdataBeans);
 						}
 						rdataBeans.add(dataBean);
@@ -409,8 +409,8 @@ public class InitNanoparticleSetup {
 				request.getSession().setAttribute("hasInVitroData", "false");
 
 		} else {
-			dataTree = new HashMap<String, SortedSet<ParticleDataLinkBean>>(
-					(Map<? extends String, SortedSet<ParticleDataLinkBean>>) (request
+			dataTree = new HashMap<String, SortedSet<DataLinkBean>>(
+					(Map<? extends String, SortedSet<DataLinkBean>>) (request
 							.getSession().getAttribute("particleDataTree")));
 		}
 		return dataTree;
