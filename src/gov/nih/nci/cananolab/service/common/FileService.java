@@ -1,11 +1,13 @@
 package gov.nih.nci.cananolab.service.common;
 
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -99,20 +101,30 @@ public class FileService {
 	}
 
 	public void saveCopiedFileAndSetVisibility(LabFile copy, UserBean user,
-			String oldSampleName, String newSampleName) throws Exception {
-		// the copied file has been persisted with the same URI but createdBy is
-		// COPY
-		LabFile file = findFileByUri(copy.getUri());
-		copy.setUri(copy.getUri().replaceFirst(oldSampleName, newSampleName));
-		saveFile(copy);
-		byte[] content = this.getFileContent(file.getId());
-		this.writeFile(copy, content);
-		AuthorizationService auth = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		LabFileBean fileBean = new LabFileBean(file);
-		this.retrieveVisibility(fileBean, user);
-		auth.assignVisibility(copy.getId().toString(), fileBean
-				.getVisibilityGroups());
+			String oldSampleName, String newSampleName) throws FileException {
+		try {
+			// the copied file has been persisted with the same URI but
+			// createdBy is
+			// COPY
+			LabFile file = findFileByUri(copy.getUri());
+			copy.setUri(copy.getUri()
+					.replaceFirst(oldSampleName, newSampleName));
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.saveOrUpdate(copy);
+			byte[] content = this.getFileContent(file.getId());
+			writeFile(copy, content);
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			LabFileBean fileBean = new LabFileBean(file);
+			this.retrieveVisibility(fileBean, user);
+			auth.assignVisibility(copy.getId().toString(), fileBean
+					.getVisibilityGroups());
+		} catch (Exception e) {
+			String err = "Error in saving copied file to the file system and setting visibility of the copied file.";
+			logger.error(err, e);
+			throw new FileException(err, e);
+		}
 	}
 
 	public LabFile findFileByUri(String uri) throws FileException {
@@ -307,18 +319,50 @@ public class FileService {
 	}
 
 	/**
-	 * save the meta data associated with a file stored in the database
+	 * Preparing keywords and other information prior to saving a file
 	 * 
 	 * @param file
+	 * @param fileData
 	 * @throws FileException
 	 */
-	public void saveFile(LabFile file) throws FileException {
+	public void prepareSaveFile(LabFile file, byte[] fileData)
+			throws FileException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			appService.saveOrUpdate(file);
+			if (file.getId() != null) {
+				try {
+					LabFile dbFile = (LabFile) appService.get(LabFile.class,
+							file.getId());
+					// don't change createdBy and createdDate it is already
+					// persisted
+					file.setCreatedBy(dbFile.getCreatedBy());
+					file.setCreatedDate(dbFile.getCreatedDate());
+					if (dbFile.getVersion() != null) {
+						file.setVersion(dbFile.getVersion());
+					}
+					// load fileName and uri if no new data has been uploaded or
+					// no new url has been entered
+					if (fileData == null && !file.getUriExternal()) {
+						file.setName(dbFile.getName());
+					}
+				} catch (Exception e) {
+					String err = "Object doesn't exist in the database anymore.  Please log in again.";
+					logger.error(err);
+					throw new ReportException(err, e);
+				}
+			}
+			if (file.getKeywordCollection() != null) {
+				for (Keyword keyword : file.getKeywordCollection()) {
+					Keyword dbKeyword = (Keyword) appService.getObject(
+							Keyword.class, "name", keyword.getName());
+					if (dbKeyword != null && keyword.getId() == null) {
+						keyword = dbKeyword;
+					}
+				}
+			}
 		} catch (Exception e) {
-			logger.error("Problem saving file: ", e);
+			logger.error("Problem in preparing saving a file: ", e);
 			throw new FileException();
 		}
 	}
