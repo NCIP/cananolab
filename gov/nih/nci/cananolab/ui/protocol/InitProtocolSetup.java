@@ -49,7 +49,7 @@ public class InitProtocolSetup {
 		}
 		ProtocolService service = new ProtocolService();
 		List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
-				protocolType, null, null, false);
+				protocolType, null, null);
 		request.getSession().setAttribute("characterizationProtocolFiles",
 				protocolFiles);
 		return protocolFiles;

@@ -44,8 +44,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 
 		ProtocolService protocolService = new ProtocolService();
 		List<ProtocolFileBean> protocolFiles = protocolService
-				.findProtocolFilesBy(protocolType, protocolName, fileTitle,
-						true);
+				.findProtocolFilesBy(protocolType, protocolName, fileTitle);
 		List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
 		// retrieve visibility
 		FileService fileService = new FileService();
