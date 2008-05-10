@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.particle;
 
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
@@ -208,13 +209,22 @@ public class NanoparticleCompositionService {
 					file.setCreatedDate(dbFile.getCreatedDate());
 					// load fileName and uri if no new data has been uploaded or
 					// no new url has been entered
-					if (fileData == null || !file.getUriExternal()) {
+					if (fileData == null && !file.getUriExternal()) {
 						file.setName(dbFile.getName());
 					}
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
 					throw new ReportException(err, e);
+				}
+			}
+			if (file.getKeywordCollection() != null) {
+				for (Keyword keyword : file.getKeywordCollection()) {
+					Keyword dbKeyword = (Keyword) appService.getObject(
+							Keyword.class, "name", keyword.getName());
+					if (dbKeyword != null && keyword.getId() == null) {
+						keyword = dbKeyword;
+					}
 				}
 			}
 			if (particleSample.getSampleComposition() == null) {
