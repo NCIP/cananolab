@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
@@ -27,7 +26,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.7 2008-05-09 04:44:06 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.8 2008-05-10 22:48:20 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -108,10 +107,10 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class ParticleDataLinkTypeDateComparator implements
-			Comparator<ParticleDataLinkBean> {
-		public int compare(ParticleDataLinkBean link1,
-				ParticleDataLinkBean link2) {
+	public static class DataLinkTypeDateComparator implements
+			Comparator<DataLinkBean> {
+		public int compare(DataLinkBean link1,
+				DataLinkBean link2) {
 			if (link1.getDataDisplayType().equals(link2.getDataDisplayType())) {
 				return link1.getCreatedDate().compareTo(link2.getCreatedDate());
 			} else {
