@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.util.SortableName;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
