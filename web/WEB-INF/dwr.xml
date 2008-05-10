@@ -32,7 +32,7 @@
 			<include method="getProtocolFileUriById" />
 		</create>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean">
+			match="gov.nih.nci.cananolab.dto.particle.DataLinkBean">
 			<param name="include" value="dataId, dataDisplayType" />
 		</convert>
 		<convert converter="bean"
