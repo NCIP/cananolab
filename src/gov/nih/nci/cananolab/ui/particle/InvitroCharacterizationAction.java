@@ -9,7 +9,6 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
@@ -42,18 +41,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		charBean.setupDomainChar(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName());
-		ParticleBean particleBean = setupParticle(theForm, request);
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		charService.saveCharacterization(
-				particleBean.getDomainParticleSample(), charBean
-						.getDomainChar());
-		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, charBean);
+		saveCharacterization(request, theForm, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistInvitroCharacterizationDropdowns(request, charBean);
 
@@ -63,7 +51,6 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(theForm, request);
 		return forward;
 	}
 
@@ -79,8 +66,8 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		return charBean;
 	}
 
-	protected void setLookups(HttpServletRequest request, CharacterizationBean charBean)
-			throws Exception {
+	protected void setLookups(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
 		super.setLookups(request, charBean);
 		InitCharacterizationSetup.getInstance()
 				.setInvitroCharacterizationDropdowns(request);

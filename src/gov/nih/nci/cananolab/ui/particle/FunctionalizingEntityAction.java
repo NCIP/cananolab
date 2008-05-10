@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.33 2008-05-09 21:20:00 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.34 2008-05-10 22:46:38 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -42,7 +42,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		// setup domainFile for fileBeans
-		setupDomainFiles(request, entityBean.getFiles(), particleBean
+		setupDomainFiles(entityBean.getFiles(), particleBean
 				.getDomainParticleSample().getName(), user.getLoginName(),
 				"Functionalizing Entity");
 
