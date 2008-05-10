@@ -6,27 +6,19 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.43 2008-05-09 21:20:29 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.44 2008-05-10 22:46:38 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,33 +53,21 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		// setup domainFile for fileBeans
-		for (LabFileBean fileBean : entityBean.getFiles()) {
-			String internalUri = InitSetup.getInstance()
-					.getFileUriFromFormFile(fileBean.getUploadedFile(),
-							CaNanoLabConstants.FOLDER_PARTICLE,
-							particleBean.getDomainParticleSample().getName(),
-							"Nanoparticle Entity");
-			fileBean.setInternalUri(internalUri);
-			fileBean.setupDomainFile(user.getLoginName());
-		}
+		setupDomainFiles(entityBean.getFiles(), particleBean
+				.getDomainParticleSample().getName(), user.getLoginName(),
+				"Nanoparticle Entity");
+
 		entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName());
 		compositionService.saveNanoparticleEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
-		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-
 		// save file data to file system and set visibility
-		FileService fileService = new FileService();
-		for (LabFileBean fileBean : entityBean.getFiles()) {
-			fileService.writeFile(fileBean.getDomainFile(), fileBean
-					.getFileData());
-			authService.assignVisibility(fileBean.getDomainFile().getId()
-					.toString(), fileBean.getVisibilityGroups());
-		}
+		saveFilesToFileSystem(entityBean.getFiles());
+
 		// save to other particles
+		FileService service = new FileService();
 		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			NanoparticleEntity copy = entityBean.getDomainCopy();
@@ -95,22 +75,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				compositionService.saveNanoparticleEntity(sample, copy);
 				// update copied filename and save content and set visibility
 				if (copy.getLabFileCollection() != null) {
-					List<LabFile> files = new ArrayList<LabFile>(copy
-							.getLabFileCollection());
-					Collections.sort(files,
-							new CaNanoLabComparators.LabFileDateComparator());
-					int i = 0;
-					for (LabFile file : files) {
-						LabFileBean origFileBean = entityBean.getFiles().get(i);
-						String origUri = origFileBean.getDomainFile().getUri();
-						file.setUri(origUri.replaceAll(particleBean
-								.getDomainParticleSample().getName(), sample
-								.getName()));
-
-						fileService.writeFile(file, origFileBean.getFileData());
-						authService.assignVisibility(file.getId().toString(),
-								origFileBean.getVisibilityGroups());
-						i++;
+					for (LabFile file : copy.getLabFileCollection()) {
+						service.saveCopiedFileAndSetVisibility(file, user,
+								particleBean.getDomainParticleSample()
+										.getName(), sample.getName());
 					}
 				}
 			}

@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleDataLinkBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
@@ -13,6 +12,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.DataLinkBean;
 
 import java.util.List;
 import java.util.Map;
@@ -122,11 +122,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 	private boolean setLookups(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
-		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
 				theForm, request);
-		SortedSet<ParticleDataLinkBean> particleEntities = dataTree
+		SortedSet<DataLinkBean> particleEntities = dataTree
 				.get("Nanoparticle Entity");
-		SortedSet<ParticleDataLinkBean> functionalizingEntities = dataTree
+		SortedSet<DataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
 		ActionMessages msgs = new ActionMessages();
 		if (particleEntities == null || particleEntities.isEmpty()) {
@@ -140,9 +140,9 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// check where particle entities has composing elements
 		int numberOfCE = 0;
 		NanoparticleCompositionService compService = new NanoparticleCompositionService();
-		SortedSet<ParticleDataLinkBean> particleEntitiesWithComposingElements = new TreeSet<ParticleDataLinkBean>();
+		SortedSet<DataLinkBean> particleEntitiesWithComposingElements = new TreeSet<DataLinkBean>();
 		// particleEntitiesWithComposingElements = particleEntities;
-		for (ParticleDataLinkBean dataLink : particleEntities) {
+		for (DataLinkBean dataLink : particleEntities) {
 			NanoparticleEntityBean entityBean = compService
 					.findNanoparticleEntityById(dataLink.getDataId());
 			if (entityBean.getComposingElements().size() > 0) {
@@ -187,20 +187,20 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 	public void prepareEntityLists(DynaValidatorForm theForm,
 			HttpServletRequest request) throws Exception {
-		Map<String, SortedSet<ParticleDataLinkBean>> dataTree = setupDataTree(
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
 				theForm, request);
-		SortedSet<ParticleDataLinkBean> particleEntitites = dataTree
+		SortedSet<DataLinkBean> particleEntitites = dataTree
 				.get("Nanoparticle Entity");
-		SortedSet<ParticleDataLinkBean> functionalizingEntities = dataTree
+		SortedSet<DataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		// associated element A
-		SortedSet<ParticleDataLinkBean> entityListA = null;
+		SortedSet<DataLinkBean> entityListA = null;
 		HttpSession session = request.getSession();
 		if (assocBean.getAssociatedElementA().getComposingElement().getId() != null) {
 			entityListA = particleEntitites;
-			for (ParticleDataLinkBean dataLink : particleEntitites) {
+			for (DataLinkBean dataLink : particleEntitites) {
 				if (assocBean.getAssociatedElementA().getComposingElement()
 						.getNanoparticleEntity().getId().toString().equals(
 								dataLink.getDataId())) {
@@ -217,10 +217,10 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			entityListA = functionalizingEntities;
 		}
 		// associated element B
-		SortedSet<ParticleDataLinkBean> entityListB = null;
+		SortedSet<DataLinkBean> entityListB = null;
 		if (assocBean.getAssociatedElementB().getComposingElement().getId() != null) {
 			entityListB = particleEntitites;
-			for (ParticleDataLinkBean dataLink : particleEntitites) {
+			for (DataLinkBean dataLink : particleEntitites) {
 				if (assocBean.getAssociatedElementB().getComposingElement()
 						.getNanoparticleEntity().getId().toString().equals(
 								dataLink.getDataId())) {

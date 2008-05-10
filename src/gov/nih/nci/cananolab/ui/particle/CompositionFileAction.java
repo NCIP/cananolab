@@ -39,7 +39,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
 				fileBean.getUploadedFile(), CaNanoLabConstants.FOLDER_PARTICLE,
 				particleBean.getDomainParticleSample().getName(),
-				"Sample Composition");
+				"Composition File");
 		fileBean.setInternalUri(internalUri);
 		fileBean.setupDomainFile(user.getLoginName());
 		NanoparticleCompositionService service = new NanoparticleCompositionService();

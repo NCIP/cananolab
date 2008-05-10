@@ -1,11 +1,15 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -62,6 +66,75 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		charBean.setClassName(charClass);
 		setLookups(request, charBean);
 		return mapping.getInputForward();
+	}
+
+	private List<LabFileBean> setupDomainFiles(HttpServletRequest request,
+			CharacterizationBean charBean, String particleSampleName,
+			String createdBy) throws Exception {
+		List<LabFileBean> files = new ArrayList<LabFileBean>();
+		for (DerivedBioAssayDataBean bioassay : charBean
+				.getDerivedBioAssayDataList()) {
+			if (bioassay.getLabFileBean() != null) {
+				files.add(bioassay.getLabFileBean());
+			}
+		}
+		super.setupDomainFiles(files, particleSampleName, createdBy, InitSetup
+				.getInstance().getDisplayName(charBean.getClassName(),
+						request.getSession().getServletContext()));
+		return files;
+	}
+
+	private void saveToOtherParticles(HttpServletRequest request,
+			Characterization copy, UserBean user, String particleSampleName,
+			NanoparticleSample[] otherSamples) throws Exception {
+		FileService fileService = new FileService();
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+		for (NanoparticleSample sample : otherSamples) {
+			charService.saveCharacterization(sample, copy);
+			// update copied filename and save content and set visibility
+			if (copy.getDerivedBioAssayDataCollection() != null) {
+				for (DerivedBioAssayData bioassay : copy
+						.getDerivedBioAssayDataCollection()) {
+					if (bioassay.getLabFile() != null) {
+						fileService.saveCopiedFileAndSetVisibility(bioassay
+								.getLabFile(), user, particleSampleName, sample
+								.getName());
+					}
+				}
+			}
+		}
+	}
+
+	protected void saveCharacterization(HttpServletRequest request,
+			DynaValidatorForm theForm, CharacterizationBean charBean)
+			throws Exception {
+		// setup domainFile for fileBeans
+		ParticleBean particleBean = setupParticle(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		List<LabFileBean> files = setupDomainFiles(request, charBean,
+				particleBean.getDomainParticleSample().getName(), user
+						.getLoginName());
+		charBean.setupDomainChar(InitSetup.getInstance()
+				.getDisplayNameToClassNameLookup(
+						request.getSession().getServletContext()), user
+				.getLoginName());
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+		charService.saveCharacterization(
+				particleBean.getDomainParticleSample(), charBean
+						.getDomainChar());
+		// save file data to file system and set visibility
+		saveFilesToFileSystem(files);
+		// save to other particles
+		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		if (otherSamples != null) {
+			Boolean copyData = (Boolean) theForm.get("copyData");
+			Characterization copy = charBean.getDomainCopy(copyData);
+			saveToOtherParticles(request, copy, user, particleBean
+					.getDomainParticleSample().getName(), otherSamples);
+		}
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		setupDataTree(theForm, request);
 	}
 
 	abstract protected void clearForm(DynaValidatorForm theForm);
