@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -21,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -43,8 +43,8 @@ public class ReportService {
 	public void saveReport(Report report, String[] particleNames,
 			byte[] fileData) throws ReportException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+			FileService fileService = new FileService();
+			fileService.prepareSaveFile(report, fileData);
 			NanoparticleSampleService sampleService = new NanoparticleSampleService();
 			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
 			for (String name : particleNames) {
@@ -52,25 +52,10 @@ public class ReportService {
 						.findNanoparticleSampleByName(name);
 				particleSamples.add(sample);
 			}
-			if (report.getId() != null) {
-				try {
-					Report dbReport = (Report) appService.get(Report.class,
-							report.getId());
-					// don't change createdBy and createdDate it is already
-					// persisted
-					report.setCreatedBy(dbReport.getCreatedBy());
-					report.setCreatedDate(dbReport.getCreatedDate());
-					// load fileName and uri if no new data has been uploaded or
-					// no new url has been entered
-					if (fileData == null || !report.getUriExternal()) {
-						report.setName(dbReport.getName());
-					}
-				} catch (Exception e) {
-					String err = "Object doesn't exist in the database anymore.  Please log in again.";
-					logger.error(err);
-					throw new ReportException(err, e);
-				}
-			}
+
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
 			if (report.getNanoparticleSampleCollection() == null) {
 				report
 						.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
@@ -82,7 +67,6 @@ public class ReportService {
 			appService.saveOrUpdate(report);
 
 			// save to the file system fileData is not empty
-			FileService fileService = new FileService();
 			fileService.writeFile(report, fileData);
 
 		} catch (Exception e) {
@@ -101,8 +85,9 @@ public class ReportService {
 		try {
 			DetachedCriteria crit = DetachedCriteria.forClass(Report.class);
 			if (reportTitle != null & reportTitle.length() > 0) {
-				crit.add(Restrictions.ilike("title", reportTitle,
-						MatchMode.ANYWHERE));
+				TextMatchMode titleMatchMode = new TextMatchMode(reportTitle);
+				crit.add(Restrictions.ilike("title", titleMatchMode
+						.getUpdatedText(), titleMatchMode.getMatchMode()));
 			}
 			if (reportCategory != null & reportCategory.length() > 0) {
 				crit.add(Restrictions.eq("category", reportCategory));
