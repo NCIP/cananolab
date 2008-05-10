@@ -150,11 +150,22 @@ public class LabFileBean {
 			domainFile.setCreatedDate(new Date());
 		}
 		// if entered external url
-		if (domainFile.getUriExternal() != null && externalUrl != null
+		if (domainFile.getUriExternal() && externalUrl != null
 				&& externalUrl.length() > 0) {
 			domainFile.setUri(externalUrl);
 			domainFile.setName(externalUrl);
 			fileData = null;
+		}
+
+		if (domainFile.getKeywordCollection() != null && keywordsStr != null) {
+			domainFile.getKeywordCollection().clear();
+			String[] strs = keywordsStr.split("\r\n");
+			for (String str : strs) {
+				// change to upper case
+				Keyword keyword = new Keyword();
+				keyword.setName(str.toUpperCase());
+				domainFile.getKeywordCollection().add(keyword);
+			}
 		}
 	}
 
