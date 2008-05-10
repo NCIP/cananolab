@@ -30,7 +30,16 @@ function confirmDeletion()
 			<c:choose>
 				<c:when
 					test="${compositionFileForm.map.compFile.hidden eq 'false' }">
-
+					<c:choose>
+						<c:when test="${compositionFileForm.map.compFile.domainFile.uriExternal eq 'true' }">
+							<c:set var="linkDisplay" value="display: inline" />
+							<c:set var="loadDisplay" value="display: none" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="linkDisplay" value="display: none" />
+							<c:set var="loadDisplay" value="display: inline" />
+						</c:otherwise>
+					</c:choose>
 					<tr>
 						<td class="leftLabel">
 							<html:radio styleId="external0"
@@ -50,7 +59,7 @@ function confirmDeletion()
 									property="compFile.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 							<br>
 							<br>
-							<span id="link" style="display: none"><html:text
+							<span id="link" style="${linkDisplay }"><html:text
 									property="compFile.externalUrl" size="60" /> </span>&nbsp;
 						</td>
 						<c:if
@@ -75,11 +84,12 @@ function confirmDeletion()
 												target="${compositionFileForm.map.compFile.urlTarget}">
 												${compositionFileForm.map.compFile.domainFile.uri}</a>
 
-											<html:hidden property="compFile.domainFile.uri" />
+
 											<br>
 										</c:otherwise>
 									</c:choose>
 								</td>
+
 							</tr>
 						</c:if>
 					<tr>
@@ -141,6 +151,10 @@ function confirmDeletion()
 					</tr>
 				</c:otherwise>
 			</c:choose>
+			<c:if test="${!empty compositionFileForm.map.file.domainFile.id }">
+				<html:hidden property="compFile.domainFile.id" />
+				<html:hidden property="compFile.domainFile.uri" />
+			</c:if>
 		</tbody>
 	</table>
 	<br>

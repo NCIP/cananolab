@@ -90,6 +90,8 @@
 																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.hidden}" />
 															<jsp:param name="fileImage"
 																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.image}" />
+															<jsp:param name="fileUriExternal"
+																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.uriExternal}" />
 														</jsp:include>
 														<br>
 													</logic:iterate>
