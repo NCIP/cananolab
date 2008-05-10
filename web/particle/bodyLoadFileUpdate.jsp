@@ -43,8 +43,8 @@
 						<strong>Enter File URL</strong>
 					</td>
 					<td class="rightLabel" colspan="3">
-						<span id="load_${param.fileInd }" style="${loadDisplay }"> <html:file
-								property="${param.fileBean}.uploadedFile" size="60" />
+						<span id="load_${param.fileInd }" style="${loadDisplay }">
+							<html:file property="${param.fileBean}.uploadedFile" size="60" />
 							&nbsp;&nbsp; </span>
 						<br>
 						<br>
@@ -72,7 +72,6 @@
 											target="<bean:write name="${param.form }" property="${target }"/>">
 											${param.fileUri}</a>
 
-										<html:hidden property="${param.fileBean}.domainFile.uri" />
 										<br>
 									</c:otherwise>
 								</c:choose>
@@ -138,6 +137,12 @@
 				</tr>
 			</c:otherwise>
 		</c:choose>
+		<c:if test="${!empty param.fileUri }">
+			<html:hidden property="${param.fileBean}.domainFile.uri" />
+		</c:if>
+		<c:if test="${!empty param.fileId }">
+			<html:hidden property="${param.fileBean}.domainFile.id" />
+		</c:if>
 		<c:if
 			test="${param.action ne 'nanoparticleEntity' and param.action ne 'functionalizingEntity'}">
 			<tr>
