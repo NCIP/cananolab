@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -83,37 +83,47 @@ public class ProtocolService {
 	public void saveProtocolFile(ProtocolFile protocolFile, byte[] fileData)
 			throws ProtocolException {
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			ProtocolFile dbProtocolFile = null;
-			if (protocolFile.getId() != null) {
-				dbProtocolFile = (ProtocolFile) appService.get(
-						ProtocolFile.class, protocolFile.getId());
-				// don't change createdBy, createdDate and it is already
-				// persisted
-				if (dbProtocolFile != null) {
-					protocolFile.setCreatedBy(dbProtocolFile.getCreatedBy());
-					protocolFile
-							.setCreatedDate(dbProtocolFile.getCreatedDate());
-					protocolFile.setVersion(dbProtocolFile.getVersion());
-				}
-				// load fileName and uri if no new data has been uploaded or
-				// no new url has been entered
-				if (fileData == null) {
-					protocolFile.setName(dbProtocolFile.getName());
-					protocolFile.setUri(dbProtocolFile.getUri());
-				}
-			}
+			FileService fileService = new FileService();
+			fileService.prepareSaveFile(protocolFile, fileData);
+			// CustomizedApplicationService appService =
+			// (CustomizedApplicationService) ApplicationServiceProvider
+			// .getApplicationService();
+			// ProtocolFile dbProtocolFile = null;
+			// if (protocolFile.getId() != null) {
+			// dbProtocolFile = (ProtocolFile) appService.get(
+			// ProtocolFile.class, protocolFile.getId());
+			// // don't change createdBy, createdDate and it is already
+			// // persisted
+			// if (dbProtocolFile != null) {
+			// protocolFile.setCreatedBy(dbProtocolFile.getCreatedBy());
+			// protocolFile
+			// .setCreatedDate(dbProtocolFile.getCreatedDate());
+			// protocolFile.setVersion(dbProtocolFile.getVersion());
+			//
+			// // load fileName and uri if no new data has been uploaded or
+			// // no new url has been entered
+			// if (fileData == null) {
+			// protocolFile.setName(dbProtocolFile.getName());
+			// protocolFile.setUri(dbProtocolFile.getUri());
+			// }
+			// } else {
+			// String err = "Object doesn't exist in the database anymore.
+			// Please log in again.";
+			// logger.error(err);
+			// throw new ProtocolException(err);
+			// }
+			// }
 			Protocol dbProtocol = findProtocolBy(protocolFile.getProtocol()
 					.getType(), protocolFile.getProtocol().getName());
 			if (dbProtocol != null) {
 				protocolFile.setProtocol(dbProtocol);
 			}
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
 
 			appService.saveOrUpdate(protocolFile);
 
 			// save to the file system fileData is not empty
-			FileService fileService = new FileService();
 			fileService.writeFile(protocolFile, fileData);
 
 		} catch (Exception e) {
@@ -172,8 +182,7 @@ public class ProtocolService {
 	}
 
 	public List<ProtocolFileBean> findProtocolFilesBy(String protocolType,
-			String protocolName, String fileTitle, Boolean useWildCard)
-			throws ProtocolException {
+			String protocolName, String fileTitle) throws ProtocolException {
 		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -188,23 +197,17 @@ public class ProtocolService {
 					crit.add(Restrictions.eq("protocol.type", protocolType));
 				}
 				if (protocolName != null && protocolName.length() > 0) {
-					if (useWildCard) {
-						crit.add(Restrictions.ilike("protocol.name",
-								protocolName, MatchMode.ANYWHERE));
-					} else {
-						crit
-								.add(Restrictions.eq("protocol.name",
-										protocolName));
-					}
+					TextMatchMode protocolNameMatchMode = new TextMatchMode(
+							protocolName);
+					crit.add(Restrictions.ilike("protocol.name",
+							protocolNameMatchMode.getUpdatedText(),
+							protocolNameMatchMode.getMatchMode()));
 				}
 			}
 			if (fileTitle != null && fileTitle.length() > 0) {
-				if (useWildCard) {
-					crit.add(Restrictions.ilike("title", fileTitle,
-							MatchMode.ANYWHERE));
-				} else {
-					crit.add(Restrictions.eq("title", fileTitle));
-				}
+				TextMatchMode titleMatchMode = new TextMatchMode(fileTitle);
+				crit.add(Restrictions.ilike("title", titleMatchMode
+						.getUpdatedText(), titleMatchMode.getMatchMode()));
 			}
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
