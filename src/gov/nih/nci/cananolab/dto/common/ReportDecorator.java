@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -31,9 +32,10 @@ public class ReportDecorator extends TableDecorator {
 		SortableName sortableLink = null;
 		ReportBean file = (ReportBean) getCurrentRowObject();
 		if (file.getDomainFile().getName() != null) {
-			String downloadURL = "searchProtocol.do?dispatch=download"
+			String downloadURL = "searchReport.do?dispatch=download"
 					+ "&fileId=" + file.getDomainFile().getId();
-			String link = "<a href=" + downloadURL + ">"
+			String link = "<a href=" + downloadURL + " target='"
+					+ file.getUrlTarget() + "'>"
 					+ file.getDomainFile().getName() + "</a>";
 			sortableLink = new SortableName(file.getDomainFile().getName(),
 					link);
@@ -42,7 +44,6 @@ public class ReportDecorator extends TableDecorator {
 		}
 		return sortableLink;
 	}
-
 
 	public String getParticleNames() {
 		ReportBean file = (ReportBean) getCurrentRowObject();
