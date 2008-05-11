@@ -81,10 +81,11 @@
 												target="${submitReportForm.map.file.urlTarget}">
 												${submitReportForm.map.file.domainFile.uri}</a>
 											<html:hidden property="file.domainFile.uri" />
+											<html:hidden property="file.domainFile.name" />
 										</td>
 									</tr>
 								</c:if>
-								<c:if test="${!empty submitReportForm.map.file.domainFile.id }">
+								<c:if test="${!empty submitReportForm.map.file.domainFile.id}">
 									<html:hidden property="file.domainFile.id" />
 								</c:if>
 								<tr>

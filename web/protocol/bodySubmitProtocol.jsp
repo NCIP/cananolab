@@ -103,10 +103,19 @@
 									<a
 											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.file.domainFile.id}">
 											${submitProtocolForm.map.file.domainFile.uri }</a>
-									</c:if>
-								</span>&nbsp;
+										<html:hidden property="file.domainFile.uri" />
+										<html:hidden property="file.domainFile.name" />
+									</c:if> </span>&nbsp;
 							</td>
 						</tr>
+						<c:if
+							test="${!empty submitProtocolForm.map.file.domainFile.version}">
+							<html:hidden property="file.domainFile.version" />
+						</c:if>
+						<html:hidden styleId="updatedUri" property="file.updatedFileUri" />
+						<html:hidden styleId="updatedName" property="file.updatedFileName" />
+						<html:hidden styleId="updatedVersion"
+							property="file.updatedFileVersion" />
 						<tr>
 							<td class="leftLabel">
 								<strong>File Title</strong>
