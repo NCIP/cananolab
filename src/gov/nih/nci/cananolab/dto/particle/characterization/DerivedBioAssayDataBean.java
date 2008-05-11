@@ -72,7 +72,7 @@ public class DerivedBioAssayDataBean {
 	}
 
 	public void setupDomainBioAssayData(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, String internalUriPath) throws Exception {
 		if (domainBioAssayData.getId() == null
 				|| domainBioAssayData.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
@@ -85,6 +85,7 @@ public class DerivedBioAssayDataBean {
 			domainBioAssayData
 					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
 		}
+		labFileBean.setupDomainFile(internalUriPath, createdBy);
 		domainBioAssayData.setLabFile(labFileBean.getDomainFile());
 		for (DerivedDatum datum : datumList) {
 			if (datum.getId() == null) {

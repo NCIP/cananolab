@@ -241,13 +241,13 @@ public class FunctionalizingEntityBean {
 	}
 
 	public void setupDomainEntity(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, String internalUriPath) throws Exception {
 		className = typeToClass.get(type);
 		Class clazz = null;
 		if (className == null) {
 			clazz = OtherFunctionalizingEntity.class;
 		} else {
-			clazz = ClassUtils.getFullClass(className);
+			clazz = ClassUtils.getFullClass("functionalization."+className);
 		}
 		if (domainEntity == null) {
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
@@ -290,8 +290,7 @@ public class FunctionalizingEntityBean {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
 		for (LabFileBean file : files) {
-			file.getDomainFile().setCreatedBy(createdBy);
-			file.getDomainFile().setCreatedDate(new Date());
+			file.setupDomainFile(internalUriPath, createdBy);
 			domainEntity.getLabFileCollection().add(file.getDomainFile());
 		}
 	}

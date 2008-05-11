@@ -15,7 +15,7 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- * 
+ *
  * @author pansu
  * 
  */
@@ -36,9 +36,7 @@ public class LabFileBean {
 
 	private FormFile uploadedFile;
 
-	private String internalUri; // uri saved in the file system
-
-	private byte[] fileData;
+	private byte[] newFileData; // data from uploadedFile if upload happened
 
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
@@ -136,25 +134,35 @@ public class LabFileBean {
 
 	public void setUploadedFile(FormFile uploadedFile) throws Exception {
 		this.uploadedFile = uploadedFile;
-		fileData = uploadedFile.getFileData();
-		if (uploadedFile.getFileName().length() > 0) {
-			domainFile.setName(uploadedFile.getFileName());
-		} else {
-			fileData = null;
-		}
 	}
 
-	public void setupDomainFile(String createdBy) throws Exception {
-		if (domainFile.getId() == null) {
+	public void setupDomainFile(String internalUriPath, String createdBy)
+			throws Exception {
+		if (domainFile.getId() == null
+				|| domainFile.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
 			domainFile.setCreatedDate(new Date());
+		}
+		if (uploadedFile.getFileName().length() > 0) {
+			domainFile.setName(uploadedFile.getFileName());
+			newFileData = uploadedFile.getFileData();
+		} else {
+			newFileData = null;
 		}
 		// if entered external url
 		if (domainFile.getUriExternal() && externalUrl != null
 				&& externalUrl.length() > 0) {
 			domainFile.setUri(externalUrl);
 			domainFile.setName(externalUrl);
-			fileData = null;
+		} else {
+			String timestamp = StringUtils.convertDateToString(new Date(),
+					"yyyyMMdd_HH-mm-ss-SSS");
+			// if uploaded new file
+			if (newFileData != null) {
+				domainFile.setUri(internalUriPath + "/" + timestamp + "_"
+						+ domainFile.getName());
+			}
 		}
 
 		if (domainFile.getKeywordCollection() != null && keywordsStr != null) {
@@ -169,14 +177,7 @@ public class LabFileBean {
 		}
 	}
 
-	public void setInternalUri(String internalUri) {
-		this.internalUri = internalUri;
-		if (internalUri != null && internalUri.length() > 0) {
-			domainFile.setUri(internalUri);
-		}
-	}
-
-	public byte[] getFileData() {
-		return fileData;
+	public byte[] getNewFileData() {
+		return newFileData;
 	}
 }

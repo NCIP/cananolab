@@ -104,29 +104,6 @@ public class DataLinkBean {
 		this.createdDate = createdDate;
 	}
 
-	public boolean equals(Object obj) {
-		if (this.compareTo(obj) == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public int hashCode() {
-		if (getDataId() != null)
-			return getDataId().hashCode();
-		return 0;
-	}
-
-	public int compareTo(Object obj) {
-		DataLinkBean link2 = (DataLinkBean) obj;
-		if (getDataDisplayType().equals(link2.getDataDisplayType())) {
-			return getCreatedDate().compareTo(link2.getCreatedDate());
-		} else {
-			return getDataDisplayType().compareTo(link2.getDataDisplayType());
-		}
-	}
-
 	public String getViewColor() {
 		if (createdBy.equals(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)
 				|| this.viewTitle != null

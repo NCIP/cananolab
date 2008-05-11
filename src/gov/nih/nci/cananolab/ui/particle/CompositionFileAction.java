@@ -8,9 +8,9 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,15 +36,17 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		LabFileBean fileBean = (LabFileBean) theForm.get("compFile");
 		ParticleBean particleBean = setupParticle(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
-				fileBean.getUploadedFile(), CaNanoLabConstants.FOLDER_PARTICLE,
-				particleBean.getDomainParticleSample().getName(),
-				"Composition File");
-		fileBean.setInternalUri(internalUri);
-		fileBean.setupDomainFile(user.getLoginName());
+		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+				+ "/"
+				+ particleBean.getDomainParticleSample().getName()
+				+ "/"
+				+ StringUtils
+						.getOneWordLowerCaseFirstLetter("Composition File");
+
+		fileBean.setupDomainFile(internalUriPath, user.getLoginName());
 		NanoparticleCompositionService service = new NanoparticleCompositionService();
 		service.saveCompositionFile(particleBean.getDomainParticleSample(),
-				fileBean.getDomainFile(), fileBean.getFileData());
+				fileBean.getDomainFile(), fileBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);

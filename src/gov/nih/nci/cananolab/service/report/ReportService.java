@@ -44,7 +44,7 @@ public class ReportService {
 			byte[] fileData) throws ReportException {
 		try {
 			FileService fileService = new FileService();
-			fileService.prepareSaveFile(report, fileData);
+			fileService.prepareSaveFile(report);
 			NanoparticleSampleService sampleService = new NanoparticleSampleService();
 			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
 			for (String name : particleNames) {

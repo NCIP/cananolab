@@ -61,7 +61,7 @@ public class ChemicalAssociationBean {
 	}
 
 	public void setupDomainAssociation(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, String internalUriPath) throws Exception {
 		className = typeToClass.get(type);
 		className = typeToClass.get(type);
 		Class clazz = null;
@@ -93,8 +93,7 @@ public class ChemicalAssociationBean {
 			domainAssociation.setLabFileCollection(new HashSet<LabFile>());
 		}
 		for (LabFileBean file : files) {
-			file.getDomainFile().setCreatedBy(createdBy);
-			file.getDomainFile().setCreatedDate(new Date());
+			file.setupDomainFile(internalUriPath, createdBy);
 			domainAssociation.getLabFileCollection().add(file.getDomainFile());
 		}
 	}
