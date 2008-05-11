@@ -30,9 +30,11 @@
 			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
 			<include method="getProtocolFileUriById" />
+			<include method="getProtocolFileNameById" />
+			<include method="getProtocolFileVersionById" />
 		</create>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.particle.DataLinkBean">
+			match="gov.nih.nci.cananolab.util.DataLinkBean">
 			<param name="include" value="dataId, dataDisplayType" />
 		</convert>
 		<convert converter="bean"
@@ -43,7 +45,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">
 			<param name="include"
-				value="domainFileId, domainFileVersion" />
+				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
 	</allow>
 </dwr>
