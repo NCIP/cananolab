@@ -36,7 +36,7 @@
 			</c:when>
 			<c:otherwise>
 				<tr>
-					<td class="completeLabel" colspan="2">
+					<td class="completeLabel" colspan="3">
 						There are no other particles from source ${particleSource} to copy
 						annotation to.
 					</td>

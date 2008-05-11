@@ -85,7 +85,7 @@ function confirmDeletion()
 													value="${param.displayType}" />
 												<input type="button" value="Delete"
 													onclick="confirmDeletion();" />
-												<input type="hidden" name="page" value="2">
+												<input type="hidden" name="page" value="1">
 											</div>
 										</div>
 									</td>
