@@ -62,20 +62,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return particleBean;
 	}
 
-	protected void setupDomainFiles(List<LabFileBean> files,
-			String particleSampleName, String createdBy, String submitType)
-			throws Exception {
-		// setup domainFile for fileBeans
-		for (LabFileBean fileBean : files) {
-			String internalUri = InitSetup.getInstance()
-					.getFileUriFromFormFile(fileBean.getUploadedFile(),
-							CaNanoLabConstants.FOLDER_PARTICLE,
-							particleSampleName, submitType);
-			fileBean.setInternalUri(internalUri);
-			fileBean.setupDomainFile(createdBy);
-		}
-	}
-
 	protected void saveFilesToFileSystem(List<LabFileBean> files)
 			throws Exception {
 		// save file data to file system and set visibility
@@ -85,7 +71,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		FileService fileService = new FileService();
 		for (LabFileBean fileBean : files) {
 			fileService.writeFile(fileBean.getDomainFile(), fileBean
-					.getFileData());
+					.getNewFileData());
 			authService.assignVisibility(fileBean.getDomainFile().getId()
 					.toString(), fileBean.getVisibilityGroups());
 		}
@@ -126,8 +112,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throws Exception {
 		String submitType = request.getParameter("submitType");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				theForm, request);
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(theForm,
+				request);
 		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
 		request.getSession().setAttribute("actionName",
 				dataToDelete.first().getDataLink());

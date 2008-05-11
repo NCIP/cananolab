@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
@@ -19,7 +18,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
-import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -76,6 +74,11 @@ public class NanoparticleCompositionService {
 			entity.setSampleComposition(particleSample.getSampleComposition());
 			particleSample.getSampleComposition()
 					.getNanoparticleEntityCollection().add(entity);
+
+			FileService service = new FileService();
+			for (LabFile file : entity.getLabFileCollection()) {
+				service.prepareSaveFile(file);
+			}
 			appService.saveOrUpdate(entity);
 		} catch (Exception e) {
 			String err = "Error in saving a nanoparticle entity.";
@@ -153,6 +156,11 @@ public class NanoparticleCompositionService {
 			entity.setSampleComposition(particleSample.getSampleComposition());
 			particleSample.getSampleComposition()
 					.getFunctionalizingEntityCollection().add(entity);
+			
+			FileService service = new FileService();
+			for (LabFile file : entity.getLabFileCollection()) {
+				service.prepareSaveFile(file);
+			}
 			appService.saveOrUpdate(entity);
 		} catch (Exception e) {
 			String err = "Problem saving the functionalizing entity.";
@@ -197,36 +205,12 @@ public class NanoparticleCompositionService {
 	public void saveCompositionFile(NanoparticleSample particleSample,
 			LabFile file, byte[] fileData) throws ParticleCompositionException {
 		try {
+			FileService fileService = new FileService();
+			fileService.prepareSaveFile(file);
+
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			if (file.getId() != null) {
-				try {
-					LabFile dbFile = (LabFile) appService.get(LabFile.class,
-							file.getId());
-					// don't change createdBy and createdDate it is already
-					// persisted
-					file.setCreatedBy(dbFile.getCreatedBy());
-					file.setCreatedDate(dbFile.getCreatedDate());
-					// load fileName and uri if no new data has been uploaded or
-					// no new url has been entered
-					if (fileData == null && !file.getUriExternal()) {
-						file.setName(dbFile.getName());
-					}
-				} catch (Exception e) {
-					String err = "Object doesn't exist in the database anymore.  Please log in again.";
-					logger.error(err);
-					throw new ReportException(err, e);
-				}
-			}
-			if (file.getKeywordCollection() != null) {
-				for (Keyword keyword : file.getKeywordCollection()) {
-					Keyword dbKeyword = (Keyword) appService.getObject(
-							Keyword.class, "name", keyword.getName());
-					if (dbKeyword != null && keyword.getId() == null) {
-						keyword = dbKeyword;
-					}
-				}
-			}
+
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setNanoparticleSample(
@@ -244,8 +228,6 @@ public class NanoparticleCompositionService {
 				appService.saveOrUpdate(file);
 			}
 			// save to the file system fileData is not empty
-
-			FileService fileService = new FileService();
 			fileService.writeFile(file, fileData);
 
 		} catch (Exception e) {

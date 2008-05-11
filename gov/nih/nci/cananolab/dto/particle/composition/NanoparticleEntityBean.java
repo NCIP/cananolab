@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Biopolymer;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.CarbonNanotube;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
@@ -123,6 +124,10 @@ public class NanoparticleEntityBean {
 						function
 								.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
 						function.setCreatedDate(new Date());
+						if (function instanceof TargetingFunction) {
+							((TargetingFunction) function)
+									.setTargetCollection(null);
+						}
 					}
 				}
 			}
@@ -200,7 +205,7 @@ public class NanoparticleEntityBean {
 	}
 
 	public void setupDomainEntity(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, String internalUriPath) throws Exception {
 		className = typeToClass.get(type);
 		Class clazz = null;
 		if (className == null) {
@@ -258,7 +263,7 @@ public class NanoparticleEntityBean {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
 		for (LabFileBean file : files) {
-			file.setupDomainFile(createdBy);
+			file.setupDomainFile(internalUriPath, createdBy);
 			domainEntity.getLabFileCollection().add(file.getDomainFile());
 		}
 	}

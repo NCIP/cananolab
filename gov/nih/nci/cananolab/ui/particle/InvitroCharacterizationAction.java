@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,12 +83,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		charBean.setupDomainChar(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName());
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		charService.deleteCharacterization(charBean.getDomainChar());
+		deleteCharacterization(request, theForm, charBean, user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteInvitroCharacterization");

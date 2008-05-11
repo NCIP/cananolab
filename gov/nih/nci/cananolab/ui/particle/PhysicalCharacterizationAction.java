@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.21 2008-05-10 22:46:38 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.22 2008-05-11 21:16:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,12 +86,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		charBean.setupDomainChar(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName());
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
-		charService.deleteCharacterization(charBean.getDomainChar());
+		deleteCharacterization(request, theForm, charBean, user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deletePhysicalCharacterization");

@@ -130,7 +130,7 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomainChar(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, String internalUriPath) throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
 		if (domainChar == null) {
@@ -170,7 +170,8 @@ public class CharacterizationBean {
 				bioAssayData.getDomainBioAssayData().setCreatedBy(createdBy);
 				bioAssayData.getDomainBioAssayData().setCreatedDate(new Date());
 			}
-			bioAssayData.setupDomainBioAssayData(typeToClass, createdBy);
+			bioAssayData.setupDomainBioAssayData(typeToClass, createdBy,
+					internalUriPath);
 			domainChar.getDerivedBioAssayDataCollection().add(
 					bioAssayData.getDomainBioAssayData());
 		}
