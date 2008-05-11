@@ -33,11 +33,15 @@ function retrieveProtocolFile() {
 	var fileId = document.getElementById("protocolFileId").value;
 	//ProtocolManager.findProtocolFileById(fileId, writeLink); //not working on linux
 	ProtocolManager.getProtocolFileUriById(fileId, writeLink);
-}
-function setProtocolVersion() {
-	var versionSelect = document.getElementById("protocolFileId");
-	var version = versionSelect[versionSelect.options.selectedIndex].text;
-	document.getElementById("selectedProtocolVersion").value = version;
+	ProtocolManager.getProtocolFileUriById(fileId, function (data) {
+		document.getElementById("updatedUri").value = data;
+	});
+	ProtocolManager.getProtocolFileNameById(fileId, function (data) {
+		document.getElementById("updatedName").value = data;
+	});
+	ProtocolManager.getProtocolFileVersionById(fileId, function (data) {
+		document.getElementById("updatedVersion").value = data;
+	});
 }
 function writeLink(uri) {
 	var fileId = document.getElementById("protocolFileId").value;
@@ -57,7 +61,7 @@ function writeLink(uri) {
 function writeLink0(protocolFile) {
 	var fileId = document.getElementById("protocolFileId").value;
 	if (protocolFile != null) {
-		var fileUri = protocolFile.uri;
+		var fileUri = protocolFile.domainUri;
 		if (fileUri != null) {
 			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
 		} else {
