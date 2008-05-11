@@ -74,6 +74,49 @@ public class ProtocolService {
 		}
 	}
 
+	// for ajax on linux
+	public String getProtocolFileNameById(String fileId)
+			throws ProtocolException {
+		String name = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					ProtocolFile.class).add(
+					Property.forName("id").eq(new Long(fileId)));
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				ProtocolFile pf = (ProtocolFile) result.get(0);
+				name = pf.getName();
+			}
+			return name;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
+	// for ajax on linux
+	public String getProtocolFileVersionById(String fileId)
+			throws ProtocolException {
+		String version = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					ProtocolFile.class).add(
+					Property.forName("id").eq(new Long(fileId)));
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				ProtocolFile pf = (ProtocolFile) result.get(0);
+				version = pf.getVersion();
+			}
+			return version;
+		} catch (Exception e) {
+			return "";
+		}
+	}
 	/**
 	 * Persist a new protocol file or update an existing protocol file
 	 * 
@@ -84,35 +127,8 @@ public class ProtocolService {
 			throws ProtocolException {
 		try {
 			FileService fileService = new FileService();
-			fileService.prepareSaveFile(protocolFile, fileData);
-			// CustomizedApplicationService appService =
-			// (CustomizedApplicationService) ApplicationServiceProvider
-			// .getApplicationService();
-			// ProtocolFile dbProtocolFile = null;
-			// if (protocolFile.getId() != null) {
-			// dbProtocolFile = (ProtocolFile) appService.get(
-			// ProtocolFile.class, protocolFile.getId());
-			// // don't change createdBy, createdDate and it is already
-			// // persisted
-			// if (dbProtocolFile != null) {
-			// protocolFile.setCreatedBy(dbProtocolFile.getCreatedBy());
-			// protocolFile
-			// .setCreatedDate(dbProtocolFile.getCreatedDate());
-			// protocolFile.setVersion(dbProtocolFile.getVersion());
-			//
-			// // load fileName and uri if no new data has been uploaded or
-			// // no new url has been entered
-			// if (fileData == null) {
-			// protocolFile.setName(dbProtocolFile.getName());
-			// protocolFile.setUri(dbProtocolFile.getUri());
-			// }
-			// } else {
-			// String err = "Object doesn't exist in the database anymore.
-			// Please log in again.";
-			// logger.error(err);
-			// throw new ProtocolException(err);
-			// }
-			// }
+			fileService.prepareSaveFile(protocolFile);
+
 			Protocol dbProtocol = findProtocolBy(protocolFile.getProtocol()
 					.getType(), protocolFile.getProtocol().getName());
 			if (dbProtocol != null) {

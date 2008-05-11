@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.particle;
 
+import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
@@ -97,6 +98,16 @@ public class NanoparticleCharacterizationService {
 							.getManufacturer());
 			if (dbInstrument != null) {
 				achar.getInstrumentConfiguration().setInstrument(dbInstrument);
+			}
+		}
+
+		if (achar.getDerivedBioAssayDataCollection() != null) {
+			FileService service = new FileService();
+			for (DerivedBioAssayData bioassay : achar
+					.getDerivedBioAssayDataCollection()) {
+				if (bioassay.getLabFile() != null) {
+					service.prepareSaveFile(bioassay.getLabFile());
+				}
 			}
 		}
 		appService.saveOrUpdate(achar);

@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.10 2008-05-07 10:30:02 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.11 2008-05-11 21:16:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -15,7 +15,6 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -39,14 +38,11 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ReportBean reportBean = (ReportBean) theForm.get("file");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
-				reportBean.getUploadedFile(), CaNanoLabConstants.FOLDER_REPORT,
-				null, null);
-		reportBean.setInternalUri(internalUri);
-		reportBean.setupDomainFile(user.getLoginName());
+		reportBean.setupDomainFile(CaNanoLabConstants.FOLDER_REPORT, user
+				.getLoginName());
 		ReportService service = new ReportService();
 		service.saveReport((Report) reportBean.getDomainFile(), reportBean
-				.getParticleNames(), reportBean.getFileData());
+				.getParticleNames(), reportBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);

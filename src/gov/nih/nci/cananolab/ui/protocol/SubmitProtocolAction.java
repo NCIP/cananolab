@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -40,15 +39,11 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ProtocolFileBean pfileBean = (ProtocolFileBean) theForm.get("file");
-		String internalUri = InitSetup.getInstance().getFileUriFromFormFile(
-				pfileBean.getUploadedFile(),
-				CaNanoLabConstants.FOLDER_PROTOCOL, null, null);
-		if (internalUri != null)
-			pfileBean.setInternalUri(internalUri);
-		pfileBean.setupDomainFile(user.getLoginName());
+		pfileBean.setupDomainFile(CaNanoLabConstants.FOLDER_PROTOCOL, user
+				.getLoginName());
 		ProtocolService service = new ProtocolService();
 		service.saveProtocolFile((ProtocolFile) pfileBean.getDomainFile(),
-				pfileBean.getFileData());
+				pfileBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);

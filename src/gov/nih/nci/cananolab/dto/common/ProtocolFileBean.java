@@ -18,7 +18,15 @@ public class ProtocolFileBean extends LabFileBean {
 	/**
 	 * 
 	 */
-	String domainFileId;
+	String domainFileId; // used for ajax
+
+	String domainFileVersion; // used for ajax
+
+	String updatedFileUri; // used for ajax
+
+	String updatedFileName; // used for ajax
+
+	String updatedFileVersion; // used for ajax
 
 	public ProtocolFileBean() {
 		super();
@@ -42,18 +50,39 @@ public class ProtocolFileBean extends LabFileBean {
 	}
 
 	public void setDomainFileId(String domainFileId) {
-		try {
-			Long id = new Long(domainFileId);
-			domainFile.setId(id);
-		} catch (Exception e) {
-			domainFile.setVersion(domainFileId);
-		}
 		this.domainFileId = domainFileId;
 	}
 
-	// for dwr ajax in bodySubmitProtocol.jsp
+	public String getUpdatedFileUri() {
+		return updatedFileUri;
+	}
+
+	public void setUpdatedFileUri(String domainFileUri) {
+		this.updatedFileUri = domainFileUri;
+	}
+
 	public String getDomainFileVersion() {
 		return domainFile.getVersion();
+	}
+
+	public void setDomainFileVersion(String domainFileVersion) {
+		this.domainFileVersion = domainFileVersion;
+	}
+
+	public String getUpdatedFileName() {
+		return updatedFileName;
+	}
+
+	public void setUpdatedFileName(String domainFileName) {
+		this.updatedFileName = domainFileName;
+	}
+
+	public String getUpdatedFileVersion() {
+		return updatedFileVersion;
+	}
+
+	public void setUpdatedFileVersion(String updatedFileVersion) {
+		this.updatedFileVersion = updatedFileVersion;
 	}
 
 	public boolean equals(Object obj) {
@@ -70,19 +99,24 @@ public class ProtocolFileBean extends LabFileBean {
 		return eq;
 	}
 
-	public void setupDomainFile(String createdBy) throws Exception {
-		super.setupDomainFile(createdBy);
+	public void setupDomainFile(String internalUriPath, String createdBy)
+			throws Exception {
+		domainFile.setUri(updatedFileUri);
+		domainFile.setName(updatedFileName);
+		if (updatedFileVersion.length() > 0) {
+			domainFile.setVersion(updatedFileVersion);
+		}
+		try {
+			Long id = new Long(domainFileId);
+			domainFile.setId(id);
+		} catch (Exception e) {
+			domainFile.setVersion(domainFileId);
+		}
+		super.setupDomainFile(internalUriPath, createdBy);
 		Protocol protocol = ((ProtocolFile) domainFile).getProtocol();
 		if (protocol.getId() == null) {
 			protocol.setCreatedBy(createdBy);
 			protocol.setCreatedDate(new Date());
 		}
-//		if (protocol.getProtocolFileCollection() == null) {
-//			protocol.setProtocolFileCollection(new HashSet<ProtocolFile>());
-//		}
-//		protocol.getProtocolFileCollection().add((ProtocolFile) domainFile);
-//		if (((ProtocolFile) domainFile).getProtocol() == null) {
-//			((ProtocolFile) domainFile).setProtocol(protocol);
-//		}
 	}
 }

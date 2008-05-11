@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.44 2008-05-10 22:46:38 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.45 2008-05-11 21:16:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -19,6 +19,8 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,15 +54,17 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
-		// setup domainFile for fileBeans
-		setupDomainFiles(entityBean.getFiles(), particleBean
-				.getDomainParticleSample().getName(), user.getLoginName(),
-				"Nanoparticle Entity");
-
+		// setup domainFile uri for fileBeans
+		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+				+ "/"
+				+ particleBean.getDomainParticleSample().getName()
+				+ "/"
+				+ StringUtils
+						.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
 		entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
-				.getLoginName());
+				.getLoginName(), internalUriPath);
 		compositionService.saveNanoparticleEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
 		// save file data to file system and set visibility
@@ -281,14 +285,23 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setLookups(request);
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		ParticleBean particleBean = setupParticle(theForm, request);
+		// setup domainFile uri for fileBeans
+		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+				+ "/"
+				+ particleBean.getDomainParticleSample().getName()
+				+ "/"
+				+ StringUtils
+						.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
 		entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
-				.getLoginName());
+				.getLoginName(), internalUriPath);
 		boolean canDelete = compositionService
 				.checkChemicalAssociationBeforeDelete(entityBean);
 		ActionMessages msgs = new ActionMessages();

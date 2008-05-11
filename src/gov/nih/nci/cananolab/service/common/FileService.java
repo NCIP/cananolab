@@ -7,7 +7,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -21,7 +20,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -112,14 +113,17 @@ public class FileService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.saveOrUpdate(copy);
-			byte[] content = this.getFileContent(file.getId());
-			writeFile(copy, content);
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			LabFileBean fileBean = new LabFileBean(file);
-			this.retrieveVisibility(fileBean, user);
-			auth.assignVisibility(copy.getId().toString(), fileBean
-					.getVisibilityGroups());
+			if (file != null) {
+				byte[] content = this.getFileContent(file.getId());
+				writeFile(copy, content);
+
+				AuthorizationService auth = new AuthorizationService(
+						CaNanoLabConstants.CSM_APP_NAME);
+				LabFileBean fileBean = new LabFileBean(file);
+				this.retrieveVisibility(fileBean, user);
+				auth.assignVisibility(copy.getId().toString(), fileBean
+						.getVisibilityGroups());
+			}
 		} catch (Exception e) {
 			String err = "Error in saving copied file to the file system and setting visibility of the copied file.";
 			logger.error(err, e);
@@ -142,7 +146,9 @@ public class FileService {
 									.ne(
 											CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX));
 			List results = appService.query(crit);
-			file = (LabFile) results.get(0);
+			if (!results.isEmpty()) {
+				file = (LabFile) results.get(0);
+			}
 			return file;
 		} catch (Exception e) {
 			String err = "Could not find the file by uri";
@@ -322,42 +328,37 @@ public class FileService {
 	 * Preparing keywords and other information prior to saving a file
 	 * 
 	 * @param file
-	 * @param fileData
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(LabFile file, byte[] fileData)
-			throws FileException {
+	public void prepareSaveFile(LabFile file) throws FileException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (file.getId() != null) {
-				try {
-					LabFile dbFile = (LabFile) appService.get(LabFile.class,
-							file.getId());
-					// don't change createdBy and createdDate it is already
+				LabFile dbFile = (LabFile) appService.get(LabFile.class, file
+						.getId());
+				if (dbFile != null) {
+					// don't change createdBy and createdDate if it is already
 					// persisted
 					file.setCreatedBy(dbFile.getCreatedBy());
 					file.setCreatedDate(dbFile.getCreatedDate());
-					if (dbFile.getVersion() != null) {
-						file.setVersion(dbFile.getVersion());
-					}
-					// load fileName and uri if no new data has been uploaded or
-					// no new url has been entered
-					if (fileData == null && !file.getUriExternal()) {
-						file.setName(dbFile.getName());
-					}
-				} catch (Exception e) {
+				} else {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ReportException(err, e);
+					throw new FileException(err);
 				}
 			}
 			if (file.getKeywordCollection() != null) {
-				for (Keyword keyword : file.getKeywordCollection()) {
+				Collection<Keyword> keywords = new HashSet<Keyword>(file
+						.getKeywordCollection());
+				file.getKeywordCollection().clear();
+				for (Keyword keyword : keywords) {
 					Keyword dbKeyword = (Keyword) appService.getObject(
 							Keyword.class, "name", keyword.getName());
-					if (dbKeyword != null && keyword.getId() == null) {
-						keyword = dbKeyword;
+					if (dbKeyword != null) {
+						file.getKeywordCollection().add(dbKeyword);
+					} else {
+						file.getKeywordCollection().add(keyword);
 					}
 				}
 			}
