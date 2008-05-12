@@ -465,7 +465,11 @@ public class NanoparticleCharacterizationService {
 
 		// protocol row
 		ProtocolFileBean protocolFileBean = achar.getProtocolFileBean();
-		String protocolId = protocolFileBean.getDomainFile().getId().toString();
+		String protocolId = null;
+		if (protocolFileBean.getDomainFile() != null
+				&& protocolFileBean.getDomainFile().getId() != null) {
+			protocolId = protocolFileBean.getDomainFile().getId().toString();
+		}
 		if (protocolId != null) {
 			row = sheet.createRow(rowCount++);
 			short cellCount = 0;
