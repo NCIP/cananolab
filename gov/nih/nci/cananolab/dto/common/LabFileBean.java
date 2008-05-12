@@ -15,7 +15,7 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- *
+ * 
  * @author pansu
  * 
  */
@@ -144,7 +144,7 @@ public class LabFileBean {
 			domainFile.setCreatedBy(createdBy);
 			domainFile.setCreatedDate(new Date());
 		}
-		if (uploadedFile.getFileName().length() > 0) {
+		if (uploadedFile != null && uploadedFile.getFileName().length() > 0) {
 			domainFile.setName(uploadedFile.getFileName());
 			newFileData = uploadedFile.getFileData();
 		} else {
