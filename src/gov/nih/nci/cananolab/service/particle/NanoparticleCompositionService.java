@@ -76,8 +76,11 @@ public class NanoparticleCompositionService {
 					.getNanoparticleEntityCollection().add(entity);
 
 			FileService service = new FileService();
-			for (LabFile file : entity.getLabFileCollection()) {
-				service.prepareSaveFile(file);
+			Collection<LabFile> labFiles = entity.getLabFileCollection();
+			if (labFiles!=null){
+				for (LabFile file : labFiles) {
+					service.prepareSaveFile(file);
+				}
 			}
 			appService.saveOrUpdate(entity);
 		} catch (Exception e) {
@@ -158,8 +161,11 @@ public class NanoparticleCompositionService {
 					.getFunctionalizingEntityCollection().add(entity);
 			
 			FileService service = new FileService();
-			for (LabFile file : entity.getLabFileCollection()) {
-				service.prepareSaveFile(file);
+			Collection<LabFile> labFiles = entity.getLabFileCollection();
+			if (labFiles!=null){
+				for (LabFile file : labFiles) {
+					service.prepareSaveFile(file);
+				}
 			}
 			appService.saveOrUpdate(entity);
 		} catch (Exception e) {
