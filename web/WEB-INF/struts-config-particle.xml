@@ -151,34 +151,39 @@
 			<forward name="success"
 				path="particle.searchNanoparticleResult" />
 		</action>
-		<action name="nanoparticleEntityForm"
-			parameter="dispatch" path="/nanoparticleEntity"
+		<action name="nanoparticleEntityForm" parameter="dispatch"
+			path="/nanoparticleEntity"
 			type="gov.nih.nci.cananolab.ui.particle.NanoparticleEntityAction"
-			input="input" >
+			input="input">
 			<forward name="input"
 				path="particle.composition.particleEntity" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action name="functionalizingEntityForm"
-			parameter="dispatch" path="/functionalizingEntity"
+		<action name="functionalizingEntityForm" parameter="dispatch"
+			path="/functionalizingEntity"
 			type="gov.nih.nci.cananolab.ui.particle.FunctionalizingEntityAction"
-			input="input" >
+			input="input">
 			<forward name="input"
 				path="particle.composition.functionalizingEntity" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action name="chemicalAssociationForm"
-			parameter="dispatch" path="/chemicalAssociation"
+		<action name="chemicalAssociationForm" parameter="dispatch"
+			path="/chemicalAssociation"
 			type="gov.nih.nci.cananolab.ui.particle.ChemicalAssociationAction"
-			input="input" >
+			input="input">
 			<forward name="input"
 				path="particle.composition.chemicalAssociation" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action name="physicalCharacterizationForm"
-			parameter="dispatch" path="/physicalCharacterization"
+		<action name="physicalCharacterizationForm" parameter="dispatch"
+			path="/physicalCharacterization"
 			type="gov.nih.nci.cananolab.ui.particle.PhysicalCharacterizationAction"
-			input="input" validate="true" >
+			input="input" validate="true">
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.duplicateCharacterizationViewTitle"
+				path="particle.physicalCharacterization"
+				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="input"
 				path="particle.physicalCharacterization" />
 			<forward name="success" path="particle.annotationMessage" />
@@ -187,10 +192,10 @@
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
 		</action>
-		<action name="invitroCharacterizationForm"
-			parameter="dispatch" path="/invitroCharacterization"
+		<action name="invitroCharacterizationForm" parameter="dispatch"
+			path="/invitroCharacterization"
 			type="gov.nih.nci.cananolab.ui.particle.InvitroCharacterizationAction"
-			input="input" >
+			input="input">
 			<forward name="input"
 				path="particle.invitroCharacterization" />
 			<forward name="success" path="particle.annotationMessage" />
@@ -199,10 +204,10 @@
 			<forward name="summaryView"
 				path="particle.invitroSummaryView" />
 		</action>
-		<action name="compositionFileForm"
-			parameter="dispatch" path="/compositionFile"
+		<action name="compositionFileForm" parameter="dispatch"
+			path="/compositionFile"
 			type="gov.nih.nci.cananolab.ui.particle.CompositionFileAction"
-			input="input" >
+			input="input">
 			<forward name="input"
 				path="particle.composition.compositionFile" />
 			<forward name="success" path="particle.annotationMessage" />
