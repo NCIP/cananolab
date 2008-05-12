@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
@@ -107,6 +108,13 @@ public class CharacterizationBean {
 				bioassay
 						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
 				bioassay.setCreatedDate(new Date());
+				if (bioassay.getLabFile() != null) {
+
+					bioassay.getLabFile().setId(null);
+					bioassay.getLabFile().setCreatedBy(
+							CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+					bioassay.getLabFile().setCreatedDate(new Date());
+				}
 				if (bioassay.getDerivedDatumCollection().isEmpty()
 						|| !copyDerivedDatum) {
 					bioassay.setDerivedDatumCollection(null);
@@ -156,8 +164,10 @@ public class CharacterizationBean {
 			}
 			domainChar.setInstrumentConfiguration(instrumentConfig);
 		}
-		// domainChar
-		// .setProtocolFile(protocolFileBean.getDomainProtocolFile());
+		if (protocolFileBean.getDomainFile().getId() != 0) {
+			domainChar.setProtocolFile(((ProtocolFile) protocolFileBean
+					.getDomainFile()));
+		}
 		if (domainChar.getDerivedBioAssayDataCollection() != null) {
 			domainChar.getDerivedBioAssayDataCollection().clear();
 		} else {
@@ -174,10 +184,6 @@ public class CharacterizationBean {
 					internalUriPath);
 			domainChar.getDerivedBioAssayDataCollection().add(
 					bioAssayData.getDomainBioAssayData());
-		}
-		if (protocolFileBean.getDomainFile().getId() != null) {
-			domainChar.setProtocolFile((ProtocolFile) protocolFileBean
-					.getDomainFile());
 		}
 	}
 
