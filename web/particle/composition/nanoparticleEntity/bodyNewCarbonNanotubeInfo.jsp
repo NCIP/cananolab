@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Average Length*</strong>
+				<strong>Average Length</strong>
 			</td>
 			<td class="label">
 				<input type="text" name="entity.carbonNanotube.averageLength" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}"/>
@@ -30,7 +30,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Diameter*</strong>
+				<strong>Diameter</strong>
 			</td>
 			<td class="label">
 				<input type="text" name="entity.carbonNanotube.diameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}"/>
