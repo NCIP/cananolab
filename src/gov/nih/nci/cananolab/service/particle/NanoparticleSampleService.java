@@ -130,8 +130,7 @@ public class NanoparticleSampleService {
 							.getName());
 			if (dbParticle != null
 					&& !dbParticle.getId().equals(particleSample.getId())) {
-				throw new DuplicateEntriesException(
-						"This nanoparticle sample ID has already been used.  Please use a different one");
+				throw new DuplicateEntriesException();
 			}
 			Source dbSource = (Source) appService.getObject(Source.class,
 					"organizationName", particleSample.getSource()
@@ -141,11 +140,14 @@ public class NanoparticleSampleService {
 			}
 
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
+				// turned off cascade save-update in order to share the same
+				// keyword instance with LabFile keywords.
 				Keyword dbKeyword = (Keyword) appService.getObject(
 						Keyword.class, "name", keyword.getName());
 				if (dbKeyword != null) {
 					keyword.setId(dbKeyword.getId());
 				}
+				appService.saveOrUpdate(keyword);
 			}
 			appService.saveOrUpdate(particleSample);
 		} catch (DuplicateEntriesException e) {
@@ -565,8 +567,9 @@ public class NanoparticleSampleService {
 	}
 
 	/**
-	 * Return all stored functionalizing entity class names.  In case of OtherFunctionalizingEntity,
-	 * store the OtherFunctionalizingEntity type
+	 * Return all stored functionalizing entity class names. In case of
+	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
+	 * 
 	 * @param particleSample
 	 * @return
 	 */
@@ -593,8 +596,9 @@ public class NanoparticleSampleService {
 	}
 
 	/**
-	 * Return all stored function class names.  In case of OtherFunction,
-	 * store the otherFunction type
+	 * Return all stored function class names. In case of OtherFunction, store
+	 * the otherFunction type
+	 * 
 	 * @param particleSample
 	 * @return
 	 */
@@ -646,8 +650,9 @@ public class NanoparticleSampleService {
 	}
 
 	/**
-	 * Return all stored nanoparticle entity class names.  In case of OtherNanoparticleEntity,
-	 * store the otherNanoparticleEntity type
+	 * Return all stored nanoparticle entity class names. In case of
+	 * OtherNanoparticleEntity, store the otherNanoparticleEntity type
+	 * 
 	 * @param particleSample
 	 * @return
 	 */
