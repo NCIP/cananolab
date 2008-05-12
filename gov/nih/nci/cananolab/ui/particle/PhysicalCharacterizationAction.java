@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.22 2008-05-11 21:16:20 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.23 2008-05-12 06:03:53 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -106,6 +106,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		PhysicalCharacterizationBean achar = (PhysicalCharacterizationBean) theForm
 				.get("achar");
 		achar.getSurfaceBean().addSurfaceChemistry();
+		setupDomainChar(request, theForm, achar);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
