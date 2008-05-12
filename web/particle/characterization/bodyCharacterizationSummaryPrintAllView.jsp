@@ -94,7 +94,7 @@ ${charBean.protocolFileBean.domainFile.uri}
 								<td class="rightLabel" valign="top">
 									<c:if
 										test="${!empty derivedBioAssayData.labFileBean.domainFile.type}">
-								${derivedBioAssayData.type}
+								${derivedBioAssayData.labFileBean.domainFile.type}
 								<br>
 									</c:if>
 									<c:choose>

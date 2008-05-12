@@ -102,7 +102,7 @@
 									</th>
 									<td class="rightLabel" valign="top">
 										<c:if test="${!empty derivedBioAssayData.labFileBean.domainFile.type}">
-								${derivedBioAssayData.type}
+								${derivedBioAssayData.labFileBean.domainFile.type}
 								<br>
 										</c:if>
 										<c:choose>
@@ -139,7 +139,7 @@
 													indexId="datumInd">
 													<th class="whiteBorderLessLabel">
 														${datum.name}
-														<c:if test="${!empty datum.unit}">(${datum.valueUnit})</c:if>
+														<c:if test="${!empty datum.valueUnit}">(${datum.valueUnit})</c:if>
 													</th>
 												</logic:iterate>
 											</tr>
