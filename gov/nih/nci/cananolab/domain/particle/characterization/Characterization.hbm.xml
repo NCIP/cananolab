@@ -141,7 +141,7 @@
 				<!-- Attributes mapping for the Surface class -->
 				<property name="isHydrophobic" type="boolean" column="surface_is_hydrophobic"/>
 				<!-- Associations mapping for the Surface class -->
-				<set name="surfaceChemistryCollection" lazy="false">
+				<set name="surfaceChemistryCollection" lazy="false" cascade="all-delete-orphan" >
 					<cache usage="read-write" />
 					<key column="surface_pk_id" />
 					<one-to-many class="gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry"/>
