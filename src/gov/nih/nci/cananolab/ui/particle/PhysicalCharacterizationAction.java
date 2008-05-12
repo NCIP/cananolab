@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.24 2008-05-12 15:57:30 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.25 2008-05-12 16:22:56 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -33,10 +33,10 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 
 	protected String setupDetailPage(CharacterizationBean charBean) {
 		String includePage = null;
-		if (charBean.getDomainChar() instanceof PhysicalState
-				|| charBean.getDomainChar() instanceof Shape
-				|| charBean.getDomainChar() instanceof Solubility
-				|| charBean.getDomainChar() instanceof Surface) {
+		if (charBean.getClassName().equals("PhysicalState")
+				|| charBean.getClassName().equals("Shape")
+				|| charBean.getClassName().equals("Solubility")
+				|| charBean.getClassName().equals("Surface")) {
 			includePage = "/particle/characterization/physical/body"
 					+ charBean.getClassName() + "Info.jsp";
 		}

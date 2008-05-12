@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.Solubilit
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Collection;
 import java.util.Date;
@@ -64,29 +65,37 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 	}
 
 	public PhysicalState getPhysicalState() {
-		domainChar=physicalState;
 		return physicalState;
 	}
 
 	public Shape getShape() {
-		domainChar=shape;
 		return shape;
 	}
 
 	public Solubility getSolubility() {
-		domainChar=solubility;
 		return solubility;
 	}
 
 	public SurfaceBean getSurfaceBean() {
-		domainChar=surfaceBean.getDomainSurface();
 		return surfaceBean;
 	}
 
 	public void setupDomainChar(Map<String, String> typeToClass,
 			String createdBy, String internalUriPath) throws Exception {
-		super.setupDomainChar(typeToClass, createdBy, internalUriPath);
-		if (domainChar instanceof Surface) {
+		// take care of characterizations that don't have any special
+		// properties shown in the form, e.g. Size
+		if (domainChar == null) {
+			Class clazz = ClassUtils.getFullClass(getClassName());
+			domainChar = (Characterization) clazz.newInstance();
+		}
+		if (domainChar instanceof Shape) {
+			domainChar = shape;
+		} else if (domainChar instanceof Solubility) {
+			domainChar = solubility;
+		} else if (domainChar instanceof PhysicalState) {
+			domainChar = physicalState;
+		} else if (domainChar instanceof Surface) {
+			domainChar = surfaceBean.getDomainSurface();
 			Surface surface = ((Surface) domainChar);
 			if (surface.getSurfaceChemistryCollection() != null) {
 				surface.getSurfaceChemistryCollection().clear();
@@ -105,5 +114,6 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 				surface.getSurfaceChemistryCollection().add(chem);
 			}
 		}
+		super.setupDomainChar(typeToClass, createdBy, internalUriPath);
 	}
 }
