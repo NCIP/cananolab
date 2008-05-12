@@ -33,15 +33,21 @@ function retrieveProtocolFile() {
 	var fileId = document.getElementById("protocolFileId").value;
 	//ProtocolManager.findProtocolFileById(fileId, writeLink); //not working on linux
 	ProtocolManager.getProtocolFileUriById(fileId, writeLink);
-	ProtocolManager.getProtocolFileUriById(fileId, function (data) {
-		document.getElementById("updatedUri").value = data;
-	});
-	ProtocolManager.getProtocolFileNameById(fileId, function (data) {
-		document.getElementById("updatedName").value = data;
-	});
-	ProtocolManager.getProtocolFileVersionById(fileId, function (data) {
-		document.getElementById("updatedVersion").value = data;
-	});
+	if (document.getElementById("updatedUri") != null) {
+		ProtocolManager.getProtocolFileUriById(fileId, function (data) {
+			document.getElementById("updatedUri").value = data;
+		});
+	}
+	if (document.getElementById("updatedName") != null) {
+		ProtocolManager.getProtocolFileNameById(fileId, function (data) {
+			document.getElementById("updatedName").value = data;
+		});
+	}
+	if (document.getElementById("updatedVersion") != null) {
+		ProtocolManager.getProtocolFileVersionById(fileId, function (data) {
+			document.getElementById("updatedVersion").value = data;
+		});
+	}
 }
 function writeLink(uri) {
 	var fileId = document.getElementById("protocolFileId").value;
