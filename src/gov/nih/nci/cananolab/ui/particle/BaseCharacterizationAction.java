@@ -90,7 +90,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		}
 	}
 
-	protected void saveCharacterization(HttpServletRequest request,
+	protected void setupDomainChar(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		// setup domainFile for fileBeans
@@ -108,6 +108,16 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+	}
+
+	protected void saveCharacterization(HttpServletRequest request,
+			DynaValidatorForm theForm, CharacterizationBean charBean)
+			throws Exception {
+		// setup domainFile for fileBeans
+		ParticleBean particleBean = setupParticle(theForm, request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// setup domainFile uri for fileBeans
+		setupDomainChar(request, theForm, charBean);
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
@@ -183,6 +193,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		setLookups(request, charBean);
 		// clear copy to otherParticles
 		theForm.set("otherParticles", new String[0]);
+		theForm.set("copyData", false);
 
 		return mapping.getInputForward();
 	}
@@ -200,15 +211,11 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	public ActionForward addDerivedBioAssayData(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		// if user pressed cancel in load characterization file
-		String cancel = request.getParameter("cancel");
-		if (cancel != null) {
-			return mapping.getInputForward();
-		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.addDerivedBioAssayData();
+		setupDomainChar(request, theForm, achar);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
@@ -237,11 +244,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	public ActionForward addDerivedDatum(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		// if user pressed cancel in load characterization file
-		String cancel = request.getParameter("cancel");
-		if (cancel != null) {
-			return mapping.getInputForward();
-		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
@@ -250,6 +252,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		DerivedBioAssayDataBean derivedBioAssayData = achar
 				.getDerivedBioAssayDataList().get(fileInd);
 		derivedBioAssayData.addDerivedDatum();
+		setupDomainChar(request, theForm, achar);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 
