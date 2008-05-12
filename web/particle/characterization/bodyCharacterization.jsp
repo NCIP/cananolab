@@ -45,8 +45,9 @@
 					page="/particle/characterization/shared/bodyCharacterizationSummary.jsp" />
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationInstrument.jsp" />
-				<jsp:include
-					page="/particle/characterization/physical/body${characterizationForm.map.achar.className}Info.jsp" />
+				<c:if test="${! empty detailPage}">
+					<jsp:include page="${detailPage}" />
+				</c:if>
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>

@@ -7,6 +7,8 @@ package gov.nih.nci.cananolab.ui.particle;
  */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.Caspase3Activation;
+import gov.nih.nci.cananolab.domain.particle.characterization.invitro.CellViability;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -24,6 +26,17 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class InvitroCharacterizationAction extends BaseCharacterizationAction {
+
+	protected String setupDetailPage(CharacterizationBean charBean) {
+		String includePage = null;
+		if (charBean.getDomainChar() instanceof Caspase3Activation
+				|| charBean.getDomainChar() instanceof CellViability) {
+			includePage = "/particle/characterization/invitro/body"
+					+ charBean.getClassName() + "Info.jsp";
+		}
+		return includePage;
+	}
+
 	/**
 	 * Add or update the data to database
 	 * 

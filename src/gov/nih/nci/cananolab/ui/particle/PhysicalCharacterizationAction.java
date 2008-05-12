@@ -6,10 +6,14 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.23 2008-05-12 06:03:53 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.24 2008-05-12 15:57:30 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalState;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.Shape;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.Solubility;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
@@ -26,6 +30,18 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
+
+	protected String setupDetailPage(CharacterizationBean charBean) {
+		String includePage = null;
+		if (charBean.getDomainChar() instanceof PhysicalState
+				|| charBean.getDomainChar() instanceof Shape
+				|| charBean.getDomainChar() instanceof Solubility
+				|| charBean.getDomainChar() instanceof Surface) {
+			includePage = "/particle/characterization/physical/body"
+					+ charBean.getClassName() + "Info.jsp";
+		}
+		return includePage;
+	}
 
 	/**
 	 * Add or update the data to database
