@@ -65,7 +65,8 @@ public class ComposingElementBean {
 	public void setupDomainComposingElement(Map<String, String> typeToClass,
 			String createdBy) throws Exception {
 		if (domainComposingElement.getId() == null
-				|| domainComposingElement.getCreatedBy().equals(
+				|| domainComposingElement.getCreatedBy() != null
+				&& domainComposingElement.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainComposingElement.setCreatedBy(createdBy);
 			domainComposingElement.setCreatedDate(new Date());

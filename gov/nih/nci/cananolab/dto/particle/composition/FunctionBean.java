@@ -129,7 +129,8 @@ public class FunctionBean {
 		}
 		domainFunction.setDescription(description);
 		if (domainFunction.getId() == null
-				|| domainFunction.getCreatedBy().equals(
+				|| domainFunction.getCreatedBy() != null
+				&& domainFunction.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFunction.setCreatedBy(createdBy);
 			domainFunction.setCreatedDate(new Date());
