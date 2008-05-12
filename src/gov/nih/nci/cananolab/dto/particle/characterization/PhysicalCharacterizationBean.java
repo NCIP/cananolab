@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.Shape;
@@ -8,6 +9,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,6 +38,29 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 		} else if (chara instanceof Solubility) {
 			solubility = (Solubility) chara;
 		}
+	}
+
+	public Characterization getDomainCopy(boolean copyDerivedDatum) {
+		Characterization copy = super.getDomainCopy(copyDerivedDatum);
+		if (copy instanceof Surface) {
+			if (((Surface) copy).getSurfaceChemistryCollection().isEmpty()) {
+				((Surface) copy).setSurfaceChemistryCollection(null);
+			} else {
+				Collection<SurfaceChemistry> chems = ((Surface) copy)
+						.getSurfaceChemistryCollection();
+				((Surface) copy)
+						.setSurfaceChemistryCollection(new HashSet<SurfaceChemistry>());
+				((Surface) copy).getSurfaceChemistryCollection().addAll(chems);
+				for (SurfaceChemistry chem : ((Surface) copy)
+						.getSurfaceChemistryCollection()) {
+					chem.setId(null);
+					chem
+							.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+					chem.setCreatedDate(new Date());
+				}
+			}
+		}
+		return copy;
 	}
 
 	public PhysicalState getPhysicalState() {
