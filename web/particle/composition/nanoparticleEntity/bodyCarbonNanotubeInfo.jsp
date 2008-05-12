@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Average Length*</strong>
+				<strong>Average Length</strong>
 			</td>
 			<td class="label">
 				<c:choose>
@@ -55,7 +55,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Diameter*</strong>
+				<strong>Diameter</strong>
 			</td>
 			<td class="label">
 				<c:choose>
