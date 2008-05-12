@@ -200,15 +200,14 @@ INSERT INTO canano.derived_datum
 (
 	datum_name,
 	value,
-	value_type,
 	value_unit,
 	created_by,
 	created_date,
 	derived_bioassay_data_pk_id
 )
-SELECT 'Surface',
+SELECT 
+	'surface_area',
 	surface_area,
-	'surface area',
 	surface_area_unit,
 	'DATA_MIGRATION',
 	SYSDATE(),
@@ -221,15 +220,14 @@ INSERT INTO canano.derived_datum
 (
 	datum_name,
 	value,
-	value_type,
 	value_unit,
 	created_by,
 	created_date,
 	derived_bioassay_data_pk_id
 )
-SELECT 'Surface',
-	charge,
+SELECT 
 	'charge',
+	charge,
 	charge_unit,
 	'DATA_MIGRATION',
 	SYSDATE(),
@@ -242,15 +240,14 @@ INSERT INTO canano.derived_datum
 (
 	datum_name,
 	value,
-	value_type,
 	value_unit,
 	created_by,
 	created_date,
 	derived_bioassay_data_pk_id
 )
-SELECT 'Surface',
+SELECT
+	'zeta_potential',
 	zeta_potential,
-	'zeta potential',
 	zeta_potential_unit,
 	'DATA_MIGRATION',
 	SYSDATE(),
