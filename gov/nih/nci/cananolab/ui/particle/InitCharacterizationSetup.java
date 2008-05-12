@@ -46,7 +46,7 @@ public class InitCharacterizationSetup {
 		for (String name : derivedDatumNames) {
 			SortedSet<String> units = InitSetup.getInstance()
 					.getDefaultAndOtherLookupTypes(request,
-							"derivedDatumUnits", name, "unit", "otherUnits",
+							"derivedDatumUnits", name, "unit", "otherUnit",
 							true);
 			unitMap.put(name, units);
 		}
