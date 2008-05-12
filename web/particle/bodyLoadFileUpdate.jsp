@@ -12,7 +12,7 @@
 			</td>
 			<td class="formSubTitleNoLeft" align="right">
 				<a href="#"
-					onclick="removeComponent(${param.form}, '${param.action}', ${param.fileInd}, ${param.removeCmd });return false;">
+					onclick="removeComponent(document.forms[0], '${param.action}', ${param.fileInd}, ${param.removeCmd });return false;">
 					<img src="images/delete.gif" border="0" alt="remove this file">
 				</a>
 			</td>
