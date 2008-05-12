@@ -247,7 +247,7 @@ public class FunctionalizingEntityBean {
 		if (className == null) {
 			clazz = OtherFunctionalizingEntity.class;
 		} else {
-			clazz = ClassUtils.getFullClass("functionalization."+className);
+			clazz = ClassUtils.getFullClass("functionalization." + className);
 		}
 		if (domainEntity == null) {
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
@@ -269,7 +269,8 @@ public class FunctionalizingEntityBean {
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setActivationMethod(activationMethod);
 		if (domainEntity.getId() == null
-				|| domainEntity.getCreatedBy().equals(
+				|| domainEntity.getCreatedBy() != null
+				&& domainEntity.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(new Date());

@@ -74,7 +74,8 @@ public class DerivedBioAssayDataBean {
 	public void setupDomainBioAssayData(Map<String, String> typeToClass,
 			String createdBy, String internalUriPath) throws Exception {
 		if (domainBioAssayData.getId() == null
-				|| domainBioAssayData.getCreatedBy().equals(
+				|| domainBioAssayData.getCreatedBy() != null
+				&& domainBioAssayData.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainBioAssayData.setCreatedBy(createdBy);
 			domainBioAssayData.setCreatedDate(new Date());
