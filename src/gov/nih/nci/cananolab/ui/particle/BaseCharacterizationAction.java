@@ -66,8 +66,12 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				appContext);
 		charBean.setClassName(charClass);
 		setLookups(request, charBean);
+		String detailPage = setupDetailPage(charBean);
+		request.getSession().setAttribute("detailPage", detailPage);
 		return mapping.getInputForward();
 	}
+
+	protected abstract String setupDetailPage(CharacterizationBean charBean);
 
 	private void saveToOtherParticles(HttpServletRequest request,
 			Characterization copy, UserBean user, String particleSampleName,
@@ -194,6 +198,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		// clear copy to otherParticles
 		theForm.set("otherParticles", new String[0]);
 		theForm.set("copyData", false);
+		String detailPage = setupDetailPage(charBean);
+		request.getSession().setAttribute("detailPage", detailPage);
 
 		return mapping.getInputForward();
 	}
