@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
-import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
@@ -141,10 +140,6 @@ public class CharacterizationBean {
 			String createdBy, String internalUriPath) throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
-		if (domainChar == null) {
-			Class clazz = ClassUtils.getFullClass(className);
-			domainChar = (Characterization) clazz.newInstance();
-		}
 		if (domainChar.getId() == null
 				|| domainChar.getCreatedBy() != null
 				&& domainChar.getCreatedBy().equals(
@@ -248,9 +243,5 @@ public class CharacterizationBean {
 
 	public void setClassName(String className) throws Exception {
 		this.className = className;
-		if (domainChar == null) {
-			Class clazz = ClassUtils.getFullClass(className);
-			domainChar = (Characterization) clazz.newInstance();
-		}
 	}
 }
