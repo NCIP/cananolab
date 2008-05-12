@@ -356,10 +356,9 @@ public class FileService {
 					Keyword dbKeyword = (Keyword) appService.getObject(
 							Keyword.class, "name", keyword.getName());
 					if (dbKeyword != null) {
-						file.getKeywordCollection().add(dbKeyword);
-					} else {
-						file.getKeywordCollection().add(keyword);
+						keyword=dbKeyword;
 					}
+					file.getKeywordCollection().add(keyword);
 				}
 			}
 		} catch (Exception e) {
