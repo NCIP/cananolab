@@ -64,18 +64,22 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 	}
 
 	public PhysicalState getPhysicalState() {
+		domainChar=physicalState;
 		return physicalState;
 	}
 
 	public Shape getShape() {
+		domainChar=shape;
 		return shape;
 	}
 
 	public Solubility getSolubility() {
+		domainChar=solubility;
 		return solubility;
 	}
 
 	public SurfaceBean getSurfaceBean() {
+		domainChar=surfaceBean.getDomainSurface();
 		return surfaceBean;
 	}
 
