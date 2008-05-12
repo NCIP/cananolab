@@ -232,7 +232,8 @@ public class NanoparticleEntityBean {
 			domainEntity = fullerene;
 		}
 		if (domainEntity.getId() == null
-				|| domainEntity.getCreatedBy().equals(
+				|| domainEntity.getCreatedBy() != null
+				&& domainEntity.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(new Date());

@@ -139,7 +139,8 @@ public class LabFileBean {
 	public void setupDomainFile(String internalUriPath, String createdBy)
 			throws Exception {
 		if (domainFile.getId() == null
-				|| domainFile.getCreatedBy().equals(
+				|| domainFile.getCreatedBy() != null
+				&& domainFile.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
 			domainFile.setCreatedDate(new Date());

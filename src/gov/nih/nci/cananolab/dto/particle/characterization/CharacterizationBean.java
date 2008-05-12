@@ -146,7 +146,8 @@ public class CharacterizationBean {
 			domainChar = (Characterization) clazz.newInstance();
 		}
 		if (domainChar.getId() == null
-				|| domainChar.getCreatedBy().equals(
+				|| domainChar.getCreatedBy() != null
+				&& domainChar.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainChar.setCreatedBy(createdBy);
 			domainChar.setCreatedDate(new Date());
