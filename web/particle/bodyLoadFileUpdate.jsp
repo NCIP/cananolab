@@ -144,7 +144,7 @@
 			<html:hidden property="${param.fileBean}.domainFile.id" />
 		</c:if>
 		<c:if
-			test="${param.action ne 'nanoparticleEntity' and param.action ne 'functionalizingEntity'}">
+			test="${param.action eq 'physicalCharacterization' || param.action eq 'invitroCharacterization'}">
 			<tr>
 				<td class="completeLabel" colspan="4">
 					<table border="0" width="100%">
