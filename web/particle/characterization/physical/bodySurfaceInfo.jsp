@@ -18,7 +18,7 @@
 		<tr>
 			<td class="leftLabel">
 				<div align="justify">
-					<strong>isHydrophobic</strong>
+					<strong>Is Hydrophobic?</strong>
 				</div>
 			</td>
 			<td class="rightLabel">
@@ -27,11 +27,12 @@
 						<html:select
 							property="achar.surfaceBean.domainSurface.isHydrophobic">
 							<option value=""></option>
-							<html:options name="booleanChoices" />
+							<html:options collection="booleanChoices" property="value"
+								labelProperty="label" />
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${characterizationForm.map.surface.isHydrophobic}&nbsp;
+						${characterizationForm.map.achar.surfaceBean.domainSurface.isHydrophobic}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

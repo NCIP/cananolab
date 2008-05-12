@@ -36,6 +36,8 @@ import java.util.TreeSet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts.util.LabelValueBean;
+
 /**
  * This class sets up information required for nanoparticle forms.
  * 
@@ -102,8 +104,7 @@ public class InitNanoparticleSetup {
 			ServletContext appContext) throws Exception {
 
 		Map<String, List<DataLinkBean>> compositionMap = new HashMap<String, List<DataLinkBean>>();
-		List<DataLinkBean> compList = new ArrayList<DataLinkBean>(
-				4);
+		List<DataLinkBean> compList = new ArrayList<DataLinkBean>(4);
 
 		compList.add(new DataLinkBean("Nanoparticle Entity",
 				"NanoparticleEntity", "nanoparticleEntity", "composition"));
@@ -113,8 +114,8 @@ public class InitNanoparticleSetup {
 						"composition"));
 		compList.add(new DataLinkBean("Chemical Association",
 				"ChemicalAssociation", "chemicalAssociation", "composition"));
-		compList.add(new DataLinkBean("Composition File",
-				"CompositionFile", "compositionFile", "composition"));
+		compList.add(new DataLinkBean("Composition File", "CompositionFile",
+				"compositionFile", "composition"));
 
 		compositionMap.put("Composition", compList);
 		appContext.setAttribute("compositionTypes", compositionMap);
@@ -199,8 +200,8 @@ public class InitNanoparticleSetup {
 		}
 	}
 
-	public Map<String, SortedSet<DataLinkBean>> getDataTree(
-			String particleId, HttpServletRequest request) throws Exception {
+	public Map<String, SortedSet<DataLinkBean>> getDataTree(String particleId,
+			HttpServletRequest request) throws Exception {
 		Map<String, SortedSet<DataLinkBean>> dataTree = new HashMap<String, SortedSet<DataLinkBean>>();
 		if (request.getAttribute("updateDataTree") != null
 				&& request.getAttribute("updateDataTree").equals("true")) {
@@ -222,8 +223,8 @@ public class InitNanoparticleSetup {
 					for (NanoparticleEntity entity : particleSample
 							.getSampleComposition()
 							.getNanoparticleEntityCollection()) {
-						DataLinkBean dataBean = new DataLinkBean(
-								entity.getId().toString(), "Composition",
+						DataLinkBean dataBean = new DataLinkBean(entity.getId()
+								.toString(), "Composition",
 								"nanoparticleEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
 						if (entity instanceof OtherNanoparticleEntity) {
@@ -252,8 +253,8 @@ public class InitNanoparticleSetup {
 					for (FunctionalizingEntity entity : particleSample
 							.getSampleComposition()
 							.getFunctionalizingEntityCollection()) {
-						DataLinkBean dataBean = new DataLinkBean(
-								entity.getId().toString(), "Composition",
+						DataLinkBean dataBean = new DataLinkBean(entity.getId()
+								.toString(), "Composition",
 								"functionalizingEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
 						if (entity instanceof OtherFunctionalizingEntity) {
@@ -283,8 +284,8 @@ public class InitNanoparticleSetup {
 					for (ChemicalAssociation association : particleSample
 							.getSampleComposition()
 							.getChemicalAssociationCollection()) {
-						DataLinkBean dataBean = new DataLinkBean(
-								association.getId().toString(), "Composition",
+						DataLinkBean dataBean = new DataLinkBean(association
+								.getId().toString(), "Composition",
 								"chemicalAssociation", association
 										.getCreatedBy(), association
 										.getCreatedDate());
@@ -313,10 +314,9 @@ public class InitNanoparticleSetup {
 						.getLabFileCollection() != null) {
 					for (LabFile file : particleSample.getSampleComposition()
 							.getLabFileCollection()) {
-						DataLinkBean dataBean = new DataLinkBean(
-								file.getId().toString(), "Composition",
-								"compositionFile", file.getCreatedBy(), file
-										.getCreatedDate());
+						DataLinkBean dataBean = new DataLinkBean(file.getId()
+								.toString(), "Composition", "compositionFile",
+								file.getCreatedBy(), file.getCreatedDate());
 						dataBean.setDataClassName("LabFile");
 						dataBean.setDataDisplayType(file.getType());
 						dataBean.setViewTitle(dataBean.getDataDisplayType()
@@ -351,9 +351,9 @@ public class InitNanoparticleSetup {
 						hasInVitroData = true;
 
 					}
-					DataLinkBean dataBean = new DataLinkBean(
-							achar.getId().toString(), category, link, achar
-									.getCreatedBy(), achar.getCreatedDate());
+					DataLinkBean dataBean = new DataLinkBean(achar.getId()
+							.toString(), category, link, achar.getCreatedBy(),
+							achar.getCreatedDate());
 					dataBean.setDataClassName(ClassUtils
 							.getShortClassName(achar.getClass()
 									.getCanonicalName()));
@@ -378,10 +378,9 @@ public class InitNanoparticleSetup {
 				if (particleSample.getReportCollection() != null) {
 					for (Report report : particleSample.getReportCollection()) {
 						String reportCategory = report.getCategory();
-						DataLinkBean dataBean = new DataLinkBean(
-								report.getId().toString(), "Report",
-								"submitReport", report.getCreatedBy(), report
-										.getCreatedDate());
+						DataLinkBean dataBean = new DataLinkBean(report.getId()
+								.toString(), "Report", "submitReport", report
+								.getCreatedBy(), report.getCreatedDate());
 						dataBean.setDataDisplayType(reportCategory);
 						dataBean.setViewTitle(report.getUri());
 						if (dataTree.get(reportCategory) != null) {
@@ -428,8 +427,17 @@ public class InitNanoparticleSetup {
 	public void setSharedDropdowns(HttpServletRequest request) throws Exception {
 		// set static boolean yes or no and characterization source choices
 		ServletContext appContext = request.getSession().getServletContext();
-		appContext.setAttribute("booleanChoices",
-				CaNanoLabConstants.BOOLEAN_CHOICES);
+		LabelValueBean trueBean = new LabelValueBean();
+		trueBean.setLabel(CaNanoLabConstants.BOOLEAN_YES);
+		trueBean.setValue("true");
+		LabelValueBean falseBean = new LabelValueBean();
+		falseBean.setLabel(CaNanoLabConstants.BOOLEAN_NO);
+		falseBean.setValue("false");
+		LabelValueBean[] booleanBeans = new LabelValueBean[2];
+		booleanBeans[0] = trueBean;
+		booleanBeans[1] = falseBean;
+
+		appContext.setAttribute("booleanChoices", booleanBeans);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "LabFile", "type", "otherType", true);
 	}
