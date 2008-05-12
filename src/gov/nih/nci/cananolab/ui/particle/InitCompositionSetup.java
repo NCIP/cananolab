@@ -98,6 +98,8 @@ public class InitCompositionSetup {
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
 			throws Exception {
+		//reload function types
+		getFunctionTypes(request);
 		getFunctionalizingEntityTypes(request);
 		getTargetTypes(request);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
