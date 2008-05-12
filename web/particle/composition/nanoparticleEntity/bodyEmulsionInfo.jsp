@@ -21,7 +21,8 @@
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:select property="entity.emulsion.polymerized">
 							<option value=""></option>
-							<html:options name="booleanChoices" />
+							<html:options collection="booleanChoices" property="value"
+								labelProperty="label" />
 						</html:select>
 					</c:when>
 					<c:otherwise>
