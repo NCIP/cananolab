@@ -29,8 +29,8 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 
 	protected String setupDetailPage(CharacterizationBean charBean) {
 		String includePage = null;
-		if (charBean.getDomainChar() instanceof Caspase3Activation
-				|| charBean.getDomainChar() instanceof CellViability) {
+		if (charBean.getClassName().equals("Caspase3Activation")
+				|| charBean.getClassName().equals("CellViability")) {
 			includePage = "/particle/characterization/invitro/body"
 					+ charBean.getClassName() + "Info.jsp";
 		}
