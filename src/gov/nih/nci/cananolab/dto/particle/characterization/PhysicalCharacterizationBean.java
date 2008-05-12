@@ -5,6 +5,12 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalS
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Map;
 
 public class PhysicalCharacterizationBean extends CharacterizationBean {
 	private PhysicalState physicalState = new PhysicalState();
@@ -27,26 +33,48 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 			shape = (Shape) chara;
 		} else if (chara instanceof PhysicalState) {
 			physicalState = (PhysicalState) chara;
+		} else if (chara instanceof Solubility) {
+			solubility = (Solubility) chara;
 		}
 	}
 
 	public PhysicalState getPhysicalState() {
-		domainChar = physicalState;
 		return physicalState;
 	}
 
 	public Shape getShape() {
-		domainChar = shape;
 		return shape;
 	}
 
 	public Solubility getSolubility() {
-		domainChar = solubility;
 		return solubility;
 	}
 
 	public SurfaceBean getSurfaceBean() {
-		domainChar = surfaceBean.getDomainSurface();
 		return surfaceBean;
+	}
+
+	public void setupDomainChar(Map<String, String> typeToClass,
+			String createdBy, String internalUriPath) throws Exception {
+		super.setupDomainChar(typeToClass, createdBy, internalUriPath);
+		if (domainChar instanceof Surface) {
+			Surface surface = ((Surface) domainChar);
+			if (surface.getSurfaceChemistryCollection() != null) {
+				surface.getSurfaceChemistryCollection().clear();
+			} else {
+				surface
+						.setSurfaceChemistryCollection(new HashSet<SurfaceChemistry>());
+			}
+			for (SurfaceChemistry chem : surfaceBean.getSurfaceChemistryList()) {
+				if (chem.getId() == null
+						|| chem.getCreatedBy() != null
+						&& chem.getCreatedBy().equals(
+								CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+					chem.setCreatedBy(createdBy);
+					chem.setCreatedDate(new Date());
+				}
+				surface.getSurfaceChemistryCollection().add(chem);
+			}
+		}
 	}
 }
