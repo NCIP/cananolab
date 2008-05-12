@@ -36,7 +36,7 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private InstrumentConfiguration instrumentConfig = new InstrumentConfiguration();
+	private InstrumentConfiguration instrumentConfiguration = new InstrumentConfiguration();
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
@@ -47,7 +47,7 @@ public class CharacterizationBean {
 	private String className;
 
 	public CharacterizationBean() {
-		instrumentConfig.setInstrument(new Instrument());
+		instrumentConfiguration.setInstrument(new Instrument());
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -57,10 +57,10 @@ public class CharacterizationBean {
 		this.viewTitle = chara.getIdentificationName();
 		this.characterizationSource = chara.getSource();
 		if (chara.getInstrumentConfiguration() != null) {
-			instrumentConfig = chara.getInstrumentConfiguration();
+			instrumentConfiguration = chara.getInstrumentConfiguration();
 		}
-		if (instrumentConfig.getInstrument() == null) {
-			instrumentConfig.setInstrument(new Instrument());
+		if (instrumentConfiguration.getInstrument() == null) {
+			instrumentConfiguration.setInstrument(new Instrument());
 		}
 		if (chara.getDerivedBioAssayDataCollection() != null) {
 			for (DerivedBioAssayData bioassayData : chara
@@ -151,14 +151,14 @@ public class CharacterizationBean {
 		domainChar.setIdentificationName(viewTitle);
 		domainChar.setSource(characterizationSource);
 
-		if (instrumentConfig.getInstrument() != null
-				&& instrumentConfig.getInstrument().getType() != null
-				&& instrumentConfig.getInstrument().getType().length() > 0) {
-			if (instrumentConfig.getId() == null) {
-				instrumentConfig.setCreatedBy(createdBy);
-				instrumentConfig.setCreatedDate(new Date());
+		if (instrumentConfiguration.getInstrument() != null
+				&& instrumentConfiguration.getInstrument().getType() != null
+				&& instrumentConfiguration.getInstrument().getType().length() > 0) {
+			if (instrumentConfiguration.getId() == null) {
+				instrumentConfiguration.setCreatedBy(createdBy);
+				instrumentConfiguration.setCreatedDate(new Date());
 			}
-			domainChar.setInstrumentConfiguration(instrumentConfig);
+			domainChar.setInstrumentConfiguration(instrumentConfiguration);
 		}
 		if (protocolFileBean.getDomainFile().getId() != 0) {
 			domainChar.setProtocolFile(((ProtocolFile) protocolFileBean
@@ -226,7 +226,7 @@ public class CharacterizationBean {
 	}
 
 	public InstrumentConfiguration getInstrumentConfiguration() {
-		return instrumentConfig;
+		return instrumentConfiguration;
 	}
 
 	public ProtocolFileBean getProtocolFileBean() {
