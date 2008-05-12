@@ -38,7 +38,7 @@
 						<c:when test="${canCreateNanoparticle eq 'true'}">
 							<html:select styleId="datumName${param.fileInd}-${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
-								onchange="javascript:callPrompt('Name', 'datumName' + ${param.fileInd} + '-'+ ${dInd});getUnit(${param.fileInd}, ${dInd});">								
+								onchange="javascript:callPrompt('Name', 'datumName' + ${param.fileInd} + '-'+ ${dInd});getUnit(${param.fileInd}, ${dInd});">
 								<option value=""></option>
 								<html:options name="derivedDatumNames" />
 								<option value="other">
@@ -88,6 +88,10 @@
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueUnit"
 								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + '-'+${dInd});">
 								<option value=""></option>
+								<c:forEach var="unit"
+									items="${unitMap[characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList[dInd].name]}">
+									<html:option value="${unit }" />
+								</c:forEach>
 								<option value="other">
 									[Other]
 								</option>
