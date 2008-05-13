@@ -34,7 +34,6 @@
 					</var-value>
 				</var>
 			</field>
-			
 			<field property="assoc.associatedElementA.entityId" page="2"
 				depends="required">
 				<arg position="0" key="associatedElement"
@@ -71,6 +70,50 @@
 					</var-value>
 				</var>
 			</field>
+			<field property="domainFile.title" page="2"
+				depends="required,mask"
+				indexedListProperty="assoc.files">
+				<arg position="0" key="file.title" bundle="particle" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			<field property="domainFile.type" page="2"
+				depends="required"
+				indexedListProperty="assoc.files">
+				<arg position="0" key="file.type" bundle="particle" />
+			</field>
+			<field property="externalUrl" page="2"
+				depends="validwhen"
+				indexedListProperty="assoc.files">
+				<arg position="0" key="externalUrl"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						  (assoc.files[].domainFile.uriExternal=="true")) or
+						 (assoc.files[].domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="uploadedFile" page="2"
+				depends="validwhen"
+				indexedListProperty="assoc.files">
+				<arg position="0" key="uploadedFile"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((assoc.files[].domainFile.uri!=null) or
+						 ((*this*!=null) and
+						  (assoc.files[].domainFile.uriExternal=="false"))) or
+						(assoc.files[].domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="nanoparticleEntityForm">
 			<field property="entity.type" page="2" depends="required">
@@ -78,10 +121,15 @@
 					bundle="particle" />
 			</field>
 			<field property="entity.carbonNanotube.diameter" page="2"
-				depends="float">
+				depends="required,mask">
 				<arg position="0"
 					key="nanoparticleEntityForm.carbonNanotube.diameter"
 					bundle="particle" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[0-9]*\.?[0-9]*$</var-value>
+				</var>
 			</field>
 			<field property="entity.carbonNanotube.averageLength"
 				page="2" depends="float">
@@ -194,6 +242,35 @@
 				indexedListProperty="entity.files">
 				<arg position="0" key="file.type" bundle="particle" />
 			</field>
+			<field property="externalUrl" page="2"
+				depends="validwhen"
+				indexedListProperty="entity.files">
+				<arg position="0" key="externalUrl"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						  (entity.files[].domainFile.uriExternal=="true")) or
+						 (entity.files[].domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="uploadedFile" page="2"
+				depends="validwhen"
+				indexedListProperty="entity.files">
+				<arg position="0" key="uploadedFile"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((entity.files[].domainFile.uri!=null) or
+						 ((*this*!=null) and
+						  (entity.files[].domainFile.uriExternal=="false"))) or
+						(entity.files[].domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="functionalizingEntityForm">
 			<field property="entity.type" page="2" depends="required">
@@ -232,6 +309,35 @@
 				indexedListProperty="entity.files">
 				<arg position="0" key="file.type" bundle="particle" />
 			</field>
+			<field property="externalUrl" page="2"
+				depends="validwhen"
+				indexedListProperty="entity.files">
+				<arg position="0" key="externalUrl"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						  (entity.files[].domainFile.uriExternal=="true")) or
+						 (entity.files[].domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="uploadedFile" page="2"
+				depends="validwhen"
+				indexedListProperty="entity.files">
+				<arg position="0" key="uploadedFile"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((entity.files[].domainFile.uri!=null) or
+						 ((*this*!=null) and
+						  (entity.files[].domainFile.uriExternal=="false"))) or
+						(entity.files[].domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="compositionFileForm">
 			<field property="compFile.externalUrl" page="2"
@@ -241,10 +347,9 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						(((compFile.domainFile.uri!=null) or
-						((*this*!=null) and
-						(compFile.domainFile.uriExternal=="true"))) or
-						(compFile.domainFile.uriExternal=="false"))
+						(((*this*!=null) and
+						  (compFile.domainFile.uriExternal=="true")) or
+						 (compFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
 			</field>
@@ -286,27 +391,27 @@
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
-			<field property="achar.instrumentConfig.instrument.type"
+			<field property="achar.instrumentConfiguration.instrument.type"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.instrument.type"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfig.description==null) or
+						((achar.instrumentConfiguration.description==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
 			<field
-				property="achar.instrumentConfig.instrument.manufacturer" page="2"
+				property="achar.instrumentConfiguration.instrument.manufacturer" page="2"
 				depends="validwhen">
 				<arg position="0" key="achar.instrument.manufacturer"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfig.instrument.type==null)
+						((achar.instrumentConfiguration.instrument.type==null)
 						or (*this*!=null))
 					</var-value>
 				</var>
@@ -321,36 +426,19 @@
 				<arg position="0" key="shape.minDimension"
 					bundle="particle" />
 			</field>
-			<field
-				property="achar.surfaceBean.domainSurface.surfaceArea" page="2"
-				depends="float">
-				<arg position="0" key="surface.surfaceAreaValue"
-					bundle="particle" />
-			</field>
-			<field
-				property="achar.surfaceBean.domainSurface.zetaPotential" page="2"
-				depends="float">
-				<arg position="0" key="surface.zetaPotentialValue"
-					bundle="particle" />
-			</field>
-			<field property="achar.surfaceBean.domainSurface.charge"
-				page="2" depends="float">
-				<arg position="0" key="surface.chargeValue"
-					bundle="particle" />
-			</field>
-			<field property="achar.surfaceBean.domainSurface.chargeUnit"
-				page="2" depends="validwhen">
-				<arg position="0" key="surface.chargeUnit"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((achar.surfaceBean.domainSurface.charge==null)
-						or (*this*!=null))
-					</var-value>
-				</var>
-			</field>
-			<field property="numberOfMolecule" page="2"
+<!--			<field-->
+<!--				property="achar.surfaceBean.domainSurface.surfaceArea" page="2"-->
+<!--				depends="float">-->
+<!--				<arg position="0" key="surface.surfaceAreaValue"-->
+<!--					bundle="particle" />-->
+<!--			</field>-->
+<!--			<field-->
+<!--				property="achar.surfaceBean.domainSurface.zetaPotential" page="2"-->
+<!--				depends="float">-->
+<!--				<arg position="0" key="surface.zetaPotentialValue"-->
+<!--					bundle="particle" />-->
+<!--			</field>-->
+			<field property="numberOfMolecules" page="2"
 				depends="integer, validwhen"
 				indexedListProperty="achar.surfaceBean.domainSurface.surfaceChemistryCollection">
 				<arg position="0" key="surface.numberOfMolecules"
@@ -377,6 +465,50 @@
 					</var-value>
 				</var>
 			</field>
+			<field property="labFileBean.domainFile.title" page="2"
+				depends="required,mask"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="file.title" bundle="particle" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			<field property="labFileBean.domainFile.type" page="2"
+				depends="required"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="file.type" bundle="particle" />
+			</field>
+			<field property="labFileBean.externalUrl" page="2"
+				depends="validwhen"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="externalUrl"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true")) or
+						 (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="labFileBean.uploadedFile" page="2"
+				depends="validwhen"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="uploadedFile"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((achar.derivedBioAssayDataList[].labFileBean.domainFile.uri!=null) or
+						 ((*this*!=null) and
+						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))) or
+						(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))
+					</var-value>
+				</var>
+			</field>
 		</form>
 		<form name="invitroCharacterizationForm">
 			<field property="achar.characterizationSource" page="2"
@@ -388,28 +520,72 @@
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
-			<field property="achar.instrumentConfig.instrument.type"
+			<field property="achar.instrumentConfiguration.instrument.type"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.instrument.type"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfig.description==null) or
+						((achar.instrumentConfiguration.description==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
 			<field
-				property="achar.instrumentConfig.instrument.manufacturer" page="2"
+				property="achar.instrumentConfiguration.instrument.manufacturer" page="2"
 				depends="validwhen">
 				<arg position="0" key="achar.instrument.manufacturer"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfig.instrument.type==null)
+						((achar.instrumentConfiguration.instrument.type==null)
 						or (*this*!=null))
+					</var-value>
+				</var>
+			</field>
+						<field property="labFileBean.domainFile.title" page="2"
+				depends="required,mask"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="file.title" bundle="particle" />
+				<msg name="mask" key="file.title.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
+				</var>
+			</field>
+			<field property="labFileBean.domainFile.type" page="2"
+				depends="required"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="file.type" bundle="particle" />
+			</field>
+			<field property="labFileBean.externalUrl" page="2"
+				depends="validwhen"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="externalUrl"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((*this*!=null) and
+						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true")) or
+						 (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))
+					</var-value>
+				</var>
+			</field>
+			<field property="labFileBean.uploadedFile" page="2"
+				depends="validwhen"
+				indexedListProperty="achar.derivedBioAssayDataList">
+				<arg position="0" key="uploadedFile"
+					bundle="particle" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						(((achar.derivedBioAssayDataList[].labFileBean.domainFile.uri!=null) or
+						 ((*this*!=null) and
+						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))) or
+						(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))
 					</var-value>
 				</var>
 			</field>
