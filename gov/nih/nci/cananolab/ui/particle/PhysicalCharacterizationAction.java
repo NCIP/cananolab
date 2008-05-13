@@ -6,14 +6,10 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.25 2008-05-12 16:22:56 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.26 2008-05-13 21:41:31 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalState;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Shape;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Solubility;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
@@ -59,6 +55,11 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
+		
+		if(!validateDerivedDatum(request, charBean)) {
+			return mapping.getInputForward();
+		}
+		
 		saveCharacterization(request, theForm, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistPhysicalCharacterizationDropdowns(request, charBean);

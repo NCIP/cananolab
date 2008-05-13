@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -25,10 +27,13 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -114,6 +119,56 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 	}
 
+	protected boolean validateDerivedDatum(
+			HttpServletRequest request, CharacterizationBean charBean)
+			throws Exception {
+		
+		ActionMessages msgs = new ActionMessages();
+		
+		for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
+				.getDerivedBioAssayDataList()) {
+			List<DerivedDatum> datumList = derivedBioassayDataBean
+					.getDatumList();
+			for (DerivedDatum datum : datumList) {
+				
+				//if name field is populated, the value field must be a nonzero float number.
+				if (datum.getName().length() > 0 &&
+					!datum.getValueType().equals("boolean") &&
+					datum.getValue() == 0) {
+					
+					ActionMessage msg = new ActionMessage("errors.nonzerofloat", "derived data value");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					return false;
+				}
+				
+				//if value field is populated, so does the name field.
+				if (datum.getName().length() == 0 &&
+					datum.getValue() != 0) {
+					ActionMessage msg = new ActionMessage("errors.required", "derived data type");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					return false;
+				}
+				
+				// for boolean type, the value must be 0 or 1.
+				if (datum.getValueType().equalsIgnoreCase("boolean")) {
+					if (datum.getValue() != 0 &&
+						datum.getValue() != 1) {
+						ActionMessage msg = new ActionMessage(
+								"error.booleanDerivedDatumValue", "derived data value");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						saveErrors(request, msgs);
+						return false;
+					}
+				}
+			}
+
+		}
+		return true;
+	}
+
+
 	protected void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
@@ -135,7 +190,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		saveFilesToFileSystem(files);
-
+		
 		// save to other particles
 		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
