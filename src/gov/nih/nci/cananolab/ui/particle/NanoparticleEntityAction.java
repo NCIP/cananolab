@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.45 2008-05-11 21:16:20 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.46 2008-05-13 20:23:48 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
@@ -65,6 +66,11 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+		
+		if(!validateInherentFunctionType(request, entityBean)) {
+			return mapping.getInputForward();
+		}
+		
 		compositionService.saveNanoparticleEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
 		// save file data to file system and set visibility
@@ -99,6 +105,27 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		return forward;
 	}
 
+	private boolean validateInherentFunctionType(
+			HttpServletRequest request, NanoparticleEntityBean entityBean) 
+		throws Exception {
+		
+		for (ComposingElementBean composingElementBean : entityBean.getComposingElements()) {
+			for (FunctionBean functionBean : composingElementBean.getInherentFunctions()) {
+				if(functionBean.getType() == null ||
+					functionBean.getType().trim().length() == 0) {
+					
+					ActionMessages msgs = new ActionMessages();
+					ActionMessage msg = new ActionMessage("errors.required", "inherent function type");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	private void setLookups(HttpServletRequest request) throws Exception {
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setNanoparticleEntityDropdowns(
