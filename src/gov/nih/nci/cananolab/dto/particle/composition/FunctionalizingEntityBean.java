@@ -61,7 +61,10 @@ public class FunctionalizingEntityBean {
 	private ActivationMethod activationMethod = new ActivationMethod();
 
 	public FunctionalizingEntityBean() {
-
+		if(functions.size() == 0) {
+			FunctionBean funcBean = new FunctionBean();
+			functions.add(funcBean);
+		}
 	}
 
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
