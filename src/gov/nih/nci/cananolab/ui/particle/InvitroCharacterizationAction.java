@@ -7,8 +7,6 @@ package gov.nih.nci.cananolab.ui.particle;
  */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.Caspase3Activation;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.CellViability;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -53,6 +51,11 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
+		
+		if(!validateDerivedDatum(request, charBean)) {
+			return mapping.getInputForward();
+		}
+		
 		saveCharacterization(request, theForm, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistInvitroCharacterizationDropdowns(request, charBean);
