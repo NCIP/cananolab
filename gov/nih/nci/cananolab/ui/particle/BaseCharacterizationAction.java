@@ -124,48 +124,44 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		
 		ActionMessages msgs = new ActionMessages();
-		
+		boolean noErrors=true;
 		for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
 				.getDerivedBioAssayDataList()) {
 			List<DerivedDatum> datumList = derivedBioassayDataBean
 					.getDatumList();
 			for (DerivedDatum datum : datumList) {
-				
-				//if name field is populated, the value field must be a nonzero float number.
-				if (datum.getName().length() > 0 &&
-					!datum.getValueType().equals("boolean") &&
-					datum.getValue() == 0) {
-					
-					ActionMessage msg = new ActionMessage("errors.nonzerofloat", "derived data value");
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					this.saveErrors(request, msgs);
-					return false;
-				}
-				
 				//if value field is populated, so does the name field.
 				if (datum.getName().length() == 0 &&
-					datum.getValue() != 0) {
-					ActionMessage msg = new ActionMessage("errors.required", "derived data type");
+					datum.getValue() == 0) {
+					ActionMessage msg = new ActionMessage("errors.required", "Derived data name");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
-					return false;
+					noErrors=false;
 				}
-				
+				//if name field is populated, the value field must be a nonzero float number.
+				if (//datum.getName().length() > 0 &&
+					!datum.getValueType().equalsIgnoreCase("boolean") &&
+					datum.getValue() == 0) {
+					
+					ActionMessage msg = new ActionMessage("errors.nonzerofloat", "When value type is not Boolean, derived data value");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					noErrors=false;
+				}						
 				// for boolean type, the value must be 0 or 1.
 				if (datum.getValueType().equalsIgnoreCase("boolean")) {
 					if (datum.getValue() != 0 &&
 						datum.getValue() != 1) {
 						ActionMessage msg = new ActionMessage(
-								"error.booleanDerivedDatumValue", "derived data value");
+								"error.booleanValue", "derived data value");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						saveErrors(request, msgs);
-						return false;
+						noErrors=false;
 					}
 				}
 			}
-
 		}
-		return true;
+		return noErrors;
 	}
 
 
