@@ -90,16 +90,16 @@ div.Appendix
 
 div.Appendix_name
 {
-  color: #515186;
-  font-family: "Palatino Linotype";
-  font-size: 27.0pt;
+  color: #516186;
+  font-family: Sans-Serif;
+  font-size: 24px;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 13.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: Right;
+  text-align: left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -114,12 +114,12 @@ div.Appendix_name
 
 .Appendix_name_inner
 {
-  color: #515186;
-  font-family: "Palatino Linotype";
-  font-size: 27.0pt;
+  color: #516186;
+  font-family: Sans-Serif;
+  font-size: 24px;
   font-style: normal;
   font-weight: bold;
-  text-align: Right;
+  text-align: left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -273,6 +273,8 @@ div.Body_Text
 div.Body_Text_Drop_Down
 {
   color: #000000;
+  cursor: pointer;
+  cursor: hand;
   font-family: Arial;
   font-size: 11.0pt;
   font-style: normal;
@@ -298,6 +300,8 @@ div.Body_Text_Drop_Down
 .Body_Text_Drop_Down_inner
 {
   color: #000000;
+  cursor: pointer;
+  cursor: hand;
   font-family: Arial;
   font-size: 11.0pt;
   font-style: normal;
@@ -1006,16 +1010,16 @@ div.Chapter
 
 div.Chapter_Name
 {
-  color: #515186;
-  font-family: "Palatino Linotype";
-  font-size: 27.0pt;
+  color: #516186;
+  font-family: Sans-Serif;
+  font-size: 24px;
   font-style: normal;
   font-weight: bold;
   margin-bottom: 13.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 0.0pt;
-  text-align: Right;
+  text-align: left;
   text-indent: 0pt;
   text-transform: none;
   vertical-align: baseline;
@@ -1030,12 +1034,12 @@ div.Chapter_Name
 
 .Chapter_Name_inner
 {
-  color: #515186;
-  font-family: "Palatino Linotype";
-  font-size: 27.0pt;
+  color: #516186;
+  font-family: Sans-Serif;
+  font-size: 24px;
   font-style: normal;
   font-weight: bold;
-  text-align: Right;
+  text-align: left;
   text-transform: none;
   vertical-align: baseline;
   margin-left: 0pt;
@@ -1556,8 +1560,8 @@ div.Header
 
 div.Heading1
 {
-  color: #515186;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 16.0pt;
   font-style: normal;
   font-variant: normal;
@@ -1583,8 +1587,8 @@ div.Heading1
 
 .Heading1_inner
 {
-  color: #515186;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 16.0pt;
   font-style: normal;
   font-variant: normal;
@@ -1696,8 +1700,8 @@ div.Heading1TOC
 
 div.Heading2
 {
-  color: #000000;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 14.0pt;
   font-style: normal;
   font-variant: normal;
@@ -1723,8 +1727,8 @@ div.Heading2
 
 .Heading2_inner
 {
-  color: #000000;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 14.0pt;
   font-style: normal;
   font-variant: normal;
@@ -1790,8 +1794,8 @@ div.Heading2TOC
 
 div.Heading3
 {
-  color: #000000;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 12.0pt;
   font-style: normal;
   font-variant: normal;
@@ -1817,8 +1821,8 @@ div.Heading3
 
 .Heading3_inner
 {
-  color: #000000;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 12.0pt;
   font-style: normal;
   font-variant: normal;
@@ -1884,12 +1888,12 @@ div.Heading3TOC
 
 div.Heading4
 {
-  color: #000000;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 12.0pt;
   font-style: italic;
   font-variant: normal;
-  font-weight: normal;
+  font-weight: bold;
   margin-bottom: 0px;
   margin-left: 0pt;
   margin-right: 0pt;
@@ -1911,12 +1915,12 @@ div.Heading4
 
 .Heading4_inner
 {
-  color: #000000;
-  font-family: "Palatino Linotype";
+  color: #516186;
+  font-family: Sans-Serif;
   font-size: 12.0pt;
   font-style: italic;
   font-variant: normal;
-  font-weight: normal;
+  font-weight: bold;
   text-align: Left;
   text-transform: none;
   vertical-align: baseline;
@@ -2265,7 +2269,7 @@ div.Note_Main_Body
   font-variant: normal;
   font-weight: normal;
   margin-bottom: 10.0pt;
-  margin-left: 64.8pt;
+  margin-left: 28px;
   margin-right: 0pt;
   margin-top: -5px;
   padding-bottom: 18px;
@@ -2903,6 +2907,8 @@ div.Table_Bullet
 div.Table_Caption_Indent_Drop_Down
 {
   color: #000000;
+  cursor: pointer;
+  cursor: hand;
   font-family: Arial;
   font-size: 11.0pt;
   font-style: normal;
@@ -2928,6 +2934,8 @@ div.Table_Caption_Indent_Drop_Down
 .Table_Caption_Indent_Drop_Down_inner
 {
   color: #000000;
+  cursor: pointer;
+  cursor: hand;
   font-family: Arial;
   font-size: 11.0pt;
   font-style: normal;
@@ -3588,7 +3596,9 @@ span.Popup
 
 span.PopupTable
 {
-  color: #000000;
+  border-bottom-color: Maroon;
+  border-bottom-style: dotted;
+  color: Maroon;
   font-family: Arial;
   font-size: 10.0pt;
   font-style: normal;
