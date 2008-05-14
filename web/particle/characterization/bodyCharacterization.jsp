@@ -54,7 +54,7 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Characterization File/Derived Data Information
+									Derived Bioassay Data Information
 								</div>
 							</td>
 						</tr>
@@ -64,36 +64,36 @@
 									<tr>
 										<c:choose>
 											<c:when test="${canCreateNanoparticle eq 'true'}">
-												<td valign="bottom">
+												<td valign="bottom" width="10%">
 													<a href="#"
 														onclick="javascript:addComponent(document.forms[0], '${actionName}', 'addDerivedBioAssayData')"><span
-														class="addLink">Add File/Derived Data</span> </a>
+														class="addLink">Add Derived Bioassay Data</span> </a>
 												</td>
 												<td>
 													<logic:iterate name="characterizationForm"
 														property="achar.derivedBioAssayDataList"
-														id="derivedBioAssayData" indexId="fileInd">
-														<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
-															<jsp:param name="fileInd" value="${fileInd}" />
-															<jsp:param name="form" value="characterizationForm" />
-															<jsp:param name="action" value="${actionName}" />
-															<jsp:param name="removeCmd"
-																value="\'removeDerivedBioAssayData\'" />
-															<jsp:param name="fileBean"
-																value="achar.derivedBioAssayDataList[${fileInd}].labFileBean" />
-															<jsp:param name="fileId"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.id}" />
-															<jsp:param name="fileUri"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.uri}" />
-															<jsp:param name="fileTitle"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.title}" />
-															<jsp:param name="fileHidden"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.hidden}" />
-															<jsp:param name="fileImage"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.image}" />
-															<jsp:param name="fileUriExternal"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.uriExternal}" />
-														</jsp:include>
+														id="derivedBioAssayData" indexId="fileInd">														
+															<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
+																<jsp:param name="fileInd" value="${fileInd}" />
+																<jsp:param name="form" value="characterizationForm" />
+																<jsp:param name="action" value="${actionName}" />
+																<jsp:param name="removeCmd"
+																	value="\'removeDerivedBioAssayData\'" />
+																<jsp:param name="fileBean"
+																	value="achar.derivedBioAssayDataList[${fileInd}].labFileBean" />
+																<jsp:param name="fileId"
+																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.id}" />
+																<jsp:param name="fileUri"
+																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.uri}" />
+																<jsp:param name="fileTitle"
+																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.title}" />
+																<jsp:param name="fileHidden"
+																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.hidden}" />
+																<jsp:param name="fileImage"
+																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.image}" />
+																<jsp:param name="fileUriExternal"
+																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.uriExternal}" />
+															</jsp:include>						
 														<br>
 													</logic:iterate>
 												</td>

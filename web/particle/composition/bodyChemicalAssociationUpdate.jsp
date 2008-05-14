@@ -19,7 +19,7 @@ function confirmDeletion()
 <c:choose>
 	<c:when
 		test="${chemicalAssociationForm.map.assoc.type eq 'attachment'}">
-		<c:set var="style" value="" />
+		<c:set var="style" value="display:inline" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="style" value="display:none" />
@@ -27,8 +27,8 @@ function confirmDeletion()
 </c:choose>
 <c:choose>
 	<c:when
-		test="${! empty chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
-		<c:set var="ceStyleA" value="" />
+		test="${! empty ceListA }">
+		<c:set var="ceStyleA" value="display:inline" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="ceStyleA" value="display:none" />
@@ -37,8 +37,8 @@ function confirmDeletion()
 </c:choose>
 <c:choose>
 	<c:when
-		test="${! empty chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
-		<c:set var="ceStyleB" value="" />
+		test="${! empty ceListB }">
+		<c:set var="ceStyleB" value="display:inline" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="ceStyleB" value="display:none" />
@@ -76,7 +76,8 @@ function confirmDeletion()
 						</td>
 						<td class="label">
 							<c:choose>
-								<c:when test="${param.dispatch eq 'setup'||empty chemicalAssociationForm.map.assoc.type}">
+								<c:when
+									test="${param.dispatch eq 'setup'||empty chemicalAssociationForm.map.assoc.type}">
 									<html:select styleId="assoType" property="assoc.type"
 										onchange="javascript:callPrompt('Association Type', 'assoType');
 											displayBondType();">
@@ -90,7 +91,8 @@ function confirmDeletion()
 								<c:otherwise>
 									${chemicalAssociationForm.map.assoc.type}
 								</c:otherwise>
-							</c:choose>&nbsp;
+							</c:choose>
+							&nbsp;
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
@@ -110,7 +112,7 @@ function confirmDeletion()
 						</td>
 					</tr>
 					<tr>
-						<td class="completeLabel" colspan="4">
+						<td class="completeLabel" colspan="4">							
 							<div id="assocEleBlockA" class="assocEleBlock">
 								<ul>
 									<li>
@@ -130,24 +132,24 @@ function confirmDeletion()
 												property="assoc.associatedElementA.entityId"
 												onchange="getAssociatedComposingElements('compositionTypeA', 'entityTypeA', 'compEleTypeA', 'compEleA');
 														setEntityDisplayName('entityTypeA', 'entityDisplayA');">
-												<c:if
-													test="${! empty chemicalAssociationForm.map.assoc.domainAssociation.id }">
-													<c:forEach var="dataLink" items="${entityListA}">
-														<c:choose>
-															<c:when
-																test="${dataLink.dataId eq chemicalAssociationForm.map.assoc.associatedElementA.entityId }">
-																<option value="${dataLink.dataId }" selected>
-																	${dataLink.dataDisplayType}
-																</option>
-															</c:when>
-															<c:otherwise>
-																<option value="${dataLink.dataId }">
-																	${dataLink.dataDisplayType}
-																</option>
-															</c:otherwise>
-														</c:choose>
-													</c:forEach>
-												</c:if>
+												<option value="" />
+													<c:if test="${! empty entityListA}">
+														<c:forEach var="dataLink" items="${entityListA}">
+															<c:choose>
+																<c:when
+																	test="${dataLink.dataId eq chemicalAssociationForm.map.assoc.associatedElementA.entityId }">
+																	<option value="${dataLink.dataId }" selected>
+																		${dataLink.dataDisplayType}
+																	</option>
+																</c:when>
+																<c:otherwise>
+																	<option value="${dataLink.dataId }">
+																		${dataLink.dataDisplayType}
+																	</option>
+																</c:otherwise>
+															</c:choose>
+														</c:forEach>
+													</c:if>
 											</html:select> </span>
 										<html:hidden styleId="entityDisplayA"
 											property="assoc.associatedElementA.entityDisplayName"
@@ -157,24 +159,25 @@ function confirmDeletion()
 										<span class="indented3" id="compEleA" style="${ceStyleA}">
 											<html:select styleId="compEleTypeA"
 												property="assoc.associatedElementA.composingElement.id">
-												<c:if test="${!empty ceListA}">
-													<c:forEach var="ce" items="${ceListA}">
-														<c:choose>
-															<c:when
-																test="${ce.domainComposingElement.id eq chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
-																<option value="${ce.domainComposingElement.id }"
-																	selected>
-																	${ce.displayName }
-																</option>
-															</c:when>
-															<c:otherwise>
-																<option value="${ce.domainComposingElement.id }">
-																	${ce.displayName }
-																</option>
-															</c:otherwise>
-														</c:choose>
-													</c:forEach>
-												</c:if>
+												<option value="" />
+													<c:if test="${!empty ceListA}">
+														<c:forEach var="ce" items="${ceListA}">
+															<c:choose>
+																<c:when
+																	test="${ce.domainComposingElement.id eq chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
+																	<option value="${ce.domainComposingElement.id }"
+																		selected>
+																		${ce.displayName }
+																	</option>
+																</c:when>
+																<c:otherwise>
+																	<option value="${ce.domainComposingElement.id }">
+																		${ce.displayName }
+																	</option>
+																</c:otherwise>
+															</c:choose>
+														</c:forEach>
+													</c:if>
 											</html:select> </span>
 									</li>
 								</ul>
@@ -204,24 +207,24 @@ function confirmDeletion()
 												property="assoc.associatedElementB.entityId"
 												onchange="getAssociatedComposingElements('compositionTypeB', 'entityTypeB', 'compEleTypeB', 'compEleB');
 															setEntityDisplayName('entityTypeB', 'entityDisplayB');">
-												<c:if
-													test="${! empty chemicalAssociationForm.map.assoc.domainAssociation.id }">
-													<c:forEach var="dataLink" items="${entityListB}">
-														<c:choose>
-															<c:when
-																test="${dataLink.dataId eq chemicalAssociationForm.map.assoc.associatedElementB.entityId }">
-																<option value="${dataLink.dataId }" selected>
-																	${dataLink.dataDisplayType}
-																</option>
-															</c:when>
-															<c:otherwise>
-																<option value="${dataLink.dataId }">
-																	${dataLink.dataDisplayType}
-																</option>
-															</c:otherwise>
-														</c:choose>
-													</c:forEach>
-												</c:if>
+												<option value="" />
+													<c:if test="${! empty entityListB }">
+														<c:forEach var="dataLink" items="${entityListB}">
+															<c:choose>
+																<c:when
+																	test="${dataLink.dataId eq chemicalAssociationForm.map.assoc.associatedElementB.entityId }">
+																	<option value="${dataLink.dataId }" selected>
+																		${dataLink.dataDisplayType}
+																	</option>
+																</c:when>
+																<c:otherwise>
+																	<option value="${dataLink.dataId }">
+																		${dataLink.dataDisplayType}
+																	</option>
+																</c:otherwise>
+															</c:choose>
+														</c:forEach>
+													</c:if>
 											</html:select> </span>
 										<html:hidden styleId="entityDisplayB"
 											property="assoc.associatedElementB.entityDisplayName"
@@ -231,25 +234,25 @@ function confirmDeletion()
 										<span class="indented3" id="compEleB" style="${ceStyleB}"><html:select
 												styleId="compEleTypeB"
 												property="assoc.associatedElementB.composingElement.id">
-
-												<c:if test="${!empty ceListB}">
-													<c:forEach var="ce" items="${ceListB}">
-														<c:choose>
-															<c:when
-																test="${ce.domainComposingElement.id eq chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
-																<option value="${ce.domainComposingElement.id }"
-																	selected>
-																	${ce.displayName }
-																</option>
-															</c:when>
-															<c:otherwise>
-																<option value="${ce.domainComposingElement.id }">
-																	${ce.displayName }
-																</option>
-															</c:otherwise>
-														</c:choose>
-													</c:forEach>
-												</c:if>
+												<option value="" />
+													<c:if test="${!empty ceListB}">
+														<c:forEach var="ce" items="${ceListB}">
+															<c:choose>
+																<c:when
+																	test="${ce.domainComposingElement.id eq chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
+																	<option value="${ce.domainComposingElement.id }"
+																		selected>
+																		${ce.displayName }
+																	</option>
+																</c:when>
+																<c:otherwise>
+																	<option value="${ce.domainComposingElement.id }">
+																		${ce.displayName }
+																	</option>
+																</c:otherwise>
+															</c:choose>
+														</c:forEach>
+													</c:if>
 											</html:select> </span>
 									</li>
 								</ul>
@@ -282,7 +285,7 @@ function confirmDeletion()
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
 									<tr>
-										<td valign="bottom">
+										<td valign="bottom" width="10%">
 											<a href="#"
 												onclick="javascript:addComponent(chemicalAssociationForm, 'chemicalAssociation', 'addFile'); return false;">
 												<span class="addLink">Add File</span> </a>
