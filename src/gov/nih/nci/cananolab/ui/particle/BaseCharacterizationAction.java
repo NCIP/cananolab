@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -71,8 +70,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				appContext);
 		charBean.setClassName(charClass);
 		setLookups(request, charBean);
-		String detailPage = setupDetailPage(charBean);
-		request.getSession().setAttribute("detailPage", detailPage);
 		return mapping.getInputForward();
 	}
 
@@ -119,51 +116,51 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 	}
 
-	protected boolean validateDerivedDatum(
-			HttpServletRequest request, CharacterizationBean charBean)
-			throws Exception {
-		
+	protected boolean validateDerivedDatum(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
+
 		ActionMessages msgs = new ActionMessages();
-		boolean noErrors=true;
+		boolean noErrors = true;
 		for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
 				.getDerivedBioAssayDataList()) {
 			List<DerivedDatum> datumList = derivedBioassayDataBean
 					.getDatumList();
 			for (DerivedDatum datum : datumList) {
-				//if value field is populated, so does the name field.
-				if (datum.getName().length() == 0 &&
-					datum.getValue() == 0) {
-					ActionMessage msg = new ActionMessage("errors.required", "Derived data name");
+				// if value field is populated, so does the name field.
+				if (datum.getName().length() == 0 && datum.getValue() == 0) {
+					ActionMessage msg = new ActionMessage("errors.required",
+							"Derived data name");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
-					noErrors=false;
+					noErrors = false;
 				}
-				//if name field is populated, the value field must be a nonzero float number.
-				if (//datum.getName().length() > 0 &&
-					!datum.getValueType().equalsIgnoreCase("boolean") &&
-					datum.getValue() == 0) {
-					
-					ActionMessage msg = new ActionMessage("errors.nonzerofloat", "When value type is not Boolean, derived data value");
+				// if name field is populated, the value field must be a nonzero
+				// float number.
+				if (// datum.getName().length() > 0 &&
+				!datum.getValueType().equalsIgnoreCase("boolean")
+						&& datum.getValue() == 0) {
+
+					ActionMessage msg = new ActionMessage(
+							"errors.nonzerofloat",
+							"When value type is not Boolean, derived data value");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
-					noErrors=false;
-				}						
+					noErrors = false;
+				}
 				// for boolean type, the value must be 0 or 1.
 				if (datum.getValueType().equalsIgnoreCase("boolean")) {
-					if (datum.getValue() != 0 &&
-						datum.getValue() != 1) {
+					if (datum.getValue() != 0 && datum.getValue() != 1) {
 						ActionMessage msg = new ActionMessage(
 								"error.booleanValue", "derived data value");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						saveErrors(request, msgs);
-						noErrors=false;
+						noErrors = false;
 					}
 				}
 			}
 		}
 		return noErrors;
 	}
-
 
 	protected void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
@@ -186,7 +183,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		saveFilesToFileSystem(files);
-		
+
 		// save to other particles
 		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
@@ -229,6 +226,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				request, charBean.getClassName());
 		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
 				charBean);
+		String detailPage = setupDetailPage(charBean);
+		request.getSession().setAttribute("compositionDetailPage", detailPage);
 	}
 
 	protected abstract CharacterizationBean getCharacterizationBean(
@@ -249,9 +248,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		// clear copy to otherParticles
 		theForm.set("otherParticles", new String[0]);
 		theForm.set("copyData", false);
-		String detailPage = setupDetailPage(charBean);
-		request.getSession().setAttribute("detailPage", detailPage);
-
 		return mapping.getInputForward();
 	}
 
