@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;
 
@@ -40,9 +42,12 @@ public class InitProtocolSetup {
 			HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
 		String protocolType = null;
-		if (charBean.getDomainChar() instanceof PhysicalCharacterization) {
+		//create a new instance of type className
+		Class clazz = ClassUtils.getFullClass(charBean.getClassName());
+		Characterization achar = (Characterization) clazz.newInstance();
+		if (achar instanceof PhysicalCharacterization) {
 			protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
-		} else if (charBean.getDomainChar() instanceof InvitroCharacterization) {
+		} else if (achar instanceof InvitroCharacterization) {
 			protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
 		} else {
 			protocolType = null; // update if in vivo is implemented
