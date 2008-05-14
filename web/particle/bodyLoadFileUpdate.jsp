@@ -2,13 +2,26 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:choose>
+	<c:when
+		test="${param.action eq 'physicalCharacterization' || param.action eq 'invitroCharacterization'}">
+		<c:set var="isChar" value="true" />
+		<c:set var="titleType" value="Derived Bioassay Data" />
+		<c:set var="required" value="" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="isChar" value="false" />
+		<c:set var="titleType" value="File" />
+		<c:set var="required" value="*" />
+	</c:otherwise>
+</c:choose>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr>
 			<td class="formSubTitleNoRight" colspan="2">
-				File #${param.fileInd+1}
+				${titleType } #${param.fileInd+1}
 			</td>
 			<td class="formSubTitleNoLeft" align="right">
 				<a href="#"
@@ -17,6 +30,7 @@
 				</a>
 			</td>
 		</tr>
+
 		<c:choose>
 			<c:when test="${param.fileHidden eq 'false' }">
 				<c:choose>
@@ -42,7 +56,7 @@
 							value="true" onclick="radLinkOrUpload(${param.fileInd })" />
 						<strong>Enter File URL</strong>
 					</td>
-					<td class="rightLabel" colspan="3">
+					<td class="rightLabel" colspan="2">
 						<span id="load_${param.fileInd }" style="${loadDisplay }">
 							<html:file property="${param.fileBean}.uploadedFile" size="60" />
 							&nbsp;&nbsp; </span>
@@ -80,7 +94,7 @@
 					</c:if>
 				<tr>
 					<td class="leftLabel">
-						<strong>File Type*</strong>
+						<strong>File Type ${required}</strong>
 					</td>
 					<td class="rightLabel" colspan="2">
 						<html:select styleId="fileType${param.fileInd}"
@@ -96,10 +110,18 @@
 				</tr>
 				<tr>
 					<td class="leftLabel">
-						<strong>File Title*</strong>
+						<strong>File Title ${required}</strong>
 					</td>
 					<td class="rightLabel" colspan="2">
 						<html:text property="${param.fileBean}.domainFile.title" size="60" />
+					</td>
+				</tr>
+				<tr>
+					<td class="leftLabel">
+						<strong>File Description</strong>
+					</td>
+					<td class="rightLabel" colspan="2">
+						<html:textarea property="${param.fileBean}.domainFile.description" rows="5" cols="60"/>
 					</td>
 				</tr>
 				<tr>
@@ -143,8 +165,7 @@
 		<c:if test="${!empty param.fileId }">
 			<html:hidden property="${param.fileBean}.domainFile.id" />
 		</c:if>
-		<c:if
-			test="${param.action eq 'physicalCharacterization' || param.action eq 'invitroCharacterization'}">
+		<c:if test="${isChar eq 'true'}">
 			<tr>
 				<td class="completeLabel" colspan="4">
 					<table border="0" width="100%">
@@ -153,7 +174,7 @@
 							<td valign="bottom">
 								<a href="#"
 									onclick="javascript:addChildComponent(document.forms[0], '${param.action}', ${param.fileInd}, 'addDerivedDatum')"><span
-									class="addLink">Add Derived Data</span> </a>
+									class="addLink">Add Derived Datum</span> </a>
 							</td>
 
 							<td>
