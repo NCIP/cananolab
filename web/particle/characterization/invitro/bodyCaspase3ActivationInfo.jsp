@@ -20,6 +20,7 @@
 				<td class="label">
 					<html:select property="achar.caspase3Activation.cellLine" styleId="cellLine"
 											onchange="javascript:callPrompt('Cell Line', 'cellLine');">
+						<option value="" />
 						<html:options name="cellLines" />
 						<option value="other">[Other]</option>
 					</html:select>
