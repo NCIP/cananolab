@@ -84,13 +84,16 @@ public class InitNanoparticleSetup {
 		if (appContext.getAttribute("characterizationTypes") == null) {
 
 			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
-			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext);
-			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext);
+			Map<String, String> charaClassNameMap = new HashMap<String, String>();
+			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext, charaClassNameMap);
+			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext, charaClassNameMap);
 
 			charaMap.putAll(physicalMap);
 			charaMap.putAll(invitroMap);
-
+			
+			appContext.setAttribute("charaClassNameMap", charaClassNameMap);
 			appContext.setAttribute("characterizationTypes", charaMap);
+			
 			return charaMap;
 
 		} else {
@@ -124,7 +127,7 @@ public class InitNanoparticleSetup {
 
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
-			ServletContext appContext) throws Exception {
+			ServletContext appContext, Map<String, String> charaClassNameMap) throws Exception {
 
 		Map<String, List<String>> physicalCharaMap = new HashMap<String, List<String>>();
 		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
@@ -132,17 +135,19 @@ public class InitNanoparticleSetup {
 
 		setSubclassMap(
 				appContext,
+				charaClassNameMap,
 				physicalCharaMap,
 				searchTreeMap,
 				"gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization",
 				indentLevel);
 		appContext.setAttribute("physicalTypes", physicalCharaMap);
+		
 		return searchTreeMap;
 	}
 
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultInvitroCharacterizationTypes(
-			ServletContext appContext) throws Exception {
+			ServletContext appContext, Map<String, String> charaClassNameMap) throws Exception {
 
 		Map<String, List<String>> invitroCharaMap = new HashMap<String, List<String>>();
 		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
@@ -150,6 +155,7 @@ public class InitNanoparticleSetup {
 		short indentLevel = -1;
 		setSubclassMap(
 				appContext,
+				charaClassNameMap,
 				invitroCharaMap,
 				searchTreeMap,
 				"gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization",
@@ -159,6 +165,7 @@ public class InitNanoparticleSetup {
 	}
 
 	private static void setSubclassMap(ServletContext appContext,
+			Map<String, String> classNameMap,
 			Map<String, List<String>> typeMap,
 			Map<TreeNodeBean, List<String>> searchTreeMap,
 			String parentClassName, int indentLevel) {
@@ -171,9 +178,12 @@ public class InitNanoparticleSetup {
 			}
 			List<String> tempList = new ArrayList<String>();
 
+			String shortParentClassName = ClassUtils.getShortClassName(parentClassName);
 			String parentDisplayName = InitSetup.getInstance().getDisplayName(
-					ClassUtils.getShortClassName(parentClassName), appContext);
-
+					shortParentClassName, appContext);
+			
+			classNameMap.put(parentDisplayName, shortParentClassName);
+			
 			TreeNodeBean nodeBean = new TreeNodeBean(parentDisplayName,
 					CaNanoLabConstants.CHARACTERIZATION_ORDER_MAP
 							.get(parentDisplayName), new Integer(indentLevel));
@@ -184,10 +194,14 @@ public class InitNanoparticleSetup {
 				String displayName = InitSetup.getInstance().getDisplayName(
 						ClassUtils.getShortClassName(sclassName), appContext);
 				tempList.add(displayName);
-
-				setSubclassMap(appContext, typeMap, searchTreeMap, sclassName,
+				
+				String shortClassName = ClassUtils.getShortClassName(sclassName);
+				classNameMap.put(displayName, shortClassName);
+				
+				setSubclassMap(appContext, classNameMap, typeMap, searchTreeMap, sclassName,
 						indentLevel);
 				subclassName = sclassName;
+				
 			}
 
 			nodeBean.setHasGrandChildrenFlag(ClassUtils
