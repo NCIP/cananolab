@@ -36,24 +36,24 @@
 			</field>
 			<field property="assoc.associatedElementA.entityId" page="2"
 				depends="required">
-				<arg position="0" key="associatedElement"
+				<arg position="0" key="associatedElementA"
 					bundle="particle" />
 			</field>
 			<field property="assoc.associatedElementB.entityId" page="2"
 				depends="required">
-				<arg position="0" key="associatedElement"
+				<arg position="0" key="associatedElementB"
 					bundle="particle" />
 			</field>
 			<field
 				property="assoc.associatedElementA.composingElement.id" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="associatedElementComposingElement" bundle="particle" />
+					key="associatedElementAComposingElement" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						((assoc.associatedElementA.compositionType!='Nanoparticle
-						Entity') or (*this*!=null))
+						Entity') or (*this*!=0))
 					</var-value>
 				</var>
 			</field>
@@ -61,12 +61,12 @@
 				property="assoc.associatedElementB.composingElement.id" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="associatedElementComposingElement" bundle="particle" />
+					key="associatedElementBComposingElement" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
 						((assoc.associatedElementA.compositionType!='Nanoparticle
-						Entity') or (*this*!=null))
+						Entity') or (*this*!=0))
 					</var-value>
 				</var>
 			</field>
@@ -228,8 +228,7 @@
 				</var>
 			</field>
 			<field property="domainFile.title" page="2"
-				depends="required,mask"
-				indexedListProperty="entity.files">
+				depends="required,mask" indexedListProperty="entity.files">
 				<arg position="0" key="file.title" bundle="particle" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
@@ -238,8 +237,7 @@
 				</var>
 			</field>
 			<field property="domainFile.type" page="2"
-				depends="required"
-				indexedListProperty="entity.files">
+				depends="required" indexedListProperty="entity.files">
 				<arg position="0" key="file.type" bundle="particle" />
 			</field>
 			<field property="externalUrl" page="2"
@@ -295,8 +293,7 @@
 				</var>
 			</field>
 			<field property="domainFile.title" page="2"
-				depends="required,mask"
-				indexedListProperty="entity.files">
+				depends="required,mask" indexedListProperty="entity.files">
 				<arg position="0" key="file.title" bundle="particle" />
 				<msg name="mask" key="file.title.invalid" />
 				<var>
@@ -305,8 +302,7 @@
 				</var>
 			</field>
 			<field property="domainFile.type" page="2"
-				depends="required"
-				indexedListProperty="entity.files">
+				depends="required" indexedListProperty="entity.files">
 				<arg position="0" key="file.type" bundle="particle" />
 			</field>
 			<field property="externalUrl" page="2"
@@ -342,8 +338,7 @@
 		<form name="compositionFileForm">
 			<field property="compFile.externalUrl" page="2"
 				depends="validwhen">
-				<arg position="0" key="externalUrl"
-					bundle="particle" />
+				<arg position="0" key="externalUrl" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -355,8 +350,7 @@
 			</field>
 			<field property="compFile.uploadedFile" page="2"
 				depends="validwhen">
-				<arg position="0" key="uploadedFile"
-					bundle="particle" />
+				<arg position="0" key="uploadedFile" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
