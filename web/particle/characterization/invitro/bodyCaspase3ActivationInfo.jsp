@@ -18,16 +18,16 @@
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
 				<td class="label">
-					<html:select property="caspase3Activation.cellLine" styleId="cellLine"
+					<html:select property="achar.caspase3Activation.cellLine" styleId="cellLine"
 											onchange="javascript:callPrompt('Cell Line', 'cellLine');">
-						<html:options name="allCellLines" />
+						<html:options name="cellLines" />
 						<option value="other">[Other]</option>
 					</html:select>
 				</td>
 			</c:when>
 			<c:otherwise>
 				<td class="label">
-					${characterizationForm.map.caspase3Activation.cellLine}&nbsp;
+					${characterizationForm.map.achar.caspase3Activation.cellLine}&nbsp;
 				</td>
 			</c:otherwise>
 		</c:choose>
