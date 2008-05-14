@@ -16,9 +16,9 @@
 		<td align="right">
 			<a
 				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=welcome_workflow')"
-				class="helpText">Help</a>&nbsp;&nbsp;&nbsp;
+				class="helpText">Help</a>&nbsp;&nbsp;&nbsp;				
 				<a
-				href="javascript:openHelpWindow('webHelp/wwhelp/wwhimpl/js/html/wwglossary.htm')"
+				href="javascript:openHelpWindow('webHelp/wwhelp/wwhimpl/common/html/wwhelp.htm?context=caNanoLab&file=caNanoLab_Glossary.9.1.html')"
 				class="helpText">Glossary</a>&nbsp;
 		</td>
 	</tr>

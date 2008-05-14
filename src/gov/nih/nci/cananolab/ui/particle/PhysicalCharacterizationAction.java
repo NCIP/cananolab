@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.26 2008-05-13 21:41:31 cais Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.27 2008-05-14 22:37:06 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -63,8 +63,9 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		saveCharacterization(request, theForm, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistPhysicalCharacterizationDropdowns(request, charBean);
-
+		//if number is invalid, validator has converted to 0, show message to user
 		ActionMessages msgs = new ActionMessages();
+		validateNumber(request, charBean, msgs);			
 		ActionMessage msg = new ActionMessage(
 				"message.addPhysicalCharacterization");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

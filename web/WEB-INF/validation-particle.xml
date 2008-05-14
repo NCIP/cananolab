@@ -438,7 +438,7 @@
 				</var>
 			</field>
 			<field property="achar.solubility.criticalConcentration"
-				page="2" depends="float">
+				page="2" depends="float">				
 				<arg position="0"
 					key="solubility.criticalConcentrationValue" bundle="particle" />
 			</field>
