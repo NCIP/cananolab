@@ -226,6 +226,10 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				request, charBean.getClassName());
 		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
 				charBean);
+		
+		InitCharacterizationSetup.getInstance()
+			.setInvitroCharacterizationDropdowns(request);
+		
 		String detailPage = setupDetailPage(charBean);
 		request.getSession().setAttribute("characterizationDetailPage", detailPage);
 	}

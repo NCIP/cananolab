@@ -84,8 +84,8 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 	protected void setLookups(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
 		super.setLookups(request, charBean);
-		InitCharacterizationSetup.getInstance()
-				.setInvitroCharacterizationDropdowns(request);
+//		InitCharacterizationSetup.getInstance()
+//				.setInvitroCharacterizationDropdowns(request);
 	}
 
 	protected void clearForm(DynaValidatorForm theForm) {
