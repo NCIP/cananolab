@@ -271,7 +271,7 @@ function confirmDeletion()
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
 									<tr>
-										<td valign="bottom">
+										<td valign="bottom" width="10%">
 											<a href="#"
 												onclick="javascript:addComponent(nanoparticleEntityForm, 'nanoparticleEntity', 'addFile'); return false;">
 												<span class="addLink">Add File</span> </a>
