@@ -18,6 +18,8 @@
 		<putList name="items">
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
+				<item value="GLOSSARY"
+				link="openHelpWindow('webHelp/wwhelp/wwhimpl/js/html/wwglossary.htm')" />
 			<item value="LOGOUT" link="logout.do" />
 		</putList>
 	</definition>
@@ -42,6 +44,8 @@
 			<item value="ADMINISTRATION" link="openHelpWindow('/upt')" />
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
+			<item value="GLOSSARY"
+				link="openHelpWindow('webHelp/wwhelp/wwhimpl/js/html/wwglossary.htm')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
 		</putList>
 	</definition>
