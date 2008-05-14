@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.46 2008-05-13 20:23:48 cais Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.47 2008-05-14 07:15:36 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -115,7 +115,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 					functionBean.getType().trim().length() == 0) {
 					
 					ActionMessages msgs = new ActionMessages();
-					ActionMessage msg = new ActionMessage("errors.required", "inherent function type");
+					ActionMessage msg = new ActionMessage("errors.required", "Inherent function type");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
 					
