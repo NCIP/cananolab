@@ -2,8 +2,7 @@
 function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
 	var inclueBlock = document.getElementById("entityInclude");
-	if(entityType == 'metal particle' ||
-		entityType == 'quantum dot') {
+	if (entityType == "metal particle" || entityType == "quantum dot") {
 		inclueBlock.style.display = "none";
 	} else {
 		inclueBlock.style.display = "inline";
@@ -22,38 +21,28 @@ function getComposingElementOptions(selectEleId) {
 		dwr.util.addOptions("compElemType", ["[Other]"]);
 	});
 }
-
-
 function getBiopolymerOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
-
 	if (compFuncTypeValue == "biopolymer") {
 		CompositionManager.getBiopolymerTypeOptions(compFuncTypeValue, {callback:function (data) {
-			dwr.util.removeAllOptions('biopolymerType');
-			dwr.util.addOptions('biopolymerType', ['']);
-			dwr.util.addOptions('biopolymerType', data);
-			dwr.util.addOptions('biopolymerType', ['[Other]']);
-
-			}, async:true
-		});
+			dwr.util.removeAllOptions("biopolymerType");
+			dwr.util.addOptions("biopolymerType", [""]);
+			dwr.util.addOptions("biopolymerType", data);
+			dwr.util.addOptions("biopolymerType", ["[Other]"]);
+		}, async:true});
 	}
 }
 function getWallTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if (compFuncTypeValue == "carbon nanotube") {
-		CompositionManager.getWallTypeOptions(compFuncTypeValue, {
-			callback:function (data) {
+		CompositionManager.getWallTypeOptions(compFuncTypeValue, {callback:function (data) {
 			var ele = document.getElementById("wallType");
-			
 			dwr.util.removeAllOptions("wallType");
 			dwr.util.addOptions("wallType", [""]);
 			dwr.util.addOptions("wallType", data);
-		}, async:true
-		} );
-		
+		}, async:true});
 	}
 }
-
 var timeoutInterval = 500;
 function getNETypeOptions() {
 	window.setTimeout("getNETypes()", timeoutInterval);
@@ -68,28 +57,23 @@ function getNETypes() {
 function getAntibodyTypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if (compFuncTypeValue == "antibody") {
-		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, { 
-			callback:function (data) {
-				dwr.util.removeAllOptions("antibodyType");
-				dwr.util.addOptions("antibodyType", [""]);
-				dwr.util.addOptions("antibodyType", data);
-				dwr.util.addOptions("antibodyType", ["[Other]"]);
-			}, async:true
-		});
+		CompositionManager.getAntibodyTypeOptions(compFuncTypeValue, {callback:function (data) {
+			dwr.util.removeAllOptions("antibodyType");
+			dwr.util.addOptions("antibodyType", [""]);
+			dwr.util.addOptions("antibodyType", data);
+			dwr.util.addOptions("antibodyType", ["[Other]"]);
+		}, async:true});
 	}
 }
 function getAntibodyIsotypeOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
 	if (compFuncTypeValue == "antibody") {
-		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, { 
-			callback:function (data) {
-			
-				dwr.util.removeAllOptions("antibodyIsotype");
-				dwr.util.addOptions("antibodyIsotype", [""]);
-				dwr.util.addOptions("antibodyIsotype", data);
-				dwr.util.addOptions("antibodyIsotype", ["[Other]"]);
-			}, async:true
-		});
+		CompositionManager.getAntibodyIsotypeOptions(compFuncTypeValue, {callback:function (data) {
+			dwr.util.removeAllOptions("antibodyIsotype");
+			dwr.util.addOptions("antibodyIsotype", [""]);
+			dwr.util.addOptions("antibodyIsotype", data);
+			dwr.util.addOptions("antibodyIsotype", ["[Other]"]);
+		}, async:true});
 	}
 }
 function getAntibodySpeciesOptions(selectEleId) {
@@ -109,7 +93,6 @@ function setEntityTypeTitle(selectEleId) {
 function getFETypeOptions() {
 	window.setTimeout("getFETypes()", timeoutInterval);
 }
-
 function getFETypes() {
 	var selectEleId = "feType";
 	getBiopolymerOptions(selectEleId);
@@ -213,6 +196,8 @@ function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEle
 					dwr.util.addOptions(compEleTypeId, data, "domainComposingElementId", "displayName");
 				}
 			});
+		} else {
+			dwr.util.removeAllOptions(compEleTypeId);
 		}
 		compEle.style.display = "inline";
 	} else {
