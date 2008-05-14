@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -26,7 +27,6 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -160,6 +160,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		return noErrors;
+	}
+	
+	protected void validateNumber(HttpServletRequest request,
+			PhysicalCharacterizationBean charBean, ActionMessages msgs) throws Exception {
+		if (charBean.getSolubility().getCriticalConcentration()==0.0){			
+			ActionMessage msg = new ActionMessage(
+					"message.invalidNumber");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		}		
 	}
 
 	protected void saveCharacterization(HttpServletRequest request,
