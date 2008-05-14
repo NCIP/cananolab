@@ -172,6 +172,8 @@
 			type="gov.nih.nci.cananolab.ui.particle.ChemicalAssociationAction"
 			input="input">
 			<forward name="input"
+				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
+			<forward name="setup"
 				path="particle.composition.chemicalAssociation" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
