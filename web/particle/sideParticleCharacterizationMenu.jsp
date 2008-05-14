@@ -68,17 +68,17 @@
 				displaytype == 'Cell Viability'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 		<style type="text/css">
-			#cytotoxicity {
+			#Cytotoxicity {
 				display: block;
 			}
-			#cytotoxicity ul {
+			#Cytotoxicity ul {
 				display: block;
 			}
 		</style>
 	</c:when>
 	<c:otherwise>
 		<style type="text/css">
-			#cytotoxicity {
+			#Cytotoxicity {
 				display: none;
 			}
 		</style>
@@ -89,17 +89,17 @@
 	<c:when test="${displaytype == 'Oxidative Stress'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 		<style type="text/css">
-			#oxidativeStress {
+			#OxidativeStress {
 				display: block;
 			}
-			#oxidativeStress ul {
+			#OxidativeStress ul {
 				display: block;
 			}
 		</style>
 	</c:when>
 	<c:otherwise>
 		<style type="text/css">
-			#oxidativeStress {
+			#OxidativeStress {
 				display: none;
 			}
 		</style>
@@ -110,23 +110,22 @@
 	<c:when test="${displaytype == 'Enzyme Induction'}">
 		<c:set var="invitroDisplay" value="display: block;" />
 		<style type="text/css">
-			#enzymeInduction {
+			#EnzymeInduction {
 				display: block;
 			}
-			#enzymeInduction ul {
+			#EnzymeInduction ul {
 				display: block;
 			}
 		</style>
 	</c:when>
 	<c:otherwise>
 		<style type="text/css">
-			#enzymeInduction {
+			#EnzymeInduction {
 				display: none;
 			}
 		</style>
 	</c:otherwise>
 </c:choose>
-
 <c:set var="physicalType" value="Physical Characterization" />
 <c:choose>
 	<c:when test="${hasPhysicalData eq 'true' || canCreateNanoparticle eq 'true'}">
@@ -229,7 +228,7 @@
 								<c:when
 									test="${!empty particleDataTree[thirdLevelChar]}">
 									<ul class="sublist_5_control"
-										id="${thirdLevelChar}">
+										id="${charaClassNameMap[thirdLevelChar]}">
 										<c:forEach var="leafCharBean"
 											items="${particleDataTree[thirdLevelChar]}">
 											<c:url var="url3" value="${leafCharBean.dataLink}.do">
@@ -259,7 +258,7 @@
 								<c:otherwise>
 									<c:if test="${!empty invitroTypes[thirdLevelChar]}">
 										<ul class="sublist_3_control"
-											id="${thirdLevelChar}">
+											id="${charaClassNameMap[thirdLevelChar]}">
 											<c:forEach var="fourthLevelChar"
 												items="${invitroTypes[thirdLevelChar]}">
 												<li>
