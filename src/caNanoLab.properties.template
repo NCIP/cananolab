@@ -1,5 +1,4 @@
 fileRepositoryDir=@FILE_REPOSITORY_DIR@
-samplePrefix=@SAMPLE_PREFIX@-
 applicationOwner=@APP_OWNER@
 gridIndexServiceURL=@GRID_INDEX_SERVER@
 database=@DATABASE@
