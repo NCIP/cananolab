@@ -59,6 +59,9 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"carbonNanotubeAverageLengthUnit", "CarbonNanotube",
 				"averageLengthUnit", "otherAverageLengthUnit", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"fullereneAverageDiameterUnit", "Fullerene",
+				"averageDiameterUnit", "otherAverageDiameterUnit", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");

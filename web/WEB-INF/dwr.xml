@@ -15,6 +15,7 @@
 			<include method="getWallTypeOptions" />
 			<include method="getCarbonNanotubeDiameterUnitOptions" />
 			<include method="getCarbonNanotubeAverageLengthUnitOptions" />
+			<include method="getFullereneAverageDiameterUnitOptions" />
 			<include method="getAssociatedElementOptions" />
 			<include method="getAssociatedComposingElements" />
 		</create>

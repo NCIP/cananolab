@@ -20,8 +20,13 @@
 				<strong>Average Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.fullerene.averageDiameterUnit"
-					value="nm" size="6" id="averageDiameter" />
+				<select name="entity.fullerene.averageDiameterUnit" id="averageDiameterUnit"
+					onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
+					<option value=""></option>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
 			</td>
 			<td class="label">
 				<strong>Number of Carbons</strong>

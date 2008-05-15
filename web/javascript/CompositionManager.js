@@ -67,6 +67,18 @@ function getAverageLengthUnitOptions(selectEleId) {
 		}, async:true});
 	}
 }
+function getAverageDiameterUnitOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if (compFuncTypeValue == "fullerene") {
+		CompositionManager.getFullereneAverageDiameterUnitOptions(compFuncTypeValue, {callback:function (data) {
+			var ele = document.getElementById("averageDiameterUnit");
+			dwr.util.removeAllOptions("averageDiameterUnit");
+			dwr.util.addOptions("averageDiameterUnit", [""]);
+			dwr.util.addOptions("averageDiameterUnit", data);
+			dwr.util.addOptions("averageDiameterUnit", ["[Other]"]);
+		}, async:true});
+	}
+}
 var timeoutInterval = 500;
 function getNETypeOptions() {
 	window.setTimeout("getNETypes()", timeoutInterval);
@@ -79,7 +91,7 @@ function getNETypes() {
 	getComposingElementOptions(selectEleId);
 	getDiameterUnitOptions(selectEleId);
 	getAverageLengthUnitOptions(selectEleId);
-	
+	getAverageDiameterUnitOptions(selectEleId);
 	setEntityTypeTitle(selectEleId);
 }
 function getAntibodyTypeOptions(selectEleId) {
