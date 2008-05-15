@@ -112,7 +112,7 @@ function confirmDeletion()
 							<strong>Value</strong>
 						</td>
 						<td class="label">
-							<html:text property="entity.value" />
+							<html:text property="entity.value" onkeydown="return filterFloatNumber(event)"/>
 						</td>
 						<td class="label" valign="top">
 							<strong>Value Unit</strong>

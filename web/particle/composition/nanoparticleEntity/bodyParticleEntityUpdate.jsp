@@ -203,7 +203,7 @@ function confirmDeletion()
 															<td class="label" valign="top">
 																<html:text
 																	property="entity.composingElements[${ind}].domainComposingElement.value"
-																	size="30" />
+																	onkeydown="return filterFloatNumber(event)" size="30" />
 															</td>
 															<td class="label" valign="top">
 																<strong>Unit</strong>
