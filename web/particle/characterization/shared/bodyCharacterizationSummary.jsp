@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript" src="javascript/calendar2.js"></script>
+
 <table width="100%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
@@ -50,6 +52,24 @@
 			</c:choose>
 		</td>
 	</tr>
+	<tr>
+		<td class="leftLabel">
+			<strong>Characterization Date</strong>
+		</td>
+		<td class="rightLabel" colspan="3">
+			<c:choose>
+				<c:when test="${canCreateNanoparticle eq 'true'}">
+					<html:text property="achar.dateString" size="10" styleId="charDate" />
+					<a href="javascript:cal1.popup();"><img
+							src="images/calendar-icon.gif" width="22" height="18" border="0"
+							alt="Click Here to Pick up the date" align="middle">
+					</a>
+				</c:when>
+				<c:otherwise>
+						${characterizationForm.map.achar.dateString}&nbsp;
+				</c:otherwise>
+			</c:choose>
+		</td>
 	<tr>
 		<td class="leftLabel">
 			<strong>Protocol Name - Version</strong>
@@ -117,4 +137,11 @@
 	</tr>
 </table>
 <br>
-
+<script language="JavaScript">
+	<!-- //
+		var cal1 = new calendar2(document.getElementById('charDate'));
+	    cal1.year_scroll = true;
+		cal1.time_comp = false;
+		cal1.context = '${pageContext.request.contextPath}';
+  	//-->
+</script>
