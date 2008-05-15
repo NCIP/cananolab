@@ -53,6 +53,12 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"ceMolecularFormulaTypes", "ComposingElement",
 				"molecularFormulaType", "otherMolecularFormulaType", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"carbonNanotubeDiameterUnit", "CarbonNanotube", "diameterUnit",
+				"otherDiameterUnit", true);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"carbonNanotubeAverageLengthUnit", "CarbonNanotube",
+				"averageLengthUnit", "otherAverageLengthUnit", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");
@@ -98,7 +104,7 @@ public class InitCompositionSetup {
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
 			throws Exception {
-		//reload function types
+		// reload function types
 		getFunctionTypes(request);
 		getFunctionalizingEntityTypes(request);
 		getTargetTypes(request);
