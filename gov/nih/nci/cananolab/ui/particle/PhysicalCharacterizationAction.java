@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.27 2008-05-14 22:37:06 tanq Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.28 2008-05-15 14:43:18 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -72,6 +72,15 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		return forward;
+	}
+	
+	protected void validateNumber(HttpServletRequest request,
+			PhysicalCharacterizationBean charBean, ActionMessages msgs) throws Exception {
+		if (charBean.getSolubility().getCriticalConcentration()==0.0){			
+			ActionMessage msg = new ActionMessage(
+					"message.invalidNumber");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		}		
 	}
 
 	protected CharacterizationBean getCharacterizationBean(
