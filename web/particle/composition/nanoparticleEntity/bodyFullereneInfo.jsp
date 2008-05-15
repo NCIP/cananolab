@@ -20,7 +20,7 @@
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:text property="entity.fullerene.averageDiameter"
-							styleId="averageDiameter" />
+							styleId="averageDiameter" onkeydown="return filterFloatNumber(event)"/>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.fullerene.averageDiameter}&nbsp;
@@ -55,7 +55,7 @@
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
 						<html:text property="entity.fullerene.numberOfCarbon"
-							styleId="numberOfCarbon" />
+							styleId="numberOfCarbon" onkeydown="return filterInteger(event)"/>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.fullerene.numberOfCarbon}&nbsp;

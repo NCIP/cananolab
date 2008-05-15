@@ -14,7 +14,7 @@
 			</td>
 			<td class="label">
 				<input type="text" name="entity.fullerene.averageDiameter"
-					id="averageDiameter" />
+					id="averageDiameter" onkeydown="return filterFloatNumber(event)"/>
 			</td>
 			<td class="label">
 				<strong>Average Diameter Unit</strong>
@@ -33,7 +33,7 @@
 			</td>
 			<td class="rightLabel">
 				<input type="text" name="entity.fullerene.numberOfCarbon"
-					id="numberOfCarbon" />
+					id="numberOfCarbon" onkeydown="return filterInteger(event)"/>
 			</td>
 		</tr>
 	</tbody>
