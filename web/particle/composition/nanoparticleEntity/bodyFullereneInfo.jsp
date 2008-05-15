@@ -33,8 +33,15 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.fullerene.averageDiameterUnit"
-							styleId="averageDiameter" value="nm" size="6" />
+						<html:select property="entity.fullerene.averageDiameterUnit"
+							styleId="averageDiameterUnit"
+							onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
+							<option value=""></option>
+							<html:options name="fullereneAverageDiameterUnit" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.fullerene.averageDiameterUnit}&nbsp;

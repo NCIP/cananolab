@@ -165,6 +165,28 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 	
+	public String[] getFullereneAverageDiameterUnitOptions(String nanoparticleEntityType) {
+		if (nanoparticleEntityType.equals("fullerene")) {
+
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			HttpServletRequest request = webContext.getHttpServletRequest();
+			try {
+				SortedSet<String> typeList = InitSetup.getInstance()
+						.getDefaultAndOtherLookupTypes(request, 
+								"fullereneAverageDiameterUnit", "Fullerene",
+								"averageDiameterUnit", "otherAverageDiameterUnit", true);
+				String[] eleArray = new String[typeList.size()];
+				return typeList.toArray(eleArray);
+
+			} catch (Exception e) {
+				System.out.println("getCarbonNanotubeDiameterUnitOptions exception.");
+				e.printStackTrace();
+			}
+		}
+		return new String[] { "" };
+	}
+	
 	public String[] getAntibodyTypeOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
