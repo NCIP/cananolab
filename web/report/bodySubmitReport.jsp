@@ -31,8 +31,9 @@
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
-							nanoparticle samples in the database. Please make sure to create
-							a new nanoparticle sample first. </font>
+							nanoparticle samples in the database. Please make sure to 
+							<html:link page="/submitNanoparticleSample.do?dispatch=setup&page=0" scope="page" >create
+							a new nanoparticle sample</html:link> first. </font>
 					</td>
 				</tr>
 			</c:when>
