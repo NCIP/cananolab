@@ -12,10 +12,11 @@
 				Protocol Search Results
 			</h3>
 		</td>
-		<td align="right" width="15%">
-			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=protocol_search_results_help')"
-				class="helpText">Help</a>&nbsp;&nbsp;
+		<td align="right" width="20%">
+			<jsp:include page="/webHelp/helpGlossary.jsp">
+				<jsp:param name="topic" value="protocol_search_results_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>				
 			<a href="searchProtocol.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
