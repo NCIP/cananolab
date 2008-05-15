@@ -174,7 +174,8 @@ public class CharacterizationBean {
 			}
 			domainChar.setInstrumentConfiguration(instrumentConfiguration);
 		}
-		if (protocolFileBean.getDomainFile().getId() != 0) {
+		if (protocolFileBean!= null && protocolFileBean.getDomainFile()!= null && 
+				protocolFileBean.getDomainFile().getId() != null && protocolFileBean.getDomainFile().getId() != 0) {
 			domainChar.setProtocolFile(((ProtocolFile) protocolFileBean
 					.getDomainFile()));
 		}
