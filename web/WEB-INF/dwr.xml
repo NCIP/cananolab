@@ -13,6 +13,8 @@
 			<include method="getAntibodyTypeOptions" />
 			<include method="getAntibodyIsotypeOptions" />
 			<include method="getWallTypeOptions" />
+			<include method="getCarbonNanotubeDiameterUnitOptions" />
+			<include method="getCarbonNanotubeAverageLengthUnitOptions" />
 			<include method="getAssociatedElementOptions" />
 			<include method="getAssociatedComposingElements" />
 		</create>

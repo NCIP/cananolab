@@ -13,13 +13,21 @@
 				<strong>Average Length</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLength" value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}"/>
+				<input type="text" name="entity.carbonNanotube.averageLength" 
+					value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}"
+					onkeydown="return filterFloatNumber(event)" />
 			</td>
 			<td class="label">
 				<strong>Average Length Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLengthUnit" value="nm" size="6" />
+				<select name="entity.carbonNanotube.averageLengthUnit" id="averageLengthUnit"
+					onchange="javascript:callPrompt('Average Length Unit', 'averageLengthUnit');">
+					<option value=""></option>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
 			</td>
 			<td class="label">
 				<strong>Chirality</strong>
@@ -33,13 +41,21 @@
 				<strong>Diameter</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.diameter" value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}"/>
+				<input type="text" name="entity.carbonNanotube.diameter" 
+					value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}"
+					onkeydown="return filterFloatNumber(event)" />
 			</td>
 			<td class="label">
 				<strong>Diameter Unit</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.diameterUnit" value="nm" size="6" />
+				<select name="entity.carbonNanotube.diameterUnit" id="diameterUnit"
+					onchange="javascript:callPrompt('Diameter Unit', 'diameterUnit');">
+					<option value=""></option>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
 			</td>
 			<td class="label">
 				<strong>Wall Type</strong>

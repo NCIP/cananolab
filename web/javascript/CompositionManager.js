@@ -43,15 +43,43 @@ function getWallTypeOptions(selectEleId) {
 		}, async:true});
 	}
 }
+function getDiameterUnitOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if (compFuncTypeValue == "carbon nanotube") {
+		CompositionManager.getCarbonNanotubeDiameterUnitOptions(compFuncTypeValue, {callback:function (data) {
+			var ele = document.getElementById("diameterUnit");
+			dwr.util.removeAllOptions("diameterUnit");
+			dwr.util.addOptions("diameterUnit", [""]);
+			dwr.util.addOptions("diameterUnit", data);
+			dwr.util.addOptions("diameterUnit", ["[Other]"]);
+		}, async:true});
+	}
+}
+function getAverageLengthUnitOptions(selectEleId) {
+	var compFuncTypeValue = dwr.util.getValue(selectEleId);
+	if (compFuncTypeValue == "carbon nanotube") {
+		CompositionManager.getCarbonNanotubeDiameterUnitOptions(compFuncTypeValue, {callback:function (data) {
+			var ele = document.getElementById("averageLengthUnit");
+			dwr.util.removeAllOptions("averageLengthUnit");
+			dwr.util.addOptions("averageLengthUnit", [""]);
+			dwr.util.addOptions("averageLengthUnit", data);
+			dwr.util.addOptions("averageLengthUnit", ["[Other]"]);
+		}, async:true});
+	}
+}
 var timeoutInterval = 500;
 function getNETypeOptions() {
 	window.setTimeout("getNETypes()", timeoutInterval);
 }
 function getNETypes() {
 	var selectEleId = "peType";
+	
 	getBiopolymerOptions(selectEleId);
 	getWallTypeOptions(selectEleId);
 	getComposingElementOptions(selectEleId);
+	getDiameterUnitOptions(selectEleId);
+	getAverageLengthUnitOptions(selectEleId);
+	
 	setEntityTypeTitle(selectEleId);
 }
 function getAntibodyTypeOptions(selectEleId) {

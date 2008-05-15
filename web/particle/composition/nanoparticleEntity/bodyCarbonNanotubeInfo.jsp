@@ -14,6 +14,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
+			
 				<strong>Average Length</strong>
 			</td>
 			<td class="label">
@@ -32,7 +33,15 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.averageLengthUnit" value="nm" size="6" />
+						<html:select property="entity.carbonNanotube.averageLengthUnit"
+							styleId="averageLengthUnit"
+							onchange="javascript:callPrompt('Average Length Unit', 'averageLengthUnit');">
+							<option value=""></option>
+							<html:options name="carbonNanotubeAverageLengthUnit" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}&nbsp;
@@ -73,7 +82,15 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.carbonNanotube.diameterUnit" size="6" value="nm"/>
+						<html:select property="entity.carbonNanotube.diameterUnit"
+							styleId="diameterUnit"
+							onchange="javascript:callPrompt('Diameter Unit', 'diameterUnit');">
+							<option value=""></option>
+							<html:options name="carbonNanotubeDiameterUnit" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.carbonNanotube.diameterUnit}&nbsp;
