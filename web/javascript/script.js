@@ -347,4 +347,14 @@ function radLinkOrUpload() {
 		linkEle.style.display = "inline";
 	}
 }
+function filterFloatNumber(evt) {
+    var keyCode = evt.which ? evt.which : evt.keyCode;
+    return (keyCode >= '0'.charCodeAt() && keyCode <= '9'.charCodeAt()) ||
+     (keyCode >= 96 && keyCode <= 105) || keyCode == 190 || keyCode == 110 || keyCode == 46 || keyCode == 8 ;
+}
+function filterInteger(evt) {
+    var keyCode = evt.which ? evt.which : evt.keyCode;
+    return (keyCode >= '0'.charCodeAt() && keyCode <= '9'.charCodeAt()) ||
+     (keyCode >= 96 && keyCode <= 105) || keyCode == 46 || keyCode == 8 ;
+}
 
