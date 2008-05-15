@@ -91,8 +91,7 @@
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
-			value="/WEB-INF/tiles-defs.xml,       												   
-                   /WEB-INF/tiles-defs-sample.xml,
+			value="/WEB-INF/tiles-defs.xml,  												   
                    /WEB-INF/tiles-defs-protocol.xml,
                    /WEB-INF/tiles-defs-particle.xml,
                    /WEB-INF/tiles-defs-report.xml" />
@@ -105,7 +104,6 @@
 		<set-property property="stopOnFirstError" value="false" />
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
-			      /WEB-INF/validation-sample.xml, 
 			      /WEB-INF/validation-particle.xml,             
 			      /WEB-INF/validation-report.xml, 
 			      /WEB-INF/validation-protocol.xml, 
