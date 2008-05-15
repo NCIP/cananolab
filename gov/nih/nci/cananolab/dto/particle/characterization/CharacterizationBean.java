@@ -46,6 +46,16 @@ public class CharacterizationBean {
 
 	private String className;
 
+	protected String dateString;
+	
+	public String getDateString() {
+		return dateString;
+	}
+
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
+
 	public CharacterizationBean() {
 		instrumentConfiguration.setInstrument(new Instrument());
 	}
@@ -56,6 +66,8 @@ public class CharacterizationBean {
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
 		this.characterizationSource = chara.getSource();
+		this.dateString = StringUtils.convertDateToString(chara.getDate(), 
+				CaNanoLabConstants.DATE_FORMAT);
 		if (chara.getInstrumentConfiguration() != null) {
 			instrumentConfiguration = chara.getInstrumentConfiguration();
 		}
@@ -150,6 +162,8 @@ public class CharacterizationBean {
 		domainChar.setDescription(description);
 		domainChar.setIdentificationName(viewTitle);
 		domainChar.setSource(characterizationSource);
+		domainChar.setDate(StringUtils.convertToDate(dateString,
+				CaNanoLabConstants.DATE_FORMAT));
 
 		if (instrumentConfiguration.getInstrument() != null
 				&& instrumentConfiguration.getInstrument().getType() != null
