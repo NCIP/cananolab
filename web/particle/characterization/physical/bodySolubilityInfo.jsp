@@ -60,7 +60,7 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="achar.solubility.criticalConcentration" />
+						<html:text property="achar.solubility.criticalConcentration" onkeydown="return filterFloatNumber(event)"/>
 						<html:select property="achar.solubility.criticalConcentrationUnit">
 							<option value=""></option>
 							<html:options name="concentrationUnits" />

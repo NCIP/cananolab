@@ -162,14 +162,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		return noErrors;
 	}
 	
-	protected void validateNumber(HttpServletRequest request,
-			PhysicalCharacterizationBean charBean, ActionMessages msgs) throws Exception {
-		if (charBean.getSolubility().getCriticalConcentration()==0.0){			
-			ActionMessage msg = new ActionMessage(
-					"message.invalidNumber");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		}		
-	}
 
 	protected void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
