@@ -19,7 +19,7 @@
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
 				<item value="GLOSSARY"
-				link="openHelpWindow('webHelp/wwhelp/wwhimpl/js/html/wwglossary.htm')" />
+				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
 			<item value="LOGOUT" link="logout.do" />
 		</putList>
 	</definition>
@@ -45,7 +45,7 @@
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
 			<item value="GLOSSARY"
-				link="openHelpWindow('webHelp/wwhelp/wwhimpl/js/html/wwglossary.htm')" />
+				link="openHelpWindow('webHelp/index.html?single=false&amp;context=caNanoLab&amp;topic=glossary_help')" />
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
 		</putList>
 	</definition>

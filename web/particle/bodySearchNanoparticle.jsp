@@ -13,9 +13,11 @@
 			</td>
 			<td align="right" width="30%">
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_nano_help')"
-					class="helpText">Help</a>
+				
+				<jsp:include page="/webHelp/helpGlossary.jsp">
+					<jsp:param name="topic" value="search_nano_help" />
+					<jsp:param name="glossaryTopic" value="glossary_help" />
+				</jsp:include>
 			</td>
 		</tr>
 

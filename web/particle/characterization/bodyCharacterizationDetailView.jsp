@@ -10,10 +10,11 @@
 				${pageTitle} ${submitType}
 			</h4>
 		</td>
-		<td align="right" width="15%">
-			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=${characterizationForm.map.achar.className}_detail_view_help')"
-				class="helpText">Help</a>
+		<td align="right" width="20%">			
+			<jsp:include page="/webHelp/helpGlossary.jsp">
+				<jsp:param name="topic" value="char_details_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>					
 		</td>
 	</tr>
 	<tr>

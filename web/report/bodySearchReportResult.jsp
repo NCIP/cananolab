@@ -11,10 +11,11 @@
 				Nanoparticle Report Search Results
 			</h3>
 		</td>
-		<td align="right" width="15%">
-			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_reports_results_help')"
-				class="helpText">Help</a>&nbsp;&nbsp;
+		<td align="right" width="25%">
+			<jsp:include page="/webHelp/helpGlossary.jsp">
+				<jsp:param name="topic" value="search_reports_results_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>				
 			<a href="searchReport.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>

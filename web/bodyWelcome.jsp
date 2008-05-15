@@ -14,12 +14,11 @@
 	</tr>
 	<tr>
 		<td align="right">
-			<a
-				href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=welcome_workflow')"
-				class="helpText">Help</a>&nbsp;&nbsp;&nbsp;				
-				<a
-				href="javascript:openHelpWindow('webHelp/wwhelp/wwhimpl/common/html/wwhelp.htm?context=caNanoLab&file=caNanoLab_Glossary.9.1.html')"
-				class="helpText">Glossary</a>&nbsp;
+			<jsp:include page="/webHelp/helpGlossary.jsp">
+				<jsp:param name="topic" value="welcome_workflow" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>	
+			
 		</td>
 	</tr>
 	<tr>

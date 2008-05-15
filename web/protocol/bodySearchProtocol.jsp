@@ -12,9 +12,10 @@
 				</h3>
 			</td>
 			<td align="right" width="25%">
-				<a
-					href="javascript:openHelpWindow('webHelp/index.html?single=true&amp;context=caNanoLab&amp;topic=search_protocol_help')"
-					class="helpText">Help</a>
+				<jsp:include page="/webHelp/helpGlossary.jsp">
+					<jsp:param name="topic" value="search_protocol_help" />
+					<jsp:param name="glossaryTopic" value="glossary_help" />
+				</jsp:include>					
 			</td>
 		</tr>
 		<tr>
