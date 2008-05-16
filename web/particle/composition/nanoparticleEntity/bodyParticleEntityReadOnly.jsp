@@ -129,13 +129,13 @@
 														</tr>
 														<tr>
 															<td class="leftLabel" valign="top">
-																<strong>Value</strong>
+																<strong>Amount</strong>
 															</td>
 															<td class="label" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}&nbsp;
 															</td>
 															<td class="label" valign="top">
-																<strong>Unit</strong>
+																<strong>Amount Unit</strong>
 															</td>
 															<td class="rightLabel" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}&nbsp;

@@ -109,17 +109,17 @@ function confirmDeletion()
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Value</strong>
+							<strong>Amount</strong>
 						</td>
 						<td class="label">
 							<html:text property="entity.value" onkeydown="return filterFloatNumber(event)"/>
 						</td>
 						<td class="label" valign="top">
-							<strong>Value Unit</strong>
+							<strong>Amount Unit</strong>
 						</td>
 						<td class="rightLabel">
 							<html:select styleId="feUnit" property="entity.valueUnit"
-								onchange="javascript:callPrompt('Value Unit', 'feUnit');">
+								onchange="javascript:callPrompt('Amount Unit', 'feUnit');">
 								<option value=""></option>
 								<html:options name="functionalizingEntityUnits" />
 								<option value="other">

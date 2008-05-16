@@ -68,13 +68,13 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Value</strong>
+							<strong>Amount</strong>
 						</td>
 						<td class="label">
 							${functionalizingEntityForm.map.entity.value}&nbsp;
 						</td>
 						<td class="label" valign="top">
-							<strong>Value Unit</strong>
+							<strong>Amount Unit</strong>
 						</td>
 						<td class="rightLabel">
 							${functionalizingEntityForm.map.entity.valueUnit}&nbsp;
