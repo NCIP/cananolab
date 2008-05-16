@@ -32,7 +32,7 @@
 			<td class="label">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true'}">
-						<html:text property="entity.polymer.crossLinkDegree" />
+						<html:text property="entity.polymer.crossLinkDegree" onkeydown="return filterFloatNumber(event)"/>
 					</c:when>
 					<c:otherwise>
 						${nanoparticleEntityForm.map.entity.polymer.crossLinkDegree}&nbsp;

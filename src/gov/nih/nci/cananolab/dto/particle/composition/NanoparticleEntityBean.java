@@ -75,6 +75,8 @@ public class NanoparticleEntityBean {
 			liposome = (Liposome) domainEntity;
 		} else if (domainEntity instanceof Emulsion) {
 			emulsion = (Emulsion) domainEntity;
+		} else if (domainEntity instanceof Polymer) {
+			polymer = (Polymer) domainEntity;
 		} else if (domainEntity instanceof Fullerene) {
 			fullerene = (Fullerene) domainEntity;
 		}
@@ -228,6 +230,8 @@ public class NanoparticleEntityBean {
 			domainEntity = liposome;
 		} else if (domainEntity instanceof Emulsion) {
 			domainEntity = emulsion;
+		} else if (domainEntity instanceof Polymer) {
+			domainEntity = polymer;
 		} else if (domainEntity instanceof Fullerene) {
 			domainEntity = fullerene;
 		}

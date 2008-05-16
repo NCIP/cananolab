@@ -19,7 +19,7 @@
 				<strong>Cross Link Degree</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.polymer.crossLinkDegree" />
+				<input type="text" name="entity.polymer.crossLinkDegree" onkeydown="return filterFloatNumber(event)"/>
 			</td>
 			<td class="label">
 				<strong>Is Cross Linked</strong>
