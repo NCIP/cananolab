@@ -71,9 +71,12 @@ public class InitCompositionSetup {
 			NanoparticleEntityBean entityBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
-		
 		InitSetup.getInstance().persistLookup(request, "Fullerene", "averageDiameterUnit",
 				"otherAverageDiameterUnit", entityBean.getFullerene().getAverageDiameterUnit());
+		InitSetup.getInstance().persistLookup(request, "CarbonNanotube", "diameterUnit",
+				"otherDiameterUnit", entityBean.getCarbonNanotube().getDiameterUnit());
+		InitSetup.getInstance().persistLookup(request, "CarbonNanotube", "averageLengthUnit",
+				"otherAverageLengthUnit", entityBean.getCarbonNanotube().getAverageLengthUnit());
 		for (ComposingElementBean elementBean : entityBean
 				.getComposingElements()) {
 			if (entityBean.getDomainEntity() instanceof Emulsion) {
@@ -139,10 +142,6 @@ public class InitCompositionSetup {
 				"antibodySpecies", "Antibody", "species");
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fullereneAverageDiameterUnit", "Fullerene",
-				"averageDiameterUnit", "otherAverageDiameterUnit", true);
-		
 	}
 
 	public void persistFunctionalizingEntityDropdowns(
@@ -153,7 +152,7 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().persistLookup(request, "Antibody", "isotype",
 				"otherIsoType", entityBean.getAntibody().getIsotype());
 		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
-				"otherType", entityBean.getBiopolymer().getType());		
+				"otherType", entityBean.getBiopolymer().getType());
 		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
 				"valueUnit", "otherValueUnit", entityBean.getValueUnit());
 		InitSetup.getInstance().persistLookup(request, "FunctionalizingEntity",
