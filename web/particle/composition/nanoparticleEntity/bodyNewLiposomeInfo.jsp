@@ -10,7 +10,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Polymer Name</strong>
+				<strong>Polymer Name*</strong>
 			</td>
 			<td class="label">
 				<input type="text" name="entity.liposome.polymerName" />

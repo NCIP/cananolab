@@ -14,7 +14,7 @@
 		</tr>
 		<tr>
 			<td class="leftLabel">
-				<strong>Polymer Name</strong>
+				<strong>Polymer Name*</strong>
 			</td>
 			<td class="label">
 				<c:choose>
