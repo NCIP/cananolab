@@ -1,0 +1,5 @@
+fileRepositoryDir=@FILE_REPOSITORY_DIR@
+applicationOwner=@APP_OWNER@
+gridIndexServiceURL=@GRID_INDEX_SERVER@
+database=@DATABASE@
+

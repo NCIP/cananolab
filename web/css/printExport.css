@@ -1,0 +1,52 @@
+/* print and export menu on characterization summary view */
+/**********************************************************/
+
+ul.pemenu,
+ul.pemenu ul,
+ul.pemenu li,
+ul.pemenu a {
+	padding: 0;
+	margin: 0;
+	display: block;
+	background-color: white;
+}
+
+ul.pemenu a:link, ul.pemenu a:visited, ul.pemenu a:active { 
+	text-decoration: none;
+	width: 100%;
+	color: black;
+}
+
+ul.pemenu a:hover {
+	background-color: #F6F6F6; /* constant: light gray */
+	color: black;
+}
+
+ul.pemenu li {
+	position: relative;
+	text-align: left;
+	width: 100%;
+	color: #FFFFFF;
+	font-size: 0.8em;
+}
+
+ul.pemenu li li {
+	text-indent: 0.2em;
+	/* padding: 0.1em 0.2em 0 0.1em; */
+	border: 1px solid #cccccc;
+	/* margin-right: 2px; */
+}
+
+ul.pemenu ul {
+	position: absolute;
+	top: -3px;
+	display: none;
+}
+
+#printChara ul { 
+	right: 100%;
+}
+
+#exportChara ul { 
+	left: 100%;
+}

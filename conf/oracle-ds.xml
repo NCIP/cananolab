@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================================================== -->
+<!--                                                                       -->
+<!--  JBoss Server Configuration                                           -->
+<!--                                                                       -->
+<!-- ===================================================================== -->
+<!-- $Id: oracle-ds.xml,v 1.5 2007-09-28 15:45:16 pansu Exp $ -->
+<!-- ==================================================================== -->
+<!--  Datasource config for Oracle originally from Steven Coy             -->
+<!-- ==================================================================== -->
+<datasources>
+
+<!-- Start caLAB Data source info -->
+  <local-tx-datasource>
+	    <jndi-name>caNanoLab</jndi-name>
+	    <connection-url>jdbc:oracle:thin:@@DBSERVER@:@PORT@:@DBNAME@</connection-url>
+	    <driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+	    <user-name>@DBUSER@</user-name>
+	    <password>@DBPASSWORD@</password>
+	    <exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+	    <!--pooling parameters-->
+	    <min-pool-size>10</min-pool-size>
+	    <max-pool-size>20</max-pool-size>
+	    <blocking-timeout-millis>5000</blocking-timeout-millis>
+	    <idle-timeout-minutes>5</idle-timeout-minutes>
+  </local-tx-datasource>
+</datasources>

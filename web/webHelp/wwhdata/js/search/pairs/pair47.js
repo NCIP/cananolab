@@ -1,0 +1,27 @@
+function FileData_Pairs(x)
+{
+x.t("subcategory","vitro");
+x.t("subcategory","cytoxicity");
+x.t("tree","vitro");
+x.t("cytotoxicity","comprises");
+x.t("cytotoxicity","toxicity");
+x.t("viability","vitro");
+x.t("characterization","cytotoxicity");
+x.t("characterization","adding");
+x.t("characterization","category");
+x.t("activation","vitro");
+x.t("cell","viability");
+x.t("subcategories","adding");
+x.t("caspase","activation");
+x.t("comprises","two");
+x.t("toxicity","subcategory");
+x.t("two","subcategories");
+x.t("navigation","tree");
+x.t("vitro","characterization");
+x.t("cytoxicity","cytotoxicity");
+x.t("cytoxicity","toxicity");
+x.t("cytoxicity","navigation");
+x.t("adding","cell");
+x.t("adding","caspase");
+x.t("category","toxicity");
+}

@@ -1,0 +1,27 @@
+function FileData_Pairs(x)
+{
+x.t("composition","physical");
+x.t("managing","characterizations");
+x.t("tree","sample");
+x.t("tree","section");
+x.t("tree","navigation");
+x.t("describes","manage");
+x.t("physical","characterization");
+x.t("sample","composition");
+x.t("includes","following");
+x.t("characterization","category");
+x.t("nanoparticles","information");
+x.t("section","describes");
+x.t("section","includes");
+x.t("reports","category");
+x.t("information","navigation");
+x.t("characterizations","reports");
+x.t("topics","understanding");
+x.t("navigation","tree");
+x.t("vitro","characterization");
+x.t("manage","nanoparticles");
+x.t("following","topics");
+x.t("understanding","navigation");
+x.t("category","managing");
+x.t("category","vitro");
+}
