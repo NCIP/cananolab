@@ -198,7 +198,7 @@ function confirmDeletion()
 														</tr>
 														<tr>
 															<td class="leftLabel" valign="top">
-																<strong>Value</strong>
+																<strong>Amount</strong>
 															</td>
 															<td class="label" valign="top">
 																<html:text
@@ -206,7 +206,7 @@ function confirmDeletion()
 																	onkeydown="return filterFloatNumber(event)" size="30" />
 															</td>
 															<td class="label" valign="top">
-																<strong>Unit</strong>
+																<strong>Amount Unit</strong>
 															</td>
 															<td class="rightLabel" valign="top">
 																<html:select styleId="compEleUnit"
