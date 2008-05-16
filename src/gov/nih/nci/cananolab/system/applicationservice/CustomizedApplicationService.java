@@ -34,4 +34,6 @@ public interface CustomizedApplicationService extends ApplicationService {
 
 	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws ApplicationException;
+
+	public List<String> getPublicData() throws ApplicationException;
 }

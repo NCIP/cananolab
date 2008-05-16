@@ -532,7 +532,10 @@ public class NanoparticleSampleService {
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException {
 		try {
-			List<String> publicData = auth.getPublicData();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			List<String> publicData = appService.getPublicData();
+
 			List<ParticleBean> allowedParticles = new ArrayList<ParticleBean>();
 			for (ParticleBean particle : particles) {
 				if (publicData.contains(particle.getDomainParticleSample()
