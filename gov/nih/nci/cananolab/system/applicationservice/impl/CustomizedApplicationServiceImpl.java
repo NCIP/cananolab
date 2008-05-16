@@ -3,16 +3,19 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.system.dao.CustomizedORMDAO;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl;
 import gov.nih.nci.system.util.ClassCache;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.aop.framework.Advised;
 
 /**
@@ -153,4 +156,35 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 		}
 	}
 
+	/**
+	 * Return a list of data (csm protected_group_name) marked public in the
+	 * database
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> getPublicData() throws ApplicationException {
+		List<String> publicData = new ArrayList<String>();
+		try {
+			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
+					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
+					+ "d.group_name='"
+					+ CaNanoLabConstants.CSM_PUBLIC_GROUP
+					+ "' and b.role_name='"
+					+ CaNanoLabConstants.CSM_READ_ROLE
+					+ "'";
+
+			String[] columns = new String[] { "protection_group_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = directSQL(query, columns, columnTypes);
+			for (Object obj : results) {
+				publicData.add((String) obj);
+			}
+		} catch (Exception e) {
+			String err = "Could not execute direct sql query to find all public data";
+			logger.error(err);
+			throw new ApplicationException(err, e);
+		}
+		return publicData;
+	}
 }

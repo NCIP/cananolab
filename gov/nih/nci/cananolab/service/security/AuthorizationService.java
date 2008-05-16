@@ -209,31 +209,6 @@ public class AuthorizationService {
 		}
 	}
 
-	public List<String> getPublicData() throws CaNanoLabSecurityException {
-		List<String> publicData = new ArrayList<String>();
-		try {
-			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
-					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
-					+ "d.group_name='"
-					+ CaNanoLabConstants.CSM_PUBLIC_GROUP
-					+ "' and b.role_name='"
-					+ CaNanoLabConstants.CSM_READ_ROLE
-					+ "'";
-
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			String[] columns = new String[] { "protection_group_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
-			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				publicData.add((String) obj);
-			}
-		} catch (Exception e) {
-			throw new CaNanoLabSecurityException();
-		}
-		return publicData;
-	}
-
 	/**
 	 * Check whether the given user has delete privilege on the given protection
 	 * element
@@ -867,7 +842,9 @@ public class AuthorizationService {
 	 * @throws Exception
 	 */
 	public boolean isUserAllowed(String data, UserBean user) throws Exception {
-		List<String> publicData = getPublicData();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getPublicData();
 		if (publicData.contains(data)) {
 			return true;
 		} else if (user != null && checkReadPermission(user, data)) {
@@ -888,7 +865,9 @@ public class AuthorizationService {
 	 */
 	public boolean isAllowedAtLeastOne(AuthorizationService auth,
 			Collection<String> dataCollection, UserBean user) throws Exception {
-		List<String> publicData = auth.getPublicData();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getPublicData();
 		for (String data : publicData) {
 			if (dataCollection.contains(data)) {
 				return true;
