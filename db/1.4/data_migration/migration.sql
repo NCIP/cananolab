@@ -588,6 +588,36 @@ WHERE c.characterization_pk_id = n.characterization_pk_id
 AND cnc.cn_composition_pk_id = n.characterization_pk_id
 ;
 
+-- Quantum Dot
+insert into canano.nanoparticle_entity
+(
+	nanoparticle_entity_pk_id,
+	composition_pk_id,
+	created_by,
+	created_date,
+	discriminator
+)
+SELECT ca.characterization_pk_id,
+	ca.characterization_pk_id,
+	ca.created_by,
+	ca.created_date,
+	'QuantumDot'
+FROM cananolab.characterization ca
+WHERE ca.discriminator = 'QuantumDotComp'
+;
+
+insert into canano.composition
+(
+	composition_pk_id,
+	particle_sample_pk_id
+)
+SELECT c.characterization_pk_id,
+	n.nanoparticle_pk_id
+FROM cananolab.nanoparticle_char n,
+	cananolab.characterization c
+WHERE c.characterization_pk_id = n.characterization_pk_id
+AND c.discriminator = 'QuantumDotComp'
+;
 
 -- emulsion
 insert into canano.emulsion
@@ -817,6 +847,7 @@ WHERE c.characterization_pk_id = n.characterization_pk_id
 AND cnc.f_composition_pk_id = n.characterization_pk_id
 ;
 
+-- composing element
 insert into canano.composing_element
 (
 	composing_element_pk_id,
@@ -829,6 +860,7 @@ SELECT ce.composing_element_pk_id,
 FROM cananolab.composing_element ce,
 	cananolab.characterization c
 WHERE ce.characterization_pk_id = c.characterization_pk_id
+AND ce.element_type != 'image contrast agent'
 ORDER BY ce.composing_element_pk_id, ce.list_index
 ;
 
@@ -849,11 +881,10 @@ SELECT ce.composing_element_pk_id,
 FROM cananolab.composing_element ce,
 	cananolab.characterization c
 WHERE ce.characterization_pk_id = c.characterization_pk_id
-ORDER BY ce.composing_element_pk_id, ce.list_index
+ORDER BY ce.characterization_pk_id, ce.list_index
 ;
 
--- functionalizing entity
- 
+-- functionalizing entity 
 insert into canano.functionalizing_entity
 (
 	functionalizing_entity_pk_id,
@@ -919,6 +950,7 @@ SELECT agent_pk_id,
 FROM cananolab.agent
 WHERE lcase(name) = 'magnevist'
 ;
+
 
 -- what default value for type?
 insert into canano.other_functionalizing_entity
@@ -1269,6 +1301,60 @@ DROP TABLE keyword_temp;
 update canano.lab_file
 set file_uri = substring(file_uri, 2)
 where left(file_uri, 1) = '/'
+;
+
+-- change element_type from 'coating' to 'coat' in the composing_element table
+update canano.composing_element
+set element_type = 'coat'
+where element_type = 'coating'
+;
+
+-- change element_type from 'modification' to 'modifier' in the composing_element table
+update canano.composing_element
+set element_type = 'modifier'
+where element_type = 'modification'
+;
+
+-- migrate image contrast agent Luc8 in cananolab composing_element
+-- to canano biopolymer_f, nano_function and functionalizing_entity
+insert into canano.biopolymer_f
+(
+	biopolymer_pk_id,
+	type
+)
+SELECT ce.composing_element_pk_id,
+	'protein'
+FROM cananolab.composing_element ce
+WHERE lcase(ce.chemical_name) = 'luc8'
+;
+
+insert into canano.functionalizing_entity
+(
+	functionalizing_entity_pk_id,
+	composition_pk_id
+)
+SELECT ce.composing_element_pk_id,
+	ce.characterization_pk_id
+FROM cananolab.composing_element ce
+WHERE lcase(ce.chemical_name) = 'luc8'
+;
+
+insert into canano.nano_function
+(
+	function_pk_id,
+	discriminator,
+	functionalizing_entity_pk_id,
+	created_by,
+	created_date
+)
+SELECT 
+	ce.composing_element_pk_id,
+	'ImagingFunction',
+	ce.composing_element_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
+FROM cananolab.composing_element ce
+WHERE lcase(ce.chemical_name) = 'luc8'
 ;
 
 
