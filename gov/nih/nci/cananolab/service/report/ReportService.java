@@ -92,7 +92,29 @@ public class ReportService {
 			if (reportCategory != null & reportCategory.length() > 0) {
 				crit.add(Restrictions.eq("category", reportCategory));
 			}
-			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
+			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);				
+			
+			crit.createAlias("nanoparticleSampleCollection", "sample",
+					CriteriaSpecification.LEFT_JOIN).createAlias(
+					"sample.sampleComposition", "compo",
+					CriteriaSpecification.LEFT_JOIN).createAlias(
+					"compo.nanoparticleEntityCollection", "nanoEntity",
+					CriteriaSpecification.LEFT_JOIN);			
+			crit.createAlias(
+					"compo.functionalizingEntityCollection", "funcEntity",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias(
+					"compo.chemicalAssociationCollection", "asso",
+					CriteriaSpecification.LEFT_JOIN);	
+			crit.createAlias(
+					"nanoEntity.composingElementCollection", "compoElement",
+					CriteriaSpecification.LEFT_JOIN);				
+			crit.createAlias(
+					"compoElement.inherentFunctionCollection", "inherentFunc",
+					CriteriaSpecification.LEFT_JOIN);			
+			crit.createAlias(
+					"funcEntity.functionCollection", "func",
+					CriteriaSpecification.LEFT_JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
