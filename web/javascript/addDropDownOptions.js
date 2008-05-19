@@ -98,6 +98,17 @@ function cancelAddOption() {
 	return false;
 }
 
+function resetAddOption(selectId) {
+    var selectEle = document.getElementById(selectId);
+	var opt = selectEle.value;
+	if (opt != null && opt != "") {
+		if (selectEle.options[0]!= null && selectEle.options[0] != "" && selectEle.options.selectedIndex==0) {
+			selectEle.options[selectEle.options.selectedIndex] = null;
+		}
+	}
+	return false;
+}
+
 
 function mouseOverStyle(event) {
 	var targetObj = getTargetElement(event);
