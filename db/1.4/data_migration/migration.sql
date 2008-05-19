@@ -78,7 +78,7 @@ SELECT surface_chemistry_pk_id,
 	molecular_formula_type,
 	surface_pk_id,
 	'DATA_MIGRATION',
-	SYSDATE()
+	ADDDATE(SYSDATE(), INTERVAL list_index MINUTE)
 FROM cananolab.surface_chemistry
 ORDER BY surface_pk_id, list_index
 ;
@@ -182,7 +182,7 @@ SELECT
 	d.characterization_pk_id,
 	derived_bioassay_data_pk_id,
 	'DATA_MIGRATION',
-	SYSDATE()
+	ADDDATE(SYSDATE(), INTERVAL list_index MINUTE)
 FROM cananolab.derived_bioassay_data d,
 	cananolab.lab_file f,
 	cananolab.characterization c
@@ -876,7 +876,7 @@ insert into canano.associated_element
 SELECT ce.composing_element_pk_id,
 	ce.description,
 	'DATA_MIGRATION',
-	SYSDATE(),
+	ADDDATE(SYSDATE(), INTERVAL ce.list_index MINUTE),
 	ce.chemical_name
 FROM cananolab.composing_element ce,
 	cananolab.characterization c
@@ -1198,7 +1198,7 @@ SELECT
 	l.function_pk_id,
 	'other',
 	'DATA_MIGRATION',
-	SYSDATE()
+	ADDDATE(SYSDATE(), INTERVAL at.list_index MINUTE)
 FROM cananolab.agent_target at,
 	cananolab.agent a,
 	cananolab.linkage l
@@ -1225,7 +1225,7 @@ SELECT
 	at.description,
 	l.function_pk_id,
 	'DATA_MIGRATION',
-	SYSDATE()
+	ADDDATE(SYSDATE(), INTERVAL at.list_index MINUTE)
 FROM cananolab.agent_target at,
 	cananolab.agent a,
 	cananolab.linkage l
