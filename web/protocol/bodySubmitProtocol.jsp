@@ -164,9 +164,18 @@
 								<tr>
 									<td width="490" height="15">
 										<div align="right">
-											<div align="right">
+											<div align="right">											
+											<c:choose>
+											<c:when test="${param.dispatch eq 'setupUpdate'}">
+												<input type="reset" value="Reset"
+													onclick="javascript:location.href='submitProtocol.do?dispatch=setupUpdate&fileId=${submitProtocolForm.map.file.domainFile.id}'">
+											</c:when>
+											<c:otherwise>
 												<input type="reset" value="Reset"
 													onclick="javascript:location.href='submitProtocol.do?dispatch=setup&page=0'">
+											</c:otherwise>
+											
+											</c:choose>
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<html:submit />

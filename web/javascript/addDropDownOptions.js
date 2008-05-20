@@ -100,10 +100,14 @@ function cancelAddOption() {
 
 function resetAddOption(selectId) {
     var selectEle = document.getElementById(selectId);
-	var opt = selectEle.value;
-	if (opt != null && opt != "") {
-		if (selectEle.options[0]!= null && selectEle.options[0] != "" && selectEle.options.selectedIndex==0) {
-			selectEle.options[selectEle.options.selectedIndex] = null;
+    if (selectEle!=null){
+		var opt = selectEle.value;
+		if (opt != null && opt != "") {
+			if (selectEle.options[0]!= null && selectEle.options[0] != "" && selectEle.options.selectedIndex==0) {
+				if (selectEle.options[selectEle.options.selectedIndex].text.charAt(0)=='['){
+					selectEle.options[selectEle.options.selectedIndex] = null;
+				}			   
+			}
 		}
 	}
 	return false;

@@ -171,8 +171,7 @@
 											<td width="490" height="32">
 												<div align="right">
 													<div align="right">
-														<input type="reset" value="Reset"
-															onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
+														<input type="reset" value="Reset" onclick="resetAddOption('reportCategories')">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<c:if test="${!empty param.particleId}">
