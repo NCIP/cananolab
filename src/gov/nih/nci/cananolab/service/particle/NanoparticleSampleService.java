@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -31,7 +32,10 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.directwebremoting.impl.DefaultWebContextBuilder;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -692,6 +696,7 @@ public class NanoparticleSampleService {
 				List<String> accessibleGroups = auth.getAccessibleGroups(
 						particleBean.getDomainParticleSample().getName(),
 						CaNanoLabConstants.CSM_READ_ROLE);
+				removeSampleSourceFromVisibilityGroup(accessibleGroups, particleBean);
 				String[] visibilityGroups = accessibleGroups
 						.toArray(new String[0]);
 				particleBean.setVisibilityGroups(visibilityGroups);
@@ -704,6 +709,13 @@ public class NanoparticleSampleService {
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
+	}
+	
+	private void removeSampleSourceFromVisibilityGroup(List<String> accessibleGroups,
+			ParticleBean particleBean) {
+		String sampleSource = particleBean.getDomainParticleSample().getSource().getOrganizationName();
+		if(sampleSource != null)
+			accessibleGroups.remove(sampleSource);
 	}
 
 	public void deleteAnnotationById(String className, Long dataId)
@@ -744,5 +756,25 @@ public class NanoparticleSampleService {
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
+	}
+	
+	public String[] removeSourceVisibility(String sampleSource) {
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		HttpServletRequest request = webContext.getHttpServletRequest();
+		
+		try {
+			SortedSet<String> visibilityGroup = 
+				InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
+			visibilityGroup.remove(sampleSource);
+			String[] eleArray = new String[visibilityGroup.size()];
+			return visibilityGroup.toArray(eleArray);
+			
+		} catch (Exception e) {
+			System.out.println("removeSourceVisibility exception.");
+			e.printStackTrace();
+		}
+		
+		return new String[] { "" };
 	}
 }
