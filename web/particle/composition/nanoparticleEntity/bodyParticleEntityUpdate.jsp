@@ -333,7 +333,16 @@ function confirmDeletion()
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="">
+												<c:choose>
+													<c:when test="${param.dispatch eq 'setupUpdate'}">
+														<input type="reset" value="Reset"
+															onclick="javascript:location.href='nanoparticleEntity.do?page=0&dispatch=setupUpdate&particleId=${param.particleId}&dataId=${param.dataId}&submitType=Nanoparticle+Entity'">
+													</c:when>
+													<c:otherwise>
+														<input type="reset" value="Reset"
+															onclick="javascript:location.href='nanoparticleEntity.do?particleId=${param.particleId}&submitType=Nanoparticle+Entity&page=0&dispatch=setup'">
+													</c:otherwise>
+												</c:choose>
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<c:choose>
