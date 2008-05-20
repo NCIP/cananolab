@@ -1358,6 +1358,280 @@ WHERE lcase(ce.chemical_name) = 'luc8'
 ;
 
 
+-- common_lookup table for used defined "other" types
+
+-- def_activation_method
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'ActivationMethod',
+	'otherType',
+	def.name
+FROM cananolab.def_activation_method def
+WHERE activation_method_pk_id > 30
+;
+
+-- def_bond_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'Attachment',
+	'otherBondType',
+	def.name
+FROM cananolab.def_bond_type def
+WHERE bond_type_pk_id > 30
+;
+
+-- def_cellline_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'Cytotoxicity',
+	'otherCellLine',
+	def.name
+FROM cananolab.def_cellline_type def
+WHERE cellline_type_pk_id > 30
+;
+
+-- def_characterization_file_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'LabFile',
+	'otherType',
+	def.name
+FROM cananolab.def_characterization_file_type def
+WHERE file_type_pk_id > 30
+;
+
+-- def_composing_element_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'ComposingElement',
+	'otherType',
+	def.name
+FROM cananolab.def_composing_element_type def
+WHERE composing_element_type_pk_id > 30
+;
+
+-- def_datum_name
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	REPLACE(def.characterization_name, ' ', ''),
+	'otherDerivedDatumName',
+	def.name
+FROM cananolab.def_datum_name def
+WHERE datum_name_pk_id > 30
+;
+
+-- def_image_contrast_agent_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'ImagingFunction',
+	'otherModality',
+	def.name
+FROM cananolab.def_image_contrast_agent_type def
+WHERE agent_type_pk_id > 30
+;
+
+-- def_measure_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'DerivedDatum',
+	'otherValueType',
+	def.name
+FROM cananolab.def_measure_type def
+WHERE measure_type_pk_id > 30
+;
+
+-- def_measure_unit
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'SampleContainer',
+	'otherConcentrationUnit',
+	def.unit_name
+FROM cananolab.def_measure_unit def
+WHERE measure_unit_pk_id > 30
+AND def.unit_type = 'Concentration'
+;
+
+-- def_measure_unit
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'SampleContainer',
+	'otherQuantityUnit',
+	def.unit_name
+FROM cananolab.def_measure_unit def
+WHERE measure_unit_pk_id > 30
+AND def.unit_type = 'Quantity'
+;
+
+-- def_measure_unit
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'SampleContainer',
+	'otherVolumeUnit',
+	def.unit_name
+FROM cananolab.def_measure_unit def
+WHERE measure_unit_pk_id > 30
+AND def.unit_type = 'Volume'
+;
+
+-- def_measure_unit
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'molecular weight',
+	'otherUnit',
+	def.unit_name
+FROM cananolab.def_measure_unit def
+WHERE measure_unit_pk_id > 30
+AND def.unit_type = 'Molecular Weight'
+;
+
+-- def_measure_unit
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'charge',
+	'otherUnit',
+	def.unit_name
+FROM cananolab.def_measure_unit def
+WHERE measure_unit_pk_id > 30
+AND def.unit_type = 'Charge'
+;
+
+-- def_measure_unit
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'surface area',
+	'otherUnit',
+	def.unit_name
+FROM cananolab.def_measure_unit def
+WHERE measure_unit_pk_id > 30
+AND def.unit_type = 'Area'
+;
+
+-- def_molecular_formula_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'SurfaceChemistry',
+	'otherMolecularFormulaType',
+	def.name
+FROM cananolab.def_molecular_formula_type def
+WHERE molecular_formula_type_pk_id > 30
+;
+
+-- def_morphology_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'PhysicalState',
+	'otherType',
+	def.name
+FROM cananolab.def_morphology_type def
+WHERE morphology_type_pk_id > 30
+;
+
+-- def_protocol_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'Protocol',
+	'otherType',
+	def.name
+FROM cananolab.def_protocol_type def
+WHERE protocol_type_pk_id > 30
+;
+
+-- def_shape_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'Shape',
+	'otherType',
+	def.name
+FROM cananolab.def_shape_type def
+WHERE shape_type_pk_id > 30
+;
+
+-- def_solvent_type
+INSERT INTO canano.common_lookup (
+	name,
+	attribute,
+	value
+)
+SELECT
+	'Solubility',
+	'otherSolventType',
+	def.name
+FROM cananolab.def_solvent_type def
+WHERE solvent_type_pk_id > 30
+;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 
