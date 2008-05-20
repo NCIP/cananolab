@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.report;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -78,8 +79,11 @@ public class ReportService {
 
 	public List<ReportBean> findReportsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
+			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
-			String[] functionClassNames) throws ReportException,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, 
+			String[] otherFunctionTypes) throws ReportException,
 			CaNanoLabSecurityException {
 		List<ReportBean> reports = new ArrayList<ReportBean>();
 		try {
@@ -115,8 +119,8 @@ public class ReportService {
 			crit.createAlias(
 					"funcEntity.functionCollection", "func",
 					CriteriaSpecification.LEFT_JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -126,10 +130,13 @@ public class ReportService {
 				reports.add(new ReportBean(report));
 			}
 			List<ReportBean> compositionFiltered = filterByCompositions(
-					nanoparticleEntityClassNames,
-					functionalizingEntityClassNames, reports);
+					nanoparticleEntityClassNames, otherNanoparticleTypes,
+					functionalizingEntityClassNames, 
+					otherFunctionalizingEntityTypes, reports);
+			
 			List<ReportBean> theReports = filterByFunctions(functionClassNames,
-					compositionFiltered);
+					otherFunctionTypes, compositionFiltered);
+			
 			return theReports;
 		} catch (Exception e) {
 			String err = "Problem finding report info.";
@@ -139,7 +146,7 @@ public class ReportService {
 	}
 
 	private List<ReportBean> filterByFunctions(String[] functionClassNames,
-			List<ReportBean> reports) {
+			String[] otherFunctionTypes, List<ReportBean> reports) {
 		NanoparticleSampleService sampleService = new NanoparticleSampleService();
 		if (functionClassNames != null && functionClassNames.length > 0) {
 			List<ReportBean> filteredList = new ArrayList<ReportBean>();
@@ -158,6 +165,12 @@ public class ReportService {
 						break;
 					}
 				}
+				for (String other : otherFunctionTypes) {
+					if (storedFunctions.contains(other)) {
+						filteredList.add(report);
+						break;
+					}
+				}
 			}
 			return filteredList;
 		} else {
@@ -167,7 +180,10 @@ public class ReportService {
 
 	private List<ReportBean> filterByCompositions(
 			String[] nanoparticleEntityClassNames,
-			String[] functionalizingEntityClassNames, List<ReportBean> reports) {
+			String[] otherNanoparticleEntityTypes,
+			String[] functionalizingEntityClassNames, 
+			String[] otherFunctionalizingEntityTypes,
+			List<ReportBean> reports) {
 		NanoparticleSampleService sampleService = new NanoparticleSampleService();
 
 		List<ReportBean> filteredList1 = new ArrayList<ReportBean>();
@@ -183,6 +199,13 @@ public class ReportService {
 				for (String entity : nanoparticleEntityClassNames) {
 					// if at least one function type matches, keep the report
 					if (storedEntities.contains(entity)) {
+						filteredList1.add(report);
+						break;
+					}
+				}
+				for (String other : otherNanoparticleEntityTypes) {
+					// if at least one function type matches, keep the particle
+					if (storedEntities.contains(other)) {
 						filteredList1.add(report);
 						break;
 					}
@@ -206,6 +229,13 @@ public class ReportService {
 				for (String entity : functionalizingEntityClassNames) {
 					// if at least one function type matches, keep the report
 					if (storedEntities.contains(entity)) {
+						filteredList2.add(report);
+						break;
+					}
+				}
+				for (String other : otherFunctionalizingEntityTypes) {
+					// if at least one function type matches, keep the particle
+					if (storedEntities.contains(other)) {
 						filteredList2.add(report);
 						break;
 					}
