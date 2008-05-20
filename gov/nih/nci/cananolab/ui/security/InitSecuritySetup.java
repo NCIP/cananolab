@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -64,6 +65,17 @@ public class InitSecuritySetup {
 		SortedSet<String> groupNames = authorizationService
 				.getAllVisibilityGroups();
 		request.getSession().setAttribute("allVisibilityGroups", groupNames);
+		return groupNames;
+	}
+
+	public SortedSet<String> getAllVisibilityGroupsWithoutSource(
+			HttpServletRequest request, ParticleBean particleBean)
+			throws CaNanoLabSecurityException {
+		SortedSet<String> groupNames = getAllVisibilityGroups(request);
+		String sampleSource = particleBean.getDomainParticleSample().getSource().getOrganizationName();
+		if(sampleSource != null)
+				groupNames.remove(sampleSource);
+		request.getSession().setAttribute("allVisibilityGroupsNoSource", groupNames);
 		return groupNames;
 	}
 
