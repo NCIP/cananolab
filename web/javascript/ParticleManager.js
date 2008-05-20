@@ -22,4 +22,17 @@ function populateParticleNames(particleNames) {
 	}
 	dwr.util.addOptions("particleName", updatedParticleNames);
 }
+function removeSourceVisibility() {
+	var sampleSource = document.getElementById("sampleSource").value;
+	
+	if(sampleSource.charAt(0) == "[" &&
+			sampleSource.charAt(otext.length - 1) == "]") 
+			return false;
+			
+	NanoparticleSampleManager.removeSourceVisibility(sampleSource, function (data) {
+		dwr.util.removeAllOptions("visibilityGroup");
+		dwr.util.addOptions("visibilityGroup", data);
+	});
+	return false;
+}
 

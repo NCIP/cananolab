@@ -26,6 +26,12 @@
 			<include method="getInstrumentAbbreviation" />
 			<include method="getDerivedDatumValueUnits" />
 		</create>
+		<create creator="new" javascript="NanoparticleSampleManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.service.particle.NanoparticleSampleService" />
+			<include method="removeSourceVisibility" />
+		</create>
 		<create creator="new" javascript="ProtocolManager"
 			scope="session">
 			<param name="class"
