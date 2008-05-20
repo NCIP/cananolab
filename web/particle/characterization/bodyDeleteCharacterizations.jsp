@@ -4,14 +4,33 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript">
 <!--//
-function confirmDeletion()
+function confirmDeletion(deleteName, deleteMsg)
 {
-	answer = confirm("Are you sure you want to delete the characterization?")
-	if (answer !=0)
-	{
-		this.document.forms[0].dispatch.value="deleteAll";
-		this.document.forms[0].submit(); 
-		return true;
+	var checkedCount = 0;
+	var i = 0;
+	if (deleteName.value!=null){
+		if (deleteName.checked){
+			checkedCount = 1;
+		}
+	}else if (deleteName.length>0){
+		for (i=0; i<deleteName.length; i++){
+			if (deleteName[i].checked){
+				checkedCount++;
+				break;
+			}
+		}	
+	}
+	if (checkedCount==0){
+		alert('Please select at least one '+deleteMsg+' to delete');
+		return false;
+	}else{
+		answer = confirm('Are you sure you want to delete the '+deleteMsg+'?')		
+		if (answer !=0)
+		{
+			this.document.forms[0].dispatch.value="deleteAll";
+			this.document.forms[0].submit(); 
+			return true;
+		}
 	}
 }
 //-->
@@ -86,7 +105,7 @@ function confirmDeletion()
 												<input type="hidden" name="diaplayType"
 													value="${param.displayType}" />
 												<input type="button" value="Delete"
-													onclick="confirmDeletion();" />
+													onclick="confirmDeletion(charIdsToDelete, 'characterization');" />
 												<input type="hidden" name="page" value="2">
 											</div>
 										</div>
