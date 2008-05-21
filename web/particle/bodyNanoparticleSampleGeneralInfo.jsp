@@ -63,19 +63,6 @@
 							&nbsp;
 						</td>
 					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Visibility</strong>
-						</td>
-						<td class="rightLabel">
-							<c:forEach var="visibility"
-								items="${nanoparticleSampleForm.map.particleSampleBean.visibilityGroups}">
-								<c:out value="${visibility}" />
-								<br>
-							</c:forEach>
-							&nbsp;
-						</td>
-					</tr>
 				</tbody>
 			</table>
 		</td>
