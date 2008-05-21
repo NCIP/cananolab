@@ -29,7 +29,7 @@
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.service.particle.NanoparticleSampleService" />
+				value="gov.nih.nci.cananolab.ui.particle.DWRSampleManager" />
 			<include method="removeSourceVisibility" />
 		</create>
 		<create creator="new" javascript="ProtocolManager"
