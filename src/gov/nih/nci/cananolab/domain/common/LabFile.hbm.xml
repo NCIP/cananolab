@@ -22,7 +22,7 @@
 		<property name="uriExternal" type="boolean" column="is_uri_external"/>		
 		<property name="version" type="string" column="version"/>
 		<!-- Associations mapping for the LabFile class -->
-		<set name="keywordCollection" table="keyword_lab_file" lazy="false" inverse="false" cascade="save-update">
+		<set name="keywordCollection" table="keyword_lab_file" lazy="false" inverse="false">
 			<cache usage="read-write" />
 			<key column="lab_file_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Keyword" column="keyword_pk_id" />
