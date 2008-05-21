@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -166,8 +167,12 @@ public class LabFileBean {
 			}
 		}
 
-		if (domainFile.getKeywordCollection() != null && keywordsStr != null) {
-			domainFile.getKeywordCollection().clear();
+		if (keywordsStr != null) {
+			if (domainFile.getKeywordCollection() != null) {
+				domainFile.getKeywordCollection().clear();
+			} else {
+				domainFile.setKeywordCollection(new HashSet<Keyword>());
+			}
 			String[] strs = keywordsStr.split("\r\n");
 			for (String str : strs) {
 				// change to upper case
