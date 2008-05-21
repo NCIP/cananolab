@@ -31,7 +31,7 @@
 						</td>
 						<td class="formTitle" colspan="3">
 							<div align="justify">
-								* for Search Wildcards
+								* for Searching Wildcards
 							</div>
 						</td>
 					</tr>
