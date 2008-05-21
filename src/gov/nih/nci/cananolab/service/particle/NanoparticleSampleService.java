@@ -696,7 +696,6 @@ public class NanoparticleSampleService {
 				List<String> accessibleGroups = auth.getAccessibleGroups(
 						particleBean.getDomainParticleSample().getName(),
 						CaNanoLabConstants.CSM_READ_ROLE);
-				removeSampleSourceFromVisibilityGroup(accessibleGroups, particleBean);
 				String[] visibilityGroups = accessibleGroups
 						.toArray(new String[0]);
 				particleBean.setVisibilityGroups(visibilityGroups);
@@ -709,13 +708,6 @@ public class NanoparticleSampleService {
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
-	}
-	
-	private void removeSampleSourceFromVisibilityGroup(List<String> accessibleGroups,
-			ParticleBean particleBean) {
-		String sampleSource = particleBean.getDomainParticleSample().getSource().getOrganizationName();
-		if(sampleSource != null)
-			accessibleGroups.remove(sampleSource);
 	}
 
 	public void deleteAnnotationById(String className, Long dataId)
@@ -758,23 +750,5 @@ public class NanoparticleSampleService {
 		}
 	}
 	
-	public String[] removeSourceVisibility(String sampleSource) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		
-		try {
-			SortedSet<String> visibilityGroup = 
-				InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
-			visibilityGroup.remove(sampleSource);
-			String[] eleArray = new String[visibilityGroup.size()];
-			return visibilityGroup.toArray(eleArray);
-			
-		} catch (Exception e) {
-			System.out.println("removeSourceVisibility exception.");
-			e.printStackTrace();
-		}
-		
-		return new String[] { "" };
-	}
+	
 }
