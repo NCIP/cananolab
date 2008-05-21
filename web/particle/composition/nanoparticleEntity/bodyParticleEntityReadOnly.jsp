@@ -202,12 +202,14 @@
 											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.title}" />
 										<jsp:param name="fileKeywordsStr"
 											value="${nanoparticleEntityForm.map.entity.files[fileInd].keywordsStr}" />
-										<jsp:param name="fileVisibilityGroups"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].visibilityGroups}" />
+										<jsp:param name="visibilityStr"
+											value="${nanoparticleEntityForm.map.entity.files[fileInd].visibilityStr}" />
 										<jsp:param name="uriExternal"
 											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
 										<jsp:param name="fileImage"
 											value="${nanoparticleEntityForm.map.entity.files[fileInd].image}" />
+										<jsp:param name="fileHidden"
+											value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
 									</jsp:include>
 
 									<br>
