@@ -79,7 +79,7 @@
 						<strong>Visibility</strong>
 					</td>
 					<td class="rightLabel" >
-						${param.visibilityGroup }&nbsp;
+						${param.visibilityStr }&nbsp;
 					</td>
 				</tr>
 			</c:when>

@@ -2,6 +2,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c_rt"%>
+
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript"
@@ -25,9 +27,19 @@
 					${particleName} ${pageTitle}
 				</h4>
 			</td>
-			<td align="right" width="20%">			
-				<jsp:include page="/webHelp/helpGlossary.jsp">				
-					<jsp:param name="topic" value="char_details_help" />
+			<c_rt:set var='dispatch' value='<%=request.getParameter("dispatch")%>'/>
+			<c:set var="helpTopic" value="char_details_help" />
+			<c:choose>
+				<c:when test='${"Physical Characterization" eq pageTitle && "setup" eq dispatch}'>
+					<c:set var="helpTopic" value="add_physical_char_help" />
+				</c:when>
+				<c:when test='${"In Vitro Characterization" eq pageTitle && "setup" eq dispatch}'>
+					<c:set var="helpTopic" value="add_in_vitro_char_help" />
+				</c:when>				
+			</c:choose>	
+			<td align="right" width="20%">
+				<jsp:include page="/webHelp/helpGlossary.jsp">			
+					<jsp:param name="topic" value="${helpTopic}" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>			
 			</td>
@@ -119,12 +131,14 @@
 																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.title}" />
 															<jsp:param name="fileKeywordsStr"
 																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.keywordsStr}" />
-															<jsp:param name="fileVisibilityGroups"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.visibilityGroups}" />
+															<jsp:param name="visibilityStr"
+																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.visibilityStr}" />
 															<jsp:param name="uriExternal"
 																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.domainFile.uriExternal}" />
 															<jsp:param name="fileImage"
 																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.image}" />
+															<jsp:param name="fileHidden"
+																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].labFileBean.hidden}" />
 														</jsp:include>
 														<br>
 													</logic:iterate>
