@@ -237,12 +237,14 @@
 											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.title}" />
 										<jsp:param name="fileKeywordsStr"
 											value="${functionalizingEntityForm.map.entity.files[fileInd].keywordsStr}" />
-										<jsp:param name="fileVisibilityGroups"
-											value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityGroups}" />
+										<jsp:param name="visibilityStr"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityStr}" />
 										<jsp:param name="uriExternal"
 											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
 										<jsp:param name="fileImage"
 											value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
+										<jsp:param name="fileHidden"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
 									</jsp:include>
 
 									<br>
