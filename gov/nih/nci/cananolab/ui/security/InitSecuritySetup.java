@@ -78,6 +78,14 @@ public class InitSecuritySetup {
 		request.getSession().setAttribute("allVisibilityGroupsNoSource", groupNames);
 		return groupNames;
 	}
+	
+	public SortedSet<String> getAllVisibilityGroupsWithoutSource(
+			HttpServletRequest request)
+			throws CaNanoLabSecurityException {
+		SortedSet<String> groupNames = getAllVisibilityGroups(request);
+		request.getSession().setAttribute("allVisibilityGroupsNoSource", groupNames);
+		return groupNames;
+	}
 
 	/**
 	 * Create default CSM groups for default visible groups and admin , and
