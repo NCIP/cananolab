@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -74,7 +75,7 @@ public class InitSecuritySetup {
 		SortedSet<String> groupNames = getAllVisibilityGroups(request);
 		String sampleSource = particleBean.getDomainParticleSample().getSource().getOrganizationName();
 		if(sampleSource != null)
-				groupNames.remove(sampleSource);
+			groupNames.remove(sampleSource);
 		request.getSession().setAttribute("allVisibilityGroupsNoSource", groupNames);
 		return groupNames;
 	}
