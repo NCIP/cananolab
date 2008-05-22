@@ -31,11 +31,32 @@
 						</td>
 						<td class="formTitle" colspan="3">
 							<div align="justify">
-								* for Searching Wildcards
+								* for searching wildcards
 							</div>
 						</td>
 					</tr>
-
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Search Location</strong>
+						</td>
+						<td class="rightLabel" colspan="5">
+							<strong><html:select property="searchLocations"
+									multiple="true" size="3">
+									<option value="local" selected>
+										Local
+									</option>
+									<option value="caNanoLab-NCL_PROD">
+										caNanoLab-NCL_PROD
+									</option>
+									<option value="caNanoLab-PROD">
+										caNanoLab-PROD
+									</option>
+									<option value="caNanoLab-WUSTL">
+										caNanoLab-WUSTL
+									</option>
+								</html:select> </strong>
+						</td>
+					</tr>
 					<tr>
 						<td class="leftLabel">
 							<strong>Protocol Type</strong>

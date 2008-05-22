@@ -12,8 +12,8 @@
 		</form-bean>
 		<form-bean name="searchNanoparticleSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleSources"
-				type="java.lang.String[]" />
+			<form-property name="particleSource"
+				type="java.lang.String" />
 			<form-property name="nanoparticleEntityTypes"
 				type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes"

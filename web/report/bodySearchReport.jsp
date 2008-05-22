@@ -24,10 +24,37 @@
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
-						<td class="formTitle" colspan="6">
+						<td class="formTitle">
 							<div align="justify">
 								Search Criteria
 							</div>
+						</td>
+						<td class="formTitle" colspan="5">
+							<div align="justify">
+								* for searching wildcards
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Search Location</strong>
+						</td>
+						<td class="rightLabel" colspan="5">
+							<strong><html:select property="searchLocations"
+									multiple="true" size="3">
+									<option value="local" selected>
+										Local
+									</option>
+									<option value="caNanoLab-NCL_PROD">
+										caNanoLab-NCL_PROD
+									</option>
+									<option value="caNanoLab-PROD">
+										caNanoLab-PROD
+									</option>
+									<option value="caNanoLab-WUSTL">
+										caNanoLab-WUSTL
+									</option>
+								</html:select> </strong>
 						</td>
 					</tr>
 					<tr>
@@ -75,28 +102,6 @@
 							<strong><html:select property="functionTypes"
 									multiple="true" size="3">
 									<html:options name="functionTypes" />
-								</html:select> </strong>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Search Location</strong>
-						</td>
-						<td class="rightLabel" colspan="5">
-							<strong><html:select property="searchLocations"
-									multiple="true" size="3">
-									<option value="local" selected>
-										Local
-									</option>
-									<option value="caNanoLab-NCL_PROD">
-										caNanoLab-NCL_PROD
-									</option>
-									<option value="caNanoLab-PROD">
-										caNanoLab-PROD
-									</option>
-									<option value="caNanoLab-WUSTL">
-										caNanoLab-WUSTL
-									</option>
 								</html:select> </strong>
 						</td>
 					</tr>
