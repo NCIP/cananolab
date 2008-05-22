@@ -28,6 +28,7 @@ function confirmDeletion(deleteName, deleteMsg)
 		if (answer !=0)
 		{
 			this.document.forms[0].dispatch.value="deleteAll";
+			this.document.forms[0].page.value="1";
 			this.document.forms[0].submit(); 
 			return true;
 		}

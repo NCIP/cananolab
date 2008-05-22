@@ -10,6 +10,7 @@ function confirmDeletion()
 	if (answer !=0)
 	{
 		this.document.forms[0].dispatch.value="delete";
+		this.document.forms[0].page.value="1";
 		this.document.forms[0].submit(); 
 		return true;
 	}
