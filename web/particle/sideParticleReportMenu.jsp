@@ -31,6 +31,7 @@
 									<c:param name="fileId" value="${dataLinkBean.dataId}" />
 									<c:param name="submitType"
 										value="${reportDisplayType}" />
+									<c:param name="location" value="${location}" />
 								</c:url>
 								<li>
 									<a href=${url } class="sublist_5_report"><span

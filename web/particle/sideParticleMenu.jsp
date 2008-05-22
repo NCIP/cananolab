@@ -39,6 +39,8 @@
 		<c:set var="particleSource"
 			value="${theParticle.domainParticleSample.source.organizationName}"
 			scope="session" />
+		<c:set var="location"
+			value="${theParticle.location}" scope="session" />
 	</c:when>
 </c:choose>
 <c:choose>
@@ -83,37 +85,8 @@
 					SAMPLE MANAGEMENT
 				</li>
 				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
-
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
 				<jsp:include page="sideParticleReportMenu.jsp"></jsp:include>
-				
-<%--				<c:choose>--%>
-<%--					<c:when test="${!empty particleReports}">--%>
-<%--						<li class="controlList">--%>
-<%--							<a href="#" class="subMenuSecondary">REPORTS</a>--%>
-<%--							<ul class="sublist_5" style="${reportDisplay}">--%>
-<%--								<c:forEach var="aReport" items="${particleReports}">--%>
-<%--									<c:url var="url" value="updateReportForParticle.do">--%>
-<%--										<c:param name="submitType" value="report" />--%>
-<%--										<c:param name="page" value="0" />--%>
-<%--										<c:param name="dispatch" value="${dispatchValue}" />--%>
-<%--										<c:param name="fileId" value="${aReport.id}" />--%>
-<%--										<c:param name="fileType" value="${aReport.type}" />--%>
-<%--									</c:url>--%>
-<%--									<li>--%>
-<%--										<a href="${url}" title="${aReport.displayName}"><span--%>
-<%--											class="data_anchar">>&nbsp;</span>${aReport.name}</a>--%>
-<%--									</li>--%>
-<%--								</c:forEach>--%>
-<%--							</ul>--%>
-<%--						</li>--%>
-<%--					</c:when>--%>
-<%--					<c:otherwise>--%>
-<%--						<li class="nodatali">--%>
-<%--							REPORTS--%>
-<%--						</li>--%>
-<%--					</c:otherwise>--%>
-<%--				</c:choose>--%>
 
 				<li class="nodatali" id="invivolist">
 					IN VIVO CHARACTERIZATIONS

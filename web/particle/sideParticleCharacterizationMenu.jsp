@@ -145,6 +145,7 @@
 					<jsp:param name="tableStyle" value="charTitle" />
 					<jsp:param name="addLinkStyle" value="addCell" />
 					<jsp:param name="addAction" value="physicalCharacterization" />
+					<jsp:param name="location" value="${location}" />
 				</jsp:include>
 				<c:if test="${!empty particleDataTree[physicalChara]}">
 					<ul class="sublist_5" style="${phyDisplay}">
@@ -156,6 +157,7 @@
 								<c:param name="particleId" value="${particleId}" />
 								<c:param name="dataId" value="${leafCharBean.dataId}" />
 								<c:param name="submitType" value="${leafCharBean.dataDisplayType}" />
+								<c:param name="location" value="${location}" />
 							</c:url>
 						<li id="${leafCharBean.dataId}">
 							<c:choose>
@@ -221,6 +223,7 @@
 										<jsp:param name="tableStyle" value="subTitleTable" />
 										<jsp:param name="addLinkStyle" value="addCellVitro" />
 										<jsp:param name="addAction" value="invitroCharacterization" />
+										<jsp:param name="location" value="${location}" />
 									</jsp:include>
 								</c:otherwise>
 							</c:choose>
@@ -238,6 +241,7 @@
 												<c:param name="dataId"
 													value="${leafCharBean.dataId}" />
 												<c:param name="submitType" value="${leafCharBean.dataDisplayType}" />
+												<c:param name="location" value="${location}" />
 											</c:url>
 											<li>
 											<c:choose>
@@ -285,6 +289,7 @@
 																<jsp:param name="addLinkStyle" value="addCell" />
 																<jsp:param name="addAction"
 																	value="invitroCharacterization" />
+																<jsp:param name="location" value="${location}" />
 															</jsp:include>
 														</c:otherwise>
 													</c:choose>
@@ -302,6 +307,7 @@
 																			value="${leafCharBean.dataId}" />
 																		<c:param name="submitType"
 																			value="${leafCharBean.dataDisplayType}" />
+																		<c:param name="location" value="${location}" />
 																	</c:url>
 																	<li>
 																	<c:choose>
@@ -332,6 +338,7 @@
 																				<c:param name="submitType" value="${fifthLevelChar}" />
 																				<c:param name="page" value="0" />
 																				<c:param name="dispatch" value="setup" />
+																				<c:param name="location" value="${location}" />
 																			</c:url>
 																			<jsp:include
 																				page="sideParticleCharacterizationMenuButtons.jsp">
@@ -345,6 +352,7 @@
 																				<jsp:param name="addLinkStyle" value="addCellVitro" />
 																				<jsp:param name="addAction"
 																					value="invitroCharacterization" />
+																				<jsp:param name="location" value="${location}" />
 																			</jsp:include>
 																			<c:if
 																				test="${!empty particleDataTree[fifthLevelChar]}">
@@ -360,6 +368,7 @@
 																								value="${leafCharBean.dataId}" />
 																							<c:param name="submitType"
 																								value="${leafCharBean.dataDisplayType}" />
+																							<c:param name="location" value="${location}" />
 																						</c:url>
 																						<li>
 																						<c:choose>
