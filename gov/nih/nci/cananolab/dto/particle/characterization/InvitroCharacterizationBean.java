@@ -1,14 +1,12 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import java.util.Map;
-
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.Caspase3Activation;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.CellViability;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Shape;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.util.ClassUtils;
+
+import java.util.Map;
 
 public class InvitroCharacterizationBean extends CharacterizationBean {
 	private Caspase3Activation caspase3Activation = new Caspase3Activation();
