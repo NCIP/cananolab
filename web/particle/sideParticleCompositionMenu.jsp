@@ -32,6 +32,7 @@
 							<jsp:param name="tableStyle" value="charTitle" />
 							<jsp:param name="addLinkStyle" value="addCell" />
 							<jsp:param name="addAction" value="${compoDataBean.dataLink}" />
+							<jsp:param name="location" value="${location}" />
 						</jsp:include>
 						<c:if
 							test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
@@ -45,6 +46,8 @@
 										<c:param name="dataId" value="${dataLinkBean.dataId}" />
 										<c:param name="submitType"
 											value="${compoDataBean.dataDisplayType}" />
+										<c:param name="location"
+											value="${location}" />
 									</c:url>
 									<li id="complist">
 										<c:choose>

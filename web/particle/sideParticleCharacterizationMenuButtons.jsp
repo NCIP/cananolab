@@ -23,6 +23,7 @@
 								<c:param name="submitType" value="${param.charType}" />
 								<c:param name="page" value="0" />
 								<c:param name="dispatch" value="summaryView" />
+								<c:param name="location" value="${param.location}" />
 							</c:url>
 							<a href="${url}" class="${param.charTypeStyle}">${param.charType}</a>
 						
@@ -44,6 +45,7 @@
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
 					<c:param name="dispatch" value="setup" />
+					<c:param name="location" value="${param.location}" />
 				</c:url>
 				<td>
 					&nbsp;
@@ -68,6 +70,7 @@
 					<c:param name="submitType" value="${param.charType}" />
 					<c:param name="page" value="0" />
 					<c:param name="dispatch" value="setupDeleteAll" />
+					<c:param name="location" value="${param.location}" />
 				</c:url>
 				<td>
 					&nbsp;
