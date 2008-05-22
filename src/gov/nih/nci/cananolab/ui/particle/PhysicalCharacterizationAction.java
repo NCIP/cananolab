@@ -6,14 +6,17 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.29 2008-05-15 19:21:50 tanq Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.30 2008-05-22 22:42:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,18 +58,18 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
-		
-		if(!validateDerivedDatum(request, charBean)) {
+
+		if (!validateDerivedDatum(request, charBean)) {
 			return mapping.getInputForward();
 		}
-		
+
 		saveCharacterization(request, theForm, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistPhysicalCharacterizationDropdowns(request, charBean);
-		
+
 		ActionMessages msgs = new ActionMessages();
-		//validate number by javascript filterFloatingNumber
-		//validateNumber(request, charBean, msgs);			
+		// validate number by javascript filterFloatingNumber
+		// validateNumber(request, charBean, msgs);
 		ActionMessage msg = new ActionMessage(
 				"message.addPhysicalCharacterization");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -74,14 +77,14 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		ActionForward forward = mapping.findForward("success");
 		return forward;
 	}
-	
+
 	protected void validateNumber(HttpServletRequest request,
-			PhysicalCharacterizationBean charBean, ActionMessages msgs) throws Exception {
-		if (charBean.getSolubility().getCriticalConcentration()==0.0){			
-			ActionMessage msg = new ActionMessage(
-					"message.invalidNumber");
+			PhysicalCharacterizationBean charBean, ActionMessages msgs)
+			throws Exception {
+		if (charBean.getSolubility().getCriticalConcentration() == 0.0) {
+			ActionMessage msg = new ActionMessage("message.invalidNumber");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		}		
+		}
 	}
 
 	protected CharacterizationBean getCharacterizationBean(
@@ -123,7 +126,10 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
 		String particleId = theForm.getString("particleId");
-		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
+		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+		ParticleBean particleBean = sampleService
+				.findNanoparticleSampleById(particleId);
+		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
 	}
 

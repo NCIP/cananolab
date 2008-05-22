@@ -8,6 +8,8 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -41,24 +43,32 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	public ParticleBean setupParticle(DynaValidatorForm theForm,
-			HttpServletRequest request) throws Exception {
+			HttpServletRequest request, String location) throws Exception {
 		String particleId = request.getParameter("particleId");
 		if (particleId == null) {
 			particleId = theForm.getString("particleId");
 		}
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-
-		NanoparticleSampleService service = new NanoparticleSampleService();
+		NanoparticleSampleService service = null;
+		if (location.equals("local")) {
+			service = new NanoparticleSampleServiceLocalImpl();
+		} else {
+			// TODO get serviceURL
+			String serviceUrl = "";
+			service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+		}
 		ParticleBean particleBean = service
 				.findNanoparticleSampleById(particleId);
+		particleBean.setLocation(location);
 		request.setAttribute("theParticle", particleBean);
-		InitNanoparticleSetup.getInstance().getOtherParticleNames(
-				request,
-				particleBean.getDomainParticleSample().getName(),
-				particleBean.getDomainParticleSample().getSource()
-						.getOrganizationName(), user);
-
+		if (location.equals("local")) {
+			InitNanoparticleSetup.getInstance().getOtherParticleNames(
+					request,
+					particleBean.getDomainParticleSample().getName(),
+					particleBean.getDomainParticleSample().getSource()
+							.getOrganizationName(), user);
+		}
 		return particleBean;
 	}
 
@@ -87,23 +97,38 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 
-	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
+	public Map<String, SortedSet<DataLinkBean>> setupDataTree0(
 			DynaValidatorForm theForm, HttpServletRequest request)
 			throws Exception {
 		request.setAttribute("updateDataTree", "true");
 		String particleId = request.getParameter("particleId");
 		if (particleId == null) {
 			if (theForm.getMap().containsKey("particleSampleBean")) {
+
 				particleId = ((ParticleBean) theForm.get("particleSampleBean"))
 						.getDomainParticleSample().getId().toString();
 			} else {
 				particleId = theForm.getString("particleId");
 			}
 		}
+		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
+		ParticleBean particleBean = service
+				.findNanoparticleSampleById(particleId);
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "reportCategories",
 						"Report", "category", "otherCategory", true);
-		return InitNanoparticleSetup.getInstance().getDataTree(particleId,
+		return InitNanoparticleSetup.getInstance().getDataTree(particleBean,
+				request);
+	}
+
+	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
+			ParticleBean particleBean, HttpServletRequest request)
+			throws Exception {
+		request.setAttribute("updateDataTree", "true");
+		InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "reportCategories",
+						"Report", "category", "otherCategory", true);
+		return InitNanoparticleSetup.getInstance().getDataTree(particleBean,
 				request);
 	}
 
@@ -112,8 +137,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throws Exception {
 		String submitType = request.getParameter("submitType");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(theForm,
-				request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
+				particleBean, request);
 		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
 		request.getSession().setAttribute("actionName",
 				dataToDelete.first().getDataLink());
@@ -138,7 +164,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				.getCanonicalName();
 
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		NanoparticleSampleService sampleService = new NanoparticleSampleService();
+		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 		ActionMessages msgs = new ActionMessages();
 		for (String id : dataIds) {
 			if (!checkDelete(request, msgs, id)) {
@@ -146,7 +172,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			}
 			sampleService.deleteAnnotationById(fullClassName, new Long(id));
 		}
-		setupDataTree(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		setupDataTree(particleBean, request);
 		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -210,7 +237,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			return null;
 		}
 		NanoparticleSample[] particleSamples = new NanoparticleSample[otherParticles.length];
-		NanoparticleSampleService sampleService = new NanoparticleSampleService();
+		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 		int i = 0;
 		for (String other : otherParticles) {
 			NanoparticleSample particleSample = sampleService
@@ -218,44 +245,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			particleSamples[i] = particleSample;
 			i++;
 		}
-		// retrieve file contents
-
-		// FileService fileService = new FileService();
-		// for (DerivedBioAssayDataBean file : entityBean.getFiles()) {
-		// byte[] content = fileService.getFileContent(new Long(file.getId()));
-		// file.setFileContent(content);
-		// }
-		//
-		// NanoparticleSampleService service = new NanoparticleSampleService();
-		// UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// int i = 0;
-		// for (String particleName : otherParticles) {
-		// NanoparticleEntityBean newEntityBean = entityBean.copy();
-		// // overwrite particle
-		// ParticleBean otherParticle = service.findNanoparticleSampleByName(
-		// particleName, user);
-		// newrBean.setParticle(otherParticle);
-		// // reset view title
-		// String timeStamp = StringUtils.convertDateToString(new Date(),
-		// "MMddyyHHmmssSSS");
-		// String autoTitle =
-		// CaNanoLabConstants.AUTO_COPY_CHARACTERIZATION_VIEW_TITLE_PREFIX
-		// + timeStamp;
-		//
-		// newCharBean.setViewTitle(autoTitle);
-		// List<DerivedBioAssayDataBean> dataList = newCharBean
-		// .getDerivedBioAssayDataList();
-		// // replace particleName in path and uri with new particleName
-		// for (DerivedBioAssayDataBean derivedBioAssayData : dataList) {
-		// String origUri = derivedBioAssayData.getUri();
-		// if (origUri != null)
-		// derivedBioAssayData.setUri(origUri.replace(particle
-		// .getSampleName(), particleName));
-		// }
-		// charBeans[i] = newCharBean;
-		// i++;
-		// }
 		return particleSamples;
 	}
-
 }

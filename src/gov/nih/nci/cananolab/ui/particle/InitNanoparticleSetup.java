@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -48,18 +49,10 @@ public class InitNanoparticleSetup {
 	private InitNanoparticleSetup() {
 	}
 
-	private NanoparticleSampleService particleService = new NanoparticleSampleService();
+	private NanoparticleSampleService particleService = new NanoparticleSampleServiceLocalImpl();
 
 	public static InitNanoparticleSetup getInstance() {
 		return new InitNanoparticleSetup();
-	}
-
-	public SortedSet<Source> getAllNanoparticleSampleSources(
-			HttpServletRequest request) throws Exception {
-		SortedSet<Source> sampleSources = particleService
-				.findAllParticleSources();
-		request.getSession().setAttribute("allParticleSources", sampleSources);
-		return sampleSources;
 	}
 
 	public SortedSet<Source> getNanoparticleSampleSources(
@@ -85,15 +78,17 @@ public class InitNanoparticleSetup {
 
 			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
 			Map<String, String> charaClassNameMap = new HashMap<String, String>();
-			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(appContext, charaClassNameMap);
-			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(appContext, charaClassNameMap);
+			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(
+					appContext, charaClassNameMap);
+			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(
+					appContext, charaClassNameMap);
 
 			charaMap.putAll(physicalMap);
 			charaMap.putAll(invitroMap);
-			
+
 			appContext.setAttribute("charaClassNameMap", charaClassNameMap);
 			appContext.setAttribute("characterizationTypes", charaMap);
-			
+
 			return charaMap;
 
 		} else {
@@ -127,7 +122,8 @@ public class InitNanoparticleSetup {
 
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
-			ServletContext appContext, Map<String, String> charaClassNameMap) throws Exception {
+			ServletContext appContext, Map<String, String> charaClassNameMap)
+			throws Exception {
 
 		Map<String, List<String>> physicalCharaMap = new HashMap<String, List<String>>();
 		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
@@ -141,13 +137,14 @@ public class InitNanoparticleSetup {
 				"gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization",
 				indentLevel);
 		appContext.setAttribute("physicalTypes", physicalCharaMap);
-		
+
 		return searchTreeMap;
 	}
 
 	@SuppressWarnings("unchecked")
 	public Map<TreeNodeBean, List<String>> getDefaultInvitroCharacterizationTypes(
-			ServletContext appContext, Map<String, String> charaClassNameMap) throws Exception {
+			ServletContext appContext, Map<String, String> charaClassNameMap)
+			throws Exception {
 
 		Map<String, List<String>> invitroCharaMap = new HashMap<String, List<String>>();
 		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
@@ -178,12 +175,13 @@ public class InitNanoparticleSetup {
 			}
 			List<String> tempList = new ArrayList<String>();
 
-			String shortParentClassName = ClassUtils.getShortClassName(parentClassName);
+			String shortParentClassName = ClassUtils
+					.getShortClassName(parentClassName);
 			String parentDisplayName = InitSetup.getInstance().getDisplayName(
 					shortParentClassName, appContext);
-			
+
 			classNameMap.put(parentDisplayName, shortParentClassName);
-			
+
 			TreeNodeBean nodeBean = new TreeNodeBean(parentDisplayName,
 					CaNanoLabConstants.CHARACTERIZATION_ORDER_MAP
 							.get(parentDisplayName), new Integer(indentLevel));
@@ -194,14 +192,15 @@ public class InitNanoparticleSetup {
 				String displayName = InitSetup.getInstance().getDisplayName(
 						ClassUtils.getShortClassName(sclassName), appContext);
 				tempList.add(displayName);
-				
-				String shortClassName = ClassUtils.getShortClassName(sclassName);
+
+				String shortClassName = ClassUtils
+						.getShortClassName(sclassName);
 				classNameMap.put(displayName, shortClassName);
-				
-				setSubclassMap(appContext, classNameMap, typeMap, searchTreeMap, sclassName,
-						indentLevel);
+
+				setSubclassMap(appContext, classNameMap, typeMap,
+						searchTreeMap, sclassName, indentLevel);
 				subclassName = sclassName;
-				
+
 			}
 
 			nodeBean.setHasGrandChildrenFlag(ClassUtils
@@ -214,17 +213,14 @@ public class InitNanoparticleSetup {
 		}
 	}
 
-	public Map<String, SortedSet<DataLinkBean>> getDataTree(String particleId,
-			HttpServletRequest request) throws Exception {
+	public Map<String, SortedSet<DataLinkBean>> getDataTree(
+			ParticleBean particleBean, HttpServletRequest request)
+			throws Exception {
 		Map<String, SortedSet<DataLinkBean>> dataTree = new HashMap<String, SortedSet<DataLinkBean>>();
 		if (request.getAttribute("updateDataTree") != null
 				&& request.getAttribute("updateDataTree").equals("true")) {
 			ServletContext appContext = request.getSession()
 					.getServletContext();
-			// reload nanoparticle sample
-			NanoparticleSampleService particleService = new NanoparticleSampleService();
-			ParticleBean particleBean = particleService
-					.findNanoparticleSampleById(particleId);
 			NanoparticleSample particleSample = particleBean
 					.getDomainParticleSample();
 			request.getSession().setAttribute("theParticle", particleBean);
@@ -455,27 +451,4 @@ public class InitNanoparticleSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "LabFile", "type", "otherType", true);
 	}
-
-	// public void setProtocolFilesByCharType(HttpSession session, String
-	// charType)
-	// throws ParticleCharacterizationException,
-	// CaNanoLabSecurityException, ProtocolException {
-	// String protocolType = null;
-	// if (charType != null
-	// && charType
-	// .equalsIgnoreCase(Characterization.PHYSICAL_CHARACTERIZATION)) {
-	// protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
-	// } else if (charType != null
-	// && charType
-	// .equalsIgnoreCase(Characterization.INVITRO_CHARACTERIZATION)) {
-	// protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
-	// } else {
-	// protocolType = null; // update if in vivo is implemented
-	// }
-	// List<ProtocolFileBean> protocolFiles = null;
-	// protocolFiles = searchProtocolService
-	// .getProtocolFileBeans(protocolType);
-	// session.setAttribute("submitTypeProtocolFiles", protocolFiles);
-	// }
-
 }

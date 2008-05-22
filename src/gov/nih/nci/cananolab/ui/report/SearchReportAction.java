@@ -2,10 +2,11 @@ package gov.nih.nci.cananolab.ui.report;
 
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.report.ReportService;
+import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
+import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
@@ -30,7 +31,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.6 2008-05-20 21:01:53 cais Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.7 2008-05-22 22:42:20 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -47,12 +48,13 @@ public class SearchReportAction extends BaseAnnotationAction {
 		String[] nanoparticleEntityTypes = (String[]) theForm
 				.get("nanoparticleEntityTypes");
 		// convert nanoparticle entity display names into short class names
-//		String[] nanoparticleEntityClassNames = new String[nanoparticleEntityTypes.length];
-//		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
-//			nanoparticleEntityClassNames[i] = InitSetup.getInstance()
-//					.getObjectName(nanoparticleEntityTypes[i],
-//							session.getServletContext());
-//		}
+		// String[] nanoparticleEntityClassNames = new
+		// String[nanoparticleEntityTypes.length];
+		// for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
+		// nanoparticleEntityClassNames[i] = InitSetup.getInstance()
+		// .getObjectName(nanoparticleEntityTypes[i],
+		// session.getServletContext());
+		// }
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
 		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
@@ -65,16 +67,17 @@ public class SearchReportAction extends BaseAnnotationAction {
 				nanoparticleEntityClassNames.add(className);
 			}
 		}
-		
+
 		String[] functionalizingEntityTypes = (String[]) theForm
 				.get("functionalizingEntityTypes");
 		// convert functionalizing entity display names into short class names
-//		String[] functionalizingEntityClassNames = new String[functionalizingEntityTypes.length];
-//		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-//			functionalizingEntityClassNames[i] = InitSetup.getInstance()
-//					.getObjectName(functionalizingEntityTypes[i],
-//							session.getServletContext());
-//		}
+		// String[] functionalizingEntityClassNames = new
+		// String[functionalizingEntityTypes.length];
+		// for (int i = 0; i < functionalizingEntityTypes.length; i++) {
+		// functionalizingEntityClassNames[i] = InitSetup.getInstance()
+		// .getObjectName(functionalizingEntityTypes[i],
+		// session.getServletContext());
+		// }
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
@@ -87,14 +90,14 @@ public class SearchReportAction extends BaseAnnotationAction {
 				functionalizingEntityClassNames.add(className);
 			}
 		}
-		
+
 		String[] functionTypes = (String[]) theForm.get("functionTypes");
 		// convert function display names into short class names
-//		String[] functionClassNames = new String[functionTypes.length];
-//		for (int i = 0; i < functionTypes.length; i++) {
-//			functionClassNames[i] = InitSetup.getInstance().getObjectName(
-//					functionTypes[i], session.getServletContext());
-//		}
+		// String[] functionClassNames = new String[functionTypes.length];
+		// for (int i = 0; i < functionTypes.length; i++) {
+		// functionClassNames[i] = InitSetup.getInstance().getObjectName(
+		// functionTypes[i], session.getServletContext());
+		// }
 		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		for (int i = 0; i < functionTypes.length; i++) {
@@ -107,27 +110,47 @@ public class SearchReportAction extends BaseAnnotationAction {
 				functionClassNames.add(className);
 			}
 		}
-
-		ReportService service = new ReportService();
-		List<ReportBean> reports = service.findReportsBy(reportTitle, reportCategory, 
-				nanoparticleEntityClassNames.toArray(new String[0]),
-				otherNanoparticleEntityTypes.toArray(new String[0]),
-				functionalizingEntityClassNames.toArray(new String[0]), 
-				otherFunctionalizingTypes.toArray(new String[0]),
-				functionClassNames.toArray(new String[0]),
-				otherFunctionTypes.toArray(new String[0]));
-		
-		List<ReportBean> filteredReports = new ArrayList<ReportBean>();
-		// retrieve visibility
-		FileService fileService = new FileService();
-		for (ReportBean report : reports) {
-			fileService.retrieveVisibility(report, user);
-			if (!report.isHidden()) {
-				filteredReports.add(report);
+		// TODO update auto-discovery to exclude local grid node
+		String[] searchLocations = (String[]) theForm.get("searchLocations");
+		List<ReportBean> foundReports = new ArrayList<ReportBean>();
+		ReportService service = null;
+		for (String location : searchLocations) {
+			if (location.equals("local")) {
+				service = new ReportServiceLocalImpl();
+			} else {
+				// TODO get serviceUrl
+				String serviceUrl = "";
+				service = new ReportServiceRemoteImpl(serviceUrl);
+			}
+			List<ReportBean> reports = service.findReportsBy(reportTitle,
+					reportCategory, nanoparticleEntityClassNames
+							.toArray(new String[0]),
+					otherNanoparticleEntityTypes.toArray(new String[0]),
+					functionalizingEntityClassNames.toArray(new String[0]),
+					otherFunctionalizingTypes.toArray(new String[0]),
+					functionClassNames.toArray(new String[0]),
+					otherFunctionTypes.toArray(new String[0]));
+			for (ReportBean report : reports) {
+				report.setLocation(location);
+			}
+			if (location.equals("local")) {
+				List<ReportBean> filteredReports = new ArrayList<ReportBean>();
+				// retrieve visibility
+				FileService fileService = new FileService();
+				for (ReportBean report : reports) {
+					fileService.retrieveVisibility(report, user);
+					if (!report.isHidden()) {
+						filteredReports.add(report);
+					}
+				}
+				foundReports.addAll(filteredReports);
+			} else {
+				foundReports.addAll(reports);
 			}
 		}
-		if (filteredReports != null && !filteredReports.isEmpty()) {
-			request.getSession().setAttribute("reports", filteredReports);
+
+		if (foundReports != null && !foundReports.isEmpty()) {
+			request.getSession().setAttribute("reports", foundReports);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
