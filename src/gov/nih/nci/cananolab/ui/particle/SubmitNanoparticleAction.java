@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.28 2008-05-21 15:18:18 cais Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.29 2008-05-22 15:22:55 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -60,13 +60,24 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("update");
 		request.setAttribute("theParticle", particleSampleBean);
-		setupLookups(request);
-		
+		setupLookups(request, particleSampleBean.getDomainParticleSample()
+				.getSource().getOrganizationName());
+
 		setupDataTree(theForm, request);
 		return forward;
 	}
 
-	private void setupGeneralInfo(ActionForm form, HttpServletRequest request)
+	private void setupLookups(HttpServletRequest request, String sampleSource)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		InitNanoparticleSetup.getInstance().getNanoparticleSampleSources(
+				request, user);
+		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutSource(
+				request, sampleSource);
+	}
+
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = setupParticle(theForm, request);
@@ -75,42 +86,26 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		NanoparticleSampleService service = new NanoparticleSampleService();
 		service.retrieveVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
-		setupLookups(request);
-		InitSecuritySetup.getInstance().
-			getAllVisibilityGroupsWithoutSource(request, particleSampleBean);
+		setupLookups(request, particleSampleBean.getDomainParticleSample()
+				.getSource().getOrganizationName());
 		setupDataTree(theForm, request);
-	}
-
-	private void setupLookups(HttpServletRequest request) throws Exception {
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleSources(
-				request);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getNanoparticleSampleSources(
-				request, user);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
-		
-	}
-
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		setupGeneralInfo(form, request);
 		return mapping.findForward("update");
 	}
 
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setupGeneralInfo(form, request);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleSampleBean = setupParticle(theForm, request);
+		theForm.set("particleSampleBean", particleSampleBean);
+		setupDataTree(theForm, request);
 		return mapping.findForward("view");
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setupLookups(request);
-		InitSecuritySetup.getInstance().
-			getAllVisibilityGroupsWithoutSource(request);
+		setupLookups(request, null);
 		return mapping.getInputForward();
 	}
 

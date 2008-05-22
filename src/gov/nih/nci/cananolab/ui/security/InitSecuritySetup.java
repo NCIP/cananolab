@@ -70,21 +70,13 @@ public class InitSecuritySetup {
 	}
 
 	public SortedSet<String> getAllVisibilityGroupsWithoutSource(
-			HttpServletRequest request, ParticleBean particleBean)
+			HttpServletRequest request, String sampleSource)
 			throws CaNanoLabSecurityException {
 		SortedSet<String> groupNames = getAllVisibilityGroups(request);
-		String sampleSource = particleBean.getDomainParticleSample().getSource().getOrganizationName();
-		if(sampleSource != null)
+		if (sampleSource != null)
 			groupNames.remove(sampleSource);
-		request.getSession().setAttribute("allVisibilityGroupsNoSource", groupNames);
-		return groupNames;
-	}
-	
-	public SortedSet<String> getAllVisibilityGroupsWithoutSource(
-			HttpServletRequest request)
-			throws CaNanoLabSecurityException {
-		SortedSet<String> groupNames = getAllVisibilityGroups(request);
-		request.getSession().setAttribute("allVisibilityGroupsNoSource", groupNames);
+		request.getSession().setAttribute("allVisibilityGroupsNoSource",
+				groupNames);
 		return groupNames;
 	}
 
