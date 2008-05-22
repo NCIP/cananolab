@@ -39,6 +39,8 @@ public class LabFileBean {
 
 	private byte[] newFileData; // data from uploadedFile if upload happened
 
+	private String location; //e.g. local, caNanoLab-WashU
+	
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
 	}
@@ -185,5 +187,13 @@ public class LabFileBean {
 
 	public byte[] getNewFileData() {
 		return newFileData;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
