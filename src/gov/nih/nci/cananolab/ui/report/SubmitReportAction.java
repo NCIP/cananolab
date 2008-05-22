@@ -5,14 +5,19 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.11 2008-05-11 21:16:20 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.12 2008-05-22 22:42:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
+import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
+import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -40,7 +45,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		reportBean.setupDomainFile(CaNanoLabConstants.FOLDER_REPORT, user
 				.getLoginName());
-		ReportService service = new ReportService();
+		ReportService service = new ReportServiceLocalImpl();
 		service.saveReport((Report) reportBean.getDomainFile(), reportBean
 				.getParticleNames(), reportBean.getNewFileData());
 		// set visibility
@@ -59,7 +64,11 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		forward = mapping.findForward("success");
 		if (request.getParameter("particleId") != null
 				&& request.getParameter("particleId").length() > 0) {
-			setupDataTree(theForm, request);
+			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+			ParticleBean particleBean = sampleService
+					.findNanoparticleSampleById(request
+							.getParameter("particleId"));
+			setupDataTree(particleBean, request);
 			forward = mapping.findForward("particleSuccess");
 		}
 		return forward;
@@ -78,7 +87,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String reportId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ReportService reportService = new ReportService();
+		ReportService reportService = new ReportServiceLocalImpl();
 		ReportBean reportBean = reportService.findReportById(reportId);
 		FileService fileService = new FileService();
 		fileService.retrieveVisibility(reportBean, user);
@@ -99,11 +108,16 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String reportId = request.getParameter("fileId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ReportService reportService = new ReportService();
+		String location = request.getParameter("location");
+		ReportService reportService = null;
+		if (location.equals("local")) {
+			reportService = new ReportServiceLocalImpl();
+		} else {
+			// TODO get serviceURL
+			String serviceUrl = "";
+			reportService = new ReportServiceRemoteImpl(serviceUrl);
+		}
 		ReportBean reportBean = reportService.findReportById(reportId);
-		FileService fileService = new FileService();
-		fileService.retrieveVisibility(reportBean, user);
 		theForm.set("file", reportBean);
 		InitReportSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page

@@ -88,10 +88,10 @@ public class TestGrid {
 	public void testOperation(String serviceUrl) throws Exception {
 		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(serviceUrl);
 		System.out.println("Running operation .............");
-		String[] particleSources = new String[] { "DNT" };
+		String particleSource = "DNT";
 		NanoparticleSample[] particleSamples = gridClient
-				.getNanoparticleSamplesBy(particleSources, null, null, null,
-						null, null, null, null, null);
+				.getNanoparticleSamplesBy(particleSource, null, null, null,
+						null, null);
 		for (NanoparticleSample particleSample : particleSamples) {
 			System.out.println(particleSample.getName());
 		}

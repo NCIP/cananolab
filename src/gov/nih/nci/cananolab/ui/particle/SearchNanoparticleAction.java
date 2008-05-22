@@ -6,12 +6,14 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.17 2008-05-09 04:43:38 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.18 2008-05-22 22:42:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -41,7 +43,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String[] particleSources = (String[]) theForm.get("particleSources");
+		String particleSource = (String) theForm.get("particleSource");
 
 		String[] nanoparticleEntityTypes = (String[]) theForm
 				.get("nanoparticleEntityTypes");
@@ -104,25 +106,47 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			words = new String[wordList.size()];
 			wordList.toArray(words);
 		}
-		NanoparticleSampleService service = new NanoparticleSampleService();
-		List<ParticleBean> particles = service.findNanoparticleSamplesBy(
-				particleSources, nanoparticleEntityClassNames
-						.toArray(new String[0]), otherNanoparticleEntityTypes
-						.toArray(new String[0]),
-				functionalizingEntityClassNames.toArray(new String[0]),
-				otherFunctionalizingTypes.toArray(new String[0]),
-				functionClassNames.toArray(new String[0]), otherFunctionTypes
-						.toArray(new String[0]), charaClassNames, words);
-		List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
-		// set visibility
-		for (ParticleBean particle : particles) {
-			service.retrieveVisibility(particle, user);
-			if (!particle.isHidden()) {
-				filteredParticles.add(particle);
+
+		// TODO update auto-discovery to exclude local grid node
+		String[] searchLocations = (String[]) theForm.get("searchLocations");
+		List<ParticleBean> foundParticles = new ArrayList<ParticleBean>();
+		for (String location : searchLocations) {
+			List<ParticleBean> particles = null;
+			NanoparticleSampleService service = null;
+			if (location.equals("local")) {
+				service = new NanoparticleSampleServiceLocalImpl();
+			} else {
+				// TODO get serviceUrl
+				String serviceUrl = "";
+				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+			}
+			particles = service.findNanoparticleSamplesBy(particleSource,
+					nanoparticleEntityClassNames.toArray(new String[0]),
+					otherNanoparticleEntityTypes.toArray(new String[0]),
+					functionalizingEntityClassNames.toArray(new String[0]),
+					otherFunctionalizingTypes.toArray(new String[0]),
+					functionClassNames.toArray(new String[0]),
+					otherFunctionTypes.toArray(new String[0]), charaClassNames,
+					words);
+			for (ParticleBean particle : particles) {
+				particle.setLocation(location);
+			}
+			if (location.equals("local")) {
+				List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
+				// set visibility
+				for (ParticleBean particle : particles) {
+					service.retrieveVisibility(particle, user);
+					if (!particle.isHidden()) {
+						filteredParticles.add(particle);
+					}
+				}
+				foundParticles.addAll(filteredParticles);
+			} else {
+				foundParticles.addAll(particles);
 			}
 		}
-		if (filteredParticles != null && !filteredParticles.isEmpty()) {
-			request.setAttribute("particles", filteredParticles);
+		if (foundParticles != null && !foundParticles.isEmpty()) {
+			request.setAttribute("particles", foundParticles);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -133,7 +157,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 			forward = mapping.getInputForward();
 		}
-
 		return forward;
 	}
 
@@ -141,8 +164,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getNanoparticleSampleSources(
-				request, user);
 		InitCompositionSetup.getInstance().getFunctionTypes(request);
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);

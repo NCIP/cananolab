@@ -6,12 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.29 2008-05-22 15:22:55 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.30 2008-05-22 22:42:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -36,7 +37,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				.get("particleSampleBean");
 		particleSampleBean.setupDomainParticleSample();
 		// persist in the database
-		NanoparticleSampleService service = new NanoparticleSampleService();
+		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
 
@@ -62,8 +63,9 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		request.setAttribute("theParticle", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
 				.getSource().getOrganizationName());
-
-		setupDataTree(theForm, request);
+		setupDataTree(particleSampleBean, request);
+		setupLookups(request, particleSampleBean.getDomainParticleSample()
+				.getSource().getOrganizationName());
 		return forward;
 	}
 
@@ -79,16 +81,17 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleSampleBean = setupParticle(theForm, request);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;		
+		ParticleBean particleSampleBean = setupParticle(theForm, request,
+				"local");
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		// set visibility
-		NanoparticleSampleService service = new NanoparticleSampleService();
+		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.retrieveVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
 				.getSource().getOrganizationName());
-		setupDataTree(theForm, request);
+		setupDataTree(particleSampleBean, request);
 		return mapping.findForward("update");
 	}
 
@@ -96,9 +99,11 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleSampleBean = setupParticle(theForm, request);
+		String location = request.getParameter("location");
+		ParticleBean particleSampleBean = setupParticle(theForm, request,
+				location);
 		theForm.set("particleSampleBean", particleSampleBean);
-		setupDataTree(theForm, request);
+		setupDataTree(particleSampleBean, request);
 		return mapping.findForward("view");
 	}
 

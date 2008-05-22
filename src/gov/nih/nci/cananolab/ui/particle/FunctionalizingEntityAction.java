@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.35 2008-05-11 21:16:20 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.36 2008-05-22 22:42:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -39,7 +39,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
@@ -84,7 +84,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(theForm, request);
+		setupDataTree(particleBean, request);
 		return forward;
 	}
 
@@ -103,7 +103,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("functionalizingEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
+		setupParticle(theForm, request, "local");
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -118,7 +118,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
+		setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
@@ -265,7 +265,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
 				+ "/"
@@ -287,7 +287,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					"message.deleteFunctionalizingEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			setupDataTree(theForm, request);
+			setupDataTree(particleBean, request);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
@@ -295,7 +295,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			setupDataTree(theForm, request);
+			setupDataTree(particleBean, request);
 			return mapping.getInputForward();
 		}
 	}
