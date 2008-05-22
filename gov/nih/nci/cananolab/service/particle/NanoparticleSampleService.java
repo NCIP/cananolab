@@ -142,7 +142,7 @@ public class NanoparticleSampleService {
 			if (dbSource != null) {
 				particleSample.getSource().setId(dbSource.getId());
 			}
-			appService.saveOrUpdate(dbSource);
+			appService.saveOrUpdate(particleSample.getSource());
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
 				// turned off cascade save-update in order to share the same
 				// keyword instance with LabFile keywords.
