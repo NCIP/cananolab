@@ -13,21 +13,6 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
-<script type="text/javascript">
-<!--//
-function confirmDeletion()
-{
-	answer = confirm("Are you sure you want to delete the composition?")
-	if (answer !=0)
-	{
-		this.document.forms[0].dispatch.value="delete";
-		this.document.forms[0].submit(); 
-		return true;
-	}
-}
-
-//-->
-</script>
 <%--<jsp:include page="/particle/submitMenu.jsp" />--%>
 <%-- turn off update when doing remote searches --%>
 <%--<c:choose>--%>
