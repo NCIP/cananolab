@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -26,7 +27,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.8 2008-05-10 22:48:20 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.9 2008-05-22 14:13:03 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -107,10 +108,18 @@ public class CaNanoLabComparators {
 		}
 	}
 
+	public static class NanoparticleSampleComparator implements
+			Comparator<NanoparticleSample> {
+		public int compare(NanoparticleSample particle1,
+				NanoparticleSample particle2) {
+			return new SortableNameComparator().compare(particle1.getName(),
+					particle2.getName());
+		}
+	}
+
 	public static class DataLinkTypeDateComparator implements
 			Comparator<DataLinkBean> {
-		public int compare(DataLinkBean link1,
-				DataLinkBean link2) {
+		public int compare(DataLinkBean link1, DataLinkBean link2) {
 			if (link1.getDataDisplayType().equals(link2.getDataDisplayType())) {
 				return link1.getCreatedDate().compareTo(link2.getCreatedDate());
 			} else {
