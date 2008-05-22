@@ -26,6 +26,45 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
+					<tr>
+						<td class="leftLabelWithTop" valign="top">
+							<strong>Search Location</strong>
+						</td>
+						<td class="rightLabelWithTop" colspan="5">
+							<strong><html:select property="searchLocations"
+									multiple="true" size="4">
+									<option value="local" selected>
+										Local
+									</option>
+									<option value="caNanoLab-NCL_PROD">
+										caNanoLab-NCL_PROD
+									</option>
+									<option value="caNanoLab-PROD">
+										caNanoLab-PROD
+									</option>
+									<option value="caNanoLab-WUSTL">
+										caNanoLab-WUSTL
+									</option>
+									<%--
+									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
+										<option value="${selectedNode}" selected>
+											${selectedNode}
+										</option>
+									</c:forEach>
+									<c:forEach var="unselectedNode"
+										items="${unselectedGridNodeHosts}">
+										<option value="${unselectedNode}">
+											${unselectedNode}
+										</option>
+									</c:forEach>
+									--%>
+								</html:select> </strong>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
 					<tr class="topBorder">
 						<td class="formTitle" colspan="6">
 							<div align="justify">
@@ -65,11 +104,8 @@
 							<strong> Nanoparticle Sample Source </strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<strong> <html:select property="particleSources"
-									multiple="3">
-									<html:options collection="allUserParticleSources"
-										labelProperty="organizationName" property="organizationName" />
-								</html:select> </strong>
+							<html:text property="particleSource" size="50" />
+							<strong>*</strong> for searching wildcards
 						</td>
 					</tr>
 					<tr>
@@ -138,45 +174,7 @@
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr>
-						<td class="leftLabelWithTop" valign="top">
-							<strong>Search Location</strong>
-						</td>
-						<td class="rightLabelWithTop" colspan="5">
-							<strong><html:select property="searchLocations"
-									multiple="true" size="4">
-									<option value="local" selected>
-										Local
-									</option>
-									<option value="caNanoLab-NCL_PROD">
-										caNanoLab-NCL_PROD
-									</option>
-									<option value="caNanoLab-PROD">
-										caNanoLab-PROD
-									</option>
-									<option value="caNanoLab-WUSTL">
-										caNanoLab-WUSTL
-									</option>
-									<%--
-									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
-										<option value="${selectedNode}" selected>
-											${selectedNode}
-										</option>
-									</c:forEach>
-									<c:forEach var="unselectedNode"
-										items="${unselectedGridNodeHosts}">
-										<option value="${unselectedNode}">
-											${unselectedNode}
-										</option>
-									</c:forEach>
-									--%>
-								</html:select> </strong>
-						</td>
-					</tr>
-				</table>
-				<br>
+				
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
