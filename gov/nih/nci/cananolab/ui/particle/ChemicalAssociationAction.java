@@ -44,7 +44,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
 				+ "/"
@@ -106,7 +106,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			ActionForward forward = mapping.findForward("success");
-			setupDataTree(theForm, request);
+			setupDataTree(particleBean, request);
 			return forward;
 		} else {
 			return mapping.getInputForward();
@@ -128,8 +128,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("chemicalAssociationForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
-		if (!setLookups(theForm, request)) {
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		if (!setLookups(particleBean, request)) {
 			return mapping.findForward("particleMessage");
 		}
 		return mapping.findForward("setup");
@@ -139,14 +139,15 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		prepareEntityLists(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		prepareEntityLists(theForm, particleBean, request);
 		return mapping.findForward("setup");
 	}
 
-	private boolean setLookups(DynaValidatorForm theForm,
+	private boolean setLookups(ParticleBean particleBean,
 			HttpServletRequest request) throws Exception {
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(theForm,
-				request);
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
+				particleBean, request);
 		SortedSet<DataLinkBean> particleEntities = dataTree
 				.get("Nanoparticle Entity");
 		SortedSet<DataLinkBean> functionalizingEntities = dataTree
@@ -210,9 +211,10 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	}
 
 	public void prepareEntityLists(DynaValidatorForm theForm,
-			HttpServletRequest request) throws Exception {
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(theForm,
-				request);
+			ParticleBean particleBean, HttpServletRequest request)
+			throws Exception {
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
+				particleBean, request);
 		SortedSet<DataLinkBean> particleEntitites = dataTree
 				.get("Nanoparticle Entity");
 		SortedSet<DataLinkBean> functionalizingEntities = dataTree
@@ -267,8 +269,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
-		setLookups(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		setLookups(particleBean, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
@@ -286,8 +288,9 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
-		setLookups(theForm, request);
+		String location = request.getParameter("location");
+		ParticleBean particleBean = setupParticle(theForm, request, location);
+		setLookups(particleBean, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
@@ -335,7 +338,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
 				+ "/"
@@ -355,7 +358,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(theForm, request);
+		setupDataTree(particleBean, request);
 		return forward;
 	}
 }

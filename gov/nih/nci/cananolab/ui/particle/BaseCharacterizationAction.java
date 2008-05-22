@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -60,7 +59,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		// characterizationForm is either physicalCharacterizationForm or
 		// invitroCharacterizationForm to use in bodyCharacterization.jsp
 		request.getSession().setAttribute("characterizationForm", theForm);
-		setupParticle(theForm, request);
+		setupParticle(theForm, request, "local");
 		// set charclass
 		ServletContext appContext = request.getSession().getServletContext();
 		CharacterizationBean charBean = (CharacterizationBean) theForm
@@ -100,7 +99,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		// setup domainFile for fileBeans
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
@@ -161,13 +160,12 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		}
 		return noErrors;
 	}
-	
 
 	protected void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		// setup domainFile for fileBeans
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		setupDomainChar(request, theForm, charBean);
@@ -195,13 +193,13 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		}
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
-		setupDataTree(theForm, request);
+		setupDataTree(particleBean, request);
 	}
 
 	protected void deleteCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean,
 			String createdBy) throws Exception {
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
 				+ "/"
@@ -227,12 +225,13 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				request, charBean.getClassName());
 		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
 				charBean);
-		
+
 		InitCharacterizationSetup.getInstance()
-			.setInvitroCharacterizationDropdowns(request);
-		
+				.setInvitroCharacterizationDropdowns(request);
+
 		String detailPage = setupDetailPage(charBean);
-		request.getSession().setAttribute("characterizationDetailPage", detailPage);
+		request.getSession().setAttribute("characterizationDetailPage",
+				detailPage);
 	}
 
 	protected abstract CharacterizationBean getCharacterizationBean(
@@ -243,7 +242,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
+		setupParticle(theForm, request, "local");
 		request.getSession().setAttribute("characterizationForm", theForm);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -347,7 +346,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
+		String location=request.getParameter("location");
+		setupParticle(theForm, request, location);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getCharacterizationBean(theForm, chara, user);
@@ -377,7 +377,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request);
+		String location=request.getParameter("location");
+		ParticleBean particleBean=setupParticle(theForm, request, location);
 		Characterization chara = prepareCharacterization(theForm, request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
@@ -404,7 +405,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				request.getSession().getServletContext());
 		String fullClassName = ClassUtils.getFullClass(className)
 				.getCanonicalName();
-		ParticleBean particleBean = setupParticle(theForm, request);
+		String location=request.getParameter("location");
+		ParticleBean particleBean=setupParticle(theForm, request, location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationService();
 		CharacterizationSummaryBean charSummary = service
@@ -456,7 +458,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request);
+		String location=request.getParameter("location");
+		ParticleBean particleBean=setupParticle(theForm, request, location);
 		CharacterizationSummaryBean charSummaryBean = setupCharSummary(theForm,
 				request);
 		String fileName = getExportFileName(particleBean
@@ -475,7 +478,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request);
+		String location=request.getParameter("location");
+		ParticleBean particleBean=setupParticle(theForm, request, location);
 		CharacterizationSummaryBean charSummaryBean = setupCharSummary(theForm,
 				request);
 		String fileName = getExportFileName(particleBean

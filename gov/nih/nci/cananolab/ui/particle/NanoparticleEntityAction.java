@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.47 2008-05-14 07:15:36 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.48 2008-05-22 22:42:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -51,7 +51,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionService();
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
@@ -101,7 +101,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(theForm, request);
+		setupDataTree(particleBean, request);
 		return forward;
 	}
 
@@ -147,7 +147,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
+		setupParticle(theForm, request, "local");
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -156,7 +156,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request);
+		setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
@@ -317,7 +317,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request);
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
 				+ "/"
@@ -339,7 +339,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 					"message.deleteNanoparticleEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			setupDataTree(theForm, request);
+			setupDataTree(particleBean, request);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(

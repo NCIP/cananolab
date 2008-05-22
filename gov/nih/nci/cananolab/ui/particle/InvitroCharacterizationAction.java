@@ -9,9 +9,12 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,11 +54,11 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
-		
-		if(!validateDerivedDatum(request, charBean)) {
+
+		if (!validateDerivedDatum(request, charBean)) {
 			return mapping.getInputForward();
 		}
-		
+
 		saveCharacterization(request, theForm, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistInvitroCharacterizationDropdowns(request, charBean);
@@ -84,8 +87,8 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 	protected void setLookups(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
 		super.setLookups(request, charBean);
-//		InitCharacterizationSetup.getInstance()
-//				.setInvitroCharacterizationDropdowns(request);
+		// InitCharacterizationSetup.getInstance()
+		// .setInvitroCharacterizationDropdowns(request);
 	}
 
 	protected void clearForm(DynaValidatorForm theForm) {
@@ -108,7 +111,10 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
 		String particleId = theForm.getString("particleId");
-		InitNanoparticleSetup.getInstance().getDataTree(particleId, request);
+		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+		ParticleBean particleBean = sampleService
+				.findNanoparticleSampleById(particleId);
+		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
 	}
 }
