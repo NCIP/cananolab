@@ -30,6 +30,8 @@ public class ParticleBean {
 
 	private SortedSet<String> keywordSet = new TreeSet<String>();
 
+	private String location; // e.g. local, caNanoLab-WashU, etc
+
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
 	}
@@ -103,5 +105,13 @@ public class ParticleBean {
 
 	public SortedSet<String> getKeywordSet() {
 		return keywordSet;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
