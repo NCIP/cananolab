@@ -77,7 +77,7 @@ public class NanoparticleCompositionService {
 
 			FileService service = new FileService();
 			Collection<LabFile> labFiles = entity.getLabFileCollection();
-			if (labFiles!=null){
+			if (labFiles != null) {
 				for (LabFile file : labFiles) {
 					service.prepareSaveFile(file);
 				}
@@ -159,10 +159,10 @@ public class NanoparticleCompositionService {
 			entity.setSampleComposition(particleSample.getSampleComposition());
 			particleSample.getSampleComposition()
 					.getFunctionalizingEntityCollection().add(entity);
-			
+
 			FileService service = new FileService();
 			Collection<LabFile> labFiles = entity.getLabFileCollection();
-			if (labFiles!=null){
+			if (labFiles != null) {
 				for (LabFile file : labFiles) {
 					service.prepareSaveFile(file);
 				}
@@ -194,6 +194,15 @@ public class NanoparticleCompositionService {
 					.getSampleComposition();
 
 			composition.getChemicalAssociationCollection().add(assoc);
+			
+			FileService service = new FileService();
+			Collection<LabFile> labFiles = assoc.getLabFileCollection();
+			if (labFiles != null) {
+				for (LabFile file : labFiles) {
+					service.prepareSaveFile(file);
+				}
+			}
+			
 			if (assoc.getId() == null) { // because of unidirectional
 				// relationship between composition
 				// and chemical associations

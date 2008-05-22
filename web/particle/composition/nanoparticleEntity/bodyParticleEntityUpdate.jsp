@@ -146,9 +146,9 @@ function confirmDeletion()
 																<strong>Composing Element Type*</strong>
 															</td>
 															<td class="labelWithTop" valign="top">
-																<html:select styleId="compElemType"
+																<html:select styleId="compElemType${ind}"
 																	property="entity.composingElements[${ind}].domainComposingElement.type"
-																	onchange="javascript:callPrompt('Composing Element Type', 'compElemType');">
+																	onchange="javascript:callPrompt('Composing Element Type', 'compElemType${ind}');">
 																	<option />
 																		<c:choose>
 																			<c:when test="${entityType ne 'emulsion'}">
@@ -178,9 +178,9 @@ function confirmDeletion()
 																<strong>Molecular Formula Type</strong>
 															</td>
 															<td class="label" valign="top">
-																<html:select styleId="molFormulaType"
+																<html:select styleId="molFormulaType${ind}"
 																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
-																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType');">
+																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType${ind}');">
 																	<option value="" />
 																		<html:options name="ceMolecularFormulaTypes" />
 																	<option value="other">
@@ -210,9 +210,9 @@ function confirmDeletion()
 																<strong>Amount Unit</strong>
 															</td>
 															<td class="rightLabel" valign="top">
-																<html:select styleId="compEleUnit"
+																<html:select styleId="compEleUnit${ind}"
 																	property="entity.composingElements[${ind}].domainComposingElement.valueUnit"
-																	onchange="javascript:callPrompt('Unit', 'compEleUnit');">
+																	onchange="javascript:callPrompt('Unit', 'compEleUnit${ind}');">
 																	<option value="" />
 																		<html:options name="composingElementUnits" />
 																	<option value="other">
@@ -333,17 +333,9 @@ function confirmDeletion()
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
-											<div align="right">
-												<c:choose>
-													<c:when test="${param.dispatch eq 'setupUpdate'}">
-														<input type="reset" value="Reset"
-															onclick="javascript:location.href='nanoparticleEntity.do?page=0&dispatch=setupUpdate&particleId=${param.particleId}&dataId=${param.dataId}&submitType=Nanoparticle+Entity'">
-													</c:when>
-													<c:otherwise>
-														<input type="reset" value="Reset"
-															onclick="javascript:location.href='nanoparticleEntity.do?particleId=${param.particleId}&submitType=Nanoparticle+Entity&page=0&dispatch=setup'">
-													</c:otherwise>
-												</c:choose>
+											<div align="right">												
+												<input type="reset" value="Reset"
+															onclick="javascript:location.reload()">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<c:choose>

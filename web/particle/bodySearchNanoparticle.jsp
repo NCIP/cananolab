@@ -187,8 +187,8 @@
 								<tr>
 									<td>
 										<div align="right">
-											<input type="button" value="Reset"
-												onClick="javascript:location.href='searchNanoparticle.do?dispatch=setup&page=0'">
+											<input type="reset" value="Reset"
+															onclick="javascript:location.reload()">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />

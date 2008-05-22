@@ -113,7 +113,7 @@
 									<td>
 										<div align="right">
 											<input type="button" value="Reset"
-												onClick="javascript:location.href='searchReport.do?dispatch=setup&page=0'">
+												onClick="javascript:location.reload()">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />
