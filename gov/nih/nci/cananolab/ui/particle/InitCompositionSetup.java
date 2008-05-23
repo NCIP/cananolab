@@ -228,6 +228,18 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("functionTypes", types);
 		return types;
 	}
+	
+	public SortedSet<String> getDefaultFunctionTypes(HttpServletRequest request)
+			throws Exception {
+		SortedSet<String> defaultTypes = InitSetup
+				.getInstance()
+				.getServletContextDefaultTypesByReflection(
+						request.getSession().getServletContext(),
+						"defaultFunctionTypes",
+						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
+		request.getSession().setAttribute("functionTypes", defaultTypes);
+		return defaultTypes;
+	}
 
 	public SortedSet<String> getNanoparticleEntityTypes(
 			HttpServletRequest request) throws Exception {
@@ -244,6 +256,18 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("nanoparticleEntityTypes", types);
 		return types;
 	}
+	
+	public SortedSet<String> getDefaultNanoparticleEntityTypes(
+			HttpServletRequest request) throws Exception {
+		SortedSet<String> defaultTypes = InitSetup
+				.getInstance()
+				.getServletContextDefaultTypesByReflection(
+						request.getSession().getServletContext(),
+						"defaultNanoparticleEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+		request.getSession().setAttribute("nanoparticleEntityTypes", defaultTypes);
+		return defaultTypes;
+	}
 
 	public SortedSet<String> getFunctionalizingEntityTypes(
 			HttpServletRequest request) throws Exception {
@@ -259,6 +283,18 @@ public class InitCompositionSetup {
 		types.addAll(otherTypes);
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
 		return types;
+	}
+	
+	public SortedSet<String> getDefaultFunctionalizingEntityTypes(
+			HttpServletRequest request) throws Exception {
+		SortedSet<String> defaultTypes = InitSetup
+				.getInstance()
+				.getServletContextDefaultTypesByReflection(
+						request.getSession().getServletContext(),
+						"defaultFunctionalizingEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
+		request.getSession().setAttribute("functionalizingEntityTypes", defaultTypes);
+		return defaultTypes;
 	}
 
 	public SortedSet<String> getChemicalAssociationTypes(
@@ -305,4 +341,5 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("targetTypes", types);
 		return types;
 	}
+	
 }
