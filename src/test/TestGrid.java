@@ -1,6 +1,6 @@
 package test;
 
-import gov.nih.nci.cagrid.cananolab.client.CaNanoLabSvcClient;
+import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
@@ -63,7 +63,8 @@ public class TestGrid {
 	}
 
 	public void testCQL(String serviceUrl) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(serviceUrl);
+		CaNanoLabServiceClient gridClient = new CaNanoLabServiceClient(
+				serviceUrl);
 		System.out.println("Running CQL .............");
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -86,7 +87,8 @@ public class TestGrid {
 	}
 
 	public void testOperation(String serviceUrl) throws Exception {
-		CaNanoLabSvcClient gridClient = new CaNanoLabSvcClient(serviceUrl);
+		CaNanoLabServiceClient gridClient = new CaNanoLabServiceClient(
+				serviceUrl);
 		System.out.println("Running operation .............");
 		String particleSource = "DNT";
 		NanoparticleSample[] particleSamples = gridClient
@@ -110,9 +112,10 @@ public class TestGrid {
 			} else {
 				System.out.println("No grid nodes found");
 			}
-			// test.testCQL("http://165.112.132.160:8080/wsrf/services/cagrid/CaNanoLabSvc");
 			test
-					.testOperation("http://165.112.132.160:8080/wsrf/services/cagrid/CaNanoLabSvc");
+					.testCQL("http://165.112.132.160:8080/wsrf/services/cagrid/CaNanoLabService");
+			// test
+			// .testOperation("http://165.112.132.160:8080/wsrf/services/cagrid/CaNanoLabService");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

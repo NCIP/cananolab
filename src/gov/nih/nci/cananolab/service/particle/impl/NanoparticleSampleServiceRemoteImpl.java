@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cagrid.cananolab.client.CaNanoLabSvcClient;
+import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
@@ -31,11 +31,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		NanoparticleSampleService {
 	private static Logger logger = Logger
 			.getLogger(NanoparticleSampleServiceRemoteImpl.class);
-	private CaNanoLabSvcClient gridClient;
+	private CaNanoLabServiceClient gridClient;
 
 	public NanoparticleSampleServiceRemoteImpl(String serviceUrl)
 			throws Exception {
-		gridClient = new CaNanoLabSvcClient(serviceUrl);
+		gridClient = new CaNanoLabServiceClient(serviceUrl);
 	}
 
 	/**

@@ -74,11 +74,6 @@
 	<classpathentry kind="lib" path="lib/cagrid/caGrid-ServiceSecurityProvider-common-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/caGrid-ServiceSecurityProvider-service-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/caGrid-ServiceSecurityProvider-stubs-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabSvc-client.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabSvc-common.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabSvc-service.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabSvc-stubs.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabSvc-tests.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/castor-1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/ehcache-1.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/globus_wsrf_mds_aggregator_stubs.jar"/>
@@ -149,5 +144,10 @@
 	<classpathentry kind="lib" path="lib/globus/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/globus/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/globus/xmlsec.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-client.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-common.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-service.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-stubs.jar"/>
+	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-tests.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
