@@ -2,6 +2,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript" src="javascript/ProtocolManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/interface/ProtocolManager.js"></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
+
 <html:form action="searchProtocol">
 	<table align="center" width="100%">
 		<tr>
@@ -40,7 +45,9 @@
 							<strong>Search Location</strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<strong><html:select property="searchLocations"
+							<strong><html:select styleId="searchLocations"
+								property="searchLocations"
+								onchange="javascript:setProtocolNameDropdown()"
 									multiple="true" size="3">
 									<option value="local" selected>
 										Local
@@ -62,7 +69,7 @@
 							<strong>Protocol Type</strong>
 						</td>
 						<td class="rightLabel"">
-							<html:select property="protocolType">
+							<html:select styleId="protocolType" property="protocolType">
 								<option />
 									<html:options name="protocolTypes" />
 							</html:select>

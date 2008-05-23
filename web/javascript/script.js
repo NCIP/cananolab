@@ -357,4 +357,14 @@ function filterInteger(evt) {
     return (keyCode >= '0'.charCodeAt() && keyCode <= '9'.charCodeAt()) ||
      (keyCode >= 96 && keyCode <= 105) || keyCode == 46 || keyCode == 8 ;
 }
-
+function getSelectedOptions(selectEle) {
+	var options = selectEle.options;
+	var selectedValues = "";
+	for (var c=0; c<options.length; c++ ) {
+		if (options[c].selected) { //true if selected.
+			selectedValues += options[c].value + "~";
+		}
+	}
+	var cleanStr = selectedValues.substr(0, selectedValues.length - 1);
+	return cleanStr;
+}
