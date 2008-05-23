@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.report.impl;
 
-import gov.nih.nci.cagrid.cananolab.client.CaNanoLabSvcClient;
+import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
@@ -29,10 +29,10 @@ public class ReportServiceRemoteImpl implements ReportService {
 			.getLogger(ReportServiceRemoteImpl.class);
 	private ReportServiceHelper helper = new ReportServiceHelper();
 
-	private CaNanoLabSvcClient gridClient;
+	private CaNanoLabServiceClient gridClient;
 
 	public ReportServiceRemoteImpl(String serviceUrl) throws Exception {
-		gridClient = new CaNanoLabSvcClient(serviceUrl);
+		gridClient = new CaNanoLabServiceClient(serviceUrl);
 	}
 
 	/**
