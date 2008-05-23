@@ -2,6 +2,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript" src="javascript/ParticleManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
+
+
 <html:form action="searchNanoparticle">
 	<table align="center" width="100%">
 		<tr>
@@ -32,7 +38,9 @@
 						</td>
 						<td class="rightLabelWithTop" colspan="5">
 							<strong><html:select property="searchLocations"
-									multiple="true" size="4">
+								styleId="searchLocations"
+									multiple="true" size="4"
+									onchange="javascript:setNanoparticleDropdowns();">	
 									<option value="local" selected>
 										Local
 									</option>
@@ -113,7 +121,7 @@
 							<strong>Composition<br> Nanoparticle Entity</strong>
 						</td>
 						<td class="label">
-							<strong><html:select property="nanoparticleEntityTypes"
+							<strong><html:select styleId="nanoparticleEntityTypes" property="nanoparticleEntityTypes"
 									multiple="true" size="4">
 									<html:options name="nanoparticleEntityTypes" />
 								</html:select> </strong>
@@ -123,6 +131,7 @@
 						</td>
 						<td class="label" valign="top">
 							<strong><html:select
+									styleId="functionalizingEntityTypes" 
 									property="functionalizingEntityTypes" multiple="true" size="3">
 									<html:options name="functionalizingEntityTypes" />
 								</html:select> </strong>
@@ -131,7 +140,7 @@
 							<strong>Function</strong>
 						</td>
 						<td class="rightLabel" valign="top">
-							<strong><html:select property="functionTypes"
+							<strong><html:select styleId="functionTypes" property="functionTypes"
 									multiple="true" size="3">
 									<html:options name="functionTypes" />
 								</html:select> </strong>

@@ -2,6 +2,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script type="text/javascript" src="javascript/ReportManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/interface/ReportManager.js"></script>
+<script type="text/javascript" src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <html:form action="searchReport">
 	<table align="center" width="100%">
 		<tr>
@@ -41,6 +46,8 @@
 						</td>
 						<td class="rightLabel" colspan="5">
 							<strong><html:select property="searchLocations"
+								styleId="searchLocations"
+								onchange="javascript:setReportDropdowns()"	
 									multiple="true" size="3">
 									<option value="local" selected>
 										Local
@@ -70,7 +77,7 @@
 							<strong>Report Category</strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<html:select property="reportCategory">
+							<html:select styleId="reportCategory" property="reportCategory">
 								<option value="" />
 									<html:options name="reportCategories" />
 							</html:select>
@@ -82,7 +89,7 @@
 						</td>
 						<td class="label">
 							<strong><html:select property="nanoparticleEntityTypes"
-									multiple="true" size="4">
+									styleId="nanoparticleEntityTypes" multiple="true" size="4">
 									<html:options name="nanoparticleEntityTypes" />
 								</html:select> </strong>
 						</td>
@@ -90,7 +97,7 @@
 							<strong>Composition <br>Functionalizing Entity</strong>
 						</td>
 						<td class="label" valign="top">
-							<strong><html:select
+							<strong><html:select styleId="functionalizingEntityTypes"
 									property="functionalizingEntityTypes" multiple="true" size="3">
 									<html:options name="functionalizingEntityTypes" />
 								</html:select> </strong>
@@ -99,7 +106,7 @@
 							<strong>Function</strong>
 						</td>
 						<td class="rightLabel" valign="top">
-							<strong><html:select property="functionTypes"
+							<strong><html:select property="functionTypes" styleId="functionTypes"
 									multiple="true" size="3">
 									<html:options name="functionTypes" />
 								</html:select> </strong>

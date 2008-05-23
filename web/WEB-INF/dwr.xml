@@ -31,6 +31,9 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.particle.DWRSampleManager" />
 			<include method="removeSourceVisibility" />
+			<include method="getNanoparticleEntityTypes" />
+			<include method="getFunctionalizingEntityTypes" />
+			<include method="getFunctionTypes" />
 		</create>
 		<create creator="new" javascript="ProtocolManager"
 			scope="session">
@@ -41,6 +44,13 @@
 			<include method="getProtocolFileUriById" />
 			<include method="getProtocolFileNameById" />
 			<include method="getProtocolFileVersionById" />
+			<include method="getProtocolTypes" />
+		</create>
+		<create creator="new" javascript="ReportManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.report.DWRReportManager" />
+			<include method="getReportCategories" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.util.DataLinkBean">

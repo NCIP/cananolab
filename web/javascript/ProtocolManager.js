@@ -78,3 +78,13 @@ function writeLink0(protocolFile) {
 	}
 }
 
+function setProtocolNameDropdown() {
+	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
+	ProtocolManager.getProtocolTypes(searchLocations, function (data) {
+			dwr.util.removeAllOptions("protocolType");
+			dwr.util.addOptions("protocolType", data);
+		});
+	
+	return false;
+}
+
