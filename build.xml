@@ -76,7 +76,7 @@
 	</target>
 	<target name="build-application" depends="compile">
 		<!-- package WAR file -->
-		<war destfile="${build.dir}/caNanoLab.war" basedir="${tmp.dir}" compress="true" />
+		<war destfile="${build.dir}/caNanoLab.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
 		<copy todir="${build.dir}">
 			<fileset dir="${conf.dir}/csm/">
 				<include name="*.war" />
