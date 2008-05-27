@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
+import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -10,18 +13,22 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -39,6 +46,8 @@ import org.hibernate.criterion.Restrictions;
  * 
  */
 public class NanoparticleSampleServiceHelper {
+	private static Logger logger = Logger
+	.getLogger(NanoparticleSampleServiceHelper.class);
 	public List<NanoparticleSample> findNanoparticleSamplesBy(
 			String particleSource, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
@@ -469,5 +478,85 @@ public class NanoparticleSampleServiceHelper {
 			sampleSources.add((Source) obj);
 		}
 		return sampleSources;
+	}
+	
+	public SortedSet<DerivedBioAssayData> findDerivedBioAssayDataByCharId(String charId)
+		throws ParticleCharacterizationException {
+		SortedSet<DerivedBioAssayData> derivedBioAssayDataCollection = new TreeSet<DerivedBioAssayData>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();		
+			HQLCriteria crit = new HQLCriteria(
+					"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "+
+					charId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
+				//derivedBioAssayData's labfile
+				LabFile labFile = findDerivedBioAssayDataLabFile(derivedBioAssayData.getId().toString());
+				
+				//labFile's keyword
+				Collection<Keyword> keywordCollection = findLabFileKeyword(labFile.getId().toString());
+				labFile.setKeywordCollection(keywordCollection);
+				
+				derivedBioAssayData.setLabFile(labFile);
+				derivedBioAssayDataCollection.add(derivedBioAssayData);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve Characterization derivedBioAssayDataCollection.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve Characterization derivedBioAssayDataCollection ");
+		}
+		return derivedBioAssayDataCollection;
+	}
+	
+	
+	public LabFile findDerivedBioAssayDataLabFile(String derivedId)
+		throws ParticleCharacterizationException {
+		LabFile labFile = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select bioassay.labFile from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "+
+					derivedId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				labFile = (LabFile) obj;
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve DerivedBioAssayData labFile.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve DerivedBioAssayData labFile ");
+		}
+		return labFile;
+	}
+	
+	public SortedSet<Keyword> findLabFileKeyword(String labFileId)
+		throws ParticleCharacterizationException {
+		SortedSet<Keyword> keywordCollection = new TreeSet<Keyword>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select labFile.keywordCollection from gov.nih.nci.cananolab.domain.common.LabFile labFile where labFile.id = "+
+					labFileId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Keyword keyword = (Keyword) obj;
+				keywordCollection.add(keyword);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve LabFile keyword.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve LabFile keyword ");
+		}
+		return keywordCollection;
 	}
 }
