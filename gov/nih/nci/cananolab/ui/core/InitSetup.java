@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -312,5 +313,21 @@ public class InitSetup {
 		} else {
 			LookupService.saveOtherType(lookupName, otherAttribute, value);
 		}
+	}
+	
+	public void setSelectedLocations(HttpServletRequest request,
+			String[] selectedGridNodeHosts) {
+		List<String> gridlist = Arrays.asList(selectedGridNodeHosts);
+		request.getSession().setAttribute("selectedLocations", gridlist);
+
+		List<String> unselectedGridNodeHosts = new ArrayList<String>();
+//		for (String hostNode : gridNodes.keySet()) {
+//			if (!gridlist.contains(hostNode)) {
+//				unselectedGridNodeHosts.add(hostNode);
+//			}
+//		}
+		request.getSession().setAttribute("unselectedLocations",
+				unselectedGridNodeHosts);
+
 	}
 }
