@@ -52,7 +52,7 @@
 		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_LASTNAME" value="${last.name}" />
 
 		<!-- repackage WAR file -->
-		<war destfile="${build.dir}/wsrf.war" basedir="${tmp.dir}" compress="true" />
+		<war destfile="${build.dir}/wsrf.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
