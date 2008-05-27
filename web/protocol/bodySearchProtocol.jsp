@@ -61,6 +61,12 @@
 									<option value="caNanoLab-WUSTL">
 										caNanoLab-WUSTL
 									</option>
+<%--									<c:forEach var="selectedNode" items="${selectedLocations}">--%>
+<%--										<option value="${selectedNode}" selected>${selectedNode}</option>--%>
+<%--									</c:forEach>--%>
+<%--									<c:forEach var="unselectedNode" items="${unselectedLocations}">--%>
+<%--										<option value="${unselectedNode}">${unselectedNode}</option>--%>
+<%--									</c:forEach>--%>
 								</html:select> </strong>
 						</td>
 					</tr>

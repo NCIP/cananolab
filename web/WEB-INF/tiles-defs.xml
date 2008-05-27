@@ -11,7 +11,7 @@
 		<put name="calabHeader" value="/html/calabHeader.html" />
 		<put name="calabSidemenu" value="/html/calabBaseSidemenu.html" />
 		<put name="calabMainmenu" value="/calabMainmenu.jsp" />
-		<put name="calabContent" value="/bodyLocalLogin.jsp" />
+		<put name="calabContent" value="/bodyLogin.jsp" />
 		<put name="calabFooter" value="/html/calabFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />

@@ -25,6 +25,7 @@
 						sharing of these characterizations in a secure fashion.
 
 						<div id="publicLinks">
+							<jsp:include page="/bodyMessage.jsp" />
 							<h2 class="welcomeTitle" id="pubh2">
 								Browse caNanoLab
 							</h2>
@@ -35,16 +36,17 @@
 											<label class="toplabel" for="location">
 												Location
 											</label>
-											<html:form action="remoteSearchNanoparticle">
-											<html:select property="gridNodes" styleId="location" multiple="true"
+											
+											<select name="searchLocations" id="location" multiple="true"
 													size="3" onchange="getGridCounts(this);">
+<%--												<option value="" />--%>
 												<option value="local" selected>
 													Local
 												</option>
-												<html:options collection="allGridNodes" property="key"
-																labelProperty="key" />
-											</html:select>
-											</html:form>
+<%--												<html:options collection="allGridNodes" property="key"--%>
+<%--																labelProperty="key" />--%>
+											</select>
+											
 										</th>
 									</tr>
 									<tr class="gridTableHeader">
@@ -55,30 +57,30 @@
 										<td>
 											<img src="images/icon_protocol_48x.jpg" width="15%" />
 											&nbsp;Protocols&nbsp;(
-											<a href="#" onclick="searchProtocols('location');">search</a> )
+											<a href="#" onclick="searchProtocols();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseProtocols('location');" id="protocolCount" class="countsLink"></a>
+											<a href="#" onclick="browseProtocols();" id="protocolCount" class="countsLink"></a>
 										</td>
 									</tr>
 									<tr class="alt">
 										<td>
 											<img src="images/icon_nanoparticle_48x.jpg" width="15%" />
 											&nbsp;Nanoparticles&nbsp;(
-											<a href="#" onclick="searchParitcles('location');">search</a> )
+											<a href="#" onclick="searchParitcles();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseParitcles('location');" id="particleCount" class="countsLink"></a>
+											<a href="#" onclick="browseParitcles();" id="particleCount" class="countsLink"></a>
 										</td>
 									</tr>
 									<tr>
 										<td>
 											<img src="images/icon_report_48x.gif" width="15%" />
 											&nbsp;Reports&nbsp;(
-											<a href="#" onclick="searchReports('location');">search</a> )
+											<a href="#" onclick="searchReports();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseReports('location');" id="reportCount" class="countsLink"></a>
+											<a href="#" onclick="browseReports();" id="reportCount" class="countsLink"></a>
 										</td>
 									</tr>
 								</table>
