@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab" default="build-grid" basedir=".">
+	<property environment="env" />
+	<property file="build.properties" />
+	<property file="build-grid.properties" />
+	<property name="build.dir" value="grid-build" />
+	<property name="grid.service.name" value="CaNanoLabService" />
+
+	<target name="clean">
+		<delete dir="${build.dir}" quiet="true" />
+	</target>
+
+	<target name="init-project">
+		<!-- create the necessary folders -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${tmp.dir}/orm" />
+	</target>
+
+	<target name="build-grid" depends="clean, init-project">
+		<!-- unpack default wsrf.war -->
+		<unzip dest="${tmp.dir}" src="conf/gridservice/wsrf.war" />
+
+		<!-- unpack required globus libraries for jboss to JBoss -->
+		<unzip dest="${env.JBOSS_HOME}/server/default/lib" src="conf/gridservice/globus_jboss_lib.zip" />
+
+		<!-- unpack caNanoLabSDK-orm.jar -->
+		<unzip dest="${tmp.dir}/orm" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" />
+		<!-- replace database connection info -->
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/orm/hibernate.cfg.xml" token="DATABASE_PASSWORD" value="${database.password}" />
+		<!-- repackage caNanoLabSDK-orm.jar -->
+		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" basedir="${tmp.dir}/orm" />
+		<delete dir="${tmp.dir}/orm" quiet="true" />
+
+		<!-- replace grid service port -->
+		<replace file="${tmp.dir}/WEB-INF/web.xml" token="DEFAULT_PORT" value="${grid.service.port}" />
+
+		<!-- replace grid index service URL -->
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/${grid.service.name}_registration.xml" token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
+
+		<!-- replace grid service metadata -->
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="APPOWNER" value="${application.owner}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_COUNTRY" value="${country}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_STATE" value="${state}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_STATE" value="${state}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_CITY" value="${city}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_STREET" value="${street}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_AFFLIATION" value="${affliation}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_EMAIL" value="${email}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_FIRSTNAME" value="${first.name}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_LASTNAME" value="${last.name}" />
+
+		<!-- repackage WAR file -->
+		<war destfile="${build.dir}/wsrf.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
+		<!-- remove tmp directory -->
+		<delete dir="${tmp.dir}" quiet="true" />
+	</target>
+</project>
