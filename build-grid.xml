@@ -1,28 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caNanoLab" default="build-grid" basedir=".">
-	<property environment="env" />
-	<property file="build.properties" />
-	<property file="build-grid.properties" />
-	<property name="build.dir" value="grid-build" />
+<project name="caNanoLab-grid" basedir=".">
+	<property file="grid.properties" />
 	<property name="grid.service.name" value="CaNanoLabService" />
+	<import file="build-grid-deploy.xml" />
 
 	<target name="clean">
 		<delete dir="${build.dir}" quiet="true" />
 	</target>
 
-	<target name="init-project">
+	<target name="init-grid">
 		<!-- create the necessary folders -->
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${tmp.dir}" />
 		<mkdir dir="${tmp.dir}/orm" />
 	</target>
 
-	<target name="build-grid" depends="clean, init-project">
+	<target name="build-grid" depends="clean, init-grid">
 		<!-- unpack default wsrf.war -->
 		<unzip dest="${tmp.dir}" src="conf/gridservice/wsrf.war" />
-
-		<!-- unpack required globus libraries for jboss to JBoss -->
-		<unzip dest="${env.JBOSS_HOME}/server/default/lib" src="conf/gridservice/globus_jboss_lib.zip" />
 
 		<!-- unpack caNanoLabSDK-orm.jar -->
 		<unzip dest="${tmp.dir}/orm" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" />
@@ -57,7 +52,7 @@
 		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_LASTNAME" value="${last.name}" />
 
 		<!-- repackage WAR file -->
-		<war destfile="${build.dir}/wsrf.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
+		<war destfile="${build.dir}/wsrf.war" basedir="${tmp.dir}" compress="true" />
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" quiet="true" />
 	</target>

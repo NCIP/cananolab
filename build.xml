@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="caNanoLab" default="build-application" basedir=".">
-	<property environment="env" />
 	<property file="build.properties" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="conf.dir" value="${basedir}/conf" />
-	<property name="webroot.dir" value="web" />
+	<property name="webroot.dir" value="${basedir}/web" />
 	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
-	<property name="build.dir" value="build" />
+	<property name="build.dir" value="${basedir}/build" />
 	<property name="tmp.dir" value="${build.dir}/tmp" />
-	<property name="resource.dir" value="gov/nih/nci/cananolab/resources" />
-	<property name="database" value="mysql" />
-	<property name="file.separator" value="/" />
-	<property name="jboss.server.dir" value="${env.JBOSS_HOME}/server/default" />
-	<property name="jboss.conf.dir" value="${jboss.server.dir}/conf" />
-	<property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
 
+	<import file="build-deploy.xml" />
+	<import file="build-grid.xml" />
+	
 	<target name="clean">
 		<delete dir="${build.dir}" quiet="true" />
 	</target>
 
-	<target name="init-project">
+	<target name="init-application">
 		<!-- create the necessary folders -->
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${tmp.dir}" />
@@ -29,7 +25,7 @@
 		<mkdir dir="${tmp.dir}/WEB-INF/lib" />
 	</target>
 
-	<target name="compile" depends="clean, init-project">
+	<target name="compile" depends="clean, init-application">
 		<echo message="*****************************************************" />
 		<echo message="**   Compiling Java Classes ...          		  **" />
 		<echo message="*****************************************************" />
@@ -78,37 +74,9 @@
 			</fileset>
 		</copy>
 	</target>
-
-	<target name="prepare-jboss">
-		<!--copy csm related configuration files -->
-		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/caNanoLab.csm.hibernate.cfg.xml" />
-		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/login-config.xml" />
-		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/ApplicationSecurityConfig.xml" />
-		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/csm/properties-service.xml" />
-		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/${database}-ds.xml" />
-
-		<!-- replace path to JBOSS HOME -->
-		<replace file="${jboss.conf.dir}/ApplicationSecurityConfig.xml" token="JBOSS_CONF_DIR" value="${jboss.conf.dir}" />
-		<replace file="${jboss.deploy.dir}/properties-service.xml" token="JBOSS_CONF_DIR" value="${jboss.conf.dir}" />
-
-		<!--replace database connection info -->
-		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_HOST" value="${database.host}" />
-		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_PORT" value="${database.port}" />
-		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_USER" value="${database.user}" />
-		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_PASSWORD" value="${database.password}" />
-
-		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_HOST" value="${database.host}" />
-		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_PORT" value="${database.port}" />
-		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_USER" value="${database.user}" />
-		<replace file="${jboss.conf.dir}/login-config.xml" token="DATABASE_PASSWORD" value="${database.password}" />
-
-		<!-- copy database jdbc driver -->
-		<copy overwrite="true" todir="${jboss.server.dir}/lib" file="${conf.dir}/mysql-connector-java-5.0.7-bin.jar" />
-	</target>
-
-	<target name="build-application" depends="prepare-jboss, compile">
+	<target name="build-application" depends="compile">
 		<!-- package WAR file -->
-		<war destfile="${build.dir}/caNanoLab.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
+		<war destfile="${build.dir}/caNanoLab.war" basedir="${tmp.dir}" compress="true" />
 		<copy todir="${build.dir}">
 			<fileset dir="${conf.dir}/csm/">
 				<include name="*.war" />
