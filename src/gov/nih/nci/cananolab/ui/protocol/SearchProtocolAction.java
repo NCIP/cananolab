@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
@@ -77,6 +78,13 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
+		
+		String gridNodeHostStr =(String) request.getParameter("searchLocations");
+		if(gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+			String[] selectedLocations = gridNodeHostStr.split("~");
+			InitSetup.getInstance().setSelectedLocations(request, selectedLocations);
+		}
+		
 		return mapping.getInputForward();
 	}
 

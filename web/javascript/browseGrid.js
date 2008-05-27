@@ -1,4 +1,3 @@
-
 var request;
 function getLocalCounts(selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
@@ -14,13 +13,9 @@ function getGridCounts(selectEle) {
 	
 	//var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url;
-	if (gridNodesStr == "local") {
-		url = "/caNanoLab/searchNanoparticle.do?dispatch=publicCounts";
-	} else {
-		url = "/caNanoLab/remoteSearchNanoparticle.do?dispatch=publicCounts&gridNodeHost=";
-		url += gridNodesStr;
-	}
+	var url = "/caNanoLab/publicCount.do?dispatch=publicCounts&searchLocations=";
+	url += gridNodesStr;
+	
     // Perform the AJAX request using a non-IE browser.
 	if (window.XMLHttpRequest) {
 		request = new XMLHttpRequest();
@@ -60,94 +55,58 @@ function updateParticleCount() {
 		}
 	}
 }
-function browseParitcles(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
+function browseParitcles() {
+	var selectEle = document.getElementById('location');
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url;
-	if (gridNodesStr == "local") {
-		url = "/caNanoLab/searchNanoparticle.do?dispatch=search";
-	} else {
-		url = "/caNanoLab/remoteSearchNanoparticle.do?dispatch=publicSearch&gridNodeHost=";
-		url += gridNodesStr;
-	}
-	gotoPage(url);
-	return false;
-}
-function searchParitcles(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
-	var url;
-	var gridNodesStr = getSelectedOptions(selectEle);
-	if (gridNodesStr == "local") {
-		url = "/caNanoLab/searchNanoparticle.do?dispatch=setup";
-	} else {
-		url = "/caNanoLab/remoteSearchNanoparticle.do?dispatch=setup&gridNodeHost=";
-		url += gridNodesStr;
-	}
-	/*
-	var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
+	var url = "/caNanoLab/searchNanoparticle.do?dispatch=search&searchLocations=";
+	url += gridNodesStr;
 
-	if (gridNode == "local") {
-		url = "/caNanoLab/searchNanoparticle.do?dispatch=setup";
-	} else {
-		url = "/caNanoLab/remoteSearchNanoparticle.do?dispatch=setup";
-	}
-	*/
 	gotoPage(url);
 	return false;
 }
-function searchReports(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
+function searchParitcles() {
+	var selectEle = document.getElementById('location');
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url;
-	if (gridNodesStr == "local") {
-		url = "/caNanoLab/searchReport.do?dispatch=setup";
-	} else {
-		url = "/caNanoLab/remoteSearchReport.do?dispatch=setup&gridNodeHost=";
-		url += gridNodesStr;
-	}
+	var url = "/caNanoLab/searchNanoparticle.do?dispatch=setup&searchLocations=";
+	url += gridNodesStr;
 	
-	/*
-	var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
-	if (gridNode == "local") {
-		url = "/caNanoLab/searchReport.do?dispatch=setup";
-	} else {
-		url = "/caNanoLab/remoteSearchReport.do?dispatch=setup";
-	}
-	*/
 	gotoPage(url);
 	return false;
 }
-function browseReports(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
+function searchReports() {
+	var selectEle = document.getElementById('location');
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url;
-	if (gridNodesStr == "local") {
-		url = "/caNanoLab/searchReport.do?dispatch=search";
-	} else {
-		url = "/caNanoLab/remoteSearchReport.do?dispatch=publicSearch&gridNodeHost=";
-		url += gridNodesStr;
-	}
+	var url = "/caNanoLab/searchReport.do?dispatch=setup&searchLocations=";
+	url += gridNodesStr;
+	
 	gotoPage(url);
 	return false;
 }
-function searchProtocols(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
-	var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
-	var url;
-	if (gridNode == "local") {
-		url = "/caNanoLab/searchProtocol.do?dispatch=setup";
-		gotoPage(url);
-	}
+function browseReports() {
+	var selectEle = document.getElementById('location');
+	var gridNodesStr = getSelectedOptions(selectEle);
+	var url = "/caNanoLab/searchReport.do?dispatch=search&searchLocations=";
+	url += gridNodesStr;
+
+	gotoPage(url);
 	return false;
 }
-function browseProtocols(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
+function searchProtocols() {
+	var selectEle = document.getElementById('location');
+	var gridNodesStr = getSelectedOptions(selectEle);
+	var url = "/caNanoLab/searchProtocol.do?dispatch=setup&searchLocations=";
+	url += gridNodesStr;
+
+	gotoPage(url);
+	return false;
+}
+function browseProtocols() {
+	var selectEle = document.getElementById('location');
 	var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
-	var url;
-	if (gridNode == "local") {
-		url = "/caNanoLab/searchProtocol.do?dispatch=search";
-		gotoPage(url);
-	}
+	var url = "/caNanoLab/searchProtocol.do?dispatch=search&searchLocations=";
+	url += gridNodesStr;
+
+	gotoPage(url);
 	return false;
 }
 function getSelectedOptions(selectEle) {
@@ -161,4 +120,3 @@ function getSelectedOptions(selectEle) {
 	var cleanStr = selectedValues.substr(0, selectedValues.length - 1);
 	return cleanStr;
 }
-

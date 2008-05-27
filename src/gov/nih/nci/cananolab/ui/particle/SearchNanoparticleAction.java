@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.18 2008-05-22 22:42:20 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.19 2008-05-27 19:11:30 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -45,8 +45,29 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleSource = (String) theForm.get("particleSource");
 
-		String[] nanoparticleEntityTypes = (String[]) theForm
-				.get("nanoparticleEntityTypes");
+		String[] nanoparticleEntityTypes = new String[0];
+		String[] functionalizingEntityTypes = new String[0];
+		String[] functionTypes = new String[0];
+		String[] characterizations = new String[0];
+		String texts = "";
+		String[] searchLocations = new String[0];
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (gridNodeHostStr != null) {
+			searchLocations = gridNodeHostStr.split("~");
+		}
+		
+		if (theForm != null) {
+			nanoparticleEntityTypes = (String[]) theForm
+					.get("nanoparticleEntityTypes");
+			functionalizingEntityTypes = (String[]) theForm
+					.get("functionalizingEntityTypes");
+			functionTypes = (String[]) theForm.get("functionTypes");
+			characterizations = (String[]) theForm.get("characterizations");
+			texts = ((String) theForm.get("text")).trim();
+			searchLocations = (String[]) theForm.get("searchLocations");
+		}
+
 		// convert nanoparticle entity display names into short class names and
 		// other types
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
@@ -61,8 +82,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				nanoparticleEntityClassNames.add(className);
 			}
 		}
-		String[] functionalizingEntityTypes = (String[]) theForm
-				.get("functionalizingEntityTypes");
+
 		// convert functionalizing entity display names into short class names
 		// and other types
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
@@ -77,7 +97,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				functionalizingEntityClassNames.add(className);
 			}
 		}
-		String[] functionTypes = (String[]) theForm.get("functionTypes");
+
 		// convert function display names into short class names and other types
 		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
@@ -91,15 +111,14 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				functionClassNames.add(className);
 			}
 		}
-		String[] characterizations = (String[]) theForm
-				.get("characterizations");
+
 		// convert characterization display names into short class names
 		String[] charaClassNames = new String[characterizations.length];
 		for (int i = 0; i < characterizations.length; i++) {
 			charaClassNames[i] = InitSetup.getInstance().getObjectName(
 					characterizations[i], session.getServletContext());
 		}
-		String texts = ((String) theForm.get("text")).trim();
+
 		List<String> wordList = StringUtils.parseToWords(texts);
 		String[] words = null;
 		if (wordList != null) {
@@ -108,7 +127,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		}
 
 		// TODO update auto-discovery to exclude local grid node
-		String[] searchLocations = (String[]) theForm.get("searchLocations");
+
 		List<ParticleBean> foundParticles = new ArrayList<ParticleBean>();
 		for (String location : searchLocations) {
 			List<ParticleBean> particles = null;
@@ -168,6 +187,13 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);
 		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
+		
+		String gridNodeHostStr =(String) request.getParameter("searchLocations");
+		if(gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+			String[] selectedLocations = gridNodeHostStr.split("~");
+			InitSetup.getInstance().setSelectedLocations(request, selectedLocations);
+		}
+		
 		return mapping.getInputForward();
 	}
 

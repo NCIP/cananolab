@@ -71,6 +71,9 @@
 		<action path="/loginPage"
 			type="gov.nih.nci.cananolab.ui.security.WelcomeAction"
 			parameter="calab.login" scope="request" />
+		<action path="/publicCount"
+            type="gov.nih.nci.cananolab.ui.core.CountAction">
+    	</action>
 	</action-mappings>
 	<controller>
 		<set-property value="true" property="inputForward" />

@@ -54,16 +54,11 @@
 										caNanoLab-WUSTL
 									</option>
 									<%--
-									<c:forEach var="selectedNode" items="${selectedGridNodeHosts}">
-										<option value="${selectedNode}" selected>
-											${selectedNode}
-										</option>
+									<c:forEach var="selectedNode" items="${selectedLocations}">
+										<option value="${selectedNode}" selected>${selectedNode}</option>
 									</c:forEach>
-									<c:forEach var="unselectedNode"
-										items="${unselectedGridNodeHosts}">
-										<option value="${unselectedNode}">
-											${unselectedNode}
-										</option>
+									<c:forEach var="unselectedNode" items="${unselectedLocations}">
+										<option value="${unselectedNode}">${unselectedNode}</option>
 									</c:forEach>
 									--%>
 								</html:select> </strong>
