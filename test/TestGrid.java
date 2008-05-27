@@ -28,7 +28,7 @@ public class TestGrid {
 			services = discoveryClient
 					.discoverDataServicesByDomainModel(domainModelName);
 			// services=discoveryClient.getAllDataServices();
-			// services=discoveryClient.getAllServices(true);
+			// services=discoveryClient.getAllServices();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -108,14 +108,15 @@ public class TestGrid {
 				for (EndpointReferenceType service : services) {
 					System.out.println(service.getAddress());
 					test.testCQL(service.getAddress().toString());
+					test.testOperation(service.getAddress().toString());
 				}
 			} else {
 				System.out.println("No grid nodes found");
 			}
-			test
-					.testCQL("http://165.112.132.160:8080/wsrf/services/cagrid/CaNanoLabService");
 			// test
-			// .testOperation("http://165.112.132.160:8080/wsrf/services/cagrid/CaNanoLabService");
+			// .testCQL("http://165.112.132.206:8080/wsrf/services/cagrid/CaNanoLabService");
+			// test
+			// .testOperation("http://165.112.132.206:8080/wsrf/services/cagrid/CaNanoLabService");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
