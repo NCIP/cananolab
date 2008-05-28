@@ -217,7 +217,7 @@
 												Summary views of nanoparticle information with print and export feature
 											</li>
 											<li>
-												Basic local and caBIGä grid (caGrid) search functionality
+												Basic local and caBIG<sup>TM</sup> grid (caGrid) search functionality
 											</li>
 											<li>
 												Role-based Security
