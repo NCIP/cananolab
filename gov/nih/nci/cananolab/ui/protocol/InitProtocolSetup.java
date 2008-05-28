@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCha
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -13,8 +14,12 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class sets up session level or servlet context level variables to be
@@ -24,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 public class InitProtocolSetup {
+	Logger logger = Logger.getLogger(InitProtocolSetup.class);
 	private InitProtocolSetup() {
 	}
 
@@ -70,5 +76,32 @@ public class InitProtocolSetup {
 				((ProtocolFile) protocolFile.getDomainFile()).getProtocol()
 						.getType());
 		setProtocolDropdowns(request);
+	}
+	
+	//for ajax
+	public String[] getProtocolTypes(String searchLocations) {
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		HttpServletRequest request = webContext.getHttpServletRequest();
+		try {
+			boolean isLocal = false;
+			if ("local".equals(searchLocations)){
+				isLocal = true;
+			}
+			SortedSet<String> types = null;
+		    if (isLocal){
+		    	types = InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+						"protocolTypes", "Protocol", "type", "otherType", true);
+			}else{
+				types = LookupService.findLookupValues("Protocol", "type");			
+			}
+		    types.add("");
+		    String[] eleArray = new String[types.size()];
+			return types.toArray(eleArray);
+		} catch (Exception e) {
+			logger.error("Problem setting protocol types: \n", e);
+			e.printStackTrace();
+		}	
+		return new String[] { "" };
 	}
 }
