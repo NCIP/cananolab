@@ -8,6 +8,8 @@ import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBe
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.HashMap;
@@ -26,7 +28,7 @@ import javax.servlet.http.HttpSession;
  * 
  */
 public class InitCharacterizationSetup {
-	private NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+	private NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
 
 	public static InitCharacterizationSetup getInstance() {
 		return new InitCharacterizationSetup();

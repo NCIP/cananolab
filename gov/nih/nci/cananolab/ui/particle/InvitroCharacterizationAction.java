@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,7 +79,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		InvitroCharacterizationBean charBean = new InvitroCharacterizationBean(
 				(InvitroCharacterization) chara);
 		// set file visibility
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
 		charService.retrieveVisiblity(charBean, user);
 		theForm.set("achar", charBean);
 		return charBean;
