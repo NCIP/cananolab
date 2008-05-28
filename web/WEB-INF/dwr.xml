@@ -22,7 +22,7 @@
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService" />
+				value="gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl" />
 			<include method="getInstrumentAbbreviation" />
 			<include method="getDerivedDatumValueUnits" />
 		</create>
