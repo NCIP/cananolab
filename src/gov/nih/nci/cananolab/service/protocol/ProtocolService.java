@@ -283,30 +283,4 @@ public class ProtocolService {
 			throw new ProtocolException(err, e);
 		}
 	}
-	
-	public String[] getProtocolTypes(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		try {
-			boolean isLocal = false;
-			if ("local".equals(searchLocations)){
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-		    if (isLocal){
-		    	types = InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-						"protocolTypes", "Protocol", "type", "otherType", true);
-			}else{
-				types = LookupService.findLookupValues("Protocol", "type");			
-			}
-		    types.add("");
-		    String[] eleArray = new String[types.size()];
-			return types.toArray(eleArray);
-		} catch (Exception e) {
-			logger.error("Problem setting protocol types: \n", e);
-			e.printStackTrace();
-		}	
-		return new String[] { "" };
-	}
 }
