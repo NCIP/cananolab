@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.30 2008-05-22 22:42:20 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.31 2008-05-28 20:45:31 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,7 +94,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
 				(PhysicalCharacterization) chara);
 		// set file visibility
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationService();
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
 		charService.retrieveVisiblity(charBean, user);
 		theForm.set("achar", charBean);
 		return charBean;
