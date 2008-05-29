@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.19 2008-05-27 19:11:30 cais Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.20 2008-05-29 18:25:21 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -51,12 +51,15 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] characterizations = new String[0];
 		String texts = "";
 		String[] searchLocations = new String[0];
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (gridNodeHostStr != null) {
-			searchLocations = gridNodeHostStr.split("~");
+		if (theForm.get("searchLocations") != null) {
+			searchLocations = (String[]) theForm.getStrings("searchLocations");
+		} else {
+			String gridNodeHostStr = (String) request
+					.getParameter("searchLocations");
+			if (gridNodeHostStr != null) {
+				searchLocations = gridNodeHostStr.split("~");
+			}
 		}
-		
 		if (theForm != null) {
 			nanoparticleEntityTypes = (String[]) theForm
 					.get("nanoparticleEntityTypes");
@@ -126,8 +129,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			wordList.toArray(words);
 		}
 
-		// TODO update auto-discovery to exclude local grid node
-
 		List<ParticleBean> foundParticles = new ArrayList<ParticleBean>();
 		for (String location : searchLocations) {
 			List<ParticleBean> particles = null;
@@ -135,8 +136,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			if (location.equals("local")) {
 				service = new NanoparticleSampleServiceLocalImpl();
 			} else {
-				// TODO get serviceUrl
-				String serviceUrl = "";
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
 				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
 			}
 			particles = service.findNanoparticleSamplesBy(particleSource,
@@ -182,18 +183,19 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitCompositionSetup.getInstance().getFunctionTypes(request);
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);
 		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
-		
-		String gridNodeHostStr =(String) request.getParameter("searchLocations");
-		if(gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
 			String[] selectedLocations = gridNodeHostStr.split("~");
-			InitSetup.getInstance().setSelectedLocations(request, selectedLocations);
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
+			theForm.set("searchLocations", selectedLocations);
 		}
-		
+
 		return mapping.getInputForward();
 	}
 

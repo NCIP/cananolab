@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.12 2008-05-22 22:42:20 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.13 2008-05-29 18:25:20 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -113,8 +114,8 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			reportService = new ReportServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			reportService = new ReportServiceRemoteImpl(serviceUrl);
 		}
 		ReportBean reportBean = reportService.findReportById(reportId);

@@ -31,10 +31,10 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.8 2008-05-27 19:11:30 cais Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.9 2008-05-29 18:25:20 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
-	
+
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -44,18 +44,19 @@ public class SearchReportAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		
+
 		String reportTitle = "";
 		String reportCategory = "";
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
 		String[] searchLocations = new String[0];
-		String gridNodeHostStr = (String) request.getParameter("searchLocations");
-		if(gridNodeHostStr != null) {
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (gridNodeHostStr != null) {
 			searchLocations = gridNodeHostStr.split("~");
 		}
-		
+
 		if (theForm != null) {
 			reportTitle = (String) theForm.get("reportTitle");
 			reportCategory = (String) theForm.get("reportCategory");
@@ -66,7 +67,7 @@ public class SearchReportAction extends BaseAnnotationAction {
 			functionTypes = (String[]) theForm.get("functionTypes");
 			searchLocations = (String[]) theForm.get("searchLocations");
 		}
-		
+
 		// convert nanoparticle entity display names into short class names
 		// String[] nanoparticleEntityClassNames = new
 		// String[nanoparticleEntityTypes.length];
@@ -88,7 +89,6 @@ public class SearchReportAction extends BaseAnnotationAction {
 			}
 		}
 
-		
 		// convert functionalizing entity display names into short class names
 		// String[] functionalizingEntityClassNames = new
 		// String[functionalizingEntityTypes.length];
@@ -110,7 +110,6 @@ public class SearchReportAction extends BaseAnnotationAction {
 			}
 		}
 
-		
 		// convert function display names into short class names
 		// String[] functionClassNames = new String[functionTypes.length];
 		// for (int i = 0; i < functionTypes.length; i++) {
@@ -129,16 +128,14 @@ public class SearchReportAction extends BaseAnnotationAction {
 				functionClassNames.add(className);
 			}
 		}
-		// TODO update auto-discovery to exclude local grid node
-		
 		List<ReportBean> foundReports = new ArrayList<ReportBean>();
 		ReportService service = null;
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
 				service = new ReportServiceLocalImpl();
 			} else {
-				// TODO get serviceUrl
-				String serviceUrl = "";
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
 				service = new ReportServiceRemoteImpl(serviceUrl);
 			}
 			List<ReportBean> reports = service.findReportsBy(reportTitle,
@@ -190,13 +187,15 @@ public class SearchReportAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);
 		InitCompositionSetup.getInstance().getFunctionTypes(request);
-		
-		String gridNodeHostStr =(String) request.getParameter("searchLocations");
-		if(gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
 			String[] selectedLocations = gridNodeHostStr.split("~");
-			InitSetup.getInstance().setSelectedLocations(request, selectedLocations);
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
+			theForm.set("searchLocations", selectedLocations);
 		}
-		
+
 		return mapping.getInputForward();
 	}
 
