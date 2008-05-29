@@ -82,7 +82,6 @@
 	<classpathentry kind="lib" path="lib/cagrid/globus_wsrf_servicegroup.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/jasciidammit-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/jdepend-2.7.jar"/>
-	<classpathentry kind="lib" path="lib/cagrid/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/sdk-customization.jar"/>
 	<classpathentry kind="lib" path="lib/globus/addressing-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/globus/axis.jar"/>
