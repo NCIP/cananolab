@@ -791,6 +791,20 @@ public class AuthorizationService {
 		}
 	}
 
+	public void removePublicGroup(String objectName)
+			throws CaNanoLabSecurityException {
+		try {
+			Group group = getGroup(CaNanoLabConstants.CSM_PUBLIC_GROUP);
+			Role role = getRole(CaNanoLabConstants.CSM_READ_ROLE);
+			ProtectionGroup pg = getProtectionGroup(objectName);
+			userManager.removeGroupRoleFromProtectionGroup(pg
+					.getProtectionGroupId().toString(), group.getGroupId()
+					.toString(), new String[] { role.getId().toString() });
+		} catch (Exception e) {
+			throw new CaNanoLabSecurityException();
+		}
+	}
+
 	public void assignVisibility(String dataToProtect, String[] visibleGroups)
 			throws CaNanoLabSecurityException {
 		try {
