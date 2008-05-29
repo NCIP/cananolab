@@ -11,7 +11,7 @@
 
 	<import file="build-deploy.xml" />
 	<import file="build-grid.xml" />
-	
+
 	<target name="clean">
 		<delete dir="${build.dir}" quiet="true" />
 	</target>
@@ -35,7 +35,6 @@
 			</fileset>
 			<fileset dir="${lib.dir}">
 				<include name="**/*.jar" />
-				<exclude name="ivy*.jar" />
 			</fileset>
 		</path>
 		<javac srcdir="${src.dir}" destdir="${tmp.dir}/WEB-INF/classes" debug="true">
@@ -71,6 +70,15 @@
 			<fileset dir="${webroot.dir}">
 				<exclude name="**/*.mex" />
 				<exclude name="**/WEB-INF/classes/**" />
+			</fileset>
+		</copy>
+
+		<!-- copy lib files from ${lib.dir} -->
+		<copy todir="${tmp.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+				<exclude name="servlet.jar" />
+				<exclude name="log4j.jar" />
 			</fileset>
 		</copy>
 	</target>
