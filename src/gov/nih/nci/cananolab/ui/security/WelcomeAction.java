@@ -16,26 +16,52 @@ package gov.nih.nci.cananolab.ui.security;
  * @author pansu
  */
 
-/* CVS $Id: WelcomeAction.java,v 1.1 2008-04-07 20:12:28 pansu Exp $ */
+/* CVS $Id: WelcomeAction.java,v 1.2 2008-05-29 18:25:20 pansu Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.ui.core.AbstractBaseAction;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.ForwardAction;
 
 public class WelcomeAction extends AbstractBaseAction {
 	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		saveToken(request); //save token to avoid back and refresh on the login page.		
-		ForwardAction forwardAction = new ForwardAction();		
+		saveToken(request); // save token to avoid back and refresh on the login
+		// page.
+
+		// auto-discover grid nodes and save in session
+		Map<String, GridNodeBean> gridNodeMap = GridService.discoverServices(
+				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+				CaNanoLabConstants.DOMAIN_MODEL_NAME,
+				CaNanoLabConstants.APP_OWNER);
+		if (gridNodeMap == null) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.grid.discovery.none",
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+		} else {
+			request.getSession().getServletContext().setAttribute(
+					"allGridNodes", gridNodeMap);
+		}
+		ForwardAction forwardAction = new ForwardAction();
 		return forwardAction.execute(mapping, form, request, response);
 	}
 

@@ -265,8 +265,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			charService = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			charService = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
 		}
 		//Qina, Characterization or CharacterizationBean???
@@ -405,8 +405,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
 		}
 		service.exportDetail(charBean, response.getOutputStream());
@@ -430,8 +430,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
 		}
 		CharacterizationSummaryBean charSummary = service
@@ -498,8 +498,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
 		}
 		service.exportSummary(charSummaryBean, response.getOutputStream());
@@ -525,8 +525,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
 		}
 		service.exportFullSummary(charSummaryBean, response.getOutputStream());
