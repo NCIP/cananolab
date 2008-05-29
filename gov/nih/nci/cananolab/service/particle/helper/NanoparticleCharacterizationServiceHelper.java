@@ -54,217 +54,40 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Service methods involving characterizations
  * 
- * @author tanq
+ * @author tanq, pansu
  * 
  */
 
-public class NanoparticleCharacterizationServiceHelper{
+public class NanoparticleCharacterizationServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(NanoparticleCharacterizationServiceHelper.class);
 
 	public NanoparticleCharacterizationServiceHelper() {
 	}
 
-/*	public void saveCharacterization(NanoparticleSample particleSample,
-			Characterization achar) throws Exception {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			if (achar.getId() != null) {
-				Characterization dbChar = (Characterization) appService.load(
-						Characterization.class, achar.getId());
-				if (dbChar == null) {
-					String err = "Object doesn't exist in the database anymore.  Please log in again.";
-					logger.error(err);
-					throw new ParticleCharacterizationException(err);
-				}
-			}
-			// check for existing view title
-			Boolean redundantViewTitle = checkRedundantViewTitle(
-					particleSample, achar);
-			if (redundantViewTitle) {
-				throw new DuplicateEntriesException();
-			}
-
-			if (particleSample.getCharacterizationCollection() != null) {
-				particleSample.getCharacterizationCollection().clear();
-			} else {
-				particleSample
-						.setCharacterizationCollection(new HashSet<Characterization>());
-			}
-			achar.setNanoparticleSample(particleSample);
-			particleSample.getCharacterizationCollection().add(achar);
-
-			// load existing instrument
-			if (achar.getInstrumentConfiguration() != null
-					&& achar.getInstrumentConfiguration().getInstrument() != null) {
-				Instrument dbInstrument = findInstrumentBy(
-						achar.getInstrumentConfiguration().getInstrument()
-								.getType(), achar.getInstrumentConfiguration()
-								.getInstrument().getManufacturer());
-				if (dbInstrument != null) {
-					achar.getInstrumentConfiguration().setInstrument(
-							dbInstrument);
-				}
-			}
-
-			if (achar.getDerivedBioAssayDataCollection() != null) {
-				FileService service = new FileService();
-				for (DerivedBioAssayData bioassay : achar
-						.getDerivedBioAssayDataCollection()) {
-					if (bioassay.getLabFile() != null) {
-						service.prepareSaveFile(bioassay.getLabFile());
-					}
-				}
-			}
-			appService.saveOrUpdate(achar);
-		} catch (DuplicateEntriesException e) {
-			throw e;
-		} catch (Exception e) {
-			String err = "Problem in saving the characterization.";
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
-		}
-	}*/
-
 	public Characterization findCharacterizationById(String charId)
-			throws ParticleCharacterizationException {
+			throws Exception {
 		Characterization achar = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
 
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Characterization.class).add(
-					Property.forName("id").eq(new Long(charId)));
-			crit.createAlias("derivedBioAssayDataCollection", "bioassay",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("bioassay.labFile", "file",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.setFetchMode("protocolFile", FetchMode.JOIN);
-			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
-			crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).add(
+				Property.forName("id").eq(new Long(charId)));
+		crit.createAlias("derivedBioAssayDataCollection", "bioassay",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("bioassay.labFile", "file",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.setFetchMode("protocolFile", FetchMode.JOIN);
+		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
+		crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
-			List result = appService.query(crit);
-			if (!result.isEmpty()) {
-				achar = (Characterization) result.get(0);
-			}
-			return achar;
-		} catch (Exception e) {
-			logger.error("Problem finding the characterization by id: "
-					+ charId, e);
-			throw new ParticleCharacterizationException();
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			achar = (Characterization) result.get(0);
 		}
-	}
-
-	public Boolean checkRedundantViewTitle(NanoparticleSample particleSample,
-			Characterization chara) throws ParticleCharacterizationException {
-		Boolean exist = false;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Characterization.class).add(
-					Property.forName("identificationName").eq(
-							chara.getIdentificationName()));
-			crit.createAlias("nanoparticleSample", "sample").add(
-					Restrictions.eq("sample.name", particleSample.getName()));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			if (!results.isEmpty()) {
-				for (Object obj : results) {
-					Characterization achar = (Characterization) obj;
-					// same characterization class with different IDs can't have
-					// the same view titles.
-					if (achar.getClass().getCanonicalName().equals(
-							chara.getClass().getCanonicalName())
-							&& !achar.getId().equals(chara.getId())) {
-						return true;
-					}
-				}
-			}
-			return exist;
-		} catch (Exception e) {
-			logger
-					.error("Problem checking whether the view title already exists.");
-			throw new ParticleCharacterizationException();
-		}
-	}
-
-	public SortedSet<String> findAllCharacterizationSources()
-			throws ParticleCharacterizationException {
-		SortedSet<String> sources = new TreeSet<String>();
-
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select distinct achar.source from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.source is not null");
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				String source = (String) obj;
-				sources.add(source);
-			}
-		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve all Characterization Sources.",
-							e);
-			throw new ParticleCharacterizationException(
-					"Problem to retrieve all Characterization Sources ");
-		}
-		sources.addAll(Arrays
-				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
-
-		return sources;
-	}
-
-	public List<Instrument> findAllInstruments()
-			throws ParticleCharacterizationException {
-		List<Instrument> instruments = new ArrayList<Instrument>();
-
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
-					.add(Restrictions.isNotNull("type"));
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Instrument instrument = (Instrument) obj;
-				instruments.add(instrument);
-			}
-		} catch (Exception e) {
-			String err = "Problem to retrieve all instruments.";
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err);
-		}
-		return instruments;
-	}
-
-	public Instrument findInstrumentBy(String instrumentType,
-			String manufacturer) throws ParticleCharacterizationException {
-		Instrument instrument = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
-					.add(Property.forName("type").eq(instrumentType)).add(
-							Property.forName("manufacturer").eq(manufacturer));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				instrument = (Instrument) obj;
-
-			}
-			return instrument;
-		} catch (Exception e) {
-			String err = "Problem to retrieve instrument.";
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err);
-		}
+		return achar;
 	}
 
 	// for dwr ajax
@@ -308,39 +131,31 @@ public class NanoparticleCharacterizationServiceHelper{
 	}
 
 	public SortedSet<Characterization> findParticleCharacterizationsByClass(
-			String particleName, String className)
-			throws ParticleCharacterizationException {
+			String particleName, String className) throws Exception {
 		SortedSet<Characterization> charas = new TreeSet<Characterization>(
 				new CaNanoLabComparators.CharacterizationDateComparator());
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Class
-					.forName(className));
-			crit.createAlias("nanoparticleSample", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("derivedBioAssayDataCollection", "bioassay",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("bioassay.labFile", "file",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.name", particleName));
-			crit.setFetchMode("protocolFile", FetchMode.JOIN);
-			crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
-			crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
-			List result = appService.query(crit);
-			for (Object obj : result) {
-				charas.add((Characterization) obj);
-			}
-			return charas;
-		} catch (Exception e) {
-			String err = "Error getting " + particleName
-					+ " characterizations of type " + className;
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Class
+				.forName(className));
+		crit.createAlias("nanoparticleSample", "sample",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("derivedBioAssayDataCollection", "bioassay",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("bioassay.labFile", "file",
+				CriteriaSpecification.LEFT_JOIN);
+		crit.add(Restrictions.eq("sample.name", particleName));
+		crit.setFetchMode("protocolFile", FetchMode.JOIN);
+		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
+		crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List result = appService.query(crit);
+		for (Object obj : result) {
+			charas.add((Characterization) obj);
 		}
+		return charas;
 	}
 
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
@@ -797,17 +612,13 @@ public class NanoparticleCharacterizationServiceHelper{
 		return rowCount;
 	}
 
-/*	public void deleteCharacterization(Characterization chara)
-			throws ParticleCharacterizationException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			appService.delete(chara);
-		} catch (Exception e) {
-			String err = "Error deleting characterization "
-					+ chara.getIdentificationName();
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
-		}
-	}*/
+	/*
+	 * public void deleteCharacterization(Characterization chara) throws
+	 * ParticleCharacterizationException { try { CustomizedApplicationService
+	 * appService = (CustomizedApplicationService) ApplicationServiceProvider
+	 * .getApplicationService(); appService.delete(chara); } catch (Exception e) {
+	 * String err = "Error deleting characterization " +
+	 * chara.getIdentificationName(); logger.error(err, e); throw new
+	 * ParticleCharacterizationException(err, e); } }
+	 */
 }

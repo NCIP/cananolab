@@ -77,10 +77,13 @@ public class NanoparticleSampleServiceRemoteImpl implements
 							functionalizingEntityClassNames,
 							functionClassNames, characterizationClassNames,
 							wordList);
-			for (NanoparticleSample particleSample : particleSamples) {				
-				//manually fetch the associated data since grid service only pass one level association
-				loadParticleSamplesAssociations(particleSample);				
-				particles.add(new ParticleBean(particleSample));
+			if (particleSamples != null) {
+				for (NanoparticleSample particleSample : particleSamples) {
+					// manually fetch the associated data since grid service
+					// only pass one level association
+					loadParticleSamplesAssociations(particleSample);
+					particles.add(new ParticleBean(particleSample));
+				}
 			}
 			return particles;
 		} catch (Exception e) {
@@ -92,33 +95,37 @@ public class NanoparticleSampleServiceRemoteImpl implements
 
 	/**
 	 * Get all the associated data of a nanoparticle sample
+	 * 
 	 * @param particleSample
 	 * @throws Exception
 	 */
-	private void loadParticleSamplesAssociations(NanoparticleSample particleSample)throws Exception{
+	private void loadParticleSamplesAssociations(
+			NanoparticleSample particleSample) throws Exception {
 		String particleId = particleSample.getId().toString();
-		//source
+		// source
 		Source source = findSourceByParticleSampleId(particleId);
 		particleSample.setSource(source);
-		
-		//keyword
+
+		// keyword
 		Collection<Keyword> keywordCollection = findKeywordsByParticleSampleId(particleId);
 		particleSample.setKeywordCollection(keywordCollection);
-		
-		//characterization, char.derivedBioAssayDataCollection, derived.labFile, labFile.keywordCollection
+
+		// characterization, char.derivedBioAssayDataCollection,
+		// derived.labFile, labFile.keywordCollection
 		Collection<Characterization> characterizationCollection = findCharsByParticleSampleId(particleId);
-		particleSample.setCharacterizationCollection(characterizationCollection);
-		
-		//sampleComposition
-		//sampleComposition.nanoparticleEntityCollection,
-		//nanoparticleEntityCollection.composingElementCollection,
-		//composingElementCollection.inherentFucntionCollection
-		//sampleComposition.functionalizingEntityCollection,
-		//functionalizingEntityCollection.functionCollection
+		particleSample
+				.setCharacterizationCollection(characterizationCollection);
+
+		// sampleComposition
+		// sampleComposition.nanoparticleEntityCollection,
+		// nanoparticleEntityCollection.composingElementCollection,
+		// composingElementCollection.inherentFucntionCollection
+		// sampleComposition.functionalizingEntityCollection,
+		// functionalizingEntityCollection.functionCollection
 		SampleComposition sampleComposition = findCompositionByParticleSampleId(particleId);
-		particleSample.setSampleComposition(sampleComposition);		
+		particleSample.setSampleComposition(sampleComposition);
 	}
-	
+
 	public ParticleBean findNanoparticleSampleById(String particleId)
 			throws ParticleException {
 		try {
@@ -140,7 +147,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				particleSample = (NanoparticleSample) obj;
-				loadParticleSamplesAssociations(particleSample);			
+				loadParticleSamplesAssociations(particleSample);
 			}
 			ParticleBean particleBean = new ParticleBean(particleSample);
 			return particleBean;
@@ -173,7 +180,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				particleSample = (NanoparticleSample) obj;
-				loadParticleSamplesAssociations(particleSample);			
+				loadParticleSamplesAssociations(particleSample);
 			}
 			return particleSample;
 		} catch (Exception e) {
@@ -217,33 +224,34 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
-	
-	
+
 	/**
-	 * return all sources with an associated NanoparticleSample whose id is equal to particleId
+	 * return all sources with an associated NanoparticleSample whose id is
+	 * equal to particleId
+	 * 
 	 * @param particleId
 	 * @return
-	 * @throws ParticleException	 
-	 *  
+	 * @throws ParticleException
+	 * 
 	 */
 	private Source findSourceByParticleSampleId(String particleId)
 			throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.common.Source");
+			target.setName("gov.nih.nci.cananolab.domain.common.Source");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			association.setRoleName("nanoparticleSampleCollection");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(particleId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -254,7 +262,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				source = (Source) obj;
-			}			
+			}
 			return source;
 		} catch (Exception e) {
 			String err = "Problem finding the source by particle id: "
@@ -263,31 +271,33 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	/**
-	 * return all keywords with an associated NanoparticleSample whose id is equal to particleId
+	 * return all keywords with an associated NanoparticleSample whose id is
+	 * equal to particleId
+	 * 
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
-	 */	
+	 */
 	private Collection<Keyword> findKeywordsByParticleSampleId(String particleId)
 			throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.common.Keyword");
+			target.setName("gov.nih.nci.cananolab.domain.common.Keyword");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			association.setRoleName("nanoparticleSampleCollection");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(particleId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -300,7 +310,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 				java.lang.Object obj = iter.next();
 				keyword = (Keyword) obj;
 				keywordCollection.add(keyword);
-			}			
+			}
 			return keywordCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the keywordCollection by particle id: "
@@ -309,31 +319,34 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	/**
-	 * return all characterization with an associated NanoparticleSample whose id is equal to particleId
+	 * return all characterization with an associated NanoparticleSample whose
+	 * id is equal to particleId
+	 * 
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private Collection<Characterization> findCharsByParticleSampleId(String particleId)
-			throws ParticleException {
+	private Collection<Characterization> findCharsByParticleSampleId(
+			String particleId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.characterization");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			association.setRoleName("nanoparticleSample");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(particleId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -345,12 +358,14 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				chars = (Characterization) obj;
-				//todo (may not needed for this search level)
-				//findDerivedBioAssayDataByCharId is added in helper file
-				//Collection<DerivedBioAssayData> derivedBioAssayDataCollection = gridClient.findDerivedBioAssayDataByCharId(chars.getId().toString());
-				//chars.setDerivedBioAssayDataCollection(derivedBioAssayDataCollection);
+				// todo (may not needed for this search level)
+				// findDerivedBioAssayDataByCharId is added in helper file
+				// Collection<DerivedBioAssayData> derivedBioAssayDataCollection
+				// =
+				// gridClient.findDerivedBioAssayDataByCharId(chars.getId().toString());
+				// chars.setDerivedBioAssayDataCollection(derivedBioAssayDataCollection);
 				characterizationCollection.add(chars);
-			}			
+			}
 			return characterizationCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the characterizationCollection by particle id: "
@@ -359,31 +374,34 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-		
+
 	/**
-	 * return all sample composition with an associated NanoparticleSample whose id is equal to particleId
+	 * return all sample composition with an associated NanoparticleSample whose
+	 * id is equal to particleId
+	 * 
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private SampleComposition findCompositionByParticleSampleId(String particleId)
-			throws ParticleException {
+	private SampleComposition findCompositionByParticleSampleId(
+			String particleId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			association.setRoleName("nanoparticleSample");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(particleId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -394,12 +412,16 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
-				Collection<NanoparticleEntity> nanoparticleEntityCollection = findNanoparticleEntityByCompositionId(sampleComposition.getId().toString());
-				sampleComposition.setNanoparticleEntityCollection(nanoparticleEntityCollection);
-				Collection<FunctionalizingEntity> functionalizingEntityCollection = findFunctionalizingEntityByCompositionId(sampleComposition.getId().toString());
-				sampleComposition.setFunctionalizingEntityCollection(functionalizingEntityCollection);
-				
-			}			
+				Collection<NanoparticleEntity> nanoparticleEntityCollection = findNanoparticleEntityByCompositionId(sampleComposition
+						.getId().toString());
+				sampleComposition
+						.setNanoparticleEntityCollection(nanoparticleEntityCollection);
+				Collection<FunctionalizingEntity> functionalizingEntityCollection = findFunctionalizingEntityByCompositionId(sampleComposition
+						.getId().toString());
+				sampleComposition
+						.setFunctionalizingEntityCollection(functionalizingEntityCollection);
+
+			}
 			return sampleComposition;
 		} catch (Exception e) {
 			String err = "Problem finding the sampleComposition by particle id: "
@@ -408,31 +430,34 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
-	/** 
-	 * return all NanoparticleEntity Collection with an associated Composition whose id is equal to compositionId
+
+	/**
+	 * return all NanoparticleEntity Collection with an associated Composition
+	 * whose id is equal to compositionId
+	 * 
 	 * @param compositionId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private Collection<NanoparticleEntity> findNanoparticleEntityByCompositionId(String compositionId)
-			throws ParticleException {
+	private Collection<NanoparticleEntity> findNanoparticleEntityByCompositionId(
+			String compositionId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
 			association.setRoleName("sampleComposition");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(compositionId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -443,16 +468,20 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Collection<NanoparticleEntity> nanoparticleEntityCollection = new ArrayList<NanoparticleEntity>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				nanoEntity = (NanoparticleEntity) obj;		
-				Collection<ComposingElement> composingElementCollection = findComposingElementByNanoparticleEntityId(nanoEntity.getId().toString());
-				
-				for (ComposingElement composingElement: composingElementCollection){
-					Collection<Function> inherentFunctionCollection = findInherentFunctionByComposingElementId(composingElement.getId().toString());
-					composingElement.setInherentFunctionCollection(inherentFunctionCollection);
+				nanoEntity = (NanoparticleEntity) obj;
+				Collection<ComposingElement> composingElementCollection = findComposingElementByNanoparticleEntityId(nanoEntity
+						.getId().toString());
+
+				for (ComposingElement composingElement : composingElementCollection) {
+					Collection<Function> inherentFunctionCollection = findInherentFunctionByComposingElementId(composingElement
+							.getId().toString());
+					composingElement
+							.setInherentFunctionCollection(inherentFunctionCollection);
 				}
-				nanoEntity.setComposingElementCollection(composingElementCollection);
+				nanoEntity
+						.setComposingElementCollection(composingElementCollection);
 				nanoparticleEntityCollection.add(nanoEntity);
-			}			
+			}
 			return nanoparticleEntityCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the NanoparticleEntity Collection by composition id: "
@@ -461,32 +490,35 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	/**
-	 * return all ComposingElement with an associated NanoparticleEntity whose id is equal to nanoEntityId
+	 * return all ComposingElement with an associated NanoparticleEntity whose
+	 * id is equal to nanoEntityId
+	 * 
 	 * @param nanoEntityId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private Collection<ComposingElement> findComposingElementByNanoparticleEntityId(String nanoEntityId)
-			throws ParticleException {
+	private Collection<ComposingElement> findComposingElementByNanoparticleEntityId(
+			String nanoEntityId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
-			
+
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
 			association.setRoleName("nanoparticleEntity");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(nanoEntityId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -497,9 +529,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				composingElement = (ComposingElement) obj;				
+				composingElement = (ComposingElement) obj;
 				composingElementCollection.add(composingElement);
-			}			
+			}
 			return composingElementCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the composingElementCollection by nanoparicleEntity id: "
@@ -508,33 +540,35 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	/**
-	 * return all InherentFunction with an associated ComposingElement whose id is equal to composingElementId
+	 * return all InherentFunction with an associated ComposingElement whose id
+	 * is equal to composingElementId
 	 * 
 	 * @param composingElementId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private Collection<Function> findInherentFunctionByComposingElementId(String composingElementId)
-			throws ParticleException {
+	private Collection<Function> findInherentFunctionByComposingElementId(
+			String composingElementId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
-			
+
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement");
 			association.setRoleName("composingElement");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(composingElementId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -545,9 +579,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Collection<Function> inherentFunctionCollection = new ArrayList<Function>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				function = (Function) obj;				
+				function = (Function) obj;
 				inherentFunctionCollection.add(function);
-			}			
+			}
 			return inherentFunctionCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the inherentFunctionCollection by composingElement id: "
@@ -556,29 +590,32 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
-	/** 
-	 * return all FunctionalizingEntity Collection with an associated Composition whose id is equal to compositionId
+
+	/**
+	 * return all FunctionalizingEntity Collection with an associated
+	 * Composition whose id is equal to compositionId
+	 * 
 	 * @param compositionId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private Collection<FunctionalizingEntity> findFunctionalizingEntityByCompositionId(String compositionId)
-			throws ParticleException {
+	private Collection<FunctionalizingEntity> findFunctionalizingEntityByCompositionId(
+			String compositionId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
 			association.setRoleName("sampleComposition");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(compositionId);			
-			association.setAttribute(attribute);			
+			attribute.setValue(compositionId);
+			association.setAttribute(attribute);
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -589,10 +626,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Collection<FunctionalizingEntity> functionalizingEntityCollection = new ArrayList<FunctionalizingEntity>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				functionalizingEntity = (FunctionalizingEntity) obj;		
-				Collection<Function> functionCollection = findFunctionCollectionByFunctionalizingEntityId(functionalizingEntity.getId().toString());
+				functionalizingEntity = (FunctionalizingEntity) obj;
+				Collection<Function> functionCollection = findFunctionCollectionByFunctionalizingEntityId(functionalizingEntity
+						.getId().toString());
 				functionalizingEntity.setFunctionCollection(functionCollection);
-			}			
+			}
 			return functionalizingEntityCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the FunctionalizingEntity Collection  by Composition Id: "
@@ -601,34 +639,35 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
-	
+
 	/**
-	 * return all functionCollection with an associated FunctionalizingEntity whose id is equal to functionalizingEntityId
+	 * return all functionCollection with an associated FunctionalizingEntity
+	 * whose id is equal to functionalizingEntityId
 	 * 
 	 * @param composingElementId
 	 * @return
 	 * @throws ParticleException
 	 */
-	private Collection<Function> findFunctionCollectionByFunctionalizingEntityId(String functionalizingEntityId)
-			throws ParticleException {
+	private Collection<Function> findFunctionCollectionByFunctionalizingEntityId(
+			String functionalizingEntityId) throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
-			
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();		
+
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
 			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
 			association.setRoleName("functionalizingEntity");
-			
-			Attribute attribute = new Attribute();			
+
+			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
 			attribute.setValue(functionalizingEntityId);
-			
+
 			association.setAttribute(attribute);
-			
+
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
@@ -639,9 +678,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Collection<Function> functionCollection = new ArrayList<Function>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				function = (Function) obj;				
+				function = (Function) obj;
 				functionCollection.add(function);
-			}			
+			}
 			return functionCollection;
 		} catch (Exception e) {
 			String err = "Problem finding the functionCollection by FunctionalizingEntity id: "
@@ -650,7 +689,5 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
-	
-	
+
 }

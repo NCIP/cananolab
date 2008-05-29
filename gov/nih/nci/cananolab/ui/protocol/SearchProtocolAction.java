@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
@@ -44,25 +45,51 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String protocolType = (String) theForm.get("protocolType");
 		String protocolName = (String) theForm.get("protocolName");
 
-		ProtocolService protocolService = new ProtocolServiceLocalImpl();
-		List<ProtocolFileBean> protocolFiles = protocolService
-				.findProtocolFilesBy(protocolType, protocolName, fileTitle);
-		List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
-		// retrieve visibility
-		FileService fileService = new FileService();
-		for (ProtocolFileBean protocolFile : protocolFiles) {
-			fileService.retrieveVisibility(protocolFile, user);
-			if (!protocolFile.isHidden()) {
-				filteredProtocolFiles.add(protocolFile);
+		String[] searchLocations = new String[0];
+		if (theForm.get("searchLocations") != null) {
+			searchLocations = (String[]) theForm.getStrings("searchLocations");
+		} else {
+			String gridNodeHostStr = (String) request
+					.getParameter("searchLocations");
+			if (gridNodeHostStr != null) {
+				searchLocations = gridNodeHostStr.split("~");
 			}
 		}
-		if (filteredProtocolFiles != null && !filteredProtocolFiles.isEmpty()) {
+		List<ProtocolFileBean> foundProtocolFiles = new ArrayList<ProtocolFileBean>();
+		ProtocolService service = null;
+		for (String location : searchLocations) {
+			if (location.equals("local")) {
+				service = new ProtocolServiceLocalImpl();
+			} else {
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
+				service = new ProtocolServiceRemoteImpl(serviceUrl);
+			}
+
+			List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
+					protocolType, protocolName, fileTitle);
+			if (location.equals("local")) {
+				List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
+				// retrieve visibility
+				FileService fileService = new FileService();
+				for (ProtocolFileBean protocolFile : protocolFiles) {
+					fileService.retrieveVisibility(protocolFile, user);
+					if (!protocolFile.isHidden()) {
+						filteredProtocolFiles.add(protocolFile);
+					}
+				}
+				foundProtocolFiles.addAll(filteredProtocolFiles);
+			} else {
+				foundProtocolFiles.addAll(protocolFiles);
+			}
+		}
+		if (foundProtocolFiles != null && !foundProtocolFiles.isEmpty()) {
 			Collections
 					.sort(
-							filteredProtocolFiles,
+							foundProtocolFiles,
 							new CaNanoLabComparators.ProtocolFileBeanNameVersionComparator());
 			request.getSession().setAttribute("protocolFiles",
-					filteredProtocolFiles);
+					foundProtocolFiles);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();

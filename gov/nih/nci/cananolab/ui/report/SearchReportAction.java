@@ -31,7 +31,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.9 2008-05-29 18:25:20 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.10 2008-05-29 22:43:18 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -51,10 +51,15 @@ public class SearchReportAction extends BaseAnnotationAction {
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
 		String[] searchLocations = new String[0];
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (gridNodeHostStr != null) {
-			searchLocations = gridNodeHostStr.split("~");
+
+		if (theForm.get("searchLocations") != null) {
+			searchLocations = (String[]) theForm.getStrings("searchLocations");
+		} else {
+			String gridNodeHostStr = (String) request
+					.getParameter("searchLocations");
+			if (gridNodeHostStr != null) {
+				searchLocations = gridNodeHostStr.split("~");
+			}
 		}
 
 		if (theForm != null) {

@@ -46,9 +46,6 @@ public interface ProtocolService {
 	public void saveProtocolFile(ProtocolFile protocolFile, byte[] fileData)
 			throws ProtocolException;
 
-	public Protocol findProtocolBy(String protocolType, String protocolName)
-			throws ProtocolException;
-
 	public List<ProtocolFileBean> findProtocolFilesBy(String protocolType,
 			String protocolName, String fileTitle) throws ProtocolException;
 
