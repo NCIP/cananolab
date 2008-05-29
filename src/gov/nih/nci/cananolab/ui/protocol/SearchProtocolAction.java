@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
@@ -43,7 +44,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String protocolType = (String) theForm.get("protocolType");
 		String protocolName = (String) theForm.get("protocolName");
 
-		ProtocolService protocolService = new ProtocolService();
+		ProtocolService protocolService = new ProtocolServiceLocalImpl();
 		List<ProtocolFileBean> protocolFiles = protocolService
 				.findProtocolFilesBy(protocolType, protocolName, fileTitle);
 		List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
@@ -78,13 +79,15 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
-		
-		String gridNodeHostStr =(String) request.getParameter("searchLocations");
-		if(gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
+
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
 			String[] selectedLocations = gridNodeHostStr.split("~");
-			InitSetup.getInstance().setSelectedLocations(request, selectedLocations);
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
+			theForm.set("searchLocations", selectedLocations);
 		}
-		
+
 		return mapping.getInputForward();
 	}
 

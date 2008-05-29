@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -41,7 +42,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ProtocolFileBean pfileBean = (ProtocolFileBean) theForm.get("file");
 		pfileBean.setupDomainFile(CaNanoLabConstants.FOLDER_PROTOCOL, user
 				.getLoginName());
-		ProtocolService service = new ProtocolService();
+		ProtocolService service = new ProtocolServiceLocalImpl();
 		service.saveProtocolFile((ProtocolFile) pfileBean.getDomainFile(),
 				pfileBean.getNewFileData());
 		// set visibility
@@ -75,7 +76,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String fileId = request.getParameter("fileId");
-		ProtocolService service = new ProtocolService();
+		ProtocolService service = new ProtocolServiceLocalImpl();
 		ProtocolFileBean pfileBean = service.findProtocolFileById(fileId);
 		theForm.set("file", pfileBean);
 		String selectedProtocolType = ((ProtocolFile) pfileBean.getDomainFile())
@@ -85,8 +86,8 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		SortedSet<String> protocolNames = service
 				.getProtocolNames(selectedProtocolType);
 		request.getSession().setAttribute("protocolNamesByType", protocolNames);
-		List<ProtocolFileBean> pFiles = service.getProtocolFiles(
-				selectedProtocolType, selectedProtocolName);
+		List<ProtocolFileBean> pFiles = service.findProtocolFilesBy(
+				selectedProtocolType, selectedProtocolName, null);
 		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
 		FileService fileService = new FileService();
 		fileService.retrieveVisibility(pfileBean, user);

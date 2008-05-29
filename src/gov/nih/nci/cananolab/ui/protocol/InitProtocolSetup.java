@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -58,7 +59,7 @@ public class InitProtocolSetup {
 		} else {
 			protocolType = null; // update if in vivo is implemented
 		}
-		ProtocolService service = new ProtocolService();
+		ProtocolService service = new ProtocolServiceLocalImpl();
 		List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
 				protocolType, null, null);
 		request.getSession().setAttribute("characterizationProtocolFiles",

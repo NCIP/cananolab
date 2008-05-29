@@ -54,8 +54,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (location.equals("local")) {
 			service = new NanoparticleSampleServiceLocalImpl();
 		} else {
-			// TODO get serviceURL
-			String serviceUrl = "";
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
 		}
 		ParticleBean particleBean = service
