@@ -38,7 +38,7 @@
 		<create creator="new" javascript="ProtocolManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.service.protocol.ProtocolService" />
+				value="gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper" />
 			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
 			<include method="getProtocolFileUriById" />
