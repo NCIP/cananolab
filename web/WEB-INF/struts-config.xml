@@ -66,14 +66,14 @@
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
-			<forward name="success" path="/loginPage.do" />
+			<forward name="success" path="/welcome.do" />
 		</action>
-		<action path="/loginPage"
+		<action path="/welcome"
 			type="gov.nih.nci.cananolab.ui.security.WelcomeAction"
 			parameter="calab.login" scope="request" />
 		<action path="/publicCount"
-            type="gov.nih.nci.cananolab.ui.core.CountAction">
-    	</action>
+			type="gov.nih.nci.cananolab.ui.core.CountAction">
+		</action>
 	</action-mappings>
 	<controller>
 		<set-property value="true" property="inputForward" />
