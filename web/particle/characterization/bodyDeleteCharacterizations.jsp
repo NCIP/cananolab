@@ -91,7 +91,7 @@ function confirmDeletion(deleteName, deleteMsg)
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="" />
+												<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
 												<input type="hidden" name="dispatch" value="deleteAll" />
 												<c:choose>
 													<c:when test="${!empty param.particleId }">

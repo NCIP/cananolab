@@ -210,6 +210,8 @@
 											value="${nanoparticleEntityForm.map.entity.files[fileInd].image}" />
 										<jsp:param name="fileHidden"
 											value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
+										<jsp:param name="externalUrl"
+											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
 									</jsp:include>
 
 									<br>

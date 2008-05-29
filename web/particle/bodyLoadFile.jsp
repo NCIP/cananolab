@@ -157,7 +157,7 @@
 													<div align="right">
 														<input type="button" value="Cancel"
 															onclick="javascript:cancel('cancel');">
-														<input type="reset" value="Reset">
+														<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
 														<input type="hidden" name="dispatch" value="submit">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="submitType"
