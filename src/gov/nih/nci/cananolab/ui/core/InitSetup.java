@@ -1,6 +1,9 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.exception.GridDownException;
+import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -17,6 +20,7 @@ import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.upload.FormFile;
 
@@ -314,20 +318,30 @@ public class InitSetup {
 			LookupService.saveOtherType(lookupName, otherAttribute, value);
 		}
 	}
-	
-	public void setSelectedLocations(HttpServletRequest request,
-			String[] selectedGridNodeHosts) {
-		List<String> gridlist = Arrays.asList(selectedGridNodeHosts);
-		request.getSession().setAttribute("selectedLocations", gridlist);
 
-		List<String> unselectedGridNodeHosts = new ArrayList<String>();
-//		for (String hostNode : gridNodes.keySet()) {
-//			if (!gridlist.contains(hostNode)) {
-//				unselectedGridNodeHosts.add(hostNode);
-//			}
-//		}
-		request.getSession().setAttribute("unselectedLocations",
-				unselectedGridNodeHosts);
-
+	public String getGridServiceUrl(HttpServletRequest request,
+			String gridHostName) throws Exception {
+		Map<String, GridNodeBean> gridNodeMap = null;
+		if (request.getSession().getServletContext().getAttribute(
+				"allGridNodes") != null) {
+			gridNodeMap = new HashMap<String, GridNodeBean>(
+					(Map<? extends String, ? extends GridNodeBean>) request
+							.getSession().getServletContext().getAttribute(
+									"allGridNodes"));
+		} else {
+			gridNodeMap = GridService.discoverServices(
+					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+					CaNanoLabConstants.DOMAIN_MODEL_NAME,
+					CaNanoLabConstants.APP_OWNER);
+			HttpSession session = request.getSession();
+			session.getServletContext().setAttribute("allGridNodes",
+					gridNodeMap);
+		}
+		String serviceUrl = gridNodeMap.get(gridHostName).getAddress();
+		if (serviceUrl == null) {
+			throw new GridDownException("Grid node " + gridHostName
+					+ " is not available at this time.");
+		}
+		return serviceUrl;
 	}
 }
