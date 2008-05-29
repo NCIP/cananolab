@@ -3,15 +3,17 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/ReportManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/ReportManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/ReportManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <html:form action="searchReport">
 	<table align="center" width="100%">
 		<tr>
 			<td>
-				<h3>					
+				<h3>
 					Search Reports
 				</h3>
 			</td>
@@ -20,7 +22,7 @@
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="search_reports_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>	
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -46,27 +48,14 @@
 						</td>
 						<td class="rightLabel" colspan="5">
 							<strong><html:select property="searchLocations"
-								styleId="searchLocations"
-								onchange="javascript:setReportDropdowns()"	
-									multiple="true" size="3">
+									styleId="searchLocations"
+									onchange="javascript:setReportDropdowns()" multiple="true"
+									size="4">
 									<option value="local" selected>
 										Local
 									</option>
-									<option value="caNanoLab-NCL_PROD">
-										caNanoLab-NCL_PROD
-									</option>
-									<option value="caNanoLab-PROD">
-										caNanoLab-PROD
-									</option>
-									<option value="caNanoLab-WUSTL">
-										caNanoLab-WUSTL
-									</option>
-<%--									<c:forEach var="selectedNode" items="${selectedLocations}">--%>
-<%--										<option value="${selectedNode}" selected>${selectedNode}</option>--%>
-<%--									</c:forEach>--%>
-<%--									<c:forEach var="unselectedNode" items="${unselectedLocations}">--%>
-<%--										<option value="${unselectedNode}">${unselectedNode}</option>--%>
-<%--									</c:forEach>--%>
+									<html:options collection="allGridNodes"
+										property="value.hostName" labelProperty="value.hostName" />
 								</html:select> </strong>
 						</td>
 					</tr>
@@ -103,7 +92,8 @@
 							<strong>Composition <br>Functionalizing Entity</strong>
 						</td>
 						<td class="label" valign="top">
-							<strong><html:select styleId="functionalizingEntityTypes"
+							<strong><html:select
+									styleId="functionalizingEntityTypes"
 									property="functionalizingEntityTypes" multiple="true" size="3">
 									<html:options name="functionalizingEntityTypes" />
 								</html:select> </strong>
@@ -112,8 +102,8 @@
 							<strong>Function</strong>
 						</td>
 						<td class="rightLabel" valign="top">
-							<strong><html:select property="functionTypes" styleId="functionTypes"
-									multiple="true" size="3">
+							<strong><html:select property="functionTypes"
+									styleId="functionTypes" multiple="true" size="3">
 									<html:options name="functionTypes" />
 								</html:select> </strong>
 						</td>
