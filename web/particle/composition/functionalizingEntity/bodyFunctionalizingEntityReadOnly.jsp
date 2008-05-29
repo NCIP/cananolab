@@ -241,6 +241,8 @@
 											value="${functionalizingEntityForm.map.entity.files[fileInd].visibilityStr}" />
 										<jsp:param name="uriExternal"
 											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
+										<jsp:param name="externalUrl"
+											value="${functionalizingEntityForm.map.entity.files[fileInd].domainFile.uri}" />
 										<jsp:param name="fileImage"
 											value="${functionalizingEntityForm.map.entity.files[fileInd].image}" />
 										<jsp:param name="fileHidden"

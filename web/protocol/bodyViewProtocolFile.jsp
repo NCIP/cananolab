@@ -183,7 +183,7 @@
 								<td width="490" height="32">
 									<div align="right">
 										<div align="right">
-											<input type="reset" value="Reset">
+											<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
 											<input type="hidden" name="dispatch" value="update">
 											<input type="hidden" name="page" value="1">
 											<html:submit />
