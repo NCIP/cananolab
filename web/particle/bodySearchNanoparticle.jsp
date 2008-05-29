@@ -3,7 +3,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/ParticleManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
@@ -19,7 +20,7 @@
 			</td>
 			<td align="right" width="30%">
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-				
+
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="search_nano_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
@@ -38,29 +39,13 @@
 						</td>
 						<td class="rightLabelWithTop" colspan="5">
 							<strong><html:select property="searchLocations"
-								styleId="searchLocations"
-									multiple="true" size="4"
-									onchange="javascript:setNanoparticleDropdowns();">	
-									<option value="local" selected>
+									styleId="searchLocations" multiple="true" size="4"
+									onchange="javascript:setNanoparticleDropdowns();">
+									<html:option value="local">
 										Local
-									</option>
-									<option value="caNanoLab-NCL_PROD">
-										caNanoLab-NCL_PROD
-									</option>
-									<option value="caNanoLab-PROD">
-										caNanoLab-PROD
-									</option>
-									<option value="caNanoLab-WUSTL">
-										caNanoLab-WUSTL
-									</option>
-									<%--
-									<c:forEach var="selectedNode" items="${selectedLocations}">
-										<option value="${selectedNode}" selected>${selectedNode}</option>
-									</c:forEach>
-									<c:forEach var="unselectedNode" items="${unselectedLocations}">
-										<option value="${unselectedNode}">${unselectedNode}</option>
-									</c:forEach>
-									--%>
+									</html:option>
+									<html:options collection="allGridNodes"
+										property="value.hostName" labelProperty="value.hostName" />
 								</html:select> </strong>
 						</td>
 					</tr>
@@ -116,8 +101,8 @@
 							<strong>Composition<br> Nanoparticle Entity</strong>
 						</td>
 						<td class="label">
-							<strong><html:select styleId="nanoparticleEntityTypes" property="nanoparticleEntityTypes"
-									multiple="true" size="4">
+							<strong><html:select styleId="nanoparticleEntityTypes"
+									property="nanoparticleEntityTypes" multiple="true" size="4">
 									<html:options name="nanoparticleEntityTypes" />
 								</html:select> </strong>
 						</td>
@@ -126,7 +111,7 @@
 						</td>
 						<td class="label" valign="top">
 							<strong><html:select
-									styleId="functionalizingEntityTypes" 
+									styleId="functionalizingEntityTypes"
 									property="functionalizingEntityTypes" multiple="true" size="3">
 									<html:options name="functionalizingEntityTypes" />
 								</html:select> </strong>
@@ -135,8 +120,8 @@
 							<strong>Function</strong>
 						</td>
 						<td class="rightLabel" valign="top">
-							<strong><html:select styleId="functionTypes" property="functionTypes"
-									multiple="true" size="3">
+							<strong><html:select styleId="functionTypes"
+									property="functionTypes" multiple="true" size="3">
 									<html:options name="functionTypes" />
 								</html:select> </strong>
 						</td>
@@ -178,7 +163,7 @@
 					</tr>
 				</table>
 				<br>
-				
+
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
@@ -190,7 +175,7 @@
 									<td>
 										<div align="right">
 											<input type="reset" value="Reset"
-															onclick="javascript:location.reload()">
+												onclick="javascript:location.reload()">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />

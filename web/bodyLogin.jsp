@@ -36,22 +36,27 @@
 											<label class="toplabel" for="location">
 												Location
 											</label>
-											
+
 											<select name="searchLocations" id="location" multiple="true"
-													size="3" onchange="getGridCounts(this);">
-<%--												<option value="" />--%>
+												size="4" onchange="getGridCounts(this);">
 												<option value="local" selected>
 													Local
 												</option>
-<%--												<html:options collection="allGridNodes" property="key"--%>
-<%--																labelProperty="key" />--%>
+												<c:forEach var="location" items="${allGridNodes}">
+													<option value="${location.value.hostName}">
+														${location.value.hostName}
+													</option>
+												</c:forEach>
 											</select>
-											
 										</th>
 									</tr>
 									<tr class="gridTableHeader">
-									<th>Data Type</th>
-									<th id="results">Results</th>
+										<th>
+											Data Type
+										</th>
+										<th id="results">
+											Results
+										</th>
 									</tr>
 									<tr>
 										<td>
@@ -60,7 +65,8 @@
 											<a href="#" onclick="searchProtocols();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseProtocols();" id="protocolCount" class="countsLink"></a>
+											<a href="#" onclick="browseProtocols();" id="protocolCount"
+												class="countsLink"></a>
 										</td>
 									</tr>
 									<tr class="alt">
@@ -70,7 +76,8 @@
 											<a href="#" onclick="searchParitcles();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseParitcles();" id="particleCount" class="countsLink"></a>
+											<a href="#" onclick="browseParitcles();" id="particleCount"
+												class="countsLink"></a>
 										</td>
 									</tr>
 									<tr>
@@ -80,7 +87,8 @@
 											<a href="#" onclick="searchReports();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseReports();" id="reportCount" class="countsLink"></a>
+											<a href="#" onclick="browseReports();" id="reportCount"
+												class="countsLink"></a>
 										</td>
 									</tr>
 								</table>
@@ -182,16 +190,20 @@
 										<br>
 										<ul>
 											<li>
-												New composition structure to include nanoparticle and functionalizing entities, chemical associations, and composition files
+												New composition structure to include nanoparticle and
+												functionalizing entities, chemical associations, and
+												composition files
 											</li>
 											<li>
-												New metadata constraints for composition and physical characterizations
+												New metadata constraints for composition and physical
+												characterizations
 											</li>
 											<li>
 												Additional grid services and seamless local/remote search
 											</li>
 											<li>
-												Disabled sample management functionality and combined with nanoparticle submission
+												Disabled sample management functionality and combined with
+												nanoparticle submission
 											</li>
 											<li>
 												New glossary of terms
@@ -205,19 +217,26 @@
 										<br>
 										<ul>
 											<li>
-												Support for nanoparticle protocols, characterizations, and reports
+												Support for nanoparticle protocols, characterizations, and
+												reports
 											</li>
 											<li>
-												Support for physical and in vitro nanoparticle characterizations
+												Support for physical and in vitro nanoparticle
+												characterizations
 											</li>
 											<li>
 												Nanoparticle Information (Characterizations) Management
 											</li>
 											<li>
-												Summary views of nanoparticle information with print and export feature
+												Summary views of nanoparticle information with print and
+												export feature
 											</li>
 											<li>
-												Basic local and caBIG<sup>TM</sup> grid (caGrid) search functionality
+												Basic local and caBIG
+												<sup>
+													TM
+												</sup>
+												grid (caGrid) search functionality
 											</li>
 											<li>
 												Role-based Security

@@ -3,8 +3,10 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/ProtocolManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/DWRProtocolManager.js"></script>
-<script type="text/javascript" src="/caNanoLab/dwr/interface/ProtocolManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/DWRProtocolManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/ProtocolManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
@@ -21,7 +23,7 @@
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="search_protocol_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>					
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -47,27 +49,14 @@
 						</td>
 						<td class="rightLabel" colspan="5">
 							<strong><html:select styleId="searchLocations"
-								property="searchLocations"
-								onchange="javascript:setProtocolNameDropdown()"
-									multiple="true" size="3">
+									property="searchLocations"
+									onchange="javascript:setProtocolNameDropdown()" multiple="true"
+									size="4">
 									<option value="local" selected>
 										Local
 									</option>
-									<option value="caNanoLab-NCL_PROD">
-										caNanoLab-NCL_PROD
-									</option>
-									<option value="caNanoLab-PROD">
-										caNanoLab-PROD
-									</option>
-									<option value="caNanoLab-WUSTL">
-										caNanoLab-WUSTL
-									</option>
-<%--									<c:forEach var="selectedNode" items="${selectedLocations}">--%>
-<%--										<option value="${selectedNode}" selected>${selectedNode}</option>--%>
-<%--									</c:forEach>--%>
-<%--									<c:forEach var="unselectedNode" items="${unselectedLocations}">--%>
-<%--										<option value="${unselectedNode}">${unselectedNode}</option>--%>
-<%--									</c:forEach>--%>
+									<html:options collection="allGridNodes"
+										property="value.hostName" labelProperty="value.hostName" />
 								</html:select> </strong>
 						</td>
 					</tr>
