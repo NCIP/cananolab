@@ -29,9 +29,6 @@ public interface NanoparticleCharacterizationService {
 	public Characterization findCharacterizationById(String charId)
 			throws ParticleCharacterizationException;
 
-	public Boolean checkRedundantViewTitle(NanoparticleSample particleSample,
-			Characterization chara) throws ParticleCharacterizationException ;
-	
 	public SortedSet<String> findAllCharacterizationSources()
 			throws ParticleCharacterizationException;
 
@@ -41,18 +38,6 @@ public interface NanoparticleCharacterizationService {
 	public Instrument findInstrumentBy(String instrumentType,
 			String manufacturer) throws ParticleCharacterizationException;
 	
-	// for dwr ajax
-	public String getInstrumentAbbreviation(String instrumentType)
-			throws ParticleCharacterizationException;
-
-	// use in dwr ajax
-	public String[] getDerivedDatumValueUnits(String derivedDatumName)
-			throws ParticleCharacterizationException;
-
-	public SortedSet<Characterization> findParticleCharacterizationsByClass(
-			String particleName, String className)
-			throws ParticleCharacterizationException;
-
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
 			String particleName, String className, UserBean user)
 			throws ParticleCharacterizationException;

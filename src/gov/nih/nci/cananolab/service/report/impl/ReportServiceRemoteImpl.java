@@ -58,8 +58,10 @@ public class ReportServiceRemoteImpl implements ReportService {
 			Report[] reports = gridClient.getReportsBy(reportTitle,
 					reportCategory, nanoparticleEntityClassNames,
 					functionalizingEntityClassNames, functionClassNames);
-			for (Report report : reports) {
-				reportBeans.add(new ReportBean(report));
+			if (reports != null) {
+				for (Report report : reports) {
+					reportBeans.add(new ReportBean(report));
+				}
 			}
 			return reportBeans;
 		} catch (Exception e) {

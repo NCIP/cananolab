@@ -29,25 +29,24 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
 
 public class CountAction extends Action {
-	
+
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		
-		String gridNodeHostStr = (String) request.getParameter("searchLocations");
+
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
 		String[] searchLocations = new String[0];
-		if(gridNodeHostStr != null) {
+		if (gridNodeHostStr != null) {
 			searchLocations = gridNodeHostStr.split("~");
 		}
-		
+
 		ActionMessages msgs = new ActionMessages();
 
-
 		// particle count
-		// TODO update auto-discovery to exclude local grid node
 		List<ParticleBean> foundParticles = new ArrayList<ParticleBean>();
 
 		String particleSource = "";
@@ -66,8 +65,8 @@ public class CountAction extends Action {
 			if (location.equals("local")) {
 				service = new NanoparticleSampleServiceLocalImpl();
 			} else {
-				// TODO get serviceUrl
-				String serviceUrl = "";
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
 				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
 			}
 			particles = service.findNanoparticleSamplesBy(particleSource,
@@ -105,21 +104,21 @@ public class CountAction extends Action {
 		}
 
 		int particleCount = foundParticles.size();
-		
-//		for (GridNodeBean gridNode : selectedGridNodes) {
-//			try {
-//				particleCount += searchService.getRemoteNanoparticleCount(
-//						particleType, functionTypes, characterizations,
-//						gridNode);
-//
-//			} catch (Exception e) {
-//				ActionMessage error = new ActionMessage(
-//						"error.grid.notAvailable", gridNode.getHostName());
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, error);
-//				saveErrors(request, msgs);
-//				e.printStackTrace();
-//			}
-//		}
+
+		// for (GridNodeBean gridNode : selectedGridNodes) {
+		// try {
+		// particleCount += searchService.getRemoteNanoparticleCount(
+		// particleType, functionTypes, characterizations,
+		// gridNode);
+		//
+		// } catch (Exception e) {
+		// ActionMessage error = new ActionMessage(
+		// "error.grid.notAvailable", gridNode.getHostName());
+		// msgs.add(ActionMessages.GLOBAL_MESSAGE, error);
+		// saveErrors(request, msgs);
+		// e.printStackTrace();
+		// }
+		// }
 
 		// report count
 		String reportTitle = "";
@@ -130,8 +129,8 @@ public class CountAction extends Action {
 			if (location.equals("local")) {
 				service = new ReportServiceLocalImpl();
 			} else {
-				// TODO get serviceUrl
-				String serviceUrl = "";
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
 				service = new ReportServiceRemoteImpl(serviceUrl);
 			}
 			List<ReportBean> reports = service.findReportsBy(reportTitle,
@@ -160,20 +159,20 @@ public class CountAction extends Action {
 				foundReports.addAll(reports);
 			}
 		}
-		
+
 		int reportCount = foundReports.size();
-//		for (GridNodeBean gridNode : selectedGridNodes) {
-//			try {
-//				reportCount += searchService.getRemoteReportCount(reportTitle,
-//						particleType, functionTypes, gridNode);
-//			} catch (Exception e) {
-//				ActionMessage message = new ActionMessage(
-//						"error.grid.notAvailable", gridNode.getHostName());
-//				msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
-//				saveErrors(request, msgs);
-//				e.printStackTrace();
-//			}
-//		}
+		// for (GridNodeBean gridNode : selectedGridNodes) {
+		// try {
+		// reportCount += searchService.getRemoteReportCount(reportTitle,
+		// particleType, functionTypes, gridNode);
+		// } catch (Exception e) {
+		// ActionMessage message = new ActionMessage(
+		// "error.grid.notAvailable", gridNode.getHostName());
+		// msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
+		// saveErrors(request, msgs);
+		// e.printStackTrace();
+		// }
+		// }
 
 		// protocol count
 		int protocolCount = 0;

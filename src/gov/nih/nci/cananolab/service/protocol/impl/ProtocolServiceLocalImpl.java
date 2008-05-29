@@ -17,7 +17,7 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 
 /**
- * This class includes methods invovled in creating and searching protocols
+ * Local implementation of ProtocolService
  * 
  * @author pansu
  * 
@@ -86,7 +86,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	public Protocol findProtocolBy(String protocolType, String protocolName)
+	private Protocol findProtocolBy(String protocolType, String protocolName)
 			throws ProtocolException {
 		try {
 			return helper.findProtocolBy(protocolType, protocolName);

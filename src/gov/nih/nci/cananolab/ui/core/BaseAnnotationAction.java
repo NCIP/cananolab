@@ -97,30 +97,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 
-	public Map<String, SortedSet<DataLinkBean>> setupDataTree0(
-			DynaValidatorForm theForm, HttpServletRequest request)
-			throws Exception {
-		request.setAttribute("updateDataTree", "true");
-		String particleId = request.getParameter("particleId");
-		if (particleId == null) {
-			if (theForm.getMap().containsKey("particleSampleBean")) {
-
-				particleId = ((ParticleBean) theForm.get("particleSampleBean"))
-						.getDomainParticleSample().getId().toString();
-			} else {
-				particleId = theForm.getString("particleId");
-			}
-		}
-		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
-		ParticleBean particleBean = service
-				.findNanoparticleSampleById(particleId);
-		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "reportCategories",
-						"Report", "category", "otherCategory", true);
-		return InitNanoparticleSetup.getInstance().getDataTree(particleBean,
-				request);
-	}
-
 	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
