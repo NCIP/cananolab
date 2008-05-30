@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 
@@ -296,7 +297,7 @@ public class DWRCompositionManager {
 
 	public ComposingElementBean[] getAssociatedComposingElements(
 			String nanoparticleEntityId) {
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		try {
 			NanoparticleEntityBean entityBean = compService
 					.findNanoparticleEntityById(nanoparticleEntityId);

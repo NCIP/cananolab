@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class InitCompositionSetup {
 
-	private NanoparticleCompositionService compService = new NanoparticleCompositionService();
+	private NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 
 	public static InitCompositionSetup getInstance() {
 		return new InitCompositionSetup();
@@ -71,12 +72,15 @@ public class InitCompositionSetup {
 			NanoparticleEntityBean entityBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
-		InitSetup.getInstance().persistLookup(request, "Fullerene", "averageDiameterUnit",
-				"otherAverageDiameterUnit", entityBean.getFullerene().getAverageDiameterUnit());
-		InitSetup.getInstance().persistLookup(request, "CarbonNanotube", "diameterUnit",
-				"otherDiameterUnit", entityBean.getCarbonNanotube().getDiameterUnit());
-		InitSetup.getInstance().persistLookup(request, "CarbonNanotube", "averageLengthUnit",
-				"otherAverageLengthUnit", entityBean.getCarbonNanotube().getAverageLengthUnit());
+		InitSetup.getInstance().persistLookup(request, "Fullerene",
+				"averageDiameterUnit", "otherAverageDiameterUnit",
+				entityBean.getFullerene().getAverageDiameterUnit());
+		InitSetup.getInstance().persistLookup(request, "CarbonNanotube",
+				"diameterUnit", "otherDiameterUnit",
+				entityBean.getCarbonNanotube().getDiameterUnit());
+		InitSetup.getInstance().persistLookup(request, "CarbonNanotube",
+				"averageLengthUnit", "otherAverageLengthUnit",
+				entityBean.getCarbonNanotube().getAverageLengthUnit());
 		for (ComposingElementBean elementBean : entityBean
 				.getComposingElements()) {
 			if (entityBean.getDomainEntity() instanceof Emulsion) {
@@ -228,7 +232,7 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("functionTypes", types);
 		return types;
 	}
-	
+
 	public SortedSet<String> getDefaultFunctionTypes(HttpServletRequest request)
 			throws Exception {
 		SortedSet<String> defaultTypes = InitSetup
@@ -256,7 +260,7 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("nanoparticleEntityTypes", types);
 		return types;
 	}
-	
+
 	public SortedSet<String> getDefaultNanoparticleEntityTypes(
 			HttpServletRequest request) throws Exception {
 		SortedSet<String> defaultTypes = InitSetup
@@ -265,7 +269,8 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultNanoparticleEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-		request.getSession().setAttribute("nanoparticleEntityTypes", defaultTypes);
+		request.getSession().setAttribute("nanoparticleEntityTypes",
+				defaultTypes);
 		return defaultTypes;
 	}
 
@@ -284,7 +289,7 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
 		return types;
 	}
-	
+
 	public SortedSet<String> getDefaultFunctionalizingEntityTypes(
 			HttpServletRequest request) throws Exception {
 		SortedSet<String> defaultTypes = InitSetup
@@ -293,7 +298,8 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultFunctionalizingEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-		request.getSession().setAttribute("functionalizingEntityTypes", defaultTypes);
+		request.getSession().setAttribute("functionalizingEntityTypes",
+				defaultTypes);
 		return defaultTypes;
 	}
 
@@ -341,5 +347,5 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("targetTypes", types);
 		return types;
 	}
-	
+
 }
