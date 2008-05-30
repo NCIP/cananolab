@@ -1,10 +1,8 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -12,24 +10,18 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;

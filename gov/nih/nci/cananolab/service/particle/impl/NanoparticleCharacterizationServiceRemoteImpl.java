@@ -6,35 +6,20 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.exception.ParticleException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving remote characterizations

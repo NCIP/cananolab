@@ -7,6 +7,8 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -90,7 +92,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			noErrors = false;
 		}
 		if (noErrors) {
-			NanoparticleCompositionService compService = new NanoparticleCompositionService();
+			NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 			compService.saveChemicalAssociation(particleBean
 					.getDomainParticleSample(), assocBean
 					.getDomainAssociation());
@@ -163,7 +165,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 		// check where particle entities has composing elements
 		int numberOfCE = 0;
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		SortedSet<DataLinkBean> particleEntitiesWithComposingElements = new TreeSet<DataLinkBean>(
 				particleEntities);
 		for (DataLinkBean dataLink : particleEntities) {
@@ -224,7 +226,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// associated element A
 		SortedSet<DataLinkBean> entityListA = null;
 		HttpSession session = request.getSession();
-		NanoparticleCompositionService service = new NanoparticleCompositionService();
+		NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 		if (assocBean.getAssociatedElementA().getCompositionType().equals(
 				"Nanoparticle Entity")) {
 			entityListA = particleEntitites;
@@ -274,7 +276,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssocationById(assocId);
 		compService.retrieveVisibility(assocBean, user);
@@ -289,19 +291,26 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
-		ParticleBean particleBean = setupParticle(theForm, request, location);
-		setLookups(particleBean, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = null;
+		if (location.equals("local")) {
+			compService = new NanoparticleCompositionServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			compService = new NanoparticleCompositionServiceRemoteImpl(
+					serviceUrl);
+		}
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssocationById(assocId);
-		compService.retrieveVisibility(assocBean, user);
+		if (location.equals("local")) {
+			compService.retrieveVisibility(assocBean, user);
+		}
 		assocBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("assoc", assocBean);
-
 		return mapping.findForward("setup");
 	}
 
@@ -350,7 +359,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		compService.deleteChemicalAssociation(assocBean.getDomainAssociation());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
