@@ -547,7 +547,7 @@ public class NanoparticleCharacterizationServiceHelper {
 		return instrumentConfig;
 	}
 
-	public Collection<SurfaceChemistry> getSurfaceChemistries(
+	public Collection<SurfaceChemistry> findSurfaceChemistriesBySurfaceId(
 			java.lang.String surfaceId) throws Exception {
 		// TODO: fill in HQL
 		Collection<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
