@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
@@ -551,5 +552,12 @@ public class NanoparticleCharacterizationServiceHelper {
 		// TODO: fill in HQL
 		Collection<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
 		return chemistries;
+	}
+
+	public LabFile findLabFileByDerivedBioAssayDataId(
+			String derivedBioAssayDataId) {
+		// TODO fill in HQL
+		LabFile file = null;
+		return file;
 	}
 }
