@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
@@ -71,7 +72,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			if (location.equals("local")) {
 				List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
 				// retrieve visibility
-				FileService fileService = new FileService();
+				FileService fileService = new FileServiceLocalImpl();
 				for (ProtocolFileBean protocolFile : protocolFiles) {
 					fileService.retrieveVisibility(protocolFile, user);
 					if (!protocolFile.isHidden()) {

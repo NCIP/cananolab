@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -51,7 +52,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	public void saveProtocolFile(ProtocolFile protocolFile, byte[] fileData)
 			throws ProtocolException {
 		try {
-			FileService fileService = new FileService();
+			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(protocolFile);
 
 			Protocol dbProtocol = findProtocolBy(protocolFile.getProtocol()

@@ -6,15 +6,21 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.exception.ParticleException;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -37,6 +43,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	public NanoparticleCharacterizationServiceRemoteImpl(String serviceUrl)
 			throws Exception {
 		gridClient = new CaNanoLabServiceClient(serviceUrl);
+		fileService = new FileServiceRemoteImpl(serviceUrl);
 	}
 
 	public Characterization findCharacterizationById(String charId)
@@ -101,6 +108,9 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			SortedSet<Characterization> charas = new TreeSet<Characterization>();
 			// charas = gridClient.getParticleCharacterizationsByClass(
 			// particleName, className);
+			for (Characterization achar : charas) {
+				loadCharacterizationAssociations(achar);
+			}
 			return charas;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName
@@ -132,26 +142,35 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	private void loadCharacterizationAssociations(Characterization achar)
 			throws Exception {
 		String charId = achar.getId().toString();
-		// TODO Qina
+		ProtocolFile protocolFile = findProtocolFileByCharacterizationId(achar
+				.getId().toString());
+		achar.setProtocolFile(protocolFile);
+		Collection<DerivedBioAssayData> bioassays = findDerivedBioAssayDataByCharacterizationId(achar
+				.getId().toString());
+		achar.setDerivedBioAssayDataCollection(bioassays);
+		InstrumentConfiguration instrumentConfig = findInstrumentConfigurationByCharacterizationId(achar
+				.getId().toString());
+		achar.setInstrumentConfiguration(instrumentConfig);
+	}
 
-		/*
-		 * CustomizedApplicationService appService =
-		 * (CustomizedApplicationService) ApplicationServiceProvider
-		 * .getApplicationService();
-		 * 
-		 * DetachedCriteria crit = DetachedCriteria.forClass(
-		 * Characterization.class).add( Property.forName("id").eq(new
-		 * Long(charId))); crit.createAlias("derivedBioAssayDataCollection",
-		 * "bioassay", CriteriaSpecification.LEFT_JOIN);
-		 * crit.createAlias("bioassay.labFile", "file",
-		 * CriteriaSpecification.LEFT_JOIN); crit.setFetchMode("protocolFile",
-		 * FetchMode.JOIN); crit.setFetchMode("derivedBioAssayDataCollection",
-		 * FetchMode.JOIN); crit.setFetchMode("instrumentConfiguration",
-		 * FetchMode.JOIN); crit
-		 * .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		 * 
-		 * List result = appService.query(crit); if (!result.isEmpty()) { achar =
-		 * (Characterization) result.get(0); } return achar;
-		 */
+	private ProtocolFile findProtocolFileByCharacterizationId(String charId)
+			throws Exception {
+		ProtocolFile pfile = null;
+		// TODO implement in grid service
+		return pfile;
+	}
+
+	private Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
+			String charId) throws Exception {
+		Collection<DerivedBioAssayData> bioassays = new HashSet<DerivedBioAssayData>();
+		// TODO implement in grid service
+		return bioassays;
+	}
+
+	private InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
+			String charId) throws Exception {
+		InstrumentConfiguration instrumentConfig = null;
+		// TODO implement in grid service
+		return instrumentConfig;
 	}
 }

@@ -11,6 +11,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
@@ -79,7 +80,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	private void saveToOtherParticles(HttpServletRequest request,
 			Characterization copy, UserBean user, String particleSampleName,
 			NanoparticleSample[] otherSamples) throws Exception {
-		FileService fileService = new FileService();
+		FileService fileService = new FileServiceLocalImpl();
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
 		for (NanoparticleSample sample : otherSamples) {
 			charService.saveCharacterization(sample, copy);

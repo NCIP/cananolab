@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
@@ -40,7 +41,7 @@ public class ReportServiceLocalImpl implements ReportService {
 	public void saveReport(Report report, String[] particleNames,
 			byte[] fileData) throws ReportException {
 		try {
-			FileService fileService = new FileService();
+			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(report);
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();

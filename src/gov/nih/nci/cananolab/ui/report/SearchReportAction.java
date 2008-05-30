@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
@@ -31,7 +32,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.10 2008-05-29 22:43:18 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.11 2008-05-30 17:00:08 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -157,7 +158,7 @@ public class SearchReportAction extends BaseAnnotationAction {
 			if (location.equals("local")) {
 				List<ReportBean> filteredReports = new ArrayList<ReportBean>();
 				// retrieve visibility
-				FileService fileService = new FileService();
+				FileService fileService = new FileServiceLocalImpl();
 				for (ReportBean report : reports) {
 					fileService.retrieveVisibility(report, user);
 					if (!report.isHidden()) {
