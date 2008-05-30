@@ -75,10 +75,11 @@
 
 		<!-- copy lib files from ${lib.dir} -->
 		<copy todir="${tmp.dir}/WEB-INF/lib">
-			<fileset dir="${lib.dir}">
-				<include name="**/*.jar" />
-				<exclude name="servlet.jar" />
-				<exclude name="log4j.jar" />
+			<fileset dir="${lib.dir}/cagrid">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/globus">
+				<include name="*.jar" />
 			</fileset>
 		</copy>
 	</target>
