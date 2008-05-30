@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -63,4 +64,7 @@ public interface NanoparticleCharacterizationService {
 	
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
 			OutputStream out) throws IOException;
+	
+	public Collection<Characterization> findCharsByParticleSampleId(
+			String particleId) throws ParticleCharacterizationException;
 }

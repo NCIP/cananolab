@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
+import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
@@ -19,6 +20,7 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -172,5 +174,60 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		InstrumentConfiguration instrumentConfig = null;
 		// TODO implement in grid service
 		return instrumentConfig;
+	}
+
+	/**
+	 * return all characterization with an associated NanoparticleSample whose
+	 * id is equal to particleId
+	 * 
+	 * @param particleId
+	 * @return
+	 * @throws ParticleException
+	 */
+	public Collection<Characterization> findCharsByParticleSampleId(
+			String particleId) throws ParticleCharacterizationException {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.characterization");
+			Association association = new Association();
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association.setRoleName("nanoparticleSample");
+
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(particleId);
+
+			association.setAttribute(attribute);
+
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.characterization");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Characterization chars = null;
+			Collection<Characterization> characterizationCollection = new ArrayList<Characterization>();
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				chars = (Characterization) obj;
+				// todo (may not needed for this search level)
+				// findDerivedBioAssayDataByCharId is added in helper file
+				// Collection<DerivedBioAssayData> derivedBioAssayDataCollection
+				// =
+				// gridClient.findDerivedBioAssayDataByCharId(chars.getId().toString());
+				// chars.setDerivedBioAssayDataCollection(derivedBioAssayDataCollection);
+				characterizationCollection.add(chars);
+			}
+			return characterizationCollection;
+		} catch (Exception e) {
+			String err = "Problem finding the characterizationCollection by particle id: "
+					+ particleId;
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err, e);
+		}
 	}
 }
