@@ -10,12 +10,15 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
+import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
@@ -160,7 +163,42 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 
 	private void loadProtocolForProtocolFile(ProtocolFile protocolFile)
 			throws Exception {
-		// TODO implement cql
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+			Association association = new Association();			
+			association
+					.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
+			association.setRoleName("protocolFileCollection");
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(protocolFile.getId().toString());
+			association.setAttribute(attribute);
+
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Protocol");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Protocol protocol = null;
+			
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				protocol = (Protocol) obj;
+				//loadInherentFunctionByComposingElement(composingElement);
+				//entity.getComposingElementCollection().add(composingElement);
+			}			
+			protocolFile.setProtocol(protocol);
+		} catch (Exception e) {
+			String err = "Problem finding the protocol for protocolFile id: "
+					+ protocolFile.getId();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}		
 	}
 
 	private void loadDerivedBioAssayDataForCharacterization(
