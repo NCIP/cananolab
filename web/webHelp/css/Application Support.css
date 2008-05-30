@@ -1711,7 +1711,7 @@ div.Note
   margin-bottom: 2.0pt;
   margin-left: 68.4pt;
   margin-right: 0pt;
-  margin-top: -5px;
+  margin-top: -10px;
   padding-bottom: 18px;
   text-align: Left;
   text-indent: -25px;
@@ -1723,7 +1723,7 @@ div.Note
 {
   margin-bottom: 2.0pt;
   margin-right: 0pt;
-  margin-top: -5px;
+  margin-top: -10px;
   padding-bottom: 18px;
 }
 
@@ -2681,6 +2681,63 @@ span.URL
   vertical-align: baseline;
 }
 
+table.Table_-_Feature_Description
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: right;
+}
+
+table.UnstructMasterPageMaps
+{
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 6.0pt;
+  padding-bottom: 3pt;
+  padding-left: 3pt;
+  padding-right: 3pt;
+  padding-top: 3pt;
+  text-align: left;
+}
+
+table.Table_-_Single_Cell
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: left;
+}
+
+table.Table_-_List
+{
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-top-style: none;
+  margin-bottom: 0px;
+  margin-left: 40px;
+  margin-right: 0px;
+  margin-top: 0px;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: right;
+  width: 90%;
+}
+
 table.Table_-_Column_Header
 {
   border-bottom-color: White;
@@ -2695,7 +2752,7 @@ table.Table_-_Column_Header
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
@@ -2704,18 +2761,17 @@ table.Table_-_Column_Header
   width: 90%;
 }
 
-table.Mapping_Table
+table.Figure_Indent
 {
-  margin-bottom: 6.0pt;
-  margin-left: 0pt;
+  margin-bottom: 12.0pt;
+  margin-left: 36pt;
   margin-right: 0pt;
-  margin-top: 6.0pt;
-  padding-bottom: 2pt;
-  padding-left: 2pt;
-  padding-right: 2pt;
-  padding-top: 2pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 0pt;
+  padding-right: 4pt;
+  padding-top: 0pt;
   text-align: left;
-  width: 90%;
 }
 
 table.Table_-_No_Border
@@ -2731,7 +2787,7 @@ table.Table_-_No_Border
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
@@ -2740,16 +2796,43 @@ table.Table_-_No_Border
   width: 90%;
 }
 
+table.Figure
+{
+  margin-bottom: 12.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 4pt;
+  padding-left: 6pt;
+  padding-right: 4pt;
+  padding-top: 4pt;
+  text-align: left;
+}
+
 table.Table_-_No_Header
 {
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
   padding-top: 4pt;
+  text-align: left;
+  width: 90%;
+}
+
+table.Mapping_Table
+{
+  margin-bottom: 6.0pt;
+  margin-left: 0pt;
+  margin-right: 0pt;
+  margin-top: 3.0pt;
+  padding-bottom: 2pt;
+  padding-left: 2pt;
+  padding-right: 2pt;
+  padding-top: 2pt;
   text-align: left;
   width: 90%;
 }
@@ -2759,7 +2842,7 @@ table.Table_-_Header
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
@@ -2768,29 +2851,27 @@ table.Table_-_Header
   width: 90%;
 }
 
-table.Figure_Indent
+table.Table_-_Row_Headings
 {
-  margin-bottom: 12.0pt;
-  margin-left: 36pt;
-  margin-right: 0pt;
-  margin-top: 12.0pt;
-  padding-bottom: 4pt;
-  padding-left: 0pt;
-  padding-right: 4pt;
-  padding-top: 0pt;
-  text-align: left;
-}
-
-table.Figure
-{
+  background-color: White;
+  border-bottom-color: White;
+  border-bottom-style: none;
+  border-bottom-width: thin;
+  border-left-color: White;
+  border-left-style: none;
+  border-right-color: White;
+  border-right-style: none;
+  border-top-color: White;
+  border-top-style: none;
   margin-bottom: 12.0pt;
   margin-left: 0pt;
   margin-right: 0pt;
-  margin-top: 12.0pt;
+  margin-top: 3.0pt;
   padding-bottom: 4pt;
   padding-left: 6pt;
   padding-right: 4pt;
   padding-top: 4pt;
   text-align: left;
+  width: 90%;
 }
 

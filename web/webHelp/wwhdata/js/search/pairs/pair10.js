@@ -1,11 +1,10 @@
 function FileData_Pairs(x)
 {
 x.t("example","click");
-x.t("annotation","user");
 x.t("annotation","feature");
+x.t("annotation","submit");
 x.t("home","page");
 x.t("user","groups");
-x.t("user","submit");
 x.t("displays","workflow");
 x.t("open","appropriate");
 x.t("public","ccne");
