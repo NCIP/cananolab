@@ -190,7 +190,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
-					.setName("gov.nih.nci.cananolab.domain.particle.characterization");
+					.setName("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
 			Association association = new Association();
 			association
 					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
@@ -207,7 +207,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
 			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.characterization");
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Characterization chars = null;
 			Collection<Characterization> characterizationCollection = new ArrayList<Characterization>();
