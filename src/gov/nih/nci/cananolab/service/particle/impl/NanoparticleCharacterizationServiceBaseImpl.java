@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSumma
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 
 import java.io.IOException;
@@ -27,9 +28,11 @@ import org.apache.log4j.Logger;
  * 
  */
 public abstract class NanoparticleCharacterizationServiceBaseImpl {
-	Logger logger = Logger
-	.getLogger(NanoparticleCharacterizationServiceBaseImpl.class);
+	private static Logger logger = Logger
+			.getLogger(NanoparticleCharacterizationServiceBaseImpl.class);
+
 	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
+	protected FileService fileService;
 
 	public void exportDetail(CharacterizationBean achar, OutputStream out)
 			throws ParticleCharacterizationException {
@@ -60,7 +63,6 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 			if (charas.isEmpty()) {
 				return null;
 			}
-			FileService fileService = new FileService();
 			for (Characterization chara : charas) {
 				CharacterizationBean charBean = new CharacterizationBean(chara);
 				charSummary.getCharBeans().add(charBean);
@@ -68,8 +70,11 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 						&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
 					for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
 							.getDerivedBioAssayDataList()) {
-						fileService.retrieveVisibility(derivedBioAssayDataBean
-								.getLabFileBean(), user);
+						if (fileService instanceof FileServiceLocalImpl) {
+							fileService.retrieveVisibility(
+									derivedBioAssayDataBean.getLabFileBean(),
+									user);
+						}
 						Map<String, String> datumMap = new HashMap<String, String>();
 						for (DerivedDatum data : derivedBioAssayDataBean
 								.getDatumList()) {

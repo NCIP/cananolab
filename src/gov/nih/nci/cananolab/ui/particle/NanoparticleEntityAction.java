@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.49 2008-05-30 12:16:52 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.50 2008-05-30 17:00:08 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
@@ -79,7 +80,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		saveFilesToFileSystem(entityBean.getFiles());
 
 		// save to other particles
-		FileService service = new FileService();
+		FileService service = new FileServiceLocalImpl();
 		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			NanoparticleEntity copy = entityBean.getDomainCopy();

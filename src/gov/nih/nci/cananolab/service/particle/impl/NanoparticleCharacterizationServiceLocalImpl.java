@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBe
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -44,6 +45,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
 
 	public NanoparticleCharacterizationServiceLocalImpl() {
+		fileService = new FileServiceLocalImpl();
 	}
 
 	public void saveCharacterization(NanoparticleSample particleSample,
@@ -90,11 +92,10 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			}
 
 			if (achar.getDerivedBioAssayDataCollection() != null) {
-				FileService service = new FileService();
 				for (DerivedBioAssayData bioassay : achar
 						.getDerivedBioAssayDataCollection()) {
 					if (bioassay.getLabFile() != null) {
-						service.prepareSaveFile(bioassay.getLabFile());
+						fileService.prepareSaveFile(bioassay.getLabFile());
 					}
 				}
 			}
@@ -248,8 +249,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	// set lab file visibility of a characterization
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException {
-		try {
-			FileService fileService = new FileService();
+		try {			
 			for (DerivedBioAssayDataBean bioAssayData : charBean
 					.getDerivedBioAssayDataList()) {
 				fileService.retrieveVisibility(bioAssayData.getLabFileBean(),

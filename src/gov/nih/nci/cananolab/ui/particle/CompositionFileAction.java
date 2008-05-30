@@ -5,10 +5,13 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -85,8 +88,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String fileId = request.getParameter("dataId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService fileService = new FileService();
-		LabFileBean fileBean = fileService.findFile(fileId);
+		FileService fileService = new FileServiceLocalImpl();
+		LabFileBean fileBean = fileService.findFileById(fileId);
 		fileService.retrieveVisibility(fileBean, user);
 		theForm.set("compFile", fileBean);
 		setLookups(request);
@@ -98,7 +101,26 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return setupUpdate(mapping, form, request, response);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = request.getParameter("location");
+		String fileId = request.getParameter("dataId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		FileService fileService = null;
+		if (location.equals("local")) {
+			fileService = new FileServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			fileService = new FileServiceRemoteImpl(serviceUrl);
+		}
+		LabFileBean fileBean = fileService.findFileById(fileId);
+		if (location.equals("local")) {
+			fileService.retrieveVisibility(fileBean, user);
+		}
+		theForm.set("compFile", fileBean);
+		setupParticle(theForm, request, location);
+		ActionForward forward = mapping.getInputForward();
+		return forward;
 	}
 
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
@@ -127,9 +149,9 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		FileService fileService = new FileService();
+		FileService fileService = new FileServiceLocalImpl();
 		for (String id : dataIds) {
-			LabFileBean fileBean = fileService.findFile(id);
+			LabFileBean fileBean = fileService.findFileById(id);
 			compService.deleteCompositionFile(particleBean
 					.getDomainParticleSample(), fileBean.getDomainFile());
 		}

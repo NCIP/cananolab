@@ -7,6 +7,8 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
@@ -78,7 +80,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 
-		FileService fileService = new FileService();
+		FileService fileService = new FileServiceLocalImpl();
 		for (LabFileBean fileBean : files) {
 			fileService.writeFile(fileBean.getDomainFile(), fileBean
 					.getNewFileData());
@@ -169,8 +171,16 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 		String fileId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService service = new FileService();
-		LabFileBean fileBean = service.findFile(fileId, user);
+		String location = request.getParameter("location");
+		FileService service = null;
+		if (location.equals("local")) {
+			service = new FileServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new FileServiceRemoteImpl(serviceUrl);
+		}
+		LabFileBean fileBean = service.findFileById(fileId, user);
 		if (fileBean.getDomainFile().getUriExternal()) {
 			response.sendRedirect(fileBean.getDomainFile().getUri());
 			return null;
