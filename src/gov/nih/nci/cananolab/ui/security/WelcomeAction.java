@@ -16,7 +16,7 @@ package gov.nih.nci.cananolab.ui.security;
  * @author pansu
  */
 
-/* CVS $Id: WelcomeAction.java,v 1.2 2008-05-29 18:25:20 pansu Exp $ */
+/* CVS $Id: WelcomeAction.java,v 1.3 2008-05-30 12:17:13 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -29,7 +29,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

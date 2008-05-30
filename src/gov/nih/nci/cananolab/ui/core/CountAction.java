@@ -1,9 +1,5 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -16,6 +12,10 @@ import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,7 +26,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.actions.DispatchAction;
 
 public class CountAction extends Action {
 
