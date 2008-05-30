@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 
+import org.apache.log4j.Logger;
+
 /**
  * Base implementation of NanoparticleCharacterizationService, shared by local
  * impl and remote impl.
@@ -25,6 +27,8 @@ import java.util.SortedSet;
  * 
  */
 public abstract class NanoparticleCharacterizationServiceBaseImpl {
+	Logger logger = Logger
+	.getLogger(NanoparticleCharacterizationServiceBaseImpl.class);
 	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
 
 	public void exportDetail(CharacterizationBean achar, OutputStream out)
