@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -27,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -529,35 +531,173 @@ public class NanoparticleCharacterizationServiceHelper {
 	public ProtocolFile findProtocolFileByCharacterizationId(
 			java.lang.String characterizationId) throws Exception {
 		ProtocolFile protocolFile = null;
-		// TODO fill in HQL
-		return protocolFile;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String hql = "select aChar.protocolFile from gov.nih.nci.cananolab.domain.particle.characterization.Characterization aChar where aChar.id="+
+				characterizationId;
+			HQLCriteria crit = new HQLCriteria(hql);		
+			List results = appService.query(crit);		
+			for (Object obj : results) {
+				protocolFile = (ProtocolFile) obj;
+			}
+			return protocolFile;
+		} catch (Exception e) {
+			logger.error("Problem to retrieve ProtocolFile.", e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve ProtocolFile ");
+		}
 	}
 
 	public Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
 			java.lang.String characterizationId) throws Exception {
-		// TODO fill in HQL
-		Collection<DerivedBioAssayData> bioassays = new ArrayList<DerivedBioAssayData>();
-		return bioassays;
+		Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();		
+			HQLCriteria crit = new HQLCriteria(
+					"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "+
+					characterizationId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
+				//derivedBioAssayData's labfile
+				LabFile labFile = findLabFileByDerivedBioAssayDataId(derivedBioAssayData.getId().toString());
+				
+				//labFile's keyword
+				Collection<Keyword> keywordCollection = findLabFileKeyword(labFile.getId().toString());
+				labFile.setKeywordCollection(keywordCollection);
+				
+				derivedBioAssayData.setLabFile(labFile);
+				derivedBioAssayDataCollection.add(derivedBioAssayData);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve Characterization derivedBioAssayDataCollection.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve Characterization derivedBioAssayDataCollection ");
+		}
+		return derivedBioAssayDataCollection;
 	}
 
 	public InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
 			java.lang.String characterizationId) throws Exception {
-		// TODO fill in HQL
-		InstrumentConfiguration instrumentConfig = null;
-		return instrumentConfig;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String hql = "select aChar.instrumentConfiguration from gov.nih.nci.cananolab.domain.particle.characterization.Characterization aChar where aChar.id="+
+			characterizationId;
+			HQLCriteria crit = new HQLCriteria(hql);		
+			List results = appService.query(crit);
+			InstrumentConfiguration instrumentConfiguration = null;
+			for (Object obj : results) {
+				instrumentConfiguration = (InstrumentConfiguration) obj;
+			}
+			return instrumentConfiguration;
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve InstrumentConfiguration.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve InstrumentConfiguration ");
+		}
 	}
 
-	public Collection<SurfaceChemistry> findSurfaceChemistriesBySurfaceId(
+	public Collection<SurfaceChemistry> getSurfaceChemistries(
 			java.lang.String surfaceId) throws Exception {
-		// TODO: fill in HQL
 		Collection<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
-		return chemistries;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String hql = "select surface.surfaceChemistryCollection from gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface surface where surface.id="+
+				surfaceId;
+			HQLCriteria crit = new HQLCriteria(hql);		
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				SurfaceChemistry surfaceChemistry = (SurfaceChemistry) obj;
+				chemistries.add(surfaceChemistry);				
+			}
+			return chemistries;
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve InstrumentConfiguration.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve InstrumentConfiguration ");
+		}
 	}
 
-	public LabFile findLabFileByDerivedBioAssayDataId(
-			String derivedBioAssayDataId) {
-		// TODO fill in HQL
-		LabFile file = null;
-		return file;
+	
+	public LabFile findLabFileByDerivedBioAssayDataId(String derivedId)
+		throws ParticleCharacterizationException {
+		LabFile labFile = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select bioassay.labFile from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "+
+					derivedId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				labFile = (LabFile) obj;
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve DerivedBioAssayData labFile.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve DerivedBioAssayData labFile ");
+		}
+		return labFile;
 	}
+	
+	public Collection<Keyword> findLabFileKeyword(String labFileId)
+		throws ParticleCharacterizationException {
+		List<Keyword> keywordCollection = new ArrayList<Keyword>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select labFile.keywordCollection from gov.nih.nci.cananolab.domain.common.LabFile labFile where labFile.id = "+
+					labFileId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Keyword keyword = (Keyword) obj;
+				keywordCollection.add(keyword);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve LabFile keyword.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve LabFile keyword ");
+		}
+		return keywordCollection;
+	}
+	
+/*	public SortedSet<Keyword> findKeywordsByParticleSampleId(String particleId)
+		throws ParticleCharacterizationException {
+		SortedSet<Keyword> keywordCollection = new TreeSet<Keyword>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();		
+			HQLCriteria crit = new HQLCriteria(
+					"select aParticle.keywordCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle where aParticle.id = "+
+					particleId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Keyword keyword = (Keyword) obj;
+				keywordCollection.add(keyword);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve NanoparticleSample keywordCollection.",
+							e);
+			throw new ParticleCharacterizationException(
+					"Problem to retrieve retrieve NanoparticleSample keywordCollection ");
+		}
+		return keywordCollection;
+	}*/
+
 }
