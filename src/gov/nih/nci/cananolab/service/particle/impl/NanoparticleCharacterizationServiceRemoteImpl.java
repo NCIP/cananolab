@@ -189,8 +189,6 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				protocol = (Protocol) obj;
-				//loadInherentFunctionByComposingElement(composingElement);
-				//entity.getComposingElementCollection().add(composingElement);
 			}			
 			protocolFile.setProtocol(protocol);
 		} catch (Exception e) {
