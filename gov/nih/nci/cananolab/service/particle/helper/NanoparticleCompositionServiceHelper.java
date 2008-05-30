@@ -1,12 +1,18 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,7 +24,7 @@ import org.hibernate.criterion.Property;
 /**
  * Service methods involving composition.
  * 
- * @author pansu
+ * @author pansu, tanq
  * 
  */
 public class NanoparticleCompositionServiceHelper {
@@ -132,10 +138,52 @@ public class NanoparticleCompositionServiceHelper {
 		return assoc;
 	}
 
-	/**
-	 * Return user-defined functionalizing entity types
-	 * 
-	 * @return
-	 * @throws ParticleCompositionException
-	 */
+	public Collection<Function> findInherentFunctionsByComposingElementId(
+			java.lang.String composingElementId) throws Exception {
+		// TODO: fill in HQL
+		Collection<Function> functions = new ArrayList<Function>();
+		return functions;
+	}
+
+	public Collection<Function> findFunctionsByFunctionalizingEntityId(
+			java.lang.String functionalizingEntityId) throws Exception {
+		// TODO: fill in HQL
+		Collection<Function> functions = new ArrayList<Function>();
+		return functions;
+	}
+
+	public Collection<Target> findTargetsByFunctionId(
+			java.lang.String functionId) throws Exception {
+		Collection<Target> targets = new ArrayList<Target>();
+		// TODO: fill in HQL
+		return targets;
+	}
+
+	public ActivationMethod findActivationMethodByFunctionalizingEntityId(
+			java.lang.String functionalizingEntityId) throws Exception {
+		ActivationMethod activationMethod = null;
+		// TODO fill in HQL
+		return activationMethod;
+	}
+
+	public Collection<ChemicalAssociation> findChemicalAssociationsByCompositionId(
+			java.lang.String compositionId) throws Exception {
+		// TODO: fill in HQL
+		Collection<ChemicalAssociation> assocs = new ArrayList<ChemicalAssociation>();
+		return assocs;
+	}
+
+	public AssociatedElement findAssociatedElementA(
+			java.lang.String chemicalAssociationId) throws Exception {
+		// TODO: fill in HQL
+		AssociatedElement element = null;
+		return element;
+	}
+
+	public AssociatedElement findAssociatedElementB(
+			java.lang.String chemicalAssociationId) throws Exception {
+		// TODO: fill in HQL
+		AssociatedElement element = null;
+		return element;
+	}
 }
