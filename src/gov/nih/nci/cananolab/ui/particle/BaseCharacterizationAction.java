@@ -270,7 +270,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			charService = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
 		}
-		//Qina, Characterization or CharacterizationBean???
 		Characterization chara = charService.findCharacterizationById(charId);
 		request.getSession().setAttribute("characterizationForm", theForm);
 		return chara;
