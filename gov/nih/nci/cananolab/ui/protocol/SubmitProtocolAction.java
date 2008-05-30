@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -89,7 +90,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		List<ProtocolFileBean> pFiles = service.findProtocolFilesBy(
 				selectedProtocolType, selectedProtocolName, null);
 		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
-		FileService fileService = new FileService();
+		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(pfileBean, user);
 		return mapping.getInputForward();
 	}

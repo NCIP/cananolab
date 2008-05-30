@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
@@ -146,7 +147,7 @@ public class CountAction extends Action {
 			if (location.equals("local")) {
 				List<ReportBean> filteredReports = new ArrayList<ReportBean>();
 				// retrieve visibility
-				FileService fileService = new FileService();
+				FileService fileService = new FileServiceLocalImpl();
 				for (ReportBean report : reports) {
 					fileService.retrieveVisibility(report, user);
 					if (!report.isHidden()) {

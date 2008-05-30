@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.13 2008-05-29 18:25:20 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.14 2008-05-30 17:00:08 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
@@ -90,7 +91,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ReportService reportService = new ReportServiceLocalImpl();
 		ReportBean reportBean = reportService.findReportById(reportId);
-		FileService fileService = new FileService();
+		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(reportBean, user);
 		theForm.set("file", reportBean);
 		InitReportSetup.getInstance().setReportDropdowns(request);
