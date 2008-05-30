@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizati
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.HashMap;
