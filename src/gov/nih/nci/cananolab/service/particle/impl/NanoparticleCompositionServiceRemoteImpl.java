@@ -11,6 +11,8 @@ import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
@@ -21,13 +23,12 @@ import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
-import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
@@ -110,21 +111,18 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				entity.getId().toString(), NanoparticleEntity.class
 						.getCanonicalName());
 		entity.setLabFileCollection(files);
-		Collection<ComposingElement> composingElements = findComposingElementByNanoparticleEntityId(entity
-				.getId().toString());
-		entity.setComposingElementCollection(composingElements);
+		loadComposingElementForNanoparticleEntity(entity);
 	}
 
 	/**
-	 * return all ComposingElement with an associated NanoparticleEntity whose
-	 * id is equal to nanoEntityId
+	 * load all ComposingElement for an associated NanoparticleEntity
 	 * 
 	 * @param nanoEntityId
 	 * @return
-	 * @throws ParticleException
+	 * @throws ParticleCompositionException
 	 */
-	public Collection<ComposingElement> findComposingElementByNanoparticleEntityId(
-			String nanoEntityId) throws ParticleCompositionException {
+	private void loadComposingElementForNanoparticleEntity(
+			NanoparticleEntity entity) throws ParticleCompositionException {
 		try {
 			CQLQuery query = new CQLQuery();
 
@@ -139,8 +137,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(nanoEntityId);
-
+			attribute.setValue(entity.getId().toString());
 			association.setAttribute(attribute);
 
 			target.setAssociation(association);
@@ -150,70 +147,43 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			ComposingElement composingElement = null;
-			Collection<ComposingElement> composingElementCollection = new ArrayList<ComposingElement>();
+			entity
+					.setComposingElementCollection(new HashSet<ComposingElement>());
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				composingElement = (ComposingElement) obj;
-				Collection<Function> inherentFunctions = findInherentFunctionByComposingElementId(composingElement
-						.getId().toString());
-				composingElement
-						.setInherentFunctionCollection(inherentFunctions);
-				composingElementCollection.add(composingElement);
+				loadInherentFunctionByComposingElement(composingElement);
+				entity.getComposingElementCollection().add(composingElement);
 			}
-			return composingElementCollection;
 		} catch (Exception e) {
-			String err = "Problem finding the composingElementCollection by nanoparicleEntity id: "
-					+ nanoEntityId;
+			String err = "Problem finding the composingElementCollection for nanoparicleEntity id: "
+					+ entity.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
 	}
 
 	/**
-	 * return all InherentFunction with an associated ComposingElement whose id
-	 * is equal to composingElementId
-	 * 
-	 * @param composingElementId
-	 * @return
-	 * @throws ParticleException
+	 * load all InherentFunction for an associated ComposingElement
 	 */
-	private Collection<Function> findInherentFunctionByComposingElementId(
-			String composingElementId) throws ParticleCompositionException {
+	private void loadInherentFunctionByComposingElement(
+			ComposingElement composingElement)
+			throws ParticleCompositionException {
 		try {
-			CQLQuery query = new CQLQuery();
-
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement");
-			association.setRoleName("composingElement");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(composingElementId);
-
-			association.setAttribute(attribute);
-
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			Function function = null;
-			Collection<Function> inherentFunctionCollection = new ArrayList<Function>();
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				function = (Function) obj;
-				inherentFunctionCollection.add(function);
+			Function[] functions = gridClient
+					.getInherentFunctionsByComposingElementId(composingElement
+							.getId().toString());
+			if (functions != null) {
+				composingElement
+						.setInherentFunctionCollection(new HashSet<Function>());
+				for (Function function : functions) {
+					composingElement.getInherentFunctionCollection().add(
+							function);
+				}
 			}
-			return inherentFunctionCollection;
 		} catch (Exception e) {
-			String err = "Problem finding the inherentFunctionCollection by composingElement id: "
-					+ composingElementId;
+			String err = "Problem finding the inherentFunctionCollection for composingElement id: "
+					+ composingElement.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
@@ -282,15 +252,11 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	}
 
 	/**
-	 * return all NanoparticleEntity Collection with an associated Composition
-	 * whose id is equal to compositionId
+	 * load all NanoparticleEntity Collection for an associated Composition
 	 * 
-	 * @param compositionId
-	 * @return
-	 * @throws ParticleException
 	 */
-	private Collection<NanoparticleEntity> findNanoparticleEntityByCompositionId(
-			String compositionId) throws ParticleException {
+	private void loadNanoparticleEntityForComposition(
+			SampleComposition composition) throws ParticleCompositionException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -304,8 +270,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(compositionId);
-
+			attribute.setValue(composition.getId().toString());
 			association.setAttribute(attribute);
 
 			target.setAssociation(association);
@@ -315,42 +280,27 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			NanoparticleEntity nanoEntity = null;
-			Collection<NanoparticleEntity> nanoparticleEntityCollection = new ArrayList<NanoparticleEntity>();
+			composition
+					.setNanoparticleEntityCollection(new HashSet<NanoparticleEntity>());
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				nanoEntity = (NanoparticleEntity) obj;
-				Collection<ComposingElement> composingElementCollection = findComposingElementByNanoparticleEntityId(nanoEntity
-						.getId().toString());
-
-				for (ComposingElement composingElement : composingElementCollection) {
-					Collection<Function> inherentFunctionCollection = findInherentFunctionByComposingElementId(composingElement
-							.getId().toString());
-					composingElement
-							.setInherentFunctionCollection(inherentFunctionCollection);
-				}
-				nanoEntity
-						.setComposingElementCollection(composingElementCollection);
-				nanoparticleEntityCollection.add(nanoEntity);
+				loadComposingElementForNanoparticleEntity(nanoEntity);
+				composition.getNanoparticleEntityCollection().add(nanoEntity);
 			}
-			return nanoparticleEntityCollection;
 		} catch (Exception e) {
-			String err = "Problem finding the NanoparticleEntity Collection by composition id: "
-					+ compositionId;
+			String err = "Problem finding the NanoparticleEntity Collection for composition id: "
+					+ composition.getId();
 			logger.error(err, e);
-			throw new ParticleException(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 	}
 
 	/**
-	 * return all FunctionalizingEntity Collection with an associated
-	 * Composition whose id is equal to compositionId
-	 * 
-	 * @param compositionId
-	 * @return
-	 * @throws ParticleException
+	 * load all FunctionalizingEntity Collection with an associated Composition
 	 */
-	private Collection<FunctionalizingEntity> findFunctionalizingEntityByCompositionId(
-			String compositionId) throws ParticleException {
+	private void loadFunctionalizingEntityForComposition(
+			SampleComposition composition) throws ParticleCompositionException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -364,7 +314,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(compositionId);
+			attribute.setValue(composition.getId().toString());
 			association.setAttribute(attribute);
 			target.setAssociation(association);
 			query.setTarget(target);
@@ -373,20 +323,21 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			FunctionalizingEntity functionalizingEntity = null;
-			Collection<FunctionalizingEntity> functionalizingEntityCollection = new ArrayList<FunctionalizingEntity>();
+			composition
+					.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				functionalizingEntity = (FunctionalizingEntity) obj;
-				Collection<Function> functionCollection = findFunctionsByFunctionalizingEntityId(functionalizingEntity
-						.getId().toString());
-				functionalizingEntity.setFunctionCollection(functionCollection);
+				loadFunctionsForFunctionalizingEntity(functionalizingEntity);
+				composition.getFunctionalizingEntityCollection().add(
+						functionalizingEntity);
 			}
-			return functionalizingEntityCollection;
+
 		} catch (Exception e) {
-			String err = "Problem finding the FunctionalizingEntity Collection  by Composition Id: "
-					+ compositionId;
+			String err = "Problem finding the FunctionalizingEntity Collection for Composition Id: "
+					+ composition.getId();
 			logger.error(err, e);
-			throw new ParticleException(err, e);
+			throw new ParticleCompositionException(err, e);
 		}
 	}
 
@@ -408,56 +359,37 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				entity.getId().toString(), NanoparticleEntity.class
 						.getCanonicalName());
 		entity.setLabFileCollection(files);
-		Collection<Function> functions = findFunctionsByFunctionalizingEntityId(entity
-				.getId().toString());
-		entity.setFunctionCollection(functions);
+		loadFunctionsForFunctionalizingEntity(entity);
 	}
 
-	/**
-	 * return all functionCollection with an associated FunctionalizingEntity
-	 * whose id is equal to functionalizingEntityId
-	 * 
-	 * @param composingElementId
-	 * @return
-	 * @throws ParticleException
-	 */
-	private Collection<Function> findFunctionsByFunctionalizingEntityId(
-			String functionalizingEntityId) throws ParticleCompositionException {
+	private void loadFunctionsForFunctionalizingEntity(
+			FunctionalizingEntity entity) throws ParticleCompositionException {
 		try {
-			CQLQuery query = new CQLQuery();
-
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-			association.setRoleName("functionalizingEntity");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(functionalizingEntityId);
-
-			association.setAttribute(attribute);
-
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			Function function = null;
-			Collection<Function> functionCollection = new ArrayList<Function>();
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				function = (Function) obj;
-				functionCollection.add(function);
+			Function[] functions = gridClient
+					.getFunctionsByFunctionalizingEntityId(entity.getId()
+							.toString());
+			if (functions != null) {
+				entity.setFunctionCollection(new HashSet<Function>());
+				for (Function function : functions) {
+					if (function instanceof TargetingFunction) {
+						Target[] targets = gridClient
+								.getTargetsByFunctionId(function.getId()
+										.toString());
+						if (targets != null) {
+							((TargetingFunction) function)
+									.setTargetCollection(new HashSet<Target>());
+							for (Target target : targets) {
+								((TargetingFunction) function)
+										.getTargetCollection().add(target);
+							}
+						}
+					}
+					entity.getFunctionCollection().add(function);
+				}
 			}
-			return functionCollection;
 		} catch (Exception e) {
-			String err = "Problem finding the functionCollection by FunctionalizingEntity id: "
-					+ functionalizingEntityId;
+			String err = "Problem loading the functionCollection for FunctionalizingEntity id: "
+					+ entity.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
@@ -642,7 +574,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	 * 
 	 * @param particleId
 	 * @return
-	 * @throws ParticleException
+	 * @throws ParticleCompositionException
 	 */
 	public SampleComposition findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException {
@@ -673,15 +605,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
-				Collection<NanoparticleEntity> nanoparticleEntityCollection = findNanoparticleEntityByCompositionId(sampleComposition
-						.getId().toString());
-				sampleComposition
-						.setNanoparticleEntityCollection(nanoparticleEntityCollection);
-				Collection<FunctionalizingEntity> functionalizingEntityCollection = findFunctionalizingEntityByCompositionId(sampleComposition
-						.getId().toString());
-				sampleComposition
-						.setFunctionalizingEntityCollection(functionalizingEntityCollection);
-
+				loadNanoparticleEntityForComposition(sampleComposition);
+				loadFunctionalizingEntityForComposition(sampleComposition);
 			}
 			return sampleComposition;
 		} catch (Exception e) {

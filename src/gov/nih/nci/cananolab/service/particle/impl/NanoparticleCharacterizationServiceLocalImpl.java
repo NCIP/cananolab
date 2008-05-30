@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -234,10 +235,13 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			throws ParticleCharacterizationException {
 
 		try {
-			SortedSet<Characterization> charas = helper
+			Collection<Characterization> charas = helper
 					.findParticleCharacterizationsByClass(particleName,
 							className);
-			return charas;
+			SortedSet<Characterization> sortedChars = new TreeSet<Characterization>(
+					new CaNanoLabComparators.CharacterizationDateComparator());
+			sortedChars.addAll(charas);
+			return sortedChars;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName
 					+ " characterizations of type " + className;

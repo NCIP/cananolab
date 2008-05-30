@@ -106,14 +106,14 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			String particleName, String className)
 			throws ParticleCharacterizationException {
 		try {
-			// TODO implement in grid service
-			SortedSet<Characterization> charas = new TreeSet<Characterization>();
-			// charas = gridClient.getParticleCharacterizationsByClass(
-			// particleName, className);
-			for (Characterization achar : charas) {
+			Characterization[] chars = gridClient.getCharacterizationsBy(
+					particleName, className);
+			SortedSet<Characterization> charSet = new TreeSet<Characterization>();
+			for (Characterization achar : chars) {
 				loadCharacterizationAssociations(achar);
+				charSet.add(achar);
 			}
-			return charas;
+			return charSet;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName
 					+ " characterizations of type " + className;
@@ -144,36 +144,37 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	private void loadCharacterizationAssociations(Characterization achar)
 			throws Exception {
 		String charId = achar.getId().toString();
-		ProtocolFile protocolFile = findProtocolFileByCharacterizationId(achar
-				.getId().toString());
+		ProtocolFile protocolFile = gridClient
+				.getProtocolFileByCharacterizationId(charId);
+		loadProtocolForProtocolFile(protocolFile);
 		achar.setProtocolFile(protocolFile);
-		Collection<DerivedBioAssayData> bioassays = findDerivedBioAssayDataByCharacterizationId(achar
-				.getId().toString());
-		achar.setDerivedBioAssayDataCollection(bioassays);
-		InstrumentConfiguration instrumentConfig = findInstrumentConfigurationByCharacterizationId(achar
-				.getId().toString());
+		loadDerivedBioAssayDataForCharacterization(achar);
+		InstrumentConfiguration instrumentConfig = gridClient
+				.getInstrumentConfigurationByCharacterizationId(charId);
+		Instrument instrument = gridClient
+				.getInstrumentByInstrumentConfigurationId(instrumentConfig
+						.getId().toString());
+		instrumentConfig.setInstrument(instrument);
 		achar.setInstrumentConfiguration(instrumentConfig);
 	}
 
-	private ProtocolFile findProtocolFileByCharacterizationId(String charId)
+	private void loadProtocolForProtocolFile(ProtocolFile protocolFile)
 			throws Exception {
-		ProtocolFile pfile = null;
-		// TODO implement in grid service
-		return pfile;
+		// TODO implement cql
 	}
 
-	private Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
-			String charId) throws Exception {
-		Collection<DerivedBioAssayData> bioassays = new HashSet<DerivedBioAssayData>();
-		// TODO implement in grid service
-		return bioassays;
-	}
-
-	private InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
-			String charId) throws Exception {
-		InstrumentConfiguration instrumentConfig = null;
-		// TODO implement in grid service
-		return instrumentConfig;
+	private void loadDerivedBioAssayDataForCharacterization(
+			Characterization achar) throws Exception {
+		achar
+				.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+		DerivedBioAssayData[] bioassayArray = gridClient
+				.getDerivedBioAssayDataByCharacterizationId(achar.getId()
+						.toString());
+		if (bioassayArray != null) {
+			for (DerivedBioAssayData bioassay : bioassayArray) {
+				achar.getDerivedBioAssayDataCollection().add(bioassay);
+			}
+		}
 	}
 
 	/**

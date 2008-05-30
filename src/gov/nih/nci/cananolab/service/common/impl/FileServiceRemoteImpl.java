@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.service.common.impl;
 
-import java.util.Collection;
-
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
@@ -14,6 +12,9 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 
@@ -89,11 +90,23 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	public Collection<LabFile> findFilesByCompositionInfoId(String entityId,
+	public Collection<LabFile> findFilesByCompositionInfoId(String id,
 			String className) throws FileException {
-		Collection<LabFile> files = null;
-		// TODO implement in grid service
-		return files;
+		try {
+			Collection<LabFile> fileSet = new HashSet<LabFile>();
+			LabFile[] files = gridClient.getLabFilesByCompositionInfoId(id,
+					className);
+			if (files != null) {
+				for (LabFile file : files) {
+					fileSet.add(file);
+				}
+			}
+			return fileSet;
+		} catch (Exception e) {
+			String err = "Error finding files by " + className + "and id " + id;
+			logger.error(err, e);
+			throw new FileException(err, e);
+		}
 	}
 
 	public void saveCopiedFileAndSetVisibility(LabFile copy, UserBean user,
