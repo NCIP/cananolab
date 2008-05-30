@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
+import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -966,8 +967,25 @@ public class NanoparticleSampleServiceHelper {
 
 	public Collection<Keyword> findKeywordsForNanoparticleSampleId(
 			String particleSampleId) throws Exception {
-		// TODO fill in HQL
 		Collection<Keyword> keywords = new ArrayList<Keyword>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();		
+			HQLCriteria crit = new HQLCriteria(
+					"select aParticle.keywordCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle where aParticle.id = "+
+					particleSampleId);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Keyword keyword = (Keyword) obj;
+				keywords.add(keyword);
+			}
+		} catch (Exception e) {
+			logger
+					.error("Problem to retrieve NanoparticleSample keywordCollection.",
+							e);
+			throw new ParticleException(
+					"Problem to retrieve retrieve NanoparticleSample keywordCollection ");
+		}
 		return keywords;
 	}
 }
