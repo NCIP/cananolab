@@ -2,6 +2,7 @@ function FileData_Pairs(x)
 {
 x.t("composition","properties");
 x.t("composition","subcategory");
+x.t("composition","sample");
 x.t("composition","link");
 x.t("composition","file");
 x.t("composition","fields");
@@ -26,7 +27,6 @@ x.t("chemical","association");
 x.t("determine","composition");
 x.t("proceed","annotate");
 x.t("fields","proceed");
-x.t("pertinent","composition");
 x.t("button","corresponding");
 x.t("first","item");
 x.t("select","nanoparticle");
@@ -44,7 +44,7 @@ x.t("omposition","customized");
 x.t("navigation","tree");
 x.t("particle","type");
 x.t("functionalizing","entity");
-x.t("corresponding","pertinent");
+x.t("corresponding","composition");
 x.t("entity","chemical");
 x.t("entity","particle");
 x.t("entity","functionalizing");
