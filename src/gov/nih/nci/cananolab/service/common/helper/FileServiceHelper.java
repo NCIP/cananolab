@@ -51,50 +51,37 @@ public class FileServiceHelper {
 	}
 
 	public Collection<LabFile> findFilesByCompositionInfoId(String id,
-			String className) throws FileException{
-		SortedSet<LabFile> labFileCollection = new TreeSet<LabFile>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			String hql = "select anEntity.labFileCollection from "+className+
-				" anEntity where anEntity.id = "+id;
-			
-			HQLCriteria crit = new HQLCriteria(hql);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				LabFile labFile = (LabFile) obj;
-				labFileCollection.add(labFile);
-			}
-		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve labFileCollection.",
-							e);
-			throw new FileException(
-					"Problem to retrieve retrieve labFileCollection ");
+			String className) throws Exception {
+		Collection<LabFile> labFileCollection = new ArrayList<LabFile>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		String hql = "select anEntity.labFileCollection from " + className
+				+ " anEntity where anEntity.id = " + id;
+
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			LabFile labFile = (LabFile) obj;
+			labFileCollection.add(labFile);
 		}
 		return labFileCollection;
 	}
 
 	public Collection<Keyword> findKeywordsByFileId(String labFileId)
-			throws FileException {
+			throws Exception {
 		Collection<Keyword> keywords = new ArrayList<Keyword>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select labFile.keywordCollection from gov.nih.nci.cananolab.domain.common.LabFile labFile where labFile.id = "
-							+ labFileId);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Keyword keyword = (Keyword) obj;
-				keywords.add(keyword);
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve LabFile keyword.", e);
-			throw new FileException(
-					"Problem to retrieve retrieve LabFile keyword ");
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select labFile.keywordCollection from gov.nih.nci.cananolab.domain.common.LabFile labFile where labFile.id = "
+						+ labFileId);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			Keyword keyword = (Keyword) obj;
+			keywords.add(keyword);
 		}
 		return keywords;
 	}
-
 }
