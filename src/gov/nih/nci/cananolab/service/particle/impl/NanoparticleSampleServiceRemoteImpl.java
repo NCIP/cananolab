@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -103,12 +104,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			NanoparticleSample particleSample) throws Exception {
 		String particleId = particleSample.getId().toString();
 		// source
-		Source source = findSourceByParticleSampleId(particleId);
-		particleSample.setSource(source);
-
+		loadSourceForParticleSample(particleSample);
 		// keyword
-		Collection<Keyword> keywordCollection = findKeywordsByParticleSampleId(particleId);
-		particleSample.setKeywordCollection(keywordCollection);
+		loadKeywordsForParticleSample(particleSample);
 
 		// characterization, char.derivedBioAssayDataCollection,
 		// derived.labFile, labFile.keywordCollection
@@ -232,15 +230,14 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	}
 
 	/**
-	 * return all sources with an associated NanoparticleSample whose id is
-	 * equal to particleId
+	 * load the source for an associated NanoparticleSample
 	 * 
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
 	 * 
 	 */
-	private Source findSourceByParticleSampleId(String particleId)
+	private void loadSourceForParticleSample(NanoparticleSample particleSample)
 			throws ParticleException {
 		try {
 			CQLQuery query = new CQLQuery();
@@ -254,8 +251,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(particleId);
-
+			attribute.setValue(particleSample.getId().toString());
 			association.setAttribute(attribute);
 
 			target.setAssociation(association);
@@ -269,31 +265,36 @@ public class NanoparticleSampleServiceRemoteImpl implements
 				java.lang.Object obj = iter.next();
 				source = (Source) obj;
 			}
-			return source;
+			particleSample.setSource(source);
 		} catch (Exception e) {
 			String err = "Problem finding the source by particle id: "
-					+ particleId;
+					+ particleSample.getId();
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
 	}
 
 	/**
-	 * return all keywords with an associated NanoparticleSample whose id is
-	 * equal to particleId
+	 * load all keywords for an associated NanoparticleSample equal to
+	 * particleId
 	 * 
-	 * @param particleId
-	 * @return
-	 * @throws ParticleException
 	 */
-	private Collection<Keyword> findKeywordsByParticleSampleId(String particleId)
+	private void loadKeywordsForParticleSample(NanoparticleSample particleSample)
 			throws ParticleException {
 		try {
-			Collection<Keyword> keywords = null;
-			return keywords;
+			particleSample.setKeywordCollection(new HashSet<Keyword>());
+			Keyword[] keywords = gridClient
+					.getKeywordsByParticleSampleId(particleSample.getId()
+							.toString());
+			if (keywords != null) {
+				for (Keyword keyword : keywords) {
+					particleSample.getKeywordCollection().add(keyword);
+				}
+			}
+
 		} catch (Exception e) {
-			String err = "Problem finding the keywordCollection by particle id: "
-					+ particleId;
+			String err = "Problem finding the keywordCollection for particle id: "
+					+ particleSample.getId();
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
