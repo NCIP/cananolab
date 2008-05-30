@@ -24,11 +24,11 @@
 						resulting from physical and in vitro nanoparticle assays and the
 						sharing of these characterizations in a secure fashion.
 
-						<div id="publicLinks">
-							<jsp:include page="/bodyMessage.jsp" />
+						<div id="publicLinks">							
 							<h2 class="welcomeTitle" id="pubh2">
 								Browse caNanoLab
 							</h2>
+							<jsp:include page="/bodyMessage.jsp" />
 							<div class="griddiv">
 								<table class="girdtable">
 									<tr>
@@ -36,7 +36,6 @@
 											<label class="toplabel" for="location">
 												Location
 											</label>
-
 											<select name="searchLocations" id="location" multiple="true"
 												size="4" onchange="getGridCounts(this);">
 												<option value="local" selected>
