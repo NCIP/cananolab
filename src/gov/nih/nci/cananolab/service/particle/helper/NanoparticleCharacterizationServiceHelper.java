@@ -1,31 +1,31 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
+import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -122,10 +122,9 @@ public class NanoparticleCharacterizationServiceHelper {
 		}
 	}
 
-	public SortedSet<Characterization> findParticleCharacterizationsByClass(
+	public Collection<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className) throws Exception {
-		SortedSet<Characterization> charas = new TreeSet<Characterization>(
-				new CaNanoLabComparators.CharacterizationDateComparator());
+		Collection<Characterization> charas = new ArrayList<Characterization>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -526,13 +525,31 @@ public class NanoparticleCharacterizationServiceHelper {
 		return rowCount;
 	}
 
-	/*
-	 * public void deleteCharacterization(Characterization chara) throws
-	 * ParticleCharacterizationException { try { CustomizedApplicationService
-	 * appService = (CustomizedApplicationService) ApplicationServiceProvider
-	 * .getApplicationService(); appService.delete(chara); } catch (Exception e) {
-	 * String err = "Error deleting characterization " +
-	 * chara.getIdentificationName(); logger.error(err, e); throw new
-	 * ParticleCharacterizationException(err, e); } }
-	 */
+	public ProtocolFile findProtocolFileByCharacterizationId(
+			java.lang.String characterizationId) throws Exception {
+		ProtocolFile protocolFile = null;
+		// TODO fill in HQL
+		return protocolFile;
+	}
+
+	public Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
+			java.lang.String characterizationId) throws Exception {
+		// TODO fill in HQL
+		Collection<DerivedBioAssayData> bioassays = new ArrayList<DerivedBioAssayData>();
+		return bioassays;
+	}
+
+	public InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
+			java.lang.String characterizationId) throws Exception {
+		// TODO fill in HQL
+		InstrumentConfiguration instrumentConfig = null;
+		return instrumentConfig;
+	}
+
+	public Collection<SurfaceChemistry> getSurfaceChemistries(
+			java.lang.String surfaceId) throws Exception {
+		// TODO: fill in HQL
+		Collection<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
+		return chemistries;
+	}
 }
