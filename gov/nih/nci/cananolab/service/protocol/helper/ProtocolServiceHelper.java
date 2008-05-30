@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -43,9 +44,9 @@ public class ProtocolServiceHelper {
 		return pf;
 	}
 
-	public List<ProtocolFile> findProtocolFilesBy(String protocolType,
+	public Collection<ProtocolFile> findProtocolFilesBy(String protocolType,
 			String protocolName, String fileTitle) throws Exception {
-		List<ProtocolFile> protocolFiles = new ArrayList<ProtocolFile>();
+		Collection<ProtocolFile> protocolFiles = new ArrayList<ProtocolFile>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(ProtocolFile.class);
@@ -187,9 +188,9 @@ public class ProtocolServiceHelper {
 	}
 
 	// for dwr ajax
-	public List<ProtocolFileBean> getProtocolFiles(String protocolType,
+	public Collection<ProtocolFileBean> getProtocolFiles(String protocolType,
 			String protocolName) throws ProtocolException {
-		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
+		Collection<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();

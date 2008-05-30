@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -83,7 +84,7 @@ public class ReportServiceLocalImpl implements ReportService {
 			throws ReportException, CaNanoLabSecurityException {
 		List<ReportBean> reportBeans = new ArrayList<ReportBean>();
 		try {
-			List<Report> reports = helper.findReportsBy(reportTitle,
+			Collection<Report> reports = helper.findReportsBy(reportTitle,
 					reportCategory, nanoparticleEntityClassNames,
 					otherNanoparticleTypes, functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
