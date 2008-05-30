@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -44,7 +45,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 						.getOneWordLowerCaseFirstLetter("Composition File");
 
 		fileBean.setupDomainFile(internalUriPath, user.getLoginName());
-		NanoparticleCompositionService service = new NanoparticleCompositionService();
+		NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 		service.saveCompositionFile(particleBean.getDomainParticleSample(),
 				fileBean.getDomainFile(), fileBean.getNewFileData());
 		// set visibility
@@ -106,7 +107,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		LabFileBean fileBean = (LabFileBean) theForm.get("compFile");
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		compService.deleteCompositionFile(particleBean
 				.getDomainParticleSample(), fileBean.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
@@ -124,7 +125,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String submitType = request.getParameter("submitType");
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		NanoparticleCompositionService compService = new NanoparticleCompositionService();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
 		FileService fileService = new FileService();
 		for (String id : dataIds) {

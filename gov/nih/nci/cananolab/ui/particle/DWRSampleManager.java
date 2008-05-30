@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.SortedSet;
@@ -13,7 +14,7 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 public class DWRSampleManager {
 
 	Logger logger = Logger.getLogger(DWRSampleManager.class);
-	private NanoparticleCompositionService compService = new NanoparticleCompositionService();
+	private NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 	public DWRSampleManager() {}
 	
 	public String[] removeSourceVisibility(String sampleSource) {
