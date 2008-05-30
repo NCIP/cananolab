@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
-import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
@@ -20,6 +19,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -249,7 +249,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	// set lab file visibility of a characterization
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException {
-		try {			
+		try {
 			for (DerivedBioAssayDataBean bioAssayData : charBean
 					.getDerivedBioAssayDataList()) {
 				fileService.retrieveVisibility(bioAssayData.getLabFileBean(),
@@ -277,5 +277,11 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			logger.error(err, e);
 			throw new ParticleCharacterizationException(err, e);
 		}
+	}
+
+	public Collection<Characterization> findCharsByParticleSampleId(
+			String particleId) throws ParticleCharacterizationException {
+		throw new ParticleCharacterizationException(
+				"Not implemented for local service");
 	}
 }
