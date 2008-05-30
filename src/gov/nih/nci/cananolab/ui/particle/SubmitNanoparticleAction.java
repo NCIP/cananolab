@@ -6,12 +6,13 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.30 2008-05-22 22:42:20 pansu Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.31 2008-05-30 16:18:02 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -27,7 +28,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitNanoparticleAction extends BaseAnnotationAction {
-
+	NanoparticleSampleServiceHelper helper = new NanoparticleSampleServiceHelper();
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -57,7 +58,8 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 
 		authService.assignVisibility(particleSampleBean
 				.getDomainParticleSample().getName(), visibleGroups);
-
+		helper.assignAssociatedVisibility(authService, particleSampleBean, visibleGroups);
+		
 		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("update");
 		request.setAttribute("theParticle", particleSampleBean);
