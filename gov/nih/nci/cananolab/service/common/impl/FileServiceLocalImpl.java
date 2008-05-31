@@ -314,7 +314,7 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	public Collection<LabFile> findFilesByCompositionInfoId(String id,
+	public List<LabFile> findFilesByCompositionInfoId(String id,
 			String className) throws FileException {
 		throw new FileException("Not implemented for local service");
 	}

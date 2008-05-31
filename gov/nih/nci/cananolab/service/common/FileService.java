@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Interface defining methods for file retrieving and writing.
@@ -33,7 +33,7 @@ public interface FileService {
 	public LabFileBean findFileById(String fileId, UserBean user)
 			throws FileException, CaNanoLabSecurityException;
 
-	public Collection<LabFile> findFilesByCompositionInfoId(String id,
+	public List<LabFile> findFilesByCompositionInfoId(String id,
 			String className) throws FileException;
 
 	public void saveCopiedFileAndSetVisibility(LabFile copy, UserBean user,

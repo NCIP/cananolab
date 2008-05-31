@@ -25,7 +25,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -125,9 +124,9 @@ public class NanoparticleCharacterizationServiceHelper {
 		}
 	}
 
-	public Collection<Characterization> findParticleCharacterizationsByClass(
+	public List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className) throws Exception {
-		Collection<Characterization> charas = new ArrayList<Characterization>();
+		List<Characterization> charas = new ArrayList<Characterization>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -544,9 +543,9 @@ public class NanoparticleCharacterizationServiceHelper {
 		return protocolFile;
 	}
 
-	public Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
+	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
 			java.lang.String characterizationId) throws Exception {
-		Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
@@ -561,7 +560,7 @@ public class NanoparticleCharacterizationServiceHelper {
 					.getId().toString());
 
 			// labFile's keyword
-			Collection<Keyword> keywordCollection = fileHelper
+			List<Keyword> keywordCollection = fileHelper
 					.findKeywordsByFileId(labFile.getId().toString());
 			labFile.setKeywordCollection(keywordCollection);
 
@@ -601,9 +600,9 @@ public class NanoparticleCharacterizationServiceHelper {
 		return instrumentConfiguration;
 	}
 
-	public Collection<SurfaceChemistry> findSurfaceChemistriesBySurfaceId(
+	public List<SurfaceChemistry> findSurfaceChemistriesBySurfaceId(
 			java.lang.String surfaceId) throws Exception {
-		Collection<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
+		List<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();

@@ -7,7 +7,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -46,9 +45,9 @@ public class FileServiceHelper {
 		return file;
 	}
 
-	public Collection<LabFile> findFilesByCompositionInfoId(String id,
+	public List<LabFile> findFilesByCompositionInfoId(String id,
 			String className) throws Exception {
-		Collection<LabFile> labFileCollection = new ArrayList<LabFile>();
+		List<LabFile> labFileCollection = new ArrayList<LabFile>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -64,9 +63,9 @@ public class FileServiceHelper {
 		return labFileCollection;
 	}
 
-	public Collection<Keyword> findKeywordsByFileId(String labFileId)
+	public List<Keyword> findKeywordsByFileId(String labFileId)
 			throws Exception {
-		Collection<Keyword> keywords = new ArrayList<Keyword>();
+		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
