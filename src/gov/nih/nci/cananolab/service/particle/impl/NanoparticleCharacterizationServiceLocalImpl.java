@@ -20,7 +20,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -230,18 +230,17 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		}
 	}
 
-	protected SortedSet<Characterization> findParticleCharacterizationsByClass(
+	protected List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className)
 			throws ParticleCharacterizationException {
 
 		try {
-			Collection<Characterization> charas = helper
+			List<Characterization> charList = helper
 					.findParticleCharacterizationsByClass(particleName,
 							className);
-			SortedSet<Characterization> sortedChars = new TreeSet<Characterization>(
+			Collections.sort(charList,
 					new CaNanoLabComparators.CharacterizationDateComparator());
-			sortedChars.addAll(charas);
-			return sortedChars;
+			return charList;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName
 					+ " characterizations of type " + className;
