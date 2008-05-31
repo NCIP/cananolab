@@ -102,7 +102,7 @@ function searchProtocols() {
 }
 function browseProtocols() {
 	var selectEle = document.getElementById('location');
-	var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
+	var gridNodesStr = getSelectedOptions(selectEle);
 	var url = "/caNanoLab/searchProtocol.do?dispatch=search&searchLocations=";
 	url += gridNodesStr;
 
