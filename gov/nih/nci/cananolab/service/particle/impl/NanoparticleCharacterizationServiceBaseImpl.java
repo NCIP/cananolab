@@ -15,8 +15,8 @@ import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizatio
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 
@@ -49,7 +49,7 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 		helper.exportSummary(summaryBean, out);
 	}
 
-	protected abstract SortedSet<Characterization> findParticleCharacterizationsByClass(
+	protected abstract List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className) throws Exception;
 
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
@@ -58,7 +58,7 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 		CharacterizationSummaryBean charSummary = new CharacterizationSummaryBean(
 				className);
 		try {
-			SortedSet<Characterization> charas = findParticleCharacterizationsByClass(
+			List<Characterization> charas = findParticleCharacterizationsByClass(
 					particleName, className);
 			if (charas.isEmpty()) {
 				return null;

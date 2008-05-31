@@ -19,10 +19,12 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -86,6 +88,8 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					particles.add(new ParticleBean(particleSample));
 				}
 			}
+			Collections.sort(particles,
+					new CaNanoLabComparators.ParticleBeanComparator());
 			return particles;
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
