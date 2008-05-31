@@ -22,8 +22,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
-import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -497,58 +495,44 @@ public class NanoparticleSampleServiceHelper {
 	}
 
 	public Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
-			String charId) throws ParticleCharacterizationException {
+			String charId) throws Exception {
 		Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
-							+ charId);
-			List results = appService.query(crit);
-			FileServiceHelper fileHelper = new FileServiceHelper();
-			for (Object obj : results) {
-				DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
-				// derivedBioAssayData's labfile
-				LabFile labFile = findDerivedBioAssayDataLabFile(derivedBioAssayData
-						.getId().toString());
 
-				// labFile's keyword
-				Collection<Keyword> keywords = fileHelper
-						.findKeywordsByFileId(labFile.getId().toString());
-				labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
+						+ charId);
+		List results = appService.query(crit);
+		FileServiceHelper fileHelper = new FileServiceHelper();
+		for (Object obj : results) {
+			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
+			// derivedBioAssayData's labfile
+			LabFile labFile = findDerivedBioAssayDataLabFile(derivedBioAssayData
+					.getId().toString());
 
-				derivedBioAssayData.setLabFile(labFile);
-				derivedBioAssayDataCollection.add(derivedBioAssayData);
-			}
-		} catch (Exception e) {
-			logger
-					.error(
-							"Problem to retrieve Characterization derivedBioAssayDataCollection.",
-							e);
-			throw new ParticleCharacterizationException(
-					"Problem to retrieve retrieve Characterization derivedBioAssayDataCollection ");
+			// labFile's keyword
+			Collection<Keyword> keywords = fileHelper
+					.findKeywordsByFileId(labFile.getId().toString());
+			labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
+
+			derivedBioAssayData.setLabFile(labFile);
+			derivedBioAssayDataCollection.add(derivedBioAssayData);
 		}
 		return derivedBioAssayDataCollection;
 	}
 
 	public LabFile findDerivedBioAssayDataLabFile(String derivedId)
-			throws ParticleCharacterizationException {
+			throws Exception {
 		LabFile labFile = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select bioassay.labFile from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
-							+ derivedId);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				labFile = (LabFile) obj;
-			}
-		} catch (Exception e) {
-			logger.error("Problem to retrieve DerivedBioAssayData labFile.", e);
-			throw new ParticleCharacterizationException(
-					"Problem to retrieve retrieve DerivedBioAssayData labFile ");
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select bioassay.labFile from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
+						+ derivedId);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			labFile = (LabFile) obj;
 		}
 		return labFile;
 	}
@@ -968,23 +952,16 @@ public class NanoparticleSampleServiceHelper {
 	public Collection<Keyword> findKeywordsForNanoparticleSampleId(
 			String particleSampleId) throws Exception {
 		Collection<Keyword> keywords = new ArrayList<Keyword>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();		
-			HQLCriteria crit = new HQLCriteria(
-					"select aParticle.keywordCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle where aParticle.id = "+
-					particleSampleId);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Keyword keyword = (Keyword) obj;
-				keywords.add(keyword);
-			}
-		} catch (Exception e) {
-			logger
-					.error("Problem to retrieve NanoparticleSample keywordCollection.",
-							e);
-			throw new ParticleException(
-					"Problem to retrieve retrieve NanoparticleSample keywordCollection ");
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select aParticle.keywordCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle where aParticle.id = "
+						+ particleSampleId);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			Keyword keyword = (Keyword) obj;
+			keywords.add(keyword);
 		}
 		return keywords;
 	}
