@@ -571,6 +571,21 @@ public class NanoparticleCharacterizationServiceHelper {
 		return derivedBioAssayDataCollection;
 	}
 
+	public Instrument findInstrumentByInstrumentConfigurationId(
+			java.lang.String instrumentConfigurationId) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		String hql = "select config.instrument from gov.nih.nci.cananolab.domain.common.InstrumentConfiguration config where config.id="
+				+ instrumentConfigurationId;
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		Instrument instrument = null;
+		for (Object obj : results) {
+			instrument = (Instrument) obj;
+		}
+		return instrument;
+	}
+
 	public InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
 			java.lang.String characterizationId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
