@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -103,7 +102,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			String protocolName, String fileTitle) throws ProtocolException {
 		List<ProtocolFileBean> protocolFileBeans = new ArrayList<ProtocolFileBean>();
 		try {
-			Collection<ProtocolFile> protocolFiles = helper
+			List<ProtocolFile> protocolFiles = helper
 					.findProtocolFilesBy(protocolType, protocolName, fileTitle);
 
 			for (ProtocolFile pf : protocolFiles) {

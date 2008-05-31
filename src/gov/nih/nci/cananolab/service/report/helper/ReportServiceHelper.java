@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -30,14 +29,14 @@ import org.hibernate.criterion.Restrictions;
 public class ReportServiceHelper {
 	private static Logger logger = Logger.getLogger(ReportServiceHelper.class);
 
-	public Collection<Report> findReportsBy(String reportTitle,
+	public List<Report> findReportsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
 			throws Exception {
-		Collection<Report> reports = new ArrayList<Report>();
+		List<Report> reports = new ArrayList<Report>();
 		DetachedCriteria crit = DetachedCriteria.forClass(Report.class);
 		if (reportTitle != null & reportTitle.length() > 0) {
 			TextMatchMode titleMatchMode = new TextMatchMode(reportTitle);
@@ -74,20 +73,20 @@ public class ReportServiceHelper {
 			Report report = (Report) obj;
 			reports.add(report);
 		}
-		Collection<Report> compositionFiltered = filterByCompositions(
+		List<Report> compositionFiltered = filterByCompositions(
 				nanoparticleEntityClassNames, otherNanoparticleTypes,
 				functionalizingEntityClassNames,
 				otherFunctionalizingEntityTypes, reports);
-		Collection<Report> functionFiltered = filterByFunctions(
-				functionClassNames, otherFunctionTypes, compositionFiltered);
+		List<Report> functionFiltered = filterByFunctions(functionClassNames,
+				otherFunctionTypes, compositionFiltered);
 		return functionFiltered;
 	}
 
-	private Collection<Report> filterByFunctions(String[] functionClassNames,
-			String[] otherFunctionTypes, Collection<Report> reports) {
+	private List<Report> filterByFunctions(String[] functionClassNames,
+			String[] otherFunctionTypes, List<Report> reports) {
 		NanoparticleSampleServiceHelper sampleServiceHelper = new NanoparticleSampleServiceHelper();
 		if (functionClassNames != null && functionClassNames.length > 0) {
-			Collection<Report> filteredList = new ArrayList<Report>();
+			List<Report> filteredList = new ArrayList<Report>();
 			for (Report report : reports) {
 				SortedSet<String> storedFunctions = new TreeSet<String>();
 				for (NanoparticleSample particle : report
@@ -116,14 +115,14 @@ public class ReportServiceHelper {
 		}
 	}
 
-	private Collection<Report> filterByCompositions(
+	private List<Report> filterByCompositions(
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleEntityTypes,
 			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes, Collection<Report> reports) {
+			String[] otherFunctionalizingEntityTypes, List<Report> reports) {
 		NanoparticleSampleServiceHelper sampleServiceHelper = new NanoparticleSampleServiceHelper();
 
-		Collection<Report> filteredList1 = new ArrayList<Report>();
+		List<Report> filteredList1 = new ArrayList<Report>();
 		if (nanoparticleEntityClassNames != null
 				&& nanoparticleEntityClassNames.length > 0) {
 			for (Report report : reports) {
@@ -151,7 +150,7 @@ public class ReportServiceHelper {
 		} else {
 			filteredList1 = reports;
 		}
-		Collection<Report> filteredList2 = new ArrayList<Report>();
+		List<Report> filteredList2 = new ArrayList<Report>();
 		if (functionalizingEntityClassNames != null
 				&& functionalizingEntityClassNames.length > 0) {
 			for (Report report : reports) {

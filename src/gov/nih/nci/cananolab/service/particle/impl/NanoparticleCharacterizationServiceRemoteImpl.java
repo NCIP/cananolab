@@ -24,7 +24,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -221,8 +220,8 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	 * @return
 	 * @throws ParticleException
 	 */
-	public Collection<Characterization> findCharsByParticleSampleId(
-			String particleId) throws ParticleCharacterizationException {
+	public List<Characterization> findCharsByParticleSampleId(String particleId)
+			throws ParticleCharacterizationException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -247,7 +246,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Characterization chars = null;
-			Collection<Characterization> characterizationCollection = new ArrayList<Characterization>();
+			List<Characterization> characterizationCollection = new ArrayList<Characterization>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				chars = (Characterization) obj;

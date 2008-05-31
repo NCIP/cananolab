@@ -283,8 +283,8 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		}
 	}
 
-	public Collection<Characterization> findCharsByParticleSampleId(
-			String particleId) throws ParticleCharacterizationException {
+	public List<Characterization> findCharsByParticleSampleId(String particleId)
+			throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
 				"Not implemented for local service");
 	}
