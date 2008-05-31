@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
@@ -22,12 +21,14 @@ import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -104,18 +105,16 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 				"Not implemented for grid service");
 	}
 
-	protected SortedSet<Characterization> findParticleCharacterizationsByClass(
+	protected List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className)
 			throws ParticleCharacterizationException {
 		try {
 			Characterization[] chars = gridClient.getCharacterizationsBy(
 					particleName, className);
-			SortedSet<Characterization> charSet = new TreeSet<Characterization>();
-			for (Characterization achar : chars) {
-				loadCharacterizationAssociations(achar);
-				charSet.add(achar);
-			}
-			return charSet;
+			List<Characterization> charList = Arrays.asList(chars);
+			Collections.sort(charList,
+					new CaNanoLabComparators.CharacterizationDateComparator());
+			return charList;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName
 					+ " characterizations of type " + className;
@@ -165,9 +164,8 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.common.Protocol");
-			Association association = new Association();			
+			target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+			Association association = new Association();
 			association
 					.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 			association.setRoleName("protocolFileCollection");
@@ -184,18 +182,18 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Protocol");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Protocol protocol = null;
-			
+
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				protocol = (Protocol) obj;
-			}			
+			}
 			protocolFile.setProtocol(protocol);
 		} catch (Exception e) {
 			String err = "Problem finding the protocol for protocolFile id: "
 					+ protocolFile.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
-		}		
+		}
 	}
 
 	private void loadDerivedBioAssayDataForCharacterization(
@@ -245,18 +243,13 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			Characterization chars = null;
+			Characterization chara = null;
 			List<Characterization> characterizationCollection = new ArrayList<Characterization>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				chars = (Characterization) obj;
-				// todo (may not needed for this search level)
-				// findDerivedBioAssayDataByCharId is added in helper file
-				// Collection<DerivedBioAssayData> derivedBioAssayDataCollection
-				// =
-				// gridClient.findDerivedBioAssayDataByCharId(chars.getId().toString());
-				// chars.setDerivedBioAssayDataCollection(derivedBioAssayDataCollection);
-				characterizationCollection.add(chars);
+				chara = (Characterization) obj;
+				//loadCharacterizationAssociations(chara);
+				characterizationCollection.add(chara);
 			}
 			return characterizationCollection;
 		} catch (Exception e) {

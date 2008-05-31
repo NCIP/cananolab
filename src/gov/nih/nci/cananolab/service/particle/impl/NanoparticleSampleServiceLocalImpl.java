@@ -19,6 +19,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -163,8 +164,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(
-			String particleSource, String[] nanoparticleEntityClassNames,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -181,6 +182,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 							otherFunctionalizingEntityTypes,
 							functionClassNames, otherFunctionTypes,
 							characterizationClassNames, wordList);
+			Collections.sort(particleSamples,
+					new CaNanoLabComparators.NanoparticleSampleComparator());
 			for (NanoparticleSample particleSample : particleSamples) {
 				particles.add(new ParticleBean(particleSample));
 			}

@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.SampleContainer;
 import gov.nih.nci.cananolab.domain.common.SampleManagement;
-import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.common.StorageElement;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -25,7 +24,6 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -35,7 +33,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -154,8 +151,6 @@ public class NanoparticleSampleServiceHelper {
 				functionalizingEntityClassNames,
 				otherFunctionalizingEntityTypes,
 				characterizationFilteredParticles);
-		Collections.sort(theParticles,
-				new CaNanoLabComparators.NanoparticleSampleComparator());
 		return theParticles;
 	}
 
@@ -477,19 +472,6 @@ public class NanoparticleSampleServiceHelper {
 		return particleSample;
 	}
 
-	public SortedSet<Source> findAllParticleSources() throws Exception {
-		SortedSet<Source> sampleSources = new TreeSet<Source>(
-				new CaNanoLabComparators.ParticleSourceComparator());
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		List results = appService.getAll(Source.class);
-		for (Object obj : results) {
-			sampleSources.add((Source) obj);
-		}
-		return sampleSources;
-	}
-
 	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
 			String charId) throws Exception {
 		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
@@ -508,7 +490,7 @@ public class NanoparticleSampleServiceHelper {
 					.getId().toString());
 
 			// labFile's keyword
-			Collection<Keyword> keywords = fileHelper
+			List<Keyword> keywords = fileHelper
 					.findKeywordsByFileId(labFile.getId().toString());
 			labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
 
