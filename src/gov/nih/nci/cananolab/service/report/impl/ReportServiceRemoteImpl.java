@@ -11,7 +11,6 @@ import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +26,6 @@ import org.apache.log4j.Logger;
 public class ReportServiceRemoteImpl implements ReportService {
 	private static Logger logger = Logger
 			.getLogger(ReportServiceRemoteImpl.class);
-	private ReportServiceHelper helper = new ReportServiceHelper();
-
 	private CaNanoLabServiceClient gridClient;
 
 	public ReportServiceRemoteImpl(String serviceUrl) throws Exception {

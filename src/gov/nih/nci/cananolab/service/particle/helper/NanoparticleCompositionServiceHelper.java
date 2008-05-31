@@ -13,10 +13,8 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -29,9 +27,6 @@ import org.hibernate.criterion.Property;
  * 
  */
 public class NanoparticleCompositionServiceHelper {
-	private static Logger logger = Logger
-			.getLogger(NanoparticleCompositionServiceHelper.class);
-
 	public NanoparticleCompositionServiceHelper() {
 	}
 
@@ -139,9 +134,9 @@ public class NanoparticleCompositionServiceHelper {
 		return assoc;
 	}
 
-	public Collection<Function> findInherentFunctionsByComposingElementId(
+	public List<Function> findInherentFunctionsByComposingElementId(
 			java.lang.String composingElementId) throws Exception {
-		Collection<Function> functions = new ArrayList<Function>();
+		List<Function> functions = new ArrayList<Function>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
@@ -156,9 +151,9 @@ public class NanoparticleCompositionServiceHelper {
 		return functions;
 	}
 
-	public Collection<Function> findFunctionsByFunctionalizingEntityId(
+	public List<Function> findFunctionsByFunctionalizingEntityId(
 			java.lang.String functionalizingEntityId) throws Exception {
-		Collection<Function> functions = new ArrayList<Function>();
+		List<Function> functions = new ArrayList<Function>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -174,9 +169,9 @@ public class NanoparticleCompositionServiceHelper {
 		return functions;
 	}
 
-	public Collection<Target> findTargetsByFunctionId(
+	public List<Target> findTargetsByFunctionId(
 			java.lang.String functionId) throws Exception {
-		Collection<Target> targets = new ArrayList<Target>();
+		List<Target> targets = new ArrayList<Target>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
@@ -208,9 +203,9 @@ public class NanoparticleCompositionServiceHelper {
 		return activationMethod;
 	}
 
-	public Collection<ChemicalAssociation> findChemicalAssociationsByCompositionId(
+	public List<ChemicalAssociation> findChemicalAssociationsByCompositionId(
 			java.lang.String compositionId) throws Exception {
-		Collection<ChemicalAssociation> assocs = new ArrayList<ChemicalAssociation>();
+		List<ChemicalAssociation> assocs = new ArrayList<ChemicalAssociation>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(

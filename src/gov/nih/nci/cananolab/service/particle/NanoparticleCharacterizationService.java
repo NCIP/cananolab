@@ -10,10 +10,8 @@ import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
-
 
 /**
  * Interface defining service methods involving characterizations
@@ -22,10 +20,9 @@ import java.util.SortedSet;
  * 
  */
 public interface NanoparticleCharacterizationService {
-	
-	
+
 	public void saveCharacterization(NanoparticleSample particleSample,
-			Characterization achar) throws Exception ;
+			Characterization achar) throws Exception;
 
 	public Characterization findCharacterizationById(String charId)
 			throws ParticleCharacterizationException;
@@ -38,7 +35,7 @@ public interface NanoparticleCharacterizationService {
 
 	public Instrument findInstrumentBy(String instrumentType,
 			String manufacturer) throws ParticleCharacterizationException;
-	
+
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
 			String particleName, String className, UserBean user)
 			throws ParticleCharacterizationException;
@@ -50,21 +47,21 @@ public interface NanoparticleCharacterizationService {
 	public void exportDetail(CharacterizationBean achar, OutputStream out)
 			throws ParticleCharacterizationException;
 
-	//private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
-			//HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount);
+	// private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
+	// HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount);
 
 	public void exportSummary(CharacterizationSummaryBean summaryBean,
 			OutputStream out) throws IOException;
-	
-	//private short setSummarySheet(CharacterizationSummaryBean summaryBean,
-			//HSSFWorkbook wb, HSSFSheet sheet, short rowCount);
-	
+
+	// private short setSummarySheet(CharacterizationSummaryBean summaryBean,
+	// HSSFWorkbook wb, HSSFSheet sheet, short rowCount);
+
 	public void deleteCharacterization(Characterization chara)
 			throws ParticleCharacterizationException;
-	
+
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
 			OutputStream out) throws IOException;
-	
-	public Collection<Characterization> findCharsByParticleSampleId(
-			String particleId) throws ParticleCharacterizationException;
+
+	public List<Characterization> findCharsByParticleSampleId(String particleId)
+			throws ParticleCharacterizationException;
 }

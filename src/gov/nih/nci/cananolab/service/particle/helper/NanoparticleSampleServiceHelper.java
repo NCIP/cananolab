@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -59,9 +58,6 @@ import org.hibernate.criterion.Restrictions;
  * 
  */
 public class NanoparticleSampleServiceHelper {
-	private static Logger logger = Logger
-			.getLogger(NanoparticleSampleServiceHelper.class);
-
 	public List<NanoparticleSample> findNanoparticleSamplesBy(
 			String particleSource, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
@@ -494,9 +490,9 @@ public class NanoparticleSampleServiceHelper {
 		return sampleSources;
 	}
 
-	public Collection<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
+	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
 			String charId) throws Exception {
-		Collection<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -949,9 +945,9 @@ public class NanoparticleSampleServiceHelper {
 		}
 	}
 
-	public Collection<Keyword> findKeywordsForNanoparticleSampleId(
+	public List<Keyword> findKeywordsForNanoparticleSampleId(
 			String particleSampleId) throws Exception {
-		Collection<Keyword> keywords = new ArrayList<Keyword>();
+		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();

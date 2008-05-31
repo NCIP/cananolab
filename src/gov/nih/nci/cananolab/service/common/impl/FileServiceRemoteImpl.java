@@ -13,8 +13,8 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -90,10 +90,10 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	public Collection<LabFile> findFilesByCompositionInfoId(String id,
+	public List<LabFile> findFilesByCompositionInfoId(String id,
 			String className) throws FileException {
 		try {
-			Collection<LabFile> fileSet = new HashSet<LabFile>();
+			List<LabFile> fileSet = new ArrayList<LabFile>();
 			LabFile[] files = gridClient.getLabFilesByCompositionInfoId(id,
 					className);
 			if (files != null) {
