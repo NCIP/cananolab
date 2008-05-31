@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -8,6 +9,9 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
@@ -103,22 +107,9 @@ public class CountAction extends Action {
 			}
 		}
 
-		int particleCount = foundParticles.size();
-
-		// for (GridNodeBean gridNode : selectedGridNodes) {
-		// try {
-		// particleCount += searchService.getRemoteNanoparticleCount(
-		// particleType, functionTypes, characterizations,
-		// gridNode);
-		//
-		// } catch (Exception e) {
-		// ActionMessage error = new ActionMessage(
-		// "error.grid.notAvailable", gridNode.getHostName());
-		// msgs.add(ActionMessages.GLOBAL_MESSAGE, error);
-		// saveErrors(request, msgs);
-		// e.printStackTrace();
-		// }
-		// }
+		int particleCount = 0;
+		if(foundParticles != null)
+			foundParticles.size();
 
 		// report count
 		String reportTitle = "";
@@ -160,23 +151,47 @@ public class CountAction extends Action {
 			}
 		}
 
-		int reportCount = foundReports.size();
-		// for (GridNodeBean gridNode : selectedGridNodes) {
-		// try {
-		// reportCount += searchService.getRemoteReportCount(reportTitle,
-		// particleType, functionTypes, gridNode);
-		// } catch (Exception e) {
-		// ActionMessage message = new ActionMessage(
-		// "error.grid.notAvailable", gridNode.getHostName());
-		// msgs.add(ActionMessages.GLOBAL_MESSAGE, message);
-		// saveErrors(request, msgs);
-		// e.printStackTrace();
-		// }
-		// }
+		int reportCount = 0;
+		if(foundReports != null)
+			reportCount = foundReports.size();
 
 		// protocol count
-		int protocolCount = 0;
+		String protocolType = "";
+		String protocolName = "";
+		String fileTitle = "";
+		
+		List<ProtocolFileBean> foundProtocolFiles = new ArrayList<ProtocolFileBean>();
+		ProtocolService protocolService = null;
+		for (String location : searchLocations) {
+			if (location.equals("local")) {
+				protocolService = new ProtocolServiceLocalImpl();
+			} else {
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
+				protocolService = new ProtocolServiceRemoteImpl(serviceUrl);
+			}
 
+			List<ProtocolFileBean> protocolFiles = protocolService.findProtocolFilesBy(
+					protocolType, protocolName, fileTitle);
+			if (location.equals("local")) {
+				List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
+				// retrieve visibility
+				FileService fileService = new FileServiceLocalImpl();
+				for (ProtocolFileBean protocolFile : protocolFiles) {
+					fileService.retrieveVisibility(protocolFile, user);
+					if (!protocolFile.isHidden()) {
+						filteredProtocolFiles.add(protocolFile);
+					}
+				}
+				foundProtocolFiles.addAll(filteredProtocolFiles);
+			} else {
+				foundProtocolFiles.addAll(protocolFiles);
+			}
+		}
+		int protocolCount = 0;
+		if(foundProtocolFiles != null)
+			protocolCount = foundProtocolFiles.size();
+		
 		PrintWriter out = response.getWriter();
 		out.print(particleCount + "\t" + reportCount + "\t" + protocolCount);
 		return null;
