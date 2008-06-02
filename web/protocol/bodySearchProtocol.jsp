@@ -37,7 +37,7 @@
 								Search Criteria
 							</div>
 						</td>
-						<td class="formTitle" colspan="3">
+						<td class="formTitle">
 							<div align="justify">
 								* for searching wildcards
 							</div>
@@ -47,7 +47,7 @@
 						<td class="leftLabel" valign="top">
 							<strong>Search Location</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="rightLabel">
 							<strong><html:select styleId="searchLocations"
 									property="searchLocations"
 									onchange="javascript:setProtocolNameDropdown()" multiple="true"
@@ -77,7 +77,7 @@
 						<td class="leftLabel" valign="top">
 							<strong> Protocol Name </strong>
 						</td>
-						<td class="rightLabel" colspan="3">
+						<td class="rightLabel">
 							<html:text property="protocolName" size="50" />
 						</td>
 					</tr>
@@ -85,7 +85,7 @@
 						<td class="leftLabel">
 							<strong>Protocol File Title</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
+						<td class="rightLabel">
 							<html:text property="fileTitle" size="50" />
 						</td>
 					</tr>
