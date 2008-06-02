@@ -1,18 +1,22 @@
 package gov.nih.nci.cananolab.service.report.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
+import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.report.ReportService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -57,12 +61,53 @@ public class ReportServiceRemoteImpl implements ReportService {
 					functionalizingEntityClassNames, functionClassNames);
 			if (reports != null) {
 				for (Report report : reports) {
+					loadParticleSamplesForReport(report);
 					reportBeans.add(new ReportBean(report));
 				}
 			}
 			return reportBeans;
 		} catch (Exception e) {
 			String err = "Problem finding report info.";
+			logger.error(err, e);
+			throw new ReportException(err, e);
+		}
+	}
+
+	private void loadParticleSamplesForReport(Report report)
+			throws ReportException {
+		try {
+			CQLQuery query = new CQLQuery();
+
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			Association association = new Association();
+			association.setName("gov.nih.nci.cananolab.domain.common.Report");
+			association.setRoleName("reportCollection");
+
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(report.getId().toString());
+			association.setAttribute(attribute);
+
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			NanoparticleSample particleSample = null;
+			report
+					.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				particleSample = (NanoparticleSample) obj;
+				report.getNanoparticleSampleCollection().add(particleSample);
+			}
+		} catch (Exception e) {
+			String err = "Problem loading nanoparticle samples for the report : "
+					+ report.getId();
 			logger.error(err, e);
 			throw new ReportException(err, e);
 		}
@@ -86,8 +131,9 @@ public class ReportServiceRemoteImpl implements ReportService {
 			Report report = null;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				report = (Report) obj;
+				report = (Report) obj;				
 			}
+			loadParticleSamplesForReport(report);
 			ReportBean reportBean = new ReportBean(report);
 			return reportBean;
 		} catch (Exception e) {

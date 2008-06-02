@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.protocol.helper;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -20,7 +19,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
- * This class includes methods invovled in creating and searching protocols
+ * This class includes methods involved in creating and searching protocols
  * 
  * @author pansu
  * 
@@ -96,8 +95,7 @@ public class ProtocolServiceHelper {
 	}
 
 	// for ajax on linux
-	public String getProtocolFileUriById(String fileId)
-			throws ProtocolException {
+	public String getProtocolFileUriById(String fileId) {
 		String uri = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -118,8 +116,7 @@ public class ProtocolServiceHelper {
 	}
 
 	// for ajax on linux
-	public String getProtocolFileNameById(String fileId)
-			throws ProtocolException {
+	public String getProtocolFileNameById(String fileId) {
 		String name = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -140,8 +137,7 @@ public class ProtocolServiceHelper {
 	}
 
 	// for ajax on linux
-	public String getProtocolFileVersionById(String fileId)
-			throws ProtocolException {
+	public String getProtocolFileVersionById(String fileId) {
 		String version = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -162,8 +158,7 @@ public class ProtocolServiceHelper {
 	}
 
 	// used for Ajax
-	public SortedSet<String> getProtocolNames(String protocolType)
-			throws ProtocolException {
+	public SortedSet<String> getProtocolNames(String protocolType) {
 		if (protocolType == null || protocolType.length() == 0) {
 			return null;
 		}
@@ -182,13 +177,13 @@ public class ProtocolServiceHelper {
 		} catch (Exception e) {
 			String err = "Problem finding protocols base on protocol type.";
 			logger.error(err, e);
-			throw new ProtocolException(err, e);
+			return null;
 		}
 	}
 
 	// for dwr ajax
 	public List<ProtocolFileBean> getProtocolFiles(String protocolType,
-			String protocolName) throws ProtocolException {
+			String protocolName) {
 		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -219,7 +214,7 @@ public class ProtocolServiceHelper {
 		} catch (Exception e) {
 			String err = "Problem finding protocol files.";
 			logger.error(err, e);
-			throw new ProtocolException(err, e);
+			return null;
 		}
 	}
 }

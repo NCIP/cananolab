@@ -36,7 +36,14 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 
 	public void exportDetail(CharacterizationBean achar, OutputStream out)
 			throws ParticleCharacterizationException {
-		helper.exportDetail(achar, out);
+		try {
+			helper.exportDetail(achar, out);
+		} catch (Exception e) {
+			String err = "error exporting detail view for "
+					+ achar.getViewTitle();
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err, e);
+		}
 	}
 
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,

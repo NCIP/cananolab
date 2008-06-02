@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -85,8 +84,7 @@ public class NanoparticleCharacterizationServiceHelper {
 	}
 
 	// for dwr ajax
-	public String getInstrumentAbbreviation(String instrumentType)
-			throws ParticleCharacterizationException {
+	public String getInstrumentAbbreviation(String instrumentType) {
 		String instrumentAbbreviation = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -102,14 +100,13 @@ public class NanoparticleCharacterizationServiceHelper {
 		} catch (Exception e) {
 			String err = "Problem to retrieve instrument abbreviation.";
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err);
+			return "";
 		}
 		return instrumentAbbreviation;
 	}
 
 	// use in dwr ajax
-	public String[] getDerivedDatumValueUnits(String derivedDatumName)
-			throws ParticleCharacterizationException {
+	public String[] getDerivedDatumValueUnits(String derivedDatumName) {
 		try {
 			SortedSet<String> units = LookupService.findLookupValues(
 					derivedDatumName, "unit");
@@ -120,7 +117,7 @@ public class NanoparticleCharacterizationServiceHelper {
 		} catch (Exception e) {
 			String err = "Error getting value unit for " + derivedDatumName;
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+			return null;
 		}
 	}
 
@@ -152,25 +149,18 @@ public class NanoparticleCharacterizationServiceHelper {
 	}
 
 	public void exportDetail(CharacterizationBean achar, OutputStream out)
-			throws ParticleCharacterizationException {
-		try {
-			HSSFWorkbook wb = new HSSFWorkbook();
-			HSSFSheet sheet = wb.createSheet("detailSheet");
-			HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-			short startRow = 0;
-			setDetailSheet(achar, wb, sheet, patriarch, startRow);
-			wb.write(out);
-			if (out != null) {
-				out.flush();
-				out.close();
-			}
-		} catch (Exception e) {
-			String err = "Error exporting detail view for "
-					+ achar.getViewTitle();
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
-		}
+			throws Exception {
 
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("detailSheet");
+		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+		short startRow = 0;
+		setDetailSheet(achar, wb, sheet, patriarch, startRow);
+		wb.write(out);
+		if (out != null) {
+			out.flush();
+			out.close();
+		}
 	}
 
 	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,

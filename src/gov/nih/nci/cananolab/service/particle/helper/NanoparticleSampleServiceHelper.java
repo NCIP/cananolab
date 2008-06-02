@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -490,8 +489,8 @@ public class NanoparticleSampleServiceHelper {
 					.getId().toString());
 
 			// labFile's keyword
-			List<Keyword> keywords = fileHelper
-					.findKeywordsByFileId(labFile.getId().toString());
+			List<Keyword> keywords = fileHelper.findKeywordsByFileId(labFile
+					.getId().toString());
 			labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
 
 			derivedBioAssayData.setLabFile(labFile);
@@ -517,7 +516,7 @@ public class NanoparticleSampleServiceHelper {
 
 	public void assignAssociatedVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean, String[] visibleGroups)
-			throws CaNanoLabSecurityException {
+			throws Exception {
 		// remove public group in all associated records
 		removeAssociatedVisibility(authService, particleSampleBean);
 		if (Arrays.asList(visibleGroups).contains(
@@ -734,7 +733,7 @@ public class NanoparticleSampleServiceHelper {
 	}
 
 	public void removeAssociatedVisibility(AuthorizationService authService,
-			ParticleBean particleSampleBean) throws CaNanoLabSecurityException {
+			ParticleBean particleSampleBean) throws Exception {
 		// remove public group in all associated records
 		NanoparticleSample nanoparticleSample = particleSampleBean
 				.getDomainParticleSample();
