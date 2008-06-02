@@ -150,10 +150,7 @@
 															</td>
 														</tr>
 														<tr>
-															<td class="leftLabel">
-																&nbsp;
-															</td>
-															<td colspan="3" class="rightLabel">
+															<td colspan="4" class="completeLabel">
 																<jsp:include
 																	page="/particle/composition/nanoparticleEntity/bodyFunctionReadOnly.jsp">
 																	<jsp:param name="compEleInd" value="${ind}" />
@@ -161,7 +158,6 @@
 																&nbsp;
 															</td>
 														</tr>
-
 													</tbody>
 												</table>
 												<br>
