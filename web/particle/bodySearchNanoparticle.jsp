@@ -34,10 +34,10 @@
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr>
-						<td class="leftLabelWithTop" valign="top">
+						<td class="leftLabelWithTop" valign="top" width="20%">
 							<strong>Search Location</strong>
 						</td>
-						<td class="rightLabelWithTop" colspan="5">
+						<td class="rightLabelWithTop" align="left">
 							<strong><html:select property="searchLocations"
 									styleId="searchLocations" multiple="true" size="4"
 									onchange="javascript:setNanoparticleDropdowns();">
