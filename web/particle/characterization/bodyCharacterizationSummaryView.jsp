@@ -52,12 +52,14 @@
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportSummary" />
+							<c:param name="location" value="${location}" />
 						</c:url>
 						<c:url var="fullSumUrl" value="${actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportFullSummary" />
+							<c:param name="location" value="${location}" />
 						</c:url>
 						<ul class="pemenu" id="exportChara">
 							<li class="pelist">
@@ -118,6 +120,7 @@
 								<c:param name="dataId"
 									value="${summaryRow.charBean.domainChar.id}" />
 								<c:param name="submitType" value="${submitType}" />
+								<c:param name="location" value="${location}" />
 							</c:url>
 							<a href="${url}">${summaryRow.charBean.viewTitle}</a>
 							<c:if test="${!empty summaryRow.charBean.description}">
@@ -185,5 +188,3 @@
 		</td>
 	</tr>
 </table>
-
-

@@ -242,12 +242,13 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception;
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response, String location)
-			throws Exception {
+			HttpServletRequest request, HttpServletResponse response,
+			String location) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request, "local");
 		request.getSession().setAttribute("characterizationForm", theForm);
-		Characterization chara = prepareCharacterization(theForm, request, location);
+		Characterization chara = prepareCharacterization(theForm, request,
+				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user);
@@ -268,7 +269,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			charService = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
+			charService = new NanoparticleCharacterizationServiceRemoteImpl(
+					serviceUrl);
 		}
 		Characterization chara = charService.findCharacterizationById(charId);
 		request.getSession().setAttribute("characterizationForm", theForm);
@@ -356,9 +358,10 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location=request.getParameter("location");
+		String location = request.getParameter("location");
 		setupParticle(theForm, request, location);
-		Characterization chara = prepareCharacterization(theForm, request, location);
+		Characterization chara = prepareCharacterization(theForm, request,
+				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getCharacterizationBean(theForm, chara, user);
 		String particleId = request.getParameter("particleId");
@@ -367,7 +370,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl
 				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
-				+ "&dataId=" + characterizationId + "&submitType=" + submitType;
+				+ "&dataId=" + characterizationId + "&submitType=" + submitType
+				+ "&location=" + location;
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
 		return mapping.findForward("detailView");
@@ -377,8 +381,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location=request.getParameter("location");
-		Characterization chara = prepareCharacterization(theForm, request, location);
+		String location = request.getParameter("location");
+		Characterization chara = prepareCharacterization(theForm, request,
+				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getCharacterizationBean(theForm, chara, user);
 		return mapping.findForward("detailPrintView");
@@ -388,9 +393,10 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location=request.getParameter("location");
-		ParticleBean particleBean=setupParticle(theForm, request, location);
-		Characterization chara = prepareCharacterization(theForm, request, location);
+		String location = request.getParameter("location");
+		ParticleBean particleBean = setupParticle(theForm, request, location);
+		Characterization chara = prepareCharacterization(theForm, request,
+				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user);
@@ -407,7 +413,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
+			service = new NanoparticleCharacterizationServiceRemoteImpl(
+					serviceUrl);
 		}
 		service.exportDetail(charBean, response.getOutputStream());
 
@@ -423,8 +430,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				request.getSession().getServletContext());
 		String fullClassName = ClassUtils.getFullClass(className)
 				.getCanonicalName();
-		String location=request.getParameter("location");
-		ParticleBean particleBean=setupParticle(theForm, request, location);
+		String location = request.getParameter("location");
+		ParticleBean particleBean = setupParticle(theForm, request, location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleCharacterizationService service = null;
 		if (location.equals("local")) {
@@ -432,7 +439,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
+			service = new NanoparticleCharacterizationServiceRemoteImpl(
+					serviceUrl);
 		}
 		CharacterizationSummaryBean charSummary = service
 				.getParticleCharacterizationSummaryByClass(particleBean
@@ -450,12 +458,14 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		String submitType = request.getParameter("submitType");
 		setupCharSummary(theForm, request);
+		String location = request.getParameter("location");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
-				+ "&submitType=" + submitType + "&dispatch=printSummaryView";
+				+ "&submitType=" + submitType + "&dispatch=printSummaryView"
+				+ "&location=" + location;
 		String printAllLinkURL = requestUrl + "?page=0&particleId="
 				+ particleId + "&submitType=" + submitType
-				+ "&dispatch=printFullSummaryView";
+				+ "&dispatch=printFullSummaryView" + "&location=" + location;
 		request.getSession().setAttribute("printSummaryViewLinkURL",
 				printLinkURL);
 		request.getSession().setAttribute("printFullSummaryViewLinkURL",
@@ -483,8 +493,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location=request.getParameter("location");
-		ParticleBean particleBean=setupParticle(theForm, request, location);
+		String location = request.getParameter("location");
+		ParticleBean particleBean = setupParticle(theForm, request, location);
 		CharacterizationSummaryBean charSummaryBean = setupCharSummary(theForm,
 				request);
 		String fileName = getExportFileName(particleBean
@@ -500,7 +510,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
+			service = new NanoparticleCharacterizationServiceRemoteImpl(
+					serviceUrl);
 		}
 		service.exportSummary(charSummaryBean, response.getOutputStream());
 		return null;
@@ -510,8 +521,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location=request.getParameter("location");
-		ParticleBean particleBean=setupParticle(theForm, request, location);
+		String location = request.getParameter("location");
+		ParticleBean particleBean = setupParticle(theForm, request, location);
 		CharacterizationSummaryBean charSummaryBean = setupCharSummary(theForm,
 				request);
 		String fileName = getExportFileName(particleBean
@@ -527,7 +538,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleCharacterizationServiceRemoteImpl(serviceUrl);
+			service = new NanoparticleCharacterizationServiceRemoteImpl(
+					serviceUrl);
 		}
 		service.exportFullSummary(charSummaryBean, response.getOutputStream());
 		return null;
