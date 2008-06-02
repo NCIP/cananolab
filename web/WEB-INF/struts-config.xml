@@ -42,6 +42,10 @@
 			key="error.generalException" path="home.error"
 			type="java.lang.Exception" />
 	</global-exceptions>
+	<global-forwards>
+		<forward name="welcome"
+			path="/welcome.do" />
+	</global-forwards>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LoginAction" input="input">
@@ -78,10 +82,6 @@
 		</action>
 		<action path="/publicCount"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
-			<exception
-				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.autodiscover" path="calab.login"
-				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.down" path="calab.login"
