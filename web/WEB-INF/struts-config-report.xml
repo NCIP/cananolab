@@ -22,7 +22,7 @@
 			<form-property name="reportCategory"
 				type="java.lang.String" />
 			<form-property name="searchLocations"
-				type="java.lang.String[]" initial="local" />
+				type="java.lang.String[]"/>
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>

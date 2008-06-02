@@ -14,7 +14,7 @@
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="fileTitle" type="java.lang.String" />
 			<form-property name="searchLocations"
-				type="java.lang.String[]" initial="local" />
+				type="java.lang.String[]"/>
 			<form-property name="protocolType" type="java.lang.String" />
 			<form-property name="protocolName" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
