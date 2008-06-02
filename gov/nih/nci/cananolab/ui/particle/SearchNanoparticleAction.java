@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.20 2008-05-29 18:25:21 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.21 2008-06-02 22:18:56 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -188,14 +188,14 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				request);
 		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
 
+		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
-			String[] selectedLocations = gridNodeHostStr.split("~");
-			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			theForm.set("searchLocations", selectedLocations);
+			selectedLocations = gridNodeHostStr.split("~");
 		}
-
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
 	}
 

@@ -32,7 +32,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.11 2008-05-30 17:00:08 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.12 2008-06-02 22:18:56 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -193,15 +193,14 @@ public class SearchReportAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
 				request);
 		InitCompositionSetup.getInstance().getFunctionTypes(request);
-
+		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
-			String[] selectedLocations = gridNodeHostStr.split("~");
-			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			theForm.set("searchLocations", selectedLocations);
+			selectedLocations = gridNodeHostStr.split("~");
 		}
-
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
 	}
 
