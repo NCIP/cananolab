@@ -989,7 +989,7 @@ insert into canano.activation_method
 	activation_method_pk_id,
 	type
 )
-SELECT pf.particle_function_pk_id,
+SELECT distinct  pf.particle_function_pk_id,
 	pf.activation_method
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
@@ -1001,7 +1001,6 @@ and pf.activation_method != ""
 ;
 
 
-	
 update canano.functionalizing_entity fe14,
 	canano.activation_method am14,
 	cananolab.linkage l
