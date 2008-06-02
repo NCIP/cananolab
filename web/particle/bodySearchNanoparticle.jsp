@@ -44,8 +44,10 @@
 									<html:option value="local">
 										Local
 									</html:option>
-									<html:options collection="allGridNodes"
-										property="value.hostName" labelProperty="value.hostName" />
+									<c:if test="${! empty allGridNodes}">
+										<html:options collection="allGridNodes"
+											property="value.hostName" labelProperty="value.hostName" />
+									</c:if>
 								</html:select> </strong>
 						</td>
 					</tr>
