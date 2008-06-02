@@ -1,5 +1,5 @@
 package gov.nih.nci.cananolab.service.particle.helper;
-
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
@@ -8,11 +8,15 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.FetchMode;
@@ -251,4 +255,170 @@ public class NanoparticleCompositionServiceHelper {
 		}
 		return element;
 	}
+	
+	public void assignChemicalAssociationVisibility(AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation, String[] visibleGroups)throws CaNanoLabSecurityException{
+		if (chemicalAssociation != null) {
+			this.removeChemicalAssociationVisibility(authService, chemicalAssociation);
+			authService.assignVisibility(chemicalAssociation
+					.getId().toString(), visibleGroups);
+			// chemicalAssociation.associatedElementA
+			if (chemicalAssociation.getAssociatedElementA() != null) {
+				authService.assignVisibility(
+						chemicalAssociation
+								.getAssociatedElementA()
+								.getId().toString(),
+						visibleGroups);
+			}
+			// chemicalAssociation.associatedElementB
+			if (chemicalAssociation.getAssociatedElementB() != null) {
+				authService.assignVisibility(
+						chemicalAssociation
+								.getAssociatedElementB()
+								.getId().toString(),
+						visibleGroups);
+			}
+		}
+	}
+
+	public void assignNanoparicleEntityVisibility(AuthorizationService authService,
+		NanoparticleEntity nanoparticleEntity, String[] visibleGroups)throws CaNanoLabSecurityException{
+		if (nanoparticleEntity != null) {
+			authService.assignVisibility(nanoparticleEntity
+					.getId().toString(), visibleGroups);		
+			// nanoparticleEntityCollection.composingElementCollection,
+			Collection<ComposingElement> composingElementCollection = nanoparticleEntity
+					.getComposingElementCollection();
+			if (composingElementCollection != null) {
+				for (ComposingElement composingElement : composingElementCollection) {
+					if (composingElement != null) {
+						authService
+								.assignVisibility(composingElement
+										.getId().toString(),
+										visibleGroups);
+					}
+					// composingElementCollection.inherentFucntionCollection
+					Collection<Function> inherentFunctionCollection = composingElement
+							.getInherentFunctionCollection();
+					if (inherentFunctionCollection != null) {
+						for (Function function : inherentFunctionCollection) {
+							if (function != null) {
+								authService
+										.assignVisibility(
+												function.getId()
+														.toString(),
+												visibleGroups);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void assignFunctionalizingEntityVisibility(AuthorizationService authService,
+			FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+		throws CaNanoLabSecurityException{
+		if (functionalizingEntity != null) {			
+			authService.assignVisibility(functionalizingEntity
+					.getId().toString(), visibleGroups);		
+			// functionalizingEntityCollection.functionCollection
+			Collection<Function> functionCollection = functionalizingEntity
+					.getFunctionCollection();
+			if (functionCollection != null) {
+				for (Function function : functionCollection) {
+					if (function != null) {
+						authService.assignVisibility(function
+								.getId().toString(), visibleGroups);
+					}
+				}
+			}
+		}
+	}	
+	
+	public void removeNanoparticleEntityVisibility(AuthorizationService authService,
+			NanoparticleEntity nanoparticleEntity)
+		throws CaNanoLabSecurityException{
+		if (nanoparticleEntity != null) {
+			authService.removePublicGroup(nanoparticleEntity
+					.getId().toString());			
+		
+			// nanoparticleEntityCollection.composingElementCollection,
+			Collection<ComposingElement> composingElementCollection = nanoparticleEntity
+					.getComposingElementCollection();
+			if (composingElementCollection != null) {
+				for (ComposingElement composingElement : composingElementCollection) {
+					if (composingElement != null) {
+						authService.removePublicGroup(composingElement
+								.getId().toString());
+					}
+					// composingElementCollection.inherentFucntionCollection
+					Collection<Function> inherentFunctionCollection = composingElement
+							.getInherentFunctionCollection();
+					if (inherentFunctionCollection != null) {
+						for (Function function : inherentFunctionCollection) {
+							if (function != null) {
+								authService.removePublicGroup(function
+										.getId().toString());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void removeFunctionalizingEntityVisibility(AuthorizationService authService,
+			FunctionalizingEntity functionalizingEntity)
+		throws CaNanoLabSecurityException{		
+		if (functionalizingEntity != null) {
+			authService.removePublicGroup(functionalizingEntity
+					.getId().toString());		
+			// functionalizingEntityCollection.functionCollection
+			Collection<Function> functionCollection = functionalizingEntity
+					.getFunctionCollection();
+			if (functionCollection != null) {
+				for (Function function : functionCollection) {
+					if (function != null) {
+						authService.removePublicGroup(function.getId()
+								.toString());
+					}
+				}
+			}
+		}
+	}
+	
+	public void removeChemicalAssociationVisibility(AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation)
+		throws CaNanoLabSecurityException{		
+		if (chemicalAssociation != null) {
+			authService.removePublicGroup(chemicalAssociation
+					.getId().toString());
+			// chemicalAssociation.associatedElementA
+			if (chemicalAssociation.getAssociatedElementA() != null) {
+				authService
+						.removePublicGroup(chemicalAssociation
+								.getAssociatedElementA().getId()
+								.toString());
+			}
+			// chemicalAssociation.associatedElementB
+			if (chemicalAssociation.getAssociatedElementB() != null) {
+				authService
+						.removePublicGroup(chemicalAssociation
+								.getAssociatedElementB().getId()
+								.toString());
+			}
+		}
+	}
+	public void assignSampleCompositionVisibility(AuthorizationService authService,
+			NanoparticleSample particleSample, String[] visibleGroups)
+		throws CaNanoLabSecurityException{		
+		authService
+			.removePublicGroup(particleSample.getSampleComposition().getId().toString());
+		authService.assignVisibility(particleSample
+					.getSampleComposition().getId().toString(),
+					visibleGroups);
+		
+	}
+
 }

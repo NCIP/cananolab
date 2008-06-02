@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -101,6 +102,15 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 				}
 			}
 			appService.saveOrUpdate(achar);
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			helper.removeCharacterizationVisibility(authService, achar);
+			List<String> accessibleGroups = authService.getAccessibleGroups(particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
+			if (accessibleGroups!=null && accessibleGroups.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
+				String[] visibleGroups = {CaNanoLabConstants.CSM_PUBLIC_GROUP};
+				//TODO distinct insert & update, then do not need to removePublic
+				helper.assignCharacterizationVisibility(authService, achar, visibleGroups);
+			}
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {

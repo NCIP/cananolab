@@ -14,8 +14,10 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -24,6 +26,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -162,7 +165,7 @@ public class NanoparticleCharacterizationServiceHelper {
 			out.close();
 		}
 	}
-
+	
 	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
 			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
 		HSSFFont headerFont = wb.createFont();
@@ -621,5 +624,93 @@ public class NanoparticleCharacterizationServiceHelper {
 			labFile = (LabFile) obj;
 		}
 		return labFile;
+	}
+	
+	public void assignCharacterizationVisibility(AuthorizationService authService,
+			Characterization aChar, String[] visibleGroups)throws CaNanoLabSecurityException{
+		// characterization
+		if (aChar != null) {
+			authService.assignVisibility(aChar.getId().toString(),
+					visibleGroups);		
+			// char.derivedBioAssayDataCollection
+			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
+					.getDerivedBioAssayDataCollection();
+			if (derivedBioAssayDataCollection != null) {
+				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
+					if (aDerived != null) {
+						authService.assignVisibility(aDerived.getId()
+								.toString(), visibleGroups);
+					}
+					// derived.derivedDatum
+					Collection<DerivedDatum> derivedDatumCollection = aDerived
+							.getDerivedDatumCollection();
+					if (derivedDatumCollection != null) {
+						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
+							if (aDerivedDatum != null) {
+								authService.assignVisibility(
+										aDerivedDatum.getId()
+												.toString(),
+										visibleGroups);
+							}
+						}
+					}
+				}
+			}
+			// InstrumentConfiguration
+			if (aChar.getInstrumentConfiguration() != null) {
+				authService.assignVisibility(aChar
+						.getInstrumentConfiguration().getId()
+						.toString(), visibleGroups);
+				// InstrumentConfiguration.Instrument
+				if (aChar.getInstrumentConfiguration().getInstrument() != null) {
+					authService.assignVisibility(aChar
+							.getInstrumentConfiguration()
+							.getInstrument().getId().toString(),
+							visibleGroups);
+				}
+			}
+		}
+	}
+	
+	public void removeCharacterizationVisibility(AuthorizationService authService,
+			Characterization aChar)throws CaNanoLabSecurityException{
+		if (aChar != null) {
+			authService.removePublicGroup(aChar.getId().toString());
+			// char.derivedBioAssayDataCollection
+			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
+					.getDerivedBioAssayDataCollection();
+			if (derivedBioAssayDataCollection != null) {
+				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
+					if (aDerived != null) {
+						authService.removePublicGroup(aDerived.getId()
+								.toString());
+					}
+					// derived.derivedDatum
+					Collection<DerivedDatum> derivedDatumCollection = aDerived
+							.getDerivedDatumCollection();
+					if (derivedDatumCollection != null) {
+						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
+							if (aDerivedDatum != null) {
+								authService.removePublicGroup(aDerivedDatum
+										.getId().toString());
+							}
+						}
+					}
+				}
+			}
+			// InstrumentConfiguration
+			InstrumentConfiguration instrumentConfiguration = aChar
+					.getInstrumentConfiguration();
+			if (instrumentConfiguration != null) {
+				authService.removePublicGroup(instrumentConfiguration
+						.getId().toString());			
+				// InstrumentConfiguration.Instrument
+				if (instrumentConfiguration.getInstrument() != null) {
+					authService.removePublicGroup(aChar
+							.getInstrumentConfiguration().getInstrument()
+							.getId().toString());
+				}
+			}
+		}
 	}
 }
