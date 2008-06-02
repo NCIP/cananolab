@@ -109,7 +109,7 @@ public class CountAction extends Action {
 
 		int particleCount = 0;
 		if(foundParticles != null)
-			foundParticles.size();
+			particleCount = foundParticles.size();
 
 		// report count
 		String reportTitle = "";
