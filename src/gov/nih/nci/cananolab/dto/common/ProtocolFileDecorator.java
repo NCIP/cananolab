@@ -45,7 +45,8 @@ public class ProtocolFileDecorator extends TableDecorator {
 		ProtocolFileBean file = (ProtocolFileBean) getCurrentRowObject();
 		if (file.getDomainFile().getName() != null) {
 			String downloadURL = "searchProtocol.do?dispatch=download"
-					+ "&fileId=" + file.getDomainFile().getId();
+					+ "&fileId=" + file.getDomainFile().getId() + "&location="
+					+ file.getLocation();
 			String link = "<a href=" + downloadURL + ">"
 					+ file.getDomainFile().getName() + "</a>";
 			sortableLink = new SortableName(file.getDomainFile().getName(),

@@ -33,7 +33,8 @@ public class ReportDecorator extends TableDecorator {
 		ReportBean file = (ReportBean) getCurrentRowObject();
 		if (file.getDomainFile().getName() != null) {
 			String downloadURL = "searchReport.do?dispatch=download"
-					+ "&fileId=" + file.getDomainFile().getId();
+					+ "&fileId=" + file.getDomainFile().getId() + "&location="
+					+ file.getLocation();
 			String link = "<a href=" + downloadURL + " target='"
 					+ file.getUrlTarget() + "'>"
 					+ file.getDomainFile().getName() + "</a>";
