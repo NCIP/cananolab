@@ -1,7 +1,13 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolFileDecorator;
+import gov.nih.nci.cananolab.dto.common.ReportBean;
+import gov.nih.nci.cananolab.dto.common.ReportDecorator;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -12,6 +18,10 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.report.ReportService;
+import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -22,6 +32,7 @@ import gov.nih.nci.cananolab.util.PropertyReader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -172,19 +183,52 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String fileId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
-		FileService service = null;
+		String instanceType = request.getParameter("instanceType");
+		ReportService reportService = null;
+		ProtocolService protocolService = null;
+		FileService fileService = null;
+		String remoteServerHostUrl = "";
+		LabFileBean fileBean = null;
 		if (location.equals("local")) {
-			service = new FileServiceLocalImpl();
-		} else {
+			fileService = new FileServiceLocalImpl();
+			fileBean = fileService.findFileById(fileId, user);
+		}
+		// CQL2HQL filters out subclasses
+		else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new FileServiceRemoteImpl(serviceUrl);
+			// assume grid service is located on the same server and port as
+			// webapp
+			String remoteDownloadUrl = remoteServerHostUrl + "/"
+					+ CaNanoLabConstants.CSM_APP_NAME;
+			URL url = new URL(serviceUrl);
+			remoteServerHostUrl = url.getProtocol() + "://" + url.getHost()
+					+ ":" + url.getPort();
+
+			if (instanceType.equalsIgnoreCase(CaNanoLabConstants.REPORT)) {
+				reportService = new ReportServiceRemoteImpl(serviceUrl);
+				fileBean = reportService.findReportById(fileId);
+				ReportDecorator decorator = new ReportDecorator();
+				remoteDownloadUrl += decorator.getDownloadURL().getName();
+			} else if (instanceType
+					.equalsIgnoreCase(CaNanoLabConstants.PROTOCOL_FILE)) {
+				protocolService = new ProtocolServiceRemoteImpl(serviceUrl);
+				fileBean = protocolService.findProtocolFileById(fileId);
+				ProtocolFileDecorator decorator = new ProtocolFileDecorator();
+				remoteDownloadUrl += decorator.getDownloadURL().getName();
+			} else {
+				fileService = new FileServiceRemoteImpl(serviceUrl);
+				fileBean = fileService.findFileById(fileId, user);
+			}
+			response.sendRedirect(remoteDownloadUrl);
+			return null;
 		}
-		LabFileBean fileBean = service.findFileById(fileId, user);
+
 		if (fileBean.getDomainFile().getUriExternal()) {
 			response.sendRedirect(fileBean.getDomainFile().getUri());
 			return null;
 		}
+		
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator
