@@ -15,7 +15,7 @@
 			<jsp:include page="/webHelp/helpGlossary.jsp">
 				<jsp:param name="topic" value="nano_search_results_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>				
+			</jsp:include>
 			<a href="searchNanoparticle.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
@@ -45,15 +45,8 @@
 					property="functionStr" />
 				<display:column title="Particle<br> Characterizations"
 					property="characterizationStr" />
-				<display:column title="Particle<br> Location">Local</display:column>
+				<display:column title="Location" property="location" sortable="true" />
 			</display:table>
-			<%--
-				<div align="right">
-					<input type="hidden" name="dispatch" value="search">
-					<input type="hidden" name="page" value="1">
-					<html:submit value="View Details" />
-				</div>
-				--%>
 		</td>
 	</tr>
 </table>
