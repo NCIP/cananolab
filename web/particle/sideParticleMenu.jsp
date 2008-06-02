@@ -81,9 +81,6 @@
 					</c:url>
 					<a href="${url}" class="subMenuSecondary">GENERAL INFORMATION</a>
 				</li>
-				<li class="nodatali">
-					SAMPLE MANAGEMENT
-				</li>
 				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
 				<jsp:include page="sideParticleReportMenu.jsp"></jsp:include>
