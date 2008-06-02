@@ -55,8 +55,10 @@
 									<option value="local" selected>
 										Local
 									</option>
-									<html:options collection="allGridNodes"
-										property="value.hostName" labelProperty="value.hostName" />
+									<c:if test="${!allGridNodes empty }">
+										<html:options collection="allGridNodes"
+											property="value.hostName" labelProperty="value.hostName" />
+									</c:if>
 								</html:select> </strong>
 						</td>
 					</tr>
@@ -99,7 +101,8 @@
 								<tr>
 									<td>
 										<div align="right">
-											<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
+											<input type="reset" value="Reset"
+												onclick="javascript:window.location.reload();">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />
