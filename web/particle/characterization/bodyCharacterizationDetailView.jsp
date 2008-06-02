@@ -10,11 +10,11 @@
 				${pageTitle} ${submitType}
 			</h4>
 		</td>
-		<td align="right" width="20%">			
+		<td align="right" width="20%">
 			<jsp:include page="/webHelp/helpGlossary.jsp">
 				<jsp:param name="topic" value="char_details_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>					
+			</jsp:include>
 		</td>
 	</tr>
 	<tr>
@@ -34,14 +34,14 @@
 									${particleName}
 								</td>
 								<td align="right" class="formTitle">
-									<c:url var="url"
-										value="${actionName}.do">
+									<c:url var="url" value="${actionName}.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="dataId"
 											value="${characterizationForm.map.achar.domainChar.id}" />
 										<c:param name="submitType" value="${submitType}" />
+										<c:param name="location" value="${location}" />
 									</c:url>
 									<c:if test="${canCreateNanoparticle eq 'true'}">
 										<td>
@@ -55,14 +55,14 @@
 											alt="print characterization detail" border="0"> </a>
 								</td>
 								<td>
-									<c:url var="exportUrl"
-										value="${actionName}.do">
+									<c:url var="exportUrl" value="${actionName}.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="exportDetail" />
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="dataId"
 											value="${characterizationForm.map.achar.domainChar.id}" />
 										<c:param name="submitType" value="${submitType}" />
+										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
 											alt="export characterization detail" border="0"> </a>
@@ -137,7 +137,8 @@
 				<logic:iterate name="characterizationForm"
 					property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 					indexId="fileInd">
-					<c:if test="${!empty derivedBioAssayData.labFileBean.domainFile.description}">
+					<c:if
+						test="${!empty derivedBioAssayData.labFileBean.domainFile.description}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd+1} Description
@@ -155,12 +156,14 @@
 							</th>
 							<td class="rightLabel" valign="top">
 								<c:choose>
-									<c:when test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
+									<c:when
+										test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${derivedBioAssayData.labFileBean.image eq 'true'}">
+											<c:when
+												test="${derivedBioAssayData.labFileBean.image eq 'true'}">
  												${derivedBioAssayData.labFileBean.domainFile.title}<br>
 												<br>
 												<a href="#"
@@ -170,7 +173,8 @@
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}" target="${derivedBioAssayData.labFileBean.urlTarget}">${derivedBioAssayData.labFileBean.domainFile.title}</a>
+													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}"
+													target="${derivedBioAssayData.labFileBean.urlTarget}">${derivedBioAssayData.labFileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
