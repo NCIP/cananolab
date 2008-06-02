@@ -195,6 +195,8 @@ ORDER BY characterization_pk_id, list_index
 ALTER TABLE canano.derived_datum
  CHANGE datum_pk_id datum_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
 
+ALTER TABLE canano.derived_datum AUTO_INCREMENT = 901;
+
 INSERT INTO canano.derived_datum
 (
 	datum_name,
@@ -1010,7 +1012,9 @@ and am14.activation_method_pk_id = l.function_pk_id
 
 
 ALTER TABLE canano.nano_function
- CHANGE function_pk_id function_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ CHANGE function_pk_id function_pk_id BIGINT(20) AUTO_INCREMENT not NULL;
+ 
+ALTER TABLE canano.nano_function AUTO_INCREMENT = 601; 
 
 -- OtherFunction
 insert into canano.nano_function
@@ -1147,6 +1151,8 @@ ALTER TABLE canano.nano_function
 -- otherwise, duplicated particle_function_pk_id maybe created
 ALTER TABLE canano.composing_element
   CHANGE composing_element_pk_id composing_element_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+
+ALTER TABLE canano.composing_element AUTO_INCREMENT = 301;
  
 insert into canano.composing_element
 (
@@ -1307,6 +1313,12 @@ update canano.lab_file
 set file_uri = substring(file_uri, 2)
 where left(file_uri, 1) = '/'
 ;
+
+-- remove first two records in the canano.lab_file table
+delete from canano.lab_file
+where file_pk_id in (1, 2)
+;
+
 
 -- change element_type from 'coating' to 'coat' in the composing_element table
 update canano.composing_element
