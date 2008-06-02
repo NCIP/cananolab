@@ -55,7 +55,7 @@
 									<option value="local" selected>
 										Local
 									</option>
-									<c:if test="${!allGridNodes empty }">
+									<c:if test="${! empty allGridNodes}">
 										<html:options collection="allGridNodes"
 											property="value.hostName" labelProperty="value.hostName" />
 									</c:if>
