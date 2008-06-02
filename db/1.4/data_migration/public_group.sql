@@ -529,6 +529,7 @@ AND ins.instrument_pk_id = ic.instrument_pk_id
 ;
 
 -- derived_bioassay_data
+/*
 INSERT into csm_protection_group (
 	protection_group_name,
 	application_id,
@@ -572,6 +573,7 @@ AND pg.protection_group_name = ns.particle_sample_name
 AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
 AND cha.characterization_pk_id = dbd.characterization_pk_id
 ;
+*/
 
 -- derived_datum
 INSERT into csm_protection_group (
@@ -623,6 +625,7 @@ AND dbd.derived_bioassay_data_pk_id = dd.derived_bioassay_data_pk_id
 ;
 
 -- lab_file
+/*
 INSERT into csm_protection_group (
 	protection_group_name,
 	application_id,
@@ -670,6 +673,7 @@ AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
 AND cha.characterization_pk_id = dbd.characterization_pk_id
 AND dbd.file_pk_id = lf.file_pk_id
 ;
+*/
 
 -- protocol
 INSERT into csm_protection_group (
@@ -832,14 +836,16 @@ INSERT into csm_user_group_role_pg (
 )
 SELECT
 	g.group_id,
-	'1',
+	cr.role_id,
 	pg.protection_group_id,
 	sysdate()
 FROM csm_group g,
 	csm_protection_group pg,
+	csm_role cr,
 	protection_group_tmp tmp
 WHERE pg.protection_group_name = tmp.protection_group_name
 AND g.group_name = 'Public'
+AND cr.role_name = 'R'
 ;
 
 drop table protection_group_tmp;
