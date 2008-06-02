@@ -110,15 +110,14 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
-
+		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
-			String[] selectedLocations = gridNodeHostStr.split("~");
-			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			theForm.set("searchLocations", selectedLocations);
+			selectedLocations = gridNodeHostStr.split("~");
 		}
-
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
 	}
 
