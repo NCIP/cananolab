@@ -16,7 +16,7 @@
 			<jsp:include page="/webHelp/helpGlossary.jsp">
 				<jsp:param name="topic" value="protocol_search_results_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>				
+			</jsp:include>
 			<a href="searchProtocol.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
@@ -49,7 +49,7 @@
 				<display:column title="Protocol Submit Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
-				<display:column title="Location">Local</display:column>
+				<display:column title="Location" property="location" sortable="true" />
 			</display:table>
 		</td>
 	</tr>
