@@ -43,10 +43,9 @@ public class GridService {
 			services = discoveryClient
 					.discoverDataServicesByDomainModel(domainModelName);
 		} catch (Exception e) {
-			logger
-					.error("Error in discovering caNanoLab nodes from the index server:"
-							+ e);
-			throw new GridAutoDiscoveryException();
+			String err = "Error in discovering caNanoLab nodes from the index server";
+			logger.error(err, e);
+			throw new GridAutoDiscoveryException(err, e);
 		}
 		if (services != null) {
 			for (EndpointReferenceType service : services) {
@@ -83,18 +82,18 @@ public class GridService {
 					// GridNodeBean gridNode = new GridNodeBean(hostName,
 					// address,
 					// appServiceURL);
-					
-					//remove local grid node from the list
+
+					// remove local grid node from the list
 					if (!hostName.contains(appOwner)) {
 						GridNodeBean gridNode = new GridNodeBean(hostName,
 								address);
 						gridNodeMap.put(hostName, gridNode);
 					}
 				} catch (Exception e) {
-					logger.error(
-							"Can't successfully obtain grid service metadata: "
-									+ address, e);
-					throw new GridAutoDiscoveryException();
+					String err = "Can't successfully obtain grid service metadata: "
+							+ address;
+					logger.error(err, e);
+					throw new GridAutoDiscoveryException(err);
 				}
 			}
 			return gridNodeMap;
