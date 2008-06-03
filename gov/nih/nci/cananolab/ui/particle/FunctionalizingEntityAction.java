@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.39 2008-06-03 15:18:11 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.40 2008-06-03 21:16:23 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
@@ -57,6 +58,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+		
+		if (!validateTargets(request, entityBean)) {
+			return mapping.getInputForward();
+		}
+		
 		compositionService.saveFunctionalizingEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
 		// save file data to file system and set visibility
@@ -91,6 +97,40 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		return forward;
 	}
 
+	private boolean validateTargets(HttpServletRequest request,
+			FunctionalizingEntityBean entityBean) throws Exception {
+
+		for (FunctionBean funcBean : entityBean
+				.getFunctions()) {
+			for (TargetBean targetBean : funcBean
+					.getTargets()) {
+				if (targetBean.getType() == null
+						|| targetBean.getType().trim().length() == 0) {
+
+					ActionMessages msgs = new ActionMessages();
+					ActionMessage msg = new ActionMessage("errors.required",
+							"Target type");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+
+					return false;
+				}
+				if (targetBean.getName() == null
+						|| targetBean.getName().trim().length() == 0) {
+
+					ActionMessages msgs = new ActionMessages();
+					ActionMessage msg = new ActionMessage("errors.required",
+							"Target name");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * Set up the input form for adding new nanoparticle entity
 	 * 
