@@ -731,7 +731,7 @@ public class NanoparticleSampleServiceHelper {
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select distinct name from NanoparticleSample");
+				"select distinct name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 		List results = appService.query(crit);
 		List<String> publicNames = new ArrayList<String>();
 		for (Object obj : results) {

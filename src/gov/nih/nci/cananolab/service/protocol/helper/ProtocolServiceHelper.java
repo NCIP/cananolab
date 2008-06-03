@@ -224,7 +224,7 @@ public class ProtocolServiceHelper {
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select distinct id from ProtocolFile");
+				"select distinct id from gov.nih.nci.cananolab.domain.common.ProtocolFile");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
