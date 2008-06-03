@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.38 2008-05-30 17:00:08 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.39 2008-06-03 15:18:11 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -285,8 +285,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setLookups(request);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;		
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
@@ -309,6 +308,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		if (canDelete) {
 			compositionService.deleteFunctionalizingEntity(entityBean
 					.getDomainEntity());
+			particleBean = setupParticle(theForm, request, "local");
 			ActionMessage msg = new ActionMessage(
 					"message.deleteFunctionalizingEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
