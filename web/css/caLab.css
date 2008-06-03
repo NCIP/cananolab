@@ -202,6 +202,19 @@ a:link.helpText,a:visited.helpText,a:active.helpText { /* for help link text not
 	text-decoration: underline;
 }
 
+
+a:link.loginText,a:visited.loginText,a:active.loginText { /* for help link text not affected by any cascading text styles */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 1em;
+	font-weight: bold;
+	color: #ffffff; /* constant: dark blue */
+	text-decoration: underline;
+}
+
+a:hover.loginText {
+	color: #f4f4f5 /* constant: red */
+}
+
 a:hover {
 	color: #a90101; /* constant: red */
 }
@@ -679,15 +692,20 @@ p,.p { /* for paragraphs */
 }
 
 #publicLinks {
-	margin: 30px 20px 20px 30px;
+	margin: 15px 7px 20px 10px;
 }
 
 div.griddiv {
 	background-color: #F4F4F5;
-	padding: 20px 10px 20px 55px;
+	padding: 20px 5px 20px 10px;
 }
 
-#pubh2 {
+div.logindiv {
+	background-color: #F4F4F5;
+	padding: 10px 10px 10px 55px;
+}
+
+.pubBrowse {
 	color: 4A49A8;
 	text-align: left;
 	text-indent: 1em;
@@ -697,17 +715,29 @@ div.griddiv {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 1.2em;
 	margin-bottom: 0;
+	padding-left: 1em;
+	background-color: #cccccc; /* constant: medium gray */
+	border-top: 1px solid #cccccc; /* constant: medium gray */
 }
 
-.girdtable {
-	width: 300px;
+.message {
+	padding-left: 50px;
+}
+
+.loginLink {
+	margin: 0 0 0 0;
+	padding: 5px 10px 5px 0;
+}
+
+.gridtable {
+	width: 400px;
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
 	border-collapse: collapse;
 }
 
-.girdtable th {
+.gridtable th {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.8em;
 	padding: 5px 30px 10px 30px;
@@ -716,7 +746,7 @@ div.griddiv {
 	border-color: #cccccc;
 }
 
-.girdtable td {
+.gridtable td {
 	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 0.7em;
 	padding: 5px 0 5px 5px;
@@ -768,6 +798,8 @@ label.toplabel {
 
 #location {
 	margin-bottom: 10px;
+	margin-right: 5px;
+	padding-right: 3px;
 }
 
 #results {
