@@ -35,7 +35,6 @@ public class CountAction extends Action {
 		int particleCount = 0;
 		NanoparticleSampleService service = null;
 		for (String location : searchLocations) {
-
 			if (location.equals("local")) {
 				service = new NanoparticleSampleServiceLocalImpl();
 			} else {
@@ -47,7 +46,8 @@ public class CountAction extends Action {
 				particleCount += service.getNumberOfPublicNanoparticleSamples();
 			} catch (Exception ex) {
 				System.out
-						.println("getNumberOfPublicNanoparticleSamples exception, location:" + location);
+						.println("getNumberOfPublicNanoparticleSamples exception, location:"
+								+ location);
 				ex.printStackTrace();
 			}
 		}
@@ -67,7 +67,8 @@ public class CountAction extends Action {
 				reportCount += reportService.getNumberOfPublicReports();
 			} catch (Exception ex) {
 				System.out
-						.println("getNumberOfPublicReports exception, location:" + location);
+						.println("getNumberOfPublicReports exception, location:"
+								+ location);
 				ex.printStackTrace();
 			}
 		}
@@ -85,10 +86,12 @@ public class CountAction extends Action {
 			}
 
 			try {
-				protocolCount += protocolService.getNumberOfPublicProtocolFiles();
+				protocolCount += protocolService
+						.getNumberOfPublicProtocolFiles();
 			} catch (Exception ex) {
 				System.out
-						.println("getNumberOfPublicProtocolFiles exception, location:" + location);
+						.println("getNumberOfPublicProtocolFiles exception, location:"
+								+ location);
 				ex.printStackTrace();
 			}
 		}

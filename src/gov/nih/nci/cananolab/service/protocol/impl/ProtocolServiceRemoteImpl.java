@@ -7,10 +7,8 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
-import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 
 import java.util.ArrayList;
