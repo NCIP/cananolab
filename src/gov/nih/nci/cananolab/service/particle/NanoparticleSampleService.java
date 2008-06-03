@@ -57,8 +57,8 @@ public interface NanoparticleSampleService {
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(
-			String particleSource, String[] nanoparticleEntityClassNames,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -93,4 +93,6 @@ public interface NanoparticleSampleService {
 
 	public SortedSet<String> findAllNanoparticleSampleNames(UserBean user)
 			throws ParticleException;
+
+	public int getNumberOfPublicNanoparticleSamples() throws ParticleException;
 }

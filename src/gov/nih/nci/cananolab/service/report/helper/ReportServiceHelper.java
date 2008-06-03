@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHe
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,5 +206,21 @@ public class ReportServiceHelper {
 			report = (Report) result.get(0);
 		}
 		return report;
+	}
+
+	public int getNumberOfPublicReports() throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List<String> publicData = appService.getPublicData();
+		HQLCriteria crit = new HQLCriteria("select distinct id from Report");
+		List results = appService.query(crit);
+		List<String> publicIds = new ArrayList<String>();
+		for (Object obj : results) {
+			String id = (String) obj.toString();
+			if (publicData.contains(id)) {
+				publicIds.add(id);
+			}
+		}
+		return publicIds.size();
 	}
 }

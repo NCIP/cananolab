@@ -33,4 +33,6 @@ public interface ReportService {
 			throws ReportException, CaNanoLabSecurityException;
 
 	public ReportBean findReportById(String reportId) throws ReportException;
+	
+	public int getNumberOfPublicReports() throws ReportException;
 }
