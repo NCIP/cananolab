@@ -26,6 +26,7 @@ import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -615,5 +616,52 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
+	}
+	
+	public void assignChemicalAssociationVisibility(AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation, String[] visibleGroups)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
+	}
+	
+	public void assignNanoparicleEntityVisibility(AuthorizationService authService,
+			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
+	}
+	
+	public void assignFunctionalizingEntityVisibility(AuthorizationService authService,
+				FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
+	}
+		
+	public void removeNanoparticleEntityVisibility(AuthorizationService authService,
+				NanoparticleEntity nanoparticleEntity)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
+	}
+
+	public void removeFunctionalizingEntityVisibility(AuthorizationService authService,
+				FunctionalizingEntity functionalizingEntity)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
+	}
+	public void removeChemicalAssociationVisibility(AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
+	}
+	public void assignSampleCompositionVisibility(AuthorizationService authService,
+			NanoparticleSample particleSample, String[] visibleGroups)
+		throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+		"Not implemented for grid service");
 	}
 }

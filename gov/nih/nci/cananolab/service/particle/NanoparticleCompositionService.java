@@ -7,11 +7,14 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
 import java.util.SortedSet;
 
@@ -120,5 +123,29 @@ public interface NanoparticleCompositionService {
 
 	public SampleComposition findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException;
+	
+	public void assignChemicalAssociationVisibility(AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation, String[] visibleGroups)throws Exception;
+	
+	public void assignNanoparicleEntityVisibility(AuthorizationService authService,
+			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
+		throws Exception;
+	
+	public void assignFunctionalizingEntityVisibility(AuthorizationService authService,
+				FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+		throws Exception;
+		
+	public void removeNanoparticleEntityVisibility(AuthorizationService authService,
+				NanoparticleEntity nanoparticleEntity)
+		throws Exception;
 
+	public void removeFunctionalizingEntityVisibility(AuthorizationService authService,
+				FunctionalizingEntity functionalizingEntity)throws Exception;
+
+	public void removeChemicalAssociationVisibility(AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation)throws Exception;
+	
+	public void assignSampleCompositionVisibility(AuthorizationService authService,
+			NanoparticleSample particleSample, String[] visibleGroups)
+		throws Exception;
 }

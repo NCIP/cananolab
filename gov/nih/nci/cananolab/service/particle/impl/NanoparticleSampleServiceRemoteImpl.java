@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.SortableName;
 
@@ -327,5 +328,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
+	}
+	
+	public void assignAssociatedVisibility(AuthorizationService authService,
+			ParticleBean particleSampleBean, String[] visibleGroups)
+		throws ParticleException{
+		throw new ParticleException("Not implemented for grid service");
 	}
 }
