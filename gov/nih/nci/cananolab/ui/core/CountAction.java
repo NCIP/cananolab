@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
@@ -18,6 +19,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 public class CountAction extends Action {
 
@@ -45,10 +48,11 @@ public class CountAction extends Action {
 			try {
 				particleCount += service.getNumberOfPublicNanoparticleSamples();
 			} catch (Exception ex) {
-				System.out
-						.println("getNumberOfPublicNanoparticleSamples exception, location:"
-								+ location);
 				ex.printStackTrace();
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage("error.nanoparticleCount", location);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
 			}
 		}
 
@@ -66,10 +70,11 @@ public class CountAction extends Action {
 			try {
 				reportCount += reportService.getNumberOfPublicReports();
 			} catch (Exception ex) {
-				System.out
-						.println("getNumberOfPublicReports exception, location:"
-								+ location);
 				ex.printStackTrace();
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage("error.reportCount", location);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
 			}
 		}
 
@@ -89,10 +94,11 @@ public class CountAction extends Action {
 				protocolCount += protocolService
 						.getNumberOfPublicProtocolFiles();
 			} catch (Exception ex) {
-				System.out
-						.println("getNumberOfPublicProtocolFiles exception, location:"
-								+ location);
 				ex.printStackTrace();
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage("error.protocolCount", location);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
 			}
 		}
 
