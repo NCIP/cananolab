@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
