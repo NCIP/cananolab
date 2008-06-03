@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="funcIndex" value="${param.funcInc }" />
+<c:set var="funcIndex" value="${param.funcInd }" />
 <logic:iterate id="targetData" name="functionalizingEntityForm"
 	property="entity.functions[${param.funcInd}].targets"
 	indexId="targetInd">
@@ -47,7 +47,7 @@
 						</c:otherwise>
 					</c:choose>
 					<div id="speciesDiv_${funcIndex}_${targetInd}" style="${speciesDisplay }">
-						<strong>Species</strong>&nbsp;
+						<strong>Species:</strong>&nbsp;
 						${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].antigen.species}
 					</div>
 					&nbsp;
