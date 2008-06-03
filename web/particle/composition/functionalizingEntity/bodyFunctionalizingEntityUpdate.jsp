@@ -395,13 +395,25 @@ function confirmDeletion()
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
+												<c:choose>
+													<c:when test="${'setup' eq param.dispatch }">
+														<c:remove var="dataId" scope="session" />
+													</c:when>										
+													<c:when test="${'setupUpdate' eq param.dispatch }">
+														<c:set var="dataId" value="${param.dataId}" scope="session" />
+													</c:when>																			
+												</c:choose>
+												<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setup&location=${location}" />
+												<c:if test="${!empty dataId}">
+													<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" />
+												</c:if>	
 												<input type="reset" value="Reset"
-													onclick="javascript:window.location.reload();">
+													onclick="javascript:window.location.href='${origUrl}'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<html:submit />
+												<html:submit />												
 												<c:choose>
 													<c:when test="${!empty param.particleId }">
 														<html:hidden property="particleId"
