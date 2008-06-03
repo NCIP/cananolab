@@ -21,11 +21,8 @@
 					<td class="labelWithTop" valign="top">
 						<strong>Description</strong>
 					</td>
-					<td class="labelWithTop" valign="top">
-						<strong>Species</strong>
-					</td>
-					<td class="rightLabelWithTop">
-						<Strong>&nbsp;</Strong>
+					<td class="rightLabelWithTop" colspan="2">
+						&nbsp;
 					</td>
 				</tr>
 			</c:if>
@@ -64,6 +61,7 @@
 					</c:choose>
 					<div id="speciesDiv_${param.funcInd}_${targetInd}"
 						style="${speciesDisplay}">
+						<strong>Species</strong>
 						<html:select
 							property="entity.functions[${param.funcInd}].targets[${targetInd}].antigen.species"
 							size="1">

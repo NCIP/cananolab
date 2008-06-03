@@ -192,6 +192,7 @@
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoReadOnly.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
 																	</jsp:include>
+																	&nbsp;
 																</td>
 															</tr>
 														</c:if>
