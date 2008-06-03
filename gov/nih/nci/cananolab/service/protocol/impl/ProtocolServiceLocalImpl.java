@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -102,8 +103,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			String protocolName, String fileTitle) throws ProtocolException {
 		List<ProtocolFileBean> protocolFileBeans = new ArrayList<ProtocolFileBean>();
 		try {
-			List<ProtocolFile> protocolFiles = helper
-					.findProtocolFilesBy(protocolType, protocolName, fileTitle);
+			List<ProtocolFile> protocolFiles = helper.findProtocolFilesBy(
+					protocolType, protocolName, fileTitle);
 
 			for (ProtocolFile pf : protocolFiles) {
 				// TODO load associations
@@ -115,6 +116,18 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			String err = "Problem finding protocol files.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
+		}
+	}
+
+	public int getNumberOfPublicProtocolFiles() throws ProtocolException {
+		try {
+			int count = helper.getNumberOfPublicProtocolFiles();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public protocol files.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+
 		}
 	}
 }

@@ -32,4 +32,6 @@ public interface ProtocolService {
 
 	public SortedSet<String> getProtocolNames(String protocolType)
 			throws ProtocolException;
+
+	public int getNumberOfPublicProtocolFiles() throws ProtocolException;
 }

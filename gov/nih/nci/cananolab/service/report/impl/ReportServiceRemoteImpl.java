@@ -131,13 +131,37 @@ public class ReportServiceRemoteImpl implements ReportService {
 			Report report = null;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				report = (Report) obj;				
+				report = (Report) obj;
 			}
 			loadParticleSamplesForReport(report);
 			ReportBean reportBean = new ReportBean(report);
 			return reportBean;
 		} catch (Exception e) {
 			String err = "Problem finding the report by id: " + reportId;
+			logger.error(err, e);
+			throw new ReportException(err, e);
+		}
+	}
+
+	public int getNumberOfPublicReports() throws ReportException {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Report");
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			List<String> ids = new ArrayList<String>();
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				String id = ((Report) obj).getId().toString();
+				ids.add(id);
+			}
+			return ids.size();
+		} catch (Exception e) {
+			String err = "Error finding counts of remote public reports.";
 			logger.error(err, e);
 			throw new ReportException(err, e);
 		}
