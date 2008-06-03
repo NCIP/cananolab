@@ -29,7 +29,7 @@ function confirmDeletion()
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="nano_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>					
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -317,25 +317,30 @@ function confirmDeletion()
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-							<table height="32" border="0" align="left" cellpadding="4"
-								cellspacing="0">
-								<tr>
-									<td height="32">
-										<div align="left">
-											<input type="button" value="Delete"
-												onclick="confirmDeletion();">
-										</div>
-									</td>
-								</tr>
-							</table>
+							<c:choose>
+								<c:when
+									test="${param.dispatch eq 'setupUpdate'&& canUserDelete eq 'true'}">
+									<table height="32" border="0" align="left" cellpadding="4"
+										cellspacing="0">
+										<tr>
+											<td height="32">
+												<div align="left">
+													<input type="button" value="Delete"
+														onclick="confirmDeletion();">
+												</div>
+											</td>
+										</tr>
+									</table>
+								</c:when>
+							</c:choose>
 							<table width="498" height="32" border="0" align="right"
 								cellpadding="4" cellspacing="0">
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
-											<div align="right">												
+											<div align="right">
 												<input type="reset" value="Reset"
-															onclick="javascript:location.reload()">
+													onclick="javascript:location.reload()">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<c:choose>

@@ -30,7 +30,7 @@ function confirmDeletion()
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="function_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>				
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -113,7 +113,8 @@ function confirmDeletion()
 							<strong>Amount</strong>
 						</td>
 						<td class="label">
-							<html:text property="entity.value" onkeydown="return filterFloatNumber(event)"/>
+							<html:text property="entity.value"
+								onkeydown="return filterFloatNumber(event)" />
 						</td>
 						<td class="label" valign="top">
 							<strong>Amount Unit</strong>
@@ -251,11 +252,11 @@ function confirmDeletion()
 															</td>
 															<td class="labelWithTop" valign="top">
 
-																<strong style="${modalityDisplay}"
-																	id="modalityStrong_${ind}">Modality Type</strong>&nbsp;
+																<strong style="" id="modalityStrong_${ind}">Modality
+																	Type</strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="${modalityDisplay}">
+																<div id="modalityDiv_${ind}" style="">
 																	<html:select
 																		property="entity.functions[${ind}].imagingFunction.modality"
 																		size="1"
@@ -283,14 +284,14 @@ function confirmDeletion()
 														</tr>
 														<tr>
 															<td valign="bottom" class="leftLabel">
-																<span id="targetSpan_${ind }" style="${targetDisplay }">
-																	<a href="#"
+																<span id="targetSpan_${ind }" style=""> <a
+																	href="#"
 																	onclick="javascript:addChildComponent(functionalizingEntityForm, 'functionalizingEntity', ${ind}, 'addTarget'); return false;">
 																		<span class="addLink2">Add Target</span> </a> </span>&nbsp;
 															</td>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
-																<div id="targetDiv_${ind }" style="${targetDisplay }">
+																<div id="targetDiv_${ind }" style="">
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoUpdate.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
@@ -372,24 +373,30 @@ function confirmDeletion()
 						<td width="30%">
 							<span class="formMessage"> </span>
 							<br>
-							<table height="32" border="0" align="left" cellpadding="4"
-								cellspacing="0">
-								<tr>
-									<td height="32">
-										<div align="left">
-											<input type="button" value="Delete"
-												onclick="confirmDeletion();">
-										</div>
-									</td>
-								</tr>
-							</table>
+							<c:choose>
+								<c:when
+									test="${param.dispatch eq 'setupUpdate'&& canUserDelete eq 'true'}">
+									<table height="32" border="0" align="left" cellpadding="4"
+										cellspacing="0">
+										<tr>
+											<td height="32">
+												<div align="left">
+													<input type="button" value="Delete"
+														onclick="confirmDeletion();">
+												</div>
+											</td>
+										</tr>
+									</table>
+								</c:when>
+							</c:choose>
 							<table width="498" height="32" border="0" align="right"
 								cellpadding="4" cellspacing="0">
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
+												<input type="reset" value="Reset"
+													onclick="javascript:window.location.reload();">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"

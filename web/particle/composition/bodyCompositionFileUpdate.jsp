@@ -32,7 +32,8 @@ function confirmDeletion()
 				<c:when
 					test="${compositionFileForm.map.compFile.hidden eq 'false' }">
 					<c:choose>
-						<c:when test="${compositionFileForm.map.compFile.domainFile.uriExternal eq 'true' }">
+						<c:when
+							test="${compositionFileForm.map.compFile.domainFile.uriExternal eq 'true' }">
 							<c:set var="linkDisplay" value="display: inline" />
 							<c:set var="loadDisplay" value="display: none" />
 						</c:when>
@@ -60,7 +61,7 @@ function confirmDeletion()
 									property="compFile.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 							<br>
 							<br>
-							<span id="link" style="${linkDisplay }"><html:text
+							<span id="link" style=""><html:text
 									property="compFile.externalUrl" size="60" /> </span>&nbsp;
 						</td>
 						<c:if
@@ -165,23 +166,30 @@ function confirmDeletion()
 			<td width="30%">
 				<span class="formMessage"> </span>
 				<br>
-				<table height="32" border="0" align="left" cellpadding="4"
-					cellspacing="0">
-					<tr>
-						<td height="32">
-							<div align="left">
-								<input type="button" value="Delete" onclick="confirmDeletion();">
-							</div>
-						</td>
-					</tr>
-				</table>
+				<c:choose>
+					<c:when
+						test="${param.dispatch eq 'setupUpdate'&& canUserDelete eq 'true'}">
+						<table height="32" border="0" align="left" cellpadding="4"
+							cellspacing="0">
+							<tr>
+								<td height="32">
+									<div align="left">
+										<input type="button" value="Delete"
+											onclick="confirmDeletion();">
+									</div>
+								</td>
+							</tr>
+						</table>
+					</c:when>
+				</c:choose>
 				<table width="498" height="32" border="0" align="right"
 					cellpadding="4" cellspacing="0">
 					<tr>
 						<td width="490" height="32">
 							<div align="right">
 								<div align="right">
-									<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
+									<input type="reset" value="Reset"
+										onclick="javascript:window.location.reload();">
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
 									<input type="hidden" name="submitType"

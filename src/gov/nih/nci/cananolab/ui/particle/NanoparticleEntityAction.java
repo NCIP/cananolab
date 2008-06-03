@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.50 2008-05-30 17:00:08 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.51 2008-06-03 15:18:11 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -340,7 +340,6 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setLookups(request);
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
@@ -363,6 +362,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		if (canDelete) {
 			compositionService.deleteNanoparticleEntity(entityBean
 					.getDomainEntity());
+			particleBean = setupParticle(theForm, request, "local");
 			ActionMessage msg = new ActionMessage(
 					"message.deleteNanoparticleEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

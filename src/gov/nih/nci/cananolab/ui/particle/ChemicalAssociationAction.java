@@ -361,6 +361,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		compService.deleteChemicalAssociation(assocBean.getDomainAssociation());
+		particleBean = setupParticle(theForm, request, "local");
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteChemicalAssociation");
