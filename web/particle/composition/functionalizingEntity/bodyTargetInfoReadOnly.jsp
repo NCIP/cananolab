@@ -21,25 +21,22 @@
 					<td class="labelWithTop" valign="top">
 						<strong>Description</strong>
 					</td>
-					<td class="labelWithTop" valign="top">
-						<strong>Species</strong>
-					</td>
-					<td class="rightLabelWithTop">
-						<Strong>&nbsp;</Strong>
+					<td class="rightLabelWithTop" valign="top">
+						&nbsp;
 					</td>
 				</tr>
 			</c:if>
 			<tr>
 				<td class="leftLabel" valign="top" width="15%">
-					${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].type}
+					${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].type}&nbsp;
 				</td>
 				<td class="label" valign="top" align="left" width="15%">
-					${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].name}
+					${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].name}&nbsp;
 				</td>
 				<td class="label" valign="top" align="right">
-					${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].description}
+					${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].description}&nbsp;
 				</td>
-				<td class="label" valign="top" align="left" width="30%">
+				<td class="rightLabel" valign="top" align="left" width="30%">
 					<c:choose>
 						<c:when
 							test="${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].type == 'antigen'}">
@@ -49,10 +46,11 @@
 							<c:set var="speciesDisplay" value="display: none;" />
 						</c:otherwise>
 					</c:choose>
-					<div id="speciesDiv_${funcIndex}_${targetInd}" style="">
+					<div id="speciesDiv_${funcIndex}_${targetInd}" style="${speciesDisplay }">
+						<strong>Species</strong>&nbsp;
 						${functionalizingEntityForm.map.entity.functions[funcIndex].targets[targetInd].antigen.species}
-						&nbsp;&nbsp;
 					</div>
+					&nbsp;
 				</td>
 			</tr>
 		</tbody>
