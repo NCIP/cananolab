@@ -242,13 +242,13 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			throws Exception;
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response,
-			String location) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		setupParticle(theForm, request, "local");
 		request.getSession().setAttribute("characterizationForm", theForm);
 		Characterization chara = prepareCharacterization(theForm, request,
-				location);
+				"local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user);
