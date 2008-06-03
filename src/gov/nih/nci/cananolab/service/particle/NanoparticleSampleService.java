@@ -69,6 +69,10 @@ public interface NanoparticleSampleService {
 
 	public ParticleBean findNanoparticleSampleById(String particleId)
 			throws ParticleException;
+	
+	public ParticleBean findFullNanoparticleSampleById(String particleId)
+			throws Exception;
+
 
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws ParticleException;

@@ -167,7 +167,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-
+	
+	public ParticleBean findFullNanoparticleSampleById(String particleId)
+			throws ParticleException {
+		throw new ParticleException("Not implemented for grid service");
+	}
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws ParticleException {
 		try {

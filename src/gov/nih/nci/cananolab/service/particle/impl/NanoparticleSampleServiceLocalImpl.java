@@ -15,8 +15,6 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCompositionServiceHelper;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -36,7 +34,9 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -217,6 +217,65 @@ public class NanoparticleSampleServiceLocalImpl implements
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
+	}
+	
+	public ParticleBean findFullNanoparticleSampleById(String particleId)
+		throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				NanoparticleSample.class).add(
+				Property.forName("id").eq(new Long(particleId)));
+		//characterization
+		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection.derivedBioAssayDataCollection", 
+				FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection", 
+				FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection.instrumentConfiguration", 
+				FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection.instrumentConfiguration.instrument", 
+				FetchMode.JOIN);
+		
+		//sampleComposition
+		crit.setFetchMode("sampleComposition",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection.composingElementCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection." +
+				"composingElementCollection.inherentFunctionCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode("sampleComposition.labFileCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
+				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementA",
+						FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.chemicalAssociationCollection.associatedElementB",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.functionalizingEntityCollection.functionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("reportCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+		List result = appService.query(crit);
+		NanoparticleSample particleSample = null;
+		ParticleBean particleBean = null;
+		if (!result.isEmpty()) {
+			particleSample = (NanoparticleSample) result.get(0);
+			particleBean = new ParticleBean(particleSample);
+		}		
+		return particleBean;
 	}
 
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
