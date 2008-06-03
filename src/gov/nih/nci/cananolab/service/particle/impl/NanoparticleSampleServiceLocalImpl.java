@@ -327,4 +327,16 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
+
+	public int getNumberOfPublicNanoparticleSamples() throws ParticleException {
+		try {
+			int count = helper.getNumberOfPublicNanoparticleSamples();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public nanoparticle samples.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+
+		}
+	}
 }

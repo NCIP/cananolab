@@ -8,6 +8,7 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -16,6 +17,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
+import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
@@ -299,6 +301,31 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		} catch (Exception e) {
 			String err = "Problem finding the keywordCollection for particle id: "
 					+ particleSample.getId();
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
+
+	public int getNumberOfPublicNanoparticleSamples() throws ParticleException {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			List<String> ids = new ArrayList<String>();
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				String id = ((NanoparticleSample) obj).getId().toString();
+				ids.add(id);
+			}
+			return ids.size();
+		} catch (Exception e) {
+			String err = "Error finding counts of remote public nanoparticle samples.";
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}

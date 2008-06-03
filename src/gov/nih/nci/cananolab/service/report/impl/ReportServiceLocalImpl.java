@@ -111,4 +111,15 @@ public class ReportServiceLocalImpl implements ReportService {
 			throw new ReportException(err, e);
 		}
 	}
+
+	public int getNumberOfPublicReports() throws ReportException {
+		try {
+			int count = helper.getNumberOfPublicReports();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public reports.";
+			logger.error(err, e);
+			throw new ReportException(err, e);
+		}
+	}
 }
