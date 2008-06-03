@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
@@ -258,5 +259,19 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			logger.error(err, e);
 			throw new ParticleCharacterizationException(err, e);
 		}
+	}
+	
+	public void removeCharacterizationVisibility(AuthorizationService authService,
+			Characterization aChar)
+		throws ParticleCharacterizationException {
+		throw new ParticleCharacterizationException(
+		"Not implemented for grid service");
+	}
+
+	public void assignCharacterizationVisibility(AuthorizationService authService,
+			Characterization aChar, String[] visibleGroups)
+		throws ParticleCharacterizationException {
+		throw new ParticleCharacterizationException(
+		"Not implemented for grid service");
 	}
 }
