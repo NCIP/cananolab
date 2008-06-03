@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.List;
@@ -95,4 +96,8 @@ public interface NanoparticleSampleService {
 			throws ParticleException;
 
 	public int getNumberOfPublicNanoparticleSamples() throws ParticleException;
+	
+	public void assignAssociatedVisibility(AuthorizationService authService,
+			ParticleBean particleSampleBean, String[] visibleGroups)
+		throws Exception;
 }

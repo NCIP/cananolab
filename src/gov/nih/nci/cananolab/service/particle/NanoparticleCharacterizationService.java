@@ -6,7 +6,9 @@ import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -64,4 +66,12 @@ public interface NanoparticleCharacterizationService {
 
 	public List<Characterization> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException;
+	
+	public void removeCharacterizationVisibility(AuthorizationService authService,
+			Characterization aChar)throws Exception;
+
+	public void assignCharacterizationVisibility(AuthorizationService authService,
+			Characterization aChar, String[] visibleGroups)throws Exception;
+	
+	
 }
