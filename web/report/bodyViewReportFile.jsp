@@ -46,10 +46,17 @@
 							<strong>File URL</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<a
-								href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}&amp;instanceType=Report"
-								target="${submitReportForm.map.file.urlTarget}"> <bean:write
-									name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
+							<c:choose>
+								<c:when
+									test="${submitReportForm.map.file.hidden eq 'true' }">
+									Private file
+								</c:when>
+								<c:otherwise>
+									<a href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}&amp;instanceType=Report"
+										target="${submitReportForm.map.file.urlTarget}"> <bean:write
+										name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
+								</c:otherwise>
+							</c:choose>
 						</td>
 					</tr>
 					<tr>
