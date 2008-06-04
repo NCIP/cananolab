@@ -5,6 +5,7 @@ import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -148,17 +149,20 @@ public class ReportServiceRemoteImpl implements ReportService {
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.Report");
 			query.setTarget(target);
+			QueryModifier modifier=new QueryModifier();
+			modifier.setCountOnly(true);
+			query.setQueryModifier(modifier);
+
 			CQLQueryResults results = gridClient.query(query);
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			List<String> ids = new ArrayList<String>();
+			int count=0;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				String id = ((Report) obj).getId().toString();
-				ids.add(id);
-			}
-			return ids.size();
+				count=((Long)obj).intValue();
+			}	
+			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of remote public reports.";
 			logger.error(err, e);

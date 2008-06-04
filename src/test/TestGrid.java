@@ -1,13 +1,11 @@
 package test;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
-import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.cqlquery.Predicate;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
@@ -27,8 +25,8 @@ public class TestGrid {
 					indexServiceUrl);
 			services = discoveryClient
 					.discoverDataServicesByDomainModel(domainModelName);
-			// services=discoveryClient.getAllDataServices();
-			// services=discoveryClient.getAllServices();
+			services = discoveryClient.getAllDataServices();
+			// services=discoveryClient.getAllServices(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -66,24 +64,44 @@ public class TestGrid {
 		CaNanoLabServiceClient gridClient = new CaNanoLabServiceClient(
 				serviceUrl);
 		System.out.println("Running CQL .............");
+		// CQLQuery query = new CQLQuery();
+		// gov.nih.nci.cagrid.cqlquery.Object target = new
+		// gov.nih.nci.cagrid.cqlquery.Object();
+		// target.setName("gov.nih.nci.cananolab.domain.common.Report");
+		// Attribute attribute = new Attribute();
+		// attribute.setName("name");
+		// attribute.setPredicate(Predicate.EQUAL_TO);
+		// attribute.setValue("120406.pdf");
+		// target.setAttribute(attribute);
+		// query.setTarget(target);
+		// CQLQueryResults results = gridClient.query(query);
+		// results
+		// .setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
+		// CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		// while (iter.hasNext()) {
+		// java.lang.Object obj = iter.next();
+		// Report report = (Report) obj;
+		// System.out.println(report.getId());
+		// }
+		//		
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.Report");
-		Attribute attribute = new Attribute();
-		attribute.setName("name");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue("120406.pdf");
-		target.setAttribute(attribute);
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 		query.setTarget(target);
+		QueryModifier modifier = new QueryModifier();
+		modifier.setCountOnly(true);
+		query.setQueryModifier(modifier);
 		CQLQueryResults results = gridClient.query(query);
 		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		int count = 0;
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
-			Report report = (Report) obj;
-			System.out.println(report.getId());
+			count = ((Long) obj).intValue();
 		}
+		System.out.println(count);
 	}
 
 	public void testOperation(String serviceUrl) throws Exception {
@@ -91,9 +109,12 @@ public class TestGrid {
 				serviceUrl);
 		System.out.println("Running operation .............");
 		String particleSource = "DNT";
+		String[] nanoparticleEntityClassNames = new String[] { "Dendrimer", "CarbonNanotube" };
+		String[] functionClassNames=new String[] {"TargetingFunction", "TherapeuticFunction"};
+		String[] characterizationClassNames=new String[] {"EnzymeInduction"};
 		NanoparticleSample[] particleSamples = gridClient
-				.getNanoparticleSamplesBy(particleSource, null, null, null,
-						null, null);
+				.getNanoparticleSamplesBy(particleSource,
+						nanoparticleEntityClassNames, null, functionClassNames, characterizationClassNames, null);
 		for (NanoparticleSample particleSample : particleSamples) {
 			System.out.println(particleSample.getName());
 		}
@@ -107,16 +128,16 @@ public class TestGrid {
 			if (services != null) {
 				for (EndpointReferenceType service : services) {
 					System.out.println(service.getAddress());
-					test.testCQL(service.getAddress().toString());
-					test.testOperation(service.getAddress().toString());
+					// test.testCQL(service.getAddress().toString());
+					// test.testOperation(service.getAddress().toString());
 				}
 			} else {
 				System.out.println("No grid nodes found");
 			}
-			// test
-			// .testCQL("http://165.112.132.206:8080/wsrf/services/cagrid/CaNanoLabService");
-			// test
-			// .testOperation("http://165.112.132.206:8080/wsrf/services/cagrid/CaNanoLabService");
+			test
+					.testCQL("http://137.187.250.17:18080/wsrf/services/cagrid/CaNanoLabService");
+			test
+					.testOperation("http://137.187.250.17:18080/wsrf/services/cagrid/CaNanoLabService");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
