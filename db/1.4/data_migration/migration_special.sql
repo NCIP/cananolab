@@ -16,7 +16,7 @@ FROM cananolab.agent a,
 WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND a.lcase(name) = 'magnevist'
+AND lcase(a.name) = 'magnevist'
 ;
 
 insert into canano.associated_element
@@ -65,7 +65,7 @@ AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND ne14.composition_pk_id = c14.composition_pk_id
 AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
-AND a.lcase(name) = 'magnevist'
+AND lcase(a.name) = 'magnevist'
 ;
 
 insert into canano.small_molecule
