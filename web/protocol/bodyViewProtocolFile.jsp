@@ -72,7 +72,7 @@
 										<c:choose>
 											<c:when test="${not empty updateProtocolForm.map.file.uri}">
 												<a
-													href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
+													href="searchProtocol.do?dispatch=download&amp;location=${location}&amp;instanceType=Protocol+File&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
 												</a>
 											</c:when>
 											<c:otherwise>No file uploaded.</c:otherwise>
@@ -123,7 +123,7 @@
 										<c:choose>
 											<c:when test="${not empty updateProtocolForm.map.file.uri}">
 												<a
-													href="searchProtocol.do?dispatch=download&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
+													href="searchProtocol.do?dispatch=download&amp;location=${location}&amp;instanceType=Protocol+File&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
 												</a>
 											</c:when>
 											<c:otherwise>No file uploaded.</c:otherwise>

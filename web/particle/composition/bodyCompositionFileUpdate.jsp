@@ -74,15 +74,15 @@ function confirmDeletion()
 						 				${compositionFileForm.map.compFile.domainFile.title}<br>
 											<br>
 											<a href="#"
-												onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}', 
+												onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}', 
 														${compositionFileForm.map.compFile.domainFile.id}, 100, 100)"><img
-													src="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}"
+													src="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}"
 													border="0" width="150"> </a>
 										</c:when>
 										<c:otherwise>
 											<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
-												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}"
+												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}"
 												target="${compositionFileForm.map.compFile.urlTarget}">
 												${compositionFileForm.map.compFile.domainFile.uri}</a>
 
