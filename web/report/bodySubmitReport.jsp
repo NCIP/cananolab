@@ -79,7 +79,7 @@
 										<td class="completeLabel" colspan="4">
 											<strong>Submitted Report</strong> &nbsp;&nbsp;
 											<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}&amp;instanceType=Report"
+												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=local&amp;instanceType=Report"
 												target="${submitReportForm.map.file.urlTarget}">
 												${submitReportForm.map.file.domainFile.uri}</a>
 											<html:hidden property="file.domainFile.uri" />
