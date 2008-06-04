@@ -368,3 +368,12 @@ function getSelectedOptions(selectEle) {
 	var cleanStr = selectedValues.substr(0, selectedValues.length - 1);
 	return cleanStr;
 }
+function displayLogin() {
+	var loginBlock = document.getElementById('loginBlock');
+	if(loginBlock.style.display == 'none')
+		loginBlock.style.display = 'block';
+	else
+		loginBlock.style.display = 'none';
+		
+	return false;
+}
