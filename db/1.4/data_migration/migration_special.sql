@@ -37,6 +37,9 @@ WHERE lcase(name) = 'magnevist'
 ;
 
 -- ImagingFunction
+ALTER TABLE canano.nano_function
+ CHANGE function_pk_id function_pk_id BIGINT(20) AUTO_INCREMENT not NULL;
+ 
 insert into canano.nano_function
 (
 	description,
@@ -68,6 +71,9 @@ AND a.agent_pk_id = l.linkage_pk_id
 AND lcase(a.name) = 'magnevist'
 ;
 
+ALTER TABLE canano.nano_function
+ CHANGE function_pk_id function_pk_id BIGINT(20) NOT NULL;
+ 
 insert into canano.small_molecule
 (
 	small_molecule_pk_id,
