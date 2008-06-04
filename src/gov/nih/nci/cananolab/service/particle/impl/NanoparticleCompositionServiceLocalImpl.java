@@ -474,6 +474,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void deleteNanoparticleEntity(NanoparticleEntity entity)
 			throws ParticleCompositionException {
 		try {
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			removeNanoparticleEntityVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
@@ -487,6 +490,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity)
 			throws ParticleCompositionException {
 		try {
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			removeFunctionalizingEntityVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
@@ -501,6 +507,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void deleteChemicalAssociation(ChemicalAssociation assoc)
 			throws ParticleCompositionException {
 		try {
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			removeChemicalAssociationVisibility(authService, assoc);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(assoc);
