@@ -84,23 +84,41 @@ public class TestGrid {
 		// System.out.println(report.getId());
 		// }
 		//		
+//		CQLQuery query = new CQLQuery();
+//		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+//		target
+//				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+//		query.setTarget(target);
+//		QueryModifier modifier = new QueryModifier();
+//		modifier.setCountOnly(true);
+//		query.setQueryModifier(modifier);
+//		CQLQueryResults results = gridClient.query(query);
+//		results
+//				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+//		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+//		int count = 0;
+//		while (iter.hasNext()) {
+//			java.lang.Object obj = iter.next();
+//			count = ((Long) obj).intValue();
+//		}
+//		
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target
-				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+		target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 		query.setTarget(target);
-		QueryModifier modifier = new QueryModifier();
+		QueryModifier modifier=new QueryModifier();
 		modifier.setCountOnly(true);
 		query.setQueryModifier(modifier);
+
 		CQLQueryResults results = gridClient.query(query);
 		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+				.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		int count = 0;
+		int count=0;
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
-			count = ((Long) obj).intValue();
-		}
+			count=((Long)obj).intValue();
+		}	
 		System.out.println(count);
 	}
 
