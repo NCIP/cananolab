@@ -54,7 +54,7 @@
 						coords="275,70,370,105" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateSample eq 'true'}">
-					<area href="submitNanoparticleSample.do?dispatch=setup&page=0" shape="rect"
+					<area href="submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}" shape="rect"
 						coords="275,110,370,160" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateReport eq 'true'}">
