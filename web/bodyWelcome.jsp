@@ -43,17 +43,12 @@
 				<area href="login.jsp" shape="rect" coords="80,140,160,170"
 					alt="rectangle" />
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
-					coords="80,240,160,270" alt="rectangle" />
+					coords="75,235,170,270" alt="rectangle" />
 				<area href="searchReport.do?dispatch=setup" shape="rect"
-					coords="80,280,160,310" alt="rectangle" />
+					coords="75,280,170,320" alt="rectangle" />
 				<area href="searchNanoparticle.do?dispatch=setup" shape="rect"
-					coords="80,320,160,350" alt="rectangle" />
-				<c:if test="${canCreateSample eq 'true'}">
-					<area href="searchSample.do?dispatch=setup" shape="rect"
-						coords="80,360,160,390" alt="rectangle" />
-					<area href="searchAliquot.do?dispatch=setup" shape="rect"
-						coords="80,400,160,430" alt="rectangle" />
-				</c:if>
+					coords="75,330,170,370" alt="rectangle" />
+				
 				<c:if test="${canCreateProtocol eq 'true'}">
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
 						coords="275,70,370,105" alt="rectangle" />
@@ -77,7 +72,7 @@
 						shape="rect" coords="490,170,640,425" alt="rectangle" />
 				</c:if>
 			</map>
-			<img align="middle" src="images/Home_Page_Workflow.gif"
+			<img align="middle" src="images/Home_Page_Workflow2.gif"
 				alt="caNanoLab flowchart" usemap="#funcMap" border="0">
 			<br>
 			<br>
