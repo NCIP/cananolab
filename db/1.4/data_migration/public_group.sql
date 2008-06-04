@@ -698,9 +698,7 @@ FROM csm_group g,
 WHERE g.group_id = upg.group_id
 AND g.group_name = 'Public'
 AND upg.protection_group_id = pg.protection_group_id
-AND pg.protection_group_name = ns.particle_sample_name
-AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
-AND cha.protocol_file_pk_id = pf.protocol_file_pk_id
+AND pg.protection_group_name = pf.protocol_file_pk_id
 AND pro.protocol_pk_id = pf.protocol_pk_id
 ;
 
@@ -720,9 +718,7 @@ FROM csm_group g,
 WHERE g.group_id = upg.group_id
 AND g.group_name = 'Public'
 AND upg.protection_group_id = pg.protection_group_id
-AND pg.protection_group_name = ns.particle_sample_name
-AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
-AND cha.protocol_file_pk_id = pf.protocol_file_pk_id
+AND pg.protection_group_name = pf.protocol_file_pk_id
 AND pro.protocol_pk_id = pf.protocol_pk_id
 ;
 
