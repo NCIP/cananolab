@@ -149,13 +149,13 @@
 												${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event,'${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}', ${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id})"><img
-														src="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}"
+													onclick="popImage(event,'${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}&amp;location=${location}', ${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id})"><img
+														src="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}&amp;location=${location}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}">${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}</a>
+													href="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}&amp;location=${location}">${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>

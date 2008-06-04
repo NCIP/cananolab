@@ -73,8 +73,8 @@
 						 				${param.fileTitle}<br>
 										<br>
 										<a href="#"
-											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img
-												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
+											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}', ${param.fileId}, 100, 100)"><img
+												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}"
 												border="0" width="150"> </a>
 									</c:when>
 									<c:otherwise>
@@ -82,7 +82,7 @@
 										<c:set var="target" value="${param.fileBean}.urlTarget" />
 
 										<a
-											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
+											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}"
 											target="<bean:write name="${param.form }" property="${target }"/>">
 											${param.fileUri}</a>
 

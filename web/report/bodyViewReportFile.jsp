@@ -47,7 +47,7 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<a
-								href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}"
+								href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}&amp;instanceType=Report"
 								target="${submitReportForm.map.file.urlTarget}"> <bean:write
 									name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
 						</td>

@@ -105,7 +105,7 @@
 								<c:otherwise>
 							${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 							<a
-										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}&amp;instanceType=Protocol+File">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 								</c:otherwise>
 							</c:choose>
 						</td>

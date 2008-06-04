@@ -34,14 +34,14 @@
 						 				${param.fileTitle}<br>>
 										<br>
 										<a href="#"
-											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}', ${param.fileId}, 100, 100)"><img
-												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}"
+											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}', ${param.fileId}, 100, 100)"><img
+												src="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}"
 												border="0" width="150"> </a>
 									</c:when>
 									<c:otherwise>
 										<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
-											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}">
+											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}">
 											<%--			target="${submitReportForm.map.file.urlTarget}">--%>
 											${param.fileUri}</a>
 									</c:otherwise>

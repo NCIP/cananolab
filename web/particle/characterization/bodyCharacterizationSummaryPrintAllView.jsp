@@ -107,7 +107,7 @@ ${charBean.protocolFileBean.domainFile.uri}
 												<c:when
 													test="${derivedBioAssayData.labFileBean.image eq 'true'}">
 													<img
-														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}"
+														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}"
 														border="0">
 
 												</c:when>
