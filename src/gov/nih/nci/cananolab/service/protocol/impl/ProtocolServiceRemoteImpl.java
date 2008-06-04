@@ -4,6 +4,7 @@ import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
@@ -107,17 +108,20 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 			query.setTarget(target);
+			QueryModifier modifier=new QueryModifier();
+			modifier.setCountOnly(true);
+			query.setQueryModifier(modifier);
+
 			CQLQueryResults results = gridClient.query(query);
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			List<String> ids = new ArrayList<String>();
+			int count=0;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				String id = ((ProtocolFile) obj).getId().toString();
-				ids.add(id);
-			}
-			return ids.size();
+				count=((Long)obj).intValue();
+			}	
+			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public remote protocol files.";
 			logger.error(err, e);
