@@ -78,6 +78,7 @@
 					<c:url var="url" value="submitNanoparticleSample.do">
 						<c:param name="dispatch" value="${dispatchValue}" />
 						<c:param name="particleId" value="${particleId}" />
+						<c:param name="location" value="${location}" />
 					</c:url>
 					<a href="${url}" class="subMenuSecondary">GENERAL INFORMATION</a>
 				</li>
