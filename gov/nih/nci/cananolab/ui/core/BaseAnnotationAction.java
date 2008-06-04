@@ -200,8 +200,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			URL url = new URL(serviceUrl);
 			remoteServerHostUrl = url.getProtocol() + "://" + url.getHost()
 					+ ":" + url.getPort();
-
-			if (instanceType.equalsIgnoreCase(CaNanoLabConstants.REPORT)) {
+			if (instanceType==null){
+				fileService = new FileServiceRemoteImpl(serviceUrl);
+				fileBean = fileService.findFileById(fileId, user);
+			}else if (instanceType.equalsIgnoreCase(CaNanoLabConstants.REPORT)) {
 				reportService = new ReportServiceRemoteImpl(serviceUrl);
 				fileBean = reportService.findReportById(fileId);
 				ReportDecorator decorator = new ReportDecorator();
