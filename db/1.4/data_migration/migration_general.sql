@@ -950,7 +950,7 @@ insert into canano.small_molecule
 	alternate_name
 )
 SELECT agent_pk_id,
-	lcase(name)
+	name
 FROM cananolab.agent
 WHERE lcase(discriminator) = 'smallmolecule'
 ;
@@ -980,8 +980,9 @@ SELECT agent_pk_id,
 	description,
 	'DATA_MIGRATION',
 	SYSDATE(),
-	lcase(name)
+	name
 FROM cananolab.agent
+WHERE discriminator != 'ImageContrastAgent'
 ;
 
 insert into canano.activation_method
@@ -1036,7 +1037,6 @@ SELECT
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
-	cananolab.agent a,
 	canano.composition c14,
 	canano.nanoparticle_entity ne14,
 	canano.composing_element ce14
@@ -1045,8 +1045,6 @@ and pf.type = 'Diagnostic Reporting'
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND ne14.composition_pk_id = c14.composition_pk_id
 AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
-AND a.agent_pk_id = l.linkage_pk_id
-AND a.discriminator != 'ImageContrastAgent'
 ;
 
 
@@ -1069,6 +1067,7 @@ SELECT
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
+	cananolab.agent a,
 	canano.composition c14,
 	canano.nanoparticle_entity ne14,
 	canano.composing_element ce14
@@ -1077,6 +1076,8 @@ and pf.type = 'Diagnostic Imaging'
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND ne14.composition_pk_id = c14.composition_pk_id
 AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
+AND a.agent_pk_id = l.linkage_pk_id
+AND a.discriminator != 'ImageContrastAgent'
 ;
 
 -- TargetingFunction
