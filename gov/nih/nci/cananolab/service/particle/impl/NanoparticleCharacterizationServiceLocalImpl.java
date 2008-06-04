@@ -112,7 +112,6 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			List<String> accessibleGroups = authService.getAccessibleGroups(particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
 			if (accessibleGroups!=null && accessibleGroups.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
 				String[] visibleGroups = {CaNanoLabConstants.CSM_PUBLIC_GROUP};
-				//TODO distinct insert & update, then do not need to removePublic
 				assignCharacterizationVisibility(authService, achar, visibleGroups);
 			}
 		} catch (DuplicateEntriesException e) {
@@ -287,7 +286,11 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			removeCharacterizationVisibility(authService,chara);
 			appService.delete(chara);
+						
 		} catch (Exception e) {
 			String err = "Error deleting characterization "
 					+ chara.getIdentificationName();
