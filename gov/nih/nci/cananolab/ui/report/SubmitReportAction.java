@@ -5,9 +5,10 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.14 2008-05-30 17:00:08 pansu Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.15 2008-06-04 23:14:11 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -27,6 +28,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -109,6 +111,8 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
 		String reportId = request.getParameter("fileId");
 		String location = request.getParameter("location");
 		ReportService reportService = null;
@@ -120,6 +124,17 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			reportService = new ReportServiceRemoteImpl(serviceUrl);
 		}
 		ReportBean reportBean = reportService.findReportById(reportId);
+		if (location.equals("local")) {
+			// retrieve visibility
+			FileService fileService = new FileServiceLocalImpl();
+			LabFileBean labFileBean = new LabFileBean(reportBean.getDomainFile());
+			fileService.retrieveVisibility(labFileBean, user);
+			if (labFileBean.isHidden()){
+				reportBean.setHidden(true);
+			}else{
+				reportBean.setHidden(false);
+			}
+		}		
 		theForm.set("file", reportBean);
 		InitReportSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
