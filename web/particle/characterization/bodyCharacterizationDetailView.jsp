@@ -105,7 +105,7 @@
 								<c:otherwise>
 							${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 							<a
-										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 								</c:otherwise>
 							</c:choose>
 						</td>
@@ -167,13 +167,13 @@
  												${derivedBioAssayData.labFileBean.domainFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}', ${derivedBioAssayData.labFileBean.domainFile.id}, 100, 100)"><img
-														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}"
+													onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}', ${derivedBioAssayData.labFileBean.domainFile.id}, 100, 100)"><img
+														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}"
+													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}"
 													target="${derivedBioAssayData.labFileBean.urlTarget}">${derivedBioAssayData.labFileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
