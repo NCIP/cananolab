@@ -360,6 +360,23 @@ public class NanoparticleSampleServiceLocalImpl implements
 	public void deleteAnnotationById(String className, Long dataId)
 			throws ParticleException {
 		try {
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			if (className==null){				
+			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.characterization")){
+				NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
+				service.removeCharacterizationVisibility(authService,findFullCharacterizationById(dataId.toString()));
+			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation")){
+				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
+				ChemicalAssociation chemicalAssociation= service.findChemicalAssocationById(dataId.toString()).getDomainAssociation();
+				service.removeChemicalAssociationVisibility(authService, chemicalAssociation);
+			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization")){
+				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
+				service.removeFunctionalizingEntityVisibility(authService, this.findFullFunctionalizingEntityById(dataId.toString()));
+			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity")){
+				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
+				service.removeNanoparticleEntityVisibility(authService, this.findFullNanoparticleEntityById(dataId.toString()));
+			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.deleteById(Class.forName(className), dataId);
@@ -610,6 +627,73 @@ public class NanoparticleSampleServiceLocalImpl implements
 		 * null) { for (Aliquot aliquot : aliquotCollection) { if (aliquot !=
 		 * null) { authService.removePublicGroup(aliquot.getId() .toString()); } } } } } }
 		 */
+	}
+	
+	public Characterization findFullCharacterizationById(String charId)
+		throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();		
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).add(
+				Property.forName("id").eq(new Long(charId)));
+		//characterization
+		crit.setFetchMode("derivedBioAssayDataCollection", 
+				FetchMode.JOIN);
+		crit.setFetchMode("derivedBioAssayDataCollection.derivedDatumCollection", 
+				FetchMode.JOIN);
+		crit.setFetchMode("instrumentConfiguration", 
+				FetchMode.JOIN);
+		crit.setFetchMode("instrumentConfiguration.instrument", 
+				FetchMode.JOIN);
+		
+		List result = appService.query(crit);
+		Characterization achar = null;
+		if (!result.isEmpty()) {
+			achar = (Characterization) result.get(0);
+		}		
+		return achar;
+	}
+	
+	
+	public NanoparticleEntity findFullNanoparticleEntityById(String id)
+		throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();		
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				NanoparticleEntity.class).add(
+				Property.forName("id").eq(new Long(id)));
+		//sampleComposition.NanoparticleEntity		
+		crit.setFetchMode("composingElementCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("composingElementCollection.inherentFunctionCollection",
+				FetchMode.JOIN);		
+		
+		List result = appService.query(crit);
+		NanoparticleEntity entity = null;
+		if (!result.isEmpty()) {
+			entity = (NanoparticleEntity) result.get(0);
+		}		
+		return entity;
+	}
+
+	
+	public FunctionalizingEntity findFullFunctionalizingEntityById(String id)
+		throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();		
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				FunctionalizingEntity.class).add(
+				Property.forName("id").eq(new Long(id)));
+		//sampleComposition.FunctionalizingEntity	
+		crit.setFetchMode("functionCollection",
+				FetchMode.JOIN);
+		
+		List result = appService.query(crit);
+		FunctionalizingEntity entity = null;
+		if (!result.isEmpty()) {
+			entity = (FunctionalizingEntity) result.get(0);
+		}		
+		return entity;
 	}
 
 }
