@@ -1,4 +1,4 @@
-use cananolab;
+use canano;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -17,11 +17,11 @@ FROM csm_group g,
 	csm_protection_group pg,
 	csm_role cr,
 	source so,
-	sample sa
+	nanoparticle_sample sa
 WHERE
 	g.group_name = so.organization_name
 AND so.source_pk_id = sa.source_pk_id
-AND sa.sample_name = pg.protection_group_name
+AND sa.particle_sample_name = pg.protection_group_name
 AND cr.role_name = 'R'
 ;
 
