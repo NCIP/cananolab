@@ -87,7 +87,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	private Protocol findProtocolBy(String protocolType, String protocolName)
+	public Protocol findProtocolBy(String protocolType, String protocolName)
 			throws ProtocolException {
 		try {
 			return helper.findProtocolBy(protocolType, protocolName);
