@@ -52,9 +52,9 @@
 									property="searchLocations"
 									onchange="javascript:setProtocolNameDropdown()" multiple="true"
 									size="4">
-									<option value="local" selected>
+									<html:option value="local">
 										Local
-									</option>
+									</html:option>
 									<c:if test="${! empty allGridNodes}">
 										<html:options collection="allGridNodes"
 											property="value.hostName" labelProperty="value.hostName" />
