@@ -1,12 +1,14 @@
 package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
+import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
@@ -39,7 +41,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+			target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
@@ -54,6 +56,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				protocolFile = (ProtocolFile) obj;
+				loadProtocolForProtocolFile(protocolFile);
 			}
 			ProtocolFileBean protocolFileBean = new ProtocolFileBean(
 					protocolFile);
@@ -89,7 +92,7 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 					protocolType, protocolName, fileTitle);
 			if (protocolFiles != null) {
 				for (ProtocolFile pf : protocolFiles) {
-					// TODO load associations
+					loadProtocolForProtocolFile(pf);
 					ProtocolFileBean pfb = new ProtocolFileBean(pf);
 					protocolFileBeans.add(pfb);
 				}
@@ -102,13 +105,39 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 		}
 	}
 
+	private void loadProtocolForProtocolFile(ProtocolFile protocolFile)
+			throws Exception {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target.setName("gov.nih.nci.cananolab.domain.common.Protocol");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
+		association.setRoleName("protocolFileCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(protocolFile.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.common.Protocol");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			Protocol protocol = (Protocol) obj;
+			protocolFile.setProtocol(protocol);
+		}
+	}
+
 	public int getNumberOfPublicProtocolFiles() throws ProtocolException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 			query.setTarget(target);
-			QueryModifier modifier=new QueryModifier();
+			QueryModifier modifier = new QueryModifier();
 			modifier.setCountOnly(true);
 			query.setQueryModifier(modifier);
 
@@ -116,11 +145,11 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.ProtocolFile");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			int count=0;
+			int count = 0;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				count=((Long)obj).intValue();
-			}	
+				count = ((Long) obj).intValue();
+			}
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public remote protocol files.";
