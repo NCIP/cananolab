@@ -54,7 +54,7 @@ function writeLink(uri) {
 	if (uri != null) {
 		var fileUri = uri;
 		if (fileUri != null) {
-			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
+			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=local&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
 		} else {
 			document.getElementById("protocolFileLink").innerHTML = "";
 		}
@@ -69,7 +69,7 @@ function writeLink0(protocolFile) {
 	if (protocolFile != null) {
 		var fileUri = protocolFile.domainUri;
 		if (fileUri != null) {
-			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
+			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=local&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
 		} else {
 			document.getElementById("protocolFileLink").innerHTML = "";
 		}
