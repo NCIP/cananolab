@@ -129,7 +129,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					.getDatumList();
 			for (DerivedDatum datum : datumList) {
 				// if value field is populated, so does the name field.
-				if (datum.getName().length() == 0 && datum.getValue() == 0) {
+				if (datum.getName().length() == 0) {
 					ActionMessage msg = new ActionMessage("errors.required",
 							"Derived data name");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
