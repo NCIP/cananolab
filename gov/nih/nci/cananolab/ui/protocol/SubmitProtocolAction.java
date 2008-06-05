@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -44,14 +45,24 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		pfileBean.setupDomainFile(CaNanoLabConstants.FOLDER_PROTOCOL, user
 				.getLoginName());
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		service.saveProtocolFile((ProtocolFile) pfileBean.getDomainFile(),
-				pfileBean.getNewFileData());
+		ProtocolFile protocolFile = (ProtocolFile) pfileBean.getDomainFile();
+		service.saveProtocolFile(protocolFile, pfileBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(pfileBean.getDomainFile().getId()
 				.toString(), pfileBean.getVisibilityGroups());
-
+		
+		//remove protocol visibility
+		ProtocolServiceLocalImpl localService = new ProtocolServiceLocalImpl();
+		Protocol dbProtocol = localService.findProtocolBy(protocolFile.getProtocol()
+				.getType(), protocolFile.getProtocol().getName());
+		authService.removePublicGroup(dbProtocol.getId().toString());
+		//assign protocol visibility
+		if (pfileBean.getVisibilityStr()!=null && pfileBean.getVisibilityStr().contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
+			authService.assignVisibility(dbProtocol.getId().toString(),new String[]{CaNanoLabConstants.CSM_PUBLIC_GROUP});
+		}	
+		
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				pfileBean);
 		ActionMessages msgs = new ActionMessages();
