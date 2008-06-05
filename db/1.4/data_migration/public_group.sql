@@ -434,6 +434,47 @@ AND fe.composition_pk_id = comp.composition_pk_id
 AND am.activation_method_pk_id = fe.activation_method_pk_id
 ;
 
+-- characterization
+INSERT into csm_protection_group (
+	protection_group_name,
+	application_id,
+	large_element_count_flag,
+	update_date
+)
+SELECT
+	distinct cha.characterization_pk_id,
+	'2',
+	'0',
+	sysdate()
+FROM csm_group g,
+	csm_protection_group pg,
+	csm_user_group_role_pg upg,
+	nanoparticle_sample ns,
+	characterization cha
+WHERE g.group_id = upg.group_id
+AND g.group_name = 'Public'
+AND upg.protection_group_id = pg.protection_group_id
+AND pg.protection_group_name = ns.particle_sample_name
+AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
+;
+
+INSERT into protection_group_tmp (
+	protection_group_name
+)
+SELECT
+	distinct cha.characterization_pk_id
+FROM csm_group g,
+	csm_protection_group pg,
+	csm_user_group_role_pg upg,
+	nanoparticle_sample ns,
+	characterization cha
+WHERE g.group_id = upg.group_id
+AND g.group_name = 'Public'
+AND upg.protection_group_id = pg.protection_group_id
+AND pg.protection_group_name = ns.particle_sample_name
+AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
+;
+
 -- instrument_config
 INSERT into csm_protection_group (
 	protection_group_name,
@@ -690,9 +731,6 @@ SELECT
 FROM csm_group g,
 	csm_protection_group pg,
 	csm_user_group_role_pg upg,
-	nanoparticle_sample ns,
-	characterization cha,
-	derived_bioassay_data dbd,
 	protocol_file pf,
 	protocol pro
 WHERE g.group_id = upg.group_id
@@ -710,9 +748,6 @@ SELECT
 FROM csm_group g,
 	csm_protection_group pg,
 	csm_user_group_role_pg upg,
-	nanoparticle_sample ns,
-	characterization cha,
-	derived_bioassay_data dbd,
 	protocol_file pf,
 	protocol pro
 WHERE g.group_id = upg.group_id
