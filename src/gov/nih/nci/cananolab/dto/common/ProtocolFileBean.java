@@ -37,6 +37,7 @@ public class ProtocolFileBean extends LabFileBean {
 
 	public ProtocolFileBean(ProtocolFile protocolFile) {
 		super(protocolFile);
+		domainFile = protocolFile;
 		domainFileId = protocolFile.getId().toString();
 	}
 
