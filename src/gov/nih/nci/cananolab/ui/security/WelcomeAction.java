@@ -16,7 +16,7 @@ package gov.nih.nci.cananolab.ui.security;
  * @author pansu
  */
 
-/* CVS $Id: WelcomeAction.java,v 1.3 2008-05-30 12:17:13 pansu Exp $ */
+/* CVS $Id: WelcomeAction.java,v 1.4 2008-06-06 05:51:04 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -56,10 +56,9 @@ public class WelcomeAction extends AbstractBaseAction {
 					CaNanoLabConstants.DOMAIN_MODEL_NAME);
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-		} else {
-			request.getSession().getServletContext().setAttribute(
-					"allGridNodes", gridNodeMap);
 		}
+		request.getSession().getServletContext().setAttribute("allGridNodes",
+				gridNodeMap);
 		ForwardAction forwardAction = new ForwardAction();
 		return forwardAction.execute(mapping, form, request, response);
 	}
