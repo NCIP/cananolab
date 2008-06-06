@@ -289,10 +289,10 @@ AND upg.protection_group_id = pg.protection_group_id
 AND pg.protection_group_name = ns.particle_sample_name
 AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
 AND fe.composition_pk_id = comp.composition_pk_id
-AND fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id
 AND ne.composition_pk_id = comp.composition_pk_id
 AND ne.nanoparticle_entity_pk_id = ce.nanoparticle_entity_pk_id
-AND fun.composing_element_pk_id = ce.composing_element_pk_id
+AND ( fun.composing_element_pk_id = ce.composing_element_pk_id
+OR fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id)
 ;
 
 INSERT into protection_group_tmp (
@@ -315,10 +315,10 @@ AND upg.protection_group_id = pg.protection_group_id
 AND pg.protection_group_name = ns.particle_sample_name
 AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
 AND fe.composition_pk_id = comp.composition_pk_id
-AND fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id
 AND ne.composition_pk_id = comp.composition_pk_id
 AND ne.nanoparticle_entity_pk_id = ce.nanoparticle_entity_pk_id
-AND fun.composing_element_pk_id = ce.composing_element_pk_id
+AND ( fun.composing_element_pk_id = ce.composing_element_pk_id
+OR fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id)
 ;
 
 
