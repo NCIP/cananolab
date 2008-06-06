@@ -70,50 +70,6 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="domainFile.title" page="2"
-				depends="required,mask"
-				indexedListProperty="assoc.files">
-				<arg position="0" key="file.title" bundle="particle" />
-				<msg name="mask" key="file.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
-				</var>
-			</field>
-			<field property="domainFile.type" page="2"
-				depends="required"
-				indexedListProperty="assoc.files">
-				<arg position="0" key="file.type" bundle="particle" />
-			</field>
-			<field property="externalUrl" page="2"
-				depends="validwhen"
-				indexedListProperty="assoc.files">
-				<arg position="0" key="externalUrl"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((*this*!=null) and
-						  (assoc.files[].domainFile.uriExternal=="true")) or
-						 (assoc.files[].domainFile.uriExternal=="false"))
-					</var-value>
-				</var>
-			</field>
-			<field property="uploadedFile" page="2"
-				depends="validwhen"
-				indexedListProperty="assoc.files">
-				<arg position="0" key="uploadedFile"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((assoc.files[].domainFile.uri!=null) or
-						 ((*this*!=null) and
-						  (assoc.files[].domainFile.uriExternal=="false"))) or
-						(assoc.files[].domainFile.uriExternal=="true"))
-					</var-value>
-				</var>
-			</field>
 		</form>
 		<form name="nanoparticleEntityForm">
 			<field property="entity.type" page="2" depends="required">
@@ -222,48 +178,6 @@
 					<var-value>(*this*!=null)</var-value>
 				</var>
 			</field>
-			<field property="domainFile.title" page="2"
-				depends="required,mask" indexedListProperty="entity.files">
-				<arg position="0" key="file.title" bundle="particle" />
-				<msg name="mask" key="file.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
-				</var>
-			</field>
-			<field property="domainFile.type" page="2"
-				depends="required" indexedListProperty="entity.files">
-				<arg position="0" key="file.type" bundle="particle" />
-			</field>
-			<field property="externalUrl" page="2"
-				depends="validwhen"
-				indexedListProperty="entity.files">
-				<arg position="0" key="externalUrl"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((*this*!=null) and
-						  (entity.files[].domainFile.uriExternal=="true")) or
-						 (entity.files[].domainFile.uriExternal=="false"))
-					</var-value>
-				</var>
-			</field>
-			<field property="uploadedFile" page="2"
-				depends="validwhen"
-				indexedListProperty="entity.files">
-				<arg position="0" key="uploadedFile"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((entity.files[].domainFile.uri!=null) or
-						 ((*this*!=null) and
-						  (entity.files[].domainFile.uriExternal=="false"))) or
-						(entity.files[].domainFile.uriExternal=="true"))
-					</var-value>
-				</var>
-			</field>
 		</form>
 		<form name="functionalizingEntityForm">
 			<field property="entity.type" page="2" depends="required">
@@ -285,48 +199,6 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
-				</var>
-			</field>
-			<field property="domainFile.title" page="2"
-				depends="required,mask" indexedListProperty="entity.files">
-				<arg position="0" key="file.title" bundle="particle" />
-				<msg name="mask" key="file.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
-				</var>
-			</field>
-			<field property="domainFile.type" page="2"
-				depends="required" indexedListProperty="entity.files">
-				<arg position="0" key="file.type" bundle="particle" />
-			</field>
-			<field property="externalUrl" page="2"
-				depends="validwhen"
-				indexedListProperty="entity.files">
-				<arg position="0" key="externalUrl"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((*this*!=null) and
-						  (entity.files[].domainFile.uriExternal=="true")) or
-						 (entity.files[].domainFile.uriExternal=="false"))
-					</var-value>
-				</var>
-			</field>
-			<field property="uploadedFile" page="2"
-				depends="validwhen"
-				indexedListProperty="entity.files">
-				<arg position="0" key="uploadedFile"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((entity.files[].domainFile.uri!=null) or
-						 ((*this*!=null) and
-						  (entity.files[].domainFile.uriExternal=="false"))) or
-						(entity.files[].domainFile.uriExternal=="true"))
-					</var-value>
 				</var>
 			</field>
 		</form>

@@ -182,49 +182,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		return noErrors;
 	}
 
-	private boolean validateFileBean(HttpServletRequest request,
-			ActionMessages msgs, LabFileBean fileBean) {
-		
-		boolean noErrors = true;
-
-		LabFile labfile = fileBean.getDomainFile();
-		if (labfile.getTitle().length() == 0) {
-			ActionMessage msg = new ActionMessage("errors.required",
-					"file title");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			noErrors = false;
-		}
-
-		if (labfile.getType().length() == 0) {
-			ActionMessage msg = new ActionMessage("errors.required",
-					"file type");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			noErrors = false;
-		}
-
-		if (labfile.getUriExternal()) {
-			if (fileBean.getExternalUrl() == null
-					|| fileBean.getExternalUrl().trim().length() == 0) {
-				ActionMessage msg = new ActionMessage("errors.required",
-						"external url");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				this.saveErrors(request, msgs);
-				noErrors = false;
-			}
-		//} else if (labfile.getUri() == null) {
-		} else if (fileBean.getUploadedFile() == null ||
-				fileBean.getUploadedFile().getFileName().length() == 0) {
-			ActionMessage msg = new ActionMessage("errors.required",
-					"uploaded file");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			noErrors = false;
-		}
-		return noErrors;
-	}
-
 	protected void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
