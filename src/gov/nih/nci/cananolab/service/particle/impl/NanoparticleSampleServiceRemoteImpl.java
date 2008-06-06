@@ -84,10 +84,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 							wordList);
 			if (particleSamples != null) {
 				for (NanoparticleSample particleSample : particleSamples) {
-					// manually fetch the associated data since grid service
-					// only pass one level association
-					loadParticleSamplesAssociations(particleSample);
-					particles.add(new ParticleBean(particleSample));
+					// manually fetch the associated source
+					loadSourceForParticleSample(particleSample);
+					ParticleBean particleBean = new ParticleBean(particleSample);
+					loadParticleBeanAssociationClassNames(particleBean);
+					particles.add(particleBean);
 				}
 			}
 			Collections.sort(particles,
@@ -98,6 +99,21 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
+	}
+
+	private void loadParticleBeanAssociationClassNames(ParticleBean particleBean)
+			throws Exception {
+		//TODO fill in HQL
+		String[] functionClassNames = new String[0];
+		particleBean.setFunctionClassNames(functionClassNames);
+		String[] characterizationClassNames = new String[0];
+		particleBean.setCharacterizationClassNames(characterizationClassNames);
+		String[] functionalizingEntityClassNames = new String[0];
+		particleBean
+				.setFunctionalizingEntityClassNames(functionalizingEntityClassNames);
+		String[] nanoparticleEntityClassNames = new String[0];
+		particleBean
+				.setNanoparticleEntityClassNames(nanoparticleEntityClassNames);
 	}
 
 	/**
@@ -168,11 +184,12 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	public ParticleBean findFullNanoparticleSampleById(String particleId)
 			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
+
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws ParticleException {
 		try {
@@ -317,7 +334,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			target
 					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			query.setTarget(target);
-			QueryModifier modifier=new QueryModifier();
+			QueryModifier modifier = new QueryModifier();
 			modifier.setCountOnly(true);
 			query.setQueryModifier(modifier);
 
@@ -325,11 +342,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			int count=0;
+			int count = 0;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				count=((Long)obj).intValue();
-			}	
+				count = ((Long) obj).intValue();
+			}
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of remote public nanoparticle samples.";
@@ -337,10 +354,10 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	public void assignAssociatedVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean, String[] visibleGroups)
-		throws ParticleException{
+			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 }
