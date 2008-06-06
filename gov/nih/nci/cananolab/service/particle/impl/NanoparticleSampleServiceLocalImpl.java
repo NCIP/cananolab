@@ -195,7 +195,21 @@ public class NanoparticleSampleServiceLocalImpl implements
 			Collections.sort(particleSamples,
 					new CaNanoLabComparators.NanoparticleSampleComparator());
 			for (NanoparticleSample particleSample : particleSamples) {
-				particles.add(new ParticleBean(particleSample));
+				ParticleBean particleBean = new ParticleBean(particleSample);
+				particles.add(particleBean);
+				// load summary information
+				particleBean.setCharacterizationClassNames(helper
+						.getStoredCharacterizationClassNames(particleSample)
+						.toArray(new String[0]));
+				particleBean.setFunctionalizingEntityClassNames(helper
+						.getStoredFunctionalizingEntityClassNames(
+								particleSample).toArray(new String[0]));
+				particleBean.setNanoparticleEntityClassNames(helper
+						.getStoredNanoparticleEntityClassNames(particleSample)
+						.toArray(new String[0]));
+				particleBean.setFunctionClassNames(helper
+						.getStoredFunctionClassNames(particleSample).toArray(
+								new String[0]));
 			}
 			return particles;
 		} catch (Exception e) {
@@ -218,35 +232,41 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
+
 	public ParticleBean findFullNanoparticleSampleById(String particleId)
-		throws Exception {
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		
+
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		//characterization
+		// characterization
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.derivedBioAssayDataCollection", 
+		crit.setFetchMode(
+				"characterizationCollection.derivedBioAssayDataCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection", 
+		crit
+				.setFetchMode(
+						"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("characterizationCollection.instrumentConfiguration",
 				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.instrumentConfiguration", 
-				FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.instrumentConfiguration.instrument", 
-				FetchMode.JOIN);
-		
-		//sampleComposition
-		crit.setFetchMode("sampleComposition",
-				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"characterizationCollection.instrumentConfiguration.instrument",
+						FetchMode.JOIN);
+
+		// sampleComposition
+		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection.composingElementCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection." +
-				"composingElementCollection.inherentFunctionCollection",
+		crit
+				.setFetchMode(
+						"sampleComposition.nanoparticleEntityCollection.composingElementCollection",
+						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection."
+				+ "composingElementCollection.inherentFunctionCollection",
 				FetchMode.JOIN);
 		crit
 				.setFetchMode("sampleComposition.labFileCollection",
@@ -263,18 +283,20 @@ public class NanoparticleSampleServiceLocalImpl implements
 						FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection.functionCollection",
-				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"sampleComposition.functionalizingEntityCollection.functionCollection",
+						FetchMode.JOIN);
 		crit.setFetchMode("reportCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		
+
 		List result = appService.query(crit);
 		NanoparticleSample particleSample = null;
 		ParticleBean particleBean = null;
 		if (!result.isEmpty()) {
 			particleSample = (NanoparticleSample) result.get(0);
 			particleBean = new ParticleBean(particleSample);
-		}		
+		}
 		return particleBean;
 	}
 
@@ -362,20 +384,30 @@ public class NanoparticleSampleServiceLocalImpl implements
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			if (className==null){				
-			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.characterization")){
+			if (className == null) {
+			} else if (className
+					.startsWith("gov.nih.nci.cananolab.domain.particle.characterization")) {
 				NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
-				service.removeCharacterizationVisibility(authService,findFullCharacterizationById(dataId.toString()));
-			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation")){
+				service.removeCharacterizationVisibility(authService,
+						findFullCharacterizationById(dataId.toString()));
+			} else if (className
+					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
-				ChemicalAssociation chemicalAssociation= service.findChemicalAssocationById(dataId.toString()).getDomainAssociation();
-				service.removeChemicalAssociationVisibility(authService, chemicalAssociation);
-			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization")){
+				ChemicalAssociation chemicalAssociation = service
+						.findChemicalAssocationById(dataId.toString())
+						.getDomainAssociation();
+				service.removeChemicalAssociationVisibility(authService,
+						chemicalAssociation);
+			} else if (className
+					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
-				service.removeFunctionalizingEntityVisibility(authService, this.findFullFunctionalizingEntityById(dataId.toString()));
-			}else if (className.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity")){
+				service.removeFunctionalizingEntityVisibility(authService, this
+						.findFullFunctionalizingEntityById(dataId.toString()));
+			} else if (className
+					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
-				service.removeNanoparticleEntityVisibility(authService, this.findFullNanoparticleEntityById(dataId.toString()));
+				service.removeNanoparticleEntityVisibility(authService, this
+						.findFullNanoparticleEntityById(dataId.toString()));
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -425,19 +457,21 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 		}
 	}
-	
+
 	public void assignAssociatedVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean, String[] visibleGroups)
 			throws Exception {
 		// remove public group in all associated records
-		//NanoparticleCharacterizationServiceHelper charHelper = new NanoparticleCharacterizationServiceHelper();
-		//NanoparticleCompositionServiceHelper compositionHelper = new NanoparticleCompositionServiceHelper();
+		// NanoparticleCharacterizationServiceHelper charHelper = new
+		// NanoparticleCharacterizationServiceHelper();
+		// NanoparticleCompositionServiceHelper compositionHelper = new
+		// NanoparticleCompositionServiceHelper();
 
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
 
-		removeAssociatedVisibility(authService, particleSampleBean, charService,
-				compositionService);
+		removeAssociatedVisibility(authService, particleSampleBean,
+				charService, compositionService);
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
 			// set public group in all associated records
@@ -542,8 +576,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	public void removeAssociatedVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean,
 			NanoparticleCharacterizationService charService,
-			NanoparticleCompositionService compositionService)
-			throws Exception {
+			NanoparticleCompositionService compositionService) throws Exception {
 		// remove public group in all associated records
 		NanoparticleSample nanoparticleSample = particleSampleBean
 				.getDomainParticleSample();
@@ -569,7 +602,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.getCharacterizationCollection();
 		if (characterizationCollection != null) {
 			for (Characterization aChar : characterizationCollection) {
-				charService.removeCharacterizationVisibility(authService, aChar);
+				charService
+						.removeCharacterizationVisibility(authService, aChar);
 			}
 		}
 		// sampleComposition
@@ -628,71 +662,66 @@ public class NanoparticleSampleServiceLocalImpl implements
 		 * null) { authService.removePublicGroup(aliquot.getId() .toString()); } } } } } }
 		 */
 	}
-	
+
 	public Characterization findFullCharacterizationById(String charId)
-		throws Exception {
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();		
+				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
-		//characterization
-		crit.setFetchMode("derivedBioAssayDataCollection", 
+		// characterization
+		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"derivedBioAssayDataCollection.derivedDatumCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("derivedBioAssayDataCollection.derivedDatumCollection", 
-				FetchMode.JOIN);
-		crit.setFetchMode("instrumentConfiguration", 
-				FetchMode.JOIN);
-		crit.setFetchMode("instrumentConfiguration.instrument", 
-				FetchMode.JOIN);
-		
+		crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+		crit.setFetchMode("instrumentConfiguration.instrument", FetchMode.JOIN);
+
 		List result = appService.query(crit);
 		Characterization achar = null;
 		if (!result.isEmpty()) {
 			achar = (Characterization) result.get(0);
-		}		
+		}
 		return achar;
 	}
-	
-	
+
 	public NanoparticleEntity findFullNanoparticleEntityById(String id)
-		throws Exception {
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();		
+				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleEntity.class).add(
 				Property.forName("id").eq(new Long(id)));
-		//sampleComposition.NanoparticleEntity		
-		crit.setFetchMode("composingElementCollection",
+		// sampleComposition.NanoparticleEntity
+		crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"composingElementCollection.inherentFunctionCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);		
-		
+
 		List result = appService.query(crit);
 		NanoparticleEntity entity = null;
 		if (!result.isEmpty()) {
 			entity = (NanoparticleEntity) result.get(0);
-		}		
+		}
 		return entity;
 	}
 
-	
 	public FunctionalizingEntity findFullFunctionalizingEntityById(String id)
-		throws Exception {
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();		
+				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				FunctionalizingEntity.class).add(
 				Property.forName("id").eq(new Long(id)));
-		//sampleComposition.FunctionalizingEntity	
-		crit.setFetchMode("functionCollection",
-				FetchMode.JOIN);
-		
+		// sampleComposition.FunctionalizingEntity
+		crit.setFetchMode("functionCollection", FetchMode.JOIN);
+
 		List result = appService.query(crit);
 		FunctionalizingEntity entity = null;
 		if (!result.isEmpty()) {
 			entity = (FunctionalizingEntity) result.get(0);
-		}		
+		}
 		return entity;
 	}
 

@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -71,14 +70,7 @@ public class NanoparticleDecorator extends TableDecorator {
 	public String getCompositionStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		SortedSet<String> compEntityNames = new TreeSet<String>();
-		NanoparticleSampleServiceHelper serviceHelper = new NanoparticleSampleServiceHelper();
-		SortedSet<String> nanoparticleEntityClassNames = serviceHelper
-				.getStoredNanoparticleEntityClassNames(particle
-						.getDomainParticleSample());
-		SortedSet<String> functionalizingEntityClassNames = serviceHelper
-				.getStoredFunctionalizingEntityClassNames(particle
-						.getDomainParticleSample());
-		for (String name : functionalizingEntityClassNames) {
+		for (String name : particle.getFunctionalizingEntityClassNames()) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
 			if (displayName.length() == 0) {
@@ -87,7 +79,7 @@ public class NanoparticleDecorator extends TableDecorator {
 				compEntityNames.add(displayName);
 			}
 		}
-		for (String name : nanoparticleEntityClassNames) {
+		for (String name : particle.getNanoparticleEntityClassNames()) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
 			if (displayName.length() == 0) {
@@ -102,10 +94,7 @@ public class NanoparticleDecorator extends TableDecorator {
 	public String getFunctionStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		SortedSet<String> functionNames = new TreeSet<String>();
-		NanoparticleSampleServiceHelper serviceHelper = new NanoparticleSampleServiceHelper();
-		SortedSet<String> functionClassNames = serviceHelper
-				.getStoredFunctionClassNames(particle.getDomainParticleSample());
-		for (String name : functionClassNames) {
+		for (String name : particle.getFunctionClassNames()) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
 			functionNames.add(displayName);
@@ -115,13 +104,8 @@ public class NanoparticleDecorator extends TableDecorator {
 
 	public String getCharacterizationStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		NanoparticleSampleServiceHelper serviceHelper = new NanoparticleSampleServiceHelper();
-		SortedSet<String> charClassNames = serviceHelper
-				.getStoredCharacterizationClassNames(particle
-						.getDomainParticleSample());
-
 		SortedSet<String> charNames = new TreeSet<String>();
-		for (String name : charClassNames) {
+		for (String name : particle.getCharacterizationClassNames()) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
 			charNames.add(displayName);
