@@ -21,7 +21,10 @@
 								<strong>File URL</strong>
 							</td>
 							<td class="rightLabel" >
-								${param.externalUrl}&nbsp;
+								<a
+									href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}">
+									<%--			target="${submitReportForm.map.file.urlTarget}">--%>
+									${param.fileUri}</a>
 							</td>
 						</c:when>
 						<c:otherwise>
@@ -31,7 +34,7 @@
 							<td class="rightLabel">
 								<c:choose>
 									<c:when test="${param.fileImage eq 'true'}">
-						 				${param.fileTitle}<br>>
+						 				${param.fileTitle}
 										<br>
 										<a href="#"
 											onclick="popImage(event, '${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}', ${param.fileId}, 100, 100)"><img
@@ -39,7 +42,6 @@
 												border="0" width="150"> </a>
 									</c:when>
 									<c:otherwise>
-										<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
 											href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}">
 											<%--			target="${submitReportForm.map.file.urlTarget}">--%>

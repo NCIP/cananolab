@@ -45,7 +45,6 @@
 													border="0" width="150"> </a>
 										</c:when>
 										<c:otherwise>
-											<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
 												href="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}"
 												target="${compositionFileForm.map.file.urlTarget}">
