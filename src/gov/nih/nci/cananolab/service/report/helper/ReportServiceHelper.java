@@ -212,7 +212,7 @@ public class ReportServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
-		HQLCriteria crit = new HQLCriteria("select distinct id from gov.nih.nci.cananolab.domain.common.Report");
+		HQLCriteria crit = new HQLCriteria("select id from gov.nih.nci.cananolab.domain.common.Report");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
