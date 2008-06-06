@@ -16,7 +16,7 @@
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="protocol_file_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>					
+				</jsp:include>
 				<logic:equal name="protocolActionName" value="updateProtocol">
 				&nbsp;&nbsp;<a href="protocolResults.do" class="helpText">Back</a>
 				</logic:equal>
@@ -72,7 +72,7 @@
 										<c:choose>
 											<c:when test="${not empty updateProtocolForm.map.file.uri}">
 												<a
-													href="searchProtocol.do?dispatch=download&amp;location=${location}&amp;instanceType=Protocol+File&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
+													href="searchProtocol.do?dispatch=download&amp;location=${location}&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
 												</a>
 											</c:when>
 											<c:otherwise>No file uploaded.</c:otherwise>
@@ -123,7 +123,7 @@
 										<c:choose>
 											<c:when test="${not empty updateProtocolForm.map.file.uri}">
 												<a
-													href="searchProtocol.do?dispatch=download&amp;location=${location}&amp;instanceType=Protocol+File&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
+													href="searchProtocol.do?dispatch=download&amp;location=${location}&amp;fileId=<bean:write name="updateProtocolForm" property="file.id" />">${updateProtocolForm.map.file.uri}
 												</a>
 											</c:when>
 											<c:otherwise>No file uploaded.</c:otherwise>
@@ -183,7 +183,8 @@
 								<td width="490" height="32">
 									<div align="right">
 										<div align="right">
-											<input type="reset" value="Reset" onclick="javascript:window.location.reload();">
+											<input type="reset" value="Reset"
+												onclick="javascript:window.location.reload();">
 											<input type="hidden" name="dispatch" value="update">
 											<input type="hidden" name="page" value="1">
 											<html:submit />

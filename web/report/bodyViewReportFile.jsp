@@ -15,7 +15,7 @@
 			<jsp:include page="/webHelp/helpGlossary.jsp">
 				<jsp:param name="topic" value="report_file_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>				
+			</jsp:include>
 		</td>
 	</tr>
 	<tr>
@@ -47,14 +47,14 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							<c:choose>
-								<c:when
-									test="${submitReportForm.map.file.hidden eq 'true' }">
+								<c:when test="${submitReportForm.map.file.hidden eq 'true' }">
 									Private file
 								</c:when>
 								<c:otherwise>
-									<a href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}&amp;instanceType=Report"
+									<a
+										href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}"
 										target="${submitReportForm.map.file.urlTarget}"> <bean:write
-										name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
+											name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
 								</c:otherwise>
 							</c:choose>
 						</td>
