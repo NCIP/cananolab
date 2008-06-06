@@ -43,7 +43,7 @@
 					property="domainFile.description" sortable="true" />
 				<display:column title="Associated <br>Particle Sample Names"
 					property="particleNames" sortable="true" />
-				<display:column title="Report Submit Date"
+				<display:column title="Report Created Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Location" property="location" sortable="true" />

@@ -86,7 +86,7 @@
 									<html:options collection="characterizationProtocolFiles"
 										property="domainFile.id" labelProperty="displayName" />
 							</html:select> &nbsp;<span id="protocolFileLink"><a
-								href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}&amp;instanceType=Protocol+File">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
+								href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 							</span>
 						</c:when>
 						<c:otherwise>
@@ -108,7 +108,7 @@
 									test="${characterizationForm.map.achar.protocolFileBean.hidden eq 'false'}">
 						${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
 						<a
-										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}&amp;instanceType=Protocol+File">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
+										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
 								</c:when>
 								<c:otherwise>
 									The protocol file is private

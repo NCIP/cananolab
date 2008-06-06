@@ -46,7 +46,7 @@
 					sortable="true" />
 				<display:column title="Description"
 					property="domainFile.description" sortable="false" />
-				<display:column title="Protocol Submit Date"
+				<display:column title="Protocol Created Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Location" property="location" sortable="true" />
