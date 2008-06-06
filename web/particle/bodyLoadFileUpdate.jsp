@@ -7,7 +7,7 @@
 		test="${param.action eq 'physicalCharacterization' || param.action eq 'invitroCharacterization'}">
 		<c:set var="isChar" value="true" />
 		<c:set var="titleType" value="Derived Bioassay Data" />
-		<c:set var="required" value="*" />
+		<c:set var="required" value="" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="isChar" value="false" />
@@ -78,7 +78,7 @@
 												border="0" width="150"> </a>
 									</c:when>
 									<c:otherwise>
-										<strong>Uploaded File</strong> &nbsp;&nbsp;
+										<strong>xxxUploaded File</strong> &nbsp;&nbsp;
 										<c:set var="target" value="${param.fileBean}.urlTarget" />
 
 										<a

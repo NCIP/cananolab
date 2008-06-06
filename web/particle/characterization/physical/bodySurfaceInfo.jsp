@@ -103,6 +103,7 @@
 												<c:choose>
 													<c:when test="${canCreateNanoparticle eq 'true'}">
 														<html:text
+															onkeydown="return filterInteger(event)"
 															property="achar.surfaceBean.surfaceChemistryList[${status.index}].numberOfMolecule" />
 															&nbsp;															
 														</c:when>
