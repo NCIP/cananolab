@@ -2,8 +2,6 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileDecorator;
-import gov.nih.nci.cananolab.dto.common.ReportDecorator;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -14,10 +12,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -179,54 +173,42 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String fileId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
-		String instanceType = request.getParameter("instanceType");
-		ReportService reportService = null;
-		ProtocolService protocolService = null;
 		FileService fileService = null;
 		String remoteServerHostUrl = "";
 		LabFileBean fileBean = null;
+		String serviceUrl = null;
 		if (location.equals("local")) {
 			fileService = new FileServiceLocalImpl();
-			fileBean = fileService.findFileById(fileId, user);
 		}
-		// CQL2HQL filters out subclasses
+		// CQL2HQL filters out subclasses, disabled the filter
 		else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			// assume grid service is located on the same server and port as
-			// webapp
-			String remoteDownloadUrl = remoteServerHostUrl + "/"
-					+ CaNanoLabConstants.CSM_APP_NAME;
-			URL url = new URL(serviceUrl);
-			remoteServerHostUrl = url.getProtocol() + "://" + url.getHost()
-					+ ":" + url.getPort();
-			if (instanceType==null){
-				fileService = new FileServiceRemoteImpl(serviceUrl);
-				fileBean = fileService.findFileById(fileId, user);
-			}else if (instanceType.equalsIgnoreCase(CaNanoLabConstants.REPORT)) {
-				reportService = new ReportServiceRemoteImpl(serviceUrl);
-				fileBean = reportService.findReportById(fileId);
-				ReportDecorator decorator = new ReportDecorator();
-				remoteDownloadUrl += decorator.getDownloadURL().getName();
-			} else if (instanceType
-					.equalsIgnoreCase(CaNanoLabConstants.PROTOCOL_FILE)) {
-				protocolService = new ProtocolServiceRemoteImpl(serviceUrl);
-				fileBean = protocolService.findProtocolFileById(fileId);
-				ProtocolFileDecorator decorator = new ProtocolFileDecorator();
-				remoteDownloadUrl += decorator.getDownloadURL().getName();
-			} else {
-				fileService = new FileServiceRemoteImpl(serviceUrl);
-				fileBean = fileService.findFileById(fileId, user);
-			}
-			response.sendRedirect(remoteDownloadUrl);
-			return null;
+			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
+					location);
+			fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
-
+		fileBean = fileService.findFileById(fileId, user);
 		if (fileBean.getDomainFile().getUriExternal()) {
 			response.sendRedirect(fileBean.getDomainFile().getUri());
 			return null;
 		}
-		
+		if (!location.equals("local")) {
+			// assume grid service is located on the same server and port as
+			// webapp
+			URL localURL = new URL(request.getRequestURL().toString());
+			String actionPath = localURL.getPath();
+
+			URL remoteUrl = new URL(serviceUrl);
+			remoteServerHostUrl = remoteUrl.getProtocol() + "://"
+					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
+			String remoteDownloadUrl = remoteServerHostUrl + "/"
+					+ CaNanoLabConstants.CSM_APP_NAME + "/" + actionPath
+					+ ".do?dispatch=download" + "&fileId=" + fileId
+					+ "&location=local";
+			// remote URL
+			response.sendRedirect(remoteDownloadUrl);
+			return null;
+		}
+
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		File dFile = new File(fileRoot + File.separator
