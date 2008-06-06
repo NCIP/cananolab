@@ -28,12 +28,20 @@
 				</h4>
 			</td>
 			<c_rt:set var='dispatch' value='<%=request.getParameter("dispatch")%>'/>
+			<c:choose>
+				<c:when test="${'setup' eq param.dispatch }">
+					<c:remove var="dataId" scope="session" />
+				</c:when>										
+				<c:when test="${'setupUpdate' eq param.dispatch }">
+					<c:set var="dataId" value="${param.dataId}" scope="session" />
+				</c:when>																			
+			</c:choose>	
 			<c:set var="helpTopic" value="char_details_help" />
 			<c:choose>
-				<c:when test='${"Physical Characterization" eq pageTitle && "setup" eq dispatch}'>
+				<c:when test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
 					<c:set var="helpTopic" value="add_physical_char_help" />
 				</c:when>
-				<c:when test='${"In Vitro Characterization" eq pageTitle && "setup" eq dispatch}'>
+				<c:when test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
 					<c:set var="helpTopic" value="add_in_vitro_char_help" />
 				</c:when>				
 			</c:choose>	
