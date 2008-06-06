@@ -6,15 +6,17 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.40 2008-06-03 21:16:23 cais Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.41 2008-06-06 22:50:18 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -60,6 +62,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 		
 		if (!validateTargets(request, entityBean)) {
+			return mapping.getInputForward();
+		}
+		
+		if (!validateEntityFile(request, entityBean)) {
 			return mapping.getInputForward();
 		}
 		
@@ -126,6 +132,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 					return false;
 				}
+			}
+		}
+		return true;
+	}
+	
+	private boolean validateEntityFile(HttpServletRequest request,
+			FunctionalizingEntityBean entityBean) throws Exception {
+		ActionMessages msgs = new ActionMessages();
+		for (LabFileBean filebean : entityBean.getFiles()) {
+			if(!validateFileBean(request, msgs, filebean)) {
+				return false;
 			}
 		}
 		return true;
