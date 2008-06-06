@@ -32,6 +32,14 @@ public class ParticleBean {
 
 	private String location; // e.g. local, caNanoLab-WashU, etc
 
+	private String[] nanoparticleEntityClassNames;
+
+	private String[] functionalizingEntityClassNames;
+
+	private String[] functionClassNames;
+
+	private String[] characterizationClassNames;
+
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
 	}
@@ -113,5 +121,43 @@ public class ParticleBean {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public void setDomainParticleSample(NanoparticleSample domainParticleSample) {
+		this.domainParticleSample = domainParticleSample;
+	}
+
+	public String[] getNanoparticleEntityClassNames() {
+		return nanoparticleEntityClassNames;
+	}
+
+	public void setNanoparticleEntityClassNames(
+			String[] nanoparticleEntityClassNames) {
+		this.nanoparticleEntityClassNames = nanoparticleEntityClassNames;
+	}
+
+	public String[] getFunctionalizingEntityClassNames() {
+		return functionalizingEntityClassNames;
+	}
+
+	public void setFunctionalizingEntityClassNames(
+			String[] functionalizingEntityClassNames) {
+		this.functionalizingEntityClassNames = functionalizingEntityClassNames;
+	}
+
+	public String[] getFunctionClassNames() {
+		return functionClassNames;
+	}
+
+	public void setFunctionClassNames(String[] functionClassNames) {
+		this.functionClassNames = functionClassNames;
+	}
+
+	public String[] getCharacterizationClassNames() {
+		return characterizationClassNames;
+	}
+
+	public void setCharacterizationClassNames(String[] characterizationClassNames) {
+		this.characterizationClassNames = characterizationClassNames;
 	}
 }
