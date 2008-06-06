@@ -1,10 +1,12 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
+import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
@@ -58,6 +60,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+		
+		if (!validateAssociationFile(request, assocBean)) {
+			return mapping.getInputForward();
+		}
+		
 		ActionMessages msgs = new ActionMessages();
 		boolean noErrors = true;
 		// validate if composing element is null
@@ -113,6 +120,17 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		} else {
 			return mapping.getInputForward();
 		}
+	}
+	
+	private boolean validateAssociationFile(HttpServletRequest request,
+			ChemicalAssociationBean entityBean) throws Exception {
+		ActionMessages msgs = new ActionMessages();
+		for (LabFileBean filebean : entityBean.getFiles()) {
+			if(!validateFileBean(request, msgs, filebean)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

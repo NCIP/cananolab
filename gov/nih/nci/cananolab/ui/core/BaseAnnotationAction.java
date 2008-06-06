@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -256,5 +257,48 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			i++;
 		}
 		return particleSamples;
+	}
+	
+	protected boolean validateFileBean(HttpServletRequest request,
+			ActionMessages msgs, LabFileBean fileBean) {
+		
+		boolean noErrors = true;
+
+		LabFile labfile = fileBean.getDomainFile();
+		if (labfile.getTitle().length() == 0) {
+			ActionMessage msg = new ActionMessage("errors.required",
+					"file title");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
+		}
+
+		if (labfile.getType().length() == 0) {
+			ActionMessage msg = new ActionMessage("errors.required",
+					"file type");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
+		}
+
+		if (labfile.getUriExternal()) {
+			if (fileBean.getExternalUrl() == null
+					|| fileBean.getExternalUrl().trim().length() == 0) {
+				ActionMessage msg = new ActionMessage("errors.required",
+						"external url");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
+				noErrors = false;
+			}
+		//} else if (labfile.getUri() == null) {
+		} else if (fileBean.getUploadedFile() == null ||
+				fileBean.getUploadedFile().getFileName().length() == 0) {
+			ActionMessage msg = new ActionMessage("errors.required",
+					"uploaded file");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
+		}
+		return noErrors;
 	}
 }
