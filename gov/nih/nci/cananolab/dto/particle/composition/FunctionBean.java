@@ -46,12 +46,14 @@ public class FunctionBean {
 		if (function instanceof ImagingFunction) {
 			imagingFunction = (ImagingFunction) function;
 		} else if (function instanceof TargetingFunction) {
-			for (Target target : ((TargetingFunction) function)
-					.getTargetCollection()) {
-				targets.add(new TargetBean(target));
+			if (((TargetingFunction) function).getTargetCollection() != null) {
+				for (Target target : ((TargetingFunction) function)
+						.getTargetCollection()) {
+					targets.add(new TargetBean(target));
+				}
+				Collections.sort(targets,
+						new CaNanoLabComparators.TargetBeanDateComparator());
 			}
-			Collections.sort(targets,
-					new CaNanoLabComparators.TargetBeanDateComparator());
 		}
 		className = ClassUtils.getShortClassName(function.getClass()
 				.getCanonicalName());
