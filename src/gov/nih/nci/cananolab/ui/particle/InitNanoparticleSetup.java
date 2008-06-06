@@ -392,7 +392,8 @@ public class InitNanoparticleSetup {
 								.toString(), "Report", "submitReport", report
 								.getCreatedBy(), report.getCreatedDate());
 						dataBean.setDataDisplayType(reportCategory);
-						dataBean.setViewTitle(report.getUri());
+						dataBean.setViewTitle(report.getTitle());
+						//dataBean.setViewTitle(report.getUri());
 						if (dataTree.get(reportCategory) != null) {
 							rdataBeans = (TreeSet<DataLinkBean>) dataTree
 									.get(reportCategory);
