@@ -427,7 +427,7 @@
 <!--				<arg position="0" key="surface.zetaPotentialValue"-->
 <!--					bundle="particle" />-->
 <!--			</field>-->
-			<field property="numberOfMolecules" page="2"
+			<field property="numberOfMolecule" page="2"
 				depends="integer, validwhen"
 				indexedListProperty="achar.surfaceBean.domainSurface.surfaceChemistryCollection">
 				<arg position="0" key="surface.numberOfMolecules"
