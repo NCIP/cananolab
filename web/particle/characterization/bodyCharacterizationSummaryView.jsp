@@ -88,7 +88,7 @@
 					<td class="formTitle"
 						colspan="${3+fn:length(charSummary.columnLabels)}">
 						<div align="justify">
-							${particleName} - ${ submitType} Characterizations
+							${fn:toUpperCase(param.location)} ${particleName} - ${ submitType} Characterizations
 						</div>
 					</td>
 				</tr>

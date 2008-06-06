@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <html:form action="/compositionFile">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
@@ -10,7 +11,7 @@
 			<tr class="topBorder">
 				<td class="formTitle" colspan="3">
 					<div align="justify">
-						Composition File Information
+						${fn:toUpperCase(param.location)} ${particleName} Composition File Information
 					</div>
 				</td>
 			</tr>
