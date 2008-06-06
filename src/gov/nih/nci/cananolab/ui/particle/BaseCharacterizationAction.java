@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -125,8 +126,24 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		boolean noErrors = true;
 		for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
 				.getDerivedBioAssayDataList()) {
+
 			List<DerivedDatum> datumList = derivedBioassayDataBean
 					.getDatumList();
+			LabFileBean lfBean = derivedBioassayDataBean.getLabFileBean();
+
+			// error, if no data input from either the lab file or derived datum
+			boolean noFileError = true;
+			if (datumList == null || datumList.size() == 0) {
+				noFileError = validateFileBean(request, msgs, lfBean);
+				if (!noFileError) {
+					ActionMessage msg = new ActionMessage("errors.required",
+							"If no derived datum entered, the file data");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					noErrors = false;
+				}
+			}
+
 			for (DerivedDatum datum : datumList) {
 				// if value field is populated, so does the name field.
 				if (datum.getName().length() == 0) {
@@ -160,6 +177,50 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					}
 				}
 			}
+
+		}
+		return noErrors;
+	}
+
+	private boolean validateFileBean(HttpServletRequest request,
+			ActionMessages msgs, LabFileBean fileBean) {
+		
+		boolean noErrors = true;
+
+		LabFile labfile = fileBean.getDomainFile();
+		if (labfile.getTitle().length() == 0) {
+			ActionMessage msg = new ActionMessage("errors.required",
+					"file title");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
+		}
+
+		if (labfile.getType().length() == 0) {
+			ActionMessage msg = new ActionMessage("errors.required",
+					"file type");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
+		}
+
+		if (labfile.getUriExternal()) {
+			if (fileBean.getExternalUrl() == null
+					|| fileBean.getExternalUrl().trim().length() == 0) {
+				ActionMessage msg = new ActionMessage("errors.required",
+						"external url");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
+				noErrors = false;
+			}
+		//} else if (labfile.getUri() == null) {
+		} else if (fileBean.getUploadedFile() == null ||
+				fileBean.getUploadedFile().getFileName().length() == 0) {
+			ActionMessage msg = new ActionMessage("errors.required",
+					"uploaded file");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
 		}
 		return noErrors;
 	}
