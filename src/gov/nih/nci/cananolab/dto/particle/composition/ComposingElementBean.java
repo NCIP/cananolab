@@ -25,12 +25,14 @@ public class ComposingElementBean {
 
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domainComposingElement = composingElement;
-		for (Function function : composingElement
-				.getInherentFunctionCollection()) {
-			inherentFunctions.add(new FunctionBean(function));
+		if (composingElement.getInherentFunctionCollection() != null) {
+			for (Function function : composingElement
+					.getInherentFunctionCollection()) {
+				inherentFunctions.add(new FunctionBean(function));
+			}
+			Collections.sort(inherentFunctions,
+					new CaNanoLabComparators.FunctionBeanDateComparator());
 		}
-		Collections.sort(inherentFunctions,
-				new CaNanoLabComparators.FunctionBeanDateComparator());
 	}
 
 	public ComposingElementBean() {

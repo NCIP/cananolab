@@ -187,17 +187,23 @@ public class NanoparticleSampleServiceHelper {
 				for (NanoparticleEntity entity : particleSample
 						.getSampleComposition()
 						.getNanoparticleEntityCollection()) {
-					for (ComposingElement element : entity
-							.getComposingElementCollection()) {
-						for (Function function : element
-								.getInherentFunctionCollection()) {
-							if (function instanceof OtherFunction) {
-								storedFunctions.add(((OtherFunction) function)
-										.getType());
-							} else {
-								storedFunctions.add(ClassUtils
-										.getShortClassName(function.getClass()
-												.getCanonicalName()));
+					if (entity.getComposingElementCollection() != null) {
+						for (ComposingElement element : entity
+								.getComposingElementCollection()) {
+							if (element.getInherentFunctionCollection() != null) {
+								for (Function function : element
+										.getInherentFunctionCollection()) {
+									if (function instanceof OtherFunction) {
+										storedFunctions
+												.add(((OtherFunction) function)
+														.getType());
+									} else {
+										storedFunctions.add(ClassUtils
+												.getShortClassName(function
+														.getClass()
+														.getCanonicalName()));
+									}
+								}
 							}
 						}
 					}
@@ -208,14 +214,16 @@ public class NanoparticleSampleServiceHelper {
 				for (FunctionalizingEntity entity : particleSample
 						.getSampleComposition()
 						.getFunctionalizingEntityCollection()) {
-					for (Function function : entity.getFunctionCollection()) {
-						if (function instanceof OtherFunction) {
-							storedFunctions.add(((OtherFunction) function)
-									.getType());
-						} else {
-							storedFunctions.add(ClassUtils
-									.getShortClassName(function.getClass()
-											.getCanonicalName()));
+					if (entity.getFunctionCollection() != null) {
+						for (Function function : entity.getFunctionCollection()) {
+							if (function instanceof OtherFunction) {
+								storedFunctions.add(((OtherFunction) function)
+										.getType());
+							} else {
+								storedFunctions.add(ClassUtils
+										.getShortClassName(function.getClass()
+												.getCanonicalName()));
+							}
 						}
 					}
 				}
@@ -501,7 +509,6 @@ public class NanoparticleSampleServiceHelper {
 		}
 		return labFile;
 	}
-
 
 	public List<Keyword> findKeywordsForNanoparticleSampleId(
 			String particleSampleId) throws Exception {
