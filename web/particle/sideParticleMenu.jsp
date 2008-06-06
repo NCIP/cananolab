@@ -32,15 +32,14 @@
 </c:choose>
 <c:choose>
 	<c:when test="${!empty theParticle}">
-		<c:set var="particleName" value="${theParticle.domainParticleSample.name}"
-			scope="session" />
+		<c:set var="particleName"
+			value="${theParticle.domainParticleSample.name}" scope="session" />
 		<c:set var="particleId" value="${theParticle.domainParticleSample.id}"
 			scope="session" />
 		<c:set var="particleSource"
 			value="${theParticle.domainParticleSample.source.organizationName}"
 			scope="session" />
-		<c:set var="location"
-			value="${theParticle.location}" scope="session" />
+		<c:set var="location" value="${theParticle.location}" scope="session" />
 	</c:when>
 </c:choose>
 <c:choose>
@@ -71,7 +70,7 @@
 			<ul class="slidingmenu" id="menuroot">
 
 				<li id="view_particle">
-					VIEWING PARTICLE:
+					<b>${fn:toUpperCase(location)} PARTICLE:</b>					
 					<c:out value="${particleName}" />
 				</li>
 				<li class="controlList">

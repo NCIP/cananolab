@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c_rt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
@@ -24,7 +25,7 @@
 		<tr>
 			<td>
 				<h4>
-					${particleName} ${pageTitle}
+					${fn:toUpperCase(param.location)} ${particleName} ${pageTitle}
 				</h4>
 			</td>
 			<c_rt:set var='dispatch' value='<%=request.getParameter("dispatch")%>'/>
