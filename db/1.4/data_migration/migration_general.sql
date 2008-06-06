@@ -92,6 +92,7 @@ SELECT protocol_file_pk_id,
 FROM cananolab.protocol_file
 ;
 
+-- protocol
 INSERT INTO canano.protocol
 (
 	protocol_pk_id,
@@ -100,12 +101,38 @@ INSERT INTO canano.protocol
 	created_by,
 	created_date
 )
-SELECT protocol_pk_id,
-	protocol_name,
-	LOWER(protocol_type),
+SELECT p.protocol_pk_id,
+	p.protocol_name,
+	LOWER(p.protocol_type),
 	'DATA_MIGRATION',
 	SYSDATE()
-FROM cananolab.protocol
+FROM cananolab.protocol p,
+cananolab.protocol_file pf,
+cananolab.lab_file lf
+WHERE lf.file_pk_id = pf.protocol_file_pk_id
+and pf.protocol_pk_id = p.protocol_pk_id
+and lf.created_date is null
+;
+
+INSERT INTO canano.protocol
+(
+	protocol_pk_id,
+	protocol_name,
+	protocol_type,
+	created_by,
+	created_date
+)
+SELECT p.protocol_pk_id,
+	p.protocol_name,
+	LOWER(p.protocol_type),
+	lf.created_by,
+	lf.created_date
+FROM cananolab.protocol p,
+cananolab.protocol_file pf,
+cananolab.lab_file lf
+WHERE lf.file_pk_id = pf.protocol_file_pk_id
+and pf.protocol_pk_id = p.protocol_pk_id
+and lf.created_date is not null
 ;
 
 INSERT INTO canano.lab_file
@@ -136,7 +163,40 @@ SELECT file_pk_id,
 	type,
 	0
 FROM cananolab.lab_file
+where created_date is null
 ;
+
+INSERT INTO canano.lab_file
+(
+	file_pk_id,
+	file_name,
+	file_uri,
+	file_extension,
+	version,
+	created_by,
+	created_date,
+	title,
+	description,
+	comments,
+	file_type,
+	is_uri_external
+)
+SELECT file_pk_id,
+	file_name,
+	file_uri,
+	file_type_extension,
+	version,
+	created_by,
+	created_date,
+	title,
+	description,
+	comments,
+	type,
+	0
+FROM cananolab.lab_file
+where created_date is not null
+;
+
 
 INSERT INTO canano.instrument
 (
