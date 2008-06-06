@@ -64,24 +64,11 @@ public class GridService {
 								hostName = serviceMetaData
 										.getHostingResearchCenter()
 										.getResearchCenter().getDisplayName();
+								// remove caNanoLab prefix
+								hostName=hostName.replace("caNanoLab-", "");
 							}
 						}
 					}
-
-					// retrieve customized metadata
-					// Element resourceProp = ResourcePropertyHelper
-					// .getResourceProperty(
-					// service,
-					// ResourceConstants.APPLICATIONSERVICEURL_MD_RP);
-					// Reader xmlReader = new StringReader(XmlUtils
-					// .toString(resourceProp));
-					// appServiceURL = (String)
-					// Utils.deserializeObject(xmlReader,
-					// String.class);
-
-					// GridNodeBean gridNode = new GridNodeBean(hostName,
-					// address,
-					// appServiceURL);
 
 					// remove local grid node from the list
 					if (!hostName.contains(appOwner)) {
