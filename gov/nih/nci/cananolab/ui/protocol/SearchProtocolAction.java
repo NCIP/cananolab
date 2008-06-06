@@ -10,10 +10,10 @@ import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,10 +88,11 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			}
 		}
 		if (foundProtocolFiles != null && !foundProtocolFiles.isEmpty()) {
-			Collections
-					.sort(
-							foundProtocolFiles,
-							new CaNanoLabComparators.ProtocolFileBeanNameVersionComparator());
+			// Collections
+			// .sort(
+			// foundProtocolFiles,
+			// new
+			// CaNanoLabComparators.ProtocolFileBeanNameVersionComparator());
 			request.getSession().setAttribute("protocolFiles",
 					foundProtocolFiles);
 			forward = mapping.findForward("success");
@@ -128,5 +129,38 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return true;
+	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String location = request.getParameter("location");
+		String fileId = request.getParameter("fileId");
+		if (location.equals("local")) {
+			return super.download(mapping, form, request, response);
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			ProtocolService protocolService = new ProtocolServiceRemoteImpl(
+					serviceUrl);
+			ProtocolFileBean fileBean = protocolService
+					.findProtocolFileById(fileId);
+			if (fileBean.getDomainFile().getUriExternal()) {
+				response.sendRedirect(fileBean.getDomainFile().getUri());
+				return null;
+			}
+
+			// assume grid service is located on the same server and port as
+			// webapp
+			URL url = new URL(serviceUrl);
+			String remoteServerHostUrl = url.getProtocol() + "://"
+					+ url.getHost() + ":" + url.getPort();
+			String remoteDownloadUrl = remoteServerHostUrl + "/"
+					+ CaNanoLabConstants.CSM_APP_NAME
+					+ "/searchProtocol.do?dispatch=download" + "&fileId="
+					+ fileId + "&location=local";
+			response.sendRedirect(remoteDownloadUrl);
+			return null;
+		}
 	}
 }

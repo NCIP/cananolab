@@ -11,7 +11,9 @@ import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.12 2008-06-02 22:18:56 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.13 2008-06-06 18:16:24 pansu Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -211,5 +213,37 @@ public class SearchReportAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return true;
+	}
+
+	public ActionForward download(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String location = request.getParameter("location");
+		String fileId = request.getParameter("fileId");
+		if (location.equals("local")) {
+			return super.download(mapping, form, request, response);
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			ReportService protocolService = new ReportServiceRemoteImpl(
+					serviceUrl);
+			ReportBean fileBean = protocolService.findReportById(fileId);
+			if (fileBean.getDomainFile().getUriExternal()) {
+				response.sendRedirect(fileBean.getDomainFile().getUri());
+				return null;
+			}
+			// assume grid service is located on the same server and port as
+			// webapp
+			URL url = new URL(serviceUrl);
+			String remoteServerHostUrl = url.getProtocol() + "://"
+					+ url.getHost() + ":" + url.getPort();
+			String remoteDownloadUrl = remoteServerHostUrl + "/"
+					+ CaNanoLabConstants.CSM_APP_NAME
+					+ "/searchReport.do?dispatch=download" + "&fileId="
+					+ fileId + "&location=local";
+
+			response.sendRedirect(remoteDownloadUrl);
+			return null;
+		}
 	}
 }
