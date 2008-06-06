@@ -600,7 +600,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
 			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.sampleComposition.SampleComposition");
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			SampleComposition sampleComposition = null;
 			while (iter.hasNext()) {
