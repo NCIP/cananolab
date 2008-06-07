@@ -70,22 +70,26 @@ public class NanoparticleDecorator extends TableDecorator {
 	public String getCompositionStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		SortedSet<String> compEntityNames = new TreeSet<String>();
-		for (String name : particle.getFunctionalizingEntityClassNames()) {
-			String displayName = InitSetup.getInstance().getDisplayName(name,
-					this.getPageContext().getServletContext());
-			if (displayName.length() == 0) {
-				compEntityNames.add(name);
-			} else {
-				compEntityNames.add(displayName);
+		if (particle.getFunctionalizingEntityClassNames() != null) {
+			for (String name : particle.getFunctionalizingEntityClassNames()) {
+				String displayName = InitSetup.getInstance().getDisplayName(
+						name, this.getPageContext().getServletContext());
+				if (displayName.length() == 0) {
+					compEntityNames.add(name);
+				} else {
+					compEntityNames.add(displayName);
+				}
 			}
 		}
-		for (String name : particle.getNanoparticleEntityClassNames()) {
-			String displayName = InitSetup.getInstance().getDisplayName(name,
-					this.getPageContext().getServletContext());
-			if (displayName.length() == 0) {
-				compEntityNames.add(name);
-			} else {
-				compEntityNames.add(displayName);
+		if (particle.getNanoparticleEntityClassNames() != null) {
+			for (String name : particle.getNanoparticleEntityClassNames()) {
+				String displayName = InitSetup.getInstance().getDisplayName(
+						name, this.getPageContext().getServletContext());
+				if (displayName.length() == 0) {
+					compEntityNames.add(name);
+				} else {
+					compEntityNames.add(displayName);
+				}
 			}
 		}
 		return StringUtils.join(compEntityNames, "<br>");
@@ -94,13 +98,15 @@ public class NanoparticleDecorator extends TableDecorator {
 	public String getFunctionStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		SortedSet<String> functionNames = new TreeSet<String>();
-		for (String name : particle.getFunctionClassNames()) {
-			String displayName = InitSetup.getInstance().getDisplayName(name,
-					this.getPageContext().getServletContext());
-			if (displayName.length() == 0) {
-				functionNames.add(name);
-			} else {
-				functionNames.add(displayName);
+		if (particle.getFunctionClassNames() != null) {
+			for (String name : particle.getFunctionClassNames()) {
+				String displayName = InitSetup.getInstance().getDisplayName(
+						name, this.getPageContext().getServletContext());
+				if (displayName.length() == 0) {
+					functionNames.add(name);
+				} else {
+					functionNames.add(displayName);
+				}
 			}
 		}
 		return StringUtils.join(functionNames, "<br>");
@@ -109,10 +115,12 @@ public class NanoparticleDecorator extends TableDecorator {
 	public String getCharacterizationStr() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		SortedSet<String> charNames = new TreeSet<String>();
-		for (String name : particle.getCharacterizationClassNames()) {
-			String displayName = InitSetup.getInstance().getDisplayName(name,
-					this.getPageContext().getServletContext());
-			charNames.add(displayName);
+		if (particle.getCharacterizationClassNames() != null) {
+			for (String name : particle.getCharacterizationClassNames()) {
+				String displayName = InitSetup.getInstance().getDisplayName(
+						name, this.getPageContext().getServletContext());
+				charNames.add(displayName);
+			}
 		}
 		return StringUtils.join(charNames, "<br>");
 	}
