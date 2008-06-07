@@ -110,9 +110,33 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			String particleName, String className)
 			throws ParticleCharacterizationException {
 		try {
-			Characterization[] chars = gridClient.getCharacterizationsBy(
-					particleName, className);
-			List<Characterization> charList = Arrays.asList(chars);
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName(className);
+			Association association = new Association();
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association.setRoleName("nanoparticleSample");
+
+			Attribute attribute = new Attribute();
+			attribute.setName("name");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(particleName);
+
+			association.setAttribute(attribute);
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results.setTargetClassname(className);
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Characterization chara = null;
+			List<Characterization> charList = new ArrayList<Characterization>();
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				chara = (Characterization) obj;
+				// loadCharacterizationAssociations(chara);
+				charList.add(chara);
+			}
 			Collections.sort(charList,
 					new CaNanoLabComparators.CharacterizationDateComparator());
 			return charList;
@@ -202,7 +226,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		achar
 				.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 		DerivedBioAssayData[] bioassayArray = gridClient
-				.getDerivedBioAssayDataByCharacterizationId(achar.getId()
+				.getDerivedBioAssayDatasByCharacterizationId(achar.getId()
 						.toString());
 		if (bioassayArray != null) {
 			for (DerivedBioAssayData bioassay : bioassayArray) {
@@ -249,7 +273,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				chara = (Characterization) obj;
-				//loadCharacterizationAssociations(chara);
+				// loadCharacterizationAssociations(chara);
 				characterizationCollection.add(chara);
 			}
 			return characterizationCollection;
@@ -260,18 +284,18 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			throw new ParticleCharacterizationException(err, e);
 		}
 	}
-	
-	public void removeCharacterizationVisibility(AuthorizationService authService,
-			Characterization aChar)
-		throws ParticleCharacterizationException {
+
+	public void removeCharacterizationVisibility(
+			AuthorizationService authService, Characterization aChar)
+			throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
-		"Not implemented for grid service");
+				"Not implemented for grid service");
 	}
 
-	public void assignCharacterizationVisibility(AuthorizationService authService,
-			Characterization aChar, String[] visibleGroups)
-		throws ParticleCharacterizationException {
+	public void assignCharacterizationVisibility(
+			AuthorizationService authService, Characterization aChar,
+			String[] visibleGroups) throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
-		"Not implemented for grid service");
+				"Not implemented for grid service");
 	}
 }
