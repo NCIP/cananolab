@@ -32,13 +32,13 @@ public class ParticleBean {
 
 	private String location; // e.g. local, caNanoLab-WashU, etc
 
-	private String[] nanoparticleEntityClassNames;
+	private String[] nanoparticleEntityClassNames=new String[0];
 
-	private String[] functionalizingEntityClassNames;
+	private String[] functionalizingEntityClassNames=new String[0];
 
-	private String[] functionClassNames;
+	private String[] functionClassNames=new String[0];
 
-	private String[] characterizationClassNames;
+	private String[] characterizationClassNames=new String[0];
 
 	public ParticleBean() {
 		domainParticleSample.setSource(new Source());
