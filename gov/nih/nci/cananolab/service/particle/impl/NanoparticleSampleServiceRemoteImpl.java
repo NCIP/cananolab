@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.SortableName;
@@ -104,16 +105,18 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	private void loadParticleBeanAssociationClassNames(ParticleBean particleBean)
 			throws Exception {
 		//TODO fill in HQL
-		String[] functionClassNames = new String[0];
-		particleBean.setFunctionClassNames(functionClassNames);
-		String[] characterizationClassNames = new String[0];
-		particleBean.setCharacterizationClassNames(characterizationClassNames);
-		String[] functionalizingEntityClassNames = new String[0];
+		NanoparticleSampleServiceHelper helper = new NanoparticleSampleServiceHelper();		
+		String particleId = particleBean.getDomainParticleSample().getId().toString();		
+		String[] functionClassNames = helper.getFunctionClassNames(particleId);
+		particleBean.setFunctionClassNames(functionClassNames);		
+		String[] characterizationClassNames = helper.getCharacterizationClassNames(particleId);
+		particleBean.setCharacterizationClassNames(characterizationClassNames);	
+		String[] nanoparticleEntityClassNames = helper.getNanoparticleEntityClassNames(particleId);
+		particleBean
+				.setNanoparticleEntityClassNames(nanoparticleEntityClassNames);		
+		String[] functionalizingEntityClassNames = helper.getFunctionalizingEntityClassNames(particleId);
 		particleBean
 				.setFunctionalizingEntityClassNames(functionalizingEntityClassNames);
-		String[] nanoparticleEntityClassNames = new String[0];
-		particleBean
-				.setNanoparticleEntityClassNames(nanoparticleEntityClassNames);
 	}
 
 	/**

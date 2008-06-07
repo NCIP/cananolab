@@ -543,4 +543,55 @@ public class NanoparticleSampleServiceHelper {
 		}
 		return publicNames.size();
 	}
+	
+	public String[] getCharacterizationClassNames(String particleId) throws Exception {
+		String hql = "select distinct achar.class from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar"+
+			" where achar.nanoparticleSample.id = "+particleId;
+		return this.getClassNames(hql);
+	}
+	
+	public String[] getFunctionalizingEntityClassNames(String particleId) throws Exception {
+		
+		String hql = "select distinct entity.class from "+
+			" gov.nih.nci.cananolab.domain.particle.samplecomposition."+
+			"functionalization.FunctionalizingEntity entity"+
+			" where entity.sampleComposition.nanoparticleSample.id = "+particleId;		
+		return this.getClassNames(hql);		
+	}
+	
+	public String[] getFunctionClassNames(String particleId) throws Exception {
+		String hql = "select distinct func.class from "+
+			" gov.nih.nci.cananolab.domain.particle.samplecomposition.Function func, "+
+			" gov.nih.nci.cananolab.domain.particle.samplecomposition."+
+			"functionalization.FunctionalizingEntity entity"+
+			" where entity.sampleComposition.nanoparticleSample.id = "+particleId+
+			" and entity.functionCollection.id = func.id";
+		return this.getClassNames(hql);		
+	}
+	
+	public String[] getNanoparticleEntityClassNames(String particleId) throws Exception {		
+		String hql = "select distinct entity.class from "+
+			" gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity entity"+
+			" where entity.sampleComposition.nanoparticleSample.id = "+particleId;		
+		return this.getClassNames(hql);		
+	}
+	
+	private String[] getClassNames(String hql) throws Exception {
+		String[] classNames = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();		
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		if (results!=null){
+			classNames = new String[results.size()];
+		}else{
+			classNames = new String[0];
+		}
+		int i = 0;
+		for (Object obj : results) {
+			classNames[i] = (String) obj.toString();
+			i++;		
+		}
+		return classNames;
+	}
 }
