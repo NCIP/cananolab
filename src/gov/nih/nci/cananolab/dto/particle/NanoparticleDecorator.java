@@ -97,7 +97,11 @@ public class NanoparticleDecorator extends TableDecorator {
 		for (String name : particle.getFunctionClassNames()) {
 			String displayName = InitSetup.getInstance().getDisplayName(name,
 					this.getPageContext().getServletContext());
-			functionNames.add(displayName);
+			if (displayName.length() == 0) {
+				functionNames.add(name);
+			} else {
+				functionNames.add(displayName);
+			}
 		}
 		return StringUtils.join(functionNames, "<br>");
 	}
