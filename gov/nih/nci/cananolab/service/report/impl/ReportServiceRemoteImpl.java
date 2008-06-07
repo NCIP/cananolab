@@ -149,7 +149,7 @@ public class ReportServiceRemoteImpl implements ReportService {
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.Report");
 			query.setTarget(target);
-			QueryModifier modifier=new QueryModifier();
+			QueryModifier modifier = new QueryModifier();
 			modifier.setCountOnly(true);
 			query.setQueryModifier(modifier);
 
@@ -157,16 +157,57 @@ public class ReportServiceRemoteImpl implements ReportService {
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			int count=0;
+			int count = 0;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				count=((Long)obj).intValue();
-			}	
+				count = ((Long) obj).intValue();
+			}
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of remote public reports.";
 			logger.error(err, e);
 			throw new ReportException(err, e);
+		}
+	}
+
+	public Report[] findReportsByParticleSampleId(String particleId)
+			throws ReportException {
+		{
+			try {
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				target.setName("gov.nih.nci.cananolab.domain.common.Report");
+				Association association = new Association();
+				association
+						.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+				association.setRoleName("nanoparticleSampleCollection");
+
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(particleId);
+				association.setAttribute(attribute);
+
+				target.setAssociation(association);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results
+						.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				Report report = null;
+				List<Report> reports = new ArrayList<Report>();
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					report = (Report) obj;
+					reports.add(report);
+				}
+				return reports.toArray(new Report[0]);
+			} catch (Exception e) {
+				String err = "Error finding reports for particle.";
+				logger.error(err, e);
+				throw new ReportException(err, e);
+			}
 		}
 	}
 }

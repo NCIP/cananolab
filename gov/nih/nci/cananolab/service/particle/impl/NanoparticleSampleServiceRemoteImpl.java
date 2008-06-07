@@ -136,8 +136,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		// keyword
 		loadKeywordsForParticleSample(particleSample);
 
-		// characterization, char.derivedBioAssayDataCollection,
-		// derived.labFile, labFile.keywordCollection
+		// characterization
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceRemoteImpl(
 				serviceUrl);
 		Collection<Characterization> characterizationCollection = charService
@@ -156,6 +155,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		SampleComposition sampleComposition = compService
 				.findCompositionByParticleSampleId(particleId);
 		particleSample.setSampleComposition(sampleComposition);
+		//TODO load reports
 	}
 
 	public ParticleBean findNanoparticleSampleById(String particleId)

@@ -28,6 +28,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.SortedSet;
@@ -257,37 +258,43 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	 * 
 	 */
 	private void loadNanoparticleEntityForComposition(
-			SampleComposition composition) throws ParticleCompositionException {
+			SampleComposition composition, String[] entityClassNames)
+			throws ParticleCompositionException {
 		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
-			association.setRoleName("sampleComposition");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(composition.getId().toString());
-			association.setAttribute(attribute);
-
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			NanoparticleEntity nanoEntity = null;
 			composition
 					.setNanoparticleEntityCollection(new HashSet<NanoparticleEntity>());
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				nanoEntity = (NanoparticleEntity) obj;
-				loadComposingElementForNanoparticleEntity(nanoEntity);
-				composition.getNanoparticleEntityCollection().add(nanoEntity);
+			for (String className : entityClassNames) {
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				target
+						.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base."
+								+ className);
+				Association association = new Association();
+				association
+						.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+				association.setRoleName("sampleComposition");
+
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(composition.getId().toString());
+				association.setAttribute(attribute);
+
+				target.setAssociation(association);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results
+						.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base."
+								+ className);
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				NanoparticleEntity nanoEntity = null;
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					nanoEntity = (NanoparticleEntity) obj;
+					composition.getNanoparticleEntityCollection().add(
+							nanoEntity);
+				}
 			}
 		} catch (Exception e) {
 			String err = "Problem finding the NanoparticleEntity Collection for composition id: "
@@ -301,39 +308,45 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	 * load all FunctionalizingEntity Collection with an associated Composition
 	 */
 	private void loadFunctionalizingEntityForComposition(
-			SampleComposition composition) throws ParticleCompositionException {
+			SampleComposition composition, String[] entityClassNames)
+			throws ParticleCompositionException {
 		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
-			association.setRoleName("sampleComposition");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(composition.getId().toString());
-			association.setAttribute(attribute);
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			FunctionalizingEntity functionalizingEntity = null;
 			composition
 					.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				functionalizingEntity = (FunctionalizingEntity) obj;
-				loadFunctionsForFunctionalizingEntity(functionalizingEntity);
-				composition.getFunctionalizingEntityCollection().add(
-						functionalizingEntity);
-			}
+			for (String name : entityClassNames) {
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				target
+						.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization."
+								+ name);
+				Association association = new Association();
+				association
+						.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+				association.setRoleName("sampleComposition");
 
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(composition.getId().toString());
+				association.setAttribute(attribute);
+				target.setAssociation(association);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results
+						.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization."
+								+ name);
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				FunctionalizingEntity functionalizingEntity = null;
+
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					functionalizingEntity = (FunctionalizingEntity) obj;
+					// loadFunctionsForFunctionalizingEntity(functionalizingEntity);
+					composition.getFunctionalizingEntityCollection().add(
+							functionalizingEntity);
+				}
+			}
 		} catch (Exception e) {
 			String err = "Problem finding the FunctionalizingEntity Collection for Composition Id: "
 					+ composition.getId();
@@ -603,11 +616,40 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			SampleComposition sampleComposition = null;
+			String[] nanoparticleEntityClasses = gridClient
+					.getNanoparticleEntityClassNamesByParticleId(particleId);
+			String[] functionalizingEntityClasses = gridClient
+					.getFunctionalizingEntityClassNamesByParticleId(particleId);
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
-				loadNanoparticleEntityForComposition(sampleComposition);
-				loadFunctionalizingEntityForComposition(sampleComposition);
+				if (nanoparticleEntityClasses != null
+						&& nanoparticleEntityClasses.length > 0) {
+					loadNanoparticleEntityForComposition(sampleComposition,
+							nanoparticleEntityClasses);
+				}
+				if (functionalizingEntityClasses != null
+						&& functionalizingEntityClasses.length > 0) {
+					loadFunctionalizingEntityForComposition(sampleComposition,
+							functionalizingEntityClasses);
+				}
+				ChemicalAssociation[] assocs = gridClient
+						.getChemicalAssociationsByCompositionId(sampleComposition
+								.getId().toString());
+				if (assocs != null && assocs.length > 0) {
+					sampleComposition
+							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
+									Arrays.asList(assocs)));
+				}
+				LabFile[] files = gridClient
+						.getLabFilesByCompositionInfoId(sampleComposition
+								.getId().toString(),
+								"gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+				if (files != null && files.length > 0) {
+					sampleComposition
+							.setLabFileCollection(new HashSet<LabFile>(Arrays
+									.asList(files)));
+				}
 			}
 			return sampleComposition;
 		} catch (Exception e) {
@@ -617,51 +659,60 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			throw new ParticleCompositionException(err, e);
 		}
 	}
-	
-	public void assignChemicalAssociationVisibility(AuthorizationService authService,
+
+	public void assignChemicalAssociationVisibility(
+			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation, String[] visibleGroups)
-		throws ParticleCompositionException {
+			throws ParticleCompositionException {
 		throw new ParticleCompositionException(
-		"Not implemented for grid service");
-	}
-	
-	public void assignNanoparicleEntityVisibility(AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
-		throws ParticleCompositionException {
-		throw new ParticleCompositionException(
-		"Not implemented for grid service");
-	}
-	
-	public void assignFunctionalizingEntityVisibility(AuthorizationService authService,
-				FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
-		throws ParticleCompositionException {
-		throw new ParticleCompositionException(
-		"Not implemented for grid service");
-	}
-		
-	public void removeNanoparticleEntityVisibility(AuthorizationService authService,
-				NanoparticleEntity nanoparticleEntity)
-		throws ParticleCompositionException {
-		throw new ParticleCompositionException(
-		"Not implemented for grid service");
+				"Not implemented for grid service");
 	}
 
-	public void removeFunctionalizingEntityVisibility(AuthorizationService authService,
-				FunctionalizingEntity functionalizingEntity)
-		throws ParticleCompositionException {
+	public void assignNanoparicleEntityVisibility(
+			AuthorizationService authService,
+			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
+			throws ParticleCompositionException {
 		throw new ParticleCompositionException(
-		"Not implemented for grid service");
+				"Not implemented for grid service");
 	}
-	public void removeChemicalAssociationVisibility(AuthorizationService authService,
+
+	public void assignFunctionalizingEntityVisibility(
+			AuthorizationService authService,
+			FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+			throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+				"Not implemented for grid service");
+	}
+
+	public void removeNanoparticleEntityVisibility(
+			AuthorizationService authService,
+			NanoparticleEntity nanoparticleEntity)
+			throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+				"Not implemented for grid service");
+	}
+
+	public void removeFunctionalizingEntityVisibility(
+			AuthorizationService authService,
+			FunctionalizingEntity functionalizingEntity)
+			throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+				"Not implemented for grid service");
+	}
+
+	public void removeChemicalAssociationVisibility(
+			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation)
-		throws ParticleCompositionException {
+			throws ParticleCompositionException {
 		throw new ParticleCompositionException(
-		"Not implemented for grid service");
+				"Not implemented for grid service");
 	}
-	public void assignSampleCompositionVisibility(AuthorizationService authService,
+
+	public void assignSampleCompositionVisibility(
+			AuthorizationService authService,
 			NanoparticleSample particleSample, String[] visibleGroups)
-		throws ParticleCompositionException {
+			throws ParticleCompositionException {
 		throw new ParticleCompositionException(
-		"Not implemented for grid service");
+				"Not implemented for grid service");
 	}
 }

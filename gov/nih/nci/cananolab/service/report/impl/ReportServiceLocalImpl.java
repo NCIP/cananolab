@@ -122,4 +122,9 @@ public class ReportServiceLocalImpl implements ReportService {
 			throw new ReportException(err, e);
 		}
 	}
+
+	public Report[] findReportsByParticleSampleId(String particleId)
+			throws ReportException {
+		throw new ReportException("Not implemented for local search");
+	}
 }
