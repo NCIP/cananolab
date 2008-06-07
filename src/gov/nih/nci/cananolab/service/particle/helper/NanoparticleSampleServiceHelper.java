@@ -95,43 +95,13 @@ public class NanoparticleSampleServiceHelper {
 			crit.add(disjunction);
 		}
 
-		// functionalizing entity
-		if (functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias(
-					"sampleComposition.functionalizingEntityCollection",
-					"funcEntity", CriteriaSpecification.LEFT_JOIN);
-			Disjunction disjunction = Restrictions.disjunction();
-			if (functionalizingEntityClassNames != null
-					&& functionalizingEntityClassNames.length > 0) {
-				// Criterion funcEntityCrit =
-				// Restrictions.in("funcEntity.class",
-				// functionalizingEntityClassNames);
-				Criterion funcEntityCrit = Restrictions.eq("funcEntity.id",
-						2719744);
-				disjunction.add(funcEntityCrit);
-			}
-			if (otherFunctionalizingEntityTypes != null
-					&& otherFunctionalizingEntityTypes.length > 0) {
-				Criterion otherFuncEntityCrit1 = Restrictions.eq(
-						"funcEntity.class", "OtherFunctionalizingEntity");
-				Criterion otherFuncEntityCrit2 = Restrictions.in(
-						"funcEntity.type", otherFunctionalizingEntityTypes);
-				Criterion otherFuncEntityCrit = Restrictions.and(
-						otherFuncEntityCrit1, otherFuncEntityCrit2);
-				disjunction.add(otherFuncEntityCrit);
-			}
-			crit.add(disjunction);
-		}
-
 		// function
 		if (functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias(
+					"sampleComposition.functionalizingEntityCollection",
+					"funcEntity", CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("nanoEntity.composingElementCollection",
 					"compElement", CriteriaSpecification.LEFT_JOIN)
 					.createAlias("compElement.inherentFunctionCollection",
@@ -207,6 +177,9 @@ public class NanoparticleSampleServiceHelper {
 				crit.add(disjunction);
 			}
 		}
+
+		// functionalizing entity
+
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -232,7 +205,47 @@ public class NanoparticleSampleServiceHelper {
 			NanoparticleSample particle = (NanoparticleSample) obj;
 			particles.add(particle);
 		}
-		return particles;
+		// filter by functionalizingEntities
+		// can't use funcEntity.class in the where clause base
+		// table-per-subclass is used for inheritance
+
+		return filterByFunctionalizingEntities(functionalizingEntityClassNames,
+				otherFunctionalizingEntityTypes, particles);
+	}
+
+	private List<NanoparticleSample> filterByFunctionalizingEntities(
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			List<NanoparticleSample> particles) {
+
+		List<NanoparticleSample> filtered = new ArrayList<NanoparticleSample>();
+		if (functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0) {
+			for (NanoparticleSample particle : particles) {
+				SortedSet<String> storedEntities = getStoredFunctionalizingEntityClassNames(particle);
+				for (String entity : functionalizingEntityClassNames) {
+					// if at least one functionalizing entity type matches, keep
+					// the particle
+					if (storedEntities.contains(entity)) {
+						filtered.add(particle);
+						break;
+					}
+				}
+				if (otherFunctionalizingEntityTypes != null) {
+					for (String other : otherFunctionalizingEntityTypes) {
+						// if at least one function type matches, keep the
+						// particle
+						if (storedEntities.contains(other)) {
+							filtered.add(particle);
+							break;
+						}
+					}
+				}
+			}
+		} else {
+			filtered = particles;
+		}
+		return filtered;
 	}
 
 	/**
