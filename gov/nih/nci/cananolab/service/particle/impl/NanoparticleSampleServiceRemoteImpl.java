@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.SortableName;
@@ -104,17 +103,21 @@ public class NanoparticleSampleServiceRemoteImpl implements
 
 	private void loadParticleBeanAssociationClassNames(ParticleBean particleBean)
 			throws Exception {
-		//TODO fill in HQL
-		NanoparticleSampleServiceHelper helper = new NanoparticleSampleServiceHelper();		
-		String particleId = particleBean.getDomainParticleSample().getId().toString();		
-		String[] functionClassNames = helper.getFunctionClassNames(particleId);
-		particleBean.setFunctionClassNames(functionClassNames);		
-		String[] characterizationClassNames = helper.getCharacterizationClassNames(particleId);
-		particleBean.setCharacterizationClassNames(characterizationClassNames);	
-		String[] nanoparticleEntityClassNames = helper.getNanoparticleEntityClassNames(particleId);
+
+		String particleId = particleBean.getDomainParticleSample().getId()
+				.toString();
+		String[] functionClassNames = gridClient
+				.getFunctionClassNamesByParticleId(particleId);
+		particleBean.setFunctionClassNames(functionClassNames);
+		String[] characterizationClassNames = gridClient
+				.getCharacterizationClassNamesByParticleId(particleId);
+		particleBean.setCharacterizationClassNames(characterizationClassNames);
+		String[] nanoparticleEntityClassNames = gridClient
+				.getNanoparticleEntityClassNamesByParticleId(particleId);
 		particleBean
-				.setNanoparticleEntityClassNames(nanoparticleEntityClassNames);		
-		String[] functionalizingEntityClassNames = helper.getFunctionalizingEntityClassNames(particleId);
+				.setNanoparticleEntityClassNames(nanoparticleEntityClassNames);
+		String[] functionalizingEntityClassNames = gridClient
+				.getFunctionalizingEntityClassNamesByParticleId(particleId);
 		particleBean
 				.setFunctionalizingEntityClassNames(functionalizingEntityClassNames);
 	}
