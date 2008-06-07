@@ -23,9 +23,9 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -246,35 +246,41 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	public List<Characterization> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException {
 		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-			association.setRoleName("nanoparticleSample");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(particleId);
-
-			association.setAttribute(attribute);
-
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			Characterization chara = null;
+			String[] charNames = gridClient
+					.getCharacterizationClassNamesByParticleId(particleId);
 			List<Characterization> characterizationCollection = new ArrayList<Characterization>();
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				chara = (Characterization) obj;
-				// loadCharacterizationAssociations(chara);
-				characterizationCollection.add(chara);
+			for (String name : charNames) {
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				String fullClassName = ClassUtils.getFullClass(name)
+						.getCanonicalName();
+				target.setName(fullClassName);
+				Association association = new Association();
+				association
+						.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+				association.setRoleName("nanoparticleSample");
+
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(particleId);
+
+				association.setAttribute(attribute);
+
+				target.setAssociation(association);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results.setTargetClassname(fullClassName);
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				Characterization chara = null;
+
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					chara = (Characterization) obj;
+					// loadCharacterizationAssociations(chara);
+					characterizationCollection.add(chara);
+				}
 			}
 			return characterizationCollection;
 		} catch (Exception e) {
