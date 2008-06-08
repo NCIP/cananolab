@@ -125,7 +125,6 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		try {
 			NanoparticleEntity entity = helper
 					.findNanoparticleEntityById(entityId);
-			// TODO load associations
 			if (entity != null)
 				entityBean = new NanoparticleEntityBean(entity);
 			return entityBean;
