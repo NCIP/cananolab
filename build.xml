@@ -48,6 +48,10 @@
 				<exclude name="caNanoLab.properties" />
 			</fileset>
 		</copy>
+
+		<!--copy wsdd file -->
+		<copy todir="${tmp.dir}/WEB-INF/classes" file="${src.dir}/client-config.wsdd" />
+
 		<copy overwrite="true" todir="${tmp.dir}/WEB-INF/classes" file="${src.dir}/caNanoLab.properties.template">
 			<!-- replace tokens with values from build properties -->
 			<filterset>
