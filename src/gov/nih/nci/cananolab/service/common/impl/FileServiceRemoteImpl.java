@@ -61,7 +61,7 @@ public class FileServiceRemoteImpl implements FileService {
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				file = (LabFile) obj;
-				// TODO load associations
+				loadKeywordsForFile(file); 
 			}
 			if (file != null) {
 				fileBean = new LabFileBean(file);
