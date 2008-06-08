@@ -47,7 +47,7 @@
 				<td class="label" valign="top" align="right">
 					<html:textarea
 						property="entity.functions[${param.funcInd}].targets[${targetInd }].description"
-						rows="1" cols="25" />
+						rows="2" cols="25" />
 				</td>
 				<td class="label" valign="top" align="left" width="30%">
 					<c:choose>
