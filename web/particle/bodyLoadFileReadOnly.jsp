@@ -76,14 +76,6 @@
 						${param.fileKeywordsStr }&nbsp;
 					</td>
 				</tr>
-				<tr>
-					<td class="leftLabel" valign="top">
-						<strong>Visibility</strong>
-					</td>
-					<td class="rightLabel" >
-						${param.visibilityStr }&nbsp;
-					</td>
-				</tr>
 			</c:when>
 			<c:otherwise>
 				<tr>
