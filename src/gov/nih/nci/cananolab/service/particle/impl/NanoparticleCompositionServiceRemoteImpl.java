@@ -261,7 +261,6 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					java.lang.Object obj = iter.next();
 					entity = (FunctionalizingEntity) obj;
 				}
-				// TODO load associations
 				if (entity != null)
 					loadFunctionalizingEntityAssociations(entity);
 				entityBean = new FunctionalizingEntityBean(entity);
@@ -308,7 +307,6 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					java.lang.Object obj = iter.next();
 					entity = (FunctionalizingEntity) obj;
 				}
-				// TODO load associations
 				if (entity != null)
 					loadFunctionalizingEntityAssociations(entity);
 				entityBean = new FunctionalizingEntityBean(entity);
@@ -506,7 +504,6 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				java.lang.Object obj = iter.next();
 				assoc = (ChemicalAssociation) obj;
 			}
-			// TODO load associations
 			if (assoc != null) {
 				loadChemicalAssociationAssociations(assoc);
 				assocBean = new ChemicalAssociationBean(assoc);
@@ -545,7 +542,6 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				java.lang.Object obj = iter.next();
 				assoc = (ChemicalAssociation) obj;
 			}
-			// TODO load associations
 			if (assoc != null) {
 				loadChemicalAssociationAssociations(assoc);
 				assocBean = new ChemicalAssociationBean(assoc);
