@@ -37,19 +37,19 @@
 		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/${grid.service.name}_registration.xml" token="GRID_INDEX_SERVER" value="${grid.indexserver}" />
 
 		<!-- replace grid service metadata -->
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="APPOWNER" value="${application.owner}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_COUNTRY" value="${country}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_STATE" value="${state}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_STATE" value="${state}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_CITY" value="${city}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_STREET" value="${street}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_AFFLIATION" value="${affliation}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_EMAIL" value="${email}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_FIRSTNAME" value="${first.name}" />
-		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetaData.xml" token="YOUR_LASTNAME" value="${last.name}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="APPOWNER" value="${application.owner}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_COUNTRY" value="${country}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_STATE" value="${state}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_STATE" value="${state}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_CITY" value="${city}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_STREET" value="${street}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_ZIPCODE" value="${zipcode}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_AFFLIATION" value="${affliation}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_EMAIL" value="${email}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_FIRSTNAME" value="${first.name}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_LASTNAME" value="${last.name}" />
 
 		<!-- repackage WAR file -->
 		<war destfile="${build.dir}/wsrf.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
