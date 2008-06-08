@@ -291,10 +291,20 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				this.saveErrors(request, msgs);
 				noErrors = false;
 			}
-		} else{ //the case that user switch from url to upload file, but no file is selected
-				if ((fileBean.getUploadedFile() == null			
+		} else{ 
+				//all empty
+				if ((fileBean.getUploadedFile()==null || fileBean.getUploadedFile().toString().trim().length()==0) && 
+					 (fileBean.getExternalUrl()==null || fileBean.getExternalUrl().trim().length()==0)	
+					){
+					ActionMessage msg = new ActionMessage("errors.required",
+							"uploaded file");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					noErrors = false;
+				//the case that user switch from url to upload file, but no file is selected
+				}else if ((fileBean.getUploadedFile() == null			
 					|| fileBean.getUploadedFile().getFileName().length() == 0) &&
-					fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {
+					fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {					
 				ActionMessage msg = new ActionMessage("errors.required",
 						"uploaded file");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
