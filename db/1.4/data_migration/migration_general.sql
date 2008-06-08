@@ -997,6 +997,19 @@ insert into canano.activation_method
 )
 SELECT distinct  pf.particle_function_pk_id,
 	pf.activation_method
+FROM cananolab.particle_function pf
+Where pf.activation_method is not null
+and pf.activation_method != ""
+;
+
+/*
+insert into canano.activation_method
+(
+	activation_method_pk_id,
+	type
+)
+SELECT distinct  pf.particle_function_pk_id,
+	pf.activation_method
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.functionalizing_entity fe14
@@ -1005,7 +1018,7 @@ and l.function_pk_id = pf.particle_function_pk_id
 and pf.activation_method is not null
 and pf.activation_method != ""
 ;
-
+*/
 
 update canano.functionalizing_entity fe14,
 	canano.activation_method am14,
