@@ -29,6 +29,9 @@ public interface NanoparticleCompositionService {
 	public NanoparticleEntityBean findNanoparticleEntityById(String entityId)
 			throws ParticleCompositionException;
 
+	public NanoparticleEntityBean findNanoparticleEntityById(String entityId,
+			String entityClassName) throws ParticleCompositionException;
+
 	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
 			FunctionalizingEntity entity) throws ParticleCompositionException;
 
@@ -41,8 +44,15 @@ public interface NanoparticleCompositionService {
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
 			String entityId) throws ParticleCompositionException;
 
-	public ChemicalAssociationBean findChemicalAssocationById(String assocId)
+	public FunctionalizingEntityBean findFunctionalizingEntityById(
+			String entityId, String entityClassName)
 			throws ParticleCompositionException;
+
+	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
+			throws ParticleCompositionException;
+
+	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
+			String assocClassName) throws ParticleCompositionException;
 
 	/**
 	 * Return user-defined functionalizing entity types
@@ -121,29 +131,36 @@ public interface NanoparticleCompositionService {
 
 	public SampleComposition findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException;
-	
-	public void assignChemicalAssociationVisibility(AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation, String[] visibleGroups)throws Exception;
-	
-	public void assignNanoparicleEntityVisibility(AuthorizationService authService,
+
+	public void assignChemicalAssociationVisibility(
+			AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation, String[] visibleGroups)
+			throws Exception;
+
+	public void assignNanoparicleEntityVisibility(
+			AuthorizationService authService,
 			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
-		throws Exception;
-	
-	public void assignFunctionalizingEntityVisibility(AuthorizationService authService,
-				FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
-		throws Exception;
-		
-	public void removeNanoparticleEntityVisibility(AuthorizationService authService,
-				NanoparticleEntity nanoparticleEntity)
-		throws Exception;
+			throws Exception;
 
-	public void removeFunctionalizingEntityVisibility(AuthorizationService authService,
-				FunctionalizingEntity functionalizingEntity)throws Exception;
+	public void assignFunctionalizingEntityVisibility(
+			AuthorizationService authService,
+			FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+			throws Exception;
 
-	public void removeChemicalAssociationVisibility(AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation)throws Exception;
-	
-	public void assignSampleCompositionVisibility(AuthorizationService authService,
+	public void removeNanoparticleEntityVisibility(
+			AuthorizationService authService,
+			NanoparticleEntity nanoparticleEntity) throws Exception;
+
+	public void removeFunctionalizingEntityVisibility(
+			AuthorizationService authService,
+			FunctionalizingEntity functionalizingEntity) throws Exception;
+
+	public void removeChemicalAssociationVisibility(
+			AuthorizationService authService,
+			ChemicalAssociation chemicalAssociation) throws Exception;
+
+	public void assignSampleCompositionVisibility(
+			AuthorizationService authService,
 			NanoparticleSample particleSample, String[] visibleGroups)
-		throws Exception;
+			throws Exception;
 }

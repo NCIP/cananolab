@@ -394,7 +394,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 				ChemicalAssociation chemicalAssociation = service
-						.findChemicalAssocationById(dataId.toString())
+						.findChemicalAssociationById(dataId.toString())
 						.getDomainAssociation();
 				service.removeChemicalAssociationVisibility(authService,
 						chemicalAssociation);

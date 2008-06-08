@@ -60,6 +60,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				"Not implemented for grid service");
 	}
 
+	// caGrid 1.2 doesn't return child class
 	public NanoparticleEntityBean findNanoparticleEntityById(String entityId)
 			throws ParticleCompositionException {
 		NanoparticleEntityBean entityBean = null;
@@ -95,19 +96,45 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		}
 	}
 
+	public NanoparticleEntityBean findNanoparticleEntityById(String entityId,
+			String entityClassName) throws ParticleCompositionException {
+		NanoparticleEntityBean entityBean = null;
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base."
+							+ entityClassName);
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(entityId);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base."
+							+ entityClassName);
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			NanoparticleEntity entity = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				entity = (NanoparticleEntity) obj;
+			}
+			if (entity != null)
+				loadNanoparticleEntityAssociations(entity);
+			entityBean = new NanoparticleEntityBean(entity);
+			return entityBean;
+		} catch (Exception e) {
+			String err = "Problem finding the nanoparticle entity by id: "
+					+ entityId;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
 	private void loadNanoparticleEntityAssociations(NanoparticleEntity entity)
 			throws Exception {
-		// crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		// crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-		// FetchMode.JOIN);
-		// crit
-		// .setFetchMode(
-		// "sampleComposition.chemicalAssociationCollection.associatedElementA",
-		// FetchMode.JOIN);
-		// crit
-		// .setFetchMode(
-		// "sampleComposition.chemicalAssociationCollection.associatedElementB",
-		// FetchMode.JOIN);
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
 		Collection<LabFile> files = fileService.findFilesByCompositionInfoId(
 				entity.getId().toString(), NanoparticleEntity.class
@@ -227,6 +254,53 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				CQLQueryResults results = gridClient.query(query);
 				results
 						.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
+				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+						results);
+				FunctionalizingEntity entity = null;
+				while (iter.hasNext()) {
+					java.lang.Object obj = iter.next();
+					entity = (FunctionalizingEntity) obj;
+				}
+				// TODO load associations
+				if (entity != null)
+					loadFunctionalizingEntityAssociations(entity);
+				entityBean = new FunctionalizingEntityBean(entity);
+				return entityBean;
+			} catch (Exception e) {
+				String err = "Problem finding the functionalizing entity by id: "
+						+ entityId;
+				logger.error(err, e);
+				throw new ParticleCompositionException(err, e);
+			}
+		} catch (Exception e) {
+			String err = "Problem finding the functionalizing entity by id: "
+					+ entityId;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public FunctionalizingEntityBean findFunctionalizingEntityById(
+			String entityId, String entityClassName)
+			throws ParticleCompositionException {
+		FunctionalizingEntityBean entityBean = null;
+		try {
+			try {
+				CQLQuery query = new CQLQuery();
+				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+				target
+						.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization."
+								+ entityClassName);
+				Attribute attribute = new Attribute();
+				attribute.setName("id");
+				attribute.setPredicate(Predicate.EQUAL_TO);
+				attribute.setValue(entityId);
+				target.setAttribute(attribute);
+				query.setTarget(target);
+				CQLQueryResults results = gridClient.query(query);
+				results
+						.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization."
+								+ entityClassName);
 				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
 						results);
 				FunctionalizingEntity entity = null;
@@ -409,7 +483,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		}
 	}
 
-	public ChemicalAssociationBean findChemicalAssocationById(String assocId)
+	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
 			throws ParticleCompositionException {
 		ChemicalAssociationBean assocBean = null;
 		try {
@@ -426,6 +500,45 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			CQLQueryResults results = gridClient.query(query);
 			results
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			ChemicalAssociation assoc = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				assoc = (ChemicalAssociation) obj;
+			}
+			// TODO load associations
+			if (assoc != null) {
+				loadChemicalAssociationAssociations(assoc);
+				assocBean = new ChemicalAssociationBean(assoc);
+			}
+			return assocBean;
+		} catch (Exception e) {
+			String err = "Problem finding the chemical association by id: "
+					+ assocId;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
+			String assocClassName) throws ParticleCompositionException {
+		ChemicalAssociationBean assocBean = null;
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation."
+							+ assocClassName);
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(assocId);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation."
+							+ assocClassName);
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			ChemicalAssociation assoc = null;
 			while (iter.hasNext()) {

@@ -226,9 +226,10 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultFunctionTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
 		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		types.addAll(otherTypes);
+		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
+		if (otherTypes != null)
+			types.addAll(otherTypes);
 		request.getSession().setAttribute("functionTypes", types);
 		return types;
 	}
@@ -253,10 +254,11 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultNanoparticleEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+		SortedSet<String> types = new TreeSet<String>(defaultTypes);
 		SortedSet<String> otherTypes = compService
 				.getAllOtherNanoparticleEntityTypes();
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		types.addAll(otherTypes);
+		if (otherTypes != null)
+			types.addAll(otherTypes);
 		request.getSession().setAttribute("nanoparticleEntityTypes", types);
 		return types;
 	}
@@ -282,10 +284,11 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultFunctionalizingEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
+		SortedSet<String> types = new TreeSet<String>(defaultTypes);
 		SortedSet<String> otherTypes = compService
 				.getAllOtherFunctionalizingEntityTypes();
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		types.addAll(otherTypes);
+		if (otherTypes != null)
+			types.addAll(otherTypes);
 		request.getSession().setAttribute("functionalizingEntityTypes", types);
 		return types;
 	}
@@ -311,10 +314,12 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultAssociationTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation");
+		SortedSet<String> types = new TreeSet<String>(defaultTypes);
 		SortedSet<String> otherTypes = compService
 				.getAllOtherChemicalAssociationTypes();
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		types.addAll(otherTypes);
+		if (otherTypes != null) {
+			types.addAll(otherTypes);
+		}
 		request.getSession().setAttribute("chemicalAssociationTypes", types);
 		return types;
 	}
@@ -341,9 +346,10 @@ public class InitCompositionSetup {
 						request.getSession().getServletContext(),
 						"defaultTargetTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Target");
-		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
 		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		types.addAll(otherTypes);
+		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
+		if (otherTypes != null)
+			types.addAll(otherTypes);
 		request.getSession().setAttribute("targetTypes", types);
 		return types;
 	}

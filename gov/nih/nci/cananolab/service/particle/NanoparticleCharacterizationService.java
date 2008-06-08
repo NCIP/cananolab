@@ -28,6 +28,9 @@ public interface NanoparticleCharacterizationService {
 	public Characterization findCharacterizationById(String charId)
 			throws ParticleCharacterizationException;
 
+	public Characterization findCharacterizationById(String charId,
+			String className) throws ParticleCharacterizationException;
+
 	public SortedSet<String> findAllCharacterizationSources()
 			throws ParticleCharacterizationException;
 
@@ -65,12 +68,13 @@ public interface NanoparticleCharacterizationService {
 
 	public List<Characterization> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException;
-	
-	public void removeCharacterizationVisibility(AuthorizationService authService,
-			Characterization aChar)throws Exception;
 
-	public void assignCharacterizationVisibility(AuthorizationService authService,
-			Characterization aChar, String[] visibleGroups)throws Exception;
-	
-	
+	public void removeCharacterizationVisibility(
+			AuthorizationService authService, Characterization aChar)
+			throws Exception;
+
+	public void assignCharacterizationVisibility(
+			AuthorizationService authService, Characterization aChar,
+			String[] visibleGroups) throws Exception;
+
 }
