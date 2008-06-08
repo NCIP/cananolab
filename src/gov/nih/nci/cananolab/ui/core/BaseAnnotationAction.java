@@ -201,9 +201,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			URL remoteUrl = new URL(serviceUrl);
 			remoteServerHostUrl = remoteUrl.getProtocol() + "://"
 					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
-			String remoteDownloadUrl = remoteServerHostUrl + "/"
-					+ CaNanoLabConstants.CSM_APP_NAME + "/" + actionPath
-					+ ".do?dispatch=download" + "&fileId=" + fileId
+			String remoteDownloadUrl = remoteServerHostUrl + "/" + actionPath
+					+ "?dispatch=download" + "&fileId=" + fileId
 					+ "&location=local";
 			// remote URL
 			response.sendRedirect(remoteDownloadUrl);
@@ -258,10 +257,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		return particleSamples;
 	}
-	
+
 	protected boolean validateFileBean(HttpServletRequest request,
 			ActionMessages msgs, LabFileBean fileBean) {
-		
+
 		boolean noErrors = true;
 
 		LabFile labfile = fileBean.getDomainFile();
@@ -290,9 +289,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				this.saveErrors(request, msgs);
 				noErrors = false;
 			}
-		//} else if (labfile.getUri() == null) {
-		} else if (fileBean.getUploadedFile() == null ||
-				fileBean.getUploadedFile().getFileName().length() == 0) {
+			// } else if (labfile.getUri() == null) {
+		} else if (fileBean.getUploadedFile() == null
+				|| fileBean.getUploadedFile().getFileName().length() == 0) {
 			ActionMessage msg = new ActionMessage("errors.required",
 					"uploaded file");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
