@@ -31,7 +31,7 @@
 				</c:choose>
 			</td>
 			<td class="label">
-				<strong>Polymer Name*</strong>
+				<strong>Polymer Name</strong>
 			</td>
 			<td class="rightLabel">
 				<c:choose>
