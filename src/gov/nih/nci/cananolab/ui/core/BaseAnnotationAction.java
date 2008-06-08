@@ -188,9 +188,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
 		fileBean = fileService.findFileById(fileId, user);
-		if (fileBean.getDomainFile().getUriExternal()) {
-			response.sendRedirect(fileBean.getDomainFile().getUri());
-			return null;
+		if (fileBean != null) {
+			if (fileBean.getDomainFile().getUriExternal()) {
+				response.sendRedirect(fileBean.getDomainFile().getUri());
+				return null;
+			}
 		}
 		if (!location.equals("local")) {
 			// assume grid service is located on the same server and port as
