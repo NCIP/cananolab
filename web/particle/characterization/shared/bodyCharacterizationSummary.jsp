@@ -76,6 +76,7 @@
 		</td>
 		<c:choose>
 			<c:when test="${canCreateNanoparticle eq 'true'}">
+				<html:hidden styleId="updatedUri" property="achar.protocolFileBean.domainFile.uri" />
 				<td class="rightLabel" colspan="3">
 					<c:choose>
 						<c:when test="${!empty characterizationProtocolFiles}">
