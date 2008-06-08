@@ -252,11 +252,11 @@ function confirmDeletion()
 															</td>
 															<td class="labelWithTop" valign="top">
 
-																<strong style="" id="modalityStrong_${ind}">Modality
+																<strong style="${modalityDisplay}" id="modalityStrong_${ind}">Modality
 																	Type</strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="">
+																<div id="modalityDiv_${ind}" style="${modalityDisplay}">
 																	<html:select
 																		property="entity.functions[${ind}].imagingFunction.modality"
 																		size="1"

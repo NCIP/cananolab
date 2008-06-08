@@ -78,7 +78,7 @@
 												border="0" width="150"> </a>
 									</c:when>
 									<c:otherwise>
-										<strong>xxxUploaded File</strong> &nbsp;&nbsp;
+										<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<c:set var="target" value="${param.fileBean}.urlTarget" />
 
 										<a

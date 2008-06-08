@@ -173,48 +173,50 @@
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle">
-								<div align="justify" id="peFileTitle">
-									Particle Entity File Information
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="completeLabel">
-								<logic:iterate name="nanoparticleEntityForm"
-									property="entity.files" id="entityFile" indexId="fileInd">
-									<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
-										<jsp:param name="fileInd" value="${fileInd}" />
-										<jsp:param name="action" value="nanoparticleEntity" />
-										<jsp:param name="domainFile"
-											value="entity.files[${fileInd}].domainFile" />
-										<jsp:param name="fileId"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
-										<jsp:param name="fileUri"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-										<jsp:param name="fileType"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.type}" />
-										<jsp:param name="fileTitle"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.title}" />
-										<jsp:param name="fileKeywordsStr"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].keywordsStr}" />
-										<jsp:param name="visibilityStr"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].visibilityStr}" />
-										<jsp:param name="uriExternal"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
-										<jsp:param name="fileImage"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].image}" />
-										<jsp:param name="fileHidden"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
-										<jsp:param name="externalUrl"
-											value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-									</jsp:include>
-
-									<br>
-								</logic:iterate>
-							</td>
-						</tr>
+						<c:if test="${!empty entity.files}">
+							<tr class="topBorder">
+								<td class="formTitle">
+									<div align="justify" id="peFileTitle">
+										Particle Entity File Information
+									</div>
+								</td>
+							</tr>										
+							<tr>
+								<td class="completeLabel">
+									<logic:iterate name="nanoparticleEntityForm"
+										property="entity.files" id="entityFile" indexId="fileInd">
+										<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
+											<jsp:param name="fileInd" value="${fileInd}" />
+											<jsp:param name="action" value="nanoparticleEntity" />
+											<jsp:param name="domainFile"
+												value="entity.files[${fileInd}].domainFile" />
+											<jsp:param name="fileId"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.id}" />
+											<jsp:param name="fileUri"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+											<jsp:param name="fileType"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.type}" />
+											<jsp:param name="fileTitle"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.title}" />
+											<jsp:param name="fileKeywordsStr"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].keywordsStr}" />
+											<jsp:param name="visibilityStr"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].visibilityStr}" />
+											<jsp:param name="uriExternal"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
+											<jsp:param name="fileImage"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].image}" />
+											<jsp:param name="fileHidden"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].hidden}" />
+											<jsp:param name="externalUrl"
+												value="${nanoparticleEntityForm.map.entity.files[fileInd].domainFile.uri}" />
+										</jsp:include>
+	
+										<br>
+									</logic:iterate>
+								</td>
+							</tr>
+						</c:if>	
 					</tbody>
 				</table>
 			</td>
