@@ -572,17 +572,14 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT c.cn_composition_pk_id,
 	c.cn_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'CarbonNanotube'
 FROM cananolab.carbon_nanotube_composition c,
-	cananolab.characterization ca,
-	cananolab.nanoparticle_char nc
+	cananolab.characterization ca
 WHERE c.cn_composition_pk_id = ca.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -608,15 +605,13 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT ca.characterization_pk_id,
 	ca.characterization_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'QuantumDot'
-FROM cananolab.characterization ca, cananolab.nanoparticle_char nc
+FROM cananolab.characterization ca
 WHERE ca.discriminator = 'QuantumDotComp'
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -653,16 +648,14 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT nc.e_composition_pk_id,
+SELECT c.e_composition_pk_id,
 	c.e_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Emulsion'
 FROM cananolab.emulsion_composition c,
-	cananolab.characterization ca,
-	cananolab.nanoparticle_char nc
+	cananolab.characterization ca
 WHERE c.e_composition_pk_id = ca.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -700,16 +693,14 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT c.d_composition_pk_id,
 	c.d_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Dendrimer'
 FROM cananolab.dendrimer_composition c,
-	cananolab.characterization ca,	
-	cananolab.nanoparticle_char nc
+	cananolab.characterization ca
 WHERE c.d_composition_pk_id = ca.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -748,16 +739,14 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT c.l_composition_pk_id,
 	c.l_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Liposome'
 FROM cananolab.liposome_composition c,
-	cananolab.characterization ca	
-	cananolab.nanoparticle_char nc
+	cananolab.characterization ca
 WHERE c.l_composition_pk_id = ca.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -797,16 +786,14 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT c.p_composition_pk_id,
 	c.p_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Polymer'
 FROM cananolab.polymer_composition c,
-	cananolab.characterization ca,	
-	cananolab.nanoparticle_char nc
+	cananolab.characterization ca
 WHERE c.p_composition_pk_id = ca.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -843,16 +830,14 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT c.f_composition_pk_id,
 	c.f_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Fullerene'
 FROM cananolab.fullerene_composition c,
-	cananolab.characterization ca,	
-	cananolab.nanoparticle_char nc
+	cananolab.characterization ca
 WHERE c.f_composition_pk_id = ca.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -876,14 +861,12 @@ insert into canano.composing_element
 	element_type,
 	nanoparticle_entity_pk_id
 )
-SELECT nc.nanoparticle_entity_pk_id,
+SELECT ce.composing_element_pk_id,
 	ce.element_type,
 	ce.characterization_pk_id
 FROM cananolab.composing_element ce,
-	cananolab.characterization c,	
-	cananolab.nanoparticle_char nc
+	cananolab.characterization c
 WHERE ce.characterization_pk_id = c.characterization_pk_id
-and nc.characterization_pk_id = ca.characterization_pk_id
 AND c.discriminator != 'ComplexComp'
 ORDER BY ce.composing_element_pk_id, ce.list_index
 ;
@@ -1038,13 +1021,12 @@ ALTER TABLE canano.nano_function
  
 ALTER TABLE canano.nano_function AUTO_INCREMENT = 601; 
 
--- OtherFunction
+-- OtherFunction for functionalizing entity
 insert into canano.nano_function
 (
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id,
 	other_function_type,
 	created_by,
 	created_date
@@ -1053,30 +1035,26 @@ SELECT
 	pf.description,
 	'OtherFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id,
 	lcase(pf.type),
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.composition c14,
-	canano.nanoparticle_entity ne14,
-	canano.composing_element ce14
+	cananolab.agent a
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Diagnostic Reporting'
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND ne14.composition_pk_id = c14.composition_pk_id
-AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
+AND a.agent_pk_id = l.linkage_pk_id
+AND a.discriminator != 'ImageContrastAgent'
 ;
 
-
--- ImagingFunction
+-- ImagingFunction for functionalizing entity
 insert into canano.nano_function
 (
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id,
 	created_by,
 	created_date
 )
@@ -1084,31 +1062,25 @@ SELECT
 	pf.description,
 	'ImagingFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id,
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	cananolab.agent a,
-	canano.composition c14,
-	canano.nanoparticle_entity ne14,
-	canano.composing_element ce14
+	canano.composition c14
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Diagnostic Imaging'
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND ne14.composition_pk_id = c14.composition_pk_id
-AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator != 'ImageContrastAgent'
 ;
 
--- TargetingFunction
+-- TargetingFunction for functionalizing entity
 insert into canano.nano_function
 (
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id,
 	created_by,
 	created_date
 )
@@ -1116,29 +1088,25 @@ SELECT
 	pf.description,
 	'TargetingFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id,
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
 	canano.composition c14,
-	canano.nanoparticle_entity ne14,
-	canano.composing_element ce14
+	cananolab.agent a
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Targeting'
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND ne14.composition_pk_id = c14.composition_pk_id
-AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
+AND a.agent_pk_id = l.linkage_pk_id
+AND a.discriminator != 'ImageContrastAgent'
 ;
 
-
--- TherapeuticFunction
+-- TherapeuticFunction for functionalizing entity
 insert into canano.nano_function
 (
 	description,
 	discriminator,
 	functionalizing_entity_pk_id,
-	composing_element_pk_id,
 	created_by,
 	created_date
 )
@@ -1146,19 +1114,17 @@ SELECT
 	pf.description,
 	'TherapeuticFunction',
 	l.linkage_pk_id,
-	ce14.composing_element_pk_id,
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
-	canano.composition c14,
-	canano.nanoparticle_entity ne14,
-	canano.composing_element ce14
+	cananolab.agent a,
+	canano.composition c14
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Therapeutic'
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND ne14.composition_pk_id = c14.composition_pk_id
-AND ne14.nanoparticle_entity_pk_id = ce14.nanoparticle_entity_pk_id
+AND a.agent_pk_id = l.linkage_pk_id
+AND a.discriminator != 'ImageContrastAgent'
 ;
 
 ALTER TABLE canano.nano_function
