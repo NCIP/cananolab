@@ -12,7 +12,7 @@
 </c:choose>
 <c:choose>
 	<c:when
-		test="${hasCompositionData eq 'true' || canCreateNanoparticle eq 'true'}">
+		test="${hasReportData eq 'true' || canCreateNanoparticle eq 'true'}">
 		
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">REPORTS</a>

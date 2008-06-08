@@ -385,7 +385,8 @@ public class InitNanoparticleSetup {
 				// report
 				SortedSet<DataLinkBean> rdataBeans = new TreeSet<DataLinkBean>(
 						new CaNanoLabComparators.DataLinkTypeDateComparator());
-				if (particleSample.getReportCollection() != null) {
+				if (particleSample.getReportCollection() != null &&
+						particleSample.getReportCollection().size() > 0 ) {
 					for (Report report : particleSample.getReportCollection()) {
 						String reportCategory = report.getCategory();
 						DataLinkBean dataBean = new DataLinkBean(report.getId()
@@ -409,6 +410,10 @@ public class InitNanoparticleSetup {
 						}
 						rdataBeans.add(dataBean);
 					}
+					request.getSession().setAttribute("hasReportData", "true");
+				} else {
+					request.getSession()
+							.setAttribute("hasReportData", "false");
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
