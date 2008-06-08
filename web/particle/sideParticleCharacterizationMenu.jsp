@@ -137,7 +137,7 @@
 
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
-			<ul class="sublist_4" style="">
+			<ul class="sublist_4" style="${phyDisplay }">
 				<c:forEach var="physicalChara"
 					items="${physicalTypes[physicalType]}">
 					<%--			<c:if test="${canCreateNanoparticle eq 'true' || !empty particleDataTree[physicalChara]}" >--%>
@@ -153,7 +153,7 @@
 							<jsp:param name="location" value="${location}" />
 						</jsp:include>
 						<c:if test="${!empty particleDataTree[physicalChara]}">
-							<ul class="sublist_5" style="">
+							<ul class="sublist_5" style="${phyDisplay }">
 								<c:forEach var="leafCharBean"
 									items="${particleDataTree[physicalChara]}">
 									<c:url var="url" value="${leafCharBean.dataLink}.do">
@@ -203,12 +203,12 @@
 		test="${hasInVitroData eq 'true' || canCreateNanoparticle eq 'true'}">
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
-			<ul class="sublist_1" style="">
+			<ul class="sublist_1" style="${invitroDisplay }">
 				<c:forEach var="secondLevelChar"
 					items="${invitroTypes[inVitroType]}">
 					<li>
 						<a href="#" class="sublist_1">${secondLevelChar}</a>
-						<ul class="sublist_2" style="">
+						<ul class="sublist_2" style="${invitroDisplay }">
 							<c:forEach var="thirdLevelChar"
 								items="${invitroTypes[secondLevelChar]}">
 								<li class="controlList2">
@@ -378,7 +378,7 @@
 																					</jsp:include>
 																					<c:if
 																						test="${!empty particleDataTree[fifthLevelChar]}">
-																						<ul class="sublist_5" style="">
+																						<ul class="sublist_5" style="${invitroDisplay }">
 																							<c:forEach var="leafCharBean"
 																								items="${particleDataTree[fifthLevelChar]}">
 																								<c:url var="url5"
@@ -401,7 +401,7 @@
 																											test="${leafCharBean.viewColor != null}">
 																											<c:set var="viewTitleDisplay"
 																												value="color: ${leafCharBean.viewColor};" />
-																											<a href="${url5}" class="sublist_5" style="">
+																											<a href="${url5}" class="sublist_5" style="${invitroDisplay }">
 																												<span class="data_anchar">>&nbsp;</span>${leafCharBean.viewTitle}</a>
 																										</c:when>
 																										<c:otherwise>
