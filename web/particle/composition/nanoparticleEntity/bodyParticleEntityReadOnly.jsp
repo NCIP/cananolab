@@ -22,7 +22,7 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					Entity#1:Dendrimer
+					Nanoparticle Entity
 				</h5>
 			</td>
 		</tr>
