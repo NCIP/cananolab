@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -167,7 +168,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				chara = (Characterization) obj;
-				// loadCharacterizationAssociations(chara);
+				loadCharacterizationAssociations(chara);
 				charList.add(chara);
 			}
 			Collections.sort(charList,
@@ -268,6 +269,12 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 						.toString());
 		if (bioassayArray != null) {
 			for (DerivedBioAssayData bioassay : bioassayArray) {
+				LabFile file = gridClient
+						.getLabFileByDerivedBioAssayDataId(bioassay.getId()
+								.toString());
+				if (file != null) {
+					bioassay.setLabFile(file);
+				}
 				achar.getDerivedBioAssayDataCollection().add(bioassay);
 			}
 		}
