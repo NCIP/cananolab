@@ -27,6 +27,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.SortableName;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -97,6 +98,10 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			Collections.sort(particles,
 					new CaNanoLabComparators.ParticleBeanComparator());
 			return particles;
+		} catch (RemoteException e) {
+			String err = "Unable to connect to the grid location that you have selected.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
 			logger.error(err, e);
