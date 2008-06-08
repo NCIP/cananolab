@@ -60,11 +60,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
-		
+
 		if (!validateAssociationFile(request, assocBean)) {
 			return mapping.getInputForward();
 		}
-		
+
 		ActionMessages msgs = new ActionMessages();
 		boolean noErrors = true;
 		// validate if composing element is null
@@ -121,12 +121,12 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			return mapping.getInputForward();
 		}
 	}
-	
+
 	private boolean validateAssociationFile(HttpServletRequest request,
 			ChemicalAssociationBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
 		for (LabFileBean filebean : entityBean.getFiles()) {
-			if(!validateFileBean(request, msgs, filebean)) {
+			if (!validateFileBean(request, msgs, filebean)) {
 				return false;
 			}
 		}
@@ -296,7 +296,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		String assocId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		ChemicalAssociationBean assocBean = compService
-				.findChemicalAssocationById(assocId);
+				.findChemicalAssociationById(assocId);
 		compService.retrieveVisibility(assocBean, user);
 		assocBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
@@ -321,8 +321,9 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			compService = new NanoparticleCompositionServiceRemoteImpl(
 					serviceUrl);
 		}
+		String assocClassName = request.getParameter("dataClassName");
 		ChemicalAssociationBean assocBean = compService
-				.findChemicalAssocationById(assocId);
+				.findChemicalAssociationById(assocId, assocClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(assocBean, user);
 		}

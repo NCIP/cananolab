@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.41 2008-06-06 22:50:18 cais Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.42 2008-06-08 05:17:15 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -60,15 +60,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
-		
+
 		if (!validateTargets(request, entityBean)) {
 			return mapping.getInputForward();
 		}
-		
+
 		if (!validateEntityFile(request, entityBean)) {
 			return mapping.getInputForward();
 		}
-		
+
 		compositionService.saveFunctionalizingEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
 		// save file data to file system and set visibility
@@ -106,10 +106,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	private boolean validateTargets(HttpServletRequest request,
 			FunctionalizingEntityBean entityBean) throws Exception {
 
-		for (FunctionBean funcBean : entityBean
-				.getFunctions()) {
-			for (TargetBean targetBean : funcBean
-					.getTargets()) {
+		for (FunctionBean funcBean : entityBean.getFunctions()) {
+			for (TargetBean targetBean : funcBean.getTargets()) {
 				if (targetBean.getType() == null
 						|| targetBean.getType().trim().length() == 0) {
 
@@ -136,18 +134,18 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		return true;
 	}
-	
+
 	private boolean validateEntityFile(HttpServletRequest request,
 			FunctionalizingEntityBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
 		for (LabFileBean filebean : entityBean.getFiles()) {
-			if(!validateFileBean(request, msgs, filebean)) {
+			if (!validateFileBean(request, msgs, filebean)) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Set up the input form for adding new nanoparticle entity
 	 * 
@@ -204,6 +202,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
+		String entityClassName = request.getParameter("dataClassName");
 		NanoparticleCompositionService compService = null;
 		if (location.equals("local")) {
 			compService = new NanoparticleCompositionServiceLocalImpl();
@@ -214,7 +213,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					serviceUrl);
 		}
 		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId);
+				.findFunctionalizingEntityById(entityId, entityClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(entityBean, user);
 		}
@@ -342,7 +341,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");

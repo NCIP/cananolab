@@ -6,6 +6,7 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -14,6 +15,8 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.service.common.FileService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -98,6 +101,7 @@ public class FileServiceRemoteImpl implements FileService {
 					className);
 			if (files != null) {
 				for (LabFile file : files) {
+					loadKeywordsForFile(file);
 					fileSet.add(file);
 				}
 			}
@@ -106,6 +110,15 @@ public class FileServiceRemoteImpl implements FileService {
 			String err = "Error finding files by " + className + "and id " + id;
 			logger.error(err, e);
 			throw new FileException(err, e);
+		}
+	}
+
+	private void loadKeywordsForFile(LabFile file) throws Exception {
+		Keyword[] keywords = gridClient.getKeywordsByFileId(file.getId()
+				.toString());
+		if (keywords != null & keywords.length > 0) {
+			file.setKeywordCollection(new HashSet<Keyword>(Arrays
+					.asList(keywords)));
 		}
 	}
 

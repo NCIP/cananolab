@@ -63,6 +63,7 @@
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="dataId"
 											value="${characterizationForm.map.achar.domainChar.id}" />
+										<c:param name="dataClassName" value="${param.dataClassName }" />
 										<c:param name="submitType" value="${submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>

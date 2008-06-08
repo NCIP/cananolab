@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.52 2008-06-06 22:50:18 cais Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.53 2008-06-08 05:17:15 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -74,7 +74,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		if (!validateInherentFunctionType(request, entityBean)) {
 			return mapping.getInputForward();
 		}
-		
+
 		if (!validateEntityFile(request, entityBean)) {
 			return mapping.getInputForward();
 		}
@@ -135,18 +135,17 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		}
 		return true;
 	}
-	
+
 	private boolean validateEntityFile(HttpServletRequest request,
 			NanoparticleEntityBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
 		for (LabFileBean filebean : entityBean.getFiles()) {
-			if(!validateFileBean(request, msgs, filebean)) {
+			if (!validateFileBean(request, msgs, filebean)) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
 
 	private void setLookups(HttpServletRequest request) throws Exception {
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
@@ -212,8 +211,9 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			compService = new NanoparticleCompositionServiceRemoteImpl(
 					serviceUrl);
 		}
+		String entityClassName = request.getParameter("dataClassName");
 		NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityById(entityId);
+				.findNanoparticleEntityById(entityId, entityClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(entityBean, user);
 		}

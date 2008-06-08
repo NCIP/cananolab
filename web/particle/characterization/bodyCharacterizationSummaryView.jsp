@@ -18,7 +18,7 @@
 			<jsp:include page="/webHelp/helpGlossary.jsp">
 				<jsp:param name="topic" value="char_summary_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>	
+			</jsp:include>
 		</td>
 	</tr>
 	<tr>
@@ -88,7 +88,8 @@
 					<td class="formTitle"
 						colspan="${3+fn:length(charSummary.columnLabels)}">
 						<div align="justify">
-							${fn:toUpperCase(param.location)} ${particleName} - ${ submitType} Characterizations
+							${fn:toUpperCase(param.location)} ${particleName} - ${
+							submitType} Characterizations
 						</div>
 					</td>
 				</tr>
@@ -119,6 +120,7 @@
 								<c:param name="particleId" value="${particleId}" />
 								<c:param name="dataId"
 									value="${summaryRow.charBean.domainChar.id}" />
+								<c:param name="dataClassName" value="${summaryRow.charBean.className}" />
 								<c:param name="submitType" value="${submitType}" />
 								<c:param name="location" value="${location}" />
 							</c:url>
