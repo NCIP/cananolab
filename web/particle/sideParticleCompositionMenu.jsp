@@ -19,7 +19,7 @@
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">SAMPLE COMPOSITION</a>
 
-			<ul class="sublist_4" style="">
+			<ul class="sublist_4" style="${compDisplay }">
 				<c:forEach var="compoDataBean"
 					items="${compositionTypes[compositionType]}">
 					<li>
@@ -36,7 +36,7 @@
 						</jsp:include>
 						<c:if
 							test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
-							<ul class="sublist_5" style="">
+							<ul class="sublist_5" style="${compDisplay }">
 								<c:forEach var="dataLinkBean"
 									items="${particleDataTree[compoDataBean.dataDisplayType]}">
 									<c:url var="url" value="${dataLinkBean.dataLink}.do">
