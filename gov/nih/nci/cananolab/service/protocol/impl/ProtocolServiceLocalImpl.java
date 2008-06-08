@@ -33,7 +33,6 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		ProtocolFileBean protocolFileBean = null;
 		try {
 			ProtocolFile pf = helper.findProtocolFileById(fileId);
-			// TODO lazy load protocol file info
 			protocolFileBean = new ProtocolFileBean(pf);
 			return protocolFileBean;
 		} catch (Exception e) {
@@ -106,7 +105,6 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 					protocolType, protocolName, fileTitle);
 
 			for (ProtocolFile pf : protocolFiles) {
-				// TODO load associations
 				ProtocolFileBean pfb = new ProtocolFileBean(pf);
 				protocolFileBeans.add(pfb);
 			}
