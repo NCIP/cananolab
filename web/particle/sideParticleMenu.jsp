@@ -15,7 +15,7 @@
 	</c:when>
 </c:choose>
 <c:choose>
-	<c:when test="${!empty submitType != 'none'}">
+	<c:when test="${!empty submitType }">
 		<c:set var="displaytype" value="${submitType}" scope="request" />
 	</c:when>
 	<c:otherwise>
