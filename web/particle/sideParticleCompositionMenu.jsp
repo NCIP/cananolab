@@ -19,7 +19,7 @@
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">SAMPLE COMPOSITION</a>
 
-			<ul class="sublist_4" style="${compDisplay}">
+			<ul class="sublist_4" style="">
 				<c:forEach var="compoDataBean"
 					items="${compositionTypes[compositionType]}">
 					<li>
@@ -36,7 +36,7 @@
 						</jsp:include>
 						<c:if
 							test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
-							<ul class="sublist_5" style="${compDisplay}">
+							<ul class="sublist_5" style="">
 								<c:forEach var="dataLinkBean"
 									items="${particleDataTree[compoDataBean.dataDisplayType]}">
 									<c:url var="url" value="${dataLinkBean.dataLink}.do">
@@ -44,18 +44,19 @@
 										<c:param name="dispatch" value="${dispatchValue}" />
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="dataId" value="${dataLinkBean.dataId}" />
+										<c:param name="dataClassName"
+											value="${dataLinkBean.dataClassName}" />
 										<c:param name="submitType"
 											value="${compoDataBean.dataDisplayType}" />
-										<c:param name="location"
-											value="${location}" />
+										<c:param name="location" value="${location}" />
 									</c:url>
 									<li id="complist">
 										<c:choose>
 											<c:when test="${dataLinkBean.viewColor != null}">
 												<c:set var="viewTitleDisplay"
 													value="color: ${dataLinkBean.viewColor};" />
-												<a href="${url}" class="sublist_5"
-													style="${viewTitleDisplay}"> <span class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
+												<a href="${url}" class="sublist_5" style=""> <span
+													class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
 											</c:when>
 											<c:otherwise>
 												<a href="${url}" class="sublist_5"><span

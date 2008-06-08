@@ -281,6 +281,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	private Characterization prepareCharacterization(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
 		String charId = request.getParameter("dataId");
+		String charClass = request.getParameter("dataClassName");
 		NanoparticleCharacterizationService charService = null;
 		if (location.equals("local")) {
 			charService = new NanoparticleCharacterizationServiceLocalImpl();
@@ -290,7 +291,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			charService = new NanoparticleCharacterizationServiceRemoteImpl(
 					serviceUrl);
 		}
-		Characterization chara = charService.findCharacterizationById(charId);
+		Characterization chara = charService.findCharacterizationById(charId,
+				charClass);
 		request.getSession().setAttribute("characterizationForm", theForm);
 		return chara;
 	}
@@ -384,12 +386,14 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		getCharacterizationBean(theForm, chara, user);
 		String particleId = request.getParameter("particleId");
 		String characterizationId = request.getParameter("dataId");
+		String className = request.getParameter("dataClassName");
 		String submitType = request.getParameter("submitType");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl
 				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
-				+ "&dataId=" + characterizationId + "&submitType=" + submitType
-				+ "&location=" + location;
+				+ "&dataId=" + characterizationId + "&dataClassName="
+				+ className + "&submitType=" + submitType + "&location="
+				+ location;
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
 		return mapping.findForward("detailView");

@@ -2,6 +2,9 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Map;
@@ -56,8 +59,13 @@ public class AssociatedElementBean {
 		// domain element is a functionalizing entity
 		if (compositionType.equals("Functionalizing Entity")) {
 			className = typeToClass.get(entityDisplayName);
-			Class clazz = ClassUtils.getFullClass("functionalization."
-					+ className);
+			Class clazz = null;
+			if (className == null) {
+				clazz = OtherFunctionalizingEntity.class;
+			} else {
+				clazz = ClassUtils.getFullClass("functionalization."
+						+ className);
+			}
 			domainElement = (AssociatedElement) clazz.newInstance();
 			domainElement.setId(new Long(entityId));
 		} else {

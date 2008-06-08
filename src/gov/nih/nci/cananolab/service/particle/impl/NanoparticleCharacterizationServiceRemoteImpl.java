@@ -83,6 +83,37 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		}
 	}
 
+	public Characterization findCharacterizationById(String charId,
+			String className) throws ParticleCharacterizationException {
+		try {
+			String fullClassName = ClassUtils.getFullClass(className)
+					.getCanonicalName();
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName(fullClassName);
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(charId);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results.setTargetClassname(fullClassName);
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Characterization achar = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				achar = (Characterization) obj;
+				loadCharacterizationAssociations(achar);
+			}
+			return achar;
+		} catch (Exception e) {
+			logger.error("Problem finding the characterization by id: "
+					+ charId, e);
+			throw new ParticleCharacterizationException();
+		}
+	}
+
 	public void saveCharacterization(NanoparticleSample particleSample,
 			Characterization achar) throws Exception {
 		throw new ParticleException("Not implemented for grid service");
@@ -112,7 +143,9 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName(className);
+			String fullClassName = ClassUtils.getFullClass(className)
+					.getCanonicalName();
+			target.setName(fullClassName);
 			Association association = new Association();
 			association
 					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
@@ -127,7 +160,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
-			results.setTargetClassname(className);
+			results.setTargetClassname(fullClassName);
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Characterization chara = null;
 			List<Characterization> charList = new ArrayList<Characterization>();
@@ -172,16 +205,21 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		String charId = achar.getId().toString();
 		ProtocolFile protocolFile = gridClient
 				.getProtocolFileByCharacterizationId(charId);
-		loadProtocolForProtocolFile(protocolFile);
-		achar.setProtocolFile(protocolFile);
+		if (protocolFile != null) {
+			loadProtocolForProtocolFile(protocolFile);
+			achar.setProtocolFile(protocolFile);
+		}
 		loadDerivedBioAssayDataForCharacterization(achar);
 		InstrumentConfiguration instrumentConfig = gridClient
 				.getInstrumentConfigurationByCharacterizationId(charId);
-		Instrument instrument = gridClient
-				.getInstrumentByInstrumentConfigurationId(instrumentConfig
-						.getId().toString());
-		instrumentConfig.setInstrument(instrument);
-		achar.setInstrumentConfiguration(instrumentConfig);
+		if (instrumentConfig != null) {
+			Instrument instrument = gridClient
+					.getInstrumentByInstrumentConfigurationId(instrumentConfig
+							.getId().toString());
+			if (instrument != null)
+				instrumentConfig.setInstrument(instrument);
+			achar.setInstrumentConfiguration(instrumentConfig);
+		}
 	}
 
 	private void loadProtocolForProtocolFile(ProtocolFile protocolFile)
