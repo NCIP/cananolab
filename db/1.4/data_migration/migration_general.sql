@@ -572,14 +572,17 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT c.cn_composition_pk_id,
+
+SELECT nc.nanoparticle_entity_pk_id,
 	c.cn_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'CarbonNanotube'
 FROM cananolab.carbon_nanotube_composition c,
-	cananolab.characterization ca
+	cananolab.characterization ca,
+	cananolab.nanoparticle_char nc
 WHERE c.cn_composition_pk_id = ca.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -605,13 +608,15 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT ca.characterization_pk_id,
+
+SELECT nc.nanoparticle_entity_pk_id,
 	ca.characterization_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'QuantumDot'
-FROM cananolab.characterization ca
+FROM cananolab.characterization ca, cananolab.nanoparticle_char nc
 WHERE ca.discriminator = 'QuantumDotComp'
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -648,14 +653,16 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT c.e_composition_pk_id,
+SELECT nc.e_composition_pk_id,
 	c.e_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Emulsion'
 FROM cananolab.emulsion_composition c,
-	cananolab.characterization ca
+	cananolab.characterization ca,
+	cananolab.nanoparticle_char nc
 WHERE c.e_composition_pk_id = ca.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -693,14 +700,16 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT c.d_composition_pk_id,
+SELECT nc.nanoparticle_entity_pk_id,
 	c.d_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Dendrimer'
 FROM cananolab.dendrimer_composition c,
-	cananolab.characterization ca
+	cananolab.characterization ca,	
+	cananolab.nanoparticle_char nc
 WHERE c.d_composition_pk_id = ca.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -739,14 +748,16 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT c.l_composition_pk_id,
+SELECT nc.nanoparticle_entity_pk_id,
 	c.l_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Liposome'
 FROM cananolab.liposome_composition c,
-	cananolab.characterization ca
+	cananolab.characterization ca	
+	cananolab.nanoparticle_char nc
 WHERE c.l_composition_pk_id = ca.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -786,14 +797,16 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT c.p_composition_pk_id,
+SELECT nc.nanoparticle_entity_pk_id,
 	c.p_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Polymer'
 FROM cananolab.polymer_composition c,
-	cananolab.characterization ca
+	cananolab.characterization ca,	
+	cananolab.nanoparticle_char nc
 WHERE c.p_composition_pk_id = ca.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -830,14 +843,16 @@ insert into canano.nanoparticle_entity
 	created_date,
 	discriminator
 )
-SELECT c.f_composition_pk_id,
+SELECT nc.nanoparticle_entity_pk_id,
 	c.f_composition_pk_id,
 	ca.created_by,
 	ca.created_date,
 	'Fullerene'
 FROM cananolab.fullerene_composition c,
-	cananolab.characterization ca
+	cananolab.characterization ca,	
+	cananolab.nanoparticle_char nc
 WHERE c.f_composition_pk_id = ca.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 ;
 
 insert into canano.composition
@@ -861,12 +876,14 @@ insert into canano.composing_element
 	element_type,
 	nanoparticle_entity_pk_id
 )
-SELECT ce.composing_element_pk_id,
+SELECT nc.nanoparticle_entity_pk_id,
 	ce.element_type,
 	ce.characterization_pk_id
 FROM cananolab.composing_element ce,
-	cananolab.characterization c
+	cananolab.characterization c,	
+	cananolab.nanoparticle_char nc
 WHERE ce.characterization_pk_id = c.characterization_pk_id
+and nc.characterization_pk_id = ca.characterization_pk_id
 AND c.discriminator != 'ComplexComp'
 ORDER BY ce.composing_element_pk_id, ce.list_index
 ;
