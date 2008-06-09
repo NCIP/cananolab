@@ -290,14 +290,6 @@ AND fe.composition_pk_id = comp.composition_pk_id
 AND fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id
 ;
 
--- nano_function
-INSERT into csm_protection_group (
-	protection_group_name,
-	application_id,
-	large_element_count_flag,
-	update_date
-)
-
 INSERT into protection_group_tmp (
 	protection_group_name
 )
@@ -309,6 +301,33 @@ FROM csm_group g,
 	nanoparticle_sample ns,
 	composition comp,
 	functionalizing_entity fe,
+	nano_function fun
+WHERE g.group_id = upg.group_id
+AND g.group_name = 'Public'
+AND upg.protection_group_id = pg.protection_group_id
+AND pg.protection_group_name = ns.particle_sample_name
+AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
+AND fe.composition_pk_id = comp.composition_pk_id
+AND fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id
+;
+
+-- nano_function
+INSERT into csm_protection_group (
+	protection_group_name,
+	application_id,
+	large_element_count_flag,
+	update_date
+)
+SELECT
+	distinct fun.function_pk_id,
+	'2',
+	'0',
+	sysdate()
+FROM csm_group g,
+	csm_protection_group pg,
+	csm_user_group_role_pg upg,
+	nanoparticle_sample ns,
+	composition comp,
 	nanoparticle_entity ne,
 	composing_element ce,
 	nano_function fun
@@ -317,13 +336,33 @@ AND g.group_name = 'Public'
 AND upg.protection_group_id = pg.protection_group_id
 AND pg.protection_group_name = ns.particle_sample_name
 AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
-AND fe.composition_pk_id = comp.composition_pk_id
 AND ne.composition_pk_id = comp.composition_pk_id
 AND ne.nanoparticle_entity_pk_id = ce.nanoparticle_entity_pk_id
-AND ( fun.composing_element_pk_id = ce.composing_element_pk_id
-OR fun.functionalizing_entity_pk_id = fe.functionalizing_entity_pk_id)
+AND fun.composing_element_pk_id = ce.composing_element_pk_id
 ;
 
+INSERT into protection_group_tmp (
+	protection_group_name
+)
+SELECT
+	distinct fun.function_pk_id
+FROM csm_group g,
+	csm_protection_group pg,
+	csm_user_group_role_pg upg,
+	nanoparticle_sample ns,
+	composition comp,
+	nanoparticle_entity ne,
+	composing_element ce,
+	nano_function fun
+WHERE g.group_id = upg.group_id
+AND g.group_name = 'Public'
+AND upg.protection_group_id = pg.protection_group_id
+AND pg.protection_group_name = ns.particle_sample_name
+AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
+AND ne.composition_pk_id = comp.composition_pk_id
+AND ne.nanoparticle_entity_pk_id = ce.nanoparticle_entity_pk_id
+AND fun.composing_element_pk_id = ce.composing_element_pk_id
+;
 
 -- target
 INSERT into csm_protection_group (
@@ -389,53 +428,8 @@ AND t.targeting_function_pk_id = fun.function_pk_id
 ;
 
 -- activation_method
-INSERT into csm_protection_group (
-	protection_group_name,
-	application_id,
-	large_element_count_flag,
-	update_date
-)
-SELECT
-	distinct am.activation_method_pk_id,
-	'2',
-	'0',
-	sysdate()
-FROM csm_group g,
-	csm_protection_group pg,
-	csm_user_group_role_pg upg,
-	nanoparticle_sample ns,
-	composition comp,
-	functionalizing_entity fe,
-	activation_method am
-WHERE g.group_id = upg.group_id
-AND g.group_name = 'Public'
-AND upg.protection_group_id = pg.protection_group_id
-AND pg.protection_group_name = ns.particle_sample_name
-AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
-AND fe.composition_pk_id = comp.composition_pk_id
-AND am.activation_method_pk_id = fe.activation_method_pk_id
-;
+-- since activation_method_pk_id = nanofunction_pk_id, do not need to add
 
-INSERT into protection_group_tmp (
-	protection_group_name
-)
-SELECT
-	distinct am.activation_method_pk_id
-FROM csm_group g,
-	csm_protection_group pg,
-	csm_user_group_role_pg upg,
-	nanoparticle_sample ns,
-	composition comp,
-	functionalizing_entity fe,
-	activation_method am
-WHERE g.group_id = upg.group_id
-AND g.group_name = 'Public'
-AND upg.protection_group_id = pg.protection_group_id
-AND pg.protection_group_name = ns.particle_sample_name
-AND ns.particle_sample_pk_id = comp.particle_sample_pk_id
-AND fe.composition_pk_id = comp.composition_pk_id
-AND am.activation_method_pk_id = fe.activation_method_pk_id
-;
 
 -- characterization
 INSERT into csm_protection_group (
