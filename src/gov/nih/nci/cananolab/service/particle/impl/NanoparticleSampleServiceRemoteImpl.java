@@ -99,7 +99,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					new CaNanoLabComparators.ParticleBeanComparator());
 			return particles;
 		} catch (RemoteException e) {
-			String err = "Unable to connect to the grid location that you have selected.";
+			String err = "Unable to connect to the grid location that you selected.";
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		} catch (Exception e) {
