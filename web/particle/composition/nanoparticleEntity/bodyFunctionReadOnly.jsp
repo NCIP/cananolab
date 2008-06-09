@@ -23,7 +23,7 @@
 					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].type}&nbsp;
 					<c:if
 						test="${nanoparticleEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
-						<strong>Modality Type </strong>&nbsp;${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality}
+						<br>(Modality Type:&nbsp;${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality})
 					</c:if>
 					&nbsp;
 				</td>
