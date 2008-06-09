@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -18,6 +19,9 @@ import org.displaytag.decorator.TableDecorator;
 public class ReportDecorator extends TableDecorator {
 	public SortableName getEditReportURL() throws UnsupportedEncodingException {
 		ReportBean file = (ReportBean) getCurrentRowObject();
+		if (!file.getLocation().equals("local")){
+			return getViewName();
+		}
 		String fileId = file.getDomainFile().getId().toString();
 		String editReportURL = "submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId="
 				+ fileId;
@@ -51,4 +55,11 @@ public class ReportDecorator extends TableDecorator {
 		return StringUtils.sortJoin(Arrays.asList(file.getParticleNames()),
 				"<br>");
 	}
+	
+	public SortableName getViewName() {
+		ReportBean file = (ReportBean) getCurrentRowObject();
+		String reportTitle = file.getDomainFile().getTitle();
+		SortableName sortableLink = new SortableName(reportTitle);
+		return sortableLink;
+	}	
 }
