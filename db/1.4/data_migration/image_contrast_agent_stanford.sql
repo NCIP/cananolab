@@ -2,44 +2,55 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- migrate image contrast agent Luc8 in cananolab composing_element
 -- to canano biopolymer_f, nano_function and functionalizing_entity
-ALTER TABLE canano.biopolymer_f
- CHANGE biopolymer_pk_id biopolymer_pk_id BIGINT(20) AUTO_INCREMENT not NULL;
- 
-ALTER TABLE canano.functionalizing_entity AUTO_INCREMENT = 1401;
- 
+
+drop table if exists canano.luc_tmp;
+
+CREATE TABLE canano.luc_tmp (
+   composing_element_pk_id BIGINT(20) NOT NULL,
+   functionalizing_entity_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL,
+   PRIMARY KEY (functionalizing_entity_pk_id)
+)
+;
+
+ALTER TABLE canano.luc_tmp AUTO_INCREMENT = 1101; 
+
+insert into canano.luc_tmp
+(
+	composing_element_pk_id
+)
+SELECT
+	ce.composing_element_pk_id
+FROM cananolab.composing_element ce
+WHERE lcase(ce.chemical_name) = 'luc8'
+;
+
+insert into canano.functionalizing_entity
+(
+	functionalizing_entity_pk_id,
+	composition_pk_id
+)
+SELECT
+	tmp.functionalizing_entity_pk_id,
+	ce.characterization_pk_id
+FROM cananolab.composing_element ce,
+	canano.luc_tmp tmp
+WHERE lcase(ce.chemical_name) = 'luc8'
+AND tmp.composing_element_pk_id = ce.composing_element_pk_id
+;
+
 insert into canano.biopolymer_f
 (
 	biopolymer_pk_id,
 	type
 )
-SELECT ce.composing_element_pk_id,
+SELECT tmp.functionalizing_entity_pk_id,
 	'protein'
-FROM cananolab.composing_element ce
+FROM cananolab.composing_element ce,
+	canano.luc_tmp tmp
 WHERE lcase(ce.chemical_name) = 'luc8'
+AND tmp.composing_element_pk_id = ce.composing_element_pk_id
 ;
 
-ALTER TABLE canano.biopolymer_f
- CHANGE biopolymer_pk_id biopolymer_pk_id BIGINT(20) not NULL;
- 
- 
-ALTER TABLE canano.functionalizing_entity
- CHANGE functionalizing_entity_pk_id functionalizing_entity_pk_id BIGINT(20) AUTO_INCREMENT not NULL;
- 
-ALTER TABLE canano.functionalizing_entity AUTO_INCREMENT = 1101; 
-
-insert into canano.functionalizing_entity
-(
-	composition_pk_id
-)
-SELECT
-	ce.characterization_pk_id
-FROM cananolab.composing_element ce
-WHERE lcase(ce.chemical_name) = 'luc8'
-;
-
-ALTER TABLE canano.functionalizing_entity
- CHANGE functionalizing_entity_pk_id functionalizing_entity_pk_id BIGINT(20) not NULL;
- 
  
 ALTER TABLE canano.nano_function
  CHANGE function_pk_id function_pk_id BIGINT(20) AUTO_INCREMENT not NULL;
@@ -55,15 +66,20 @@ insert into canano.nano_function
 )
 SELECT
 	'ImagingFunction',
-	ce.composing_element_pk_id,
+	tmp.functionalizing_entity_pk_id,
 	'DATA_MIGRATION',
 	SYSDATE()
-FROM cananolab.composing_element ce
+FROM cananolab.composing_element ce,
+	canano.luc_tmp tmp
 WHERE lcase(ce.chemical_name) = 'luc8'
+AND tmp.composing_element_pk_id = ce.composing_element_pk_id
 ;
 
 ALTER TABLE canano.nano_function
  CHANGE function_pk_id function_pk_id BIGINT(20) NOT NULL;
+
+drop table luc_tmp;
+
 
 -- functionalizing entity for other image contrast agent
 insert into canano.functionalizing_entity
