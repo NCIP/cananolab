@@ -5,8 +5,9 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.15 2008-06-04 23:14:11 tanq Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.16 2008-06-09 01:55:32 tanq Exp $ */
 
+import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
@@ -47,8 +48,12 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ReportBean reportBean = (ReportBean) theForm.get("file");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		
 		reportBean.setupDomainFile(CaNanoLabConstants.FOLDER_REPORT, user
 				.getLoginName());
+		if (!validateReportFile(request, reportBean)) {
+			return mapping.getInputForward();
+		}
 		ReportService service = new ReportServiceLocalImpl();
 		service.saveReport((Report) reportBean.getDomainFile(), reportBean
 				.getParticleNames(), reportBean.getNewFileData());
@@ -154,5 +159,52 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_REPORT);
+	}
+	
+	private boolean validateReportFile(HttpServletRequest request,
+			ReportBean reportBean) throws Exception {
+		ActionMessages msgs = new ActionMessages();
+		if (!validateFileBean(request, msgs, reportBean)) {
+			return false;
+		}		
+		return true;
+	}
+	
+	
+	protected boolean validateFileBean(HttpServletRequest request,
+			ActionMessages msgs, LabFileBean fileBean) {
+		boolean noErrors = true;
+		LabFile labfile = fileBean.getDomainFile();		
+		if (labfile.getUriExternal()) {
+			if (fileBean.getExternalUrl() == null
+					|| fileBean.getExternalUrl().trim().length() == 0) {
+				ActionMessage msg = new ActionMessage("errors.required",
+						"external url");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
+				noErrors = false;
+			}
+		} else{ 
+				//all empty
+				if ((fileBean.getUploadedFile()==null || fileBean.getUploadedFile().toString().trim().length()==0) && 
+					 (fileBean.getExternalUrl()==null || fileBean.getExternalUrl().trim().length()==0)	
+					){
+					ActionMessage msg = new ActionMessage("errors.required",
+							"uploaded file");
+					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+					this.saveErrors(request, msgs);
+					noErrors = false;
+				//the case that user switch from url to upload file, but no file is selected
+				}else if ((fileBean.getUploadedFile() == null			
+					|| fileBean.getUploadedFile().getFileName().length() == 0) &&
+					fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {					
+				ActionMessage msg = new ActionMessage("errors.required",
+						"uploaded file");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
+				noErrors = false;
+			}
+		}		
+		return noErrors;
 	}
 }
