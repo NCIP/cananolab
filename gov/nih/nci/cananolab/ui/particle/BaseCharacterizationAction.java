@@ -214,6 +214,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		}
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, charBean);
+		particleBean = setupParticle(theForm, request, "local");
 		setupDataTree(particleBean, request);
 	}
 
