@@ -38,6 +38,28 @@ WHERE lcase(ce.chemical_name) = 'luc8'
 AND tmp.composing_element_pk_id = ce.composing_element_pk_id
 ;
 
+
+-- associated element
+-- use same conditions as the functionalizing entity
+insert into canano.associated_element
+(
+	associated_element_pk_id,
+	description,
+	created_by,
+	created_date,
+	name
+)
+SELECT tmp.functionalizing_entity_pk_id,
+	ce.description,
+	'DATA_MIGRATION',
+	SYSDATE(),
+	ce.chemical_name
+FROM cananolab.composing_element ce,
+	canano.luc_tmp tmp
+WHERE lcase(ce.chemical_name) = 'luc8'
+AND tmp.composing_element_pk_id = ce.composing_element_pk_id
+;
+
 insert into canano.biopolymer_f
 (
 	biopolymer_pk_id,
@@ -74,6 +96,7 @@ FROM cananolab.composing_element ce,
 WHERE lcase(ce.chemical_name) = 'luc8'
 AND tmp.composing_element_pk_id = ce.composing_element_pk_id
 ;
+
 
 ALTER TABLE canano.nano_function
  CHANGE function_pk_id function_pk_id BIGINT(20) NOT NULL;
