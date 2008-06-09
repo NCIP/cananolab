@@ -117,50 +117,52 @@
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
-								<div align="justify" id="peFileTitle">
-									Chemical Association File Information
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="completeLabel" colspan="4">
-								<logic:iterate name="chemicalAssociationForm"
-									property="assoc.files" id="assocFile" indexId="fileInd">
-									<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
-										<jsp:param name="fileInd" value="${fileInd}" />
-										<jsp:param name="action" value="chemicalAssociation" />
-										<jsp:param name="domainFile"
-											value="assoc.files[${fileInd}].domainFile" />
-										<jsp:param name="fileId"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
-										<jsp:param name="fileUri"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.uri}" />
-										<jsp:param name="fileType"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.type}" />
-										<jsp:param name="fileTitle"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.title}" />
-										<jsp:param name="fileKeywordsStr"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].keywordsStr}" />
-										<jsp:param name="visibilityStr"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].visibilityStr}" />
-										<jsp:param name="uriExternal"
-											value="${chemicalAssociationForm.map.entity.files[fileInd].domainFile.uriExternal}" />
-										<jsp:param name="externalUrl"
-											value="${chemicalAssociationForm.map.entity.files[fileInd].domainFile.uri}" />
-										<jsp:param name="fileImage"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
-										<jsp:param name="fileHidden"
-											value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
-													
-											
-									</jsp:include>
-
-									<br>
-								</logic:iterate>
-							</td>
-						</tr>
+						<c:if test="${!empty assoc.files}">
+							<tr class="topBorder">
+								<td class="formTitle" colspan="4">
+									<div align="justify" id="peFileTitle">
+										Chemical Association File Information
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="completeLabel" colspan="4">
+									<logic:iterate name="chemicalAssociationForm"
+										property="assoc.files" id="assocFile" indexId="fileInd">
+										<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
+											<jsp:param name="fileInd" value="${fileInd}" />
+											<jsp:param name="action" value="chemicalAssociation" />
+											<jsp:param name="domainFile"
+												value="assoc.files[${fileInd}].domainFile" />
+											<jsp:param name="fileId"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.id}" />
+											<jsp:param name="fileUri"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.uri}" />
+											<jsp:param name="fileType"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.type}" />
+											<jsp:param name="fileTitle"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].domainFile.title}" />
+											<jsp:param name="fileKeywordsStr"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].keywordsStr}" />
+											<jsp:param name="visibilityStr"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].visibilityStr}" />
+											<jsp:param name="uriExternal"
+												value="${chemicalAssociationForm.map.entity.files[fileInd].domainFile.uriExternal}" />
+											<jsp:param name="externalUrl"
+												value="${chemicalAssociationForm.map.entity.files[fileInd].domainFile.uri}" />
+											<jsp:param name="fileImage"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
+											<jsp:param name="fileHidden"
+												value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
+														
+												
+										</jsp:include>
+	
+										<br>
+									</logic:iterate>
+								</td>
+							</tr>
+						</c:if>
 					</tbody>
 				</table>
 			</td>
