@@ -103,6 +103,7 @@ WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 -- associated element
@@ -128,6 +129,7 @@ WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 insert into canano.small_molecule
@@ -141,6 +143,7 @@ FROM cananolab.agent a,
 	canano.functionalizing_entity fe14
 WHERE a.agent_pk_id = fe14.functionalizing_entity_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 -- nano_function using cananolab.linkage.function_pk_id as function_pk_id
@@ -173,6 +176,7 @@ and pf.type = 'Diagnostic Reporting'
 AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 -- ImagingFunction for functionalizing entity
@@ -201,6 +205,7 @@ and pf.type = 'Diagnostic Imaging'
 AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 -- TargetingFunction for functionalizing entity
@@ -229,6 +234,7 @@ and pf.type = 'Targeting'
 AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 -- TherapeuticFunction for functionalizing entity
@@ -257,6 +263,7 @@ and pf.type = 'Therapeutic'
 AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 insert into canano.activation_method
@@ -275,6 +282,7 @@ and pf.activation_method != ""
 and nf14.function_pk_id = pf.particle_function_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 update canano.functionalizing_entity fe14,
@@ -286,6 +294,7 @@ where fe14.functionalizing_entity_pk_id = l.linkage_pk_id
 and am14.activation_method_pk_id = l.function_pk_id
 AND a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 ;
 
 insert into canano.target
@@ -318,6 +327,7 @@ and nf14.functionalizing_entity_pk_id = fe14.functionalizing_entity_pk_id
 and at.agent_pk_id = a.agent_pk_id
 and a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 and lcase(at.discriminator) = 'other'
 order by at.list_index
 ;
@@ -351,6 +361,7 @@ and lcase(at.discriminator) != 'other'
 and at.agent_pk_id = a.agent_pk_id
 and a.agent_pk_id = l.linkage_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND lcase(a.name) != 'magnevist'
 order by at.list_index
 ;
 
