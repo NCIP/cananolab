@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.16 2008-06-09 01:55:32 tanq Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.17 2008-06-09 03:28:45 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -185,19 +185,19 @@ public class SubmitReportAction extends BaseAnnotationAction {
 				noErrors = false;
 			}
 		} else{ 
-				//all empty
-				if ((fileBean.getUploadedFile()==null || fileBean.getUploadedFile().toString().trim().length()==0) && 
-					 (fileBean.getExternalUrl()==null || fileBean.getExternalUrl().trim().length()==0)	
-					){
-					ActionMessage msg = new ActionMessage("errors.required",
-							"uploaded file");
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					this.saveErrors(request, msgs);
-					noErrors = false;
-				//the case that user switch from url to upload file, but no file is selected
-				}else if ((fileBean.getUploadedFile() == null			
-					|| fileBean.getUploadedFile().getFileName().length() == 0) &&
-					fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {					
+			//all empty
+			if ((fileBean.getUploadedFile()==null || fileBean.getUploadedFile().toString().trim().length()==0) && 
+				 (fileBean.getExternalUrl()==null || fileBean.getExternalUrl().trim().length()==0)  &&
+				 (fileBean.getDomainFile()==null || fileBean.getDomainFile().getName()==null)){
+				ActionMessage msg = new ActionMessage("errors.required",
+						"uploaded file");
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				this.saveErrors(request, msgs);
+				noErrors = false;
+			//the case that user switch from url to upload file, but no file is selected
+			}else if ((fileBean.getUploadedFile() == null			
+				|| fileBean.getUploadedFile().getFileName().length() == 0) &&
+				fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {					
 				ActionMessage msg = new ActionMessage("errors.required",
 						"uploaded file");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
