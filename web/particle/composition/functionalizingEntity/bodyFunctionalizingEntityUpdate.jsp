@@ -203,7 +203,7 @@ function confirmDeletion()
 												<c:choose>
 													<c:when
 														test="${functionalizingEntityForm.map.entity.functions[ind].type == 'imaging'}">
-														<c:set var="modalityDisplay" value="display: block;" />
+														<c:set var="modalityDisplay" value="display: block;" />														
 													</c:when>
 													<c:otherwise>
 														<c:set var="modalityDisplay" value="display: none;" />
@@ -284,7 +284,7 @@ function confirmDeletion()
 														</tr>
 														<tr>
 															<td valign="bottom" class="leftLabel">
-																<span id="targetSpan_${ind }" style=""> <a
+																<span id="targetSpan_${ind }" style="${targetDisplay}"> <a
 																	href="#"
 																	onclick="javascript:addChildComponent(functionalizingEntityForm, 'functionalizingEntity', ${ind}, 'addTarget'); return false;">
 																		<span class="addLink2">Add Target</span> </a> </span>&nbsp;
