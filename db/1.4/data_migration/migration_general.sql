@@ -385,6 +385,7 @@ SELECT source_pk_id,
 FROM cananolab.source
 ;
 
+/*
 -- sample_management_pk_id = sample_pk_id of 1.3
 -- particle_sample_pk_id = sample_pk_id of 1.3
 insert into canano.sample_management
@@ -505,18 +506,7 @@ WHERE s.is_derived = 'true'
 AND s.sample_container_pk_id = d.sample_container_pk_id
 ;
 
--- table keyword_nanoparticle in 1.3
--- change to keyword_nanoparticle_sample in 1.4
-insert into canano.keyword_nanoparticle_sample
-(
-	keyword_pk_id,
-	particle_sample_pk_id
-)
-SELECT 
-  keyword_pk_id,
-  nanoparticle_pk_id
-FROM cananolab.keyword_nanoparticle
-;
+
 
 insert into canano.storage
 (
@@ -540,6 +530,21 @@ SELECT
  	sample_container_pk_id,
 	storage_pk_id
 FROM cananolab.container_storage_location
+;
+
+*/
+
+-- table keyword_nanoparticle in 1.3
+-- change to keyword_nanoparticle_sample in 1.4
+insert into canano.keyword_nanoparticle_sample
+(
+	keyword_pk_id,
+	particle_sample_pk_id
+)
+SELECT 
+  keyword_pk_id,
+  nanoparticle_pk_id
+FROM cananolab.keyword_nanoparticle
 ;
 
 -- particle entity
@@ -910,6 +915,31 @@ AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator != 'ImageContrastAgent'
 ;
 
+-- associated element
+-- use same conditions as the functionalizing entity
+insert into canano.associated_element
+(
+	associated_element_pk_id,
+	description,
+	created_by,
+	created_date,
+	name
+)
+SELECT a.agent_pk_id,
+	a.description,
+	'DATA_MIGRATION',
+	SYSDATE(),
+	a.name
+FROM cananolab.agent a,
+	cananolab.linkage l,
+	cananolab.particle_function pf,
+	canano.composition c14
+WHERE a.agent_pk_id = l.linkage_pk_id
+AND l.function_pk_id = pf.particle_function_pk_id
+AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
+AND a.discriminator != 'ImageContrastAgent'
+;
+
 insert into canano.antibody
 (
 	antibody_pk_id,
@@ -917,8 +947,10 @@ insert into canano.antibody
 )
 SELECT agent_pk_id,
 	lcase(other)
-FROM cananolab.agent
+FROM cananolab.agent a,
+	canano.functionalizing_entity fe14
 WHERE discriminator = 'Antibody'
+and a.agent_pk_id = fe14.functionalizing_entity_pk_id
 ;
 
 insert into canano.biopolymer_f
@@ -930,9 +962,11 @@ insert into canano.biopolymer_f
 SELECT agent_pk_id,
 	discriminator,
 	sequence
-FROM cananolab.agent
-WHERE discriminator = 'DNA'
-OR	discriminator = 'RNA'
+FROM cananolab.agent a,
+	canano.functionalizing_entity fe14
+WHERE (discriminator = 'DNA'
+OR	discriminator = 'RNA')
+and a.agent_pk_id = fe14.functionalizing_entity_pk_id
 ;
 
 insert into canano.biopolymer_f
@@ -944,9 +978,11 @@ insert into canano.biopolymer_f
 SELECT agent_pk_id,
 	lcase(discriminator),
 	sequence
-FROM cananolab.agent
-WHERE lcase(discriminator) = 'protein'
-OR lcase(discriminator) = 'peptide'
+FROM cananolab.agent a,
+	canano.functionalizing_entity fe14
+WHERE (lcase(discriminator) = 'protein'
+OR lcase(discriminator) = 'peptide')
+and a.agent_pk_id = fe14.functionalizing_entity_pk_id
 ;
 
 insert into canano.small_molecule
@@ -956,8 +992,10 @@ insert into canano.small_molecule
 )
 SELECT agent_pk_id,
 	name
-FROM cananolab.agent
+FROM cananolab.agent a,
+	canano.functionalizing_entity fe14
 WHERE lcase(discriminator) = 'smallmolecule'
+and a.agent_pk_id = fe14.functionalizing_entity_pk_id
 ;
 
 -- what default value for type?
@@ -968,39 +1006,14 @@ insert into canano.other_functionalizing_entity
 )
 SELECT agent_pk_id,
 	other
-FROM cananolab.agent
+FROM cananolab.agent a,
+	canano.functionalizing_entity fe14
 WHERE lcase(discriminator) = 'other'
 AND other is not null
+and a.agent_pk_id = fe14.functionalizing_entity_pk_id
 ;
 
-insert into canano.associated_element
-(
-	associated_element_pk_id,
-	description,
-	created_by,
-	created_date,
-	name
-)
-SELECT agent_pk_id,
-	description,
-	'DATA_MIGRATION',
-	SYSDATE(),
-	name
-FROM cananolab.agent
-WHERE discriminator != 'ImageContrastAgent'
-;
 
-insert into canano.activation_method
-(
-	activation_method_pk_id,
-	type
-)
-SELECT distinct  pf.particle_function_pk_id,
-	pf.activation_method
-FROM cananolab.particle_function pf
-Where pf.activation_method is not null
-and pf.activation_method != ""
-;
 
 /*
 insert into canano.activation_method
@@ -1020,15 +1033,112 @@ and pf.activation_method != ""
 ;
 */
 
-update canano.functionalizing_entity fe14,
-	canano.activation_method am14,
-	cananolab.linkage l
-set fe14.activation_method_pk_id = am14.activation_method_pk_id
-where fe14.functionalizing_entity_pk_id = l.linkage_pk_id
-and am14.activation_method_pk_id = l.function_pk_id
+
+-- nano_function using cananolab.linkage.function_pk_id as function_pk_id
+
+-- OtherFunction for functionalizing entity
+insert into canano.nano_function
+(
+	function_pk_id,
+	description,
+	discriminator,
+	functionalizing_entity_pk_id,
+	other_function_type,
+	created_by,
+	created_date
+)
+SELECT
+	l.function_pk_id,
+	pf.description,
+	'OtherFunction',
+	fe.functionalizing_entity_pk_id,
+	lcase(pf.type),
+	'DATA_MIGRATION',
+	SYSDATE()
+FROM cananolab.particle_function pf,
+	cananolab.linkage l,
+	canano.functionalizing_entity fe
+Where pf.particle_function_pk_id = l.function_pk_id
+and pf.type = 'Diagnostic Reporting'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 ;
 
+-- ImagingFunction for functionalizing entity
+insert into canano.nano_function
+(
+	function_pk_id,
+	description,
+	discriminator,
+	functionalizing_entity_pk_id,
+	created_by,
+	created_date
+)
+SELECT
+	l.function_pk_id,
+	pf.description,
+	'ImagingFunction',
+	l.linkage_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
+FROM cananolab.particle_function pf,
+	cananolab.linkage l,
+	canano.functionalizing_entity fe
+Where pf.particle_function_pk_id = l.function_pk_id
+and pf.type = 'Diagnostic Imaging'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
+;
 
+-- TargetingFunction for functionalizing entity
+insert into canano.nano_function
+(
+	function_pk_id,
+	description,
+	discriminator,
+	functionalizing_entity_pk_id,
+	created_by,
+	created_date
+)
+SELECT
+	l.function_pk_id,
+	pf.description,
+	'TargetingFunction',
+	l.linkage_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
+FROM cananolab.particle_function pf,
+	cananolab.linkage l,
+	canano.functionalizing_entity fe
+Where pf.particle_function_pk_id = l.function_pk_id
+and pf.type = 'Targeting'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
+;
+
+-- TherapeuticFunction for functionalizing entity
+insert into canano.nano_function
+(
+	function_pk_id,
+	description,
+	discriminator,
+	functionalizing_entity_pk_id,
+	created_by,
+	created_date
+)
+SELECT
+	l.function_pk_id,
+	pf.description,
+	'TherapeuticFunction',
+	l.linkage_pk_id,
+	'DATA_MIGRATION',
+	SYSDATE()
+FROM cananolab.particle_function pf,
+	cananolab.linkage l,
+	canano.functionalizing_entity fe
+Where pf.particle_function_pk_id = l.function_pk_id
+and pf.type = 'Therapeutic'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
+;
+
+/*
 ALTER TABLE canano.nano_function
  CHANGE function_pk_id function_pk_id BIGINT(20) AUTO_INCREMENT not NULL;
  
@@ -1047,19 +1157,16 @@ insert into canano.nano_function
 SELECT 
 	pf.description,
 	'OtherFunction',
-	l.linkage_pk_id,
+	fe.functionalizing_entity_pk_id,
 	lcase(pf.type),
 	'DATA_MIGRATION',
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
-	canano.composition c14,
-	cananolab.agent a
+	canano.functionalizing_entity fe
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Diagnostic Reporting'
-AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND a.agent_pk_id = l.linkage_pk_id
-AND a.discriminator != 'ImageContrastAgent'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 ;
 
 -- ImagingFunction for functionalizing entity
@@ -1079,13 +1186,10 @@ SELECT
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
-	cananolab.agent a,
-	canano.composition c14
+	canano.functionalizing_entity fe
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Diagnostic Imaging'
-AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND a.agent_pk_id = l.linkage_pk_id
-AND a.discriminator != 'ImageContrastAgent'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 ;
 
 -- TargetingFunction for functionalizing entity
@@ -1105,13 +1209,10 @@ SELECT
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
-	canano.composition c14,
-	cananolab.agent a
+	canano.functionalizing_entity fe
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Targeting'
-AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND a.agent_pk_id = l.linkage_pk_id
-AND a.discriminator != 'ImageContrastAgent'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 ;
 
 -- TherapeuticFunction for functionalizing entity
@@ -1131,17 +1232,15 @@ SELECT
 	SYSDATE()
 FROM cananolab.particle_function pf,
 	cananolab.linkage l,
-	cananolab.agent a,
-	canano.composition c14
+	canano.functionalizing_entity fe
 Where pf.particle_function_pk_id = l.function_pk_id
 and pf.type = 'Therapeutic'
-AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
-AND a.agent_pk_id = l.linkage_pk_id
-AND a.discriminator != 'ImageContrastAgent'
+AND fe.functionalizing_entity_pk_id = l.linkage_pk_id
 ;
 
 ALTER TABLE canano.nano_function
  CHANGE function_pk_id function_pk_id BIGINT(20) NOT NULL;
+*/
 
 -- create a row in composing_element table with element_type = 'repeat unit'
 -- create corresponding row in associated_element table with
@@ -1190,6 +1289,27 @@ WHERE ce14.element_type = 'repeat unit'
 AND	cnc.d_composition_pk_id = ce14.nanoparticle_entity_pk_id
 ;
 
+insert into canano.activation_method
+(
+	activation_method_pk_id,
+	type
+)
+SELECT distinct  pf.particle_function_pk_id,
+	pf.activation_method
+FROM cananolab.particle_function pf,
+	canano.nano_function nf14
+Where pf.activation_method is not null
+and pf.activation_method != ""
+and nf14.function_pk_id = pf.particle_function_pk_id
+;
+
+update canano.functionalizing_entity fe14,
+	canano.activation_method am14,
+	cananolab.linkage l
+set fe14.activation_method_pk_id = am14.activation_method_pk_id
+where fe14.functionalizing_entity_pk_id = l.linkage_pk_id
+and am14.activation_method_pk_id = l.function_pk_id
+;
 
 insert into canano.target
 (
@@ -1207,15 +1327,15 @@ SELECT
 	'OtherTarget',
 	at.name,
 	at.description,
-	l.function_pk_id,
+	nf14.function_pk_id,
 	'other',
 	'DATA_MIGRATION',
 	ADDDATE(SYSDATE(), INTERVAL at.list_index MINUTE)
 FROM cananolab.agent_target at,
-	cananolab.agent a,
-	cananolab.linkage l
-WHERE at.agent_pk_id = a.agent_pk_id
-and a.agent_pk_id = l.linkage_pk_id
+	canano.functionalizing_entity fe14,
+	canano.nano_function nf14
+WHERE at.agent_pk_id = fe14.functionalizing_entity_pk_id
+and nf14.functionalizing_entity_pk_id = fe14.functionalizing_entity_pk_id
 and lcase(at.discriminator) = 'other'
 order by at.list_index
 ;
@@ -1235,14 +1355,14 @@ SELECT
 	at.discriminator,
 	at.name,
 	at.description,
-	l.function_pk_id,
+	nf14.function_pk_id,
 	'DATA_MIGRATION',
 	ADDDATE(SYSDATE(), INTERVAL at.list_index MINUTE)
 FROM cananolab.agent_target at,
-	cananolab.agent a,
-	cananolab.linkage l
-WHERE at.agent_pk_id = a.agent_pk_id
-and a.agent_pk_id = l.linkage_pk_id
+	canano.functionalizing_entity fe14,
+	canano.nano_function nf14
+WHERE at.agent_pk_id = fe14.functionalizing_entity_pk_id
+and nf14.functionalizing_entity_pk_id = fe14.functionalizing_entity_pk_id
 and lcase(at.discriminator) != 'other'
 order by at.list_index
 ;
