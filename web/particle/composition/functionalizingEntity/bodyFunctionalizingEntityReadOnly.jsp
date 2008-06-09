@@ -9,14 +9,15 @@
 		<tr>
 			<td>
 				<h4>
-					${fn:toUpperCase(param.location)} ${particleName} Sample Composition - Functionalizing Entity
+					${fn:toUpperCase(param.location)} ${particleName} Sample
+					Composition - Functionalizing Entity
 				</h4>
 			</td>
 			<td align="right" width="20%">
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="function_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>	
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -109,12 +110,11 @@
 						<c:set var="entityType"
 							value="${functionalizingEntityForm.map.entity.type}" scope="page" />
 						<%
-							String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-											.getInstance().getObjectName(
-													(String) pageContext
-															.getAttribute("entityType"),
-													application);
-									pageContext.setAttribute("entityClass", entityClass);
+									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+									.getInstance().getObjectName(
+									(String) pageContext.getAttribute("entityType"),
+									application);
+							pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
 							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />
@@ -135,71 +135,46 @@
 								<table border="0" width="100%">
 									<tr>
 										<td id="functionTd">
-											<logic:iterate name="functionalizingEntityForm"
-												property="entity.functions" id="function" indexId="ind">
-												<c:choose>
-													<c:when
-														test="${functionalizingEntityForm.map.entity.functions[ind].type == 'imaging'}">
-														<c:set var="modalityDisplay" value="display: inline;" />
-													</c:when>
-													<c:otherwise>
-														<c:set var="modalityDisplay" value="display: none;" />
-													</c:otherwise>
-												</c:choose>
-
-												<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-													width="100%" align="center" summary="" border="0">
-													<tbody>
+											<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+												width="100%" align="center" summary="" border="0">
+												<tbody>
+													<tr>
+														<td class="leftLabelWithTop" valign="top">
+															<strong>Function Type</strong>
+														</td>
+														<td class="rightLabelWithTop" valign="top">
+															<strong>Description</strong>
+														</td>
+													</tr>
+													<logic:iterate name="functionalizingEntityForm"
+														property="entity.functions" id="function" indexId="ind">
 														<tr>
-															<td class="formSubTitleNoRight" colspan="4">
-																<span>Function #${ind + 1}</span>
-															</td>
-
-														</tr>
-														<tr>
-															<td class="leftLabelWithTop" valign="top">
-																<strong>Function Type</strong>
-															</td>
-															<td class="labelWithTop" valign="top">
+															<td class="leftLabel" valign="top" width="50%">
 																${functionalizingEntityForm.map.entity.functions[ind].type}&nbsp;
-
-															</td>
-															<td class="labelWithTop" valign="top">
-																<strong style="" id="modalityStrong_${ind}">Modality
-																	Type </strong>&nbsp;
-															</td>
-															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="">
-																	${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}&nbsp;
-
-																</div>
-																&nbsp;
-															</td>
-														</tr>
-														<tr>
-															<td class="leftLabel" valign="top">
-																<strong>Description</strong>
-															</td>
-															<td class="rightLabel" colspan="3">
-																${functionalizingEntityForm.map.entity.functions[ind].description}&nbsp;
-															</td>
-														</tr>
-														<c:if
-															test="${functionalizingEntityForm.map.entity.functions[ind].type == 'targeting'}">
-															<tr>
-																<td colspan="4" class="completeLabel">
+																<c:if
+																	test="${functionalizingEntityForm.map.entity.functions[ind].type == 'imaging' && !empty functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}">
+																	<br>
+																	(Modality Type&nbsp;														
+																		${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality})&nbsp;																
+																</c:if>
+																<c:if
+																	test="${functionalizingEntityForm.map.entity.functions[ind].type == 'targeting' && !empty functionalizingEntityForm.map.entity.functions[ind].targets}">
+																	<br>
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoReadOnly.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
 																	</jsp:include>
-																	&nbsp;
-																</td>
-															</tr>
-														</c:if>
-													</tbody>
-												</table>
-												<br>
-											</logic:iterate>
+																		&nbsp;																	
+																</c:if>
+																&nbsp;
+															</td>
+															<td class="rightLabel" valign="top">
+																${functionalizingEntityForm.map.entity.functions[ind].description}&nbsp;
+															</td>
+													</logic:iterate>
+												</tbody>
+											</table>
+											<br>
 										</td>
 									</tr>
 								</table>
@@ -214,14 +189,14 @@
 					<tbody>
 						<c:if test="${!empty entity.files}">
 							<tr class="topBorder">
-								<td class="formTitle" >
+								<td class="formTitle">
 									<div align="justify" id="peFileTitle">
 										Functionalizing Entity File Information
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td class="completeLabel" >
+								<td class="completeLabel">
 									<logic:iterate name="functionalizingEntityForm"
 										property="entity.files" id="entityFile" indexId="fileInd">
 										<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
@@ -250,7 +225,7 @@
 											<jsp:param name="fileHidden"
 												value="${functionalizingEntityForm.map.entity.files[fileInd].hidden}" />
 										</jsp:include>
-	
+
 										<br>
 									</logic:iterate>
 								</td>
