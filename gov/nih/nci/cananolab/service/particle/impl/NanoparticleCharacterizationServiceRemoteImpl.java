@@ -294,37 +294,39 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			String[] charNames = gridClient
 					.getCharacterizationClassNamesByParticleId(particleId);
 			List<Characterization> characterizationCollection = new ArrayList<Characterization>();
-			for (String name : charNames) {
-				CQLQuery query = new CQLQuery();
-				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-				String fullClassName = ClassUtils.getFullClass(name)
-						.getCanonicalName();
-				target.setName(fullClassName);
-				Association association = new Association();
-				association
-						.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-				association.setRoleName("nanoparticleSample");
-
-				Attribute attribute = new Attribute();
-				attribute.setName("id");
-				attribute.setPredicate(Predicate.EQUAL_TO);
-				attribute.setValue(particleId);
-
-				association.setAttribute(attribute);
-
-				target.setAssociation(association);
-				query.setTarget(target);
-				CQLQueryResults results = gridClient.query(query);
-				results.setTargetClassname(fullClassName);
-				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
-						results);
-				Characterization chara = null;
-
-				while (iter.hasNext()) {
-					java.lang.Object obj = iter.next();
-					chara = (Characterization) obj;
-					// loadCharacterizationAssociations(chara);
-					characterizationCollection.add(chara);
+			if (charNames!=null){
+				for (String name : charNames) {
+					CQLQuery query = new CQLQuery();
+					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+					String fullClassName = ClassUtils.getFullClass(name)
+							.getCanonicalName();
+					target.setName(fullClassName);
+					Association association = new Association();
+					association
+							.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+					association.setRoleName("nanoparticleSample");
+	
+					Attribute attribute = new Attribute();
+					attribute.setName("id");
+					attribute.setPredicate(Predicate.EQUAL_TO);
+					attribute.setValue(particleId);
+	
+					association.setAttribute(attribute);
+	
+					target.setAssociation(association);
+					query.setTarget(target);
+					CQLQueryResults results = gridClient.query(query);
+					results.setTargetClassname(fullClassName);
+					CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+							results);
+					Characterization chara = null;
+	
+					while (iter.hasNext()) {
+						java.lang.Object obj = iter.next();
+						chara = (Characterization) obj;
+						// loadCharacterizationAssociations(chara);
+						characterizationCollection.add(chara);
+					}
 				}
 			}
 			return characterizationCollection;
