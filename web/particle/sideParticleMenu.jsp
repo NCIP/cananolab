@@ -23,7 +23,7 @@
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when test="${canCreateNanoparticle eq 'true'}">
+	<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
 	</c:when>
 	<c:otherwise>

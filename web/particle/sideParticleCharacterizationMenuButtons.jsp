@@ -39,7 +39,7 @@
 			</c:choose>
 
 		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true'}">
+			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<c:url var="submitUrl" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />
@@ -63,7 +63,7 @@
 		</c:choose>
 		<c:choose>
 			<c:when
-				test="${canUserDelete eq 'true' &&
+				test="${canUserDelete eq 'true' && location eq 'local' &&
 				!empty particleDataTree[param.charType]}">
 				<c:url var="deleteUrl" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
