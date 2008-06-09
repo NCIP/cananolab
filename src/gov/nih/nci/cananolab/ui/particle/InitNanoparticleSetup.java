@@ -241,6 +241,7 @@ public class InitNanoparticleSetup {
 							dataBean
 									.setDataDisplayType(((OtherNanoparticleEntity) entity)
 											.getType());
+							dataBean.setDataClassName("OtherNanoparticleEntity");
 						} else {
 							dataBean.setDataClassName(ClassUtils
 									.getShortClassName(entity.getClass()
@@ -271,6 +272,7 @@ public class InitNanoparticleSetup {
 							dataBean
 									.setDataDisplayType(((OtherFunctionalizingEntity) entity)
 											.getType());
+							dataBean.setDataClassName("OtherFunctionalizingEntity");
 						} else {
 							dataBean.setDataClassName(ClassUtils
 									.getShortClassName(entity.getClass()
@@ -303,6 +305,7 @@ public class InitNanoparticleSetup {
 							dataBean
 									.setDataDisplayType(((OtherChemicalAssociation) association)
 											.getType());
+							dataBean.setDataClassName("OtherChemicalAssociation");
 						} else {
 							dataBean.setDataClassName(ClassUtils
 									.getShortClassName(association.getClass()
