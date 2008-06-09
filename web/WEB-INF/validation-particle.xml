@@ -125,7 +125,7 @@
 					<var-name>test</var-name>
 					<var-value>
 						((entity.type!='liposome') or
-						((entity.liposome.polymerized=="No") or
+						((entity.liposome.polymerized=='false') or
 						(*this*!=null)))
 					</var-value>
 				</var>
@@ -139,7 +139,7 @@
 					<var-name>test</var-name>
 					<var-value>
 						((entity.type!='emulsion') or
-						((entity.emulsion.polymerized=="No") or
+						((entity.emulsion.polymerized=='false') or
 						(*this*!=null)))
 					</var-value>
 				</var>
