@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.42 2008-06-08 05:17:15 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.43 2008-06-09 21:26:02 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -105,30 +105,31 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	private boolean validateTargets(HttpServletRequest request,
 			FunctionalizingEntityBean entityBean) throws Exception {
-
 		for (FunctionBean funcBean : entityBean.getFunctions()) {
-			for (TargetBean targetBean : funcBean.getTargets()) {
-				if (targetBean.getType() == null
-						|| targetBean.getType().trim().length() == 0) {
-
-					ActionMessages msgs = new ActionMessages();
-					ActionMessage msg = new ActionMessage("errors.required",
-							"Target type");
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					this.saveErrors(request, msgs);
-
-					return false;
-				}
-				if (targetBean.getName() == null
-						|| targetBean.getName().trim().length() == 0) {
-
-					ActionMessages msgs = new ActionMessages();
-					ActionMessage msg = new ActionMessage("errors.required",
-							"Target name");
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					this.saveErrors(request, msgs);
-
-					return false;
+			if ("TargetingFunction".equals(funcBean.getClassName())){
+				for (TargetBean targetBean : funcBean.getTargets()) {
+					if (targetBean.getType() == null
+							|| targetBean.getType().trim().length() == 0) {
+	
+						ActionMessages msgs = new ActionMessages();
+						ActionMessage msg = new ActionMessage("errors.required",
+								"Target type");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						this.saveErrors(request, msgs);
+	
+						return false;
+					}
+					if (targetBean.getName() == null
+							|| targetBean.getName().trim().length() == 0) {
+	
+						ActionMessages msgs = new ActionMessages();
+						ActionMessage msg = new ActionMessage("errors.required",
+								"Target name");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						this.saveErrors(request, msgs);
+	
+						return false;
+					}
 				}
 			}
 		}
