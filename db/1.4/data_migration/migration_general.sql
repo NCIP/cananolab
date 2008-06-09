@@ -912,6 +912,7 @@ FROM cananolab.agent a,
 WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
+AND a.discriminator != 'Other'
 AND a.discriminator != 'ImageContrastAgent'
 ;
 
@@ -937,6 +938,7 @@ FROM cananolab.agent a,
 WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
+AND a.discriminator != 'Other'
 AND a.discriminator != 'ImageContrastAgent'
 ;
 
@@ -1012,26 +1014,6 @@ WHERE lcase(discriminator) = 'other'
 AND other is not null
 and a.agent_pk_id = fe14.functionalizing_entity_pk_id
 ;
-
-
-
-/*
-insert into canano.activation_method
-(
-	activation_method_pk_id,
-	type
-)
-SELECT distinct  pf.particle_function_pk_id,
-	pf.activation_method
-FROM cananolab.particle_function pf,
-	cananolab.linkage l,
-	canano.functionalizing_entity fe14
-Where fe14.functionalizing_entity_pk_id = l.linkage_pk_id
-and l.function_pk_id = pf.particle_function_pk_id
-and pf.activation_method is not null
-and pf.activation_method != ""
-;
-*/
 
 
 -- nano_function using cananolab.linkage.function_pk_id as function_pk_id
