@@ -103,7 +103,7 @@
 								<span id="protocolFileLink"> <c:if
 										test="${!empty submitProtocolForm.map.file.domainFile.uri }">&nbsp;&nbsp;
 									<a
-											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.file.domainFile.id}&amp;location=${location}">
+											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.file.domainFile.id}&amp;location=local">
 											${submitProtocolForm.map.file.domainFile.uri }</a>
 										<html:hidden property="file.domainFile.uri" />
 										<html:hidden property="file.domainFile.name" />
