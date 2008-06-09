@@ -291,7 +291,7 @@ function confirmDeletion()
 															</td>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
-																<div id="targetDiv_${ind }" style="">
+																<div id="targetDiv_${ind }" style="${targetDisplay}">
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoUpdate.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
