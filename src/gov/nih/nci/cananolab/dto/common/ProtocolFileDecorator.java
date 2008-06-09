@@ -18,6 +18,9 @@ import org.displaytag.decorator.TableDecorator;
 public class ProtocolFileDecorator extends TableDecorator {
 	public SortableName getEditURL() {
 		ProtocolFileBean file = (ProtocolFileBean) getCurrentRowObject();
+		if (!file.getLocation().equals("local")){
+			return getViewName();
+		}
 		// replace space with special char
 		String fileId = file.getDomainFile().getId().toString();
 		String editProtocolURL = "submitProtocol.do?dispatch=setupUpdate&fileId="

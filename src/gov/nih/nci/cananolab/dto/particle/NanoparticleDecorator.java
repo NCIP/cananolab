@@ -22,6 +22,9 @@ import org.displaytag.decorator.TableDecorator;
 public class NanoparticleDecorator extends TableDecorator {
 	public SortableName getEditParticleURL() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
+		if (!particle.getLocation().equals("local")){
+			return getViewParticleURL();
+		}
 		String particleId = particle.getDomainParticleSample().getId()
 				.toString();
 		String particleName = particle.getDomainParticleSample().getName();
