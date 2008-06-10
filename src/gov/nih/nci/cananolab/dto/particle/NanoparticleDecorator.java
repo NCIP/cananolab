@@ -29,7 +29,7 @@ public class NanoparticleDecorator extends TableDecorator {
 				.toString();
 		String particleName = particle.getDomainParticleSample().getName();
 		String editParticleURL = "submitNanoparticleSample.do?dispatch=setupUpdate&particleId="
-				+ particleId;
+				+ particleId+"&location=local";
 		String link = "<a href=" + editParticleURL + ">" + particleName
 				+ "</a>";
 

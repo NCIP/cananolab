@@ -24,7 +24,7 @@ public class ReportDecorator extends TableDecorator {
 		}
 		String fileId = file.getDomainFile().getId().toString();
 		String editReportURL = "submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId="
-				+ fileId;
+				+ fileId+"&location=local";
 		String link = "<a href=" + editReportURL + ">"
 				+ file.getDomainFile().getTitle() + "</a>";
 		SortableName sortableLink = new SortableName(file.getDomainFile()
