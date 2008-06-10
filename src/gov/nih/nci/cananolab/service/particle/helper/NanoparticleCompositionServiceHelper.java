@@ -1,4 +1,5 @@
 package gov.nih.nci.cananolab.service.particle.helper;
+
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
@@ -168,14 +169,14 @@ public class NanoparticleCompositionServiceHelper {
 		return functions;
 	}
 
-	public List<Target> findTargetsByFunctionId(
-			java.lang.String functionId) throws Exception {
+	public List<Target> findTargetsByFunctionId(java.lang.String functionId)
+			throws Exception {
 		List<Target> targets = new ArrayList<Target>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select function.targetCollection from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.Function function where Function.id = "
+						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.Function function where function.id = "
 						+ functionId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
@@ -250,7 +251,5 @@ public class NanoparticleCompositionServiceHelper {
 		}
 		return element;
 	}
-	
-
 
 }
