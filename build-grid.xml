@@ -30,6 +30,9 @@
 		<jar destfile="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" basedir="${tmp.dir}/orm" />
 		<delete dir="${tmp.dir}/orm" quiet="true" />
 
+		<!-- replace grid service hostname -->
+				<replace file="${tmp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
+
 		<!-- replace grid service port -->
 		<replace file="${tmp.dir}/WEB-INF/web.xml" token="DEFAULT_PORT" value="${grid.service.port}" />
 
