@@ -31,7 +31,7 @@
 		<delete dir="${tmp.dir}/orm" quiet="true" />
 
 		<!-- replace grid service hostname -->
-				<replace file="${tmp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
+		<replace file="${tmp.dir}/WEB-INF/etc/globus_wsrf_core/server-config.wsdd" token="GRID_SERVICE_HOSTNAME" value="${grid.service.hostname}" />
 
 		<!-- replace grid service port -->
 		<replace file="${tmp.dir}/WEB-INF/web.xml" token="DEFAULT_PORT" value="${grid.service.port}" />
@@ -55,7 +55,7 @@
 		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_LASTNAME" value="${last.name}" />
 
 		<!-- repackage WAR file -->
-		<war destfile="${build.dir}/wsrf.war" webxml="${tmp.dir}/WEB-INF/web.xml" basedir="${tmp.dir}" compress="true" />
+		<jar destfile="${build.dir}/wsrf.war" basedir="${tmp.dir}" />
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
