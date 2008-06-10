@@ -24,7 +24,7 @@ public class ProtocolFileDecorator extends TableDecorator {
 		// replace space with special char
 		String fileId = file.getDomainFile().getId().toString();
 		String editProtocolURL = "submitProtocol.do?dispatch=setupUpdate&fileId="
-				+ fileId;
+				+ fileId+"&location=local";
 		String link = "<a href="
 				+ editProtocolURL
 				+ ">"
