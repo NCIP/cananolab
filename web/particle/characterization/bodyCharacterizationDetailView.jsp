@@ -45,7 +45,7 @@
 										<c:param name="submitType" value="${submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
-									<c:if test="${canCreateNanoparticle eq 'true'}">
+									<c:if test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit characterization" border="0"> </a>

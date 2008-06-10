@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.fullerene.averageDiameter"
 							styleId="averageDiameter" onkeydown="return filterFloatNumber(event)"/>
 					</c:when>
@@ -32,7 +32,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.fullerene.averageDiameterUnit"
 							styleId="averageDiameterUnit"
 							onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
@@ -53,7 +53,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.fullerene.numberOfCarbon"
 							styleId="numberOfCarbon" onkeydown="return filterInteger(event)"/>
 					</c:when>

@@ -19,7 +19,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.carbonNanotube.averageLength" />
 					</c:when>
 					<c:otherwise>
@@ -32,7 +32,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.carbonNanotube.averageLengthUnit"
 							styleId="averageLengthUnit"
 							onchange="javascript:callPrompt('Average Length Unit', 'averageLengthUnit');">
@@ -53,7 +53,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.carbonNanotube.chirality" />
 					</c:when>
 					<c:otherwise>
@@ -68,7 +68,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.carbonNanotube.diameter" />
 					</c:when>
 					<c:otherwise>
@@ -81,7 +81,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.carbonNanotube.diameterUnit"
 							styleId="diameterUnit"
 							onchange="javascript:callPrompt('Diameter Unit', 'diameterUnit');">
@@ -102,7 +102,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.carbonNanotube.wallType"
 							styleId="wallType" >
 							<option value=""></option>

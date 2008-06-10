@@ -14,7 +14,7 @@
 </c:choose>
 <c:choose>
 	<c:when
-		test="${hasCompositionData eq 'true' || canCreateNanoparticle eq 'true'}">
+		test="${hasCompositionData eq 'true' || canCreateNanoparticle eq 'true' && location eq 'local'}">
 		<c:set var="compositionType" value="Composition" />
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">SAMPLE COMPOSITION</a>

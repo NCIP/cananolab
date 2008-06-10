@@ -23,7 +23,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select
 							property="achar.surfaceBean.domainSurface.isHydrophobic">
 							<option value=""></option>
@@ -56,7 +56,7 @@
 				<table border="0" width="100%">
 					<tr>
 						<c:choose>
-							<c:when test="${canCreateNanoparticle eq 'true'}">
+							<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 								<td valign="bottom">
 									<a href="#"
 										onclick="javascript:addComponent(document.forms[0],'${actionName}', 'addSurfaceChemistry')"><span
@@ -76,7 +76,7 @@
 									<tbody>
 										<tr>
 											<c:choose>
-												<c:when test="${canCreateNanoparticle eq 'true'}">
+												<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 													<td class="formSubTitleNoRight" colspan="3">
 														Surface Chemistry #${status.index+1}
 													</td>
@@ -101,7 +101,7 @@
 											<td class="label">
 												&nbsp;
 												<c:choose>
-													<c:when test="${canCreateNanoparticle eq 'true'}">
+													<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 														<html:text
 															onkeydown="return filterInteger(event)"
 															property="achar.surfaceBean.surfaceChemistryList[${status.index}].numberOfMolecule" />
@@ -118,7 +118,7 @@
 											<td class="rightLabel">
 												&nbsp;
 												<c:choose>
-													<c:when test="${canCreateNanoparticle eq 'true'}">
+													<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 														<html:text
 															property="achar.surfaceBean.surfaceChemistryList[${status.index}].moleculeName" /> &nbsp;															
 														</c:when>
@@ -144,7 +144,7 @@
 											</td>
 											<td class="rightLabel">
 												<c:choose>
-													<c:when test="${canCreateNanoparticle eq 'true'}">
+													<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 														<html:text
 															property="achar.surfaceBean.surfaceChemistryList[${status.index}].molecularFormula"
 															size="30" />

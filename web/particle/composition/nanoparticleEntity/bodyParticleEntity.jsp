@@ -25,7 +25,7 @@
 
 
 <c:choose>
-	<c:when	test="${canCreateNanoparticle eq 'true'}">
+	<c:when	test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 		<%@ include file="bodyParticleEntityUpdate.jsp"%>
 	</c:when>
 	<c:otherwise>

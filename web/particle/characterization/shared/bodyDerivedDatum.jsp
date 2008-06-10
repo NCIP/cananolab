@@ -35,7 +35,7 @@
 			<tr>
 				<td class="leftLabel" valign="top">
 					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true'}">
+						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:select styleId="datumName${param.fileInd}-${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
 								onchange="javascript:callPrompt('Name', 'datumName' + ${param.fileInd} + '-'+ ${dInd});getUnit(${param.fileInd}, ${dInd});">
@@ -53,7 +53,7 @@
 				</td>
 				<td class="label" valign="top">
 					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true'}">
+						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:select styleId="valueType${param.fileInd}-${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueType"
 								onchange="javascript:callPrompt('Value Type', 'valueType' + ${param.fileInd} + '-'+${dInd});">
@@ -71,7 +71,7 @@
 				</td>
 				<td class="label" valign="top">
 					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true'}">
+						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:text
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].value"
 								size="5" />&nbsp; 						
@@ -83,7 +83,7 @@
 				</td>
 				<td class="label" valign="top">
 					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true'}">
+						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:select styleId="unit${param.fileInd}-${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueUnit"
 								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + '-'+${dInd});">
@@ -104,7 +104,7 @@
 				</td>
 				<td class="label" valign="top">
 					<c:choose>
-						<c:when test="${canCreateNanoparticle eq 'true'}">
+						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:textarea styleId="description${param.fileInd}-${dInd}"
 								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].description" />&nbsp; 												
 						</c:when>
@@ -114,7 +114,7 @@
 					</c:choose>
 				</td>
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 
 						<td class="rightLabel">
 							<a href="#" class="removeLink2"

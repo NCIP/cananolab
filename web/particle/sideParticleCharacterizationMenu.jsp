@@ -133,14 +133,14 @@
 <c:set var="physicalType" value="Physical Characterization" />
 <c:choose>
 	<c:when
-		test="${hasPhysicalData eq 'true' || canCreateNanoparticle eq 'true'}">
+		test="${hasPhysicalData eq 'true' || canCreateNanoparticle eq 'true' && location eq 'local'}">
 
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
 			<ul class="sublist_4" style="${phyDisplay }">
 				<c:forEach var="physicalChara"
 					items="${physicalTypes[physicalType]}">
-					<%--			<c:if test="${canCreateNanoparticle eq 'true' || !empty particleDataTree[physicalChara]}" >--%>
+					<%--			<c:if test="${canCreateNanoparticle eq 'true' && location eq 'local' || !empty particleDataTree[physicalChara]}" >--%>
 					<li>
 						<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
 							<jsp:param name="charType" value="${physicalChara}" />
@@ -200,7 +200,7 @@
 <c:set var="inVitroType" value="In Vitro Characterization" />
 <c:choose>
 	<c:when
-		test="${hasInVitroData eq 'true' || canCreateNanoparticle eq 'true'}">
+		test="${hasInVitroData eq 'true' || canCreateNanoparticle eq 'true' && location eq 'local'}">
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 			<ul class="sublist_1" style="${invitroDisplay }">

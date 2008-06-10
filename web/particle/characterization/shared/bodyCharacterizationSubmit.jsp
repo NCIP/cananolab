@@ -41,7 +41,7 @@ function confirmDeletion()
 				</c:when>
 			</c:choose>
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<table height="32" border="0" align="right" cellpadding="4"
 						cellspacing="0">
 						<tr>

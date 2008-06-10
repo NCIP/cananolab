@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.biopolymer.name" />
 					</c:when>
 					<c:otherwise>
@@ -31,7 +31,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.biopolymer.type"
 							styleId="biopolymerType"
 							onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
@@ -54,7 +54,7 @@
 			</td>
 			<td class="rightLabel" colspan="3">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:textarea property="entity.biopolymer.sequence" cols="80"
 							rows="3" />
 					</c:when>

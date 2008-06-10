@@ -16,7 +16,7 @@
 			<strong>Cell Line</strong>
 		</td>
 		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true'}">
+			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<td class="label">
 					<html:select property="achar.cellViability.cellLine" styleId="cellLine"
 											onchange="javascript:callPrompt('Cell Line', 'cellLine');">

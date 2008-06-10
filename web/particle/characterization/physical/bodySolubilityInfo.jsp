@@ -20,7 +20,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="achar.solubility.solvent" styleId="solvent"
 							onchange="javascript:callPrompt('Solvent', 'solvent');">
 							<option value=""></option>
@@ -40,7 +40,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="achar.solubility.isSoluble">
 							<option value=""></option>
 							<html:options collection="booleanChoices" property="value"
@@ -59,7 +59,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="achar.solubility.criticalConcentration" onkeydown="return filterFloatNumber(event)"/>
 						<html:select property="achar.solubility.criticalConcentrationUnit">
 							<option value=""></option>
