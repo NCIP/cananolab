@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.emulsion.polymerized">
 							<option value=""></option>
 							<html:options collection="booleanChoices" property="value"
@@ -35,7 +35,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.emulsion.polymerName" />
 					</c:when>
 					<c:otherwise>

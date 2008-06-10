@@ -22,7 +22,7 @@
 	<tr>
 		<td colspan="2">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<c:set var="particleURL" value="editParticleURL" />
 				</c:when>
 				<c:otherwise>

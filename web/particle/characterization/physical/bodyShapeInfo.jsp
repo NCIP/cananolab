@@ -20,7 +20,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="achar.shape.type" styleId="shapeType"
 							onchange="javascript:callPrompt('Type', 'shapeType');">
 							<option value=""></option>
@@ -40,7 +40,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="achar.shape.aspectRatio"
 							styleId="aspectRatio" />
 					</c:when>
@@ -56,7 +56,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="achar.shape.minDimension" />
 										${characterizationForm.map.achar.shape.minDimensionUnit}&nbsp;
 									</c:when>
@@ -71,7 +71,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="achar.shape.maxDimension" />
 										${characterizationForm.map.achar.shape.maxDimensionUnit}&nbsp;
 									</c:when>

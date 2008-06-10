@@ -85,7 +85,7 @@
 								<table border="0" width="100%">
 									<tr>
 										<c:choose>
-											<c:when test="${canCreateNanoparticle eq 'true'}">
+											<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 												<td valign="bottom" width="10%">
 													<a href="#"
 														onclick="javascript:addComponent(document.forms[0], '${actionName}', 'addDerivedBioAssayData')"><span

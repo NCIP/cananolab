@@ -20,7 +20,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="achar.physicalState.type"
 							styleId="physicalStateType"
 							onchange="javascript:callPrompt('Type', 'physicalStateType');">

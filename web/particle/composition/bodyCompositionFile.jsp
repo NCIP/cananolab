@@ -23,7 +23,7 @@
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=report" />
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<%@ include file="bodyCompositionFileUpdate.jsp"%>
 				</c:when>
 				<c:otherwise>

@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.antibody.type"
 							styleId="antibodyType"
 							onchange="javascript:callPrompt('Type', 'antibodyType');">
@@ -39,7 +39,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.antibody.isotype"
 							styleId="antibodyIsotype"
 							onchange="javascript:callPrompt('Isotype', 'antibodyIsotype');">
@@ -60,7 +60,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.antibody.species"
 							styleId="antibodySpecies"
 							onchange="javascript:callPrompt('Species', 'species');">

@@ -20,7 +20,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:select property="achar.characterizationSource"
 						styleId="charSource"
 						onchange="javascript:callPrompt('Characterization Source', 'charSource');">
@@ -43,7 +43,7 @@
 		</td>
 		<td class="rightLabel">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:text property="achar.viewTitle" size="30" />
 				</c:when>
 				<c:otherwise>
@@ -58,7 +58,7 @@
 		</td>
 		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:text property="achar.dateString" size="10" styleId="charDate" />
 					<a href="javascript:cal1.popup();"><img
 							src="images/calendar-icon.gif" width="22" height="18" border="0"
@@ -75,7 +75,7 @@
 			<strong>Protocol Name - Version</strong>
 		</td>
 		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true'}">
+			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<html:hidden styleId="updatedUri" property="achar.protocolFileBean.domainFile.uri" />
 				<td class="rightLabel" colspan="3">
 					<c:choose>
@@ -127,7 +127,7 @@
 		</td>
 		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:textarea property="achar.description" rows="3" cols="80" />
 				</c:when>
 				<c:otherwise>

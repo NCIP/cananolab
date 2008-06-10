@@ -18,7 +18,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.smallMolecule.alternateName" />
 					</c:when>
 					<c:otherwise>

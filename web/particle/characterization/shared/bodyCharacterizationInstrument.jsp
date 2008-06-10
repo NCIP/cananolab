@@ -18,7 +18,7 @@
 		</td>
 		<td class="label">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:select styleId="instrumentType"
 						property="achar.instrumentConfiguration.instrument.type"
 						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');retrieveInstrumentAbbreviation();">
@@ -35,7 +35,7 @@
 			</c:choose>
 		</td>
 		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true'}">
+			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<td class="rightLabel" width="20%">
 					<span id="instrumentAbbr">
 					<c:if
@@ -61,7 +61,7 @@
 		</td>
 		<td class="rightLabel" colspan="2">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:select styleId="instrumentManufacturer"
 						property="achar.instrumentConfiguration.instrument.manufacturer"
 						onchange="javascript:callPrompt('Instrument Manufacturer', 'instrumentManufacturer');">
@@ -84,7 +84,7 @@
 		</td>
 		<td class="rightLabel" colspan="2">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<html:textarea property="achar.instrumentConfiguration.description"
 						rows="3" cols="80" />
 				</c:when>

@@ -19,7 +19,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.dendrimer.branch" />
 					</c:when>
 					<c:otherwise>
@@ -32,7 +32,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.dendrimer.generation" />
 					</c:when>
 					<c:otherwise>

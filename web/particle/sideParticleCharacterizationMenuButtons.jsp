@@ -39,7 +39,7 @@
 			</c:choose>
 
 		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local' && location eq 'local'}">
 				<c:url var="submitUrl" value="${param.addAction}.do">
 					<c:param name="particleId" value="${particleId}" />
 					<c:param name="submitType" value="${param.charType}" />

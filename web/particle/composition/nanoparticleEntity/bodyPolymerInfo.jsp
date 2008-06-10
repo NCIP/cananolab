@@ -18,7 +18,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.polymer.initiator" />
 					</c:when>
 					<c:otherwise>
@@ -31,7 +31,7 @@
 			</td>
 			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:text property="entity.polymer.crossLinkDegree" onkeydown="return filterFloatNumber(event)"/>
 					</c:when>
 					<c:otherwise>
@@ -44,7 +44,7 @@
 			</td>
 			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true'}">
+					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 						<html:select property="entity.polymer.crossLinked">
 							<option value=""></option>
 							<html:options collection="booleanChoices" property="value"
