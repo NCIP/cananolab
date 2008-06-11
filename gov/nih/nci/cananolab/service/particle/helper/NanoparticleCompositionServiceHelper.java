@@ -226,7 +226,7 @@ public class NanoparticleCompositionServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select chemicalAssociation.associatedElementA from "
+				"select chemicalassociation.associatedElementA from "
 						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation chemicalassociation where chemicalassociation.id = "
 						+ chemicalAssociationId);
 		List results = appService.query(crit);
@@ -242,7 +242,7 @@ public class NanoparticleCompositionServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select chemicalAssociation.associatedElementB from "
+				"select chemicalassociation.associatedElementB from "
 						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation chemicalassociation where chemicalassociation.id = "
 						+ chemicalAssociationId);
 		List results = appService.query(crit);

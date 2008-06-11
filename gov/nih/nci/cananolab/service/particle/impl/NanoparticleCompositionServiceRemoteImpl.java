@@ -28,6 +28,7 @@ import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
+import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCompositionServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -530,7 +531,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			String fullClassName = ClassUtils.getFullClass(assocClassName)
 					.getCanonicalName();
 			if (fullClassName.equals("java.lang.Object")) {
-				fullClassName = "gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociationF";
+				fullClassName = "gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation";
 			}
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -577,6 +578,16 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		AssociatedElement associatedElementB = gridClient
 				.getAssociatedElementBByChemicalAssociationId(assoc.getId()
 						.toString());
+		
+		//FIXME
+		/*NanoparticleCompositionServiceHelper helper = new NanoparticleCompositionServiceHelper();
+		AssociatedElement associatedElementA = helper
+				.findAssociatedElementA(assoc.getId()
+						.toString());
+		AssociatedElement associatedElementB = helper
+				.findAssociatedElementB(assoc.getId()
+						.toString());
+		*/
 		if (associatedElementA != null) {
 			assoc.setAssociatedElementA(associatedElementA);
 		}
