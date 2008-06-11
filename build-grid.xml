@@ -17,7 +17,7 @@
 
 	<target name="build-grid" depends="clean, init-grid">
 		<!-- unpack default wsrf.war -->
-		<unzip dest="${tmp.dir}" src="conf/gridservice/wsrf.war" />
+		<unzip dest="${tmp.dir}" src="conf/gridservice/wsrf-canano.war" />
 
 		<!-- unpack caNanoLabSDK-orm.jar -->
 		<unzip dest="${tmp.dir}/orm" src="${tmp.dir}/WEB-INF/lib/caNanoLabSDK-orm.jar" />
@@ -55,7 +55,7 @@
 		<replace file="${tmp.dir}/WEB-INF/etc/cagrid_${grid.service.name}/serviceMetadata.xml" token="YOUR_LASTNAME" value="${last.name}" />
 
 		<!-- repackage WAR file -->
-		<jar destfile="${build.dir}/wsrf.war" basedir="${tmp.dir}" />
+		<jar destfile="${build.dir}/wsrf-canano.war" basedir="${tmp.dir}" />
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
