@@ -11,9 +11,12 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -98,6 +101,9 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 				}
 			}
 			return protocolFileBeans;
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ProtocolException(CaNanoLabConstants.NODE_UNAVAILABLE, e);		
 		} catch (Exception e) {
 			String err = "Problem finding protocol files.";
 			logger.error(err, e);
