@@ -88,8 +88,10 @@ public class NanoparticleEntityBean {
 		}
 		Collections.sort(composingElements,
 				new CaNanoLabComparators.ComposingElementBeanDateComparator());
-		for (LabFile file : nanoparticleEntity.getLabFileCollection()) {
-			files.add(new LabFileBean(file));
+		if (nanoparticleEntity.getLabFileCollection()!=null){
+			for (LabFile file : nanoparticleEntity.getLabFileCollection()) {
+				files.add(new LabFileBean(file));
+			}
 		}
 		Collections.sort(files,
 				new CaNanoLabComparators.LabFileBeanDateComparator());
