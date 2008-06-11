@@ -23,14 +23,6 @@
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="dispatchValue" value="setupView" scope="session" />
-	</c:otherwise>
-</c:choose>
-<c:choose>
 	<c:when test="${!empty theParticle}">
 		<c:set var="particleName"
 			value="${theParticle.domainParticleSample.name}" scope="session" />
@@ -41,6 +33,14 @@
 			scope="session" />
 		<c:set var="location" value="${theParticle.location}" scope="session" />
 	</c:when>
+</c:choose>
+<c:choose>
+	<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="dispatchValue" value="setupView" scope="session" />
+	</c:otherwise>
 </c:choose>
 <c:choose>
 	<c:when test="${submitType == 'report'}">
