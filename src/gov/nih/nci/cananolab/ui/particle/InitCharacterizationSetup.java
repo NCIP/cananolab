@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizat
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,7 @@ public class InitCharacterizationSetup {
 		}
 		session.setAttribute("manufacturers", manufacturers);
 		session.setAttribute("instrumentTypes", instrumentTypes);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void setPhysicalCharacterizationDropdowns(HttpServletRequest request)
