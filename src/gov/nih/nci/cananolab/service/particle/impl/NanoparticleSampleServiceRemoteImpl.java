@@ -94,9 +94,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					loadParticleBeanAssociationClassNames(particleBean);
 					particles.add(particleBean);
 				}
+				Collections.sort(particles,
+						new CaNanoLabComparators.ParticleBeanComparator());
 			}
-			Collections.sort(particles,
-					new CaNanoLabComparators.ParticleBeanComparator());
 			return particles;
 		} catch (RemoteException e) {
 			String err = "Unable to connect to the grid location that you selected.";
@@ -147,22 +147,18 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		// characterization
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceRemoteImpl(
 				serviceUrl);
-		Collection<Characterization> characterizationCollection = charService
+		List<Characterization> characterizationCollection = charService
 				.findCharsByParticleSampleId(particleId);
 		particleSample
-				.setCharacterizationCollection(characterizationCollection);
-
-		// sampleComposition
-		// sampleComposition.nanoparticleEntityCollection,
-		// nanoparticleEntityCollection.composingElementCollection,
-		// composingElementCollection.inherentFucntionCollection
-		// sampleComposition.functionalizingEntityCollection,
-		// functionalizingEntityCollection.functionCollection
+				.setCharacterizationCollection(new HashSet<Characterization>(
+						characterizationCollection));
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceRemoteImpl(
 				serviceUrl);
 		SampleComposition sampleComposition = compService
 				.findCompositionByParticleSampleId(particleId);
-		particleSample.setSampleComposition(sampleComposition);
+		if (sampleComposition != null) {
+			particleSample.setSampleComposition(sampleComposition);
+		}
 		loadReportsForParticleSample(particleSample);
 	}
 
@@ -315,11 +311,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 */
 	private void loadKeywordsForParticleSample(NanoparticleSample particleSample)
 			throws Exception {
-		particleSample.setKeywordCollection(new HashSet<Keyword>());
 		Keyword[] keywords = gridClient
 				.getKeywordsByParticleSampleId(particleSample.getId()
 						.toString());
-		if (keywords != null) {
+		if (keywords != null && keywords.length > 0) {
+			particleSample.setKeywordCollection(new HashSet<Keyword>());
 			for (Keyword keyword : keywords) {
 				particleSample.getKeywordCollection().add(keyword);
 			}
@@ -333,12 +329,12 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 */
 	private void loadReportsForParticleSample(NanoparticleSample particleSample)
 			throws Exception {
-		particleSample.setReportCollection(new HashSet<Report>());
 		ReportService reportService = new ReportServiceRemoteImpl(serviceUrl);
 		Report[] reports = reportService
 				.findReportsByParticleSampleId(particleSample.getId()
 						.toString());
-		if (reports != null) {
+		if (reports != null && reports.length > 0) {
+			particleSample.setReportCollection(new HashSet<Report>());
 			for (Report report : reports) {
 				particleSample.getReportCollection().add(report);
 			}

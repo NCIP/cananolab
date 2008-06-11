@@ -15,6 +15,8 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
@@ -211,6 +213,9 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			achar.setProtocolFile(protocolFile);
 		}
 		loadDerivedBioAssayDataForCharacterization(achar);
+		if (achar instanceof Surface) {
+			loadSurfaceChemistriesForSurface((Surface) achar);
+		}
 		InstrumentConfiguration instrumentConfig = gridClient
 				.getInstrumentConfigurationByCharacterizationId(charId);
 		if (instrumentConfig != null) {
@@ -262,12 +267,12 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 
 	private void loadDerivedBioAssayDataForCharacterization(
 			Characterization achar) throws Exception {
-		achar
-				.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 		DerivedBioAssayData[] bioassayArray = gridClient
 				.getDerivedBioAssayDatasByCharacterizationId(achar.getId()
 						.toString());
-		if (bioassayArray != null) {
+		if (bioassayArray != null && bioassayArray.length > 0) {
+			achar
+					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 			for (DerivedBioAssayData bioassay : bioassayArray) {
 				LabFile file = gridClient
 						.getLabFileByDerivedBioAssayDataId(bioassay.getId()
@@ -276,6 +281,19 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 					bioassay.setLabFile(file);
 				}
 				achar.getDerivedBioAssayDataCollection().add(bioassay);
+			}
+		}
+	}
+
+	private void loadSurfaceChemistriesForSurface(Surface surface)
+			throws Exception {
+		SurfaceChemistry[] chemistries = gridClient
+				.getSurfaceChemistriesBySurfaceId(surface.getId().toString());
+		if (chemistries != null && chemistries.length > 0) {
+			surface
+					.setSurfaceChemistryCollection(new HashSet<SurfaceChemistry>());
+			for (SurfaceChemistry chem : chemistries) {
+				surface.getSurfaceChemistryCollection().add(chem);
 			}
 		}
 	}
@@ -294,7 +312,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			String[] charNames = gridClient
 					.getCharacterizationClassNamesByParticleId(particleId);
 			List<Characterization> characterizationCollection = new ArrayList<Characterization>();
-			if (charNames!=null){
+			if (charNames != null) {
 				for (String name : charNames) {
 					CQLQuery query = new CQLQuery();
 					gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -305,14 +323,14 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 					association
 							.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 					association.setRoleName("nanoparticleSample");
-	
+
 					Attribute attribute = new Attribute();
 					attribute.setName("id");
 					attribute.setPredicate(Predicate.EQUAL_TO);
 					attribute.setValue(particleId);
-	
+
 					association.setAttribute(attribute);
-	
+
 					target.setAssociation(association);
 					query.setTarget(target);
 					CQLQueryResults results = gridClient.query(query);
@@ -320,7 +338,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 					CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
 							results);
 					Characterization chara = null;
-	
+
 					while (iter.hasNext()) {
 						java.lang.Object obj = iter.next();
 						chara = (Characterization) obj;
