@@ -12,9 +12,12 @@ import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.report.ReportService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -66,6 +69,9 @@ public class ReportServiceRemoteImpl implements ReportService {
 				}
 			}
 			return reportBeans;
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ReportException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
 			String err = "Problem finding report info.";
 			logger.error(err, e);
@@ -136,6 +142,9 @@ public class ReportServiceRemoteImpl implements ReportService {
 			loadParticleSamplesForReport(report);
 			ReportBean reportBean = new ReportBean(report);
 			return reportBean;
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ReportException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
 			String err = "Problem finding the report by id: " + reportId;
 			logger.error(err, e);
@@ -203,6 +212,9 @@ public class ReportServiceRemoteImpl implements ReportService {
 					reports.add(report);
 				}
 				return reports.toArray(new Report[0]);
+			} catch (RemoteException e) {
+				logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+				throw new ReportException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 			} catch (Exception e) {
 				String err = "Error finding reports for particle.";
 				logger.error(err, e);
