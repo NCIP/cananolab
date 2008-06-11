@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.43 2008-06-09 21:26:02 tanq Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.44 2008-06-11 18:16:02 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
