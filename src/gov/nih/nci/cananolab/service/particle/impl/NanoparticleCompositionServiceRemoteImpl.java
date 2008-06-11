@@ -15,7 +15,9 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -30,8 +32,8 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
@@ -138,10 +140,12 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadNanoparticleEntityAssociations(NanoparticleEntity entity)
 			throws Exception {
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
-		Collection<LabFile> files = fileService.findFilesByCompositionInfoId(
-				entity.getId().toString(), NanoparticleEntity.class
-						.getCanonicalName());
-		entity.setLabFileCollection(files);
+		List<LabFile> files = fileService.findFilesByCompositionInfoId(entity
+				.getId().toString(), NanoparticleEntity.class
+				.getCanonicalName());
+		if (files != null && !files.isEmpty()) {
+			entity.setLabFileCollection(new HashSet<LabFile>(files));
+		}
 		loadComposingElementForNanoparticleEntity(entity);
 	}
 
@@ -204,7 +208,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			Function[] functions = gridClient
 					.getInherentFunctionsByComposingElementId(composingElement
 							.getId().toString());
-			if (functions != null) {
+			if (functions != null && functions.length > 0) {
 				composingElement
 						.setInherentFunctionCollection(new HashSet<Function>());
 				for (Function function : functions) {
@@ -434,22 +438,19 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	private void loadFunctionalizingEntityAssociations(
 			FunctionalizingEntity entity) throws Exception {
-		// crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		// crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-		// FetchMode.JOIN);
-		// crit
-		// .setFetchMode(
-		// "sampleComposition.chemicalAssociationCollection.associatedElementA",
-		// FetchMode.JOIN);
-		// crit
-		// .setFetchMode(
-		// "sampleComposition.chemicalAssociationCollection.associatedElementB",
-		// FetchMode.JOIN);
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
-		Collection<LabFile> files = fileService.findFilesByCompositionInfoId(
-				entity.getId().toString(), NanoparticleEntity.class
-						.getCanonicalName());
-		entity.setLabFileCollection(files);
+		List<LabFile> files = fileService.findFilesByCompositionInfoId(entity
+				.getId().toString(), NanoparticleEntity.class
+				.getCanonicalName());
+		if (files != null && !files.isEmpty()) {
+			entity.setLabFileCollection(new HashSet<LabFile>(files));
+		}
+		ActivationMethod activationMethod = gridClient
+				.getActivationMethodByFunctionalizingEntityId(entity.getId()
+						.toString());
+		if (activationMethod != null) {
+			entity.setActivationMethod(activationMethod);
+		}
 		loadFunctionsForFunctionalizingEntity(entity);
 	}
 
@@ -459,7 +460,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			Function[] functions = gridClient
 					.getFunctionsByFunctionalizingEntityId(entity.getId()
 							.toString());
-			if (functions != null) {
+			if (functions != null && functions.length > 0) {
 				entity.setFunctionCollection(new HashSet<Function>());
 				for (Function function : functions) {
 					if (function instanceof TargetingFunction) {
@@ -564,10 +565,24 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadChemicalAssociationAssociations(ChemicalAssociation assoc)
 			throws Exception {
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
-		Collection<LabFile> files = fileService.findFilesByCompositionInfoId(
-				assoc.getId().toString(), ChemicalAssociation.class
-						.getCanonicalName());
-		assoc.setLabFileCollection(files);
+		List<LabFile> files = fileService.findFilesByCompositionInfoId(assoc
+				.getId().toString(), ChemicalAssociation.class
+				.getCanonicalName());
+		if (files != null && !files.isEmpty()) {
+			assoc.setLabFileCollection(new HashSet<LabFile>(files));
+		}
+		AssociatedElement associatedElementA = gridClient
+				.getAssociatedElementAByChemicalAssociationId(assoc.getId()
+						.toString());
+		AssociatedElement associatedElementB = gridClient
+				.getAssociatedElementBByChemicalAssociationId(assoc.getId()
+						.toString());
+		if (associatedElementA != null) {
+			assoc.setAssociatedElementA(associatedElementA);
+		}
+		if (associatedElementB != null) {
+			assoc.setAssociatedElementB(associatedElementB);
+		}
 	}
 
 	/**
