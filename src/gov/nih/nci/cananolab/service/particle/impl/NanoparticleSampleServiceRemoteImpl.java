@@ -25,11 +25,11 @@ import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -99,9 +99,8 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			}
 			return particles;
 		} catch (RemoteException e) {
-			String err = "Unable to connect to the grid location that you selected.";
-			logger.error(err, e);
-			throw new ParticleException(err, e);
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
 			logger.error(err, e);
