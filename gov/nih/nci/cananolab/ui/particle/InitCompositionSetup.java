@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class InitCompositionSetup {
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistNanoparticleEntityDropdowns(HttpServletRequest request,
@@ -112,6 +114,7 @@ public class InitCompositionSetup {
 			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
+		
 		setNanoparticleEntityDropdowns(request);
 	}
 
@@ -146,6 +149,7 @@ public class InitCompositionSetup {
 				"antibodySpecies", "Antibody", "species");
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistFunctionalizingEntityDropdowns(
@@ -192,6 +196,7 @@ public class InitCompositionSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "Attachment", "bondType", "otherBondType", true);
 		InitCompositionSetup.getInstance().getChemicalAssociationTypes(request);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void persistChemicalAssociationDropdowns(HttpServletRequest request,
