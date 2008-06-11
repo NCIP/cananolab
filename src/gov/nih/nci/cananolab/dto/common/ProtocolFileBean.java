@@ -102,8 +102,12 @@ public class ProtocolFileBean extends LabFileBean {
 
 	public void setupDomainFile(String internalUriPath, String createdBy)
 			throws Exception {
-		domainFile.setUri(updatedFileUri);
-		domainFile.setName(updatedFileName);
+		if (updatedFileUri!=null && updatedFileUri.trim().length()>0){
+			domainFile.setUri(updatedFileUri);
+		}
+		if (updatedFileName!=null && updatedFileName.trim().length()>0){
+			domainFile.setName(updatedFileName);
+		}
 		if (updatedFileVersion.length() > 0) {
 			domainFile.setVersion(updatedFileVersion);
 		}
