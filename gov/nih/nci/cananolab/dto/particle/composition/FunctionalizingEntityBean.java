@@ -93,8 +93,10 @@ public class FunctionalizingEntityBean {
 		if (functionalizingEntity.getActivationMethod() != null) {
 			activationMethod = functionalizingEntity.getActivationMethod();
 		}
-		for (LabFile file : functionalizingEntity.getLabFileCollection()) {
-			files.add(new LabFileBean(file));
+		if (functionalizingEntity.getLabFileCollection()!=null){
+			for (LabFile file : functionalizingEntity.getLabFileCollection()) {
+				files.add(new LabFileBean(file));
+			}
 		}
 		Collections.sort(files,
 				new CaNanoLabComparators.LabFileBeanDateComparator());
