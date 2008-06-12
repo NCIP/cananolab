@@ -133,7 +133,7 @@
 <c:set var="physicalType" value="Physical Characterization" />
 <c:choose>
 	<c:when
-		test="${hasPhysicalData eq 'true' || canCreateNanoparticle eq 'true' && location eq 'local'}">
+		test="${hasPhysicalData eq 'true' || canCreateNanoparticle eq 'true'}">
 
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">PHYSICAL CHARACTERIZATIONS</a>
@@ -200,7 +200,7 @@
 <c:set var="inVitroType" value="In Vitro Characterization" />
 <c:choose>
 	<c:when
-		test="${hasInVitroData eq 'true' || canCreateNanoparticle eq 'true' && location eq 'local'}">
+		test="${hasInVitroData eq 'true' || canCreateNanoparticle eq 'true'}">
 		<li class="controlList">
 			<a href="#" class="subMenuSecondary">IN VITRO CHARACTERIZATIONS</a>
 			<ul class="sublist_1" style="${invitroDisplay }">

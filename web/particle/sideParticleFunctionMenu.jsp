@@ -15,13 +15,13 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${!empty allFuncTypeFuncs || canCreateNanoparticle eq 'true' && location eq 'local'}">
+	<c:when test="${!empty allFuncTypeFuncs || canCreateNanoparticle eq 'true'}">
 	<li class="controlList">
 	<a href="#" class="subMenuSecondary">FUNCTION</a>
 	<ul class="sublist_4" style="${funcDisplay}">
 		<c:forEach var="funcType" items="${allFunctionTypes}">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local' && location eq 'local'}">
+				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<c:url var="addUrl" value="nanoparticleFunction.do">
 						<c:param name="page" value="0" />
 						<c:param name="dispatch" value="setup" />
