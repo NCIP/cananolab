@@ -116,7 +116,7 @@ public class FileServiceRemoteImpl implements FileService {
 	private void loadKeywordsForFile(LabFile file) throws Exception {
 		Keyword[] keywords = gridClient.getKeywordsByFileId(file.getId()
 				.toString());
-		if (keywords != null & keywords.length > 0) {
+		if (keywords != null && keywords.length > 0) {
 			file.setKeywordCollection(new HashSet<Keyword>(Arrays
 					.asList(keywords)));
 		}
