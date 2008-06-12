@@ -47,7 +47,7 @@ public class CharacterizationBean {
 	private String className;
 
 	protected String dateString;
-	
+
 	public String getDateString() {
 		return dateString;
 	}
@@ -66,7 +66,7 @@ public class CharacterizationBean {
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
 		this.characterizationSource = chara.getSource();
-		this.dateString = StringUtils.convertDateToString(chara.getDate(), 
+		this.dateString = StringUtils.convertDateToString(chara.getDate(),
 				CaNanoLabConstants.DATE_FORMAT);
 		if (chara.getInstrumentConfiguration() != null) {
 			instrumentConfiguration = chara.getInstrumentConfiguration();
@@ -173,11 +173,17 @@ public class CharacterizationBean {
 				instrumentConfiguration.setCreatedDate(new Date());
 			}
 			domainChar.setInstrumentConfiguration(instrumentConfiguration);
+		} else {
+			domainChar.setInstrumentConfiguration(null);
 		}
-		if (protocolFileBean!= null && protocolFileBean.getDomainFile()!= null && 
-				protocolFileBean.getDomainFile().getId() != null && protocolFileBean.getDomainFile().getId() != 0) {
+		if (protocolFileBean != null
+				&& protocolFileBean.getDomainFile() != null
+				&& protocolFileBean.getDomainFile().getId() != null
+				&& protocolFileBean.getDomainFile().getId() != 0) {
 			domainChar.setProtocolFile(((ProtocolFile) protocolFileBean
 					.getDomainFile()));
+		} else {
+			domainChar.setProtocolFile(null);
 		}
 		if (domainChar.getDerivedBioAssayDataCollection() != null) {
 			domainChar.getDerivedBioAssayDataCollection().clear();
