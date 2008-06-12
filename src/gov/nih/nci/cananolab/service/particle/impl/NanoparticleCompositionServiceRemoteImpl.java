@@ -292,7 +292,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		FunctionalizingEntityBean entityBean = null;
 		try {
 			try {
-				String fullClassName = ClassUtils.getFullClass(entityClassName)
+				String fullClassName = ClassUtils.getFullClass(
+						"functionalization." + entityClassName)
 						.getCanonicalName();
 				if (fullClassName.equals("java.lang.Object")) {
 					fullClassName = "gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity";
@@ -395,8 +396,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			composition
 					.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
 			for (String name : entityClassNames) {
-				String fullClassName = ClassUtils.getFullClass(name)
-						.getCanonicalName();
+				String fullClassName = ClassUtils.getFullClass(
+						"functionalization." + name).getCanonicalName();
 				if (fullClassName.equals("java.lang.Object")) {
 					fullClassName = "gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity";
 				}
@@ -578,16 +579,15 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		AssociatedElement associatedElementB = gridClient
 				.getAssociatedElementBByChemicalAssociationId(assoc.getId()
 						.toString());
-		
-		//FIXME
-		/*NanoparticleCompositionServiceHelper helper = new NanoparticleCompositionServiceHelper();
-		AssociatedElement associatedElementA = helper
-				.findAssociatedElementA(assoc.getId()
-						.toString());
-		AssociatedElement associatedElementB = helper
-				.findAssociatedElementB(assoc.getId()
-						.toString());
-		*/
+
+		// FIXME
+		/*
+		 * NanoparticleCompositionServiceHelper helper = new
+		 * NanoparticleCompositionServiceHelper(); AssociatedElement
+		 * associatedElementA = helper .findAssociatedElementA(assoc.getId()
+		 * .toString()); AssociatedElement associatedElementB = helper
+		 * .findAssociatedElementB(assoc.getId() .toString());
+		 */
 		if (associatedElementA != null) {
 			assoc.setAssociatedElementA(associatedElementA);
 		}
