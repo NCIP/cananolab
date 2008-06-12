@@ -39,12 +39,12 @@ public class ReportServiceHelper {
 			throws Exception {
 		List<Report> reports = new ArrayList<Report>();
 		DetachedCriteria crit = DetachedCriteria.forClass(Report.class);
-		if (reportTitle != null & reportTitle.length() > 0) {
+		if (reportTitle != null && reportTitle.length() > 0) {
 			TextMatchMode titleMatchMode = new TextMatchMode(reportTitle);
 			crit.add(Restrictions.ilike("title", titleMatchMode
 					.getUpdatedText(), titleMatchMode.getMatchMode()));
 		}
-		if (reportCategory != null & reportCategory.length() > 0) {
+		if (reportCategory != null && reportCategory.length() > 0) {
 			crit.add(Restrictions.eq("category", reportCategory));
 		}
 		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
