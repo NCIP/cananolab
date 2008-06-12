@@ -8,6 +8,6 @@
 		<unzip dest="${jboss.server.dir}/lib" src="conf/gridservice/globus_jboss_lib.zip" />
 	</target>
 	<target name="deploy-grid" depends="build-grid">
-		<copy todir="${jboss.deploy.dir}" overwrite="true" file="${build.dir}/wsrf.war" />
+		<copy todir="${jboss.deploy.dir}" overwrite="true" file="${build.dir}/wsrf-canano.war" />
 	</target>
 </project>
