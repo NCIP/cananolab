@@ -186,6 +186,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			}
 			ParticleBean particleBean = new ParticleBean(particleSample);
 			return particleBean;
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding the remote particle by id: "
 					+ particleId;
@@ -223,6 +226,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 				loadParticleSamplesAssociations(particleSample);
 			}
 			return particleSample;
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding the particle by name: "
 					+ particleName;
