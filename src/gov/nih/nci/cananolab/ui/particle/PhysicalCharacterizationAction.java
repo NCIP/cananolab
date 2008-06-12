@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.31 2008-05-28 20:45:31 tanq Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.32 2008-06-12 07:08:27 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -89,13 +89,15 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 	}
 
 	protected CharacterizationBean getCharacterizationBean(
-			DynaValidatorForm theForm, Characterization chara, UserBean user)
-			throws Exception {
+			DynaValidatorForm theForm, Characterization chara, UserBean user,
+			String location) throws Exception {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
 				(PhysicalCharacterization) chara);
-		// set file visibility
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
-		charService.retrieveVisiblity(charBean, user);
+		if (location.equals("local")) {
+			// set file visibility
+			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+			charService.retrieveVisiblity(charBean, user);
+		}
 		theForm.set("achar", charBean);
 		return charBean;
 	}

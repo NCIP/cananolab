@@ -256,7 +256,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	}
 
 	protected abstract CharacterizationBean getCharacterizationBean(
-			DynaValidatorForm theForm, Characterization chara, UserBean user)
+			DynaValidatorForm theForm, Characterization chara, UserBean user, String location)
 			throws Exception;
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -269,7 +269,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				"local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
-				user);
+				user, "local");
 		setLookups(request, charBean);
 		// clear copy to otherParticles
 		theForm.set("otherParticles", new String[0]);
@@ -383,7 +383,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		Characterization chara = prepareCharacterization(theForm, request,
 				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		getCharacterizationBean(theForm, chara, user);
+		getCharacterizationBean(theForm, chara, user, location);
 		String particleId = request.getParameter("particleId");
 		String characterizationId = request.getParameter("dataId");
 		String className = request.getParameter("dataClassName");
@@ -407,7 +407,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		Characterization chara = prepareCharacterization(theForm, request,
 				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		getCharacterizationBean(theForm, chara, user);
+		getCharacterizationBean(theForm, chara, user, location);
 		return mapping.findForward("detailPrintView");
 	}
 
@@ -421,7 +421,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				location);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
-				user);
+				user, location);
 		String fileName = this.getExportFileName(particleBean
 				.getDomainParticleSample().getName(), "detailView", charBean
 				.getClassName());

@@ -74,13 +74,15 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 	}
 
 	protected CharacterizationBean getCharacterizationBean(
-			DynaValidatorForm theForm, Characterization chara, UserBean user)
-			throws Exception {
+			DynaValidatorForm theForm, Characterization chara, UserBean user,
+			String location) throws Exception {
 		InvitroCharacterizationBean charBean = new InvitroCharacterizationBean(
 				(InvitroCharacterization) chara);
-		// set file visibility
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
-		charService.retrieveVisiblity(charBean, user);
+		if (location.equals("local")) {
+			// set file visibility
+			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+			charService.retrieveVisiblity(charBean, user);
+		}
 		theForm.set("achar", charBean);
 		return charBean;
 	}
