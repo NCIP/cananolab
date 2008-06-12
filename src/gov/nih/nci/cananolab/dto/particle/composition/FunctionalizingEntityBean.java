@@ -61,7 +61,7 @@ public class FunctionalizingEntityBean {
 	private ActivationMethod activationMethod = new ActivationMethod();
 
 	public FunctionalizingEntityBean() {
-		if(functions.size() == 0) {
+		if (functions.size() == 0) {
 			FunctionBean funcBean = new FunctionBean();
 			functions.add(funcBean);
 		}
@@ -93,7 +93,7 @@ public class FunctionalizingEntityBean {
 		if (functionalizingEntity.getActivationMethod() != null) {
 			activationMethod = functionalizingEntity.getActivationMethod();
 		}
-		if (functionalizingEntity.getLabFileCollection()!=null){
+		if (functionalizingEntity.getLabFileCollection() != null) {
 			for (LabFile file : functionalizingEntity.getLabFileCollection()) {
 				files.add(new LabFileBean(file));
 			}
@@ -322,10 +322,10 @@ public class FunctionalizingEntityBean {
 			type = ((OtherFunctionalizingEntity) domainEntity).getType();
 		} else {
 			type = classToType.get(className);
-			// set function type and target type
-			for (FunctionBean functionBean : getFunctions()) {
-				functionBean.updateType(classToType);
-			}
+		}
+		// set function type and target type
+		for (FunctionBean functionBean : getFunctions()) {
+			functionBean.updateType(classToType);
 		}
 	}
 
