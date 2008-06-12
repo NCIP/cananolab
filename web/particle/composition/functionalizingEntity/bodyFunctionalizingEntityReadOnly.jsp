@@ -187,7 +187,7 @@
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0">
 					<tbody>
-						<c:if test="${!empty entity.files}">
+						<c:if test="${!empty functionalizingEntityForm.map.entity.files}">
 							<tr class="topBorder">
 								<td class="formTitle">
 									<div align="justify" id="peFileTitle">
