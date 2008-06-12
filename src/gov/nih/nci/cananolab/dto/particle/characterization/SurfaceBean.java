@@ -18,8 +18,10 @@ public class SurfaceBean {
 
 	public SurfaceBean(Surface surface) {
 		domainSurface = surface;
-		for (SurfaceChemistry chem : surface.getSurfaceChemistryCollection()) {
-			surfaceChemistryList.add(chem);
+		if (surface.getSurfaceChemistryCollection()!=null){
+			for (SurfaceChemistry chem : surface.getSurfaceChemistryCollection()) {
+				surfaceChemistryList.add(chem);
+			}
 		}
 		Collections.sort(surfaceChemistryList,
 				new CaNanoLabComparators.SurfaceChemistryDateComparator());
