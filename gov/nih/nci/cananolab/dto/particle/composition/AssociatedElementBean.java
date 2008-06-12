@@ -29,8 +29,10 @@ public class AssociatedElementBean {
 		className = ClassUtils.getShortClassName(element.getClass().getName());
 		if (element instanceof ComposingElement) {
 			composingElement = (ComposingElement) element;
-			entityId = composingElement.getNanoparticleEntity().getId()
+			if (composingElement.getNanoparticleEntity()!=null){
+				entityId = composingElement.getNanoparticleEntity().getId()
 					.toString();
+			}
 		} else {
 			entityId = element.getId().toString();
 		}

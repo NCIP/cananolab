@@ -488,6 +488,53 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 			throw new ParticleCompositionException(err, e);
 		}
 	}
+	
+	
+	/**
+	 * load all NanoparticleEntity for associated ComposingElement
+	 * 
+	 * @param composingElement
+	 * @return
+	 * @throws ParticleCompositionException
+	 */
+	private void loadNanoparticleEntityForComposingElement(
+			ComposingElement composingElement) throws ParticleCompositionException {
+		try {
+			CQLQuery query = new CQLQuery();
+
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+			Association association = new Association();
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement");
+			association.setRoleName("composingElementCollection");
+
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(composingElement.getId().toString());
+			association.setAttribute(attribute);
+
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			NanoparticleEntity entity = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				entity = (NanoparticleEntity) obj;
+				composingElement.setNanoparticleEntity(entity);
+			}
+		} catch (Exception e) {
+			String err = "Problem finding NanoparticleEntity for associated ComposingElement id: "
+					+ composingElement.getId();
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
 
 	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
 			throws ParticleCompositionException {
@@ -576,10 +623,16 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		AssociatedElement associatedElementA = gridClient
 				.getAssociatedElementAByChemicalAssociationId(assoc.getId()
 						.toString());
+		if (associatedElementA!=null && associatedElementA instanceof ComposingElement){
+			loadNanoparticleEntityForComposingElement((ComposingElement)associatedElementA);
+		}
 		AssociatedElement associatedElementB = gridClient
 				.getAssociatedElementBByChemicalAssociationId(assoc.getId()
 						.toString());
-
+		if (associatedElementB!=null && associatedElementB instanceof ComposingElement){
+			loadNanoparticleEntityForComposingElement((ComposingElement)associatedElementB);
+		}
+		
 		// FIXME
 		/*
 		 * NanoparticleCompositionServiceHelper helper = new
