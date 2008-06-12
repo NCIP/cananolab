@@ -154,7 +154,7 @@
 																<c:if
 																	test="${functionalizingEntityForm.map.entity.functions[ind].type == 'imaging' && !empty functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality}">
 																	<br>
-																	(Modality Type&nbsp;														
+																	(Modality Type:&nbsp;														
 																		${functionalizingEntityForm.map.entity.functions[ind].imagingFunction.modality})&nbsp;																
 																</c:if>
 																<c:if
