@@ -84,8 +84,10 @@ public class FunctionalizingEntityBean {
 		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
-		for (Function function : functionalizingEntity.getFunctionCollection()) {
-			functions.add(new FunctionBean(function));
+		if (functionalizingEntity.getFunctionCollection()!=null){
+			for (Function function : functionalizingEntity.getFunctionCollection()) {
+				functions.add(new FunctionBean(function));
+			}
 		}
 		Collections.sort(functions,
 				new CaNanoLabComparators.FunctionBeanDateComparator());
