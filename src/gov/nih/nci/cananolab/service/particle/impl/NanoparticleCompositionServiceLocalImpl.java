@@ -348,8 +348,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
-			String assocClassName) throws ParticleCompositionException {
+	public ChemicalAssociationBean findChemicalAssociationById(
+			String particleId, String assocId, String assocClassName)
+			throws ParticleCompositionException {
 		return findChemicalAssociationById(assocId);
 	}
 
