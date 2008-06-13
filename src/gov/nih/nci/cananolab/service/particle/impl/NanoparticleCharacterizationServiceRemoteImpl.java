@@ -356,16 +356,16 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		}
 	}
 
-	public void removeCharacterizationVisibility(
+	public void removeCharacterizationPublicVisibility(
 			AuthorizationService authService, Characterization aChar)
 			throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
 				"Not implemented for grid service");
 	}
 
-	public void assignCharacterizationVisibility(
-			AuthorizationService authService, Characterization aChar,
-			String[] visibleGroups) throws ParticleCharacterizationException {
+	public void assignCharacterizationPublicVisibility(
+			AuthorizationService authService, Characterization aChar) 
+		throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
 				"Not implemented for grid service");
 	}

@@ -94,22 +94,20 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeNanoparticleEntityVisibility(authService, entity);
-			if (!newSampleComposition) {
-				authService.removePublicGroup(particleSample
-						.getSampleComposition().getId().toString());
-			}
+			removeNanoparticleEntityPublicVisibility(authService, entity);
+//			if (!newSampleComposition) {
+//				authService.removePublicGroup(particleSample
+//						.getSampleComposition().getId().toString());
+//			}
 			List<String> accessibleGroups = authService.getAccessibleGroups(
 					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-				String[] visibleGroups = { CaNanoLabConstants.CSM_PUBLIC_GROUP };
-				assignNanoparicleEntityVisibility(authService, entity,
-						visibleGroups);
+				assignNanoparicleEntityPublicVisibility(authService, entity);
 				if (newSampleComposition) {
-					assignSampleCompositionVisibility(authService,
-							particleSample, visibleGroups);
+					assignSampleCompositionPublicVisibility(authService,
+							particleSample);
 				}
 			}
 		} catch (Exception e) {
@@ -181,25 +179,22 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeFunctionalizingEntityVisibility(authService, entity);
-			if (!newSampleComposition) {
-				authService.removePublicGroup(particleSample
-						.getSampleComposition().getId().toString());
-			}
+			removeFunctionalizingEntityPublicVisibility(authService, entity);
+//			if (!newSampleComposition) {
+//				authService.removePublicGroup(particleSample
+//						.getSampleComposition().getId().toString());
+//			}
 			List<String> accessibleGroups = authService.getAccessibleGroups(
 					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-				String[] visibleGroups = { CaNanoLabConstants.CSM_PUBLIC_GROUP };
-				assignFunctionalizingEntityVisibility(authService, entity,
-						visibleGroups);
+				assignFunctionalizingEntityPublicVisibility(authService, entity);
 				if (newSampleComposition) {
-					assignSampleCompositionVisibility(authService,
-							particleSample, visibleGroups);
+					assignSampleCompositionPublicVisibility(authService,
+							particleSample);
 				}
 			}
-
 		} catch (Exception e) {
 			String err = "Problem saving the functionalizing entity.";
 			logger.error(err, e);
@@ -245,24 +240,15 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			if (assoc.getId() == null) {
-				authService.removePublicGroup(composition.getId().toString());
-			} else {
-				removeChemicalAssociationVisibility(authService, assoc);
+			if (assoc.getId() != null) {
+				removeChemicalAssociationPublicVisibility(authService, assoc);
 			}
 			List<String> accessibleGroups = authService.getAccessibleGroups(
 					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
-			if (accessibleGroups != null
+			if (assoc.getId() != null && accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-				String[] visibleGroups = { CaNanoLabConstants.CSM_PUBLIC_GROUP };
-				if (assoc.getId() == null) {
-					authService.assignVisibility(
-							composition.getId().toString(), visibleGroups);
-				} else {
-					assignChemicalAssociationVisibility(authService, assoc,
-							visibleGroups);
-				}
+				assignChemicalAssociationPublicVisibility(authService, assoc);
 			}
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
@@ -508,7 +494,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeNanoparticleEntityVisibility(authService, entity);
+			removeNanoparticleEntityPublicVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
@@ -524,7 +510,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeFunctionalizingEntityVisibility(authService, entity);
+			removeFunctionalizingEntityPublicVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
@@ -541,7 +527,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeChemicalAssociationVisibility(authService, assoc);
+			removeChemicalAssociationPublicVisibility(authService, assoc);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(assoc);
@@ -639,45 +625,42 @@ public class NanoparticleCompositionServiceLocalImpl implements
 				"Not implemented for local service");
 	}
 
-	public void assignChemicalAssociationVisibility(
+	public void assignChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation, String[] visibleGroups)
+			ChemicalAssociation chemicalAssociation)
 			throws CaNanoLabSecurityException {
 		if (chemicalAssociation != null) {
-			this.removeChemicalAssociationVisibility(authService,
+			removeChemicalAssociationPublicVisibility(authService,
 					chemicalAssociation);
-			authService.assignVisibility(
-					chemicalAssociation.getId().toString(), visibleGroups);
+			authService.assignPublicVisibility(
+					chemicalAssociation.getId().toString());
 			// chemicalAssociation.associatedElementA
 			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.assignVisibility(chemicalAssociation
-						.getAssociatedElementA().getId().toString(),
-						visibleGroups);
+				authService.assignPublicVisibility(chemicalAssociation
+						.getAssociatedElementA().getId().toString());
 			}
 			// chemicalAssociation.associatedElementB
 			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.assignVisibility(chemicalAssociation
-						.getAssociatedElementB().getId().toString(),
-						visibleGroups);
+				authService.assignPublicVisibility(chemicalAssociation
+						.getAssociatedElementB().getId().toString());
 			}
 		}
 	}
 
-	public void assignNanoparicleEntityVisibility(
+	public void assignNanoparicleEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
+			NanoparticleEntity nanoparticleEntity)
 			throws CaNanoLabSecurityException {
 		if (nanoparticleEntity != null) {
-			authService.assignVisibility(nanoparticleEntity.getId().toString(),
-					visibleGroups);
+			authService.assignPublicVisibility(nanoparticleEntity.getId().toString());
 			// nanoparticleEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = nanoparticleEntity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService.assignVisibility(composingElement.getId()
-								.toString(), visibleGroups);
+						authService.assignPublicVisibility(composingElement.getId()
+								.toString());
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -685,8 +668,8 @@ public class NanoparticleCompositionServiceLocalImpl implements
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService.assignVisibility(function.getId()
-										.toString(), visibleGroups);
+								authService.assignPublicVisibility(function.getId()
+										.toString());
 							}
 						}
 					}
@@ -695,28 +678,27 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	public void assignFunctionalizingEntityVisibility(
+	public void assignFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
-			FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+			FunctionalizingEntity functionalizingEntity)
 			throws CaNanoLabSecurityException {
 		if (functionalizingEntity != null) {
-			authService.assignVisibility(functionalizingEntity.getId()
-					.toString(), visibleGroups);
+			authService.assignPublicVisibility(functionalizingEntity.getId().toString());
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
 					.getFunctionCollection();
 			if (functionCollection != null) {
 				for (Function function : functionCollection) {
 					if (function != null) {
-						authService.assignVisibility(function.getId()
-								.toString(), visibleGroups);
+						authService.assignPublicVisibility(function.getId()
+								.toString());
 					}
 				}
 			}
 		}
 	}
 
-	public void removeNanoparticleEntityVisibility(
+	public void removeNanoparticleEntityPublicVisibility(
 			AuthorizationService authService,
 			NanoparticleEntity nanoparticleEntity)
 			throws CaNanoLabSecurityException {
@@ -749,7 +731,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	public void removeFunctionalizingEntityVisibility(
+	public void removeFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
 			FunctionalizingEntity functionalizingEntity)
 			throws CaNanoLabSecurityException {
@@ -770,7 +752,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	public void removeChemicalAssociationVisibility(
+	public void removeChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation)
 			throws CaNanoLabSecurityException {
@@ -790,14 +772,14 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	public void assignSampleCompositionVisibility(
+	public void assignSampleCompositionPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleSample particleSample, String[] visibleGroups)
+			NanoparticleSample particleSample)
 			throws CaNanoLabSecurityException {
 		authService.removePublicGroup(particleSample.getSampleComposition()
 				.getId().toString());
-		authService.assignVisibility(particleSample.getSampleComposition()
-				.getId().toString(), visibleGroups);
+		authService.assignPublicVisibility(particleSample.getSampleComposition()
+				.getId().toString());
 
 	}
 }

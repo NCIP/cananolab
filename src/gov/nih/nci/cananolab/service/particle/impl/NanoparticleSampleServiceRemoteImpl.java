@@ -374,7 +374,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		}
 	}
 
-	public void assignAssociatedVisibility(AuthorizationService authService,
+	public void assignAssociatedPublicVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean, String[] visibleGroups)
 			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");

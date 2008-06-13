@@ -101,7 +101,7 @@ public interface NanoparticleSampleService {
 
 	public int getNumberOfPublicNanoparticleSamples() throws ParticleException;
 	
-	public void assignAssociatedVisibility(AuthorizationService authService,
+	public void assignAssociatedPublicVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean, String[] visibleGroups)
 		throws Exception;
 }

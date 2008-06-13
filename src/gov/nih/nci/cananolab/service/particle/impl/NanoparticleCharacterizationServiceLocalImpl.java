@@ -108,15 +108,13 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			appService.saveOrUpdate(achar);
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeCharacterizationVisibility(authService, achar);
+			removeCharacterizationPublicVisibility(authService, achar);
 			List<String> accessibleGroups = authService.getAccessibleGroups(
 					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-				String[] visibleGroups = { CaNanoLabConstants.CSM_PUBLIC_GROUP };
-				assignCharacterizationVisibility(authService, achar,
-						visibleGroups);
+				assignCharacterizationPublicVisibility(authService, achar);
 			}
 		} catch (DuplicateEntriesException e) {
 			throw e;
@@ -297,7 +295,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			removeCharacterizationVisibility(authService, chara);
+			removeCharacterizationPublicVisibility(authService, chara);
 			appService.delete(chara);
 
 		} catch (Exception e) {
@@ -314,21 +312,20 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 				"Not implemented for local service");
 	}
 
-	public void assignCharacterizationVisibility(
-			AuthorizationService authService, Characterization aChar,
-			String[] visibleGroups) throws CaNanoLabSecurityException {
+	public void assignCharacterizationPublicVisibility(
+			AuthorizationService authService, Characterization aChar) 
+		throws CaNanoLabSecurityException {
 		// characterization
 		if (aChar != null) {
-			authService.assignVisibility(aChar.getId().toString(),
-					visibleGroups);
+			authService.assignPublicVisibility(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection
 			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
 					.getDerivedBioAssayDataCollection();
 			if (derivedBioAssayDataCollection != null) {
 				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
 					if (aDerived != null) {
-						authService.assignVisibility(aDerived.getId()
-								.toString(), visibleGroups);
+						authService.assignPublicVisibility(aDerived.getId()
+								.toString());
 					}
 					// derived.derivedDatum
 					Collection<DerivedDatum> derivedDatumCollection = aDerived
@@ -336,8 +333,8 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					if (derivedDatumCollection != null) {
 						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
 							if (aDerivedDatum != null) {
-								authService.assignVisibility(aDerivedDatum
-										.getId().toString(), visibleGroups);
+								authService.assignPublicVisibility(aDerivedDatum
+										.getId().toString());
 							}
 						}
 					}
@@ -345,19 +342,19 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			}
 			// InstrumentConfiguration
 			if (aChar.getInstrumentConfiguration() != null) {
-				authService.assignVisibility(aChar.getInstrumentConfiguration()
-						.getId().toString(), visibleGroups);
+				authService.assignPublicVisibility(aChar.getInstrumentConfiguration()
+						.getId().toString());
 				// InstrumentConfiguration.Instrument
 				if (aChar.getInstrumentConfiguration().getInstrument() != null) {
-					authService.assignVisibility(aChar
+					authService.assignPublicVisibility(aChar
 							.getInstrumentConfiguration().getInstrument()
-							.getId().toString(), visibleGroups);
+							.getId().toString());
 				}
 			}
 		}
 	}
 
-	public void removeCharacterizationVisibility(
+	public void removeCharacterizationPublicVisibility(
 			AuthorizationService authService, Characterization aChar)
 			throws CaNanoLabSecurityException {
 		if (aChar != null) {

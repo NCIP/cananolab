@@ -827,6 +827,21 @@ public class AuthorizationService {
 			throw new CaNanoLabSecurityException();
 		}
 	}
+	
+	public void assignPublicVisibility(String dataToProtect)
+			throws CaNanoLabSecurityException {
+		try {
+			removeExistingVisibleGroups(dataToProtect,
+					CaNanoLabConstants.CSM_READ_ROLE);		
+			// set public visibilities
+			secureObject(dataToProtect, CaNanoLabConstants.CSM_PUBLIC_GROUP,
+					CaNanoLabConstants.CSM_READ_ROLE);
+		} catch (Exception e) {
+			logger.error("Error in setting visibility", e);
+			throw new CaNanoLabSecurityException();
+		}
+	}
+
 
 	public void assignGroupToProtectionGroupWithRole(String groupName,
 			String protectionGroupName, String roleName)
