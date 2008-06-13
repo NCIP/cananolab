@@ -133,35 +133,35 @@ public interface NanoparticleCompositionService {
 	public SampleComposition findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException;
 
-	public void assignChemicalAssociationVisibility(
+	public void assignChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation, String[] visibleGroups)
+			ChemicalAssociation chemicalAssociation)
 			throws Exception;
 
-	public void assignNanoparicleEntityVisibility(
+	public void assignNanoparicleEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity, String[] visibleGroups)
+			NanoparticleEntity nanoparticleEntity)
 			throws Exception;
 
-	public void assignFunctionalizingEntityVisibility(
+	public void assignFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
-			FunctionalizingEntity functionalizingEntity, String[] visibleGroups)
+			FunctionalizingEntity functionalizingEntity)
 			throws Exception;
 
-	public void removeNanoparticleEntityVisibility(
+	public void removeNanoparticleEntityPublicVisibility(
 			AuthorizationService authService,
 			NanoparticleEntity nanoparticleEntity) throws Exception;
 
-	public void removeFunctionalizingEntityVisibility(
+	public void removeFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
 			FunctionalizingEntity functionalizingEntity) throws Exception;
 
-	public void removeChemicalAssociationVisibility(
+	public void removeChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation) throws Exception;
 
-	public void assignSampleCompositionVisibility(
+	public void assignSampleCompositionPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleSample particleSample, String[] visibleGroups)
+			NanoparticleSample particleSample)
 			throws Exception;
 }
