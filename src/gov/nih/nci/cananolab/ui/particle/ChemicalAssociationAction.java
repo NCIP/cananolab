@@ -311,6 +311,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
+		String particleId = request.getParameter("particleId");
 		NanoparticleCompositionService compService = null;
 		if (location.equals("local")) {
 			compService = new NanoparticleCompositionServiceLocalImpl();
@@ -322,7 +323,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		}
 		String assocClassName = request.getParameter("dataClassName");
 		ChemicalAssociationBean assocBean = compService
-				.findChemicalAssociationById(assocId, assocClassName);
+				.findChemicalAssociationById(particleId, assocId,
+						assocClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(assocBean, user);
 		}
