@@ -27,8 +27,7 @@ function confirmDeletion()
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when
-		test="${! empty ceListA }">
+	<c:when test="${! empty ceListA }">
 		<c:set var="ceStyleA" value="display:inline" />
 	</c:when>
 	<c:otherwise>
@@ -37,8 +36,7 @@ function confirmDeletion()
 	</c:otherwise>
 </c:choose>
 <c:choose>
-	<c:when
-		test="${! empty ceListB }">
+	<c:when test="${! empty ceListB }">
 		<c:set var="ceStyleB" value="display:inline" />
 	</c:when>
 	<c:otherwise>
@@ -57,7 +55,7 @@ function confirmDeletion()
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="chem_association_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>	
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -98,11 +96,11 @@ function confirmDeletion()
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong id="bondTypeTitle" style="${style }">Bond Type*</Strong>
+							<Strong id="bondTypeTitle" style="">Bond Type*</Strong>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							<span id="bondTypeLine" style="${style}"><html:select
+							<span id="bondTypeLine" style=""><html:select
 									styleId="bondType" property="assoc.attachment.bondType"
 									onchange="javascript:callPrompt('Bond Type', 'bondType');">
 									<option value=""></option>
@@ -114,7 +112,18 @@ function confirmDeletion()
 						</td>
 					</tr>
 					<tr>
-						<td class="completeLabel" colspan="4">							
+						<td class="leftLabel" valign="top">
+							<strong>Association Description</strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<html:textarea property="assoc.description" rows="3" cols="60" />
+						</td>
+					</tr>
+					<tr>
+						<td class="completeLabel" colspan="4">
+							<strong>Associated Elements </strong>
+							<i>(either a composing element of a nanoparticle entity or a
+								functionalizing entity)</i>
 							<div id="assocEleBlockA" class="assocEleBlock">
 								<ul>
 									<li>
@@ -158,8 +167,8 @@ function confirmDeletion()
 											value="${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName}" />
 									</li>
 									<li>
-										<span class="indented3" id="compEleA" style="${ceStyleA}">
-											<html:select styleId="compEleTypeA"
+										<span class="indented3" id="compEleA" style=""> <html:select
+												styleId="compEleTypeA"
 												property="assoc.associatedElementA.composingElement.id">
 												<option value="" />
 													<c:if test="${!empty ceListA}">
@@ -233,7 +242,7 @@ function confirmDeletion()
 											value="${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName}" />
 									</li>
 									<li>
-										<span class="indented3" id="compEleB" style="${ceStyleB}"><html:select
+										<span class="indented3" id="compEleB" style=""><html:select
 												styleId="compEleTypeB"
 												property="assoc.associatedElementB.composingElement.id">
 												<option value="" />
@@ -259,15 +268,6 @@ function confirmDeletion()
 									</li>
 								</ul>
 							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Association Description</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<html:textarea property="assoc.description" rows="2" cols="60" />
 						</td>
 					</tr>
 				</table>
@@ -356,22 +356,25 @@ function confirmDeletion()
 											<div align="right">
 												<c:choose>
 													<c:when test="${!empty param.dataId }">
-														<c:set var="dataId" value="${param.dataId}" scope="session" />																		
+														<c:set var="dataId" value="${param.dataId}"
+															scope="session" />
 													</c:when>
 													<c:when test="${'setup' eq param.dispatch }">
 														<c:remove var="dataId" scope="session" />
-													</c:when>	
+													</c:when>
 												</c:choose>
-												<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setup&location=${location}" />
+												<c:set var="origUrl"
+													value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setup&location=${location}" />
 												<c:if test="${!empty dataId}">
-													<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" />
-												</c:if>		
-												<input type="reset" value="Reset" 
+													<c:set var="origUrl"
+														value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" />
+												</c:if>
+												<input type="reset" value="Reset"
 													onclick="javascript:window.location.href='${origUrl}'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
-													value="${param.submitType}" />												
+													value="${param.submitType}" />
 												<c:choose>
 													<c:when test="${!empty param.particleId }">
 														<html:hidden property="particleId"

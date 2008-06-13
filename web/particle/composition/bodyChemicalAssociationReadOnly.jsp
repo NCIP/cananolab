@@ -9,14 +9,15 @@
 		<tr>
 			<td>
 				<h4>
-					${fn:toUpperCase(param.location)} ${particleName} Sample Composition - Chemical Association
+					${fn:toUpperCase(param.location)} ${particleName} Sample
+					Composition - Chemical Association
 				</h4>
 			</td>
 			<td align="right" width="20%">
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="chem_association_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>				
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -54,54 +55,6 @@
 							</c:if>
 						</td>
 					</tr>
-					<tr>
-						<td class="completeLabel" colspan="4">
-							<div id="assocEleBlockA" class="assocEleBlock">
-								<ul>
-									<li>
-										<strong>Element</strong>
-									</li>
-									<li>
-										&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
-									</li>
-									<li>
-										&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName}
-									</li>
-									<c:if
-										test="${! empty chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
-										<li>
-											&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name}
-										</li>
-									</c:if>
-								</ul>
-							</div>
-							<div id="assocEleLinkBlock" class="arrowBlock">
-								<img src="images/arrow.small.left.gif" />
-								<img src="images/arrow.small.right.gif" />
-								<br>
-								<strong>associated with</strong>
-							</div>
-							<div id="assocEleBlockB" class="assocEleBlock">
-								<ul>
-									<li>
-										<strong>Element</strong>
-									</li>
-									<li>
-										&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
-									</li>
-									<li>
-										&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName}
-									</li>
-									<c:if
-										test="${! empty chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
-										<li>
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.name}
-										</li>
-									</c:if>
-								</ul>
-							</div>
-						</td>
-					</tr>
 
 					<tr>
 						<td class="leftLabel" valign="top">
@@ -109,6 +62,46 @@
 						</td>
 						<td class="rightLabel" colspan="3">
 							${chemicalAssociationForm.map.assoc.description}&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td class="completeLabel" colspan="4" valign="top">
+							<strong>Associated Elements </strong>
+							<i>(either a composing element of a nanoparticle entity or a
+								functionalizing entity)</i>
+							<div id="assocEleBlockA" class="assocEleBlock">
+								&nbsp;&nbsp;
+								<strong>Element</strong>
+								<br>
+								<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
+								(${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName})
+								<br>
+								<c:if
+									test="${! empty chemicalAssociationForm.map.assoc.associatedElementA.composingElement.id }">
+										
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Composing Element (${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name})
+										<br>
+								</c:if>
+							</div>
+							<div id="assocEleLinkBlock">
+								
+							</div>
+							<div id="assocEleBlockB" class="assocEleBlock">
+								&nbsp;&nbsp;
+								<strong>Element</strong>
+								<br>
+								<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
+								(${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName})
+								<br>
+								<c:if
+									test="${! empty chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
+										
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Composing Element (${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name})
+										<br>
+								</c:if>
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -154,10 +147,10 @@
 												value="${chemicalAssociationForm.map.assoc.files[fileInd].image}" />
 											<jsp:param name="fileHidden"
 												value="${chemicalAssociationForm.map.assoc.files[fileInd].hidden}" />
-														
-												
+
+
 										</jsp:include>
-	
+
 										<br>
 									</logic:iterate>
 								</td>
