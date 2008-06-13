@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -29,9 +31,9 @@ public class AssociatedElementBean {
 		className = ClassUtils.getShortClassName(element.getClass().getName());
 		if (element instanceof ComposingElement) {
 			composingElement = (ComposingElement) element;
-			if (composingElement.getNanoparticleEntity()!=null){
+			if (composingElement.getNanoparticleEntity() != null) {
 				entityId = composingElement.getNanoparticleEntity().getId()
-					.toString();
+						.toString();
 			}
 		} else {
 			entityId = element.getId().toString();
@@ -95,13 +97,25 @@ public class AssociatedElementBean {
 	public void updateType(Map<String, String> classToType) {
 		if (composingElement.getId() != null) {
 			compositionType = classToType.get("NanoparticleEntity");
-			String entityClassName = className = ClassUtils
-					.getShortClassName(composingElement.getNanoparticleEntity()
-							.getClass().getName());
-			entityDisplayName = classToType.get(entityClassName);
+			NanoparticleEntity entity = composingElement
+					.getNanoparticleEntity();
+			if (entity instanceof OtherNanoparticleEntity) {
+				entityDisplayName = ((OtherNanoparticleEntity) entity)
+						.getType();
+			} else {
+				String entityClassName = className = ClassUtils
+						.getShortClassName(composingElement
+								.getNanoparticleEntity().getClass().getName());
+				entityDisplayName = classToType.get(entityClassName);
+			}
 		} else {
 			compositionType = classToType.get("FunctionalizingEntity");
-			entityDisplayName = classToType.get(className);
+			if (domainElement instanceof OtherFunctionalizingEntity) {
+				entityDisplayName = ((OtherFunctionalizingEntity) domainElement)
+						.getType();
+			} else {
+				entityDisplayName = classToType.get(className);
+			}
 		}
 	}
 
