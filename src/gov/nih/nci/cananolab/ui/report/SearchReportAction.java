@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.14 2008-06-13 14:59:11 cais Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.15 2008-06-13 15:10:57 cais Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -198,12 +198,9 @@ public class SearchReportAction extends BaseAnnotationAction {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
 		
-		boolean isLocal = false;
 		if ("local".equals(selectedLocations[0]) &&
 				selectedLocations.length == 1) {
-			isLocal = true;
-		}
-		if (isLocal) {
+			
 			InitCompositionSetup.getInstance()
 					.getNanoparticleEntityTypes(request);
 			

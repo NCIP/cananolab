@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.22 2008-06-13 14:59:11 cais Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.23 2008-06-13 15:10:57 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -194,12 +194,9 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 
-		boolean isLocal = false;
 		if ("local".equals(selectedLocations[0]) &&
 				selectedLocations.length == 1) {
-			isLocal = true;
-		}
-		if (isLocal) {
+			
 			InitCompositionSetup.getInstance()
 					.getNanoparticleEntityTypes(request);
 			
