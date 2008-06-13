@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.13 2008-06-06 18:16:24 pansu Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.14 2008-06-13 14:59:11 cais Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -191,16 +191,32 @@ public class SearchReportAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitReportSetup.getInstance().setReportDropdowns(request);
-		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
-		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
-				request);
-		InitCompositionSetup.getInstance().getFunctionTypes(request);
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
+		
+		boolean isLocal = false;
+		if ("local".equals(selectedLocations[0]) &&
+				selectedLocations.length == 1) {
+			isLocal = true;
+		}
+		if (isLocal) {
+			InitCompositionSetup.getInstance()
+					.getNanoparticleEntityTypes(request);
+			
+			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(request);
+			InitCompositionSetup.getInstance().getFunctionTypes(request);
+		} else {
+			InitCompositionSetup.getInstance()
+					.getDefaultNanoparticleEntityTypes(request);
+			
+			InitCompositionSetup.getInstance().getDefaultFunctionalizingEntityTypes(request);
+			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
+		}
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
