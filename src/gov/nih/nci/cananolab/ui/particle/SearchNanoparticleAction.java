@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.21 2008-06-02 22:18:56 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.22 2008-06-13 14:59:11 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -20,6 +20,7 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -183,10 +184,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitCompositionSetup.getInstance().getFunctionTypes(request);
-		InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
-				request);
-		InitCompositionSetup.getInstance().getNanoparticleEntityTypes(request);
 
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
@@ -196,6 +193,26 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
+
+		boolean isLocal = false;
+		if ("local".equals(selectedLocations[0]) &&
+				selectedLocations.length == 1) {
+			isLocal = true;
+		}
+		if (isLocal) {
+			InitCompositionSetup.getInstance()
+					.getNanoparticleEntityTypes(request);
+			
+			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(request);
+			InitCompositionSetup.getInstance().getFunctionTypes(request);
+		} else {
+			InitCompositionSetup.getInstance()
+					.getDefaultNanoparticleEntityTypes(request);
+			
+			InitCompositionSetup.getInstance().getDefaultFunctionalizingEntityTypes(request);
+			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
+		}
+
 		return mapping.getInputForward();
 	}
 
