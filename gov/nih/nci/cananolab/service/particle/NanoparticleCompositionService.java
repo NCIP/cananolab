@@ -51,8 +51,9 @@ public interface NanoparticleCompositionService {
 	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
 			throws ParticleCompositionException;
 
-	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
-			String assocClassName) throws ParticleCompositionException;
+	public ChemicalAssociationBean findChemicalAssociationById(
+			String particleId, String assocId, String assocClassName)
+			throws ParticleCompositionException;
 
 	/**
 	 * Return user-defined functionalizing entity types
