@@ -754,7 +754,7 @@ AND pg.protection_group_name = pf.protocol_file_pk_id
 AND pro.protocol_pk_id = pf.protocol_pk_id
 ;
 
--- keyword
+-- keyword nanoparticle sample
 INSERT into csm_protection_group (
 	protection_group_name,
 	application_id,
@@ -770,20 +770,14 @@ FROM csm_group g,
 	csm_protection_group pg,
 	csm_user_group_role_pg upg,
 	nanoparticle_sample ns,
-	characterization cha,
-	derived_bioassay_data dbd,
-	lab_file lf,
-	keyword_lab_file klf,
+	keyword_nanoparticle_sample kns,
 	keyword kw
 WHERE g.group_id = upg.group_id
 AND g.group_name = 'Public'
 AND upg.protection_group_id = pg.protection_group_id
 AND pg.protection_group_name = ns.particle_sample_name
-AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
-AND cha.characterization_pk_id = dbd.characterization_pk_id
-AND dbd.file_pk_id = lf.file_pk_id
-AND klf.lab_file_pk_id = lf.file_pk_id
-AND kw.keyword_pk_id = klf.keyword_pk_id
+AND ns.particle_sample_pk_id = kns.particle_sample_pk_id
+AND kw.keyword_pk_id = kns.keyword_pk_id
 ;
 
 INSERT into protection_group_tmp (
@@ -795,21 +789,18 @@ FROM csm_group g,
 	csm_protection_group pg,
 	csm_user_group_role_pg upg,
 	nanoparticle_sample ns,
-	characterization cha,
-	derived_bioassay_data dbd,
-	lab_file lf,
-	keyword_lab_file klf,
+	keyword_nanoparticle_sample kns,
 	keyword kw
 WHERE g.group_id = upg.group_id
 AND g.group_name = 'Public'
 AND upg.protection_group_id = pg.protection_group_id
 AND pg.protection_group_name = ns.particle_sample_name
-AND ns.particle_sample_pk_id = cha.particle_sample_pk_id
-AND cha.characterization_pk_id = dbd.characterization_pk_id
-AND dbd.file_pk_id = lf.file_pk_id
-AND klf.lab_file_pk_id = lf.file_pk_id
-AND kw.keyword_pk_id = klf.keyword_pk_id
+AND ns.particle_sample_pk_id = kns.particle_sample_pk_id
+AND kw.keyword_pk_id = kns.keyword_pk_id
 ;
+
+-- keyword lab file
+-- do not need to run
 
 -- surface_chemistry
 INSERT into csm_protection_group (
