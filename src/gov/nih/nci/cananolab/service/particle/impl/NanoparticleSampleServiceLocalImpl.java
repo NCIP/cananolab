@@ -476,11 +476,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 			.getDomainParticleSample();
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-			// set public group in all associated records
-			//visibleGroups will not be use in this method
-			//this line will be remove after debugging
-			//FIXME
-			//visibleGroups = null;
 			// source, need special handle for sharing			
 			if (nanoparticleSample.getSource() != null) {
 				authService.removePublicGroup(nanoparticleSample.getSource()
