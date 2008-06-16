@@ -9,7 +9,7 @@ public class ParticleCharacterizationException extends CaNanoLabException {
 	private static final long serialVersionUID = 1234567890L;
 
 	public ParticleCharacterizationException() {
-		super("Exception ocurred working with particle characterizations");
+		super("Exception occurred working with particle characterizations");
 	}
 
 	public ParticleCharacterizationException(String message) {

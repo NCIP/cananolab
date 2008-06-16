@@ -9,7 +9,7 @@ public class ReportException extends CaNanoLabException {
 	private static final long serialVersionUID = 1234567890L;
 
 	public ReportException() {
-		super("Exception ocurred working with reports");
+		super("Exception occurred working with reports");
 	}
 
 	public ReportException(String message) {
