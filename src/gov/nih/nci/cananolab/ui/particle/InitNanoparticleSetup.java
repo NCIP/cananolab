@@ -292,7 +292,6 @@ public class InitNanoparticleSetup {
 						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getChemicalAssociationCollection() != null) {
-					int i = 1;
 					for (ChemicalAssociation association : particleSample
 							.getSampleComposition()
 							.getChemicalAssociationCollection()) {
@@ -332,8 +331,16 @@ public class InitNanoparticleSetup {
 								file.getCreatedBy(), file.getCreatedDate());
 						dataBean.setDataClassName("LabFile");
 						dataBean.setDataDisplayType(file.getType());
-						dataBean.setViewTitle(dataBean.getDataDisplayType()
-								+ ": " + file.getName());
+						
+						if(file.getTitle().length() <= 20)
+							dataBean.setViewTitle(dataBean.getDataDisplayType() + ": " + file.getTitle());
+						else {
+							String sideMenuTitle = file.getTitle().substring(0, 20);
+							dataBean.setViewTitle(dataBean.getDataDisplayType() + ": " + sideMenuTitle);
+						}
+						
+//						dataBean.setViewTitle(dataBean.getDataDisplayType()
+//								+ ": " + file.getName());
 						ldataBeans.add(dataBean);
 					}
 				}
