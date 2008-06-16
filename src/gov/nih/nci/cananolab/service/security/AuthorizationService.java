@@ -811,16 +811,22 @@ public class AuthorizationService {
 			removeExistingVisibleGroups(dataToProtect,
 					CaNanoLabConstants.CSM_READ_ROLE);
 
-			// set new visibilities
-			for (String group : visibleGroups) {
-				secureObject(dataToProtect, group,
+			if (Arrays.asList(visibleGroups).contains(
+					CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+				// only need to assign public visibilities
+				secureObject(dataToProtect, CaNanoLabConstants.CSM_PUBLIC_GROUP,
 						CaNanoLabConstants.CSM_READ_ROLE);
-			}
-
-			// set default visibilities
-			for (String group : CaNanoLabConstants.VISIBLE_GROUPS) {
-				secureObject(dataToProtect, group,
-						CaNanoLabConstants.CSM_READ_ROLE);
+			}else{
+				// set new visibilities
+				for (String group : visibleGroups) {
+					secureObject(dataToProtect, group,
+							CaNanoLabConstants.CSM_READ_ROLE);
+				}	
+				// set default visibilities
+				for (String group : CaNanoLabConstants.VISIBLE_GROUPS) {
+					secureObject(dataToProtect, group,
+							CaNanoLabConstants.CSM_READ_ROLE);
+				}
 			}
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
