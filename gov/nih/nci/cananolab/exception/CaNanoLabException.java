@@ -13,7 +13,7 @@ public class CaNanoLabException extends Exception {
 	 * 
 	 */
 	public CaNanoLabException() {
-		super("An exception ocurred in caNanoLab");
+		super("An exception occurred in caNanoLab");
 	}
 
 	public CaNanoLabException(String message) {
