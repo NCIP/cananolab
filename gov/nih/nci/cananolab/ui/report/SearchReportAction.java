@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.15 2008-06-13 15:10:57 cais Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.16 2008-06-16 16:03:40 cais Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -55,15 +55,15 @@ public class SearchReportAction extends BaseAnnotationAction {
 		String[] functionTypes = new String[0];
 		String[] searchLocations = new String[0];
 
-		if (theForm.get("searchLocations") != null) {
-			searchLocations = (String[]) theForm.getStrings("searchLocations");
-		} else {
-			String gridNodeHostStr = (String) request
-					.getParameter("searchLocations");
-			if (gridNodeHostStr != null) {
-				searchLocations = gridNodeHostStr.split("~");
-			}
-		}
+//		if (theForm.get("searchLocations") != null) {
+//			searchLocations = (String[]) theForm.getStrings("searchLocations");
+//		} else {
+//			String gridNodeHostStr = (String) request
+//					.getParameter("searchLocations");
+//			if (gridNodeHostStr != null) {
+//				searchLocations = gridNodeHostStr.split("~");
+//			}
+//		}
 
 		if (theForm != null) {
 			reportTitle = (String) theForm.get("reportTitle");
@@ -74,6 +74,13 @@ public class SearchReportAction extends BaseAnnotationAction {
 					.get("functionalizingEntityTypes");
 			functionTypes = (String[]) theForm.get("functionTypes");
 			searchLocations = (String[]) theForm.get("searchLocations");
+		}
+		
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
+				&& gridNodeHostStr.trim().length() > 0) {
+			searchLocations = gridNodeHostStr.split("~");
 		}
 
 		// convert nanoparticle entity display names into short class names
