@@ -96,11 +96,11 @@ function confirmDeletion()
 						</td>
 						<td class="label" valign="top">
 							&nbsp;
-							<Strong id="bondTypeTitle" style="">Bond Type*</Strong>
+							<Strong id="bondTypeTitle" style="${style }">Bond Type*</Strong>
 						</td>
 						<td class="rightLabel">
 							&nbsp;
-							<span id="bondTypeLine" style=""><html:select
+							<span id="bondTypeLine" style="${style }"><html:select
 									styleId="bondType" property="assoc.attachment.bondType"
 									onchange="javascript:callPrompt('Bond Type', 'bondType');">
 									<option value=""></option>
@@ -167,7 +167,7 @@ function confirmDeletion()
 											value="${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName}" />
 									</li>
 									<li>
-										<span class="indented3" id="compEleA" style=""> <html:select
+										<span class="indented3" id="compEleA" style="${ceStyleA }"> <html:select
 												styleId="compEleTypeA"
 												property="assoc.associatedElementA.composingElement.id">
 												<option value="" />
@@ -242,7 +242,7 @@ function confirmDeletion()
 											value="${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName}" />
 									</li>
 									<li>
-										<span class="indented3" id="compEleB" style=""><html:select
+										<span class="indented3" id="compEleB" style="${ceStyleB}"><html:select
 												styleId="compEleTypeB"
 												property="assoc.associatedElementB.composingElement.id">
 												<option value="" />
