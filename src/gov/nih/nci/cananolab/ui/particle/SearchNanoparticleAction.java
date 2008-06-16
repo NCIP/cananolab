@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.24 2008-06-16 14:42:02 cais Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.25 2008-06-16 16:03:40 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -51,14 +51,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] characterizations = new String[0];
 		String texts = "";
 		String[] searchLocations = new String[0];
-		String gridNodeHostStr = (String) request
-				.getParameter("searchLocations");
-		if (gridNodeHostStr != null) {
-			searchLocations = gridNodeHostStr.split("~");
-		} else if (theForm.get("searchLocations") != null) {
-			searchLocations = (String[]) theForm.getStrings("searchLocations");
 		
-		}
 		if (theForm != null) {
 			nanoparticleEntityTypes = (String[]) theForm
 					.get("nanoparticleEntityTypes");
@@ -67,9 +60,16 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			functionTypes = (String[]) theForm.get("functionTypes");
 			characterizations = (String[]) theForm.get("characterizations");
 			texts = ((String) theForm.get("text")).trim();
-			//searchLocations = (String[]) theForm.get("searchLocations");
+			searchLocations = (String[]) theForm.get("searchLocations");
 		}
 
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (searchLocations[0].indexOf("~") != -1 && 
+			gridNodeHostStr != null && gridNodeHostStr.trim().length() > 0) {
+			searchLocations = gridNodeHostStr.split("~");
+		}
+	
 		// convert nanoparticle entity display names into short class names and
 		// other types
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
@@ -135,7 +135,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			if (location.equals("local")) {
 				service = new NanoparticleSampleServiceLocalImpl();
 			} else {
-				
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
 				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
@@ -184,7 +183,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		String[] selectedLocations = new String[] { "local" };
+		String[] selectedLocations = new String[0];
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {

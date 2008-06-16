@@ -49,12 +49,12 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String[] searchLocations = new String[0];
 		if (theForm.get("searchLocations") != null) {
 			searchLocations = (String[]) theForm.getStrings("searchLocations");
-		} else {
-			String gridNodeHostStr = (String) request
-					.getParameter("searchLocations");
-			if (gridNodeHostStr != null) {
-				searchLocations = gridNodeHostStr.split("~");
-			}
+		}
+		String gridNodeHostStr = (String) request
+				.getParameter("searchLocations");
+		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
+				&& gridNodeHostStr.trim().length() > 0) {
+			searchLocations = gridNodeHostStr.split("~");
 		}
 		List<ProtocolFileBean> foundProtocolFiles = new ArrayList<ProtocolFileBean>();
 		ProtocolService service = null;
