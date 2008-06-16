@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.25 2008-06-16 16:03:40 cais Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.26 2008-06-16 16:23:24 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -183,7 +183,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		String[] selectedLocations = new String[0];
+		String[] selectedLocations = new String[] {"local"};
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
