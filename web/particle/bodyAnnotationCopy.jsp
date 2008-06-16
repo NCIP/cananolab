@@ -17,7 +17,7 @@
 				<tr>
 					<td class="leftLabel" valign="top" width="30%">
 						<strong>Copy to other ${particleSource} nanoparticle
-							sampless</strong>
+							samples</strong>
 					</td>
 					<td class="label">
 						<html:select property="otherParticles" size="5" multiple="true">
