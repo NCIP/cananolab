@@ -9,7 +9,7 @@ public class ProtocolException extends CaNanoLabException {
 	private static final long serialVersionUID = 1234567890L;
 
 	public ProtocolException() {
-		super("Exception ocurred working with protocols");
+		super("Exception occurred working with protocols");
 	}
 
 	public ProtocolException(String message) {
