@@ -41,7 +41,7 @@
 											Data Type
 										</th>
 										<th id="results">
-											Results
+											Public Results
 										</th>
 									</tr>
 									<tr>
