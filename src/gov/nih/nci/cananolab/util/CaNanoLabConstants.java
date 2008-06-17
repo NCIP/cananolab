@@ -36,6 +36,10 @@ public class CaNanoLabConstants {
 	public static final String DEFAULT_APP_OWNER = "NCICB";
 
 	public static final String APP_OWNER;
+	
+	public static final String VIEW_COL_DELIMITE = "~~~";
+	
+	public static final String VIEW_CLASSNAME_DELIMITE = "!!!";
 
 	static {
 		String appOwner = PropertyReader.getProperty(CANANOLAB_PROPERTY,
