@@ -745,44 +745,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 	
 	/**
-	 * Directly query if there exists public nanoparticle sample for given sourceId
-	 * 
-	 * @param sourcId
-	 * @return
-	 */
-//	public boolean isExistPublicNanoparticleSampleForSource(String sourceId)
-//			throws Exception {
-//		
-//		String query = "select count(aparticle.particle_sample_pk_id) mycount "
-//				+ "from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d, "
-//				+ "nanoparticle_sample aparticle, source asource "
-//				+ "where a.protection_group_id=c.protection_group_id "
-//				+ "and b.role_id=c.role_id and c.group_id=d.group_id "
-//				+ "and d.group_name='Public' and b.role_name='R'"
-//				+ "and a.protection_group_name='"+sourceId+"' "
-//				+ "and aparticle.source_pk_id=asource.source_pk_id ";
-//		try {
-//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//					.getApplicationService();
-//			String[] columns = new String[] { "mycount" };
-//			Object[] columnTypes = new Object[] { Hibernate.INTEGER };
-//			List results = appService.directSQL(query, columns, columnTypes);			
-//			Integer count = null;
-//			for (Object obj : results) {
-//				count = (Integer) obj;
-//			}
-//			if (count!=null && count.intValue()>0){
-//				return true;
-//			}else{
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			logger.error("Error in isExistPublicNanoparticleSampleForSource() ", e);
-//			throw new Exception();
-//		}
-//	}
-//	
-	/**
 	 * Check if there exists public nanoparticle sample for given sourceId
 	 * 
 	 * @param sourcId
