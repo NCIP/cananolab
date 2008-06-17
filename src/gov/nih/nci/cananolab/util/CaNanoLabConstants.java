@@ -37,9 +37,9 @@ public class CaNanoLabConstants {
 
 	public static final String APP_OWNER;
 	
-	public static final String VIEW_COL_DELIMITE = "~~~";
+	public static final String VIEW_COL_DELIMITER = "~~~";
 	
-	public static final String VIEW_CLASSNAME_DELIMITE = "!!!";
+	public static final String VIEW_CLASSNAME_DELIMITER = "!!!";
 
 	static {
 		String appOwner = PropertyReader.getProperty(CANANOLAB_PROPERTY,
