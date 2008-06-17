@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -631,4 +632,35 @@ public class NanoparticleSampleServiceHelper {
 		}
 		return classNames;
 	}
+	
+	public String[] getNanoparticleSampleViewStrs(List<NanoparticleSample> particleSamples) {
+		List<String> particleStrings = new ArrayList<String> (particleSamples.size());
+		for(NanoparticleSample particleSample : particleSamples) {
+			StringBuffer buf = new StringBuffer();
+			buf.append(particleSample.getId());
+			buf.append("||~||");
+			
+			buf.append(particleSample.getName());
+			buf.append("||~||");
+			
+			buf.append(particleSample.getSource());
+			buf.append("||~||");			
+			
+			buf.append(StringUtils.join(getStoredNanoparticleEntityClassNames(particleSample), ":"));
+			buf.append(":");
+			buf.append(StringUtils.join(getStoredFunctionalizingEntityClassNames(particleSample), ":"));
+			buf.append("||~||");
+			
+			buf.append(StringUtils.join(getStoredFunctionClassNames(particleSample), ":"));
+			buf.append("||~||");
+			
+			buf.append(StringUtils.join(getStoredCharacterizationClassNames(particleSample), ":"));
+
+			particleStrings.add(buf.toString());
+		}
+		String [] particleStrArray = new String[particleStrings.size()];
+		return particleStrings.toArray(particleStrArray);
+	}
+
+
 }
