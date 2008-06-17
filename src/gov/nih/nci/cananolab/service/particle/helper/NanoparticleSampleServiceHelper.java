@@ -179,7 +179,7 @@ public class NanoparticleSampleServiceHelper {
 				crit.add(disjunction);
 			}
 		}
-		crit.setFetchMode("source", FetchMode.JOIN); //eager load not set in caDSR
+		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -388,7 +388,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		crit.setFetchMode("source", FetchMode.JOIN); //eager load not set in caDSR
+		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -427,7 +427,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("name").eq(particleName));
-		crit.setFetchMode("source", FetchMode.JOIN); //eager load not set in caDSR
+		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -644,18 +644,17 @@ public class NanoparticleSampleServiceHelper {
 			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
-			columns.add(particleSample.getSource().getOrganizationName());			
-			//nanoparticle entities and functionalizing entities are in one column.
-			StringBuffer buf = new StringBuffer();
-			buf.append(StringUtils.join(
-					getStoredNanoparticleEntityClassNames(particleSample),
+			columns.add(particleSample.getSource().getOrganizationName());
+
+			// nanoparticle entities and functionalizing entities are in one
+			// column.
+			SortedSet<String> entities = new TreeSet<String>();
+			entities
+					.addAll(getStoredNanoparticleEntityClassNames(particleSample));
+			entities
+					.addAll(getStoredFunctionalizingEntityClassNames(particleSample));
+			columns.add(StringUtils.join(entities,
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
-			buf.append(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
-			buf.append(StringUtils.join(
-					getStoredFunctionalizingEntityClassNames(particleSample),
-					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
-			columns.add(buf.toString());	
-			
 			columns.add(StringUtils.join(
 					getStoredFunctionClassNames(particleSample),
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
