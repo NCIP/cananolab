@@ -638,12 +638,13 @@ public class NanoparticleSampleServiceHelper {
 			List<NanoparticleSample> particleSamples) {
 		List<String> particleStrings = new ArrayList<String>(particleSamples
 				.size());
+		//6 columns
+		List<String> columns = new ArrayList<String>(6);
 		for (NanoparticleSample particleSample : particleSamples) {
-			List<String> columns = new ArrayList<String>();
+			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
-			columns.add(particleSample.getSource().getOrganizationName());
-			
+			columns.add(particleSample.getSource().getOrganizationName());			
 			//nanoparticle entities and functionalizing entities are in one column.
 			StringBuffer buf = new StringBuffer();
 			buf.append(StringUtils.join(
@@ -653,8 +654,7 @@ public class NanoparticleSampleServiceHelper {
 			buf.append(StringUtils.join(
 					getStoredFunctionalizingEntityClassNames(particleSample),
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
-			columns.add(buf.toString());
-			
+			columns.add(buf.toString());	
 			
 			columns.add(StringUtils.join(
 					getStoredFunctionClassNames(particleSample),
