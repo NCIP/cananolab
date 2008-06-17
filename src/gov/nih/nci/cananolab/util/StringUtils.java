@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.7 2008-06-17 18:18:51 tanq Exp $ */
+/* CVS $Id: StringUtils.java,v 1.8 2008-06-17 18:47:53 tanq Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -76,19 +76,24 @@ public class StringUtils {
 		if (stringArray == null) {
 			return joinedStr;
 		}
+		StringBuilder sb = new StringBuilder();
+		String str = null;
 		for (int i = 0; i < stringArray.length; i++) {
-			String str = stringArray[i];
+			str = stringArray[i];
 			if (str == null) {
 				str = "";
-			}
-			if ((str.length() > 0)) {
+			}else if (str.length() > 0) {
 				if (i < stringArray.length - 1) {
-					joinedStr += str + delimiter;
+					sb.append(str);
+					sb.append(delimiter);
+					//joinedStr += str + delimiter;
 				} else {
-					joinedStr += str;
+					sb.append(str);
+					//joinedStr += str;
 				}
 			}
 		}
+		joinedStr = sb.toString();
 		if (joinedStr.endsWith(delimiter)) {
 			joinedStr = joinedStr.substring(0, joinedStr.length() - 1);
 		}
