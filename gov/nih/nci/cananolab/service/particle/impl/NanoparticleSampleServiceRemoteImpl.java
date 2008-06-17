@@ -70,6 +70,44 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 * @return
 	 * @throws ParticleException
 	 */
+//	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
+//			String[] nanoparticleEntityClassNames,
+//			String[] otherNanoparticleTypes,
+//			String[] functionalizingEntityClassNames,
+//			String[] otherFunctionalizingEntityTypes,
+//			String[] functionClassNames, String[] otherFunctionTypes,
+//			String[] characterizationClassNames, String[] wordList)
+//			throws ParticleException {
+//		List<ParticleBean> particles = new ArrayList<ParticleBean>();
+//		try {
+//			NanoparticleSample[] particleSamples = gridClient
+//					.getNanoparticleSamplesBy(particleSource,
+//							nanoparticleEntityClassNames,
+//							functionalizingEntityClassNames,
+//							functionClassNames, characterizationClassNames,
+//							wordList);
+//			if (particleSamples != null) {
+//				for (NanoparticleSample particleSample : particleSamples) {
+//					// manually fetch the associated source
+//					loadSourceForParticleSample(particleSample);
+//					ParticleBean particleBean = new ParticleBean(particleSample);
+//					loadParticleBeanAssociationClassNames(particleBean);
+//					particles.add(particleBean);
+//				}
+//				Collections.sort(particles,
+//						new CaNanoLabComparators.ParticleBeanComparator());
+//			}
+//			return particles;
+//		} catch (RemoteException e) {
+//			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+//			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+//		} catch (Exception e) {
+//			String err = "Problem finding particles with the given search parameters.";
+//			logger.error(err, e);
+//			throw new ParticleException(err, e);
+//		}
+//	}
+	
 	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
@@ -80,19 +118,57 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
-			NanoparticleSample[] particleSamples = gridClient
-					.getNanoparticleSamplesBy(particleSource,
-							nanoparticleEntityClassNames,
-							functionalizingEntityClassNames,
-							functionClassNames, characterizationClassNames,
-							wordList);
-			if (particleSamples != null) {
-				for (NanoparticleSample particleSample : particleSamples) {
-					// manually fetch the associated source
-					loadSourceForParticleSample(particleSample);
-					ParticleBean particleBean = new ParticleBean(particleSample);
-					loadParticleBeanAssociationClassNames(particleBean);
-					particles.add(particleBean);
+			String[] particleSampleStrs = gridClient.getNanoparticleSampleViewStrs(particleSource,
+	                  nanoparticleEntityClassNames,
+	                  otherNanoparticleTypes,
+	                  functionalizingEntityClassNames,
+	                  otherFunctionalizingEntityTypes,
+	                  functionClassNames, otherFunctionTypes,
+	                  characterizationClassNames, wordList);
+//			String[] particleSampleStrs = {
+//					"35444457~~~NCICB-6~~~DNT~~~Carbon nanotube!!!small molecule~~~therapeutic~~~Enzyme Induction:Molecular Weight:Oxidative Stress",
+//					"35445457~~~NCICB-60~~~DNT~~~Carbon nanotube!!!small molecule~~~therapeutic~~~Enzyme Induction:Molecular Weight:Oxidative Stress",
+//					};					
+			if (particleSampleStrs != null) {
+				String[] columns = null;
+				for (String particleSampleStr : particleSampleStrs) {
+					columns = particleSampleStr.split(CaNanoLabConstants.VIEW_COL_DELIMITE);
+					NanoparticleSample particleSample = new NanoparticleSample();
+					//id
+					particleSample.setId(new Long(columns[0]));
+					//sample name					
+					particleSample.setName(columns[1]);
+					//source
+					Source source = new Source();
+					source.setOrganizationName(columns[2]);
+					particleSample.setSource(source);										
+					ParticleBean particleBean = new ParticleBean(particleSample);					
+					//composition, set all compositions as NanoparticleEntity for now
+					if (columns[3]!=null && columns[3].length()>0){
+						String[] compositionsClazzNames =  columns[3].split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITE);
+						if (compositionsClazzNames!=null){
+							particleBean
+								.setNanoparticleEntityClassNames(compositionsClazzNames);
+						}
+					}					
+					//functionClassNames
+					if (columns[4]!=null && columns[4].length()>0){
+						String[] functionClazzNames =  columns[4].split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITE);
+						if (functionClazzNames!=null){
+							particleBean
+								.setFunctionClassNames(functionClazzNames);
+						}
+					}
+					
+					//characterizationClassNames
+					if (columns[5]!=null && columns[5].length()>0){
+						String[] characterizationClazzNames =  columns[5].split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITE);
+						if (characterizationClazzNames!=null){
+							particleBean
+								.setCharacterizationClassNames(characterizationClazzNames);
+						}
+					}
+					particles.add(particleBean);					
 				}
 				Collections.sort(particles,
 						new CaNanoLabComparators.ParticleBeanComparator());
@@ -107,6 +183,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
+
 
 	private void loadParticleBeanAssociationClassNames(ParticleBean particleBean)
 			throws Exception {
