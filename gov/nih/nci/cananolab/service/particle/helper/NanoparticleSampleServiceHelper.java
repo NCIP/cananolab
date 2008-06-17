@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -638,23 +639,23 @@ public class NanoparticleSampleServiceHelper {
 		for(NanoparticleSample particleSample : particleSamples) {
 			StringBuffer buf = new StringBuffer();
 			buf.append(particleSample.getId());
-			buf.append("||~||");
+			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
 			
 			buf.append(particleSample.getName());
-			buf.append("||~||");
+			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
 			
 			buf.append(particleSample.getSource());
-			buf.append("||~||");			
+			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);			
 			
-			buf.append(StringUtils.join(getStoredNanoparticleEntityClassNames(particleSample), ":"));
-			buf.append(":");
-			buf.append(StringUtils.join(getStoredFunctionalizingEntityClassNames(particleSample), ":"));
-			buf.append("||~||");
+			buf.append(StringUtils.join(getStoredNanoparticleEntityClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
+			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
+			buf.append(StringUtils.join(getStoredFunctionalizingEntityClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
+			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
 			
-			buf.append(StringUtils.join(getStoredFunctionClassNames(particleSample), ":"));
-			buf.append("||~||");
+			buf.append(StringUtils.join(getStoredFunctionClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
+			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
 			
-			buf.append(StringUtils.join(getStoredCharacterizationClassNames(particleSample), ":"));
+			buf.append(StringUtils.join(getStoredCharacterizationClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
 
 			particleStrings.add(buf.toString());
 		}
