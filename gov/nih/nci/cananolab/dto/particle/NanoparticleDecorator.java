@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle;
 
+import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.SortableName;
@@ -28,10 +29,18 @@ public class NanoparticleDecorator extends TableDecorator {
 		String particleId = particle.getDomainParticleSample().getId()
 				.toString();
 		String particleName = particle.getDomainParticleSample().getName();
-		String editParticleURL = "submitNanoparticleSample.do?dispatch=setupUpdate&particleId="
-				+ particleId+"&location=local";
-		String link = "<a href=" + editParticleURL + ">" + particleName
-				+ "</a>";
+//		String editParticleURL = "submitNanoparticleSample.do?dispatch=setupUpdate&particleId="
+//				+ particleId+"&location=local";
+//		String link = "<a href=" + editParticleURL + ">" + particleName
+//				+ "</a>";
+		
+		StringBuilder sb = new StringBuilder("<a href=");
+		sb.append("submitNanoparticleSample.do?dispatch=setupUpdate&particleId=");
+		sb.append(particleId);
+		sb.append("&location=local>");
+		sb.append(particleName);
+		sb.append("</a>");
+		String link = sb.toString();
 
 		SortableName sortableLink = new SortableName(particleName, link);
 		return sortableLink;
@@ -42,11 +51,21 @@ public class NanoparticleDecorator extends TableDecorator {
 		String particleId = particle.getDomainParticleSample().getId()
 				.toString();
 		String particleName = particle.getDomainParticleSample().getName();
-		String viewParticleURL = "submitNanoparticleSample.do?dispatch=setupView&particleId="
-				+ particleId + "&location=" + particle.getLocation();
-		;
-		String link = "<a href=" + viewParticleURL + ">" + particleName
-				+ "</a>";
+//		String viewParticleURL = "submitNanoparticleSample.do?dispatch=setupView&particleId="
+//				+ particleId + "&location=" + particle.getLocation();
+//		;
+//		String link = "<a href=" + viewParticleURL + ">" + particleName
+//				+ "</a>";
+		
+		StringBuilder sb = new StringBuilder("<a href=");
+		sb.append("submitNanoparticleSample.do?dispatch=setupView&particleId=");
+		sb.append(particleId);
+		sb.append("&location=");
+		sb.append(particle.getLocation());
+		sb.append(">");
+		sb.append(particleName);
+		sb.append("</a>");
+		String link = sb.toString();
 		SortableName sortableLink = new SortableName(particleName, link);
 		return sortableLink;
 	}
