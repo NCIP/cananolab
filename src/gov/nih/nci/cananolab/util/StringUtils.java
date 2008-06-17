@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.6 2008-05-10 22:47:59 pansu Exp $ */
+/* CVS $Id: StringUtils.java,v 1.7 2008-06-17 18:18:51 tanq Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -97,21 +97,24 @@ public class StringUtils {
 
 	public static String join(Collection<String> stringList, String delimiter) {
 		String joinedStr = "";
+		
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
 		}
-
+		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (String str : stringList) {
 			if (i < stringList.size() - 1) {
 				if (str != null && str.length() > 0)
-					joinedStr += str + delimiter;
+					sb.append(str);
+					sb.append(delimiter);
 			} else {
 				if (str != null && str.length() > 0)
-					joinedStr += str;
+					sb.append(str);
 			}
 			i++;
 		}
+		joinedStr = sb.toString();
 		return joinedStr;
 	}
 
@@ -124,19 +127,24 @@ public class StringUtils {
 		if (sortableNames == null || sortableNames.isEmpty()) {
 			return joinedStr;
 		}
+		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (SortableName sortableName : sortableNames) {
 			if (i < sortableNames.size() - 1) {
 				if (sortableName.getName() != null
 						&& sortableName.getName().length() > 0)
-					joinedStr += sortableName.getName() + delimiter;
+					//joinedStr += sortableName.getName() + delimiter;
+					sb.append(sortableName.getName());
+					sb.append(delimiter);
 			} else {
 				if (sortableName.getName() != null
 						&& sortableName.getName().length() > 0)
-					joinedStr += sortableName.getName();
+					//joinedStr += sortableName.getName();
+					sb.append(sortableName.getName());
 			}
 			i++;
 		}
+		joinedStr = sb.toString();
 		return joinedStr;
 	}
 
