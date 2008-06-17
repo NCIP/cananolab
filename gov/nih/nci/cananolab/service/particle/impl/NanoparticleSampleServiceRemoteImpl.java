@@ -150,7 +150,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					ParticleBean particleBean = new ParticleBean(particleSample);
 					// composition, set all compositions as NanoparticleEntity
 					// for now
-					if (columns[3] != null && columns[3].length() > 0) {
+					if (columns.length>3 && columns[3] != null && columns[3].length() > 0) {
 						String[] compositionsClazzNames = columns[3]
 								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
 						if (compositionsClazzNames != null) {
@@ -159,7 +159,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 						}
 					}
 					// functionClassNames
-					if (columns[4] != null && columns[4].length() > 0) {
+					if (columns.length>4 && columns[4] != null && columns[4].length() > 0) {
 						String[] functionClazzNames = columns[4]
 								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
 						if (functionClazzNames != null) {
@@ -169,7 +169,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					}
 
 					// characterizationClassNames
-					if (columns[5] != null && columns[5].length() > 0) {
+					if (columns.length>5 && columns[5] != null && columns[5].length() > 0) {
 						String[] characterizationClazzNames = columns[5]
 								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
 						if (characterizationClazzNames != null) {
