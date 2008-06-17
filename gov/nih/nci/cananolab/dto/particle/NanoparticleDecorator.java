@@ -51,18 +51,6 @@ public class NanoparticleDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getRemoteViewURL() throws UnsupportedEncodingException {
-		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-
-		String particleName = URLEncoder.encode(particle
-				.getDomainParticleSample().getName(), "UTF-8");
-		String remoteViewURL = "remoteNanoparticleGeneralInfo.do?dispatch=view"
-				+ "&particleName=" + particleName + "&gridNodeHost=";
-		String link = "<a href=" + remoteViewURL + ">" + particleName + "</a>";
-		SortableName sortableLink = new SortableName(particleName, link);
-		return sortableLink;
-	}
-
 	public String getKeywordStr() {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		String keywordsStr = particle.getKeywordsStr();
