@@ -179,9 +179,7 @@ public class NanoparticleSampleServiceHelper {
 				crit.add(disjunction);
 			}
 		}
-
-		// functionalizing entity
-
+		crit.setFetchMode("source", FetchMode.JOIN); //eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -390,6 +388,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
+		crit.setFetchMode("source", FetchMode.JOIN); //eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -428,6 +427,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("name").eq(particleName));
+		crit.setFetchMode("source", FetchMode.JOIN); //eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -633,35 +633,33 @@ public class NanoparticleSampleServiceHelper {
 		}
 		return classNames;
 	}
-	
-	public String[] getNanoparticleSampleViewStrs(List<NanoparticleSample> particleSamples) {
-		List<String> particleStrings = new ArrayList<String> (particleSamples.size());
-		for(NanoparticleSample particleSample : particleSamples) {
-			StringBuffer buf = new StringBuffer();
-			buf.append(particleSample.getId());
-			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
-			
-			buf.append(particleSample.getName());
-			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
-			
-			buf.append(particleSample.getSource());
-			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);			
-			
-			buf.append(StringUtils.join(getStoredNanoparticleEntityClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
-			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
-			buf.append(StringUtils.join(getStoredFunctionalizingEntityClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
-			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
-			
-			buf.append(StringUtils.join(getStoredFunctionClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
-			buf.append(CaNanoLabConstants.VIEW_COL_DELIMITE);
-			
-			buf.append(StringUtils.join(getStoredCharacterizationClassNames(particleSample), CaNanoLabConstants.VIEW_COL_DELIMITE));
 
-			particleStrings.add(buf.toString());
+	public String[] getNanoparticleSampleViewStrs(
+			List<NanoparticleSample> particleSamples) {
+		List<String> particleStrings = new ArrayList<String>(particleSamples
+				.size());
+		for (NanoparticleSample particleSample : particleSamples) {
+			List<String> columns = new ArrayList<String>();
+			columns.add(particleSample.getId().toString());
+			columns.add(particleSample.getName());
+			columns.add(particleSample.getSource().getOrganizationName());
+			columns.add(StringUtils.join(
+					getStoredNanoparticleEntityClassNames(particleSample),
+					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+			columns.add(StringUtils.join(
+					getStoredFunctionalizingEntityClassNames(particleSample),
+					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+			columns.add(StringUtils.join(
+					getStoredFunctionClassNames(particleSample),
+					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+			columns.add(StringUtils.join(
+					getStoredCharacterizationClassNames(particleSample),
+					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+
+			particleStrings.add(StringUtils.join(columns,
+					CaNanoLabConstants.VIEW_COL_DELIMITER));
 		}
-		String [] particleStrArray = new String[particleStrings.size()];
+		String[] particleStrArray = new String[particleStrings.size()];
 		return particleStrings.toArray(particleStrArray);
 	}
-
-
 }
