@@ -643,12 +643,19 @@ public class NanoparticleSampleServiceHelper {
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
 			columns.add(particleSample.getSource().getOrganizationName());
-			columns.add(StringUtils.join(
+			
+			//nanoparticle entities and functionalizing entities are in one column.
+			StringBuffer buf = new StringBuffer();
+			buf.append(StringUtils.join(
 					getStoredNanoparticleEntityClassNames(particleSample),
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
-			columns.add(StringUtils.join(
+			buf.append(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
+			buf.append(StringUtils.join(
 					getStoredFunctionalizingEntityClassNames(particleSample),
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+			columns.add(buf.toString());
+			
+			
 			columns.add(StringUtils.join(
 					getStoredFunctionClassNames(particleSample),
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
@@ -656,7 +663,7 @@ public class NanoparticleSampleServiceHelper {
 					getStoredCharacterizationClassNames(particleSample),
 					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
 
-			particleStrings.add(StringUtils.join(columns,
+			particleStrings.add(StringUtils.joinEmptyItemIncluded(columns,
 					CaNanoLabConstants.VIEW_COL_DELIMITER));
 		}
 		String[] particleStrArray = new String[particleStrings.size()];
