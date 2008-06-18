@@ -782,8 +782,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	public boolean isExistPublicNanoparticleSampleForKeyword (String keywordId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List<String> publicData = appService.getPublicData();
-		//FIXME not sure if where aParticle.keywordCollection =$keywordId ok??		
+		List<String> publicData = appService.getPublicData();	
 		HQLCriteria crit = new HQLCriteria(
 				"select aParticle.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle "+
 				"join aParticle.keywordCollection keyword where keyword.id= '"+keywordId +"'");	
