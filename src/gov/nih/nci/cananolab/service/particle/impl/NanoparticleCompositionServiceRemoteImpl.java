@@ -648,14 +648,6 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					(ComposingElement) associatedElementB);
 		}
 
-		// FIXME
-		/*
-		 * NanoparticleCompositionServiceHelper helper = new
-		 * NanoparticleCompositionServiceHelper(); AssociatedElement
-		 * associatedElementA = helper .findAssociatedElementA(assoc.getId()
-		 * .toString()); AssociatedElement associatedElementB = helper
-		 * .findAssociatedElementB(assoc.getId() .toString());
-		 */
 		if (associatedElementA != null) {
 			assoc.setAssociatedElementA(associatedElementA);
 		}
