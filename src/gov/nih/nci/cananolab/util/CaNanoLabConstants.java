@@ -43,7 +43,7 @@ public class CaNanoLabConstants {
 
 	static {
 		String appOwner = PropertyReader.getProperty(CANANOLAB_PROPERTY,
-				"applicationOwner");
+				"applicationOwner").trim();
 		if (appOwner == null || appOwner.length() == 0)
 			appOwner = DEFAULT_APP_OWNER;
 		APP_OWNER = appOwner;
@@ -61,7 +61,7 @@ public class CaNanoLabConstants {
 	public static final String GRID_INDEX_SERVICE_URL;
 	static {
 		String gridIndexServiceURL = PropertyReader.getProperty(
-				CANANOLAB_PROPERTY, "gridIndexServiceURL");
+				CANANOLAB_PROPERTY, "gridIndexServiceURL").trim();
 		GRID_INDEX_SERVICE_URL = gridIndexServiceURL;
 	}
 
