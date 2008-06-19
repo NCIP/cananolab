@@ -427,8 +427,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.getClassName());
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ fileName + ".xls");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
@@ -524,8 +524,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				charSummaryBean.getCharBeans().get(0).getClassName());
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ fileName + ".xls");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
@@ -552,8 +552,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				charSummaryBean.getCharBeans().get(0).getClassName());
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ fileName + ".xls");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
