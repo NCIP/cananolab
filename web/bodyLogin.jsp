@@ -35,7 +35,8 @@
 								<table class="gridtable">
 									<tr class="gridTableHeader">
 										<th>
-											Location
+											Location<br>
+											<span><a href="welcome.do?refreshGrid=true" class="helpText">refresh grid</a></span>
 										</th>
 										<th>
 											Data Type
