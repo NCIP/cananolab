@@ -54,7 +54,7 @@
 						<TR>
 							<TD>
 								<P align=justify>
-									<STRONG>I HAVE READ AND UNDERSTOOD THE ABOVE PROVISIONS, AND SIGNIFY MY AGREEMENT BY <a href="welcome.do">CLICKING HERE</A>. </STRONG>
+									<STRONG>I HAVE READ AND UNDERSTOOD THE ABOVE PROVISIONS, AND SIGNIFY MY AGREEMENT BY <a href="welcome.do?refreshGrid=true">CLICKING HERE</A>. </STRONG>
 									<BR>
 								</P>
 							</TD>
