@@ -9,12 +9,7 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.axis.message.addressing.EndpointReferenceType;
 
@@ -33,8 +28,8 @@ public class TestGrid {
 					indexServiceUrl);
 			services = discoveryClient
 					.discoverDataServicesByDomainModel(domainModelName);
-			//services = discoveryClient.getAllDataServices();
-			//services=discoveryClient.getAllServices(false);
+			services = discoveryClient.getAllDataServices();
+			// services=discoveryClient.getAllServices(false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -302,34 +297,15 @@ public class TestGrid {
 		String composingElementId = "1409024";
 		Function[] functions = gridClient
 				.getInherentFunctionsByComposingElementId(composingElementId);
-		if (functions != null)
-			for (Function function : functions) {
-				System.out.println(function.getId());
-			}
-
-		String functionId = "5898240";
-		Target[] targets = gridClient.getTargetsByFunctionId(functionId);
-		if (targets != null)
-			for (Target target : targets) {
-				System.out.println(target.getId());
-			}
-
-		String assocId = "10584064";
-		AssociatedElement eleA = gridClient
-				.getAssociatedElementAByChemicalAssociationId(assocId);
-		AssociatedElement eleB = gridClient
-				.getAssociatedElementBByChemicalAssociationId(assocId);
-		System.out.println(eleA+" "+eleB);
+		for (Function function : functions) {
+			System.out.println(function.getId());
+		}
 	}
 
 	public static void main(String[] args) {
 		try {
-			List<String> tests = new ArrayList<String>();
 			TestGrid test = new TestGrid(
-					"http://cagrid-index-qa.nci.nih.gov:8080/wsrf/services/DefaultIndexService");
-			//
-//			 TestGrid test = new TestGrid(
-//			 "http://cbiovdev5012.nci.nih.gov:8080/wsrf/services/DefaultIndexService");
+					"http://cbiovdev5012.nci.nih.gov:8080/wsrf/services/DefaultIndexService");
 			EndpointReferenceType[] services = test.discover("caNanoLab");
 			if (services != null) {
 				for (EndpointReferenceType service : services) {
@@ -340,13 +316,10 @@ public class TestGrid {
 			} else {
 				System.out.println("No grid nodes found");
 			}
-//			test
-//					.testCQL("http://cananolab-dev.nci.nih.gov/wsrf-canano/services/cagrid/CaNanoLabService");
-//			test
-//					.testOperation("http://cananolab-dev.nci.nih.gov/wsrf-canano/services/cagrid/CaNanoLabService");
-//			test
-//			.testOperation("http://NCI-Pansu-1.nci.nih.gov:8080/wsrf-canano/services/cagrid/CaNanoLabService");
-
+			test
+					.testCQL("http://165.112.132.67:8080/wsrf/services/cagrid/CaNanoLabService");
+			 test
+			 .testOperation("http://165.112.132.67:8080/wsrf/services/cagrid/CaNanoLabService");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

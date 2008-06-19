@@ -203,7 +203,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			URL remoteUrl = new URL(serviceUrl);
 			remoteServerHostUrl = remoteUrl.getProtocol() + "://"
 					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
-			String remoteDownloadUrl = remoteServerHostUrl + "/" + actionPath
+			String remoteDownloadUrl = remoteServerHostUrl + actionPath
 					+ "?dispatch=download" + "&fileId=" + fileId
 					+ "&location=local";
 			// remote URL
@@ -217,8 +217,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
-			response.setHeader("Content-disposition", "attachment;filename="
-					+ fileBean.getDomainFile().getName());
+			response.setHeader("Content-disposition", "attachment;filename=\""
+					+ fileBean.getDomainFile().getName()+"\"");
 			response.setHeader("cache-control", "Private");
 
 			java.io.InputStream in = new FileInputStream(dFile);
