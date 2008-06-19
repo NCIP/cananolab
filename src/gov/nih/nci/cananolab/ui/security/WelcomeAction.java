@@ -16,7 +16,7 @@ package gov.nih.nci.cananolab.ui.security;
  * @author pansu
  */
 
-/* CVS $Id: WelcomeAction.java,v 1.4 2008-06-06 05:51:04 pansu Exp $ */
+/* CVS $Id: WelcomeAction.java,v 1.5 2008-06-19 20:19:06 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -43,22 +43,26 @@ public class WelcomeAction extends AbstractBaseAction {
 			throws Exception {
 		saveToken(request); // save token to avoid back and refresh on the login
 		// page.
+		String refreshGrid = request.getParameter("refreshGrid");
 
-		// auto-discover grid nodes and save in session
-		Map<String, GridNodeBean> gridNodeMap = GridService.discoverServices(
-				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
-				CaNanoLabConstants.DOMAIN_MODEL_NAME,
-				CaNanoLabConstants.APP_OWNER);
-		if (gridNodeMap == null) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.grid.discovery.none",
-					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+		if (refreshGrid != null && refreshGrid.equals("true")) {
+			// auto-discover grid nodes and save in session
+			Map<String, GridNodeBean> gridNodeMap = GridService
+					.discoverServices(
+							CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
+							CaNanoLabConstants.DOMAIN_MODEL_NAME,
+							CaNanoLabConstants.APP_OWNER);
+			if (gridNodeMap == null) {
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage(
+						"message.grid.discovery.none",
+						CaNanoLabConstants.DOMAIN_MODEL_NAME);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+			}
+			request.getSession().getServletContext().setAttribute(
+					"allGridNodes", gridNodeMap);
 		}
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodeMap);
 		ForwardAction forwardAction = new ForwardAction();
 		return forwardAction.execute(mapping, form, request, response);
 	}
