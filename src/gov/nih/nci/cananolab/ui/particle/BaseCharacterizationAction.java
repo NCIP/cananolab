@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -414,6 +415,12 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		return exportDetail(mapping, form, request, response, null);
+		
+	}
+	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response, String filePath)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
 		ParticleBean particleBean = setupParticle(theForm, request, location);
@@ -430,6 +437,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
+		String remoteDownloadUrl = null;
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
@@ -437,8 +445,16 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(
 					serviceUrl);
+
+			URL localURL = new URL(request.getRequestURL().toString());
+			String actionPath = localURL.getPath();
+			URL remoteUrl = new URL(serviceUrl);
+			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
+					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
+			remoteDownloadUrl = remoteServerHostUrl + actionPath
+					+ "?dispatch=download&location=local&fileId=";
 		}
-		service.exportDetail(charBean, response.getOutputStream());
+		service.exportDetail(charBean, response.getOutputStream(), remoteDownloadUrl);
 
 		return null;
 	}
@@ -555,6 +571,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
+		String remoteDownloadUrl = null;
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
@@ -562,8 +579,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(
 					serviceUrl);
+			URL localURL = new URL(request.getRequestURL().toString());
+			String actionPath = localURL.getPath();
+			URL remoteUrl = new URL(serviceUrl);
+			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
+					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
+			remoteDownloadUrl = remoteServerHostUrl + actionPath
+					+ "?dispatch=download&location=local&fileId=";
 		}
-		service.exportFullSummary(charSummaryBean, response.getOutputStream());
+		service.exportFullSummary(charSummaryBean, response.getOutputStream(), remoteDownloadUrl);
 		return null;
 	}
 
