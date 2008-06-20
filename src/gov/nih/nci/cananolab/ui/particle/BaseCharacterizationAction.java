@@ -20,8 +20,10 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -257,8 +259,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	}
 
 	protected abstract CharacterizationBean getCharacterizationBean(
-			DynaValidatorForm theForm, Characterization chara, UserBean user, String location)
-			throws Exception;
+			DynaValidatorForm theForm, Characterization chara, UserBean user,
+			String location) throws Exception;
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -412,14 +414,50 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		return mapping.findForward("detailPrintView");
 	}
 
+	private void setCharacterizationFileFullPath(HttpServletRequest request,
+			CharacterizationBean charBean, String location) throws Exception {
+		if (location.equals("local")) {
+			// set file full path
+			for (DerivedBioAssayDataBean bioassayBean : charBean
+					.getDerivedBioAssayDataList()) {
+				if (bioassayBean.getLabFileBean() != null) {
+					LabFileBean fileBean = bioassayBean.getLabFileBean();
+					if (!fileBean.getDomainFile().getUriExternal()) {
+						String fileRoot = PropertyReader.getProperty(
+								CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+								"fileRepositoryDir");
+						fileBean.setFullPath(fileRoot + File.separator
+								+ fileBean.getDomainFile().getUri());
+					} else {
+						fileBean.setFullPath(fileBean.getDomainFile().getUri());
+					}
+				}
+			}
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+
+			URL localURL = new URL(request.getRequestURL().toString());
+			String actionPath = localURL.getPath();
+			URL remoteUrl = new URL(serviceUrl);
+			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
+					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
+			String remoteDownloadUrlBase = remoteServerHostUrl + actionPath
+					+ "?dispatch=download&location=local&fileId=";
+			for (DerivedBioAssayDataBean bioassayBean : charBean
+					.getDerivedBioAssayDataList()) {
+				if (bioassayBean.getLabFileBean() != null) {
+					LabFileBean fileBean = bioassayBean.getLabFileBean();
+					String remoteDownloadUrl =remoteDownloadUrlBase
+							+ fileBean.getDomainFile().getId().toString();
+					fileBean.setFullPath(remoteDownloadUrl);
+				}
+			}
+		}
+	}
+
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return exportDetail(mapping, form, request, response, null);
-		
-	}
-	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response, String filePath)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
@@ -437,7 +475,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
-		String remoteDownloadUrl = null;
+		setCharacterizationFileFullPath(request, charBean, location);
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
@@ -445,16 +483,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(
 					serviceUrl);
-
-			URL localURL = new URL(request.getRequestURL().toString());
-			String actionPath = localURL.getPath();
-			URL remoteUrl = new URL(serviceUrl);
-			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
-					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
-			remoteDownloadUrl = remoteServerHostUrl + actionPath
-					+ "?dispatch=download&location=local&fileId=";
 		}
-		service.exportDetail(charBean, response.getOutputStream(), remoteDownloadUrl);
+		service.exportDetail(charBean, response.getOutputStream());
 
 		return null;
 	}
@@ -571,7 +601,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
 		NanoparticleCharacterizationService service = null;
-		String remoteDownloadUrl = null;
+		for (CharacterizationBean charBean : charSummaryBean.getCharBeans()) {
+			setCharacterizationFileFullPath(request, charBean, location);
+		}
 		if (location.equals("local")) {
 			service = new NanoparticleCharacterizationServiceLocalImpl();
 		} else {
@@ -579,15 +611,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					request, location);
 			service = new NanoparticleCharacterizationServiceRemoteImpl(
 					serviceUrl);
-			URL localURL = new URL(request.getRequestURL().toString());
-			String actionPath = localURL.getPath();
-			URL remoteUrl = new URL(serviceUrl);
-			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
-					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
-			remoteDownloadUrl = remoteServerHostUrl + actionPath
-					+ "?dispatch=download&location=local&fileId=";
 		}
-		service.exportFullSummary(charSummaryBean, response.getOutputStream(), remoteDownloadUrl);
+		service.exportFullSummary(charSummaryBean, response.getOutputStream());
+
 		return null;
 	}
 
