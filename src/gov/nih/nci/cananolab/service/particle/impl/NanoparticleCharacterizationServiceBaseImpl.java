@@ -34,10 +34,10 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
 	protected FileService fileService;
 
-	public void exportDetail(CharacterizationBean achar, OutputStream out, String remoteDownloadUrl)
+	public void exportDetail(CharacterizationBean achar, OutputStream out)
 		throws ParticleCharacterizationException {
 		try {
-			helper.exportDetail(achar, out, remoteDownloadUrl);
+			helper.exportDetail(achar, out);
 		} catch (Exception e) {
 			String err = "error exporting detail view for "
 					+ achar.getViewTitle();
@@ -47,8 +47,8 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 	}
 
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out, String remoteDownloadUrl) throws IOException {
-		helper.exportFullSummary(summaryBean, out, remoteDownloadUrl);
+			OutputStream out) throws IOException {
+		helper.exportFullSummary(summaryBean, out);
 	}
 
 	public void exportSummary(CharacterizationSummaryBean summaryBean,
