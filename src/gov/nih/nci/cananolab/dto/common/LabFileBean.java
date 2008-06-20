@@ -41,6 +41,9 @@ public class LabFileBean {
 
 	private String location; //e.g. local, caNanoLab-WashU
 	
+	private String fullPath;  //e.g. C:/temp/caNanoLab/fileUpload/particles/NCL-23/...,
+	//or for remote files, it will be the remote download URL
+	
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
 	}
@@ -103,17 +106,6 @@ public class LabFileBean {
 
 	public void setKeywordsStr(String keywordsStr) {
 		this.keywordsStr = keywordsStr;
-	}
-
-	public String getFullPath() {
-		if (!getDomainFile().getUriExternal()) {
-			String fileRoot = PropertyReader
-					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-							"fileRepositoryDir");
-			return fileRoot + File.separator + getDomainFile().getUri();
-		} else {
-			return getDomainFile().getUri();
-		}
 	}
 
 	public String getExternalUrl() {
@@ -195,5 +187,13 @@ public class LabFileBean {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getFullPath() {
+		return fullPath;
+	}
+
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
 	}
 }
