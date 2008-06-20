@@ -148,14 +148,14 @@ public class NanoparticleCharacterizationServiceHelper {
 		return charas;
 	}
 
-	public void exportDetail(CharacterizationBean achar, OutputStream out)
+	public void exportDetail(CharacterizationBean achar, OutputStream out, String remoteDownloadUrl)
 			throws Exception {
 
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("detailSheet");
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 		short startRow = 0;
-		setDetailSheet(achar, wb, sheet, patriarch, startRow);
+		setDetailSheet(achar, wb, sheet, patriarch, startRow, remoteDownloadUrl);
 		wb.write(out);
 		if (out != null) {
 			out.flush();
@@ -163,8 +163,12 @@ public class NanoparticleCharacterizationServiceHelper {
 		}
 	}
 	
-	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
+	/*private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
 			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
+		return setDetailSheet(achar, wb, sheet, patriarch, rowCount, null);
+	}*/
+	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
+			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount, String remoteDownloadUrl) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -288,8 +292,15 @@ public class NanoparticleCharacterizationServiceHelper {
 										.getLabFileBean().getDomainFile()
 										.getTitle()));
 						try {
-							String filePath = derivedBioAssayData
+							String filePath = null;
+							if (remoteDownloadUrl!=null){
+								String fileId = derivedBioAssayData.getLabFileBean()
+									.getDomainFile().getId().toString();
+								filePath = remoteDownloadUrl+fileId;;
+							}else{
+								filePath = derivedBioAssayData
 									.getLabFileBean().getFullPath();
+							}
 							HSSFClientAnchor anchor;
 							short topLeftCell = cellCount;
 							short bottomRightCell = (short) (cellCount + 7);
@@ -367,7 +378,7 @@ public class NanoparticleCharacterizationServiceHelper {
 	}
 
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out) throws IOException {
+			OutputStream out, String remoteDownloadUrl) throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("summarySheet");
 		short startRow = 0;
@@ -375,7 +386,7 @@ public class NanoparticleCharacterizationServiceHelper {
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
 		rowCount += 2;
 		for (CharacterizationBean cbean : summaryBean.getCharBeans()) {
-			rowCount = setDetailSheet(cbean, wb, sheet, patriarch, rowCount);
+			rowCount = setDetailSheet(cbean, wb, sheet, patriarch, rowCount, remoteDownloadUrl);
 			rowCount += 2;
 		}
 		wb.write(out);
