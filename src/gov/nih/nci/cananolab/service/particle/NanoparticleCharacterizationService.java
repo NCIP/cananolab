@@ -48,23 +48,18 @@ public interface NanoparticleCharacterizationService {
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException;
 
-	public void exportDetail(CharacterizationBean achar, OutputStream out, String filePath)
+	public void exportDetail(CharacterizationBean achar, OutputStream out)
 		throws ParticleCharacterizationException;
 
-	// private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
-	// HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount);
 
 	public void exportSummary(CharacterizationSummaryBean summaryBean,
 			OutputStream out) throws IOException;
-
-	// private short setSummarySheet(CharacterizationSummaryBean summaryBean,
-	// HSSFWorkbook wb, HSSFSheet sheet, short rowCount);
 
 	public void deleteCharacterization(Characterization chara)
 			throws ParticleCharacterizationException;
 
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out, String remoteDownloadUrl) throws IOException;
+			OutputStream out) throws IOException;
 
 	public List<Characterization> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException;
