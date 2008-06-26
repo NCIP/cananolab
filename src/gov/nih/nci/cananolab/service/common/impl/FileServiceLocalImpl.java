@@ -290,21 +290,23 @@ public class FileServiceLocalImpl implements FileService {
 	public void retrieveVisibility(LabFileBean fileBean, UserBean user)
 			throws FileException {
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			if (fileBean.getDomainFile().getId() != null
-					&& auth.isUserAllowed(fileBean.getDomainFile().getId()
-							.toString(), user)) {
-				fileBean.setHidden(false);
-				// get assigned visible groups
-				List<String> accessibleGroups = auth.getAccessibleGroups(
-						fileBean.getDomainFile().getId().toString(),
-						CaNanoLabConstants.CSM_READ_ROLE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				fileBean.setVisibilityGroups(visibilityGroups);
-			} else {
-				fileBean.setHidden(true);
+			if (fileBean!=null) {
+				AuthorizationService auth = new AuthorizationService(
+						CaNanoLabConstants.CSM_APP_NAME);
+				if (fileBean.getDomainFile().getId() != null
+						&& auth.isUserAllowed(fileBean.getDomainFile().getId()
+								.toString(), user)) {
+					fileBean.setHidden(false);
+					// get assigned visible groups
+					List<String> accessibleGroups = auth.getAccessibleGroups(
+							fileBean.getDomainFile().getId().toString(),
+							CaNanoLabConstants.CSM_READ_ROLE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					fileBean.setVisibilityGroups(visibilityGroups);
+				} else {
+					fileBean.setHidden(true);
+				}
 			}
 		} catch (Exception e) {
 			String err = "Error in setting file visibility for "

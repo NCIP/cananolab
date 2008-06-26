@@ -149,14 +149,16 @@
 				</tr>
 			</c:when>
 			<c:otherwise>
-				<tr>
-					<td class="leftLabel">
-						The file is private.
-					</td>
-					<td class="rightLabel" colspan="2">
-						&nbsp;
-					</td>
-				</tr>
+				<c:if test="${param.fileHidden eq 'true'}">
+					<tr>
+						<td class="leftLabel">
+							The file is private.
+						</td>
+						<td class="rightLabel" colspan="2">
+							&nbsp;
+						</td>
+					</tr>
+				</c:if>
 			</c:otherwise>
 		</c:choose>
 		<c:if test="${!empty param.fileUri }">
