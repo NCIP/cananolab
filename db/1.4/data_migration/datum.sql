@@ -22,6 +22,22 @@ FROM cananolab.datum d
 ORDER BY d.datum_pk_id, d.list_index
 ;
 
+update  canano.derived_datum
+set name = 'molecular weight'
+where name = 'Molecular Weight';
+
+update  canano.derived_datum
+set name = 'surface area'
+where name = 'surface_area';
+
+update  canano.derived_datum
+set name = 'Z-average'
+where name = 'Z-Average';
+
+update  canano.derived_datum
+set name = 'zeta potential'
+where name = 'zeta_potential';
+
 drop table if exists canano.protection_group_tmp;
 
 CREATE TABLE canano.protection_group_tmp (

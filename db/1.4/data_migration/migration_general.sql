@@ -188,13 +188,34 @@ SELECT
 	'DATA_MIGRATION',
 	ADDDATE(SYSDATE(), INTERVAL list_index MINUTE)
 FROM cananolab.derived_bioassay_data d,
+	cananolab.characterization c
+WHERE d.characterization_pk_id = c.characterization_pk_id
+ORDER BY characterization_pk_id, list_index
+;
+
+/*
+INSERT INTO canano.derived_bioassay_data
+(
+	derived_bioassay_data_pk_id,
+	characterization_pk_id,
+	file_pk_id,
+	created_by,
+	created_date
+)
+SELECT
+	derived_bioassay_data_pk_id,
+	d.characterization_pk_id,
+	derived_bioassay_data_pk_id,
+	'DATA_MIGRATION',
+	ADDDATE(SYSDATE(), INTERVAL list_index MINUTE)
+FROM cananolab.derived_bioassay_data d,
 	cananolab.lab_file f,
 	cananolab.characterization c
 WHERE d.derived_bioassay_data_pk_id = f.file_pk_id
 AND d.characterization_pk_id = c.characterization_pk_id
 ORDER BY characterization_pk_id, list_index
 ;
-
+*/
 
 -- surface table in 1.3 loaded into derived_datum table in 1.4
 
@@ -213,7 +234,7 @@ INSERT INTO canano.derived_datum
 	derived_bioassay_data_pk_id
 )
 SELECT 
-	'surface_area',
+	'surface area',
 	surface_area,
 	surface_area_unit,
 	'DATA_MIGRATION',
@@ -253,7 +274,7 @@ INSERT INTO canano.derived_datum
 	derived_bioassay_data_pk_id
 )
 SELECT
-	'zeta_potential',
+	'zeta potential',
 	zeta_potential,
 	zeta_potential_unit,
 	'DATA_MIGRATION',
@@ -266,7 +287,7 @@ where zeta_potential is not null
 ALTER TABLE canano.derived_datum
  CHANGE datum_pk_id datum_pk_id BIGINT(20) NOT NULL;
 
-
+/*
 INSERT INTO canano.derived_bioassay_data
 (
 	derived_bioassay_data_pk_id,
@@ -280,7 +301,7 @@ SELECT distinct derived_bioassay_data_pk_id,
 	SYSDATE()
 FROM canano.derived_datum
 ;
-
+*/
 
 -- migrate general  datum data after migration of cananolab.surface table.
 INSERT INTO canano.derived_datum
@@ -304,6 +325,14 @@ SELECT
 FROM cananolab.datum d
 ORDER BY d.datum_pk_id, d.list_index
 ;
+
+update  canano.derived_datum
+set name = 'molecular weight'
+where name = 'Molecular Weight';
+
+update  canano.derived_datum
+set name = 'Z-average'
+where name = 'Z-Average';
   
 -- morphology table in 1.3 loaded into physical_state table in 1.4
 INSERT INTO canano.physical_state
