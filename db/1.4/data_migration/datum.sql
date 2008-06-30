@@ -23,20 +23,20 @@ ORDER BY d.datum_pk_id, d.list_index
 ;
 
 update  canano.derived_datum
-set name = 'molecular weight'
-where name = 'Molecular Weight';
+set datum_name = 'molecular weight'
+where datum_name = 'Molecular Weight';
 
 update  canano.derived_datum
-set name = 'surface area'
-where name = 'surface_area';
+set datum_name = 'surface area'
+where datum_name = 'surface_area';
 
 update  canano.derived_datum
-set name = 'Z-average'
-where name = 'Z-Average';
+set datum_name = 'Z-average'
+where datum_name = 'Z-Average';
 
 update  canano.derived_datum
-set name = 'zeta potential'
-where name = 'zeta_potential';
+set datum_name = 'zeta potential'
+where datum_name = 'zeta_potential';
 
 drop table if exists canano.protection_group_tmp;
 
