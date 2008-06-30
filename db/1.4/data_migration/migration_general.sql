@@ -188,34 +188,12 @@ SELECT
 	'DATA_MIGRATION',
 	ADDDATE(SYSDATE(), INTERVAL list_index MINUTE)
 FROM cananolab.derived_bioassay_data d,
-	cananolab.characterization c
-WHERE d.characterization_pk_id = c.characterization_pk_id
-ORDER BY characterization_pk_id, list_index
-;
-
-/*
-INSERT INTO canano.derived_bioassay_data
-(
-	derived_bioassay_data_pk_id,
-	characterization_pk_id,
-	file_pk_id,
-	created_by,
-	created_date
-)
-SELECT
-	derived_bioassay_data_pk_id,
-	d.characterization_pk_id,
-	derived_bioassay_data_pk_id,
-	'DATA_MIGRATION',
-	ADDDATE(SYSDATE(), INTERVAL list_index MINUTE)
-FROM cananolab.derived_bioassay_data d,
 	cananolab.lab_file f,
 	cananolab.characterization c
 WHERE d.derived_bioassay_data_pk_id = f.file_pk_id
 AND d.characterization_pk_id = c.characterization_pk_id
 ORDER BY characterization_pk_id, list_index
 ;
-*/
 
 -- surface table in 1.3 loaded into derived_datum table in 1.4
 
@@ -287,7 +265,7 @@ where zeta_potential is not null
 ALTER TABLE canano.derived_datum
  CHANGE datum_pk_id datum_pk_id BIGINT(20) NOT NULL;
 
-/*
+
 INSERT INTO canano.derived_bioassay_data
 (
 	derived_bioassay_data_pk_id,
@@ -301,9 +279,8 @@ SELECT distinct derived_bioassay_data_pk_id,
 	SYSDATE()
 FROM canano.derived_datum
 ;
-*/
 
--- migrate general  datum data after migration of cananolab.surface table.
+-- migrate general datum data after migration of cananolab.surface table.
 INSERT INTO canano.derived_datum
 (
 	datum_pk_id,
@@ -327,13 +304,13 @@ ORDER BY d.datum_pk_id, d.list_index
 ;
 
 update  canano.derived_datum
-set name = 'molecular weight'
-where name = 'Molecular Weight';
+set datum_name = 'molecular weight'
+where datum_name = 'Molecular Weight';
 
 update  canano.derived_datum
-set name = 'Z-average'
-where name = 'Z-Average';
-  
+set datum_name = 'Z-average'
+where datum_name = 'Z-Average';
+
 -- morphology table in 1.3 loaded into physical_state table in 1.4
 INSERT INTO canano.physical_state
 (
@@ -927,6 +904,7 @@ FROM cananolab.composing_element ce,
 	cananolab.characterization c
 WHERE ce.characterization_pk_id = c.characterization_pk_id
 AND c.discriminator != 'ComplexComp'
+AND ce.element_type != 'image contrast agent'
 ORDER BY ce.composing_element_pk_id, ce.list_index
 ;
 
