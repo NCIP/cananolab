@@ -5,7 +5,7 @@ INSERT INTO canano.common_lookup (
 	attribute,
 	value
 )
-VALUES('Size','derivedDatumName','Average'),
+VALUES('Size','otherDerivedDatumName','Average'),
 ('Average','unit','nm'),
-('CellViability','derivedDatumName','Percent Cell Viability'),
+('CellViability','otherDerivedDatumName','Percent Cell Viability'),
 ('Percent Cell Viability','unit','%');
