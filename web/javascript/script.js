@@ -287,9 +287,24 @@ var imgWindow = null;
 var t = null;
 function popImage(event, imgSrc, imgId) {
 	var popImg = new Image();
+	var ratio = 1;
+	var maxHeight = 800;
 	popImg.src = imgSrc;
 	width = popImg.width + 20;
 	height = popImg.height + 20;
+	if (width>height){
+		if (width>maxHeight){
+		 	ratio = maxHeight/width;
+		    width = maxHeight+2;	 
+		    height = ratio * height;
+		}	
+	}else{
+		if (height>maxHeight){
+		 	ratio = maxHeight/height*100;
+		    height = maxHeight+2;	 
+		    width = ratio * width/100;  
+		}
+	}	
 //    leftPos=event.clientX-width-200;
 //    topPos=event.clientY-200;
 	leftPos = 50;
@@ -304,7 +319,7 @@ function popImage(event, imgSrc, imgId) {
 	imgWindow.document.write(myScript);
 	//imgWindow.document.write("<body onLoad="closeMe();self.focus();" bgcolor="#FFFFFF">n");
 	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
-	imgWindow.document.write("<img styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
+	imgWindow.document.write("<img width="+(width-10)+" styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
 	t = setTimeout("imgWindow.close();", 15000);
 }
