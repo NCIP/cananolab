@@ -89,11 +89,7 @@ public class DerivedBioAssayDataBean {
 			domainBioAssayData
 					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
 		}
-		if (labFileBean.getDomainFile()==null || 
-			(labFileBean.getDomainFile().getName()==null &&
-			 labFileBean.getDomainFile().getVersion()==null)) {
-			domainBioAssayData.setLabFile(null);
-		}else {
+		if (labFileBean!=null) {
 			labFileBean.setupDomainFile(internalUriPath, createdBy);
 			domainBioAssayData.setLabFile(labFileBean.getDomainFile());
 		}
