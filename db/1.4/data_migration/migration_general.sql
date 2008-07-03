@@ -1469,6 +1469,9 @@ where element_type = 'modification'
 
 -- common_lookup table for user defined "other" types
 
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+
 -- def_activation_method
 INSERT INTO canano.common_lookup (
 	name,
@@ -1740,6 +1743,9 @@ SELECT
 FROM cananolab.def_solvent_type def
 WHERE solvent_type_pk_id > 30
 ;
+
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) NOT NULL;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
