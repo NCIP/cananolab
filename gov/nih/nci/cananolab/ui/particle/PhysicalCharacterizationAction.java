@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: PhysicalCharacterizationAction.java,v 1.32 2008-06-12 07:08:27 pansu Exp $ */
+/* CVS $Id: PhysicalCharacterizationAction.java,v 1.33 2008-07-03 17:15:09 pansu Exp $ */
 
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
@@ -59,14 +59,16 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PhysicalCharacterizationBean charBean = (PhysicalCharacterizationBean) theForm
 				.get("achar");
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		InitCharacterizationSetup.getInstance()
+				.persistPhysicalCharacterizationDropdowns(request, charBean);
 
 		if (!validateDerivedDatum(request, charBean)) {
 			return mapping.getInputForward();
 		}
 
 		saveCharacterization(request, theForm, charBean);
-		InitCharacterizationSetup.getInstance()
-				.persistPhysicalCharacterizationDropdowns(request, charBean);
 
 		ActionMessages msgs = new ActionMessages();
 		// validate number by javascript filterFloatingNumber

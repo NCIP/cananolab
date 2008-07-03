@@ -55,14 +55,16 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		InvitroCharacterizationBean charBean = (InvitroCharacterizationBean) theForm
 				.get("achar");
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
+		InitCharacterizationSetup.getInstance()
+				.persistInvitroCharacterizationDropdowns(request, charBean);
 
 		if (!validateDerivedDatum(request, charBean)) {
 			return mapping.getInputForward();
 		}
 
 		saveCharacterization(request, theForm, charBean);
-		InitCharacterizationSetup.getInstance()
-				.persistInvitroCharacterizationDropdowns(request, charBean);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(

@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -10,6 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
@@ -129,7 +129,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
 				.getDerivedBioAssayDataList()) {
 
-			List<DerivedDatum> datumList = derivedBioassayDataBean
+			List<DerivedDatumBean> datumList = derivedBioassayDataBean
 					.getDatumList();
 			LabFileBean lfBean = derivedBioassayDataBean.getLabFileBean();
 
@@ -146,40 +146,48 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				}
 			}
 
-			for (DerivedDatum datum : datumList) {
+			for (DerivedDatumBean datum : datumList) {
 				// if value field is populated, so does the name field.
-				if (datum.getName().length() == 0) {
+				if (datum.getDomainDerivedDatum().getName().length() == 0) {
 					ActionMessage msg = new ActionMessage("errors.required",
 							"Derived data name");
 					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 					this.saveErrors(request, msgs);
 					noErrors = false;
 				}
-				// if name field is populated, the value field must be a nonzero
-				// float number.
-				if (// datum.getName().length() > 0 &&
-				!datum.getValueType().equalsIgnoreCase("boolean")
-						&& datum.getValue() == 0) {
-
-					ActionMessage msg = new ActionMessage(
-							"errors.nonzerofloat",
-							"When value type is not Boolean, derived data value");
-					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-					this.saveErrors(request, msgs);
-					noErrors = false;
-				}
-				// for boolean type, the value must be 0 or 1.
-				if (datum.getValueType().equalsIgnoreCase("boolean")) {
-					if (datum.getValue() != 0 && datum.getValue() != 1) {
+				try {
+					Float value = new Float(datum.getValueStr());
+					// for boolean type, the value must be 0/1
+					if (datum.getDomainDerivedDatum().getValueType()
+							.equalsIgnoreCase("boolean")
+							&& value != 0.0 && value != 1.0) {
 						ActionMessage msg = new ActionMessage(
-								"error.booleanValue", "derived data value");
+								"error.booleanValue", "Derived data value");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						saveErrors(request, msgs);
+						noErrors = false;
+					}
+				} catch (NumberFormatException e) {
+					// for boolean type, the value must be true/false
+					if (datum.getDomainDerivedDatum().getValueType()
+							.equalsIgnoreCase("boolean")
+							&& !datum.getValueStr().equalsIgnoreCase("true")
+							&& !datum.getValueStr().equalsIgnoreCase("false")) {
+						ActionMessage msg = new ActionMessage(
+								"error.booleanValue", "Derived data value");
+						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+						saveErrors(request, msgs);
+						noErrors = false;
+					} else if (!datum.getDomainDerivedDatum().getValueType()
+							.equalsIgnoreCase("boolean")) {
+						ActionMessage msg = new ActionMessage(
+								"error.derivedDatumValue", "Derived data value");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						saveErrors(request, msgs);
 						noErrors = false;
 					}
 				}
 			}
-
 		}
 		return noErrors;
 	}
@@ -214,8 +222,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			saveToOtherParticles(request, copy, user, particleBean
 					.getDomainParticleSample().getName(), otherSamples);
 		}
-		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, charBean);
 		particleBean = setupParticle(theForm, request, "local");
 		setupDataTree(particleBean, request);
 	}
@@ -308,6 +314,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		achar.addDerivedBioAssayData();
 		setupDomainChar(request, theForm, achar);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
@@ -448,7 +456,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					.getDerivedBioAssayDataList()) {
 				if (bioassayBean.getLabFileBean() != null) {
 					LabFileBean fileBean = bioassayBean.getLabFileBean();
-					String remoteDownloadUrl =remoteDownloadUrlBase
+					String remoteDownloadUrl = remoteDownloadUrlBase
 							+ fileBean.getDomainFile().getId().toString();
 					fileBean.setFullPath(remoteDownloadUrl);
 				}

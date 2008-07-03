@@ -24,7 +24,7 @@ public class DerivedBioAssayDataBean {
 
 	private LabFileBean labFileBean = new LabFileBean();
 
-	private List<DerivedDatum> datumList = new ArrayList<DerivedDatum>();
+	private List<DerivedDatumBean> datumList = new ArrayList<DerivedDatumBean>();
 
 	public DerivedBioAssayDataBean() {
 
@@ -32,17 +32,20 @@ public class DerivedBioAssayDataBean {
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData derivedBioAssayData) {
 		domainBioAssayData = derivedBioAssayData;
-		if (domainBioAssayData.getLabFile() != null && 
-			domainBioAssayData.getLabFile().getName()!=null) {
+		if (domainBioAssayData.getLabFile() != null
+				&& domainBioAssayData.getLabFile().getName() != null) {
 			labFileBean = new LabFileBean(domainBioAssayData.getLabFile());
-		}else {
+		} else {
 			labFileBean = null;
 		}
 		if (domainBioAssayData.getDerivedDatumCollection() != null) {
-			datumList.addAll(domainBioAssayData.getDerivedDatumCollection());
+			for (DerivedDatum datum : domainBioAssayData
+					.getDerivedDatumCollection()) {
+				datumList.add(new DerivedDatumBean(datum));
+			}
 		}
 		Collections.sort(datumList,
-				new CaNanoLabComparators.DerivedDatumDateComparator());
+				new CaNanoLabComparators.DerivedDatumBeanDateComparator());
 	}
 
 	public DerivedBioAssayData getDomainBioAssayData() {
@@ -53,21 +56,12 @@ public class DerivedBioAssayDataBean {
 		return labFileBean;
 	}
 
-	public List<DerivedDatum> getDatumList() {
-		if (domainBioAssayData.getDerivedDatumCollection() != null) {
-			domainBioAssayData.getDerivedDatumCollection().clear();
-		} else {
-			domainBioAssayData
-					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
-		}
-		for (DerivedDatum datum : datumList) {
-			domainBioAssayData.getDerivedDatumCollection().add(datum);
-		}
+	public List<DerivedDatumBean> getDatumList() {
 		return datumList;
 	}
 
 	public void addDerivedDatum() {
-		datumList.add(new DerivedDatum());
+		datumList.add(new DerivedDatumBean());
 	}
 
 	public void removeDerivedDatum(int ind) {
@@ -89,16 +83,14 @@ public class DerivedBioAssayDataBean {
 			domainBioAssayData
 					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
 		}
-		if (labFileBean!=null) {
+		if (labFileBean != null) {
 			labFileBean.setupDomainFile(internalUriPath, createdBy);
 			domainBioAssayData.setLabFile(labFileBean.getDomainFile());
 		}
-		for (DerivedDatum datum : datumList) {
-			if (datum.getId() == null) {
-				datum.setCreatedBy(createdBy);
-				datum.setCreatedDate(new Date());
-			}
-			domainBioAssayData.getDerivedDatumCollection().add(datum);
+		for (DerivedDatumBean datum : datumList) {
+			datum.setDomainDerivedDatum(createdBy);
+			domainBioAssayData.getDerivedDatumCollection().add(
+					datum.getDomainDerivedDatum());
 		}
 	}
 }

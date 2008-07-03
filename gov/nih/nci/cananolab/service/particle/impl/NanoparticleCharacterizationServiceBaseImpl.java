@@ -1,12 +1,12 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -35,7 +35,7 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 	protected FileService fileService;
 
 	public void exportDetail(CharacterizationBean achar, OutputStream out)
-		throws ParticleCharacterizationException {
+			throws ParticleCharacterizationException {
 		try {
 			helper.exportDetail(achar, out);
 		} catch (Exception e) {
@@ -83,15 +83,16 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 									user);
 						}
 						Map<String, String> datumMap = new HashMap<String, String>();
-						for (DerivedDatum data : derivedBioAssayDataBean
+						for (DerivedDatumBean data : derivedBioAssayDataBean
 								.getDatumList()) {
-							String datumLabel = data.getName();
-							if (data.getValueUnit() != null
-									&& data.getValueUnit().length() > 0) {
-								datumLabel += "(" + data.getValueUnit() + ")";
+							String datumLabel = data.getDomainDerivedDatum()
+									.getName();
+							if (data.getDomainDerivedDatum().getValueUnit() != null
+									&& data.getDomainDerivedDatum().getValueUnit().length() > 0) {
+								datumLabel += "(" + data.getDomainDerivedDatum().getValueUnit() + ")";
 							}
 							datumMap
-									.put(datumLabel, data.getValue().toString());
+									.put(datumLabel, data.getValueStr());
 						}
 						CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
 						charSummaryRow.setCharBean(charBean);
@@ -117,5 +118,5 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 			logger.error(err, e);
 			throw new ParticleCharacterizationException(err, e);
 		}
-	}	
+	}
 }
