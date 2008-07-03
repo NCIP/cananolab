@@ -138,8 +138,8 @@
 													property="achar.derivedBioAssayDataList[${fileInd}].datumList"
 													indexId="datumInd">
 													<th class="whiteBorderLessLabel">
-														${datum.name}
-														<c:if test="${!empty datum.valueUnit}">(${datum.valueUnit})</c:if>
+														${datum.domainDerivedDatum.name}
+														<c:if test="${!empty datum.domainDerivedDatum.valueUnit}">(${datum.domainDerivedDatum.valueUnit})</c:if>
 													</th>
 												</logic:iterate>
 											</tr>
@@ -149,7 +149,7 @@
 													property="achar.derivedBioAssayDataList[${fileInd}].datumList"
 													indexId="datumInd">
 													<td class="whiteBorderLessLabel">
-														${datum.value}
+														${datum.valueStr}
 													</td>
 												</logic:iterate>
 											</tr>
