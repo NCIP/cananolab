@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
@@ -141,19 +141,23 @@ public class InitCharacterizationSetup {
 			CharacterizationBean charBean) throws Exception {
 		for (DerivedBioAssayDataBean bioassay : charBean
 				.getDerivedBioAssayDataList()) {
-			if (bioassay.getLabFileBean()!=null) {
-				InitSetup.getInstance().persistLookup(request, "LabFile", "type",
-						"otherType",
+			if (bioassay.getLabFileBean() != null) {
+				InitSetup.getInstance().persistLookup(request, "LabFile",
+						"type", "otherType",
 						bioassay.getLabFileBean().getDomainFile().getType());
 			}
-			for (DerivedDatum datum : bioassay.getDatumList()) {
-				InitSetup.getInstance().persistLookup(request, datum.getName(),
-						"unit", "otherUnit", datum.getValueUnit());
+			for (DerivedDatumBean datum : bioassay.getDatumList()) {
+				InitSetup.getInstance().persistLookup(request,
+						datum.getDomainDerivedDatum().getName(), "unit",
+						"otherUnit",
+						datum.getDomainDerivedDatum().getValueUnit());
 				InitSetup.getInstance().persistLookup(request, "DerivedDatum",
-						"valueType", "otherValueType", datum.getValueType());
+						"valueType", "otherValueType",
+						datum.getDomainDerivedDatum().getValueType());
 				InitSetup.getInstance().persistLookup(request,
 						charBean.getClassName(), "derivedDatumName",
-						"otherDerivedDatumName", datum.getName());
+						"otherDerivedDatumName",
+						datum.getDomainDerivedDatum().getName());
 			}
 		}
 		setCharactierizationDropDowns(request, charBean.getClassName());
