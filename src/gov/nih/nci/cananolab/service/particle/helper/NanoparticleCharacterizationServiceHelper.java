@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.common.Keyword;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -162,7 +162,7 @@ public class NanoparticleCharacterizationServiceHelper {
 			out.close();
 		}
 	}
-	
+
 	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
 			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
 		HSSFFont headerFont = wb.createFont();
@@ -248,23 +248,24 @@ public class NanoparticleCharacterizationServiceHelper {
 		int fileIndex = 1;
 
 		for (DerivedBioAssayDataBean derivedBioAssayData : derivedBioAssayDataList) {
-			String dDescription = derivedBioAssayData.getLabFileBean()
-					.getDomainFile().getDescription();
 			short cellCount = 0;
-			if (dDescription != null) {
-				row = sheet.createRow(rowCount++);
-				cell = row.createCell(cellCount++);
-				cell.setCellStyle(headerStyle);
-				cell
-						.setCellValue(new HSSFRichTextString(
-								"Characterization File #" + fileIndex
-										+ " Description"));
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString(dDescription));
+			if (derivedBioAssayData.getLabFileBean() != null) {
+				String dDescription = derivedBioAssayData.getLabFileBean()
+						.getDomainFile().getDescription();
+				if (dDescription != null) {
+					row = sheet.createRow(rowCount++);
+					cell = row.createCell(cellCount++);
+					cell.setCellStyle(headerStyle);
+					cell.setCellValue(new HSSFRichTextString(
+							"Characterization File #" + fileIndex
+									+ " Description"));
+					row.createCell(cellCount++).setCellValue(
+							new HSSFRichTextString(dDescription));
 
+				}
 			}
-
 			if (derivedBioAssayData != null
+					&& derivedBioAssayData.getLabFileBean() != null
 					&& derivedBioAssayData.getLabFileBean().getDomainFile()
 							.getUri() != null) {
 				row = sheet.createRow(rowCount++);
@@ -321,7 +322,8 @@ public class NanoparticleCharacterizationServiceHelper {
 				}
 			}
 
-			List<DerivedDatum> datumList = derivedBioAssayData.getDatumList();
+			List<DerivedDatumBean> datumList = derivedBioAssayData
+					.getDatumList();
 			if (datumList != null && !datumList.isEmpty()) {
 				cellCount = 0;
 				row = sheet.createRow(rowCount);
@@ -335,29 +337,30 @@ public class NanoparticleCharacterizationServiceHelper {
 				row = sheet.createRow(rowCount++);
 
 				short ccount = 0;
-				for (DerivedDatum datum : datumList) {
-					if (datum.getValueUnit() != null
-							&& datum.getValueUnit().trim().length() > 0) {
+				for (DerivedDatumBean datum : datumList) {
+					if (datum.getDomainDerivedDatum().getValueUnit() != null
+							&& datum.getDomainDerivedDatum().getValueUnit()
+									.trim().length() > 0) {
 						cell = row.createCell(ccount++);
 						cell.setCellStyle(headerStyle);
 						cell.setCellValue(new HSSFRichTextString(datum
-								.getName()
-								+ " (" + datum.getValueUnit() + ")"));
+								.getDomainDerivedDatum().getName()
+								+ " ("
+								+ datum.getDomainDerivedDatum().getValueUnit()
+								+ ")"));
 					} else {
 						cell = row.createCell(ccount++);
 						cell.setCellStyle(headerStyle);
 						cell.setCellValue(new HSSFRichTextString(datum
-								.getName()));
+								.getDomainDerivedDatum().getName()));
 					}
 				}
 
 				row = sheet.createRow(rowCount++);
 				ccount = 0;
-				for (DerivedDatum datum : datumList) {
-					row.createCell(ccount++)
-							.setCellValue(
-									new HSSFRichTextString(datum.getValue()
-											.toString()));
+				for (DerivedDatumBean datum : datumList) {
+					row.createCell(ccount++).setCellValue(
+							new HSSFRichTextString(datum.getValueStr()));
 				}
 				rowCount++;
 			}
@@ -468,14 +471,16 @@ public class NanoparticleCharacterizationServiceHelper {
 					.getDerivedBioAssayDataBean();
 			if (charFile != null) {
 				StringBuffer sbuf = new StringBuffer();
-				if (charFile.getLabFileBean().getDomainFile().getType() != null
+				if (charFile.getLabFileBean() != null
+						&& charFile.getLabFileBean().getDomainFile().getType() != null
 						&& charFile.getLabFileBean().getDomainFile().getType()
 								.length() > 0) {
 					sbuf.append(charFile.getLabFileBean().getDomainFile()
 							.getType()
 							+ " ");
 				}
-				if (charFile.getLabFileBean().getDomainFile().getUri() != null) {
+				if (charFile.getLabFileBean() != null
+						&& charFile.getLabFileBean().getDomainFile().getUri() != null) {
 					if (charFile.getLabFileBean().isHidden()) {
 						sbuf.append("Private file");
 					} else if (charFile.getLabFileBean().getDomainFile()
