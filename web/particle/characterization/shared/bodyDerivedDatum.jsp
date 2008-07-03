@@ -37,7 +37,7 @@
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:select styleId="datumName${param.fileInd}-${dInd}"
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].name"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].domainDerivedDatum.name"
 								onchange="javascript:callPrompt('Name', 'datumName' + ${param.fileInd} + '-'+ ${dInd});getUnit(${param.fileInd}, ${dInd});">
 								<option value=""></option>
 								<html:options name="derivedDatumNames" />
@@ -47,7 +47,7 @@
 							</html:select>&nbsp; 	
 						</c:when>
 						<c:otherwise>
-							${ddata.name}&nbsp;
+							${ddata.domainDerivedDatum.name}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -55,7 +55,7 @@
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:select styleId="valueType${param.fileInd}-${dInd}"
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueType"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].domainDerivedDatum.valueType"
 								onchange="javascript:callPrompt('Value Type', 'valueType' + ${param.fileInd} + '-'+${dInd});">
 								<option value=""></option>
 								<html:options name="derivedDatumValueTypes" />
@@ -65,7 +65,7 @@
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.valueType}&nbsp;
+							${ddata.domainDerivedDatum.valueType}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -73,11 +73,11 @@
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:text
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].value"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueStr"
 								size="5" />&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.value}&nbsp;
+							${ddata.valueStr}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -85,11 +85,11 @@
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:select styleId="unit${param.fileInd}-${dInd}"
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].valueUnit"
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].domainDerivedDatum.valueUnit"
 								onchange="javascript:callPrompt('Unit', 'unit' + ${param.fileInd} + '-'+${dInd});">
 								<option value=""></option>
 								<c:forEach var="unit"
-									items="${unitMap[characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList[dInd].name]}">
+									items="${unitMap[characterizationForm.map.achar.derivedBioAssayDataList[param.fileInd].datumList[dInd].domainDerivedDatum.name]}">
 									<html:option value="${unit }" />
 								</c:forEach>
 								<option value="other">
@@ -98,7 +98,7 @@
 							</html:select>&nbsp; 						
 						</c:when>
 						<c:otherwise>
-							${ddata.valueUnit}&nbsp;
+							${ddata.domainDerivedDatum.valueUnit}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -106,10 +106,10 @@
 					<c:choose>
 						<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 							<html:textarea styleId="description${param.fileInd}-${dInd}"
-								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].description" />&nbsp; 												
+								property="achar.derivedBioAssayDataList[${param.fileInd}].datumList[${dInd}].domainDerivedDatum.description" />&nbsp; 												
 						</c:when>
 						<c:otherwise>
-							${ddata.description}&nbsp;
+							${ddata.domainDerivedDatum.description}&nbsp;
 						</c:otherwise>
 					</c:choose>
 				</td>

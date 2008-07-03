@@ -131,8 +131,8 @@ ${charBean.protocolFileBean.domainFile.uri}
 											<c:forEach var="datum"
 												items="${derivedBioAssayData.datumList}">
 												<th class="whiteBorderLessLabel">
-													${datum.name}
-													<c:if test="${!empty datum.valueUnit}">(${datum.valueUnit})</c:if>
+													${datum.domainDerivedDatum.name}
+													<c:if test="${!empty datum.domainDerivedDatum.valueUnit}">(${datum.domainDerivedDatum.valueUnit})</c:if>
 												</th>
 											</c:forEach>
 										</tr>
@@ -140,7 +140,7 @@ ${charBean.protocolFileBean.domainFile.uri}
 											<c:forEach var="datum"
 												items="${derivedBioAssayData.datumList}">
 												<td class="whiteBorderLessLabel">
-													${datum.value}
+													${datum.valueStr}
 												</td>
 											</c:forEach>
 										</tr>
