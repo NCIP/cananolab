@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -27,7 +28,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.9 2008-05-22 14:13:03 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.10 2008-07-03 17:15:36 pansu Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -207,6 +208,14 @@ public class CaNanoLabComparators {
 		public int compare(LabFileBean file1, LabFileBean file2) {
 			return file1.getDomainFile().getCreatedDate().compareTo(
 					file2.getDomainFile().getCreatedDate());
+		}
+	}
+
+	public static class DerivedDatumBeanDateComparator implements
+			Comparator<DerivedDatumBean> {
+		public int compare(DerivedDatumBean data1, DerivedDatumBean data2) {
+			return data1.getDomainDerivedDatum().getCreatedDate().compareTo(
+					data2.getDomainDerivedDatum().getCreatedDate());
 		}
 	}
 
