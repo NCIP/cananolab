@@ -18,12 +18,16 @@
 					<td class="welcomeContent" valign="top">
 						Welcome to the
 						<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
-						portal. caNanoLab is a data sharing portal designed for
-						laboratories performing nanoparticle assays. caNanoLab provides
-						support for the annotation of nanoparticles with characterizations
-						resulting from physical and in vitro nanoparticle assays and the
-						sharing of these characterizations in a secure fashion.
-
+						portal. caNanoLab is a data sharing portal designed to facilitate 
+						information sharing in the biomedical nanotechnology research community 
+						to expedite and validate the use of nanotechnology in biomedicine.  
+						caNanoLab allows researchers to share information on nanoparticles 
+						including the composition of the particle, the functions (e.g. therapeutic, 
+						targeting, diagnostic imaging) of the particle, the characterizations of 
+						the particle from physical (e.g. size, molecular weight) and in vitro 
+						(e.g. cytotoxicity, immunotoxicity) nanoparticle assays, and the protocols 
+						of these characterization.
+						
 						<div class="message">
 							<jsp:include page="/bodyMessage.jsp" />
 						</div>
