@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.common.Keyword;
@@ -626,5 +627,21 @@ public class NanoparticleCharacterizationServiceHelper {
 			labFile = (LabFile) obj;
 		}
 		return labFile;
+	}
+	
+	public List<DerivedDatum> findDerivedDatumListByDerivedBioAssayDataId(String derivedBioAssayDataId)
+			throws Exception {
+		List<DerivedDatum> datumList = new ArrayList<DerivedDatum>();
+		
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select bioassay.derivedDatumCollection from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
+						+ derivedBioAssayDataId);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			datumList.add((DerivedDatum) obj);
+		}
+		return datumList;
 	}
 }
