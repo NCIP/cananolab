@@ -188,7 +188,7 @@
 					<c:if test="${!empty derivedBioAssayData.datumList}">
 						<tr>
 							<th class="completeLabel" align="left" colspan="2">
-								Characterization Derived Data #1
+								Characterization Derived Data #${fileInd+1}
 								<br>
 								<br>
 								<table border="1" borderColor="#CCCCCC" cellpadding="3"
