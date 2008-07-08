@@ -50,15 +50,17 @@ public class LabFileBean {
 
 	public LabFileBean(LabFile labFile) {
 		this.domainFile = labFile;
-		SortedSet<String> keywordStrs = new TreeSet<String>();
-		if (domainFile.getKeywordCollection() != null) {
-			for (Keyword keyword : domainFile.getKeywordCollection()) {
-				keywordStrs.add(keyword.getName());
+		if (labFile!=null) {
+			SortedSet<String> keywordStrs = new TreeSet<String>();
+			if (domainFile.getKeywordCollection() != null) {
+				for (Keyword keyword : domainFile.getKeywordCollection()) {
+					keywordStrs.add(keyword.getName());
+				}
 			}
-		}
-		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-		if (labFile.getUriExternal()) {
-			externalUrl = labFile.getUri();
+			keywordsStr = StringUtils.join(keywordStrs, "\r\n");
+			if (labFile.getUriExternal()) {
+				externalUrl = labFile.getUri();
+			}
 		}
 	}
 
