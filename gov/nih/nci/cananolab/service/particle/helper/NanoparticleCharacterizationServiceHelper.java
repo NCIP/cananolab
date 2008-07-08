@@ -250,8 +250,7 @@ public class NanoparticleCharacterizationServiceHelper {
 
 		for (DerivedBioAssayDataBean derivedBioAssayData : derivedBioAssayDataList) {
 			short cellCount = 0;
-			if (derivedBioAssayData.getLabFileBean() != null
-				&& derivedBioAssayData.getLabFileBean().getDomainFile()!=null) {
+			if (derivedBioAssayData.getLabFileBean() != null) {
 				String dDescription = derivedBioAssayData.getLabFileBean()
 						.getDomainFile().getDescription();
 				if (dDescription != null) {
@@ -268,7 +267,6 @@ public class NanoparticleCharacterizationServiceHelper {
 			}
 			if (derivedBioAssayData != null
 					&& derivedBioAssayData.getLabFileBean() != null
-					&& derivedBioAssayData.getLabFileBean().getDomainFile()!=null
 					&& derivedBioAssayData.getLabFileBean().getDomainFile()
 							.getUri() != null) {
 				row = sheet.createRow(rowCount++);
@@ -483,7 +481,6 @@ public class NanoparticleCharacterizationServiceHelper {
 							+ " ");
 				}
 				if (charFile.getLabFileBean() != null
-						&& charFile.getLabFileBean().getDomainFile()!= null
 						&& charFile.getLabFileBean().getDomainFile().getUri() != null) {
 					if (charFile.getLabFileBean().isHidden()) {
 						sbuf.append("Private file");
@@ -559,12 +556,12 @@ public class NanoparticleCharacterizationServiceHelper {
 					.getId().toString());
 
 			// labFile's keyword
-			if (labFile!=null) {
+			if (labFile != null) {
 				List<Keyword> keywordCollection = fileHelper
 						.findKeywordsByFileId(labFile.getId().toString());
 				labFile.setKeywordCollection(keywordCollection);
+				derivedBioAssayData.setLabFile(labFile);
 			}
-			derivedBioAssayData.setLabFile(labFile);
 			derivedBioAssayDataCollection.add(derivedBioAssayData);
 		}
 		return derivedBioAssayDataCollection;
@@ -632,11 +629,11 @@ public class NanoparticleCharacterizationServiceHelper {
 		}
 		return labFile;
 	}
-	
-	public List<DerivedDatum> findDerivedDatumListByDerivedBioAssayDataId(String derivedBioAssayDataId)
-			throws Exception {
+
+	public List<DerivedDatum> findDerivedDatumListByDerivedBioAssayDataId(
+			String derivedBioAssayDataId) throws Exception {
 		List<DerivedDatum> datumList = new ArrayList<DerivedDatum>();
-		
+
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
