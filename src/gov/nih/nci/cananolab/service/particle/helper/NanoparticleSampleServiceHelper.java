@@ -474,10 +474,11 @@ public class NanoparticleSampleServiceHelper {
 					.getId().toString());
 
 			// labFile's keyword
-			List<Keyword> keywords = fileHelper.findKeywordsByFileId(labFile
-					.getId().toString());
-			labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
-
+			if (labFile!=null) {
+				List<Keyword> keywords = fileHelper.findKeywordsByFileId(labFile
+						.getId().toString());
+				labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
+			}
 			derivedBioAssayData.setLabFile(labFile);
 			derivedBioAssayDataCollection.add(derivedBioAssayData);
 		}
