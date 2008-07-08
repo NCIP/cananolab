@@ -141,7 +141,8 @@
 					property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 					indexId="fileInd">
 					<c:if
-						test="${!empty derivedBioAssayData.labFileBean.domainFile.description}">
+						test="${!empty derivedBioAssayData.labFileBean.domainFile.description 
+							&& derivedBioAssayData.labFileBean.hidden ne 'true'}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd+1} Description
