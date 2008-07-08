@@ -75,7 +75,8 @@ ${charBean.protocolFileBean.domainFile.uri}
 					<c:forEach var="derivedBioAssayData"
 						items="${charBean.derivedBioAssayDataList}" varStatus="fileInd">
 						<c:if
-							test="${!empty derivedBioAssayData.labFileBean.domainFile.description}">
+							test="${!empty derivedBioAssayData.labFileBean.domainFile.description 
+								&& derivedBioAssayData.labFileBean.hidden ne 'true'}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Characterization File #${fileInd.index+1} Description
