@@ -8,6 +8,7 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.common.LabFile;
@@ -280,6 +281,16 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 				if (file != null) {
 					bioassay.setLabFile(file);
 				}
+				DerivedDatum[] datums = gridClient
+						.getDerivedDatumsByDerivedBioAssayDataId(bioassay
+								.getId().toString());
+				if (datums != null && datums.length > 0) {
+					bioassay
+							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
+					for (DerivedDatum datum : datums) {
+						bioassay.getDerivedDatumCollection().add(datum);
+					}
+				}
 				achar.getDerivedBioAssayDataCollection().add(bioassay);
 			}
 		}
@@ -364,8 +375,8 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	}
 
 	public void assignCharacterizationPublicVisibility(
-			AuthorizationService authService, Characterization aChar) 
-		throws ParticleCharacterizationException {
+			AuthorizationService authService, Characterization aChar)
+			throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
 				"Not implemented for grid service");
 	}
