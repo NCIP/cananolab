@@ -1752,11 +1752,11 @@ div.Heading2
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  margin-bottom: 0.0pt;
+  margin-bottom: 3px;
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 12.0pt;
-  padding-bottom: 10px;
+  padding-bottom: 3px;
   text-align: Left;
   text-indent: 0pt;
   text-transform: none;
@@ -1765,10 +1765,10 @@ div.Heading2
 
 .Heading2_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 3px;
   margin-right: 0pt;
   margin-top: 12.0pt;
-  padding-bottom: 10px;
+  padding-bottom: 3px;
 }
 
 .Heading2_inner
@@ -1846,11 +1846,11 @@ div.Heading3
   font-style: normal;
   font-variant: normal;
   font-weight: bold;
-  margin-bottom: 0.0pt;
+  margin-bottom: 3px;
   margin-left: 0pt;
   margin-right: 0pt;
   margin-top: 12.0pt;
-  padding-bottom: 10px;
+  padding-bottom: 3px;
   text-align: Left;
   text-indent: 0pt;
   text-transform: none;
@@ -1859,10 +1859,10 @@ div.Heading3
 
 .Heading3_outer
 {
-  margin-bottom: 0.0pt;
+  margin-bottom: 3px;
   margin-right: 0pt;
   margin-top: 12.0pt;
-  padding-bottom: 10px;
+  padding-bottom: 3px;
 }
 
 .Heading3_inner
@@ -2175,10 +2175,9 @@ div.Note
   margin-bottom: 6.0pt;
   margin-left: 68.4pt;
   margin-right: 0pt;
-  margin-top: -10px;
-  padding-bottom: 18px;
+  margin-top: 3.0pt;
   text-align: Left;
-  text-indent: -25px;
+  text-indent: -32.400000000000006pt;
   text-transform: none;
   vertical-align: baseline;
 }
@@ -2187,8 +2186,7 @@ div.Note
 {
   margin-bottom: 6.0pt;
   margin-right: 0pt;
-  margin-top: -10px;
-  padding-bottom: 18px;
+  margin-top: 3.0pt;
 }
 
 .Note_inner
@@ -2271,7 +2269,7 @@ div.Note_Main_Body
   margin-bottom: 10.0pt;
   margin-left: 28px;
   margin-right: 0pt;
-  margin-top: -10px;
+  margin-top: -5px;
   padding-bottom: 18px;
   text-align: Left;
   text-indent: -15px;
@@ -2283,7 +2281,7 @@ div.Note_Main_Body
 {
   margin-bottom: 10.0pt;
   margin-right: 0pt;
-  margin-top: -10px;
+  margin-top: -5px;
   padding-bottom: 18px;
 }
 
@@ -3707,6 +3705,7 @@ table.Table_-_Feature_Description
   padding-right: 4pt;
   padding-top: 4pt;
   text-align: right;
+  width: 90%;
 }
 
 table.UnstructMasterPageMaps
