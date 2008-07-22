@@ -416,17 +416,16 @@ CREATE TABLE publication
 (
 	publication_pk_id BIGINT NOT NULL,
 	category VARCHAR(200) NOT NULL,
-	digital_object_id VARCHAR(50) NULL,
-	end_page BIGINT NULL,
-	first_author VARCHAR(200) NULL,
-	journal_name VARCHAR(200) NULL,
-	publication_status VARCHAR(50) NULL,
+	publication_status VARCHAR(50) NOT NULL,
 	pubmed_id BIGINT NULL,
+	digital_object_id VARCHAR(200) NULL,
+	journal_name VARCHAR(200) NULL,
+	volume VARCHAR(50) NULL,
 	start_page BIGINT NULL,
-	volume VARCHAR(10) NULL,
+	end_page BIGINT NULL,
 	year INTEGER NULL,
-	PRIMARY KEY (publication_pk_id),
-	KEY (publication_pk_id)
+	research_area VARCHAR(200)  NULL,
+	PRIMARY KEY (publication_pk_id)
 ) TYPE=InnoDB
 ;
 
