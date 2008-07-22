@@ -10,11 +10,9 @@
                         </generator>
 		</id>
 		<!-- Attributes mapping for the LabFile class -->
-		<property name="comments" type="string" column="comments"/>
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
-		<property name="description" type="string" column="description"/>
-		<property name="extension" type="string" column="file_extension"/>
+		<property name="description" type="string" column="description"/>		
 		<property name="name" type="string" column="file_name"/>
 		<property name="title" type="string" column="title"/>
 		<property name="type" type="string" column="file_type"/>
@@ -44,9 +42,9 @@
 			<property name="category" type="string" column="category"/>
 			<property name="digitalObjectId" type="string" column="digital_object_id"/>
 			<property name="endPage" type="long" column="end_page"/>
-			<property name="firstAuthor" type="string" column="first_author"/>
 			<property name="journalName" type="string" column="journal_name"/>
-			<property name="pubMedId" type="long" column="pubmed_id"/>
+			<property name="pubMedId" type="long" column="pubmed_id"/>			
+			<property name="researchArea" type="string" column="research_area"/>
 			<property name="startPage" type="long" column="start_page"/>
 			<property name="status" type="string" column="publication_status"/>
 			<property name="volume" type="string" column="volume"/>
