@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -26,6 +27,7 @@ import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.TreeNodeBean;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -391,7 +393,7 @@ public class InitNanoparticleSetup {
 					}
 					cdataBeans.add(dataBean);
 				}
-
+				boolean hasDocumentData = false;
 				// report
 				SortedSet<DataLinkBean> rdataBeans = new TreeSet<DataLinkBean>(
 						new CaNanoLabComparators.DataLinkTypeDateComparator());
@@ -404,10 +406,10 @@ public class InitNanoparticleSetup {
 								.getCreatedBy(), report.getCreatedDate());
 						dataBean.setDataDisplayType(reportCategory);
 						if(report.getTitle().length() <= 20)
-							dataBean.setViewTitle(report.getTitle());
+							dataBean.setViewTitle("Report: "+report.getTitle());
 						else {
 							String sideMenuTitle = report.getTitle().substring(0, 20);
-							dataBean.setViewTitle(sideMenuTitle);
+							dataBean.setViewTitle("Report: "+sideMenuTitle);
 						}
 						//dataBean.setViewTitle(report.getUri());
 						if (dataTree.get(reportCategory) != null) {
@@ -420,10 +422,64 @@ public class InitNanoparticleSetup {
 						}
 						rdataBeans.add(dataBean);
 					}
-					request.getSession().setAttribute("hasReportData", "true");
-				} else {
-					request.getSession()
-							.setAttribute("hasReportData", "false");
+					hasDocumentData = true;
+				}
+				
+				//TODO, to be verified by shuang
+				// publication
+				SortedSet<DataLinkBean> pdataBeans = new TreeSet<DataLinkBean>(
+						new CaNanoLabComparators.DataLinkTypeDateComparator());
+				Collection<Publication> publicationCollection = 
+					particleSample.getPublicationCollection();
+				if (publicationCollection != null &&
+						publicationCollection.size() > 0 ) {
+					long pubmedid = 0L;
+					String doi = null, title = null;
+					for (Publication publication : publicationCollection) {
+						String publicationCategory = publication.getCategory();
+						DataLinkBean dataBean = new DataLinkBean(publication.getId()
+								.toString(), "Publication", "submitPublication", publication
+								.getCreatedBy(), publication.getCreatedDate());
+						dataBean.setDataDisplayType(publicationCategory);
+						pubmedid = publication.getPubMedId();						
+						if(pubmedid>0) {
+							dataBean.setViewTitle("PMID: "+pubmedid);
+						}else {
+							doi = publication.getDigitalObjectId();
+							if (doi!=null && doi.length()>0) {
+								if (doi.length()>20) {
+									dataBean.setViewTitle("DOI: "+doi.substring(0, 20));
+								}else {
+									dataBean.setViewTitle("DOI: "+doi);
+								}
+							}else {
+								title = publication.getTitle();
+								if (title!=null && title.length()>0) {
+									if (title.length()>20) {
+										dataBean.setViewTitle("Publication: "+title.substring(0, 20));
+									}else {
+										dataBean.setViewTitle("Publication: "+title);
+									}
+								}
+							}
+						}
+						//dataBean.setViewTitle(report.getUri());
+						if (dataTree.get(publicationCategory) != null) {
+							pdataBeans = (TreeSet<DataLinkBean>) dataTree
+									.get(publicationCategory);
+						} else {
+							pdataBeans = new TreeSet<DataLinkBean>(
+									new CaNanoLabComparators.DataLinkTypeDateComparator());
+							dataTree.put(publicationCategory, pdataBeans);
+						}
+						pdataBeans.add(dataBean);
+					}
+					hasDocumentData = true;					
+				}
+				if (hasDocumentData) {
+					request.getSession().setAttribute("hasDocumentData", "true");
+				}else {
+					request.getSession().setAttribute("hasDocumentData", "true");
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
