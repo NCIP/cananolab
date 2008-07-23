@@ -36,10 +36,7 @@
 	<global-forwards>
 		<forward name="reportMessage" path="report.message" />
 	</global-forwards>
-	<action-mappings>
-		<action path="/manageReport"
-			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
-			parameter="report.manageReport" scope="request" />
+	<action-mappings>		
 		<action name="submitReportForm" parameter="dispatch"
 			path="/submitReport"
 			type="gov.nih.nci.cananolab.ui.report.SubmitReportAction"

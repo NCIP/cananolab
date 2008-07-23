@@ -4,16 +4,6 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!-- definition for the manage nanoparticle page -->
-	<definition name="report.manageReport" extends="calab.home">
-		<put name="calabContent" value="/bodyManageItem.jsp" />
-		<put name="menu" value="reports" />
-		<put name="item" value="Report" />
-		<put name="itemDescription"
-			value="/report/bodyReportDescription.jsp" />
-		<put name="createLink"
-			value="submitReport.do?dispatch=setup&amp;page=0" />
-		<put name="searchLink" value="searchReport.do?dispatch=setup" />
-	</definition>
 
 	<definition name="report.message" extends="calab.home">
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=report" />

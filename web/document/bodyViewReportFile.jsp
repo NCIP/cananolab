@@ -79,7 +79,16 @@
 							&nbsp;
 						</td>
 					</tr>
-					
+					<tr>
+						<td class="leftLabel">
+							<strong>Comments</strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<bean:write name="submitReportForm"
+								property="file.domainFile.comments" />
+							&nbsp;
+						</td>
+					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
 							<strong>Visibility</strong>

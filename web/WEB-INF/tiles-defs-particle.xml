@@ -155,6 +155,16 @@
 			value="/particle/function/bodyParticleFunction.jsp" />
 	</definition>
 
+	<!-- definition for the view document page -->
+	<definition name="particle.chooseDocument"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/document/bodyChooseDocument.jsp" />
+	</definition>
+	<definition name="particle.submitPublication"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/document/bodySubmitPublication.jsp" />
+		<put name="onloadJavascript" value="radLinkOrUpload()" />
+	</definition>
 	<!-- definition for the view report/associated file page -->
 	<definition name="particle.submitReport"
 		extends="particle.annotationHome">

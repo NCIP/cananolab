@@ -3,7 +3,9 @@
   <StrutsActivity path="/login.do" location="35,149" dimension="234,88" />
   <StrutsActivity path="/updatePassword.do" location="369,149" dimension="290,88" />
   <StrutsActivity path="/logout.do" location="759,149" dimension="242,88" />
-  <StrutsActivity path="/loginPage.do" location="950,350" dimension="255,88" />
+  <StrutsActivity path="/welcome.do" location="950,650" dimension="276,88" />
+  <StrutsActivity path="/publicCount.do" location="50,850" dimension="245,88" />
+  <StrutsActivity path="welcome;6" location="350,850" dimension="100,75" />
   <StrutsActivity path="calab.password" location="217,357" dimension="104,49" />
   <StrutsActivity path="calab.welcome" location="0,357" dimension="99,49" />
   <StrutsActivity path="input" location="279,0" dimension="53,49" />
@@ -19,14 +21,6 @@
   <StrutsActivity path="/" location="650,650" dimension="33,49" />
   <StrutsActivity path="report.message" location="50,750" dimension="105,49" />
   <StrutsActivity path="/bodyMessage.jsp" location="950,950" dimension="117,49" />
-  <StrutsTransition id="/updatePassword.do,success,/loginPage.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="544,237" />
-      <AbsolutePoint location="544,282" />
-      <AbsolutePoint location="1077,282" />
-      <AbsolutePoint location="1077,350" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="/updatePassword.do,input,calab.password,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="514,237" />
@@ -34,10 +28,18 @@
       <AbsolutePoint location="321,381" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="fileMessage;6,null,home.error,1" routingType="0">
+  <StrutsTransition id="/login.do,input,/welcome.do,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1007,687" />
-      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="140,237" />
+      <AbsolutePoint location="140,714" />
+      <AbsolutePoint location="950,714" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/logout.do,success,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="880,237" />
+      <AbsolutePoint location="880,684" />
+      <AbsolutePoint location="950,684" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="input,null,/login.do,2" routingType="0">
@@ -45,19 +47,6 @@
       <AbsolutePoint location="305,49" />
       <AbsolutePoint location="305,193" />
       <AbsolutePoint location="269,193" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/login.do,input,/loginPage.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="140,237" />
-      <AbsolutePoint location="140,421" />
-      <AbsolutePoint location="950,421" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/logout.do,success,/loginPage.do,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="965,237" />
-      <AbsolutePoint location="965,350" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/login.do,success,calab.welcome,1" routingType="0">
@@ -72,11 +61,26 @@
       <AbsolutePoint location="232,357" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="welcome;6,null,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="450,887" />
+      <AbsolutePoint location="1088,887" />
+      <AbsolutePoint location="1088,738" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="input,null,/updatePassword.do,2" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="332,24" />
       <AbsolutePoint location="514,24" />
       <AbsolutePoint location="514,149" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/updatePassword.do,success,/welcome.do,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="544,237" />
+      <AbsolutePoint location="544,483" />
+      <AbsolutePoint location="1088,483" />
+      <AbsolutePoint location="1088,650" />
     </AutomaticBendpoints>
   </StrutsTransition>
 </FlowViewLayout>

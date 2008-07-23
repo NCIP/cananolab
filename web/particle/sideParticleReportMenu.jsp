@@ -12,11 +12,45 @@
 </c:choose>
 <c:choose>
 	<c:when
-		test="${hasReportData eq 'true' || (canCreateNanoparticle eq 'true' && location eq 'local')}">
+		test="${hasDocumentData eq 'true' || (canCreateNanoparticle eq 'true' && location eq 'local')}">
+		<c:url var="submitUrl" value="chooseParticleDocument.do">
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="submitType" value="${param.charType}" />
+			<c:param name="page" value="0" />
+			<c:param name="dispatch" value="setup" />
+			<c:param name="location" value="local" />
+		</c:url>
 		
+		<c:url var="deleteUrl" value="${param.addAction}.do">
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="submitType" value="${param.charType}" />
+			<c:param name="page" value="0" />
+			<c:param name="dispatch" value="setupDeleteAll" />
+			<c:param name="location" value="local" />
+		</c:url>
 		<li class="controlList">
-			<a href="#" class="subMenuSecondary">REPORTS</a>
+			<a href="#" class="subMenuSecondary">DOCUMENTS</a>
 			<ul class="sublist_4_report" style="${reportDisplay}">
+				<table class="${param.tableStyle}" ><tr class="titleRow">
+					<c:choose>
+						<c:when
+							test="${canCreateDocument eq 'true'}">
+							<td valign="top">
+								<a href="${submitUrl}" class="addlink"><img
+									src="images/btn_add.gif" border="0" /></a>
+							</td>
+						</c:when>						
+						<c:when
+							test="${canUserDelete eq 'true' &&
+							!empty particleDataTree[param.charType]}">
+							<td>
+								<a href="chooseDocument.do" class="addlink"><img
+								src="images/btn_delete.gif" border="0" /></a>
+							</td>
+						</c:when>
+					</c:choose>
+				</tr></table>
+							
 				<c:forEach var="reportDisplayType" items="${reportCategories}">					
 					<li>
 						<a href="#" class="sublist_4">${reportDisplayType}</a>
@@ -47,7 +81,7 @@
 	</c:when>
 	<c:otherwise>
 		<li class="nodatali">
-			REPORTS
+			DOCUMENTS
 		</li>
 	</c:otherwise>
 </c:choose>

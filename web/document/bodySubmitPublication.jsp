@@ -10,7 +10,7 @@
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 
-<html:form action="/submitReport" enctype="multipart/form-data">
+<html:form action="/submitPublication" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -51,42 +51,8 @@
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td class="leftLabel">
-										<html:radio styleId="external0"
-											property="file.domainFile.uriExternal" value="false"
-											onclick="radLinkOrUpload()" />
-										<strong>Upload Report File</strong>
-										<br>
-										&nbsp;&nbsp;or
-										<br>
-										<html:radio styleId="external1"
-											property="file.domainFile.uriExternal" value="true"
-											onclick="radLinkOrUpload()" />
-										<strong>Enter Report URL</strong>
-									</td>
-									<td class="rightLabel" colspan="3">
-										<span id="load" style="display:none"> <html:file
-												property="file.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
-										<br>
-										<br>
-										<span id="link" style="display:none"><html:text
-												property="file.externalUrl" size="60" /> </span>&nbsp;
-									</td>
-								</tr>
-								<c:if test="${!empty submitReportForm.map.file.domainFile.uri }">
-									<tr>
-										<td class="completeLabel" colspan="4">
-											<strong>Submitted Report</strong> &nbsp;&nbsp;
-											<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=local"
-												target="${submitReportForm.map.file.urlTarget}">
-												${submitReportForm.map.file.domainFile.uri}</a>
-											<html:hidden property="file.domainFile.uri" />
-											<html:hidden property="file.domainFile.name" />
-										</td>
-									</tr>
-								</c:if>
+
+
 								<c:if test="${!empty submitReportForm.map.file.domainFile.id}">
 									<html:hidden property="file.domainFile.id" />
 								</c:if>
