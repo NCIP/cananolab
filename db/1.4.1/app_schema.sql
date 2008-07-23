@@ -338,12 +338,22 @@ CREATE TABLE sample_management
 ;
 
 
-CREATE TABLE nanoparticle_sample_publication
+CREATE TABLE nanoparticle_sample_report
 (
 	particle_sample_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	KEY (particle_sample_pk_id),
 	KEY (file_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE nanoparticle_sample_publication
+(
+	particle_sample_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	INDEX particle_sample_pk_id (particle_sample_pk_id ASC),
+	INDEX file_pk_id (file_pk_id ASC)
 ) TYPE=InnoDB
 ;
 
@@ -412,6 +422,16 @@ CREATE TABLE characterization
 ;
 
 
+CREATE TABLE report
+(
+	report_pk_id BIGINT NOT NULL,
+	category VARCHAR(200) NOT NULL,
+	PRIMARY KEY (report_pk_id),
+	KEY (report_pk_id)
+) TYPE=InnoDB
+;
+
+
 CREATE TABLE publication
 (
 	publication_pk_id BIGINT NOT NULL,
@@ -424,7 +444,7 @@ CREATE TABLE publication
 	start_page BIGINT NULL,
 	end_page BIGINT NULL,
 	year INTEGER NULL,
-	research_area VARCHAR(200)  NULL,
+	research_area VARCHAR(200) NOT NULL,
 	PRIMARY KEY (publication_pk_id)
 ) TYPE=InnoDB
 ;
@@ -548,6 +568,16 @@ CREATE TABLE chemical_association
 ;
 
 
+CREATE TABLE author_publication
+(
+	document_author_pk_id BIGINT NOT NULL,
+	publication_pk_id BIGINT NOT NULL,
+	KEY (document_author_pk_id),
+	KEY (publication_pk_id)
+) 
+;
+
+
 CREATE TABLE associated_file
 (
 	associated_file_pk_id BIGINT NOT NULL,
@@ -606,7 +636,6 @@ CREATE TABLE lab_file
 	created_date DATETIME NOT NULL,
 	title VARCHAR(500) NULL,
 	description TEXT NULL,
-	comments VARCHAR(2000) NULL,
 	file_type VARCHAR(200) NULL,
 	is_uri_external TINYINT NOT NULL,
 	PRIMARY KEY (file_pk_id)
@@ -632,6 +661,18 @@ CREATE TABLE instrument
 	PRIMARY KEY (instrument_pk_id),
 	UNIQUE (instrument_pk_id)
 ) TYPE=InnoDB
+;
+
+
+CREATE TABLE document_author
+(
+	document_author_pk_id BIGINT NOT NULL,
+	first_name VARCHAR(200) NOT NULL,
+	last_name VARCHAR(200) NOT NULL,
+	middle_initial VARCHAR(10) NULL,
+	PRIMARY KEY (document_author_pk_id),
+	UNIQUE (document_author_pk_id)
+) 
 ;
 
 
@@ -670,7 +711,6 @@ CREATE TABLE activation_method
 	PRIMARY KEY (activation_method_pk_id)
 ) 
 ;
-
 
 CREATE TABLE hibernate_unique_key (
   next_hi BIGINT NOT NULL
@@ -795,8 +835,12 @@ ALTER TABLE sample_management ADD CONSTRAINT FK_sample_management_nanoparticle_s
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_nanoparticle_sample 
+ALTER TABLE nanoparticle_sample_report ADD CONSTRAINT FK_nanoparticle_sample_report_nanoparticle_sample 
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+;
+
+ALTER TABLE nanoparticle_sample_report ADD CONSTRAINT FK_nanoparticle_sample_report_report 
+	FOREIGN KEY (file_pk_id) REFERENCES report (report_pk_id)
 ;
 
 ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication 
@@ -831,8 +875,8 @@ ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
 ;
 
-ALTER TABLE publication ADD CONSTRAINT FK_publication_lab_file 
-	FOREIGN KEY (publication_pk_id) REFERENCES lab_file (file_pk_id)
+ALTER TABLE report ADD CONSTRAINT FK_report_lab_file 
+	FOREIGN KEY (report_pk_id) REFERENCES lab_file (file_pk_id)
 ;
 
 ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_lab_file 
@@ -897,6 +941,14 @@ ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associat
 
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b 
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
+;
+
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_document_author 
+	FOREIGN KEY (document_author_pk_id) REFERENCES document_author (document_author_pk_id)
+;
+
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication 
+	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
 ALTER TABLE associated_file ADD CONSTRAINT FK_associated_file_lab_file 
