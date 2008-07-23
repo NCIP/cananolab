@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+       "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
+<tiles-definitions>
+	<!-- definition for the manage document page -->
+	<definition name="document.manageDocument" extends="calab.home">
+		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="menu" value="documents" />
+		<put name="item" value="Document" />
+		<put name="itemDescription"
+			value="/document/bodyDocumentDescription.jsp" />
+		<put name="createLink"
+			value="chooseDocument.do" />
+		<put name="searchLink" value="searchReport.do?dispatch=setup" />
+	</definition>
+	
+	<definition name="document.chooseDocument" extends="calab.home">
+		<put name="calabContent" value="/document/bodyChooseDocument.jsp" />
+		<put name="menu" value="documents" />		
+	</definition>
+	
+	<definition name="document.message" extends="calab.home">
+		<put name="calabContent" value="/bodyMessage.jsp?bundle=document" />
+		<put name="menu" value="documents" />
+	</definition>
+
+	<definition name="document.submitPublication" extends="calab.home">
+		<put name="calabContent" value="/document/bodySubmitPublication.jsp" />
+		<put name="menu" value="documents" />
+		<put name="onloadJavascript" value="radLinkOrUpload()"/>
+	</definition>
+	<!-- definition for the search report page -->
+	<definition name="document.searchDocument" extends="calab.home">
+		<put name="calabContent" value="/report/bodySearchDocument.jsp" />
+		<put name="menu" value="documents" />
+	</definition>
+
+	<definition name="report.viewReport" extends="calab.home">
+		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
+		<put name="menu" value="reports" />
+		<put name="reportActionName" value="updateReport" />
+	</definition>
+	
+	<!-- definition for the search report result page -->
+	<definition name="document.searchDocumentResult"
+		extends="calab.home">
+		<put name="calabContent"
+			value="/document/bodySearchDocumentResult.jsp" />
+		<put name="menu" value="documents" />
+	</definition>
+
+	<definition name="document.remoteSearchDocument"
+		extends="calab.home">
+		<put name="calabContent"
+			value="/report/bodyRemoteSearchDocument.jsp" />
+		<put name="menu" value="documents" />
+	</definition>
+
+	<!-- definition for the remote search document result page -->
+	<definition name="document.remoteSearchDocumentResult"
+		extends="calab.home">
+		<put name="calabContent"
+			value="/document/bodyRemoteSearchDocumentResult.jsp" />
+		<put name="menu" value="documents" />
+	</definition>
+</tiles-definitions>
+

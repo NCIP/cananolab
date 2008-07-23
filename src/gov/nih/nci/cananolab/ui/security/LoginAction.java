@@ -81,15 +81,17 @@ public class LoginAction extends AbstractBaseAction {
 		session.setAttribute("user", user);
 		session.setAttribute("userService", authorizationService);
 
+		//TODO, need to remove sample previlege, not in used
 		Boolean createSample = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_SAMPLE);
 		session.setAttribute("canCreateSample", createSample);
 		Boolean createProtocol = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PROTOCOL);
 		session.setAttribute("canCreateProtocol", createProtocol);
-		Boolean createReport = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_REPORT);
-		session.setAttribute("canCreateReport", createReport);
+		Boolean createDocument = authorizationService.checkCreatePermission(user,
+				CaNanoLabConstants.CSM_PG_DOCUMENT);
+		session.setAttribute("canCreateReport", createDocument);
+		session.setAttribute("canCreatePublication", createDocument);
 		Boolean createParticle = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 		session.setAttribute("canCreateNanoparticle", createParticle);

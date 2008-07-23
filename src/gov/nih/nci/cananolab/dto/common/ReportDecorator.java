@@ -22,10 +22,7 @@ public class ReportDecorator extends TableDecorator {
 			return getViewName();
 		}
 		String fileId = file.getDomainFile().getId().toString();
-//		String editReportURL = "submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId="
-//				+ fileId+"&location=local";
-//		String link = "<a href=" + editReportURL + ">"
-//				+ file.getDomainFile().getTitle() + "</a>";
+		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId=");
 		sb.append(fileId);

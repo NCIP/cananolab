@@ -1,26 +1,24 @@
-package gov.nih.nci.cananolab.ui.report;
+package gov.nih.nci.cananolab.ui.document;
 
 /**
- * This class uploads a report file and assigns visibility  
+ * This class submits publication and assigns visibility  
  *  
- * @author pansu
+ * @author tanq
  */
-/* CVS $Id: SubmitReportAction.java,v 1.18 2008-07-23 21:53:10 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
-import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
-import gov.nih.nci.cananolab.dto.common.ReportBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.DocumentService;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -38,7 +36,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SubmitReportAction extends BaseAnnotationAction {
+public class SubmitPublicationAction extends BaseAnnotationAction {
 
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -46,28 +44,29 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ReportBean reportBean = (ReportBean) theForm.get("file");
+		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
-		reportBean.setupDomainFile(CaNanoLabConstants.FOLDER_REPORT, user
+		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName());
-		if (!validateReportFile(request, reportBean)) {
-			return mapping.getInputForward();
-		}
-		ReportService service = new ReportServiceLocalImpl();
-		service.saveReport((Report) reportBean.getDomainFile(), reportBean
-				.getParticleNames(), reportBean.getNewFileData());
+		
+		//TODO, tanq, publicaionService
+		DocumentService service = new DocumentServiceLocalImpl();
+		service.savePublication((Publication) publicationBean.getDomainFile(), publicationBean
+				.getParticleNames(), publicationBean.getNewFileData());
+		//end
+		
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
-		authService.assignVisibility(reportBean.getDomainFile().getId()
-				.toString(), reportBean.getVisibilityGroups());
+		authService.assignVisibility(publicationBean.getDomainFile().getId()
+				.toString(), publicationBean.getVisibilityGroups());
 
-		InitReportSetup.getInstance().persistReportDropdowns(request,
-				reportBean);
+		InitDocumentSetup.getInstance().persistPublicationDropdowns(request,
+				publicationBean);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.submitReport.file",
-				reportBean.getDomainFile().getTitle());
+		ActionMessage msg = new ActionMessage("message.submitPublication.file",
+				publicationBean.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -86,12 +85,11 @@ public class SubmitReportAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitReportSetup.getInstance().setReportDropdowns(request);
-		// if particleId is available direct to particle specific page
+		InitDocumentSetup.getInstance().setReportDropdowns(request);		
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null) {
-			forward = mapping.findForward("particleSubmitReport");
+			forward = mapping.findForward("particleSubmitPublication");
 			request.setAttribute("particleId", particleId);
 		}
 		return forward;
@@ -103,17 +101,20 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String reportId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ReportService reportService = new ReportServiceLocalImpl();
-		ReportBean reportBean = reportService.findReportById(reportId);
-		FileService fileService = new FileServiceLocalImpl();
-		fileService.retrieveVisibility(reportBean, user);
-		theForm.set("file", reportBean);
-		InitReportSetup.getInstance().setReportDropdowns(request);
+		
+		//TODO, tanq
+		//DocumentService DocumentService = new DocumentServiceLocalImpl();
+		//PublicationBean publicationBean = DocumentService.findReportById(reportId);
+		//FileService fileService = new FileServiceLocalImpl();
+		//fileService.retrieveVisibility(publicationBean, user);
+		//theForm.set("file", publicationBean);
+		InitDocumentSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null) {
-			forward = mapping.findForward("particleSubmitReport");
+			//TODO, particleSubmitReport?? particleSubmitPublication??
+			forward = mapping.findForward("particleSubmitPublication");
 			request.setAttribute("particleId", particleId);
 		}
 		return forward;
@@ -125,30 +126,30 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		String reportId = request.getParameter("fileId");
+		String publicationId = request.getParameter("fileId");
 		String location = request.getParameter("location");
-		ReportService reportService = null;
+		DocumentService documentService = null;
 		if (location.equals("local")) {
-			reportService = new ReportServiceLocalImpl();
+			documentService = new DocumentServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			reportService = new ReportServiceRemoteImpl(serviceUrl);
+			documentService = new DocumentServiceRemoteImpl(serviceUrl);
 		}
-		ReportBean reportBean = reportService.findReportById(reportId);
+		PublicationBean publicationBean = documentService.findPublicationById(publicationId);
 		if (location.equals("local")) {
 			// retrieve visibility
 			FileService fileService = new FileServiceLocalImpl();
-			LabFileBean labFileBean = new LabFileBean(reportBean.getDomainFile());
+			LabFileBean labFileBean = new LabFileBean(publicationBean.getDomainFile());
 			fileService.retrieveVisibility(labFileBean, user);
 			if (labFileBean.isHidden()){
-				reportBean.setHidden(true);
+				publicationBean.setHidden(true);
 			}else{
-				reportBean.setHidden(false);
+				publicationBean.setHidden(false);
 			}
 		}		
-		theForm.set("file", reportBean);
-		InitReportSetup.getInstance().setReportDropdowns(request);
+		theForm.set("file", publicationBean);
+		InitDocumentSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.findForward("view");
@@ -169,49 +170,13 @@ public class SubmitReportAction extends BaseAnnotationAction {
 	}
 	
 	private boolean validateReportFile(HttpServletRequest request,
-			ReportBean reportBean) throws Exception {
+			PublicationBean publicationBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
-		if (!validateFileBean(request, msgs, reportBean)) {
+		if (!validateFileBean(request, msgs, publicationBean)) {
 			return false;
 		}		
 		return true;
 	}
-	
-	
-	protected boolean validateFileBean(HttpServletRequest request,
-			ActionMessages msgs, LabFileBean fileBean) {
-		boolean noErrors = true;
-		LabFile labfile = fileBean.getDomainFile();		
-		if (labfile.getUriExternal()) {
-			if (fileBean.getExternalUrl() == null
-					|| fileBean.getExternalUrl().trim().length() == 0) {
-				ActionMessage msg = new ActionMessage("errors.required",
-						"external url");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				this.saveErrors(request, msgs);
-				noErrors = false;
-			}
-		} else{ 
-			//all empty
-			if ((fileBean.getUploadedFile()==null || fileBean.getUploadedFile().toString().trim().length()==0) && 
-				 (fileBean.getExternalUrl()==null || fileBean.getExternalUrl().trim().length()==0)  &&
-				 (fileBean.getDomainFile()==null || fileBean.getDomainFile().getName()==null)){
-				ActionMessage msg = new ActionMessage("errors.required",
-						"uploaded file");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				this.saveErrors(request, msgs);
-				noErrors = false;
-			//the case that user switch from url to upload file, but no file is selected
-			}else if ((fileBean.getUploadedFile() == null			
-				|| fileBean.getUploadedFile().getFileName().length() == 0) &&
-				fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {					
-				ActionMessage msg = new ActionMessage("errors.required",
-						"uploaded file");
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				this.saveErrors(request, msgs);
-				noErrors = false;
-			}
-		}		
-		return noErrors;
-	}
+		
+
 }

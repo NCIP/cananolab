@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="submitPublicationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+		<form-bean name="searchPublicationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="nanoparticleEntityTypes"
+				type="java.lang.String[]" />
+			<form-property name="functionalizingEntityTypes"
+				type="java.lang.String[]" />
+			<form-property name="functionTypes"
+				type="java.lang.String[]" />
+			<form-property name="reportTitle" type="java.lang.String" />
+			<form-property name="reportCategory"
+				type="java.lang.String" />
+			<form-property name="searchLocations"
+				type="java.lang.String[]"/>
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
+	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			bundle="document" key="error.documentException" path="document.message"
+			type="gov.nih.nci.cananolab.exception.DocumentException" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="documentMessage" path="document.message" />
+	</global-forwards>
+	<action-mappings>		
+		<action name="submitPublicationForm" parameter="dispatch"
+			path="/submitPublication"
+			type="gov.nih.nci.cananolab.ui.document.SubmitPublicationAction"
+			input="input" scope="request">
+			<forward name="success" path="document.message" />
+			<forward name="input" path="document.submitPublication" />
+			<forward name="view" path="document.viewPublication" />
+			<forward name="particleSubmitPublication"
+				path="particle.submitPublication" />
+			<forward name="particleViewPublication"
+				path="particle.viewPublication" />
+			<forward name="particleSuccess"
+				path="particle.annotationMessage" />
+		</action>
+		<action path="/documentResults"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			parameter="document.searchDocumentResult" scope="request" />
+		<action input="input" name="searchDocumentForm"
+			parameter="dispatch" path="/searchDocument"
+			type="gov.nih.nci.cananolab.ui.document.SearchDocumentAction"
+			scope="request">
+			<forward name="input" path="document.searchDocument" />
+			<forward name="success" path="document.searchDocumentResult" />
+		</action>		
+		<action path="/manageDocument"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			parameter="document.manageDocument" scope="request" />
+		<action path="/chooseDocument"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			parameter="document.chooseDocument" scope="request" />
+		<action path="/chooseParticleDocument"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			parameter="particle.chooseDocument" scope="request" />
+	</action-mappings>
+</struts-config>
+

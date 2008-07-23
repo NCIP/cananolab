@@ -79,7 +79,10 @@ public class CaNanoLabConstants {
 
 	public static final String FOLDER_PARTICLE = "particles";
 
+	//TODO, to remove FOLDER_REPORT
 	public static final String FOLDER_REPORT = "reports";
+	
+	public static final String FOLDER_DOCUMENT = "documents";
 
 	public static final String FOLDER_PROTOCOL = "protocols";
 
@@ -129,7 +132,8 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_PG_PARTICLE = "nanoparticle";
 
-	public static final String CSM_PG_REPORT = "report";
+	//public static final String CSM_PG_REPORT = "report";
+	public static final String CSM_PG_DOCUMENT = "document";
 
 	public static final String PHYSICAL_CHARACTERIZATION_CLASS_NAME = "Physical Characterization";
 

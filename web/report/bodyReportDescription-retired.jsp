@@ -1,7 +1,7 @@
 <tr>
 	<td>
 		<h4>
-			Manage Reports
+			Manage Documents
 		</h4>
 	</td>
 	<td align="right" width="20%">
