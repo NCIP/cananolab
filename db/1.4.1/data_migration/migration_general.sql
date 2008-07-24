@@ -69,17 +69,17 @@ ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
 UPDATE csm_protection_element
 SET protection_element_name = 'document' ,
 object_id = 'document'
-WHERE  protection_element_id = 'report'
+WHERE  protection_element_name = 'report';
 
 DELETE csm_protection_element
-WHERE protection_element_id = 'sample'
+WHERE protection_element_name = 'sample';
 
 UPDATE csm_protection_group
-SET protection_element_name = 'document' 
-WHERE  protection_element_id = 'report'
+SET protection_group_name = 'document' 
+WHERE  protection_group_name = 'report';
 
 DELETE csm_protection_group
-WHERE protection_element_id = 'sample'
+WHERE protection_group_name = 'sample';
 
 
 -- Re-enable foreign key checks
