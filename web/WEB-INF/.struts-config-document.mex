@@ -1,119 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlowViewLayout Version="1.2">
-  <StrutsActivity path="/manageDocument.do" location="950,550" dimension="279,88" />
-  <StrutsActivity path="/chooseDocument.do" location="350,50" dimension="279,88" />
-  <StrutsActivity path="report.viewReport" location="0,357" dimension="118,49" />
-  <StrutsActivity path="report.submitReport" location="218,357" dimension="127,49" />
-  <StrutsActivity path="particle.viewReport" location="445,357" dimension="123,49" />
-  <StrutsActivity path="particle.annotationMessage" location="668,357" dimension="162,49" />
-  <StrutsActivity path="particle.submitReport" location="930,357" dimension="132,49" />
-  <StrutsActivity path="report.message" location="1162,357" dimension="105,49" />
-  <StrutsActivity path="input" location="1031,0" dimension="53,49" />
-  <StrutsActivity path="report.searchReport" location="1387,357" dimension="128,49" />
-  <StrutsActivity path="report.searchReportResult" location="1615,357" dimension="158,49" />
-  <StrutsActivity path="/chooseParticleDocument.do" location="50,550" dimension="279,88" />
   <StrutsActivity path="/submitPublication.do" location="50,750" dimension="305,88" />
   <StrutsActivity path="/documentResults.do" location="650,750" dimension="279,88" />
   <StrutsActivity path="/searchDocument.do" location="50,950" dimension="306,88" />
+  <StrutsActivity path="/manageDocument.do" location="950,550" dimension="279,88" />
+  <StrutsActivity path="/chooseDocument.do" location="350,50" dimension="279,88" />
+  <StrutsActivity path="/chooseParticleDocument.do" location="50,550" dimension="279,88" />
   <StrutsActivity path="documentMessage;6" location="650,950" dimension="132,75" />
   <StrutsActivity path="document.viewPublication" location="950,950" dimension="153,49" />
   <StrutsActivity path="document.submitPublication" location="950,1050" dimension="162,49" />
+  <StrutsActivity path="particle.annotationMessage" location="668,357" dimension="162,49" />
   <StrutsActivity path="particle.submitPublication" location="50,1150" dimension="150,49" />
   <StrutsActivity path="particle.viewPublication" location="350,1150" dimension="141,49" />
   <StrutsActivity path="document.message" location="650,1150" dimension="122,49" />
-  <StrutsActivity path="report.searchDocument" location="950,1150" dimension="143,49" />
-  <StrutsActivity path="report.searchDocumentResult" location="50,1250" dimension="173,49" />
+  <StrutsActivity path="input" location="1031,0" dimension="53,49" />
   <StrutsActivity path="document.searchDocument" location="650,550" dimension="160,49" />
   <StrutsActivity path="document.searchDocumentResult" location="650,650" dimension="190,49" />
+  <StrutsActivity path="report.viewReport" location="0,357" dimension="118,49" />
+  <StrutsActivity path="report.submitReport" location="218,357" dimension="127,49" />
+  <StrutsActivity path="particle.viewReport" location="445,357" dimension="123,49" />
+  <StrutsActivity path="particle.submitReport" location="930,357" dimension="132,49" />
+  <StrutsActivity path="report.message" location="1162,357" dimension="105,49" />
+  <StrutsActivity path="report.searchReport" location="1387,357" dimension="128,49" />
+  <StrutsActivity path="report.searchReportResult" location="1615,357" dimension="158,49" />
+  <StrutsActivity path="report.searchDocument" location="950,1150" dimension="143,49" />
+  <StrutsActivity path="report.searchDocumentResult" location="50,1250" dimension="173,49" />
   <StrutsTransition id="documentMessage;6,null,document.message,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="716,1025" />
       <AbsolutePoint location="716,1150" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/searchDocument.do,input,document.searchDocument,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="356,964" />
-      <AbsolutePoint location="461,964" />
-      <AbsolutePoint location="461,574" />
-      <AbsolutePoint location="650,574" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitReport.do,particleViewReport,particle.viewReport,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="340,794" />
-      <AbsolutePoint location="506,794" />
-      <AbsolutePoint location="506,406" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitReport.do,success,report.message,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="225,750" />
-      <AbsolutePoint location="225,713" />
-      <AbsolutePoint location="1244,713" />
-      <AbsolutePoint location="1244,406" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitPublication.do,particleSuccess,particle.annotationMessage,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="355,764" />
-      <AbsolutePoint location="613,764" />
-      <AbsolutePoint location="613,381" />
-      <AbsolutePoint location="668,381" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/searchDocument.do,success,report.searchDocumentResult,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="245,1038" />
-      <AbsolutePoint location="245,1274" />
-      <AbsolutePoint location="223,1274" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitPublication.do,particleViewPublication,particle.viewPublication,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="355,794" />
-      <AbsolutePoint location="431,794" />
-      <AbsolutePoint location="431,1150" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/searchReport.do,success,report.searchReportResult,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="195,1038" />
-      <AbsolutePoint location="195,1113" />
-      <AbsolutePoint location="1694,1113" />
-      <AbsolutePoint location="1694,406" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="input,null,/submitReport.do,2" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="1031,24" />
-      <AbsolutePoint location="-75,24" />
-      <AbsolutePoint location="-75,824" />
-      <AbsolutePoint location="50,824" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitReport.do,particleSuccess,particle.annotationMessage,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="340,824" />
-      <AbsolutePoint location="613,824" />
-      <AbsolutePoint location="613,381" />
-      <AbsolutePoint location="668,381" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/searchDocument.do,success,document.searchDocumentResult,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="50,994" />
-      <AbsolutePoint location="-150,994" />
-      <AbsolutePoint location="-150,674" />
-      <AbsolutePoint location="650,674" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitPublication.do,input,document.submitPublication,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="355,824" />
-      <AbsolutePoint location="401,824" />
-      <AbsolutePoint location="401,1074" />
-      <AbsolutePoint location="950,1074" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/submitPublication.do,success,document.message,1" routingType="0">
@@ -125,11 +40,12 @@
       <AbsolutePoint location="650,1174" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/submitReport.do,view,report.viewReport,1" routingType="0">
+  <StrutsTransition id="/searchDocument.do,input,document.searchDocument,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="50,794" />
-      <AbsolutePoint location="35,794" />
-      <AbsolutePoint location="35,406" />
+      <AbsolutePoint location="356,964" />
+      <AbsolutePoint location="461,964" />
+      <AbsolutePoint location="461,574" />
+      <AbsolutePoint location="650,574" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/submitPublication.do,particleSubmitPublication,particle.submitPublication,1" routingType="0">
@@ -138,14 +54,6 @@
       <AbsolutePoint location="-75,824" />
       <AbsolutePoint location="-75,1174" />
       <AbsolutePoint location="50,1174" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/submitReport.do,input,report.submitReport,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="340,764" />
-      <AbsolutePoint location="395,764" />
-      <AbsolutePoint location="395,381" />
-      <AbsolutePoint location="345,381" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="input,null,/searchDocument.do,2" routingType="0">
@@ -165,12 +73,19 @@
       <AbsolutePoint location="1026,950" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/searchReport.do,input,report.searchReport,1" routingType="0">
+  <StrutsTransition id="/submitPublication.do,particleSuccess,particle.annotationMessage,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="195,950" />
-      <AbsolutePoint location="195,884" />
-      <AbsolutePoint location="1451,884" />
-      <AbsolutePoint location="1451,406" />
+      <AbsolutePoint location="355,764" />
+      <AbsolutePoint location="613,764" />
+      <AbsolutePoint location="613,381" />
+      <AbsolutePoint location="668,381" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/submitPublication.do,particleViewPublication,particle.viewPublication,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="355,794" />
+      <AbsolutePoint location="431,794" />
+      <AbsolutePoint location="431,1150" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="input,null,/submitPublication.do,2" routingType="0">
@@ -181,38 +96,20 @@
       <AbsolutePoint location="50,794" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="reportMessage;6,null,report.message,1" routingType="0">
+  <StrutsTransition id="/searchDocument.do,success,document.searchDocumentResult,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="765,987" />
-      <AbsolutePoint location="1312,987" />
-      <AbsolutePoint location="1312,381" />
-      <AbsolutePoint location="1267,381" />
+      <AbsolutePoint location="50,994" />
+      <AbsolutePoint location="-150,994" />
+      <AbsolutePoint location="-150,674" />
+      <AbsolutePoint location="650,674" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/submitReport.do,particleSubmitReport,particle.submitReport,1" routingType="0">
+  <StrutsTransition id="/submitPublication.do,input,document.submitPublication,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="195,750" />
-      <AbsolutePoint location="195,683" />
-      <AbsolutePoint location="875,683" />
-      <AbsolutePoint location="875,381" />
-      <AbsolutePoint location="930,381" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="input,null,/searchReport.do,2" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="1047,49" />
-      <AbsolutePoint location="1047,243" />
-      <AbsolutePoint location="583,243" />
-      <AbsolutePoint location="583,994" />
-      <AbsolutePoint location="341,994" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/searchDocument.do,input,report.searchDocument,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="215,1038" />
-      <AbsolutePoint location="215,1114" />
-      <AbsolutePoint location="1021,1114" />
-      <AbsolutePoint location="1021,1150" />
+      <AbsolutePoint location="355,824" />
+      <AbsolutePoint location="401,824" />
+      <AbsolutePoint location="401,1074" />
+      <AbsolutePoint location="950,1074" />
     </AutomaticBendpoints>
   </StrutsTransition>
 </FlowViewLayout>

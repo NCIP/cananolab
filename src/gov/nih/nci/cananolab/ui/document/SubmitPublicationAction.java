@@ -41,6 +41,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		System.out.println("############ publication create");
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -85,7 +86,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitDocumentSetup.getInstance().setReportDropdowns(request);		
+		//TODO
+		System.out.println("############ publication setup");
+		InitDocumentSetup.getInstance().setPublicationDropdowns(request);		
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null) {
@@ -108,7 +111,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		//FileService fileService = new FileServiceLocalImpl();
 		//fileService.retrieveVisibility(publicationBean, user);
 		//theForm.set("file", publicationBean);
-		InitDocumentSetup.getInstance().setReportDropdowns(request);
+		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.getInputForward();
@@ -123,6 +126,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		System.out.println("############ publication setupView");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -149,12 +153,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			}
 		}		
 		theForm.set("file", publicationBean);
-		InitDocumentSetup.getInstance().setReportDropdowns(request);
+		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.findForward("view");
 		if (particleId != null) {
-			forward = mapping.findForward("particleViewReport");
+			forward = mapping.findForward("particleViewPublication");
 		}
 		return forward;
 	}

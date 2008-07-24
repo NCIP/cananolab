@@ -92,6 +92,10 @@
 				type="gov.nih.nci.cananolab.exception.ReportException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+				key="error.grid.document.query" path="calab.login"
+				type="gov.nih.nci.cananolab.exception.DocumentException" />
+			<exception
+				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.grid.protocol.query" path="calab.login"
 				type="gov.nih.nci.cananolab.exception.ProtocolException" />
 			<exception

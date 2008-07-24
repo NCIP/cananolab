@@ -76,6 +76,7 @@ public class DocumentServiceLocalImpl implements DocumentService {
 		}
 	}
 
+	//TODO may create a documentBean
 	public List<LabFileBean> findDocumentsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
@@ -85,12 +86,12 @@ public class DocumentServiceLocalImpl implements DocumentService {
 			throws DocumentException, CaNanoLabSecurityException {
 		List<LabFileBean> documentBeans = new ArrayList<LabFileBean>();
 		try {
-			Collection<LabFileBean> documents = helper.findDocumentsBy(reportTitle,
+			Collection documents = helper.findDocumentsBy(reportTitle,
 					reportCategory, nanoparticleEntityClassNames,
 					otherNanoparticleTypes, functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes);
-			for (LabFileBean document : documents) {
+			for (Object document : documents) {
 				//TODO, tanq
 				//documentBeans.add(new LabFileBean(document));
 			}
@@ -102,14 +103,13 @@ public class DocumentServiceLocalImpl implements DocumentService {
 		}
 	}
 
-	public PublicationBean findPublicationById(String documentId) throws DocumentException {
+	public PublicationBean findPublicationById(String publcationId) throws DocumentException {
 		try {
-			//TODO, tanq
-			Publication publication = helper.findPublicationById(documentId);
+			Publication publication = helper.findPublicationById(publcationId);
 			PublicationBean publicationBean = new PublicationBean(publication);
 			return publicationBean;
 		} catch (Exception e) {
-			String err = "Problem finding the document by id: " + documentId;
+			String err = "Problem finding the publcation by id: " + publcationId;
 			logger.error(err, e);
 			throw new DocumentException(err, e);
 		}

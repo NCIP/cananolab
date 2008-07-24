@@ -15,12 +15,12 @@
 		<tr>
 			<td>
 				<h3>
-					${action} Report
+					Submit Publication
 				</h3>
 			</td>
 			<td align="right" width="20%">
 				<jsp:include page="/webHelp/helpGlossary.jsp">
-					<jsp:param name="topic" value="nano_report_help" />
+					<jsp:param name="topic" value="TODO_nano_publication_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>					
 			</td>
@@ -47,25 +47,34 @@
 								<tr class="topBorder">
 									<td class="formTitle" colspan="4">
 										<div align="justify">
-											Report Information
+											Publication Information
 										</div>
 									</td>
 								</tr>
-
-
-								<c:if test="${!empty submitReportForm.map.file.domainFile.id}">
-									<html:hidden property="file.domainFile.id" />
-								</c:if>
 								<tr>
 									<td class="leftLabel">
-										<strong>Report Category*</strong>
+										<strong>Publication Type*</strong>
 									</td>
-									<td class="rightLabel"">
+									<td class="label">
 										<html:select property="file.domainFile.category"
-											onchange="javascript:callPrompt('Report Category', 'file.domainFile.category');"
+											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');"
 											styleId="file.domainFile.category">
 											<option value=""></option>
-											<html:options name="reportCategories" />
+											<html:options name="publicationCategories" />
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</td>								
+									<td class="label">
+										<strong>Publication Status*</strong>
+									</td>
+									<td class="rightLabel">
+										<html:select property="file.domainFile.status"
+											onchange="javascript:callPrompt('Publication status', 'file.domainFile.status');"
+											styleId="file.domainFile.status">
+											<option value=""></option>
+											<html:options name="publicationStatuses" />
 											<option value="other">
 												[Other]
 											</option>
@@ -74,32 +83,154 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Report File Title*</strong>
+										<strong>Research Category</strong>
 									</td>
-									<td class="rightLabel"">
+									<td class="label" colspan="3">
+										<html:multibox property="file.domainFile.researchArea" value="synthesis"/> synthesis
+										<html:multibox property="file.domainFile.researchArea" value="characterization"/> characterization
+										<html:multibox property="file.domainFile.researchArea" value="cell line"/> cell line
+									</td>	
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
+										<strong>PubMed ID</strong>
+									</td>
+									<td class="rightLabel" colspan="3">	
+										<a
+												href="searchReport.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
+												target="${submitPublicationForm.map.file.urlTarget}">
+												Click to look up PubMed Identifier</a>
+										<br>									
+										<html:text property="file.domainFile.pubMedId" size="30" />
+										<html:button property="file.domainFile.pubMedId" value="Auto Populate Fields"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
+										<strong>Digital Object ID</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<html:text property="file.domainFile.digitalObjectId" size="30" />
+										<html:button property="file.domainFile.digitalObjectId" value="Auto Populate Fields"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Title*
+										</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
 										<html:text property="file.domainFile.title" size="80" />
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel" valign="top" width="20%">
-										<strong>Nanoparticle Sample Name*</strong>
+									<td class="leftLabel">
+										<strong>Journal
+										</strong>
 									</td>
-									<td class="rightLabel"">
+									<td class="rightLabel" colspan="3">
+										<html:text property="file.domainFile.title" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Authors:</strong><br>(TODO)
+									</td>
+									<td class="rightLabel" colspan="3">
+										<html:text property="file.authors" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
+										<strong>Year of Publication
+										</strong>
+									</td>
+									<td class="label">
+										<html:text property="file.domainFile.year" size="17" 
+											onkeydown="return filterInteger(event)"/>
+									</td>
+									<td class="label">
+										<strong>Volume
+										</strong>
+									</td>
+									<td class="rightLabel">
+										<html:text property="file.domainFile.volume" size="17"/>
+									</td>
+								</tr>								
+								<tr>
+									<td class="leftLabel">
+										<strong>Start Page
+										</strong>
+									</td>
+									<td class="label">
+										<html:text property="file.domainFile.startPage" size="17" 
+											onkeydown="return filterInteger(event)"/>
+									</td>
+									<td class="label">
+										<strong>End Page
+										</strong>
+									</td>
+									<td class="rightLabel">
+										<html:text property="file.domainFile.endPage" size="17" 
+											onkeydown="return filterInteger(event)"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
+										<strong>Keywords<br><em>(one keyword per line)</em></strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<html:textarea property="file.keywordsStr"
+											rows="3" cols="60"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
+										<strong>Description</strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<html:textarea property="file.domainFile.description" rows="3"
+											cols="60" />
+									</td>
+								</tr>			
+							</tbody>
+						</table>
+
+						<br>
+						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+							width="100%" align="center" summary="" border="0">		
+							<tbody>
+								<tr class="topBorder">
+									<td class="formTitle" colspan="4">
+										<div align="justify">
+											Copy
+										</div>
+									</td>
+								</tr>																
+								<tr>
+									<td class="leftLabel" valign="top" width="20%">
+										<strong>Copy to other DNT nanoparticle samples</strong>
+									</td>
+									<td class="rightLabel">
 										<html:select property="file.particleNames" multiple="true"
 											size="5">
 											<html:options name="allUserParticleNames" />
 										</html:select>
 									</td>
 								</tr>
-								<tr>
-									<td class="leftLabel">
-										<strong>Report File Description</strong>
+							</tbody>
+						</table>
+						<br>
+						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+							width="100%" align="center" summary="" border="0">		
+							<tbody>
+								<tr class="topBorder">
+									<td class="formTitle" colspan="4">
+										<div align="justify">
+											Visibilities
+										</div>
 									</td>
-									<td class="rightLabel"">
-										<html:textarea property="file.domainFile.description" rows="3"
-											cols="60" />
-									</td>
-								</tr>
+								</tr>		
 								
 								<tr>
 									<td class="leftLabel">
@@ -117,7 +248,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<br>
+									
 						<table width="100%" border="0" align="center" cellpadding="3"
 							cellspacing="0" class="topBorderOnly" summary="">
 							<tr>

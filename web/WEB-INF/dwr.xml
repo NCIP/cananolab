@@ -51,11 +51,13 @@
 				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
 			<include method="getProtocolTypes" />
 		</create>
-		<create creator="new" javascript="ReportManager"
+		<create creator="new" javascript="DocumentManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.report.DWRReportManager" />
+				value="gov.nih.nci.cananolab.ui.document.DWRDocumentManager" />
 			<include method="getReportCategories" />
+			<include method="getPublicationCategories" />
+			<include method="getPublicationStatuses" />
 		</create>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.util.DataLinkBean">
