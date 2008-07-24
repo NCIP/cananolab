@@ -7,8 +7,11 @@
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
+			<form-property name="file"
+				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
 		</form-bean>
-		<form-bean name="searchPublicationForm"
+		
+		<form-bean name="searchDocumentForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="nanoparticleEntityTypes"
 				type="java.lang.String[]" />
@@ -16,8 +19,8 @@
 				type="java.lang.String[]" />
 			<form-property name="functionTypes"
 				type="java.lang.String[]" />
-			<form-property name="reportTitle" type="java.lang.String" />
-			<form-property name="reportCategory"
+			<form-property name="DocumentTitle" type="java.lang.String" />
+			<form-property name="DocumentCategory"
 				type="java.lang.String" />
 			<form-property name="searchLocations"
 				type="java.lang.String[]"/>
