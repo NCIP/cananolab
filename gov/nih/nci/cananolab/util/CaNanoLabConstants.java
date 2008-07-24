@@ -93,16 +93,18 @@ public class CaNanoLabConstants {
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 23;
 
-	public static final String CSM_PI = APP_OWNER + "_PI";
+	
+	public static final String CSM_DATA_CURATOR = APP_OWNER + "_DataCurator";
 
-	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
+	public static final String CSM_DATA_RETRIEVER = APP_OWNER + "_DataRetriever";
+
 
 	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
 
 	public static final String CSM_PUBLIC_GROUP = "Public";
 
-	public static final String[] VISIBLE_GROUPS = new String[] { CSM_PI,
-			CSM_RESEARCHER };
+	public static final String[] VISIBLE_GROUPS = new String[] { CSM_DATA_CURATOR,
+		CSM_DATA_RETRIEVER };
 
 	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 

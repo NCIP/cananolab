@@ -91,21 +91,21 @@ public class InitSecuritySetup {
 		// assign PI group to role CURD on sample, protocol, nanopoarticle and
 		// report
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_PI, CaNanoLabConstants.CSM_PG_SAMPLE,
+				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_SAMPLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_PI, CaNanoLabConstants.CSM_PG_PROTOCOL,
+				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PROTOCOL,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_PI, CaNanoLabConstants.CSM_PG_DOCUMENT,
+				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_DOCUMENT,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_PI, CaNanoLabConstants.CSM_PG_PARTICLE,
+				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PARTICLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 
-		// assign researcher to role CURD on sample
+		// assign DATA_RETRIEVER to role CURD on sample
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_RESEARCHER,
+				CaNanoLabConstants.CSM_DATA_RETRIEVER,
 				CaNanoLabConstants.CSM_PG_SAMPLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 	}

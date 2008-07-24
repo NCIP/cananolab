@@ -25,35 +25,31 @@ public class InitDocumentSetup {
 		return new InitDocumentSetup();
 	}
 
-	public void setReportDropdowns(HttpServletRequest request) throws Exception {
+	public void setPublicationDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "publicationCategories",
 						"Publication", "category", "otherCategory", true);
+		InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
+						"Publication", "status", "otherStatus", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
 				request, user);
 	}
 
-	public void persistReportDropdowns(HttpServletRequest request,
-			ReportBean report) throws Exception {
-		//TODO
-		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
-				"otherType", report.getDomainFile().getType());
-		InitSetup.getInstance().persistLookup(request, "Publication", "category",
-				"otherCategory",
-				((Report) (report.getDomainFile())).getCategory());
-		setReportDropdowns(request);
-	}
 	
 	public void persistPublicationDropdowns(HttpServletRequest request,
 			PublicationBean publication) throws Exception {
-		//TODO to be verified by tanq
+		//TODO to be verified by tanq, ,need LabFile?? done by report??
 		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 				"otherType", publication.getDomainFile().getType());		
 		InitSetup.getInstance().persistLookup(request, "Publication", "category",
 				"otherCategory",
 				((Publication) (publication.getDomainFile())).getCategory());
-		setReportDropdowns(request);
+		InitSetup.getInstance().persistLookup(request, "Publication", "status",
+				"otherStatus",
+				((Publication) (publication.getDomainFile())).getStatus());
+		setPublicationDropdowns(request);
 	}
 }
