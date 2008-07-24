@@ -3,8 +3,11 @@
  */
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+
+import java.util.Collection;
 
 /**
  * Publication view bean
@@ -14,6 +17,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
  */
 public class PublicationBean extends LabFileBean {
 	private String[] particleNames;
+	private String[] authors;
 
 	/**
 	 * 
@@ -28,12 +32,24 @@ public class PublicationBean extends LabFileBean {
 		super(publication);
 		this.domainFile = publication;
 		particleNames = new String[publication.getNanoparticleSampleCollection()
-				.size()];
+				.size()];	
 		int i = 0;
 		for (NanoparticleSample particle : publication
 				.getNanoparticleSampleCollection()) {
 			particleNames[i] = particle.getName();
 			i++;
+		}
+		Collection<DocumentAuthor> authorCollection = 
+			publication.getDocumentAuthorCollection();
+		if (authorCollection!=null && authorCollection.size()>0) {
+			authors = new String[authorCollection.size()];
+			i = 0;
+			for (DocumentAuthor author : authorCollection) {
+				authors[i] = author.getFirstName();
+				i++;
+			}
+		}else {
+			authors = null;
 		}
 	}
 
@@ -70,5 +86,19 @@ public class PublicationBean extends LabFileBean {
 
 	public void setParticleNames(String[] particleNames) {
 		this.particleNames = particleNames;
+	}
+
+	/**
+	 * @return the authors
+	 */
+	public String[] getAuthors() {
+		return authors;
+	}
+
+	/**
+	 * @param authors the authors to set
+	 */
+	public void setAuthors(String[] authors) {
+		this.authors = authors;
 	}
 }

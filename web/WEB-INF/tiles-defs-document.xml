@@ -30,19 +30,19 @@
 		<put name="menu" value="documents" />
 		<put name="onloadJavascript" value="radLinkOrUpload()"/>
 	</definition>
-	<!-- definition for the search report page -->
+	<!-- definition for the search document page -->
 	<definition name="document.searchDocument" extends="calab.home">
-		<put name="calabContent" value="/report/bodySearchDocument.jsp" />
+		<put name="calabContent" value="/document/bodySearchDocument.jsp" />
 		<put name="menu" value="documents" />
 	</definition>
 
-	<definition name="report.viewReport" extends="calab.home">
-		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
-		<put name="menu" value="reports" />
-		<put name="reportActionName" value="updateReport" />
+	<definition name="document.viewPublication" extends="calab.home">
+		<put name="calabContent" value="/document/bodyViewPublicationFile.jsp" />
+		<put name="menu" value="documents" />
+		<put name="publicationActionName" value="updatePublication" />
 	</definition>
 	
-	<!-- definition for the search report result page -->
+	<!-- definition for the search document result page -->
 	<definition name="document.searchDocumentResult"
 		extends="calab.home">
 		<put name="calabContent"
@@ -53,7 +53,7 @@
 	<definition name="document.remoteSearchDocument"
 		extends="calab.home">
 		<put name="calabContent"
-			value="/report/bodyRemoteSearchDocument.jsp" />
+			value="/document/bodyRemoteSearchDocument.jsp" />
 		<put name="menu" value="documents" />
 	</definition>
 

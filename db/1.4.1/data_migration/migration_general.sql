@@ -83,5 +83,23 @@ WHERE protection_group_name = 'sample';
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
+
+
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ 
+ 
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','journal');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review paper');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','book chapter');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','published');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in press');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','submitted');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in pre');
+
+
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
+
 -- End of script
 

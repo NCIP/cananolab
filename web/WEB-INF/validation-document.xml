@@ -8,40 +8,22 @@
 			<field property="file.particleNames" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.particleNames"
-					bundle="report" />
+					bundle="document" />
+			</field>
+			<field property="file.authors" page="2"
+				depends="required">
+				<arg position="0" key="submitPublicationForm.authors"
+					bundle="document" />
 			</field>
 			<field property="file.domainFile.category" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.category"
-					bundle="report" />
-			</field>
-			<field property="file.externalUrl" page="2"
-				depends="validwhen">
-				<arg position="0" key="submitPublicationForm.externalUrl"
-					bundle="report" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((file.domainFile.uri!=null) or
-						((*this*!=null) and
-						(file.domainFile.uriExternal=="true"))) or
-						(file.domainFile.uriExternal=="false"))
-					</var-value>
-				</var>
-			</field>
-			<field property="file.uploadedFile" page="2"
-				depends="validwhen">
-				<arg position="0" key="submitPublicationForm.reportFile"
 					bundle="document" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						(((file.domainFile.uri!=null) or
-						((*this*!=null) and
-						(file.domainFile.uriExternal=="false"))) or
-						(file.domainFile.uriExternal=="true"))
-					</var-value>
-				</var>
+			</field>
+			<field property="file.domainFile.status" page="2"
+				depends="required">
+				<arg position="0" key="submitPublicationForm.file.status"
+					bundle="document" />
 			</field>
 			<field property="file.domainFile.title" page="1"
 				depends="required,mask">
