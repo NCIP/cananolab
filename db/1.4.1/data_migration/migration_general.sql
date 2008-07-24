@@ -3,7 +3,6 @@ USE canano;
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
-
 CREATE TABLE nanoparticle_sample_publication
 (
 	particle_sample_pk_id BIGINT NOT NULL,
@@ -65,20 +64,19 @@ ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-
 UPDATE csm_protection_element
 SET protection_element_name = 'document' ,
 object_id = 'document'
 WHERE  protection_element_name = 'report';
 
-DELETE csm_protection_element
+DELETE from csm_protection_element
 WHERE protection_element_name = 'sample';
 
 UPDATE csm_protection_group
 SET protection_group_name = 'document' 
 WHERE  protection_group_name = 'report';
 
-DELETE csm_protection_group
+DELETE from csm_protection_group
 WHERE protection_group_name = 'sample';
 
 
