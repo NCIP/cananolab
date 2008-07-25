@@ -147,7 +147,7 @@
 								</html:select>
 								<br>
 								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_PI are always selected by default.)</i>
+									${applicationOwner}_DataCurator are always selected by default.)</i>
 							</td>
 						</tr>
 					</tbody>

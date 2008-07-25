@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLoca
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -41,7 +42,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		System.out.println("############ publication create");
 		ActionForward forward = null;
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -51,12 +51,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName());
 		
-		//TODO, tanq, publicaionService
 		DocumentService service = new DocumentServiceLocalImpl();
 		service.savePublication((Publication) publicationBean.getDomainFile(), publicationBean
 				.getParticleNames(), publicationBean.getNewFileData());
-		//end
-		
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
@@ -87,9 +84,23 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		//TODO
-		System.out.println("############ publication setup");
-		InitDocumentSetup.getInstance().setPublicationDropdowns(request);		
+		InitDocumentSetup.getInstance().setPublicationDropdowns(request);	
+		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");
+		if (request.getParameter("particleId") != null
+				&& request.getParameter("particleId").length() > 0
+				&& session.getAttribute("otherParticleNames")==null) {
+			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+			ParticleBean particleBean = sampleService
+					.findNanoparticleSampleById(request
+							.getParameter("particleId"));
+			UserBean user = (UserBean) session.getAttribute("user");
+			InitNanoparticleSetup.getInstance().getOtherParticleNames(
+					request,
+					particleBean.getDomainParticleSample().getName(),
+					particleBean.getDomainParticleSample().getSource()
+							.getOrganizationName(), user);
+		}		
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null) {
 			forward = mapping.findForward("particleSubmitPublication");

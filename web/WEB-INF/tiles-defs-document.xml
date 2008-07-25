@@ -5,7 +5,7 @@
 <tiles-definitions>
 	<!-- definition for the manage document page -->
 	<definition name="document.manageDocument" extends="calab.home">
-		<put name="calabContent" value="/bodyManageItem.jsp" />
+		<put name="calabContent" value="/document/bodyManageDocument.jsp" />
 		<put name="menu" value="documents" />
 		<put name="item" value="Document" />
 		<put name="itemDescription"

@@ -9,12 +9,7 @@
 				depends="required">
 				<arg position="0" key="submitPublicationForm.particleNames"
 					bundle="document" />
-			</field>
-			<field property="file.authors" page="2"
-				depends="required">
-				<arg position="0" key="submitPublicationForm.authors"
-					bundle="document" />
-			</field>
+			</field>			
 			<field property="file.domainFile.category" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.category"
@@ -23,6 +18,11 @@
 			<field property="file.domainFile.status" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.status"
+					bundle="document" />
+			</field>
+			<field property="file.domainFile.researchArea" page="2"
+				depends="required">
+				<arg position="0" key="submitPublicationForm.file.researchArea"
 					bundle="document" />
 			</field>
 			<field property="file.domainFile.title" page="1"
@@ -47,7 +47,7 @@
 				</var>
 			</field>
 			<field property="publicationCategory" page="1" depends="mask">
-				<arg position="0" key="document.category" bundle="report" />
+				<arg position="0" key="document.category" bundle="document" />
 				<msg name="mask" key="document.category.invalid" />
 				<var>
 					<var-name>mask</var-name>
