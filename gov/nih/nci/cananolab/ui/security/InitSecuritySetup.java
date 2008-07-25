@@ -103,9 +103,9 @@ public class InitSecuritySetup {
 				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PARTICLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 
-		// assign DATA_RETRIEVER to role CURD on sample
+		// assign CSM_RESEARCHER to role CURD on sample
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_DATA_RETRIEVER,
+				CaNanoLabConstants.CSM_RESEARCHER,
 				CaNanoLabConstants.CSM_PG_SAMPLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 	}

@@ -49,7 +49,7 @@
 			<property name="status" type="string" column="publication_status"/>
 			<property name="volume" type="string" column="volume"/>
 			<property name="year" type="integer" column="year"/>
-			<!-- Associations mapping for the Report class -->
+			<!-- Associations mapping for the Publication class -->
 			<set name="documentAuthorCollection" table="author_publication" lazy="true" cascade="save-update">
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />

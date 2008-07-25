@@ -96,7 +96,8 @@ public class CaNanoLabConstants {
 	
 	public static final String CSM_DATA_CURATOR = APP_OWNER + "_DataCurator";
 
-	public static final String CSM_DATA_RETRIEVER = APP_OWNER + "_DataRetriever";
+	
+	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
 
 
 	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
@@ -104,7 +105,7 @@ public class CaNanoLabConstants {
 	public static final String CSM_PUBLIC_GROUP = "Public";
 
 	public static final String[] VISIBLE_GROUPS = new String[] { CSM_DATA_CURATOR,
-		CSM_DATA_RETRIEVER };
+		CSM_RESEARCHER };
 
 	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 
@@ -134,7 +135,6 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_PG_PARTICLE = "nanoparticle";
 
-	//public static final String CSM_PG_REPORT = "report";
 	public static final String CSM_PG_DOCUMENT = "document";
 
 	public static final String PHYSICAL_CHARACTERIZATION_CLASS_NAME = "Physical Characterization";
