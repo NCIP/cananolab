@@ -120,6 +120,8 @@
 		parameter="gov.nih.nci.cananolab.resources.particle" null="false" />
 	<message-resources key="report"
 		parameter="gov.nih.nci.cananolab.resources.report" null="false" />
+	<message-resources key="document"
+		parameter="gov.nih.nci.cananolab.resources.document" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"

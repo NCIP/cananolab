@@ -137,7 +137,7 @@ function confirmDeletion()
 								<html:options name="allVisibilityGroups" />
 							</html:select>
 							<br>
-							<i>(${applicationOwner}_Researcher and ${applicationOwner}_PI
+							<i>(${applicationOwner}_Researcher and ${applicationOwner}_DataCurator
 								are defaults if none of above is selected.)</i>
 						</td>
 					</tr>

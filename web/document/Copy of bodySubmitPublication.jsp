@@ -40,7 +40,7 @@
 			<c:otherwise>
 				<tr>
 					<td colspan="2">
-						<jsp:include page="/bodyMessage.jsp?bundle=report" />
+						<jsp:include page="/bodyMessage.jsp?bundle=document" />
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 							width="100%" align="center" summary="" border="0">
 							<tbody>
@@ -57,11 +57,10 @@
 									</td>
 									<td class="label">
 										<html:select property="file.domainFile.category"
-											onchange="javascript:callPrompt('Report Category', 'file.domainFile.category');"
+											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');"
 											styleId="file.domainFile.category">
 											<option value=""></option>
-											<option value="">journal</option>
-											<option value="">report</option>
+											<html:options name="publicationCategories" />
 											<option value="other">
 												[Other]
 											</option>
@@ -71,13 +70,11 @@
 										<strong>Publication Status*</strong>
 									</td>
 									<td class="rightLabel">
-										<html:select property="file.domainFile.category"
-											onchange="javascript:callPrompt('Report Category', 'file.domainFile.category');"
-											styleId="file.domainFile.category">
+										<html:select property="file.domainFile.status"
+											onchange="javascript:callPrompt('Publication status', 'file.domainFile.status');"
+											styleId="file.domainFile.status">
 											<option value=""></option>
-											<option value="">published</option>
-											<option value="">submitted</option>
-											<option value="">unpublished</option>
+											<html:options name="publicationStatuses" />
 											<option value="other">
 												[Other]
 											</option>
@@ -86,53 +83,35 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>First Author*</strong>
+										<strong>Research Category*</strong><br>(TODO)
 									</td>
-									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.title" size="80" />
+									<td class="label" colspan="3">
+										<html:multibox property="file.domainFile.researchArea" value="synthesis"/> synthesis
+										<html:multibox property="file.domainFile.researchArea" value="characterization"/> characterization
+										<html:multibox property="file.domainFile.researchArea" value="cell line"/> cell line
+									</td>	
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
+										<strong>PubMed ID</strong>
+									</td>
+									<td class="rightLabel" colspan="3">	
+										<a
+												href="http://www.ncbi.nlm.nih.gov/pubmed/"
+												target="_blank">
+												Click to look up PubMed Identifier</a>
+										<br>									
+										<html:text property="file.domainFile.pubMedId" size="30" />
+										<html:button property="file.domainFile.pubMedId" value="Auto Populate Fields"/>
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel">
-										<strong>Identifier*
-										</strong>
+									<td class="leftLabel" valign="top">
+										<strong>Digital Object ID</strong>
 									</td>
-									<td class="rightLabel" colspan="3">										
-										<table class="topBorderOnly" border="0">
-											<tr>
-											<td class="borderlessLabel">												
-												<html:radio 
-													property="file.domainFile.uriExternal" value="false"/>
-													PubMed ID&nbsp;&nbsp;
-											</td>
-											<td class="borderlessLabel">
-												<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
-												target="${submitPublicationForm.map.file.urlTarget}">
-												Click to look up PubMed Identifier</a>
-												<br>
-												<html:text property="file.domainFile.title" size="30" />
-												<html:button property="file.domainFile.title" value="Auto Populate Fields"/>
-											</td>
-											</tr>
-											<tr>
-											<td class="borderlessLabel">
-												<html:radio 
-													property="file.domainFile.uriExternal" value="true"/>
-													Digital Object Identifier&nbsp;&nbsp;
-											</td>
-											<td>
-												<html:text property="file.domainFile.title" size="30" />
-											</td>
-											</tr>
-											<tr>
-												<td class="borderlessLabel">													
-													<html:radio 
-														property="file.domainFile.uriExternal" value="false"/>
-														No Identifier
-												</td>
-											</tr>
-										</table>
+									<td class="rightLabel" colspan="3">
+										<html:text property="file.domainFile.digitalObjectId" size="30" />
+										<html:button property="file.domainFile.digitalObjectId" value="Auto Populate Fields"/>
 									</td>
 								</tr>
 								<tr>
@@ -155,18 +134,27 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
+										<strong>Authors:</strong><br>(TODO)
+									</td>
+									<td class="rightLabel" colspan="3">
+										<html:text property="file.authors" size="80" />
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel">
 										<strong>Year of Publication
 										</strong>
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.title" size="17" />
+										<html:text property="file.domainFile.year" size="17" 
+											onkeydown="return filterInteger(event)"/>
 									</td>
 									<td class="label">
 										<strong>Volume
 										</strong>
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.title" size="17" />
+										<html:text property="file.domainFile.volume" size="17"/>
 									</td>
 								</tr>								
 								<tr>
@@ -175,18 +163,29 @@
 										</strong>
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.title" size="17" />
+										<html:text property="file.domainFile.startPage" size="17" 
+											onkeydown="return filterInteger(event)"/>
 									</td>
 									<td class="label">
 										<strong>End Page
 										</strong>
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.title" size="17" />
+										<html:text property="file.domainFile.endPage" size="17" 
+											onkeydown="return filterInteger(event)"/>
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel">
+									<td class="leftLabel" valign="top">
+										<strong>Keywords<br><em>(one keyword per line)</em></strong>
+									</td>
+									<td class="rightLabel" colspan="3">
+										<html:textarea property="file.keywordsStr"
+											rows="3" cols="60"/>
+									</td>
+								</tr>
+								<tr>
+									<td class="leftLabel" valign="top">
 										<strong>Description</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
@@ -196,82 +195,63 @@
 								</tr>			
 							</tbody>
 						</table>
+
 						<br>
-						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-							width="100%" align="center" summary="" border="0">	
-							<tbody>	
-								<tr class="topBorder">
-									<td class="formTitle" colspan="4">
-										<div align="justify">
-											File
-										</div>
-									</td>
-								</tr>									
-								<tr>
-									<td class="leftLabel">
-										<html:radio styleId="external0"
-											property="file.domainFile.uri" value="false"
-											onclick="radLinkOrUpload()" />
-										<strong>Upload File</strong>
-										<br>
-										&nbsp;&nbsp;or
-										<br>
-										<html:radio styleId="external1"
-											property="file.domainFile.uri" value="true"
-											onclick="radLinkOrUpload()" />
-										<strong>Enter URL</strong>
-									</td>
-									<td class="rightLabel" colspan="3">
-										<span id="load" style="display:none"> <html:file
-												property="file.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
-										<br>
-										<br>
-										<span id="link" style="display:none"><html:text
-												property="file.externalUrl" size="80" /> </span>&nbsp;
-									</td>
-								</tr>
-								<c:if test="${!empty submitPublicationForm.map.file.domainFile.uri }">
-									<tr>
-										<td class="completeLabel" colspan="4">
-											<strong>Submitted Publication</strong> &nbsp;&nbsp;
-											<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
-												target="${submitPublicationForm.map.file.urlTarget}">
-												${submitPublicationForm.map.file.domainFile.uri}</a>
-											<html:hidden property="file.domainFile.uri" />
-											<html:hidden property="file.domainFile.name" />
-										</td>
-									</tr>
-								</c:if>
-								<c:if test="${!empty submitPublicationForm.map.file.domainFile.id}">
-									<html:hidden property="file.domainFile.id" />
-								</c:if>		
-							</tbody>
-						</table>
-						<br>
-						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-							width="100%" align="center" summary="" border="0">		
-							<tbody>
-								<tr class="topBorder">
-									<td class="formTitle" colspan="4">
-										<div align="justify">
-											Copy
-										</div>
-									</td>
-								</tr>																
-								<tr>
-									<td class="leftLabel" valign="top" width="20%">
-										<strong>Copy to other DNT nanoparticle samples</strong>
-									</td>
-									<td class="rightLabel">
-										<html:select property="file.particleNames" multiple="true"
-											size="5">
-											<html:options name="allUserParticleNames" />
-										</html:select>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						
+						
+						<c:choose>
+							<c:when test="${empty param.particleId}">
+								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+									width="100%" align="center" summary="" border="0">		
+									<tbody>
+										<tr class="topBorder">
+											<td class="formTitle" colspan="4">
+												<div align="justify">
+													&nbsp;
+												</div>
+											</td>
+										</tr>																
+										<tr>
+											<td class="leftLabel" valign="top" width="20%">
+												<strong>Nanoparticle Sample Name*</strong>
+											</td>
+											<td class="rightLabel">
+												<html:select property="file.particleNames" multiple="true"
+													size="5">
+													<html:options name="allUserParticleNames" />
+												</html:select>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</c:when>
+							<c:otherwise>
+								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+									width="100%" align="center" summary="" border="0">		
+									<tbody>
+										<tr class="topBorder">
+											<td class="formTitle" colspan="4">
+												<div align="justify">
+													Copy
+												</div>
+											</td>
+										</tr>																
+										<tr>
+											<td class="leftLabel" valign="top" width="20%">
+												<strong>Copy to other ${particleSource} nanoparticle</strong>
+											</td>
+											<td class="rightLabel">										
+												<html:select property="file.particleNames" multiple="true"
+													size="5">
+													<html:options collection="otherParticleNames" property="name"
+														labelProperty="name" />
+												</html:select>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</c:otherwise>								
+						</c:choose>
 						<br>
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 							width="100%" align="center" summary="" border="0">		
@@ -295,7 +275,7 @@
 										</html:select>
 										<br>
 										<i>(${applicationOwner}_Researcher and
-											${applicationOwner}_PI are always selected by default.)</i>
+											${applicationOwner}_DataCurator are always selected by default.)</i>
 									</td>
 								</tr>
 							</tbody>

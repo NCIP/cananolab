@@ -40,7 +40,7 @@
 			<c:otherwise>
 				<tr>
 					<td colspan="2">
-						<jsp:include page="/bodyMessage.jsp?bundle=report" />
+						<jsp:include page="/bodyMessage.jsp?bundle=document" />
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 							width="100%" align="center" summary="" border="0">
 							<tbody>
@@ -83,7 +83,7 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Research Category</strong>
+										<strong>Research Category*</strong><br>(TODO)
 									</td>
 									<td class="label" colspan="3">
 										<html:multibox property="file.domainFile.researchArea" value="synthesis"/> synthesis
@@ -97,8 +97,8 @@
 									</td>
 									<td class="rightLabel" colspan="3">	
 										<a
-												href="searchReport.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
-												target="${submitPublicationForm.map.file.urlTarget}">
+												href="http://www.ncbi.nlm.nih.gov/pubmed/"
+												target="_blank">
 												Click to look up PubMed Identifier</a>
 										<br>									
 										<html:text property="file.domainFile.pubMedId" size="30" />
@@ -197,29 +197,60 @@
 						</table>
 
 						<br>
-						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-							width="100%" align="center" summary="" border="0">		
-							<tbody>
-								<tr class="topBorder">
-									<td class="formTitle" colspan="4">
-										<div align="justify">
-											Copy
-										</div>
-									</td>
-								</tr>																
-								<tr>
-									<td class="leftLabel" valign="top" width="20%">
-										<strong>Copy to other DNT nanoparticle samples</strong>
-									</td>
-									<td class="rightLabel">
-										<html:select property="file.particleNames" multiple="true"
-											size="5">
-											<html:options name="allUserParticleNames" />
-										</html:select>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+						
+						
+						<c:choose>
+							<c:when test="${empty param.particleId}">
+								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+									width="100%" align="center" summary="" border="0">		
+									<tbody>
+										<tr class="topBorder">
+											<td class="formTitle" colspan="4">
+												<div align="justify">
+													&nbsp;
+												</div>
+											</td>
+										</tr>																
+										<tr>
+											<td class="leftLabel" valign="top" width="20%">
+												<strong>Nanoparticle Sample Name*</strong>
+											</td>
+											<td class="rightLabel">
+												<html:select property="file.particleNames" multiple="true"
+													size="5">
+													<html:options name="allUserParticleNames" />
+												</html:select>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</c:when>
+							<c:otherwise>
+								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+									width="100%" align="center" summary="" border="0">		
+									<tbody>
+										<tr class="topBorder">
+											<td class="formTitle" colspan="4">
+												<div align="justify">
+													Copy
+												</div>
+											</td>
+										</tr>																
+										<tr>
+											<td class="leftLabel" valign="top" width="20%">
+												<strong>Copy to other ${particleSource} nanoparticle</strong>
+											</td>
+											<td class="rightLabel">										
+												<html:select property="file.particleNames" multiple="true"
+													size="5">
+													<html:options name="allUserParticleNames" />
+												</html:select>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</c:otherwise>								
+						</c:choose>
 						<br>
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 							width="100%" align="center" summary="" border="0">		
@@ -243,7 +274,7 @@
 										</html:select>
 										<br>
 										<i>(${applicationOwner}_Researcher and
-											${applicationOwner}_PI are always selected by default.)</i>
+											${applicationOwner}_DataCurator are always selected by default.)</i>
 									</td>
 								</tr>
 							</tbody>
