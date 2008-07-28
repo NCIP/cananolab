@@ -7,9 +7,9 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.DocumentService;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
@@ -164,14 +164,14 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		//Publication
 		if (publicationOrReport==null || publicationOrReport.length==0 ||
 				Arrays.toString(publicationOrReport).contains("publication")){
-			DocumentService documentService = null;
+			PublicationService documentService = null;
 			for (String location : searchLocations) {
 				if (location.equals("local")) {
-					documentService = new DocumentServiceLocalImpl();
+					documentService = new PublicationServiceLocalImpl();
 				} else {
 					String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 							request, location);
-					documentService = new DocumentServiceRemoteImpl(serviceUrl);
+					documentService = new PublicationServiceRemoteImpl(serviceUrl);
 				}
 				List<PublicationBean> publications = documentService.findPublicationsBy(title,
 						category, nanoparticleEntityClassNames
@@ -280,7 +280,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 					+ url.getHost() + ":" + url.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + "/"
 					+ CaNanoLabConstants.CSM_APP_NAME
-					+ "/searchReport.do?dispatch=download" + "&fileId="
+					+ "/searchDocument.do?dispatch=download" + "&fileId="
 					+ fileId + "&location=local";
 
 			response.sendRedirect(remoteDownloadUrl);
