@@ -412,20 +412,29 @@ public class InitNanoparticleSetup {
 							dataBean.setViewTitle("Report: "+sideMenuTitle);
 						}
 						//dataBean.setViewTitle(report.getUri());
-						if (dataTree.get(reportCategory) != null) {
+//						if (dataTree.get(reportCategory) != null) {
+//							rdataBeans = (TreeSet<DataLinkBean>) dataTree
+//									.get(reportCategory);
+//						} else {
+//							rdataBeans = new TreeSet<DataLinkBean>(
+//									new CaNanoLabComparators.DataLinkTypeDateComparator());
+//							dataTree.put(reportCategory, rdataBeans);
+//						}
+						
+						if (dataTree.get(CaNanoLabConstants.FOLDER_DOCUMENT) != null) {
 							rdataBeans = (TreeSet<DataLinkBean>) dataTree
-									.get(reportCategory);
+									.get(CaNanoLabConstants.FOLDER_DOCUMENT);
 						} else {
 							rdataBeans = new TreeSet<DataLinkBean>(
 									new CaNanoLabComparators.DataLinkTypeDateComparator());
-							dataTree.put(reportCategory, rdataBeans);
+							dataTree.put(CaNanoLabConstants.FOLDER_DOCUMENT, rdataBeans);
 						}
 						rdataBeans.add(dataBean);
 					}
 					hasDocumentData = true;
 				}
 				
-				//TODO, to be verified by shuang
+				//TODO, to be verified by                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
 				// publication
 				SortedSet<DataLinkBean> pdataBeans = new TreeSet<DataLinkBean>(
 						new CaNanoLabComparators.DataLinkTypeDateComparator());
@@ -464,13 +473,13 @@ public class InitNanoparticleSetup {
 							}
 						}
 						//dataBean.setViewTitle(report.getUri());
-						if (dataTree.get(publicationCategory) != null) {
+						if (dataTree.get(CaNanoLabConstants.FOLDER_DOCUMENT) != null) {
 							pdataBeans = (TreeSet<DataLinkBean>) dataTree
-									.get(publicationCategory);
+									.get(CaNanoLabConstants.FOLDER_DOCUMENT);
 						} else {
 							pdataBeans = new TreeSet<DataLinkBean>(
 									new CaNanoLabComparators.DataLinkTypeDateComparator());
-							dataTree.put(publicationCategory, pdataBeans);
+							dataTree.put(CaNanoLabConstants.FOLDER_DOCUMENT, pdataBeans);
 						}
 						pdataBeans.add(dataBean);
 					}
