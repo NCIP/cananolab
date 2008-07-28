@@ -9,25 +9,25 @@
 	src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-<html:form action="searchReport">
+<html:form action="searchDocument">
 	<table align="center" width="100%">
 		<tr>
 			<td>
 				<h3>
-					Search Reports
+					Search Documents
 				</h3>
 			</td>
 			<td align="right" width="30%">
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 				<jsp:include page="/webHelp/helpGlossary.jsp">
-					<jsp:param name="topic" value="search_reports_help" />
+					<jsp:param name="topic" value="search_documents_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=report" />
+				<jsp:include page="/bodyMessage.jsp?bundle=document" />
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
@@ -62,21 +62,33 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
-							<strong>Report Title</strong>
+						<td class="leftLabel" valign="top">
+							<strong>Document Category</strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<html:text property="reportTitle" size="60" />
+							<strong><html:select property="publicationOrReport"
+									styleId="publicationOrReport" multiple="true" size="2">
+									<html:option value="publication">Publication</html:option>
+									<html:option value="report">Report</html:option>
+								</html:select> </strong>
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Report Category</strong>
+							<strong>Document Title</strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<html:select styleId="reportCategory" property="reportCategory">
+							<html:text property="title" size="60" />
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel">
+							<strong>Publication Type</strong>
+						</td>
+						<td class="rightLabel" colspan="5">
+							<html:select styleId="category" property="category">
 								<option value="" />
-									<html:options name="reportCategories" />
+									<html:options name="publicationCategories" />
 							</html:select>
 						</td>
 					</tr>

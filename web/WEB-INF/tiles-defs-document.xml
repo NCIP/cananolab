@@ -12,7 +12,7 @@
 			value="/document/bodyDocumentDescription.jsp" />
 		<put name="createLink"
 			value="chooseDocument.do" />
-		<put name="searchLink" value="searchReport.do?dispatch=setup" />
+		<put name="searchLink" value="searchDocument.do?dispatch=setup" />
 	</definition>
 	
 	<definition name="document.chooseDocument" extends="calab.home">
