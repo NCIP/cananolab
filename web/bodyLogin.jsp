@@ -88,10 +88,10 @@
 										<td>
 											<img src="images/icon_report_48x.gif" width="15%" />
 											&nbsp;Reports&nbsp;(
-											<a href="#" onclick="searchReports();">search</a> )
+											<a href="#" onclick="searchDocuments();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseReports();" id="reportCount"
+											<a href="#" onclick="browseDocuments();" id="reportCount"
 												class="countsLink"></a>
 										</td>
 									</tr>
