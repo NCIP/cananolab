@@ -1,11 +1,14 @@
 package gov.nih.nci.cananolab.service.document.impl;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.DocumentBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
+import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.document.DocumentService;
@@ -76,15 +79,15 @@ public class DocumentServiceLocalImpl implements DocumentService {
 		}
 	}
 
-	//TODO may create a documentBean
-	public List<LabFileBean> findDocumentsBy(String reportTitle,
+/*	//TODO XXXX may create a documentBean
+	public List findDocumentsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
 			throws DocumentException, CaNanoLabSecurityException {
-		List<LabFileBean> documentBeans = new ArrayList<LabFileBean>();
+		List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
 		try {
 			Collection documents = helper.findDocumentsBy(reportTitle,
 					reportCategory, nanoparticleEntityClassNames,
@@ -93,11 +96,38 @@ public class DocumentServiceLocalImpl implements DocumentService {
 					otherFunctionTypes);
 			for (Object document : documents) {
 				//TODO, tanq
-				//documentBeans.add(new LabFileBean(document));
+				documentBeans.add(new DocumentBean(document));
 			}
 			return documentBeans;
 		} catch (Exception e) {
 			String err = "Problem finding report info.";
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}*/
+	
+	
+	public List<PublicationBean> findPublicationsBy(String title,
+			String category, String[] nanoparticleEntityClassNames,
+			String[] otherNanoparticleTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws DocumentException, CaNanoLabSecurityException {
+		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
+		try {
+			List<Publication> publications = helper.findPublicationsBy(title, category, nanoparticleEntityClassNames, 
+					otherNanoparticleTypes, functionalizingEntityClassNames, 
+					otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
+			if (publications!=null) {
+				for (Publication publication: publications) {
+					publicationBeans.add(new PublicationBean(publication));
+				}
+			}			
+			return publicationBeans;
+			
+		} catch (Exception e) {
+			String err = "Problem finding publication info.";
 			logger.error(err, e);
 			throw new DocumentException(err, e);
 		}

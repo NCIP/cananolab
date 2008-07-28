@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.util;
 
+import gov.nih.nci.cananolab.domain.common.Report;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -8,11 +10,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -187,6 +193,19 @@ public class ClassUtils {
 				System.out.println(name);
 			}
 			System.out.println("MolecularWeight");
+			
+			//test, put this to the beginnging of ClassUtils.mapObjects
+//			Report report1 = new Report();
+//			report1.setCategory("myCategory");
+//			report1.setTitle("mytitle");
+//			inputObjects = new Object[1];
+//			inputObjects[0] = report1;
+//			
+//			aTargetClazz = new Report().getClass();
+			//end of test
+			
+//			List<Report> reportLists = ClassUtils.mapObjects(null, null);
+//			System.out.println("report ========="+reportLists.get(0).getCategory());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -238,6 +257,74 @@ public class ClassUtils {
 
 		return obj;
 	}
+		
+	/**
+	 * copy attributes of one object to another
+	 * 
+	 * mapping attribute criteria:
+	 * - use setter and getter to copy value
+	 * - getter method have no parameter types, method.getParameterTypes().length==0
+	 * - setter method have one and only one parameter types, method.getParameterTypes().length==1
+	 * - setter method returns void type
+	 * - The return type of getter method matches the parameter type of the setter method
+	 */
+	public static List mapObjects(Class aTargetClazz, List inputObjects) {
+		List resultObjs = new ArrayList();
+		if (inputObjects!=null && inputObjects.size()>0){				
+			//put to inputObjects map
+			Map<String, Method> setterMethodsMap = new HashMap<String, Method>();			
+			Method[] inputObjectMethods = inputObjects.get(0).getClass().getMethods();
+			for (Method method: inputObjectMethods){
+				if (method.getName().startsWith("set") && method.getParameterTypes().length==1 &&
+						method.getReturnType().toString().equals("void")){
+					setterMethodsMap.put(method.getName().replaceFirst("set", ""), method);
+				}
+			}			
+			Method setterMethod = null;
+			try {
+				//take the first object to get methods
+				Class objClazz = inputObjects.get(0).getClass();
+				Method[] allMethods = objClazz.getMethods();
+				
+				//qualified getter methods
+				List<Method> methods = new ArrayList<Method>((int)(allMethods.length/2));
+				for (Method method: allMethods){
+					if (method.getName().startsWith("get") && !method.getName().equals("getClass")
+							&& method.getParameterTypes().length==0){
+						methods.add(method);
+					}
+				}
+				
+				Object getterResult = null;
+				
+				for (int i=0; i<inputObjects.size(); i++){
+					resultObjs.add(aTargetClazz.newInstance());
+					for (Method method: methods){
+						System.out.println("method: "+method);											
+						getterResult = method.invoke(inputObjects.get(0), (Object[])null);
+						setterMethod = setterMethodsMap.get(method.getName().replaceFirst("get", ""));
+
+						if (getterResult!=null && 
+								getterResult.getClass().getName().
+									equals(setterMethod.getParameterTypes()[0].getName())){		
+							System.out.println(" getterResult.getClass().getName(): "+getterResult.getClass().getName());	
+							System.out.println(" setterMethod.getParameterTypes()[0].getName(): "+setterMethod.getParameterTypes()[0].getName());		
+							//invoke setter
+							System.out.println(" going to set: "+getterResult);								
+							setterMethod.invoke(resultObjs.get(i), getterResult);
+						}					
+					}
+				}
+				System.out.println("completed");
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return resultObjs;
+	}
+
+
 
 	/**
 	 * Thread subclass that handles deserializing from a PipedInputStream.

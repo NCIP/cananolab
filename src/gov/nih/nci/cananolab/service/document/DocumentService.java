@@ -26,7 +26,15 @@ public interface DocumentService {
 	public void savePublication(Publication publication, String[] particleNames,
 			byte[] fileData) throws DocumentException;
 
-	public List<LabFileBean> findDocumentsBy(String reportTitle,
+/*	public List<LabFileBean> findDocumentsBy(String reportTitle,
+			String reportCategory, String[] nanoparticleEntityClassNames,
+			String[] otherNanoparticleTypes,
+			String[] functionalizingEntityClassNames,
+			String[] otherFunctionalizingEntityTypes,
+			String[] functionClassNames, String[] otherFunctionTypes)
+			throws DocumentException, CaNanoLabSecurityException;*/
+	
+	public List<PublicationBean> findPublicationsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,

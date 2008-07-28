@@ -25,6 +25,23 @@ public class InitDocumentSetup {
 		return new InitDocumentSetup();
 	}
 
+	//TODO, what to put here??
+	public void setDocumentDropdowns(HttpServletRequest request) throws Exception {
+		InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "reportCategories",
+						"Report", "category", "otherCategory", true);
+		InitSetup.getInstance()
+			.getDefaultAndOtherLookupTypes(request, "publicationCategories",
+				"Publication", "category", "otherCategory", true);
+		InitSetup.getInstance()
+			.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
+				"Publication", "status", "otherStatus", true);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
+				request, user);
+	}
+	
 	public void setPublicationDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "publicationCategories",

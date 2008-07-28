@@ -1,14 +1,14 @@
 package gov.nih.nci.cananolab.ui.core;
 
+import gov.nih.nci.cananolab.service.document.DocumentService;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 
 import java.io.PrintWriter;
 
@@ -56,23 +56,23 @@ public class CountAction extends Action {
 			}
 		}
 
-		// report count
-		int reportCount = 0;
-		ReportService reportService = null;
+		// document count
+		int documentCount = 0;
+		DocumentService documentService = null;
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
-				reportService = new ReportServiceLocalImpl();
+				documentService = new DocumentServiceLocalImpl();
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
-				reportService = new ReportServiceRemoteImpl(serviceUrl);
+				documentService = new DocumentServiceRemoteImpl(serviceUrl);
 			}
 			try {
-				reportCount += reportService.getNumberOfPublicReports();
+				documentCount += documentService.getNumberOfPublicDocuments();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				ActionMessages msgs = new ActionMessages();
-				ActionMessage msg = new ActionMessage("error.reportCount", location);
+				ActionMessage msg = new ActionMessage("error.documentCount", location);
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				this.saveErrors(request, msgs);
 			}
@@ -103,7 +103,7 @@ public class CountAction extends Action {
 		}
 
 		PrintWriter out = response.getWriter();
-		out.print(particleCount + "\t" + reportCount + "\t" + protocolCount);
+		out.print(particleCount + "\t" + documentCount + "\t" + protocolCount);
 		return null;
 	}
 }
