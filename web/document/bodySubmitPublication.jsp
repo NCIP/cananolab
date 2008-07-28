@@ -101,7 +101,7 @@
 									<td class="rightLabel" colspan="3">	
 										<a
 												href="http://www.ncbi.nlm.nih.gov/pubmed/"
-												target="_blank">
+												target="_pubmed">
 												Click to look up PubMed Identifier</a>
 										<br>									
 										<html:text property="file.domainFile.pubMedId" size="30" 

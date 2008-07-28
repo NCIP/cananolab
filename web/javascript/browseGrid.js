@@ -73,19 +73,19 @@ function searchParitcles() {
 	gotoPage(url);
 	return false;
 }
-function searchReports() {
+function searchDocuments() {
 	var selectEle = document.getElementById('location');
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchReport.do?dispatch=setup&searchLocations=";
+	var url = "/caNanoLab/searchDocument.do?dispatch=setup&searchLocations=";
 	url += gridNodesStr;
 	
 	gotoPage(url);
 	return false;
 }
-function browseReports() {
+function browseDocuments() {
 	var selectEle = document.getElementById('location');
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchReport.do?dispatch=search&searchLocations=";
+	var url = "/caNanoLab/searchDocument.do?dispatch=search&searchLocations=";
 	url += gridNodesStr;
 
 	gotoPage(url);

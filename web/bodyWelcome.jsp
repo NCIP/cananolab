@@ -48,7 +48,7 @@
 					alt="rectangle" />
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
 					coords="75,235,170,270" alt="rectangle" />
-				<area href="searchReport.do?dispatch=setup" shape="rect"
+				<area href="searchDocument.do?dispatch=setup" shape="rect"
 					coords="75,280,170,320" alt="rectangle" />
 				<area href="searchNanoparticle.do?dispatch=setup" shape="rect"
 					coords="75,330,170,370" alt="rectangle" />
