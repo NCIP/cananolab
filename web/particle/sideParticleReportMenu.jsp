@@ -3,7 +3,7 @@
 	<c:when
 		test="${displaytype == 'Report' ||
 				displaytype == 'associated file' ||
-				displaytype == 'report File'}">
+				displaytype == 'documents'}">
 		<c:set var="reportDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
@@ -29,6 +29,11 @@
 			<c:param name="location" value="local" />
 		</c:url>
 		<li class="controlList">
+			<c:url var="url" value="submitNanoparticleSample.do">
+						<c:param name="dispatch" value="${dispatchValue}" />
+						<c:param name="particleId" value="${particleId}" />
+						<c:param name="location" value="${location}" />
+					</c:url>
 			<a href="#" class="subMenuSecondary">DOCUMENTS</a>
 			<ul class="sublist_4_report" style="${reportDisplay}">
 				<table class="${param.tableStyle}" ><tr class="titleRow">
@@ -50,21 +55,21 @@
 						</c:when>
 					</c:choose>
 				</tr></table>
-							
-				<c:forEach var="reportDisplayType" items="${reportCategories}">					
-					<li>
-						<a href="#" class="sublist_4">${reportDisplayType}</a>
-						<c:if test="${!empty particleDataTree[reportDisplayType] }">
-						<ul class="sublist_5_report" style="${reportDisplay}">
+<%--							</ul>--%>
+<%--				<c:forEach var="reportDisplayType" items="${reportCategories}">					--%>
+<%--					<li>--%>
+<%--						<a href="#" class="sublist_4">${reportDisplayType}</a>--%>
+<%--						<c:if test="${!empty particleDataTree[reportDisplayType] }">--%>
+<%--						<ul class="sublist_5_report" style="${reportDisplay}">--%>
 							<c:forEach var="dataLinkBean"
-								items="${particleDataTree[reportDisplayType]}">
+								items="${particleDataTree['documents']}">
 								<c:url var="url" value="${dataLinkBean.dataLink}.do">
 									<c:param name="page" value="0" />
 									<c:param name="dispatch" value="${dispatchValue}" />
 									<c:param name="particleId" value="${particleId}" />
 									<c:param name="fileId" value="${dataLinkBean.dataId}" />
 									<c:param name="submitType"
-										value="${reportDisplayType}" />
+										value="documents" />
 									<c:param name="location" value="${location}" />
 								</c:url>
 								<li>
@@ -72,10 +77,10 @@
 										class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
 								</li>
 							</c:forEach>
-						</ul>
-						</c:if>
-					</li>
-				</c:forEach>
+<%--						</ul>--%>
+<%--						</c:if>--%>
+<%--					</li>--%>
+<%--				</c:forEach>--%>
 			</ul>
 		</li>
 	</c:when>
