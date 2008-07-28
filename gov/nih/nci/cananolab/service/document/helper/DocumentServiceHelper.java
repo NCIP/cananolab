@@ -35,7 +35,7 @@ public class DocumentServiceHelper {
 	//TODO, tanq
 	private ReportServiceHelper reportHelper = new ReportServiceHelper();
 	
-	public List<Object> findDocumentsBy(String title,
+/*	public List<Object> findDocumentsBy(String title,
 			String category, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -48,7 +48,7 @@ public class DocumentServiceHelper {
 					otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
 		if (reports!=null) {
 			for (Report report: reports) {
-				documents.add(report);
+				documents.add((LabFile)report);
 			}
 		}
 		List<Publication> publications = findPublicationsBy(title, category, nanoparticleEntityClassNames, 
@@ -61,9 +61,9 @@ public class DocumentServiceHelper {
 		}
 		return documents;
 	}
-
+*/
 	
-	private List<Publication> findPublicationsBy(String title,
+	public List<Publication> findPublicationsBy(String title,
 			String category, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -81,6 +81,7 @@ public class DocumentServiceHelper {
 			crit.add(Restrictions.eq("category", category));
 		}
 		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
+		crit.setFetchMode("documentAuthorCollection", FetchMode.JOIN);
 
 		crit.createAlias("nanoparticleSampleCollection", "sample",
 				CriteriaSpecification.LEFT_JOIN).createAlias(
@@ -226,7 +227,6 @@ public class DocumentServiceHelper {
 		}
 	}
 
-	//TODO, tanq
 	public Publication findPublicationById(String publicationId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -234,6 +234,7 @@ public class DocumentServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class).add(
 				Property.forName("id").eq(new Long(publicationId)));
 		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
+		crit.setFetchMode("documentAuthorCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		Publication publication = null;
@@ -242,8 +243,7 @@ public class DocumentServiceHelper {
 		}
 		return publication;
 	}
-
-	//TODO, tanq
+	
 	public int getNumberOfPublicDocuments() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();

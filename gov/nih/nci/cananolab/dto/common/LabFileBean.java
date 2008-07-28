@@ -57,7 +57,7 @@ public class LabFileBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-		if (labFile.getUriExternal()) {
+		if (labFile.getUriExternal()!=null && labFile.getUriExternal()) {
 			externalUrl = labFile.getUri();
 		}
 	}
@@ -117,7 +117,7 @@ public class LabFileBean {
 	}
 
 	public String getUrlTarget() {
-		if (domainFile.getUriExternal()) {
+		if (domainFile.getUriExternal()!=null && domainFile.getUriExternal()) {
 			return "pop";
 		}
 		return "_self";
