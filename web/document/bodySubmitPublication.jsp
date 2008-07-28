@@ -15,7 +15,7 @@
 		<tr>
 			<td>
 				<h3>
-					Submit Publication
+					${action} Publication
 				</h3>
 			</td>
 			<td align="right" width="20%">
@@ -38,6 +38,9 @@
 				</tr>
 			</c:when>
 			<c:otherwise>
+				<c:if test="${!empty submitPublicationForm.map.file.domainFile.id}">
+					<html:hidden property="file.domainFile.id" />
+				</c:if>
 				<tr>
 					<td colspan="2">
 						<jsp:include page="/bodyMessage.jsp?bundle=document" />
@@ -85,7 +88,7 @@
 									<td class="leftLabel">
 										<strong>Research Category*</strong><br>(TODO)
 									</td>
-									<td class="label" colspan="3">
+									<td class="rightLabel" colspan="3">
 										<html:multibox property="file.domainFile.researchArea" value="synthesis"/> synthesis
 										<html:multibox property="file.domainFile.researchArea" value="characterization"/> characterization
 										<html:multibox property="file.domainFile.researchArea" value="cell line"/> cell line
@@ -101,7 +104,8 @@
 												target="_blank">
 												Click to look up PubMed Identifier</a>
 										<br>									
-										<html:text property="file.domainFile.pubMedId" size="30" />
+										<html:text property="file.domainFile.pubMedId" size="30" 
+											onkeydown="return filterInteger(event)"/>
 										<html:button property="file.domainFile.pubMedId" value="Auto Populate Fields"/>
 									</td>
 								</tr>
@@ -129,7 +133,7 @@
 										</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.title" size="80" />
+										<html:text property="file.domainFile.journalName" size="80" />
 									</td>
 								</tr>
 								<tr>
@@ -237,13 +241,15 @@
 											</td>
 										</tr>																
 										<tr>
+											<input type="hidden" name="file.particleNames" value="${particleName}">
 											<td class="leftLabel" valign="top" width="20%">
 												<strong>Copy to other ${particleSource} nanoparticle</strong>
 											</td>
 											<td class="rightLabel">										
 												<html:select property="file.particleNames" multiple="true"
 													size="5">
-													<html:options name="allUserParticleNames" />
+													<html:options collection="otherParticleNames" property="name"
+														labelProperty="name" />
 												</html:select>
 											</td>
 										</tr>
@@ -292,7 +298,7 @@
 											<td width="490" height="32">
 												<div align="right">
 													<div align="right">
-														<input type="reset" value="Reset" onclick="javascript:window.location.reload()">
+														<input type="reset" value="Reset:TODO" onclick="javascript:window.location.reload()">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<c:if test="${!empty param.particleId}">

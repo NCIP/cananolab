@@ -95,7 +95,7 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','c
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','published');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in press');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','submitted');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in pre');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in preparation');
 
 
 ALTER TABLE canano.common_lookup

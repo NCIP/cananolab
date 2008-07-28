@@ -8,42 +8,46 @@
 	<tr>
 		<td>
 			<h3>
-				Nanoparticle Report Search Results
+				Nanoparticle Document Search Results
 			</h3>
 		</td>
 		<td align="right" width="25%">
 			<jsp:include page="/webHelp/helpGlossary.jsp">
-				<jsp:param name="topic" value="search_reports_results_help" />
+				<jsp:param name="topic" value="search_documents_results_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>				
-			<a href="searchReport.do?dispatch=setup" class="helpText">Back</a>
+			<a href="searchDocument.do?dispatch=setup" class="helpText">Back</a>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=report" />
+			<jsp:include page="/bodyMessage.jsp?bundle=document" />
 			<c:choose>
-				<c:when test="${canCreateReport eq 'true'}">
-					<c:set var="link" value="editReportURL" />
+				<c:when test="${canCreateDocument eq 'true'}">
+					<c:set var="link" value="editDocumentURL" />
 				</c:when>
 				<c:otherwise>
 					<c:set var="link" value="domainFile.title" />
 				</c:otherwise>
 			</c:choose>
-			<display:table name="sessionScope.reports" id="report"
-				requestURI="searchReport.do" pagesize="25" class="displaytable"
-				decorator="gov.nih.nci.cananolab.dto.common.ReportDecorator">
-				<display:column title="Report Title" property="${link}"
+			<display:table name="sessionScope.documents" id="document"
+				requestURI="searchDocument.do" pagesize="25" class="displaytable"
+				decorator="gov.nih.nci.cananolab.dto.common.DocumentDecorator">
+				<display:column title="Category" property="publicationOrReport"
 					sortable="true" />
-				<display:column title="Report Category"
+				<display:column title="Title" property="${link}"
+					sortable="true" />
+				<display:column title="Type"
 					property="domainFile.category" sortable="true" />
-				<display:column title="Report Link"
+				<display:column title="Document Link"
 					property="downloadURL" sortable="true" />
-				<display:column title="Report Description"
+				<display:column title="Keywords"
+					property="keywordsStr" sortable="true" />
+				<display:column title="Document Description"
 					property="domainFile.description" sortable="true" />
-				<display:column title="Associated <br>Particle Sample Names"
+				<display:column title="Associated Particle<br>Sample Names"
 					property="particleNames" sortable="true" />
-				<display:column title="Report Created Date"
+				<display:column title="Created Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Location" property="location" sortable="true" />

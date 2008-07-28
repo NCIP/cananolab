@@ -13,14 +13,16 @@
 		
 		<form-bean name="searchDocumentForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="publicationOrReport"
+				type="java.lang.String[]" />
 			<form-property name="nanoparticleEntityTypes"
 				type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes"
 				type="java.lang.String[]" />
 			<form-property name="functionTypes"
 				type="java.lang.String[]" />
-			<form-property name="DocumentTitle" type="java.lang.String" />
-			<form-property name="DocumentCategory"
+			<form-property name="title" type="java.lang.String" />
+			<form-property name="category"
 				type="java.lang.String" />
 			<form-property name="searchLocations"
 				type="java.lang.String[]"/>
