@@ -15,11 +15,11 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.DocumentService;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -50,7 +50,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName());
 		
-		DocumentService service = new DocumentServiceLocalImpl();
+		PublicationService service = new PublicationServiceLocalImpl();
 		service.savePublication((Publication) publicationBean.getDomainFile(), publicationBean
 				.getParticleNames(), publicationBean.getNewFileData());
 		// set visibility
@@ -116,8 +116,8 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
 		//TODO, tanq
-		DocumentService DocumentService = new DocumentServiceLocalImpl();
-		PublicationBean publicationBean = DocumentService.findPublicationById(publicationId);
+		PublicationService publicationService = new PublicationServiceLocalImpl();
+		PublicationBean publicationBean = publicationService.findPublicationById(publicationId);
 		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(publicationBean, user);
 		theForm.set("file", publicationBean);
@@ -141,13 +141,13 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		String publicationId = request.getParameter("fileId");
 		String location = request.getParameter("location");
-		DocumentService documentService = null;
+		PublicationService documentService = null;
 		if (location.equals("local")) {
-			documentService = new DocumentServiceLocalImpl();
+			documentService = new PublicationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			documentService = new DocumentServiceRemoteImpl(serviceUrl);
+			documentService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
 		PublicationBean publicationBean = documentService.findPublicationById(publicationId);
 		if (location.equals("local")) {

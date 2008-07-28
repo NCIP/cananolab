@@ -16,8 +16,11 @@ import java.util.Collection;
  * 
  */
 public class PublicationBean extends LabFileBean {
+	private static final String delimiter = ";";
+	
 	private String[] particleNames;
 	private String[] authors;
+	private String[] researchAreas;
 
 	/**
 	 * 
@@ -29,28 +32,7 @@ public class PublicationBean extends LabFileBean {
 	}
 
 	public PublicationBean(Publication publication) {
-		super(publication);
-		this.domainFile = publication;
-		particleNames = new String[publication.getNanoparticleSampleCollection()
-				.size()];	
-		int i = 0;
-		for (NanoparticleSample particle : publication
-				.getNanoparticleSampleCollection()) {
-			particleNames[i] = particle.getName();
-			i++;
-		}
-		Collection<DocumentAuthor> authorCollection = 
-			publication.getDocumentAuthorCollection();
-		if (authorCollection!=null && authorCollection.size()>0) {
-			authors = new String[authorCollection.size()];
-			i = 0;
-			for (DocumentAuthor author : authorCollection) {
-				authors[i] = author.getFirstName();
-				i++;
-			}
-		}else {
-			authors = null;
-		}
+		this(publication, false);
 	}
 
 	public PublicationBean(Publication publication, boolean loadSamples) {
@@ -65,6 +47,26 @@ public class PublicationBean extends LabFileBean {
 				particleNames[i] = particle.getName();
 				i++;
 			}
+		}
+		Collection<DocumentAuthor> authorCollection = 
+			publication.getDocumentAuthorCollection();
+		int i = 0;
+		if (authorCollection!=null && authorCollection.size()>0) {
+			authors = new String[authorCollection.size()];
+			i = 0;
+			for (DocumentAuthor author : authorCollection) {
+				authors[i] = author.getFirstName();
+				i++;
+			}
+		}else {
+			authors = null;
+		}
+		String researchAreasStr = 
+			publication.getResearchArea();
+		if (researchAreasStr!=null && researchAreasStr.length()>0) {
+			researchAreas = researchAreasStr.split(delimiter);
+		}else {
+			researchAreas = null;
 		}
 	}
 
@@ -100,5 +102,19 @@ public class PublicationBean extends LabFileBean {
 	 */
 	public void setAuthors(String[] authors) {
 		this.authors = authors;
+	}
+
+	/**
+	 * @return the researchAreas
+	 */
+	public String[] getResearchAreas() {
+		return researchAreas;
+	}
+
+	/**
+	 * @param researchAreas the researchAreas to set
+	 */
+	public void setResearchAreas(String[] researchAreas) {
+		this.researchAreas = researchAreas;
 	}
 }
