@@ -7,6 +7,7 @@ package gov.nih.nci.cananolab.ui.document;
  */
 
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -43,11 +44,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName());
 		
@@ -113,15 +112,15 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String reportId = request.getParameter("fileId");
+		String publicationId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
 		//TODO, tanq
-		//DocumentService DocumentService = new DocumentServiceLocalImpl();
-		//PublicationBean publicationBean = DocumentService.findReportById(reportId);
-		//FileService fileService = new FileServiceLocalImpl();
-		//fileService.retrieveVisibility(publicationBean, user);
-		//theForm.set("file", publicationBean);
+		DocumentService DocumentService = new DocumentServiceLocalImpl();
+		PublicationBean publicationBean = DocumentService.findPublicationById(publicationId);
+		FileService fileService = new FileServiceLocalImpl();
+		fileService.retrieveVisibility(publicationBean, user);
+		theForm.set("file", publicationBean);
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
@@ -137,7 +136,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		System.out.println("############ publication setupView");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");

@@ -53,30 +53,32 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 		throw new DocumentException("not implemented for grid service.");
 	}
 
-	//TODO, tanq
-	public List<LabFileBean> findDocumentsBy(String reportTitle,
+	//TODO, XXXXXXXX tanq
+	public List<PublicationBean> findPublicationsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
 			throws DocumentException, CaNanoLabSecurityException {
-		List<ReportBean> reportBeans = new ArrayList<ReportBean>();
+		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
-			Report[] reports = gridClient.getReportsBy(reportTitle,
+			//TODO, XXXXXXXX tanq
+			//TODO, uncomment catch (RemoteException e)
+			/*Publication[] publications = gridClient.getPublicationsBy(reportTitle,
 					reportCategory, nanoparticleEntityClassNames,
-					functionalizingEntityClassNames, functionClassNames);
-			if (reports != null) {
-				for (Report report : reports) {
-					loadParticleSamplesForReport(report);
-					reportBeans.add(new ReportBean(report));
+					functionalizingEntityClassNames, functionClassNames);*/
+			Publication[] publications = null;
+			if (publications != null) {
+				for (Publication publication : publications) {
+					loadParticleSamplesForPublication(publication);
+					publicationBeans.add(new PublicationBean(publication));
 				}
 			}
-			List<LabFileBean>labFileBeans = new ArrayList<LabFileBean>();
-			return labFileBeans;
-		} catch (RemoteException e) {
+			return publicationBeans;
+		/*} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	*/
 		} catch (Exception e) {
 			String err = "Problem finding report info.";
 			logger.error(err, e);
@@ -84,45 +86,7 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 		}
 	}
 
-	private void loadParticleSamplesForReport(Report report)
-			throws DocumentException {
-		try {
-			CQLQuery query = new CQLQuery();
 
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-			Association association = new Association();
-			association.setName("gov.nih.nci.cananolab.domain.common.Report");
-			association.setRoleName("reportCollection");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(report.getId().toString());
-			association.setAttribute(attribute);
-
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			NanoparticleSample particleSample = null;
-			report
-					.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				particleSample = (NanoparticleSample) obj;
-				report.getNanoparticleSampleCollection().add(particleSample);
-			}
-		} catch (Exception e) {
-			String err = "Problem loading nanoparticle samples for the report : "
-					+ report.getId();
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
-	}
 
 	//TODO, tanq
 	private void loadParticleSamplesForPublication(Publication publication)
@@ -225,6 +189,7 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 		}
 	}
 
+	//TODO XXXXXXXXXXXXXX
 	public LabFile[] findDocumentsByParticleSampleId(String particleId)
 			throws DocumentException {
 		{
