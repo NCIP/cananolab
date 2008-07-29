@@ -152,7 +152,7 @@ public class ReportServiceRemoteImpl implements ReportService {
 			}			
 			return reportBeans;
 		} catch (ClassCastException e) {			
-			List<Report> reportLists = ClassUtils.mapObjects(new Report().getClass(), resultList);				
+			List<Report> reportLists = ClassUtils.mapObjects(Report.class, resultList);				
 			if (reportLists != null) {
 				for (Report report : reportLists) {					
 					if (report!=null){
@@ -253,7 +253,7 @@ public class ReportServiceRemoteImpl implements ReportService {
 					}else{
 						List objList = new ArrayList();
 						objList.add(obj);
-						List<NanoparticleSample> particleSampleList = ClassUtils.mapObjects(new NanoparticleSample().getClass(), objList);
+						List<NanoparticleSample> particleSampleList = ClassUtils.mapObjects(NanoparticleSample.class, objList);
 						particleSample = particleSampleList.get(0);
 						report.getNanoparticleSampleCollection().add(particleSample);					
 					}
@@ -262,7 +262,7 @@ public class ReportServiceRemoteImpl implements ReportService {
 					inSync = false;
 					List objList = new ArrayList();
 					objList.add(obj);
-					List<NanoparticleSample> particleSampleList = ClassUtils.mapObjects(new NanoparticleSample().getClass(), objList);
+					List<NanoparticleSample> particleSampleList = ClassUtils.mapObjects(NanoparticleSample.class, objList);
 					particleSample = particleSampleList.get(0);
 					report.getNanoparticleSampleCollection().add(particleSample);					
 				}

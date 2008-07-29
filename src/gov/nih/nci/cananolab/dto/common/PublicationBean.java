@@ -32,7 +32,7 @@ public class PublicationBean extends LabFileBean {
 	}
 
 	public PublicationBean(Publication publication) {
-		this(publication, false);
+		this(publication, true);
 	}
 
 	public PublicationBean(Publication publication, boolean loadSamples) {
