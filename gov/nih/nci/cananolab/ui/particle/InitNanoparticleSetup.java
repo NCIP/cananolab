@@ -488,7 +488,7 @@ public class InitNanoparticleSetup {
 				if (hasDocumentData) {
 					request.getSession().setAttribute("hasDocumentData", "true");
 				}else {
-					request.getSession().setAttribute("hasDocumentData", "true");
+					request.getSession().setAttribute("hasDocumentData", "false");
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);

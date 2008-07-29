@@ -84,6 +84,7 @@ public class DocumentDecorator extends TableDecorator {
 		String actionName = null;
 		Object documentBean = getCurrentRowObject();
 		LabFileBean file = null;
+		//TODO, try to not use instanceof??
 		if (documentBean instanceof ReportBean){
 			actionName = "searchReport.do";
 			file = (ReportBean) documentBean;

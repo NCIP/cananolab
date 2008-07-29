@@ -10,7 +10,9 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.exception.DocumentException;
+import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -109,5 +111,10 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 				throw new DocumentException(err, e);
 			}
 		}
+	}
+	
+	public void removeDocumentFromParticle(NanoparticleSample particle,
+			Long dataId) 	throws DocumentException{
+		throw new DocumentException("not implemented for grid service.");
 	}
 }

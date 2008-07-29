@@ -7,7 +7,7 @@ package gov.nih.nci.cananolab.ui.document;
  */
 
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -15,17 +15,22 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.DocumentService;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,15 +146,15 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 		String publicationId = request.getParameter("fileId");
 		String location = request.getParameter("location");
-		PublicationService documentService = null;
+		PublicationService publicationService = null;
 		if (location.equals("local")) {
-			documentService = new PublicationServiceLocalImpl();
+			publicationService = new PublicationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			documentService = new PublicationServiceRemoteImpl(serviceUrl);
+			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		PublicationBean publicationBean = documentService.findPublicationById(publicationId);
+		PublicationBean publicationBean = publicationService.findPublicationById(publicationId);
 		if (location.equals("local")) {
 			// retrieve visibility
 			FileService fileService = new FileServiceLocalImpl();
@@ -171,6 +176,36 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}
 		return forward;
 	}
+	
+	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		String submitType = request.getParameter("submitType");
+		String[] dataIds = (String[]) theForm.get("idsToDelete");
+		DocumentService documentService = new DocumentServiceLocalImpl();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			.getApplicationService();
+		NanoparticleSample particle = (NanoparticleSample)appService.getObject(
+				NanoparticleSample.class, "id", new Long(particleId));
+		
+		ActionMessages msgs = new ActionMessages();
+		for (String id : dataIds) {
+			if (!checkDelete(request, msgs, id)) {
+				return mapping.findForward("annotationDeleteView");
+			}
+			documentService.removeDocumentFromParticle(particle, new Long(id));
+		}
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		setupDataTree(particleBean, request);
+		ActionMessage msg = new ActionMessage("message.deleteDocuments",
+				submitType);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		return mapping.findForward("success");
+	}
+
 
 	public boolean loginRequired() {
 		return true;
