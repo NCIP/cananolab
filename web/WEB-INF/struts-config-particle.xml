@@ -138,6 +138,7 @@
 				path="particle.submitNanoparticleSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="view" path="particle.generalInfo" />
+			<forward name="documentView" path="particle.documentInfo" />
 			<forward name="update"
 				path="particle.updateNanoparticleSample" />
 			<forward name="input"
