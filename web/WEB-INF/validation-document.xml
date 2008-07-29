@@ -25,7 +25,7 @@
 				<arg position="0" key="submitPublicationForm.file.researchArea"
 					bundle="document" />
 			</field>
-			<field property="file.domainFile.title" page="1"
+			<field property="file.domainFile.title" page="2"
 				depends="required,mask">
 				<arg position="0" key="document.title" bundle="document" />
 				<msg name="mask" key="document.title.invalid" />

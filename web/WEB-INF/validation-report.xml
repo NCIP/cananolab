@@ -43,7 +43,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="file.domainFile.title" page="1"
+			<field property="file.domainFile.title" page="2"
 				depends="required,mask">
 				<arg position="0" key="report.title" bundle="report" />
 				<msg name="mask" key="report.title.invalid" />

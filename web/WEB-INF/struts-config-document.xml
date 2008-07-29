@@ -9,6 +9,7 @@
 				initial="0" />
 			<form-property name="file"
 				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
+			<form-property name="idsToDelete" type="java.lang.String[]" />
 		</form-bean>
 		
 		<form-bean name="searchDocumentForm"

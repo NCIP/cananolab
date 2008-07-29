@@ -89,9 +89,14 @@
 										<strong>Research Category*</strong><br>(TODO)
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:multibox property="file.domainFile.researchArea" value="synthesis"/> synthesis
-										<html:multibox property="file.domainFile.researchArea" value="characterization"/> characterization
-										<html:multibox property="file.domainFile.researchArea" value="cell line"/> cell line
+										<html:multibox property="file.domainFile.researchArea" value="synthesis"/>synthesis &nbsp;
+										<html:multibox property="file.domainFile.researchArea" value="characterization"/>characterization &nbsp;
+										<html:multibox property="file.domainFile.researchArea" value="cell line"/>cell line &nbsp;
+										<html:multibox property="file.domainFile.researchArea" value="animal"/>animal &nbsp;
+										<html:multibox property="file.domainFile.researchArea" value="in vitro"/>in vitro &nbsp;
+										<html:multibox property="file.domainFile.researchArea" value="in vivo"/>in vivo &nbsp;
+										<html:multibox property="file.domainFile.researchArea" value="clinical trials"/>clinical trials &nbsp;
+										
 									</td>	
 								</tr>
 								<tr>
@@ -301,6 +306,7 @@
 														<input type="reset" value="Reset:TODO" onclick="javascript:window.location.reload()">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
+														<input type="hidden" name="location" value="local">
 														<c:if test="${!empty param.particleId}">
 															<input type="hidden" name="particleId"
 																value="${param.particleId}">

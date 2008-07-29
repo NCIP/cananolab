@@ -22,13 +22,13 @@
 		</tr>
 		<tr>
 			<td colspan="2" class="sidebarContent">
-			<html:link page="/submitPublication.do?dispatch=setup&amp;page=0&amp;particleId=${particleId}" scope="page">
+			<html:link page="/submitPublication.do?dispatch=setup&amp;page=0&amp;particleId=${particleId}&amp;location=local" scope="page">
 				Submit a New Publication</html:link> 
 			
 		</tr>
 		<tr>
 			<td colspan="2" class="sidebarContent">
-			<html:link page="/submitReport.do?dispatch=setup&amp;page=0&amp;particleId=${particleId}" scope="page">
+			<html:link page="/submitReport.do?dispatch=setup&amp;page=0&amp;particleId=${particleId}&amp;location=local" scope="page">
 				Submit a New Report</html:link> 
 			
 		</tr>
