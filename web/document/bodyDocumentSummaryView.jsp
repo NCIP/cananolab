@@ -11,7 +11,7 @@
 		<td>
 			<h4>
 				<br>
-				Publication
+				Documents
 			</h4>
 		</td>
 		<td align="right" width="20%">
@@ -37,8 +37,7 @@
 											Summary </a>
 									</li>
 									<li>
-										<a
-											href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
+										<a href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
 											Full Summary </a>
 									</li>
 								</ul>
@@ -155,7 +154,7 @@
 						&nbsp;
 					</td>
 					<td class="label">
-						<a href="#">${report.title}</a>
+						${report.title}&nbsp;
 					</td>
 					<td class="rightLabel">
 						&nbsp;
