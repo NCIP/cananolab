@@ -27,6 +27,9 @@
 				type="java.lang.String" />
 			<form-property name="searchLocations"
 				type="java.lang.String[]"/>
+			<form-property name="pubMedId" type="java.lang.String" />
+			<form-property name="digitalObjectId" type="java.lang.String" />			
+			<form-property name="keywordsStr" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
