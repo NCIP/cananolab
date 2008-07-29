@@ -8,6 +8,7 @@ package gov.nih.nci.cananolab.ui.document;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -29,7 +30,6 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import javax.servlet.http.HttpServletRequest;
@@ -206,6 +206,31 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		return mapping.findForward("success");
 	}
 
+	public ActionForward detailView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = request.getParameter("location");
+//		setupParticle(theForm, request, location);
+//		Characterization chara = prepareCharacterization(theForm, request,
+//				location);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		getCharacterizationBean(theForm, chara, user, location);
+//		String particleId = request.getParameter("particleId");
+//		String publicationId = request.getParameter("dataId");
+//		String className = request.getParameter("dataClassName");
+//		String submitType = request.getParameter("submitType");
+//		String requestUrl = request.getRequestURL().toString();
+//		String printLinkURL = requestUrl
+//				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+//				+ "&dataId=" + publicationId + "&dataClassName="
+//				+ className + "&submitType=" + submitType + "&location="
+//				+ location;
+//		request.getSession().setAttribute("printDetailViewLinkURL",
+//				printLinkURL);
+		return mapping.findForward("detailView");
+	}
+
 
 	public boolean loginRequired() {
 		return true;
@@ -217,14 +242,14 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				CaNanoLabConstants.CSM_PG_DOCUMENT);
 	}
 	
-	private boolean validateReportFile(HttpServletRequest request,
-			PublicationBean publicationBean) throws Exception {
-		ActionMessages msgs = new ActionMessages();
-		if (!validateFileBean(request, msgs, publicationBean)) {
-			return false;
-		}		
-		return true;
-	}
+//	private boolean validateReportFile(HttpServletRequest request,
+//			PublicationBean publicationBean) throws Exception {
+//		ActionMessages msgs = new ActionMessages();
+//		if (!validateFileBean(request, msgs, publicationBean)) {
+//			return false;
+//		}		
+//		return true;
+//	}
 		
 
 }

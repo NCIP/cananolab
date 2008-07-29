@@ -42,6 +42,11 @@
 		<put name="publicationActionName" value="updatePublication" />
 	</definition>
 	
+	<definition name="document.detailViewPublication" extends="calab.home">
+		<put name="calabContent" value="/document/bodyPublicationDetailView.jsp" />
+		<put name="menu" value="documents" />
+	</definition>
+	
 	<!-- definition for the search document result page -->
 	<definition name="document.searchDocumentResult"
 		extends="calab.home">
