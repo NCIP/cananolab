@@ -108,17 +108,23 @@
 				<c:forEach var="pubObj" items="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.publicationCollection}">
 				<tr>
 					<td class="leftLabel">
+						<c:url var="pubUrl" value="submitPublication.do">
+							<c:param name="submitType" value="${submitType}" />
+							<c:param name="dispatch" value="detailView" />
+							<c:param name="pubId" value="${pubObj.id}" />
+							<c:param name="location" value="${location}" />
+						</c:url>
 						<c:choose>
 							<c:when test="${!empty pubObj.pubMedId && pubObj.pubMedId != 0}">
-								<a href="#">PMID: ${pubObj.pubMedId }</a>
+								<a href="${pubUrl }">PMID: ${pubObj.pubMedId }</a>
 							</c:when>
 							<c:otherwise>
 								<c:choose>
 									<c:when test="${!empty pubObj.digitalObjectId && pubObj.digitalObjectId != 0}}">
-										<a href="#">DOI: ${pubObj.digitalObjectId }</a>
+										<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
 									</c:when>
 									<c:otherwise>
-										<a href="#">Publication: ${pubObj.title }</a>
+										<a href="${pubUrl }">Publication: ${pubObj.title }</a>
 									</c:otherwise>
 								</c:choose>
 							</c:otherwise>
