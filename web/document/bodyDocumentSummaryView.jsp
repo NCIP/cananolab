@@ -120,7 +120,7 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${!empty pubObj.digitalObjectId && pubObj.digitalObjectId != 0}}">
+									<c:when test="${!empty pubObj.digitalObjectId && pubObj.digitalObjectId != null}}">
 										<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
 									</c:when>
 									<c:otherwise>
