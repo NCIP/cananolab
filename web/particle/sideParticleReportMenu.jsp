@@ -15,7 +15,7 @@
 		test="${hasDocumentData eq 'true' || (canCreateNanoparticle eq 'true' && location eq 'local')}">
 		<c:url var="submitUrl" value="chooseParticleDocument.do">
 			<c:param name="particleId" value="${particleId}" />
-			<c:param name="submitType" value="${param.charType}" />
+			<c:param name="submitType" value="documents" />
 			<c:param name="page" value="0" />
 			<c:param name="dispatch" value="setup" />
 			<c:param name="location" value="local" />
@@ -23,18 +23,19 @@
 		
 		<c:url var="deleteUrl" value="${param.addAction}.do">
 			<c:param name="particleId" value="${particleId}" />
-			<c:param name="submitType" value="${param.charType}" />
+			<c:param name="submitType" value="documents" />
 			<c:param name="page" value="0" />
 			<c:param name="dispatch" value="setupDeleteAll" />
 			<c:param name="location" value="local" />
 		</c:url>
 		<li class="controlList">
-			<c:url var="url" value="submitNanoparticleSample.do">
-						<c:param name="dispatch" value="${dispatchValue}" />
+			<c:url var="docurl" value="submitNanoparticleSample.do">
+						<c:param name="dispatch" value="setupDocumentView" />
 						<c:param name="particleId" value="${particleId}" />
 						<c:param name="location" value="${location}" />
+						<c:param name="submitType" value="documents" />
 					</c:url>
-			<a href="#" class="subMenuSecondary">DOCUMENTS</a>
+			<a href="${docurl}" class="subMenuSecondary">DOCUMENTS</a>
 			<ul class="sublist_4_report" style="${reportDisplay}">
 				<table class="${param.tableStyle}" ><tr class="titleRow">
 					<c:choose>

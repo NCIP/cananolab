@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.34 2008-06-13 20:49:19 tanq Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.35 2008-07-29 17:45:05 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -111,6 +111,18 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupDataTree(particleSampleBean, request);
 		return mapping.findForward("view");
+	}
+	
+	public ActionForward setupDocumentView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = request.getParameter("location");
+		ParticleBean particleSampleBean = setupParticle(theForm, request,
+				location);
+		theForm.set("particleSampleBean", particleSampleBean);
+		setupDataTree(particleSampleBean, request);
+		return mapping.findForward("documentView");
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
