@@ -5,10 +5,11 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.18 2008-07-23 21:53:10 tanq Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.19 2008-07-29 18:12:46 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -16,16 +17,20 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.DocumentService;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -214,4 +219,35 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		}		
 		return noErrors;
 	}
+	
+	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		String submitType = request.getParameter("submitType");
+		String[] dataIds = (String[]) theForm.get("idsToDelete");
+		DocumentService documentService = new DocumentServiceLocalImpl();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			.getApplicationService();
+		NanoparticleSample particle = (NanoparticleSample)appService.getObject(
+				NanoparticleSample.class, "id", new Long(particleId));
+		
+		ActionMessages msgs = new ActionMessages();
+		for (String id : dataIds) {
+			if (!checkDelete(request, msgs, id)) {
+				return mapping.findForward("annotationDeleteView");
+			}
+			documentService.removeDocumentFromParticle(particle, new Long(id));
+		}
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		setupDataTree(particleBean, request);
+		ActionMessage msg = new ActionMessage("message.deleteDocuments",
+				submitType);
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		return mapping.findForward("success");
+	}
+
+
 }
