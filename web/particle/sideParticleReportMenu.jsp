@@ -20,14 +20,14 @@
 			<c:param name="dispatch" value="setup" />
 			<c:param name="location" value="local" />
 		</c:url>
-		
-		<c:url var="deleteUrl" value="${param.addAction}.do">
+		<c:url var="deleteUrl" value="submitPublication.do">
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="submitType" value="documents" />
 			<c:param name="page" value="0" />
 			<c:param name="dispatch" value="setupDeleteAll" />
 			<c:param name="location" value="local" />
 		</c:url>
+		
 		<li class="controlList">
 			<c:url var="docurl" value="submitNanoparticleSample.do">
 						<c:param name="dispatch" value="setupDocumentView" />
@@ -45,13 +45,15 @@
 								<a href="${submitUrl}" class="addlink"><img
 									src="images/btn_add.gif" border="0" /></a>
 							</td>
-						</c:when>						
+						</c:when>	
+					</c:choose>
+					<c:choose>					
 						<c:when
-							test="${canUserDelete eq 'true' &&
-							!empty particleDataTree[param.charType]}">
+							test="${canUserDelete eq 'true' && location eq 'local' &&
+								!empty particleDataTree['documents']}">
 							<td>
-								<a href="chooseDocument.do" class="addlink"><img
-								src="images/btn_delete.gif" border="0" /></a>
+								<a href="${deleteUrl}" class="addlink"><img
+								src="images/btn_delete.gif" border="0"/></a>
 							</td>
 						</c:when>
 					</c:choose>

@@ -52,7 +52,11 @@ public class DocumentDecorator extends TableDecorator {
 		sb.append("submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId=");
 		sb.append(fileId);
 		sb.append("&location=local>");
-		sb.append(file.getDomainFile().getTitle());
+		if (file.getDomainFile().getTitle().length()>30) {
+			sb.append(file.getDomainFile().getTitle().substring(0, 30));
+		}else {
+			sb.append(file.getDomainFile().getTitle());
+		}
 		sb.append("</a>");
 		String link = sb.toString();
 		SortableName sortableLink = new SortableName(file.getDomainFile()
@@ -71,7 +75,11 @@ public class DocumentDecorator extends TableDecorator {
 		sb.append("submitPublication.do?submitType=none&page=0&dispatch=setupUpdate&fileId=");
 		sb.append(fileId);
 		sb.append("&location=local>");
-		sb.append(file.getDomainFile().getTitle());
+		if (file.getDomainFile().getTitle().length()>30) {
+			sb.append(file.getDomainFile().getTitle().substring(0, 30));
+		}else {
+			sb.append(file.getDomainFile().getTitle());
+		}		
 		sb.append("</a>");
 		String link = sb.toString();
 		SortableName sortableLink = new SortableName(file.getDomainFile()

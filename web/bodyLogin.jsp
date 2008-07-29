@@ -87,7 +87,7 @@
 									<tr>
 										<td>
 											<img src="images/icon_report_48x.gif" width="15%" />
-											&nbsp;Reports&nbsp;(
+											&nbsp;Documents&nbsp;(
 											<a href="#" onclick="searchDocuments();">search</a> )
 										</td>
 										<td class="counts">

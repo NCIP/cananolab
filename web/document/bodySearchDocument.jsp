@@ -65,12 +65,19 @@
 						<td class="leftLabel" valign="top">
 							<strong>Document Category</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="label" colspan="1">
 							<strong><html:select property="publicationOrReport"
 									styleId="publicationOrReport" multiple="true" size="2">
 									<html:option value="publication">Publication</html:option>
 									<html:option value="report">Report</html:option>
 								</html:select> </strong>
+						</td>
+						<td class="label" valign="top">
+							<strong>Keywords</strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<html:textarea property="publicationOrReport" rows="2">
+							</html:textarea> 
 						</td>
 					</tr>
 					<tr>
@@ -78,18 +85,30 @@
 							<strong>Document Title</strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<html:text property="title" size="60" />
+							<html:text property="title" size="100" />
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel">
 							<strong>Publication Type</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="label">
 							<html:select styleId="category" property="category">
 								<option value="" />
 									<html:options name="publicationCategories" />
 							</html:select>
+						</td>
+						<td class="label">
+							<strong>PubMed ID</strong>
+						</td>
+						<td class="label" colspan="">
+							<html:text property="pubMedId" size="12" />
+						</td>
+						<td class="label">
+							<strong>Digital Object ID</strong>
+						</td>
+						<td class="rightLabel" colspan="">
+							<html:text property="digitalObjectId" size="12" />
 						</td>
 					</tr>
 					<tr>

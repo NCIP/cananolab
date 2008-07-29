@@ -49,6 +49,9 @@ public class InitDocumentSetup {
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
 						"Publication", "status", "otherStatus", true);
+		InitSetup.getInstance()
+			.getDefaultAndOtherLookupTypes(request, "publicationResearchAreas",
+				"Publication", "researchArea", "otherResearchArea", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(

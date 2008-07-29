@@ -86,17 +86,14 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Research Category*</strong><br>(TODO)
+										<strong>Research Category*</strong><br>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:multibox property="file.domainFile.researchArea" value="synthesis"/>synthesis &nbsp;
-										<html:multibox property="file.domainFile.researchArea" value="characterization"/>characterization &nbsp;
-										<html:multibox property="file.domainFile.researchArea" value="cell line"/>cell line &nbsp;
-										<html:multibox property="file.domainFile.researchArea" value="animal"/>animal &nbsp;
-										<html:multibox property="file.domainFile.researchArea" value="in vitro"/>in vitro &nbsp;
-										<html:multibox property="file.domainFile.researchArea" value="in vivo"/>in vivo &nbsp;
-										<html:multibox property="file.domainFile.researchArea" value="clinical trials"/>clinical trials &nbsp;
-										
+										<c:forEach var="data" items="${publicationResearchAreas}">
+											<html:multibox property="file.domainFile.researchArea">
+												${data}
+											</html:multibox>${data}&nbsp;
+										</c:forEach>										
 									</td>	
 								</tr>
 								<tr>
@@ -120,7 +117,6 @@
 									</td>
 									<td class="rightLabel" colspan="3">
 										<html:text property="file.domainFile.digitalObjectId" size="30" />
-										<html:button property="file.domainFile.digitalObjectId" value="Auto Populate Fields"/>
 									</td>
 								</tr>
 								<tr>
@@ -142,11 +138,35 @@
 									</td>
 								</tr>
 								<tr>
-									<td class="leftLabel">
-										<strong>Authors:</strong><br>(TODO)
+									<td class="leftLabel" valign="top">
+										<strong>Authors</strong><br>
 									</td>
-									<td class="rightLabel" colspan="3">
-										<html:text property="file.authors" size="80" />
+									<td class="label" colspan="2" valign="top">
+										<table class="smalltable" border="0">
+											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Middle Initial</th>
+											<tr>
+												<td><input type="text" name="author.firstName" size="17"/></td>
+												<td><input type="text" name="author.lastName" size="17"/></td>
+												<td><input type="text" name="author.middleInitial" size="17"/>												
+												</td>
+											</tr>
+											<tr>
+												<td><input type="text" name="author.firstName" size="17"/></td>
+												<td><input type="text" name="author.lastName" size="17"/></td>
+												<td><input type="text" name="author.middleInitial" size="17"/>												
+												</td>
+											</tr>
+											<c:forEach var="author" items="${file.domainFile.documentAuthorCollection}">
+												<tr>
+													<td><html:text property="author.firstName" size="30"/></td>
+													<td><html:text property="author.lastName" size="30"/></td>
+													<td><html:text property="author.middleInitial" size="30"/></td>
+												</tr>
+											</c:forEach>	
+										</table>																				
+									</td>
+									<td class="rightLabel" colspan="2" valign="top">
+										<html:button property="file.domainFile.pubMedId" value="add authors"/>
 									</td>
 								</tr>
 								<tr>
