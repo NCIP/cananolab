@@ -105,7 +105,7 @@ function confirmDeletion(deleteName, deleteMsg)
 												<input type="hidden" name="diaplayType"
 													value="${param.displayType}" />
 												<input type="button" value="Delete"
-													onclick="confirmDeletion(idsToDelete, 'annotation');" />
+													onclick="confirmDeletion(idsToDelete, submitType.value)" />
 												<input type="hidden" name="page" value="1">
 											</div>
 										</div>
