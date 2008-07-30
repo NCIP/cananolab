@@ -57,7 +57,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		PublicationService service = new PublicationServiceLocalImpl();
 		service.savePublication((Publication) publicationBean.getDomainFile(), publicationBean
-				.getParticleNames(), publicationBean.getNewFileData());
+				.getParticleNames(), publicationBean.getNewFileData(), publicationBean.getAuthors());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);

@@ -4,15 +4,11 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Publication view bean
@@ -25,7 +21,7 @@ public class PublicationBean extends LabFileBean {
 	
 	private String[] particleNames;
 	private String[] researchAreas;
-//	private String authorsStr;
+	private List<DocumentAuthor> authors;
 
 	/**
 	 * 
@@ -42,7 +38,7 @@ public class PublicationBean extends LabFileBean {
 
 	public PublicationBean(Publication publication, boolean loadSamples) {
 		super(publication);
-		this.domainFile = publication;
+		System.out.println("############ PublicationBean");
 		if (loadSamples) {
 			particleNames = new String[publication.getNanoparticleSampleCollection()
 					.size()];
@@ -53,16 +49,18 @@ public class PublicationBean extends LabFileBean {
 				i++;
 			}
 		}
-//		SortedSet<String> authorsStrs = new TreeSet<String>();
-//		if (publication.getDocumentAuthorCollection() != null) {
-//			for (DocumentAuthor author : publication.getDocumentAuthorCollection()) {
-//				//TODO, XXXXXXX author, lastname, ...
-//				authorsStrs.add(author.getFirstName()+" "+author.getLastName());
-//			}
-//		}
-//		authorsStr = StringUtils.join(authorsStrs, delimiter);
-		
-
+		authors = new ArrayList<DocumentAuthor>();
+		if (publication.getDocumentAuthorCollection()!=null &&
+				publication.getDocumentAuthorCollection().size()>0) {
+			int i = 0;			
+			for (DocumentAuthor author : publication
+					.getDocumentAuthorCollection()) {
+				authors.add(author);
+				i++;
+			}
+		}
+		//TODO not sure??
+		//publication.setDocumentAuthorCollection(authors);
 		String researchAreasStr = 
 			publication.getResearchArea();
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
@@ -70,9 +68,10 @@ public class PublicationBean extends LabFileBean {
 		}else {
 			researchAreas = null;
 		}
+		this.domainFile = publication;
 	}
 	
-	public void setupDocumentAuthors() {
+	private void setupDocumentAuthors() {
 //		if (authorsStr != null) {			
 //			Publication publication = (Publication)domainFile;
 //			if (publication.getDocumentAuthorCollection() != null) {
@@ -125,6 +124,20 @@ public class PublicationBean extends LabFileBean {
 	 */
 	public void setResearchAreas(String[] researchAreas) {
 		this.researchAreas = researchAreas;
+	}
+
+	/**
+	 * @return the authors
+	 */
+	public List<DocumentAuthor> getAuthors() {
+		return authors;
+	}
+
+	/**
+	 * @param authors the authors to set
+	 */
+	public void setAuthors(List<DocumentAuthor> authors) {
+		this.authors = authors;
 	}
 
 //	/**

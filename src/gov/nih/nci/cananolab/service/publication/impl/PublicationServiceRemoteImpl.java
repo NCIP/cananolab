@@ -8,6 +8,7 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -49,7 +50,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData) throws DocumentException {
+			byte[] fileData, List<DocumentAuthor> authors) throws DocumentException {
 		throw new DocumentException("not implemented for grid service.");
 	}
 
@@ -133,6 +134,18 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	}
 	public PublicationBean findPublicationById(String publicationId) throws DocumentException {
 		try {
+			Publication publication = findDomainPublicationById(publicationId);
+			PublicationBean publicationBean = new PublicationBean(publication);
+			return publicationBean;
+		} catch (Exception e) {
+			String err = "Problem finding the publication by id: " + publicationId;
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}
+	
+	public Publication findDomainPublicationById(String publicationId) throws DocumentException{
+		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
@@ -152,13 +165,12 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 				publication = (Publication) obj;
 			}
 			loadParticleSamplesForPublication(publication);
-			PublicationBean publicationBean = new PublicationBean(publication);
-			return publicationBean;
+			return publication;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
 			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
-			String err = "Problem finding the report by id: " + publicationId;
+			String err = "Problem finding the publication by id: " + publicationId;
 			logger.error(err, e);
 			throw new DocumentException(err, e);
 		}
