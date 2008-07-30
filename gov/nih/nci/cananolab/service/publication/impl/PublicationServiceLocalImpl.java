@@ -1,14 +1,11 @@
 package gov.nih.nci.cananolab.service.publication.impl;
 
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.DocumentBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
-import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
@@ -19,7 +16,6 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,11 +36,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	/**
 	 * Persist a new publication or update an existing publication
 	 * 
-	 * @param publication, particleNames, fileData
+	 * @param publication, particleNames, fileData, authors
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData) throws DocumentException {
+			byte[] fileData, List<DocumentAuthor> authors) throws DocumentException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication);
@@ -66,6 +62,21 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			for (NanoparticleSample sample : particleSamples) {
 				publication.getNanoparticleSampleCollection().add(sample);
 				sample.getPublicationCollection().add(publication);
+			}
+			
+			if (publication.getDocumentAuthorCollection() == null) {
+				System.out.println("####### publication.getDocumentAuthorCollection() == null");
+				publication
+						.setDocumentAuthorCollection(new HashSet<DocumentAuthor>());
+			}
+			if (authors!=null) {
+				System.out.println("####### authors!=null");
+				for (DocumentAuthor author : authors) {
+					publication.getDocumentAuthorCollection().add(author);
+					author.getPublicationCollection().add(publication);
+				}
+			}else {
+				System.out.println("####### authors=====null");				
 			}
 			appService.saveOrUpdate(publication);
 
@@ -138,6 +149,17 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			Publication publication = helper.findPublicationById(publcationId);
 			PublicationBean publicationBean = new PublicationBean(publication);
 			return publicationBean;
+		} catch (Exception e) {
+			String err = "Problem finding the publcation by id: " + publcationId;
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}
+	
+	public Publication findDomainPublicationById(String publcationId) throws DocumentException {
+		try {
+			Publication publication = helper.findPublicationById(publcationId);
+			return publication;
 		} catch (Exception e) {
 			String err = "Problem finding the publcation by id: " + publcationId;
 			logger.error(err, e);
