@@ -144,25 +144,19 @@
 									<td class="label" colspan="2" valign="top">
 										<table class="smalltable" border="0">
 											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Middle Initial</th>
-											<tr>
-												<td><input type="text" name="author.firstName" size="17"/></td>
-												<td><input type="text" name="author.lastName" size="17"/></td>
-												<td><input type="text" name="author.middleInitial" size="17"/>												
-												</td>
-											</tr>
-											<tr>
-												<td><input type="text" name="author.firstName" size="17"/></td>
-												<td><input type="text" name="author.lastName" size="17"/></td>
-												<td><input type="text" name="author.middleInitial" size="17"/>												
-												</td>
-											</tr>
-											<c:forEach var="author" items="${file.domainFile.documentAuthorCollection}">
+											<logic:notEmpty name="submitPublicationForm"
+														property="file.authors" >
 												<tr>
-													<td><html:text property="author.firstName" size="30"/></td>
-													<td><html:text property="author.lastName" size="30"/></td>
-													<td><html:text property="author.middleInitial" size="30"/></td>
+													<logic:iterate name="submitPublicationForm"
+														property="file.authors" id="author" indexId="authorInd">
+														<tr>
+														<td><html:text property="file.authors[${authorInd}].firstName" size="17"/></td>
+														<td><html:text property="file.authors[${authorInd}].lastName" size="17"/></td>
+														<td><html:text property="file.authors[${authorInd}].middleInitial" size="17"/></td>
+														</tr>													
+													</logic:iterate>
 												</tr>
-											</c:forEach>	
+											</logic:notEmpty>																					
 										</table>																				
 									</td>
 									<td class="rightLabel" colspan="2" valign="top">

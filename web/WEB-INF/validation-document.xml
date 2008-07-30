@@ -26,13 +26,8 @@
 					bundle="document" />
 			</field>
 			<field property="file.domainFile.title" page="2"
-				depends="required,mask">
+				depends="required">
 				<arg position="0" key="document.title" bundle="document" />
-				<msg name="mask" key="document.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>
-				</var>
 			</field>
 		</form>
 

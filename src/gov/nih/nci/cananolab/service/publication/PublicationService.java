@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.service.publication;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
@@ -24,7 +23,7 @@ public interface PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData) throws DocumentException;
+			byte[] fileData, List<DocumentAuthor> authors) throws DocumentException;
 
 /*	public List<LabFileBean> findDocumentsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
@@ -43,6 +42,8 @@ public interface PublicationService {
 			throws DocumentException, CaNanoLabSecurityException;
 
 	public PublicationBean findPublicationById(String publicationId) throws DocumentException;
+
+	public Publication findDomainPublicationById(String publicationId) throws DocumentException;
 
 //	public int getNumberOfPublicDocuments() throws DocumentException;
 

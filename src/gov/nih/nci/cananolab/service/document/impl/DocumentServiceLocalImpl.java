@@ -9,7 +9,8 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.helper.DocumentServiceHelper;
-import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -106,14 +107,14 @@ public class DocumentServiceLocalImpl implements DocumentService {
 			Long dataId) 	throws DocumentException{
 		try {
 			ReportServiceHelper reportHelper = new ReportServiceHelper();
-			PublicationServiceHelper publicationHelper = new PublicationServiceHelper();
+			PublicationService publicationService = new PublicationServiceLocalImpl();
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 			Object publicationObject = appService.getObject(Publication.class, "id", dataId);
 			if (publicationObject!=null) {
-				Publication publication = publicationHelper.findPublicationById(dataId.toString());
+				Publication publication = publicationService.findDomainPublicationById(dataId.toString());
 				Collection<NanoparticleSample> nanoparticleSampleCollection 
 					= publication.getNanoparticleSampleCollection();
 				if (nanoparticleSampleCollection==null || nanoparticleSampleCollection.size()==0) {
