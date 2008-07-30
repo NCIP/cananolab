@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.ui.document;
 
+import java.util.SortedSet;
+
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -71,5 +73,12 @@ public class InitDocumentSetup {
 				"otherStatus",
 				((Publication) (publication.getDomainFile())).getStatus());
 		setPublicationDropdowns(request);
+	}
+	
+	public void setDefaultResearchAreas(
+			HttpServletRequest request) throws Exception {
+		InitSetup.getInstance()
+			.getDefaultAndOtherLookupTypes(request, "publicationResearchAreas",
+			"Publication", "researchArea", "otherResearchArea", true);
 	}
 }

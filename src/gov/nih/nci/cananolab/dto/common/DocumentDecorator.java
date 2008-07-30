@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -26,6 +28,33 @@ public class DocumentDecorator extends TableDecorator {
 			publicationOrReport = "publication";
 		}
 		SortableName sortableLink = new SortableName(publicationOrReport);
+		return sortableLink;
+	}
+	
+	
+	public SortableName getDocumentType() throws UnsupportedEncodingException {
+		String documentType = "";
+		Object documentBean = getCurrentRowObject();
+		if (documentBean instanceof ReportBean){
+			documentType = "";
+		}else if (documentBean instanceof PublicationBean){
+			LabFile file = ((PublicationBean)documentBean).getDomainFile();
+			documentType = ((Publication)file).getCategory();
+		}
+		SortableName sortableLink = new SortableName(documentType);
+		return sortableLink;
+	}
+	
+	public SortableName getResearchArea() throws UnsupportedEncodingException {
+		String researchArea = "";
+		Object documentBean = getCurrentRowObject();
+		if (documentBean instanceof ReportBean){
+			researchArea = "";
+		}else if (documentBean instanceof PublicationBean){
+			LabFile file = ((PublicationBean)documentBean).getDomainFile();
+			researchArea = ((Publication)file).getResearchArea();
+		}
+		SortableName sortableLink = new SortableName(researchArea);
 		return sortableLink;
 	}
 	
@@ -145,4 +174,16 @@ public class DocumentDecorator extends TableDecorator {
 		SortableName sortableLink = new SortableName(title);
 		return sortableLink;
 	}	
+	
+	public SortableName getDocumentType_retire() throws UnsupportedEncodingException {
+		String type = "";
+		Object documentBean = getCurrentRowObject();
+		if (documentBean instanceof PublicationBean){
+			LabFileBean file = (PublicationBean) documentBean;
+			file.getDomainFile().getTitle();		
+		}
+		SortableName sortableLink = new SortableName(type);		
+		return sortableLink;
+	}
+	
 }

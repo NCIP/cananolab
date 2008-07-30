@@ -89,13 +89,21 @@ ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
  
  
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','journal');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review paper');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','peer review article');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review article');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','book chapter');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','published');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in press');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','submitted');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in preparation');
+
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','synthesis');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','characterization');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','cell line');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','animal');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vitro');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vivo');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','clinical trials');
 
 
 ALTER TABLE canano.common_lookup

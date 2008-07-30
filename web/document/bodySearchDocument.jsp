@@ -31,12 +31,12 @@
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
-						<td class="formTitle">
+						<td class="formTitle" colspan="2">
 							<div align="justify">
 								Search Criteria
 							</div>
 						</td>
-						<td class="formTitle" colspan="5">
+						<td class="formTitle" colspan="4">
 							<div align="justify">
 								* for searching wildcards
 							</div>
@@ -72,12 +72,23 @@
 									<html:option value="report">Report</html:option>
 								</html:select> </strong>
 						</td>
+						
+						<td class="label" valign="top">
+							<strong>Research Category</strong>
+						</td>
+						<td class="label" colspan="1">												
+							<strong><html:select property="publicationResearchAreas"
+									styleId="publicationResearchAreas" multiple="true" size="2">
+									<html:options name="publicationResearchAreas" />
+								</html:select> </strong>
+						</td>
 						<td class="label" valign="top">
 							<strong>Keywords</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<html:textarea property="publicationOrReport" rows="2">
-							</html:textarea> 
+							<strong><html:textarea property="keywordsStr"
+									styleId="keywordsStr" rows="2">
+							</html:textarea> </strong>
 						</td>
 					</tr>
 					<tr>
@@ -89,7 +100,27 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
+						<td class=leftLabelNoBottom colspan="2">
+							&nbsp;
+						</td>						
+						<td class="borderlessLabel">
+							<strong>PubMed ID</strong>
+						</td>
+						<td class="borderlessLabel" colspan="">
+							<html:text property="pubMedId" size="20" />
+						</td>
+						<td class="borderlessLabel">
+							<strong>Digital Object ID</strong>
+						</td>
+						<td class="rightLabelNoBottom">
+							<html:text property="digitalObjectId" size="20" />
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel" colspan="2">
+							&nbsp;
+						</td>
+						<td class="label">
 							<strong>Publication Type</strong>
 						</td>
 						<td class="label">
@@ -99,16 +130,41 @@
 							</html:select>
 						</td>
 						<td class="label">
-							<strong>PubMed ID</strong>
+							<strong>Authors</strong>
 						</td>
-						<td class="label" colspan="">
-							<html:text property="pubMedId" size="12" />
+						<td class="rightLabel">
+							<html:text property="authors" size="20" />
+						</td>
+					</tr>
+				</table>
+				<br>
+				
+				<table width="100%" border="0" align="center" cellpadding="3"
+					cellspacing="0" summary="">
+					<tr class="topBorder">
+						<td class="formTitle" colspan="2">
+							<div align="justify">
+								Advance Search
+							</div>
+						</td>
+						<td class="formTitle" colspan="4">
+							<div align="justify">
+								Nanoparticle Sample
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel">
+							<strong>Nanoparticle ID</strong>
 						</td>
 						<td class="label">
-							<strong>Digital Object ID</strong>
+							<html:text property="nanoparticleId" size="20" />
 						</td>
-						<td class="rightLabel" colspan="">
-							<html:text property="digitalObjectId" size="12" />
+						<td class="label">
+							<strong>Nanoparticle Name</strong>
+						</td>
+						<td class="rightLabel" colspan="3">
+							<html:text property="nanoparticleName" size="20" />
 						</td>
 					</tr>
 					<tr>

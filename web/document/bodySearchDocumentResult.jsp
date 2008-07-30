@@ -33,21 +33,21 @@
 			<display:table name="sessionScope.documents" id="document"
 				requestURI="searchDocument.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.DocumentDecorator">
-				<display:column title="Category" property="publicationOrReport"
+				<display:column title="Document<br>Category" property="publicationOrReport"
 					sortable="true" />
 				<display:column title="Title" property="${link}"
 					sortable="true" />
-				<display:column title="Type"
-					property="domainFile.category" sortable="true" />
+				<display:column title="Publication<br>Type" property="documentType"
+					sortable="true" />
 				<display:column title="Document Link"
 					property="downloadURL" sortable="true" />
 				<display:column title="Keywords"
 					property="keywordsStr" sortable="true" />
-				<display:column title="Document Description"
-					property="domainFile.description" sortable="true" />
+				<display:column title="Research<br>Category"
+					property="researchArea" sortable="true" />
 				<display:column title="Associated Particle<br>Sample Names"
 					property="particleNames" sortable="true" />
-				<display:column title="Created Date"
+				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Location" property="location" sortable="true" />
