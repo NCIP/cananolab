@@ -242,6 +242,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
 		}
 		
+		InitDocumentSetup.getInstance().setDefaultResearchAreas(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 		return mapping.getInputForward();
