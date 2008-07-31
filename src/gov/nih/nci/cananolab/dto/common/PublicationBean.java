@@ -38,18 +38,8 @@ public class PublicationBean extends LabFileBean {
 
 	public PublicationBean(Publication publication, boolean loadSamples) {
 		super(publication);
+		this.domainFile = publication;
 		System.out.println("############ PublicationBean");
-		if (loadSamples) {
-			particleNames = new String[publication.getNanoparticleSampleCollection()
-					.size()];
-			int i = 0;
-			for (NanoparticleSample particle : publication
-					.getNanoparticleSampleCollection()) {
-				particleNames[i] = particle.getName();
-				i++;
-			}
-		}
-		authors = new ArrayList<DocumentAuthor>();
 		if (publication.getDocumentAuthorCollection()!=null &&
 				publication.getDocumentAuthorCollection().size()>0) {
 			int i = 0;			
@@ -60,7 +50,7 @@ public class PublicationBean extends LabFileBean {
 			}
 		}
 		//TODO not sure??
-		//publication.setDocumentAuthorCollection(authors);
+		publication.setDocumentAuthorCollection(authors);
 		String researchAreasStr = 
 			publication.getResearchArea();
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
@@ -68,7 +58,18 @@ public class PublicationBean extends LabFileBean {
 		}else {
 			researchAreas = null;
 		}
-		this.domainFile = publication;
+
+		if (loadSamples) {
+			particleNames = new String[publication.getNanoparticleSampleCollection()
+					.size()];
+			int i = 0;
+			for (NanoparticleSample particle : publication
+					.getNanoparticleSampleCollection()) {
+				particleNames[i] = particle.getName();
+				i++;
+			}
+		}
+		
 	}
 	
 	private void setupDocumentAuthors() {
