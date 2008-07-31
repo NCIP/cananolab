@@ -27,6 +27,11 @@
 		<put name="reportActionName" value="updateReport" />
 	</definition>
 	
+	<definition name="report.detailViewReport" extends="calab.home">
+		<put name="calabContent" value="/document/bodyReportDetailView.jsp" />
+		<put name="menu" value="reports" />
+	</definition>
+	
 	<!-- definition for the search report result page -->
 	<definition name="report.searchReportResult"
 		extends="calab.home">
