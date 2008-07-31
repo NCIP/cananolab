@@ -183,6 +183,12 @@
 		extends="particle.annotationHome">
 		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
 	</definition>
+	<definition name="particle.detailViewPublication" extends="particle.annotationHome">
+		<put name="calabContent" value="/document/bodyPublicationDetailView.jsp" />
+	</definition>
+		<definition name="particle.detailViewReport" extends="particle.annotationHome">
+		<put name="calabContent" value="/document/bodyReportDetailView.jsp" />
+	</definition>	
 
 	<!-- definition for the search nanoparticle page -->
 	<definition name="particle.searchNanoparticle"

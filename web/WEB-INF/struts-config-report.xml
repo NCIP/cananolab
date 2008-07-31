@@ -46,6 +46,7 @@
 			<forward name="input" path="report.submitReport" />
 			<forward name="view" path="report.viewReport" />
 			<forward name="detailView" path="report.detailViewReport" />
+			<forward name="particleDetailView" path="particle.detailViewReport" />
 			<forward name="particleSubmitReport"
 				path="particle.submitReport" />
 			<forward name="particleViewReport"
