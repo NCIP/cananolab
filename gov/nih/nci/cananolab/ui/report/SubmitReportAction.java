@@ -5,12 +5,13 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.19 2008-07-29 18:12:46 tanq Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.20 2008-07-31 19:20:05 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -21,6 +22,9 @@ import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
@@ -162,6 +166,47 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		}
 		return forward;
 	}
+	
+	public ActionForward detailView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		String location = request.getParameter("location");
+		ReportService reportService = null;
+		if (location.equals("local")) {
+			reportService = new ReportServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			reportService = new ReportServiceRemoteImpl(serviceUrl);
+		}
+		
+		String reportId = request.getParameter("reportId");
+		
+		ReportBean reportBean = reportService.findReportById(reportId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("file", reportBean);
+		
+//		setupParticle(theForm, request, location);
+//		Characterization chara = prepareCharacterization(theForm, request,
+//				location);
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		getCharacterizationBean(theForm, chara, user, location);
+//		String particleId = request.getParameter("particleId");
+//		String publicationId = request.getParameter("dataId");
+//		String className = request.getParameter("dataClassName");
+//		String submitType = request.getParameter("submitType");
+//		String requestUrl = request.getRequestURL().toString();
+//		String printLinkURL = requestUrl
+//				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+//				+ "&dataId=" + publicationId + "&dataClassName="
+//				+ className + "&submitType=" + submitType + "&location="
+//				+ location;
+//		request.getSession().setAttribute("printDetailViewLinkURL",
+//				printLinkURL);
+		return mapping.findForward("detailView");
+	}
+
 
 	public boolean loginRequired() {
 		return true;
