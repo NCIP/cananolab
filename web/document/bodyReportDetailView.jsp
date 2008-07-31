@@ -36,17 +36,18 @@
 									${fn:toUpperCase(param.location)} ${particleName}
 								</td>
 								<td align="right" class="formTitle">
-									
-									<c:url var="url" value="submitReport.do"><!-- FIXME: hardcode action -->
+
+									<c:url var="url" value="submitReport.do">
+										<!-- FIXME: hardcode action -->
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="fileId" value="${param.fileId}" />
-										<c:param name="submitType"
-											value="${param.submitType}" />
+										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
-									<c:if test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+									<c:if
+										test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit characterization" border="0"> </a>
@@ -75,62 +76,35 @@
 						</table>
 					</td>
 				</tr>
+			
+				<tr>
+					<th class="leftLabel" valign="top">
+						Title
+					</th>
+					<td class="rightLabel">
+						<bean:write name="submitReportForm"
+							property="file.domainFile.title" />
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						Report URL
+					</th>
+					<td class="rightLabel">
+						<a href="${submitReportForm.map.file.domainFile.uri }"> <bean:write
+								name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						Description
+					</th>
+					<td class="rightLabel">
+						<bean:write name="submitReportForm"
+							property="file.domainFile.description" />&nbsp;
+					</td>
+				</tr>
 			</table>
 		</td>
 	</tr>
-	
-	<tr><td colspan="2">
-		<table class="gridtableblack" width="100%" border="0" align="center" cellpadding="3"
-				cellspacing="0" >
-			<tr>
-				<th>
-					Publication Type
-				</th>
-				<td>
-					report
-				</td>
-			</tr>	
-			<tr>
-				<th>
-					Publication Status
-				</th>
-				<td>
-					Submitted
-				</td>
-			</tr>	
-			<tr>
-				<th>
-					First Author
-				</th>
-				<td>
-					Scott E. McNeil
-				</td>
-			</tr>				
-			<tr>
-				<th>
-					Title
-				</th>
-				<td >
-					DENDRITIC NANOTECHNOLOGIES
-				</td>
-			</tr>	
-			<tr>
-				<th>
-					File URL
-				</th>
-				<td >
-					<a href="#">reports/200612_8-06-33-125_120406.pdf</a>
-				</td>
-			</tr>					
-			<tr>
-				<th>
-					Description
-				</th>
-				<td >
-					
-				</td>
-			</tr>				
-		</table>
-	</td></tr>
-	
 </table>
