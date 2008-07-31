@@ -88,8 +88,7 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null &&
-													submitPublicationForm.map.file.domainFile.digitalObjectId != 0}}">
+									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null}">
 										DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }
 									</c:when>
 									<c:otherwise>
@@ -199,8 +198,7 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null &&
-													submitPublicationForm.map.file.domainFile.digitalObjectId != 0}}">
+									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null}">
 										<a href="#">DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }</a>
 									</c:when>
 								</c:choose>
