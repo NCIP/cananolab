@@ -6,6 +6,8 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ public class PublicationBean extends LabFileBean {
 	
 	private String[] particleNames;
 	private String[] researchAreas;
-	private List<DocumentAuthor> authors;
+	private List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>();
 
 	/**
 	 * 
@@ -29,7 +31,7 @@ public class PublicationBean extends LabFileBean {
 	public PublicationBean() {
 		super();
 		domainFile = new Publication();
-		domainFile.setUriExternal(false);
+		domainFile.setUriExternal(false);		
 	}
 
 	public PublicationBean(Publication publication) {
@@ -39,8 +41,6 @@ public class PublicationBean extends LabFileBean {
 	public PublicationBean(Publication publication, boolean loadSamples) {
 		super(publication);
 		this.domainFile = publication;
-		authors = new ArrayList<DocumentAuthor>();
-		System.out.println("############ PublicationBean");
 		if (publication.getDocumentAuthorCollection()!=null &&
 				publication.getDocumentAuthorCollection().size()>0) {
 			int i = 0;			
@@ -51,7 +51,7 @@ public class PublicationBean extends LabFileBean {
 			}
 		}
 		//TODO not sure??
-		publication.setDocumentAuthorCollection(authors);
+		//publication.setDocumentAuthorCollection(authors);
 		String researchAreasStr = 
 			publication.getResearchArea();
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
@@ -73,27 +73,7 @@ public class PublicationBean extends LabFileBean {
 		
 	}
 	
-	private void setupDocumentAuthors() {
-//		if (authorsStr != null) {			
-//			Publication publication = (Publication)domainFile;
-//			if (publication.getDocumentAuthorCollection() != null) {
-//				publication.getDocumentAuthorCollection().clear();
-//			} else {
-//				publication.setDocumentAuthorCollection(new HashSet<DocumentAuthor>());
-//			}
-//			//TODO, XXXXX author split to firstname, lastname, initial
-//			String[] strs = authorsStr.split(delimiter);
-//			String[] names = null;
-//			for (String str : strs) {
-//				// change to upper case
-//				DocumentAuthor author = new DocumentAuthor();
-//				names = str.split(" ");
-//				author.setFirstName(names[0].toUpperCase());
-//				author.setLastName(names[1].toUpperCase());
-//				publication.getDocumentAuthorCollection().add(author);
-//			}
-//		}
-	}
+
 
 	public boolean equals(Object obj) {
 		boolean eq = false;
@@ -155,4 +135,16 @@ public class PublicationBean extends LabFileBean {
 //	public void setAuthorsStr(String authorsStr) {
 //		this.authorsStr = authorsStr;
 //	}
+	
+	
+	public void addAuthor() {
+		authors.add(new DocumentAuthor());
+	}
+
+	public void removeAuthor(int ind) {
+		authors.remove(ind);
+	}
+
+	
+	
 }

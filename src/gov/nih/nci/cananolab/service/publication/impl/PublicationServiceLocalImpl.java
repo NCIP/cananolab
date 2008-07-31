@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, List<DocumentAuthor> authors) throws DocumentException {
+			byte[] fileData, Collection<DocumentAuthor> authors) throws DocumentException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication);
