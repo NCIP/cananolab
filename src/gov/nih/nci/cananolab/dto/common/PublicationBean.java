@@ -39,6 +39,7 @@ public class PublicationBean extends LabFileBean {
 	public PublicationBean(Publication publication, boolean loadSamples) {
 		super(publication);
 		this.domainFile = publication;
+		authors = new ArrayList<DocumentAuthor>();
 		System.out.println("############ PublicationBean");
 		if (publication.getDocumentAuthorCollection()!=null &&
 				publication.getDocumentAuthorCollection().size()>0) {
