@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public interface PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, List<DocumentAuthor> authors) throws DocumentException;
+			byte[] fileData, Collection<DocumentAuthor> authors) throws DocumentException;
 
 /*	public List<LabFileBean> findDocumentsBy(String reportTitle,
 			String reportCategory, String[] nanoparticleEntityClassNames,
