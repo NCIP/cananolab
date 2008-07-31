@@ -111,16 +111,16 @@
 						<c:url var="pubUrl" value="submitPublication.do">
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="dispatch" value="detailView" />
-							<c:param name="pubId" value="${pubObj.id}" />
+							<c:param name="publicationId" value="${pubObj.id}" />
 							<c:param name="location" value="${location}" />
 						</c:url>
 						<c:choose>
-							<c:when test="${!empty pubObj.pubMedId && pubObj.pubMedId != 0}">
+							<c:when test="${pubObj.pubMedId != null && pubObj.pubMedId != 0}">
 								<a href="${pubUrl }">PMID: ${pubObj.pubMedId }</a>
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${!empty pubObj.digitalObjectId && pubObj.digitalObjectId != null}}">
+									<c:when test="${pubObj.digitalObjectId != null && pubObj.digitalObjectId != 0}}">
 										<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
 									</c:when>
 									<c:otherwise>
@@ -152,9 +152,15 @@
 				</tr>
 				</c:forEach>
 				<c:forEach var="report" items="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.reportCollection}" >
+				<c:url var="reportUrl" value="submitReport.do">
+							<c:param name="submitType" value="${submitType}" />
+							<c:param name="dispatch" value="detailView" />
+							<c:param name="reportId" value="${report.id}" />
+							<c:param name="location" value="${location}" />
+						</c:url>
 				<tr>
 					<td class="leftLabel">
-						<a href="#">REPORT: ${report.title}</a>
+						<a href="${reportUrl}">REPORT: ${report.title}</a>
 					</td>
 					<td class="label">
 						&nbsp;
