@@ -125,10 +125,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(publicationBean, user);
 		theForm.set("file", publicationBean);
-		theForm.set("documentAuthors",publicationBean.getAuthors());
-
-		request.setAttribute("documentAuthors",publicationBean.getAuthors());
-
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
