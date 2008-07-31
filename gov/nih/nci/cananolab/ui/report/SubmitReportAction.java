@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.20 2008-07-31 19:20:05 cais Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.21 2008-07-31 21:22:18 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -169,8 +169,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 	
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
+			throws Exception {		
 		String location = request.getParameter("location");
 		ReportService reportService = null;
 		if (location.equals("local")) {
@@ -179,32 +178,13 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			reportService = new ReportServiceRemoteImpl(serviceUrl);
-		}
-		
+		}		
 		String reportId = request.getParameter("reportId");
 		
 		ReportBean reportBean = reportService.findReportById(reportId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", reportBean);
-		
-//		setupParticle(theForm, request, location);
-//		Characterization chara = prepareCharacterization(theForm, request,
-//				location);
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		getCharacterizationBean(theForm, chara, user, location);
-//		String particleId = request.getParameter("particleId");
-//		String publicationId = request.getParameter("dataId");
-//		String className = request.getParameter("dataClassName");
-//		String submitType = request.getParameter("submitType");
-//		String requestUrl = request.getRequestURL().toString();
-//		String printLinkURL = requestUrl
-//				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
-//				+ "&dataId=" + publicationId + "&dataClassName="
-//				+ className + "&submitType=" + submitType + "&location="
-//				+ location;
-//		request.getSession().setAttribute("printDetailViewLinkURL",
-//				printLinkURL);
-		return mapping.findForward("detailView");
+		return mapping.findForward("particleDetailView");
 	}
 
 

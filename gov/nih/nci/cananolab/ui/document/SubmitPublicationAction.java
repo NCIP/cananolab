@@ -217,34 +217,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		}
-		
+		}		
 		String publicationId = request.getParameter("publicationId");
-//		Publication publication = publicationService.findDomainPublicationById(publicationId);
-//		PublicationBean pubBean = new PublicationBean(publication);
-		
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("file", pubBean);
-		
-//		setupParticle(theForm, request, location);
-//		Characterization chara = prepareCharacterization(theForm, request,
-//				location);
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		getCharacterizationBean(theForm, chara, user, location);
-//		String particleId = request.getParameter("particleId");
-//		String publicationId = request.getParameter("dataId");
-//		String className = request.getParameter("dataClassName");
-//		String submitType = request.getParameter("submitType");
-//		String requestUrl = request.getRequestURL().toString();
-//		String printLinkURL = requestUrl
-//				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
-//				+ "&dataId=" + publicationId + "&dataClassName="
-//				+ className + "&submitType=" + submitType + "&location="
-//				+ location;
-//		request.getSession().setAttribute("printDetailViewLinkURL",
-//				printLinkURL);
-		return mapping.findForward("detailView");
+		theForm.set("file", pubBean);		
+		return mapping.findForward("particleDetailView");
 	}
 
 
