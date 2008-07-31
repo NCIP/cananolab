@@ -155,15 +155,9 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Nanoparticle ID</strong>
-						</td>
-						<td class="label">
-							<html:text property="nanoparticleId" size="20" />
-						</td>
-						<td class="label">
 							<strong>Nanoparticle Name</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
+						<td class="rightLabel" colspan="5">
 							<html:text property="nanoparticleName" size="20" />
 						</td>
 					</tr>
