@@ -57,7 +57,7 @@
 			<forward name="success" path="document.message" />
 			<forward name="input" path="document.submitPublication" />
 			<forward name="view" path="document.viewPublication" />
-			<forward name="detailView" path="document.detailViewPublication" />
+			<forward name="particleDetailView" path="particle.detailViewPublication" />
 			<forward name="particleSubmitPublication"
 				path="particle.submitPublication" />
 			<forward name="particleViewPublication"
