@@ -78,10 +78,37 @@
 				</tr>
 				<tr>
 					<th class="leftLabel" valign="top">
+						Publication Identifer
+					</th>
+					<td class="rightLabel">
+						<c:choose>
+							<c:when test="${submitPublicationForm.map.file.domainFile.pubMedId != null && 
+										submitPublicationForm.map.file.domainFile.pubMedId != 0}">
+								PMID: ${submitPublicationForm.map.file.domainFile.pubMedId }
+							</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null &&
+													submitPublicationForm.map.file.domainFile.digitalObjectId != 0}}">
+										DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }
+									</c:when>
+									<c:otherwise>
+										Publication: ${submitPublicationForm.map.file.domainFile.title }
+									</c:otherwise>
+								</c:choose>
+							</c:otherwise>
+						</c:choose>
+							&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
 						Publication Type
 					</th>
 					<td class="rightLabel">
-						report
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.category" />
+							&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -89,7 +116,9 @@
 						Publication Status
 					</th>
 					<td class="rightLabel">
-						Submitted
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.status" />
+							&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -97,7 +126,11 @@
 						First Author
 					</th>
 					<td class="rightLabel">
-						Scott E. McNeil
+						<c:if test="${!empty submitPublicationForm.map.file.authors }">
+							<bean:write name="submitPublicationForm"
+								property="file.authors[0]" />
+						</c:if>
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -105,15 +138,76 @@
 						Title
 					</th>
 					<td class="rightLabel">
-						DENDRITIC NANOTECHNOLOGIES
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.title" />
+							&nbsp;
 					</td>
 				</tr>
 				<tr>
 					<th class="leftLabel" valign="top">
-						File URL
+						Journal
 					</th>
 					<td class="rightLabel">
-						<a href="#">reports/200612_8-06-33-125_120406.pdf</a>
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.journalName" />
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						Year
+					</th>
+					<td class="rightLabel">
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.year" />
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						Volume
+					</th>
+					<td class="rightLabel">
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.volume" />
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						Pages
+					</th>
+					<td class="rightLabel">
+						<c:if test="${submitPublicationForm.map.file.domainFile.startPage != null && 
+										submitPublicationForm.map.file.domainFile.startPage != 0}">
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.startPage" /> - <bean:write name="submitPublicationForm"
+								property="file.domainFile.endPage" />
+						</c:if>
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						Abstract in<br>PubMed
+					</th>
+					<td class="rightLabel">
+						<c:choose>
+							<c:when test="${submitPublicationForm.map.file.domainFile.pubMedId != null && 
+										submitPublicationForm.map.file.domainFile.pubMedId != 0}">
+								<a href="#">PMID: ${submitPublicationForm.map.file.domainFile.pubMedId }</a>
+							</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null &&
+													submitPublicationForm.map.file.domainFile.digitalObjectId != 0}}">
+										<a href="#">DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }</a>
+									</c:when>
+								</c:choose>
+							</c:otherwise>
+						</c:choose>
+							&nbsp;
+						&nbsp;
 					</td>
 				</tr>
 				<tr>
@@ -121,7 +215,9 @@
 						Description
 					</th>
 					<td class="rightLabel">
-						&nbsp;
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.description" />
+							&nbsp;
 					</td>
 				</tr>
 			</table>

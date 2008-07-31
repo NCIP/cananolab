@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.document;
 
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -213,12 +212,29 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		
 		String location = request.getParameter("location");
+		PublicationService publicationService = null;
+		if (location.equals("local")) {
+			publicationService = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		}
+		
+		String publicationId = request.getParameter("publicationId");
+//		Publication publication = publicationService.findDomainPublicationById(publicationId);
+//		PublicationBean pubBean = new PublicationBean(publication);
+		
+		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("file", pubBean);
+		
 //		setupParticle(theForm, request, location);
 //		Characterization chara = prepareCharacterization(theForm, request,
 //				location);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
 //		getCharacterizationBean(theForm, chara, user, location);
 //		String particleId = request.getParameter("particleId");
 //		String publicationId = request.getParameter("dataId");
