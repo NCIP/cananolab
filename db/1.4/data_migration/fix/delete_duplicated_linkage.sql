@@ -1,9 +1,9 @@
 /*
 Aug. 1, 2008
 
-In WashU 1.3 data, there are duplicated particle functions linked to 
+In WashU 1.3 data, there is one particle function linked to 
 different linkages in the linkage table.
-The particle that has these duplicated functions is WUSTL-121. In the
+The particle that has this duplicated function is WUSTL-121. In the
 linkage table, the duplicated function_pk_id is 7078043, which is linked
 to both linkage_pk_id 7176363 and 7176364.
 
