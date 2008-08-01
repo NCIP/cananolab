@@ -9,12 +9,7 @@
 				depends="required">
 				<arg position="0" key="submitReportForm.particleNames"
 					bundle="report" />
-			</field>
-			<field property="file.domainFile.category" page="2"
-				depends="required">
-				<arg position="0" key="submitReportForm.file.category"
-					bundle="report" />
-			</field>
+			</field>			
 			<field property="file.externalUrl" page="2"
 				depends="validwhen">
 				<arg position="0" key="submitReportForm.externalUrl"
