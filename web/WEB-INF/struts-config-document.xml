@@ -55,9 +55,13 @@
 			type="gov.nih.nci.cananolab.ui.document.SubmitPublicationAction"
 			input="input" scope="request">
 			<forward name="success" path="document.message" />
-			<forward name="input" path="document.submitPublication" />
+			<forward name="particleSuccess" path="particle.annotationMessage" />
+			<forward name="input"
+				path="/submitPublication.do?dispatch=input&amp;page=0" />
 			<forward name="view" path="document.viewPublication" />
 			<forward name="particleDetailView" path="particle.detailViewPublication" />
+			<forward name="documentSubmitPublication"
+				path="document.submitPublication" />
 			<forward name="particleSubmitPublication"
 				path="particle.submitPublication" />
 			<forward name="particleViewPublication"
