@@ -90,6 +90,8 @@
 								<c:if test="${!empty submitReportForm.map.file.domainFile.id}">
 									<html:hidden property="file.domainFile.id" />
 								</c:if>
+								
+								<%-- remove report category 
 								<tr>
 									<td class="leftLabel">
 										<strong>Report Category*</strong>
@@ -106,6 +108,8 @@
 										</html:select>
 									</td>
 								</tr>
+								--%>
+								
 								<tr>
 									<td class="leftLabel">
 										<strong>Report File Title*</strong>
@@ -114,17 +118,36 @@
 										<html:text property="file.domainFile.title" size="80" />
 									</td>
 								</tr>
-								<tr>
-									<td class="leftLabel" valign="top" width="20%">
-										<strong>Nanoparticle Sample Name*</strong>
-									</td>
-									<td class="rightLabel"">
-										<html:select property="file.particleNames" multiple="true"
-											size="5">
-											<html:options name="allUserParticleNames" />
-										</html:select>
-									</td>
-								</tr>
+								<c:choose>
+									<c:when test="${empty param.particleId}">
+										<tr>
+											<td class="leftLabel" valign="top" width="20%">
+												<strong>Nanoparticle Sample Name*</strong>
+											</td>
+											<td class="rightLabel"">
+												<html:select property="file.particleNames" multiple="true"
+													size="5">
+													<html:options name="allUserParticleNames" />
+												</html:select>
+											</td>
+										</tr>
+									</c:when>
+									<c:otherwise>
+										<tr>
+											<input type="hidden" name="file.particleNames" value="${particleName}">
+											<td class="leftLabel" valign="top" width="20%">
+												<strong>Copy to other ${particleSource} nanoparticle</strong>
+											</td>
+											<td class="rightLabel">										
+												<html:select property="file.particleNames" multiple="true"
+													size="5">
+													<html:options collection="otherParticleNames" property="name"
+														labelProperty="name" />
+												</html:select>
+											</td>
+										</tr>
+									</c:otherwise>
+								</c:choose>
 								<tr>
 									<td class="leftLabel">
 										<strong>Report File Description</strong>
@@ -171,6 +194,7 @@
 															<input type="hidden" name="particleId"
 																value="${param.particleId}">
 														</c:if>
+														<html:hidden property="file.domainFile.category"/>
 														<html:submit />
 													</div>
 												</div>
