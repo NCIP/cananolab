@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -18,7 +19,10 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -64,7 +68,10 @@ public class PublicationServiceHelper {
 */
 	
 	public List<Publication> findPublicationsBy(String title,
-			String category, String[] nanoparticleEntityClassNames,
+			String category,  String nanoparticleName, 
+			String[] researchArea, String keywordsStr,
+			String pubMedId, String digitalObjectId, String authorsStr,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -78,17 +85,121 @@ public class PublicationServiceHelper {
 					.getUpdatedText(), titleMatchMode.getMatchMode()));
 		}
 		if (category != null && category.length() > 0) {
-			crit.add(Restrictions.eq("category", category));
+			TextMatchMode categoryMatchMode = new TextMatchMode(category);
+			crit.add(Restrictions.ilike("category", categoryMatchMode
+					.getUpdatedText(), categoryMatchMode.getMatchMode()));
 		}
-		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
-		crit.setFetchMode("documentAuthorCollection", FetchMode.JOIN);
-
+		
+		//pubMedId
+		if (pubMedId != null && pubMedId.length() > 0) {
+			TextMatchMode pubMedIdMatchMode = new TextMatchMode(pubMedId);
+			Long pubMedIdLong = null;	
+			try {
+				pubMedIdLong = new Long(pubMedIdMatchMode.getUpdatedText());
+			}catch (Exception ex) {
+				//ignore
+				pubMedIdLong = new Long(0);
+			}
+			crit.add(Restrictions.eq("pubMedId", pubMedIdLong));
+		}
+		if (digitalObjectId != null && digitalObjectId.length() > 0) {
+			TextMatchMode digitalObjectIdMatchMode = new TextMatchMode(digitalObjectId);
+			crit.add(Restrictions.ilike("digitalObjectId", digitalObjectIdMatchMode
+					.getUpdatedText(), digitalObjectIdMatchMode.getMatchMode()));
+		}
+		
+		
+		
+		//researchArea
+		
+		if (researchArea != null && researchArea.length > 0) {
+			
+			Disjunction disjunction = Restrictions.disjunction();
+			for (String research : researchArea) {
+				Criterion crit1 = Restrictions.like("researchArea",
+						research, MatchMode.ANYWHERE);				
+				disjunction.add(crit1);
+			}
+			crit.add(disjunction);
+		}
+		
+		//keywords
+		String keywordsArray[] = null;
+		if (keywordsStr != null && keywordsStr.length() > 0) {
+			List<String> keywordsList = StringUtils.parseToWords(keywordsStr);
+			if (keywordsList != null) {
+				keywordsArray = new String[keywordsList.size()];
+				keywordsList.toArray(keywordsArray);
+			}
+		}		
+		if (keywordsArray != null && keywordsArray.length > 0) {
+			// turn words into upper case before searching keywords
+			String[] upperKeywords = new String[keywordsArray.length];
+			for (int i = 0; i < keywordsArray.length; i++) {
+				upperKeywords[i] = keywordsArray[i].toUpperCase();
+			}
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias("keywordCollection", "keyword1",
+					CriteriaSpecification.LEFT_JOIN);
+			for (String keyword : upperKeywords) {
+				Criterion keywordCrit1 = Restrictions.like("keyword1.name",
+						keyword, MatchMode.ANYWHERE);
+				disjunction.add(keywordCrit1);
+			}
+			crit.add(disjunction);
+		}
+		
+		
+		//authors
+		crit.setFetchMode("documentAuthorCollection", FetchMode.JOIN);		
+		String authorsArray[] = null;
+		if (authorsStr != null && authorsStr.length() > 0) {
+			List<String> authorsList = StringUtils.parseToWords(authorsStr);
+			if (authorsList != null) {
+				authorsArray = new String[authorsList.size()];
+				authorsList.toArray(authorsArray);
+			}
+		}		
+		if (authorsArray != null && authorsArray.length > 0) {
+			// turn words into upper case before searching keywords
+			String[] uppers = new String[authorsArray.length];
+			for (int i = 0; i < authorsArray.length; i++) {
+				uppers[i] = authorsArray[i].toUpperCase();
+			}
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias("documentAuthorCollection", "author1",
+					CriteriaSpecification.LEFT_JOIN);
+			for (String author : uppers) {
+				Criterion crit1 = Restrictions.like("author1.lastName",
+						author, MatchMode.ANYWHERE);
+				disjunction.add(crit1);
+				Criterion crit2 = Restrictions.like("author1.firstName",
+						author, MatchMode.ANYWHERE);
+				disjunction.add(crit2);
+				Criterion crit3 = Restrictions.like("author1.middleInitial",
+						author, MatchMode.ANYWHERE);
+				disjunction.add(crit3);
+			}
+			crit.add(disjunction);
+		}
+		
 		crit.createAlias("nanoparticleSampleCollection", "sample",
 				CriteriaSpecification.LEFT_JOIN).createAlias(
 				"sample.sampleComposition", "compo",
 				CriteriaSpecification.LEFT_JOIN).createAlias(
 				"compo.nanoparticleEntityCollection", "nanoEntity",
 				CriteriaSpecification.LEFT_JOIN);
+		//nanoparticleName
+		if (nanoparticleName != null && nanoparticleName.length() > 0) {
+			TextMatchMode particleMatchMode = new TextMatchMode(nanoparticleName);
+			Disjunction disjunction = Restrictions.disjunction();
+			Criterion keywordCrit1 = Restrictions.like("sample.name",
+					particleMatchMode.getUpdatedText(), 
+					particleMatchMode.getMatchMode());
+			disjunction.add(keywordCrit1);			
+			crit.add(disjunction);
+		}		
+
 		crit.createAlias("compo.functionalizingEntityCollection", "funcEntity",
 				CriteriaSpecification.LEFT_JOIN);
 		crit.createAlias("compo.chemicalAssociationCollection", "asso",

@@ -54,7 +54,13 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 
 		String title = "";
 		String category = "";
+		String keywordsStr = "";
+		String pubMedId = "";
+		String digitalObjectId = "";
+		String authorsStr = "";
+		String nanoparticleName = "";
 		String[] publicationOrReport = new String[0];
+		String[] researchArea = new String[0];
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
@@ -62,6 +68,14 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		if (theForm != null) {
 			title = (String) theForm.get("title");
 			category = (String) theForm.get("category");
+			keywordsStr = (String) theForm.get("keywordsStr");
+			pubMedId = (String) theForm.get("pubMedId");
+			digitalObjectId = (String) theForm.get("digitalObjectId");
+			authorsStr = (String) theForm.get("authorsStr");
+			nanoparticleName = (String) theForm.get("nanoparticleName");
+			
+			researchArea = (String[]) theForm
+				.get("researchArea");
 			publicationOrReport = (String[]) theForm
 				.get("publicationOrReport");
 			nanoparticleEntityTypes = (String[]) theForm
@@ -91,8 +105,6 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 				nanoparticleEntityClassNames.add(className);
 			}
 		}
-
-
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
@@ -134,7 +146,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 					service = new ReportServiceRemoteImpl(serviceUrl);
 				}
 				List<ReportBean> reports = service.findReportsBy(title,
-						category, nanoparticleEntityClassNames
+						category, nanoparticleName, nanoparticleEntityClassNames
 								.toArray(new String[0]),
 						otherNanoparticleEntityTypes.toArray(new String[0]),
 						functionalizingEntityClassNames.toArray(new String[0]),
@@ -174,7 +186,9 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 					documentService = new PublicationServiceRemoteImpl(serviceUrl);
 				}
 				List<PublicationBean> publications = documentService.findPublicationsBy(title,
-						category, nanoparticleEntityClassNames
+						category, nanoparticleName, researchArea, keywordsStr,
+						pubMedId, digitalObjectId, authorsStr,
+						nanoparticleEntityClassNames
 								.toArray(new String[0]),
 						otherNanoparticleEntityTypes.toArray(new String[0]),
 						functionalizingEntityClassNames.toArray(new String[0]),
