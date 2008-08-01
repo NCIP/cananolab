@@ -53,7 +53,7 @@
 		<action name="submitPublicationForm" parameter="dispatch"
 			path="/submitPublication"
 			type="gov.nih.nci.cananolab.ui.document.SubmitPublicationAction"
-			input="input" scope="request">
+			input="input">
 			<forward name="success" path="document.message" />
 			<forward name="particleSuccess" path="particle.annotationMessage" />
 			<forward name="input"

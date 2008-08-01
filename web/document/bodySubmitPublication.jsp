@@ -92,8 +92,8 @@
 										<c:forEach var="data" items="${publicationResearchAreas}">
 											<html:multibox property="file.domainFile.researchArea">
 												${data}
-											</html:multibox>${data}&nbsp;
-										</c:forEach>										
+											</html:multibox>${data}
+										</c:forEach>&nbsp;
 									</td>	
 								</tr>
 								<tr>
@@ -143,9 +143,10 @@
 									</td>
 									<td class="label" colspan="2" valign="top">
 										<table class="smalltable" border="0">
+<%--											<logic:notEmpty name="submitPublicationForm"
+														property="file.authors" > --%>
 											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Middle Initial</th>
-											<logic:notEmpty name="submitPublicationForm"
-														property="file.authors" >
+											
 												<tr>
 													<logic:iterate name="submitPublicationForm"
 														property="file.authors" id="author" indexId="authorInd">
@@ -156,11 +157,14 @@
 														</tr>													
 													</logic:iterate>
 												</tr>
-											</logic:notEmpty>																					
-										</table>																				
+<%--											</logic:notEmpty> --%>
+										</table>&nbsp;																			
 									</td>
 									<td class="rightLabel" colspan="2" valign="top">
-										<html:button property="file.domainFile.pubMedId" value="add authors"/>
+										<a href="#"
+												onclick="javascript:addComponent(submitPublicationForm, 'submitPublication', 'addAuthor'); return false;">
+												<span class="addLink2">Add Author</span> </a>
+<%--										<html:button property="file.domainFile.pubMedId" value="add authors"/>--%>
 									</td>
 								</tr>
 								<tr>
