@@ -29,7 +29,10 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,16 +50,29 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
+		String[] researchAreas = publicationBean.getResearchAreas();
+//		if (!validateResearchAreas(request, researchAreas)) {
+//			return mapping.getInputForward();
+//		}
+//		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName());
+		String researchAreasStr = null;
+		if (researchAreas!=null && researchAreas.length>0) {
+			researchAreasStr = StringUtils.join(researchAreas, ";");
+		}
+		Publication publication = (Publication) publicationBean.getDomainFile();
+		publication.setResearchArea(researchAreasStr);
 		
 		PublicationService service = new PublicationServiceLocalImpl();
-		service.savePublication((Publication) publicationBean.getDomainFile(), publicationBean
-				.getParticleNames(), publicationBean.getNewFileData(), publicationBean.getAuthors());
+		service.savePublication(publication, publicationBean
+				.getParticleNames(), publicationBean.getNewFileData(), 
+				publicationBean.getAuthors());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
@@ -76,15 +92,13 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");	
 		if (particleId==null ||particleId.length()==0) {
 			Object particleIdObj = session.getAttribute("particleId");
-			System.out.println("session.getAttribute ="+particleIdObj);
 			if (particleIdObj!=null) {
 				particleId = particleIdObj.toString();
 				request.setAttribute("particleId", particleId);
 			}else {
 				request.removeAttribute("particleId");
 			}
-		}
-		
+		}		
 		if (particleId != null
 				&& particleId.length() > 0) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
@@ -100,6 +114,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		System.out.println("########### setup");
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
 		if (particleId != null) {
@@ -136,6 +151,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		System.out.println("########### setupUpdate");
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
 		if (particleId != null) {
@@ -259,6 +275,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {		
+		System.out.println("########### input");
 		HttpSession session = request.getSession();	
 		Object particleIdObj = session.getAttribute("particleId");
 		String particleId = null;
@@ -306,6 +323,23 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 //		}		
 //		return true;
 //	}
+	
+	protected boolean validateResearchAreas(HttpServletRequest request,
+			String[] researchAreas) throws Exception {
+		ActionMessages msgs = new ActionMessages();
+		boolean noErrors = true;
+		if (researchAreas==null || researchAreas.length==0) {
+			ActionMessage msg = new ActionMessage("submitPublicationForm.file.researchArea",
+					"researchAreas");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			noErrors = false;
+		}else {
+			System.out.println("validateResearchAreas =="+Arrays.toString(researchAreas));
+		}
+		return noErrors;
+	}
+
 		
 
 }

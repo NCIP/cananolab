@@ -6,7 +6,11 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,10 +26,6 @@ public class PublicationBean extends LabFileBean {
 	private String[] researchAreas;
 	private List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>(20);
 
-
-	/**
-	 * 
-	 */
 	public PublicationBean() {
 		super();
 		domainFile = new Publication();
@@ -40,22 +40,26 @@ public class PublicationBean extends LabFileBean {
 	public PublicationBean(Publication publication, boolean loadSamples) {
 		super(publication);
 		this.domainFile = publication;
-		if (publication.getDocumentAuthorCollection()!=null &&
-				publication.getDocumentAuthorCollection().size()>0) {
-			for (DocumentAuthor author : publication
-					.getDocumentAuthorCollection()) {
-				authors.add(author);
-			}
+		Collection<DocumentAuthor> documentAuthorCollection =
+			publication.getDocumentAuthorCollection();
+		if (documentAuthorCollection!=null &&
+				documentAuthorCollection.size()>0) {
+			List<DocumentAuthor> authorslist = new ArrayList<DocumentAuthor>(documentAuthorCollection);
+			Collections.sort(authorslist, 
+					new Comparator<DocumentAuthor>() {
+			    public int compare(DocumentAuthor o1, DocumentAuthor o2) {
+			        return (int)(o1.getId() - o2.getId());
+			    }});
+			authors = authorslist;
 		}
-		//TODO not sure??
-		//publication.setDocumentAuthorCollection(authors);
 		String researchAreasStr = 
 			publication.getResearchArea();
+		//System.out.println("########## researchAreasStr "+researchAreasStr);
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
 			researchAreas = researchAreasStr.split(delimiter);
 		}else {
 			researchAreas = null;
-		}
+		}		
 
 		if (loadSamples) {
 			particleNames = new String[publication.getNanoparticleSampleCollection()

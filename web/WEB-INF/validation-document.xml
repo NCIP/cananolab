@@ -20,7 +20,7 @@
 				<arg position="0" key="submitPublicationForm.file.status"
 					bundle="document" />
 			</field>
-			<field property="file.domainFile.researchArea" page="2"
+			<field property="file.researchAreas" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.researchArea"
 					bundle="document" />
