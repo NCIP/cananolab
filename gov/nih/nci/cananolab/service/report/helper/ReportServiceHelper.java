@@ -44,9 +44,9 @@ public class ReportServiceHelper {
 			crit.add(Restrictions.ilike("title", titleMatchMode
 					.getUpdatedText(), titleMatchMode.getMatchMode()));
 		}
-		if (reportCategory != null && reportCategory.length() > 0) {
-			crit.add(Restrictions.eq("category", reportCategory));
-		}
+//		if (reportCategory != null && reportCategory.length() > 0) {
+//			crit.add(Restrictions.eq("category", reportCategory));
+//		}
 		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
 
 		crit.createAlias("nanoparticleSampleCollection", "sample",

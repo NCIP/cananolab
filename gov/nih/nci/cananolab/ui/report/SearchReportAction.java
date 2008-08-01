@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.16 2008-06-16 16:03:40 cais Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.17 2008-08-01 19:49:36 tanq Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -50,6 +50,7 @@ public class SearchReportAction extends BaseAnnotationAction {
 
 		String reportTitle = "";
 		String reportCategory = "";
+		String nanoparticleName = "";
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
@@ -68,6 +69,7 @@ public class SearchReportAction extends BaseAnnotationAction {
 		if (theForm != null) {
 			reportTitle = (String) theForm.get("reportTitle");
 			reportCategory = (String) theForm.get("reportCategory");
+			nanoparticleName = (String) theForm.get("nanoparticleName");
 			nanoparticleEntityTypes = (String[]) theForm
 					.get("nanoparticleEntityTypes");
 			functionalizingEntityTypes = (String[]) theForm
@@ -154,7 +156,7 @@ public class SearchReportAction extends BaseAnnotationAction {
 				service = new ReportServiceRemoteImpl(serviceUrl);
 			}
 			List<ReportBean> reports = service.findReportsBy(reportTitle,
-					reportCategory, nanoparticleEntityClassNames
+					reportCategory, nanoparticleName, nanoparticleEntityClassNames
 							.toArray(new String[0]),
 					otherNanoparticleEntityTypes.toArray(new String[0]),
 					functionalizingEntityClassNames.toArray(new String[0]),

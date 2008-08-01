@@ -76,7 +76,8 @@ public class ReportServiceLocalImpl implements ReportService {
 	}
 
 	public List<ReportBean> findReportsBy(String reportTitle,
-			String reportCategory, String[] nanoparticleEntityClassNames,
+			String reportCategory, String nanoparticleName,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
