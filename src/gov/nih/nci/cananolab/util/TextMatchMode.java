@@ -17,7 +17,10 @@ public class TextMatchMode {
 	public TextMatchMode(String originalText) {
 		this.originalText = originalText;
 		updatedText = originalText;
-		if (originalText.startsWith("*") && originalText.endsWith("*")) {
+		if (originalText.equals("*")){
+			matchMode = MatchMode.ANYWHERE;
+			updatedText = "";
+		}else if (originalText.startsWith("*") && originalText.endsWith("*")) {
 			matchMode = MatchMode.ANYWHERE;
 			updatedText = originalText.substring(1, originalText.length() - 1);
 		} else if (originalText.startsWith("*")) {
