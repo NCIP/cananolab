@@ -120,7 +120,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	
 	
 	public List<PublicationBean> findPublicationsBy(String title,
-			String category, String[] nanoparticleEntityClassNames,
+			String category, String nanoparticleName, 
+			String[] researchArea, String keywordsStr,
+			String pubMedId, String digitalObjectId, String authorsStr,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -128,7 +131,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throws DocumentException, CaNanoLabSecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
-			List<Publication> publications = helper.findPublicationsBy(title, category, nanoparticleEntityClassNames, 
+			List<Publication> publications = helper.findPublicationsBy(title, category,
+					nanoparticleName, researchArea, keywordsStr,
+					pubMedId, digitalObjectId, authorsStr,
+					nanoparticleEntityClassNames, 
 					otherNanoparticleTypes, functionalizingEntityClassNames, 
 					otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
 			if (publications!=null) {

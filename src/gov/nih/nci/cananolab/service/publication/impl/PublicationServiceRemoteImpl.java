@@ -55,7 +55,10 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	//wait for update on gridclient
 	
 	public List<PublicationBean> findPublicationsBy(String reportTitle,
-			String reportCategory, String[] nanoparticleEntityClassNames,
+			String reportCategory, String nanoparticleName, 
+			String[] researchArea, String keywordsStr,
+			String pubMedId, String digitalObjectId, String authorsStr,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,

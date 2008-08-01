@@ -77,8 +77,8 @@
 							<strong>Research Category</strong>
 						</td>
 						<td class="label" colspan="1">												
-							<strong><html:select property="publicationResearchAreas"
-									styleId="publicationResearchAreas" multiple="true" size="2">
+							<strong><html:select property="researchArea"
+									styleId="researchArea" multiple="true" size="2">
 									<html:options name="publicationResearchAreas" />
 								</html:select> </strong>
 						</td>
@@ -99,15 +99,16 @@
 							<html:text property="title" size="100" />
 						</td>
 					</tr>
-					<tr>
+					<tr valign="top">
 						<td class=leftLabelNoBottom colspan="2">
 							&nbsp;
 						</td>						
-						<td class="borderlessLabel">
+						<td class="borderlessLabel" valign="top">
 							<strong>PubMed ID</strong>
 						</td>
-						<td class="borderlessLabel" colspan="">
-							<html:text property="pubMedId" size="20" />
+						<td class="borderlessLabel" valign="top">
+							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
+							<br>(Please enter the whole PubMedID)<br><br>
 						</td>
 						<td class="borderlessLabel">
 							<strong>Digital Object ID</strong>
@@ -133,7 +134,7 @@
 							<strong>Authors</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="authors" size="20" />
+							<html:text property="authorsStr" size="20" />
 						</td>
 					</tr>
 				</table>

@@ -24,8 +24,18 @@ public interface ReportService {
 	public void saveReport(Report report, String[] particleNames,
 			byte[] fileData) throws ReportException;
 
+//	//TODO: keep it for backward capacity?
+//	public List<ReportBean> findReportsBy(String reportTitle,
+//			String reportCategory, String[] nanoparticleEntityClassNames,
+//			String[] otherNanoparticleTypes,
+//			String[] functionalizingEntityClassNames,
+//			String[] otherFunctionalizingEntityTypes,
+//			String[] functionClassNames, String[] otherFunctionTypes)
+//			throws ReportException, CaNanoLabSecurityException;
+	
 	public List<ReportBean> findReportsBy(String reportTitle,
-			String reportCategory, String[] nanoparticleEntityClassNames,
+			String reportCategory, String nanoparticleName,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
