@@ -16,7 +16,7 @@
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="publicationOrReport"
 				type="java.lang.String[]" />
-			<form-property name="publicationResearchAreas"
+			<form-property name="researchArea"
 				type="java.lang.String[]" />
 			<form-property name="nanoparticleEntityTypes"
 				type="java.lang.String[]" />
@@ -28,13 +28,11 @@
 			<form-property name="category"
 				type="java.lang.String" />
 			<form-property name="searchLocations"
-				type="java.lang.String[]"/>
-			<form-property name="researchArea" type="java.lang.String" />
-			<form-property name="authors" type="java.lang.String" />
+				type="java.lang.String[]"/>			
+			<form-property name="authorsStr" type="java.lang.String" />
 			<form-property name="pubMedId" type="java.lang.String" />
 			<form-property name="digitalObjectId" type="java.lang.String" />			
 			<form-property name="keywordsStr" type="java.lang.String" />
-			<form-property name="nanoparticleId" type="java.lang.String" />
 			<form-property name="nanoparticleName" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
