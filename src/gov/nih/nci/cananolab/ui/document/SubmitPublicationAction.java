@@ -71,32 +71,50 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-		if (request.getParameter("particleId") != null
-				&& request.getParameter("particleId").length() > 0) {
+		
+		HttpSession session = request.getSession();	
+		String particleId = request.getParameter("particleId");	
+		if (particleId==null ||particleId.length()==0) {
+			Object particleIdObj = session.getAttribute("particleId");
+			System.out.println("session.getAttribute ="+particleIdObj);
+			if (particleIdObj!=null) {
+				particleId = particleIdObj.toString();
+				request.setAttribute("particleId", particleId);
+			}else {
+				request.removeAttribute("particleId");
+			}
+		}
+		
+		if (particleId != null
+				&& particleId.length() > 0) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
-					.findNanoparticleSampleById(request
-							.getParameter("particleId"));
+					.findNanoparticleSampleById(particleId);
 			setupDataTree(particleBean, request);
 			forward = mapping.findForward("particleSuccess");
 		}
+		session.removeAttribute("particleId");
 		return forward;
 	}
 
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//TODO
-		InitDocumentSetup.getInstance().setPublicationDropdowns(request);	
 		HttpSession session = request.getSession();	
-		String particleId = request.getParameter("particleId");
-		if (request.getParameter("particleId") != null
-				&& request.getParameter("particleId").length() > 0
+		String particleId = request.getParameter("particleId");		
+		if (particleId != null) {
+			session.setAttribute("particleId", particleId);
+		}else {
+			//if it is not calling from particle, remove previous set attribute if applicable
+			session.removeAttribute("particleId");
+		}
+		InitDocumentSetup.getInstance().setPublicationDropdowns(request);	
+		if (particleId!= null
+				&& particleId.length() > 0
 				&& session.getAttribute("otherParticleNames")==null) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
-					.findNanoparticleSampleById(request
-							.getParameter("particleId"));
+					.findNanoparticleSampleById(particleId);
 			UserBean user = (UserBean) session.getAttribute("user");
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
@@ -105,9 +123,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 							.getOrganizationName(), user);
 		}		
 		ActionForward forward = mapping.getInputForward();
-		if (particleId != null) {
+		
+		if (particleId != null && !particleId.equals("null")) {
 			forward = mapping.findForward("particleSubmitPublication");
 			request.setAttribute("particleId", particleId);
+		}else {
+			request.removeAttribute("particleId");
 		}
 		return forward;
 	}
@@ -115,11 +136,18 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		HttpSession session = request.getSession();	
+		String particleId = request.getParameter("particleId");		
+		if (particleId != null) {
+			session.setAttribute("particleId", particleId);
+		}else {
+			session.removeAttribute("particleId");
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String publicationId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
-		//TODO, tanq
+		
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = publicationService.findPublicationById(publicationId);
 		FileService fileService = new FileServiceLocalImpl();
@@ -127,12 +155,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		theForm.set("file", publicationBean);
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
-		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null) {
-			//TODO, particleSubmitReport?? particleSubmitPublication??
 			forward = mapping.findForward("particleSubmitPublication");
 			request.setAttribute("particleId", particleId);
+		}else {
+			request.removeAttribute("particleId");
 		}
 		return forward;
 	}
@@ -202,13 +230,16 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		return mapping.findForward("success");
+		if (particleId!=null) {
+			return mapping.findForward("particleSuccess");
+		}else {
+			return mapping.findForward("success");
+		}
 	}
 
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
+			throws Exception {		
 		String location = request.getParameter("location");
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
@@ -223,6 +254,27 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", pubBean);		
 		return mapping.findForward("particleDetailView");
+	}
+
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {		
+		HttpSession session = request.getSession();	
+		Object particleIdObj = session.getAttribute("particleId");
+		String particleId = null;
+		if (particleIdObj!=null) {
+			particleId = particleIdObj.toString();
+			request.setAttribute("particleId", particleId);
+		}else {
+			request.removeAttribute("particleId");
+		}
+				ActionForward forward = null;	
+		if (particleId != null) {
+			forward = mapping.findForward("particleSubmitPublication");
+		}else {
+			forward = mapping.findForward("documentSubmitPublication");
+		}
+		return forward;
 	}
 
 

@@ -43,10 +43,13 @@
 			type="gov.nih.nci.cananolab.ui.report.SubmitReportAction"
 			input="input" scope="request">
 			<forward name="success" path="report.message" />
-			<forward name="input" path="report.submitReport" />
+			<forward name="input"
+				path="/submitReport.do?dispatch=input&amp;page=0" />
 			<forward name="view" path="report.viewReport" />
 			<forward name="detailView" path="report.detailViewReport" />
 			<forward name="particleDetailView" path="particle.detailViewReport" />
+			<forward name="documentSubmitReport"
+				path="report.submitReport" />
 			<forward name="particleSubmitReport"
 				path="particle.submitReport" />
 			<forward name="particleViewReport"
