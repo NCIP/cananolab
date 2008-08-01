@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -63,25 +64,23 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			for (NanoparticleSample sample : particleSamples) {
 				publication.getNanoparticleSampleCollection().add(sample);
 				sample.getPublicationCollection().add(publication);
-			}
-			
+			}			
 			if (publication.getDocumentAuthorCollection() == null) {
-				System.out.println("####### publication.getDocumentAuthorCollection() == null");
 				publication
 						.setDocumentAuthorCollection(new HashSet<DocumentAuthor>());
 			}
 			if (authors!=null) {
-				System.out.println("####### authors!=null");
 				for (DocumentAuthor author : authors) {
-					publication.getDocumentAuthorCollection().add(author);
-					author.getPublicationCollection().add(publication);
-				}
-			}else {
-				System.out.println("####### authors=====null");				
+					if (!StringUtils.isBlank(author.getFirstName()) || 
+						!StringUtils.isBlank(author.getLastName())||
+						!StringUtils.isBlank(author.getMiddleInitial())){
+						publication.getDocumentAuthorCollection().add(author);
+					}else {
+						publication.getDocumentAuthorCollection().remove(author);
+					}
+				}			
 			}
 			appService.saveOrUpdate(publication);
-
-			// save to the file system fileData is not empty
 			fileService.writeFile(publication, fileData);
 
 		} catch (Exception e) {
@@ -90,34 +89,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new DocumentException(err, e);
 		}
 	}
-
-/*	//TODO XXXX may create a documentBean
-	public List findDocumentsBy(String reportTitle,
-			String reportCategory, String[] nanoparticleEntityClassNames,
-			String[] otherNanoparticleTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws DocumentException, CaNanoLabSecurityException {
-		List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
-		try {
-			Collection documents = helper.findDocumentsBy(reportTitle,
-					reportCategory, nanoparticleEntityClassNames,
-					otherNanoparticleTypes, functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes);
-			for (Object document : documents) {
-				//TODO, tanq
-				documentBeans.add(new DocumentBean(document));
-			}
-			return documentBeans;
-		} catch (Exception e) {
-			String err = "Problem finding report info.";
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
-	}*/
-	
 	
 	public List<PublicationBean> findPublicationsBy(String title,
 			String category, String nanoparticleName, 
