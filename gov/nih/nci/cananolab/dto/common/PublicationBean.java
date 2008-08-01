@@ -6,9 +6,6 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,8 @@ public class PublicationBean extends LabFileBean {
 	
 	private String[] particleNames;
 	private String[] researchAreas;
-	private List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>();
+	private List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>(20);
+
 
 	/**
 	 * 
@@ -31,7 +29,8 @@ public class PublicationBean extends LabFileBean {
 	public PublicationBean() {
 		super();
 		domainFile = new Publication();
-		domainFile.setUriExternal(false);		
+		domainFile.setUriExternal(false);
+		authors.add(new DocumentAuthor());
 	}
 
 	public PublicationBean(Publication publication) {
@@ -43,11 +42,9 @@ public class PublicationBean extends LabFileBean {
 		this.domainFile = publication;
 		if (publication.getDocumentAuthorCollection()!=null &&
 				publication.getDocumentAuthorCollection().size()>0) {
-			int i = 0;			
 			for (DocumentAuthor author : publication
 					.getDocumentAuthorCollection()) {
 				authors.add(author);
-				i++;
 			}
 		}
 		//TODO not sure??
@@ -79,7 +76,7 @@ public class PublicationBean extends LabFileBean {
 		boolean eq = false;
 		if (obj instanceof PublicationBean) {
 			PublicationBean c = (PublicationBean) obj;
-			Long thisId = domainFile.getId();
+			Long thisId = this.domainFile.getId();
 			if (thisId != null && thisId.equals(c.getDomainFile().getId())) {
 				eq = true;
 			}
