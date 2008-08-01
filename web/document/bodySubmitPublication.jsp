@@ -90,7 +90,7 @@
 									</td>
 									<td class="rightLabel" colspan="3">
 										<c:forEach var="data" items="${publicationResearchAreas}">
-											<html:multibox property="file.domainFile.researchArea">
+											<html:multibox property="file.researchAreas">
 												${data}
 											</html:multibox>${data}
 										</c:forEach>&nbsp;
