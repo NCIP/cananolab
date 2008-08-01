@@ -277,7 +277,17 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		return forward;
 	}
 
+	public ActionForward addAuthor(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PublicationBean pbean = (PublicationBean) theForm
+				.get("file");
+		pbean.addAuthor();
 
+		return mapping.getInputForward();
+	}
+	
 	public boolean loginRequired() {
 		return true;
 	}
