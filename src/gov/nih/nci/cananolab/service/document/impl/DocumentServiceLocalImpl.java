@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
@@ -17,6 +18,8 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -157,4 +160,17 @@ public class DocumentServiceLocalImpl implements DocumentService {
 		
 	}
 	
+	
+	public void exportFullSummary(DocumentSummaryBean summaryBean,
+			OutputStream out) throws IOException {
+		DocumentServiceHelper helper = new DocumentServiceHelper();
+		helper.exportFullSummary(summaryBean, out);
+	}
+
+	public void exportSummary(DocumentSummaryBean summaryBean,
+			OutputStream out) throws IOException {
+		DocumentServiceHelper helper = new DocumentServiceHelper();
+		helper.exportSummary(summaryBean, out);
+	}
+
 }

@@ -1,19 +1,39 @@
 package gov.nih.nci.cananolab.service.report.helper;
 
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.ReportBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -222,5 +242,99 @@ public class ReportServiceHelper {
 			}
 		}
 		return publicIds.size();
+	}
+	
+	
+	public void exportDetail(ReportBean aReport, OutputStream out)
+		throws Exception {
+		
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("detailSheet");
+		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+		short startRow = 0;
+		setDetailSheet(aReport, wb, sheet, patriarch, startRow);
+		wb.write(out);
+		if (out != null) {
+			out.flush();
+			out.close();
+		}
+	}
+	
+	public short setDetailSheet(ReportBean aReport, HSSFWorkbook wb,
+			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
+		HSSFFont headerFont = wb.createFont();
+		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		HSSFCellStyle headerStyle = wb.createCellStyle();
+		headerStyle.setFont(headerFont);
+
+		Report report = null;
+		if (aReport!=null) {
+			report = (Report) aReport.getDomainFile();
+		}
+		if (report==null) {
+			return 0;
+		}
+		HSSFRow row = null;
+		HSSFCell cell = null;
+		short cellCount = 0;
+
+		//Title
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Title"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(report.getTitle()));	
+		
+		//Description
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Description"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(report.getDescription()));
+		
+		if (report.getUri() != null) {
+			row = sheet.createRow(rowCount++);
+			cellCount = 0;
+			cell = row.createCell(cellCount++);
+			cell.setCellStyle(headerStyle);
+			cell.setCellValue(new HSSFRichTextString("Report File"));
+
+			if (aReport.isHidden()) {
+				row.createCell(cellCount++).setCellValue(
+						new HSSFRichTextString("Private file"));
+			} else {
+				if (aReport.isImage()) {
+					try {
+						String filePath = aReport.getFullPath();
+						HSSFClientAnchor anchor;
+						short topLeftCell = cellCount;
+						short bottomRightCell = (short) (cellCount + 7);
+						int topLeftRow = rowCount + 1;
+						int bottomRightRow = rowCount + 22;
+						anchor = new HSSFClientAnchor(0, 0, 0, 255,
+								topLeftCell, topLeftRow, bottomRightCell,
+								bottomRightRow);
+						anchor.setAnchorType(2);
+						patriarch.createPicture(anchor, ExportUtils
+								.loadPicture(filePath, wb));
+						cellCount = bottomRightCell;
+						rowCount = (short) (bottomRightRow + 3);
+					} catch (IOException ioe) {
+						logger
+								.error(
+										"Input/output problem to export detail view image data ",
+										ioe);
+					}
+				} else {
+					row.createCell(cellCount++).setCellValue(
+							new HSSFRichTextString(report.getTitle()));
+				}
+			}
+		}
+		return rowCount;
 	}
 }

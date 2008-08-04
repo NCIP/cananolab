@@ -1,8 +1,9 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -11,12 +12,21 @@ import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -378,4 +388,168 @@ public class PublicationServiceHelper {
 		}
 		return count;
 	}
+	
+	public void exportDetail(PublicationBean aPub, OutputStream out)
+		throws Exception {
+		
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("detailSheet");
+		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+		short startRow = 0;
+		setDetailSheet(aPub, wb, sheet, patriarch, startRow);
+		wb.write(out);
+		if (out != null) {
+			out.flush();
+			out.close();
+		}
+	}
+	
+	public short setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
+			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
+		HSSFFont headerFont = wb.createFont();
+		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		HSSFCellStyle headerStyle = wb.createCellStyle();
+		headerStyle.setFont(headerFont);
+
+		Publication publication = (Publication) aPub.getDomainFile();
+		
+		HSSFRow row = null;
+		HSSFCell cell = null;
+		// PubMedID
+		Long pubMedId = publication.getPubMedId();
+		row = sheet.createRow(rowCount++);
+		short cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Publication Identifier"));
+		if (pubMedId.intValue()>0) {			
+			row.createCell(cellCount++).setCellValue(
+					new HSSFRichTextString(pubMedId.toString()));
+		}else {
+			String oid = publication.getDigitalObjectId();
+			if (oid!=null && oid.length()>0) {
+				row.createCell(cellCount++).setCellValue(
+						new HSSFRichTextString(oid));
+			}else {
+				//row.createCell(cellCount++).setCellValue(
+					//	new HSSFRichTextString(""));
+			}		
+		}
+		
+		//publication type
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Publication Type"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getCategory()));	
+		
+		//publication status
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Publication Status"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getStatus()));	
+		
+		//research area
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Research Category"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getResearchArea()));	
+		
+		//Title
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Title"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getTitle()));	
+		
+		//Journal
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Journal"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getJournalName()));	
+		
+		//Year
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Year"));
+		int year = publication.getYear();
+		if (year>0) {
+			row.createCell(cellCount++).setCellValue(
+					new HSSFRichTextString(Integer.toString(year)));
+		}
+		
+		//Volume
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Volume"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getVolume()));	
+		
+		//Pages
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Pages"));
+		long startPage = publication.getStartPage();
+		long endPage = publication.getEndPage();
+		if (startPage>0 || endPage>0) {
+			row.createCell(cellCount++).setCellValue(
+					new HSSFRichTextString(publication.getJournalName()));
+		}
+		//Authors
+		String rowHeader = "Authors";
+		
+		StringBuffer sb = new StringBuffer();
+		if (publication.getDocumentAuthorCollection()!=null) {
+			for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
+				
+				sb.append(author.getFirstName());
+				sb.append(' ');
+				sb.append(author.getMiddleInitial());
+				sb.append(' ');
+				sb.append(author.getLastName());
+				
+				row = sheet.createRow(rowCount++);
+				cellCount = 0;
+				cell = row.createCell(cellCount++);
+				cell.setCellStyle(headerStyle);
+				cell.setCellValue(new HSSFRichTextString(rowHeader));
+				row.createCell(cellCount++).setCellValue(
+						new HSSFRichTextString(sb.toString()));	
+				rowHeader = "";
+				sb.setLength(0);
+			}
+		}		
+		//Description
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Description"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getDescription()));	
+		
+		
+		
+		return rowCount;
+	}
+
 }

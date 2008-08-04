@@ -2,18 +2,22 @@ package gov.nih.nci.cananolab.service.report.impl;
 
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -127,5 +131,18 @@ public class ReportServiceLocalImpl implements ReportService {
 	public Report[] findReportsByParticleSampleId(String particleId)
 			throws ReportException {
 		throw new ReportException("Not implemented for local search");
+	}
+	
+	public void exportDetail(ReportBean aReport, OutputStream out)
+	throws DocumentException{		
+		try {
+			ReportServiceHelper helper = new ReportServiceHelper();
+			helper.exportDetail(aReport, out);
+		} catch (Exception e) {
+			String err = "error exporting detail view for "
+					+ aReport.getDomainFile().getTitle();
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
 	}
 }

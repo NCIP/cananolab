@@ -5,7 +5,13 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.22 2008-08-01 17:43:44 tanq Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.23 2008-08-04 22:36:27 tanq Exp $ */
+
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -15,6 +21,8 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -34,6 +42,8 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.PropertyReader;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import javax.servlet.http.HttpServletRequest;
@@ -138,7 +148,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			session.removeAttribute("particleId");
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String reportId = request.getParameter("fileId");
+		String reportId = request.getParameter("reportId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ReportService reportService = new ReportServiceLocalImpl();
 		ReportBean reportBean = reportService.findReportById(reportId);
@@ -163,7 +173,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		String reportId = request.getParameter("fileId");
+		String reportId = request.getParameter("reportId");
 		String location = request.getParameter("location");
 		ReportService reportService = null;
 		if (location.equals("local")) {
@@ -213,6 +223,19 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		ReportBean reportBean = reportService.findReportById(reportId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", reportBean);
+		
+		
+		String particleId = request.getParameter("particleId");
+		String submitType = request.getParameter("submitType");
+		String requestUrl = request.getRequestURL().toString();
+		String printLinkURL = requestUrl
+				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+				+ "&reportId=" + reportId +
+				"&submitType=" + submitType + "&location="
+				+ location;
+		request.getSession().setAttribute("printDetailViewLinkURL",
+				printLinkURL);
+		
 		return mapping.findForward("particleDetailView");
 	}
 
@@ -322,5 +345,107 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			forward = mapping.findForward("documentSubmitReport");
 		}
 		return forward;
+	}
+	
+	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String location = request.getParameter("location");
+		ReportService reportService = null;
+		if (location.equals("local")) {
+			reportService = new ReportServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			reportService = new ReportServiceRemoteImpl(serviceUrl);
+		}		
+		String reportId = request.getParameter("reportId");
+		ReportBean reportBean = reportService.findReportById(reportId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("file", reportBean);		
+		String title = reportBean.getDomainFile().getTitle();
+		if (title!=null && title.length()>10) {
+			title = title.substring(0,10);
+		}
+		String fileName = this.getExportFileName(title, 
+				"detailView");
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
+		setReportFileFullPath(request, reportBean, location);
+		ReportService service = null;
+		if (location.equals("local")) {
+			service = new ReportServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new ReportServiceRemoteImpl(
+					serviceUrl);
+		}
+		service.exportDetail(reportBean, response.getOutputStream());
+		return null;
+	}
+	
+	private String getExportFileName(String titleName, String viewType) {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(titleName);
+		nameParts.add("Report");
+		nameParts.add(viewType);
+		nameParts.add(StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS"));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
+	}
+	
+	public ActionForward printDetailView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {		
+		String location = request.getParameter("location");
+		ReportService reportService = null;
+		if (location.equals("local")) {
+			reportService = new ReportServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			reportService = new ReportServiceRemoteImpl(serviceUrl);
+		}		
+		String reportId = request.getParameter("reportId");
+		ReportBean reportBean = reportService.findReportById(reportId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("file", reportBean);
+		return mapping.findForward("reportDetailPrintView");
+	}
+	
+	private void setReportFileFullPath(HttpServletRequest request,
+			ReportBean reportBean, String location) throws Exception {
+		if (location.equals("local")) {
+			// set file full path
+			if (!reportBean.getDomainFile().getUriExternal()) {
+				String fileRoot = PropertyReader.getProperty(
+						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						"fileRepositoryDir");
+				reportBean.setFullPath(fileRoot + File.separator
+						+ reportBean.getDomainFile().getUri());
+			} else {
+				reportBean.setFullPath(reportBean.getDomainFile().getUri());
+			}
+
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+
+			URL localURL = new URL(request.getRequestURL().toString());
+			String actionPath = localURL.getPath();
+			URL remoteUrl = new URL(serviceUrl);
+			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
+					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
+			String remoteDownloadUrlBase = remoteServerHostUrl + actionPath
+					+ "?dispatch=download&location=local&fileId=";
+
+			String remoteDownloadUrl = remoteDownloadUrlBase
+					+ reportBean.getDomainFile().getId().toString();
+			reportBean.setFullPath(remoteDownloadUrl);
+		}
 	}
 }

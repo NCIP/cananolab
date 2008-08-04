@@ -14,8 +14,10 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -170,6 +172,19 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
 			String err = "Problem finding the publication by id: " + publicationId;
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}
+	
+	public void exportDetail(PublicationBean aPub, OutputStream out)
+		throws DocumentException{		
+		try {
+			PublicationServiceHelper helper = new PublicationServiceHelper();
+			helper.exportDetail(aPub, out);
+		} catch (Exception e) {
+			String err = "error exporting detail view for "
+					+ aPub.getDomainFile().getTitle();
 			logger.error(err, e);
 			throw new DocumentException(err, e);
 		}

@@ -12,11 +12,14 @@ import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.report.ReportService;
+import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
+import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -382,6 +385,19 @@ public class ReportServiceRemoteImpl implements ReportService {
 			String err = "Error finding reports for particle.";
 			logger.error(err, e);
 			throw new ReportException(err, e);
+		}
+	}
+	
+	public void exportDetail(ReportBean aReport, OutputStream out)
+		throws DocumentException{		
+		try {
+			ReportServiceHelper helper = new ReportServiceHelper();
+			helper.exportDetail(aReport, out);
+		} catch (Exception e) {
+			String err = "error exporting detail view for "
+					+ aReport.getDomainFile().getTitle();
+			logger.error(err, e);
+			throw new DocumentException(err, e);
 		}
 	}
 	
