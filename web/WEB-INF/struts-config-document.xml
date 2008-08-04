@@ -46,6 +46,10 @@
 	</global-exceptions>
 	<global-forwards>
 		<forward name="documentMessage" path="document.message" />
+		<forward name="reportDetailPrintView"
+			path="/document/bodyReportDetailPrintView.jsp" />
+		<forward name="publicationDetailPrintView"
+			path="/document/bodyPublicationDetailPrintView.jsp" />
 	</global-forwards>
 	<action-mappings>		
 		<action name="submitPublicationForm" parameter="dispatch"

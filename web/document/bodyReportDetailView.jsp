@@ -9,7 +9,7 @@
 		<td>
 			<h4>
 				<br>
-				Publication
+				Report
 			</h4>
 		</td>
 		<td align="right" width="20%">
@@ -36,13 +36,11 @@
 									${fn:toUpperCase(param.location)} ${particleName}
 								</td>
 								<td align="right" class="formTitle">
-
 									<c:url var="url" value="submitReport.do">
-										<!-- FIXME: hardcode action -->
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="particleId" value="${particleId}" />
-										<c:param name="fileId" value="${param.fileId}" />
+										<c:param name="reportId" value="${param.reportId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
@@ -50,27 +48,29 @@
 										test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit characterization" border="0"> </a>
+													alt="edit characterization"
+													title="edit characterization" border="0"> </a>
 										</td>
 									</c:if>
 								<td>
 									<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 											src="images/icon_print_23x.gif"
-											alt="print characterization detail" border="0"> </a>
+											alt="print report detail" 
+											title="print report detail"  border="0"> </a>
 								</td>
 								<td>
-									<c:url var="exportUrl" value="${actionName}.do">
+									<c:url var="exportUrl" value="submitReport.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="exportDetail" />
 										<c:param name="particleId" value="${particleId}" />
-										<c:param name="dataId"
-											value="${characterizationForm.map.achar.domainChar.id}" />
-										<c:param name="dataClassName" value="${param.dataClassName }" />
+										<c:param name="reportId"
+											value="${param.reportId}" />
 										<c:param name="submitType" value="${submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export characterization detail" border="0"> </a>
+											alt="export report detail" 
+											title="export report detail" border="0"> </a>
 								</td>
 							</tr>
 						</table>
@@ -91,8 +91,10 @@
 						Report URL
 					</th>
 					<td class="rightLabel">
-						<a href="${submitReportForm.map.file.domainFile.uri }"> <bean:write
-								name="submitReportForm" property="file.domainFile.uri" /> </a>&nbsp;
+						<a
+							href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}"
+							target="${submitReportForm.map.file.urlTarget}">
+							${submitReportForm.map.file.domainFile.uri}</a>
 					</td>
 				</tr>
 				<tr>

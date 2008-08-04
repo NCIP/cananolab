@@ -37,12 +37,11 @@
 								</td>
 								<td align="right" class="formTitle">
 
-									<c:url var="url" value="submitReport.do">
-										<!-- FIXME: hardcode action -->
+									<c:url var="url" value="submitPublication.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="particleId" value="${particleId}" />
-										<c:param name="fileId" value="${param.fileId}" />
+										<c:param name="fileId" value="${param.publicationId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
@@ -56,21 +55,20 @@
 								<td>
 									<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 											src="images/icon_print_23x.gif"
-											alt="print characterization detail" border="0"> </a>
+											alt="print publication detail" border="0"> </a>
 								</td>
 								<td>
-									<c:url var="exportUrl" value="${actionName}.do">
+									<c:url var="exportUrl" value="submitPublication.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="exportDetail" />
 										<c:param name="particleId" value="${particleId}" />
-										<c:param name="dataId"
-											value="${characterizationForm.map.achar.domainChar.id}" />
-										<c:param name="dataClassName" value="${param.dataClassName }" />
+										<c:param name="publicationId"
+											value="${submitPublicationForm.map.file.domainFile.id}" />
 										<c:param name="submitType" value="${submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export characterization detail" border="0"> </a>
+											alt="export publication detail" border="0"> </a>
 								</td>
 							</tr>
 						</table>
@@ -88,11 +86,12 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null}">
+									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null
+										&& submitPublicationForm.map.file.domainFile.digitalObjectId ne ''}">
 										DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }
 									</c:when>
 									<c:otherwise>
-										Publication: ${submitPublicationForm.map.file.domainFile.title }
+										&nbsp;
 									</c:otherwise>
 								</c:choose>
 							</c:otherwise>
@@ -122,14 +121,12 @@
 				</tr>
 				<tr>
 					<th class="leftLabel" valign="top">
-						First Author
+						Research Category
 					</th>
 					<td class="rightLabel">
-						<c:if test="${!empty submitPublicationForm.map.file.authors }">
-							<bean:write name="submitPublicationForm"
-								property="file.authors[0]" />
-						</c:if>
-						&nbsp;
+						<bean:write name="submitPublicationForm"
+								property="file.domainFile.researchArea" />
+						&nbsp;				
 					</td>
 				</tr>
 				<tr>
@@ -154,11 +151,27 @@
 				</tr>
 				<tr>
 					<th class="leftLabel" valign="top">
+						Authors
+					</th>
+					<td class="rightLabel">
+						<c:if test="${!empty submitPublicationForm.map.file.authors}">
+							<c:forEach var="author"
+								items="${submitPublicationForm.map.file.authors}">
+									${author.firstName}&nbsp;${author.middleInitial}&nbsp;${author.lastName}<br>
+							</c:forEach>							
+						</c:if>		
+						&nbsp;				
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
 						Year
 					</th>
 					<td class="rightLabel">
-						<bean:write name="submitPublicationForm"
+						<c:if test="${submitPublicationForm.map.file.domainFile.year!=0}">
+							<bean:write name="submitPublicationForm"
 								property="file.domainFile.year" />
+						</c:if>
 						&nbsp;
 					</td>
 				</tr>
@@ -186,28 +199,26 @@
 						&nbsp;
 					</td>
 				</tr>
-				<tr>
-					<th class="leftLabel" valign="top">
-						Abstract in<br>PubMed
-					</th>
-					<td class="rightLabel">
-						<c:choose>
-							<c:when test="${submitPublicationForm.map.file.domainFile.pubMedId != null && 
+
+				<c:choose>
+					<c:when
+						test="${submitPublicationForm.map.file.domainFile.pubMedId != null && 
 										submitPublicationForm.map.file.domainFile.pubMedId != 0}">
-								<a href="#">PMID: ${submitPublicationForm.map.file.domainFile.pubMedId }</a>
-							</c:when>
-							<c:otherwise>
-								<c:choose>
-									<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null}">
-										<a href="#">DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }</a>
-									</c:when>
-								</c:choose>
-							</c:otherwise>
-						</c:choose>
-							&nbsp;
-						&nbsp;
-					</td>
-				</tr>
+						<tr>
+							<th class="leftLabel" valign="top">
+								Abstract in
+								<br>
+								PubMed
+							</th>
+							<td class="rightLabel">
+								<a target="_pubmed" href="http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}">PMID:
+									${submitPublicationForm.map.file.domainFile.pubMedId }</a> &nbsp;
+								&nbsp;
+							</td>
+						</tr>
+					</c:when>
+				</c:choose>
+
 				<tr>
 					<th class="leftLabel" valign="top">
 						Description
