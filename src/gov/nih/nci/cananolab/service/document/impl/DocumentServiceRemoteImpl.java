@@ -11,11 +11,14 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
 import gov.nih.nci.cananolab.exception.DocumentException;
-import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
+import gov.nih.nci.cananolab.service.document.helper.DocumentServiceHelper;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,4 +120,17 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 			Long dataId) 	throws DocumentException{
 		throw new DocumentException("not implemented for grid service.");
 	}
+	
+	public void exportFullSummary(DocumentSummaryBean summaryBean,
+			OutputStream out) throws IOException {
+		DocumentServiceHelper helper = new DocumentServiceHelper();
+		helper.exportFullSummary(summaryBean, out);
+	}
+
+	public void exportSummary(DocumentSummaryBean summaryBean,
+			OutputStream out) throws IOException {
+		DocumentServiceHelper helper = new DocumentServiceHelper();
+		helper.exportSummary(summaryBean, out);
+	}
+
 }

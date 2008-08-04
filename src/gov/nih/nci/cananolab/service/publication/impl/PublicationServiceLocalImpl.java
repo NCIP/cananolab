@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -145,6 +146,18 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
+	public void exportDetail(PublicationBean aPub, OutputStream out)
+		throws DocumentException{
+		try {
+			PublicationServiceHelper helper = new PublicationServiceHelper();
+			helper.exportDetail(aPub, out);
+		} catch (Exception e) {
+			String err = "error exporting detail view for "
+					+ aPub.getDomainFile().getTitle();
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}
 //	public int getNumberOfPublicDocuments() throws DocumentException {
 //		try {
 //			int count = helper.getNumberOfPublicDocuments();
