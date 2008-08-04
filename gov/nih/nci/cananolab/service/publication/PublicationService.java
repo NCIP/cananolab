@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,6 +49,9 @@ public interface PublicationService {
 	public PublicationBean findPublicationById(String publicationId) throws DocumentException;
 
 	public Publication findDomainPublicationById(String publicationId) throws DocumentException;
+
+	public void exportDetail(PublicationBean aPub, OutputStream out)
+		throws DocumentException;
 
 //	public int getNumberOfPublicDocuments() throws DocumentException;
 

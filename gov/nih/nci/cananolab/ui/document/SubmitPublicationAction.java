@@ -12,11 +12,14 @@ import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -29,10 +32,16 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -114,7 +123,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		System.out.println("########### setup");
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
 		if (particleId != null) {
@@ -151,7 +159,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		System.out.println("########### setupUpdate");
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
 		if (particleId != null) {
@@ -268,14 +275,45 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("file", pubBean);		
+		theForm.set("file", pubBean);	
+	
+		String particleId = request.getParameter("particleId");
+		String submitType = request.getParameter("submitType");
+		String requestUrl = request.getRequestURL().toString();
+		String printLinkURL = requestUrl
+				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+				+ "&publicationId=" + publicationId +
+				"&submitType=" + submitType + "&location="
+				+ location;
+		request.getSession().setAttribute("printDetailViewLinkURL",
+				printLinkURL);
+		
 		return mapping.findForward("particleDetailView");
+	}
+	
+	
+	public ActionForward printDetailView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {		
+		String location = request.getParameter("location");
+		PublicationService publicationService = null;
+		if (location.equals("local")) {
+			publicationService = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		}		
+		String publicationId = request.getParameter("publicationId");
+		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("file", pubBean);
+		return mapping.findForward("publicationDetailPrintView");
 	}
 
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {		
-		System.out.println("########### input");
 		HttpSession session = request.getSession();	
 		Object particleIdObj = session.getAttribute("particleId");
 		String particleId = null;
@@ -339,7 +377,59 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}
 		return noErrors;
 	}
+	
+	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		String location = request.getParameter("location");
+		PublicationService publicationService = null;
+		if (location.equals("local")) {
+			publicationService = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		}		
+		String publicationId = request.getParameter("publicationId");
+		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("file", pubBean);		
+		String title = pubBean.getDomainFile().getTitle();
+		if (title!=null && title.length()>10) {
+			title = title.substring(0,10);
+		}
+		String fileName = this.getExportFileName(title, 
+				"detailView");
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
+		
+		PublicationService service = null;
+		if (location.equals("local")) {
+			service = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new PublicationServiceRemoteImpl(
+					serviceUrl);
+		}
+		service.exportDetail(pubBean, response.getOutputStream());
+		return null;
+	}
+	
 
+	private String getExportFileName(String titleName, String viewType) {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(titleName);
+		nameParts.add("Publication");
+		nameParts.add(viewType);
+		nameParts.add(StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS"));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
+	}
 		
 
 }

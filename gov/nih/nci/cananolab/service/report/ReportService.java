@@ -3,8 +3,10 @@ package gov.nih.nci.cananolab.service.report;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.exception.ReportException;
 
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -48,4 +50,7 @@ public interface ReportService {
 
 	public Report[] findReportsByParticleSampleId(String particleId)
 			throws ReportException;
+	
+	public void exportDetail(ReportBean aPub, OutputStream out)
+		throws DocumentException;
 }
