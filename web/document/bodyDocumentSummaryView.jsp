@@ -96,7 +96,7 @@
 						Identifier
 					</th>
 					<th class="label">
-						First Author
+						Authors
 					</th>
 					<th class="label">
 						Title
@@ -110,6 +110,7 @@
 					<td class="leftLabel">
 						<c:url var="pubUrl" value="submitPublication.do">
 							<c:param name="submitType" value="${submitType}" />
+							<c:param name="particleId" value="${particleId}" />
 							<c:param name="dispatch" value="detailView" />
 							<c:param name="publicationId" value="${pubObj.id}" />
 							<c:param name="location" value="${location}" />
@@ -120,7 +121,8 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${pubObj.digitalObjectId != null}">
+									<c:when test="${pubObj.digitalObjectId != null && 
+										pubObj.digitalObjectId ne ''}">
 										<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
 									</c:when>
 									<c:otherwise>
@@ -131,33 +133,34 @@
 						</c:choose>
 					</td>
 					<td class="label">
-						<c:if test="$(!empty pubObj.documentAuthorCollection}">
-							<c:set var="authorCount" value="0" />
+						<c:if test="${!empty pubObj.documentAuthorCollection}">
 							<c:forEach var="author"
-									items="${pubObj.documentAuthorCollection}">
-								<c:if test="${authorCount < 1 }">
-									${author.firstName }&nbsp;${author.middleInitial }.&nbsp;${author.lastName }
-								</c:if>
-								<c:set var="authorCount" value="${authorCount} + 1" />
+								items="${pubObj.documentAuthorCollection}">
+									${author.lastName};
 							</c:forEach>
-						</c:if>
+						</c:if>		
+						
 						&nbsp;
 					</td>
 					<td class="label">
 					${pubObj.title}&nbsp;
 					</td>
 					<td class="rightLabel">
-						${pubObj.year}&nbsp;
+						<c:if test="${pubObj.year!=0}">
+							${pubObj.year}
+						</c:if>
+						&nbsp;
 					</td>
 				</tr>
 				</c:forEach>
 				<c:forEach var="report" items="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.reportCollection}" >
-				<c:url var="reportUrl" value="submitReport.do">
+					<c:url var="reportUrl" value="submitReport.do">
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="dispatch" value="detailView" />
+							<c:param name="particleId" value="${particleId}" />
 							<c:param name="reportId" value="${report.id}" />
 							<c:param name="location" value="${location}" />
-						</c:url>
+					</c:url>
 				<tr>
 					<td class="leftLabel">
 						<a href="${reportUrl}">REPORT: ${report.title}</a>
