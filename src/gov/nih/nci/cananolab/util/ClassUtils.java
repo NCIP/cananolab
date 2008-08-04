@@ -257,6 +257,13 @@ public class ClassUtils {
 
 		return obj;
 	}
+	
+	public static Object mapObjects(Class aTargetClazz, Object inputObject) {
+		List objList = new ArrayList();
+		objList.add(inputObject);
+		List resultObjs = mapObjects(aTargetClazz, objList);
+		return resultObjs.get(0);
+	}
 		
 	/**
 	 * copy attributes of one object to another
