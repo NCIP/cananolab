@@ -292,9 +292,15 @@ public class ReportServiceRemoteImpl implements ReportService {
 					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			Report report = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				report = (Report) obj;
+			while (iter.hasNext()) {//TODO: if grid not in sync, error here				
+				try{
+					java.lang.Object obj = iter.next();
+					report = (Report) obj;
+					//TODO, need to check what kind of exception 
+				}catch (Exception ex){//TODO: grid object model and local object model not in sync
+					java.lang.Object obj = iter.next();
+					report = (Report)ClassUtils.mapObjects(Report.class, obj);			
+				}
 			}
 			loadParticleSamplesForReport(report);
 			ReportBean reportBean = new ReportBean(report);
