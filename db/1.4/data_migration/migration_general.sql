@@ -663,6 +663,38 @@ WHERE c.characterization_pk_id = n.characterization_pk_id
 AND c.discriminator = 'QuantumDotComp'
 ;
 
+
+-- metal particle
+insert into canano.nanoparticle_entity
+(
+	nanoparticle_entity_pk_id,
+	composition_pk_id,
+	created_by,
+	created_date,
+	discriminator
+)
+SELECT ca.characterization_pk_id,
+	ca.characterization_pk_id,
+	ca.created_by,
+	ca.created_date,
+	'MetalParticle'
+FROM cananolab.characterization ca
+WHERE ca.discriminator = 'MetalComp'
+;
+
+insert into canano.composition
+(
+	composition_pk_id,
+	particle_sample_pk_id
+)
+SELECT c.characterization_pk_id,
+	n.nanoparticle_pk_id
+FROM cananolab.nanoparticle_char n,
+	cananolab.characterization c
+WHERE c.characterization_pk_id = n.characterization_pk_id
+AND c.discriminator = 'MetalComp'
+;
+
 -- emulsion
 insert into canano.emulsion
 (
@@ -946,6 +978,19 @@ AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator != 'Other'
 AND a.discriminator != 'ImageContrastAgent'
+AND a.agent_pk_id in (select a2.agent_pk_id
+		from cananolab.agent a2,
+			cananolab.linkage l2,
+			cananolab.particle_function pf2,
+			canano.composition c142
+		WHERE a2.agent_pk_id = l2.linkage_pk_id
+		AND l2.function_pk_id = pf2.particle_function_pk_id
+		AND pf2.nanoparticle_pk_id = c142.particle_sample_pk_id
+		AND a2.discriminator != 'Other'
+		AND a2.discriminator != 'ImageContrastAgent'
+		group by a2.agent_pk_id
+		having count(a2.agent_pk_id) = 1
+)
 ;
 
 -- associated element
@@ -961,7 +1006,7 @@ insert into canano.associated_element
 SELECT a.agent_pk_id,
 	a.description,
 	'DATA_MIGRATION',
-	SYSDATE(),
+	ADDDATE(SYSDATE(), INTERVAL ROUND(RAND() * 100) SECOND),
 	a.name
 FROM cananolab.agent a,
 	cananolab.linkage l,
@@ -972,6 +1017,19 @@ AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator != 'Other'
 AND a.discriminator != 'ImageContrastAgent'
+AND a.agent_pk_id in (select a2.agent_pk_id
+		from cananolab.agent a2,
+			cananolab.linkage l2,
+			cananolab.particle_function pf2,
+			canano.composition c142
+		WHERE a2.agent_pk_id = l2.linkage_pk_id
+		AND l2.function_pk_id = pf2.particle_function_pk_id
+		AND pf2.nanoparticle_pk_id = c142.particle_sample_pk_id
+		AND a2.discriminator != 'Other'
+		AND a2.discriminator != 'ImageContrastAgent'
+		group by a2.agent_pk_id
+		having count(a2.agent_pk_id) = 1
+)
 ;
 
 insert into canano.antibody
@@ -1295,7 +1353,7 @@ insert into canano.associated_element
 )
 SELECT ce14.composing_element_pk_id,
 	'DATA_MIGRATION',
-	SYSDATE(),
+	ADDDATE(SYSDATE(), INTERVAL ROUND(RAND() * 100) SECOND),
 	cnc.repeat_unit
 FROM cananolab.dendrimer_composition cnc,
 	canano.composing_element ce14
