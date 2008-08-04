@@ -16,6 +16,18 @@ WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND a.agent_pk_id in (select a2.agent_pk_id
+		from cananolab.agent a2,
+			cananolab.linkage l2,
+			cananolab.particle_function pf2,
+			canano.composition c142
+		WHERE a2.agent_pk_id = l2.linkage_pk_id
+		AND l2.function_pk_id = pf2.particle_function_pk_id
+		AND pf2.nanoparticle_pk_id = c142.particle_sample_pk_id
+		AND a2.discriminator = 'ImageContrastAgent'
+		group by a2.agent_pk_id
+		having count(a2.agent_pk_id) = 1
+)
 ;
 
 -- associated element
@@ -41,6 +53,18 @@ WHERE a.agent_pk_id = l.linkage_pk_id
 AND l.function_pk_id = pf.particle_function_pk_id
 AND pf.nanoparticle_pk_id = c14.particle_sample_pk_id
 AND a.discriminator = 'ImageContrastAgent'
+AND a.agent_pk_id in (select a2.agent_pk_id
+		from cananolab.agent a2,
+			cananolab.linkage l2,
+			cananolab.particle_function pf2,
+			canano.composition c142
+		WHERE a2.agent_pk_id = l2.linkage_pk_id
+		AND l2.function_pk_id = pf2.particle_function_pk_id
+		AND pf2.nanoparticle_pk_id = c142.particle_sample_pk_id
+		AND a2.discriminator = 'ImageContrastAgent'
+		group by a2.agent_pk_id
+		having count(a2.agent_pk_id) = 1
+)
 ;
 
 insert into canano.small_molecule
