@@ -113,6 +113,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
 					.findNanoparticleSampleById(particleId);
+			particleBean.setLocation("local");
 			setupDataTree(particleBean, request);
 			forward = mapping.findForward("particleSuccess");
 		}
