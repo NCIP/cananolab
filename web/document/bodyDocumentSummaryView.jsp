@@ -29,49 +29,28 @@
 					<td>
 						<ul class="pemenu" id="printChara">
 							<li class="pelist">
-								<a href="#"><img src="images/icon_print_23x.gif" border="0"
+								<a href="javascript:printPage('${printSummaryViewLinkURL}')"><img src="images/icon_print_23x.gif" border="0"
+										title="Print Summary" 
+										alt="Print Summary" 
 										align="middle"> </a>
-								<ul>
-									<li>
-										<a href="javascript:printPage('${printSummaryViewLinkURL}')">Print
-											Summary </a>
-									</li>
-									<li>
-										<a href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
-											Full Summary </a>
-									</li>
-								</ul>
 							</li>
 						</ul>
 					</td>
 					<td>&nbsp;</td>
 					<td>
-						<c:url var="sumUrl" value="${actionName}.do">
+						<c:url var="sumUrl" value="searchDocument.do">
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportSummary" />
 							<c:param name="location" value="${location}" />
 						</c:url>
-						<c:url var="fullSumUrl" value="${actionName}.do">
-							<c:param name="particleId" value="${particleId}" />
-							<c:param name="submitType" value="${submitType}" />
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="exportFullSummary" />
-							<c:param name="location" value="${location}" />
-						</c:url>
 						<ul class="pemenu" id="exportChara">
 							<li class="pelist">
-								<a href="#"><img src="images/icon_excel_23x.gif" border="0"
-										align="middle"> </a>
-								<ul>
-									<li>
-										<a href="${sumUrl}">Export Summary</a>
-									</li>
-									<li>
-										<a href="${fullSumUrl}">Export Full Summary</a>
-									</li>
-								</ul>
+								<a href="${sumUrl}"><img src="images/icon_excel_23x.gif" border="0"
+										align="middle"
+										title="Export Summary" 
+										alt="Export Summary" > </a>								
 							</li>
 						</ul>
 					</td>
@@ -96,16 +75,16 @@
 						Identifier
 					</th>
 					<th class="label">
-						Authors
+						Title
 					</th>
 					<th class="label">
-						Title
+						Authors
 					</th>
 					<th class="rightLabel">
 						Year
 					</th>
 				</tr>
-				<c:forEach var="pubObj" items="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.publicationCollection}">
+				<c:forEach var="pubObj" items="${searchDocumentForm.map.particleSampleBean.domainParticleSample.publicationCollection}">
 				<tr>
 					<td class="leftLabel">
 						<c:url var="pubUrl" value="submitPublication.do">
@@ -133,6 +112,9 @@
 						</c:choose>
 					</td>
 					<td class="label">
+					${pubObj.title}&nbsp;
+					</td>
+					<td class="label">
 						<c:if test="${!empty pubObj.documentAuthorCollection}">
 							<c:forEach var="author"
 								items="${pubObj.documentAuthorCollection}">
@@ -141,10 +123,7 @@
 						</c:if>		
 						
 						&nbsp;
-					</td>
-					<td class="label">
-					${pubObj.title}&nbsp;
-					</td>
+					</td>					
 					<td class="rightLabel">
 						<c:if test="${pubObj.year!=0}">
 							${pubObj.year}
@@ -153,7 +132,7 @@
 					</td>
 				</tr>
 				</c:forEach>
-				<c:forEach var="report" items="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.reportCollection}" >
+				<c:forEach var="report" items="${searchDocumentForm.map.particleSampleBean.domainParticleSample.reportCollection}" >
 					<c:url var="reportUrl" value="submitReport.do">
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="dispatch" value="detailView" />
@@ -163,13 +142,13 @@
 					</c:url>
 				<tr>
 					<td class="leftLabel">
-						<a href="${reportUrl}">REPORT: ${report.title}</a>
-					</td>
-					<td class="label">
-						&nbsp;
+						<a href="${reportUrl}">REPORT</a>
 					</td>
 					<td class="label">
 						${report.title}&nbsp;
+					</td>
+					<td class="label">
+						&nbsp;
 					</td>
 					<td class="rightLabel">
 						&nbsp;

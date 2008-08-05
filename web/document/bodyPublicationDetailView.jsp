@@ -49,13 +49,15 @@
 										test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit characterization" border="0"> </a>
+													alt="edit characterization" 
+													title="edit characterization" border="0"> </a>
 										</td>
 									</c:if>
 								<td>
 									<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 											src="images/icon_print_23x.gif"
-											alt="print publication detail" border="0"> </a>
+											alt="print publication detail"
+											title="print publication detail" border="0"> </a>
 								</td>
 								<td>
 									<c:url var="exportUrl" value="submitPublication.do">
@@ -68,7 +70,8 @@
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export publication detail" border="0"> </a>
+											alt="export publication detail"
+											title="export publication detail" border="0"> </a>
 								</td>
 							</tr>
 						</table>

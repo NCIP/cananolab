@@ -62,7 +62,8 @@
 					<html:text property="achar.dateString" size="10" styleId="charDate" />
 					<a href="javascript:cal1.popup();"><img
 							src="images/calendar-icon.gif" width="22" height="18" border="0"
-							alt="Click Here to Pick up the date" align="middle">
+							alt="Click Here to Pick up the date" 
+							title="Click Here to Pick up the date" align="middle">
 					</a>
 				</c:when>
 				<c:otherwise>
