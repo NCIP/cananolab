@@ -124,6 +124,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();	
+		session.removeAttribute("submitPublicationForm");
 		String particleId = request.getParameter("particleId");		
 		if (particleId != null) {
 			session.setAttribute("particleId", particleId);
