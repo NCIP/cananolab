@@ -15,26 +15,27 @@ import java.util.TreeSet;
 public class DocumentSummaryBean {
 	private SortedSet<String> columnLabels = new TreeSet<String>();
 
-	private List<LabFileBean> documentBeans = new ArrayList<LabFileBean>();
+	private List<LabFileBean> documentRows = new ArrayList<LabFileBean>();
 
-	private String characterizationClassName;
 
 	public DocumentSummaryBean() {
-	}
-
-	public DocumentSummaryBean(String characterizationClassName) {
-		this.characterizationClassName = characterizationClassName;
-	}
-
-	public String getCharacterizationClassName() {
-		return characterizationClassName;
 	}
 
 	public SortedSet<String> getColumnLabels() {
 		return columnLabels;
 	}
 
-	public List<LabFileBean> getDocumentBeans() {
-		return documentBeans;
+	/**
+	 * @return the documentRows
+	 */
+	public List<LabFileBean> getDocumentRows() {
+		return documentRows;
+	}
+
+	/**
+	 * @param documentRows the documentRows to set
+	 */
+	public void setDocumentRows(List<LabFileBean> documentRows) {
+		this.documentRows = documentRows;
 	}
 }
