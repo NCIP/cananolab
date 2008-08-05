@@ -2,9 +2,11 @@ package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
+import gov.nih.nci.cananolab.exception.ReportException;
 
 import java.io.OutputStream;
 import java.util.Collection;
@@ -55,6 +57,6 @@ public interface PublicationService {
 
 //	public int getNumberOfPublicDocuments() throws DocumentException;
 
-//	public LabFile[] findDocumentsByParticleSampleId(String particleId)
-		//	throws DocumentException;
+	public Publication[] findPublicationsByParticleSampleId(String particleId)
+		throws DocumentException;
 }
