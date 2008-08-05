@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -68,7 +69,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			}			
 			if (publication.getDocumentAuthorCollection() == null) {
 				publication
-						.setDocumentAuthorCollection(new HashSet<DocumentAuthor>());
+						.setDocumentAuthorCollection(new TreeSet<DocumentAuthor>());
+			}else {
+				publication.getDocumentAuthorCollection().clear();
 			}
 			if (authors!=null) {
 				for (DocumentAuthor author : authors) {
@@ -76,8 +79,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						!StringUtils.isBlank(author.getLastName())||
 						!StringUtils.isBlank(author.getMiddleInitial())){
 						publication.getDocumentAuthorCollection().add(author);
-					}else {
-						publication.getDocumentAuthorCollection().remove(author);
 					}
 				}			
 			}
