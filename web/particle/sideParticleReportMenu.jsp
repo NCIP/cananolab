@@ -29,7 +29,7 @@
 		</c:url>
 		
 		<li class="controlList">
-			<c:url var="docurl" value="submitNanoparticleSample.do">
+			<c:url var="docurl" value="searchDocument.do">
 						<c:param name="dispatch" value="setupDocumentView" />
 						<c:param name="particleId" value="${particleId}" />
 						<c:param name="location" value="${location}" />
@@ -68,9 +68,10 @@
 								items="${particleDataTree['documents']}">
 								<c:url var="url" value="${dataLinkBean.dataLink}.do">
 									<c:param name="page" value="0" />
-									<c:param name="dispatch" value="${dispatchValue}" />
+									<c:param name="dispatch" value="detailView" />
 									<c:param name="particleId" value="${particleId}" />
-									<c:param name="fileId" value="${dataLinkBean.dataId}" />
+									<c:param name="publicationId" value="${dataLinkBean.dataId}" />
+									<c:param name="reportId" value="${dataLinkBean.dataId}" />
 									<c:param name="submitType"
 										value="documents" />
 									<c:param name="location" value="${location}" />
