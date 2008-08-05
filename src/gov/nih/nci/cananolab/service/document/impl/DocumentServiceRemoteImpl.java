@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.helper.DocumentServiceHelper;
@@ -127,10 +128,10 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 		helper.exportFullSummary(summaryBean, out);
 	}
 
-	public void exportSummary(DocumentSummaryBean summaryBean,
+	public void exportSummary(ParticleBean particleBean,
 			OutputStream out) throws IOException {
 		DocumentServiceHelper helper = new DocumentServiceHelper();
-		helper.exportSummary(summaryBean, out);
+		helper.exportSummary(particleBean, out);
 	}
 
 }

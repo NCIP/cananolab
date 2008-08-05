@@ -123,7 +123,12 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new DocumentException(err, e);
 		}
 	}
-
+	
+	public Publication[] findPublicationsByParticleSampleId(String particleId)
+		throws DocumentException{
+		throw new DocumentException("Not implemented for local search");
+	}
+	
 	public PublicationBean findPublicationById(String publcationId) throws DocumentException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);

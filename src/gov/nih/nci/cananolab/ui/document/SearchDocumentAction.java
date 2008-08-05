@@ -4,9 +4,13 @@ import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.DocumentService;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
+import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
@@ -17,10 +21,12 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -302,4 +308,72 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 			return null;
 		}
 	}
+	
+	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = request.getParameter("location");
+		ParticleBean particleBean = setupParticle(theForm, request, location);
+		String fileName = getExportFileName(particleBean
+				.getDomainParticleSample().getName(), 
+			"summaryView");
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
+		DocumentService service = null;
+		if (location.equals("local")) {
+			service = new DocumentServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new DocumentServiceRemoteImpl(
+					serviceUrl);
+		}
+		service.exportSummary(particleBean, response.getOutputStream());
+		return null;
+	}
+	
+	
+	private String getExportFileName(String titleName, String viewType) {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(titleName);
+		nameParts.add("Document");
+		nameParts.add(viewType);
+		nameParts.add(StringUtils.convertDateToString(new Date(),
+				"yyyyMMdd_HH-mm-ss-SSS"));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
+	}
+
+	public ActionForward setupDocumentView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = request.getParameter("location");
+		ParticleBean particleSampleBean = setupParticle(theForm, request,
+				location);
+		theForm.set("particleSampleBean", particleSampleBean);
+		
+		HttpSession session = request.getSession();		
+		session.setAttribute("particleSampleBean", particleSampleBean);
+		setupDataTree(particleSampleBean, request);
+		String particleId = request.getParameter("particleId");
+		String requestUrl = request.getRequestURL().toString();
+		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
+				+ "&dispatch=printSummaryView"
+				+ "&location=" + location;
+		request.getSession().setAttribute("printSummaryViewLinkURL",
+				printLinkURL);
+		return mapping.findForward("documentView");
+	}
+
+	public ActionForward printSummaryView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {	
+		//return mapping.findForward("publicationDetailPrintView");
+		return mapping.findForward("documentSummaryPrintView");
+	}
+
 }

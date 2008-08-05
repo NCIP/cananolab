@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
+import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -93,6 +94,48 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 
 
+	public Publication[] findPublicationsByParticleSampleId(String particleId)
+		throws DocumentException {	
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
+			Association association = new Association();
+			association
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			association.setRoleName("nanoparticleSampleCollection");
+	
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(particleId);
+			association.setAttribute(attribute);
+	
+			target.setAssociation(association);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Publication");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+					results);
+			Publication publication = null;
+			List<Publication> publications = new ArrayList<Publication>();
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				publication = (Publication) obj;
+				publications.add(publication);
+			}
+			return publications.toArray(new Publication[0]);
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+		} catch (Exception e) {
+			String err = "Error finding publications for particle.";
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}
+	
 	//TODO, tanq
 	private void loadParticleSamplesForPublication(Publication publication)
 		throws DocumentException {
