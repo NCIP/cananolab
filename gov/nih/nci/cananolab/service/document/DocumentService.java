@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.document;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.DocumentException;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public interface DocumentService {
 	public void exportFullSummary(DocumentSummaryBean summaryBean,
 			OutputStream out) throws IOException ;
 
-	public void exportSummary(DocumentSummaryBean summaryBean,
+	public void exportSummary(ParticleBean particleBean,
 			OutputStream out) throws IOException ;
 
 

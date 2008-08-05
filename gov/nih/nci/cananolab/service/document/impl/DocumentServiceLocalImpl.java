@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
@@ -35,33 +36,6 @@ public class DocumentServiceLocalImpl implements DocumentService {
 			.getLogger(DocumentServiceLocalImpl.class);
 	private DocumentServiceHelper helper = new DocumentServiceHelper();
 
-
-/*	//TODO XXXX may create a documentBean
-	public List findDocumentsBy(String reportTitle,
-			String reportCategory, String[] nanoparticleEntityClassNames,
-			String[] otherNanoparticleTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws DocumentException, CaNanoLabSecurityException {
-		List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
-		try {
-			Collection documents = helper.findDocumentsBy(reportTitle,
-					reportCategory, nanoparticleEntityClassNames,
-					otherNanoparticleTypes, functionalizingEntityClassNames,
-					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes);
-			for (Object document : documents) {
-				//TODO, tanq
-				documentBeans.add(new DocumentBean(document));
-			}
-			return documentBeans;
-		} catch (Exception e) {
-			String err = "Problem finding report info.";
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
-	}*/
 		
 	//TODO: XXXXXXXX removeDocumentPublicVisibility
 	public void removeDocumentPublicVisibility(
@@ -166,11 +140,11 @@ public class DocumentServiceLocalImpl implements DocumentService {
 		DocumentServiceHelper helper = new DocumentServiceHelper();
 		helper.exportFullSummary(summaryBean, out);
 	}
-
-	public void exportSummary(DocumentSummaryBean summaryBean,
+	
+	public void exportSummary(ParticleBean particleBean,
 			OutputStream out) throws IOException {
 		DocumentServiceHelper helper = new DocumentServiceHelper();
-		helper.exportSummary(summaryBean, out);
+		helper.exportSummary(particleBean, out);
 	}
 
 }

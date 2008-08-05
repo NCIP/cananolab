@@ -9,6 +9,7 @@ import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -21,6 +22,8 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -244,6 +247,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			particleSample.setSampleComposition(sampleComposition);
 		}
 		loadReportsForParticleSample(particleSample);
+		loadPublicationsForParticleSample(particleSample);
 	}
 
 	public ParticleBean findNanoparticleSampleById(String particleId)
@@ -413,7 +417,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	}
 
 	/**
-	 * load all keywords for an associated NanoparticleSample equal to
+	 * load all reports for an associated NanoparticleSample equal to
 	 * particleId
 	 * 
 	 */
@@ -427,6 +431,25 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			particleSample.setReportCollection(new HashSet<Report>());
 			for (Report report : reports) {
 				particleSample.getReportCollection().add(report);
+			}
+		}
+	}
+	
+	/**
+	 * load all publications for an associated NanoparticleSample equal to
+	 * particleId
+	 * 
+	 */
+	private void loadPublicationsForParticleSample(NanoparticleSample particleSample)
+			throws Exception {
+		PublicationService publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		Publication[] publications = publicationService
+				.findPublicationsByParticleSampleId(particleSample.getId()
+						.toString());
+		if (publications != null && publications.length > 0) {
+			particleSample.setPublicationCollection(new HashSet<Publication>());
+			for (Publication publication : publications) {
+				particleSample.getPublicationCollection().add(publication);
 			}
 		}
 	}
