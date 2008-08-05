@@ -48,13 +48,15 @@
 									<c:if test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit characterization" border="0"> </a>
+													alt="edit characterization"
+													title="edit characterization" border="0"> </a>
 										</td>
 									</c:if>
 								<td>
 									<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 											src="images/icon_print_23x.gif"
-											alt="print characterization detail" border="0"> </a>
+											alt="print characterization detail"
+											title="print characterization detail" border="0"> </a>
 								</td>
 								<td>
 									<c:url var="exportUrl" value="${actionName}.do">
@@ -68,7 +70,8 @@
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export characterization detail" border="0"> </a>
+											alt="export characterization detail" 
+											title="export characterization detail"border="0"> </a>
 								</td>
 							</tr>
 						</table>
