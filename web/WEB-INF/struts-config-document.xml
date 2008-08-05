@@ -14,6 +14,8 @@
 		
 		<form-bean name="searchDocumentForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="particleSampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
 			<form-property name="publicationOrReport"
 				type="java.lang.String[]" />
 			<form-property name="researchArea"
@@ -50,6 +52,8 @@
 			path="/document/bodyReportDetailPrintView.jsp" />
 		<forward name="publicationDetailPrintView"
 			path="/document/bodyPublicationDetailPrintView.jsp" />
+		<forward name="documentSummaryPrintView"
+			path="/document/bodyDocumentSummaryPrintView.jsp" />
 	</global-forwards>
 	<action-mappings>		
 		<action name="submitPublicationForm" parameter="dispatch"
@@ -80,6 +84,7 @@
 			scope="request">
 			<forward name="input" path="document.searchDocument" />
 			<forward name="success" path="document.searchDocumentResult" />
+			<forward name="documentView" path="particle.documentInfo" />
 		</action>		
 		<action path="/manageDocument"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
