@@ -25,23 +25,11 @@ public class DocumentDecorator extends TableDecorator {
 		if (documentBean instanceof ReportBean){
 			publicationOrReport = "report";
 		}else if (documentBean instanceof PublicationBean){
-			publicationOrReport = "publication";
+			LabFile file = ((PublicationBean)documentBean).getDomainFile();
+			publicationOrReport = "publication"+":"+
+				((Publication)file).getCategory();
 		}
 		SortableName sortableLink = new SortableName(publicationOrReport);
-		return sortableLink;
-	}
-	
-	
-	public SortableName getDocumentType() throws UnsupportedEncodingException {
-		String documentType = "";
-		Object documentBean = getCurrentRowObject();
-		if (documentBean instanceof ReportBean){
-			documentType = "";
-		}else if (documentBean instanceof PublicationBean){
-			LabFile file = ((PublicationBean)documentBean).getDomainFile();
-			documentType = ((Publication)file).getCategory();
-		}
-		SortableName sortableLink = new SortableName(documentType);
 		return sortableLink;
 	}
 	
@@ -53,12 +41,14 @@ public class DocumentDecorator extends TableDecorator {
 		}else if (documentBean instanceof PublicationBean){
 			LabFile file = ((PublicationBean)documentBean).getDomainFile();
 			researchArea = ((Publication)file).getResearchArea();
+			if (researchArea!=null) {
+				researchArea = researchArea.replaceAll(";", "<br>");
+			}
 		}
 		SortableName sortableLink = new SortableName(researchArea);
 		return sortableLink;
 	}
-	
-	//TODO
+		
 	public SortableName getEditDocumentURL() throws UnsupportedEncodingException {
 		Object documentBean = getCurrentRowObject();
 		if (documentBean instanceof ReportBean){
