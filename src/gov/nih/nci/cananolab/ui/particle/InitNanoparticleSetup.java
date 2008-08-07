@@ -411,15 +411,6 @@ public class InitNanoparticleSetup {
 							String sideMenuTitle = report.getTitle().substring(0, 20);
 							dataBean.setViewTitle("Report: "+sideMenuTitle);
 						}
-						//dataBean.setViewTitle(report.getUri());
-//						if (dataTree.get(reportCategory) != null) {
-//							rdataBeans = (TreeSet<DataLinkBean>) dataTree
-//									.get(reportCategory);
-//						} else {
-//							rdataBeans = new TreeSet<DataLinkBean>(
-//									new CaNanoLabComparators.DataLinkTypeDateComparator());
-//							dataTree.put(reportCategory, rdataBeans);
-//						}
 						
 						if (dataTree.get(CaNanoLabConstants.FOLDER_DOCUMENT) != null) {
 							rdataBeans = (TreeSet<DataLinkBean>) dataTree
