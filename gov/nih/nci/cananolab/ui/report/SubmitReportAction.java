@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.25 2008-08-06 15:20:26 tanq Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.26 2008-08-07 15:44:15 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -90,13 +90,13 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			}else {
 				request.removeAttribute("particleId");
 			}
-		}
-		
+		}		
 		if (particleId != null
 				&& particleId.length() > 0) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
 					.findNanoparticleSampleById(particleId);
+			particleBean.setLocation("local");
 			setupDataTree(particleBean, request);
 			forward = mapping.findForward("particleSuccess");
 		}
