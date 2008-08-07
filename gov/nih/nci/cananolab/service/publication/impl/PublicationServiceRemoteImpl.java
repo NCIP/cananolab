@@ -57,8 +57,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	//remote search did not implement findPublicationsBy yet
 	//wait for update on gridclient
 	
-	public List<PublicationBean> findPublicationsBy(String reportTitle,
-			String reportCategory, String nanoparticleName, 
+	public List<PublicationBean> findPublicationsBy(String title,
+			String category, String nanoparticleName, 
 			String[] researchArea, String keywordsStr,
 			String pubMedId, String digitalObjectId, String authorsStr,
 			String[] nanoparticleEntityClassNames,
@@ -69,10 +69,9 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			throws DocumentException, CaNanoLabSecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
-			//TODO, XXXXXXXX tanq
 			//TODO, uncomment catch (RemoteException e)
-			/*Publication[] publications = gridClient.getPublicationsBy(reportTitle,
-					reportCategory, nanoparticleEntityClassNames,
+			/*Publication[] publications = gridClient.getPublicationsBy(title,
+					category, nanoparticleEntityClassNames,
 					functionalizingEntityClassNames, functionClassNames);*/
 			Publication[] publications = null;
 			if (publications != null) {
