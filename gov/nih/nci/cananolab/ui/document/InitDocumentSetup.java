@@ -27,7 +27,6 @@ public class InitDocumentSetup {
 		return new InitDocumentSetup();
 	}
 
-	//TODO, what to put here??
 	public void setDocumentDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "reportCategories",
@@ -63,7 +62,7 @@ public class InitDocumentSetup {
 	
 	public void persistPublicationDropdowns(HttpServletRequest request,
 			PublicationBean publication) throws Exception {
-		//TODO to be verified by tanq, ,need LabFile?? done by report??
+		//FIXME cleanup to be verified by tanq, ,need LabFile?? done by report??
 		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
 				"otherType", publication.getDomainFile().getType());		
 		InitSetup.getInstance().persistLookup(request, "Publication", "category",
