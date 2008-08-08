@@ -101,19 +101,7 @@
 										<strong>PubMed ID</strong>
 									</td>
 									<td class="rightLabel" colspan="3">	
-										<a
-												href="http://www.ncbi.nlm.nih.gov/pubmed/"
-												target="_pubmed">
-												Click to look up PubMed Identifier</a>
-										<br>									
-										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
-											onkeydown="return filterInteger(event)"/>
-										<a href="#"
-												onclick="javascript:addPubmed(submitPublicationForm); return false;">
-												<span class="addLink2">Auto Populate PubMed Fields</span> </a>
-<%--										<html:link page="/submitPublication.do?dispatch=setupPubmed&amp;page=0&amp;particleId=${particleId}&amp;location=local" scope="page">--%>
-<%--				Auto Populate PubMed Fields</html:link>--%>
-<%--										<html:button property="file.domainFile.pubMedId" value="Auto Populate Fields"/>--%>
+										${submitPublicationForm.map.file.pubmedId }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -130,7 +118,7 @@
 										</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.title" size="80" />
+										${submitPublicationForm.map.file.title }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -139,7 +127,7 @@
 										</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.journalName" size="80" />
+										${submitPublicationForm.map.file.journal }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -148,45 +136,36 @@
 									</td>
 									<td class="label" colspan="2" valign="top">
 										<table class="smalltable" border="0">
-<%--											<logic:notEmpty name="submitPublicationForm"
-														property="file.authors" > --%>
 											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Middle Initial</th>
 											
 												<tr>
 													<logic:iterate name="submitPublicationForm"
 														property="file.authors" id="author" indexId="authorInd">
 														<tr>
-														<td><html:text property="file.authors[${authorInd}].firstName" size="17"/></td>
-														<td><html:text property="file.authors[${authorInd}].lastName" size="17"/></td>
-														<td><html:text property="file.authors[${authorInd}].middleInitial" size="17"/></td>
+														<td>${submitPublicationForm.map.file.authors[authorInd].firstName}&nbsp;</td>
+														<td>${submitPublicationForm.map.file.authors[authorInd].lastName}&nbsp;</td>
+														<td>${submitPublicationForm.map.file.authors[authorInd].middleInitial}&nbsp;</td>
 														</tr>													
 													</logic:iterate>
 												</tr>
-<%--											</logic:notEmpty> --%>
 										</table>&nbsp;																			
 									</td>
 									<td class="rightLabel" colspan="2" valign="top">
-										<a href="#"
-												onclick="javascript:addComponent(submitPublicationForm, 'submitPublication', 'addAuthor'); return false;">
-												<span class="addLink2">Add Author</span> </a>
-<%--										<html:button property="file.domainFile.pubMedId" value="add authors"/>--%>
+										&nbsp;
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Year of Publication
-										</strong>
+										<strong>Year of Publication</strong>
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.year" size="17" 
-											onkeydown="return filterInteger(event)"/>
+										${submitPublicationForm.map.file.year }&nbsp;
 									</td>
 									<td class="label">
-										<strong>Volume
-										</strong>
+										<strong>Volume</strong>
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.volume" size="17"/>
+										${submitPublicationForm.map.file.volume }&nbsp;
 									</td>
 								</tr>								
 								<tr>
@@ -195,16 +174,14 @@
 										</strong>
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.startPage" size="17" 
-											onkeydown="return filterInteger(event)"/>
+										${submitPublicationForm.map.file.startPage }&nbsp;
 									</td>
 									<td class="label">
 										<strong>End Page
 										</strong>
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.endPage" size="17" 
-											onkeydown="return filterInteger(event)"/>
+										${submitPublicationForm.map.file.endPage }&nbsp;
 									</td>
 								</tr>
 								<tr>
