@@ -33,6 +33,7 @@ public class PubMedXMLHandler {
     private StringBuffer middleInitial;
     private StringBuffer lastName;
     private boolean inPubDate;
+    private String pubmedId;
     
     public static synchronized PubMedXMLHandler getInstance() {
         if (onlyInstance == null)
@@ -43,22 +44,20 @@ public class PubMedXMLHandler {
     
     private PubMedXMLHandler(){}
 	
-	public PublicationBean parsePubMedXML (Long pubMedId) {
-		
+	public PublicationBean parsePubMedXML (Long pubMedId, PublicationBean pubBean) {
+			publicationBean = pubBean;
+			publicationBean.setPubmedId(pubmedId);
+			System.out.println("start parsePubMedXML, ");
 			String uri = PUBMED_URL + pubMedId;
 	        try {
 	        	go(uri);
 	        } catch(Exception ex) {
-	        	
+	        	System.out.println("exception in parsePubMedXML, ");
+	        	ex.printStackTrace();
 	        }
+	        pubmedId = pubMedId.toString();
+	        
 	        return publicationBean;
-	}
-
-	private class PubmedArticleHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			publicationBean = new PublicationBean();
-		}
 	}
 	
 	private class VolumeHandler extends SAXElementHandler
@@ -188,8 +187,8 @@ public class PubMedXMLHandler {
 		
 		public void endElement(String uri, String localName, String qname) {
 			author.setFirstName(firstName.toString());
-			author.setFirstName(lastName.toString());
-			author.setFirstName(middleInitial.toString());
+			author.setLastName(lastName.toString());
+			author.setMiddleInitial(middleInitial.toString());
 			authorList.add(author);
 		}
 	}
@@ -229,9 +228,7 @@ public class PubMedXMLHandler {
 	
 	public void go(String xmlinput) throws Exception
 	{
-		System.out.println("xml input:" + xmlinput);
 		SAXEventSwitcher s = new SAXEventSwitcher();
-		s.setElementHandler("pubmedarticle", new PubmedArticleHandler());
 		s.setElementHandler("volume", new VolumeHandler());
 		s.setElementHandler("pubdate", new PubDateHandler());
 		s.setElementHandler("year", new YearHandler());
@@ -243,7 +240,7 @@ public class PubMedXMLHandler {
 		s.setElementHandler("author", new AuthorHandler());
 		s.setElementHandler("lastname", new LastNameHandler());
 		s.setElementHandler("forename", new ForeNameHandler());
-		s.setElementHandler("middleinitial", new MiddleInitialHandler());
+		s.setElementHandler("initials", new MiddleInitialHandler());
 		
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser sparser = spf.newSAXParser();
@@ -252,7 +249,7 @@ public class PubMedXMLHandler {
 	
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
-		phandler.parsePubMedXML(Long.valueOf("18294836"));
+		phandler.parsePubMedXML(Long.valueOf("18294836"), new PublicationBean());
 		
 		System.out.println("bean journal:" + publicationBean.getJournal());
 		System.out.println("abstract:" + publicationBean.getAbstractText());

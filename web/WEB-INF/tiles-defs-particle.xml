@@ -173,6 +173,12 @@
 		<put name="calabContent" value="/document/bodySubmitPublication.jsp" />
 		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
+	<definition name="particle.submitPublicationPubmed"
+		extends="particle.annotationHome">
+		<put name="calabContent" value="/document/bodySubmitPublicationPubmedReadOnly.jsp" />
+		<put name="onloadJavascript" value="radLinkOrUpload()" />
+	</definition>
+	
 	<!-- definition for the view report/associated file page -->
 	<definition name="particle.submitReport"
 		extends="particle.annotationHome">
