@@ -88,7 +88,14 @@
 				</tr>
 				<tr>
 					<th class="leftLabel" valign="top">
-						Report URL
+						<c:choose>
+							<c:when test="${submitReportForm.map.file.domainFile.uriExternal==true}">
+								Report URL
+							</c:when>
+							<c:otherwise>
+								Report File
+							</c:otherwise>
+						</c:choose>
 					</th>
 					<td class="rightLabel">
 						<a
