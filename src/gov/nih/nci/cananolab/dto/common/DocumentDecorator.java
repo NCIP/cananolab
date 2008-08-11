@@ -68,7 +68,7 @@ public class DocumentDecorator extends TableDecorator {
 		String fileId = file.getDomainFile().getId().toString();
 		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitReport.do?submitType=none&page=0&dispatch=detailView&fileId=");
+		sb.append("submitReport.do?submitType=none&page=0&dispatch=detailView&reportId=");
 		sb.append(fileId);
 		sb.append("&location=");
 		sb.append(file.getLocation());
@@ -93,7 +93,7 @@ public class DocumentDecorator extends TableDecorator {
 		String fileId = file.getDomainFile().getId().toString();
 		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitPublication.do?submitType=none&page=0&dispatch=detailView&fileId=");
+		sb.append("submitPublication.do?submitType=none&page=0&dispatch=detailView&publciationId=");
 		sb.append(fileId);
 		sb.append("&location=");
 		sb.append(file.getLocation());
