@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
@@ -17,6 +18,7 @@ public class PubMedXMLHandler {
 	private static final String PUBMED_URL = "http://www.ncbi.nlm.nih.gov/entrez/utils/pmfetch.fcgi?db=PubMed&report=abstract&mode=xml&id=";
 	
 	private static PublicationBean publicationBean = null;
+	private Publication publication = null;
 	private static PubMedXMLHandler onlyInstance = null;
 	
     private StringBuffer journal;
@@ -25,15 +27,15 @@ public class PubMedXMLHandler {
     private StringBuffer year;
     private StringBuffer abstractText;
     private StringBuffer pageStr;
-    private int startPage;
-    private int endPage;
+    private long startPage;
+    private long endPage;
     private List<DocumentAuthor> authorList = null;
     private DocumentAuthor author = null;
     private StringBuffer firstName;
     private StringBuffer middleInitial;
     private StringBuffer lastName;
     private boolean inPubDate;
-    private String pubmedId;
+    //private String pubmedId;
     
     public static synchronized PubMedXMLHandler getInstance() {
         if (onlyInstance == null)
@@ -44,18 +46,23 @@ public class PubMedXMLHandler {
     
     private PubMedXMLHandler(){}
 	
-	public PublicationBean parsePubMedXML (Long pubMedId, PublicationBean pubBean) {
+	public PublicationBean parsePubMedXML (Long pubMedId,
+			PublicationBean pubBean) {
 			publicationBean = pubBean;
-			publicationBean.setPubmedId(pubmedId);
-			System.out.println("start parsePubMedXML, ");
+			publication = (Publication) pubBean.getDomainFile();
+			
+ 			publication.setPubMedId(pubMedId);
 			String uri = PUBMED_URL + pubMedId;
 	        try {
 	        	go(uri);
+	        	publicationBean.setDomainPublication(publication);
 	        } catch(Exception ex) {
 	        	System.out.println("exception in parsePubMedXML, ");
 	        	ex.printStackTrace();
 	        }
-	        pubmedId = pubMedId.toString();
+	       // pubmedId = pubMedId.toString();
+	        //publicationBean = new PublicationBean(publication);
+	        
 	        
 	        return publicationBean;
 	}
@@ -71,7 +78,7 @@ public class PubMedXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			publicationBean.setVolume(volume.toString());
+			publication.setVolume(volume.toString());
 		}
 	}
 	
@@ -86,7 +93,7 @@ public class PubMedXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			publicationBean.setJournal(journal.toString());
+			publication.setJournalName(journal.toString());
 		}
 	}
 	
@@ -112,7 +119,7 @@ public class PubMedXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			if(inPubDate) publicationBean.setYear(year.toString());
+			if(inPubDate) publication.setYear(Integer.parseInt(year.toString()));
 		}
 	}
 	
@@ -127,7 +134,7 @@ public class PubMedXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			publicationBean.setTitle(articleTitle.toString());
+			publication.setTitle(articleTitle.toString());
 		}
 	}
 	
@@ -158,13 +165,13 @@ public class PubMedXMLHandler {
 		
 		public void endElement(String uri, String localName, String qname) {
 			String [] pages = pageStr.toString().split("-");
-			startPage = Integer.parseInt(pages[0]);
+			startPage = Long.parseLong(pages[0]);
 			int endPagePrefixLength = pages[0].length() - pages[1].length();
 			String endPagePrefix = pages[0].substring(0, endPagePrefixLength);
-			endPage = Integer.parseInt(endPagePrefix + pages[1]);
+			endPage = Long.parseLong(endPagePrefix + pages[1]);
 
-			publicationBean.setStartPage(startPage);
-			publicationBean.setEndPage(endPage);
+			publication.setStartPage(startPage);
+			publication.setEndPage(endPage);
 		}
 	}
 	
