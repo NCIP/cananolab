@@ -19,8 +19,8 @@ import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.helper.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -164,11 +164,19 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		ActionForward forward = mapping.findForward("particleSubmitPublication");
 		if(pubmedID != null && pubmedID.length() > 0) {
-			//Publication publication = (Publication) pbean.getDomainFile();
-			PublicationBean pubbean = phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
-			theForm.set("file", pubbean);
-		
-			forward = mapping.findForward("particleSubmitPubmedPublication");;
+			phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
+			if (!pbean.isFoundPubMedArticle()) {
+
+				ActionMessages msgs = new ActionMessages();
+				ActionMessage msg = new ActionMessage("message.submitPublication.pubmedArticleNotFound",
+						pubmedID);
+				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+				saveMessages(request, msgs);
+				
+				return forward;
+			}
+			theForm.set("file", pbean);
+			forward = mapping.findForward("particleSubmitPubmedPublication");
 		}
 		return forward;
 	}

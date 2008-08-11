@@ -25,15 +25,8 @@ public class PublicationBean extends LabFileBean {
 	private String[] particleNames;
 	private String[] researchAreas;
 	private List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>(20);
-	
-	private String pubmedId;
-	private String journal;
-	private String volume;
-	private String title;
-	private String abstractText;
-	private String year;
-	private int startPage;
-	private int endPage;
+
+	private boolean foundPubMedArticle = false;
 
 	public PublicationBean() {
 		super();
@@ -81,70 +74,6 @@ public class PublicationBean extends LabFileBean {
 			}
 		}
 		
-	}
-
-	public String getAbstractText() {
-		return abstractText;
-	}
-
-	public void setAbstractText(String abstractText) {
-		this.abstractText = abstractText;
-	}
-
-	public int getEndPage() {
-		return endPage;
-	}
-
-	public void setEndPage(int endPage) {
-		this.endPage = endPage;
-	}
-
-	public String getJournal() {
-		return journal;
-	}
-
-	public void setJournal(String journal) {
-		this.journal = journal;
-	}
-
-	public String getPubmedId() {
-		return pubmedId;
-	}
-
-	public void setPubmedId(String pubmedId) {
-		this.pubmedId = pubmedId;
-	}
-
-	public int getStartPage() {
-		return startPage;
-	}
-
-	public void setStartPage(int startPage) {
-		this.startPage = startPage;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getVolume() {
-		return volume;
-	}
-
-	public void setVolume(String volume) {
-		this.volume = volume;
-	}
-
-	public String getYear() {
-		return year;
-	}
-
-	public void setYear(String year) {
-		this.year = year;
 	}
 
 	public boolean equals(Object obj) {
@@ -215,6 +144,14 @@ public class PublicationBean extends LabFileBean {
 
 	public void removeAuthor(int ind) {
 		authors.remove(ind);
+	}
+
+	public boolean isFoundPubMedArticle() {
+		return foundPubMedArticle;
+	}
+
+	public void setFoundPubMedArticle(boolean foundPubMedArticle) {
+		this.foundPubMedArticle = foundPubMedArticle;
 	}
 
 	
