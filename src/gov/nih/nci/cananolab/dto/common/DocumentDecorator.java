@@ -62,15 +62,17 @@ public class DocumentDecorator extends TableDecorator {
 	
 	public SortableName getEditReportURL() throws UnsupportedEncodingException {
 		ReportBean file = (ReportBean) getCurrentRowObject();
-		if (!file.getLocation().equals("local")){
-			return getViewName();
-		}
+		//if (!file.getLocation().equals("local")){
+			//return getViewName();
+		//}
 		String fileId = file.getDomainFile().getId().toString();
 		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitReport.do?submitType=none&page=0&dispatch=setupUpdate&fileId=");
+		sb.append("submitReport.do?submitType=none&page=0&dispatch=detailView&fileId=");
 		sb.append(fileId);
-		sb.append("&location=local>");
+		sb.append("&location=");
+		sb.append(file.getLocation());
+		sb.append(">");
 		if (file.getDomainFile().getTitle().length()>30) {
 			sb.append(file.getDomainFile().getTitle().substring(0, 30));
 		}else {
@@ -85,15 +87,17 @@ public class DocumentDecorator extends TableDecorator {
 	
 	public SortableName getEditPublicationURL() throws UnsupportedEncodingException {
 		PublicationBean file = (PublicationBean) getCurrentRowObject();
-		if (!file.getLocation().equals("local")){
-			return getViewName();
-		}
+		//if (!file.getLocation().equals("local")){
+		//	return getViewName();
+		//}
 		String fileId = file.getDomainFile().getId().toString();
 		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitPublication.do?submitType=none&page=0&dispatch=setupUpdate&fileId=");
+		sb.append("submitPublication.do?submitType=none&page=0&dispatch=detailView&fileId=");
 		sb.append(fileId);
-		sb.append("&location=local>");
+		sb.append("&location=");
+		sb.append(file.getLocation());
+		sb.append(">");
 		if (file.getDomainFile().getTitle().length()>30) {
 			sb.append(file.getDomainFile().getTitle().substring(0, 30));
 		}else {
