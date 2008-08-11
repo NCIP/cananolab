@@ -393,9 +393,7 @@ function displayLogin() {
 	return false;
 }
 function addPubmed(form) {
-	var pubmedEle = document.getElementById('pubmedId');
-	var pubmedId = pubmedEle.getAttribute("value");
-	//form.action = "submitPublication.do?dispatch=setupPubmed&page=0&location=local&pubmedId=" + pubmedId;
-	form.action = "submitPublication.do?dispatch=setupPubmed&page=0&location=local&pubmedId=18294836";
+	var pubmedId = document.getElementById('pubmedId').value;
+	form.action = "submitPublication.do?dispatch=setupPubmed&page=0&location=local&pubmedId=" + pubmedId;
 	form.submit();
 }
