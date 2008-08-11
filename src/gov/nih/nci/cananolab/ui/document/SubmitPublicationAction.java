@@ -161,11 +161,15 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		String pubmedID = request.getParameter("pubmedId");
-		phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
-		theForm.set("file", pbean);
 		
-		ActionForward forward = mapping.findForward("particleSubmitPubmedPublication");;
+		ActionForward forward = mapping.findForward("particleSubmitPublication");
+		if(pubmedID != null && pubmedID.length() > 0) {
+			//Publication publication = (Publication) pbean.getDomainFile();
+			PublicationBean pubbean = phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
+			theForm.set("file", pubbean);
 		
+			forward = mapping.findForward("particleSubmitPubmedPublication");;
+		}
 		return forward;
 	}
 
