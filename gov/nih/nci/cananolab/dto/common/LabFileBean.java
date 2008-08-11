@@ -3,10 +3,8 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.SortedSet;
@@ -195,5 +193,9 @@ public class LabFileBean {
 
 	public void setFullPath(String fullPath) {
 		this.fullPath = fullPath;
+	}
+
+	public void setDomainFile(LabFile domainFile) {
+		this.domainFile = domainFile;
 	}
 }
