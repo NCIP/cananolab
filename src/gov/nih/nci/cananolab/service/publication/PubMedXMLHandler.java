@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.service.publication.helper;
+package gov.nih.nci.cananolab.service.publication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class PubMedXMLHandler {
     private StringBuffer volume;
     private StringBuffer articleTitle;
     private StringBuffer year;
-    private StringBuffer abstractText;
+    // private StringBuffer abstractText;
     private StringBuffer pageStr;
     private long startPage;
     private long endPage;
@@ -35,7 +35,7 @@ public class PubMedXMLHandler {
     private StringBuffer middleInitial;
     private StringBuffer lastName;
     private boolean inPubDate;
-    //private String pubmedId;
+    private boolean foundPubmedArticle = false;
     
     public static synchronized PubMedXMLHandler getInstance() {
         if (onlyInstance == null)
@@ -55,16 +55,25 @@ public class PubMedXMLHandler {
 			String uri = PUBMED_URL + pubMedId;
 	        try {
 	        	go(uri);
-	        	publicationBean.setDomainPublication(publication);
+	        	publicationBean.setDomainFile(publication);
 	        } catch(Exception ex) {
 	        	System.out.println("exception in parsePubMedXML, ");
 	        	ex.printStackTrace();
 	        }
-	       // pubmedId = pubMedId.toString();
-	        //publicationBean = new PublicationBean(publication);
-	        
 	        
 	        return publicationBean;
+	}
+	
+	private class PubmedArticleHandler extends SAXElementHandler
+	{
+		public void startElement(String uri, String localName, String qname, Attributes atts) {
+			foundPubmedArticle = true;
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			publicationBean.setFoundPubMedArticle(foundPubmedArticle);
+		}
+		
 	}
 	
 	private class VolumeHandler extends SAXElementHandler
@@ -138,20 +147,20 @@ public class PubMedXMLHandler {
 		}
 	}
 	
-	private class AbstractHandler extends SAXElementHandler
-	{
-		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			abstractText = new StringBuffer();
-		}
-		
-		public void characters(char[] ch, int start, int length) {
-			abstractText.append(new String(ch, start, length));
-		}
-		
-		public void endElement(String uri, String localName, String qname) {
-			publicationBean.setAbstractText(abstractText.toString());
-		}
-	}
+//	private class AbstractHandler extends SAXElementHandler
+//	{
+//		public void startElement(String uri, String localName, String qname, Attributes atts) {
+//			abstractText = new StringBuffer();
+//		}
+//		
+//		public void characters(char[] ch, int start, int length) {
+//			abstractText.append(new String(ch, start, length));
+//		}
+//		
+//		public void endElement(String uri, String localName, String qname) {
+//			publicationBean.setAbstractText(abstractText.toString());
+//		}
+//	}
 	
 	private class PageHandler extends SAXElementHandler
 	{
@@ -165,13 +174,18 @@ public class PubMedXMLHandler {
 		
 		public void endElement(String uri, String localName, String qname) {
 			String [] pages = pageStr.toString().split("-");
-			startPage = Long.parseLong(pages[0]);
-			int endPagePrefixLength = pages[0].length() - pages[1].length();
-			String endPagePrefix = pages[0].substring(0, endPagePrefixLength);
-			endPage = Long.parseLong(endPagePrefix + pages[1]);
+			try {
+				startPage = Long.parseLong(pages[0]);
+				int endPagePrefixLength = pages[0].length() - pages[1].length();
+				String endPagePrefix = pages[0].substring(0,
+						endPagePrefixLength);
+				endPage = Long.parseLong(endPagePrefix + pages[1]);
 
-			publication.setStartPage(startPage);
-			publication.setEndPage(endPage);
+				publication.setStartPage(startPage);
+				publication.setEndPage(endPage);
+			} catch (NumberFormatException nfe) {
+				System.out.println("publication page number format exception:" + pageStr.toString());
+			}
 		}
 	}
 	
@@ -236,12 +250,13 @@ public class PubMedXMLHandler {
 	public void go(String xmlinput) throws Exception
 	{
 		SAXEventSwitcher s = new SAXEventSwitcher();
+		s.setElementHandler("pubmedarticle", new PubmedArticleHandler());
 		s.setElementHandler("volume", new VolumeHandler());
 		s.setElementHandler("pubdate", new PubDateHandler());
 		s.setElementHandler("year", new YearHandler());
 		s.setElementHandler("title", new JournalTitleHandler());
 		s.setElementHandler("articletitle", new ArticleTitleHandler());
-		s.setElementHandler("abstracttext", new AbstractHandler());
+//		s.setElementHandler("abstracttext", new AbstractHandler());
 		s.setElementHandler("medlinepgn", new PageHandler());
 		s.setElementHandler("authorlist", new AuthorListHandler());
 		s.setElementHandler("author", new AuthorHandler());
@@ -254,16 +269,17 @@ public class PubMedXMLHandler {
         sparser.parse(xmlinput, s);
 	}
 	
+	// for testing
 	public static void main(String[] args) {
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		phandler.parsePubMedXML(Long.valueOf("18294836"), new PublicationBean());
-		
-		System.out.println("bean journal:" + publicationBean.getJournal());
-		System.out.println("abstract:" + publicationBean.getAbstractText());
-		System.out.println("year:" + publicationBean.getYear());
-		System.out.println("title:" + publicationBean.getTitle());
-		System.out.println("start page:" + publicationBean.getStartPage());
-		System.out.println("end page:" + publicationBean.getEndPage());
+//		
+//		System.out.println("bean journal:" + publicationBean.getJournal());
+//		System.out.println("abstract:" + publicationBean.getAbstractText());
+//		System.out.println("year:" + publicationBean.getYear());
+//		System.out.println("title:" + publicationBean.getTitle());
+//		System.out.println("start page:" + publicationBean.getStartPage());
+//		System.out.println("end page:" + publicationBean.getEndPage());
 
 	}
 }
