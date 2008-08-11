@@ -111,9 +111,6 @@
 										<a href="#"
 												onclick="javascript:addPubmed(submitPublicationForm); return false;">
 												<span class="addLink2">Auto Populate PubMed Fields</span> </a>
-<%--										<html:link page="/submitPublication.do?dispatch=setupPubmed&amp;page=0&amp;particleId=${particleId}&amp;location=local" scope="page">--%>
-<%--				Auto Populate PubMed Fields</html:link>--%>
-<%--										<html:button property="file.domainFile.pubMedId" value="Auto Populate Fields"/>--%>
 									</td>
 								</tr>
 								<tr>

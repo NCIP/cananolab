@@ -101,7 +101,7 @@
 										<strong>PubMed ID</strong>
 									</td>
 									<td class="rightLabel" colspan="3">	
-										${submitPublicationForm.map.file.pubmedId }&nbsp;
+										${submitPublicationForm.map.file.domainFile.pubMedId }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -118,7 +118,7 @@
 										</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										${submitPublicationForm.map.file.title }&nbsp;
+										${submitPublicationForm.map.file.domainFile.title }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -127,7 +127,7 @@
 										</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										${submitPublicationForm.map.file.journal }&nbsp;
+										${submitPublicationForm.map.file.domainFile.journalName }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -159,13 +159,13 @@
 										<strong>Year of Publication</strong>
 									</td>
 									<td class="label">
-										${submitPublicationForm.map.file.year }&nbsp;
+										${submitPublicationForm.map.file.domainFile.year }&nbsp;
 									</td>
 									<td class="label">
 										<strong>Volume</strong>
 									</td>
 									<td class="rightLabel">
-										${submitPublicationForm.map.file.volume }&nbsp;
+										${submitPublicationForm.map.file.domainFile.volume }&nbsp;
 									</td>
 								</tr>								
 								<tr>
@@ -174,14 +174,14 @@
 										</strong>
 									</td>
 									<td class="label">
-										${submitPublicationForm.map.file.startPage }&nbsp;
+										${submitPublicationForm.map.file.domainFile.startPage }&nbsp;
 									</td>
 									<td class="label">
 										<strong>End Page
 										</strong>
 									</td>
 									<td class="rightLabel">
-										${submitPublicationForm.map.file.endPage }&nbsp;
+										${submitPublicationForm.map.file.domainFile.endPage }&nbsp;
 									</td>
 								</tr>
 								<tr>
