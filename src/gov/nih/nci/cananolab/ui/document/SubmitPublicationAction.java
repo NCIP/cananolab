@@ -177,6 +177,11 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			}
 			theForm.set("file", pbean);
 			forward = mapping.findForward("particleSubmitPubmedPublication");
+		} else {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage("message.submitPublication.pubmedIdRequired");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
 		}
 		return forward;
 	}
@@ -303,6 +308,10 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		theForm.set("file", pubBean);	
 	
 		String particleId = request.getParameter("particleId");
+		if(particleId == null || particleId.length() == 0) {
+			return mapping.findForward("publicationDetailView");
+		}
+		
 		String submitType = request.getParameter("submitType");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl
