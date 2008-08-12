@@ -22,18 +22,10 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=document" />
-			<c:choose>
-				<c:when test="${canCreateDocument eq 'true'}">
-					<c:set var="link" value="editDocumentURL" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="link" value="domainFile.title" />
-				</c:otherwise>
-			</c:choose>
 			<display:table name="sessionScope.documents" id="document"
 				requestURI="searchDocument.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.DocumentDecorator">
-				<display:column title="Title" property="${link}"
+				<display:column title="Title" property="editDocumentURL"
 					sortable="true" />
 				<display:column title="Document Link"
 					property="downloadURL" sortable="true" />
