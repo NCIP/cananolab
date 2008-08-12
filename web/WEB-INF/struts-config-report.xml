@@ -48,6 +48,7 @@
 			<forward name="view" path="report.viewReport" />
 			<forward name="detailView" path="report.detailViewReport" />
 			<forward name="particleDetailView" path="particle.detailViewReport" />
+			<forward name="documentDetailView" path="report.detailViewReport" />
 			<forward name="documentSubmitReport"
 				path="report.submitReport" />
 			<forward name="particleSubmitReport"

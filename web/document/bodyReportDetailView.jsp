@@ -42,10 +42,10 @@
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="reportId" value="${param.reportId}" />
 										<c:param name="submitType" value="${param.submitType}" />
-										<c:param name="location" value="${location}" />
+										<c:param name="location" value="${param.location}" />
 									</c:url>
 									<c:if
-										test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+										test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit characterization"
@@ -66,7 +66,7 @@
 										<c:param name="reportId"
 											value="${param.reportId}" />
 										<c:param name="submitType" value="${submitType}" />
-										<c:param name="location" value="${location}" />
+										<c:param name="location" value="${param.location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
 											alt="export report detail" 
@@ -99,7 +99,7 @@
 					</th>
 					<td class="rightLabel">
 						<a
-							href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${location}"
+							href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${param.location}"
 							target="${submitReportForm.map.file.urlTarget}">
 							${submitReportForm.map.file.domainFile.uri}</a>
 					</td>
