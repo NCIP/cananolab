@@ -68,12 +68,9 @@ public class PubMedXMLHandler {
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
 			foundPubmedArticle = true;
-		}
-		
-		public void endElement(String uri, String localName, String qname) {
 			publicationBean.setFoundPubMedArticle(foundPubmedArticle);
 		}
-		
+
 	}
 	
 	private class VolumeHandler extends SAXElementHandler
@@ -175,7 +172,6 @@ public class PubMedXMLHandler {
 		public void endElement(String uri, String localName, String qname) {
 			if (pageStr.toString().trim().length() > 0) {
 				String[] pages = pageStr.toString().split("-");
-System.out.println("page:" + pageStr);
 				try {
 					startPage = Long.parseLong(pages[0]);
 					if (pages.length == 2) {
@@ -234,46 +230,20 @@ System.out.println("page:" + pageStr);
 	
 	private class LastNameHandler extends SAXElementHandler
 	{
-//		public void startElement(String uri, String localName, String qname, Attributes atts) {
-//			lastName = new StringBuffer();
-//		}
-		
 		public void characters(char[] ch, int start, int length) {
 			lastName.append(new String(ch, start, length));
-			System.out.println("lastName:" + lastName);
 		}
 	}
 	
 	private class ForeNameHandler extends SAXElementHandler
 	{
-//		public void startElement(String uri, String localName, String qname, Attributes atts) {
-//			firstName = new StringBuffer();
-//		}
-		
 		public void characters(char[] ch, int start, int length) {
 			firstName.append(new String(ch, start, length));
-			System.out.println("firstName:" + firstName);
-		}
-	}
-	
-	private class FirstNameHandler extends SAXElementHandler
-	{
-//		public void startElement(String uri, String localName, String qname, Attributes atts) {
-//			firstName = new StringBuffer();
-//		}
-		
-		public void characters(char[] ch, int start, int length) {
-			firstName.append(new String(ch, start, length));
-			System.out.println("firstName:" + firstName);
 		}
 	}
 	
 	private class MiddleInitialHandler extends SAXElementHandler
 	{
-//		public void startElement(String uri, String localName, String qname, Attributes atts) {
-//			middleInitial = new StringBuffer();
-//		}
-		
 		public void characters(char[] ch, int start, int length) {
 			middleInitial.append(new String(ch, start, length));
 		}
