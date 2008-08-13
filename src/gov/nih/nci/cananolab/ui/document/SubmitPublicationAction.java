@@ -200,7 +200,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String publicationId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
-		
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = publicationService.findPublicationById(publicationId);
 		FileService fileService = new FileServiceLocalImpl();
@@ -209,11 +208,19 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		ActionForward forward = mapping.getInputForward();
-		if (particleId != null) {
+		if (particleId != null && particleId.length() > 0) {
 			forward = mapping.findForward("particleSubmitPublication");
 			request.setAttribute("particleId", particleId);
 		}else {
+			Publication pub = (Publication) publicationBean.getDomainFile();
+			if (pub.getPubMedId() != null && pub.getPubMedId() > 0) {
+				forward = mapping
+						.findForward("particleSubmitPubmedPublication");
+			} else {
+				forward = mapping.findForward("documentSubmitPublication");
+			}
 			request.removeAttribute("particleId");
+			
 		}
 		return forward;
 	}
