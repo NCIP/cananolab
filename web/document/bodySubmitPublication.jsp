@@ -323,14 +323,16 @@
 											<td width="490" height="32">
 												<div align="right">
 													<div align="right">
-														<input type="reset" value="Reset" onclick="javascript:window.location.reload()">
+												<c:set var="dataId" value="${submitPublicationForm.map.file.domainFile.id}" />
+												<c:set var="origUrl" value="submitPublication.do?page=0&dispatch=setup&location=${location}" />
+												<c:if test="${!empty dataId}">
+													<c:set var="origUrl" value="submitPublication.do?page=0&dispatch=setupUpdate&location=${location}&fileId=${dataId }" />
+												</c:if>
+												<input type="reset" value="Reset"
+													onclick="javascript:window.location.href='${origUrl}'">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
-														<c:if test="${!empty param.particleId}">
-															<input type="hidden" name="particleId"
-																value="${param.particleId}">
-														</c:if>
 														<html:submit />
 													</div>
 												</div>
