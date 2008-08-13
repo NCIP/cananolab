@@ -22,7 +22,7 @@
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="TODO_nano_publication_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>					
+				</jsp:include>
 			</td>
 		</tr>
 		<c:choose>
@@ -31,8 +31,9 @@
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
-							nanoparticle samples in the database. Please make sure to 
-							<html:link page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}" scope="page" >create
+							nanoparticle samples in the database. Please make sure to <html:link
+								page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
+								scope="page">create
 							a new nanoparticle sample</html:link> first. </font>
 					</td>
 				</tr>
@@ -68,7 +69,7 @@
 												[Other]
 											</option>
 										</html:select>
-									</td>								
+									</td>
 									<td class="label">
 										<strong>Publication Status*</strong>
 									</td>
@@ -86,21 +87,23 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Research Category*</strong><br>
+										<strong>Research Category*</strong>
+										<br>
 									</td>
 									<td class="rightLabel" colspan="3">
 										<c:forEach var="data" items="${publicationResearchAreas}">
 											<html:multibox property="file.researchAreas">
 												${data}
 											</html:multibox>${data}
-										</c:forEach>&nbsp;
-									</td>	
+										</c:forEach>
+										&nbsp;
+									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel" valign="top">
 										<strong>PubMed ID</strong>
 									</td>
-									<td class="rightLabel" colspan="3">	
+									<td class="rightLabel" colspan="3">
 										${submitPublicationForm.map.file.domainFile.pubMedId }&nbsp;
 									</td>
 								</tr>
@@ -109,13 +112,13 @@
 										<strong>Digital Object ID</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.digitalObjectId" size="30" />
+										<html:text property="file.domainFile.digitalObjectId"
+											size="30" />
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Title*
-										</strong>
+										<strong>Title* </strong>
 									</td>
 									<td class="rightLabel" colspan="3">
 										${submitPublicationForm.map.file.domainFile.title }&nbsp;
@@ -123,32 +126,48 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Journal
-										</strong>
+										<strong>Journal </strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										${submitPublicationForm.map.file.domainFile.journalName }&nbsp;
+										${submitPublicationForm.map.file.domainFile.journalName
+										}&nbsp;
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel" valign="top">
-										<strong>Authors</strong><br>
+										<strong>Authors</strong>
+										<br>
 									</td>
 									<td class="label" colspan="2" valign="top">
 										<table class="smalltable" border="0">
-											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Middle Initial</th>
-											
-												<tr>
-													<logic:iterate name="submitPublicationForm"
-														property="file.authors" id="author" indexId="authorInd">
-														<tr>
-														<td>${submitPublicationForm.map.file.authors[authorInd].firstName}&nbsp;</td>
-														<td>${submitPublicationForm.map.file.authors[authorInd].lastName}&nbsp;</td>
-														<td>${submitPublicationForm.map.file.authors[authorInd].middleInitial}&nbsp;</td>
-														</tr>													
-													</logic:iterate>
-												</tr>
-										</table>&nbsp;																			
+											<tr class="smallTableHeader">
+												<th>
+													First Name
+												</th>
+												<th>
+													Last Name
+												</th>
+												<th>
+													Middle Initial
+												</th>
+											<tr>
+												<logic:iterate name="submitPublicationForm"
+													property="file.authors" id="author" indexId="authorInd">
+													<tr>
+														<td>
+															${submitPublicationForm.map.file.authors[authorInd].firstName}&nbsp;
+														</td>
+														<td>
+															${submitPublicationForm.map.file.authors[authorInd].lastName}&nbsp;
+														</td>
+														<td>
+															${submitPublicationForm.map.file.authors[authorInd].middleInitial}&nbsp;
+														</td>
+													</tr>
+												</logic:iterate>
+											</tr>
+										</table>
+										&nbsp;
 									</td>
 									<td class="rightLabel" colspan="2" valign="top">
 										&nbsp;
@@ -167,18 +186,16 @@
 									<td class="rightLabel">
 										${submitPublicationForm.map.file.domainFile.volume }&nbsp;
 									</td>
-								</tr>								
+								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Start Page
-										</strong>
+										<strong>Start Page </strong>
 									</td>
 									<td class="label">
 										${submitPublicationForm.map.file.domainFile.startPage }&nbsp;
 									</td>
 									<td class="label">
-										<strong>End Page
-										</strong>
+										<strong>End Page </strong>
 									</td>
 									<td class="rightLabel">
 										${submitPublicationForm.map.file.domainFile.endPage }&nbsp;
@@ -186,11 +203,12 @@
 								</tr>
 								<tr>
 									<td class="leftLabel" valign="top">
-										<strong>Keywords<br><em>(one keyword per line)</em></strong>
+										<strong>Keywords<br>
+											<em>(one keyword per line)</em>
+										</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:textarea property="file.keywordsStr"
-											rows="3" cols="60"/>
+										<html:textarea property="file.keywordsStr" rows="3" cols="60" />
 									</td>
 								</tr>
 								<tr>
@@ -201,17 +219,17 @@
 										<html:textarea property="file.domainFile.description" rows="3"
 											cols="60" />
 									</td>
-								</tr>			
+								</tr>
 							</tbody>
 						</table>
 
 						<br>
-						
-						
+
+
 						<c:choose>
 							<c:when test="${empty param.particleId}">
 								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-									width="100%" align="center" summary="" border="0">		
+									width="100%" align="center" summary="" border="0">
 									<tbody>
 										<tr class="topBorder">
 											<td class="formTitle" colspan="4">
@@ -219,7 +237,7 @@
 													&nbsp;
 												</div>
 											</td>
-										</tr>																
+										</tr>
 										<tr>
 											<td class="leftLabel" valign="top" width="20%">
 												<strong>Nanoparticle Sample Name*</strong>
@@ -236,7 +254,7 @@
 							</c:when>
 							<c:otherwise>
 								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-									width="100%" align="center" summary="" border="0">		
+									width="100%" align="center" summary="" border="0">
 									<tbody>
 										<tr class="topBorder">
 											<td class="formTitle" colspan="4">
@@ -244,27 +262,29 @@
 													Copy
 												</div>
 											</td>
-										</tr>																
+										</tr>
 										<tr>
-											<input type="hidden" name="file.particleNames" value="${particleName}">
+											<input type="hidden" name="file.particleNames"
+												value="${particleName}">
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Copy to other ${particleSource} nanoparticle</strong>
+												<strong>Copy to other ${particleSource}
+													nanoparticle</strong>
 											</td>
-											<td class="rightLabel">										
+											<td class="rightLabel">
 												<html:select property="file.particleNames" multiple="true"
 													size="5">
-													<html:options collection="otherParticleNames" property="name"
-														labelProperty="name" />
+													<html:options collection="otherParticleNames"
+														property="name" labelProperty="name" />
 												</html:select>
 											</td>
 										</tr>
 									</tbody>
 								</table>
-							</c:otherwise>								
+							</c:otherwise>
 						</c:choose>
 						<br>
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-							width="100%" align="center" summary="" border="0">		
+							width="100%" align="center" summary="" border="0">
 							<tbody>
 								<tr class="topBorder">
 									<td class="formTitle" colspan="4">
@@ -272,8 +292,8 @@
 											Visibilities
 										</div>
 									</td>
-								</tr>		
-								
+								</tr>
+
 								<tr>
 									<td class="leftLabel">
 										<strong>Visibility</strong>
@@ -285,12 +305,13 @@
 										</html:select>
 										<br>
 										<i>(${applicationOwner}_Researcher and
-											${applicationOwner}_DataCurator are always selected by default.)</i>
+											${applicationOwner}_DataCurator are always selected by
+											default.)</i>
 									</td>
 								</tr>
 							</tbody>
 						</table>
-									
+
 						<table width="100%" border="0" align="center" cellpadding="3"
 							cellspacing="0" class="topBorderOnly" summary="">
 							<tr>
@@ -303,7 +324,16 @@
 											<td width="490" height="32">
 												<div align="right">
 													<div align="right">
-														<input type="reset" value="Reset" onclick="javascript:window.location.reload()">
+														<c:set var="dataId"
+															value="${submitPublicationForm.map.file.domainFile.id}" />
+														<c:set var="origUrl"
+															value="submitPublication.do?page=0&dispatch=setup&location=${location}" />
+														<c:if test="${!empty dataId}">
+															<c:set var="origUrl"
+																value="submitPublication.do?page=0&dispatch=setupUpdate&location=${location}&fileId=${dataId }" />
+														</c:if>
+														<input type="reset" value="Reset"
+															onclick="javascript:window.location.href='${origUrl}'">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
