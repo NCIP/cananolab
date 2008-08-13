@@ -33,7 +33,7 @@
 						<table width="100%">
 							<tr>
 								<td class="formTitle" width="100%">
-									${fn:toUpperCase(param.location)} ${particleName}
+									${fn:toUpperCase(param.location)} ${particleName}&nbsp;
 								</td>
 								<td align="right" class="formTitle">
 
@@ -43,10 +43,11 @@
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="fileId" value="${param.publicationId}" />
 										<c:param name="submitType" value="${param.submitType}" />
-										<c:param name="location" value="${location}" />
+										<c:param name="location" value="${param.location}" />
 									</c:url>
+									
 									<c:if
-										test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+										test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit characterization" 
@@ -67,7 +68,7 @@
 										<c:param name="publicationId"
 											value="${submitPublicationForm.map.file.domainFile.id}" />
 										<c:param name="submitType" value="${submitType}" />
-										<c:param name="location" value="${location}" />
+										<c:param name="location" value="${param.location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
 											alt="export publication detail"
