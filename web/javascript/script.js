@@ -392,8 +392,8 @@ function displayLogin() {
 		
 	return false;
 }
-function addPubmed(form) {
+function addPubmed(form, particleId) {
 	var pubmedId = document.getElementById('pubmedId').value;
-	form.action = "submitPublication.do?dispatch=setupPubmed&page=0&location=local&pubmedId=" + pubmedId;
+	form.action = "submitPublication.do?dispatch=setupPubmed&page=0&location=local&particleId=" + particleId + "&pubmedId=" + pubmedId;
 	form.submit();
 }

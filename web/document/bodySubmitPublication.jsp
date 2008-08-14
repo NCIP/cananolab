@@ -109,7 +109,7 @@
 										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
 											onkeydown="return filterInteger(event)"/>
 										<a href="#"
-												onclick="javascript:addPubmed(submitPublicationForm); return false;">
+												onclick="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;">
 												<span class="addLink2">Auto Populate PubMed Fields</span> </a>
 									</td>
 								</tr>

@@ -71,6 +71,8 @@
 				path="document.submitPublication" />
 			<forward name="particleSubmitPublication"
 				path="particle.submitPublication" />
+			<forward name="documentSubmitPubmedPublication"
+				path="document.submitPublicationPubmed" />
 			<forward name="particleSubmitPubmedPublication"
 				path="particle.submitPublicationPubmed" />
 			<forward name="particleViewPublication"
