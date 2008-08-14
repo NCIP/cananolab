@@ -21,12 +21,12 @@
 		A publication is a document which is published. Publication includes review paper, 
 		journal and book chapter etc.
 		<br>
-		<br>
 		A report is a document generated
 		by a given research organization that describe the physical, in vitro,
 		and/or in vivo properties of a nanoparticle or set of nanoparticles.
+		<br><br>
 		In this section, depending on your authorization level, you may submit
-		new reports or search for an existing report.
+		new documents or search for an existing document.
 		<br>
 		<br>
 </tr>
