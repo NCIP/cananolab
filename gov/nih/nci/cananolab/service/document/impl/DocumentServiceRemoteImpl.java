@@ -70,7 +70,7 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 		}
 	}
 
-	//TODO XXXXXXXXXXXXXX
+	//FIXME XXXXXXXXXXXXXX may not needed
 	public LabFile[] findDocumentsByParticleSampleId(String particleId)
 			throws DocumentException {
 		{
