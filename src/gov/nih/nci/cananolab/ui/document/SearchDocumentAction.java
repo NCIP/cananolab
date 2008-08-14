@@ -182,16 +182,16 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		//Publication
 		if (publicationOrReport==null || publicationOrReport.length==0 ||
 				Arrays.toString(publicationOrReport).contains("publication")){
-			PublicationService documentService = null;
+			PublicationService publicationService = null;
 			for (String location : searchLocations) {
 				if (location.equals("local")) {
-					documentService = new PublicationServiceLocalImpl();
+					publicationService = new PublicationServiceLocalImpl();
 				} else {
 					String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 							request, location);
-					documentService = new PublicationServiceRemoteImpl(serviceUrl);
+					publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 				}
-				List<PublicationBean> publications = documentService.findPublicationsBy(title,
+				List<PublicationBean> publications = publicationService.findPublicationsBy(title,
 						category, nanoparticleName, researchArea, keywordsStr,
 						pubMedId, digitalObjectId, authorsStr,
 						nanoparticleEntityClassNames
