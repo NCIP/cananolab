@@ -40,7 +40,7 @@
 				<table class="${param.tableStyle}" ><tr class="titleRow">
 					<c:choose>
 						<c:when
-							test="${canCreateDocument eq 'true'}">
+							test="${canCreateDocument eq 'true' && location eq 'local'}">
 							<td valign="top">
 								<a href="${submitUrl}" class="addlink"><img
 									src="images/btn_add.gif" border="0" /></a>
