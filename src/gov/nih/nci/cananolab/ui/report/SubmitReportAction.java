@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.28 2008-08-13 20:11:09 cais Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.29 2008-08-14 21:05:00 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -82,15 +82,15 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");	
-		if (particleId==null ||particleId.length()==0) {
-			Object particleIdObj = session.getAttribute("particleId");
-			if (particleIdObj!=null) {
-				particleId = particleIdObj.toString();
-				request.setAttribute("particleId", particleId);
-			}else {
-				request.removeAttribute("particleId");
-			}
-		}		
+//		if (particleId==null ||particleId.length()==0) {
+//			Object particleIdObj = session.getAttribute("particleId");
+//			if (particleIdObj!=null) {
+//				particleId = particleIdObj.toString();
+//				request.setAttribute("particleId", particleId);
+//			}else {
+//				request.removeAttribute("particleId");
+//			}
+//		}		
 		if (particleId != null
 				&& particleId.length() > 0) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
