@@ -37,26 +37,26 @@ public class DocumentServiceLocalImpl implements DocumentService {
 	private DocumentServiceHelper helper = new DocumentServiceHelper();
 
 		
-	//TODO: XXXXXXXX removeDocumentPublicVisibility
+	//FIXME: clean up XXXXXXXX removeDocumentPublicVisibility
 	public void removeDocumentPublicVisibility(
 			AuthorizationService authService,
 			FunctionalizingEntity functionalizingEntity)
 			throws CaNanoLabSecurityException {
-		if (functionalizingEntity != null) {
-			authService.removePublicGroup(functionalizingEntity.getId()
-					.toString());
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						authService.removePublicGroup(function.getId()
-								.toString());
-					}
-				}
-			}
-		}
+//		if (functionalizingEntity != null) {
+//			authService.removePublicGroup(functionalizingEntity.getId()
+//					.toString());
+//			// functionalizingEntityCollection.functionCollection
+//			Collection<Function> functionCollection = functionalizingEntity
+//					.getFunctionCollection();
+//			if (functionCollection != null) {
+//				for (Function function : functionCollection) {
+//					if (function != null) {
+//						authService.removePublicGroup(function.getId()
+//								.toString());
+//					}
+//				}
+//			}
+//		}
 	}
 
 	public int getNumberOfPublicDocuments() throws DocumentException {
