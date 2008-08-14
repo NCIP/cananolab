@@ -161,8 +161,14 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		String pubmedID = request.getParameter("pubmedId");
+		String particleId = request.getParameter("particleId");
 		
-		ActionForward forward = mapping.findForward("particleSubmitPublication");
+		ActionForward forward = null;
+		if (particleId != null && particleId.length() > 0) {
+			forward = mapping.findForward("particleSubmitPublication");
+		} else {
+			forward = mapping.findForward("documentSubmitPublication");
+		}
 		if(pubmedID != null && pubmedID.length() > 0) {
 			phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
 			if (!pbean.isFoundPubMedArticle()) {
@@ -176,7 +182,11 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				return forward;
 			}
 			theForm.set("file", pbean);
-			forward = mapping.findForward("particleSubmitPubmedPublication");
+			if (particleId != null && particleId.length() > 0) {
+				forward = mapping.findForward("particleSubmitPubmedPublication");
+			} else {
+				forward = mapping.findForward("documentSubmitPubmedPublication");
+			}
 		} else {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage("message.submitPublication.pubmedIdRequired");
@@ -191,11 +201,11 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
-		if (particleId != null) {
-			session.setAttribute("particleId", particleId);
-		}else {
-			session.removeAttribute("particleId");
-		}
+//		if (particleId != null) {
+//			session.setAttribute("particleId", particleId);
+//		}else {
+//			session.removeAttribute("particleId");
+//		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String publicationId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -208,19 +218,24 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		ActionForward forward = mapping.getInputForward();
+		
+		Publication pub = (Publication) publicationBean.getDomainFile();
 		if (particleId != null && particleId.length() > 0) {
-			forward = mapping.findForward("particleSubmitPublication");
-			request.setAttribute("particleId", particleId);
-		}else {
-			Publication pub = (Publication) publicationBean.getDomainFile();
 			if (pub.getPubMedId() != null && pub.getPubMedId() > 0) {
 				forward = mapping
 						.findForward("particleSubmitPubmedPublication");
 			} else {
+				forward = mapping.findForward("particleSubmitPublication");
+			}
+			request.setAttribute("particleId", particleId);
+		}else {
+			if (pub.getPubMedId() != null && pub.getPubMedId() > 0) {
+				forward = mapping
+						.findForward("documentSubmitPubmedPublication");
+			} else {
 				forward = mapping.findForward("documentSubmitPublication");
 			}
 			request.removeAttribute("particleId");
-			
 		}
 		return forward;
 	}

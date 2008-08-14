@@ -30,6 +30,11 @@
 		<put name="menu" value="documents" />
 		<put name="onloadJavascript" value="radLinkOrUpload()"/>
 	</definition>
+	<definition name="document.submitPublicationPubmed" extends="calab.home">
+		<put name="calabContent" value="/document/bodySubmitPublicationPubmedReadOnly.jsp" />
+		<put name="menu" value="documents" />
+		<put name="onloadJavascript" value="radLinkOrUpload()"/>
+	</definition>
 	<!-- definition for the search document page -->
 	<definition name="document.searchDocument" extends="calab.home">
 		<put name="calabContent" value="/document/bodySearchDocument.jsp" />
