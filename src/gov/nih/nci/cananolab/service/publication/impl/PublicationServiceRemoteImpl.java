@@ -53,10 +53,6 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		throw new DocumentException("not implemented for grid service.");
 	}
 
-	//TODO, XXXXXXXX tanq
-	//remote search did not implement findPublicationsBy yet
-	//wait for update on gridclient
-	
 	public List<PublicationBean> findPublicationsBy(String title,
 			String category, String nanoparticleName, 
 			String[] researchArea, String keywordsStr,
@@ -68,157 +64,27 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String[] functionClassNames, String[] otherFunctionTypes)
 			throws DocumentException, CaNanoLabSecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
-		try {
-			//TODO, uncomment catch (RemoteException e)
-			/*Publication[] publications = gridClient.getPublicationsBy(title,
-					category, nanoparticleEntityClassNames,
-					functionalizingEntityClassNames, functionClassNames);*/
-			Publication[] publications = null;
-			if (publications != null) {
-				for (Publication publication : publications) {
-					loadParticleSamplesForPublication(publication);
-					publicationBeans.add(new PublicationBean(publication));
-				}
-			}
-			return publicationBeans;
-		/*} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	*/
-		} catch (Exception e) {
-			String err = "Problem finding report info.";
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
+		return publicationBeans;		
 	}
 
 
 
 	public Publication[] findPublicationsByParticleSampleId(String particleId)
 		throws DocumentException {	
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-			association.setRoleName("nanoparticleSampleCollection");
-	
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(particleId);
-			association.setAttribute(attribute);
-	
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Publication");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
-					results);
-			Publication publication = null;
-			List<Publication> publications = new ArrayList<Publication>();
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				publication = (Publication) obj;
-				publications.add(publication);
-			}
-			return publications.toArray(new Publication[0]);
-		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
-		} catch (Exception e) {
-			String err = "Error finding publications for particle.";
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
+		return new Publication[0];
 	}
 	
-	//TODO, tanq
-	private void loadParticleSamplesForPublication(Publication publication)
-		throws DocumentException {
-	try {
-		CQLQuery query = new CQLQuery();
-	
-		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target
-				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-		Association association = new Association();
-		association.setName("gov.nih.nci.cananolab.domain.common.Publication");
-		association.setRoleName("publicationCollection");
-	
-		Attribute attribute = new Attribute();
-		attribute.setName("id");
-		attribute.setPredicate(Predicate.EQUAL_TO);
-		attribute.setValue(publication.getId().toString());
-		association.setAttribute(attribute);
-	
-		target.setAssociation(association);
-		query.setTarget(target);
-		CQLQueryResults results = gridClient.query(query);
-		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		NanoparticleSample particleSample = null;
-		publication
-				.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-		while (iter.hasNext()) {
-			java.lang.Object obj = iter.next();
-			particleSample = (NanoparticleSample) obj;
-			publication.getNanoparticleSampleCollection().add(particleSample);
-		}
-	} catch (Exception e) {
-		String err = "Problem loading nanoparticle samples for the publication : "
-				+ publication.getId();
-		logger.error(err, e);
-		throw new DocumentException(err, e);
-	}
-	}
+
 	public PublicationBean findPublicationById(String publicationId) throws DocumentException {
-		try {
-			Publication publication = findDomainPublicationById(publicationId);
-			PublicationBean publicationBean = new PublicationBean(publication);
-			return publicationBean;
-		} catch (Exception e) {
-			String err = "Problem finding the publication by id: " + publicationId;
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
+		return null;
 	}
 	
 	public Publication findDomainPublicationById(String publicationId) throws DocumentException{
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(publicationId);
-			target.setAttribute(attribute);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Publication");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			Publication publication = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				publication = (Publication) obj;
-			}
-			loadParticleSamplesForPublication(publication);
-			return publication;
-		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
-		} catch (Exception e) {
-			String err = "Problem finding the publication by id: " + publicationId;
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
+		return null;
 	}
 	
+	
+
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 		throws DocumentException{		
 		try {
