@@ -34,7 +34,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-/* CVS $Id: SearchReportAction.java,v 1.17 2008-08-01 19:49:36 tanq Exp $ */
+/* CVS $Id: SearchReportAction.java,v 1.18 2008-08-14 19:12:26 tanq Exp $ */
 
 public class SearchReportAction extends BaseAnnotationAction {
 
@@ -247,9 +247,9 @@ public class SearchReportAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			ReportService protocolService = new ReportServiceRemoteImpl(
+			ReportService reportService = new ReportServiceRemoteImpl(
 					serviceUrl);
-			ReportBean fileBean = protocolService.findReportById(fileId);
+			ReportBean fileBean = reportService.findReportById(fileId);
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
 				return null;
