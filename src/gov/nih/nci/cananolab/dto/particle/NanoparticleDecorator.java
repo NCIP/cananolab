@@ -32,7 +32,7 @@ public class NanoparticleDecorator extends TableDecorator {
 //				+ "</a>";
 		
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitNanoparticleSample.do?dispatch=setupUpdate&particleId=");
+		sb.append("submitNanoparticleSample.do?submitType=&dispatch=setupUpdate&particleId=");
 		sb.append(particleId);
 		sb.append("&location=local>");
 		sb.append(particleName);

@@ -39,7 +39,7 @@
 									<c:url var="url" value="submitReport.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
-										<c:param name="particleId" value="${particleId}" />
+										<c:param name="particleId" value="${param.particleId}" />
 										<c:param name="reportId" value="${param.reportId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${param.location}" />

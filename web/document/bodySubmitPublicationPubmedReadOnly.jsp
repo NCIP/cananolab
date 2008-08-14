@@ -337,6 +337,7 @@
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
+														<input type="hidden" name="submitType" value="documents">
 														<c:if test="${!empty param.particleId}">
 															<input type="hidden" name="particleId"
 																value="${param.particleId}">
