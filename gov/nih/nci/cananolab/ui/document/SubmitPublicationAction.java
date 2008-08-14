@@ -94,15 +94,15 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");	
-		if (particleId==null ||particleId.length()==0) {
-			Object particleIdObj = session.getAttribute("particleId");
-			if (particleIdObj!=null) {
-				particleId = particleIdObj.toString();
-				request.setAttribute("particleId", particleId);
-			}else {
-				request.removeAttribute("particleId");
-			}
-		}		
+//		if (particleId==null ||particleId.length()==0) {
+//			Object particleIdObj = session.getAttribute("particleId");
+//			if (particleIdObj!=null) {
+//				particleId = particleIdObj.toString();
+//				request.setAttribute("particleId", particleId);
+//			}else {
+//				request.removeAttribute("particleId");
+//			}
+//		}		
 		if (particleId != null
 				&& particleId.length() > 0) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
