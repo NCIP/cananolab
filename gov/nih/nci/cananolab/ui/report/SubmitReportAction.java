@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.29 2008-08-14 21:05:00 cais Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.30 2008-08-15 15:17:30 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -220,8 +220,11 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		
 		
 		String particleId = request.getParameter("particleId");
+		ActionForward forward = null;
 		if(particleId == null || particleId.length() == 0) {
-			return mapping.findForward("documentDetailView");
+			forward = mapping.findForward("documentDetailView");
+		} else {
+			forward = mapping.findForward("particleDetailView");
 		}
 		
 		String submitType = request.getParameter("submitType");
@@ -234,7 +237,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
 		
-		return mapping.findForward("particleDetailView");
+		return forward;
 	}
 
 
