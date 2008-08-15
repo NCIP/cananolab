@@ -14,6 +14,8 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -454,6 +456,39 @@ public class PublicationServiceHelper {
 		row.createCell(cellCount++).setCellValue(
 				new HSSFRichTextString(publication.getStatus()));	
 		
+//		Authors
+		String rowHeader = "Authors";
+		
+		StringBuffer sb = new StringBuffer();
+		if (publication.getDocumentAuthorCollection()!=null) {
+			
+			List<DocumentAuthor> authorslist = new ArrayList<DocumentAuthor>(publication.getDocumentAuthorCollection());
+			Collections.sort(authorslist, 
+					new Comparator<DocumentAuthor>() {
+			    public int compare(DocumentAuthor o1, DocumentAuthor o2) {
+			        return (int)(o1.getId() - o2.getId());
+			    }});
+			
+			for (DocumentAuthor author: authorslist) {
+				
+				sb.append(author.getFirstName());
+				sb.append(' ');
+				sb.append(author.getMiddleInitial());
+				sb.append(' ');
+				sb.append(author.getLastName());
+				
+				row = sheet.createRow(rowCount++);
+				cellCount = 0;
+				cell = row.createCell(cellCount++);
+				cell.setCellStyle(headerStyle);
+				cell.setCellValue(new HSSFRichTextString(rowHeader));
+				row.createCell(cellCount++).setCellValue(
+						new HSSFRichTextString(sb.toString()));	
+				rowHeader = "";
+				sb.setLength(0);
+			}
+		}
+		
 		//research area
 		row = sheet.createRow(rowCount++);
 		cellCount = 0;
@@ -514,30 +549,7 @@ public class PublicationServiceHelper {
 			row.createCell(cellCount++).setCellValue(
 					new HSSFRichTextString(publication.getJournalName()));
 		}
-		//Authors
-		String rowHeader = "Authors";
 		
-		StringBuffer sb = new StringBuffer();
-		if (publication.getDocumentAuthorCollection()!=null) {
-			for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
-				
-				sb.append(author.getFirstName());
-				sb.append(' ');
-				sb.append(author.getMiddleInitial());
-				sb.append(' ');
-				sb.append(author.getLastName());
-				
-				row = sheet.createRow(rowCount++);
-				cellCount = 0;
-				cell = row.createCell(cellCount++);
-				cell.setCellStyle(headerStyle);
-				cell.setCellValue(new HSSFRichTextString(rowHeader));
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString(sb.toString()));	
-				rowHeader = "";
-				sb.setLength(0);
-			}
-		}		
 		//Description
 		row = sheet.createRow(rowCount++);
 		cellCount = 0;
@@ -546,9 +558,7 @@ public class PublicationServiceHelper {
 		cell.setCellValue(new HSSFRichTextString("Description"));
 		row.createCell(cellCount++).setCellValue(
 				new HSSFRichTextString(publication.getDescription()));	
-		
-		
-		
+
 		return rowCount;
 	}
 
