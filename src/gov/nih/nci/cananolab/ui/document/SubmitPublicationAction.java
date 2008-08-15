@@ -330,8 +330,11 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		theForm.set("file", pubBean);	
 	
 		String particleId = request.getParameter("particleId");
+		ActionForward forward = null;
 		if(particleId == null || particleId.length() == 0) {
-			return mapping.findForward("publicationDetailView");
+			forward = mapping.findForward("publicationDetailView");
+		} else {
+			forward = mapping.findForward("particleDetailView");
 		}
 		
 		String submitType = request.getParameter("submitType");
@@ -344,7 +347,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
 		
-		return mapping.findForward("particleDetailView");
+		return forward;
 	}
 	
 	
