@@ -147,7 +147,7 @@
 										<table class="smalltable" border="0">
 <%--											<logic:notEmpty name="submitPublicationForm"
 														property="file.authors" > --%>
-											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Middle Initial</th>
+											<tr class="smallTableHeader"><th>First Name</th><th>Last Name</th><th>Initials</th>
 											
 												<tr>
 													<logic:iterate name="submitPublicationForm"

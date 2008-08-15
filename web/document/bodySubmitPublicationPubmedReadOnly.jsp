@@ -148,7 +148,7 @@
 													Last Name
 												</th>
 												<th>
-													Middle Initial
+													Initials
 												</th>
 											<tr>
 												<logic:iterate name="submitPublicationForm"
