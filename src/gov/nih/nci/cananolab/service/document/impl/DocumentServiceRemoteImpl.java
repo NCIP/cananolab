@@ -41,9 +41,12 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 		gridClient = new CaNanoLabServiceClient(serviceUrl);
 	}
 
-
-	//TODO
 	public int getNumberOfPublicDocuments() throws DocumentException {
+		int count = getNumberOfPublicReports()+getNumberOfPublicPublications();
+		return count;
+	}
+	
+	public int getNumberOfPublicReports() throws DocumentException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -69,52 +72,81 @@ public class DocumentServiceRemoteImpl implements DocumentService {
 			throw new DocumentException(err, e);
 		}
 	}
+	
+	
+	public int getNumberOfPublicPublications() throws DocumentException {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
+			query.setTarget(target);
+			QueryModifier modifier = new QueryModifier();
+			modifier.setCountOnly(true);
+			query.setQueryModifier(modifier);
 
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Publication");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			int count = 0;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				count = ((Long) obj).intValue();
+			}
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of remote public publications.";
+			logger.error(err, e);
+			throw new DocumentException(err, e);
+		}
+	}
+	
 	//FIXME XXXXXXXXXXXXXX may not needed
 	public LabFile[] findDocumentsByParticleSampleId(String particleId)
 			throws DocumentException {
-		{
-			try {
-				CQLQuery query = new CQLQuery();
-				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-				target.setName("gov.nih.nci.cananolab.domain.common.Report");
-				Association association = new Association();
-				association
-						.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-				association.setRoleName("nanoparticleSampleCollection");
-
-				Attribute attribute = new Attribute();
-				attribute.setName("id");
-				attribute.setPredicate(Predicate.EQUAL_TO);
-				attribute.setValue(particleId);
-				association.setAttribute(attribute);
-
-				target.setAssociation(association);
-				query.setTarget(target);
-				CQLQueryResults results = gridClient.query(query);
-				results
-						.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
-				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
-						results);
-				Report report = null;
-				List<Report> reports = new ArrayList<Report>();
-				while (iter.hasNext()) {
-					java.lang.Object obj = iter.next();
-					report = (Report) obj;
-					reports.add(report);
-				}
-				//return reports.toArray(new Report[0]);
-				//TODO
-				return null;
-			} catch (RemoteException e) {
-				logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-				throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
-			} catch (Exception e) {
-				String err = "Error finding reports for particle.";
-				logger.error(err, e);
-				throw new DocumentException(err, e);
-			}
-		}
+		return null;
+//		{
+//			try {
+//				CQLQuery query = new CQLQuery();
+//				gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+//				target.setName("gov.nih.nci.cananolab.domain.common.Report");
+//				Association association = new Association();
+//				association
+//						.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+//				association.setRoleName("nanoparticleSampleCollection");
+//
+//				Attribute attribute = new Attribute();
+//				attribute.setName("id");
+//				attribute.setPredicate(Predicate.EQUAL_TO);
+//				attribute.setValue(particleId);
+//				association.setAttribute(attribute);
+//
+//				target.setAssociation(association);
+//				query.setTarget(target);
+//				CQLQueryResults results = gridClient.query(query);
+//				results
+//						.setTargetClassname("gov.nih.nci.cananolab.domain.common.Report");
+//				CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
+//						results);
+//				Report report = null;
+//				List<Report> reports = new ArrayList<Report>();
+//				while (iter.hasNext()) {
+//					java.lang.Object obj = iter.next();
+//					report = (Report) obj;
+//					reports.add(report);
+//				}
+//				//return reports.toArray(new Report[0]);
+//				//TODO
+//				return null;
+//			} catch (RemoteException e) {
+//				logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+//				throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+//			} catch (Exception e) {
+//				String err = "Error finding reports for particle.";
+//				logger.error(err, e);
+//				throw new DocumentException(err, e);
+//			}
+//		}
 	}
 	
 	public void removeDocumentFromParticle(NanoparticleSample particle,
