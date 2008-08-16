@@ -366,15 +366,7 @@ public class PublicationServiceHelper {
 		}
 		return publication;
 	}
-	
-//	public int getNumberOfPublicDocuments() throws Exception {
-//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//				.getApplicationService();
-//		int count = getNumberOfPublicPublications();
-//		count+=reportHelper.getNumberOfPublicReports();		
-//		return count;
-//	}
-	
+
 	public int getNumberOfPublicPublications() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
