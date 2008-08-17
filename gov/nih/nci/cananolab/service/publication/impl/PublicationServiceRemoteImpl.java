@@ -81,12 +81,13 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			return publicationBeans;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			//should show warning to user
 			//throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			return null;
+			return publicationBeans;
 		} catch (Exception e) {
 			String err = "Problem finding publication info.";
 			logger.error(err, e);
-			return null;
+			return publicationBeans;
 			//if may cause by grid version incompatible
 			//throw new DocumentException(err, e);
 		}
