@@ -83,9 +83,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
 			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
-			String err = "Problem finding report info.";
+			String err = "Problem finding publication info.";
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			return null;
+			//if may cause by grid version incompatible
+			//throw new DocumentException(err, e);
 		}
 	}
 
@@ -129,7 +131,9 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		} catch (Exception e) {
 			String err = "Error finding publications for particle.";
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			return null;
+			//if may cause by grid version incompatible
+			//throw new DocumentException(err, e);
 		}
 	}
 	
@@ -256,42 +260,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			throw new DocumentException(err, e);
 		}
 	}	
-	
-	public List<Publication> findAllPublications() throws DocumentException{
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
-			//Attribute attribute = new Attribute();
-			//attribute.setName("id");
-			//attribute.setPredicate(Predicate.EQUAL_TO);
-			//attribute.setValue(publicationId);
-			//target.setAttribute(attribute);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Publication");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			List<Publication> publications = new ArrayList<Publication>();
-			Publication publication = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				publication = (Publication) obj;
-				publications.add(publication);
-				loadParticleSamplesForPublication(publication);
-			}
-			return publications;
-		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
-		} catch (Exception e) {
-			String err = "Problem finding the publications ";
-			logger.error(err, e);
-			throw new DocumentException(err, e);
-		}
-	}
-	
-	
+
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 		throws DocumentException{		
 		try {
