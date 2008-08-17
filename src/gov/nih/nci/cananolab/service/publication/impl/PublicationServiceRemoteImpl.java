@@ -81,7 +81,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			return publicationBeans;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+			//throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			return null;
 		} catch (Exception e) {
 			String err = "Problem finding publication info.";
 			logger.error(err, e);
@@ -127,7 +128,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			return publications.toArray(new Publication[0]);
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+			//throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+			return null;
 		} catch (Exception e) {
 			String err = "Error finding publications for particle.";
 			logger.error(err, e);
