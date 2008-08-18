@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:choose>
 	<c:when
-		test="${displaytype == 'Report' ||
+		test="${displaytype == 'report' ||
 				displaytype == 'associated file' ||
 				displaytype == 'documents'}">
 		<c:set var="reportDisplay" value="display: block;" />

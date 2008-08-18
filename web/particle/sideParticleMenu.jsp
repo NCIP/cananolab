@@ -8,20 +8,20 @@
 <script type="text/javascript" src="javascript/sidemenu.js"></script>
 <script type="text/javascript" src="javascript/particleEntity.js"></script>
 <script type="text/javascript" src="javascript/functionalizingEntity.js"></script>
-<!-- submenu begins -->
-<c:choose>
-	<c:when test="${!empty param.submitType}">
-		<c:set var="submitType" value="${param.submitType}" scope="session" />
-	</c:when>
-</c:choose>
+
 <c:choose>
 	<c:when test="${!empty submitType }">
-		<c:set var="displaytype" value="${submitType}" scope="request" />
+		<c:set var="displaytype" value="${submitType}" scope="session" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="displaytype" value="${param.displayType}" scope="request" />
+		<c:if test="${!empty param.submitType }">
+			<c:set var="displaytype" value="${param.submitType}" scope="session" />
+		</c:if>
 	</c:otherwise>
 </c:choose>
+<c:if test="${particleId ne theParticle.domainParticleSample.id }">
+	<c:set var="displaytype" value="" scope="session"/>
+</c:if>
 <c:choose>
 	<c:when test="${!empty theParticle}">
 		<c:set var="particleName"
@@ -40,22 +40,6 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="dispatchValue" value="setupView" scope="session" />
-	</c:otherwise>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType == 'report'}">
-		<c:set var="reportDisplay" value="display: block;" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="reportDisplay" value="display: none;" />
-	</c:otherwise>
-</c:choose>
-<c:choose>
-	<c:when test="${submitType == 'associatedFile'}">
-		<c:set var="fileDisplay" value="display: block;" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="fileDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
 <table summary="" cellpadding="0" cellspacing="0" border="0"
