@@ -3,6 +3,7 @@ USE canano;
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
+DROP TABLE IF EXISTS nanoparticle_sample_publication;
 CREATE TABLE nanoparticle_sample_publication
 (
 	particle_sample_pk_id BIGINT NOT NULL,
@@ -12,6 +13,7 @@ CREATE TABLE nanoparticle_sample_publication
 ) TYPE=InnoDB
 ;
 
+DROP TABLE IF EXISTS publication;
 CREATE TABLE publication
 (
 	publication_pk_id BIGINT NOT NULL,
@@ -29,7 +31,7 @@ CREATE TABLE publication
 ) TYPE=InnoDB
 ;
 
-
+DROP TABLE IF EXISTS document_author;
 CREATE TABLE document_author
 (
 	document_author_pk_id BIGINT NOT NULL,
@@ -41,7 +43,7 @@ CREATE TABLE document_author
 ) 
 ;
 
-
+DROP TABLE IF EXISTS author_publication;
 CREATE TABLE author_publication
 (
 	document_author_pk_id BIGINT NOT NULL,
