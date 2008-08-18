@@ -334,6 +334,10 @@
 														<input type="hidden" name="submitType" value="documents">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
+														<c:if test="${!empty param.particleId}">
+															<input type="hidden" name="particleId"
+																value="${param.particleId}">
+														</c:if>
 														<html:submit />
 													</div>
 												</div>
