@@ -35,15 +35,7 @@
 			<field property="title" page="1" depends="mask">
 				<arg position="0" key="document.title" bundle="document" />
 				<msg name="mask"
-					key="document.domainFile.title.invalid" />
-				<var>
-					<var-name>mask</var-name>
-					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
-				</var>
-			</field>
-			<field property="category" page="1" depends="mask">
-				<arg position="0" key="document.category" bundle="document" />
-				<msg name="mask" key="document.category.invalid" />
+					key="document.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
