@@ -62,9 +62,7 @@ public class InitDocumentSetup {
 	
 	public void persistPublicationDropdowns(HttpServletRequest request,
 			PublicationBean publication) throws Exception {
-		//FIXME cleanup to be verified by tanq, ,need LabFile?? done by report??
-		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
-				"otherType", publication.getDomainFile().getType());		
+			
 		InitSetup.getInstance().persistLookup(request, "Publication", "category",
 				"otherCategory",
 				((Publication) (publication.getDomainFile())).getCategory());

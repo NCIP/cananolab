@@ -19,9 +19,6 @@ public interface DocumentService {
 
 	public int getNumberOfPublicDocuments() throws DocumentException;
 
-	public LabFile[] findDocumentsByParticleSampleId(String particleId)
-			throws DocumentException;
-	
 	public void removeDocumentFromParticle(NanoparticleSample particle,
 			Long dataId) 	throws DocumentException;
 
