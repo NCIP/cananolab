@@ -100,21 +100,20 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
-
-	//TODO, remove this??, category not need for dataTree
+	
 	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
 		request.setAttribute("updateDataTree", "true");
-		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "reportCategories",
-						"Report", "category", "otherCategory", true);
-		InitSetup.getInstance()
-			.getDefaultAndOtherLookupTypes(request, "publicationCategories",
-				"Publication", "category", "otherCategory", true);
-		InitSetup.getInstance()
-			.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
-			"Publication", "status", "otherStatus", true);
+//		InitSetup.getInstance()
+//				.getDefaultAndOtherLookupTypes(request, "reportCategories",
+//						"Report", "category", "otherCategory", true);
+//		InitSetup.getInstance()
+//			.getDefaultAndOtherLookupTypes(request, "publicationCategories",
+//				"Publication", "category", "otherCategory", true);
+//		InitSetup.getInstance()
+//			.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
+//			"Publication", "status", "otherStatus", true);
 		return InitNanoparticleSetup.getInstance().getDataTree(particleBean,
 				request);
 	}

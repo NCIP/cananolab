@@ -424,8 +424,7 @@ public class InitNanoparticleSetup {
 					}
 					hasDocumentData = true;
 				}
-				
-				//TODO, to be verified by                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+								                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 				// publication
 				SortedSet<DataLinkBean> pdataBeans = new TreeSet<DataLinkBean>(
 						new CaNanoLabComparators.DataLinkTypeDateComparator());

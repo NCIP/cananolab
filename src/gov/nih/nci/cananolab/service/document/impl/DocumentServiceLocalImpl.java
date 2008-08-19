@@ -36,29 +36,6 @@ public class DocumentServiceLocalImpl implements DocumentService {
 			.getLogger(DocumentServiceLocalImpl.class);
 	private DocumentServiceHelper helper = new DocumentServiceHelper();
 
-		
-	//FIXME: clean up XXXXXXXX removeDocumentPublicVisibility
-	public void removeDocumentPublicVisibility(
-			AuthorizationService authService,
-			FunctionalizingEntity functionalizingEntity)
-			throws CaNanoLabSecurityException {
-//		if (functionalizingEntity != null) {
-//			authService.removePublicGroup(functionalizingEntity.getId()
-//					.toString());
-//			// functionalizingEntityCollection.functionCollection
-//			Collection<Function> functionCollection = functionalizingEntity
-//					.getFunctionCollection();
-//			if (functionCollection != null) {
-//				for (Function function : functionCollection) {
-//					if (function != null) {
-//						authService.removePublicGroup(function.getId()
-//								.toString());
-//					}
-//				}
-//			}
-//		}
-	}
-
 	public int getNumberOfPublicDocuments() throws DocumentException {
 		try {
 			int count = helper.getNumberOfPublicDocuments();
@@ -68,11 +45,6 @@ public class DocumentServiceLocalImpl implements DocumentService {
 			logger.error(err, e);
 			throw new DocumentException(err, e);
 		}
-	}
-
-	public Publication[] findDocumentsByParticleSampleId(String particleId)
-			throws DocumentException {
-		throw new DocumentException("Not implemented for local search");
 	}
 	
 	/**

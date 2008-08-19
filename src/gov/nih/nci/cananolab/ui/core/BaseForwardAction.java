@@ -16,7 +16,7 @@ package gov.nih.nci.cananolab.ui.core;
  * @author pansu
  */
 
-/* CVS $Id: BaseForwardAction.java,v 1.2 2008-07-23 21:53:09 tanq Exp $ */
+/* CVS $Id: BaseForwardAction.java,v 1.3 2008-08-19 18:12:45 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -52,10 +52,7 @@ public class BaseForwardAction extends AbstractBaseAction {
 		session.setAttribute("canCreateProtocol", createProtocol);
 		Boolean createDocument = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_DOCUMENT);
-		//TODO, may remove canCreateReport and canCreatePublication
 		session.setAttribute("canCreateDocument", createDocument);
-		session.setAttribute("canCreateReport", createDocument);
-		session.setAttribute("canCreatePublication", createDocument);
 		Boolean createParticle = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 		session.setAttribute("canCreateNanoparticle", createParticle);
