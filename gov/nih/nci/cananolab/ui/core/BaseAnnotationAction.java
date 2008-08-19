@@ -270,7 +270,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			ActionMessages msgs, LabFileBean fileBean) {
 
 		boolean noErrors = true;
-
+		if (fileBean==null) {
+			return noErrors;
+		}
 		LabFile labfile = fileBean.getDomainFile();
 		if (labfile.getTitle().length() == 0) {
 			ActionMessage msg = new ActionMessage("errors.required",
