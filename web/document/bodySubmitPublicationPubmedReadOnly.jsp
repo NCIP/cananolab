@@ -104,6 +104,9 @@
 										<strong>PubMed ID</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
+									<a href=
+										"http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}"
+												target="_pubmed">
 										${submitPublicationForm.map.file.domainFile.pubMedId }&nbsp;
 									</td>
 								</tr>
