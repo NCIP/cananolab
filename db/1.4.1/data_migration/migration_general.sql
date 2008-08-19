@@ -114,12 +114,5 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','r
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 
--- increase the molecular_formula from VARCHAR(200) to VARCHAR(500)
-ALTER TABLE canano.associated_element
- CHANGE molecular_formula molecular_formula VARCHAR(500);
- 
-ALTER TABLE canano.surface_chemistry
- CHANGE molecular_formula molecular_formula VARCHAR(500);
- 
 -- End of script
 
