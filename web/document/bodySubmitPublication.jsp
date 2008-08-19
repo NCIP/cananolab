@@ -102,7 +102,7 @@
 									</td>
 									<td class="rightLabel" colspan="3">	
 										<a
-												href="http://www.ncbi.nlm.nih.gov/pubmed/"
+												href="http://www.ncbi.nlm.nih.gov/pubmed/${file.domainFile.pubMedId}"
 												target="_pubmed">
 												Click to look up PubMed Identifier</a>
 										<br>									
