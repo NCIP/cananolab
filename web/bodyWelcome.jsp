@@ -63,7 +63,7 @@
 						href="submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
 						shape="rect" coords="265,100,360,160" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreateReport eq 'true'}">
+				<c:if test="${canCreateDocument eq 'true'}">
 					<area href="manageDocument.do" shape="rect"
 						coords="360,445,445,480" alt="rectangle" />
 				</c:if>
