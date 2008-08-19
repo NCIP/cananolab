@@ -57,13 +57,15 @@
 						<td class="leftLabel">
 							<strong>Molecular Formula Type</strong>
 						</td>
-						<td class="label">
+						<td class="rightLabel" colspan="3">
 							${functionalizingEntityForm.map.entity.molecularFormulaType}&nbsp;
 						</td>
-						<td class="label" valign="top">
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
 							<strong>Molecular Formula</strong>
 						</td>
-						<td class="rightLabel">
+						<td class="rightLabel" colspan="3">
 							${functionalizingEntityForm.map.entity.molecularFormula}&nbsp;
 						</td>
 					</tr>

@@ -134,7 +134,7 @@
 															<td class="label" valign="top">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}&nbsp;
 															</td>
-															<td class="label" valign="top">
+															<td class="label" valign="top" width="15%">
 																${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}&nbsp;
 															</td>
 															<td class="label" valign="top">
