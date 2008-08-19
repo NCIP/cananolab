@@ -62,11 +62,7 @@ public class DocumentDecorator extends TableDecorator {
 	
 	public SortableName getEditReportURL() throws UnsupportedEncodingException {
 		ReportBean file = (ReportBean) getCurrentRowObject();
-		//if (!file.getLocation().equals("local")){
-			//return getViewName();
-		//}
 		String fileId = file.getDomainFile().getId().toString();
-		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("submitReport.do?submitType=none&page=0&dispatch=detailView&reportId=");
 		sb.append(fileId);
@@ -87,11 +83,7 @@ public class DocumentDecorator extends TableDecorator {
 	
 	public SortableName getEditPublicationURL() throws UnsupportedEncodingException {
 		PublicationBean file = (PublicationBean) getCurrentRowObject();
-		//if (!file.getLocation().equals("local")){
-		//	return getViewName();
-		//}
 		String fileId = file.getDomainFile().getId().toString();
-		//TODO, submitReport or submitPublication
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("submitPublication.do?submitType=none&page=0&dispatch=detailView&publicationId=");
 		sb.append(fileId);
@@ -115,7 +107,6 @@ public class DocumentDecorator extends TableDecorator {
 		String actionName = null;
 		Object documentBean = getCurrentRowObject();
 		LabFileBean file = null;
-		//TODO, try to not use instanceof??
 		if (documentBean instanceof ReportBean){
 			actionName = "searchReport.do";
 			file = (ReportBean) documentBean;

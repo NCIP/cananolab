@@ -78,8 +78,7 @@ public class CaNanoLabConstants {
 	public static final String PROTOCOL_FILE = "Protocol File";
 
 	public static final String FOLDER_PARTICLE = "particles";
-
-	//TODO, to remove FOLDER_REPORT
+	
 	public static final String FOLDER_REPORT = "reports";
 	
 	public static final String FOLDER_DOCUMENT = "documents";

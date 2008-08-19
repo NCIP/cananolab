@@ -46,38 +46,6 @@ import org.hibernate.criterion.Restrictions;
  * 
  */
 public class PublicationServiceHelper {
-	private static Logger logger = Logger.getLogger(PublicationServiceHelper.class);
-
-	//TODO, tanq
-	private ReportServiceHelper reportHelper = new ReportServiceHelper();
-	
-/*	public List<Object> findDocumentsBy(String title,
-			String category, String[] nanoparticleEntityClassNames,
-			String[] otherNanoparticleTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws Exception {
-		List documents = new ArrayList();
-		List<Report> reports = reportHelper.findReportsBy(title, category, nanoparticleEntityClassNames, 
-					otherNanoparticleTypes, functionalizingEntityClassNames, 
-					otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
-		if (reports!=null) {
-			for (Report report: reports) {
-				documents.add((LabFile)report);
-			}
-		}
-		List<Publication> publications = findPublicationsBy(title, category, nanoparticleEntityClassNames, 
-				otherNanoparticleTypes, functionalizingEntityClassNames, 
-				otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
-		if (publications!=null) {
-			for (Publication publication: publications) {
-				documents.add(publication);
-			}
-		}
-		return documents;
-	}
-*/
 	
 	public List<Publication> findPublicationsBy(String title,
 			String category,  String nanoparticleName, 
