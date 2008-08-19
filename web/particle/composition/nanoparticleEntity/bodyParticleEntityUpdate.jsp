@@ -177,7 +177,7 @@ function confirmDeletion()
 															<td class="leftLabel" valign="top">
 																<strong>Molecular Formula Type</strong>
 															</td>
-															<td class="label" valign="top">
+															<td class="rightLabel" valign="top" colspan="3">
 																<html:select styleId="molFormulaType${ind}"
 																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
 																	onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType${ind}');">
@@ -188,13 +188,15 @@ function confirmDeletion()
 																	</option>
 																</html:select>
 															</td>
-															<td class="label" valign="top">
+														</tr>
+														<tr>
+															<td class="leftLabel" valign="top">
 																<strong>Molecular Formula</strong>
 															</td>
-															<td class="rightLabel" valign="top">
-																<html:text
+															<td class="rightLabel" valign="top" colspan="3">
+																<html:textarea
 																	property="entity.composingElements[${ind}].domainComposingElement.molecularFormula"
-																	size="30" />
+																	rows="2" cols="65"/>
 															</td>
 														</tr>
 														<tr>

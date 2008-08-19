@@ -88,7 +88,7 @@ function confirmDeletion()
 						<td class="leftLabel">
 							<strong>Molecular Formula Type</strong>
 						</td>
-						<td class="label">
+						<td class="rightLabel" colspan="3">
 							<html:select styleId="mfType"
 								property="entity.molecularFormulaType"
 								onchange="javascript:callPrompt('Molecular Formula Type', 'mfType'); ">
@@ -100,11 +100,13 @@ function confirmDeletion()
 							</html:select>
 							&nbsp;
 						</td>
-						<td class="label" valign="top">
+					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
 							<strong>Molecular Formula</strong>
 						</td>
-						<td class="rightLabel">
-							<html:text property="entity.molecularFormula" />
+						<td class="rightLabel" colspan="3">
+							<html:textarea property="entity.molecularFormula" rows="2" cols="80"/>
 							&nbsp;
 						</td>
 					</tr>
