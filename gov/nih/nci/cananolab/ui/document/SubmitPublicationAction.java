@@ -112,7 +112,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			setupDataTree(particleBean, request);
 			forward = mapping.findForward("particleSuccess");
 		}
-		session.removeAttribute("particleId");
+		//session.removeAttribute("particleId");
 		return forward;
 	}
 
