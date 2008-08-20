@@ -48,8 +48,8 @@
 										test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit characterization"
-													title="edit characterization" border="0"> </a>
+													alt="edit report"
+													title="edit report" border="0"> </a>
 										</td>
 									</c:if>
 								<td>
