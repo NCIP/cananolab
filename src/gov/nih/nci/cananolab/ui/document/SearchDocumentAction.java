@@ -59,6 +59,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
 		String title = "";
+		//publication type
 		String category = "";
 		String keywordsStr = "";
 		String pubMedId = "";
@@ -139,9 +140,17 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		
 		List<LabFileBean> foundDocuments = new ArrayList<LabFileBean>();
 		//report
-		//List<ReportBean> foundReports = new ArrayList<ReportBean>();
-		if (publicationOrReport==null || publicationOrReport.length==0 ||
-				Arrays.toString(publicationOrReport).contains("report")){		
+		if ((publicationOrReport==null || publicationOrReport.length==0 ||
+				Arrays.toString(publicationOrReport).contains("report"))
+				&&
+				((researchArea==null || researchArea.length==0) &&
+				  (keywordsStr==null || keywordsStr.length()==0)&&
+				  (pubMedId == null || pubMedId.length()==0) &&
+				  (digitalObjectId == null || digitalObjectId.length()==0) &&
+				  (category == null || category.length()==0) &&
+				  (authorsStr == null || authorsStr.length()==0)				
+				)		
+			){		
 			ReportService service = null;
 			for (String location : searchLocations) {
 				if (location.equals("local")) {
