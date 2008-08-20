@@ -33,31 +33,38 @@
 								</td>
 							</tr>
 							<bean:define id="canCreate" name="canCreate${item}" />
-							<c:choose>
-								<c:when test="${canCreate eq 'true'}">
-									<tr>
-										<td class="sidebarContent">
-											Submit a New Document
-											<ul><ul>
+							<c:if test="${canCreate eq 'true'}">
+								<tr>
+									<td class="sidebarContentTop">
+										Submit a New Document
+										<ul>
 												<li>
-													<html:link page="/submitPublication.do?dispatch=setup&amp;page=0" scope="page">
+													<html:link
+														page="/submitPublication.do?dispatch=setup&amp;page=0"
+														scope="page">
 													Submit a New Publication</html:link>
+													<br>
+													Click to submit a new publication.
 												</li>
-												<li><html:link page="/submitReport.do?dispatch=setup&amp;page=0" scope="page">
-													Submit a New Report</html:link> 
+												<li>
+													<html:link
+														page="/submitReport.do?dispatch=setup&amp;page=0"
+														scope="page">
+													Submit a New Report</html:link>
+													<br>
+													Click to submit a new report.
 												</li>
-											</ul></ul>
-											
-										</td>
-									</tr>
-								</c:when>
-							</c:choose>
+										</ul>
+									</td>
+								</tr>
+							</c:if>
 							<tr>
-								<td class="sidebarContent">
+								<td class="sidebarContentBottom">
 									<a href="${searchLink}">Search Existing <c:out
 											value="${item}" />s </a>
 									<br>
-									Enter search criteria to obtain information on
+									Enter search criteria to obtain
+									information on
 									<c:out value="${fn:toLowerCase(item)}" />s
 									of interest.
 								</td>

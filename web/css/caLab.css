@@ -443,6 +443,37 @@ SIDEBAR BEGINS
 	padding-left: 0.8em;
 }
 
+.sidebarContentTop { /* for the areas under the sidebar titles and requires text */
+	font-size: 1em;
+	padding: 0.8em 0 0 0.8em;
+	margin-bottom: 0;
+}
+
+.sidebarContentTop ul {
+	list-style-type: disc;
+	font-weight: normal;
+	padding-left: 2em;
+}
+
+.sidebarContentTop li {
+	padding-bottom: 0.5em;
+}
+
+.sidebarContentBottom { /* for the areas under the sidebar titles and requires text */
+	font-size: 1em;
+	padding: 0 0 0.8em 0.8em;
+}
+
+.sidebarContentBottom ul {
+	list-style-type: disc;
+	font-weight: normal;
+	padding-left: 2em;
+}
+
+.sidebarContentBottom li {
+	padding-bottom: 0.5em;
+}
+
 /*###############
 DATA TABLE BEGINS 
 ###############*/
