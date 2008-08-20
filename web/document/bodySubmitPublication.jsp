@@ -9,7 +9,9 @@
 <c:if test="${param.dispatch eq 'setupUpdate'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-
+<c:if test="${!empty param.particleId}">
+	<c:set var="particleId" value="${param.particleId}" scope="request"/>
+</c:if>
 <html:form action="/submitPublication" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
@@ -324,9 +326,9 @@
 												<div align="right">
 													<div align="right">
 												<c:set var="dataId" value="${submitPublicationForm.map.file.domainFile.id}" />
-												<c:set var="origUrl" value="submitPublication.do?page=0&dispatch=setup&location=${location}" />
+												<c:set var="origUrl" value="submitPublication.do?page=0&particleId=${particleId }&dispatch=setup&location=${location}" />
 												<c:if test="${!empty dataId}">
-													<c:set var="origUrl" value="submitPublication.do?page=0&dispatch=setupUpdate&location=${location}&fileId=${dataId }" />
+													<c:set var="origUrl" value="submitPublication.do?page=0&particleId=${particleId }&dispatch=setupUpdate&location=${location}&fileId=${dataId }" />
 												</c:if>
 												<input type="reset" value="Reset"
 													onclick="javascript:window.location.href='${origUrl}'">
@@ -334,10 +336,7 @@
 														<input type="hidden" name="submitType" value="documents">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
-														<c:if test="${!empty param.particleId}">
-															<input type="hidden" name="particleId"
-																value="${param.particleId}">
-														</c:if>
+														<input type="hidden" name="particleId" value="${particleId}">
 														<html:submit />
 													</div>
 												</div>
