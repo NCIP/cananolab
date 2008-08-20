@@ -48,7 +48,7 @@
 											Click to
 											<c:choose>
 												<c:when test="${item eq 'Nanoparticle'}">
-												submit a new <c:out value="${fn:toLowerCase(item)}" /> Sample.
+												submit a new <c:out value="${fn:toLowerCase(item)}" /> sample.
 											</c:when>
 												<c:otherwise>
 												submit a new <c:out value="${fn:toLowerCase(item)}" />.
