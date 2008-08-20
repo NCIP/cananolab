@@ -20,9 +20,8 @@
 		vitro characterizations and characterization result files. In this
 		section, depending on your authorization level, you may submit new
 		nanoparticle information or search for an existing nanoparticle for
-		editing, viewing, printing, or exporting. Prior to submitting new
-		information about a nanoparticle, a sample must first be created via
-		the Create a New Sample function.
+		editing, viewing, printing, or exporting. 
 		<br>
 		<br>
+	</td>
 </tr>
