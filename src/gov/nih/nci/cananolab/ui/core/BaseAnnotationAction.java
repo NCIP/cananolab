@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
@@ -14,6 +15,8 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.document.InitDocumentSetup;
+import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -322,4 +325,16 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}		
 		return noErrors;
 	}
+	
+	public ActionForward unspecified (ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws InvalidSessionException {
+		HttpSession session = request.getSession();
+		if (session.isNew()) {
+			throw new InvalidSessionException(
+					"Session timed out.  Please start again");
+		}
+		return mapping.getInputForward();
+	}
+
 }
