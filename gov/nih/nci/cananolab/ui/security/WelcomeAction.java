@@ -10,13 +10,13 @@
 package gov.nih.nci.cananolab.ui.security;
 
 /**
- * This class calls the Struts ForwardAction to forward to a page, aslo extends
+ * This class calls the Struts ForwardAction to forward to a page, also extends
  * AbstractBaseAction to inherit the user authentication features.
  * 
  * @author pansu
  */
 
-/* CVS $Id: WelcomeAction.java,v 1.5 2008-06-19 20:19:06 pansu Exp $ */
+/* CVS $Id: WelcomeAction.java,v 1.6 2008-08-21 22:27:35 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
