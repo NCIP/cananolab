@@ -120,11 +120,8 @@ ALTER TABLE canano.associated_element
  
 ALTER TABLE canano.surface_chemistry
  CHANGE molecular_formula molecular_formula VARCHAR(500);
- 
- 
-ALTER TABLE canano.csm_user_group
- CHANGE user_group_id user_group_id BIGINT(20) AUTO_INCREMENT NOT NULL;
- 
+  
+  
  insert into csm_user_group
  (user_id, group_id)
 
@@ -135,8 +132,6 @@ where g.group_name like '%_PI'
 and g.group_id = cug.group_id
 and g2.group_name like '%_DataCurator';
 
-ALTER TABLE canano.csm_user_group
- CHANGE user_group_id user_group_id BIGINT(20) NOT NULL;
  
 -- End of script
 
