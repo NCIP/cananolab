@@ -91,7 +91,7 @@
 											<a href="#" onclick="searchDocuments();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseDocuments();" id="reportCount"
+											<a href="#" onclick="browseDocuments();" id="documentCount"
 												class="countsLink"></a>
 										</td>
 									</tr>
