@@ -8,7 +8,7 @@ function getGridCounts(selectEle) {
 	// display progress.gif while waiting for the response.
 	var loaderimg = "<img src=\"images/ajax-loader.gif\" border=\"0\" class=\"counts\">";
 	document.getElementById("particleCount").innerHTML = loaderimg;
-	document.getElementById("reportCount").innerHTML = loaderimg;
+	document.getElementById("documentCount").innerHTML = loaderimg;
 	document.getElementById("protocolCount").innerHTML = loaderimg;
 	
 	//var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
@@ -48,7 +48,7 @@ function updateParticleCount() {
 			var countStr = request.responseText;
 			var countarray = countStr.split("\t");
 			document.getElementById("particleCount").innerHTML = countarray[0];
-			document.getElementById("reportCount").innerHTML = countarray[1];
+			document.getElementById("documentCount").innerHTML = countarray[1];
 			document.getElementById("protocolCount").innerHTML = countarray[2];
 		} else {
 			alert("Unable to retrieve particle count from server.");
