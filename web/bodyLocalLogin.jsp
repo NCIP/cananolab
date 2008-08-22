@@ -36,10 +36,11 @@
 										<a href="${protocolURL}">Browse Protocols</a>
 									</h4>
 									<h5>
-										Provides access to <u>publicly</u> available nanotechnology
-										protocols. Includes protocols for nanoparticle
-										characterizations (physical, in vitro, in vivo), sample
-										preparation, radio labeling, and safety.
+										Provides access to
+										<u>publicly</u> available nanotechnology protocols. Includes
+										protocols for nanoparticle characterizations (physical, in
+										vitro, in vivo), sample preparation, radio labeling, and
+										safety.
 									</h5>
 								</li>
 								<img src="images/icon_nanoparticle_48x.jpg" />
@@ -51,10 +52,10 @@
 										<a href="${charURL}">Browse Nanoparticles</a>
 									</h4>
 									<h5>
-										Provides access to <u>publicly</u> available nanoparticle
-										characterization data. Includes information on particle
-										composition, function, and physical and in vitro
-										characterizations (in vivo coming soon).
+										Provides access to
+										<u>publicly</u> available nanoparticle characterization data.
+										Includes information on particle composition, function, and
+										physical and in vitro characterizations (in vivo coming soon).
 									</h5>
 								</li>
 
@@ -67,8 +68,9 @@
 										<a href="${reportURL}">Browse Reports</a>
 									</h4>
 									<h5>
-										Provides access to <u>publicly</u> available reports detailing the
-										results of nanoparticle characterization projects.
+										Provides access to
+										<u>publicly</u> available reports detailing the results of
+										nanoparticle characterization projects.
 									</h5>
 								</li>
 							</ul>
@@ -113,7 +115,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-													<input type="text" name="loginId" size="14"/>
+													<input type="text" name="loginId" size="14" />
 												</td>
 											</tr>
 											<tr>
@@ -123,7 +125,7 @@
 													</label>
 												</td>
 												<td class="formFieldLogin">
-													<input type="password" name="password" size="14"/>
+													<input type="password" name="password" size="14" />
 												</td>
 											</tr>
 											<tr>
@@ -162,29 +164,15 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<strong>caNanoLab 1.4 is now available!</strong>
+										<strong>caNanoLab 1.4.1 is now available!</strong>
 										<br>
 										<br>
-										caNanoLab 1.4 contains the following primary features:
+										caNanoLab 1.4.1 contains the following primary features:
 										<br>
 										<ul>
 											<li>
-												New composition structure to include nanoparticle and functionalizing entities, chemical associations, and composition files
-											</li>
-											<li>
-												New metadata constraints for composition and physical characterizations
-											</li>
-											<li>
-												Additional grid services and seamless local/remote search
-											</li>
-											<li>
-												Disabled sample management functionality and combined with nanoparticle submission
-											</li>
-											<li>
-												New glossary of terms
-											</li>
-											<li>
-												Product upgrades to the caCORE SDK 4.0 and caGrid 1.2
+												Support for publications associated with nanoparticle
+												characterizations
 											</li>
 										</ul>
 										caNanoLab 1.4 expands upon existing caNanoLab functionality
@@ -192,25 +180,36 @@
 										<br>
 										<ul>
 											<li>
-												Support for nanoparticle protocols, characterizations, and reports
+												Support for the composition and structure of nanoparticles
+												including nanoparticle entities, functionalizing entities,
+												and chemical associations
 											</li>
 											<li>
-												Support for physical and in vitro nanoparticle characterizations
+												Support for nanoparticle protocols, characterizations, and
+												reports
 											</li>
 											<li>
-												Nanoparticle Information (Characterizations) Management
+												Support for physical and in vitro nanoparticle
+												characterizations
 											</li>
 											<li>
-												Summary views of nanoparticle information with print and export feature
+												Summary views of nanoparticle characterizations with print
+												and export feature
 											</li>
 											<li>
-												Basic local and caBIG<sup>TM</sup> grid (caGrid) search functionality
+												Basic local and caBIG
+												<sup>
+													TM
+												</sup>
+												grid (caGrid) remote search functionality
 											</li>
 											<li>
-												Role-based Security
+												Role-based security supporting user authentication and
+												authorization
 											</li>
 											<li>
-												MySQL 5.0.x Database Support
+												Product upgrades to the caCORE SDK 4.0, caGrid 1.2, and
+												MySQL 5.0.x Database
 											</li>
 										</ul>
 										<br>

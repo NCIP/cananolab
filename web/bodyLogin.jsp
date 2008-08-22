@@ -187,66 +187,44 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<strong>caNanoLab 1.4 is now available!</strong>
+									<strong>caNanoLab 1.4.1 is now available!</strong>
 									<br>
 									<br>
-									caNanoLab 1.4 contains the following primary features:
+									caNanoLab 1.4.1 contains the following primary features:
 									<br>
 									<ul>
 										<li>
-											New composition structure to include nanoparticle and
-											functionalizing entities, chemical associations, and
-											composition files
-										</li>
-										<li>
-											New metadata constraints for composition and physical
-											characterizations
-										</li>
-										<li>
-											Additional grid services and seamless local/remote search
-										</li>
-										<li>
-											Disabled sample management functionality and combined with
-											nanoparticle submission
-										</li>
-										<li>
-											New glossary of terms
-										</li>
-										<li>
-											Product upgrades to the caCORE SDK 4.0 and caGrid 1.2
+											Support for publications associated with nanoparticle characterizations
 										</li>
 									</ul>
-									caNanoLab 1.4 expands upon existing caNanoLab functionality
+									caNanoLab 1.4.1 expands upon existing caNanoLab functionality
 									including:
 									<br>
 									<ul>
 										<li>
-											Support for nanoparticle protocols, characterizations, and
-											reports
+											Support for the composition and structure of nanoparticles including nanoparticle entities, functionalizing entities, and chemical associations
 										</li>
 										<li>
-											Support for physical and in vitro nanoparticle
-											characterizations
+											Support for nanoparticle protocols, characterizations, and reports
 										</li>
 										<li>
-											Nanoparticle Information (Characterizations) Management
+											Support for physical and in vitro nanoparticle characterizations
 										</li>
 										<li>
-											Summary views of nanoparticle information with print and
-											export feature
+											Summary views of nanoparticle characterizations with print and export feature
 										</li>
 										<li>
 											Basic local and caBIG
 											<sup>
 												TM
 											</sup>
-											grid (caGrid) search functionality
+											grid (caGrid) remote search functionality
 										</li>
 										<li>
-											Role-based Security
+											Role-based security supporting user authentication and authorization
 										</li>
 										<li>
-											MySQL 5.0.x Database Support
+											Product upgrades to the caCORE SDK 4.0, caGrid 1.2, and MySQL 5.0.x Database
 										</li>
 									</ul>
 									<br>
