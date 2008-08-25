@@ -119,8 +119,9 @@
     <i t="Editing Documents" l="91">
       <i t="Update Report Page" l="92" />
       <i t="Update Publication Page" l="93" />
+      <i t="Deleting a Document" l="94" />
     </i>
   </i>
-  <i t="caNanoLab Glossary" l="94" />
-  <i t="Application Support" l="95" />
+  <i t="caNanoLab Glossary" l="95" />
+  <i t="Application Support" l="96" />
 </WebWorksHelpTOC>
