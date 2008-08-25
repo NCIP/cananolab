@@ -452,7 +452,8 @@ SIDEBAR BEGINS
 .sidebarContentTop ul {
 	list-style-type: disc;
 	font-weight: normal;
-	padding-left: 2em;
+	padding: 0 0 0 2em;
+	margin-bottom: 0.3em;
 }
 
 .sidebarContentTop li {
@@ -462,6 +463,7 @@ SIDEBAR BEGINS
 .sidebarContentBottom { /* for the areas under the sidebar titles and requires text */
 	font-size: 1em;
 	padding: 0 0 0.8em 0.8em;
+	
 }
 
 .sidebarContentBottom ul {
