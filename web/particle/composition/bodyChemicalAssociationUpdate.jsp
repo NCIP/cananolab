@@ -194,8 +194,7 @@ function confirmDeletion()
 								</ul>
 							</div>
 							<div id="assocEleLinkBlock" class="arrowBlock">
-								<img src="images/arrow.small.left.gif" />
-								<img src="images/arrow.small.right.gif" />
+								<img src="images/arrow_left_right.gif" />
 								<br>
 								<strong>associated with</strong>
 							</div>
