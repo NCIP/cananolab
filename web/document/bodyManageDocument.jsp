@@ -59,7 +59,11 @@
 								</tr>
 							</c:if>
 							<tr>
+								
 								<td class="sidebarContentBottom">
+									<c:if test="${canCreate ne 'true'}">
+										<br>
+									</c:if>
 									<a href="${searchLink}">Search Existing <c:out
 											value="${item}" />s </a>
 									<br>
