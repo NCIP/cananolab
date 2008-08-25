@@ -287,21 +287,16 @@ public class ReportServiceHelper {
 		row.createCell(cellCount++).setCellValue(
 				new HSSFRichTextString(report.getTitle()));	
 		
-		//Description
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
-		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Description"));
-		row.createCell(cellCount++).setCellValue(
-				new HSSFRichTextString(report.getDescription()));
-		
 		if (report.getUri() != null) {
 			row = sheet.createRow(rowCount++);
 			cellCount = 0;
 			cell = row.createCell(cellCount++);
 			cell.setCellStyle(headerStyle);
-			cell.setCellValue(new HSSFRichTextString("Report File"));
+			if (aReport.getDomainFile().getUriExternal()) {
+				cell.setCellValue(new HSSFRichTextString("Report URL"));
+			}else {
+				cell.setCellValue(new HSSFRichTextString("Report File"));
+			}
 
 			if (aReport.isHidden()) {
 				row.createCell(cellCount++).setCellValue(
@@ -331,10 +326,19 @@ public class ReportServiceHelper {
 					}
 				} else {
 					row.createCell(cellCount++).setCellValue(
-							new HSSFRichTextString(report.getTitle()));
+							new HSSFRichTextString(report.getUri()));
 				}
 			}
 		}
+		
+		//Description
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Description"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(report.getDescription()));
 		return rowCount;
 	}
 }
