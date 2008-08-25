@@ -94,6 +94,7 @@ P.fA("Publication Page","Documents.9.8.html");
 P.fA("Editing Documents","Documents.9.9.html");
 P.fA("Update Report Page","Documents.9.10.html");
 P.fA("Update Publication Page","Documents.9.11.html");
+P.fA("Deleting a Document","Documents.9.12.html");
 P.fA("caNanoLab Glossary","caNanoLab_Glossary.10.1.html");
 P.fA("Application Support","Application%20Support.11.1.html");
 }

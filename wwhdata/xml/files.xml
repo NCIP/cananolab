@@ -132,6 +132,7 @@
     <Document title="Editing Documents" href="Documents.9.9.html" />
     <Document title="Update Report Page" href="Documents.9.10.html" />
     <Document title="Update Publication Page" href="Documents.9.11.html" />
+    <Document title="Deleting a Document" href="Documents.9.12.html" />
     <Document title="caNanoLab Glossary" href="caNanoLab_Glossary.10.1.html" />
     <Document title="Application Support" href="Application%20Support.11.1.html" />
   </DocumentInfo>
@@ -176,14 +177,16 @@
     <Topic name="char_summary_help" href="Navigation%20Tree%20Managing_Char.8.3.html#1546544" />
     <Topic name="char_details_help" href="Navigation%20Tree%20Managing_Char.8.4.html#1546636" />
     <Topic name="delete_characterization_help" href="Navigation%20Tree%20Managing_Char.8.7.html#1546778" />
+    <Topic name="doc_summary_help" href="Navigation%20Tree%20Managing_Char.8.8.html#1546804" />
     <Topic name="manage_reports_help" href="Documents.9.2.html#1123962" />
     <Topic name="submit_publication_help" href="Documents.9.3.html#1131845" />
     <Topic name="nano_report_help" href="Documents.9.4.html#1138842" />
     <Topic name="search_reports_help" href="Documents.9.5.html#1135396" />
     <Topic name="search_reports_results_help" href="Documents.9.6.html#1104802" />
     <Topic name="report_page_help" href="Documents.9.7.html#1131363" />
-    <Topic name="publication_page_help" href="Documents.9.8.html#1131749" />
+    <Topic name="publication_page_help" href="Documents.9.8.html#1142741" />
     <Topic name="report_file_page" href="Documents.9.11.html#1138948" />
+    <Topic name="delete_doc_help" href="Documents.9.12.html#1124634" />
     <Topic name="glossary_help" href="caNanoLab_Glossary.10.1.html#1065170" />
   </TopicMap>
 </WebWorksHelpBook>
