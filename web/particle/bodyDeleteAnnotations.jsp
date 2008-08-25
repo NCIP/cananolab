@@ -47,8 +47,16 @@ function confirmDeletion(deleteName, deleteMsg)
 				</h3>
 			</td>
 			<td align="right" width="20%">
-				<jsp:include page="/webHelp/helpGlossary.jsp">
-					<jsp:param name="topic" value="delete_characterization_help" />
+				<c:choose>
+					<c:when test="${param.submitType eq 'documents'}">
+						<c:set var="docHelp" value="delete_doc_help" scope="request" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="docHelp" value="delete_characterization_help" scope="request" />
+					</c:otherwise>
+				</c:choose>
+				<jsp:include page="/webHelp/helpGlossary.jsp">					
+					<jsp:param name="topic" value="${docHelp}" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
 			</td>
@@ -101,7 +109,7 @@ function confirmDeletion(deleteName, deleteMsg)
 														<html:hidden property="particleId" />
 													</c:otherwise>
 												</c:choose>
-												<input type="hidden" name="submitType" value="${submitType}" />
+												<input type="hidden" name="submitType" value="${param.submitType}" />
 												<input type="hidden" name="diaplayType"
 													value="${param.displayType}" />
 												<input type="button" value="Delete"
