@@ -65,7 +65,7 @@
 						<td class="leftLabel" valign="top">
 							<strong>Document Category</strong>
 						</td>
-						<td class="label" colspan="1">
+						<td class="label" colspan="2">
 							<strong><html:select property="publicationOrReport"
 									styleId="publicationOrReport" multiple="true" size="2">
 									<html:option value="publication">Publication</html:option>
@@ -76,19 +76,11 @@
 						<td class="label" valign="top">
 							<strong>Research Category</strong>
 						</td>
-						<td class="label" colspan="1">												
+						<td class="rightLabel" colspan="2">												
 							<strong><html:select property="researchArea"
-									styleId="researchArea" multiple="true" size="2">
+									styleId="researchArea" multiple="true" size="3">
 									<html:options name="publicationResearchAreas" />
 								</html:select> </strong>
-						</td>
-						<td class="label" valign="top">
-							<strong>Keywords</strong>
-						</td>
-						<td class="rightLabel" colspan="3">
-							<strong><html:textarea property="keywordsStr"
-									styleId="keywordsStr" rows="2">
-							</html:textarea> </strong>
 						</td>
 					</tr>
 					<tr>
@@ -100,28 +92,7 @@
 						</td>
 					</tr>
 					<tr valign="top">
-						<td class=leftLabelNoBottom colspan="2">
-							&nbsp;
-						</td>						
-						<td class="borderlessLabel" valign="top">
-							<strong>PubMed ID</strong>
-						</td>
-						<td class="borderlessLabel" valign="top">
-							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
-							<br>(Please enter the whole PubMedID)<br><br>
-						</td>
-						<td class="borderlessLabel">
-							<strong>Digital Object ID</strong>
-						</td>
-						<td class="rightLabelNoBottom">
-							<html:text property="digitalObjectId" size="20" />
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" colspan="2">
-							&nbsp;
-						</td>
-						<td class="label">
+						<td class="leftLabel">
 							<strong>Publication Type</strong>
 						</td>
 						<td class="label">
@@ -129,12 +100,38 @@
 								<option value="" />
 									<html:options name="publicationCategories" />
 							</html:select>
+						</td>				
+						<td class="label" valign="top">
+							<strong>PubMed ID</strong>
+						</td>
+						<td class="label" valign="top">
+							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
+							<br>(Please enter the whole PubMedID)<br><br>
 						</td>
 						<td class="label">
-							<strong>Authors</strong>
+							<strong>Digital Object ID</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="authorsStr" size="20" />
+							<html:text property="digitalObjectId" size="20" />
+						</td>
+					</tr>
+					<tr>
+						<td class="leftLabel">
+							<strong>Authors</strong>
+						</td>
+						<td class="rightLabel" colspan="5">
+							<html:text property="authorsStr" size="100" />
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Keywords</strong>
+						</td>
+						<td class="rightLabel" colspan="5">
+							<strong><html:textarea property="keywordsStr"
+									cols="30" styleId="keywordsStr" rows="3">
+							</html:textarea> </strong>
 						</td>
 					</tr>
 				</table>
