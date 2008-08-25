@@ -116,10 +116,10 @@ ALTER TABLE canano.common_lookup
 
 -- increase the molecular_formula from VARCHAR(200) to VARCHAR(500)
 ALTER TABLE canano.associated_element
- CHANGE molecular_formula molecular_formula VARCHAR(500);
+ CHANGE molecular_formula molecular_formula VARCHAR(2000);
  
 ALTER TABLE canano.surface_chemistry
- CHANGE molecular_formula molecular_formula VARCHAR(500);
+ CHANGE molecular_formula molecular_formula VARCHAR(2000);
 
 update csm_group
 set group_name = replace(group_name,'_PI','_DataCurator')
