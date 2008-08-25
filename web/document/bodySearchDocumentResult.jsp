@@ -13,7 +13,7 @@
 		</td>
 		<td align="right" width="25%">
 			<jsp:include page="/webHelp/helpGlossary.jsp">
-				<jsp:param name="topic" value="search_documents_results_help" />
+				<jsp:param name="topic" value="search_reports_results_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>				
 			<a href="searchDocument.do?dispatch=setup" class="helpText">Back</a>
