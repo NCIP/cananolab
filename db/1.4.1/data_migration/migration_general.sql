@@ -120,18 +120,10 @@ ALTER TABLE canano.associated_element
  
 ALTER TABLE canano.surface_chemistry
  CHANGE molecular_formula molecular_formula VARCHAR(500);
-  
-  
- insert into csm_user_group
- (user_id, group_id)
 
-select distinct cug.user_id, g2.group_id
-
-from  csm_user_group cug, csm_group g, csm_group g2
-where g.group_name like '%_PI'
-and g.group_id = cug.group_id
-and g2.group_name like '%_DataCurator';
-
+update csm_group
+set group_name = replace(group_name,'_PI','_DataCurator')
+where group_name like '%_PI';
  
 -- End of script
 
