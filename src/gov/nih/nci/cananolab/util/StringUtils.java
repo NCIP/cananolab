@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
  * @author pansu
  * 
  */
-/* CVS $Id: StringUtils.java,v 1.8 2008-06-17 18:47:53 tanq Exp $ */
+/* CVS $Id: StringUtils.java,v 1.9 2008-08-26 22:27:30 tanq Exp $ */
 
 public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
@@ -308,9 +308,12 @@ public class StringUtils {
 	 */
 	public static String getOneWordLowerCaseFirstLetter(String words) {
 		// remove space in words and make the first letter lower case.
-		String firstLetter = words.substring(0, 1);
-		String oneWord = words.replaceFirst(firstLetter,
-				firstLetter.toLowerCase()).replace(" ", "");
+		String oneWord = words;
+		if (words!=null && words.length()>0) {
+			String firstLetter = words.substring(0, 1);
+			oneWord = words.replaceFirst(firstLetter,
+					firstLetter.toLowerCase()).replace(" ", "");
+		}
 		return oneWord;
 	}
 
