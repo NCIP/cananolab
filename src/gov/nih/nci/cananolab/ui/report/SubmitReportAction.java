@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.30 2008-08-15 15:17:30 cais Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.31 2008-08-26 23:21:19 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -81,7 +81,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		forward = mapping.findForward("success");
 		
 		HttpSession session = request.getSession();	
-		String particleId = request.getParameter("particleId");	
+		String particleId = (String) session.getAttribute("docParticleId");	
 //		if (particleId==null ||particleId.length()==0) {
 //			Object particleIdObj = session.getAttribute("particleId");
 //			if (particleIdObj!=null) {
@@ -120,8 +120,10 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null) {
 			forward = mapping.findForward("particleSubmitReport");
+			session.setAttribute("docParticleId", particleId);
 			request.setAttribute("particleId", particleId);
 		}else {
+			session.removeAttribute("docParticleId");
 			request.removeAttribute("particleId");
 		}		
 		return forward;
@@ -131,12 +133,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();	
-		String particleId = request.getParameter("particleId");		
-		if (particleId != null) {
-			session.setAttribute("particleId", particleId);
-		}else {
-			session.removeAttribute("particleId");
-		}
+		String particleId = request.getParameter("particleId");	
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String reportId = request.getParameter("reportId");
 		if (reportId==null) {
@@ -154,8 +151,10 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		if (particleId != null && particleId.length() > 0) {
 			forward = mapping.findForward("particleSubmitReport");
 			request.setAttribute("particleId", particleId);
+			session.setAttribute("docParticleId", particleId);
 		}else {
 			request.removeAttribute("particleId");
+			session.removeAttribute("docParticleId");
 			forward = mapping.findForward("documentSubmitReport");
 		}
 		return forward;
@@ -310,16 +309,10 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {		
 		HttpSession session = request.getSession();	
-		Object particleIdObj = session.getAttribute("particleId");
-		String particleId = null;
-		if (particleIdObj!=null) {
-			particleId = particleIdObj.toString();
-			request.setAttribute("particleId", particleId);
-		}else {
-			request.removeAttribute("particleId");
-		}
+		String particleId = (String) session.getAttribute("particleId");
+		
 		ActionForward forward = null;	
-		if (particleId != null) {
+		if (particleId != null && particleId.trim().length() > 0) {
 			forward = mapping.findForward("particleSubmitReport");
 		}else {
 			forward = mapping.findForward("documentSubmitReport");

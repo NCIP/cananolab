@@ -191,10 +191,10 @@
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="submitType" value="documents">
 														<input type="hidden" name="page" value="2">
-														<c:if test="${!empty param.particleId}">
-															<input type="hidden" name="particleId"
-																value="${param.particleId}">
-														</c:if>
+<%--														<c:if test="${!empty param.particleId}">--%>
+<%--															<input type="hidden" name="particleId"--%>
+<%--																value="${param.particleId}">--%>
+<%--														</c:if>--%>
 														<html:hidden property="file.domainFile.category"/>
 														<html:submit />
 													</div>
