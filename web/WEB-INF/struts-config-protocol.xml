@@ -40,7 +40,8 @@
 			type="gov.nih.nci.cananolab.ui.protocol.SubmitProtocolAction"
 			input="input" scope="request">
 			<forward name="success" path="protocol.message" />
-			<forward name="input" path="protocol.submitProtocol" />
+			<forward name="input" path="/submitProtocol.do?dispatch=input&amp;page=0" />
+			<forward name="inputPage" path="protocol.submitProtocol"/>
 		</action>
 		<action input="input" name="searchProtocolForm"
 			parameter="dispatch" path="/searchProtocol"
