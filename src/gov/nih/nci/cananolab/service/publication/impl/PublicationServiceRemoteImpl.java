@@ -184,47 +184,22 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	private void loadAuthorsForPublication(Publication publication)
 		throws DocumentException {
 		try {
-//			CQLQuery query = new CQLQuery();
-//		
-//			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-//			target
-//					.setName("gov.nih.nci.cananolab.domain.common.DocumentAuthor");
-//			Association association = new Association();
-//			association.setName("gov.nih.nci.cananolab.domain.common.Publication");
-//			association.setRoleName("publicationCollection");	
-//		
-//			Attribute attribute = new Attribute();
-//			attribute.setName("id");
-//			attribute.setPredicate(Predicate.EQUAL_TO);
-//			attribute.setValue(publication.getId().toString());
-//			association.setAttribute(attribute);
-//		
-//			target.setAssociation(association);
-//			query.setTarget(target);
-//			CQLQueryResults results = gridClient.query(query);
-//			results
-//					.setTargetClassname("gov.nih.nci.cananolab.domain.common.DocumentAuthor");
-//			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-//			DocumentAuthor author = null;
-//			publication.setDocumentAuthorCollection(new HashSet<DocumentAuthor>());
-//			while (iter.hasNext()) {
-//				java.lang.Object obj = iter.next();
-//				author = (DocumentAuthor) obj;
-//				publication.getDocumentAuthorCollection().add(author);
-//			}
-			
 			CQLQuery query = new CQLQuery();
-			
+		
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
 					.setName("gov.nih.nci.cananolab.domain.common.DocumentAuthor");
+			Association association = new Association();
+			association.setName("gov.nih.nci.cananolab.domain.common.Publication");
+			association.setRoleName("publicationCollection");	
 		
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue("6881282");
+			attribute.setValue(publication.getId().toString());
+			association.setAttribute(attribute);
 		
-			target.setAttribute(attribute);
+			target.setAssociation(association);
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
 			results
@@ -237,6 +212,31 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 				author = (DocumentAuthor) obj;
 				publication.getDocumentAuthorCollection().add(author);
 			}
+			
+//			CQLQuery query = new CQLQuery();
+//			
+//			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+//			target
+//					.setName("gov.nih.nci.cananolab.domain.common.DocumentAuthor");
+//		
+//			Attribute attribute = new Attribute();
+//			attribute.setName("id");
+//			attribute.setPredicate(Predicate.EQUAL_TO);
+//			attribute.setValue("6881282");
+//		
+//			target.setAttribute(attribute);
+//			query.setTarget(target);
+//			CQLQueryResults results = gridClient.query(query);
+//			results
+//					.setTargetClassname("gov.nih.nci.cananolab.domain.common.DocumentAuthor");
+//			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+//			DocumentAuthor author = null;
+//			publication.setDocumentAuthorCollection(new HashSet<DocumentAuthor>());
+//			while (iter.hasNext()) {
+//				java.lang.Object obj = iter.next();
+//				author = (DocumentAuthor) obj;
+//				publication.getDocumentAuthorCollection().add(author);
+//			}
 		} catch (Exception e) {
 			String err = "Problem loading authors for the publication : "
 					+ publication.getId();
