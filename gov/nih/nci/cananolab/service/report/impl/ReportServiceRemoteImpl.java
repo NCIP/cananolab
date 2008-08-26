@@ -54,43 +54,73 @@ public class ReportServiceRemoteImpl implements ReportService {
 		throw new ReportException("not implemented for grid service.");
 	}
 		
+//	public List<ReportBean> findReportsBy(String reportTitle,
+//			String reportCategory, String nanoparticleName,
+//			String[] nanoparticleEntityClassNames,
+//			String[] otherNanoparticleTypes,
+//			String[] functionalizingEntityClassNames,
+//			String[] otherFunctionalizingEntityTypes,
+//			String[] functionClassNames, String[] otherFunctionTypes)
+//			throws ReportException, CaNanoLabSecurityException {
+//		List<ReportBean> reportBeans = new ArrayList<ReportBean>();
+//		List resultList = null;
+//		try {			
+//			resultList = Arrays.asList(gridClient.getReportsBy(reportTitle,
+//					reportCategory, nanoparticleEntityClassNames,
+//					functionalizingEntityClassNames, functionClassNames));
+//			if (resultList != null) {
+//				for (Object obj : resultList) {
+//					Report report = (Report) obj;
+//					loadParticleSamplesForReport(report);
+//					reportBeans.add(new ReportBean(report));
+//				}
+//			}
+//			return reportBeans;
+//		} catch (ClassCastException e) {//to be tested
+//			List<Report> reportLists = ClassUtils.mapObjects(Report.class,
+//					resultList);
+//			if (reportLists != null) {
+//				for (Report report : reportLists) {
+//					if (report != null) {
+//						loadParticleSamplesForReport(report);
+//						reportBeans.add(new ReportBean(report));
+//					}
+//				}
+//			}
+//			return reportBeans;
+//		} catch (RemoteException e) {
+//			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+//			throw new ReportException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+//		} catch (Exception e) {
+//			String err = "Problem finding report info.";
+//			logger.error(err, e);
+//			throw new ReportException(err, e);
+//		}
+//	}
+	
 	public List<ReportBean> findReportsBy(String reportTitle,
-			String reportCategory, String nanoparticleName,
-			String[] nanoparticleEntityClassNames,
-			String[] otherNanoparticleTypes,
-			String[] functionalizingEntityClassNames,
-			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
+		String reportCategory, String nanoparticleName,
+		String[] nanoparticleEntityClassNames,
+		String[] otherNanoparticleTypes,
+		String[] functionalizingEntityClassNames,
+		String[] otherFunctionalizingEntityTypes,
+		String[] functionClassNames, String[] otherFunctionTypes)
 			throws ReportException, CaNanoLabSecurityException {
 		List<ReportBean> reportBeans = new ArrayList<ReportBean>();
-		List resultList = null;
-		try {			
-			resultList = Arrays.asList(gridClient.getReportsBy(reportTitle,
+		try {
+			Report[] reports = gridClient.getReportsBy(reportTitle,
 					reportCategory, nanoparticleEntityClassNames,
-					functionalizingEntityClassNames, functionClassNames));
-			if (resultList != null) {
-				for (Object obj : resultList) {
-					Report report = (Report) obj;
+					functionalizingEntityClassNames, functionClassNames);
+			if (reports != null) {
+				for (Report report : reports) {
 					loadParticleSamplesForReport(report);
 					reportBeans.add(new ReportBean(report));
 				}
 			}
 			return reportBeans;
-		} catch (ClassCastException e) {//to be tested
-			List<Report> reportLists = ClassUtils.mapObjects(Report.class,
-					resultList);
-			if (reportLists != null) {
-				for (Report report : reportLists) {
-					if (report != null) {
-						loadParticleSamplesForReport(report);
-						reportBeans.add(new ReportBean(report));
-					}
-				}
-			}
-			return reportBeans;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new ReportException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ReportException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
 			String err = "Problem finding report info.";
 			logger.error(err, e);
