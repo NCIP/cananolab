@@ -51,13 +51,15 @@ public class InitProtocolSetup {
 		String protocolType = null;
 		//create a new instance of type className
 		Class clazz = ClassUtils.getFullClass(charBean.getClassName());
-		Characterization achar = (Characterization) clazz.newInstance();
-		if (achar instanceof PhysicalCharacterization) {
-			protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
-		} else if (achar instanceof InvitroCharacterization) {
-			protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
-		} else {
-			protocolType = null; // update if in vivo is implemented
+		if (clazz!=null) {
+			Characterization achar = (Characterization) clazz.newInstance();
+			if (achar instanceof PhysicalCharacterization) {
+				protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
+			} else if (achar instanceof InvitroCharacterization) {
+				protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
+			} else {
+				protocolType = null; // update if in vivo is implemented
+			}
 		}
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
