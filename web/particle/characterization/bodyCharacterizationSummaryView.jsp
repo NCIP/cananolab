@@ -11,7 +11,7 @@
 		<td>
 			<h4>
 				<br>
-				${pageTitle} ${submitType}
+				${pageTitle} ${param.submitType}
 			</h4>
 		</td>
 		<td align="right" width="20%">
@@ -49,14 +49,14 @@
 					<td>
 						<c:url var="sumUrl" value="${actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
-							<c:param name="submitType" value="${submitType}" />
+							<c:param name="submitType" value="${param.submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportSummary" />
 							<c:param name="location" value="${location}" />
 						</c:url>
 						<c:url var="fullSumUrl" value="${actionName}.do">
 							<c:param name="particleId" value="${particleId}" />
-							<c:param name="submitType" value="${submitType}" />
+							<c:param name="submitType" value="${param.submitType}" />
 							<c:param name="page" value="0" />
 							<c:param name="dispatch" value="exportFullSummary" />
 							<c:param name="location" value="${location}" />
@@ -89,7 +89,7 @@
 						colspan="${3+fn:length(charSummary.columnLabels)}">
 						<div align="justify">
 							${fn:toUpperCase(param.location)} ${particleName} - ${
-							submitType} Characterizations
+							param.submitType} Characterizations
 						</div>
 					</td>
 				</tr>
@@ -121,7 +121,7 @@
 								<c:param name="dataId"
 									value="${summaryRow.charBean.domainChar.id}" />
 								<c:param name="dataClassName" value="${summaryRow.charBean.className}" />
-								<c:param name="submitType" value="${submitType}" />
+								<c:param name="submitType" value="${param.submitType}" />
 								<c:param name="location" value="${location}" />
 							</c:url>
 							<a href="${url}">${summaryRow.charBean.viewTitle}</a>

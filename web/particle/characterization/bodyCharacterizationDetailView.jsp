@@ -9,7 +9,7 @@
 		<td>
 			<h4>
 				<br>
-				${pageTitle} ${submitType}
+				${pageTitle} ${param.submitType}
 			</h4>
 		</td>
 		<td align="right" width="20%">
@@ -42,7 +42,7 @@
 										<c:param name="particleId" value="${particleId}" />
 										<c:param name="dataId"
 											value="${characterizationForm.map.achar.domainChar.id}" />
-										<c:param name="submitType" value="${submitType}" />
+										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<c:if test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
@@ -66,7 +66,7 @@
 										<c:param name="dataId"
 											value="${characterizationForm.map.achar.domainChar.id}" />
 										<c:param name="dataClassName" value="${param.dataClassName }" />
-										<c:param name="submitType" value="${submitType}" />
+										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"

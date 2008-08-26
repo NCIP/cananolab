@@ -12,7 +12,7 @@
 				<tr>
 					<th class="formTitle"
 						colspan="${3+fn:length(charSummary.columnLabels)}" align="center">
-						${particleName} - ${ submitType} Characterizations
+						${particleName} - ${ param.submitType} Characterizations
 					</th>
 				</tr>
 				<tr>

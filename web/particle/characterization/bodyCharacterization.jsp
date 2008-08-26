@@ -56,7 +56,7 @@
 		<tr>
 			<td colspan="2">
 				<h5 align="center">
-					${submitType}
+					${param.submitType}
 				</h5>
 			</td>
 		</tr>
