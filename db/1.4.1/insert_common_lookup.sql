@@ -8,11 +8,6 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Attachment','bo
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Attachment','bondType','hydrogen');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Attachment','bondType','ionic');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Attachment','bondType','van der Waals');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','journal');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','report');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','published');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','submitted');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','unpublished');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Cytotoxicity','cellDeathMethod','apoptosis');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Cytotoxicity','cellDeathMethod','necrosis');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Cytotoxicity','cellLine','human hepatocarinoma');
@@ -252,6 +247,22 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Hemolysis','der
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('PlateletAggregation','derivedDatumName','is above threshold');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('CFU_GM','derivedDatumName','number of CFU-GM colonies');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('CFU_GM','derivedDatumName','total number of bone marrow cells');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','peer review article');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review article');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','book chapter');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','editorial');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','published');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in press');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','submitted');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','status','in preparation');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','synthesis');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','characterization');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','cell line');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','animal');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vitro');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vivo');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','clinical trials');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
