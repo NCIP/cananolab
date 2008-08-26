@@ -65,7 +65,7 @@
 						<td class="leftLabel" valign="top">
 							<strong>Document Category</strong>
 						</td>
-						<td class="label" colspan="2">
+						<td class="label" colspan="1" valign="top">
 							<strong><html:select property="publicationOrReport"
 									styleId="publicationOrReport" multiple="true" size="2">
 									<html:option value="publication">Publication</html:option>
@@ -74,13 +74,16 @@
 						</td>
 						
 						<td class="label" valign="top">
-							<strong>Research Category</strong>
+							<strong>Research<br>Category</strong>
 						</td>
-						<td class="rightLabel" colspan="2">												
+						<td class="label" valign="top">
 							<strong><html:select property="researchArea"
 									styleId="researchArea" multiple="true" size="3">
 									<html:options name="publicationResearchAreas" />
 								</html:select> </strong>
+						</td>
+						<td class="rightLabel" colspan="2" valign="top" align="left">												
+							&nbsp;
 						</td>
 					</tr>
 					<tr>
@@ -95,31 +98,29 @@
 						<td class="leftLabel">
 							<strong>Publication Type</strong>
 						</td>
-						<td class="label">
+						<td class="label" valign="top">
 							<html:select styleId="category" property="category">
 								<option value="" />
 									<html:options name="publicationCategories" />
 							</html:select>
 						</td>				
-						<td class="label" valign="top">
+						<td class="label" valign="top" colspan="2">
 							<strong>PubMed ID</strong>
+							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
+							<br>(Please enter exact numerical PubMed ID)<br><br>
 						</td>
 						<td class="label" valign="top">
-							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
-							<br>(Please enter the whole PubMedID)<br><br>
-						</td>
-						<td class="label">
 							<strong>Digital Object ID</strong>
 						</td>
-						<td class="rightLabel">
+						<td class="rightLabel" valign="top">
 							<html:text property="digitalObjectId" size="20" />
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
+						<td class="leftLabel" valign="top">
 							<strong>Authors</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="rightLabel" colspan="5" valign="top">
 							<html:text property="authorsStr" size="100" />
 						</td>
 					</tr>
@@ -128,7 +129,7 @@
 						<td class="leftLabel" valign="top">
 							<strong>Keywords</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="rightLabel" colspan="5" valign="top">
 							<strong><html:textarea property="keywordsStr"
 									cols="30" styleId="keywordsStr" rows="3">
 							</html:textarea> </strong>
@@ -145,17 +146,14 @@
 								Advance Search
 							</div>
 						</td>
-						<td class="formTitle" colspan="4">
-							<div align="justify">
-								Nanoparticle Sample
-							</div>
+						<td class="formTitle" colspan="4">&nbsp;
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
+						<td class="leftLabel"  valign="top">
 							<strong>Nanoparticle Name</strong>
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td class="rightLabel" colspan="5" valign="top">
 							<html:text property="nanoparticleName" size="20" />
 						</td>
 					</tr>
@@ -163,7 +161,7 @@
 						<td class="leftLabel" valign="top">
 							<strong>Composition<br> Nanoparticle Entity</strong>
 						</td>
-						<td class="label">
+						<td class="label" valign="top">
 							<strong><html:select property="nanoparticleEntityTypes"
 									styleId="nanoparticleEntityTypes" multiple="true" size="4">
 									<html:options name="nanoparticleEntityTypes" />
