@@ -38,17 +38,12 @@
 		<create creator="new" javascript="ProtocolManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper" />
+				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
 			<include method="getProtocolFiles" />
 			<include method="getProtocolNames" />
 			<include method="getProtocolFileUriById" />
 			<include method="getProtocolFileNameById" />
 			<include method="getProtocolFileVersionById" />
-		</create>
-		<create creator="new" javascript="DWRProtocolManager"
-			scope="session">
-			<param name="class"
-				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
 			<include method="getProtocolTypes" />
 		</create>
 		<create creator="new" javascript="DocumentManager"
