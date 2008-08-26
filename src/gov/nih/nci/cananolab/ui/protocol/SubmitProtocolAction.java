@@ -52,17 +52,20 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(pfileBean.getDomainFile().getId()
 				.toString(), pfileBean.getVisibilityGroups());
-		
-		//remove protocol visibility
+
+		// remove protocol visibility
 		ProtocolServiceLocalImpl localService = new ProtocolServiceLocalImpl();
-		Protocol dbProtocol = localService.findProtocolBy(protocolFile.getProtocol()
-				.getType(), protocolFile.getProtocol().getName());
+		Protocol dbProtocol = localService.findProtocolBy(protocolFile
+				.getProtocol().getType(), protocolFile.getProtocol().getName());
 		authService.removePublicGroup(dbProtocol.getId().toString());
-		//assign protocol visibility
-		if (pfileBean.getVisibilityStr()!=null && pfileBean.getVisibilityStr().contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
-			authService.assignVisibility(dbProtocol.getId().toString(),new String[]{CaNanoLabConstants.CSM_PUBLIC_GROUP});
-		}	
-		
+		// assign protocol visibility
+		if (pfileBean.getVisibilityStr() != null
+				&& pfileBean.getVisibilityStr().contains(
+						CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+			authService.assignVisibility(dbProtocol.getId().toString(),
+					new String[] { CaNanoLabConstants.CSM_PUBLIC_GROUP });
+		}
+
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				pfileBean);
 		ActionMessages msgs = new ActionMessages();
@@ -74,11 +77,33 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		return forward;
 	}
 
+	// for retaining user selected values during validation
+	public ActionForward input(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ProtocolFileBean pfileBean = ((ProtocolFileBean) theForm.get("file"));
+		String selectedProtocolType = ((ProtocolFile) pfileBean.getDomainFile())
+				.getProtocol().getType();
+		ProtocolService service = new ProtocolServiceLocalImpl();
+		SortedSet<String> protocolNames = service
+				.getProtocolNames(selectedProtocolType);
+		request.getSession().setAttribute("protocolNamesByType", protocolNames);
+		String selectedProtocolName = ((ProtocolFile) pfileBean.getDomainFile())
+				.getProtocol().getName();
+		List<ProtocolFileBean> pFiles = service.findProtocolFilesBy(
+				selectedProtocolType, selectedProtocolName, null);
+		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
+
+		return mapping.findForward("inputPage");
+	}
+
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
-		return mapping.getInputForward();
+		return mapping.findForward("inputPage");
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
@@ -103,7 +128,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
 		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(pfileBean, user);
-		return mapping.getInputForward();
+		return mapping.findForward("inputPage");
 	}
 
 	public boolean loginRequired() {
