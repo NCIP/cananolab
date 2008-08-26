@@ -27,8 +27,6 @@
 				decorator="gov.nih.nci.cananolab.dto.common.DocumentDecorator">
 				<display:column title="Title" property="editDocumentURL"
 					sortable="true" />
-				<display:column title="Document Link"
-					property="downloadURL" sortable="true" />
 				<display:column title="Document<br>Category" property="publicationOrReport"
 					sortable="true" />		
 				<display:column title="Research<br>Category"
