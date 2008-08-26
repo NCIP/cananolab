@@ -54,11 +54,15 @@ function confirmDeletion()
 										<c:when test="${'setupUpdate' eq param.dispatch }">
 											<c:set var="dataId" value="${param.dataId}" scope="session" />
 										</c:when>																			
-									</c:choose>						
-									<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setup&location=${location}" />
-									<c:if test="${!empty dataId}">
-										<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" />
-									</c:if>												
+									</c:choose>	
+									<c:choose>
+										<c:when	test="${!empty param.submitType }">
+											<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${param.submitType}&page=0&dispatch=setup&location=${location}" scope="session"/>
+											<c:if test="${!empty dataId}">
+												<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${param.submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" scope="session"/>
+											</c:if>		
+										</c:when>
+									</c:choose>									
 									<input type="reset" value="Reset" onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
