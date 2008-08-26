@@ -15,7 +15,6 @@ function populateProtocolNames(protocolNames) {
 	dwr.util.addOptions("protocolName", ["[Other]"]);
 }
 function retrieveProtocolFileVersions() {
-	resetProtocolFiles();
 	var protocolName = document.getElementById("protocolName").value;
 	var protocolType = document.getElementById("protocolType").value;
 	ProtocolManager.getProtocolFiles(protocolType, protocolName, populateProtocolFileVersions);
@@ -26,6 +25,7 @@ function resetProtocolFiles() {
 	writeLink(null);
 }
 function populateProtocolFileVersions(protocolFiles) {
+	resetProtocolFiles();
 	dwr.util.addOptions("protocolFileId", protocolFiles, "domainFileId", "domainFileVersion");
 	dwr.util.addOptions("protocolFileId", ["[Other]"]);
 }

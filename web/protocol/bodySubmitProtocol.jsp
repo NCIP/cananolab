@@ -28,8 +28,8 @@
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="submit_protocol_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>	
-				
+				</jsp:include>
+
 			</td>
 		</tr>
 		<tr>
@@ -82,9 +82,10 @@
 								<html:select styleId="protocolFileId"
 									property="file.domainFileId"
 									onchange="javascript:callPrompt('Protocol Version', 'protocolFileId');retrieveProtocolFile();">
-									<c:if test="${!empty protocolNamesByType}">
-										<html:optionsCollection name="protocolFilesByTypeName"
-											label="domainFile.version" value="domainFile.id" />
+									<c:if test="${!empty protocolFilesByTypeName}">
+										<option value="" />
+											<html:optionsCollection name="protocolFilesByTypeName"
+												label="domainFile.version" value="domainFile.id" />
 										<option value="other">
 											[Other]
 										</option>
@@ -147,7 +148,8 @@
 								</html:select>
 								<br>
 								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_DataCurator are always selected by default.)</i>
+									${applicationOwner}_DataCurator are always selected by
+									default.)</i>
 							</td>
 						</tr>
 					</tbody>
@@ -164,9 +166,9 @@
 								<tr>
 									<td width="490" height="15">
 										<div align="right">
-											<div align="right">											
+											<div align="right">
 												<input type="reset" value="Reset"
-															onclick="javascript:location.reload()">
+													onclick="javascript:location.reload()">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<html:submit />

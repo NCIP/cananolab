@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/ProtocolManager.js"></script>
 <script type="text/javascript"
-	src="/caNanoLab/dwr/interface/DWRProtocolManager.js"></script>
-<script type="text/javascript"
 	src="/caNanoLab/dwr/interface/ProtocolManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
