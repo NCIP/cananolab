@@ -330,10 +330,10 @@
 														<c:set var="dataId"
 															value="${submitPublicationForm.map.file.domainFile.id}" />
 														<c:set var="origUrl"
-															value="submitPublication.do?page=0&dispatch=setup&location=${location}" />
+															value="submitPublication.do?page=0&dispatch=setup&particleId=${docParticleId }&location=${location}" />
 														<c:if test="${!empty dataId}">
 															<c:set var="origUrl"
-																value="submitPublication.do?page=0&dispatch=setupUpdate&location=${location}&fileId=${dataId }" />
+																value="submitPublication.do?page=0&dispatch=setupUpdate&particleId=${docParticleId }&location=${location}&fileId=${dataId }" />
 														</c:if>
 														<input type="reset" value="Reset"
 															onclick="javascript:window.location.href='${origUrl}'">
@@ -341,10 +341,10 @@
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
 														<input type="hidden" name="submitType" value="documents">
-														<c:if test="${!empty param.particleId}">
-															<input type="hidden" name="particleId"
-																value="${param.particleId}">
-														</c:if>
+<%--														<c:if test="${!empty param.particleId}">--%>
+<%--															<input type="hidden" name="particleId"--%>
+<%--																value="${param.particleId}">--%>
+<%--														</c:if>--%>
 														<html:submit />
 													</div>
 												</div>
