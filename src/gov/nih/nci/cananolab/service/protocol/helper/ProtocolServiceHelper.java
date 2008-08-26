@@ -95,7 +95,6 @@ public class ProtocolServiceHelper {
 		return protocol;
 	}
 
-	// for ajax on linux
 	public String getProtocolFileUriById(String fileId) {
 		String uri = null;
 		try {
@@ -116,7 +115,6 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	// for ajax on linux
 	public String getProtocolFileNameById(String fileId) {
 		String name = null;
 		try {
@@ -137,7 +135,6 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	// for ajax on linux
 	public String getProtocolFileVersionById(String fileId) {
 		String version = null;
 		try {
@@ -158,7 +155,6 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	// used for Ajax
 	public SortedSet<String> getProtocolNames(String protocolType) {
 		if (protocolType == null || protocolType.length() == 0) {
 			return null;
@@ -182,7 +178,6 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	// for dwr ajax
 	public List<ProtocolFileBean> getProtocolFiles(String protocolType,
 			String protocolName) {
 		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
