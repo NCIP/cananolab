@@ -203,7 +203,7 @@ CREATE TABLE surface_chemistry
 	molecule_name VARCHAR(200) NULL,
 	number_molecule INTEGER NULL,
 	molecular_formula_type VARCHAR(200) NULL,
-	molecular_formula TEXT NULL,
+	molecular_formula VARCHAR(2000)  NULL,
 	surface_pk_id BIGINT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
@@ -690,7 +690,7 @@ CREATE TABLE common_lookup
 CREATE TABLE associated_element
 (
 	associated_element_pk_id BIGINT NOT NULL,
-	molecular_formula VARCHAR(200) NULL,
+	molecular_formula VARCHAR(2000) NULL,
 	molecular_formula_type VARCHAR(200) NULL,
 	description TEXT NULL,
 	created_by VARCHAR(200) NOT NULL,
