@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.32 2008-08-27 17:05:01 cais Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.33 2008-08-27 21:11:03 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -81,18 +81,9 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		forward = mapping.findForward("success");
 		
 		HttpSession session = request.getSession();	
-		String particleId = (String) session.getAttribute("docParticleId");	
-//		if (particleId==null ||particleId.length()==0) {
-//			Object particleIdObj = session.getAttribute("particleId");
-//			if (particleIdObj!=null) {
-//				particleId = particleIdObj.toString();
-//				request.setAttribute("particleId", particleId);
-//			}else {
-//				request.removeAttribute("particleId");
-//			}
-//		}		
+		String particleId = (String) session.getAttribute("docParticleId");
 		if (particleId != null
-				&& particleId.length() > 0) {
+				&& particleId.trim().length() > 0) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
 					.findNanoparticleSampleById(particleId);
@@ -108,23 +99,15 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();	
-		String particleId = request.getParameter("particleId");		
-		if (particleId != null) {
-			session.setAttribute("particleId", particleId);
-		}else {
-			//if it is not calling from particle, remove previous set attribute if applicable
-			session.removeAttribute("particleId");
-		}
+		String particleId = request.getParameter("particleId");	
 		InitReportSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
 		ActionForward forward = mapping.getInputForward();
-		if (particleId != null) {
+		if (particleId != null && particleId.trim().length() > 0) {
 			forward = mapping.findForward("particleSubmitReport");
 			session.setAttribute("docParticleId", particleId);
-			request.setAttribute("particleId", particleId);
 		}else {
 			session.removeAttribute("docParticleId");
-			request.removeAttribute("particleId");
 		}		
 		return forward;
 	}
@@ -148,12 +131,12 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		InitReportSetup.getInstance().setReportDropdowns(request);
 		// if particleId is available direct to particle specific page
 		ActionForward forward = mapping.getInputForward();
-		if (particleId != null && particleId.length() > 0) {
+		if (particleId != null && particleId.trim().length() > 0) {
 			forward = mapping.findForward("particleSubmitReport");
-			request.setAttribute("particleId", particleId);
+//			request.setAttribute("particleId", particleId);
 			session.setAttribute("docParticleId", particleId);
 		}else {
-			request.removeAttribute("particleId");
+//			request.removeAttribute("particleId");
 			session.removeAttribute("docParticleId");
 			forward = mapping.findForward("documentSubmitReport");
 		}
@@ -193,7 +176,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.findForward("view");
-		if (particleId != null) {
+		if (particleId != null && particleId.trim().length() > 0) {
 			forward = mapping.findForward("particleViewReport");
 		}
 		return forward;
@@ -221,7 +204,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		HttpSession session = request.getSession();	
 		ActionForward forward = null;
-		if(particleId == null || particleId.length() == 0) {
+		if(particleId == null || particleId.trim().length() == 0) {
 			forward = mapping.findForward("documentDetailView");
 			session.removeAttribute("docParticleId");
 		} else {
@@ -312,7 +295,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {		
 		HttpSession session = request.getSession();	
-		String particleId = (String) session.getAttribute("particleId");
+		String particleId = (String) session.getAttribute("docParticleId");
 		
 		ActionForward forward = null;	
 		if (particleId != null && particleId.trim().length() > 0) {
