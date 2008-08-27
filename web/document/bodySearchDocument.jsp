@@ -107,7 +107,7 @@
 						<td class="label" valign="top" colspan="2">
 							<strong>PubMed ID</strong>
 							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
-							<br>(Please enter exact numerical PubMed ID)<br><br>
+							<br><i>(Please enter exact numeric PubMed ID)</i><br><br>
 						</td>
 						<td class="label" valign="top">
 							<strong>Digital Object ID</strong>
