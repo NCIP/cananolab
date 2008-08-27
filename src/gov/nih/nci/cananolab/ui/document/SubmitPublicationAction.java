@@ -6,6 +6,7 @@ package gov.nih.nci.cananolab.ui.document;
  * @author tanq
  */
 
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -166,6 +167,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean pbean = (PublicationBean) theForm.get("file");
+		pbean.setFoundPubMedArticle(false);
 		
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		String pubmedID = request.getParameter("pubmedId");
@@ -182,7 +184,10 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		if(pubmedID != null && pubmedID.length() > 0 && !pubmedID.equals("0")) {
 			phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
 			if (!pbean.isFoundPubMedArticle()) {
-
+				Publication pub = new Publication();
+				pub.setPubMedId(new Long(pubmedID));
+				pbean.setDomainFile(pub);
+				pbean.setAuthors(new ArrayList<DocumentAuthor>());
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.submitPublication.pubmedArticleNotFound",
 						pubmedID);
