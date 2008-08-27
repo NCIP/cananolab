@@ -119,8 +119,9 @@
 										<strong>Digital Object ID</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.digitalObjectId"
-											size="30" />
+										${submitPublicationForm.map.file.domainFile.digitalObjectId }&nbsp;
+<%--										<html:text property="file.domainFile.digitalObjectId"--%>
+<%--											size="30" />--%>
 									</td>
 								</tr>
 								<tr>
