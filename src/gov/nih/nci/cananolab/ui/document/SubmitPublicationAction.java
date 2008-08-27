@@ -131,16 +131,10 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();	
 		session.removeAttribute("submitPublicationForm");
-		String particleId = request.getParameter("particleId");		
-		if (particleId != null) {
-			session.setAttribute("docParticleId", particleId);
-		}else {
-			//if it is not calling from particle, remove previous set attribute if applicable
-			session.removeAttribute("docParticleId");
-		}
+		String particleId = request.getParameter("particleId");	
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);	
 		if (particleId!= null
-				&& particleId.length() > 0
+				&& particleId.trim().length() > 0
 				&& session.getAttribute("otherParticleNames")==null) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
@@ -154,11 +148,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		ActionForward forward = mapping.getInputForward();
 		
-		if (particleId != null && !particleId.equals("null")) {
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
 			forward = mapping.findForward("particleSubmitPublication");
-//			request.setAttribute("particleId", particleId);
+			session.setAttribute("docParticleId", particleId);
 		}else {
-//			request.removeAttribute("particleId");
+			session.removeAttribute("docParticleId");
 		}
 		return forward;
 	}
@@ -175,7 +170,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		HttpSession session = request.getSession();	
 		ActionForward forward = null;
-		if (particleId != null && particleId.length() > 0) {
+		if (particleId != null && particleId.trim().length() > 0) {
 			forward = mapping.findForward("particleSubmitPublication");
 			session.setAttribute("docParticleId", particleId);
 		} else {
@@ -234,7 +229,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
-		if (particleId != null) {
+		if (particleId != null && particleId.trim().length() > 0) {
 			session.setAttribute("docParticleId", particleId);
 		}else {
 			session.removeAttribute("docParticleId");
