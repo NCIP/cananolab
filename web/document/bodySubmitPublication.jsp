@@ -163,13 +163,13 @@
 													</logic:iterate>
 												</tr>
 <%--											</logic:notEmpty> --%>
-										</table>&nbsp;																			
+										</table>&nbsp;		
+										<i>To remove author, please clear first name, last name and initials fields</i>																	
 									</td>
 									<td class="rightLabel" colspan="2" valign="top">
 										<a href="#"
 												onclick="javascript:addComponent(submitPublicationForm, 'submitPublication', 'addAuthor'); return false;">
 												<span class="addLink2">Add Author</span> </a>
-<%--										<html:button property="file.domainFile.pubMedId" value="add authors"/>--%>
 									</td>
 								</tr>
 								<tr>
