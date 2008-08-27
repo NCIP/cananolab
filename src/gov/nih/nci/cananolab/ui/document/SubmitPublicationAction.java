@@ -208,7 +208,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				forward = mapping.findForward("documentSubmitPubmedPublication");
 			}
 		} else {
-			//clean data fields
+			//clear data fields
 			Publication publication = (Publication)pbean.getDomainFile();
 			publication.setPubMedId(null);
 			publication.setTitle("");
