@@ -57,7 +57,7 @@ public class PubMedXMLHandler {
  			publication.setPubMedId(pubMedId);
 			String uri = PUBMED_URL + pubMedId;
 	        try {
-	        	System.out.println("pubmed id:" + pubMedId);
+	        	//System.out.println("pubmed id:" + pubMedId);
 	        	go(uri);
 	        	publicationBean.setDomainFile(publication);
 	        } catch(Exception ex) {
@@ -160,7 +160,7 @@ public class PubMedXMLHandler {
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
 			doi = new StringBuffer();
 			String idType = atts.getValue("IdType");
-			System.out.println("start doi, idtype:" + idType);
+			//System.out.println("start doi, idtype:" + idType);
 			if(idType != null && idType.equalsIgnoreCase("doi")) {
 				isDoi = true;
 				foundDoi = true;
@@ -174,9 +174,9 @@ public class PubMedXMLHandler {
 		
 		public void endElement(String uri, String localName, String qname) {
 			if(isDoi) {
-			publication.setDigitalObjectId(doi.toString());
-			System.out.println("doi:" + doi.toString());
-			isDoi = false;
+				publication.setDigitalObjectId(doi.toString());
+				//System.out.println("doi:" + doi.toString());
+				isDoi = false;
 			}
 		}
 	}
