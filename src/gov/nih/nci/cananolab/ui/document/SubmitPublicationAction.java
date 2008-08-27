@@ -168,6 +168,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PublicationBean pbean = (PublicationBean) theForm.get("file");
+		pbean.setFoundPubMedArticle(false);
 		
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		String pubmedID = request.getParameter("pubmedId");
