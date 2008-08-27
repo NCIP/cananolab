@@ -112,6 +112,8 @@
 										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
 											onkeydown="return filterInteger(event)" 
 											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
+										<br><i>When a valid PubMed ID is entered, the related fields (DOI, title, journal, author, etc)<br>
+										would be auto-populated from PubMed and become read-only.</i>
 									</td>
 								</tr>
 								<tr>
@@ -207,7 +209,7 @@
 								</tr>
 								<tr>
 									<td class="leftLabel" valign="top">
-										<strong>Keywords<br><em>(one keyword per line)</em></strong>
+										<strong>Keywords<br></strong><i>(one keyword per line)</i>
 									</td>
 									<td class="rightLabel" colspan="3">
 										<html:textarea property="file.keywordsStr"
