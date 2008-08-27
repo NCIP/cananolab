@@ -185,7 +185,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.submitPublication.invalidPubmedId");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				saveMessages(request, msgs);
+				saveErrors(request, msgs);
 				return forward;
 			}
 			phandler.parsePubMedXML(pubMedIDLong, pbean);
@@ -210,11 +210,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		} else {
 			//clean data fields
 			Publication publication = (Publication)pbean.getDomainFile();
+			publication.setPubMedId(null);
 			publication.setTitle("");
 			publication.setJournalName("");
-			publication.setStartPage(0L);
-			publication.setEndPage(0L);
-			publication.setYear(0);
+			publication.setStartPage(null);
+			publication.setEndPage(null);
+			publication.setYear(null);
 			publication.setVolume("");
 			List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>();
 			authors.add(new DocumentAuthor());
