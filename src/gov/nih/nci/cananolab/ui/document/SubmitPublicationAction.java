@@ -179,7 +179,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			forward = mapping.findForward("documentSubmitPublication");
 			session.removeAttribute("docParticleId");
 		}
-		if(pubmedID != null && pubmedID.length() > 0) {
+		if(pubmedID != null && pubmedID.length() > 0 && !pubmedID.equals("0")) {
 			phandler.parsePubMedXML(Long.valueOf(pubmedID), pbean);
 			if (!pbean.isFoundPubMedArticle()) {
 
@@ -198,10 +198,11 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				forward = mapping.findForward("documentSubmitPubmedPublication");
 			}
 		} else {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage("message.submitPublication.pubmedIdRequired");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+			//do nothing
+//			ActionMessages msgs = new ActionMessages();
+//			ActionMessage msg = new ActionMessage("message.submitPublication.pubmedIdRequired");
+//			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//			saveMessages(request, msgs);
 		}
 		return forward;
 	}

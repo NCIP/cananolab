@@ -110,10 +110,8 @@
 												Click to look up PubMed Identifier</a>
 										<br>									
 										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
-											onkeydown="return filterInteger(event)"/>
-										<a href="#"
-												onclick="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;">
-												<span class="addLink2">Auto Populate PubMed Fields</span> </a>
+											onkeydown="return filterInteger(event)" 
+											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
 									</td>
 								</tr>
 								<tr>
