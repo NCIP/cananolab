@@ -33,7 +33,14 @@
 						<table width="100%">
 							<tr>
 								<td class="formTitle" width="100%">
-									${fn:toUpperCase(param.location)} ${particleName}&nbsp;
+									<c:choose>
+										<c:when test="${!empty docParticleId }">
+											${fn:toUpperCase(param.location)} ${particleName}
+										</c:when>
+										<c:otherwise>
+											${fn:toUpperCase(param.location)}
+										</c:otherwise>
+									</c:choose>
 								</td>
 								<td align="right" class="formTitle">
 
