@@ -54,7 +54,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Keywords <em>(one keyword per line)</em> </strong>
+							<strong>Keywords</strong> <i>(one keyword per line)</i>
 						</td>
 						<td class="rightLabel">
 							<c:forEach var="keyword"
