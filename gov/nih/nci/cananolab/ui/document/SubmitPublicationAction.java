@@ -347,13 +347,16 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("file", pubBean);	
-	
+		
+		HttpSession session = request.getSession();
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = null;
 		if(particleId == null || particleId.length() == 0) {
 			forward = mapping.findForward("publicationDetailView");
+			session.removeAttribute("docParticleId");
 		} else {
 			forward = mapping.findForward("particleDetailView");
+			session.setAttribute("docParticleId", particleId);
 		}
 		
 		String submitType = request.getParameter("submitType");
