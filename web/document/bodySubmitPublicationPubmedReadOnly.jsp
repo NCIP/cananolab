@@ -103,11 +103,15 @@
 									<td class="leftLabel" valign="top">
 										<strong>PubMed ID</strong>
 									</td>
-									<td class="rightLabel" colspan="3">
-									<a href=
-										"http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}"
+									<td class="rightLabel" colspan="3">	
+										<a
+												href="http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}"
 												target="_pubmed">
-										${submitPublicationForm.map.file.domainFile.pubMedId }&nbsp;
+												Click to look up PubMed Identifier</a>
+										<br>									
+										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
+											onkeydown="return filterInteger(event)" 
+											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
 									</td>
 								</tr>
 								<tr>
