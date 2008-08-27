@@ -34,7 +34,10 @@ public class PubMedXMLHandler {
     private StringBuffer firstName;
     private StringBuffer middleInitial;
     private StringBuffer lastName;
+    private StringBuffer doi;
     private boolean inPubDate;
+    private boolean isDoi = false;
+    private boolean foundDoi = false;
     private boolean foundPubmedArticle = false;
     
     public static synchronized PubMedXMLHandler getInstance() {
@@ -54,6 +57,7 @@ public class PubMedXMLHandler {
  			publication.setPubMedId(pubMedId);
 			String uri = PUBMED_URL + pubMedId;
 	        try {
+	        	System.out.println("pubmed id:" + pubMedId);
 	        	go(uri);
 	        	publicationBean.setDomainFile(publication);
 	        } catch(Exception ex) {
@@ -69,6 +73,13 @@ public class PubMedXMLHandler {
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
 			foundPubmedArticle = true;
 			publicationBean.setFoundPubMedArticle(foundPubmedArticle);
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			if(!foundDoi)
+				publication.setDigitalObjectId("");
+			
+			foundDoi = false;
 		}
 
 	}
@@ -143,6 +154,33 @@ public class PubMedXMLHandler {
 			publication.setTitle(articleTitle.toString());
 		}
 	}
+	
+	private class ArticleIdHandler extends SAXElementHandler
+	{
+		public void startElement(String uri, String localName, String qname, Attributes atts) {
+			doi = new StringBuffer();
+			String idType = atts.getValue("IdType");
+			System.out.println("start doi, idtype:" + idType);
+			if(idType != null && idType.equalsIgnoreCase("doi")) {
+				isDoi = true;
+				foundDoi = true;
+			}
+		}
+		
+		public void characters(char[] ch, int start, int length) {
+			if(isDoi)
+				doi.append(new String(ch, start, length));
+		}
+		
+		public void endElement(String uri, String localName, String qname) {
+			if(isDoi) {
+			publication.setDigitalObjectId(doi.toString());
+			System.out.println("doi:" + doi.toString());
+			isDoi = false;
+			}
+		}
+	}
+	
 	
 //	private class AbstractHandler extends SAXElementHandler
 //	{
@@ -266,6 +304,7 @@ public class PubMedXMLHandler {
 		s.setElementHandler("forename", new ForeNameHandler());
 		s.setElementHandler("firstname", new ForeNameHandler());
 		s.setElementHandler("initials", new MiddleInitialHandler());
+		s.setElementHandler("articleid", new ArticleIdHandler());
 		
         SAXParserFactory spf = SAXParserFactory.newInstance();
         SAXParser sparser = spf.newSAXParser();
