@@ -9,7 +9,6 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -74,7 +73,6 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			if (publications != null) {
 				for (Publication publication : publications) {
 					loadParticleSamplesForPublication(publication);
-					loadAuthorsForPublication(publication);
 					publicationBeans.add(new PublicationBean(publication));
 				}
 			}
@@ -278,6 +276,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 				publication = (Publication) obj;
 			}
 			loadParticleSamplesForPublication(publication);
+			loadAuthorsForPublication(publication);
 			return publication;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
