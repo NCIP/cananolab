@@ -5,7 +5,7 @@ package gov.nih.nci.cananolab.ui.report;
  *  
  * @author pansu
  */
-/* CVS $Id: SubmitReportAction.java,v 1.33 2008-08-27 21:11:03 cais Exp $ */
+/* CVS $Id: SubmitReportAction.java,v 1.34 2008-08-28 21:57:45 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Report;
@@ -58,7 +58,7 @@ public class SubmitReportAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
 		reportBean.setupDomainFile(CaNanoLabConstants.FOLDER_REPORT, user
-				.getLoginName());
+				.getLoginName(),0);
 		if (!validateReportFile(request, reportBean)) {
 			return mapping.getInputForward();
 		}
