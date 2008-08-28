@@ -12,7 +12,9 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.OutputStream;
@@ -67,10 +69,17 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				publication.getNanoparticleSampleCollection().add(sample);
 				sample.getPublicationCollection().add(publication);
 			}			
+			
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			
 			if (publication.getDocumentAuthorCollection() == null) {
 				publication
 						.setDocumentAuthorCollection(new TreeSet<DocumentAuthor>());
 			}else {
+				for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
+					authService.removePublicGroup(author.getId().toString());
+				}
 				publication.getDocumentAuthorCollection().clear();
 			}
 			if (authors!=null) {

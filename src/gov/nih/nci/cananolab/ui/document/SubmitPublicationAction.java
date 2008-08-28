@@ -85,6 +85,16 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		authService.assignVisibility(publicationBean.getDomainFile().getId()
 				.toString(), publicationBean.getVisibilityGroups());
 
+		// set documentAuthor visibility
+		if (publicationBean.getVisibilityGroups()!=null && 
+				Arrays.asList(publicationBean.getVisibilityGroups())
+					.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
+			if (publicationBean.getAuthors()!=null) {
+				for (DocumentAuthor author: publicationBean.getAuthors()) {
+					authService.assignPublicVisibility(author.getId().toString());
+				}
+			}
+		}
 		InitDocumentSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 		ActionMessages msgs = new ActionMessages();
@@ -212,6 +222,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			Publication publication = (Publication)pbean.getDomainFile();
 			publication.setPubMedId(null);
 			publication.setTitle("");
+			publication.setDigitalObjectId("");
 			publication.setJournalName("");
 			publication.setStartPage(null);
 			publication.setEndPage(null);
@@ -246,7 +257,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		theForm.set("file", publicationBean);
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
-		
 		Publication pub = (Publication) publicationBean.getDomainFile();
 		Long pubMedId = pub.getPubMedId();
 		ActionForward forward = getReturnForward(mapping, particleId, pubMedId);
@@ -437,9 +447,20 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				request.getSession().setAttribute("publicationStatuses", statuses);
 			}
 		}
+		Publication pub = (Publication) publicationBean.getDomainFile();
+		//remove 0
+		if (pub.getPubMedId()!=null && pub.getPubMedId()==0)
+			pub.setPubMedId(null);
+		if (pub.getStartPage()!=null && pub.getStartPage()==0)
+			pub.setStartPage(null);
+		if (pub.getEndPage()!=null && pub.getEndPage()==0)
+			pub.setEndPage(null);
+		if (pub.getYear()!=null && pub.getYear()==0)
+			pub.setYear(null);
+		theForm.set("file", publicationBean);	
 
 		// if pubMedId is available, the related fields should be set to read only.			
-		Publication pub = (Publication) publicationBean.getDomainFile();
+		
 		Long pubMedId = pub.getPubMedId();
 		ActionForward forward = getReturnForward(mapping, particleId, pubMedId);
 		
