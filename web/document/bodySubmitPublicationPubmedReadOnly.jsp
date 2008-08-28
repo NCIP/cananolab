@@ -113,7 +113,7 @@
 											onkeydown="return filterInteger(event)" 
 											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
 										<br><i>When a valid PubMed ID is entered, the related fields (DOI, title, journal, author, etc)<br>
-										would be auto-populated from PubMed and become read-only.</i>
+										are auto-populated by PubMed and become read-only.</i>
 									</td>
 								</tr>
 								<tr>
