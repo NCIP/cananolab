@@ -8,10 +8,10 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +96,7 @@ public class FunctionBean {
 	}
 
 	public void setupDomainFunction(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, int index) throws Exception {
 		className = typeToClass.get(type);
 		Class clazz = null;
 		if (className != null) {
@@ -121,10 +121,12 @@ public class FunctionBean {
 				((TargetingFunction) domainFunction)
 						.setTargetCollection(new HashSet<Target>());
 			}
+			int i = 0;
 			for (TargetBean targetBean : targets) {
-				targetBean.setupDomainTarget(typeToClass, createdBy);
+				targetBean.setupDomainTarget(typeToClass, createdBy, i);
 				((TargetingFunction) domainFunction).getTargetCollection().add(
 						targetBean.getDomainTarget());
+				i++;
 			}
 		} else if (domainFunction instanceof OtherFunction) {
 			((OtherFunction) domainFunction).setType(type);
@@ -135,7 +137,11 @@ public class FunctionBean {
 				&& domainFunction.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFunction.setCreatedBy(createdBy);
-			domainFunction.setCreatedDate(new Date());
+			// domainFunction.setCreatedDate(new Date());
+			// fix for MySQL database, which supports precision only up to
+			// seconds
+			domainFunction.setCreatedDate(DateUtil
+					.addSecondsToCurrentDate(index));
 		}
 	}
 

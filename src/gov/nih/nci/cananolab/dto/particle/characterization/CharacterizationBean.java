@@ -192,15 +192,17 @@ public class CharacterizationBean {
 					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 		}
 		// set createdBy and createdDate
+		int i=0;
 		for (DerivedBioAssayDataBean bioAssayData : derivedBioAssayDataList) {
 			if (bioAssayData.getDomainBioAssayData().getId() == null) {
 				bioAssayData.getDomainBioAssayData().setCreatedBy(createdBy);
 				bioAssayData.getDomainBioAssayData().setCreatedDate(new Date());
 			}
 			bioAssayData.setupDomainBioAssayData(typeToClass, createdBy,
-					internalUriPath);
+					internalUriPath, i);
 			domainChar.getDerivedBioAssayDataCollection().add(
 					bioAssayData.getDomainBioAssayData());
+			i++;
 		}
 	}
 

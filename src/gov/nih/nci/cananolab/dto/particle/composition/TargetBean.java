@@ -5,8 +5,8 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.DateUtil;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -75,7 +75,7 @@ public class TargetBean {
 	}
 
 	public void setupDomainTarget(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, int index) throws Exception {
 		className = typeToClass.get(type);
 		Class clazz = null;
 		if (className != null) {
@@ -100,8 +100,12 @@ public class TargetBean {
 				|| (domainTarget.getCreatedBy() != null && domainTarget
 						.getCreatedBy().equals(
 								CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX))) {
-			domainTarget.setCreatedBy(createdBy);
-			domainTarget.setCreatedDate(new Date());
+			domainTarget.setCreatedBy(createdBy);			
+			//domainTarget.setCreatedDate(new Date());
+			// fix for MySQL database, which supports precision only up to
+			// seconds
+			domainTarget.setCreatedDate(DateUtil
+					.addSecondsToCurrentDate(index));
 		}
 	}
 
