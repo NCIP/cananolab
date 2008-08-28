@@ -519,3 +519,7 @@ td.addCellVitro a:hover {
 	background-color: #F4F4F5;
 
 }
+
+.pname {
+	padding-left: 1em;
+}
