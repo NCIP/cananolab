@@ -15,11 +15,13 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,9 +96,12 @@ public class ReportServiceLocalImpl implements ReportService {
 					otherNanoparticleTypes, functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes);
+			
 			for (Report report : reports) {
 				reportBeans.add(new ReportBean(report));
 			}
+			Collections.sort(reportBeans,
+					new CaNanoLabComparators.ReportBeanTitleComparator());
 			return reportBeans;
 		} catch (Exception e) {
 			String err = "Problem finding report info.";

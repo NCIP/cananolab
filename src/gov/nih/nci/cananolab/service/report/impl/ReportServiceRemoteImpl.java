@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.exception.ReportException;
 import gov.nih.nci.cananolab.service.report.ReportService;
 import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -23,6 +24,7 @@ import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -117,6 +119,8 @@ public class ReportServiceRemoteImpl implements ReportService {
 					reportBeans.add(new ReportBean(report));
 				}
 			}
+			Collections.sort(reportBeans,
+					new CaNanoLabComparators.ReportBeanTitleComparator());
 			return reportBeans;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);

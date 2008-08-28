@@ -15,12 +15,14 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -76,6 +78,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 					publicationBeans.add(new PublicationBean(publication));
 				}
 			}
+			Collections.sort(publicationBeans,
+					new CaNanoLabComparators.PublicationBeanTitleComparator());
 			return publicationBeans;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
