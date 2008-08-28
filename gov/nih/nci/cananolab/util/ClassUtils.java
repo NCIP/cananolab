@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.util;
 
-import gov.nih.nci.cananolab.domain.common.Report;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,7 +11,6 @@ import java.io.PipedOutputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;

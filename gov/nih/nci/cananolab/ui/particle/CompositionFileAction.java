@@ -47,7 +47,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Composition File");
 
-		fileBean.setupDomainFile(internalUriPath, user.getLoginName());
+		fileBean.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 		service.saveCompositionFile(particleBean.getDomainParticleSample(),
 				fileBean.getDomainFile(), fileBean.getNewFileData());

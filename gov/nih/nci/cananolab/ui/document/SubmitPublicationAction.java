@@ -67,7 +67,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 //		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
-				.getLoginName());
+				.getLoginName(), 0);
 		String researchAreasStr = null;
 		if (researchAreas!=null && researchAreas.length>0) {
 			researchAreasStr = StringUtils.join(researchAreas, ";");
