@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.util;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -12,6 +13,8 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
@@ -28,7 +31,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.10 2008-07-03 17:15:36 pansu Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.11 2008-08-28 21:54:26 tanq Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -286,6 +289,22 @@ public class CaNanoLabComparators {
 			} else {
 				return nameComp;
 			}
+		}
+	}
+	
+	public static class ReportBeanTitleComparator implements
+			Comparator<ReportBean> {
+		public int compare(ReportBean file1, ReportBean file2) {
+			return file1.getDomainFile().getTitle().compareTo(
+					file2.getDomainFile().getTitle());
+		}
+	}
+	
+	public static class PublicationBeanTitleComparator implements
+			Comparator<PublicationBean> {
+		public int compare(PublicationBean file1, PublicationBean file2) {
+			return file1.getDomainFile().getTitle().compareTo(
+					file2.getDomainFile().getTitle());
 		}
 	}
 
