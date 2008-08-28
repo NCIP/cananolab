@@ -1,13 +1,11 @@
 package gov.nih.nci.cananolab.service.document.impl;
 
+import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.helper.DocumentServiceHelper;
@@ -72,6 +70,11 @@ public class DocumentServiceLocalImpl implements DocumentService {
 				}else if (nanoparticleSampleCollection.size()==1) {
 					//delete
 					authService.removePublicGroup(dataId.toString());	
+					if (publication.getDocumentAuthorCollection()!=null) {
+						for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
+							authService.removePublicGroup(author.getId().toString());
+						}
+					}
 					appService.delete(publication);
 				}else {//size>1
 					//remove nanoparticleSample association
