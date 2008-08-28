@@ -14,12 +14,14 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -124,6 +126,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					publicationBeans.add(new PublicationBean(publication));
 				}
 			}			
+			Collections.sort(publicationBeans,
+					new CaNanoLabComparators.PublicationBeanTitleComparator());
 			return publicationBeans;
 			
 		} catch (Exception e) {
