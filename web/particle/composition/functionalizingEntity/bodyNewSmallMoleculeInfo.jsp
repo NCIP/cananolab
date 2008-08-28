@@ -13,7 +13,7 @@
 				<strong>Alternate Name</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.smallMolecule.alternateName" />
+				<input type="text" name="entity.smallMolecule.alternateName" size="90"/>
 			</td>
 		</tr>
 	</tbody>

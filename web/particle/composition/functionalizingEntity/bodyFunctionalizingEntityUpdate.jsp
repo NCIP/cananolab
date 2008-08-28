@@ -81,7 +81,7 @@ function confirmDeletion()
 							<strong>Chemical Name*</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="entity.name" />
+							<html:text property="entity.name" size="70"/>
 						</td>
 					</tr>
 					<tr>
@@ -159,7 +159,7 @@ function confirmDeletion()
 							<strong>Activation Effect</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="entity.activationMethod.activationEffect" />
+							<html:text property="entity.activationMethod.activationEffect" size="70"/>
 						</td>
 					</tr>
 				</table>

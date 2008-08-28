@@ -52,7 +52,7 @@
 							</td>
 							<td class="rightLabel">
 								<html:text
-									property="particleSampleBean.domainParticleSample.name" />
+									property="particleSampleBean.domainParticleSample.name" size="50"/>
 								<c:if
 									test="${!empty nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}">
 									<html:hidden

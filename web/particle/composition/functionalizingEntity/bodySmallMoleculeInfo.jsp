@@ -19,7 +19,7 @@
 			<td class="rightLabel">
 				<c:choose>
 					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-						<html:text property="entity.smallMolecule.alternateName" />
+						<html:text property="entity.smallMolecule.alternateName" size="90"/>
 					</c:when>
 					<c:otherwise>
 						${functionalizingEntityForm.map.entity.smallMolecule.alternateName}&nbsp;
