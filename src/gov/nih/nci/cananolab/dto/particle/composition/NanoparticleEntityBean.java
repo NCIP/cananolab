@@ -251,9 +251,10 @@ public class NanoparticleEntityBean {
 			domainEntity
 					.setComposingElementCollection(new HashSet<ComposingElement>());
 		}
+		int i=0;
 		for (ComposingElementBean composingElementBean : composingElements) {
 			composingElementBean.setupDomainComposingElement(typeToClass,
-					createdBy);
+					createdBy, i);
 			ComposingElement domainComposingElement = composingElementBean
 					.getDomainComposingElement();
 			if (domainComposingElement.getId() == null) {
@@ -263,15 +264,18 @@ public class NanoparticleEntityBean {
 			domainComposingElement.setNanoparticleEntity(domainEntity);
 			domainEntity.getComposingElementCollection().add(
 					domainComposingElement);
+			i++;
 		}
 		if (domainEntity.getLabFileCollection() != null) {
 			domainEntity.getLabFileCollection().clear();
 		} else {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
+		int j=0;
 		for (LabFileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy);
+			file.setupDomainFile(internalUriPath, createdBy, j);
 			domainEntity.getLabFileCollection().add(file.getDomainFile());
+			j++;
 		}
 	}
 

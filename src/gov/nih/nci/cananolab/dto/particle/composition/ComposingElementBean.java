@@ -4,10 +4,10 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,13 +65,17 @@ public class ComposingElementBean {
 	}
 
 	public void setupDomainComposingElement(Map<String, String> typeToClass,
-			String createdBy) throws Exception {
+			String createdBy, int index) throws Exception {
 		if (domainComposingElement.getId() == null
 				|| domainComposingElement.getCreatedBy() != null
 				&& domainComposingElement.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainComposingElement.setCreatedBy(createdBy);
-			domainComposingElement.setCreatedDate(new Date());
+			// domainComposingElement.setCreatedDate(new Date());
+			// fix for MySQL database, which supports precision only up to
+			// seconds
+			domainComposingElement.setCreatedDate(DateUtil
+					.addSecondsToCurrentDate(index));
 		}
 		if (domainComposingElement.getInherentFunctionCollection() != null) {
 			domainComposingElement.getInherentFunctionCollection().clear();
@@ -79,10 +83,12 @@ public class ComposingElementBean {
 			domainComposingElement
 					.setInherentFunctionCollection(new HashSet<Function>());
 		}
+		int i=0;
 		for (FunctionBean functionBean : inherentFunctions) {
-			functionBean.setupDomainFunction(typeToClass, createdBy);
+			functionBean.setupDomainFunction(typeToClass, createdBy, i);
 			domainComposingElement.getInherentFunctionCollection().add(
 					functionBean.getDomainFunction());
+			i++;
 		}
 	}
 }

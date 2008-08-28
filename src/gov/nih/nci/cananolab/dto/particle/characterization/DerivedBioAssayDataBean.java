@@ -5,10 +5,10 @@ import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -69,13 +69,17 @@ public class DerivedBioAssayDataBean {
 	}
 
 	public void setupDomainBioAssayData(Map<String, String> typeToClass,
-			String createdBy, String internalUriPath) throws Exception {
+			String createdBy, String internalUriPath, int index) throws Exception {
 		if (domainBioAssayData.getId() == null
 				|| domainBioAssayData.getCreatedBy() != null
 				&& domainBioAssayData.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainBioAssayData.setCreatedBy(createdBy);
-			domainBioAssayData.setCreatedDate(new Date());
+			//domainBioAssayData.setCreatedDate(new Date());
+			// fix for MySQL database, which supports precision only up to
+			// seconds
+			domainBioAssayData.setCreatedDate(DateUtil
+					.addSecondsToCurrentDate(index));
 		}
 		if (domainBioAssayData.getDerivedDatumCollection() != null) {
 			domainBioAssayData.getDerivedDatumCollection().clear();
@@ -84,13 +88,15 @@ public class DerivedBioAssayDataBean {
 					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
 		}
 		if (labFileBean != null) {
-			labFileBean.setupDomainFile(internalUriPath, createdBy);
+			labFileBean.setupDomainFile(internalUriPath, createdBy, 0);
 			domainBioAssayData.setLabFile(labFileBean.getDomainFile());
 		}
+		int i = 0;
 		for (DerivedDatumBean datum : datumList) {
-			datum.setDomainDerivedDatum(createdBy);
+			datum.setDomainDerivedDatum(createdBy, i);
 			domainBioAssayData.getDerivedDatumCollection().add(
 					datum.getDomainDerivedDatum());
+			i++;
 		}
 	}
 }

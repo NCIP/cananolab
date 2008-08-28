@@ -2,8 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-
-import java.util.Date;
+import gov.nih.nci.cananolab.util.DateUtil;
 
 /**
  * View bean for DerivedDatum
@@ -40,13 +39,17 @@ public class DerivedDatumBean {
 		this.valueStr = valueStr;
 	}
 
-	public void setDomainDerivedDatum(String createdBy) throws Exception {
+	public void setDomainDerivedDatum(String createdBy, int index) throws Exception {
 		if (domainDerivedDatum.getId() == null
 				|| domainDerivedDatum.getCreatedBy() != null
 				&& domainDerivedDatum.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainDerivedDatum.setCreatedBy(createdBy);
-			domainDerivedDatum.setCreatedDate(new Date());
+			//domainDerivedDatum.setCreatedDate(new Date());
+			// fix for MySQL database, which supports precision only up to
+			// seconds
+			domainDerivedDatum.setCreatedDate(DateUtil
+					.addSecondsToCurrentDate(index));
 		}
 		if (domainDerivedDatum.getValueType() != null
 				&& domainDerivedDatum.getValueType().equals("boolean")) {
