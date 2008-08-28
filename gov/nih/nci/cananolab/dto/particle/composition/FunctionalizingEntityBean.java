@@ -84,8 +84,9 @@ public class FunctionalizingEntityBean {
 		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
-		if (functionalizingEntity.getFunctionCollection()!=null){
-			for (Function function : functionalizingEntity.getFunctionCollection()) {
+		if (functionalizingEntity.getFunctionCollection() != null) {
+			for (Function function : functionalizingEntity
+					.getFunctionCollection()) {
 				functions.add(new FunctionBean(function));
 			}
 		}
@@ -287,19 +288,23 @@ public class FunctionalizingEntityBean {
 		} else {
 			domainEntity.setFunctionCollection(new HashSet<Function>());
 		}
+		int i = 0;
 		for (FunctionBean functionBean : functions) {
-			functionBean.setupDomainFunction(typeToClass, createdBy);
+			functionBean.setupDomainFunction(typeToClass, createdBy, i);
 			domainEntity.getFunctionCollection().add(
 					functionBean.getDomainFunction());
+			i++;
 		}
 		if (domainEntity.getLabFileCollection() != null) {
 			domainEntity.getLabFileCollection().clear();
 		} else {
 			domainEntity.setLabFileCollection(new HashSet<LabFile>());
 		}
+		int j=0;
 		for (LabFileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy);
+			file.setupDomainFile(internalUriPath, createdBy, j);
 			domainEntity.getLabFileCollection().add(file.getDomainFile());
+			j++;
 		}
 	}
 

@@ -93,9 +93,11 @@ public class ChemicalAssociationBean {
 		} else {
 			domainAssociation.setLabFileCollection(new HashSet<LabFile>());
 		}
+		int i=0;
 		for (LabFileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy);
+			file.setupDomainFile(internalUriPath, createdBy, i);
 			domainAssociation.getLabFileCollection().add(file.getDomainFile());
+			i++;
 		}
 	}
 

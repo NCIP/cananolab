@@ -117,7 +117,7 @@ public class ProtocolFileBean extends LabFileBean {
 		} catch (Exception e) {
 			domainFile.setVersion(domainFileId);
 		}
-		super.setupDomainFile(internalUriPath, createdBy);
+		super.setupDomainFile(internalUriPath, createdBy, 0);
 		Protocol protocol = ((ProtocolFile) domainFile).getProtocol();
 		if (protocol.getId() == null) {
 			protocol.setCreatedBy(createdBy);

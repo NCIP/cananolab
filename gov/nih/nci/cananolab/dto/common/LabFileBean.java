@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.DateUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -37,11 +38,13 @@ public class LabFileBean {
 
 	private byte[] newFileData; // data from uploadedFile if upload happened
 
-	private String location; //e.g. local, caNanoLab-WashU
-	
-	private String fullPath;  //e.g. C:/temp/caNanoLab/fileUpload/particles/NCL-23/...,
-	//or for remote files, it will be the remote download URL
-	
+	private String location; // e.g. local, caNanoLab-WashU
+
+	private String fullPath; // e.g.
+								// C:/temp/caNanoLab/fileUpload/particles/NCL-23/...,
+
+	// or for remote files, it will be the remote download URL
+
 	public LabFileBean() {
 		domainFile.setUriExternal(false);
 	}
@@ -55,7 +58,7 @@ public class LabFileBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-		if (labFile.getUriExternal()!=null && labFile.getUriExternal()) {
+		if (labFile.getUriExternal() != null && labFile.getUriExternal()) {
 			externalUrl = labFile.getUri();
 		}
 	}
@@ -115,7 +118,7 @@ public class LabFileBean {
 	}
 
 	public String getUrlTarget() {
-		if (domainFile.getUriExternal()!=null && domainFile.getUriExternal()) {
+		if (domainFile.getUriExternal() != null && domainFile.getUriExternal()) {
 			return "pop";
 		}
 		return "_self";
@@ -129,14 +132,17 @@ public class LabFileBean {
 		this.uploadedFile = uploadedFile;
 	}
 
-	public void setupDomainFile(String internalUriPath, String createdBy)
-			throws Exception {
+	public void setupDomainFile(String internalUriPath, String createdBy,
+			int index) throws Exception {
 		if (domainFile.getId() == null
 				|| domainFile.getCreatedBy() != null
 				&& domainFile.getCreatedBy().equals(
 						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
-			domainFile.setCreatedDate(new Date());
+			// domainFile.setCreatedDate(new Date());
+			// fix for MySQL database, which supports precision only up to
+			// seconds
+			domainFile.setCreatedDate(DateUtil.addSecondsToCurrentDate(index));
 		}
 		if (uploadedFile != null && uploadedFile.getFileName().length() > 0) {
 			domainFile.setName(uploadedFile.getFileName());
