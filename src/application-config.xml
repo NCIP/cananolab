@@ -21,7 +21,7 @@
 		<constructor-arg>
 			<props>
 				<prop key="caseSensitive">false</prop>
-				<prop key="resultCountPerQuery">1000</prop>
+				<prop key="resultCountPerQuery">5000</prop>				
 				<prop key="resultOutputFormatter">resultOutputFormatter.xsl</prop>
 				<prop key="rowCounter">200</prop>
 				<prop key="securityEnabled">false</prop>
