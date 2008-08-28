@@ -54,8 +54,8 @@
 			<ul class="slidingmenu" id="menuroot">
 
 				<li id="view_particle">
-					<b>${fn:toUpperCase(location)} PARTICLE:</b>					
-					<c:out value="${particleName}" />
+					<b>${fn:toUpperCase(location)} PARTICLE:</b><br>					
+					<span class="pname"><c:out value="${particleName}" /></span>
 				</li>
 				<li class="controlList">
 					<c:url var="url" value="submitNanoparticleSample.do">
