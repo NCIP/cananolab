@@ -59,12 +59,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		String[] researchAreas = publicationBean.getResearchAreas();
 //		if (!validateResearchAreas(request, researchAreas)) {
 //			return mapping.getInputForward();
 //		}
-//		
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName(), 0);
@@ -73,6 +73,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			researchAreasStr = StringUtils.join(researchAreas, ";");
 		}
 		Publication publication = (Publication) publicationBean.getDomainFile();
+		change0ToNull(publication);
 		publication.setResearchArea(researchAreasStr);
 		
 		PublicationService service = new PublicationServiceLocalImpl();
@@ -89,9 +90,15 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		if (publicationBean.getVisibilityGroups()!=null && 
 				Arrays.asList(publicationBean.getVisibilityGroups())
 					.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
-			if (publicationBean.getAuthors()!=null) {
-				for (DocumentAuthor author: publicationBean.getAuthors()) {
-					authService.assignPublicVisibility(author.getId().toString());
+			if (publication.getDocumentAuthorCollection()!=null) {
+				for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
+					if (author!=null) {
+						if (author.getId()!=null && 
+								author.getId().toString().trim().length()>0) {
+							authService.assignPublicVisibility(author.getId().toString());
+						}
+					
+					}
 				}
 			}
 		}
@@ -449,14 +456,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}
 		Publication pub = (Publication) publicationBean.getDomainFile();
 		//remove 0
-		if (pub.getPubMedId()!=null && pub.getPubMedId()==0)
-			pub.setPubMedId(null);
-		if (pub.getStartPage()!=null && pub.getStartPage()==0)
-			pub.setStartPage(null);
-		if (pub.getEndPage()!=null && pub.getEndPage()==0)
-			pub.setEndPage(null);
-		if (pub.getYear()!=null && pub.getYear()==0)
-			pub.setYear(null);
+		change0ToNull(pub);
 		theForm.set("file", publicationBean);	
 
 		// if pubMedId is available, the related fields should be set to read only.			
@@ -488,14 +488,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				CaNanoLabConstants.CSM_PG_DOCUMENT);
 	}
 	
-//	private boolean validateReportFile(HttpServletRequest request,
-//			PublicationBean publicationBean) throws Exception {
-//		ActionMessages msgs = new ActionMessages();
-//		if (!validateFileBean(request, msgs, publicationBean)) {
-//			return false;
-//		}		
-//		return true;
-//	}
 	
 	protected boolean validateResearchAreas(HttpServletRequest request,
 			String[] researchAreas) throws Exception {
@@ -564,6 +556,17 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				"yyyyMMdd_HH-mm-ss-SSS"));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
+	}
+	
+	private void change0ToNull(Publication pub) {
+		if (pub.getPubMedId()!=null && pub.getPubMedId()==0)
+			pub.setPubMedId(null);
+		if (pub.getStartPage()!=null && pub.getStartPage()==0)
+			pub.setStartPage(null);
+		if (pub.getEndPage()!=null && pub.getEndPage()==0)
+			pub.setEndPage(null);
+		if (pub.getYear()!=null && pub.getYear()==0)
+			pub.setYear(null);		
 	}
 		
 
