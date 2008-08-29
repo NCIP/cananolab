@@ -432,7 +432,7 @@ public class InitNanoparticleSetup {
 					particleSample.getPublicationCollection();
 				if (publicationCollection != null &&
 						publicationCollection.size() > 0 ) {
-					long pubmedid = 0L;
+					Long pubmedid = 0L;
 					String doi = null, title = null;
 					for (Publication publication : publicationCollection) {
 						String publicationCategory = publication.getCategory();
@@ -440,8 +440,9 @@ public class InitNanoparticleSetup {
 								.toString(), "Publication", "submitPublication", publication
 								.getCreatedBy(), publication.getCreatedDate());
 						dataBean.setDataDisplayType(publicationCategory);
-						pubmedid = publication.getPubMedId();						
-						if(pubmedid>0) {
+						pubmedid = publication.getPubMedId();
+						
+						if(pubmedid!=null && pubmedid>0) {
 							dataBean.setViewTitle("PMID: "+pubmedid);
 						}else {
 							doi = publication.getDigitalObjectId();

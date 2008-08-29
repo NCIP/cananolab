@@ -384,7 +384,7 @@ public class PublicationServiceHelper {
 		cell = row.createCell(cellCount++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Publication Identifier"));
-		if (pubMedId.intValue()>0) {			
+		if (pubMedId!=null && pubMedId.intValue()>0) {			
 			row.createCell(cellCount++).setCellValue(
 					new HSSFRichTextString(pubMedId.toString()));
 		}else {
@@ -503,9 +503,9 @@ public class PublicationServiceHelper {
 		cell = row.createCell(cellCount++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Pages"));
-		long startPage = publication.getStartPage();
-		long endPage = publication.getEndPage();
-		if (startPage>0 || endPage>0) {
+		Long startPage = publication.getStartPage();
+		Long endPage = publication.getEndPage();
+		if ((startPage!=null && startPage>0) || (endPage!=null && endPage>0)) {
 			row.createCell(cellCount++).setCellValue(
 					new HSSFRichTextString(publication.getJournalName()));
 		}
