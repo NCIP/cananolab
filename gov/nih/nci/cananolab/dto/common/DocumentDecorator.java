@@ -159,16 +159,4 @@ public class DocumentDecorator extends TableDecorator {
 		SortableName sortableLink = new SortableName(title);
 		return sortableLink;
 	}	
-	
-	public SortableName getDocumentType_retire() throws UnsupportedEncodingException {
-		String type = "";
-		Object documentBean = getCurrentRowObject();
-		if (documentBean instanceof PublicationBean){
-			LabFileBean file = (PublicationBean) documentBean;
-			file.getDomainFile().getTitle();		
-		}
-		SortableName sortableLink = new SortableName(type);		
-		return sortableLink;
-	}
-	
 }
