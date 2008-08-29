@@ -61,7 +61,7 @@
 							<html:submit value="Update" />
 						</TD>
 						<TD>
-							<input type="button" value="Reset" onclick="javascript:window.location.reload();">
+							<input type="button" value="Reset" onclick="javascript:location.href='updatePassword.do?'">
 						</TD>
 					</TR>
 				</TABLE>
