@@ -110,9 +110,8 @@
 												Click to look up PubMed Identifier</a>
 										<br>									
 										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
-											onkeydown="return filterInteger(event)" 
 											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
-										<br><i>When a valid PubMed ID is entered, the related fields (DOI, title, journal, author, etc)<br>
+										<br><i>After entering a valid PubMed ID and clicking outside of the text field, <br>the related fields (DOI, title, journal, author, etc)
 										are auto-populated by PubMed and become read-only.</i>
 									</td>
 								</tr>
