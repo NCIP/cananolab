@@ -168,7 +168,7 @@
 										<div align="right">
 											<div align="right">
 												<input type="reset" value="Reset"
-													onclick="javascript:location.reload()">
+													onclick="javascript:location.href='submitProtocol.do?dispatch=setup&page=0'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<html:submit />
