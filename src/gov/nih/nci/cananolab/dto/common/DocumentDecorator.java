@@ -26,7 +26,7 @@ public class DocumentDecorator extends TableDecorator {
 			publicationOrReport = "report";
 		}else if (documentBean instanceof PublicationBean){
 			LabFile file = ((PublicationBean)documentBean).getDomainFile();
-			publicationOrReport = "publication"+":"+
+			publicationOrReport = "publication:"+
 				((Publication)file).getCategory();
 		}
 		SortableName sortableLink = new SortableName(publicationOrReport);
