@@ -119,7 +119,7 @@ public class DocumentServiceHelper {
 		StringBuffer sb = new StringBuffer();
 		NanoparticleSample particle = particleBean.getDomainParticleSample();
 		if (particle.getPublicationCollection()!=null) {		
-			long pubmedid = 0;
+			Long pubmedid = null;
 			String doi = null;
 			String id = null;
 			int year = 0;
@@ -129,9 +129,9 @@ public class DocumentServiceHelper {
 				row = sheet.createRow(rowCount);
 				rowCount++;
 				cellCount = 0;
+				pubmedid = publication.getPubMedId();
 				
-				pubmedid = publication.getPubMedId();						
-				if(pubmedid>0) {
+				if(pubmedid!=null && pubmedid>0) {
 					id = "PMID: "+pubmedid;
 				}else {
 					doi = publication.getDigitalObjectId();
