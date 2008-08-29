@@ -188,22 +188,21 @@ function confirmDeletion()
 						<td width="490" height="32">
 							<div align="right">
 								<div align="right">
+									<c:choose>
+										<c:when test="${!empty param.particleId }">
+											<c:set var="particleId"
+												value="${param.particleId }" />
+										</c:when>
+									</c:choose>
 									<input type="reset" value="Reset"
-										onclick="javascript:window.location.reload();">
+										onclick="javascript:location.href='compositionFile.do?submitType=Composition+File&dispatch=setup&page=0&particleId=${particleId }&location=${location }'" />
+<%--										onclick="javascript:window.location.reload();">--%>
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
 									<input type="hidden" name="submitType"
 										value="${param.submitType}" />
 									<html:submit />
-									<c:choose>
-										<c:when test="${!empty param.particleId }">
-											<html:hidden property="particleId"
-												value="${param.particleId }" />
-										</c:when>
-										<c:otherwise>
-											<html:hidden property="particleId" />
-										</c:otherwise>
-									</c:choose>
+									<html:hidden property="particleId" />
 								</div>
 							</div>
 						</td>
