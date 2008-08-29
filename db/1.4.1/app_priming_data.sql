@@ -1,5 +1,8 @@
 use canano;
 
+-- Disable foreign key checks
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+
 INSERT INTO hibernate_unique_key(next_hi)
 VALUES (1);
 
