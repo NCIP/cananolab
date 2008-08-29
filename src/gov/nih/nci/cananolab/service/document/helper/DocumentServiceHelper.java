@@ -158,9 +158,9 @@ public class DocumentServiceHelper {
 						sb.setLength(0);
 						sb.append(author.getFirstName());
 						sb.append(' ');
-						sb.append(author.getMiddleInitial());
-						sb.append(' ');
 						sb.append(author.getLastName());
+						sb.append(' ');
+						sb.append(author.getMiddleInitial());						
 						if (countAuthors==0) {
 							row.createCell((short)2).setCellValue(
 									new HSSFRichTextString(sb.toString()));
