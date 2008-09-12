@@ -23,7 +23,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.7 2008-05-06 22:58:15 pansu Exp $ */
+/* CVS $Id: LookupService.java,v 1.8 2008-09-12 20:08:09 tanq Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -85,7 +85,7 @@ public class LookupService {
 			crit.add(Property.forName("attribute").eq(attribute));
 			Collection results = appService.query(crit);
 			for (Object obj : results) {
-				lookupValues.add(((CommonLookup) obj).getValue());
+				lookupValues.add(((CommonLookup) obj).getValue().toLowerCase());
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving common lookup values for name "
