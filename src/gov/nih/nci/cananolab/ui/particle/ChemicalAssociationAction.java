@@ -55,10 +55,27 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Chemical Association");
-		assocBean.setupDomainAssociation(InitSetup.getInstance()
+		try {
+			assocBean.setupDomainAssociation(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+		}catch (ClassCastException ex) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = null;
+			if (ex.getMessage()!=null && ex.getMessage().length()>0 &&
+					!ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType",
+						ex.getMessage(),"Chemical Association");
+			}else {
+				msg = new ActionMessage("errors.invalidOtherType",
+						assocBean.getType(),"Chemical Association");
+				assocBean.setType(null);
+			}			
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);			
+			return mapping.getInputForward();
+		}
 
 		if (!validateAssociationFile(request, assocBean)) {
 			return mapping.getInputForward();

@@ -250,7 +250,7 @@ public class FunctionalizingEntityBean {
 
 	public void setupDomainEntity(Map<String, String> typeToClass,
 			String createdBy, String internalUriPath) throws Exception {
-		className = typeToClass.get(type);
+		className = typeToClass.get(type.toLowerCase());
 		Class clazz = null;
 		if (className == null) {
 			clazz = OtherFunctionalizingEntity.class;

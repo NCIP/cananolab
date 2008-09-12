@@ -60,15 +60,22 @@ public class AssociatedElementBean {
 			String createdBy) throws Exception {
 		// domain element is a functionalizing entity
 		if (compositionType.equals("Functionalizing Entity")) {
-			className = typeToClass.get(entityDisplayName);
+			className = typeToClass.get(entityDisplayName.toLowerCase());
 			Class clazz = null;
 			if (className == null) {
 				clazz = OtherFunctionalizingEntity.class;
 			} else {
 				clazz = ClassUtils.getFullClass("functionalization."
 						+ className);
+			}			
+			try {
+				domainElement = (AssociatedElement) clazz.newInstance();
+			}catch (ClassCastException ex) {
+				String tmpType = compositionType;
+				this.setCompositionType(null);
+				throw new ClassCastException(tmpType);
 			}
-			domainElement = (AssociatedElement) clazz.newInstance();
+			
 			domainElement.setId(new Long(entityId));
 		} else {
 			domainElement = composingElement;

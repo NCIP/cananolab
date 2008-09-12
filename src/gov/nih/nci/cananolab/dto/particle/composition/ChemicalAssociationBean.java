@@ -62,7 +62,7 @@ public class ChemicalAssociationBean {
 
 	public void setupDomainAssociation(Map<String, String> typeToClass,
 			String createdBy, String internalUriPath) throws Exception {
-		className = typeToClass.get(type);
+		className = typeToClass.get(type.toLowerCase());
 		Class clazz = null;
 		if (className == null) {
 			clazz = OtherChemicalAssociation.class;
@@ -70,7 +70,13 @@ public class ChemicalAssociationBean {
 			clazz = ClassUtils.getFullClass(className);
 		}
 		if (domainAssociation == null) {
-			domainAssociation = (ChemicalAssociation) clazz.newInstance();
+			try {
+				domainAssociation = (ChemicalAssociation) clazz.newInstance();
+			}catch (ClassCastException ex) {
+				String tmpType = type;
+				this.setType(null);
+				throw new ClassCastException(tmpType);
+			}
 		}
 		if (domainAssociation instanceof OtherChemicalAssociation) {
 			((OtherChemicalAssociation) domainAssociation).setType(type);

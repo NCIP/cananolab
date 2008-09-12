@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: FunctionalizingEntityAction.java,v 1.44 2008-06-11 18:16:02 pansu Exp $ */
+/* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -55,10 +55,28 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
-		entityBean.setupDomainEntity(InitSetup.getInstance()
+		try {
+			entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+		}catch (ClassCastException ex) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = null;
+			if (ex.getMessage()!=null && ex.getMessage().length()>0 &&
+					!ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType",
+						ex.getMessage(),"Function");
+			}else {
+				msg = new ActionMessage("errors.invalidOtherType",
+						entityBean.getType(),"Functionalizing Entity");		
+				entityBean.setType(null);
+			}
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			
+			return mapping.getInputForward();
+		}
 
 		if (!validateTargets(request, entityBean)) {
 			return mapping.getInputForward();
