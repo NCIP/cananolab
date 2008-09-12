@@ -76,7 +76,7 @@ public class TargetBean {
 
 	public void setupDomainTarget(Map<String, String> typeToClass,
 			String createdBy, int index) throws Exception {
-		className = typeToClass.get(type);
+		className = typeToClass.get(type.toLowerCase());
 		Class clazz = null;
 		if (className != null) {
 			clazz = ClassUtils.getFullClass(className);
@@ -87,7 +87,13 @@ public class TargetBean {
 				|| domainTarget != null
 				&& !clazz.getCanonicalName().equals(
 						domainTarget.getClass().getCanonicalName())) {
-			domainTarget = (Target) clazz.newInstance();
+			try {
+				domainTarget = (Target) clazz.newInstance();
+			}catch (ClassCastException ex) {
+				String tmpType = type;
+				this.setType(null);
+				throw new ClassCastException(tmpType);
+			}
 		}
 		if (domainTarget instanceof OtherTarget) {
 			((OtherTarget) domainTarget).setType(type);

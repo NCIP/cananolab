@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.53 2008-06-08 05:17:15 pansu Exp $ */
+/* CVS $Id: NanoparticleEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -66,10 +66,28 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
-		entityBean.setupDomainEntity(InitSetup.getInstance()
+		try {
+			entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
+		}catch (ClassCastException ex) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = null;
+			if (ex.getMessage()!=null && ex.getMessage().length()>0 &&
+					!ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType",
+						entityBean.getType(),"Nanoparticle Entity");
+			}else {
+				msg = new ActionMessage("errors.invalidOtherType",
+						entityBean.getType(),"Nanoparticle Entity");
+				entityBean.setType(null);
+			}		
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+			entityBean.setType(null);
+			return mapping.getInputForward();
+		}
 
 		if (!validateInherentFunctionType(request, entityBean)) {
 			return mapping.getInputForward();
