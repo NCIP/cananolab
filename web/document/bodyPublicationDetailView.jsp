@@ -17,6 +17,7 @@
 				<jsp:param name="topic" value="publication_page_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
+			<a href="documentResults.do" class="helpText">Back</a>
 		</td>
 	</tr>
 	<tr>
