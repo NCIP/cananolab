@@ -190,10 +190,14 @@ function confirmDeletion()
 								<div align="right">
 									<c:choose>
 										<c:when test="${!empty param.particleId }">
-											<c:set var="particleId"
+											<html:hidden property="particleId"
 												value="${param.particleId }" />
 										</c:when>
+										<c:otherwise>
+											<html:hidden property="particleId" />
+										</c:otherwise>
 									</c:choose>
+
 									<input type="reset" value="Reset"
 										onclick="javascript:location.href='compositionFile.do?submitType=Composition+File&dispatch=setup&page=0&particleId=${particleId }&location=${location }'" />
 <%--										onclick="javascript:window.location.reload();">--%>
@@ -202,7 +206,6 @@ function confirmDeletion()
 									<input type="hidden" name="submitType"
 										value="${param.submitType}" />
 									<html:submit />
-									<html:hidden property="particleId" />
 								</div>
 							</div>
 						</td>
