@@ -97,7 +97,7 @@ public class FunctionBean {
 
 	public void setupDomainFunction(Map<String, String> typeToClass,
 			String createdBy, int index) throws Exception {
-		className = typeToClass.get(type);
+		className = typeToClass.get(type.toLowerCase());
 		Class clazz = null;
 		if (className != null) {
 			clazz = ClassUtils.getFullClass(className);
@@ -108,7 +108,13 @@ public class FunctionBean {
 				|| domainFunction != null
 				&& !clazz.getCanonicalName().equals(
 						domainFunction.getClass().getCanonicalName())) {
-			domainFunction = (Function) clazz.newInstance();
+			try {
+				domainFunction = (Function) clazz.newInstance();
+			}catch (ClassCastException ex) {
+				String tmpType = type;
+				this.setType(null);
+				throw new ClassCastException(tmpType);
+			}
 		}
 
 		if (domainFunction instanceof ImagingFunction) {
