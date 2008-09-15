@@ -87,7 +87,7 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Research Category*</strong>
+										<strong>Research Category</strong>
 										<br>
 									</td>
 									<td class="rightLabel" colspan="3">
@@ -249,7 +249,7 @@
 										</tr>
 										<tr>
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Nanoparticle Sample Name*</strong>
+												<strong>Nanoparticle Sample Name</strong>
 											</td>
 											<td class="rightLabel">
 												<html:select property="file.particleNames" multiple="true"

@@ -5,11 +5,6 @@
 <form-validation>
 	<formset>
 		<form name="submitPublicationForm">
-			<field property="file.particleNames" page="2"
-				depends="required">
-				<arg position="0" key="submitPublicationForm.particleNames"
-					bundle="document" />
-			</field>			
 			<field property="file.domainFile.category" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.category"
@@ -18,11 +13,6 @@
 			<field property="file.domainFile.status" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.status"
-					bundle="document" />
-			</field>
-			<field property="file.researchAreas" page="2"
-				depends="required">
-				<arg position="0" key="submitPublicationForm.file.researchArea"
 					bundle="document" />
 			</field>
 			<field property="file.domainFile.title" page="2"
