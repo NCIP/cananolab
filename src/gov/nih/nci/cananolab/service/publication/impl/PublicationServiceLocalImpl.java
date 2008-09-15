@@ -54,10 +54,12 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			fileService.prepareSaveFile(publication);
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
-			for (String name : particleNames) {
-				NanoparticleSample sample = sampleService
-						.findNanoparticleSampleByName(name);
-				particleSamples.add(sample);
+			if (particleSamples!=null && particleSamples.size()>0) {
+				for (String name : particleNames) {
+					NanoparticleSample sample = sampleService
+							.findNanoparticleSampleByName(name);
+					particleSamples.add(sample);
+				}
 			}
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
