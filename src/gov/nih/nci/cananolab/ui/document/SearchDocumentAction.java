@@ -72,7 +72,10 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
 		String[] searchLocations = new String[0];
-		if (theForm != null) {
+		
+		String invokeMethod = request.getParameter("invokeMethod");
+		if (theForm != null &&
+				(invokeMethod == null || !invokeMethod.equals("back"))) {
 			title = (String) theForm.get("title");
 			category = (String) theForm.get("category");
 			keywordsStr = (String) theForm.get("keywordsStr");
@@ -91,6 +94,40 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 					.get("functionalizingEntityTypes");
 			functionTypes = (String[]) theForm.get("functionTypes");
 			searchLocations = (String[]) theForm.get("searchLocations");
+			
+			session.setAttribute("docTitle", title);
+			session.setAttribute("docCategory", category);
+			session.setAttribute("docKeywordsStr", keywordsStr);
+			session.setAttribute("docPubMedId", pubMedId);
+			session.setAttribute("docDigitalObjectId", digitalObjectId);
+			session.setAttribute("docAuthorsStr", authorsStr);
+			session.setAttribute("docNanoparticleName", nanoparticleName);
+			
+			session.setAttribute("docResearchArea", researchArea);
+			session.setAttribute("docPublicationOrReport", publicationOrReport);
+			session.setAttribute("docNanoparticleEntityTypes", nanoparticleEntityTypes);
+			session.setAttribute("docFunctionalizingEntityTypes", functionalizingEntityTypes);
+			session.setAttribute("docFunctionTypes", functionTypes);
+			session.setAttribute("docSearchLocations", searchLocations);
+		} 
+		
+		
+		//if(invokeMethod != null && invokeMethod.equals("back")) {
+		else {
+			title = (String) session.getAttribute("docTitle");
+			category = (String) session.getAttribute("docCategory");
+			keywordsStr = (String) session.getAttribute("docKeywordsStr");
+			pubMedId = (String) session.getAttribute("docPubMedId");
+			digitalObjectId = (String) session.getAttribute("docDigitalObjectId");
+			authorsStr = (String) session.getAttribute("docAuthorsStr");
+			nanoparticleName = (String) session.getAttribute("docNanoparticleName");
+			
+			researchArea = (String[]) session.getAttribute("docResearchArea");
+			publicationOrReport = (String[]) session.getAttribute("docPublicationOrReport");
+			nanoparticleEntityTypes = (String[]) session.getAttribute("docNanoparticleEntityTypes");
+			functionalizingEntityTypes = (String[]) session.getAttribute("docFunctionalizingEntityTypes");
+			functionTypes = (String[]) session.getAttribute("docfunctionTypes");
+			searchLocations = (String[]) session.getAttribute("docSearchLocations");
 		}
 		
 		String gridNodeHostStr = (String) request
@@ -127,16 +164,18 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 
 		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
-		for (int i = 0; i < functionTypes.length; i++) {
-			String className = InitSetup.getInstance().getObjectName(
-					functionTypes[i], session.getServletContext());
-			if (className.length() == 0) {
-				className = "OtherFunction";
-				otherFunctionTypes.add(functionTypes[i]);
-			} else {
-				functionClassNames.add(className);
+		if (functionTypes != null) {
+			for (int i = 0; i < functionTypes.length; i++) {
+				String className = InitSetup.getInstance().getObjectName(
+						functionTypes[i], session.getServletContext());
+				if (className.length() == 0) {
+					className = "OtherFunction";
+					otherFunctionTypes.add(functionTypes[i]);
+				} else {
+					functionClassNames.add(className);
+				}
 			}
-		}	
+		}
 		
 		List<LabFileBean> foundDocuments = new ArrayList<LabFileBean>();
 		//report
