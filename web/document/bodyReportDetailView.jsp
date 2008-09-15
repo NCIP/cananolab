@@ -17,6 +17,12 @@
 				<jsp:param name="topic" value="report_page_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
+			<c:url var="url" value="searchDocument.do">
+				<c:param name="page" value="1" />
+				<c:param name="dispatch" value="search" />
+				<c:param name="invokeMethod" value="back" />
+			</c:url>
+			<a href="${url}" class="helpText">Back</a>
 		</td>
 	</tr>
 	<tr>
