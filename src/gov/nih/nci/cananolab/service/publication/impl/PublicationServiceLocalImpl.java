@@ -68,6 +68,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			if (publication.getNanoparticleSampleCollection() == null) {
 				publication
 						.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
+			}else {
+				publication.getNanoparticleSampleCollection().clear();
 			}
 			for (NanoparticleSample sample : particleSamples) {
 				publication.getNanoparticleSampleCollection().add(sample);
