@@ -444,7 +444,7 @@ CREATE TABLE publication
 	start_page BIGINT NULL,
 	end_page BIGINT NULL,
 	year INTEGER NULL,
-	research_area VARCHAR(200) NOT NULL,
+	research_area VARCHAR(200) NULL,
 	PRIMARY KEY (publication_pk_id)
 ) TYPE=InnoDB
 ;
