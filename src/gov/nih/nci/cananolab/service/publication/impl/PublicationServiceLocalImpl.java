@@ -54,7 +54,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			fileService.prepareSaveFile(publication);
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
-			if (particleSamples!=null && particleSamples.size()>0) {
+			if (particleNames!=null && particleNames.length>0) {
 				for (String name : particleNames) {
 					NanoparticleSample sample = sampleService
 							.findNanoparticleSampleByName(name);
