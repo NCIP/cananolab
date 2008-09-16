@@ -112,8 +112,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		} 
 		
 		
-		//if(invokeMethod != null && invokeMethod.equals("back")) {
-		else {
+		if(invokeMethod != null && invokeMethod.equals("back")) {
 			title = (String) session.getAttribute("docTitle");
 			category = (String) session.getAttribute("docCategory");
 			keywordsStr = (String) session.getAttribute("docKeywordsStr");
