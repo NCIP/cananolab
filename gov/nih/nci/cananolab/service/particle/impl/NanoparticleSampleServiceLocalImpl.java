@@ -434,7 +434,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 					"select sample.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample sample");
 			List results = appService.query(crit);
 			for (Object obj : results) {
-				String name = (String) obj;
+				String name = ((String) obj).trim();
 				if (auth.isUserAllowed(name, user)) {
 					names.add(name);
 				}
