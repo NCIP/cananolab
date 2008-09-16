@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.util;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -31,7 +30,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.11 2008-08-28 21:54:26 tanq Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.12 2008-09-16 20:24:39 cais Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -45,9 +44,16 @@ public class CaNanoLabComparators {
 
 	public static class SortableNameComparator implements Comparator<String> {
 		public int compare(String name1, String name2) {
+			
 			// in case of sample name, container name and aliquot name
-			if (name1.matches("\\D+(-(\\d+)(\\D+)*)+")
-					&& name2.matches("\\D+(-(\\d+)(\\D+)*)+")) {
+			name1 = name1.trim();
+			name2 = name2.trim();
+			
+//			if (name1.matches("\\D+(-(\\d+)(\\D+)*)+")
+//					&& name2.matches("\\D+(-(\\d+)(\\D+)*)+")) {
+			
+			if (name1.matches("\\D+(-.+)+")
+					&& name2.matches("\\D+(-.+)+")) {
 				String[] toks1 = name1.split("-");
 				String[] toks2 = name2.split("-");
 				int num = 0;
@@ -56,7 +62,7 @@ public class CaNanoLabComparators {
 				} else {
 					num = toks2.length;
 				}
-
+				
 				for (int i = 0; i < num; i++) {
 					String str1 = "0", str2 = "0";
 					if (i < toks1.length) {
