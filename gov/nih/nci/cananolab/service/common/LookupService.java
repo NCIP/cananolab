@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  * 
  */
-/* CVS $Id: LookupService.java,v 1.8 2008-09-12 20:08:09 tanq Exp $ */
+/* CVS $Id: LookupService.java,v 1.9 2008-09-16 15:54:50 tanq Exp $ */
 
 public class LookupService {
 	private static Logger logger = Logger.getLogger(LookupService.class);
@@ -75,7 +76,12 @@ public class LookupService {
 
 	public static SortedSet<String> findLookupValues(String name,
 			String attribute) throws CaNanoLabException {
-		SortedSet<String> lookupValues = new TreeSet<String>();
+		SortedSet<String> lookupValues = new TreeSet<String>(
+				new Comparator<String>() {
+		    public int compare(String s1, String s2) {
+		        return s1.toLowerCase () .compareTo ( s2.toLowerCase());
+		    }}
+		);
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -85,7 +91,7 @@ public class LookupService {
 			crit.add(Property.forName("attribute").eq(attribute));
 			Collection results = appService.query(crit);
 			for (Object obj : results) {
-				lookupValues.add(((CommonLookup) obj).getValue().toLowerCase());
+				lookupValues.add(((CommonLookup) obj).getValue());
 			}
 		} catch (Exception e) {
 			logger.error("Error in retrieving common lookup values for name "
