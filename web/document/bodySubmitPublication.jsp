@@ -110,7 +110,7 @@
 												Click to look up PubMed Identifier</a>
 										<br>									
 										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
-											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
+											onchange="javascript:addPubmed(submitPublicationForm, '${docParticleId}'); return false;"/>
 										<br><i>After entering a valid PubMed ID and clicking outside of the text field, <br>the related fields (DOI, title, journal, author, etc)
 										are auto-populated by PubMed and become read-only.</i>
 									</td>
@@ -231,7 +231,7 @@
 						
 						
 						<c:choose>
-							<c:when test="${empty param.particleId}">
+							<c:when test="${empty docParticleId}">
 								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 									width="100%" align="center" summary="" border="0">		
 									<tbody>
@@ -336,7 +336,7 @@
 														<input type="hidden" name="submitType" value="documents">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
-<%--														<input type="hidden" name="particleId" value="${particleId}">--%>
+														<input type="hidden" name="particleId" value="${docParticleId}">
 														<html:submit />
 													</div>
 												</div>
