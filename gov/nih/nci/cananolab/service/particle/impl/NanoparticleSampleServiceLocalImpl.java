@@ -427,7 +427,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			AuthorizationService auth = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
 
-			SortedSet<String> names = new TreeSet<String>();
+			SortedSet<String> names = new TreeSet<String>(new CaNanoLabComparators.SortableNameComparator());
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
