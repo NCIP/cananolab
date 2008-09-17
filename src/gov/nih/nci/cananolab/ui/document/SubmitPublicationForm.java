@@ -18,15 +18,17 @@ public class SubmitPublicationForm extends DynaValidatorForm{
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		SubmitPublicationForm form = 
 			(SubmitPublicationForm)request.getSession().getAttribute("submitPublicationForm");
-		String dispatch = (String)form.get("dispatch");
-		//if addAuthor and validator fail, do not reset
-		if (dispatch!=null && !dispatch.equalsIgnoreCase("addAuthor")
-				&& !dispatch.equalsIgnoreCase("create")) {
-			PublicationBean pubBean = (PublicationBean)form.get("file");
-			pubBean.setResearchAreas(new String[0]);
-			pubBean.setVisibilityGroups(new String[0]);
-			pubBean.setParticleNames(new String[0]);		
-			this.set("file", pubBean);
+		if (form!=null) {
+			String dispatch = (String)form.get("dispatch");
+			//if addAuthor and validator fail, do not reset
+			if (dispatch!=null && !dispatch.equalsIgnoreCase("addAuthor")
+					&& !dispatch.equalsIgnoreCase("create")) {
+				PublicationBean pubBean = (PublicationBean)form.get("file");
+				pubBean.setResearchAreas(new String[0]);
+				pubBean.setVisibilityGroups(new String[0]);
+				pubBean.setParticleNames(new String[0]);		
+				this.set("file", pubBean);
+			}
 		}
 	}
 }
