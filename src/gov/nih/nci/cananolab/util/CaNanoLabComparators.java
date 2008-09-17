@@ -30,7 +30,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.12 2008-09-16 20:24:39 cais Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.13 2008-09-17 20:02:08 tanq Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -46,6 +46,9 @@ public class CaNanoLabComparators {
 		public int compare(String name1, String name2) {
 			
 			// in case of sample name, container name and aliquot name
+			if (name1==null) return -1;
+			if (name2==null) return 1;
+			
 			name1 = name1.trim();
 			name2 = name2.trim();
 			
