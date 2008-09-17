@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,13 +60,10 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		
 		ActionForward forward = null;
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		String[] researchAreas = publicationBean.getResearchAreas();
-//		if (!validateResearchAreas(request, researchAreas)) {
-//			return mapping.getInputForward();
-//		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
 				.getLoginName(), 0);
@@ -178,7 +177,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupPubmed(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		PublicationBean pbean = (PublicationBean) theForm.get("file");
 		pbean.setFoundPubMedArticle(false);
 		
@@ -253,7 +252,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}else {
 			session.removeAttribute("docParticleId");
 		}
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		String publicationId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
@@ -297,7 +296,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String publicationId = request.getParameter("fileId");
@@ -336,7 +335,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		String particleId = request.getParameter("particleId");
 		String submitType = request.getParameter("submitType");
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
@@ -380,7 +379,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		theForm.set("file", pubBean);	
 	
 		String particleId = request.getParameter("particleId");
@@ -419,7 +418,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		theForm.set("file", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
 	}
@@ -433,7 +432,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		
 		//save new entered other types
 		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		
 		PublicationBean publicationBean = ((PublicationBean) theForm.get("file"));
 		String selectedPublicationType = ((Publication)publicationBean.getDomainFile()).getCategory();
@@ -470,7 +469,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward addAuthor(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		PublicationBean pbean = (PublicationBean) theForm
 				.get("file");
 		pbean.addAuthor();
@@ -520,7 +519,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		theForm.set("file", pubBean);		
 		String title = pubBean.getDomainFile().getTitle();
 		if (title!=null && title.length()>10) {
@@ -567,6 +566,21 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			pub.setEndPage(null);
 		if (pub.getYear()!=null && pub.getYear()==0)
 			pub.setYear(null);		
+	}
+	
+	public ActionForward setupDeleteAll(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String submitType = request.getParameter("submitType");
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
+				particleBean, request);
+		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
+		request.getSession().setAttribute("actionName",
+				dataToDelete.first().getDataLink());
+		request.getSession().setAttribute("dataToDelete", dataToDelete);
+		return mapping.findForward("annotationDeleteView");
 	}
 		
 
