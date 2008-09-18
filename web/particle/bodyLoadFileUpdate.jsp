@@ -65,6 +65,7 @@
 						<span id="link_${param.fileInd }" style="${linkDisplay }"><html:text
 								property="${param.fileBean}.externalUrl" size="60" /> </span>&nbsp;
 					</td>
+					</tr>
 					<c:if test="${!empty param.fileUri }">
 						<tr>
 							<td class="completeLabel" colspan="3">
