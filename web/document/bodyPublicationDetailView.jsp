@@ -17,12 +17,14 @@
 				<jsp:param name="topic" value="publication_page_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
+			<c:if test="${empty docParticleId}">
 			<c:url var="url" value="searchDocument.do">
 				<c:param name="page" value="1" />
 				<c:param name="dispatch" value="search" />
 				<c:param name="invokeMethod" value="back" />
 			</c:url>
 			<a href="${url}" class="helpText">Back</a>
+			</c:if>
 		</td>
 	</tr>
 	<tr>
@@ -244,6 +246,24 @@
 						<bean:write name="submitPublicationForm"
 								property="file.domainFile.description" />
 							&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<th class="leftLabel" valign="top">
+						<c:choose>
+							<c:when test="${submitReportForm.map.file.domainFile.uriExternal==true}">
+								Publication URL&nbsp;
+							</c:when>
+							<c:otherwise>
+								Download Publication&nbsp;
+							</c:otherwise>
+						</c:choose>
+					</th>
+					<td class="rightLabel">
+						<a
+							href="submitPublication.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=${param.location}"
+							target="${submitPublicationForm.map.file.urlTarget}">
+							${submitPublicationForm.map.file.domainFile.uri}</a>&nbsp;
 					</td>
 				</tr>
 			</table>
