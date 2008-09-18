@@ -312,6 +312,9 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		InitDocumentSetup.getInstance().setDefaultResearchAreas(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
+		
+		HttpSession session = request.getSession();
+		session.removeAttribute("docParticleId");
 		return mapping.getInputForward();
 	}
 

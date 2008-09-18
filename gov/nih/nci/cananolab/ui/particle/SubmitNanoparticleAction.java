@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SubmitNanoparticleAction.java,v 1.36 2008-08-05 22:45:24 tanq Exp $ */
+/* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -98,6 +99,17 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
 				.getSource().getOrganizationName());
 		setupDataTree(particleSampleBean, request);
+		
+		//for display "back" button on the publication detail view
+		String particleId = request.getParameter("particleId");
+		HttpSession session = request.getSession();
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
+			session.setAttribute("docParticleId", particleId);
+		}else {
+			session.removeAttribute("docParticleId");
+		}
+		
 		return mapping.findForward("update");
 	}
 
