@@ -56,7 +56,7 @@ function confirmDeletion()
 								onclick="radLinkOrUpload()" />
 							<strong>Enter File URL</strong>
 						</td>
-						<td class="rightLabel" colspan="3">
+						<td class="rightLabel" colspan="2">
 							<span id="load"> <html:file
 									property="compFile.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 							<br>
@@ -64,6 +64,7 @@ function confirmDeletion()
 							<span id="link" style=""><html:text
 									property="compFile.externalUrl" size="60" /> </span>&nbsp;
 						</td>
+						</tr>
 						<c:if
 							test="${!empty compositionFileForm.map.compFile.domainFile.uri }">
 							<tr>
