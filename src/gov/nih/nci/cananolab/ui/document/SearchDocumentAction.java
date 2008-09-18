@@ -131,11 +131,13 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
-		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
-				&& gridNodeHostStr.trim().length() > 0) {
+		if (searchLocations[0].indexOf("~") != -1 && 
+				gridNodeHostStr != null && gridNodeHostStr.trim().length() > 0 ) {
 			searchLocations = gridNodeHostStr.split("~");
+		} else if (invokeMethod != null && invokeMethod.equals("back") ) {
+			searchLocations = searchLocations[0].split("~");
 		}
-
+		
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
 		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
