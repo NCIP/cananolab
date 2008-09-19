@@ -108,10 +108,8 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 			session.setAttribute("docNanoparticleEntityTypes", nanoparticleEntityTypes);
 			session.setAttribute("docFunctionalizingEntityTypes", functionalizingEntityTypes);
 			session.setAttribute("docFunctionTypes", functionTypes);
-			session.setAttribute("docSearchLocations", searchLocations);
 		} 
-		
-		
+	
 		if(invokeMethod != null && invokeMethod.equals("back")) {
 			title = (String) session.getAttribute("docTitle");
 			category = (String) session.getAttribute("docCategory");
@@ -134,8 +132,10 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 		if (searchLocations[0].indexOf("~") != -1 && 
 				gridNodeHostStr != null && gridNodeHostStr.trim().length() > 0 ) {
 			searchLocations = gridNodeHostStr.split("~");
-		} else if (invokeMethod != null && invokeMethod.equals("back") ) {
-			searchLocations = searchLocations[0].split("~");
+		}
+		
+		if(invokeMethod == null || !invokeMethod.equals("back")) {
+			session.setAttribute("docSearchLocations", searchLocations);
 		}
 		
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
