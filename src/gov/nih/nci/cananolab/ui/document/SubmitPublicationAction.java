@@ -525,7 +525,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			title = title.substring(0,10);
 		}
 		String fileName = this.getExportFileName(title, 
-				"detailView_1");
+				"detailView");
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename=\""
