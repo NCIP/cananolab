@@ -477,7 +477,9 @@ public class PublicationServiceHelper {
 		cell = row.createCell(cellCount++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Year"));
-		int year = publication.getYear();
+		int year = 0;
+		if(publication.getYear() != null)
+			year = publication.getYear();
 		if (year>0) {
 			row.createCell(cellCount++).setCellValue(
 					new HSSFRichTextString(Integer.toString(year)));
