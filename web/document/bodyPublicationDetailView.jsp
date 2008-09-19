@@ -248,24 +248,32 @@
 							&nbsp;
 					</td>
 				</tr>
-				<tr>
-					<th class="leftLabel" valign="top">
-						<c:choose>
-							<c:when test="${submitReportForm.map.file.domainFile.uriExternal==true}">
+
+				<c:choose>
+					<c:when
+						test="${submitPublicationForm.map.file.domainFile.pubMedId == null || 
+										submitPublicationForm.map.file.domainFile.pubMedId == 0}">
+						<tr>
+							<th class="leftLabel" valign="top">
+								<c:choose>
+									<c:when
+										test="${submitReportForm.map.file.domainFile.uriExternal==true}">
 								Publication URL&nbsp;
 							</c:when>
-							<c:otherwise>
+									<c:otherwise>
 								Download Publication&nbsp;
 							</c:otherwise>
-						</c:choose>
-					</th>
-					<td class="rightLabel">
-						<a
-							href="submitPublication.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=${param.location}"
-							target="${submitPublicationForm.map.file.urlTarget}">
-							${submitPublicationForm.map.file.domainFile.uri}</a>&nbsp;
-					</td>
-				</tr>
+								</c:choose>
+							</th>
+							<td class="rightLabel">
+								<a
+									href="submitPublication.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=${param.location}"
+									target="${submitPublicationForm.map.file.urlTarget}">
+									${submitPublicationForm.map.file.domainFile.uri}</a>&nbsp;
+							</td>
+						</tr>
+					</c:when>
+				</c:choose>
 			</table>
 		</td>
 	</tr>
