@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
-import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -88,10 +86,7 @@ public class PublicationServiceHelper {
 					.getUpdatedText(), digitalObjectIdMatchMode.getMatchMode()));
 		}
 		
-		
-		
 		//researchArea
-		
 		if (researchArea != null && researchArea.length > 0) {
 			
 			Disjunction disjunction = Restrictions.disjunction();
@@ -517,7 +512,16 @@ public class PublicationServiceHelper {
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Description"));
 		row.createCell(cellCount++).setCellValue(
-				new HSSFRichTextString(publication.getDescription()));	
+				new HSSFRichTextString(publication.getDescription()));
+		
+//		Uploaded Publication URI
+		row = sheet.createRow(rowCount++);
+		cellCount = 0;
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Publication URI"));
+		row.createCell(cellCount++).setCellValue(
+				new HSSFRichTextString(publication.getUri()));
 
 		return rowCount;
 	}

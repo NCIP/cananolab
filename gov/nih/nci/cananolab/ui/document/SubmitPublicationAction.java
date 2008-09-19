@@ -525,22 +525,13 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			title = title.substring(0,10);
 		}
 		String fileName = this.getExportFileName(title, 
-				"detailView");
+				"detailView_1");
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
-		
-		PublicationService service = null;
-		if (location.equals("local")) {
-			service = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new PublicationServiceRemoteImpl(
-					serviceUrl);
-		}
-		service.exportDetail(pubBean, response.getOutputStream());
+
+		publicationService.exportDetail(pubBean, response.getOutputStream());
 		return null;
 	}
 	
