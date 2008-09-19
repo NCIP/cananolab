@@ -74,18 +74,15 @@
 						</tr>
 						<tr>
 							<th class="leftLabel" valign="top">
-								Authors
+								Research Category
 							</th>
 							<td class="rightLabel">
-								<c:if test="${!empty submitPublicationForm.map.file.authors}">
-									<c:forEach var="author"
-										items="${submitPublicationForm.map.file.authors}">
-											${author.firstName}&nbsp;${author.lastName}&nbsp;${author.middleInitial}<br>
-									</c:forEach>							
-								</c:if>		
-								&nbsp;				
+								<bean:write name="submitPublicationForm"
+									property="file.domainFile.researchArea" />
+								&nbsp;
 							</td>
 						</tr>
+						
 						<tr>
 							<th class="leftLabel" valign="top">
 								Title
@@ -103,6 +100,20 @@
 							<td class="rightLabel">
 								<bean:write name="submitPublicationForm"
 										property="file.domainFile.journalName" />
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<th class="leftLabel" valign="top">
+								Authors
+							</th>
+							<td class="rightLabel">
+								<c:if test="${!empty submitPublicationForm.map.file.authors}">
+									<c:forEach var="author"
+										items="${submitPublicationForm.map.file.authors}">
+											${author.firstName}&nbsp;${author.lastName}&nbsp;${author.middleInitial}<br>
+									</c:forEach>
+								</c:if>
 								&nbsp;
 							</td>
 						</tr>
@@ -172,6 +183,30 @@
 									&nbsp;
 							</td>
 						</tr>
+
+						<c:choose>
+							<c:when
+								test="${submitPublicationForm.map.file.domainFile.pubMedId == null || 
+										submitPublicationForm.map.file.domainFile.pubMedId == 0}">
+								<tr>
+									<th class="leftLabel" valign="top">
+										<c:choose>
+											<c:when
+												test="${submitReportForm.map.file.domainFile.uriExternal==true}">
+								Publication URL&nbsp;
+							</c:when>
+											<c:otherwise>
+								Download Publication&nbsp;
+							</c:otherwise>
+										</c:choose>
+									</th>
+									<td class="rightLabel">
+										<a href="#" target="_file">
+											${submitPublicationForm.map.file.domainFile.uri}</a>&nbsp;
+									</td>
+								</tr>
+							</c:when>
+						</c:choose>
 					</table>
 				</td>
 			</tr>
