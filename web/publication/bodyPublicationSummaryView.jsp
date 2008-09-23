@@ -115,9 +115,9 @@
 					${pubObj.title}&nbsp;
 					</td>
 					<td class="label">
-						<c:if test="${!empty pubObj.documentAuthorCollection}">
+						<c:if test="${!empty pubObj.authorCollection}">
 							<c:forEach var="author"
-								items="${pubObj.documentAuthorCollection}">
+								items="${pubObj.authorCollection}">
 									${author.lastName};
 							</c:forEach>
 						</c:if>		
@@ -131,30 +131,7 @@
 						&nbsp;
 					</td>
 				</tr>
-				</c:forEach>
-				<c:forEach var="report" items="${searchPublicationForm.map.particleSampleBean.domainParticleSample.reportCollection}" >
-					<c:url var="reportUrl" value="submitReport.do">
-							<c:param name="submitType" value="${submitType}" />
-							<c:param name="dispatch" value="detailView" />
-							<c:param name="particleId" value="${particleId}" />
-							<c:param name="reportId" value="${report.id}" />
-							<c:param name="location" value="${location}" />
-					</c:url>
-				<tr>
-					<td class="leftLabel">
-						<a href="${reportUrl}">REPORT</a>
-					</td>
-					<td class="label">
-						${report.title}&nbsp;
-					</td>
-					<td class="label">
-						&nbsp;
-					</td>
-					<td class="rightLabel">
-						&nbsp;
-					</td>
-				</tr>
-				</c:forEach>
+				</c:forEach>				
 			</table>
 		</td>
 	</tr>
