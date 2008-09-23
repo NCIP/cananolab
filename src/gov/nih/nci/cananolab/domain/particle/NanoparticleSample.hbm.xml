@@ -25,11 +25,6 @@
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Keyword" column="keyword_pk_id" />
 		</set>
 		<one-to-one name="sampleManagement" class="gov.nih.nci.cananolab.domain.common.SampleManagement" property-ref="nanoparticleSample" />
-		<set name="reportCollection" table="nanoparticle_sample_report" lazy="true" inverse="true">
-			<cache usage="read-write" />
-			<key column="particle_sample_pk_id" />
-			<many-to-many class="gov.nih.nci.cananolab.domain.common.Report" column="file_pk_id" />
-		</set>				
 		<set name="publicationCollection" table="nanoparticle_sample_publication" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="particle_sample_pk_id" />
