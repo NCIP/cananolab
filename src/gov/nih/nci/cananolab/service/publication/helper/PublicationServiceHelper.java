@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -126,7 +126,7 @@ public class PublicationServiceHelper {
 		
 		
 		//authors
-		crit.setFetchMode("documentAuthorCollection", FetchMode.JOIN);		
+		crit.setFetchMode("authorCollection", FetchMode.JOIN);		
 		String authorsArray[] = null;
 		if (authorsStr != null && authorsStr.length() > 0) {
 			List<String> authorsList = StringUtils.parseToWords(authorsStr);
@@ -142,7 +142,7 @@ public class PublicationServiceHelper {
 				uppers[i] = authorsArray[i].toUpperCase();
 			}
 			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias("documentAuthorCollection", "author1",
+			crit.createAlias("authorCollection", "author1",
 					CriteriaSpecification.LEFT_JOIN);
 			for (String author : uppers) {
 				Criterion crit1 = Restrictions.like("author1.lastName",
@@ -320,7 +320,7 @@ public class PublicationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class).add(
 				Property.forName("id").eq(new Long(publicationId)));
 		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
-		crit.setFetchMode("documentAuthorCollection", FetchMode.JOIN);
+		crit.setFetchMode("authorCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		Publication publication = null;
@@ -415,16 +415,16 @@ public class PublicationServiceHelper {
 		String rowHeader = "Authors";
 		
 		StringBuffer sb = new StringBuffer();
-		if (publication.getDocumentAuthorCollection()!=null) {
+		if (publication.getAuthorCollection()!=null) {
 			
-			List<DocumentAuthor> authorslist = new ArrayList<DocumentAuthor>(publication.getDocumentAuthorCollection());
+			List<Author> authorslist = new ArrayList<Author>(publication.getAuthorCollection());
 			Collections.sort(authorslist, 
-					new Comparator<DocumentAuthor>() {
-			    public int compare(DocumentAuthor o1, DocumentAuthor o2) {
+					new Comparator<Author>() {
+			    public int compare(Author o1, Author o2) {
 			        return (int)(o1.getId() - o2.getId());
 			    }});
 			
-			for (DocumentAuthor author: authorslist) {
+			for (Author author: authorslist) {
 				
 				sb.append(author.getFirstName());
 				sb.append(' ');
@@ -500,9 +500,10 @@ public class PublicationServiceHelper {
 		cell = row.createCell(cellCount++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Pages"));
-		Long startPage = publication.getStartPage();
-		Long endPage = publication.getEndPage();
-		if ((startPage!=null && startPage>0) || (endPage!=null && endPage>0)) {
+		String startPage = publication.getStartPage();
+		String endPage = publication.getEndPage();
+		if ((startPage!=null && startPage.trim().length()>0) || 
+			(endPage!=null && endPage.trim().length()>0)) {
 			row.createCell(cellCount++).setCellValue(
 					new HSSFRichTextString(publication.getJournalName()));
 		}

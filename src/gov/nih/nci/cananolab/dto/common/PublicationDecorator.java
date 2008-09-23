@@ -22,13 +22,11 @@ public class PublicationDecorator extends TableDecorator {
 	public SortableName getPublicationOrReport() throws UnsupportedEncodingException {
 		String publicationOrReport = "otherType";
 		Object documentBean = getCurrentRowObject();
-		if (documentBean instanceof ReportBean){
-			publicationOrReport = "report";
-		}else if (documentBean instanceof PublicationBean){
-			LabFile file = ((PublicationBean)documentBean).getDomainFile();
-			publicationOrReport = "publication:"+
-				((Publication)file).getCategory();
-		}
+		//TODO
+		LabFile file = ((PublicationBean) documentBean).getDomainFile();
+		publicationOrReport = "publication:"
+				+ ((Publication) file).getCategory();
+
 		SortableName sortableLink = new SortableName(publicationOrReport);
 		return sortableLink;
 	}
@@ -36,49 +34,22 @@ public class PublicationDecorator extends TableDecorator {
 	public SortableName getResearchArea() throws UnsupportedEncodingException {
 		String researchArea = "";
 		Object documentBean = getCurrentRowObject();
-		if (documentBean instanceof ReportBean){
-			researchArea = "";
-		}else if (documentBean instanceof PublicationBean){
-			LabFile file = ((PublicationBean)documentBean).getDomainFile();
-			researchArea = ((Publication)file).getResearchArea();
-			if (researchArea!=null) {
-				researchArea = researchArea.replaceAll(";", "<br>");
-			}
+		// TODO
+		// report
+		// researchArea = "";
+		LabFile file = ((PublicationBean) documentBean).getDomainFile();
+		researchArea = ((Publication) file).getResearchArea();
+		if (researchArea != null) {
+			researchArea = researchArea.replaceAll(";", "<br>");
 		}
+
 		SortableName sortableLink = new SortableName(researchArea);
 		return sortableLink;
 	}
 		
 	public SortableName getEditDocumentURL() throws UnsupportedEncodingException {
-		Object documentBean = getCurrentRowObject();
-		if (documentBean instanceof ReportBean){
-			return getEditReportURL();
-		}else if (documentBean instanceof PublicationBean){
-			return getEditPublicationURL();
-		}else{
-			return null;
-		}
-	}
-	
-	public SortableName getEditReportURL() throws UnsupportedEncodingException {
-		ReportBean file = (ReportBean) getCurrentRowObject();
-		String fileId = file.getDomainFile().getId().toString();
-		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitReport.do?submitType=none&page=0&dispatch=detailView&reportId=");
-		sb.append(fileId);
-		sb.append("&location=");
-		sb.append(file.getLocation());
-		sb.append(">");
-		if (file.getDomainFile().getTitle().length()>30) {
-			sb.append(file.getDomainFile().getTitle().substring(0, 30));
-		}else {
-			sb.append(file.getDomainFile().getTitle());
-		}
-		sb.append("</a>");
-		String link = sb.toString();
-		SortableName sortableLink = new SortableName(file.getDomainFile()
-				.getTitle(), link);
-		return sortableLink;
+		//TODO
+		return getEditPublicationURL();
 	}
 	
 	public SortableName getEditPublicationURL() throws UnsupportedEncodingException {
@@ -107,13 +78,10 @@ public class PublicationDecorator extends TableDecorator {
 		String actionName = null;
 		Object documentBean = getCurrentRowObject();
 		LabFileBean file = null;
-		if (documentBean instanceof ReportBean){
-			actionName = "searchReport.do";
-			file = (ReportBean) documentBean;
-		}else if (documentBean instanceof PublicationBean){
-			actionName = "searchPublication.do";
-			file = (PublicationBean) documentBean;
-		}				
+
+		actionName = "searchPublication.do";
+		file = (PublicationBean) documentBean;
+				
 		if (file.getDomainFile().getName() != null) {
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append(actionName);
@@ -138,23 +106,14 @@ public class PublicationDecorator extends TableDecorator {
 	public String getParticleNames() {
 		Object documentBean = getCurrentRowObject();
 		String[] particleNames = null;
-		if (documentBean instanceof ReportBean){
-			particleNames = ((ReportBean) documentBean).getParticleNames();
-		}else if (documentBean instanceof PublicationBean){
-			particleNames = ((PublicationBean) documentBean).getParticleNames();
-		}		
-		return StringUtils.sortJoin(Arrays.asList(particleNames),
-				"<br>");
+		particleNames = ((PublicationBean) documentBean).getParticleNames();
+		return StringUtils.sortJoin(Arrays.asList(particleNames), "<br>");
 	}
 	
 	public SortableName getViewName() {
 		Object documentBean = getCurrentRowObject();
 		LabFileBean file = null;
-		if (documentBean instanceof ReportBean){
-			file = (ReportBean) documentBean;
-		}else if (documentBean instanceof PublicationBean){
-			file = (PublicationBean) documentBean;
-		}		
+		file = (PublicationBean) documentBean;
 		String title = file.getDomainFile().getTitle();		
 		SortableName sortableLink = new SortableName(title);
 		return sortableLink;

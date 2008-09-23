@@ -10,7 +10,6 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -24,8 +23,6 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -423,16 +420,16 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 */
 	private void loadReportsForParticleSample(NanoparticleSample particleSample)
 			throws Exception {
-		ReportService reportService = new ReportServiceRemoteImpl(serviceUrl);
-		Report[] reports = reportService
-				.findReportsByParticleSampleId(particleSample.getId()
-						.toString());
-		if (reports != null && reports.length > 0) {
-			particleSample.setReportCollection(new HashSet<Report>());
-			for (Report report : reports) {
-				particleSample.getReportCollection().add(report);
-			}
-		}
+//		ReportService reportService = new ReportServiceRemoteImpl(serviceUrl);
+//		Report[] reports = reportService
+//				.findReportsByParticleSampleId(particleSample.getId()
+//						.toString());
+//		if (reports != null && reports.length > 0) {
+//			particleSample.setReportCollection(new HashSet<Report>());
+//			for (Report report : reports) {
+//				particleSample.getReportCollection().add(report);
+//			}
+//		}
 	}
 	
 	/**

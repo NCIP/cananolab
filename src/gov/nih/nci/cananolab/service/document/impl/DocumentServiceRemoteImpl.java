@@ -1,28 +1,19 @@
 package gov.nih.nci.cananolab.service.document.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
-import gov.nih.nci.cagrid.cqlquery.Association;
-import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
-import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cananolab.domain.common.LabFile;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.DocumentException;
 import gov.nih.nci.cananolab.service.document.DocumentService;
 import gov.nih.nci.cananolab.service.document.helper.DocumentServiceHelper;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
