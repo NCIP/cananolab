@@ -15,7 +15,7 @@
 				/WEB-INF/struts-config.xml,
 				/WEB-INF/struts-config-protocol.xml,
 				/WEB-INF/struts-config-particle.xml,
-				/WEB-INF/struts-config-document.xml,
+				/WEB-INF/struts-config-publication.xml,
 				/WEB-INF/struts-config-report.xml
 			</param-value>
 		</init-param>

@@ -189,7 +189,7 @@
 													<div align="right">
 														<input type="reset" value="Reset" onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
 														<input type="hidden" name="dispatch" value="create">
-														<input type="hidden" name="submitType" value="documents">
+														<input type="hidden" name="submitType" value="publications">
 														<input type="hidden" name="page" value="2">
 <%--														<c:if test="${!empty param.particleId}">--%>
 <%--															<input type="hidden" name="particleId"--%>

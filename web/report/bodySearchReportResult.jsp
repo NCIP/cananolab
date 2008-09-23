@@ -23,7 +23,7 @@
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=report" />
 			<c:choose>
-				<c:when test="${canCreateDocument eq 'true'}">
+				<c:when test="${canCreatePublication eq 'true'}">
 					<c:set var="link" value="editReportURL" />
 				</c:when>
 				<c:otherwise>

@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.ui.document;
+package gov.nih.nci.cananolab.ui.publication;
 
 /**
  * This class submits publication and assigns visibility  
@@ -100,7 +100,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				}
 			}
 		}
-		InitDocumentSetup.getInstance().persistPublicationDropdowns(request,
+		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitPublication.file",
@@ -147,7 +147,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();	
 		session.removeAttribute("submitPublicationForm");
 		String particleId = request.getParameter("particleId");	
-		InitDocumentSetup.getInstance().setPublicationDropdowns(request);	
+		InitPublicationSetup.getInstance().setPublicationDropdowns(request);	
 		if (particleId!= null
 				&& particleId.trim().length() > 0
 				&& session.getAttribute("otherParticleNames")==null) {
@@ -189,7 +189,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			forward = mapping.findForward("particleSubmitPublication");
 			session.setAttribute("docParticleId", particleId);
 		} else {
-			forward = mapping.findForward("documentSubmitPublication");
+			forward = mapping.findForward("publicationSubmitPublication");
 			session.removeAttribute("docParticleId");
 		}
 		if(pubmedID != null && pubmedID.length() > 0 && !pubmedID.equals("0")) {
@@ -220,7 +220,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			if (particleId != null && particleId.length() > 0) {
 				forward = mapping.findForward("particleSubmitPubmedPublication");
 			} else {
-				forward = mapping.findForward("documentSubmitPubmedPublication");
+				forward = mapping.findForward("publicationSubmitPubmedPublication");
 			}
 		} else {
 			//clear data fields
@@ -260,7 +260,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(publicationBean, user);
 		theForm.set("file", publicationBean);
-		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
+		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		Publication pub = (Publication) publicationBean.getDomainFile();
 		Long pubMedId = pub.getPubMedId();
@@ -283,9 +283,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}else {
 			if (pubMedId != null && pubMedId > 0) {
 				forward = mapping
-						.findForward("documentSubmitPubmedPublication");
+						.findForward("publicationSubmitPubmedPublication");
 			} else {
-				forward = mapping.findForward("documentSubmitPublication");
+				forward = mapping.findForward("publicationSubmitPublication");
 			}
 //			request.removeAttribute("particleId");
 		}
@@ -321,7 +321,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			}
 		}		
 		theForm.set("file", publicationBean);
-		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
+		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
 		String particleId = request.getParameter("particleId");
 		ActionForward forward = mapping.findForward("view");
@@ -430,7 +430,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String particleId = (String) session.getAttribute("docParticleId");
 		
 		//save new entered other types
-		InitDocumentSetup.getInstance().setPublicationDropdowns(request);
+		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		
 		PublicationBean publicationBean = ((PublicationBean) theForm.get("file"));

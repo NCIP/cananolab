@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gov.nih.nci.cananolab.ui.document;
+package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 

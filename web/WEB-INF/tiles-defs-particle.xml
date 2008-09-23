@@ -52,10 +52,10 @@
 		<put name="menu" value="nanoparticles" />
 	</definition>
 	
-	<definition name="particle.documentInfo"
+	<definition name="particle.publicationInfo"
 		extends="particle.annotationHome">
 		<put name="calabContent"
-			value="/document/bodyDocumentSummaryView.jsp" />
+			value="/publication/bodyPublicationSummaryView.jsp" />
 		<put name="menu" value="nanoparticles" />
 		<put name="actionName" value="submitNanoparticleSample" />
 	</definition>
@@ -163,19 +163,19 @@
 			value="/particle/function/bodyParticleFunction.jsp" />
 	</definition>
 
-	<!-- definition for the view document page -->
-	<definition name="particle.chooseDocument"
+	<!-- definition for the view publication page -->
+	<definition name="particle.choosePublication"
 		extends="particle.annotationHome">
-		<put name="calabContent" value="/document/bodyChooseDocument.jsp" />
+		<put name="calabContent" value="/publication/bodyChoosePublication.jsp" />
 	</definition>
 	<definition name="particle.submitPublication"
 		extends="particle.annotationHome">
-		<put name="calabContent" value="/document/bodySubmitPublication.jsp" />
+		<put name="calabContent" value="/publication/bodySubmitPublication.jsp" />
 		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 	<definition name="particle.submitPublicationPubmed"
 		extends="particle.annotationHome">
-		<put name="calabContent" value="/document/bodySubmitPublicationPubmedReadOnly.jsp" />
+		<put name="calabContent" value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
 		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 	
@@ -190,10 +190,10 @@
 		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
 	</definition>
 	<definition name="particle.detailViewPublication" extends="particle.annotationHome">
-		<put name="calabContent" value="/document/bodyPublicationDetailView.jsp" />
+		<put name="calabContent" value="/publication/bodyPublicationDetailView.jsp" />
 	</definition>
 		<definition name="particle.detailViewReport" extends="particle.annotationHome">
-		<put name="calabContent" value="/document/bodyReportDetailView.jsp" />
+		<put name="calabContent" value="/publication/bodyReportDetailView.jsp" />
 	</definition>	
 
 	<!-- definition for the search nanoparticle page -->

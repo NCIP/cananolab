@@ -120,15 +120,15 @@
 		parameter="gov.nih.nci.cananolab.resources.particle" null="false" />
 	<message-resources key="report"
 		parameter="gov.nih.nci.cananolab.resources.report" null="false" />
-	<message-resources key="document"
-		parameter="gov.nih.nci.cananolab.resources.document" null="false" />
+	<message-resources key="publication"
+		parameter="gov.nih.nci.cananolab.resources.publication" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,  												   
                    /WEB-INF/tiles-defs-protocol.xml,
                    /WEB-INF/tiles-defs-particle.xml,
-                   /WEB-INF/tiles-defs-document.xml,
+                   /WEB-INF/tiles-defs-publication.xml,
                    /WEB-INF/tiles-defs-report.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
@@ -140,7 +140,7 @@
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
 			      /WEB-INF/validation-particle.xml,
-			      /WEB-INF/validation-document.xml,              
+			      /WEB-INF/validation-publication.xml,              
 			      /WEB-INF/validation-report.xml, 			      
 			      /WEB-INF/validation-protocol.xml, 
                   /WEB-INF/validator-rules.xml" />
