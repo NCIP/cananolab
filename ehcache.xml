@@ -142,20 +142,8 @@
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.Report"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
 	
-	<cache name="gov.nih.nci.cananolab.domain.common.Report.nanoparticleSampleCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
+	
 				
 	<cache name="gov.nih.nci.cananolab.domain.common.Publication"
 		maxElementsInMemory="500"
@@ -164,7 +152,7 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 	
-	<cache name="gov.nih.nci.cananolab.domain.common.Publication.documentAuthorCollection"
+	<cache name="gov.nih.nci.cananolab.domain.common.Publication.authorCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -408,14 +396,7 @@
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample.reportCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
+
 	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample.publicationCollection"
 		maxElementsInMemory="500"
 		eternal="false"
@@ -542,14 +523,14 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.common.DocumentAuthor"
+	<cache name="gov.nih.nci.cananolab.domain.common.Author"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 	
-	<cache name="gov.nih.nci.cananolab.domain.common.DocumentAuthor.publicationCollection"
+	<cache name="gov.nih.nci.cananolab.domain.common.Author.publicationCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
