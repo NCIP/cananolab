@@ -89,24 +89,7 @@
 						&nbsp;
 					</td>
 				</tr>
-				</c:forEach>
-				<c:forEach var="report" items="${particleSampleBean.domainParticleSample.reportCollection}" >
-					
-				<tr>
-					<td class="leftLabel">
-						REPORT
-					</td>
-					<td class="label">
-						${report.title}&nbsp;
-					</td>
-					<td class="label">
-						&nbsp;
-					</td>					
-					<td class="rightLabel">
-						&nbsp;
-					</td>
-				</tr>
-				</c:forEach>
+				</c:forEach>				
 			</table>
 		</td>
 	</tr>
