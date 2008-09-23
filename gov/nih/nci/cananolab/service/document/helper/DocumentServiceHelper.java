@@ -1,16 +1,13 @@
 package gov.nih.nci.cananolab.service.document.helper;
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
-import gov.nih.nci.cananolab.service.report.helper.ReportServiceHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,19 +33,19 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 public class DocumentServiceHelper {
 	private static Logger logger = Logger.getLogger(DocumentServiceHelper.class);
 
-	private ReportServiceHelper reportHelper = new ReportServiceHelper();
+	//private ReportServiceHelper reportHelper = new ReportServiceHelper();
 	private PublicationServiceHelper publicationHelper = new PublicationServiceHelper();
 	
 	public int getNumberOfPublicDocuments() throws Exception {
 		int count = publicationHelper.getNumberOfPublicPublications();
-		count+=reportHelper.getNumberOfPublicReports();		
+		//count+=reportHelper.getNumberOfPublicReports();		
 		return count;
 	}
 	
 	public void exportFullSummary(DocumentSummaryBean summaryBean,
 			OutputStream out) throws IOException {
 		PublicationServiceHelper publicationHelper = new PublicationServiceHelper();
-		ReportServiceHelper reportHelper = new ReportServiceHelper();		
+		//ReportServiceHelper reportHelper = new ReportServiceHelper();		
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("summarySheet");
 		short rowCount = 0;
@@ -57,7 +54,7 @@ public class DocumentServiceHelper {
 			if (labFileBean instanceof PublicationBean) {
 				publicationHelper.setDetailSheet((PublicationBean)labFileBean, wb, sheet, patriarch, rowCount);
 			}else {
-				reportHelper.setDetailSheet((ReportBean)labFileBean, wb, sheet, patriarch, rowCount);
+				//reportHelper.setDetailSheet((ReportBean)labFileBean, wb, sheet, patriarch, rowCount);
 			}
 			rowCount += 2;
 		}
@@ -123,7 +120,7 @@ public class DocumentServiceHelper {
 			String doi = null;
 			String id = null;
 			int year = 0;
-			Collection<DocumentAuthor> authors = null;
+			Collection<Author> authors = null;
 			for (Publication publication: particle.getPublicationCollection()) {
 				
 				row = sheet.createRow(rowCount);
@@ -151,10 +148,10 @@ public class DocumentServiceHelper {
 				//authors
 				sb.setLength(0);
 				
-				authors = publication.getDocumentAuthorCollection();
+				authors = publication.getAuthorCollection();
 				if (authors!=null) {
 					int countAuthors = 0;
-					for (DocumentAuthor author: authors) {
+					for (Author author: authors) {
 						sb.setLength(0);
 						sb.append(author.getFirstName());
 						sb.append(' ');
@@ -182,19 +179,6 @@ public class DocumentServiceHelper {
 			}
 		}
 		
-		if (particle.getReportCollection()!=null) {	
-			for (Report report: particle.getReportCollection()) {				
-				row = sheet.createRow(rowCount);
-				rowCount++;
-				cellCount = 0;
-				//identifier
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString("Report"));				
-				//title
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString(report.getTitle()));
-			}
-		}
 		return rowCount;
 	}
 

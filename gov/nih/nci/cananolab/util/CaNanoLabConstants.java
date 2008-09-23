@@ -134,7 +134,7 @@ public class CaNanoLabConstants {
 
 	public static final String CSM_PG_PARTICLE = "nanoparticle";
 
-	public static final String CSM_PG_DOCUMENT = "document";
+	public static final String CSM_PG_PUBLICATION = "publication";
 
 	public static final String PHYSICAL_CHARACTERIZATION_CLASS_NAME = "Physical Characterization";
 

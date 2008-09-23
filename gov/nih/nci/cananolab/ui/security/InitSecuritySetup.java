@@ -97,7 +97,7 @@ public class InitSecuritySetup {
 				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PROTOCOL,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_DOCUMENT,
+				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PUBLICATION,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
 				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PARTICLE,

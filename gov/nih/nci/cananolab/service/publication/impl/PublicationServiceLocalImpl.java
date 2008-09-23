@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.publication.impl;
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -48,7 +48,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, Collection<DocumentAuthor> authors) throws DocumentException {
+			byte[] fileData, Collection<Author> authors) throws DocumentException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication);
@@ -79,21 +79,24 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
 			
-			if (publication.getDocumentAuthorCollection() == null) {
+			if (publication.getAuthorCollection() == null) {
+				//FIXME
+//				publication
+//						.setAuthorCollection(new TreeSet<Author>());
 				publication
-						.setDocumentAuthorCollection(new TreeSet<DocumentAuthor>());
+					.setAuthorCollection(new HashSet<Author>());
 			}else {
-				for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
+				for (Author author: publication.getAuthorCollection()) {
 					authService.removePublicGroup(author.getId().toString());
 				}
-				publication.getDocumentAuthorCollection().clear();
+				publication.getAuthorCollection().clear();
 			}
 			if (authors!=null) {
-				for (DocumentAuthor author : authors) {
+				for (Author author : authors) {
 					if (!StringUtils.isBlank(author.getFirstName()) || 
 						!StringUtils.isBlank(author.getLastName())||
 						!StringUtils.isBlank(author.getMiddleInitial())){
-						publication.getDocumentAuthorCollection().add(author);
+						publication.getAuthorCollection().add(author);
 					}
 				}			
 			}

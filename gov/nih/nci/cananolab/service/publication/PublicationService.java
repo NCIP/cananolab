@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.service.publication;
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Report;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DocumentException;
@@ -27,7 +26,7 @@ public interface PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, Collection<DocumentAuthor> authors) throws DocumentException;
+			byte[] fileData, Collection<Author> authors) throws DocumentException;
 
 	
 	public List<PublicationBean> findPublicationsBy(String reportTitle,

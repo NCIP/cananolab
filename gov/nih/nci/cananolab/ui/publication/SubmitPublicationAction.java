@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.publication;
  * @author tanq
  */
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
@@ -57,7 +57,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
 		ActionForward forward = null;
 		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		
@@ -72,8 +71,20 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}
 		Publication publication = (Publication) publicationBean.getDomainFile();
 		change0ToNull(publication);
-		publication.setResearchArea(researchAreasStr);
+		publication.setResearchArea(researchAreasStr);		
 		
+		if (publicationBean.getAuthors()!=null && 
+				publicationBean.getAuthors().size()>0) {
+			for (Author author: publicationBean.getAuthors()) {
+				if (author.getCreatedBy()==null || author.getCreatedBy().trim().length()==0) {
+					author.setCreatedBy(user.getLoginName());
+				}
+				if (author.getCreatedDate()==null) {
+					//FIXME, use date to order
+					author.setCreatedDate(new Date());
+				}
+			}
+		}
 		PublicationService service = new PublicationServiceLocalImpl();
 		service.savePublication(publication, publicationBean
 				.getParticleNames(), publicationBean.getNewFileData(), 
@@ -84,12 +95,12 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		authService.assignVisibility(publicationBean.getDomainFile().getId()
 				.toString(), publicationBean.getVisibilityGroups());
 
-		// set documentAuthor visibility
+		// set author visibility
 		if (publicationBean.getVisibilityGroups()!=null && 
 				Arrays.asList(publicationBean.getVisibilityGroups())
 					.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)){
-			if (publication.getDocumentAuthorCollection()!=null) {
-				for (DocumentAuthor author: publication.getDocumentAuthorCollection()) {
+			if (publication.getAuthorCollection()!=null) {
+				for (Author author: publication.getAuthorCollection()) {
 					if (author!=null) {
 						if (author.getId()!=null && 
 								author.getId().toString().trim().length()>0) {
@@ -208,7 +219,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				Publication pub = new Publication();
 				pub.setPubMedId(new Long(pubmedID));
 				pbean.setDomainFile(pub);
-				pbean.setAuthors(new ArrayList<DocumentAuthor>());
+				pbean.setAuthors(new ArrayList<Author>());
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.submitPublication.pubmedArticleNotFound",
 						pubmedID);
@@ -233,8 +244,8 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			publication.setEndPage(null);
 			publication.setYear(null);
 			publication.setVolume("");
-			List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>();
-			authors.add(new DocumentAuthor());
+			List<Author> authors = new ArrayList<Author>();
+			authors.add(new Author());
 			pbean.setAuthors(authors);
 			theForm.set("file", pbean);		
 		}
@@ -483,7 +494,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_DOCUMENT);
+				CaNanoLabConstants.CSM_PG_PUBLICATION);
 	}
 	
 	
@@ -550,10 +561,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	private void change0ToNull(Publication pub) {
 		if (pub.getPubMedId()!=null && pub.getPubMedId()==0)
 			pub.setPubMedId(null);
-		if (pub.getStartPage()!=null && pub.getStartPage()==0)
-			pub.setStartPage(null);
-		if (pub.getEndPage()!=null && pub.getEndPage()==0)
-			pub.setEndPage(null);
 		if (pub.getYear()!=null && pub.getYear()==0)
 			pub.setYear(null);		
 	}
