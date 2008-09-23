@@ -8,24 +8,24 @@
 			<field property="file.domainFile.category" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.category"
-					bundle="document" />
+					bundle="publication" />
 			</field>
 			<field property="file.domainFile.status" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.status"
-					bundle="document" />
+					bundle="publication" />
 			</field>
 			<field property="file.domainFile.title" page="2"
 				depends="required">
-				<arg position="0" key="document.title" bundle="document" />
+				<arg position="0" key="publication.title" bundle="publication" />
 			</field>
 		</form>
 
-		<form name="searchDocumentForm">
+		<form name="searchPublicationForm">
 			<field property="title" page="1" depends="mask">
-				<arg position="0" key="document.title" bundle="document" />
+				<arg position="0" key="publication.title" bundle="publication" />
 				<msg name="mask"
-					key="document.title.invalid" />
+					key="publication.title.invalid" />
 				<var>
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>

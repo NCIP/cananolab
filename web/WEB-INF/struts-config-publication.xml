@@ -3,7 +3,7 @@
 <struts-config>
 	<form-beans>
 		<form-bean name="submitPublicationForm"
-			type="gov.nih.nci.cananolab.ui.document.SubmitPublicationForm">
+			type="gov.nih.nci.cananolab.ui.publication.SubmitPublicationForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
@@ -12,7 +12,7 @@
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 		</form-bean>
 		
-		<form-bean name="searchDocumentForm"
+		<form-bean name="searchPublicationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleSampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
@@ -43,36 +43,36 @@
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-			bundle="document" key="error.documentException" path="document.message"
-			type="gov.nih.nci.cananolab.exception.DocumentException" />
+			bundle="publication" key="error.publicationException" path="publication.message"
+			type="gov.nih.nci.cananolab.exception.PublicationException" />
 	</global-exceptions>
 	<global-forwards>
-		<forward name="documentMessage" path="document.message" />
+		<forward name="publicationMessage" path="publication.message" />
 		<forward name="reportDetailPrintView"
-			path="/document/bodyReportDetailPrintView.jsp" />
+			path="/publication/bodyReportDetailPrintView.jsp" />
 		<forward name="publicationDetailPrintView"
-			path="/document/bodyPublicationDetailPrintView.jsp" />
-		<forward name="documentSummaryPrintView"
-			path="/document/bodyDocumentSummaryPrintView.jsp" />
+			path="/publication/bodyPublicationDetailPrintView.jsp" />
+		<forward name="publicationSummaryPrintView"
+			path="/publication/bodyPublicationSummaryPrintView.jsp" />
 	</global-forwards>
 	<action-mappings>		
 		<action name="submitPublicationForm" parameter="dispatch"
 			path="/submitPublication"
-			type="gov.nih.nci.cananolab.ui.document.SubmitPublicationAction"
+			type="gov.nih.nci.cananolab.ui.publication.SubmitPublicationAction"
 			input="input">
-			<forward name="success" path="document.message" />
+			<forward name="success" path="publication.message" />
 			<forward name="particleSuccess" path="particle.annotationMessage" />
 			<forward name="input"
 				path="/submitPublication.do?dispatch=input&amp;page=0" />
-			<forward name="view" path="document.viewPublication" />
+			<forward name="view" path="publication.viewPublication" />
 			<forward name="particleDetailView" path="particle.detailViewPublication" />
-			<forward name="publicationDetailView" path="document.detailViewPublication" />
-			<forward name="documentSubmitPublication"
-				path="document.submitPublication" />
+			<forward name="publicationDetailView" path="publication.detailViewPublication" />
+			<forward name="publicationSubmitPublication"
+				path="publication.submitPublication" />
 			<forward name="particleSubmitPublication"
 				path="particle.submitPublication" />
-			<forward name="documentSubmitPubmedPublication"
-				path="document.submitPublicationPubmed" />
+			<forward name="publicationSubmitPubmedPublication"
+				path="publication.submitPublicationPubmed" />
 			<forward name="particleSubmitPubmedPublication"
 				path="particle.submitPublicationPubmed" />
 			<forward name="particleViewPublication"
@@ -80,26 +80,26 @@
 			<forward name="particleSuccess"
 				path="particle.annotationMessage" />
 		</action>
-		<action path="/documentResults"
+		<action path="/publicationResults"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
-			parameter="document.searchDocumentResult" scope="request" />
-		<action input="input" name="searchDocumentForm"
-			parameter="dispatch" path="/searchDocument"
-			type="gov.nih.nci.cananolab.ui.document.SearchDocumentAction"
+			parameter="publication.searchPublicationResult" scope="request" />
+		<action input="input" name="searchPublicationForm"
+			parameter="dispatch" path="/searchPublication"
+			type="gov.nih.nci.cananolab.ui.publication.SearchPublicationAction"
 			scope="request">
-			<forward name="input" path="document.searchDocument" />
-			<forward name="success" path="document.searchDocumentResult" />
-			<forward name="documentView" path="particle.documentInfo" />
+			<forward name="input" path="publication.searchPublication" />
+			<forward name="success" path="publication.searchPublicationResult" />
+			<forward name="publicationView" path="particle.publicationInfo" />
 		</action>		
-		<action path="/manageDocument"
+		<action path="/managePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
-			parameter="document.manageDocument" scope="request" />
-		<action path="/chooseDocument"
+			parameter="publication.managePublication" scope="request" />
+		<action path="/choosePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
-			parameter="document.chooseDocument" scope="request" />
-		<action path="/chooseParticleDocument"
+			parameter="publication.choosePublication" scope="request" />
+		<action path="/chooseParticlePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
-			parameter="particle.chooseDocument" scope="request" />
+			parameter="particle.choosePublication" scope="request" />
 	</action-mappings>
 </struts-config>
 

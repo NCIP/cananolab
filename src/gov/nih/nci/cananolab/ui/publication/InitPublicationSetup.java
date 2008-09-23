@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.ui.document;
+package gov.nih.nci.cananolab.ui.publication;
 
 import java.util.SortedSet;
 
@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletRequest;
  * @author tanq
  * 
  */
-public class InitDocumentSetup {
-	private InitDocumentSetup() {
+public class InitPublicationSetup {
+	private InitPublicationSetup() {
 	}
 
-	public static InitDocumentSetup getInstance() {
-		return new InitDocumentSetup();
+	public static InitPublicationSetup getInstance() {
+		return new InitPublicationSetup();
 	}
 
 	public void setDocumentDropdowns(HttpServletRequest request) throws Exception {

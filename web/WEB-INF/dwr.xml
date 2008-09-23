@@ -46,10 +46,10 @@
 			<include method="getProtocolFileVersionById" />
 			<include method="getProtocolTypes" />
 		</create>
-		<create creator="new" javascript="DocumentManager"
+		<create creator="new" javascript="PublicationManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.document.DWRDocumentManager" />
+				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
 			<include method="getReportCategories" />
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />

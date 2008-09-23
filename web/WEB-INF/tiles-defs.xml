@@ -40,7 +40,7 @@
 				link="gotoPage('manageProtocol.do')" />
 			<item value="NANOPARTICLES"
 				link="gotoPage('manageParticle.do')" />
-			<item value="DOCUMENTS" link="gotoPage('manageDocument.do')" />
+			<item value="DOCUMENTS" link="gotoPage('managePublication.do')" />
 			<item value="ADMINISTRATION" link="openHelpWindow('/upt')" />
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
