@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -14,9 +13,6 @@ import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.report.ReportService;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceLocalImpl;
-import gov.nih.nci.cananolab.service.report.impl.ReportServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
@@ -179,55 +175,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		}
 		
 		List<LabFileBean> foundDocuments = new ArrayList<LabFileBean>();
-		//report
-		if ((publicationOrReport==null || publicationOrReport.length==0 ||
-				Arrays.toString(publicationOrReport).contains("report"))
-				&&
-				((researchArea==null || researchArea.length==0) &&
-				  (keywordsStr==null || keywordsStr.length()==0)&&
-				  (pubMedId == null || pubMedId.length()==0) &&
-				  (digitalObjectId == null || digitalObjectId.length()==0) &&
-				  (category == null || category.length()==0) &&
-				  (authorsStr == null || authorsStr.length()==0)				
-				)		
-			){		
-			ReportService service = null;
-			for (String location : searchLocations) {
-				if (location.equals("local")) {
-					service = new ReportServiceLocalImpl();
-				} else {
-					String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-							request, location);
-					service = new ReportServiceRemoteImpl(serviceUrl);
-				}
-				List<ReportBean> reports = service.findReportsBy(title,
-						category, nanoparticleName, nanoparticleEntityClassNames
-								.toArray(new String[0]),
-						otherNanoparticleEntityTypes.toArray(new String[0]),
-						functionalizingEntityClassNames.toArray(new String[0]),
-						otherFunctionalizingTypes.toArray(new String[0]),
-						functionClassNames.toArray(new String[0]),
-						otherFunctionTypes.toArray(new String[0]));
-				for (ReportBean report : reports) {
-					report.setLocation(location);
-				}
-				if (location.equals("local")) {
-					List<LabFileBean> filteredReports = new ArrayList<LabFileBean>();
-					// retrieve visibility
-					FileService fileService = new FileServiceLocalImpl();
-					for (ReportBean report : reports) {
-						fileService.retrieveVisibility(report, user);
-						if (!report.isHidden()) {
-							filteredReports.add((LabFileBean)report);
-						}
-					}
-					foundDocuments.addAll(filteredReports);
-				} else {
-					foundDocuments.addAll(reports);
-				}
-			}
-		}
-		
+
 		//Publication
 		if (publicationOrReport==null || publicationOrReport.length==0 ||
 				Arrays.toString(publicationOrReport).contains("publication")){
@@ -337,15 +285,16 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			return super.download(mapping, form, request, response);
 		} else {
+			//TODO
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			ReportService protocolService = new ReportServiceRemoteImpl(
-					serviceUrl);
-			ReportBean fileBean = protocolService.findReportById(fileId);
-			if (fileBean.getDomainFile().getUriExternal()) {
-				response.sendRedirect(fileBean.getDomainFile().getUri());
-				return null;
-			}
+//			ReportService protocolService = new ReportServiceRemoteImpl(
+//					serviceUrl);
+//			ReportBean fileBean = protocolService.findReportById(fileId);
+//			if (fileBean.getDomainFile().getUriExternal()) {
+//				response.sendRedirect(fileBean.getDomainFile().getUri());
+//				return null;
+//			}
 			// assume grid service is located on the same server and port as
 			// webapp
 			URL url = new URL(serviceUrl);
@@ -399,7 +348,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		return exportFileName;
 	}
 
-	public ActionForward setupDocumentView(ActionMapping mapping, ActionForm form,
+	public ActionForward setupPublicationView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;

@@ -13,7 +13,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.ReportBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
@@ -30,7 +29,7 @@ import java.util.Comparator;
  * 
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.13 2008-09-17 20:02:08 tanq Exp $ */
+/* CVS $Id: CaNanoLabComparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
 
 public class CaNanoLabComparators {
 
@@ -298,14 +297,6 @@ public class CaNanoLabComparators {
 			} else {
 				return nameComp;
 			}
-		}
-	}
-	
-	public static class ReportBeanTitleComparator implements
-			Comparator<ReportBean> {
-		public int compare(ReportBean file1, ReportBean file2) {
-			return file1.getDomainFile().getTitle().compareTo(
-					file2.getDomainFile().getTitle());
 		}
 	}
 	

@@ -287,7 +287,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.setFetchMode(
 						"sampleComposition.functionalizingEntityCollection.functionCollection",
 						FetchMode.JOIN);
-		crit.setFetchMode("reportCollection", FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 

@@ -3,7 +3,7 @@
  */
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 
@@ -24,7 +24,7 @@ public class PublicationBean extends LabFileBean {
 	
 	private String[] particleNames;
 	private String[] researchAreas;
-	private List<DocumentAuthor> authors = new ArrayList<DocumentAuthor>(20);
+	private List<Author> authors = new ArrayList<Author>(20);
 
 	private boolean foundPubMedArticle = false;
 
@@ -32,7 +32,7 @@ public class PublicationBean extends LabFileBean {
 		super();
 		domainFile = new Publication();
 		domainFile.setUriExternal(false);
-		authors.add(new DocumentAuthor());
+		authors.add(new Author());
 	}
 
 	public PublicationBean(Publication publication) {
@@ -42,14 +42,14 @@ public class PublicationBean extends LabFileBean {
 	public PublicationBean(Publication publication, boolean loadSamples) {
 		super(publication);
 		this.domainFile = publication;
-		Collection<DocumentAuthor> documentAuthorCollection =
-			publication.getDocumentAuthorCollection();
-		if (documentAuthorCollection!=null &&
-				documentAuthorCollection.size()>0) {
-			List<DocumentAuthor> authorslist = new ArrayList<DocumentAuthor>(documentAuthorCollection);
+		Collection<Author> authorCollection =
+			publication.getAuthorCollection();
+		if (authorCollection!=null &&
+				authorCollection.size()>0) {
+			List<Author> authorslist = new ArrayList<Author>(authorCollection);
 			Collections.sort(authorslist, 
-					new Comparator<DocumentAuthor>() {
-			    public int compare(DocumentAuthor o1, DocumentAuthor o2) {
+					new Comparator<Author>() {
+			    public int compare(Author o1, Author o2) {
 			        return (int)(o1.getId() - o2.getId());
 			    }});
 			authors = authorslist;
@@ -112,14 +112,14 @@ public class PublicationBean extends LabFileBean {
 	/**
 	 * @return the authors
 	 */
-	public List<DocumentAuthor> getAuthors() {
+	public List<Author> getAuthors() {
 		return authors;
 	}
 
 	/**
 	 * @param authors the authors to set
 	 */
-	public void setAuthors(List<DocumentAuthor> authors) {
+	public void setAuthors(List<Author> authors) {
 		this.authors = authors;
 	}
 
@@ -139,7 +139,7 @@ public class PublicationBean extends LabFileBean {
 	
 	
 	public void addAuthor() {
-		authors.add(new DocumentAuthor());
+		authors.add(new Author());
 	}
 
 	public void removeAuthor(int ind) {
