@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.ui.document;
+package gov.nih.nci.cananolab.ui.publication;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import java.util.SortedSet;
@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
 
-public class DWRDocumentManager {
+public class DWRPublicationManager {
 
-	Logger logger = Logger.getLogger(DWRDocumentManager.class);
-	public DWRDocumentManager() {}
+	Logger logger = Logger.getLogger(DWRPublicationManager.class);
+	public DWRPublicationManager() {}
 	
 	public String[] getReportCategories(String searchLocations) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();

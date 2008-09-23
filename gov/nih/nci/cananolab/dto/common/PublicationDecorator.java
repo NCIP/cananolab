@@ -11,13 +11,13 @@ import java.util.Arrays;
 import org.displaytag.decorator.TableDecorator;
 
 /**
- * This decorator is used to for decorate different properties of a document to be
+ * This decorator is used to for decorate different properties of a publication to be
  * shown properly in the view page using display tag lib.
  * 
  * @author tanq
  * 
  */
-public class DocumentDecorator extends TableDecorator {
+public class PublicationDecorator extends TableDecorator {
 	
 	public SortableName getPublicationOrReport() throws UnsupportedEncodingException {
 		String publicationOrReport = "otherType";

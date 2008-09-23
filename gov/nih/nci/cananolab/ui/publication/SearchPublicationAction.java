@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.ui.document;
+package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -46,7 +46,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author tanq
  */
 
-public class SearchDocumentAction extends BaseAnnotationAction {
+public class SearchPublicationAction extends BaseAnnotationAction {
 
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -271,7 +271,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 			}
 		}
 		if (foundDocuments != null && !foundDocuments.isEmpty()) {
-			request.getSession().setAttribute("documents", foundDocuments);
+			request.getSession().setAttribute("publications", foundDocuments);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -287,7 +287,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitDocumentSetup.getInstance().setDocumentDropdowns(request);
+		InitPublicationSetup.getInstance().setDocumentDropdowns(request);
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
@@ -311,7 +311,7 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
 		}
 		
-		InitDocumentSetup.getInstance().setDefaultResearchAreas(request);
+		InitPublicationSetup.getInstance().setDefaultResearchAreas(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 		
@@ -418,14 +418,14 @@ public class SearchDocumentAction extends BaseAnnotationAction {
 				+ "&location=" + location;
 		request.getSession().setAttribute("printSummaryViewLinkURL",
 				printLinkURL);
-		return mapping.findForward("documentView");
+		return mapping.findForward("publicationView");
 	}
 
 	public ActionForward printSummaryView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {	
 		//return mapping.findForward("publicationDetailPrintView");
-		return mapping.findForward("documentSummaryPrintView");
+		return mapping.findForward("publicationSummaryPrintView");
 	}
 
 }
