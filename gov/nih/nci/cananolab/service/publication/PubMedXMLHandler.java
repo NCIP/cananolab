@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.service.publication;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.cananolab.domain.common.DocumentAuthor;
+import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
@@ -27,10 +27,10 @@ public class PubMedXMLHandler {
     private StringBuffer year;
     // private StringBuffer abstractText;
     private StringBuffer pageStr;
-    private long startPage;
-    private long endPage;
-    private List<DocumentAuthor> authorList = null;
-    private DocumentAuthor author = null;
+    private String startPage;
+    private String endPage;
+    private List<Author> authorList = null;
+    private Author author = null;
     private StringBuffer firstName;
     private StringBuffer middleInitial;
     private StringBuffer lastName;
@@ -211,7 +211,7 @@ public class PubMedXMLHandler {
 			if (pageStr.toString().trim().length() > 0) {
 				String[] pages = pageStr.toString().split("-");
 				try {
-					startPage = Long.parseLong(pages[0]);
+					startPage = pages[0];
 					if (pages.length == 2) {
 
 						int endPagePrefixLength = pages[0].length()
@@ -219,9 +219,9 @@ public class PubMedXMLHandler {
 						if (endPagePrefixLength > 0) {
 							String endPagePrefix = pages[0].substring(0,
 									endPagePrefixLength);
-							endPage = Long.parseLong(endPagePrefix + pages[1]);
+							endPage = endPagePrefix + pages[1];
 						} else {
-							endPage = Long.parseLong(pages[1]);
+							endPage = pages[1];
 						}
 					} else {
 						endPage = startPage;
@@ -241,7 +241,7 @@ public class PubMedXMLHandler {
 	private class AuthorListHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			authorList = new ArrayList<DocumentAuthor>();
+			authorList = new ArrayList<Author>();
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
@@ -252,7 +252,7 @@ public class PubMedXMLHandler {
 	private class AuthorHandler extends SAXElementHandler
 	{
 		public void startElement(String uri, String localName, String qname, Attributes atts) {
-			author = new DocumentAuthor();
+			author = new Author();
 			lastName = new StringBuffer();
 			firstName = new StringBuffer();
 			middleInitial = new StringBuffer();
