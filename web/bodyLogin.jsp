@@ -87,11 +87,11 @@
 									<tr>
 										<td>
 											<img src="images/icon_report_48x.gif" width="15%" />
-											&nbsp;Documents&nbsp;(
-											<a href="#" onclick="searchDocuments();">search</a> )
+											&nbsp;Publications&nbsp;(
+											<a href="#" onclick="searchPublications();">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseDocuments();" id="documentCount"
+											<a href="#" onclick="browsePublications();" id="documentCount"
 												class="countsLink"></a>
 										</td>
 									</tr>
