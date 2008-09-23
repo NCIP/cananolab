@@ -51,7 +51,7 @@
 					coords="70,230,165,265" alt="rectangle" />
 				<area href="searchNanoparticle.do?dispatch=setup" shape="rect"
 					coords="70,275,165,315" alt="rectangle" />
-				<area href="searchDocument.do?dispatch=setup" shape="rect"
+				<area href="searchPublication.do?dispatch=setup" shape="rect"
 					coords="70,325,165,365" alt="rectangle" />
 
 				<c:if test="${canCreateProtocol eq 'true'}">
@@ -63,8 +63,8 @@
 						href="submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
 						shape="rect" coords="265,100,360,160" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreateDocument eq 'true'}">
-					<area href="manageDocument.do" shape="rect"
+				<c:if test="${canCreatePublication eq 'true'}">
+					<area href="managePublication.do" shape="rect"
 						coords="360,445,445,480" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">

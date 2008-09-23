@@ -5,7 +5,6 @@
 <logic:present parameter="bundle">
 	<bean:parameter id="bundle" name="bundle" />
 	<logic:messagesPresent>
-	    <br>
 		<font color="red">
 			<ul>
 				<html:messages id="error" bundle="<%=bundle%>">
@@ -16,7 +15,6 @@
 			</ul> </font>
 	</logic:messagesPresent>
 	<logic:messagesPresent message="true">
-		<br>
 		<font color="blue">
 			<ul>
 				<html:messages id="msg" message="true" bundle="<%=bundle%>">
@@ -30,7 +28,6 @@
 
 <logic:notPresent parameter="bundle">
 	<logic:messagesPresent>
-	    <br>
 		<font color="red">
 			<ul>
 				<html:messages id="error">
@@ -41,7 +38,6 @@
 			</ul> </font>
 	</logic:messagesPresent>
 	<logic:messagesPresent message="true">
-	    <br>
 		<font color="blue">
 			<ul>
 				<html:messages id="msg" message="true">

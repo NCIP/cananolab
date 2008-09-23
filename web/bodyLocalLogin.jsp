@@ -61,7 +61,7 @@
 
 								<img src="images/icon_report_48x.gif" />
 								<li>
-									<c:url var="reportURL" value="searchDocument.do">
+									<c:url var="reportURL" value="searchPublication.do">
 										<c:param name="dispatch">setup</c:param>
 									</c:url>
 									<h4>
