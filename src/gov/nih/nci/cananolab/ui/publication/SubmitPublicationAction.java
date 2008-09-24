@@ -37,6 +37,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		String[] researchAreas = publicationBean.getResearchAreas();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_DOCUMENT, user
+		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_PUBLICATION, user
 				.getLoginName(), 0);
 		String researchAreasStr = null;
 		if (researchAreas!=null && researchAreas.length>0) {
@@ -78,10 +79,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			for (Author author: publicationBean.getAuthors()) {
 				if (author.getCreatedBy()==null || author.getCreatedBy().trim().length()==0) {
 					author.setCreatedBy(user.getLoginName());
-				}
-				if (author.getCreatedDate()==null) {
-					//FIXME, use date to order
-					author.setCreatedDate(new Date());
 				}
 			}
 		}
