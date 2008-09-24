@@ -7,9 +7,6 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.DocumentService;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
@@ -285,16 +282,16 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			return super.download(mapping, form, request, response);
 		} else {
-			//TODO
+			//TODO, to test
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-//			ReportService protocolService = new ReportServiceRemoteImpl(
-//					serviceUrl);
-//			ReportBean fileBean = protocolService.findReportById(fileId);
-//			if (fileBean.getDomainFile().getUriExternal()) {
-//				response.sendRedirect(fileBean.getDomainFile().getUri());
-//				return null;
-//			}
+			PublicationService publicationService = new PublicationServiceRemoteImpl(
+					serviceUrl);
+			PublicationBean fileBean = publicationService.findPublicationById(fileId);
+			if (fileBean.getDomainFile().getUriExternal()) {
+				response.sendRedirect(fileBean.getDomainFile().getUri());
+				return null;
+			}
 			// assume grid service is located on the same server and port as
 			// webapp
 			URL url = new URL(serviceUrl);
@@ -323,13 +320,13 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
-		DocumentService service = null;
+		PublicationService service = null;
 		if (location.equals("local")) {
-			service = new DocumentServiceLocalImpl();
+			service = new PublicationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new DocumentServiceRemoteImpl(
+			service = new PublicationServiceRemoteImpl(
 					serviceUrl);
 		}
 		service.exportSummary(particleBean, response.getOutputStream());
