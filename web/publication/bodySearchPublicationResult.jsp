@@ -22,7 +22,7 @@
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=publication" />
-			<display:table name="sessionScope.documents" id="publication"
+			<display:table name="sessionScope.publications" id="publication"
 				requestURI="searchPublication.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
 				<display:column title="Title" property="editDocumentURL"
