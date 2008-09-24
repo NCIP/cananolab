@@ -392,39 +392,8 @@ public class InitNanoparticleSetup {
 					}
 					cdataBeans.add(dataBean);
 				}
-				boolean hasDocumentData = false;
-				//FIXME, to be verify
-//				// report
-//				SortedSet<DataLinkBean> rdataBeans = new TreeSet<DataLinkBean>(
-//						new CaNanoLabComparators.DataLinkTypeDateComparator());
-//				if (particleSample.getReportCollection() != null &&
-//						particleSample.getReportCollection().size() > 0 ) {
-//					for (Report report : particleSample.getReportCollection()) {
-//						String reportCategory = report.getCategory();
-//						DataLinkBean dataBean = new DataLinkBean(report.getId()
-//								.toString(), "Report", "submitReport", report
-//								.getCreatedBy(), report.getCreatedDate());
-//						dataBean.setDataDisplayType(reportCategory);
-//						if(report.getTitle().length() <= 20)
-//							dataBean.setViewTitle("Report: "+report.getTitle());
-//						else {
-//							String sideMenuTitle = report.getTitle().substring(0, 20);
-//							dataBean.setViewTitle("Report: "+sideMenuTitle);
-//						}
-//						
-//						if (dataTree.get(CaNanoLabConstants.FOLDER_DOCUMENT) != null) {
-//							rdataBeans = (TreeSet<DataLinkBean>) dataTree
-//									.get(CaNanoLabConstants.FOLDER_DOCUMENT);
-//						} else {
-//							rdataBeans = new TreeSet<DataLinkBean>(
-//									new CaNanoLabComparators.DataLinkTypeDateComparator());
-//							dataTree.put(CaNanoLabConstants.FOLDER_DOCUMENT, rdataBeans);
-//						}
-//						rdataBeans.add(dataBean);
-//					}
-//					hasDocumentData = true;
-//				}
-//								                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+				boolean hasPublicationData = false;
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 				// publication
 				SortedSet<DataLinkBean> pdataBeans = new TreeSet<DataLinkBean>(
 						new CaNanoLabComparators.DataLinkTypeDateComparator());
@@ -474,12 +443,12 @@ public class InitNanoparticleSetup {
 						}
 						pdataBeans.add(dataBean);
 					}
-					hasDocumentData = true;					
+					hasPublicationData = true;					
 				}
-				if (hasDocumentData) {
-					request.getSession().setAttribute("hasDocumentData", "true");
+				if (hasPublicationData) {
+					request.getSession().setAttribute("hasPublicationData", "true");
 				}else {
-					request.getSession().setAttribute("hasDocumentData", "false");
+					request.getSession().setAttribute("hasPublicationData", "false");
 				}
 			}
 			request.getSession().setAttribute("particleDataTree", dataTree);
