@@ -25,7 +25,7 @@
 			<display:table name="sessionScope.publications" id="publication"
 				requestURI="searchPublication.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
-				<display:column title="Title" property="editDocumentURL"
+				<display:column title="Title" property="editPublicationURL"
 					sortable="true" />
 				<display:column title="Publication<br>Category" property="publicationOrReport"
 					sortable="true" />		
