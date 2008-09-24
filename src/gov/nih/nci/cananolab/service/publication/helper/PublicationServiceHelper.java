@@ -411,7 +411,7 @@ public class PublicationServiceHelper {
 		row.createCell(cellCount++).setCellValue(
 				new HSSFRichTextString(publication.getStatus()));	
 		
-//		Authors
+		//Authors
 		String rowHeader = "Authors";
 		
 		StringBuffer sb = new StringBuffer();
@@ -420,12 +420,10 @@ public class PublicationServiceHelper {
 			List<Author> authorslist = new ArrayList<Author>(publication.getAuthorCollection());
 			Collections.sort(authorslist, 
 					new Comparator<Author>() {
-			    public int compare(Author o1, Author o2) {
-			        return (int)(o1.getId() - o2.getId());
-			    }});
-			
-			for (Author author: authorslist) {
-				
+				 public int compare(Author o1, Author o2) {
+				        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
+				 }});
+			for (Author author: authorslist) {				
 				sb.append(author.getFirstName());
 				sb.append(' ');
 				sb.append(author.getMiddleInitial());

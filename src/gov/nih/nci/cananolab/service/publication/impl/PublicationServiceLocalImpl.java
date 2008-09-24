@@ -20,6 +20,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -92,11 +93,16 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				publication.getAuthorCollection().clear();
 			}
 			if (authors!=null) {
+				Calendar myCal = Calendar.getInstance();
 				for (Author author : authors) {
 					if (!StringUtils.isBlank(author.getFirstName()) || 
 						!StringUtils.isBlank(author.getLastName())||
 						!StringUtils.isBlank(author.getMiddleInitial())){
-						publication.getAuthorCollection().add(author);
+						if (author.getCreatedDate()==null) {
+							myCal.add(Calendar.SECOND, 1);
+							author.setCreatedDate(myCal.getTime());
+						}
+						publication.getAuthorCollection().add(author);						
 					}
 				}			
 			}
