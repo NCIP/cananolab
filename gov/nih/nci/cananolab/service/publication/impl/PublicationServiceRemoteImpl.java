@@ -5,19 +5,22 @@ import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
+import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.exception.DocumentException;
+import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -50,8 +53,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, Collection<Author> authors) throws DocumentException {
-		throw new DocumentException("not implemented for grid service.");
+			byte[] fileData, Collection<Author> authors) throws PublicationException {
+		throw new PublicationException("not implemented for grid service.");
 	}
 
 		public List<PublicationBean> findPublicationsBy(String title,
@@ -63,7 +66,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
-			throws DocumentException, CaNanoLabSecurityException {
+			throws PublicationException, CaNanoLabSecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
 			Publication[] publications = gridClient.getPublicationsBy(title, category, 
@@ -98,7 +101,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 
 	public Publication[] findPublicationsByParticleSampleId(String particleId)
-		throws DocumentException {	
+		throws PublicationException {	
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -143,7 +146,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	}
 	
 	private void loadParticleSamplesForPublication(Publication publication)
-		throws DocumentException {
+		throws PublicationException {
 		try {
 			CQLQuery query = new CQLQuery();
 		
@@ -178,13 +181,13 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String err = "Problem loading nanoparticle samples for the publication : "
 					+ publication.getId();
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 	
 	
 	private void loadAuthorsForPublication(Publication publication)
-		throws DocumentException {
+		throws PublicationException {
 		try {
 			CQLQuery query = new CQLQuery();
 		
@@ -243,11 +246,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String err = "Problem loading authors for the publication : "
 					+ publication.getId();
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 	
-	public PublicationBean findPublicationById(String publicationId) throws DocumentException {
+	public PublicationBean findPublicationById(String publicationId) throws PublicationException {
 		try {
 			Publication publication = findDomainPublicationById(publicationId);
 			PublicationBean publicationBean = new PublicationBean(publication);
@@ -255,11 +258,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		} catch (Exception e) {
 			String err = "Problem finding the publication by id: " + publicationId;
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 	
-	public Publication findDomainPublicationById(String publicationId) throws DocumentException{
+	public Publication findDomainPublicationById(String publicationId) throws PublicationException{
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -284,16 +287,16 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			return publication;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
+			throw new PublicationException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
 		} catch (Exception e) {
 			String err = "Problem finding the publication by id: " + publicationId;
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}	
 
 	public void exportDetail(PublicationBean aPub, OutputStream out)
-		throws DocumentException{		
+		throws PublicationException{		
 		try {
 			PublicationServiceHelper helper = new PublicationServiceHelper();
 			helper.exportDetail(aPub, out);
@@ -301,7 +304,45 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			String err = "error exporting detail view for "
 					+ aPub.getDomainFile().getTitle();
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
+	}
+	
+	public int getNumberOfPublicPublications() throws PublicationException {
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
+			query.setTarget(target);
+			QueryModifier modifier = new QueryModifier();
+			modifier.setCountOnly(true);
+			query.setQueryModifier(modifier);
+
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.Publication");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			int count = 0;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				count = ((Long) obj).intValue();
+			}
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of remote public publications.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+	}
+	
+	public void exportSummary(ParticleBean particleBean,
+			OutputStream out) throws IOException {
+		PublicationServiceHelper helper = new PublicationServiceHelper();
+		helper.exportSummary(particleBean, out);
+	}
+	
+	public void removePublicationFromParticle(NanoparticleSample particle,
+			Long dataId) 	throws PublicationException{
+		throw new PublicationException("not implemented for grid service.");
 	}
 }

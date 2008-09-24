@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -11,8 +12,10 @@ import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -391,8 +394,7 @@ public class PublicationServiceHelper {
 				//row.createCell(cellCount++).setCellValue(
 					//	new HSSFRichTextString(""));
 			}		
-		}
-		
+		}		
 		//publication type
 		row = sheet.createRow(rowCount++);
 		cellCount = 0;
@@ -412,16 +414,14 @@ public class PublicationServiceHelper {
 				new HSSFRichTextString(publication.getStatus()));	
 		
 		//Authors
-		String rowHeader = "Authors";
-		
+		String rowHeader = "Authors";		
 		StringBuffer sb = new StringBuffer();
-		if (publication.getAuthorCollection()!=null) {
-			
+		if (publication.getAuthorCollection()!=null) {			
 			List<Author> authorslist = new ArrayList<Author>(publication.getAuthorCollection());
 			Collections.sort(authorslist, 
 					new Comparator<Author>() {
 				 public int compare(Author o1, Author o2) {
-				        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
+				        return (int)(o2.getCreatedDate().compareTo(o1.getCreatedDate()));
 				 }});
 			for (Author author: authorslist) {				
 				sb.append(author.getFirstName());
@@ -526,5 +526,120 @@ public class PublicationServiceHelper {
 
 		return rowCount;
 	}
+	
+	public void exportSummary(ParticleBean particleBean,
+			OutputStream out) throws IOException {
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("summarySheet");
+		short startRow = 0;
+		setSummarySheet(particleBean, wb, sheet, startRow);
+		wb.write(out);
+		if (out != null) {
+			out.flush();
+			out.close();
+		}
+	}
+	
+	private short setSummarySheet(ParticleBean particleBean,
+			HSSFWorkbook wb, HSSFSheet sheet, short rowCount) {
+		HSSFFont headerFont = wb.createFont();
+		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		HSSFCellStyle headerStyle = wb.createCellStyle();
+		headerStyle.setFont(headerFont);
+
+		HSSFCellStyle newLineStyle = wb.createCellStyle();
+		// Word Wrap MUST be turned on
+		newLineStyle.setWrapText(true);
+
+		short cellCount = 0;
+		HSSFRow row = null;
+		HSSFRow rowAuthor = null;
+		HSSFCell cell = null;
+
+		// summary header
+		row = sheet.createRow(rowCount);
+		rowCount++;
+
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Identifier"));
+
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Title"));
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Authors"));
+		cell = row.createCell(cellCount++);
+		cell.setCellStyle(headerStyle);
+		cell.setCellValue(new HSSFRichTextString("Year"));
+
+		// data
+		StringBuffer sb = new StringBuffer();
+		NanoparticleSample particle = particleBean.getDomainParticleSample();
+		if (particle.getPublicationCollection()!=null) {		
+			Long pubmedid = null;
+			String doi = null;
+			String id = null;
+			int year = 0;
+			Collection<Author> authors = null;
+			for (Publication publication: particle.getPublicationCollection()) {				
+				row = sheet.createRow(rowCount);
+				rowCount++;
+				cellCount = 0;
+				pubmedid = publication.getPubMedId();				
+				if(pubmedid!=null && pubmedid>0) {
+					id = "PMID: "+pubmedid;
+				}else {
+					doi = publication.getDigitalObjectId();
+					if (doi!=null && doi.length()>0) {
+						id = "DOI: "+doi;
+					}else {
+						id = "Publication: "+publication.getTitle();
+						
+					}
+				}
+				//identifier
+				row.createCell(cellCount++).setCellValue(
+						new HSSFRichTextString(id));				
+				//title
+				row.createCell(cellCount++).setCellValue(
+						new HSSFRichTextString(publication.getTitle()));
+				//authors
+				sb.setLength(0);
+				//TODO, ORDER
+				authors = publication.getAuthorCollection();
+				if (authors!=null) {
+					int countAuthors = 0;
+					for (Author author: authors) {
+						sb.setLength(0);
+						sb.append(author.getFirstName());
+						sb.append(' ');
+						sb.append(author.getLastName());
+						sb.append(' ');
+						sb.append(author.getMiddleInitial());						
+						if (countAuthors==0) {
+							row.createCell((short)2).setCellValue(
+									new HSSFRichTextString(sb.toString()));
+						}else {							
+							rowAuthor = sheet.createRow(rowCount);
+							rowCount++;
+							rowAuthor.createCell((short)2).setCellValue(
+									new HSSFRichTextString(sb.toString()));
+						}
+						countAuthors++;
+					}
+				}						
+				//year
+				year = publication.getYear();
+				if (year>0) {
+					row.createCell((short)3).setCellValue(
+						new HSSFRichTextString(Integer.toString(year)));
+				}
+			}
+		}		
+		return rowCount;
+	}
+
 
 }
