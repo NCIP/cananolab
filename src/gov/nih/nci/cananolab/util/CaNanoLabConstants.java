@@ -81,7 +81,7 @@ public class CaNanoLabConstants {
 	
 	public static final String FOLDER_REPORT = "reports";
 	
-	public static final String FOLDER_DOCUMENT = "documents";
+	public static final String FOLDER_PUBLICATION = "publications";
 
 	public static final String FOLDER_PROTOCOL = "protocols";
 
