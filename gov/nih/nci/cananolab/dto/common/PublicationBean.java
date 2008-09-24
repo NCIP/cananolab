@@ -50,13 +50,12 @@ public class PublicationBean extends LabFileBean {
 			Collections.sort(authorslist, 
 					new Comparator<Author>() {
 			    public int compare(Author o1, Author o2) {
-			        return (int)(o1.getId() - o2.getId());
+			        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
 			    }});
 			authors = authorslist;
 		}
 		String researchAreasStr = 
 			publication.getResearchArea();
-		//System.out.println("########## researchAreasStr "+researchAreasStr);
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
 			researchAreas = researchAreasStr.split(delimiter);
 		}else {
