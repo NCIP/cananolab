@@ -21,37 +21,30 @@ public class PublicationDecorator extends TableDecorator {
 	
 	public SortableName getPublicationOrReport() throws UnsupportedEncodingException {
 		String publicationOrReport = "otherType";
-		Object documentBean = getCurrentRowObject();
+		PublicationBean publicationBean = (PublicationBean) getCurrentRowObject();
+		Publication publication = (Publication)publicationBean.getDomainFile();
+		String category = publication.getCategory();
+		if (category!=null) {
+			publicationOrReport = publication.getCategory();		
+		}
 		//TODO
-		LabFile file = ((PublicationBean) documentBean).getDomainFile();
-		publicationOrReport = "publication:"
-				+ ((Publication) file).getCategory();
-
 		SortableName sortableLink = new SortableName(publicationOrReport);
 		return sortableLink;
 	}
 	
 	public SortableName getResearchArea() throws UnsupportedEncodingException {
 		String researchArea = "";
-		Object documentBean = getCurrentRowObject();
-		// TODO
-		// report
-		// researchArea = "";
+		Object documentBean = getCurrentRowObject();		
 		LabFile file = ((PublicationBean) documentBean).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
 		if (researchArea != null) {
-			researchArea = researchArea.replaceAll(";", "<br>");
+			researchArea = researchArea.replaceAll(";", "<br>");			
 		}
 
 		SortableName sortableLink = new SortableName(researchArea);
 		return sortableLink;
 	}
-		
-	public SortableName getEditDocumentURL() throws UnsupportedEncodingException {
-		//TODO
-		return getEditPublicationURL();
-	}
-	
+			
 	public SortableName getEditPublicationURL() throws UnsupportedEncodingException {
 		PublicationBean file = (PublicationBean) getCurrentRowObject();
 		String fileId = file.getDomainFile().getId().toString();

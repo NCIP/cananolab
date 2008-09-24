@@ -16,8 +16,6 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.document.DocumentService;
-import gov.nih.nci.cananolab.service.document.impl.DocumentServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
@@ -37,7 +35,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -346,7 +343,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		String submitType = request.getParameter("submitType");
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		DocumentService documentService = new DocumentServiceLocalImpl();
+		PublicationService publicationService = new PublicationServiceLocalImpl();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 			.getApplicationService();
 		NanoparticleSample particle = (NanoparticleSample)appService.getObject(
@@ -357,7 +354,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			if (!checkDelete(request, msgs, id)) {
 				return mapping.findForward("annotationDeleteView");
 			}
-			documentService.removeDocumentFromParticle(particle, new Long(id));
+			publicationService.removePublicationFromParticle(particle, new Long(id));
 		}
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		setupDataTree(particleBean, request);
