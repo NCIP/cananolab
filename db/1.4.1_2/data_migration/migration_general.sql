@@ -15,7 +15,6 @@ ALTER TABLE canano.author
  ALTER TABLE canano.author
  ADD created_by varchar(100) NOT NULL AFTER created_date;
  
- 
  ALTER TABLE canano.publication
  CHANGE start_page start_page VARCHAR(50),
  CHANGE end_page end_page VARCHAR(50);
