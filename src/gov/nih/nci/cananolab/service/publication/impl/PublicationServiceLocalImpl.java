@@ -4,8 +4,9 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.exception.DocumentException;
+import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
@@ -18,6 +19,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,7 +51,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, Collection<Author> authors) throws DocumentException {
+			byte[] fileData, Collection<Author> authors) throws PublicationException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication);
@@ -99,7 +101,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						!StringUtils.isBlank(author.getLastName())||
 						!StringUtils.isBlank(author.getMiddleInitial())){
 						if (author.getCreatedDate()==null) {
-							myCal.add(Calendar.SECOND, 1);
+							myCal.add(Calendar.SECOND, -1);
 							author.setCreatedDate(myCal.getTime());
 						}
 						publication.getAuthorCollection().add(author);						
@@ -112,7 +114,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		} catch (Exception e) {
 			String err = "Error in saving the publication.";
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 	
@@ -125,7 +127,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
-			throws DocumentException, CaNanoLabSecurityException {
+			throws PublicationException, CaNanoLabSecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
 			List<Publication> publications = helper.findPublicationsBy(title, category,
@@ -146,16 +148,16 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		} catch (Exception e) {
 			String err = "Problem finding publication info.";
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 	
 	public Publication[] findPublicationsByParticleSampleId(String particleId)
-		throws DocumentException{
-		throw new DocumentException("Not implemented for local search");
+		throws PublicationException{
+		throw new PublicationException("Not implemented for local search");
 	}
 	
-	public PublicationBean findPublicationById(String publcationId) throws DocumentException {
+	public PublicationBean findPublicationById(String publcationId) throws PublicationException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);
 			PublicationBean publicationBean = new PublicationBean(publication);
@@ -163,23 +165,23 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		} catch (Exception e) {
 			String err = "Problem finding the publcation by id: " + publcationId;
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 	
-	public Publication findDomainPublicationById(String publcationId) throws DocumentException {
+	public Publication findDomainPublicationById(String publcationId) throws PublicationException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);
 			return publication;
 		} catch (Exception e) {
 			String err = "Problem finding the publcation by id: " + publcationId;
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 
 	public void exportDetail(PublicationBean aPub, OutputStream out)
-		throws DocumentException{
+		throws PublicationException{
 		try {
 			PublicationServiceHelper helper = new PublicationServiceHelper();
 			helper.exportDetail(aPub, out);
@@ -187,17 +189,17 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			String err = "error exporting detail view for "
 					+ aPub.getDomainFile().getTitle();
 			logger.error(err, e);
-			throw new DocumentException(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
-//	public int getNumberOfPublicDocuments() throws DocumentException {
+//	public int getNumberOfPublicPublcations() throws PublicationException {
 //		try {
-//			int count = helper.getNumberOfPublicDocuments();
+//			int count = helper.getNumberOfPublicPublications();
 //			return count;
 //		} catch (Exception e) {
-//			String err = "Error finding counts of public reports.";
+//			String err = "Error finding counts of public publications.";
 //			logger.error(err, e);
-//			throw new DocumentException(err, e);
+//			throw new PublicationException(err, e);
 //		}
 //	}
 
@@ -205,4 +207,87 @@ public class PublicationServiceLocalImpl implements PublicationService {
 //			throws DocumentException {
 //		throw new DocumentException("Not implemented for local search");
 //	}
+	
+	public void exportSummary(ParticleBean particleBean,
+			OutputStream out) throws IOException {
+		PublicationServiceHelper helper = new PublicationServiceHelper();
+		helper.exportSummary(particleBean, out);
+	}
+	
+	public int getNumberOfPublicPublications() throws PublicationException {
+		try {
+			int count = helper.getNumberOfPublicPublications();
+			return count;
+		} catch (Exception e) {
+			String err = "Error finding counts of public publication.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+	}
+	
+	
+	//TODO, remove report
+	/**
+	 * if publication/report associates with multiple particle
+	 * remove the entry from nanoparticle_sample_publication or nanoparticle_sample_report
+	 * otherwise, remove publicVisibility and delete publication/report
+	 */
+	public void removePublicationFromParticle(NanoparticleSample particle,
+			Long dataId) 	throws PublicationException{
+		try {
+			//ReportServiceHelper reportHelper = new ReportServiceHelper();
+			PublicationService publicationService = new PublicationServiceLocalImpl();
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+			Object publicationObject = appService.getObject(Publication.class, "id", dataId);
+			if (publicationObject!=null) {
+				Publication publication = publicationService.findDomainPublicationById(dataId.toString());
+				Collection<NanoparticleSample> nanoparticleSampleCollection 
+					= publication.getNanoparticleSampleCollection();
+				if (nanoparticleSampleCollection==null || nanoparticleSampleCollection.size()==0) {
+					//something wrong
+					throw new PublicationException();
+				}else if (nanoparticleSampleCollection.size()==1) {
+					//delete
+					authService.removePublicGroup(dataId.toString());	
+					if (publication.getAuthorCollection()!=null) {
+						for (Author author: publication.getAuthorCollection()) {
+							authService.removePublicGroup(author.getId().toString());
+						}
+					}
+					appService.delete(publication);
+				}else {//size>1
+					//remove nanoparticleSample association
+					nanoparticleSampleCollection.remove(particle);
+					appService.saveOrUpdate(publication);
+				}
+			}else {
+//				Object reportObject = appService.getObject(Report.class, "id", dataId);
+//				if (reportObject!=null) {
+//					Report report = reportHelper.findReportById(dataId.toString());
+//					Collection<NanoparticleSample> nanoparticleSampleCollection 
+//						= report.getNanoparticleSampleCollection();
+//					if (nanoparticleSampleCollection==null || nanoparticleSampleCollection.size()==0) {
+//						//something wrong
+//						throw new DocumentException();
+//					}else if (nanoparticleSampleCollection.size()==1) {
+//						//delete
+//						authService.removePublicGroup(dataId.toString());	
+//						appService.delete(report);
+//					}else {//size>1
+//						//remove nanoparticleSample association
+//						nanoparticleSampleCollection.remove(particle);
+//						appService.saveOrUpdate(report);
+//					}
+//				}
+			}
+		} catch (Exception e) {
+			String err = "Error deleting document by ID " + dataId;
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+		
+	}
 }
