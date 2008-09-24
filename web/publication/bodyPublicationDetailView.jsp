@@ -209,8 +209,7 @@
 						Pages
 					</th>
 					<td class="rightLabel">
-						<c:if test="${submitPublicationForm.map.file.domainFile.startPage != null && 
-										submitPublicationForm.map.file.domainFile.startPage != 0}">
+						<c:if test="${submitPublicationForm.map.file.domainFile.startPage != null}">
 						<bean:write name="submitPublicationForm"
 								property="file.domainFile.startPage" /> - <bean:write name="submitPublicationForm"
 								property="file.domainFile.endPage" />
