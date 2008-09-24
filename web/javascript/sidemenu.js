@@ -1,4 +1,3 @@
-
 function addEvent(elm, evType, fn, useCapture) {
 	if (elm == null) {
 		return false;
@@ -23,29 +22,11 @@ function init() {
 		if (node.nodeName.toLowerCase() == "li") {
 			if (node.className == "controlList" || node.className == "controlList2") {
 				addEvent(node, "click", getClickFor(node), false);
-        		// node.getElementsByTagName('a')[0].className += ' subheader';
 			} else {
 				addEvent(node, "click", cancelBubling, false);
 			}
 		}
 	}
-	var browserName = navigator.userAgent;
-	if (!browserName.match(/MSIE/)) {
-		//initial event listener for add composing element on Nanoparticle Entity page
-		var removeLinkEle = document.getElementById("removeCE1");
-		addEvent(removeLinkEle, "click", removeComposingElement, false);
-		
-		//initial event listener for add function on Functionalization Entity page
-		var removeFuncLinkEle = document.getElementById("removeFunc1");
-		addEvent(removeFuncLinkEle, "click", removeFunction, false);
-	}
-  
-	//initial event listener for adding target on Functionalizing Entity page
-	var addTargetEle = document.getElementById("targetLink1");
-	addEvent(addTargetEle, "click", addTarget, false);
-	
-   	var addInherentFunctionEle = document.getElementById("inherentFuncLink1");
-    addEvent(addInherentFunctionEle, "click", addInherentFunction, false);
 }
 addEvent(window, "load", init, false);
 function getClickFor(node) {
@@ -110,7 +91,6 @@ function mclick(e, targetElement) {
 	}
 }
 function closeAllSideMenu(ulroot) {
-	//var ulroot = document.getElementById('menuroot');
 	var menuuls = ulroot.getElementsByTagName("ul");
 	for (var k = 0; k < menuuls.length; k++) {
 		menuuls[k].style.display = "none";
