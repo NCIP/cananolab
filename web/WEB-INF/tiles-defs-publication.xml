@@ -5,13 +5,13 @@
 <tiles-definitions>
 	<!-- definition for the manage publication page -->
 	<definition name="publication.managePublication" extends="calab.home">
-		<put name="calabContent" value="/publication/bodyManagePublication.jsp" />
+		<put name="calabContent" value="/bodyManageItem.jsp" />
 		<put name="menu" value="publications" />
 		<put name="item" value="Publication" />
 		<put name="itemDescription"
 			value="/publication/bodyPublicationDescription.jsp" />
 		<put name="createLink"
-			value="choosePublication.do" />
+			value="submitPublication.do?dispatch=setup&amp;page=0" />
 		<put name="searchLink" value="searchPublication.do?dispatch=setup" />
 	</definition>
 	
