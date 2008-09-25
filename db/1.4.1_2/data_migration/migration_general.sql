@@ -12,6 +12,9 @@ ADD created_date DATETIME AFTER middle_initial;
  
 ALTER TABLE canano.author
 ADD created_by varchar(100) AFTER created_date;
+
+ALTER TABLE canano.author
+ CHANGE middle_initial initial VARCHAR(10);
  
 ALTER TABLE canano.publication
 CHANGE start_page start_page VARCHAR(50),
