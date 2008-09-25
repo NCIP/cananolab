@@ -424,10 +424,11 @@ public class InitNanoparticleSetup {
 							}else {
 								title = publication.getTitle();
 								if (title!=null && title.length()>0) {
+									String type = publication.getCategory();
 									if (title.length()>20) {
-										dataBean.setViewTitle("Publication: "+title.substring(0, 20));
+										dataBean.setViewTitle(type+": "+title.substring(0, 20));
 									}else {
-										dataBean.setViewTitle("Publication: "+title);
+										dataBean.setViewTitle(type+": "+title);
 									}
 								}
 							}
