@@ -64,7 +64,8 @@
 									</td>
 									<td class="label">
 										<html:select property="file.domainFile.category"
-											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');"
+											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category'); 
+													setupReport(submitPublicationForm, '${docParticleId}');"
 											styleId="file.domainFile.category">
 											<option value=""></option>
 											<html:options name="publicationCategories" />
