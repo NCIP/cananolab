@@ -35,6 +35,12 @@
 		<put name="menu" value="publications" />
 		<put name="onloadJavascript" value="radLinkOrUpload()"/>
 	</definition>
+	<definition name="publication.submitReport" extends="calab.home">
+		<put name="calabContent" value="/publication/bodySubmitReport.jsp" />
+		<put name="menu" value="reports" />
+		<put name="onloadJavascript" value="radLinkOrUpload()"/>
+	</definition>
+	
 	<!-- definition for the search publication page -->
 	<definition name="publication.searchPublication" extends="calab.home">
 		<put name="calabContent" value="/publication/bodySearchPublication.jsp" />
