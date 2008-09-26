@@ -111,7 +111,7 @@
 								<c:if test="${!empty submitPublicationForm.map.file.authors}">
 									<c:forEach var="author"
 										items="${submitPublicationForm.map.file.authors}">
-											${author.firstName}&nbsp;${author.lastName}&nbsp;${author.middleInitial}<br>
+											${author.firstName}&nbsp;${author.lastName}&nbsp;${author.initial}<br>
 									</c:forEach>
 								</c:if>
 								&nbsp;

@@ -170,7 +170,7 @@
 															${submitPublicationForm.map.file.authors[authorInd].lastName}&nbsp;
 														</td>
 														<td>
-															${submitPublicationForm.map.file.authors[authorInd].middleInitial}&nbsp;
+															${submitPublicationForm.map.file.authors[authorInd].initial}&nbsp;
 														</td>
 													</tr>
 												</logic:iterate>

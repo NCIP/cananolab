@@ -32,7 +32,7 @@ public class PubMedXMLHandler {
     private List<Author> authorList = null;
     private Author author = null;
     private StringBuffer firstName;
-    private StringBuffer middleInitial;
+    private StringBuffer initial;
     private StringBuffer lastName;
     private StringBuffer doi;
     private boolean inPubDate;
@@ -255,13 +255,13 @@ public class PubMedXMLHandler {
 			author = new Author();
 			lastName = new StringBuffer();
 			firstName = new StringBuffer();
-			middleInitial = new StringBuffer();
+			initial = new StringBuffer();
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
 			author.setFirstName(firstName.toString());
 			author.setLastName(lastName.toString());
-			author.setMiddleInitial(middleInitial.toString());
+			author.setInitial(initial.toString());
 			authorList.add(author);
 		}
 	}
@@ -280,10 +280,10 @@ public class PubMedXMLHandler {
 		}
 	}
 	
-	private class MiddleInitialHandler extends SAXElementHandler
+	private class InitialHandler extends SAXElementHandler
 	{
 		public void characters(char[] ch, int start, int length) {
-			middleInitial.append(new String(ch, start, length));
+			initial.append(new String(ch, start, length));
 		}
 	}
 	
@@ -303,7 +303,7 @@ public class PubMedXMLHandler {
 		s.setElementHandler("lastname", new LastNameHandler());
 		s.setElementHandler("forename", new ForeNameHandler());
 		s.setElementHandler("firstname", new ForeNameHandler());
-		s.setElementHandler("initials", new MiddleInitialHandler());
+		s.setElementHandler("initials", new InitialHandler());
 		s.setElementHandler("articleid", new ArticleIdHandler());
 		
         SAXParserFactory spf = SAXParserFactory.newInstance();
