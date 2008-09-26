@@ -3,12 +3,10 @@ package gov.nih.nci.cananolab.service.publication;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.DocumentSummaryBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.exception.ReportException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -16,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Interface defining methods invovled in submiting and searching documents.
+ * Interface defining methods invovled in submiting and searching publications.
  * 
  * @author tanq
  * 
