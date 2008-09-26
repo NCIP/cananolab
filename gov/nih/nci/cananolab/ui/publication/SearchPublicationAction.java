@@ -337,7 +337,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 	private String getExportFileName(String titleName, String viewType) {
 		List<String> nameParts = new ArrayList<String>();
 		nameParts.add(titleName);
-		nameParts.add("Document");
+		nameParts.add("Publication");
 		nameParts.add(viewType);
 		nameParts.add(StringUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS"));
