@@ -79,6 +79,10 @@
 				path="particle.viewPublication" />
 			<forward name="particleSuccess"
 				path="particle.annotationMessage" />
+			<forward name="publicationSubmitReport"
+				path="publication.submitReport" />
+			<forward name="particleSubmitReport"
+				path="particle.submitReport" />
 		</action>
 		<action path="/publicationResults"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
