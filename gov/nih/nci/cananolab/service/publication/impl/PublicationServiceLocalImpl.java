@@ -99,7 +99,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				for (Author author : authors) {
 					if (!StringUtils.isBlank(author.getFirstName()) || 
 						!StringUtils.isBlank(author.getLastName())||
-						!StringUtils.isBlank(author.getMiddleInitial())){
+						!StringUtils.isBlank(author.getInitial())){
 						if (author.getCreatedDate()==null) {
 							myCal.add(Calendar.SECOND, -1);
 							author.setCreatedDate(myCal.getTime());

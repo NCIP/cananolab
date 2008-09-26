@@ -154,7 +154,7 @@ public class PublicationServiceHelper {
 				Criterion crit2 = Restrictions.like("author1.firstName",
 						author, MatchMode.ANYWHERE);
 				disjunction.add(crit2);
-				Criterion crit3 = Restrictions.like("author1.middleInitial",
+				Criterion crit3 = Restrictions.like("author1.initial",
 						author, MatchMode.ANYWHERE);
 				disjunction.add(crit3);
 			}
@@ -426,7 +426,7 @@ public class PublicationServiceHelper {
 			for (Author author: authorslist) {				
 				sb.append(author.getFirstName());
 				sb.append(' ');
-				sb.append(author.getMiddleInitial());
+				sb.append(author.getInitial());
 				sb.append(' ');
 				sb.append(author.getLastName());
 				
@@ -617,7 +617,7 @@ public class PublicationServiceHelper {
 						sb.append(' ');
 						sb.append(author.getLastName());
 						sb.append(' ');
-						sb.append(author.getMiddleInitial());						
+						sb.append(author.getInitial());						
 						if (countAuthors==0) {
 							row.createCell((short)2).setCellValue(
 									new HSSFRichTextString(sb.toString()));
