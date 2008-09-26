@@ -178,6 +178,39 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		return forward;
 	}
 	
+	public ActionForward setupReport(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		HttpSession session = request.getSession();	
+		session.removeAttribute("submitPublicationForm");
+		String particleId = request.getParameter("particleId");	
+		InitPublicationSetup.getInstance().setPublicationDropdowns(request);	
+		if (particleId!= null
+				&& particleId.trim().length() > 0
+				&& session.getAttribute("otherParticleNames")==null) {
+			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+			ParticleBean particleBean = sampleService
+					.findNanoparticleSampleById(particleId);
+			UserBean user = (UserBean) session.getAttribute("user");
+			InitNanoparticleSetup.getInstance().getOtherParticleNames(
+					request,
+					particleBean.getDomainParticleSample().getName(),
+					particleBean.getDomainParticleSample().getSource()
+							.getOrganizationName(), user);
+		}		
+		ActionForward forward = mapping.getInputForward();
+		
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
+			forward = mapping.findForward("particleSubmitReport");
+			session.setAttribute("docParticleId", particleId);
+		}else {
+			session.removeAttribute("docParticleId");
+			forward = mapping.findForward("publicationSubmitReport");
+		}
+		return forward;
+	}
+	
 	public ActionForward setupPubmed(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
