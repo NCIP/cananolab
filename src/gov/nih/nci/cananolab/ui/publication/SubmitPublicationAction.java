@@ -391,7 +391,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		setupDataTree(particleBean, request);
-		ActionMessage msg = new ActionMessage("message.deleteDocuments",
+		ActionMessage msg = new ActionMessage("message.deletePublications",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
