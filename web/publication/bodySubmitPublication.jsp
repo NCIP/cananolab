@@ -180,7 +180,7 @@
 														</td>
 														<td>
 															<html:text
-																property="file.authors[${authorInd}].middleInitial"
+																property="file.authors[${authorInd}].initial"
 																size="17" />
 														</td>
 													</tr>
