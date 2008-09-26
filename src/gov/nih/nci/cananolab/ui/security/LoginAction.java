@@ -87,8 +87,6 @@ public class LoginAction extends AbstractBaseAction {
 		Boolean createPublication = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PUBLICATION);
 		session.setAttribute("canCreatePublication", createPublication);
-		//session.setAttribute("canCreateReport", createDocument);
-		//session.setAttribute("canCreatePublication", createDocument);
 		Boolean createParticle = authorizationService.checkCreatePermission(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 		session.setAttribute("canCreateNanoparticle", createParticle);
