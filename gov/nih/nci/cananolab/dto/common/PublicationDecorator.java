@@ -33,9 +33,8 @@ public class PublicationDecorator extends TableDecorator {
 	}
 	
 	public SortableName getResearchArea() throws UnsupportedEncodingException {
-		String researchArea = "";
-		Object documentBean = getCurrentRowObject();		
-		LabFile file = ((PublicationBean) documentBean).getDomainFile();
+		String researchArea = "";		
+		LabFile file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
 		if (researchArea != null) {
 			researchArea = researchArea.replaceAll(";", "<br>");			
@@ -69,11 +68,9 @@ public class PublicationDecorator extends TableDecorator {
 	public SortableName getDownloadURL() throws UnsupportedEncodingException {
 		SortableName sortableLink = null;
 		String actionName = null;
-		Object documentBean = getCurrentRowObject();
 		LabFileBean file = null;
-
 		actionName = "searchPublication.do";
-		file = (PublicationBean) documentBean;
+		file = (PublicationBean) getCurrentRowObject();;
 				
 		if (file.getDomainFile().getName() != null) {
 			StringBuilder sb = new StringBuilder("<a href=");
@@ -97,16 +94,14 @@ public class PublicationDecorator extends TableDecorator {
 	}
 
 	public String getParticleNames() {
-		Object documentBean = getCurrentRowObject();
 		String[] particleNames = null;
-		particleNames = ((PublicationBean) documentBean).getParticleNames();
+		particleNames = ((PublicationBean) getCurrentRowObject()).getParticleNames();
 		return StringUtils.sortJoin(Arrays.asList(particleNames), "<br>");
 	}
 	
 	public SortableName getViewName() {
-		Object documentBean = getCurrentRowObject();
 		LabFileBean file = null;
-		file = (PublicationBean) documentBean;
+		file = (PublicationBean) getCurrentRowObject();
 		String title = file.getDomainFile().getTitle();		
 		SortableName sortableLink = new SortableName(title);
 		return sortableLink;
