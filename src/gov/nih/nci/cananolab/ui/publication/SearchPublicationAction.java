@@ -34,7 +34,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
- * This class searches nanoparticle document based on user supplied criteria
+ * This class searches nanoparticle publication based on user supplied criteria
  * 
  * @author tanq
  */
@@ -171,7 +171,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 		}
 		
-		List<LabFileBean> foundDocuments = new ArrayList<LabFileBean>();
+		List<LabFileBean> foundPublications = new ArrayList<LabFileBean>();
 
 		//Publication
 		if (publicationOrReport==null || publicationOrReport.length==0 ||
@@ -209,19 +209,19 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 							filteredPublications.add((LabFileBean)publication);
 						}
 					}
-					foundDocuments.addAll(filteredPublications);
+					foundPublications.addAll(filteredPublications);
 				} else {
-					foundDocuments.addAll(publications);
+					foundPublications.addAll(publications);
 				}
 			}
 		}
-		if (foundDocuments != null && !foundDocuments.isEmpty()) {
-			request.getSession().setAttribute("publications", foundDocuments);
+		if (foundPublications != null && !foundPublications.isEmpty()) {
+			request.getSession().setAttribute("publications", foundPublications);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = new ActionMessage(
-					"message.searchDocument.noresult");
+					"message.searchPublication.noresult");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			forward = mapping.getInputForward();
@@ -232,7 +232,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitPublicationSetup.getInstance().setDocumentDropdowns(request);
+		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
@@ -299,7 +299,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 					+ url.getHost() + ":" + url.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + "/"
 					+ CaNanoLabConstants.CSM_APP_NAME
-					+ "/searchDocument.do?dispatch=download" + "&fileId="
+					+ "/searchPublication.do?dispatch=download" + "&fileId="
 					+ fileId + "&location=local";
 
 			response.sendRedirect(remoteDownloadUrl);
