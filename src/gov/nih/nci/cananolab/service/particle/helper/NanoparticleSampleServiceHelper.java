@@ -119,10 +119,10 @@ public class NanoparticleSampleServiceHelper {
 			}
 			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 				Criterion otherFuncCrit1 = Restrictions.and(Restrictions.eq(
-						"inFunc.class", "OtherFunctionType"), Restrictions.in(
+						"inFunc.class", "OtherFunction"), Restrictions.in(
 						"inFunc.type", otherFunctionTypes));
 				Criterion otherFuncCrit2 = Restrictions.and(Restrictions.eq(
-						"func.class", "OtherFunctionType"), Restrictions.in(
+						"func.class", "OtherFunction"), Restrictions.in(
 						"func.type", otherFunctionTypes));
 				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
 			}
