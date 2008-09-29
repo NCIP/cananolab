@@ -22,9 +22,13 @@ import java.util.List;
 public interface PublicationService {
 
 	/**
-	 * Persist a new report or update an existing report
+	 * Persist a new publication or update an existing publication
 	 * 
-	 * @param report
+	 * @param publication
+	 * @param particleNames
+	 * @param fileData
+	 * @param authors
+	 * 
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,

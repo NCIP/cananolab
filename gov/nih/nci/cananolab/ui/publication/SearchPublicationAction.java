@@ -59,7 +59,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String digitalObjectId = "";
 		String authorsStr = "";
 		String nanoparticleName = "";
-		String[] publicationOrReport = new String[0];
+		//String[] publicationOrReport = new String[0];
 		String[] researchArea = new String[0];
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
@@ -79,8 +79,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			
 			researchArea = (String[]) theForm
 				.get("researchArea");
-			publicationOrReport = (String[]) theForm
-				.get("publicationOrReport");
+//			publicationOrReport = (String[]) theForm
+//				.get("publicationOrReport");
 			nanoparticleEntityTypes = (String[]) theForm
 					.get("nanoparticleEntityTypes");
 			functionalizingEntityTypes = (String[]) theForm
@@ -97,7 +97,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			session.setAttribute("docNanoparticleName", nanoparticleName);
 			
 			session.setAttribute("docResearchArea", researchArea);
-			session.setAttribute("docPublicationOrReport", publicationOrReport);
+			//session.setAttribute("docPublicationOrReport", publicationOrReport);
 			session.setAttribute("docNanoparticleEntityTypes", nanoparticleEntityTypes);
 			session.setAttribute("docFunctionalizingEntityTypes", functionalizingEntityTypes);
 			session.setAttribute("docFunctionTypes", functionTypes);
@@ -113,7 +113,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			nanoparticleName = (String) session.getAttribute("docNanoparticleName");
 			
 			researchArea = (String[]) session.getAttribute("docResearchArea");
-			publicationOrReport = (String[]) session.getAttribute("docPublicationOrReport");
+			//publicationOrReport = (String[]) session.getAttribute("docPublicationOrReport");
 			nanoparticleEntityTypes = (String[]) session.getAttribute("docNanoparticleEntityTypes");
 			functionalizingEntityTypes = (String[]) session.getAttribute("docFunctionalizingEntityTypes");
 			functionTypes = (String[]) session.getAttribute("docfunctionTypes");
@@ -174,45 +174,42 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<LabFileBean> foundPublications = new ArrayList<LabFileBean>();
 
 		//Publication
-		if (publicationOrReport==null || publicationOrReport.length==0 ||
-				Arrays.toString(publicationOrReport).contains("publication")){
-			PublicationService publicationService = null;
-			for (String location : searchLocations) {
-				if (location.equals("local")) {
-					publicationService = new PublicationServiceLocalImpl();
-				} else {
-					String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-							request, location);
-					publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-				}
-				List<PublicationBean> publications = publicationService.findPublicationsBy(title,
-						category, nanoparticleName, researchArea, keywordsStr,
-						pubMedId, digitalObjectId, authorsStr,
-						nanoparticleEntityClassNames
-								.toArray(new String[0]),
-						otherNanoparticleEntityTypes.toArray(new String[0]),
-						functionalizingEntityClassNames.toArray(new String[0]),
-						otherFunctionalizingTypes.toArray(new String[0]),
-						functionClassNames.toArray(new String[0]),
-						otherFunctionTypes.toArray(new String[0]));
+		PublicationService publicationService = null;
+		for (String location : searchLocations) {
+			if (location.equals("local")) {
+				publicationService = new PublicationServiceLocalImpl();
+			} else {
+				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+						request, location);
+				publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+			}
+			List<PublicationBean> publications = publicationService.findPublicationsBy(title,
+					category, nanoparticleName, researchArea, keywordsStr,
+					pubMedId, digitalObjectId, authorsStr,
+					nanoparticleEntityClassNames
+							.toArray(new String[0]),
+					otherNanoparticleEntityTypes.toArray(new String[0]),
+					functionalizingEntityClassNames.toArray(new String[0]),
+					otherFunctionalizingTypes.toArray(new String[0]),
+					functionClassNames.toArray(new String[0]),
+					otherFunctionTypes.toArray(new String[0]));
+			for (PublicationBean publication : publications) {
+				publication.setLocation(location);
+			}
+			
+			if (location.equals("local")) {
+				List<LabFileBean> filteredPublications = new ArrayList<LabFileBean>();
+				// retrieve visibility
+				FileService fileService = new FileServiceLocalImpl();
 				for (PublicationBean publication : publications) {
-					publication.setLocation(location);
-				}
-				
-				if (location.equals("local")) {
-					List<LabFileBean> filteredPublications = new ArrayList<LabFileBean>();
-					// retrieve visibility
-					FileService fileService = new FileServiceLocalImpl();
-					for (PublicationBean publication : publications) {
-						fileService.retrieveVisibility(publication, user);
-						if (!publication.isHidden()) {
-							filteredPublications.add((LabFileBean)publication);
-						}
+					fileService.retrieveVisibility(publication, user);
+					if (!publication.isHidden()) {
+						filteredPublications.add((LabFileBean)publication);
 					}
-					foundPublications.addAll(filteredPublications);
-				} else {
-					foundPublications.addAll(publications);
 				}
+				foundPublications.addAll(filteredPublications);
+			} else {
+				foundPublications.addAll(publications);
 			}
 		}
 		if (foundPublications != null && !foundPublications.isEmpty()) {

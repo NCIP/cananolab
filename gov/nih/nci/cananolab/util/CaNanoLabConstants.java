@@ -71,7 +71,8 @@ public class CaNanoLabConstants {
 	 */
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
-	public static final String REPORT = "Report";
+	//TODO, cleanup
+	//public static final String REPORT = "Report";
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
@@ -79,7 +80,7 @@ public class CaNanoLabConstants {
 
 	public static final String FOLDER_PARTICLE = "particles";
 	
-	public static final String FOLDER_REPORT = "reports";
+	//public static final String FOLDER_REPORT = "reports";
 	
 	public static final String FOLDER_PUBLICATION = "publications";
 

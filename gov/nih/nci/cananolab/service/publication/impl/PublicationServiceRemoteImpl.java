@@ -49,7 +49,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	/**
 	 * Persist a new publication or update an existing publication
 	 * 
-	 * @param report
+	 * @param publication
+	 * @param particleNames
+	 * @param fileData
+	 * @param authors
+	 *    
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication, String[] particleNames,
