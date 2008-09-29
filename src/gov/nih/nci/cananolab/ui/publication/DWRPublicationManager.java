@@ -11,32 +11,33 @@ public class DWRPublicationManager {
 	Logger logger = Logger.getLogger(DWRPublicationManager.class);
 	public DWRPublicationManager() {}
 	
-	public String[] getReportCategories(String searchLocations) {
-		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-		org.directwebremoting.WebContext webContext = dwcb.get();
-		HttpServletRequest request = webContext.getHttpServletRequest();
-		try {
-			boolean isLocal = false;
-			if ("local".equals(searchLocations)){
-				isLocal = true;
-			}
-			SortedSet<String> types = null;
-			if (isLocal){
-				types = InitSetup.getInstance()
-					.getDefaultAndOtherLookupTypes(request, "reportCategories",
-						"Report", "category", "otherCategory", true);
-			}else{
-				types = LookupService.findLookupValues("Report", "category");			
-			}
-		    types.add("");
-		    String[] eleArray = new String[types.size()];
-			return types.toArray(eleArray);
-		} catch (Exception e) {
-			logger.error("Problem getting report types: \n", e);
-			e.printStackTrace();
-		}	
-		return new String[] { "" };
-	}
+	//TODO, to cleanup report
+//	public String[] getReportCategories(String searchLocations) {
+//		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+//		org.directwebremoting.WebContext webContext = dwcb.get();
+//		HttpServletRequest request = webContext.getHttpServletRequest();
+//		try {
+//			boolean isLocal = false;
+//			if ("local".equals(searchLocations)){
+//				isLocal = true;
+//			}
+//			SortedSet<String> types = null;
+//			if (isLocal){
+//				types = InitSetup.getInstance()
+//					.getDefaultAndOtherLookupTypes(request, "reportCategories",
+//						"Report", "category", "otherCategory", true);
+//			}else{
+//				types = LookupService.findLookupValues("Report", "category");			
+//			}
+//		    types.add("");
+//		    String[] eleArray = new String[types.size()];
+//			return types.toArray(eleArray);
+//		} catch (Exception e) {
+//			logger.error("Problem getting report types: \n", e);
+//			e.printStackTrace();
+//		}	
+//		return new String[] { "" };
+//	}
 	
 	public String[] getPublicationCategories(String searchLocations) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
