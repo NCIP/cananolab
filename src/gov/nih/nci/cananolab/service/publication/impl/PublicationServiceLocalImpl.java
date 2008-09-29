@@ -224,18 +224,15 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new PublicationException(err, e);
 		}
 	}
-	
-	
-	//TODO, remove report
+		
 	/**
-	 * if publication/report associates with multiple particle
-	 * remove the entry from nanoparticle_sample_publication or nanoparticle_sample_report
-	 * otherwise, remove publicVisibility and delete publication/report
+	 * if publication associates with multiple particle
+	 * remove the entry from nanoparticle_sample_publication  
+	 * otherwise, remove publicVisibility and delete publication
 	 */
 	public void removePublicationFromParticle(NanoparticleSample particle,
 			Long dataId) 	throws PublicationException{
 		try {
-			//ReportServiceHelper reportHelper = new ReportServiceHelper();
 			PublicationService publicationService = new PublicationServiceLocalImpl();
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
@@ -263,28 +260,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					nanoparticleSampleCollection.remove(particle);
 					appService.saveOrUpdate(publication);
 				}
-			}else {
-//				Object reportObject = appService.getObject(Report.class, "id", dataId);
-//				if (reportObject!=null) {
-//					Report report = reportHelper.findReportById(dataId.toString());
-//					Collection<NanoparticleSample> nanoparticleSampleCollection 
-//						= report.getNanoparticleSampleCollection();
-//					if (nanoparticleSampleCollection==null || nanoparticleSampleCollection.size()==0) {
-//						//something wrong
-//						throw new DocumentException();
-//					}else if (nanoparticleSampleCollection.size()==1) {
-//						//delete
-//						authService.removePublicGroup(dataId.toString());	
-//						appService.delete(report);
-//					}else {//size>1
-//						//remove nanoparticleSample association
-//						nanoparticleSampleCollection.remove(particle);
-//						appService.saveOrUpdate(report);
-//					}
-//				}
 			}
 		} catch (Exception e) {
-			String err = "Error deleting document by ID " + dataId;
+			String err = "Error deleting publication by ID " + dataId;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}

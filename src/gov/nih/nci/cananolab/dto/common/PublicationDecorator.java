@@ -19,16 +19,15 @@ import org.displaytag.decorator.TableDecorator;
  */
 public class PublicationDecorator extends TableDecorator {
 	
-	public SortableName getPublicationOrReport() throws UnsupportedEncodingException {
-		String publicationOrReport = "otherType";
+	public SortableName getPublicationType() throws UnsupportedEncodingException {
+		String publicationType = null;
 		PublicationBean publicationBean = (PublicationBean) getCurrentRowObject();
 		Publication publication = (Publication)publicationBean.getDomainFile();
 		String category = publication.getCategory();
 		if (category!=null) {
-			publicationOrReport = publication.getCategory();		
+			publicationType = publication.getCategory();		
 		}
-		//TODO
-		SortableName sortableLink = new SortableName(publicationOrReport);
+		SortableName sortableLink = new SortableName(publicationType);
 		return sortableLink;
 	}
 	
