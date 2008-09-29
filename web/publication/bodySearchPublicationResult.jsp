@@ -27,7 +27,7 @@
 				decorator="gov.nih.nci.cananolab.dto.common.PublicationDecorator">
 				<display:column title="Title" property="editPublicationURL"
 					sortable="true" />
-				<display:column title="Publication<br>Category" property="publicationOrReport"
+				<display:column title="Publication<br>Type" property="publicationType"
 					sortable="true" />		
 				<display:column title="Research<br>Category"
 					property="researchArea" sortable="true" />

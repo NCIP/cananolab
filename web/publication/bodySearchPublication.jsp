@@ -63,16 +63,14 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Publication Category</strong>
+							<strong>Publication Type</strong>
 						</td>
-						<td class="label" colspan="1" valign="top">
-							<strong><html:select property="publicationOrReport"
-									styleId="publicationOrReport" multiple="true" size="2">
-									<html:option value="publication">Publication</html:option>
-									<html:option value="report">Report</html:option>
-								</html:select> </strong>
-						</td>
-						
+						<td class="label" valign="top">
+							<html:select styleId="category" property="category">
+								<option value="" />
+									<html:options name="publicationCategories" />
+							</html:select>
+						</td>					
 						<td class="label" valign="top">
 							<strong>Research<br>Category</strong>
 						</td>
@@ -94,26 +92,20 @@
 							<html:text property="title" size="100" />
 						</td>
 					</tr>
-					<tr valign="top">
-						<td class="leftLabel">
-							<strong>Publication Type</strong>
-						</td>
-						<td class="label" valign="top">
-							<html:select styleId="category" property="category">
-								<option value="" />
-									<html:options name="publicationCategories" />
-							</html:select>
-						</td>				
-						<td class="label" valign="top" colspan="2">
-							<strong>PubMed ID</strong>
+					<tr valign="top">									
+						<td class="leftLabel" valign="top" colspan="2">
+							<strong>PubMed ID</strong>&nbsp;&nbsp;&nbsp;&nbsp;
 							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
 							<br><i>(Please enter the exact numeric PubMed ID)</i><br><br>
 						</td>
 						<td class="label" valign="top">
 							<strong>Digital Object ID</strong>
 						</td>
-						<td class="rightLabel" valign="top">
+						<td class="label" valign="top">
 							<html:text property="digitalObjectId" size="20" />
+						</td>
+						<td class="rightLabel" colspan="2" valign="top" align="left">												
+							&nbsp;
 						</td>
 					</tr>
 					<tr>
