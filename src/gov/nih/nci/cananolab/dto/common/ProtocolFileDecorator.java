@@ -76,21 +76,22 @@ public class ProtocolFileDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public SortableName getRemoteDownloadURL()
-			throws UnsupportedEncodingException {
-		ProtocolFileBean file = (ProtocolFileBean) getCurrentRowObject();
-		String fileName = URLEncoder.encode(file.domainFile.getName(), "UTF-8");
-		// String gridNode = URLEncoder.encode(file.getGridNode(), "UTF-8");
-		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="
-				// + gridNode
-				+ "&fileId="
-				+ file.getDomainFile().getId()
-				+ "&fileName="
-				+ fileName;
-		String link = "<a href=" + downloadURL + ">"
-				+ file.getDomainFile().getTitle() + "</a>";
-		SortableName sortableLink = new SortableName(file.getDomainFile()
-				.getTitle(), link);
-		return sortableLink;
-	}
+	//TODO, to cleanup, not in used
+//	public SortableName getRemoteDownloadURL()
+//			throws UnsupportedEncodingException {
+//		ProtocolFileBean file = (ProtocolFileBean) getCurrentRowObject();
+//		String fileName = URLEncoder.encode(file.domainFile.getName(), "UTF-8");
+//		// String gridNode = URLEncoder.encode(file.getGridNode(), "UTF-8");
+//		String downloadURL = "remoteSearchReport.do?dispatch=download&gridNodeHost="
+//				// + gridNode
+//				+ "&fileId="
+//				+ file.getDomainFile().getId()
+//				+ "&fileName="
+//				+ fileName;
+//		String link = "<a href=" + downloadURL + ">"
+//				+ file.getDomainFile().getTitle() + "</a>";
+//		SortableName sortableLink = new SortableName(file.getDomainFile()
+//				.getTitle(), link);
+//		return sortableLink;
+//	}
 }
