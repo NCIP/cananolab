@@ -243,7 +243,6 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		if (sampleComposition != null) {
 			particleSample.setSampleComposition(sampleComposition);
 		}
-		loadReportsForParticleSample(particleSample);
 		loadPublicationsForParticleSample(particleSample);
 	}
 
@@ -413,24 +412,6 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		}
 	}
 
-	/**
-	 * load all reports for an associated NanoparticleSample equal to
-	 * particleId
-	 * 
-	 */
-	private void loadReportsForParticleSample(NanoparticleSample particleSample)
-			throws Exception {
-//		ReportService reportService = new ReportServiceRemoteImpl(serviceUrl);
-//		Report[] reports = reportService
-//				.findReportsByParticleSampleId(particleSample.getId()
-//						.toString());
-//		if (reports != null && reports.length > 0) {
-//			particleSample.setReportCollection(new HashSet<Report>());
-//			for (Report report : reports) {
-//				particleSample.getReportCollection().add(report);
-//			}
-//		}
-	}
 	
 	/**
 	 * load all publications for an associated NanoparticleSample equal to
