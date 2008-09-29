@@ -67,7 +67,7 @@
 				</li>
 				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
 				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
-				<jsp:include page="sideParticleReportMenu.jsp"></jsp:include>
+				<jsp:include page="sideParticlePublicationMenu.jsp"></jsp:include>
 
 				<li class="nodatali" id="invivolist">
 					IN VIVO CHARACTERIZATIONS

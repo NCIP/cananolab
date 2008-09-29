@@ -89,7 +89,7 @@ public class InitSecuritySetup {
 		}
 
 		// assign PI group to role CURD on sample, protocol, nanopoarticle and
-		// report
+		// publication
 		authorizationService.assignGroupToProtectionGroupWithRole(
 				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_SAMPLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);

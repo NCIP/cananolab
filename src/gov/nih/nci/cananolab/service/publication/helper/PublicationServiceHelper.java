@@ -258,7 +258,7 @@ public class PublicationServiceHelper {
 							.getStoredNanoparticleEntityClassNames(particle));
 				}
 				for (String entity : nanoparticleEntityClassNames) {
-					// if at least one function type matches, keep the report
+					// if at least one function type matches, keep the publication
 					if (storedEntities.contains(entity)) {
 						filteredList1.add(publication);
 						break;
@@ -288,7 +288,7 @@ public class PublicationServiceHelper {
 									.getStoredFunctionalizingEntityClassNames(particle));
 				}
 				for (String entity : functionalizingEntityClassNames) {
-					// if at least one function type matches, keep the report
+					// if at least one function type matches, keep the publication
 					if (storedEntities.contains(entity)) {
 						filteredList2.add(publication);
 						break;
@@ -631,10 +631,12 @@ public class PublicationServiceHelper {
 					}
 				}						
 				//year
-				year = publication.getYear();
-				if (year>0) {
-					row.createCell((short)3).setCellValue(
-						new HSSFRichTextString(Integer.toString(year)));
+				if (publication.getYear()!=null) {
+					year = publication.getYear();
+					if (year>0) {
+						row.createCell((short)3).setCellValue(
+							new HSSFRichTextString(Integer.toString(year)));
+					}
 				}
 			}
 		}		
