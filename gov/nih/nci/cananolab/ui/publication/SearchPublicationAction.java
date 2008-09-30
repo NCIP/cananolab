@@ -1,11 +1,13 @@
 package gov.nih.nci.cananolab.ui.publication;
 
+import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -18,9 +20,9 @@ import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,23 +54,23 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 
 		String title = "";
-		//publication type
+		// publication type
 		String category = "";
 		String keywordsStr = "";
 		String pubMedId = "";
 		String digitalObjectId = "";
 		String authorsStr = "";
 		String nanoparticleName = "";
-		//String[] publicationOrReport = new String[0];
+		// String[] publicationOrReport = new String[0];
 		String[] researchArea = new String[0];
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
 		String[] searchLocations = new String[0];
-		
+
 		String invokeMethod = request.getParameter("invokeMethod");
-		if (theForm != null &&
-				(invokeMethod == null || !invokeMethod.equals("back"))) {
+		if (theForm != null
+				&& (invokeMethod == null || !invokeMethod.equals("back"))) {
 			title = (String) theForm.get("title");
 			category = (String) theForm.get("category");
 			keywordsStr = (String) theForm.get("keywordsStr");
@@ -76,18 +78,17 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			digitalObjectId = (String) theForm.get("digitalObjectId");
 			authorsStr = (String) theForm.get("authorsStr");
 			nanoparticleName = (String) theForm.get("nanoparticleName");
-			
-			researchArea = (String[]) theForm
-				.get("researchArea");
-//			publicationOrReport = (String[]) theForm
-//				.get("publicationOrReport");
+
+			researchArea = (String[]) theForm.get("researchArea");
+			// publicationOrReport = (String[]) theForm
+			// .get("publicationOrReport");
 			nanoparticleEntityTypes = (String[]) theForm
 					.get("nanoparticleEntityTypes");
 			functionalizingEntityTypes = (String[]) theForm
 					.get("functionalizingEntityTypes");
 			functionTypes = (String[]) theForm.get("functionTypes");
 			searchLocations = (String[]) theForm.get("searchLocations");
-			
+
 			session.setAttribute("docTitle", title);
 			session.setAttribute("docCategory", category);
 			session.setAttribute("docKeywordsStr", keywordsStr);
@@ -95,42 +96,51 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			session.setAttribute("docDigitalObjectId", digitalObjectId);
 			session.setAttribute("docAuthorsStr", authorsStr);
 			session.setAttribute("docNanoparticleName", nanoparticleName);
-			
+
 			session.setAttribute("docResearchArea", researchArea);
-			//session.setAttribute("docPublicationOrReport", publicationOrReport);
-			session.setAttribute("docNanoparticleEntityTypes", nanoparticleEntityTypes);
-			session.setAttribute("docFunctionalizingEntityTypes", functionalizingEntityTypes);
+			// session.setAttribute("docPublicationOrReport",
+			// publicationOrReport);
+			session.setAttribute("docNanoparticleEntityTypes",
+					nanoparticleEntityTypes);
+			session.setAttribute("docFunctionalizingEntityTypes",
+					functionalizingEntityTypes);
 			session.setAttribute("docFunctionTypes", functionTypes);
-		} 
-	
-		if(invokeMethod != null && invokeMethod.equals("back")) {
+		}
+
+		if (invokeMethod != null && invokeMethod.equals("back")) {
 			title = (String) session.getAttribute("docTitle");
 			category = (String) session.getAttribute("docCategory");
 			keywordsStr = (String) session.getAttribute("docKeywordsStr");
 			pubMedId = (String) session.getAttribute("docPubMedId");
-			digitalObjectId = (String) session.getAttribute("docDigitalObjectId");
+			digitalObjectId = (String) session
+					.getAttribute("docDigitalObjectId");
 			authorsStr = (String) session.getAttribute("docAuthorsStr");
-			nanoparticleName = (String) session.getAttribute("docNanoparticleName");
-			
+			nanoparticleName = (String) session
+					.getAttribute("docNanoparticleName");
+
 			researchArea = (String[]) session.getAttribute("docResearchArea");
-			//publicationOrReport = (String[]) session.getAttribute("docPublicationOrReport");
-			nanoparticleEntityTypes = (String[]) session.getAttribute("docNanoparticleEntityTypes");
-			functionalizingEntityTypes = (String[]) session.getAttribute("docFunctionalizingEntityTypes");
+			// publicationOrReport = (String[])
+			// session.getAttribute("docPublicationOrReport");
+			nanoparticleEntityTypes = (String[]) session
+					.getAttribute("docNanoparticleEntityTypes");
+			functionalizingEntityTypes = (String[]) session
+					.getAttribute("docFunctionalizingEntityTypes");
 			functionTypes = (String[]) session.getAttribute("docfunctionTypes");
-			searchLocations = (String[]) session.getAttribute("docSearchLocations");
+			searchLocations = (String[]) session
+					.getAttribute("docSearchLocations");
 		}
-		
+
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
-		if (searchLocations[0].indexOf("~") != -1 && 
-				gridNodeHostStr != null && gridNodeHostStr.trim().length() > 0 ) {
+		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
+				&& gridNodeHostStr.trim().length() > 0) {
 			searchLocations = gridNodeHostStr.split("~");
 		}
-		
-		if(invokeMethod == null || !invokeMethod.equals("back")) {
+
+		if (invokeMethod == null || !invokeMethod.equals("back")) {
 			session.setAttribute("docSearchLocations", searchLocations);
 		}
-		
+
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
 		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
@@ -170,10 +180,10 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 				}
 			}
 		}
-		
+
 		List<LabFileBean> foundPublications = new ArrayList<LabFileBean>();
 
-		//Publication
+		// Publication
 		PublicationService publicationService = null;
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
@@ -181,22 +191,30 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
-				publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+				publicationService = new PublicationServiceRemoteImpl(
+						serviceUrl);
 			}
-			List<PublicationBean> publications = publicationService.findPublicationsBy(title,
-					category, nanoparticleName, researchArea, keywordsStr,
-					pubMedId, digitalObjectId, authorsStr,
-					nanoparticleEntityClassNames
-							.toArray(new String[0]),
-					otherNanoparticleEntityTypes.toArray(new String[0]),
-					functionalizingEntityClassNames.toArray(new String[0]),
-					otherFunctionalizingTypes.toArray(new String[0]),
-					functionClassNames.toArray(new String[0]),
-					otherFunctionTypes.toArray(new String[0]));
+			List<PublicationBean> publications = publicationService
+					.findPublicationsBy(
+							title,
+							category,
+							nanoparticleName,
+							researchArea,
+							keywordsStr,
+							pubMedId,
+							digitalObjectId,
+							authorsStr,
+							nanoparticleEntityClassNames.toArray(new String[0]),
+							otherNanoparticleEntityTypes.toArray(new String[0]),
+							functionalizingEntityClassNames
+									.toArray(new String[0]),
+							otherFunctionalizingTypes.toArray(new String[0]),
+							functionClassNames.toArray(new String[0]),
+							otherFunctionTypes.toArray(new String[0]));
 			for (PublicationBean publication : publications) {
 				publication.setLocation(location);
 			}
-			
+
 			if (location.equals("local")) {
 				List<LabFileBean> filteredPublications = new ArrayList<LabFileBean>();
 				// retrieve visibility
@@ -204,7 +222,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 				for (PublicationBean publication : publications) {
 					fileService.retrieveVisibility(publication, user);
 					if (!publication.isHidden()) {
-						filteredPublications.add((LabFileBean)publication);
+						filteredPublications.add((LabFileBean) publication);
 					}
 				}
 				foundPublications.addAll(filteredPublications);
@@ -213,7 +231,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 		}
 		if (foundPublications != null && !foundPublications.isEmpty()) {
-			request.getSession().setAttribute("publications", foundPublications);
+			request.getSession()
+					.setAttribute("publications", foundPublications);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -230,33 +249,49 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
+		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
+		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
+				.getAllGridNodes();
+		if (gridNodeMap == null) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.grid.discovery.none",
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+		}
+		request.getSession().getServletContext().setAttribute("allGridNodes",
+				gridNodeMap);
+
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
-		
-		if ("local".equals(selectedLocations[0]) &&
-				selectedLocations.length == 1) {
-			
-			InitCompositionSetup.getInstance()
-					.getNanoparticleEntityTypes(request);
-			
-			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(request);
+
+		if ("local".equals(selectedLocations[0])
+				&& selectedLocations.length == 1) {
+
+			InitCompositionSetup.getInstance().getNanoparticleEntityTypes(
+					request);
+
+			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
+					request);
 			InitCompositionSetup.getInstance().getFunctionTypes(request);
 		} else {
 			InitCompositionSetup.getInstance()
 					.getDefaultNanoparticleEntityTypes(request);
-			
-			InitCompositionSetup.getInstance().getDefaultFunctionalizingEntityTypes(request);
+
+			InitCompositionSetup.getInstance()
+					.getDefaultFunctionalizingEntityTypes(request);
 			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
 		}
-		
+
 		InitPublicationSetup.getInstance().setDefaultResearchAreas(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
-		
+
 		HttpSession session = request.getSession();
 		session.removeAttribute("docParticleId");
 		return mapping.getInputForward();
@@ -279,12 +314,13 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			return super.download(mapping, form, request, response);
 		} else {
-			//TODO, to test
+			// TODO, to test
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			PublicationService publicationService = new PublicationServiceRemoteImpl(
 					serviceUrl);
-			PublicationBean fileBean = publicationService.findPublicationById(fileId);
+			PublicationBean fileBean = publicationService
+					.findPublicationById(fileId);
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
 				return null;
@@ -303,7 +339,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			return null;
 		}
 	}
-	
+
 	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -311,8 +347,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		ParticleBean particleBean = setupParticle(theForm, request, location);
 		String fileName = getExportFileName(particleBean
-				.getDomainParticleSample().getName(), 
-			"summaryView");
+				.getDomainParticleSample().getName(), "summaryView");
 		response.setContentType("application/vnd.ms-execel");
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename=\""
@@ -323,14 +358,12 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new PublicationServiceRemoteImpl(
-					serviceUrl);
+			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
 		service.exportSummary(particleBean, response.getOutputStream());
 		return null;
 	}
-	
-	
+
 	private String getExportFileName(String titleName, String viewType) {
 		List<String> nameParts = new ArrayList<String>();
 		nameParts.add(titleName);
@@ -342,23 +375,22 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		return exportFileName;
 	}
 
-	public ActionForward setupPublicationView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward setupPublicationView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
 		ParticleBean particleSampleBean = setupParticle(theForm, request,
 				location);
 		theForm.set("particleSampleBean", particleSampleBean);
-		
-		HttpSession session = request.getSession();		
+
+		HttpSession session = request.getSession();
 		session.setAttribute("particleSampleBean", particleSampleBean);
 		setupDataTree(particleSampleBean, request);
 		String particleId = request.getParameter("particleId");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
-				+ "&dispatch=printSummaryView"
-				+ "&location=" + location;
+				+ "&dispatch=printSummaryView" + "&location=" + location;
 		request.getSession().setAttribute("printSummaryViewLinkURL",
 				printLinkURL);
 		return mapping.findForward("publicationView");
@@ -366,8 +398,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 
 	public ActionForward printSummaryView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {	
-		//return mapping.findForward("publicationDetailPrintView");
+			HttpServletResponse response) throws Exception {
+		// return mapping.findForward("publicationDetailPrintView");
 		return mapping.findForward("publicationSummaryPrintView");
 	}
 

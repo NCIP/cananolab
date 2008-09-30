@@ -6,20 +6,24 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.26 2008-06-16 16:23:24 cais Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.27 2008-09-30 19:02:41 pansu Exp $ */
 
+import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +55,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] characterizations = new String[0];
 		String texts = "";
 		String[] searchLocations = new String[0];
-		
+
 		if (theForm != null) {
 			nanoparticleEntityTypes = (String[]) theForm
 					.get("nanoparticleEntityTypes");
@@ -65,11 +69,11 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
-		if (searchLocations[0].indexOf("~") != -1 && 
-			gridNodeHostStr != null && gridNodeHostStr.trim().length() > 0) {
+		if (searchLocations[0].indexOf("~") != -1 && gridNodeHostStr != null
+				&& gridNodeHostStr.trim().length() > 0) {
 			searchLocations = gridNodeHostStr.split("~");
 		}
-	
+
 		// convert nanoparticle entity display names into short class names and
 		// other types
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
@@ -183,7 +187,21 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		String[] selectedLocations = new String[] {"local"};
+		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
+		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
+				.getAllGridNodes();
+		if (gridNodeMap == null) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.grid.discovery.none",
+					CaNanoLabConstants.DOMAIN_MODEL_NAME);
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+		}
+		request.getSession().getServletContext().setAttribute("allGridNodes",
+				gridNodeMap);
+
+		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
@@ -192,19 +210,21 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 
-		if ("local".equals(selectedLocations[0]) &&
-				selectedLocations.length == 1) {
-				
-			InitCompositionSetup.getInstance()
-					.getNanoparticleEntityTypes(request);
-			
-			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(request);
+		if ("local".equals(selectedLocations[0])
+				&& selectedLocations.length == 1) {
+
+			InitCompositionSetup.getInstance().getNanoparticleEntityTypes(
+					request);
+
+			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
+					request);
 			InitCompositionSetup.getInstance().getFunctionTypes(request);
 		} else {
 			InitCompositionSetup.getInstance()
 					.getDefaultNanoparticleEntityTypes(request);
-			
-			InitCompositionSetup.getInstance().getDefaultFunctionalizingEntityTypes(request);
+
+			InitCompositionSetup.getInstance()
+					.getDefaultFunctionalizingEntityTypes(request);
 			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
 		}
 
