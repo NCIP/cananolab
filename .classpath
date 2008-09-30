@@ -147,5 +147,6 @@
 	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-service.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-stubs.jar"/>
 	<classpathentry kind="lib" path="lib/cagrid/CaNanoLabService-tests.jar"/>
+	<classpathentry kind="lib" path="web/WEB-INF/lib/quartz-1.6.0.jar"/>
 	<classpathentry kind="output" path="web/WEB-INF/classes"/>
 </classpath>
