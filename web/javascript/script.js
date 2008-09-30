@@ -397,3 +397,11 @@ function addPubmed(form, particleId) {
 	form.action = "submitPublication.do?dispatch=setupPubmed&page=0&location=local&particleId=" + particleId + "&pubmedId=" + pubmedId;
 	form.submit();
 }
+function setupReport(form, particleId) {
+	var selectEle = document.getElementById('file.domainFile.category');
+	if(selectEle.options[selectEle.options.selectedIndex].value == 'report') {
+		form.action = "submitPublication.do?dispatch=setupReport&page=0&location=local&particleId=" + particleId;
+		form.submit();
+	}
+	return false;
+}

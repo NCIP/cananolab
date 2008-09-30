@@ -61,6 +61,7 @@
 											styleId="file.domainFile.category">
 											<option value=""></option>
 											<html:options name="publicationCategories" />
+<%--											<option value="report" selected>report</option>--%>
 											<option value="other">
 												[Other]
 											</option>
@@ -177,7 +178,7 @@
 														</td>
 														<td>
 															<html:text
-																property="file.authors[${authorInd}].middleInitial"
+																property="file.authors[${authorInd}].initial"
 																size="17" />
 														</td>
 													</tr>
