@@ -1,7 +1,8 @@
 package gov.nih.nci.cananolab.dto.common;
 
 /**
- * DTO object representing a grid node with a host name and a URL address.
+ * DTO object representing a grid node with a host name, a service URL address
+ * and a domain model name.
  * 
  * @author pansu
  * 
@@ -11,7 +12,13 @@ public class GridNodeBean {
 
 	private String address;
 
-	private String appServiceURL;
+	private String domainModelName;
+
+	public enum NodeType {
+		REMOTE, LOCAL
+	};
+
+	public NodeType nodeType = NodeType.REMOTE;
 
 	public GridNodeBean(String hostName, String address) {
 
@@ -19,9 +26,15 @@ public class GridNodeBean {
 		this.address = address;
 	}
 
-	public GridNodeBean(String hostName, String address, String appServiceURL) {
+	public GridNodeBean(String hostName, String address, String domainModelName) {
 		this(hostName, address);
-		this.appServiceURL = appServiceURL;
+		this.domainModelName = domainModelName;
+	}
+
+	public GridNodeBean(String hostName, String address,
+			String domainModelName, NodeType nodeType) {
+		this(hostName, address, domainModelName);
+		this.nodeType = nodeType;
 	}
 
 	public String getAddress() {
@@ -40,11 +53,19 @@ public class GridNodeBean {
 		this.hostName = hostName;
 	}
 
-	public String getAppServiceURL() {
-		return this.appServiceURL;
+	public String getDomainModelName() {
+		return this.domainModelName;
 	}
 
-	public void setAppServiceURL(String appServiceURL) {
-		this.appServiceURL = appServiceURL;
+	public void setDomainModelName(String domainModelName) {
+		this.domainModelName = domainModelName;
+	}
+
+	public NodeType getNodeType() {
+		return nodeType;
+	}
+
+	public void setNodeType(NodeType nodeType) {
+		this.nodeType = nodeType;
 	}
 }
