@@ -43,8 +43,7 @@
 			type="java.lang.Exception" />
 	</global-exceptions>
 	<global-forwards>
-		<forward name="welcome"
-			path="/welcome.do" />
+		<forward name="welcome" path="/welcome.do" />
 	</global-forwards>
 	<action-mappings>
 		<action name="loginForm" path="/login" scope="request"
@@ -73,7 +72,7 @@
 			<forward name="success" path="/welcome.do" />
 		</action>
 		<action path="/welcome"
-			type="gov.nih.nci.cananolab.ui.security.WelcomeAction"
+			type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
 			parameter="calab.login" scope="request">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
@@ -146,4 +145,9 @@
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
 	<plug-in className="gov.nih.nci.cananolab.ui.core.CustomPlugIn" />
+	<plug-in
+		className="gov.nih.nci.cananolab.ui.core.SchedulerPlugin">
+		<set-property property="startOnLoad" value="false" />
+		<set-property property="startupDelay" value="0" />
+	</plug-in>
 </struts-config>
