@@ -49,6 +49,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitPublicationAction extends BaseAnnotationAction {
 
@@ -181,10 +182,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupReport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session = request.getSession();	
-		session.removeAttribute("submitPublicationForm");
+		HttpSession session = request.getSession();
+		
 		String particleId = request.getParameter("particleId");	
-		InitPublicationSetup.getInstance().setPublicationDropdowns(request);	
 		if (particleId!= null
 				&& particleId.trim().length() > 0
 				&& session.getAttribute("otherParticleNames")==null) {
@@ -198,7 +198,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 					particleBean.getDomainParticleSample().getSource()
 							.getOrganizationName(), user);
 		}		
-		ActionForward forward = mapping.getInputForward();
+		ActionForward forward = null;
 		
 		if (particleId != null && !particleId.equals("null")
 				&& particleId.trim().length() > 0) {
@@ -208,6 +208,15 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			session.removeAttribute("docParticleId");
 			forward = mapping.findForward("publicationSubmitReport");
 		}
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PublicationBean publicationBean = ((PublicationBean) theForm.get("file"));
+		
+		Publication pub = (Publication) publicationBean.getDomainFile();
+//		pub.setCategory("report");
+		pub.setStatus("published");
+		publicationBean.setDomainFile(pub);
+		theForm.set("file", publicationBean);
 		return forward;
 	}
 	
@@ -476,6 +485,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		if (selectedPublicationType!=null) {
 			SortedSet<String> types = (SortedSet<String>)
 				request.getSession().getAttribute("publicationCategories");
+			for(String op: types) {
+		    	System.out.println("options:" + op);
+		    }
 			if (types!=null) {
 				types.add(selectedPublicationType);
 				request.getSession().setAttribute("publicationCategories", types);
