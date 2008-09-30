@@ -36,9 +36,9 @@ public class CaNanoLabConstants {
 	public static final String DEFAULT_APP_OWNER = "NCICB";
 
 	public static final String APP_OWNER;
-	
+
 	public static final String VIEW_COL_DELIMITER = "~~~";
-	
+
 	public static final String VIEW_CLASSNAME_DELIMITER = "!!!";
 
 	static {
@@ -93,19 +93,16 @@ public class CaNanoLabConstants {
 
 	public static final int MAX_VIEW_TITLE_LENGTH = 23;
 
-	
 	public static final String CSM_DATA_CURATOR = APP_OWNER + "_DataCurator";
 
-	
 	public static final String CSM_RESEARCHER = APP_OWNER + "_Researcher";
-
 
 	public static final String CSM_ADMIN = APP_OWNER + "_Administrator";
 
 	public static final String CSM_PUBLIC_GROUP = "Public";
 
-	public static final String[] VISIBLE_GROUPS = new String[] { CSM_DATA_CURATOR,
-		CSM_RESEARCHER };
+	public static final String[] VISIBLE_GROUPS = new String[] {
+			CSM_DATA_CURATOR, CSM_RESEARCHER };
 
 	public static final String AUTO_COPY_ANNOTATION_PREFIX = "COPY";
 
@@ -170,12 +167,18 @@ public class CaNanoLabConstants {
 			"STD", "SVG", "SXD", "WMF" };
 
 	public static final String[] PUBLIC_DISPATCHES = { "view", "search",
-			"setupView", "setupPublicationView", "summaryView", "detailView", "printDetailView",
-			"exportDetail", "printSummaryView", "printFullSummaryView",
-			"exportSummary", "exportFullSummary", "download", "loadFile" };
-	
-	public static final String PHYSICAL_ASSAY_PROTOCOL="physical assay";
-	public static final String INVITRO_ASSAY_PROTOCOL="in vitro assay";
-	
-	public static final String NODE_UNAVAILABLE="Unable to connect to the grid location that you selected";
+			"setupView", "setupPublicationView", "summaryView", "detailView",
+			"printDetailView", "exportDetail", "printSummaryView",
+			"printFullSummaryView", "exportSummary", "exportFullSummary",
+			"download", "loadFile" };
+
+	public static final String PHYSICAL_ASSAY_PROTOCOL = "physical assay";
+	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
+
+	public static final String NODE_UNAVAILABLE = "Unable to connect to the grid location that you selected";
+
+	// default discovery internal for grid index server
+	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 20;
+
+	public static final String DOMAIN_MODEL_VERSION = "1.4";
 }
