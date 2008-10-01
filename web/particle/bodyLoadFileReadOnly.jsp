@@ -23,7 +23,6 @@
 							<td class="rightLabel" >
 								<a
 									href="${param.action}.do?dispatch=download&amp;fileId=${param.fileId}&amp;location=${location}">
-									<%--			target="${submitReportForm.map.file.urlTarget}">--%>
 									${param.fileUri}</a>
 							</td>
 						</c:when>
