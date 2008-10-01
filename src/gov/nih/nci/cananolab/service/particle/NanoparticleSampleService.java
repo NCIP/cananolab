@@ -64,7 +64,8 @@ public interface NanoparticleSampleService {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList)
+			String[] characterizationClassNames, String[] wordList,
+			String publicationKeywordsStr)
 			throws ParticleException;
 
 	public ParticleBean findNanoparticleSampleById(String particleId)

@@ -115,10 +115,12 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList)
+			String[] characterizationClassNames, String[] wordList,
+			String publicationKeywordsStr)
 			throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
+			//TODO: add publicationKeywordsStr to grid search
 			String[] particleSampleStrs = gridClient
 					.getNanoparticleSampleViewStrs(particleSource,
 							nanoparticleEntityClassNames,
