@@ -51,7 +51,8 @@ public class NanoparticleSampleServiceHelper {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList)
+			String[] characterizationClassNames, String[] wordList,
+			String publicationKeywordsStr)
 			throws Exception {
 		List<NanoparticleSample> particles = new ArrayList<NanoparticleSample>();
 
@@ -179,6 +180,37 @@ public class NanoparticleSampleServiceHelper {
 				crit.add(disjunction);
 			}
 		}
+		
+		
+		//publication keywords
+		String publicationKeywordsArray[] = null;
+		if (publicationKeywordsStr != null && publicationKeywordsStr.length() > 0) {
+			List<String> keywordsList = StringUtils.parseToWords(publicationKeywordsStr);
+			if (keywordsList != null) {
+				publicationKeywordsArray = new String[keywordsList.size()];
+				keywordsList.toArray(publicationKeywordsArray);
+			}
+		}		
+		if (publicationKeywordsArray != null && publicationKeywordsArray.length > 0) {
+			// turn words into upper case before searching publication keywords
+			String[] upperKeywords = new String[publicationKeywordsArray.length];
+			for (int i = 0; i < publicationKeywordsArray.length; i++) {
+				upperKeywords[i] = publicationKeywordsArray[i].toUpperCase();
+			}
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias(
+					"publicationCollection",
+					"pub1", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("pub1.keywordCollection", "keyword1",
+					CriteriaSpecification.LEFT_JOIN);
+			for (String keyword : upperKeywords) {
+				Criterion keywordCrit1 = Restrictions.like("keyword1.name",
+						keyword, MatchMode.ANYWHERE);
+				disjunction.add(keywordCrit1);
+			}
+			crit.add(disjunction);
+		}
+		
 		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",

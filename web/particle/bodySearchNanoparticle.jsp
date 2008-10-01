@@ -163,6 +163,17 @@
 								</html:select> </strong>
 						</td>
 					</tr>
+					
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Publication Keywords</strong>
+						</td>
+						<td class="rightLabel" colspan="5" valign="top">
+							<strong><html:textarea property="publicationKeywordsStr"
+									cols="30" styleId="publicationKeywordsStr" rows="3">
+							</html:textarea> </strong>
+						</td>
+					</tr>
 				</table>
 				<br>
 

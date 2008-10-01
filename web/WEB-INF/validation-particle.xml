@@ -466,6 +466,14 @@
 					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
 				</var>
 			</field>
+			<field property="publicationKeywordsStr" page="1" depends="mask">
+				<arg position="0" key="publicationKeywordsStr" bundle="particle" />
+				<msg name="mask" key="publicationKeyword.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
+				</var>
+			</field>
 		</form>
 	</formset>
 </form-validation>
