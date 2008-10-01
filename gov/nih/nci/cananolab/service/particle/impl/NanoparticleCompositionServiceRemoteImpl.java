@@ -679,6 +679,19 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		throw new ParticleCompositionException(
 				"Not implemented for grid service");
 	}
+	
+	/**
+	 * Return user-defined target types
+	 * 
+	 * @return
+	 * @throws ParticleCompositionException
+	 */
+	public SortedSet<String> getAllOtherTargetTypes()
+			throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+				"Not implemented for grid service");
+	}
+
 
 	/**
 	 * Return user-defined functionalizing entity types

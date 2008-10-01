@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
+import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -387,6 +388,33 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			return types;
 		} catch (Exception e) {
 			String err = "Error in retrieving other function types";
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
+	}
+
+	
+	/**
+	 * Return user-defined function types
+	 * 
+	 * @return
+	 * @throws ParticleCompositionException
+	 */
+	public SortedSet<String> getAllOtherTargetTypes()
+			throws ParticleCompositionException {
+		SortedSet<String> types = new TreeSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			List results = appService.getAll(OtherTarget.class);
+			for (Object obj : results) {
+				OtherTarget other = (OtherTarget) obj;
+				types.add(other.getType());
+			}
+			return types;
+		} catch (Exception e) {
+			String err = "Error in retrieving other target types";
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
 		}
