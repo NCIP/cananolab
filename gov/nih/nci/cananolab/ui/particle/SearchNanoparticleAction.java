@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.27 2008-09-30 19:02:41 pansu Exp $ */
+/* CVS $Id: SearchNanoparticleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -55,6 +55,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] characterizations = new String[0];
 		String texts = "";
 		String[] searchLocations = new String[0];
+		String publicationKeywordsStr = "";
+		
 
 		if (theForm != null) {
 			nanoparticleEntityTypes = (String[]) theForm
@@ -65,6 +67,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			characterizations = (String[]) theForm.get("characterizations");
 			texts = ((String) theForm.get("text")).trim();
 			searchLocations = (String[]) theForm.get("searchLocations");
+			publicationKeywordsStr = ((String) theForm.get("publicationKeywordsStr")).trim();
 		}
 
 		String gridNodeHostStr = (String) request
@@ -150,7 +153,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 					otherFunctionalizingTypes.toArray(new String[0]),
 					functionClassNames.toArray(new String[0]),
 					otherFunctionTypes.toArray(new String[0]), charaClassNames,
-					words);
+					words,publicationKeywordsStr);
 			for (ParticleBean particle : particles) {
 				particle.setLocation(location);
 			}
