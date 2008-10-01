@@ -352,7 +352,7 @@ public class InitCompositionSetup {
 						"defaultTargetTypes",
 						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Target");
 		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
+		SortedSet<String> otherTypes = compService.getAllOtherTargetTypes();
 		if (otherTypes != null)
 			types.addAll(otherTypes);
 		request.getSession().setAttribute("targetTypes", types);
