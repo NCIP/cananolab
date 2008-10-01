@@ -35,8 +35,8 @@ public interface PublicationService {
 			byte[] fileData, Collection<Author> authors) throws PublicationException;
 
 	
-	public List<PublicationBean> findPublicationsBy(String reportTitle,
-			String reportCategory, String nanoparticleName, 
+	public List<PublicationBean> findPublicationsBy(String publicationTitle,
+			String publicationCategory, String nanoparticleName, 
 			String[] researchArea, String keywordsStr,
 			String pubMedId, String digitalObjectId, String authorsStr,
 			String[] nanoparticleEntityClassNames,
