@@ -72,6 +72,16 @@ public interface NanoparticleCompositionService {
 	 */
 	public SortedSet<String> getAllOtherFunctionTypes()
 			throws ParticleCompositionException;
+	
+	/**
+	 * Return user-defined target types
+	 * 
+	 * @return
+	 * @throws ParticleCompositionException
+	 */
+	public SortedSet<String> getAllOtherTargetTypes()
+			throws ParticleCompositionException;
+
 
 	/**
 	 * Return user-defined functionalizing entity types
