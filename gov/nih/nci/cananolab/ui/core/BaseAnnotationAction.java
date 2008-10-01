@@ -108,15 +108,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
 		request.setAttribute("updateDataTree", "true");
-//		InitSetup.getInstance()
-//				.getDefaultAndOtherLookupTypes(request, "reportCategories",
-//						"Report", "category", "otherCategory", true);
-//		InitSetup.getInstance()
-//			.getDefaultAndOtherLookupTypes(request, "publicationCategories",
-//				"Publication", "category", "otherCategory", true);
-//		InitSetup.getInstance()
-//			.getDefaultAndOtherLookupTypes(request, "publicationStatuses",
-//			"Publication", "status", "otherStatus", true);
 		return InitNanoparticleSetup.getInstance().getDataTree(particleBean,
 				request);
 	}
