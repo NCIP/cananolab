@@ -36,7 +36,7 @@
 						<option value="" />
 							<html:options name="targetTypes" />
 						<option value="other">
-							Other
+							[Other]
 						</option>
 					</html:select>
 				</td>
