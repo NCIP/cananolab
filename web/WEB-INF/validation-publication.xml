@@ -31,6 +31,22 @@
 					<var-value>^[a-zA-Z0-9\-\_\*\s]*$</var-value>
 				</var>
 			</field>
+			<field property="authorsStr" page="1" depends="mask">
+				<arg position="0" key="authorsStr" bundle="publication" />
+				<msg name="mask" key="authorsStr.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
+				</var>
+			</field>
+			<field property="keywordsStr" page="1" depends="mask">
+				<arg position="0" key="keywordsStr" bundle="publication" />
+				<msg name="mask" key="keywordsStr.invalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
+				</var>
+			</field>
 		</form>
 	</formset>
 </form-validation>
