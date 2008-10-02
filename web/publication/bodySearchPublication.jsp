@@ -113,7 +113,14 @@
 							<strong>Authors</strong>
 						</td>
 						<td class="rightLabel" colspan="5" valign="top">
-							<html:text property="authorsStr" size="100" />
+							<strong><html:textarea property="authorsStr"
+									cols="30" styleId="authorsStr" rows="3">
+							</html:textarea> </strong>
+							<br>
+							<em>case insensitive</em>
+							<br>
+							<em>words in quotes are searched together</em>
+							<br>
 						</td>
 					</tr>
 					
@@ -125,6 +132,11 @@
 							<strong><html:textarea property="keywordsStr"
 									cols="30" styleId="keywordsStr" rows="3">
 							</html:textarea> </strong>
+							<br>
+							<em>case insensitive</em>
+							<br>
+							<em>words in quotes are searched together</em>
+							<br>
 						</td>
 					</tr>
 				</table>
