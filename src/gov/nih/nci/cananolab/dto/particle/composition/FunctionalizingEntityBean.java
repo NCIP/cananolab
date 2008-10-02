@@ -275,7 +275,17 @@ public class FunctionalizingEntityBean {
 		domainEntity.setName(name);
 		domainEntity.setValue(value);
 		domainEntity.setValueUnit(valueUnit);
-		domainEntity.setActivationMethod(activationMethod);
+		
+		if (activationMethod != null
+				&& ((activationMethod.getActivationEffect() != null && activationMethod
+						.getActivationEffect().trim().length() > 0) || (activationMethod
+						.getType() != null && activationMethod.getType().trim()
+						.length() > 0))) {
+			domainEntity.setActivationMethod(activationMethod);
+		} else {
+			domainEntity.setActivationMethod(null);
+		}		
+		
 		if (domainEntity.getId() == null
 				|| domainEntity.getCreatedBy() != null
 				&& domainEntity.getCreatedBy().equals(
