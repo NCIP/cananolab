@@ -77,6 +77,21 @@
 							<br>
 						</td>
 					</tr>
+					<tr>
+						<td class="leftLabel" valign="top">
+							<strong>Publication Keywords</strong>
+						</td>
+						<td class="rightLabel" colspan="5" valign="top">
+							<strong><html:textarea property="publicationKeywordsStr"
+									cols="60" styleId="publicationKeywordsStr" rows="3">
+							</html:textarea> </strong>
+							<br>
+							<em>case insensitive</em>
+							<br>
+							<em>words in quotes are searched together</em>
+							<br>
+						</td>
+					</tr>
 				</table>
 				<br>
 
@@ -162,18 +177,8 @@
 									</c:forEach>
 								</html:select> </strong>
 						</td>
-					</tr>
+					</tr>		
 					
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Publication Keywords</strong>
-						</td>
-						<td class="rightLabel" colspan="5" valign="top">
-							<strong><html:textarea property="publicationKeywordsStr"
-									cols="30" styleId="publicationKeywordsStr" rows="3">
-							</html:textarea> </strong>
-						</td>
-					</tr>
 				</table>
 				<br>
 
