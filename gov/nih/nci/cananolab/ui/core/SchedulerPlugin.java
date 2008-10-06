@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -28,9 +27,9 @@ import org.quartz.impl.StdSchedulerFactory;
  * 
  */
 public class SchedulerPlugin implements PlugIn {
-	Logger logger = Logger.getLogger(SchedulerPlugin.class);	
+	Logger logger = Logger.getLogger(SchedulerPlugin.class);
 	private static Scheduler scheduler = null;
-	
+
 	public void init(ActionServlet actionServlet, ModuleConfig config)
 			throws ServletException {
 		System.out.println("Initializing Scheduler Plugin for Jobs...");
@@ -58,8 +57,9 @@ public class SchedulerPlugin implements PlugIn {
 			// Retrieve the scheduler from the factory
 			scheduler = factory.getScheduler();
 			if (scheduler != null) {
-				scheduler.start();				
-				initialiseJob(CaNanoLabConstants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS);
+				scheduler.start();
+				int interval=getIntervalInMinutes(context);
+				initialiseJob(interval);
 			}
 		} catch (SchedulerException e) {
 			logger.error("Error setting up scheduler", e);
@@ -70,6 +70,18 @@ public class SchedulerPlugin implements PlugIn {
 	public void destroy() {
 		System.out.println("Entering SchedulerPlugin.destroy()");
 		System.out.println("Exiting SchedulerPlugIn.destroy()");
+	}
+
+	private int getIntervalInMinutes(ServletContext context) {
+		Integer interval = 0;
+		try {
+			interval = new Integer(context
+					.getInitParameter("schedulerIntervalInMinutes"));
+		} catch (NumberFormatException e) {
+			// use default
+			interval = CaNanoLabConstants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
+		}
+		return interval;
 	}
 
 	public void initialiseJob(int intervalInMinutes) {
