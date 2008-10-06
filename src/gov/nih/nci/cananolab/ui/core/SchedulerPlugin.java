@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -58,8 +59,9 @@ public class SchedulerPlugin implements PlugIn {
 			scheduler = factory.getScheduler();
 			if (scheduler != null) {
 				scheduler.start();
-				int interval=getIntervalInMinutes(context);
-				initialiseJob(interval);
+				int schedulerInterval = getIntervalInMinutes(actionServlet
+						.getServletConfig());
+				initialiseJob(schedulerInterval);
 			}
 		} catch (SchedulerException e) {
 			logger.error("Error setting up scheduler", e);
@@ -72,10 +74,10 @@ public class SchedulerPlugin implements PlugIn {
 		System.out.println("Exiting SchedulerPlugIn.destroy()");
 	}
 
-	private int getIntervalInMinutes(ServletContext context) {
+	private int getIntervalInMinutes(ServletConfig servletConfig) {
 		Integer interval = 0;
 		try {
-			interval = new Integer(context
+			interval = new Integer(servletConfig
 					.getInitParameter("schedulerIntervalInMinutes"));
 		} catch (NumberFormatException e) {
 			// use default
