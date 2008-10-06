@@ -69,7 +69,6 @@ public class GridDiscoveryServiceJob implements Job {
 	 */
 	private Map<String, GridNodeBean> populateNewServices(Set<String> extantURLs) {
 		logger.debug("Refreshing Grid Nodes via discoverServices");
-System.out.println("refreshing discovery.....");
 		Map<String, GridNodeBean> map = null;
 
 		// auto-discover grid nodes and save in session
@@ -78,6 +77,8 @@ System.out.println("refreshing discovery.....");
 					CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
 					CaNanoLabConstants.DOMAIN_MODEL_NAME,
 					CaNanoLabConstants.DOMAIN_MODEL_VERSION, extantURLs);
+			System.out.println("refreshing discovery and found " + map.size()
+					+ " services.");
 		} catch (GridAutoDiscoveryException e) {
 			String err = "Error in discovering grid nodes from the index server";
 			logger.warn(err);
