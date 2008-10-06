@@ -27,6 +27,10 @@
 			<param-name>detail</param-name>
 			<param-value>3</param-value>
 		</init-param>
+		<init-param>
+			<param-name>schedulerIntervalInMinutes</param-name>
+			<param-value>30</param-value>
+		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 	<servlet>
