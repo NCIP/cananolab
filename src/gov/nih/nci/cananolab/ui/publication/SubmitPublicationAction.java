@@ -185,36 +185,25 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		
 		String particleId = request.getParameter("particleId");	
-		if (particleId!= null
-				&& particleId.trim().length() > 0
-				&& session.getAttribute("otherParticleNames")==null) {
-			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-			ParticleBean particleBean = sampleService
-					.findNanoparticleSampleById(particleId);
-			UserBean user = (UserBean) session.getAttribute("user");
-			InitNanoparticleSetup.getInstance().getOtherParticleNames(
-					request,
-					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample().getSource()
-							.getOrganizationName(), user);
-		}		
 		ActionForward forward = null;
 		
 		if (particleId != null && !particleId.equals("null")
 				&& particleId.trim().length() > 0) {
-			forward = mapping.findForward("particleSubmitReport");
+//			forward = mapping.findForward("particleSubmitReport");
+			forward = mapping.findForward("particleSubmitPublication");
 			session.setAttribute("docParticleId", particleId);
 		}else {
 			session.removeAttribute("docParticleId");
-			forward = mapping.findForward("publicationSubmitReport");
+			forward = mapping.findForward("publicationSubmitPublication");
+//			forward = mapping.findForward("publicationSubmitReport");
 		}
 		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		PublicationBean publicationBean = ((PublicationBean) theForm.get("file"));
-		
+//		PublicationBean publicationBean = ((PublicationBean) theForm.get("file"));
+		PublicationBean publicationBean = new PublicationBean();
 		Publication pub = (Publication) publicationBean.getDomainFile();
-//		pub.setCategory("report");
 		pub.setStatus("published");
+		pub.setCategory("report");
 		publicationBean.setDomainFile(pub);
 		theForm.set("file", publicationBean);
 		return forward;

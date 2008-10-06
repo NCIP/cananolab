@@ -66,7 +66,8 @@
 							<strong>Publication Type</strong>
 						</td>
 						<td class="label" valign="top">
-							<html:select styleId="category" property="category">
+							<html:select styleId="category" property="category"
+								onchange="javascript:setSearchReportFields('category');">
 								<option value="" />
 									<html:options name="publicationCategories" />
 							</html:select>
@@ -92,7 +93,7 @@
 							<html:text property="title" size="100" />
 						</td>
 					</tr>
-					<tr valign="top">									
+					<tr valign="top" id="pubMedRow">									
 						<td class="leftLabel" valign="top" colspan="2">
 							<strong>PubMed ID</strong>&nbsp;&nbsp;&nbsp;&nbsp;
 							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
