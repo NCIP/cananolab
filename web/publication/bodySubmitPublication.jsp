@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript" src="javascript/PublicationManager.js"></script>
 
 <c:set var="action" value="Submit" scope="request" />
 <c:if test="${param.dispatch eq 'setupUpdate'}">
@@ -49,10 +50,10 @@
 					<td colspan="2">
 						<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-							width="100%" align="center" summary="" border="0">
+							width="100%" align="center" summary="" border="0" id="pubTable">
 							<tbody>
 								<tr class="topBorder">
-									<td class="formTitle" colspan="4">
+									<td class="formTitle" colspan="8">
 										<div align="justify">
 											Publication Information
 										</div>
@@ -62,10 +63,10 @@
 									<td class="leftLabel">
 										<strong>Publication Type*</strong>
 									</td>
-									<td class="label">
+									<td class="label" colspan="3">
 										<html:select property="file.domainFile.category"
-											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category'); 
-													setupReport(submitPublicationForm, '${docParticleId}');"
+											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');
+														setReportFields('file.domainFile.category', 'file.domainFile.status');"
 											styleId="file.domainFile.category">
 											<option value=""></option>
 											<html:options name="publicationCategories" />
@@ -77,7 +78,7 @@
 									<td class="label">
 										<strong>Publication Status*</strong>
 									</td>
-									<td class="rightLabel">
+									<td class="rightLabel" colspan="3">
 										<html:select property="file.domainFile.status"
 											onchange="javascript:callPrompt('Publication status', 'file.domainFile.status');"
 											styleId="file.domainFile.status">
@@ -94,7 +95,7 @@
 										<strong>Research Category</strong>
 										<br>
 									</td>
-									<td class="rightLabel" colspan="3">
+									<td class="rightLabel" colspan="7">
 										<c:forEach var="data" items="${publicationResearchAreas}">
 											<html:multibox property="file.researchAreas">
 												${data}
@@ -103,13 +104,13 @@
 										&nbsp;
 									</td>
 								</tr>
-								<tr>
+								<tr id="pubMedRow" >
+
 									<td class="leftLabel" valign="top">
-										<strong>PubMed ID</strong>
+										<strong>PubMed ID</strong>&nbsp;
 									</td>
-									<td class="rightLabel" colspan="3">
-										<a
-											href="http://www.ncbi.nlm.nih.gov/pubmed/${file.domainFile.pubMedId}"
+									<td class="rightLabel" colspan="7">
+										<a href="http://www.ncbi.nlm.nih.gov/pubmed/${file.domainFile.pubMedId}"
 											target="_pubmed"> Click to look up PubMed Identifier</a>
 										<br>
 										<html:text property="file.domainFile.pubMedId" size="30"
@@ -121,30 +122,31 @@
 											journal, author, etc) are auto-populated by PubMed and become
 											read-only.</i>
 									</td>
+
 								</tr>
-								<tr>
+								<tr id="doiRow">
 									<td class="leftLabel" valign="top">
-										<strong>Digital Object ID</strong>
+										<strong>Digital Object ID</strong>&nbsp;
 									</td>
-									<td class="rightLabel" colspan="3">
+									<td class="rightLabel" colspan="7">
 										<html:text property="file.domainFile.digitalObjectId"
-											size="30" />
+											size="30" />&nbsp;
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel">
 										<strong>Title* </strong>
 									</td>
-									<td class="rightLabel" colspan="3">
+									<td class="rightLabel" colspan="7">
 										<html:text property="file.domainFile.title" size="80" />
 									</td>
 								</tr>
-								<tr>
+								<tr id="journalRow">
 									<td class="leftLabel">
-										<strong>Journal </strong>
+										<strong>Journal</strong>&nbsp;
 									</td>
-									<td class="rightLabel" colspan="3">
-										<html:text property="file.domainFile.journalName" size="80" />
+									<td class="rightLabel" colspan="7">
+										<html:text property="file.domainFile.journalName" size="80" />&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -152,10 +154,8 @@
 										<strong>Authors</strong>
 										<br>
 									</td>
-									<td class="label" colspan="2" valign="top">
-										<table class="smalltable" border="0">
-											<%--											<logic:notEmpty name="submitPublicationForm"
-														property="file.authors" > --%>
+									<td class="label" colspan="6" valign="top">
+										<table class="smalltable" border="0" width="100%">
 											<tr class="smallTableHeader">
 												<th>
 													First Name
@@ -187,13 +187,12 @@
 													</tr>
 												</logic:iterate>
 											</tr>
-											<%--											</logic:notEmpty> --%>
 										</table>
 										&nbsp;
 										<i>To remove author, please clear first name, last name
 											and initials fields</i>
 									</td>
-									<td class="rightLabel" colspan="2" valign="top">
+									<td class="rightLabel" valign="top">
 										<a href="#"
 											onclick="javascript:addComponent(submitPublicationForm, 'submitPublication', 'addAuthor'); return false;">
 											<span class="addLink2">Add Author</span> </a>
@@ -201,41 +200,55 @@
 								</tr>
 								<tr>
 									<td class="leftLabel">
-										<strong>Year of Publication </strong>
+										<strong>Year of Publication</strong>
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.year" size="17"
+										<html:text property="file.domainFile.year" size="5"
 											onkeydown="return filterInteger(event)" />
 									</td>
+									<td class="label" align="right" style="padding-left: 3em; padding-right: 0">
+										<strong id="volumeTitle">Volume</strong>&nbsp;
+									</td>
 									<td class="label">
-										<strong>Volume </strong>
+										<html:text property="file.domainFile.volume" size="8" styleId="volumeValue" />&nbsp;
+									</td>
+									<td class="label" align="right" valign="middle" style="padding-left: 5em; padding-right: 0;">
+										<strong id="spageTitle">Start Page</strong>&nbsp;
+									</td>
+									<td class="label">
+										<html:text property="file.domainFile.startPage" size="8"
+											onkeydown="return filterInteger(event)" styleId="spageValue" />&nbsp;
+									</td>
+									<td class="label" align="right">
+										<strong id="epageTitle" >End Page</strong>&nbsp;
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.volume" size="17" />
+										<html:text property="file.domainFile.endPage" size="8"
+											onkeydown="return filterInteger(event)" styleId="epageValue" />&nbsp;
 									</td>
 								</tr>
-								<tr>
-									<td class="leftLabel">
-										<strong>Start Page </strong>
-									</td>
-									<td class="label">
-										<html:text property="file.domainFile.startPage" size="17"
-											onkeydown="return filterInteger(event)" />
-									</td>
-									<td class="label">
-										<strong>End Page </strong>
-									</td>
-									<td class="rightLabel">
-										<html:text property="file.domainFile.endPage" size="17"
-											onkeydown="return filterInteger(event)" />
-									</td>
-								</tr>
+<%--								<tr>--%>
+<%--									<td class="leftLabel">--%>
+<%--										<strong>Start Page </strong>--%>
+<%--									</td>--%>
+<%--									<td class="label">--%>
+<%--										<html:text property="file.domainFile.startPage" size="17"--%>
+<%--											onkeydown="return filterInteger(event)" />--%>
+<%--									</td>--%>
+<%--									<td class="label">--%>
+<%--										<strong>End Page </strong>--%>
+<%--									</td>--%>
+<%--									<td class="rightLabel">--%>
+<%--										<html:text property="file.domainFile.endPage" size="17"--%>
+<%--											onkeydown="return filterInteger(event)" />--%>
+<%--									</td>--%>
+<%--								</tr>--%>
 								<tr>
 									<td class="leftLabel" valign="top">
 										<strong>Keywords<br>
 										</strong><i>(one keyword per line)</i>
 									</td>
-									<td class="rightLabel" colspan="3">
+									<td class="rightLabel" colspan="7">
 										<html:textarea property="file.keywordsStr" rows="3" cols="60" />
 									</td>
 								</tr>
@@ -243,7 +256,7 @@
 									<td class="leftLabel" valign="top">
 										<strong>Description</strong>
 									</td>
-									<td class="rightLabel" colspan="3">
+									<td class="rightLabel" colspan="7">
 										<html:textarea property="file.domainFile.description" rows="3"
 											cols="60" />
 									</td>
