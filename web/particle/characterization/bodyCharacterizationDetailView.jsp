@@ -92,7 +92,7 @@
 							Description
 						</th>
 						<td class="rightLabel">
-							${characterizationForm.map.achar.description}
+							${characterizationForm.map.achar.description}&nbsp;
 						</td>
 					</tr>
 				</c:if>
