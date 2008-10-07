@@ -46,7 +46,7 @@
 									</html:option>
 									<c:if test="${! empty allGridNodes}">
 										<html:options collection="allGridNodes"
-											property="value.hostName" labelProperty="value.hostName" />
+											property="hostName" labelProperty="hostName" />
 									</c:if>
 								</html:select> </strong>
 						</td>
