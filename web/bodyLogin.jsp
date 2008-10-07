@@ -56,8 +56,8 @@
 													Local
 												</option>
 												<c:forEach var="location" items="${allGridNodes}">
-													<option value="${location.value.hostName}">
-														${location.value.hostName}
+													<option value="${location.hostName}">
+														${location.hostName}
 													</option>
 												</c:forEach>
 											</select>
