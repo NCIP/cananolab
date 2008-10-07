@@ -21,7 +21,6 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.Map;
@@ -42,19 +41,7 @@ public class WelcomeAction extends AbstractBaseAction {
 			throws Exception {
 		saveToken(request); // save token to avoid back and refresh on the login
 		// page.
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
-				.getAllGridNodes();
-		if (gridNodeMap == null) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.grid.discovery.none",
-					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-		}
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodeMap);
+		InitSetup.getInstance().getGridNodesInContext(request);
 		ForwardAction forwardAction = new ForwardAction();
 		return forwardAction.execute(mapping, form, request, response);
 	}
