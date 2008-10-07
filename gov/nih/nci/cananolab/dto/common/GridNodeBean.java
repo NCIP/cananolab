@@ -68,4 +68,17 @@ public class GridNodeBean {
 	public void setNodeType(NodeType nodeType) {
 		this.nodeType = nodeType;
 	}
+	
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof GridNodeBean) {
+			GridNodeBean node = (GridNodeBean) obj;
+			String url = node.getAddress();
+
+			if (url.equals(this.getAddress())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
 }
