@@ -12,11 +12,11 @@ import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
+import gov.nih.nci.cananolab.ui.core.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -56,7 +56,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String texts = "";
 		String[] searchLocations = new String[0];
 		String publicationKeywordsStr = "";
-		
 
 		if (theForm != null) {
 			nanoparticleEntityTypes = (String[]) theForm
@@ -67,7 +66,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			characterizations = (String[]) theForm.get("characterizations");
 			texts = ((String) theForm.get("text")).trim();
 			searchLocations = (String[]) theForm.get("searchLocations");
-			publicationKeywordsStr = ((String) theForm.get("publicationKeywordsStr")).trim();
+			publicationKeywordsStr = ((String) theForm
+					.get("publicationKeywordsStr")).trim();
 		}
 
 		String gridNodeHostStr = (String) request
@@ -153,7 +153,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 					otherFunctionalizingTypes.toArray(new String[0]),
 					functionClassNames.toArray(new String[0]),
 					otherFunctionTypes.toArray(new String[0]), charaClassNames,
-					words,publicationKeywordsStr);
+					words, publicationKeywordsStr);
 			for (ParticleBean particle : particles) {
 				particle.setLocation(location);
 			}
@@ -190,19 +190,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
-				.getAllGridNodes();
-		if (gridNodeMap == null) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.grid.discovery.none",
-					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-		}
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodeMap);
+		InitSetup.getInstance().getGridNodesInContext(request);
 
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request

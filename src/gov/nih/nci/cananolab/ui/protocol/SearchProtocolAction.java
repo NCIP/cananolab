@@ -5,12 +5,12 @@ import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -114,19 +114,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
-				.getAllGridNodes();
-		if (gridNodeMap == null) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.grid.discovery.none",
-					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-		}
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodeMap);
+		InitSetup.getInstance().getGridNodesInContext(request);
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
