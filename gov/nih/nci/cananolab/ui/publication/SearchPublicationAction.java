@@ -7,12 +7,12 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
+import gov.nih.nci.cananolab.ui.core.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -249,19 +249,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
-				.getAllGridNodes();
-		if (gridNodeMap == null) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"message.grid.discovery.none",
-					CaNanoLabConstants.DOMAIN_MODEL_NAME);
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-		}
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodeMap);
+		InitSetup.getInstance().getGridNodesInContext(request);;
 
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
