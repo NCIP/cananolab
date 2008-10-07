@@ -2,13 +2,15 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.exception.GridAutoDiscoveryException;
 import gov.nih.nci.cananolab.exception.GridDownException;
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
+import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -319,16 +321,35 @@ public class InitSetup {
 
 	public String getGridServiceUrl(HttpServletRequest request,
 			String gridHostName) throws Exception {
-		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-		Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
-				.getAllGridNodes();
-		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodeMap);
-		String serviceUrl = gridNodeMap.get(gridHostName).getAddress();
-		if (serviceUrl == null) {
+		List<GridNodeBean> remoteNodes = getGridNodesInContext(request);
+		GridNodeBean theNode = GridService.getGridNodeByHostName(remoteNodes,
+				gridHostName);
+		if (theNode == null) {
 			throw new GridDownException("Grid node " + gridHostName
 					+ " is not available at this time.");
 		}
-		return serviceUrl;
+		return theNode.getAddress();
+	}
+
+	public List<GridNodeBean> getGridNodesInContext(HttpServletRequest request)
+			throws Exception {
+		URL localURL = new URL(request.getRequestURL().toString());
+		String localGridURL = localURL.getProtocol() + "://"
+				+ localURL.getHost() + ":" + localURL.getPort() + "/"
+				+ CaNanoLabConstants.GRID_SERVICE_PATH;
+		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
+		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
+		if (gridNodes.isEmpty()) {
+			throw new GridAutoDiscoveryException();
+		}
+		// remove local grid from the list
+		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
+				localGridURL);
+		if (localGrid != null) {
+			gridNodes.remove(localGrid);
+		}
+		request.getSession().getServletContext().setAttribute("allGridNodes",
+				gridNodes);
+		return gridNodes;
 	}
 }
