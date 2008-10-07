@@ -334,17 +334,15 @@ public class InitSetup {
 	public List<GridNodeBean> getGridNodesInContext(HttpServletRequest request)
 			throws Exception {
 		URL localURL = new URL(request.getRequestURL().toString());
+		int port = (localURL.getPort() == -1) ? 80 : localURL.getPort();
 		String localGridURL = localURL.getProtocol() + "://"
-				+ localURL.getHost() + ":" + localURL.getPort() + "/"
+				+ localURL.getHost() + ":" + port + "/"
 				+ CaNanoLabConstants.GRID_SERVICE_PATH;
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
-		if (gridNodes.isEmpty()) {
-			throw new GridAutoDiscoveryException("No remote grid nodes found");
-		}
-		// remove local grid from the list
 		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
 				localGridURL);
+
 		if (localGrid != null) {
 			gridNodes.remove(localGrid);
 		}
