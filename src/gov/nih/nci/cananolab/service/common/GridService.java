@@ -43,12 +43,15 @@ public class GridService {
 					indexServiceURL);
 			returnedServices = discoveryClient
 					.discoverDataServicesByDomainModel(domainModelName);
-			for (EndpointReferenceType returnedService : returnedServices) {
-				// obtain the domain model version
-				DomainModel domainModel = MetadataUtils
-						.getDomainModel(returnedService);
-				if (domainModel.getProjectVersion().equals(domainModelVersion)) {
-					services.add(returnedService);
+			if (returnedServices != null) {
+				for (EndpointReferenceType returnedService : returnedServices) {
+					// obtain the domain model version
+					DomainModel domainModel = MetadataUtils
+							.getDomainModel(returnedService);
+					if (domainModel.getProjectVersion().equals(
+							domainModelVersion)) {
+						services.add(returnedService);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -79,12 +82,15 @@ public class GridService {
 					indexServiceURL);
 			returnedServices = discoveryClient
 					.discoverDataServicesByDomainModel(domainModelName);
-			for (EndpointReferenceType returnedService : returnedServices) {
-				// obtain the domain model version
-				DomainModel domainModel = MetadataUtils
-						.getDomainModel(returnedService);
-				if (domainModel.getProjectVersion().equals(domainModelVersion)) {
-					services.add(returnedService);
+			if (returnedServices != null) {
+				for (EndpointReferenceType returnedService : returnedServices) {
+					// obtain the domain model version
+					DomainModel domainModel = MetadataUtils
+							.getDomainModel(returnedService);
+					if (domainModel.getProjectVersion().equals(
+							domainModelVersion)) {
+						services.add(returnedService);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -179,5 +185,4 @@ public class GridService {
 		}
 		return theNode;
 	}
-
 }
