@@ -103,4 +103,18 @@ ALTER TABLE canano.author_publication
 ADD CONSTRAINT FK_author_publication_author FOREIGN KEY (author_pk_id) REFERENCES canano.author (author_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
 ADD CONSTRAINT FK_author_publication_publication FOREIGN KEY (publication_pk_id) REFERENCES canano.publication (publication_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
+
+-- fix errors in functionalizing_entity and activation_method tables
+update canano.functionalizing_entity fe, canano.activation_method am
+set fe.activation_method_pk_id = null
+where am.activation_method_pk_id = fe.activation_method_pk_id
+and ( am.type = null or am.type = ' ' )
+and ( am.activation_effect = null or am.activation_effect = ' ' )
+;
+
+delete from activation_method
+where ( type = null or type = ' ' )
+and (activation_effect = null or activation_effect = ' ' )
+;
+
 -- End of script
