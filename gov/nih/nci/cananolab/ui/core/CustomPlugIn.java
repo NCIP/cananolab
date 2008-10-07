@@ -1,13 +1,11 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.exception.GridAutoDiscoveryException;
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -81,7 +79,7 @@ public class CustomPlugIn implements PlugIn {
 
 			InitSecuritySetup.getInstance().createDefaultCSMGroups();
 
-			setupInitialGridNodes(appContext);
+			setupInitialGridNodes();
 		} catch (Exception e) {
 			this.logger.error("Servlet initialization error", e);
 		}
@@ -94,19 +92,11 @@ public class CustomPlugIn implements PlugIn {
 		System.out.println("Exiting CustomPlugIn.destroy()");
 	}
 
-	// discover grid nodes during start-up time and saves the grid nodes in
-	// application context
-	private void setupInitialGridNodes(ServletContext appContext) {
-		try {
-			GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
-			Map<String, GridNodeBean> gridNodeMap = gridDiscoveryJob
-					.getAllGridNodes();
-			if (gridNodeMap == null) {
-				throw new GridAutoDiscoveryException();
-			}
-			appContext.setAttribute("allGridNodes", gridNodeMap);
-		} catch (Exception e) {
-			logger.error(e);
-		}
+	// discover grid nodes during start-up time and populates the grid nodes in
+	// scheduler
+	private void setupInitialGridNodes() {
+		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
+		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
+		logger.info("Found " + gridNodes + " grid nodes at start up.");
 	}
 }
