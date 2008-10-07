@@ -127,8 +127,7 @@
 			value="/WEB-INF/tiles-defs.xml,  												   
                    /WEB-INF/tiles-defs-protocol.xml,
                    /WEB-INF/tiles-defs-particle.xml,
-                   /WEB-INF/tiles-defs-publication.xml,
-                   /WEB-INF/tiles-defs-report.xml" />
+                   /WEB-INF/tiles-defs-publication.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
 		<set-property property="definitions-parser-validate"
@@ -139,8 +138,7 @@
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
 			      /WEB-INF/validation-particle.xml,
-			      /WEB-INF/validation-publication.xml,              
-			      /WEB-INF/validation-report.xml, 			      
+			      /WEB-INF/validation-publication.xml,	      
 			      /WEB-INF/validation-protocol.xml, 
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
