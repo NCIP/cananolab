@@ -10,10 +10,15 @@
 <c:if test="${param.dispatch eq 'setupUpdate'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-<%--<c:set var="particleId" value="" />--%>
-<%--<c:if test="${!empty param.particleId}">--%>
-<%--	<c:set var="particleId" value="${param.particleId}" scope="request"/>--%>
-<%--</c:if>--%>
+<c:choose>
+	<c:when
+		test="${submitPublicationForm.map.file.domainFile.category eq 'report'}">
+		<c:set var="reportStyle" value="display:none" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="reportStyle" value="" />
+	</c:otherwise>
+</c:choose>
 <html:form action="/submitPublication" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
@@ -104,7 +109,7 @@
 										&nbsp;
 									</td>
 								</tr>
-								<tr id="pubMedRow" >
+								<tr id="pubMedRow" style="${reportStyle }">
 
 									<td class="leftLabel" valign="top">
 										<strong>PubMed ID</strong>&nbsp;
@@ -124,7 +129,7 @@
 									</td>
 
 								</tr>
-								<tr id="doiRow">
+								<tr id="doiRow" style="${reportStyle }">
 									<td class="leftLabel" valign="top">
 										<strong>Digital Object ID</strong>&nbsp;
 									</td>
@@ -141,7 +146,7 @@
 										<html:text property="file.domainFile.title" size="80" />
 									</td>
 								</tr>
-								<tr id="journalRow">
+								<tr id="journalRow" style="${reportStyle }">
 									<td class="leftLabel">
 										<strong>Journal</strong>&nbsp;
 									</td>
@@ -207,49 +212,34 @@
 											onkeydown="return filterInteger(event)" />
 									</td>
 									<td class="label" align="right" style="padding-left: 3em; padding-right: 0">
-										<strong id="volumeTitle">Volume</strong>&nbsp;
+										<strong id="volumeTitle" style="${reportStyle }">Volume</strong>&nbsp;
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.volume" size="8" styleId="volumeValue" />&nbsp;
+										<html:text property="file.domainFile.volume" size="8"
+											 styleId="volumeValue" style="${reportStyle }"/>&nbsp;
 									</td>
 									<td class="label" align="right" valign="middle" style="padding-left: 5em; padding-right: 0;">
-										<strong id="spageTitle">Start Page</strong>&nbsp;
+										<strong id="spageTitle" style="${reportStyle }">Start Page</strong>&nbsp;
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.startPage" size="8"
+										<html:text property="file.domainFile.startPage" size="8" style="${reportStyle }"
 											onkeydown="return filterInteger(event)" styleId="spageValue" />&nbsp;
 									</td>
 									<td class="label" align="right">
-										<strong id="epageTitle" >End Page</strong>&nbsp;
+										<strong id="epageTitle" style="${reportStyle }">End Page</strong>&nbsp;
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.endPage" size="8"
+										<html:text property="file.domainFile.endPage" size="8" style="${reportStyle }"
 											onkeydown="return filterInteger(event)" styleId="epageValue" />&nbsp;
 									</td>
 								</tr>
-<%--								<tr>--%>
-<%--									<td class="leftLabel">--%>
-<%--										<strong>Start Page </strong>--%>
-<%--									</td>--%>
-<%--									<td class="label">--%>
-<%--										<html:text property="file.domainFile.startPage" size="17"--%>
-<%--											onkeydown="return filterInteger(event)" />--%>
-<%--									</td>--%>
-<%--									<td class="label">--%>
-<%--										<strong>End Page </strong>--%>
-<%--									</td>--%>
-<%--									<td class="rightLabel">--%>
-<%--										<html:text property="file.domainFile.endPage" size="17"--%>
-<%--											onkeydown="return filterInteger(event)" />--%>
-<%--									</td>--%>
-<%--								</tr>--%>
 								<tr>
 									<td class="leftLabel" valign="top">
 										<strong>Keywords<br>
 										</strong><i>(one keyword per line)</i>
 									</td>
 									<td class="rightLabel" colspan="7">
-										<html:textarea property="file.keywordsStr" rows="3" cols="60" />
+										<html:textarea property="file.keywordsStr" rows="3" cols="70" />
 									</td>
 								</tr>
 								<tr>
@@ -258,7 +248,7 @@
 									</td>
 									<td class="rightLabel" colspan="7">
 										<html:textarea property="file.domainFile.description" rows="3"
-											cols="60" />
+											cols="70" />
 									</td>
 								</tr>
 							</tbody>
