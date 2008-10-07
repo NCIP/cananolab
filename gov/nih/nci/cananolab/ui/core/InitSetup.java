@@ -340,7 +340,7 @@ public class InitSetup {
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		if (gridNodes.isEmpty()) {
-			throw new GridAutoDiscoveryException();
+			throw new GridAutoDiscoveryException("No remote grid nodes found.");
 		}
 		// remove local grid from the list
 		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
