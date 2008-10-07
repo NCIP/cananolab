@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceCh
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
@@ -43,19 +44,20 @@ public class CaNanoLabComparators {
 
 	public static class SortableNameComparator implements Comparator<String> {
 		public int compare(String name1, String name2) {
-			
+
 			// in case of sample name, container name and aliquot name
-			if (name1==null) return -1;
-			if (name2==null) return 1;
-			
+			if (name1 == null)
+				return -1;
+			if (name2 == null)
+				return 1;
+
 			name1 = name1.trim();
 			name2 = name2.trim();
-			
-//			if (name1.matches("\\D+(-(\\d+)(\\D+)*)+")
-//					&& name2.matches("\\D+(-(\\d+)(\\D+)*)+")) {
-			
-			if (name1.matches("\\D+(-.+)+")
-					&& name2.matches("\\D+(-.+)+")) {
+
+			// if (name1.matches("\\D+(-(\\d+)(\\D+)*)+")
+			// && name2.matches("\\D+(-(\\d+)(\\D+)*)+")) {
+
+			if (name1.matches("\\D+(-.+)+") && name2.matches("\\D+(-.+)+")) {
 				String[] toks1 = name1.split("-");
 				String[] toks2 = name2.split("-");
 				int num = 0;
@@ -64,7 +66,7 @@ public class CaNanoLabComparators {
 				} else {
 					num = toks2.length;
 				}
-				
+
 				for (int i = 0; i < num; i++) {
 					String str1 = "0", str2 = "0";
 					if (i < toks1.length) {
@@ -299,12 +301,19 @@ public class CaNanoLabComparators {
 			}
 		}
 	}
-	
+
 	public static class PublicationBeanTitleComparator implements
 			Comparator<PublicationBean> {
 		public int compare(PublicationBean file1, PublicationBean file2) {
 			return file1.getDomainFile().getTitle().compareTo(
 					file2.getDomainFile().getTitle());
+		}
+	}
+
+	public static class GridNodeHostNameComparator implements
+			Comparator<GridNodeBean> {
+		public int compare(GridNodeBean node1, GridNodeBean node2) {
+			return node1.getHostName().compareTo(node2.getHostName());
 		}
 	}
 

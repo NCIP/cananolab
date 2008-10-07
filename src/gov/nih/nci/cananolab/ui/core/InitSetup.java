@@ -6,12 +6,14 @@ import gov.nih.nci.cananolab.exception.GridAutoDiscoveryException;
 import gov.nih.nci.cananolab.exception.GridDownException;
 import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -346,6 +348,9 @@ public class InitSetup {
 		if (localGrid != null) {
 			gridNodes.remove(localGrid);
 		}
+		Collections.sort(gridNodes,
+				new CaNanoLabComparators.GridNodeHostNameComparator());
+
 		request.getSession().getServletContext().setAttribute("allGridNodes",
 				gridNodes);
 		return gridNodes;
