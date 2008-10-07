@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.service.common.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.ServletConfig;
