@@ -220,7 +220,7 @@
 										
 									</td>
 									<td class="rightLabel" colspan="7">
-										<html:textarea property="file.keywordsStr" rows="3" cols="60" />
+										<html:textarea property="file.keywordsStr" rows="3" cols="70" />
 									</td>
 								</tr>
 								<tr>
@@ -229,7 +229,7 @@
 									</td>
 									<td class="rightLabel" colspan="7">
 										<html:textarea property="file.domainFile.description" rows="3"
-											cols="60" />
+											cols="70" />
 									</td>
 								</tr>
 							</tbody>
