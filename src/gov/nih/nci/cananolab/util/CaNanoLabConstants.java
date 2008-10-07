@@ -181,4 +181,7 @@ public class CaNanoLabConstants {
 	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 20;
 
 	public static final String DOMAIN_MODEL_VERSION = "1.4";
+	
+	public static final String GRID_SERVICE_PATH="wsrf-canano/services/cagrid/CaNanoLabService";
+
 }
