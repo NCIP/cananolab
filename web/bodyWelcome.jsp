@@ -78,7 +78,7 @@
 						shape="rect" coords="475,155,620,420" alt="rectangle" />
 				</c:if>
 			</map>
-			<img align="middle" src="images/Home_Page_Workflow_1.4.1.gif"
+			<img align="middle" src="images/Home_Page_Workflow.gif"
 				alt="caNanoLab flowchart" usemap="#funcMap" border="0">
 			<br>
 			<br>
