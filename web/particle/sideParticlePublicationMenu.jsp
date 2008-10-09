@@ -13,7 +13,7 @@
 <c:choose>
 	<c:when
 		test="${hasPublicationData eq 'true' || (canCreateNanoparticle eq 'true' && location eq 'local')}">
-		<c:url var="submitUrl" value="chooseParticlePublication.do">
+		<c:url var="submitUrl" value="submitPublication.do">
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="submitType" value="publications" />
 			<c:param name="page" value="0" />

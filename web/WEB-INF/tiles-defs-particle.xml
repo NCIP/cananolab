@@ -164,10 +164,6 @@
 	</definition>
 
 	<!-- definition for the view publication page -->
-	<definition name="particle.choosePublication"
-		extends="particle.annotationHome">
-		<put name="calabContent" value="/publication/bodyChoosePublication.jsp" />
-	</definition>
 	<definition name="particle.submitPublication"
 		extends="particle.annotationHome">
 		<put name="calabContent" value="/publication/bodySubmitPublication.jsp" />
