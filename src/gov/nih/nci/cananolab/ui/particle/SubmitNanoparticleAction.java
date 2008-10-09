@@ -122,6 +122,17 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				location);
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupDataTree(particleSampleBean, request);
+		
+		//for display "back" button on the publication detail view
+		String particleId = request.getParameter("particleId");
+		HttpSession session = request.getSession();
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
+			session.setAttribute("docParticleId", particleId);
+		}else {
+			session.removeAttribute("docParticleId");
+		}
+		
 		return mapping.findForward("view");
 	}
 	
@@ -130,6 +141,8 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		setupLookups(request, null);
+		
+		
 		return mapping.getInputForward();
 	}
 
