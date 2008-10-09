@@ -15,11 +15,6 @@
 		<put name="searchLink" value="searchPublication.do?dispatch=setup" />
 	</definition>
 	
-	<definition name="publication.choosePublication" extends="calab.home">
-		<put name="calabContent" value="/publication/bodyChoosePublication.jsp" />
-		<put name="menu" value="publications" />		
-	</definition>
-	
 	<definition name="publication.message" extends="calab.home">
 		<put name="calabContent" value="/bodyMessage.jsp?bundle=publication" />
 		<put name="menu" value="publications" />
