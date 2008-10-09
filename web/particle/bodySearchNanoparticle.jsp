@@ -110,7 +110,7 @@
 						</td>
 						<td class="rightLabel" colspan="5">
 							<html:text property="particleSource" size="50" />
-							<strong>*</strong> for searching wildcards
+							<em>* for searching wildcards</em>
 						</td>
 					</tr>
 					<tr>
