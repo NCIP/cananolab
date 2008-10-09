@@ -31,14 +31,9 @@
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
-						<td class="formTitle" colspan="2">
+						<td class="formTitle" colspan="6">
 							<div align="justify">
 								Search Criteria
-							</div>
-						</td>
-						<td class="formTitle" colspan="4">
-							<div align="justify">
-								* for searching wildcards
 							</div>
 						</td>
 					</tr>
@@ -91,6 +86,7 @@
 						</td>
 						<td class="rightLabel" colspan="5">
 							<html:text property="title" size="100" />
+							<br><em>* for searching wildcards</em>
 						</td>
 					</tr>
 					<tr valign="top" id="pubMedRow">									
@@ -160,6 +156,7 @@
 						</td>
 						<td class="rightLabel" colspan="5" valign="top">
 							<html:text property="nanoparticleName" size="20" />
+							<em>* for searching wildcards</em>
 						</td>
 					</tr>
 					<tr>
