@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -115,8 +116,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList,
-			String publicationKeywordsStr)
+			String[] characterizationClassNames, String[] wordList)
 			throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
@@ -466,5 +466,49 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			AuthorizationService authService, ParticleBean particleSampleBean,
 			String[] visibleGroups) throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
+	}
+	
+	public List<PublicationBean> findPublicationsByParticleId(String particleId)
+			throws ParticleException {		
+		try {
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(particleId);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			NanoparticleSample particleSample = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				particleSample = (NanoparticleSample) obj;
+				loadPublicationsForParticleSample(particleSample);
+			}			
+			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
+			if (particleSample!=null) {
+				PublicationServiceRemoteImpl publicationRemoteService = 
+					new PublicationServiceRemoteImpl(serviceUrl);
+				for (Publication publication: particleSample.getPublicationCollection()) {
+					publicationRemoteService.loadAuthorsForPublication(publication);
+					publicationCollection.add(new PublicationBean(publication));
+				}
+			}				
+			return publicationCollection;
+		} catch (RemoteException e) {
+			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+		} catch (Exception e) {
+			String err = "Problem finding the remote publication collection by particle id: "
+					+ particleId;
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
 	}
 }

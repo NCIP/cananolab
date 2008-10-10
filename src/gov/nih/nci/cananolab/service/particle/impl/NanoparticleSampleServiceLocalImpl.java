@@ -1,12 +1,14 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -180,8 +182,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList, 
-			String publicationKeywordsStr)
+			String[] characterizationClassNames, String[] wordList)
 			throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
@@ -192,8 +193,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 							functionalizingEntityClassNames,
 							otherFunctionalizingEntityTypes,
 							functionClassNames, otherFunctionTypes,
-							characterizationClassNames, wordList,
-							publicationKeywordsStr);
+							characterizationClassNames, wordList);
 			Collections.sort(particleSamples,
 					new CaNanoLabComparators.NanoparticleSampleComparator());
 			for (NanoparticleSample particleSample : particleSamples) {
@@ -803,5 +803,39 @@ public class NanoparticleSampleServiceLocalImpl implements
 			return false;
 		}
 	}
+	
+	
+	public List<PublicationBean> findPublicationsByParticleId(String particleId)
+			throws ParticleException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+			.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					NanoparticleSample.class).add(
+					Property.forName("id").eq(new Long(particleId)));		
+			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+			crit.setFetchMode("publicationCollection.authorCollection", FetchMode.JOIN);
+			crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			
+			List result = appService.query(crit);
+			NanoparticleSample particleSample = null;
+			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
+			if (!result.isEmpty()) {
+				particleSample = (NanoparticleSample) result.get(0);			
+			}
+			if (particleSample!=null) {
+				for (Publication publication: particleSample.getPublicationCollection()) {
+					//do not load particle sample in PublicationBean
+					publicationCollection.add(new PublicationBean(publication, false));
+				}
+			}		
+			return publicationCollection;	
+		} catch (Exception e) {
+			String err = "Problem finding publication collections with the given particle ID.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
+
 
 }
