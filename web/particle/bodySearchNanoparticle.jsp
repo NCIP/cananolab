@@ -64,7 +64,7 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Search by nanoparticle characterization keywords
+							<strong>Search by nanoparticle characterization keywords, publication keywords
 								and text in characterization descriptions</strong>
 							<br>
 						</td>
@@ -77,24 +77,9 @@
 							<br>
 						</td>
 					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Publication Keywords</strong>
-						</td>
-						<td class="rightLabel" colspan="5" valign="top">
-							<strong><html:textarea property="publicationKeywordsStr"
-									cols="60" styleId="publicationKeywordsStr" rows="3">
-							</html:textarea> </strong>
-							<br>
-							<em>case insensitive</em>
-							<br>
-							<em>words in quotes are searched together</em>
-							<br>
-						</td>
-					</tr>
+
 				</table>
 				<br>
-
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" summary="">
 					<tr class="topBorder">
