@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.particle.helper;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
@@ -12,6 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -51,8 +53,7 @@ public class NanoparticleSampleServiceHelper {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList,
-			String publicationKeywordsStr)
+			String[] characterizationClassNames, String[] wordList)
 			throws Exception {
 		List<NanoparticleSample> particles = new ArrayList<NanoparticleSample>();
 
@@ -177,38 +178,19 @@ public class NanoparticleSampleServiceHelper {
 							summaryCrit2);
 					disjunction.add(summaryCrit);
 				}
+				
+				//publication keywords
+				crit.createAlias("publicationCollection", "pub1",
+						CriteriaSpecification.LEFT_JOIN);
+				crit.createAlias("pub1.keywordCollection", "keyword3",
+						CriteriaSpecification.LEFT_JOIN);
+				for (String keyword : upperKeywords) {
+					Criterion keywordCrit3 = Restrictions.like("keyword3.name",
+							keyword, MatchMode.ANYWHERE);
+					disjunction.add(keywordCrit3);
+				}	
 				crit.add(disjunction);
 			}
-		}
-		
-		
-		//publication keywords
-		String publicationKeywordsArray[] = null;
-		if (publicationKeywordsStr != null && publicationKeywordsStr.length() > 0) {
-			List<String> keywordsList = StringUtils.parseToWords(publicationKeywordsStr);
-			if (keywordsList != null) {
-				publicationKeywordsArray = new String[keywordsList.size()];
-				keywordsList.toArray(publicationKeywordsArray);
-			}
-		}		
-		if (publicationKeywordsArray != null && publicationKeywordsArray.length > 0) {
-			// turn words into upper case before searching publication keywords
-			String[] upperKeywords = new String[publicationKeywordsArray.length];
-			for (int i = 0; i < publicationKeywordsArray.length; i++) {
-				upperKeywords[i] = publicationKeywordsArray[i].toUpperCase();
-			}
-			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias(
-					"publicationCollection",
-					"pub1", CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("pub1.keywordCollection", "keyword1",
-					CriteriaSpecification.LEFT_JOIN);
-			for (String keyword : upperKeywords) {
-				Criterion keywordCrit1 = Restrictions.like("keyword1.name",
-						keyword, MatchMode.ANYWHERE);
-				disjunction.add(keywordCrit1);
-			}
-			crit.add(disjunction);
 		}
 		
 		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in caDSR
@@ -450,7 +432,7 @@ public class NanoparticleSampleServiceHelper {
 		}
 		return particleSample;
 	}
-
+	
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws Exception {
 		NanoparticleSample particleSample = null;
