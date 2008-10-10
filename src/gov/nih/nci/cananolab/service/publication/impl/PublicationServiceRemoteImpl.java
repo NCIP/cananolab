@@ -190,7 +190,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	}
 	
 	
-	private void loadAuthorsForPublication(Publication publication)
+	public void loadAuthorsForPublication(Publication publication)
 		throws PublicationException {
 		try {
 			CQLQuery query = new CQLQuery();
