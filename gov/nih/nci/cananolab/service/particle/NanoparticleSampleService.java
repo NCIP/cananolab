@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.particle;
 
 import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -64,8 +65,7 @@ public interface NanoparticleSampleService {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList,
-			String publicationKeywordsStr)
+			String[] characterizationClassNames, String[] wordList)
 			throws ParticleException;
 
 	public ParticleBean findNanoparticleSampleById(String particleId)
@@ -104,5 +104,8 @@ public interface NanoparticleSampleService {
 	
 	public void assignAssociatedPublicVisibility(AuthorizationService authService,
 			ParticleBean particleSampleBean, String[] visibleGroups)
+		throws Exception;
+	
+	public List<PublicationBean> findPublicationsByParticleId(String particleId)
 		throws Exception;
 }
