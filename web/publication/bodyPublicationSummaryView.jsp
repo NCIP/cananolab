@@ -84,7 +84,8 @@
 						Year
 					</th>
 				</tr>
-				<c:forEach var="pubObj" items="${searchPublicationForm.map.particleSampleBean.domainParticleSample.publicationCollection}">
+				<c:forEach var="pubBean" items="${publicationCollection}">
+				<c:set var="pubObj" value="${pubBean.domainFile}"/>
 				<tr>
 					<td class="leftLabel">
 						<c:url var="pubUrl" value="submitPublication.do">
@@ -115,9 +116,9 @@
 					${pubObj.title}&nbsp;
 					</td>
 					<td class="label">
-						<c:if test="${!empty pubObj.authorCollection}">
+						<c:if test="${!empty pubBean.authors}">
 							<c:forEach var="author"
-								items="${pubObj.authorCollection}">
+								items="${pubBean.authors}">
 									${author.lastName};
 							</c:forEach>
 						</c:if>		
