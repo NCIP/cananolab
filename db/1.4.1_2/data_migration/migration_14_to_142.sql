@@ -65,7 +65,6 @@ ALTER TABLE canano.common_lookup
  
  
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','peer review article');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review article');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','book chapter');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','editorial');
