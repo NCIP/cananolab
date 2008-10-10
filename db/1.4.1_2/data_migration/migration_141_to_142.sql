@@ -117,4 +117,15 @@ where ( type = null or type = ' ' )
 and (activation_effect = null or activation_effect = ' ' )
 ;
 
+-- delete "review-article" from publication category
+update canano.publication
+set category = 'review'
+where category = 'review article'
+;
+
+delete from canano.common_lookup
+where value = 'review article'
+;
+
+
 -- End of script
