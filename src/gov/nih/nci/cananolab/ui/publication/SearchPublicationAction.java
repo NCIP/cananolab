@@ -8,6 +8,9 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
@@ -366,16 +369,20 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 	public ActionForward setupPublicationView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
-		ParticleBean particleSampleBean = setupParticle(theForm, request,
-				location);
-		theForm.set("particleSampleBean", particleSampleBean);
-
-		HttpSession session = request.getSession();
-		session.setAttribute("particleSampleBean", particleSampleBean);
-		setupDataTree(particleSampleBean, request);
 		String particleId = request.getParameter("particleId");
+		NanoparticleSampleService service = null;
+		if (location.equals("local")) {
+			service = new NanoparticleSampleServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+		}
+		List<PublicationBean> publicationCollection = service
+				.findPublicationsByParticleId(particleId);
+		HttpSession session = request.getSession();
+    	session.setAttribute("publicationCollection", publicationCollection);
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
 				+ "&dispatch=printSummaryView" + "&location=" + location;
