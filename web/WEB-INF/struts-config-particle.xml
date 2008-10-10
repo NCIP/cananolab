@@ -29,8 +29,6 @@
 				type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="publicationKeywordsStr"
-				type="java.lang.String" />
 		</form-bean>
 
 		<form-bean name="nanoparticleEntityForm"
