@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SearchNanoparticleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -16,14 +15,11 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
-import gov.nih.nci.cananolab.ui.core.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +51,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] characterizations = new String[0];
 		String texts = "";
 		String[] searchLocations = new String[0];
-		String publicationKeywordsStr = "";
 
 		if (theForm != null) {
 			nanoparticleEntityTypes = (String[]) theForm
@@ -66,8 +61,6 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			characterizations = (String[]) theForm.get("characterizations");
 			texts = ((String) theForm.get("text")).trim();
 			searchLocations = (String[]) theForm.get("searchLocations");
-			publicationKeywordsStr = ((String) theForm
-					.get("publicationKeywordsStr")).trim();
 		}
 
 		String gridNodeHostStr = (String) request
@@ -153,7 +146,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 					otherFunctionalizingTypes.toArray(new String[0]),
 					functionClassNames.toArray(new String[0]),
 					otherFunctionTypes.toArray(new String[0]), charaClassNames,
-					words, publicationKeywordsStr);
+					words);
 			for (ParticleBean particle : particles) {
 				particle.setLocation(location);
 			}
