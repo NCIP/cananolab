@@ -10,6 +10,18 @@
 		<c:set var="reportDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
+<c:set var="docurl" value="#" />
+<c:choose>
+	<c:when
+		test="${hasPublicationData eq 'true' }">
+		<c:url var="docurl" value="searchPublication.do">
+			<c:param name="dispatch" value="setupPublicationView" />
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="location" value="${location}" />
+			<c:param name="submitType" value="publications" />
+		</c:url>
+	</c:when>
+</c:choose>		
 <c:choose>
 	<c:when
 		test="${hasPublicationData eq 'true' || (canCreateNanoparticle eq 'true' && location eq 'local')}">
@@ -29,12 +41,6 @@
 		</c:url>
 		
 		<li class="controlList">
-			<c:url var="docurl" value="searchPublication.do">
-						<c:param name="dispatch" value="setupPublicationView" />
-						<c:param name="particleId" value="${particleId}" />
-						<c:param name="location" value="${location}" />
-						<c:param name="submitType" value="publications" />
-					</c:url>
 			<a href="${docurl}" class="subMenuSecondary">PUBLICATIONS</a>
 			<ul class="sublist_4_report" style="${reportDisplay}">
 				<table class="${param.tableStyle}" ><tr class="titleRow">
@@ -78,7 +84,7 @@
 								</c:url>
 								<li>
 									<a href=${url } class="sublist_5_report"><span
-										class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
+										class="data_anchar">&gt;&nbsp;</span>${dataLinkBean.viewTitle}</a>
 								</li>
 							</c:forEach>
 <%--						</ul>--%>
