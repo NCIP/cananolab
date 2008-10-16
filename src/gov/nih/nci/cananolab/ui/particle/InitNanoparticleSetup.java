@@ -13,8 +13,11 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -217,6 +220,7 @@ public class InitNanoparticleSetup {
 	public Map<String, SortedSet<DataLinkBean>> getDataTree(
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Map<String, SortedSet<DataLinkBean>> dataTree = new HashMap<String, SortedSet<DataLinkBean>>();
 		if (request.getAttribute("updateDataTree") != null
 				&& request.getAttribute("updateDataTree").equals("true")) {
@@ -403,48 +407,54 @@ public class InitNanoparticleSetup {
 						publicationCollection.size() > 0 ) {
 					Long pubmedid = 0L;
 					String doi = null, title = null;
+					FileService fileService = new FileServiceLocalImpl();
 					for (Publication publication : publicationCollection) {
-						String publicationCategory = publication.getCategory();
-						DataLinkBean dataBean = new DataLinkBean(publication.getId()
-								.toString(), "Publication", "submitPublication", publication
-								.getCreatedBy(), publication.getCreatedDate());
-						dataBean.setDataDisplayType(publicationCategory);
-						pubmedid = publication.getPubMedId();
-						
-						if(pubmedid!=null && pubmedid>0) {
-							dataBean.setViewTitle("PMID: "+pubmedid);
-						}else {
-							doi = publication.getDigitalObjectId();
-							if (doi!=null && doi.length()>0) {
-								if (doi.length()>20) {
-									dataBean.setViewTitle("DOI: "+doi.substring(0, 20));
-								}else {
-									dataBean.setViewTitle("DOI: "+doi);
-								}
+						PublicationBean pubBean = new PublicationBean(publication, false);
+						fileService.retrieveVisibility(pubBean, user);
+						if (!pubBean.isHidden()) {							
+							String publicationCategory = publication.getCategory();
+							DataLinkBean dataBean = new DataLinkBean(publication.getId()
+									.toString(), "Publication", "submitPublication", publication
+									.getCreatedBy(), publication.getCreatedDate());
+							dataBean.setDataDisplayType(publicationCategory);
+							pubmedid = publication.getPubMedId();
+							
+							if(pubmedid!=null && pubmedid>0) {
+								dataBean.setViewTitle("PMID: "+pubmedid);
 							}else {
-								title = publication.getTitle();
-								if (title!=null && title.length()>0) {
-									String type = publication.getCategory();
-									if (title.length()>20) {
-										dataBean.setViewTitle(type+": "+title.substring(0, 20));
+								doi = publication.getDigitalObjectId();
+								if (doi!=null && doi.length()>0) {
+									if (doi.length()>20) {
+										dataBean.setViewTitle("DOI: "+doi.substring(0, 20));
 									}else {
-										dataBean.setViewTitle(type+": "+title);
+										dataBean.setViewTitle("DOI: "+doi);
+									}
+								}else {
+									title = publication.getTitle();
+									if (title!=null && title.length()>0) {
+										String type = publication.getCategory();
+										if (title.length()>20) {
+											dataBean.setViewTitle(type+": "+title.substring(0, 20));
+										}else {
+											dataBean.setViewTitle(type+": "+title);
+										}
 									}
 								}
 							}
+							//dataBean.setViewTitle(report.getUri());
+							if (dataTree.get(CaNanoLabConstants.FOLDER_PUBLICATION) != null) {
+								pdataBeans = (TreeSet<DataLinkBean>) dataTree
+										.get(CaNanoLabConstants.FOLDER_PUBLICATION);
+							} else {
+								pdataBeans = new TreeSet<DataLinkBean>(
+										new CaNanoLabComparators.DataLinkTypeDateComparator());
+								dataTree.put(CaNanoLabConstants.FOLDER_PUBLICATION, pdataBeans);
+							}
+							pdataBeans.add(dataBean);
 						}
-						//dataBean.setViewTitle(report.getUri());
-						if (dataTree.get(CaNanoLabConstants.FOLDER_PUBLICATION) != null) {
-							pdataBeans = (TreeSet<DataLinkBean>) dataTree
-									.get(CaNanoLabConstants.FOLDER_PUBLICATION);
-						} else {
-							pdataBeans = new TreeSet<DataLinkBean>(
-									new CaNanoLabComparators.DataLinkTypeDateComparator());
-							dataTree.put(CaNanoLabConstants.FOLDER_PUBLICATION, pdataBeans);
-						}
-						pdataBeans.add(dataBean);
+						hasPublicationData = true;	
+					
 					}
-					hasPublicationData = true;					
 				}
 				if (hasPublicationData) {
 					request.getSession().setAttribute("hasPublicationData", "true");
