@@ -106,7 +106,7 @@
 										<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
 									</c:when>
 									<c:otherwise>
-										<a href="${pubUrl }">Publication: ${fn:substring(pubObj.title,0,50)}</a>
+										<a href="${pubUrl }">${pubObj.category}: ${fn:substring(pubObj.title,0,50)}</a>
 									</c:otherwise>
 								</c:choose>
 							</c:otherwise>
