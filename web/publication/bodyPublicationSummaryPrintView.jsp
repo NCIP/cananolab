@@ -62,7 +62,7 @@
 										DOI: ${pubObj.digitalObjectId }
 									</c:when>
 									<c:otherwise>
-										Publication: ${pubObj.title }
+										${pubObj.category}: ${pubObj.title }
 									</c:otherwise>
 								</c:choose>
 							</c:otherwise>
