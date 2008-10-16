@@ -365,12 +365,12 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
-
 	public ActionForward summaryView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String location = request.getParameter("location");
 		String particleId = request.getParameter("particleId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanoparticleSampleService service = null;
 		if (location.equals("local")) {
 			service = new NanoparticleSampleServiceLocalImpl();
@@ -380,9 +380,25 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
 		}
 		List<PublicationBean> publicationCollection = service
-				.findPublicationsByParticleId(particleId);
+				.findPublicationsByParticleId(particleId);		
+		List<PublicationBean> foundPublications = new ArrayList<PublicationBean>();
+		if (location.equals("local")) {
+			List<PublicationBean> filteredPublications = new ArrayList<PublicationBean>();
+			// retrieve visibility
+			FileService fileService = new FileServiceLocalImpl();
+			for (PublicationBean publication : publicationCollection) {
+				fileService.retrieveVisibility(publication, user);
+				if (!publication.isHidden()) {
+					filteredPublications.add((PublicationBean) publication);
+				}
+			}
+			foundPublications.addAll(filteredPublications);
+		} else {
+			foundPublications.addAll(publicationCollection);
+		}
+			
 		HttpSession session = request.getSession();
-    	session.setAttribute("publicationCollection", publicationCollection);
+    	session.setAttribute("publicationCollection", foundPublications);
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
 				+ "&dispatch=printSummaryView" + "&location=" + location;
