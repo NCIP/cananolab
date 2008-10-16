@@ -15,7 +15,7 @@
 	<c:when
 		test="${hasPublicationData eq 'true' }">
 		<c:url var="docurl" value="searchPublication.do">
-			<c:param name="dispatch" value="setupPublicationView" />
+			<c:param name="dispatch" value="summaryView" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
 			<c:param name="submitType" value="publications" />

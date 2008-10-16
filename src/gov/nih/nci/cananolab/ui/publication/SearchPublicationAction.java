@@ -366,7 +366,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		return exportFileName;
 	}
 
-	public ActionForward setupPublicationView(ActionMapping mapping,
+	public ActionForward summaryView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String location = request.getParameter("location");
