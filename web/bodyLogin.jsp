@@ -51,7 +51,7 @@
 									<tr>
 										<td rowspan="3">
 											<select name="searchLocations" id="location" multiple="true"
-												size="4" onchange="getGridCounts(this);">
+												size="4" onchange="getAllGridCounts(this);">
 												<option value="local" selected>
 													Local
 												</option>
@@ -65,10 +65,10 @@
 										<td>
 											<img src="images/icon_protocol_48x.jpg" width="15%" />
 											&nbsp;Protocols&nbsp;(
-											<a href="#" onclick="searchProtocols();">search</a> )
+											<a href="#" onclick="gotoProtocols('setup')">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseProtocols();" id="protocolCount"
+											<a href="#" onclick="gotoProtocols('search')" id="protocolCount"
 												class="countsLink"></a>
 										</td>
 									</tr>
@@ -76,10 +76,10 @@
 										<td>
 											<img src="images/icon_nanoparticle_48x.jpg" width="15%" />
 											&nbsp;Nanoparticles&nbsp;(
-											<a href="#" onclick="searchParitcles();">search</a> )
+											<a href="#" onclick="gotoParticles('setup');">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browseParitcles();" id="particleCount"
+											<a href="#" onclick="gotoParticles('search');" id="particleCount"
 												class="countsLink"></a>
 										</td>
 									</tr>
@@ -87,10 +87,10 @@
 										<td>
 											<img src="images/icon_report_48x.gif" width="15%" />
 											&nbsp;Publications&nbsp;(
-											<a href="#" onclick="searchPublications();">search</a> )
+											<a href="#" onclick="gotoPublications('setup');">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="browsePublications();" id="documentCount"
+											<a href="#" onclick="gotoPublications('search')" id="publicationCount"
 												class="countsLink"></a>
 										</td>
 									</tr>
