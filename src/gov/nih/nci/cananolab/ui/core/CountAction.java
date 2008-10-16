@@ -102,31 +102,6 @@ public class CountAction extends AbstractDispatchAction {
 			}
 		}
 
-		// publication count
-		int publicationCount = 0;
-		PublicationService publicationService = null;
-		for (String location : searchLocations) {
-			if (location.equals("local")) {
-				publicationService = new PublicationServiceLocalImpl();
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				publicationService = new PublicationServiceRemoteImpl(
-						serviceUrl);
-			}
-			try {
-				publicationCount += publicationService
-						.getNumberOfPublicPublications();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				ActionMessages msgs = new ActionMessages();
-				ActionMessage msg = new ActionMessage("error.publicationCount",
-						location);
-				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-				this.saveErrors(request, msgs);
-			}
-		}
-
 		PrintWriter out = response.getWriter();
 		out.print(particleCount);
 		return null;
