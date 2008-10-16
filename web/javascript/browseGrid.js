@@ -1,28 +1,34 @@
-var request;
-function getLocalCounts(selectEleId) {
-	var selectEle = document.getElementById(selectEleId);
-	getGridCounts(selectEle);
-}
-function getGridCounts(selectEle) {
 
+function getLocalCounts(selectEleId, countType, dispatch) {
+	var selectEle = document.getElementById(selectEleId);
+	getAllGridCounts(selectEle);
+}
+
+function getAllGridCounts(location) {
+	getGridCounts(location, "protocolCount", "countProtocols");
+	getGridCounts(location, "particleCount", "countParticles");
+    getGridCounts(location, "publicationCount", "countPublications");
+}
+
+function getGridCounts(location, countType, dispatch) {
+    var request;
 	// display progress.gif while waiting for the response.
 	var loaderimg = "<img src=\"images/ajax-loader.gif\" border=\"0\" class=\"counts\">";
-	document.getElementById("particleCount").innerHTML = loaderimg;
-	document.getElementById("documentCount").innerHTML = loaderimg;
-	document.getElementById("protocolCount").innerHTML = loaderimg;
+	document.getElementById(countType).innerHTML = loaderimg;
 	
-	//var gridNode = selectEle.options[selectEle.options.selectedIndex].value;
-	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/publicCount.do?dispatch=publicCounts&searchLocations=";
+	//var gridNode = selectEle.options[location.options.selectedIndex].value;
+	var gridNodesStr = getSelectedOptions(location);
+	
+	var url = "/caNanoLab/publicCount.do?dispatch=" + dispatch + "&searchLocations=";
 	url += gridNodesStr;
-	
+	//alert(countType);
     // Perform the AJAX request using a non-IE browser.
 	if (window.XMLHttpRequest) {
 		request = new XMLHttpRequest();
-   
+  
       // Register callback function that will be called when
       // the response is generated from the server.
-		request.onreadystatechange = updateParticleCount;
+		request.onreadystatechange = function(){ updateCount(request, countType); };
 		try {
 			request.open("GET", url, true);
 		}
@@ -35,84 +41,56 @@ function getGridCounts(selectEle) {
 		if (window.ActiveXObject) {
 			request = new ActiveXObject("Microsoft.XMLHTTP");
 			if (request) {
-				request.onreadystatechange = updateParticleCount;
+				request.onreadystatechange = function(){ updateCount(request, countType); };
 				request.open("GET", url, true);
 				request.send();
 			}
 		}
 	}
 }
-function updateParticleCount() {
+
+function  updateCount(request, countType) {
 	if (request.readyState == 4) {
 		if (request.status == 200) {
 			var countStr = request.responseText;
-			var countarray = countStr.split("\t");
-			document.getElementById("particleCount").innerHTML = countarray[0];
-			document.getElementById("documentCount").innerHTML = countarray[1];
-			document.getElementById("protocolCount").innerHTML = countarray[2];
+			document.getElementById(countType).innerHTML = countStr;
 		} else {
-			alert("Unable to retrieve particle count from server.");
+			alert("Unable to retrieve counts from server for "+countType);
 		}
 	}
 }
-function browseParitcles() {
-	var selectEle = document.getElementById('location');
-	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchNanoparticle.do?dispatch=search&searchLocations=";
-	url += gridNodesStr;
 
+function gotoParticles(dispatch) {
+	var selectEle = document.getElementById("location");
+	var gridNodesStr = getSelectedOptions(selectEle);
+	var url = "/caNanoLab/searchNanoparticle.do?dispatch="+dispatch+"&searchLocations=";
+	url += gridNodesStr;
 	gotoPage(url);
 	return false;
 }
-function searchParitcles() {
-	var selectEle = document.getElementById('location');
-	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchNanoparticle.do?dispatch=setup&searchLocations=";
-	url += gridNodesStr;
-	
-	gotoPage(url);
-	return false;
-}
-function searchPublications() {
-	var selectEle = document.getElementById('location');
-	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchPublication.do?dispatch=setup&searchLocations=";
-	url += gridNodesStr;
-	
-	gotoPage(url);
-	return false;
-}
-function browsePublications() {
-	var selectEle = document.getElementById('location');
-	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchPublication.do?dispatch=search&searchLocations=";
-	url += gridNodesStr;
 
-	gotoPage(url);
-	return false;
-}
-function searchProtocols() {
-	var selectEle = document.getElementById('location');
+function gotoPublications(dispatch) {
+	var selectEle = document.getElementById("location");
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchProtocol.do?dispatch=setup&searchLocations=";
+	var url = "/caNanoLab/searchPublication.do?dispatch="+dispatch+"&searchLocations=";
 	url += gridNodesStr;
-
 	gotoPage(url);
 	return false;
 }
-function browseProtocols() {
-	var selectEle = document.getElementById('location');
+
+function gotoProtocols(dispatch) {
+	var selectEle = document.getElementById("location");
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchProtocol.do?dispatch=search&searchLocations=";
+	var url = "/caNanoLab/searchProtocol.do?dispatch="+dispatch+"&searchLocations=";
 	url += gridNodesStr;
-
 	gotoPage(url);
 	return false;
 }
+
 function getSelectedOptions(selectEle) {
 	var options = selectEle.options;
 	var selectedValues = "";
-	for (var c=0; c<options.length; c++ ) {
+	for (var c = 0; c < options.length; c++) {
 		if (options[c].selected) { //true if selected.
 			selectedValues += options[c].value + "~";
 		}
@@ -120,3 +98,4 @@ function getSelectedOptions(selectEle) {
 	var cleanStr = selectedValues.substr(0, selectedValues.length - 1);
 	return cleanStr;
 }
+
