@@ -9,7 +9,6 @@ package gov.nih.nci.cananolab.ui.publication;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -292,7 +291,8 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
 		PublicationService publicationService = new PublicationServiceLocalImpl();
-		PublicationBean publicationBean = publicationService.findPublicationById(publicationId);
+		PublicationBean publicationBean = publicationService
+				.findPublicationById(publicationId);
 		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(publicationBean, user);
 		theForm.set("file", publicationBean);
@@ -345,17 +345,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
 		PublicationBean publicationBean = publicationService.findPublicationById(publicationId);
-		if (location.equals("local")) {
-			// retrieve visibility
-			FileService fileService = new FileServiceLocalImpl();
-			LabFileBean labFileBean = new LabFileBean(publicationBean.getDomainFile());
-			fileService.retrieveVisibility(labFileBean, user);
-			if (labFileBean.isHidden()){
-				publicationBean.setHidden(true);
-			}else{
-				publicationBean.setHidden(false);
-			}
-		}		
+		this.checkVisibility(request, location, user, publicationBean);		
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if particleId is available direct to particle specific page
@@ -404,6 +394,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {		
 		String location = request.getParameter("location");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
@@ -414,6 +405,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
+		checkVisibility(request,  location, user,  pubBean);	
 		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		theForm.set("file", pubBean);	
 	
@@ -443,6 +435,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {		
 		String location = request.getParameter("location");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
@@ -453,6 +446,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
+		checkVisibility(request, location, user, pubBean);
 		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		theForm.set("file", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
@@ -544,9 +538,9 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 	
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		
+			throws Exception {		
 		String location = request.getParameter("location");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
@@ -557,6 +551,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		}		
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService.findPublicationById(publicationId);
+		checkVisibility(request,  location, user,  pubBean);
 		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
 		theForm.set("file", pubBean);		
 		String title = pubBean.getDomainFile().getTitle();
