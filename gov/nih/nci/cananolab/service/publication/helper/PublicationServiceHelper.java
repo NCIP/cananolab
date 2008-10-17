@@ -605,7 +605,6 @@ public class PublicationServiceHelper {
 						new HSSFRichTextString(publication.getTitle()));
 				// authors
 				sb.setLength(0);
-				// TODO, ORDER
 				authors = publication.getAuthorCollection();
 				if (authors != null) {
 					int countAuthors = 0;
