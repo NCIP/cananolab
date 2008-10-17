@@ -826,7 +826,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			if (particleSample!=null) {
 				for (Publication publication: particleSample.getPublicationCollection()) {
 					//do not load particle sample in PublicationBean
-					publicationCollection.add(new PublicationBean(publication, false));
+					publicationCollection.add(new PublicationBean(publication));
 				}
 			}		
 			return publicationCollection;	
