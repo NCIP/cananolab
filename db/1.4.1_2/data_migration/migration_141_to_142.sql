@@ -6,7 +6,7 @@ ALTER TABLE canano.author
 ADD created_date DATETIME AFTER middle_initial; 
  
 ALTER TABLE canano.author
-ADD created_by varchar(100) AFTER created_date;
+ADD created_by varchar(100)  AFTER created_date;
 
 ALTER TABLE canano.author
  CHANGE middle_initial initial VARCHAR(10);
@@ -51,6 +51,8 @@ ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sampl
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
+ALTER TABLE canano.publication CHANGE research_area research_area VARCHAR(200);
+ 
 --migrate and drop report table
 INSERT INTO canano.publication
 (
@@ -72,13 +74,7 @@ ALTER TABLE canano.publication
 ;
 
 
--- change to not null
-ALTER TABLE canano.author
- CHANGE created_date created_date DATETIME NOT NULL;
- 
-ALTER TABLE canano.author
- CHANGE created_by created_by varchar(100) NOT NULL;
- 
+
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
  
@@ -99,6 +95,14 @@ SET author.created_by = 'DATA_MIGRATION',
 author.created_date = ADDDATE(SYSDATE(), INTERVAL author.author_pk_id SECOND)
 order by author.author_pk_id;
 
+-- change to not null
+ALTER TABLE canano.author
+ CHANGE created_date created_date DATETIME NOT NULL;
+ 
+ALTER TABLE canano.author
+ CHANGE created_by created_by varchar(100) NOT NULL;
+ 
+ 
 ALTER TABLE canano.author_publication
 ADD CONSTRAINT FK_author_publication_author FOREIGN KEY (author_pk_id) REFERENCES canano.author (author_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
 ADD CONSTRAINT FK_author_publication_publication FOREIGN KEY (publication_pk_id) REFERENCES canano.publication (publication_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
@@ -111,6 +115,8 @@ where am.activation_method_pk_id = fe.activation_method_pk_id
 and ( am.type = null or am.type = ' ' )
 and ( am.activation_effect = null or am.activation_effect = ' ' )
 ;
+
+
 
 delete from activation_method
 where ( type = null or type = ' ' )
