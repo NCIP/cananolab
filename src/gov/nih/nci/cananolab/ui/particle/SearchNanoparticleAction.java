@@ -151,14 +151,10 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				particle.setLocation(location);
 			}
 			if (location.equals("local")) {
-				List<ParticleBean> filteredParticles = new ArrayList<ParticleBean>();
-				// set visibility
-				for (ParticleBean particle : particles) {
-					service.retrieveVisibility(particle, user);
-					if (!particle.isHidden()) {
-						filteredParticles.add(particle);
-					}
-				}
+				//get user accessible particles
+				List<ParticleBean> filteredParticles =
+					service.getUserAccessibleParticles(
+							particles, user);
 				foundParticles.addAll(filteredParticles);
 			} else {
 				foundParticles.addAll(particles);
