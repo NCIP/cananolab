@@ -3,11 +3,13 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
@@ -67,6 +69,17 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		ParticleBean particleBean = service
 				.findNanoparticleSampleById(particleId);
+		if (location.equals("local")) {
+			service.retrieveVisibility(particleBean, user);
+			if (particleBean.isHidden()) {				
+				if (user != null) {
+					request.getSession().removeAttribute("user");
+					throw new NoAccessException();
+				} else {
+					throw new InvalidSessionException();
+				}
+			}
+		}		
 		particleBean.setLocation(location);
 		request.setAttribute("theParticle", particleBean);
 		if (location.equals("local")) {
@@ -327,5 +340,20 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		return mapping.getInputForward();
 	}
-
+	
+	public void checkVisibility(HttpServletRequest request, String location, 
+			UserBean user, LabFileBean fileBean) throws Exception{
+		if (location.equals("local")) {
+			FileService fileService = new FileServiceLocalImpl();
+			fileService.retrieveVisibility(fileBean, user);
+			if (fileBean.isHidden()) {
+				if (user != null) {
+					request.getSession().removeAttribute("user");
+					throw new NoAccessException();
+				} else {
+					throw new InvalidSessionException();
+				}
+			}
+		}
+	}
 }

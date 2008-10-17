@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.publication;
 
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -15,7 +14,6 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -25,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -302,6 +299,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		String location = request.getParameter("location");
 		String fileId = request.getParameter("fileId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (location.equals("local")) {
 			return super.download(mapping, form, request, response);
 		} else {
@@ -312,6 +310,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 					serviceUrl);
 			PublicationBean fileBean = publicationService
 					.findPublicationById(fileId);
+			checkVisibility(request,  location, user,  fileBean);			
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
 				return null;
