@@ -409,7 +409,7 @@ public class InitNanoparticleSetup {
 					String doi = null, title = null;
 					FileService fileService = new FileServiceLocalImpl();
 					for (Publication publication : publicationCollection) {
-						PublicationBean pubBean = new PublicationBean(publication, false);
+						PublicationBean pubBean = new PublicationBean(publication, false, false);
 						fileService.retrieveVisibility(pubBean, user);
 						if (!pubBean.isHidden()) {							
 							String publicationCategory = publication.getCategory();
