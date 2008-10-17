@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -135,7 +134,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
 			if (publications!=null) {
 				for (Publication publication: publications) {
-					publicationBeans.add(new PublicationBean(publication));
+					publicationBeans.add(new PublicationBean(publication, true, false));
 				}
 			}			
 			Collections.sort(publicationBeans,
@@ -157,7 +156,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	public PublicationBean findPublicationById(String publcationId) throws PublicationException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);
-			PublicationBean publicationBean = new PublicationBean(publication);
+			PublicationBean publicationBean = new PublicationBean(publication, false, true);
 			return publicationBean;
 		} catch (Exception e) {
 			String err = "Problem finding the publcation by id: " + publcationId;
