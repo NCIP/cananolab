@@ -79,7 +79,7 @@
 				key="error.grid.autodiscover" path="calab.login"
 				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
 		</action>
-		<action path="/publicCount"
+		<action path="/publicCount" parameter="dispatch"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
