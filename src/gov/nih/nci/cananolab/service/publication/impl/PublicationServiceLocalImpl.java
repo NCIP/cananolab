@@ -83,9 +83,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					CaNanoLabConstants.CSM_APP_NAME);
 			
 			if (publication.getAuthorCollection() == null) {
-				//FIXME
-//				publication
-//						.setAuthorCollection(new TreeSet<Author>());
 				publication
 					.setAuthorCollection(new HashSet<Author>());
 			}else {
