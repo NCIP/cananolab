@@ -70,10 +70,9 @@ public interface NanoparticleSampleService {
 
 	public ParticleBean findNanoparticleSampleById(String particleId)
 			throws ParticleException;
-	
+
 	public ParticleBean findFullNanoparticleSampleById(String particleId)
 			throws Exception;
-
 
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws ParticleException;
@@ -101,11 +100,15 @@ public interface NanoparticleSampleService {
 			throws ParticleException;
 
 	public int getNumberOfPublicNanoparticleSamples() throws ParticleException;
-	
-	public void assignAssociatedPublicVisibility(AuthorizationService authService,
-			ParticleBean particleSampleBean, String[] visibleGroups)
-		throws Exception;
-	
+
+	public void assignAssociatedPublicVisibility(
+			AuthorizationService authService, ParticleBean particleSampleBean,
+			String[] visibleGroups) throws Exception;
+
 	public List<PublicationBean> findPublicationsByParticleId(String particleId)
-		throws Exception;
+			throws Exception;
+
+	public List<ParticleBean> getUserAccessibleParticles(
+			List<ParticleBean> particles, UserBean user)
+			throws ParticleException;
 }
