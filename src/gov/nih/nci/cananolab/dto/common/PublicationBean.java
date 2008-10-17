@@ -36,24 +36,14 @@ public class PublicationBean extends LabFileBean {
 	}
 
 	public PublicationBean(Publication publication) {
-		this(publication, true);
+		this(publication, false, false);
 	}
-
-	public PublicationBean(Publication publication, boolean loadSamples) {
+	
+	public PublicationBean(Publication publication, boolean loadSamples,
+			boolean loadAuthors) {
 		super(publication);
 		this.domainFile = publication;
-		Collection<Author> authorCollection =
-			publication.getAuthorCollection();
-		if (authorCollection!=null &&
-				authorCollection.size()>0) {
-			List<Author> authorslist = new ArrayList<Author>(authorCollection);
-			Collections.sort(authorslist, 
-					new Comparator<Author>() {
-			    public int compare(Author o1, Author o2) {
-			        return (int)(o2.getCreatedDate().compareTo(o1.getCreatedDate()));
-			    }});
-			authors = authorslist;
-		}
+		
 		String researchAreasStr = 
 			publication.getResearchArea();
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
@@ -61,7 +51,6 @@ public class PublicationBean extends LabFileBean {
 		}else {
 			researchAreas = null;
 		}		
-
 		if (loadSamples) {
 			particleNames = new String[publication.getNanoparticleSampleCollection()
 					.size()];
@@ -70,6 +59,20 @@ public class PublicationBean extends LabFileBean {
 					.getNanoparticleSampleCollection()) {
 				particleNames[i] = particle.getName();
 				i++;
+			}
+		}
+		if (loadAuthors) {
+			Collection<Author> authorCollection =
+				publication.getAuthorCollection();
+			if (authorCollection!=null &&
+					authorCollection.size()>0) {
+				List<Author> authorslist = new ArrayList<Author>(authorCollection);
+				Collections.sort(authorslist, 
+						new Comparator<Author>() {
+				    public int compare(Author o1, Author o2) {
+				        return (int)(o2.getCreatedDate().compareTo(o1.getCreatedDate()));
+				    }});
+				authors = authorslist;
 			}
 		}
 		
