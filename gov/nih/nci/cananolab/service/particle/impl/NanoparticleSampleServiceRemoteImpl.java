@@ -426,13 +426,15 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			NanoparticleSample particleSample) throws Exception {
 		PublicationService publicationService = new PublicationServiceRemoteImpl(
 				serviceUrl);
-		Publication[] publications = publicationService
+		//publication does not include particle nor author
+		List<PublicationBean> publications = publicationService
 				.findPublicationsByParticleSampleId(particleSample.getId()
-						.toString());
-		if (publications != null && publications.length > 0) {
+						.toString(), false, false);
+		if (publications != null && publications.size() > 0) {
 			particleSample.setPublicationCollection(new HashSet<Publication>());
-			for (Publication publication : publications) {
-				particleSample.getPublicationCollection().add(publication);
+			for (PublicationBean publication : publications) {
+				particleSample.getPublicationCollection().
+					add((Publication)publication.getDomainFile());
 			}
 		}
 	}
@@ -489,15 +491,17 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			NanoparticleSample particleSample = null;
+			PublicationServiceRemoteImpl publicationRemoteService = new PublicationServiceRemoteImpl(
+					serviceUrl);
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				particleSample = (NanoparticleSample) obj;
+				//FIXME, move to publicationService
 				loadPublicationsForParticleSample(particleSample);
 			}
 			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
 			if (particleSample != null) {
-				PublicationServiceRemoteImpl publicationRemoteService = new PublicationServiceRemoteImpl(
-						serviceUrl);
+				
 				for (Publication publication : particleSample
 						.getPublicationCollection()) {
 					publicationRemoteService
