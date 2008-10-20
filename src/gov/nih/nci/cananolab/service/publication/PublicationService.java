@@ -53,7 +53,8 @@ public interface PublicationService {
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 		throws PublicationException;
 
-	public Publication[] findPublicationsByParticleSampleId(String particleId)
+	public List<PublicationBean> findPublicationsByParticleSampleId(String particleId,
+			boolean loadParticle, boolean loadAuthor)
 		throws PublicationException;
 	
 	public int getNumberOfPublicPublications() throws PublicationException;

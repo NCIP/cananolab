@@ -31,6 +31,10 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of PublicationService
@@ -148,9 +152,39 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 	
-	public Publication[] findPublicationsByParticleSampleId(String particleId)
+	public List<PublicationBean> findPublicationsByParticleSampleId(String particleId,
+			boolean loadParticle, boolean loadAuthor)
 		throws PublicationException{
-		throw new PublicationException("Not implemented for local search");
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					Publication.class);
+			crit.createAlias("nanoparticleSampleCollection", "sample",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
+			if (loadAuthor) {
+				crit.setFetchMode("authorCollection",FetchMode.JOIN);
+			}
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+	
+			List results = appService.query(crit);	
+			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();	
+			for (Object obj : results) {
+				Publication publication = (Publication)obj;
+				if (loadAuthor) {
+					publicationCollection.add(new PublicationBean(publication, false, true));
+				}else {
+					publicationCollection.add(new PublicationBean(publication));
+				}
+			}			
+			return publicationCollection;
+		} catch (Exception e) {
+			String err = "Problem finding publication collections with the given particle ID.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
 	}
 	
 	public PublicationBean findPublicationById(String publcationId) throws PublicationException {

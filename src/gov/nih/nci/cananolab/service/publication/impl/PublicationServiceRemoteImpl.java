@@ -104,7 +104,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 
 
-	public Publication[] findPublicationsByParticleSampleId(String particleId)
+	public List<PublicationBean> findPublicationsByParticleSampleId(String particleId,
+			boolean loadParticle, boolean loadAuthor)
 		throws PublicationException {	
 		try {
 			CQLQuery query = new CQLQuery();
@@ -129,13 +130,13 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(
 					results);
 			Publication publication = null;
-			List<Publication> publications = new ArrayList<Publication>();
+			List<PublicationBean> publications = new ArrayList<PublicationBean>();
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				publication = (Publication) obj;
-				publications.add(publication);
+				publications.add(new PublicationBean(publication));
 			}
-			return publications.toArray(new Publication[0]);
+			return publications;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
 			//throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE, e);	
