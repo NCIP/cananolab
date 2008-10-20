@@ -816,41 +816,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 		}
 	}
 
-	public List<PublicationBean> findPublicationsByParticleId(String particleId)
-			throws ParticleException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					NanoparticleSample.class).add(
-					Property.forName("id").eq(new Long(particleId)));
-			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-			crit.setFetchMode("publicationCollection.authorCollection",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List result = appService.query(crit);
-			NanoparticleSample particleSample = null;
-			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
-			if (!result.isEmpty()) {
-				particleSample = (NanoparticleSample) result.get(0);
-			}
-			if (particleSample != null) {
-				for (Publication publication : particleSample
-						.getPublicationCollection()) {
-					// do not load particle sample in PublicationBean
-					publicationCollection.add(new PublicationBean(publication));
-				}
-			}
-			return publicationCollection;
-		} catch (Exception e) {
-			String err = "Problem finding publication collections with the given particle ID.";
-			logger.error(err, e);
-			throw new ParticleException(err, e);
-		}
-	}
-
 	public List<ParticleBean> getUserAccessibleParticles(
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException {
