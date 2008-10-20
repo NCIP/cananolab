@@ -72,7 +72,7 @@
 							<div id="assocEleBlockA" class="assocEleBlock">
 								&nbsp;&nbsp;
 								<strong>Element</strong>
-								<br>
+								<br><br>
 								&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
 								(${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName})
 								<br>
@@ -91,7 +91,7 @@
 							<div id="assocEleBlockB" class="assocEleBlock">
 								&nbsp;&nbsp;
 								<strong>Element</strong>
-								<br>
+								<br><br>
 								&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
 								(${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName})
 								<br>
