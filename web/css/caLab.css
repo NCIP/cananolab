@@ -1095,7 +1095,7 @@ img.img { /* for images that need a border */
 }
 
 #assocImg {
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 }
 
 .indented0 {
