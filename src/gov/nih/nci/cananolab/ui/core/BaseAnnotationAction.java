@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.LabFileBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -17,9 +16,7 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
-import gov.nih.nci.cananolab.ui.publication.InitPublicationSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -51,6 +48,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  * 
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
+
 	public ParticleBean setupParticle(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
 		String particleId = request.getParameter("particleId");
@@ -70,18 +68,27 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		ParticleBean particleBean = service
 				.findNanoparticleSampleById(particleId);
 		if (location.equals("local")) {
-			service.retrieveVisibility(particleBean, user);
-			if (particleBean.isHidden()) {				
+			// check access privilege
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			boolean access = auth.isUserAllowed(particleBean
+					.getDomainParticleSample().getName(), user);
+			if (!access) {
 				if (user != null) {
 					request.getSession().removeAttribute("user");
-					throw new NoAccessException();
-				} else {
-					throw new InvalidSessionException();
 				}
+				throw new NoAccessException(
+						"You don't have the required privileges to access this particle");
 			}
-		}		
+		}
 		particleBean.setLocation(location);
 		request.setAttribute("theParticle", particleBean);
+		return particleBean;
+	}
+
+	public void setOtherParticlesFromTheSameSource(String location,
+			HttpServletRequest request, ParticleBean particleBean, UserBean user)
+			throws Exception {
 		if (location.equals("local")) {
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
@@ -89,7 +96,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					particleBean.getDomainParticleSample().getSource()
 							.getOrganizationName(), user);
 		}
-		return particleBean;
 	}
 
 	protected void saveFilesToFileSystem(List<LabFileBean> files)
@@ -116,7 +122,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
-	
+
 	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
@@ -231,7 +237,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
 			response.setHeader("Content-disposition", "attachment;filename=\""
-					+ fileBean.getDomainFile().getName()+"\"");
+					+ fileBean.getDomainFile().getName() + "\"");
 			response.setHeader("cache-control", "Private");
 
 			java.io.InputStream in = new FileInputStream(dFile);
@@ -277,7 +283,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			ActionMessages msgs, LabFileBean fileBean) {
 
 		boolean noErrors = true;
-		if (fileBean==null) {
+		if (fileBean == null) {
 			return noErrors;
 		}
 		LabFile labfile = fileBean.getDomainFile();
@@ -306,31 +312,36 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				this.saveErrors(request, msgs);
 				noErrors = false;
 			}
-		} else{ 
-			//all empty				
-			if ((fileBean.getUploadedFile()==null || fileBean.getUploadedFile().toString().trim().length()==0) && 
-				 (fileBean.getExternalUrl()==null || fileBean.getExternalUrl().trim().length()==0) &&
-				 (fileBean.getDomainFile()==null || fileBean.getDomainFile().getName()==null)){
+		} else {
+			// all empty
+			if ((fileBean.getUploadedFile() == null || fileBean
+					.getUploadedFile().toString().trim().length() == 0)
+					&& (fileBean.getExternalUrl() == null || fileBean
+							.getExternalUrl().trim().length() == 0)
+					&& (fileBean.getDomainFile() == null || fileBean
+							.getDomainFile().getName() == null)) {
 				ActionMessage msg = new ActionMessage("errors.required",
 						"uploaded file");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				this.saveErrors(request, msgs);
 				noErrors = false;
-			//the case that user switch from url to upload file, but no file is selected
-			}else if ((fileBean.getUploadedFile() == null			
-				|| fileBean.getUploadedFile().getFileName().length() == 0) &&
-				fileBean.getExternalUrl()!=null && fileBean.getExternalUrl().trim().length()>0) {					
+				// the case that user switch from url to upload file, but no
+				// file is selected
+			} else if ((fileBean.getUploadedFile() == null || fileBean
+					.getUploadedFile().getFileName().length() == 0)
+					&& fileBean.getExternalUrl() != null
+					&& fileBean.getExternalUrl().trim().length() > 0) {
 				ActionMessage msg = new ActionMessage("errors.required",
 						"uploaded file");
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				this.saveErrors(request, msgs);
 				noErrors = false;
 			}
-		}		
+		}
 		return noErrors;
 	}
-	
-	public ActionForward unspecified (ActionMapping mapping, ActionForm form,
+
+	public ActionForward unspecified(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws InvalidSessionException {
 		HttpSession session = request.getSession();
@@ -340,9 +351,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		return mapping.getInputForward();
 	}
-	
-	public void checkVisibility(HttpServletRequest request, String location, 
-			UserBean user, LabFileBean fileBean) throws Exception{
+
+	public void checkVisibility(HttpServletRequest request, String location,
+			UserBean user, LabFileBean fileBean) throws Exception {
 		if (location.equals("local")) {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.retrieveVisibility(fileBean, user);
