@@ -334,8 +334,11 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
 		ParticleBean particleBean = setupParticle(theForm, request, location);
+		this.setOtherParticlesFromTheSameSource("local", request,
+				particleBean, user);
 		String fileName = getExportFileName(particleBean
 				.getDomainParticleSample().getName(), "summaryView");
 		response.setContentType("application/vnd.ms-execel");
@@ -370,16 +373,17 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		String particleId = request.getParameter("particleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		NanoparticleSampleService service = null;
+		PublicationService service = null;
 		if (location.equals("local")) {
-			service = new NanoparticleSampleServiceLocalImpl();
+			service = new PublicationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
+		//publication includes author, not include particle sample data
 		List<PublicationBean> publicationCollection = service
-				.findPublicationsByParticleId(particleId);		
+				.findPublicationsByParticleSampleId(particleId, false, true);		
 		List<PublicationBean> foundPublications = new ArrayList<PublicationBean>();
 		if (location.equals("local")) {
 			List<PublicationBean> filteredPublications = new ArrayList<PublicationBean>();
