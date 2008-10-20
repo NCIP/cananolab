@@ -32,6 +32,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -65,7 +66,14 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		// characterizationForm is either physicalCharacterizationForm or
 		// invitroCharacterizationForm to use in bodyCharacterization.jsp
 		request.getSession().setAttribute("characterizationForm", theForm);
-		setupParticle(theForm, request, "local");
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+
+		// setup other particles from the same source		
+		this.setOtherParticlesFromTheSameSource("local", request,
+				particleBean, user);
+
 		// set charclass
 		ServletContext appContext = request.getSession().getServletContext();
 		CharacterizationBean charBean = (CharacterizationBean) theForm
@@ -272,17 +280,21 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request, "local");
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+
 		request.getSession().setAttribute("characterizationForm", theForm);
 		Characterization chara = prepareCharacterization(theForm, request,
 				"local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user, "local");
-		setLookups(request, charBean);
+		setLookups(request, charBean);		
+		this.setOtherParticlesFromTheSameSource("local", request,
+				particleBean, user);
 		// clear copy to otherParticles
 		theForm.set("otherParticles", new String[0]);
 		theForm.set("copyData", false);
+
 		return mapping.getInputForward();
 	}
 
