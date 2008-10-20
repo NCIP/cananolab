@@ -105,9 +105,6 @@ public interface NanoparticleSampleService {
 			AuthorizationService authService, ParticleBean particleSampleBean,
 			String[] visibleGroups) throws Exception;
 
-	public List<PublicationBean> findPublicationsByParticleId(String particleId)
-			throws Exception;
-
 	public List<ParticleBean> getUserAccessibleParticles(
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException;
