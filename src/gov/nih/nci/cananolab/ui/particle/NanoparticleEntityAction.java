@@ -186,7 +186,11 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request, "local");
+		ParticleBean particleBean=setupParticle(theForm, request, "local");
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -195,10 +199,12 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request, "local");
+		ParticleBean particleBean=setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		NanoparticleEntityBean entityBean = compService
 				.findNanoparticleEntityById(entityId);
