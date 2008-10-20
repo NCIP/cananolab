@@ -57,24 +57,24 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
 		try {
 			entityBean.setupDomainEntity(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName(), internalUriPath);
-		}catch (ClassCastException ex) {
+					.getDisplayNameToClassNameLookup(
+							request.getSession().getServletContext()), user
+					.getLoginName(), internalUriPath);
+		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
-			if (ex.getMessage()!=null && ex.getMessage().length()>0 &&
-					!ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msg = new ActionMessage("errors.invalidOtherType",
-						ex.getMessage(),"Function");
-			}else {
-				msg = new ActionMessage("errors.invalidOtherType",
-						entityBean.getType(),"Functionalizing Entity");		
+			if (ex.getMessage() != null && ex.getMessage().length() > 0
+					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType", ex
+						.getMessage(), "Function");
+			} else {
+				msg = new ActionMessage("errors.invalidOtherType", entityBean
+						.getType(), "Functionalizing Entity");
 				entityBean.setType(null);
 			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
-			
+
 			return mapping.getInputForward();
 		}
 
@@ -123,28 +123,28 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	private boolean validateTargets(HttpServletRequest request,
 			FunctionalizingEntityBean entityBean) throws Exception {
 		for (FunctionBean funcBean : entityBean.getFunctions()) {
-			if ("TargetingFunction".equals(funcBean.getClassName())){
+			if ("TargetingFunction".equals(funcBean.getClassName())) {
 				for (TargetBean targetBean : funcBean.getTargets()) {
 					if (targetBean.getType() == null
 							|| targetBean.getType().trim().length() == 0) {
-	
+
 						ActionMessages msgs = new ActionMessages();
-						ActionMessage msg = new ActionMessage("errors.required",
-								"Target type");
+						ActionMessage msg = new ActionMessage(
+								"errors.required", "Target type");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						this.saveErrors(request, msgs);
-	
+
 						return false;
 					}
 					if (targetBean.getName() == null
 							|| targetBean.getName().trim().length() == 0) {
-	
+
 						ActionMessages msgs = new ActionMessages();
-						ActionMessage msg = new ActionMessage("errors.required",
-								"Target name");
+						ActionMessage msg = new ActionMessage(
+								"errors.required", "Target name");
 						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 						this.saveErrors(request, msgs);
-	
+
 						return false;
 					}
 				}
@@ -179,7 +179,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("functionalizingEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request, "local");
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");		
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -194,9 +198,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request, "local");
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
