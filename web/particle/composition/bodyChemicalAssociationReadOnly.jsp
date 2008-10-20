@@ -73,7 +73,6 @@
 								&nbsp;&nbsp;
 								<strong>Element</strong>
 								<br>
-								<br>
 								&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementA.compositionType}
 								(${chemicalAssociationForm.map.assoc.associatedElementA.entityDisplayName})
 								<br>
@@ -84,13 +83,14 @@
 										<br>
 								</c:if>
 							</div>
-							<div id="assocEleLinkBlock">
-								
+							<div id="assocEleLinkReadOnlyBlock" class="arrowBlock">
+								<img src="images/arrow_left_right_gray.gif" id="assocImg"/>
+								<br>
+								<strong>associated with</strong>
 							</div>
 							<div id="assocEleBlockB" class="assocEleBlock">
 								&nbsp;&nbsp;
 								<strong>Element</strong>
-								<br>
 								<br>
 								&nbsp;&nbsp;&nbsp;&nbsp;${chemicalAssociationForm.map.assoc.associatedElementB.compositionType}
 								(${chemicalAssociationForm.map.assoc.associatedElementB.entityDisplayName})
@@ -98,7 +98,7 @@
 								<c:if
 									test="${! empty chemicalAssociationForm.map.assoc.associatedElementB.composingElement.id }">
 										
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Composing Element (${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementA.composingElement.name})
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Composing Element (${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.type}:${chemicalAssociationForm.map.assoc.associatedElementB.composingElement.name})
 										<br>
 								</c:if>
 							</div>
