@@ -1085,6 +1085,19 @@ img.img { /* for images that need a border */
 	padding-bottom: 3px;
 }
 
+#assocEleLinkReadOnlyBlock {
+	float: left;
+	width: 120px;
+	margin: 20px 0 0 0;
+	text-align: center;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+#assocImg {
+	margin-bottom: 1em;
+}
+
 .indented0 {
 	padding-left: 3pt;
 }
