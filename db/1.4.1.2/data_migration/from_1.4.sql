@@ -41,7 +41,7 @@ CREATE TABLE author
 	created_by varchar(100) NOT NULL,
 	PRIMARY KEY (author_pk_id),
 	UNIQUE (author_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 UPDATE csm_protection_element
@@ -141,7 +141,7 @@ CREATE TABLE author_publication
 	publication_pk_id BIGINT NOT NULL,
 	KEY (author_pk_id),
 	KEY (publication_pk_id)
-) 
+) TYPE=InnoDB
 ;
 
 ALTER TABLE canano.author_publication
