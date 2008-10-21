@@ -880,7 +880,7 @@ public class AuthorizationService {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
-		if (publicData.contains(data)) {
+		if (data!=null && publicData.contains(data.trim().toUpperCase())) {
 			return true;
 		} else if (user != null && checkReadPermission(user, data)) {
 			return true;

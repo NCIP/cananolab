@@ -592,7 +592,7 @@ public class NanoparticleSampleServiceHelper {
 		List<String> publicNames = new ArrayList<String>();
 		for (Object obj : results) {
 			String name = (String) obj.toString();
-			if (publicData.contains(name)) {
+			if (publicData.contains(name.trim().toUpperCase())) {
 				publicNames.add(name);
 			}
 		}
