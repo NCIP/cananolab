@@ -315,6 +315,29 @@ public class FileServiceLocalImpl implements FileService {
 			throw new FileException(err, e);
 		}
 	}
+	
+	// retrieve file accessibility
+	public void retrieveAccessibility(LabFileBean fileBean, UserBean user)
+			throws FileException {
+		try {
+			if (fileBean!=null) {
+				AuthorizationService auth = new AuthorizationService(
+						CaNanoLabConstants.CSM_APP_NAME);
+				if (fileBean.getDomainFile().getId() != null
+						&& auth.isUserAllowed(fileBean.getDomainFile().getId()
+								.toString(), user)) {
+					fileBean.setHidden(false);
+				} else {
+					fileBean.setHidden(true);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting file accessibility for "
+					+ fileBean.getDisplayName();
+			logger.error(err, e);
+			throw new FileException(err, e);
+		}
+	}
 
 	public List<LabFile> findFilesByCompositionInfoId(String id,
 			String className) throws FileException {
