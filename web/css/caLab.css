@@ -185,6 +185,12 @@ td.subMenuFooter { /* for the last row in the submenu left of the footer menu */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+td.footerVersion { /* for the items under the sub-menu title elements */
+	font-size: 0.6em;
+	background-color: #ffffff; /* constant: white */
+	color: #000000; /* constant: black */
+}
+
 /*############### 
 LINKS BEGIN 
 ###############*/
