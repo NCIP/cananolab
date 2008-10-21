@@ -178,7 +178,9 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
-				publicData.add((String) obj);
+				if (obj!=null) {
+					publicData.add(((String) obj).trim().toUpperCase());
+				}
 			}
 		} catch (Exception e) {
 			String err = "Could not execute direct sql query to find all public data";

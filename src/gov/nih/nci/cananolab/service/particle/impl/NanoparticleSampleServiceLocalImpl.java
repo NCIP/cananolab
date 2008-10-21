@@ -772,7 +772,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		int count = 0;
 		for (Object obj : results) {
 			String name = (String) obj.toString();
-			if (publicData.contains(name)) {
+			if (publicData.contains(name.trim().toUpperCase())) {
 				count = 1;
 				break;
 			}
@@ -829,7 +829,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			for (ParticleBean particle : particles) {
 				String particleName = particle.getDomainParticleSample()
 						.getName();
-				if (publicData.contains(particleName)) {
+				if (publicData.contains(particleName.trim().toUpperCase())) {
 					filtered.add(particle);
 				} else if (user != null
 						&& auth.checkReadPermission(user, particleName)) {
