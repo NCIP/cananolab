@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -10,14 +9,12 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.GridDiscoveryServiceJob;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,10 +74,10 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			}
 			if (location.equals("local")) {
 				List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
-				// retrieve visibility
+				// retrieve accessibility
 				FileService fileService = new FileServiceLocalImpl();
 				for (ProtocolFileBean protocolFile : protocolFiles) {
-					fileService.retrieveVisibility(protocolFile, user);
+					fileService.retrieveAccessibility(protocolFile, user);
 					if (!protocolFile.isHidden()) {
 						filteredProtocolFiles.add(protocolFile);
 					}
