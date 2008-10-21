@@ -50,7 +50,9 @@ public interface FileService {
 	public void prepareSaveFile(LabFile file) throws FileException;
 
 	// retrieve file visibility
-
 	public void retrieveVisibility(LabFileBean fileBean, UserBean user)
 			throws FileException;
+	
+	public void retrieveAccessibility(LabFileBean fileBean, UserBean user)
+	throws FileException;
 }
