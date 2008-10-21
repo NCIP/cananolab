@@ -112,6 +112,6 @@
 		</copy>
 
 		<!-- remove tmp directory -->
-		<!--		<delete dir="${tmp.dir}" quiet="true" />-->
+		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
 </project>
