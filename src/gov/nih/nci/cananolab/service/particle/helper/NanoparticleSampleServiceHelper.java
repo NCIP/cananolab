@@ -79,7 +79,7 @@ public class NanoparticleSampleServiceHelper {
 				&& otherNanoparticleEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias("sample.sampleComposition", "comp");
+			crit.createAlias("sampleComposition", "comp");
 			crit.createAlias("comp.nanoparticleEntityCollection", "nanoEntity");
 		}
 
