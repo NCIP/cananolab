@@ -147,4 +147,10 @@ public class FileServiceRemoteImpl implements FileService {
 			throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
+	
+	// retrieve file retrieve accessibility
+	public void retrieveAccessibility(LabFileBean fileBean, UserBean user)
+			throws FileException {
+		throw new FileException("Not implemented for grid service");
+	}
 }
