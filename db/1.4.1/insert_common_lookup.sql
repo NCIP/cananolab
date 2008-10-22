@@ -248,7 +248,6 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('PlateletAggrega
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('CFU_GM','derivedDatumName','number of CFU-GM colonies');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('CFU_GM','derivedDatumName','total number of bone marrow cells');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','peer review article');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review article');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','book chapter');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','editorial');
