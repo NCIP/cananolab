@@ -58,7 +58,7 @@
 					<tr class="topBorder">
 						<td class="formTitle" colspan="6">
 							<div align="justify">
-								Basic Search
+								Keyword Search
 							</div>
 						</td>
 					</tr>
@@ -85,7 +85,7 @@
 					<tr class="topBorder">
 						<td class="formTitle" colspan="6">
 							<div align="justify">
-								Advanced Search
+								Basic Search
 							</div>
 						</td>
 					</tr>
