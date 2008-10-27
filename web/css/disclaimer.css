@@ -50,6 +50,7 @@ TD.subMenuFooter {
 	BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 0.8em; FONT-WEIGHT: bold; FONT-SIZE: 0.6em; COLOR: #ffffff; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #5c5c5c
 }
 TD.footerVersion { /* for the items under the sub-menu title elements */
+	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.6em;
 	background-color: #ffffff; /* constant: white */
 	color: #000000; /* constant: black */
