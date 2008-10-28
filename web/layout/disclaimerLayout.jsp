@@ -3,8 +3,8 @@
 <html>
 	<head>
 		<title><tiles:getAsString name="title" ignore="true" /></title>
+		<LINK rel="stylesheet" type="text/css" href="css/caLab.css">
 		<LINK rel="stylesheet" type="text/css" href="css/disclaimer.css">
-
 	</head>
 	<tiles:importAttribute scope="session" />
 	<body>
