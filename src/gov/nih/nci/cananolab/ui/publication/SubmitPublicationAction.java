@@ -227,6 +227,20 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			forward = mapping.findForward("publicationSubmitPublication");
 			session.removeAttribute("docParticleId");
 		}
+		
+		//clear publication data fields
+		Publication publication = (Publication)pbean.getDomainFile();
+		publication.setTitle("");
+		publication.setDigitalObjectId("");
+		publication.setJournalName("");
+		publication.setStartPage(null);
+		publication.setEndPage(null);
+		publication.setYear(null);
+		publication.setVolume("");
+		List<Author> authors = new ArrayList<Author>();
+		authors.add(new Author());
+		pbean.setAuthors(authors);
+		
 		if(pubmedID != null && pubmedID.length() > 0 && !pubmedID.equals("0")) {
 			Long pubMedIDLong = 0L;
 			try {
@@ -238,12 +252,8 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				saveErrors(request, msgs);
 				return forward;
 			}
-			Publication pub = new Publication();
-			pub.setPubMedId(new Long(pubmedID));
-			pbean.setDomainFile(pub);
 			phandler.parsePubMedXML(pubMedIDLong, pbean);
 			if (!pbean.isFoundPubMedArticle()) {
-				pbean.setAuthors(new ArrayList<Author>());
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.submitPublication.pubmedArticleNotFound",
 						pubmedID);
@@ -251,7 +261,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				saveMessages(request, msgs);
 				return forward;
 			} else {
-				change0ToNull(pub);
+				change0ToNull(publication);
 			}
 			theForm.set("file", pbean);
 			if (particleId != null && particleId.length() > 0) {
@@ -260,19 +270,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				forward = mapping.findForward("publicationSubmitPubmedPublication");
 			}
 		} else {
-			//clear data fields
-			Publication publication = (Publication)pbean.getDomainFile();
 			publication.setPubMedId(null);
-			publication.setTitle("");
-			publication.setDigitalObjectId("");
-			publication.setJournalName("");
-			publication.setStartPage(null);
-			publication.setEndPage(null);
-			publication.setYear(null);
-			publication.setVolume("");
-			List<Author> authors = new ArrayList<Author>();
-			authors.add(new Author());
-			pbean.setAuthors(authors);
 			theForm.set("file", pbean);		
 		}
 		return forward;
