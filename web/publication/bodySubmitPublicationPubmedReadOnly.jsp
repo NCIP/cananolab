@@ -140,8 +140,7 @@
 										<strong>Journal </strong>
 									</td>
 									<td class="rightLabel" colspan="7">
-										${submitPublicationForm.map.file.domainFile.journalName
-										}&nbsp;
+										${submitPublicationForm.map.file.domainFile.journalName}&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -189,28 +188,25 @@
 										<strong>Year of Publication</strong>
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.year" size="5"
-											onkeydown="return filterInteger(event)" />
+										${submitPublicationForm.map.file.domainFile.year}&nbsp;
 									</td>
 									<td class="label" align="right" style="padding-left: 3em; padding-right: 0">
 										<strong id="volumeTitle">Volume</strong>&nbsp;
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.volume" size="8" styleId="volumeValue" />&nbsp;
+										${submitPublicationForm.map.file.domainFile.volume}&nbsp;
 									</td>
 									<td class="label" align="right" valign="middle" style="padding-left: 5em; padding-right: 0;">
 										<strong id="spageTitle">Start Page</strong>&nbsp;
 									</td>
 									<td class="label">
-										<html:text property="file.domainFile.startPage" size="8"
-											onkeydown="return filterInteger(event)" styleId="spageValue" />&nbsp;
+										${submitPublicationForm.map.file.domainFile.startPage}&nbsp;
 									</td>
 									<td class="label" align="right">
 										<strong id="epageTitle" >End Page</strong>&nbsp;
 									</td>
 									<td class="rightLabel">
-										<html:text property="file.domainFile.endPage" size="8"
-											onkeydown="return filterInteger(event)" styleId="epageValue" />&nbsp;
+										${submitPublicationForm.map.file.domainFile.endPage}&nbsp;
 									</td>
 								</tr>
 								<tr>
