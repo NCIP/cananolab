@@ -44,13 +44,11 @@ if(P=="delete_characterization_help")C="Navigation%20Tree%20Managing_Char.8.7.ht
 if(P=="doc_summary_help")C="Navigation%20Tree%20Managing_Char.8.8.html#1546804";
 if(P=="manage_reports_help")C="Documents.9.2.html#1123962";
 if(P=="submit_publication_help")C="Documents.9.3.html#1131845";
-if(P=="nano_report_help")C="Documents.9.4.html#1138842";
-if(P=="search_reports_help")C="Documents.9.5.html#1135396";
-if(P=="search_reports_results_help")C="Documents.9.6.html#1104802";
-if(P=="report_page_help")C="Documents.9.7.html#1131363";
-if(P=="publication_page_help")C="Documents.9.8.html#1142741";
-if(P=="report_file_page")C="Documents.9.11.html#1138948";
-if(P=="delete_doc_help")C="Documents.9.12.html#1124634";
+if(P=="search_reports_help")C="Documents.9.4.html#1135396";
+if(P=="search_reports_results_help")C="Documents.9.5.html#1104802";
+if(P=="publication_page_help")C="Documents.9.6.html#1142741";
+if(P=="report_file_page")C="Documents.9.8.html#1138948";
+if(P=="delete_doc_help")C="Documents.9.9.html#1124634";
 if(P=="glossary_help")C="caNanoLab_Glossary.10.1.html#1065170";
 return C;
 }

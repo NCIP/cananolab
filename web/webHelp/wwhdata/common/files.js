@@ -1,7 +1,7 @@
 function  WWHBookData_Files(P)
 {
 P.fA("Welcome to the caNanoLab Online Help","Welcome.1.1.html");
-P.fA("Getting Started with caNanoLab 1.4","About%20caNanoLab.2.1.html");
+P.fA("Getting Started with caNanoLab","About%20caNanoLab.2.1.html");
 P.fA("Using caNanoLab Online Help","About%20caNanoLab.2.2.html");
 P.fA("About caNanoLab","About%20caNanoLab.2.3.html");
 P.fA("caNanoLab Functionality Overview","About%20caNanoLab.2.4.html");
@@ -81,20 +81,17 @@ P.fA("Characterization Details View","Navigation%20Tree%20Managing_Char.8.4.html
 P.fA("Characterization Tasks","Navigation%20Tree%20Managing_Char.8.5.html");
 P.fA("Copying Characterizations","Navigation%20Tree%20Managing_Char.8.6.html");
 P.fA("Deleting a Characterization","Navigation%20Tree%20Managing_Char.8.7.html");
-P.fA("Documents Category","Navigation%20Tree%20Managing_Char.8.8.html");
+P.fA("Publication Category","Navigation%20Tree%20Managing_Char.8.8.html");
 P.fA("In Vivo Characterization Category","Navigation%20Tree%20Managing_Char.8.9.html");
-P.fA("Managing Documents","Documents.9.1.html");
-P.fA("Documents Overview","Documents.9.2.html");
+P.fA("Managing Publications","Documents.9.1.html");
+P.fA("Publications Overview","Documents.9.2.html");
 P.fA("Submitting a Publication","Documents.9.3.html");
-P.fA("Submitting a Report","Documents.9.4.html");
-P.fA("Searching Nanoparticle Documents","Documents.9.5.html");
-P.fA("Nanoparticle Documents Search Results","Documents.9.6.html");
-P.fA("Report Page","Documents.9.7.html");
-P.fA("Publication Page","Documents.9.8.html");
-P.fA("Editing Documents","Documents.9.9.html");
-P.fA("Update Report Page","Documents.9.10.html");
-P.fA("Update Publication Page","Documents.9.11.html");
-P.fA("Deleting a Document","Documents.9.12.html");
+P.fA("Searching Nanoparticle Publications","Documents.9.4.html");
+P.fA("Nanoparticle Publications Search Results","Documents.9.5.html");
+P.fA("Publication Page","Documents.9.6.html");
+P.fA("Editing Publications","Documents.9.7.html");
+P.fA("Update Publication Page","Documents.9.8.html");
+P.fA("Deleting a Publication","Documents.9.9.html");
 P.fA("caNanoLab Glossary","caNanoLab_Glossary.10.1.html");
 P.fA("Application Support","Application%20Support.11.1.html");
 }
