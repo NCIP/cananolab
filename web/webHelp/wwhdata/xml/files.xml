@@ -39,7 +39,7 @@
   </ScoringPrefs>
   <DocumentInfo>
     <Document title="Welcome to the caNanoLab Online Help" href="Welcome.1.1.html" />
-    <Document title="Getting Started with caNanoLab 1.4" href="About%20caNanoLab.2.1.html" />
+    <Document title="Getting Started with caNanoLab" href="About%20caNanoLab.2.1.html" />
     <Document title="Using caNanoLab Online Help" href="About%20caNanoLab.2.2.html" />
     <Document title="About caNanoLab" href="About%20caNanoLab.2.3.html" />
     <Document title="caNanoLab Functionality Overview" href="About%20caNanoLab.2.4.html" />
@@ -119,20 +119,17 @@
     <Document title="Characterization Tasks" href="Navigation%20Tree%20Managing_Char.8.5.html" />
     <Document title="Copying Characterizations" href="Navigation%20Tree%20Managing_Char.8.6.html" />
     <Document title="Deleting a Characterization" href="Navigation%20Tree%20Managing_Char.8.7.html" />
-    <Document title="Documents Category" href="Navigation%20Tree%20Managing_Char.8.8.html" />
+    <Document title="Publication Category" href="Navigation%20Tree%20Managing_Char.8.8.html" />
     <Document title="In Vivo Characterization Category" href="Navigation%20Tree%20Managing_Char.8.9.html" />
-    <Document title="Managing Documents" href="Documents.9.1.html" />
-    <Document title="Documents Overview" href="Documents.9.2.html" />
+    <Document title="Managing Publications" href="Documents.9.1.html" />
+    <Document title="Publications Overview" href="Documents.9.2.html" />
     <Document title="Submitting a Publication" href="Documents.9.3.html" />
-    <Document title="Submitting a Report" href="Documents.9.4.html" />
-    <Document title="Searching Nanoparticle Documents" href="Documents.9.5.html" />
-    <Document title="Nanoparticle Documents Search Results" href="Documents.9.6.html" />
-    <Document title="Report Page" href="Documents.9.7.html" />
-    <Document title="Publication Page" href="Documents.9.8.html" />
-    <Document title="Editing Documents" href="Documents.9.9.html" />
-    <Document title="Update Report Page" href="Documents.9.10.html" />
-    <Document title="Update Publication Page" href="Documents.9.11.html" />
-    <Document title="Deleting a Document" href="Documents.9.12.html" />
+    <Document title="Searching Nanoparticle Publications" href="Documents.9.4.html" />
+    <Document title="Nanoparticle Publications Search Results" href="Documents.9.5.html" />
+    <Document title="Publication Page" href="Documents.9.6.html" />
+    <Document title="Editing Publications" href="Documents.9.7.html" />
+    <Document title="Update Publication Page" href="Documents.9.8.html" />
+    <Document title="Deleting a Publication" href="Documents.9.9.html" />
     <Document title="caNanoLab Glossary" href="caNanoLab_Glossary.10.1.html" />
     <Document title="Application Support" href="Application%20Support.11.1.html" />
   </DocumentInfo>
@@ -180,13 +177,11 @@
     <Topic name="doc_summary_help" href="Navigation%20Tree%20Managing_Char.8.8.html#1546804" />
     <Topic name="manage_reports_help" href="Documents.9.2.html#1123962" />
     <Topic name="submit_publication_help" href="Documents.9.3.html#1131845" />
-    <Topic name="nano_report_help" href="Documents.9.4.html#1138842" />
-    <Topic name="search_reports_help" href="Documents.9.5.html#1135396" />
-    <Topic name="search_reports_results_help" href="Documents.9.6.html#1104802" />
-    <Topic name="report_page_help" href="Documents.9.7.html#1131363" />
-    <Topic name="publication_page_help" href="Documents.9.8.html#1142741" />
-    <Topic name="report_file_page" href="Documents.9.11.html#1138948" />
-    <Topic name="delete_doc_help" href="Documents.9.12.html#1124634" />
+    <Topic name="search_reports_help" href="Documents.9.4.html#1135396" />
+    <Topic name="search_reports_results_help" href="Documents.9.5.html#1104802" />
+    <Topic name="publication_page_help" href="Documents.9.6.html#1142741" />
+    <Topic name="report_file_page" href="Documents.9.8.html#1138948" />
+    <Topic name="delete_doc_help" href="Documents.9.9.html#1124634" />
     <Topic name="glossary_help" href="caNanoLab_Glossary.10.1.html#1065170" />
   </TopicMap>
 </WebWorksHelpBook>
