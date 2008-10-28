@@ -1,7 +1,7 @@
 function  WWHBookData_AddTOCEntries(P)
 {
 var A=P.fN("Welcome to the caNanoLab Online Help","0");
-A=P.fN("Getting Started with caNanoLab 1.4","1");
+A=P.fN("Getting Started with caNanoLab","1");
 var B=A.fN("Using caNanoLab Online Help","2");
 B=A.fN("About caNanoLab","3");
 var C=B.fN("caNanoLab Functionality Overview","4");
@@ -81,20 +81,17 @@ C=B.fN("Characterization Details View","77");
 B=A.fN("Characterization Tasks","78");
 C=B.fN("Copying Characterizations","79");
 C=B.fN("Deleting a Characterization","80");
-B=A.fN("Documents Category","81");
+B=A.fN("Publication Category","81");
 B=A.fN("In Vivo Characterization Category","82");
-A=P.fN("Managing Documents","83");
-B=A.fN("Documents Overview","84");
+A=P.fN("Managing Publications","83");
+B=A.fN("Publications Overview","84");
 B=A.fN("Submitting a Publication","85");
-B=A.fN("Submitting a Report","86");
-B=A.fN("Searching Nanoparticle Documents","87");
-C=B.fN("Nanoparticle Documents Search Results","88");
-C=B.fN("Report Page","89");
-C=B.fN("Publication Page","90");
-B=A.fN("Editing Documents","91");
-C=B.fN("Update Report Page","92");
-C=B.fN("Update Publication Page","93");
-C=B.fN("Deleting a Document","94");
-A=P.fN("caNanoLab Glossary","95");
-A=P.fN("Application Support","96");
+B=A.fN("Searching Nanoparticle Publications","86");
+C=B.fN("Nanoparticle Publications Search Results","87");
+C=B.fN("Publication Page","88");
+B=A.fN("Editing Publications","89");
+C=B.fN("Update Publication Page","90");
+C=B.fN("Deleting a Publication","91");
+A=P.fN("caNanoLab Glossary","92");
+A=P.fN("Application Support","93");
 }

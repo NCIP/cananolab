@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WebWorksHelpTOC version="5.0" xmlns="urn:WebWorks-Help-TOC-Schema">
   <i t="Welcome to the caNanoLab Online Help" l="0" />
-  <i t="Getting Started with caNanoLab 1.4" l="1">
+  <i t="Getting Started with caNanoLab" l="1">
     <i t="Using caNanoLab Online Help" l="2" />
     <i t="About caNanoLab" l="3">
       <i t="caNanoLab Functionality Overview" l="4" />
@@ -104,24 +104,21 @@
       <i t="Copying Characterizations" l="79" />
       <i t="Deleting a Characterization" l="80" />
     </i>
-    <i t="Documents Category" l="81" />
+    <i t="Publication Category" l="81" />
     <i t="In Vivo Characterization Category" l="82" />
   </i>
-  <i t="Managing Documents" l="83">
-    <i t="Documents Overview" l="84" />
+  <i t="Managing Publications" l="83">
+    <i t="Publications Overview" l="84" />
     <i t="Submitting a Publication" l="85" />
-    <i t="Submitting a Report" l="86" />
-    <i t="Searching Nanoparticle Documents" l="87">
-      <i t="Nanoparticle Documents Search Results" l="88" />
-      <i t="Report Page" l="89" />
-      <i t="Publication Page" l="90" />
+    <i t="Searching Nanoparticle Publications" l="86">
+      <i t="Nanoparticle Publications Search Results" l="87" />
+      <i t="Publication Page" l="88" />
     </i>
-    <i t="Editing Documents" l="91">
-      <i t="Update Report Page" l="92" />
-      <i t="Update Publication Page" l="93" />
-      <i t="Deleting a Document" l="94" />
+    <i t="Editing Publications" l="89">
+      <i t="Update Publication Page" l="90" />
+      <i t="Deleting a Publication" l="91" />
     </i>
   </i>
-  <i t="caNanoLab Glossary" l="95" />
-  <i t="Application Support" l="96" />
+  <i t="caNanoLab Glossary" l="92" />
+  <i t="Application Support" l="93" />
 </WebWorksHelpTOC>
