@@ -238,11 +238,11 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				saveErrors(request, msgs);
 				return forward;
 			}
+			Publication pub = new Publication();
+			pub.setPubMedId(new Long(pubmedID));
+			pbean.setDomainFile(pub);
 			phandler.parsePubMedXML(pubMedIDLong, pbean);
 			if (!pbean.isFoundPubMedArticle()) {
-				Publication pub = new Publication();
-				pub.setPubMedId(new Long(pubmedID));
-				pbean.setDomainFile(pub);
 				pbean.setAuthors(new ArrayList<Author>());
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage("message.submitPublication.pubmedArticleNotFound",
@@ -250,6 +250,8 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, msgs);
 				return forward;
+			} else {
+				change0ToNull(pub);
 			}
 			theForm.set("file", pbean);
 			if (particleId != null && particleId.length() > 0) {
