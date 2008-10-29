@@ -1,30 +1,8 @@
-function setReportDropdowns() {
-	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
-	ReportManager.getReportCategories(searchLocations, function (data) {
-			dwr.util.removeAllOptions("reportCategory");
-			dwr.util.addOptions("reportCategory", data);
-		});
-	NanoparticleSampleManager.getNanoparticleEntityTypes(searchLocations, function (data) {
-			dwr.util.removeAllOptions("nanoparticleEntityTypes");
-			dwr.util.addOptions("nanoparticleEntityTypes", data);
-		});
-	NanoparticleSampleManager.getFunctionalizingEntityTypes(searchLocations, function (data) {
-			dwr.util.removeAllOptions("functionalizingEntityTypes");
-			dwr.util.addOptions("functionalizingEntityTypes", data);
-		});
-		
-	NanoparticleSampleManager.getFunctionTypes(searchLocations, function (data) {
-			dwr.util.removeAllOptions("functionTypes");
-			dwr.util.addOptions("functionTypes", data);
-		});
-	return false;
-}
-
 function setPublicationDropdowns() {
 	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
-	PublicatioManager.getPublicatioCategories(searchLocations, function (data) {
-			dwr.util.removeAllOptions("publicatioCategory");
-			dwr.util.addOptions("publicatioCategory", data);
+	PublicationManager.getPublicationCategories(searchLocations, function (data) {
+			dwr.util.removeAllOptions("publicationCategories");
+			dwr.util.addOptions("publicationCategories", data);
 		});
 	NanoparticleSampleManager.getNanoparticleEntityTypes(searchLocations, function (data) {
 			dwr.util.removeAllOptions("nanoparticleEntityTypes");
@@ -100,8 +78,8 @@ function setReportFields(pubCategoryId, pubStatusId) {
  * in bodySubmitPublication.jsp
  * set publication status to "published" when user selects "report" publication category. 
  */
-function setSearchReportFields(pubCategoryId) {
-	var pubCategory = document.getElementById(pubCategoryId);
+function setSearchReportFields() {
+	var pubCategory = document.getElementById("publicationCategories");
 	var pubmedRow = document.getElementById("pubMedRow");
 	
 	var otext = pubCategory.options[pubCategory.options.selectedIndex].text;

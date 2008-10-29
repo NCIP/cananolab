@@ -50,7 +50,6 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.publication.DWRPublicationManager" />
-			<include method="getReportCategories" />
 			<include method="getPublicationCategories" />
 			<include method="getPublicationStatuses" />
 		</create>

@@ -44,7 +44,7 @@
 						<td class="rightLabel" colspan="5">
 							<strong><html:select property="searchLocations"
 									styleId="searchLocations"
-									onchange="javascript:setReportDropdowns()" multiple="true"
+									onchange="javascript:setPublicationDropdowns()" multiple="true"
 									size="4">
 									<html:option value="local">
 										Local
@@ -61,8 +61,8 @@
 							<strong>Publication Type</strong>
 						</td>
 						<td class="label" valign="top">
-							<html:select styleId="category" property="category"
-								onchange="javascript:setSearchReportFields('category');">
+							<html:select property="category"
+								styleId="publicationCategories" onchange="javascript:setSearchReportFields();">
 								<option value="" />
 									<html:options name="publicationCategories" />
 							</html:select>
