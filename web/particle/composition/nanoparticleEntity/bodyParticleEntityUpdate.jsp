@@ -25,8 +25,7 @@ function confirmDeletion()
 					${particleName} Sample Composition - Nanoparticle Entity
 				</h4>
 			</td>
-			<td align="right" width="20%">
-				<jsp:include page="/webHelp/helpGlossary.jsp">
+			<td align="right" width="20/helpGlossary.jspe="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="nano_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>

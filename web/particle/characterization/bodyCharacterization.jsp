@@ -46,7 +46,7 @@
 					<c:set var="helpTopic" value="add_in_vitro_char_help" />
 				</c:when>				
 			</c:choose>	
-			<td align="right" width="20%">
+			<td al/helpGlossary.jsp
 				<jsp:include page="/webHelp/helpGlossary.jsp">			
 					<jsp:param name="topic" value="${helpTopic}" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />

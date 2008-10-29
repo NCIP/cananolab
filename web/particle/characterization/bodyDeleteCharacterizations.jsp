@@ -46,7 +46,7 @@ function confirmDeletion(deleteName, deleteMsg)
 					<br>
 				</h3>
 			</td>
-			<td align="right" width="20%">
+			<td al/helpGlossary.jsp
 				<jsp:include page="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="delete_characterization_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />

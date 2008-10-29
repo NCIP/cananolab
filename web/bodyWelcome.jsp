@@ -14,7 +14,7 @@
 	</tr>
 	<tr>
 		<td align="right">
-			<jsp:include page="/webHelp/helpGlossary.jsp">
+			<jsp:include page="/helpGlossary.jsp">
 				<jsp:param name="topic" value="welcome_workflow" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>

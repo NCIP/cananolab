@@ -53,8 +53,7 @@ function confirmDeletion(deleteName, deleteMsg)
 					</c:when>
 					<c:otherwise>
 						<c:set var="docHelp" value="delete_characterization_help" scope="request" />
-					</c:otherwise>
-				</c:choose>
+				/helpGlossary.jspchoose>
 				<jsp:include page="/webHelp/helpGlossary.jsp">					
 					<jsp:param name="topic" value="${docHelp}" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />

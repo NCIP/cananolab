@@ -26,8 +26,7 @@ function confirmDeletion()
 					${particleName} Sample Composition - Functionalizing Entity
 				</h4>
 			</td>
-			<td align="right" width="15%">
-				<jsp:include page="/webHelp/helpGlossary.jsp">
+			<td align="right" width="1/helpGlossary.jspge="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="function_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>

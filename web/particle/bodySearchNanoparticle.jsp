@@ -21,7 +21,7 @@
 			<td align="right" width="30%">
 				<%--<a href="advancedNanoparticleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
 
-				<jsp:include page="/webHelp/helpGlossary.jsp">
+				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="search_nano_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>

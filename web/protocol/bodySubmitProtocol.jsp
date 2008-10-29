@@ -24,8 +24,7 @@
 					${action } Protocol
 				</h3>
 			</td>
-			<td align="right" width="20%">
-				<jsp:include page="/webHelp/helpGlossary.jsp">
+			<td align="right" width="20%/helpGlossary.jsp="/webHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="submit_protocol_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>

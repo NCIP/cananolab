@@ -19,7 +19,7 @@
 				</h3>
 			</td>
 			<td align="right" width="20%">
-				<jsp:include page="/webHelp/helpGlossary.jsp">
+		/helpGlossary.jspHelp/helpGlossary.jsp">
 					<jsp:param name="topic" value="nano_report_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>					

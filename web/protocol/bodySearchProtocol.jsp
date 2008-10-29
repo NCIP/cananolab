@@ -18,7 +18,7 @@
 				</h3>
 			</td>
 			<td align="right" width="25%">
-				<jsp:include page="/webHelp/helpGlossary.jsp">
+				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="search_protocol_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
