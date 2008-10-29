@@ -19,10 +19,10 @@
 				</h3>
 			</td>
 			<td align="right" width="20%">
-		/helpGlossary.jspHelp/helpGlossary.jsp">
+				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="nano_report_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>					
+				</jsp:include>
 			</td>
 		</tr>
 		<c:choose>
@@ -31,8 +31,9 @@
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
-							nanoparticle samples in the database. Please make sure to 
-							<html:link page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}" scope="page" >create
+							nanoparticle samples in the database. Please make sure to <html:link
+								page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
+								scope="page">create
 							a new nanoparticle sample</html:link> first. </font>
 					</td>
 				</tr>
@@ -61,7 +62,7 @@
 											styleId="file.domainFile.category">
 											<option value=""></option>
 											<html:options name="publicationCategories" />
-<%--											<option value="report" selected>report</option>--%>
+											<%--											<option value="report" selected>report</option>--%>
 											<option value="other">
 												[Other]
 											</option>
@@ -111,11 +112,11 @@
 										<strong>Enter Report URL</strong>
 									</td>
 									<td class="rightLabel" colspan="3">
-										<span id="load" style="display:none"> <html:file
+										<span id="load" style="display: none"> <html:file
 												property="file.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
 										<br>
 										<br>
-										<span id="link" style="display:none"><html:text
+										<span id="link" style="display: none"><html:text
 												property="file.externalUrl" size="60" /> </span>&nbsp;
 									</td>
 								</tr>
@@ -135,7 +136,7 @@
 								<c:if test="${!empty submitReportForm.map.file.domainFile.id}">
 									<html:hidden property="file.domainFile.id" />
 								</c:if>
-								
+
 								<tr>
 									<td class="leftLabel">
 										<strong>Title*</strong>
@@ -177,8 +178,7 @@
 																size="17" />
 														</td>
 														<td>
-															<html:text
-																property="file.authors[${authorInd}].initial"
+															<html:text property="file.authors[${authorInd}].initial"
 																size="17" />
 														</td>
 													</tr>
@@ -221,15 +221,17 @@
 									</c:when>
 									<c:otherwise>
 										<tr>
-											<input type="hidden" name="file.particleNames" value="${particleName}">
+											<input type="hidden" name="file.particleNames"
+												value="${particleName}">
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Copy to other ${particleSource} nanoparticle</strong>
+												<strong>Copy to other ${particleSource}
+													nanoparticle</strong>
 											</td>
-											<td class="rightLabel" colspan="3">										
+											<td class="rightLabel" colspan="3">
 												<html:select property="file.particleNames" multiple="true"
 													size="5">
-													<html:options collection="otherParticleNames" property="name"
-														labelProperty="name" />
+													<html:options collection="otherParticleNames"
+														property="name" labelProperty="name" />
 												</html:select>
 											</td>
 										</tr>
@@ -237,8 +239,8 @@
 								</c:choose>
 								<tr>
 									<td class="leftLabel" valign="top">
-										<strong>Keywords<br>
-										</strong><i>(one keyword per line)</i>
+										<strong>Keywords<br> </strong><i>(one keyword per
+											line)</i>
 									</td>
 									<td class="rightLabel" colspan="3">
 										<html:textarea property="file.keywordsStr" rows="3" cols="60" />
@@ -253,7 +255,7 @@
 											cols="60" />
 									</td>
 								</tr>
-								
+
 								<tr>
 									<td class="leftLabel">
 										<strong>Visibility</strong>
@@ -265,7 +267,8 @@
 										</html:select>
 										<br>
 										<i>(${applicationOwner}_Researcher and
-											${applicationOwner}_DataCurator are always selected by default.)</i>
+											${applicationOwner}_DataCurator are always selected by
+											default.)</i>
 									</td>
 								</tr>
 							</tbody>
@@ -283,15 +286,17 @@
 											<td width="490" height="32">
 												<div align="right">
 													<div align="right">
-														<input type="reset" value="Reset" onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
+														<input type="reset" value="Reset"
+															onclick="javascript:location.href='submitReport.do?dispatch=setup&page=0'">
 														<input type="hidden" name="dispatch" value="create">
-														<input type="hidden" name="submitType" value="publications">
+														<input type="hidden" name="submitType"
+															value="publications">
 														<input type="hidden" name="page" value="2">
-<%--														<c:if test="${!empty param.particleId}">--%>
-<%--															<input type="hidden" name="particleId"--%>
-<%--																value="${param.particleId}">--%>
-<%--														</c:if>--%>
-														<html:hidden property="file.domainFile.category"/>
+														<%--														<c:if test="${!empty param.particleId}">--%>
+														<%--															<input type="hidden" name="particleId"--%>
+														<%--																value="${param.particleId}">--%>
+														<%--														</c:if>--%>
+														<html:hidden property="file.domainFile.category" />
 														<html:submit />
 													</div>
 												</div>

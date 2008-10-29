@@ -13,7 +13,7 @@
 			</h4>
 		</td>
 		<td align="right" width="35%">
-			<jsp/helpGlossary.jspelpGlossary.jsp">
+			<jsp:include page="/helpGlossary.jsp">
 				<jsp:param name="topic" value="report_page_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>

@@ -26,7 +26,8 @@ function confirmDeletion()
 					${particleName} Sample Composition - Functionalizing Entity
 				</h4>
 			</td>
-			<td align="right" width="1/helpGlossary.jspge="/webHelp/helpGlossary.jsp">
+			<td align="right" width="15%">
+				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="function_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
@@ -80,7 +81,7 @@ function confirmDeletion()
 							<strong>Chemical Name*</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="entity.name" size="70"/>
+							<html:text property="entity.name" size="70" />
 						</td>
 					</tr>
 					<tr>
@@ -105,7 +106,8 @@ function confirmDeletion()
 							<strong>Molecular Formula</strong>
 						</td>
 						<td class="rightLabel" colspan="3">
-							<html:textarea property="entity.molecularFormula" rows="2" cols="80"/>
+							<html:textarea property="entity.molecularFormula" rows="2"
+								cols="80" />
 							&nbsp;
 						</td>
 					</tr>
@@ -158,7 +160,8 @@ function confirmDeletion()
 							<strong>Activation Effect</strong>
 						</td>
 						<td class="rightLabel">
-							<html:text property="entity.activationMethod.activationEffect" size="70"/>
+							<html:text property="entity.activationMethod.activationEffect"
+								size="70" />
 						</td>
 					</tr>
 				</table>
@@ -168,11 +171,12 @@ function confirmDeletion()
 						<c:set var="entityType"
 							value="${functionalizingEntityForm.map.entity.type}" scope="page" />
 						<%
-									String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
-									.getInstance().getObjectName(
-									(String) pageContext.getAttribute("entityType"),
-									application);
-							pageContext.setAttribute("entityClass", entityClass);
+							String entityClass = gov.nih.nci.cananolab.ui.core.InitSetup
+											.getInstance().getObjectName(
+													(String) pageContext
+															.getAttribute("entityType"),
+													application);
+									pageContext.setAttribute("entityClass", entityClass);
 						%>
 						<jsp:include
 							page="/particle/composition/functionalizingEntity/body${entityClass}Info.jsp" />
@@ -204,7 +208,7 @@ function confirmDeletion()
 												<c:choose>
 													<c:when
 														test="${functionalizingEntityForm.map.entity.functions[ind].type == 'imaging'}">
-														<c:set var="modalityDisplay" value="display: block;" />														
+														<c:set var="modalityDisplay" value="display: block;" />
 													</c:when>
 													<c:otherwise>
 														<c:set var="modalityDisplay" value="display: none;" />
@@ -253,11 +257,11 @@ function confirmDeletion()
 															</td>
 															<td class="labelWithTop" valign="top">
 
-																<strong style="${modalityDisplay}" id="modalityStrong_${ind}">Modality
+																<strong style="" id="modalityStrong_${ind}">Modality
 																	Type</strong>&nbsp;
 															</td>
 															<td class="rightLabelWithTop" valign="top">
-																<div id="modalityDiv_${ind}" style="${modalityDisplay}">
+																<div id="modalityDiv_${ind}" style="">
 																	<html:select
 																		property="entity.functions[${ind}].imagingFunction.modality"
 																		size="1"
@@ -285,14 +289,14 @@ function confirmDeletion()
 														</tr>
 														<tr>
 															<td valign="bottom" class="leftLabel">
-																<span id="targetSpan_${ind }" style="${targetDisplay}"> <a
+																<span id="targetSpan_${ind }" style=""> <a
 																	href="#"
 																	onclick="javascript:addChildComponent(functionalizingEntityForm, 'functionalizingEntity', ${ind}, 'addTarget'); return false;">
 																		<span class="addLink2">Add Target</span> </a> </span>&nbsp;
 															</td>
 															<td colspan="4" class="rightLabel">
 																&nbsp;
-																<div id="targetDiv_${ind }" style="${targetDisplay}">
+																<div id="targetDiv_${ind }" style="">
 																	<jsp:include
 																		page="/particle/composition/functionalizingEntity/bodyTargetInfoUpdate.jsp">
 																		<jsp:param name="funcInd" value="${ind}" />
@@ -399,22 +403,25 @@ function confirmDeletion()
 												<c:choose>
 													<c:when test="${'setup' eq param.dispatch }">
 														<c:remove var="dataId" scope="session" />
-													</c:when>										
+													</c:when>
 													<c:when test="${'setupUpdate' eq param.dispatch }">
-														<c:set var="dataId" value="${param.dataId}" scope="session" />
-													</c:when>																			
+														<c:set var="dataId" value="${param.dataId}"
+															scope="session" />
+													</c:when>
 												</c:choose>
-												<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setup&location=${location}" />
+												<c:set var="origUrl"
+													value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setup&location=${location}" />
 												<c:if test="${!empty dataId}">
-													<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" />
-												</c:if>	
+													<c:set var="origUrl"
+														value="${actionName}.do?particleId=${particleId}&submitType=${submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" />
+												</c:if>
 												<input type="reset" value="Reset"
 													onclick="javascript:window.location.href='${origUrl}'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="2">
 												<input type="hidden" name="submitType"
 													value="${param.submitType}" />
-												<html:submit />												
+												<html:submit />
 												<c:choose>
 													<c:when test="${!empty param.particleId }">
 														<html:hidden property="particleId"

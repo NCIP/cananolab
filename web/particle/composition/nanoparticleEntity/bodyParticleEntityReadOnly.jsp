@@ -14,7 +14,7 @@
 				</h4>
 			</td>
 			<td align="right" width="20%">
-				<js/helpGlossary.jsphelpGlossary.jsp">
+				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="nano_entity_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
