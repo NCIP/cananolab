@@ -89,6 +89,15 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			height="20">
+			<a class="subMenuSecondary">caNanoLab WIKI</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onclick="openWindow('http://www.cancer.gov')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
