@@ -344,15 +344,17 @@ public class InitSetup {
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
 				localGridURL);
-
+		//don't remove from original list
+		List<GridNodeBean> remoteNodes=new ArrayList<GridNodeBean>();
+		remoteNodes.addAll(gridNodes);
 		if (localGrid != null) {
-			gridNodes.remove(localGrid);
+			remoteNodes.remove(localGrid);
 		}
-		Collections.sort(gridNodes,
+		Collections.sort(remoteNodes,
 				new CaNanoLabComparators.GridNodeHostNameComparator());
 
 		request.getSession().getServletContext().setAttribute("allGridNodes",
-				gridNodes);
+				remoteNodes);
 		return gridNodes;
 	}
 }
