@@ -166,7 +166,7 @@ public class GridService {
 			String gridServiceURL) {
 		GridNodeBean theNode = null;
 		for (GridNodeBean node : gridNodes) {
-			if (node.getAddress().equals(gridServiceURL)) {
+			if (node.getAddress().equalsIgnoreCase(gridServiceURL)) {
 				theNode = node;
 				break;
 			}
