@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.util;
 
-
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,14 +81,14 @@ public class StringUtils {
 			str = stringArray[i];
 			if (str == null) {
 				str = "";
-			}else if (str.length() > 0) {
+			} else if (str.length() > 0) {
 				if (i < stringArray.length - 1) {
 					sb.append(str);
 					sb.append(delimiter);
-					//joinedStr += str + delimiter;
+					// joinedStr += str + delimiter;
 				} else {
 					sb.append(str);
-					//joinedStr += str;
+					// joinedStr += str;
 				}
 			}
 		}
@@ -102,7 +101,7 @@ public class StringUtils {
 
 	public static String join(Collection<String> stringList, String delimiter) {
 		String joinedStr = "";
-		
+
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
 		}
@@ -112,7 +111,7 @@ public class StringUtils {
 			if (i < stringList.size() - 1) {
 				if (str != null && str.length() > 0)
 					sb.append(str);
-					sb.append(delimiter);
+				sb.append(delimiter);
 			} else {
 				if (str != null && str.length() > 0)
 					sb.append(str);
@@ -138,13 +137,13 @@ public class StringUtils {
 			if (i < sortableNames.size() - 1) {
 				if (sortableName.getName() != null
 						&& sortableName.getName().length() > 0)
-					//joinedStr += sortableName.getName() + delimiter;
+					// joinedStr += sortableName.getName() + delimiter;
 					sb.append(sortableName.getName());
-					sb.append(delimiter);
+				sb.append(delimiter);
 			} else {
 				if (sortableName.getName() != null
 						&& sortableName.getName().length() > 0)
-					//joinedStr += sortableName.getName();
+					// joinedStr += sortableName.getName();
 					sb.append(sortableName.getName());
 			}
 			i++;
@@ -309,10 +308,11 @@ public class StringUtils {
 	public static String getOneWordLowerCaseFirstLetter(String words) {
 		// remove space in words and make the first letter lower case.
 		String oneWord = words;
-		if (words!=null && words.length()>0) {
+		if (words != null && words.length() > 0) {
 			String firstLetter = words.substring(0, 1);
-			oneWord = words.replaceFirst(firstLetter,
-					firstLetter.toLowerCase()).replace(" ", "");
+			oneWord = words
+					.replaceFirst(firstLetter, firstLetter.toLowerCase())
+					.replace(" ", "");
 		}
 		return oneWord;
 	}
@@ -365,6 +365,16 @@ public class StringUtils {
 		wordList.addAll(quotedWords);
 
 		return new ArrayList<String>(wordList);
+	}
+
+	public static Boolean containsIgnoreCase(Collection<String> collection,
+			String match) {
+		for (String str : collection) {
+			if (str.trim().equalsIgnoreCase(match.trim())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public static void main(String[] args) {
