@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -224,7 +225,7 @@ public class ProtocolServiceHelper {
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (publicData.contains(id)) {
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
 				publicIds.add(id);
 			}
 		}
