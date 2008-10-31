@@ -338,7 +338,7 @@ public class PublicationServiceHelper {
 		int count = 0;
 		for (Object obj : results) {
 			String id = (String) obj.toString();
-			if (publicData.contains(id)) {
+			if (StringUtils.containsIgnoreCase(publicData, id)) {
 				count++;
 			}
 		}

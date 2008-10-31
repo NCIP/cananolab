@@ -23,6 +23,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.SortableName;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -769,19 +770,13 @@ public class NanoparticleSampleServiceLocalImpl implements
 				"select aParticle.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle "
 						+ " where aParticle.source=" + sourceId);
 		List results = appService.query(crit);
-		int count = 0;
 		for (Object obj : results) {
 			String name = (String) obj.toString();
-			if (publicData.contains(name.trim().toUpperCase())) {
-				count = 1;
-				break;
+			if (StringUtils.containsIgnoreCase(publicData, name)) {
+				return true;
 			}
 		}
-		if (count > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 
 	/**
@@ -801,19 +796,13 @@ public class NanoparticleSampleServiceLocalImpl implements
 						+ keywordId + "'");
 
 		List results = appService.query(crit);
-		int count = 0;
 		for (Object obj : results) {
 			String name = (String) obj.toString();
-			if (publicData.contains(name)) {
-				count = 1;
-				break;
+			if (StringUtils.containsIgnoreCase(publicData, name)) {
+				return true;
 			}
 		}
-		if (count > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 
 	public List<ParticleBean> getUserAccessibleParticles(
@@ -829,7 +818,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			for (ParticleBean particle : particles) {
 				String particleName = particle.getDomainParticleSample()
 						.getName();
-				if (publicData.contains(particleName.trim().toUpperCase())) {
+				if (StringUtils.containsIgnoreCase(publicData, particleName)) {
 					filtered.add(particle);
 				} else if (user != null
 						&& auth.checkReadPermission(user, particleName)) {

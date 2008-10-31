@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -814,14 +815,15 @@ public class AuthorizationService {
 			if (Arrays.asList(visibleGroups).contains(
 					CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
 				// only need to assign public visibilities
-				secureObject(dataToProtect, CaNanoLabConstants.CSM_PUBLIC_GROUP,
+				secureObject(dataToProtect,
+						CaNanoLabConstants.CSM_PUBLIC_GROUP,
 						CaNanoLabConstants.CSM_READ_ROLE);
-			}else{
+			} else {
 				// set new visibilities
 				for (String group : visibleGroups) {
 					secureObject(dataToProtect, group,
 							CaNanoLabConstants.CSM_READ_ROLE);
-				}	
+				}
 				// set default visibilities
 				for (String group : CaNanoLabConstants.VISIBLE_GROUPS) {
 					secureObject(dataToProtect, group,
@@ -833,12 +835,12 @@ public class AuthorizationService {
 			throw new CaNanoLabSecurityException();
 		}
 	}
-	
+
 	public void assignPublicVisibility(String dataToProtect)
 			throws CaNanoLabSecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,
-					CaNanoLabConstants.CSM_READ_ROLE);		
+					CaNanoLabConstants.CSM_READ_ROLE);
 			// set public visibilities
 			secureObject(dataToProtect, CaNanoLabConstants.CSM_PUBLIC_GROUP,
 					CaNanoLabConstants.CSM_READ_ROLE);
@@ -847,7 +849,6 @@ public class AuthorizationService {
 			throw new CaNanoLabSecurityException();
 		}
 	}
-
 
 	public void assignGroupToProtectionGroupWithRole(String groupName,
 			String protectionGroupName, String roleName)
@@ -880,7 +881,7 @@ public class AuthorizationService {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
-		if (data!=null && publicData.contains(data.trim().toUpperCase())) {
+		if (data != null && StringUtils.containsIgnoreCase(publicData, data)) {
 			return true;
 		} else if (user != null && checkReadPermission(user, data)) {
 			return true;
@@ -904,7 +905,7 @@ public class AuthorizationService {
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		for (String data : publicData) {
-			if (dataCollection.contains(data)) {
+			if (StringUtils.containsIgnoreCase(dataCollection, data)) {
 				return true;
 			}
 		}

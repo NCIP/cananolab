@@ -430,8 +430,8 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-//		crit.setFetchMode("publicationCollection.authorCollection",
-//				FetchMode.JOIN);
+		// crit.setFetchMode("publicationCollection.authorCollection",
+		// FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -592,7 +592,7 @@ public class NanoparticleSampleServiceHelper {
 		List<String> publicNames = new ArrayList<String>();
 		for (Object obj : results) {
 			String name = (String) obj.toString();
-			if (publicData.contains(name.trim().toUpperCase())) {
+			if (StringUtils.containsIgnoreCase(publicData, name)) {
 				publicNames.add(name);
 			}
 		}
