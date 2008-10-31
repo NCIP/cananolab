@@ -60,6 +60,9 @@ public class GridDiscoveryServiceJob implements Job {
 			// 2. populate remote services but eliminate existing duplicate
 			// addresses
 			List<GridNodeBean> remoteNodes = populateNewServices(extantURLs);
+			if (remoteNodes.size()>0) {
+				System.out.println("Found "+remoteNodes.size()+ " new grid service(s).");
+			}
 			gridNodes.addAll(remoteNodes);
 		}
 	}
