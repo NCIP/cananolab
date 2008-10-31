@@ -46,11 +46,15 @@ public class GridService {
 			if (returnedServices != null) {
 				for (EndpointReferenceType returnedService : returnedServices) {
 					// obtain the domain model version
-					DomainModel domainModel = MetadataUtils
-							.getDomainModel(returnedService);
-					if (domainModel.getProjectVersion().equals(
-							domainModelVersion)) {
-						services.add(returnedService);
+					try {
+						DomainModel domainModel = MetadataUtils
+								.getDomainModel(returnedService);
+						if (domainModel.getProjectVersion().equals(
+								domainModelVersion)) {
+							services.add(returnedService);
+						}
+					} catch (Exception e) {
+						logger.error(e.getMessage(), e);
 					}
 				}
 			}
@@ -85,11 +89,15 @@ public class GridService {
 			if (returnedServices != null) {
 				for (EndpointReferenceType returnedService : returnedServices) {
 					// obtain the domain model version
-					DomainModel domainModel = MetadataUtils
-							.getDomainModel(returnedService);
-					if (domainModel.getProjectVersion().equals(
-							domainModelVersion)) {
-						services.add(returnedService);
+					try {
+						DomainModel domainModel = MetadataUtils
+								.getDomainModel(returnedService);
+						if (domainModel.getProjectVersion().equals(
+								domainModelVersion)) {
+							services.add(returnedService);
+						}
+					} catch (Exception e) {
+						logger.error(e.getMessage(), e);
 					}
 				}
 			}
