@@ -179,7 +179,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 			List results = directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
 				if (obj!=null) {
-					publicData.add(((String) obj).trim().toUpperCase());
+					publicData.add(((String) obj));
 				}
 			}
 		} catch (Exception e) {
