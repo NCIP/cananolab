@@ -89,7 +89,7 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab')"
+			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">caNanoLab Wiki</a>
@@ -98,7 +98,7 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onclick="openWindow('http://www.cancer.gov')"
+			onclick="openWindow('http://www.cancer.gov', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">NCI HOME</a>
@@ -107,7 +107,7 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onclick="openWindow('http://ncicb.nci.nih.gov/')"
+			onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
 			<a class="subMenuSecondary">NCICB HOME</a>
@@ -116,7 +116,7 @@
 	<tr>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onclick="openWindow('http://ncl.cancer.gov/')"
+			onclick="openWindow('http://ncl.cancer.gov/', '', '800', '800')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
 			<a class="subMenuSecondary">NCL HOME</a>
