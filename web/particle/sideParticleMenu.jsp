@@ -92,7 +92,7 @@
 			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
-			<a class="subMenuSecondary">caNanoLab WIKI</a>
+			<a class="subMenuSecondary">caNanoLab Wiki</a>
 		</td>
 	</tr>
 	<tr>
