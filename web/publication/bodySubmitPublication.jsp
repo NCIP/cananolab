@@ -371,22 +371,35 @@
 															</div>
 														</td>
 													</tr>
-													<tr>
-														<input type="hidden" name="file.particleNames"
-															value="${particleName}">
-														<td class="leftLabel" valign="top" width="20%">
-															<strong>Copy to other ${particleSource}
-																nanoparticle</strong>
-														</td>
-														<td class="rightLabel">
-															<html:select property="file.particleNames"
-																multiple="true" size="5">
-																<html:options collection="otherParticleNames"
-																	property="name" labelProperty="name" />
-															</html:select>
-														</td>
-													</tr>
-												</tbody>
+												<c:choose>
+													<c:when test="${!empty otherParticleNames}">
+														<tr>
+															<input type="hidden" name="file.particleNames"
+																value="${particleName}">
+															<td class="leftLabel" valign="top" width="20%">
+																<strong>Copy to other ${particleSource}
+																	nanoparticle</strong>
+															</td>
+															<td class="rightLabel">
+																<html:select property="file.particleNames" multiple="true"
+																	size="5">
+																	<html:options collection="otherParticleNames"
+																		property="name" labelProperty="name" />
+																</html:select>
+															</td>
+														</tr>		
+													</c:when>
+													<c:otherwise>
+														<tr>
+															<td class="completeLabel" colspan="2">
+																There are no other particles from source ${particleSource}
+																to copy annotation to.
+															</td>
+														</tr>
+													</c:otherwise>
+												</c:choose>
+
+									</tbody>
 											</table>
 										</c:otherwise>
 									</c:choose>
