@@ -20,7 +20,6 @@ DROP FOREIGN KEY FK_author_publication_document_author,
 DROP FOREIGN KEY FK_author_publication_publication,
 CHANGE document_author_pk_id author_pk_id BIGINT(20) NOT NULL;
 
--- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
 UPDATE csm_protection_element
@@ -30,10 +29,8 @@ WHERE  protection_element_name = 'document';
 
 UPDATE csm_protection_group
 SET protection_group_name = 'publication' 
-
 WHERE  protection_group_name = 'document';
 
---migrate and drop nanoparticle_sample_report table
 INSERT INTO canano.nanoparticle_sample_publication
 (
 	particle_sample_pk_id,
@@ -53,7 +50,6 @@ ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sampl
 
 ALTER TABLE canano.publication CHANGE research_area research_area VARCHAR(200);
  
---migrate and drop report table
 INSERT INTO canano.publication
 (
 	publication_pk_id,
@@ -73,9 +69,6 @@ ALTER TABLE canano.publication
  REFERENCES canano.lab_file (file_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT
 ;
 
-
-
--- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
  
 ALTER TABLE canano.common_lookup
@@ -88,14 +81,11 @@ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 ALTER TABLE canano.author
 CHANGE document_author_pk_id author_pk_id BIGINT(20) not null;
 
---add data to author.created_by and author.created_date
---larger author.id should has larger author.created_date
 UPDATE canano.author author
 SET author.created_by = 'DATA_MIGRATION',
 author.created_date = ADDDATE(SYSDATE(), INTERVAL author.author_pk_id SECOND)
 order by author.author_pk_id;
 
--- change to not null
 ALTER TABLE canano.author
  CHANGE created_date created_date DATETIME NOT NULL;
  
@@ -107,8 +97,6 @@ ALTER TABLE canano.author_publication
 ADD CONSTRAINT FK_author_publication_author FOREIGN KEY (author_pk_id) REFERENCES canano.author (author_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT,
 ADD CONSTRAINT FK_author_publication_publication FOREIGN KEY (publication_pk_id) REFERENCES canano.publication (publication_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
-
--- fix errors in functionalizing_entity and activation_method tables
 update canano.functionalizing_entity fe, canano.activation_method am
 set fe.activation_method_pk_id = null
 where am.activation_method_pk_id = fe.activation_method_pk_id
@@ -123,7 +111,6 @@ where ( type = null or type = ' ' )
 and (activation_effect = null or activation_effect = ' ' )
 ;
 
--- delete "review-article" from publication category
 update canano.publication
 set category = 'review'
 where category = 'review article'
@@ -132,6 +119,3 @@ where category = 'review article'
 delete from canano.common_lookup
 where value = 'review article'
 ;
-
-
--- End of script
