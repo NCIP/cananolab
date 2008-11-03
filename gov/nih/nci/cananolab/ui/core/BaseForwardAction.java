@@ -19,8 +19,6 @@ package gov.nih.nci.cananolab.ui.core;
 /* CVS $Id: BaseForwardAction.java,v 1.5 2008-09-23 21:53:24 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -33,42 +31,30 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.ForwardAction;
 
-public class BaseForwardAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class BaseForwardAction extends ForwardAction {
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		if (session.isNew()) {
-			throw new InvalidSessionException(
-					"Session timed out.  Please start again");
-		}
-		ForwardAction forwardAction = new ForwardAction();
+
 		AuthorizationService authorizationService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-
-		Boolean createProtocol = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_PROTOCOL);
+		
+		Boolean createProtocol = false;
+		Boolean createPublication = false;
+		Boolean createParticle = false;
+		if (user != null) {
+			createProtocol = authorizationService.checkCreatePermission(user,
+					CaNanoLabConstants.CSM_PG_PROTOCOL);
+			createPublication = authorizationService.checkCreatePermission(
+					user, CaNanoLabConstants.CSM_PG_PUBLICATION);
+			createParticle = authorizationService.checkCreatePermission(user,
+					CaNanoLabConstants.CSM_PG_PARTICLE);
+		}
 		session.setAttribute("canCreateProtocol", createProtocol);
-		Boolean createPublication = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_PUBLICATION);
 		session.setAttribute("canCreatePublication", createPublication);
-		Boolean createParticle = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
 		session.setAttribute("canCreateNanoparticle", createParticle);
-		Boolean createSample = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_SAMPLE);
-		session.setAttribute("canCreateSample", createSample);
-
-		return forwardAction.execute(mapping, form, request, response);
-	}
-
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
-		return true;
+		return super.execute(mapping, form, request, response);
 	}
 }
