@@ -34,7 +34,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 				break;
 			}
 		}
-		if (!loginRequired() && !privateDispatch) {
+		if (!loginRequired() || !privateDispatch) {
 			return super.execute(mapping, form, request, response);
 		}
 		UserBean user = (UserBean) session.getAttribute("user");
