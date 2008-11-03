@@ -341,17 +341,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return noErrors;
 	}
 
-	public ActionForward unspecified(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws InvalidSessionException {
-		HttpSession session = request.getSession();
-		if (session.isNew()) {
-			throw new InvalidSessionException(
-					"Session timed out.  Please start again");
-		}
-		return mapping.getInputForward();
-	}
-
 	public void checkVisibility(HttpServletRequest request, String location,
 			UserBean user, LabFileBean fileBean) throws Exception {
 		if (location.equals("local")) {
