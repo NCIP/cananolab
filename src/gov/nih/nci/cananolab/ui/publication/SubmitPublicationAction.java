@@ -290,6 +290,10 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		String publicationId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		this.setOtherParticlesFromTheSameSource("local", request,
+				particleBean, user);
+		
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = publicationService
 				.findPublicationById(publicationId);
