@@ -27,7 +27,7 @@
 			type="gov.nih.nci.cananolab.exception.InvalidSessionException" />
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-			key="error.noaccess" path="/index.jsp"
+			key="error.noaccess" path="/home.jsp"
 			type="gov.nih.nci.cananolab.exception.NoAccessException" />
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
@@ -50,7 +50,7 @@
 			type="gov.nih.nci.cananolab.ui.security.LoginAction" input="input">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.securityException" path="/index.jsp"
+				key="error.securityException" path="/home.jsp"
 				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="calab.welcome" />
 			<forward name="input" path="/welcome.do" />
@@ -102,13 +102,13 @@
 				key="error.grid.particle.query" path="calab.login"
 				type="gov.nih.nci.cananolab.exception.ParticleException" />
 		</action>
-	</action-mappings>
+	</action-mappings>	 
 	<controller>
 		<set-property value="true" property="inputForward" />
 		<set-property property="processorClass"
 			value="gov.nih.nci.cananolab.ui.core.CustomRequestProcessor" />
 		<set-property property="nocache" value="true" />
-	</controller>
+	</controller>	
 	<message-resources
 		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
 	<message-resources key="sample"

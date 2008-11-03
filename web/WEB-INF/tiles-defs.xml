@@ -35,7 +35,7 @@
 		<put name="menu" value="home" />
 		<put name="onloadJavascript" value="" />
 		<putList name="items">
-			<item value="HOME" link="gotoPage('index.jsp')" />
+			<item value="HOME" link="gotoPage('home.jsp')" />
 			<item value="PROTOCOLS"
 				link="gotoPage('manageProtocol.do')" />
 			<item value="NANOPARTICLES"
