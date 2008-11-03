@@ -83,7 +83,7 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Antibody','isot
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Antibody','isotype','IgG');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Antibody','isotype','IgM');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('ImagingFunction','modality','bioluminescence');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('ImagingFunction','modality','flurorescence');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('ImagingFunction','modality','fluorescence');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('ImagingFunction','modality','infrared');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('ImagingFunction','modality','MRI');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('ImagingFunction','modality','neutron scattering');

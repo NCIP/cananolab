@@ -104,8 +104,6 @@ and ( am.type = null or am.type = ' ' )
 and ( am.activation_effect = null or am.activation_effect = ' ' )
 ;
 
-
-
 delete from activation_method
 where ( type = null or type = ' ' )
 and (activation_effect = null or activation_effect = ' ' )
@@ -119,3 +117,9 @@ where category = 'review article'
 delete from canano.common_lookup
 where value = 'review article'
 ;
+
+update canano.common_lookup
+set value = 'fluorescence'
+where value = 'flurorescence'
+;
+

@@ -1,6 +1,5 @@
 USE canano;
 
--- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS nanoparticle_sample_publication;
@@ -83,11 +82,15 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','r
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vivo');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','clinical trials');
 
+update canano.common_lookup
+set value = 'fluorescence'
+where value = 'flurorescence'
+;
+
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 
--- increase the molecular_formula from VARCHAR(200) to VARCHAR(500)
 ALTER TABLE canano.associated_element
  CHANGE molecular_formula molecular_formula VARCHAR(2000);
  
@@ -98,7 +101,6 @@ update csm_group
 set group_name = replace(group_name,'_PI','_DataCurator')
 where group_name like '%_PI';
 
---migrate and drop report table
 INSERT INTO canano.publication
 (
 	publication_pk_id,
@@ -113,7 +115,6 @@ FROM canano.report report;
 
 drop table canano.report;
 
---migrate and drop nanoparticle_sample_report table
 INSERT INTO canano.nanoparticle_sample_publication
 (
 	particle_sample_pk_id,
@@ -156,7 +157,6 @@ ALTER TABLE canano.publication
  REFERENCES canano.lab_file (file_pk_id) ON UPDATE RESTRICT ON DELETE RESTRICT
 ;
 
--- fix errors in functionalizing_entity and activation_method tables
 update canano.functionalizing_entity fe, canano.activation_method am
 set fe.activation_method_pk_id = null
 where am.activation_method_pk_id = fe.activation_method_pk_id
@@ -169,7 +169,4 @@ where ( type = null or type = ' ' )
 and (activation_effect = null or activation_effect = ' ' )
 ;
 
--- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-
--- End of script
