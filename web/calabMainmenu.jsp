@@ -19,8 +19,7 @@
 					</c:choose>
 					<c:choose>
 						<c:when
-							test="${item.value eq 'LOGOUT' && sessionScope.user == null || 
-							        item.value eq 'SAMPLES' && (sessionScope.canCreateSample eq 'false' || sessionScope.user==null) ||
+							test="${item.value eq 'LOGOUT' && sessionScope.user == null ||							        
 							        item.value eq 'ADMINISTRATION' && (sessionScope.isAdmin eq 'false' || sessionScope.user==null)}">
 							<td></td>
 						</c:when>
