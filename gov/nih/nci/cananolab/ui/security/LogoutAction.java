@@ -42,7 +42,4 @@ public class LogoutAction extends Action {
 		return forward;
 	}
 
-	public boolean loginRequired() {
-		return false;
-	}
 }
