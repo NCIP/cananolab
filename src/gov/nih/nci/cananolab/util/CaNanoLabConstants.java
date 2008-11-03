@@ -71,17 +71,17 @@ public class CaNanoLabConstants {
 	 */
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
-	//TODO, cleanup
-	//public static final String REPORT = "Report";
+	// TODO, cleanup
+	// public static final String REPORT = "Report";
 
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
 	public static final String PROTOCOL_FILE = "Protocol File";
 
 	public static final String FOLDER_PARTICLE = "particles";
-	
-	//public static final String FOLDER_REPORT = "reports";
-	
+
+	// public static final String FOLDER_REPORT = "reports";
+
 	public static final String FOLDER_PUBLICATION = "publications";
 
 	public static final String FOLDER_PROTOCOL = "protocols";
@@ -166,11 +166,8 @@ public class CaNanoLabConstants {
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
 
-	public static final String[] PUBLIC_DISPATCHES = { "view", "search",
-			"setupView", "summaryView", "detailView",
-			"printDetailView", "exportDetail", "printSummaryView",
-			"printFullSummaryView", "exportSummary", "exportFullSummary",
-			"download", "loadFile" };
+	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
+			"setupUpdate", "setupDeleteAll", "add", "remove" };
 
 	public static final String PHYSICAL_ASSAY_PROTOCOL = "physical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
@@ -181,7 +178,7 @@ public class CaNanoLabConstants {
 	public static final int DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS = 20;
 
 	public static final String DOMAIN_MODEL_VERSION = "1.4";
-	
-	public static final String GRID_SERVICE_PATH="wsrf-canano/services/cagrid/CaNanoLabService";
+
+	public static final String GRID_SERVICE_PATH = "wsrf-canano/services/cagrid/CaNanoLabService";
 
 }
