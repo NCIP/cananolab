@@ -6,8 +6,6 @@ import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Arrays;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -18,21 +16,28 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 
 public abstract class AbstractDispatchAction extends DispatchAction {
+
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-
-		if (!loginRequired()) {
-			return super.execute(mapping, form, request, response);
-		}
-
 		String dispatch = request.getParameter("dispatch");
-		if (Arrays.asList(CaNanoLabConstants.PUBLIC_DISPATCHES).contains(
-				dispatch)) {
+		if (dispatch == null && session.isNew()) {
+			throw new InvalidSessionException();
+		}
+		
+		// private dispatch
+		boolean privateDispatch = false;
+		for (String theDispatch : CaNanoLabConstants.PRIVATE_DISPATCHES) {
+			if (dispatch.startsWith(theDispatch)) {
+				privateDispatch = true;
+				break;
+			}
+		}
+		if (!loginRequired() && !privateDispatch) {
 			return super.execute(mapping, form, request, response);
 		}
+		UserBean user = (UserBean) session.getAttribute("user");
 		if (user != null) {
 			// check whether user have access to the class
 			boolean accessStatus = canUserExecute(user);
