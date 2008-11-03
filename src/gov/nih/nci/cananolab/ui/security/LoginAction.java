@@ -4,13 +4,13 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.ui.core.AbstractBaseAction;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -24,8 +24,8 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author doswellj, pansu
  */
 
-public class LoginAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class LoginAction extends Action {
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		//if comes in from back and refresh			
@@ -102,13 +102,4 @@ public class LoginAction extends AbstractBaseAction {
 			session.setAttribute("canUserDelete", "false");
 		}
 	}
-
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user) {
-		return true;
-	}
-
 }

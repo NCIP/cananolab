@@ -1,14 +1,13 @@
 package gov.nih.nci.cananolab.ui.security;
 
-import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.ui.core.AbstractBaseAction;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -22,8 +21,8 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu
  */
 
-public class UpdatePasswordAction extends AbstractBaseAction {
-	public ActionForward executeTask(ActionMapping mapping, ActionForm form,
+public class UpdatePasswordAction extends Action {
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -46,13 +45,5 @@ public class UpdatePasswordAction extends AbstractBaseAction {
 			saveMessages(request, messages);
 		}
 		return mapping.findForward("success");
-	}
-
-	public boolean loginRequired() {
-		return false;
-	}
-
-	public boolean canUserExecute(UserBean user) {
-		return true;
 	}
 }
