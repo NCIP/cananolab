@@ -10,11 +10,27 @@ function validateOptions(newOption, optionsArray) {
 	return true;
 }
 
+function getValidatedProtocolVersion(newOption) {
+	if (isNaN(parseInt(newOption))){
+		return newOption;
+	}else{
+		if (parseInt(newOption)==newOption){
+			newOption = newOption + '.0';
+			return newOption;
+		}else{
+			return newOption;
+		}
+	}	
+}
+
 function addOption(selectId) {
 	var opt = document.getElementById("promptbox").value;
 	if (opt != null && opt != "") {
 		var selectEle = document.getElementById(selectId);
 		if(opt == "other") return false;
+		if (selectId=='protocolFileId'){
+			opt = getValidatedProtocolVersion(opt);
+		}
 		if (!validateOptions(opt, selectEle.options)) {
 			selectEle.options.selectedIndex = 0;
 			alert(opt + " is already on the list!");
@@ -39,6 +55,9 @@ function changeOption(selectId) {
 	if (opt != null && opt != "") {
 		var selectEle = document.getElementById(selectId);
 		if(opt == "other") return false;
+		if (selectId=='protocolFileId'){
+			opt = getValidatedProtocolVersion(opt);
+		}
 		if (!validateOptions(opt, selectEle.options)) {
 			selectEle.options.selectedIndex = 0;
 			alert(opt + " is already on the list!");
