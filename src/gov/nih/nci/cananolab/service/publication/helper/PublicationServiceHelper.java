@@ -417,7 +417,7 @@ public class PublicationServiceHelper {
 					.getAuthorCollection());
 			Collections.sort(authorslist, new Comparator<Author>() {
 				public int compare(Author o1, Author o2) {
-					return (int) (o2.getCreatedDate().compareTo(o1
+					return (int) (o1.getCreatedDate().compareTo(o2
 							.getCreatedDate()));
 				}
 			});

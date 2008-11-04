@@ -101,7 +101,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 						!StringUtils.isBlank(author.getLastName())||
 						!StringUtils.isBlank(author.getInitial())){
 						if (author.getCreatedDate()==null) {
-							myCal.add(Calendar.SECOND, -1);
+							myCal.add(Calendar.SECOND, 1);
 							author.setCreatedDate(myCal.getTime());
 						}
 						publication.getAuthorCollection().add(author);						
