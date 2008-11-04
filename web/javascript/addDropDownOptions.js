@@ -11,16 +11,10 @@ function validateOptions(newOption, optionsArray) {
 }
 
 function getValidatedProtocolVersion(newOption) {
-	if (isNaN(parseInt(newOption))){
-		return newOption;
-	}else{
-		if (parseInt(newOption)==newOption){
-			newOption = newOption + '.0';
-			return newOption;
-		}else{
-			return newOption;
-		}
+	if (parseInt(newOption) == newOption && newOption.indexOf(".0")<0) {
+		newOption = newOption + ".0";
 	}	
+	return newOption;
 }
 
 function addOption(selectId) {
