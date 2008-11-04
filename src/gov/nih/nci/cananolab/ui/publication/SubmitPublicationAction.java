@@ -281,18 +281,18 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();	
 		String particleId = request.getParameter("particleId");		
+		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (particleId != null && particleId.trim().length() > 0) {
 			session.setAttribute("docParticleId", particleId);
+			ParticleBean particleBean = setupParticle(theForm, request, "local");
+			this.setOtherParticlesFromTheSameSource("local", request,
+					particleBean, user);
 		}else {
 			session.removeAttribute("docParticleId");
-		}
-		SubmitPublicationForm theForm = (SubmitPublicationForm) form;
+		}		
 		String publicationId = request.getParameter("fileId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		this.setOtherParticlesFromTheSameSource("local", request,
-				particleBean, user);
+				
 		
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = publicationService
