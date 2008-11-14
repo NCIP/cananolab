@@ -45,7 +45,7 @@ public class TestConnectionPool {
 
 	public static void main(String[] args) {
 		TestConnectionPool test = new TestConnectionPool();
-		//test.testPublicationService("peer review article");
+		test.testPublicationService("peer review article");
 		test.testCSM();
 	}
 }
