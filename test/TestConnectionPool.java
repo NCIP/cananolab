@@ -32,7 +32,6 @@ public class TestConnectionPool {
 
 	public void testCSM() {
 		try {
-			System.setProperty("gov.nih.nci.security.configFile", "C:/devel/caNanoLab/build/tmp/classes/ApplicationSecurityConfig.xml");
 			AuthorizationService service = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);			
 			List<UserBean> users = service.getAllUsers();
