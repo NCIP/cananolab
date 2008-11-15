@@ -137,27 +137,22 @@
 			token="JBOSS_CONF_DIR" value="${tmp.dir}/classes" />
 	</target>
 
-	<target name="run-connection-test" depends="build-endnote-parser">
+	<target name="run-endnote-loader" depends="build-endnote-parser">
 		<path id="class.path">
 			<fileset dir="${tmp.dir}/lib">
 				<include name="**/*.jar" />
 			</fileset>
-			<fileset dir="${tmp.dir}">
-				<include name="**/*.xml" />
-			</fileset>
 			<pathelement path="${tmp.dir}/classes" />
 		</path>
 
-		<java classname="test.TestConnectionPool" fork="true">
+		<java classname="test.EndnoteParser" fork="true">
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 		</java>
 
 		<!-- remove tmp directory -->
-		<!--
-			<delete dir="${tmp.dir}" quiet="true" />
-		-->
+		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
 
 	<!--
