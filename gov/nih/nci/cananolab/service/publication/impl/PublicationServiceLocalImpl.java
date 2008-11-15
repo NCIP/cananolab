@@ -50,17 +50,19 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	/**
 	 * Persist a new publication or update an existing publication
 	 * 
-	 * @param publication, particleNames, fileData, authors
+	 * @param publication,
+	 *            particleNames, fileData, authors
 	 * @throws Exception
 	 */
-	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, Collection<Author> authors) throws PublicationException {
+	public void savePublication(Publication publication,
+			String[] particleNames, byte[] fileData, Collection<Author> authors)
+			throws PublicationException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication);
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
-			if (particleNames!=null && particleNames.length>0) {
+			if (particleNames != null && particleNames.length > 0) {
 				for (String name : particleNames) {
 					NanoparticleSample sample = sampleService
 							.findNanoparticleSampleByName(name);
@@ -74,39 +76,40 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			if (publication.getNanoparticleSampleCollection() == null) {
 				publication
 						.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-			}else {
+			} else {
 				publication.getNanoparticleSampleCollection().clear();
 			}
 			for (NanoparticleSample sample : particleSamples) {
 				publication.getNanoparticleSampleCollection().add(sample);
 				sample.getPublicationCollection().add(publication);
-			}			
-			
+			}
+
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			
+
 			if (publication.getAuthorCollection() == null) {
-				publication
-					.setAuthorCollection(new HashSet<Author>());
-			}else {
-				for (Author author: publication.getAuthorCollection()) {
-					authService.removePublicGroup(author.getId().toString());
+				publication.setAuthorCollection(new HashSet<Author>());
+			} else {
+				for (Author author : publication.getAuthorCollection()) {
+					if (author.getId() != null)
+						authService
+								.removePublicGroup(author.getId().toString());
 				}
 				publication.getAuthorCollection().clear();
 			}
-			if (authors!=null) {
+			if (authors != null) {
 				Calendar myCal = Calendar.getInstance();
 				for (Author author : authors) {
-					if (!StringUtils.isBlank(author.getFirstName()) || 
-						!StringUtils.isBlank(author.getLastName())||
-						!StringUtils.isBlank(author.getInitial())){
-						if (author.getCreatedDate()==null) {
+					if (!StringUtils.isBlank(author.getFirstName())
+							|| !StringUtils.isBlank(author.getLastName())
+							|| !StringUtils.isBlank(author.getInitial())) {
+						if (author.getCreatedDate() == null) {
 							myCal.add(Calendar.SECOND, 1);
 							author.setCreatedDate(myCal.getTime());
 						}
-						publication.getAuthorCollection().add(author);						
+						publication.getAuthorCollection().add(author);
 					}
-				}			
+				}
 			}
 			appService.saveOrUpdate(publication);
 			fileService.writeFile(publication, fileData);
@@ -117,12 +120,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new PublicationException(err, e);
 		}
 	}
-	
+
 	public List<PublicationBean> findPublicationsBy(String title,
-			String category, String nanoparticleName, 
-			String[] researchArea, String keywordsStr,
-			String pubMedId, String digitalObjectId, String authorsStr,
-			String[] nanoparticleEntityClassNames,
+			String category, String nanoparticleName, String[] researchArea,
+			String keywordsStr, String pubMedId, String digitalObjectId,
+			String authorsStr, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -130,55 +132,58 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throws PublicationException, CaNanoLabSecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
-			List<Publication> publications = helper.findPublicationsBy(title, category,
-					nanoparticleName, researchArea, keywordsStr,
+			List<Publication> publications = helper.findPublicationsBy(title,
+					category, nanoparticleName, researchArea, keywordsStr,
 					pubMedId, digitalObjectId, authorsStr,
-					nanoparticleEntityClassNames, 
-					otherNanoparticleTypes, functionalizingEntityClassNames, 
-					otherFunctionalizingEntityTypes, functionClassNames, otherFunctionTypes);
-			if (publications!=null) {
-				for (Publication publication: publications) {
-					publicationBeans.add(new PublicationBean(publication, true, false));
+					nanoparticleEntityClassNames, otherNanoparticleTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes);
+			if (publications != null) {
+				for (Publication publication : publications) {
+					publicationBeans.add(new PublicationBean(publication, true,
+							false));
 				}
-			}			
+			}
 			Collections.sort(publicationBeans,
 					new CaNanoLabComparators.PublicationBeanTitleComparator());
 			return publicationBeans;
-			
+
 		} catch (Exception e) {
 			String err = "Problem finding publication info.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
 	}
-	
-	public List<PublicationBean> findPublicationsByParticleSampleId(String particleId,
-			boolean loadParticle, boolean loadAuthor)
-		throws PublicationException{
+
+	public List<PublicationBean> findPublicationsByParticleSampleId(
+			String particleId, boolean loadParticle, boolean loadAuthor)
+			throws PublicationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Publication.class);
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(Publication.class);
 			crit.createAlias("nanoparticleSampleCollection", "sample",
 					CriteriaSpecification.LEFT_JOIN);
 			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
 			if (loadAuthor) {
-				crit.setFetchMode("authorCollection",FetchMode.JOIN);
+				crit.setFetchMode("authorCollection", FetchMode.JOIN);
 			}
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-	
-			List results = appService.query(crit);	
-			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();	
+
+			List results = appService.query(crit);
+			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
 			for (Object obj : results) {
-				Publication publication = (Publication)obj;
+				Publication publication = (Publication) obj;
 				if (loadAuthor) {
-					publicationCollection.add(new PublicationBean(publication, false, true));
-				}else {
+					publicationCollection.add(new PublicationBean(publication,
+							false, true));
+				} else {
 					publicationCollection.add(new PublicationBean(publication));
 				}
-			}			
+			}
 			return publicationCollection;
 		} catch (Exception e) {
 			String err = "Problem finding publication collections with the given particle ID.";
@@ -186,32 +191,37 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new PublicationException(err, e);
 		}
 	}
-	
-	public PublicationBean findPublicationById(String publcationId) throws PublicationException {
+
+	public PublicationBean findPublicationById(String publcationId)
+			throws PublicationException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);
-			PublicationBean publicationBean = new PublicationBean(publication, false, true);
+			PublicationBean publicationBean = new PublicationBean(publication,
+					false, true);
 			return publicationBean;
 		} catch (Exception e) {
-			String err = "Problem finding the publcation by id: " + publcationId;
+			String err = "Problem finding the publcation by id: "
+					+ publcationId;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
 	}
-	
-	public Publication findDomainPublicationById(String publcationId) throws PublicationException {
+
+	public Publication findDomainPublicationById(String publcationId)
+			throws PublicationException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);
 			return publication;
 		} catch (Exception e) {
-			String err = "Problem finding the publcation by id: " + publcationId;
+			String err = "Problem finding the publcation by id: "
+					+ publcationId;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
 	}
 
 	public void exportDetail(PublicationBean aPub, OutputStream out)
-		throws PublicationException{
+			throws PublicationException {
 		try {
 			PublicationServiceHelper helper = new PublicationServiceHelper();
 			helper.exportDetail(aPub, out);
@@ -222,28 +232,29 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new PublicationException(err, e);
 		}
 	}
-//	public int getNumberOfPublicPublcations() throws PublicationException {
-//		try {
-//			int count = helper.getNumberOfPublicPublications();
-//			return count;
-//		} catch (Exception e) {
-//			String err = "Error finding counts of public publications.";
-//			logger.error(err, e);
-//			throw new PublicationException(err, e);
-//		}
-//	}
 
-//	public Publication[] findDocumentsByParticleSampleId(String particleId)
-//			throws DocumentException {
-//		throw new DocumentException("Not implemented for local search");
-//	}
-	
-	public void exportSummary(ParticleBean particleBean,
-			OutputStream out) throws IOException {
+	// public int getNumberOfPublicPublcations() throws PublicationException {
+	// try {
+	// int count = helper.getNumberOfPublicPublications();
+	// return count;
+	// } catch (Exception e) {
+	// String err = "Error finding counts of public publications.";
+	// logger.error(err, e);
+	// throw new PublicationException(err, e);
+	// }
+	// }
+
+	// public Publication[] findDocumentsByParticleSampleId(String particleId)
+	// throws DocumentException {
+	// throw new DocumentException("Not implemented for local search");
+	// }
+
+	public void exportSummary(ParticleBean particleBean, OutputStream out)
+			throws IOException {
 		PublicationServiceHelper helper = new PublicationServiceHelper();
 		helper.exportSummary(particleBean, out);
 	}
-	
+
 	public int getNumberOfPublicPublications() throws PublicationException {
 		try {
 			int count = helper.getNumberOfPublicPublications();
@@ -254,39 +265,43 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throw new PublicationException(err, e);
 		}
 	}
-		
+
 	/**
-	 * if publication associates with multiple particle
-	 * remove the entry from nanoparticle_sample_publication  
-	 * otherwise, remove publicVisibility and delete publication
+	 * if publication associates with multiple particle remove the entry from
+	 * nanoparticle_sample_publication otherwise, remove publicVisibility and
+	 * delete publication
 	 */
 	public void removePublicationFromParticle(NanoparticleSample particle,
-			Long dataId) 	throws PublicationException{
+			Long dataId) throws PublicationException {
 		try {
 			PublicationService publicationService = new PublicationServiceLocalImpl();
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-			Object publicationObject = appService.getObject(Publication.class, "id", dataId);
-			if (publicationObject!=null) {
-				Publication publication = publicationService.findDomainPublicationById(dataId.toString());
-				Collection<NanoparticleSample> nanoparticleSampleCollection 
-					= publication.getNanoparticleSampleCollection();
-				if (nanoparticleSampleCollection==null || nanoparticleSampleCollection.size()==0) {
-					//something wrong
+					.getApplicationService();
+			Object publicationObject = appService.getObject(Publication.class,
+					"id", dataId);
+			if (publicationObject != null) {
+				Publication publication = publicationService
+						.findDomainPublicationById(dataId.toString());
+				Collection<NanoparticleSample> nanoparticleSampleCollection = publication
+						.getNanoparticleSampleCollection();
+				if (nanoparticleSampleCollection == null
+						|| nanoparticleSampleCollection.size() == 0) {
+					// something wrong
 					throw new PublicationException();
-				}else if (nanoparticleSampleCollection.size()==1) {
-					//delete
-					authService.removePublicGroup(dataId.toString());	
-					if (publication.getAuthorCollection()!=null) {
-						for (Author author: publication.getAuthorCollection()) {
-							authService.removePublicGroup(author.getId().toString());
+				} else if (nanoparticleSampleCollection.size() == 1) {
+					// delete
+					authService.removePublicGroup(dataId.toString());
+					if (publication.getAuthorCollection() != null) {
+						for (Author author : publication.getAuthorCollection()) {
+							authService.removePublicGroup(author.getId()
+									.toString());
 						}
 					}
 					appService.delete(publication);
-				}else {//size>1
-					//remove nanoparticleSample association
+				} else {// size>1
+					// remove nanoparticleSample association
 					nanoparticleSampleCollection.remove(particle);
 					appService.saveOrUpdate(publication);
 				}
@@ -296,6 +311,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
-		
+
 	}
 }
