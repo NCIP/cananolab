@@ -2,6 +2,7 @@
 <project name="caNanoLab" default="build-parser" basedir=".">
 	<property name="file.separator" value="/" />
 	<property file="deploy.properties" />
+	<property file="endnote.properties"/>
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="conf.dir" value="${basedir}/conf" />
@@ -149,27 +150,10 @@
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<arg value="${endnote.xml.dir}"/>
 		</java>
 
 		<!-- remove tmp directory -->
 		<delete dir="${tmp.dir}" quiet="true" />
 	</target>
-
-	<!--
-		<target name="run-endnote-parser" depends="build-endnote-parser">
-		<path id="endnote.parser.path">
-		<fileset dir="${tmp.dir}/WEB-INF/lib">
-		<include name="**/*.jar" />
-		</fileset>
-		<fileset dir="${tmp.dir}/WEB-INF/">
-		<include name="**/*.xml" />
-		</fileset>
-		<pathelement path="${tmp.dir}/WEB-INF/classes" />
-		</path>
-		
-		<java classname="test.TestDB" fork="true">
-		<classpath refid="endnote.parser.path" />
-		</java>
-		</target>
-	-->
 </project>
