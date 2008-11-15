@@ -45,6 +45,8 @@
 		</path>
 		<javac srcdir="${src.dir}" destdir="${tmp.dir}/classes"
 			debug="true">
+			<exclude
+				name="gov/nih/nci/cananolab/dto/particle/NanoparticleDecorator.java" />
 			<exclude name="test/TestGrid.java" />
 			<exclude name="gov/nih/nci/cananolab/ui/**" />
 			<exclude
@@ -56,7 +58,7 @@
 
 		<!--copy properties files -->
 		<copy todir="${tmp.dir}/classes"
-			file="${src.dir}/log4j.properties" />
+			file="${conf.dir}/log4j.properties" />
 
 		<!--copy xml files -->
 		<copy todir="${tmp.dir}/classes">
@@ -132,7 +134,7 @@
 			input="${tmp.dir}"
 			regexp="\$HeadURL\: .*/calab/cananolab/tags/([^/]*)/.*" select="\1" />
 		<replace file="${tmp.dir}/classes/ApplicationSecurityConfig.xml"
-			token="JBOSS_CONF_DIR" value="C:/devel/caNanoLab/build/tmp/classes" />
+			token="JBOSS_CONF_DIR" value="${tmp.dir}/classes" />
 	</target>
 
 	<target name="run-connection-test" depends="build-endnote-parser">
@@ -149,7 +151,7 @@
 		<java classname="test.TestConnectionPool" fork="true">
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
-				value="C:/devel/caNanoLab/build/tmp/classes/ApplicationSecurityConfig.xml" />
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 		</java>
 
 		<!-- remove tmp directory -->
