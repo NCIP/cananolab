@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,12 +88,19 @@ public class EndnoteXMLHandler {
 				Publication publication = (Publication) pubBean.getDomainFile();
 				publication.setStatus("published");
 				publication.setCategory("peer review article");
+				Collection authors  = null;
+				if (publication.getAuthorCollection()!=null) {
+					authors = new HashSet<Author>();					
+					for (Author author: publication.getAuthorCollection()) {
+						authors.add(author);
+					}
+				}				
 				pubBean.setVisibilityGroups(visibilityGroups);	
 				System.out.println("title:" + publication.getTitle());
 				//TODO: verify if the publication in DB
 				service.savePublication(publication, pubBean
 	    				.getParticleNames(), pubBean.getNewFileData(), 
-	    				pubBean.getAuthors());
+	    				authors);
 	    		// set visibility
 				authService.assignVisibility(pubBean.getDomainFile().getId()
 	    				.toString(), pubBean.getVisibilityGroups());
