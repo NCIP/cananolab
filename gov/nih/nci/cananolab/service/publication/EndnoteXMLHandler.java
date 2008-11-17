@@ -419,7 +419,7 @@ public class EndnoteXMLHandler {
 		}
 		
 		public void endElement(String uri, String localName, String qname) {
-			keyword.setName(keywordName.toString());
+			keyword.setName(keywordName.toString().toUpperCase());
 			keywordCollection.add(keyword);
 		}
 	}
