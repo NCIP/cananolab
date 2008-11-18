@@ -49,11 +49,11 @@ ALTER TABLE csm_user ADD COLUMN migrated_flag BOOL NOT NULL DEFAULT 0;
 ALTER TABLE csm_user ADD COLUMN premgrt_login_name VARCHAR(100) ;
 
 
-ALTER TABLE CSM_PG_PE MODIFY COLUMN update_date DATE DEFAULT '0000-00-00';
+ALTER TABLE csm_pg_pe MODIFY COLUMN update_date DATE DEFAULT '0000-00-00';
 
-ALTER TABLE CSM_ROLE_PRIVILEGE DROP COLUMN update_date;
-ALTER TABLE CSM_USER_PE DROP COLUMN update_date;
+ALTER TABLE csm_role_privilege DROP COLUMN update_date;
+ALTER TABLE csm_user_pe DROP COLUMN update_date;
 
-ALTER TABLE CSM_FILTER_CLAUSE CHANGE generated_sql generated_sql_user VARCHAR (4000) NOT NULL;
-ALTER TABLE CSM_FILTER_CLAUSE ADD COLUMN generated_sql_group VARCHAR (4000) NOT NULL;
+ALTER TABLE csm_filter_clause CHANGE generated_sql generated_sql_user VARCHAR (4000) NOT NULL;
+ALTER TABLE csm_filter_clause ADD COLUMN generated_sql_group VARCHAR (4000) NOT NULL;
 
