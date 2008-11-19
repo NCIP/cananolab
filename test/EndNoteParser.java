@@ -24,16 +24,16 @@ public class EndNoteParser {
 	public static void main(String[] args) {
 		
 		//DEBUG
-		System.setProperty("gov.nih.nci.security.configFile", "C:/project/java/workspace/caNanoLab/build/ApplicationSecurityConfig.xml");
-		String inputFileName = "C:\\temp\\publication\\ShorterAllianceNoStyle.xml";
-		String outputFileName = "C:\\temp\\publication\\AllianceOutput.txt";
-		args = new String[2];
-		args[0] = inputFileName;
-		args[1] = outputFileName;			
+//		System.setProperty("gov.nih.nci.security.configFile", "C:/project/java/workspace/caNanoLab/build/ApplicationSecurityConfig.xml");
+//		String inputFileName = "C:\\temp\\publication\\ShorterAllianceNoStyle.xml";
+//		String outputFileName = "C:\\temp\\publication\\AllianceOutput.txt";
+//		args = new String[2];
+//		args[0] = inputFileName;
+//		args[1] = outputFileName;			
 		//END OF DEBUG
 		
-		//String inputFileName = null;
-		//String outputFileName = null;
+		String inputFileName = null;
+		String outputFileName = null;
 		PrintStream p = System.out; 
 		if (args != null){
 			if (args.length == 1) {
