@@ -156,9 +156,8 @@
 			<arg value="${endnote.xml.dir}" />
 		</java>
 
-		<!-- remove tmp directory -->
-		<!--  
+		<!-- remove tmp directory -->		  
 		<delete dir="${tmp.dir}" quiet="true" />
-		-->
+		
 	</target>
 </project>
