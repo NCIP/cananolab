@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.system.dao.orm;
 
+import gov.nih.nci.cananolab.system.dao.SessionFactoryHolder;
+
 import java.util.Map;
 import java.util.Properties;
 
@@ -25,11 +27,15 @@ public class CustomizedORMDAOFactoryBean extends LocalSessionFactoryBean {
 	boolean caseSensitive;
 
 	int resultCountPerQuery;
+	
+	SessionFactoryHolder holder;
 
 	public CustomizedORMDAOFactoryBean(String configLocation,
-			Properties systemProperties, Map systemPropertiesMap)
+			Properties systemProperties, Map systemPropertiesMap, SessionFactoryHolder holder)
 			throws Exception {
 
+		this.holder= holder;
+		
 		Resource resource = new ClassPathResource(configLocation);
 		this.setConfigLocation(resource);
 
@@ -61,5 +67,7 @@ public class CustomizedORMDAOFactoryBean extends LocalSessionFactoryBean {
 		ormDAO = new CustomizedORMDAOImpl((SessionFactory) this
 				.getSessionFactory(), (Configuration) this.getConfiguration(),
 				caseSensitive, resultCountPerQuery);
+		
+		holder.setInstance(getSessionFactory());
 	}
 }
