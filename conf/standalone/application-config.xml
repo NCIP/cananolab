@@ -49,7 +49,7 @@
 
 	<bean name="ORMDAOFactory"
 		class="gov.nih.nci.cananolab.system.dao.orm.CustomizedORMDAOFactoryBean">
-		<constructor-arg value="local-hibernate.cfg.xml" index="0"></constructor-arg>
+		<constructor-arg value="hibernate.cfg.xml" index="0"></constructor-arg>
 		<!-- configLocation -->
 		<constructor-arg ref="SystemProperties" index="1"></constructor-arg>
 		<constructor-arg ref="SystemPropertiesMap" index="2"></constructor-arg>
