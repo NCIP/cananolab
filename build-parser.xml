@@ -60,14 +60,11 @@
 		<!--copy properties files -->
 		<copy todir="${tmp.dir}/classes"
 			file="${conf.dir}/standalone/log4j.properties" />
-		<copy todir="${tmp.dir}/classes"
-			file="${conf.dir}/standalone/application-config.xml" />
 			
 		<!--copy xml files -->
 		<copy todir="${tmp.dir}/classes">
 			<fileset dir="${src.dir}">
-				<include name="**/*.xml" />
-				<exclude name="application-config.xml" />
+				<include name="**/*.xml" />		
 			</fileset>
 			<fileset dir="${conf.dir}/csm">
 				<include name="ApplicationSecurityConfig.xml" />
@@ -150,6 +147,25 @@
 		</path>
 
 		<java classname="gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler" fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<arg value="${endnote.xml.dir}" />
+		</java>
+
+		<!-- remove tmp directory -->		  
+		<delete dir="${tmp.dir}" quiet="true" />
+		
+	</target>
+		<target name="test-connection-pool" depends="build-endnote-parser">
+		<path id="class.path">
+			<fileset dir="${tmp.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${tmp.dir}/classes" />
+		</path>
+
+		<java classname="test.TestConnectionPool" fork="true">
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
