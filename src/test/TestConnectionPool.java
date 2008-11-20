@@ -47,5 +47,6 @@ public class TestConnectionPool {
 		TestConnectionPool test = new TestConnectionPool();
 		test.testPublicationService("peer review article");
 		test.testCSM();
+		System.exit(0);
 	}
 }
