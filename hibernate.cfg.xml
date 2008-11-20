@@ -4,7 +4,7 @@
 	<session-factory>
 	
 		<!-- Properties for the session factory -->
-		<!--@DB_CONNECTION_POOL_BEGIN@--
+		<!-- @DB_CONNECTION_POOL_BEGIN@
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="connection.url">jdbc:mysql://DATABASE_HOST:DATABASE_PORT/canano</property>
 		<property name="connection.username">DATABASE_USER</property>
@@ -17,10 +17,9 @@
 		<property name="c3p0.idle_test_period">3000</property>
 		<property name="c3p0.acquire_increment">2</property>
 		<property name="c3p0.validate">false</property>
-		<property name="connection.autocommit">true</property>
-		@DB_CONNECTION_POOL_END@---->					
+		@DB_CONNECTION_POOL_END@-->			
 		<property name="connection.datasource">java:/caNanoLab</property>
-		<property name="hibernate.show_sql">false</property>
+		<property name="show_sql">false</property>
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="max_fetch_depth">1</property>
 		<property name="cglib.use_reflection_optimizer">false</property>
