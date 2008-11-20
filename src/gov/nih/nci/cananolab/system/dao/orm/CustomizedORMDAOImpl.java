@@ -87,7 +87,9 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 		} catch (Exception e) {
 			log.error("Exception ", e);
 			throw new DAOException("Exception in ORMDAOImpl ", e);
-		} finally {
+		}
+		/*  not needed after introduced transaction manager in Spring
+		finally {
 			try {
 				session.clear();
 				session.close();
@@ -97,7 +99,7 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 				throw new DAOException("Could not close the session  "
 						+ eSession);
 			}
-		}
+		}*/
 	}
 
 	public List<String> getAllClassNames() {
@@ -372,7 +374,9 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 		} catch (Exception e) {
 			log.error("Exception ", e);
 			throw new DAOException("Exception in CustomORMDAOImpl ", e);
-		} finally {
+		}
+		/* not needed after introduced transaction manager in Spring
+		finally {
 			try {
 				session.clear();
 				session.close();
@@ -382,6 +386,6 @@ public class CustomizedORMDAOImpl extends HibernateDaoSupport implements
 				throw new DAOException("Could not close the session  "
 						+ eSession);
 			}
-		}
+		}*/
 	}
 }
