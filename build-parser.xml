@@ -2,7 +2,7 @@
 <project name="caNanoLab" default="build-parser" basedir=".">
 	<property name="file.separator" value="/" />
 	<property file="deploy.properties" />
-	<property file="endnote.properties"/>
+	<property file="endnote.properties" />
 	<property name="src.dir" value="${basedir}/src" />
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="conf.dir" value="${basedir}/conf" />
@@ -59,12 +59,15 @@
 
 		<!--copy properties files -->
 		<copy todir="${tmp.dir}/classes"
-			file="${conf.dir}/log4j.properties" />
-
+			file="${conf.dir}/standalone/log4j.properties" />
+		<copy todir="${tmp.dir}/classes"
+			file="${conf.dir}/standalone/application-config.xml" />
+			
 		<!--copy xml files -->
 		<copy todir="${tmp.dir}/classes">
 			<fileset dir="${src.dir}">
 				<include name="**/*.xml" />
+				<exclude name="application-config.xml" />
 			</fileset>
 			<fileset dir="${conf.dir}/csm">
 				<include name="ApplicationSecurityConfig.xml" />
@@ -146,14 +149,16 @@
 			<pathelement path="${tmp.dir}/classes" />
 		</path>
 
-		<java classname="test.EndnoteParser" fork="true">
+		<java classname="gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler" fork="true">
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
-			<arg value="${endnote.xml.dir}"/>
+			<arg value="${endnote.xml.dir}" />
 		</java>
 
 		<!-- remove tmp directory -->
+		<!--  
 		<delete dir="${tmp.dir}" quiet="true" />
+		-->
 	</target>
 </project>
