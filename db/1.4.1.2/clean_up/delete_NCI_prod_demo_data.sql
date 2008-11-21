@@ -66,5 +66,14 @@ where file_pk_id not in
 (select publication_pk_id
 from publication);
 
-commit;
+delete from author
+where author_pk_id not in
+(select author_pk_id
+from author_publication);
 
+delete from author_publication
+where publication_pk_id not in
+(select file_pk_id
+from lab_file);
+
+commit;
