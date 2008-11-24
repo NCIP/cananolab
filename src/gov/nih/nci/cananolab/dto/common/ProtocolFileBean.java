@@ -14,7 +14,7 @@ import java.util.Date;
  * @author pansu
  * 
  */
-public class ProtocolFileBean extends LabFileBean {
+public class ProtocolFileBean extends FileBean {
 	/**
 	 * 
 	 */

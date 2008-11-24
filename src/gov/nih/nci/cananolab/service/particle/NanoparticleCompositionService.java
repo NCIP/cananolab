@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -39,7 +39,7 @@ public interface NanoparticleCompositionService {
 			ChemicalAssociation assoc) throws ParticleCompositionException;
 
 	public void saveCompositionFile(NanoparticleSample particleSample,
-			LabFile file, byte[] fileData) throws ParticleCompositionException;
+			File file, byte[] fileData) throws ParticleCompositionException;
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
 			String entityId) throws ParticleCompositionException;
@@ -120,7 +120,7 @@ public interface NanoparticleCompositionService {
 			throws ParticleCompositionException;
 
 	public void deleteCompositionFile(NanoparticleSample particleSample,
-			LabFile file) throws ParticleCompositionException;
+			File file) throws ParticleCompositionException;
 
 	// check if any composing elements of the nanoparticle entity is invovled in
 	// the chemical association

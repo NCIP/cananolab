@@ -3,7 +3,7 @@
  */
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 
@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
  * @author tanq
  * 
  */
-public class DocumentBean extends LabFileBean {
+public class DocumentBean extends FileBean {
 	private String[] particleNames;
 
 	/**
@@ -21,11 +21,11 @@ public class DocumentBean extends LabFileBean {
 	 */
 	public DocumentBean() {
 		super();
-		domainFile = new LabFile();
+		domainFile = new File();
 		domainFile.setUriExternal(false);
 	}
 
-	public DocumentBean(LabFile document) {
+	public DocumentBean(File document) {
 		super(document);
 		this.domainFile = document;
 		Publication publication = (Publication) document;

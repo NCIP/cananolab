@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.DateUtil;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class DerivedBioAssayDataBean {
 	private DerivedBioAssayData domainBioAssayData = new DerivedBioAssayData();
 
-	private LabFileBean labFileBean = new LabFileBean();
+	private FileBean FileBean = new FileBean();
 
 	private List<DerivedDatumBean> datumList = new ArrayList<DerivedDatumBean>();
 
@@ -32,11 +32,11 @@ public class DerivedBioAssayDataBean {
 
 	public DerivedBioAssayDataBean(DerivedBioAssayData derivedBioAssayData) {
 		domainBioAssayData = derivedBioAssayData;
-		if (domainBioAssayData.getLabFile() != null
-				&& domainBioAssayData.getLabFile().getName() != null) {
-			labFileBean = new LabFileBean(domainBioAssayData.getLabFile());
+		if (domainBioAssayData.getFile() != null
+				&& domainBioAssayData.getFile().getName() != null) {
+			FileBean = new FileBean(domainBioAssayData.getFile());
 		} else {
-			labFileBean = null;
+			FileBean = null;
 		}
 		if (domainBioAssayData.getDerivedDatumCollection() != null) {
 			for (DerivedDatum datum : domainBioAssayData
@@ -52,8 +52,8 @@ public class DerivedBioAssayDataBean {
 		return domainBioAssayData;
 	}
 
-	public LabFileBean getLabFileBean() {
-		return labFileBean;
+	public FileBean getFileBean() {
+		return FileBean;
 	}
 
 	public List<DerivedDatumBean> getDatumList() {
@@ -87,9 +87,9 @@ public class DerivedBioAssayDataBean {
 			domainBioAssayData
 					.setDerivedDatumCollection(new HashSet<DerivedDatum>());
 		}
-		if (labFileBean != null) {
-			labFileBean.setupDomainFile(internalUriPath, createdBy, 0);
-			domainBioAssayData.setLabFile(labFileBean.getDomainFile());
+		if (FileBean != null) {
+			FileBean.setupDomainFile(internalUriPath, createdBy, 0);
+			domainBioAssayData.setFile(FileBean.getDomainFile());
 		}
 		int i = 0;
 		for (DerivedDatumBean datum : datumList) {

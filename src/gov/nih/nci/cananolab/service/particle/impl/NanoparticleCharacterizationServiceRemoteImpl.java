@@ -9,9 +9,9 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
-import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -275,11 +275,11 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			achar
 					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 			for (DerivedBioAssayData bioassay : bioassayArray) {
-				LabFile file = gridClient
-						.getLabFileByDerivedBioAssayDataId(bioassay.getId()
+				File file = gridClient
+						.getFileByDerivedBioAssayDataId(bioassay.getId()
 								.toString());
 				if (file != null) {
-					bioassay.setLabFile(file);
+					bioassay.setFile(file);
 				}
 				DerivedDatum[] datums = gridClient
 						.getDerivedDatumsByDerivedBioAssayDataId(bioassay

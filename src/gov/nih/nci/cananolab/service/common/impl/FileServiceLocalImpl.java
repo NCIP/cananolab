@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.service.common.impl;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.LabFile;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
@@ -15,7 +15,6 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,12 +47,12 @@ public class FileServiceLocalImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean findFileById(String fileId) throws FileException {
-		LabFileBean fileBean = null;
+	public FileBean findFileById(String fileId) throws FileException {
+		FileBean fileBean = null;
 		try {
-			LabFile file = helper.findFile(fileId);
+			File file = helper.findFile(fileId);
 			if (file != null) {
-				fileBean = new LabFileBean(file);
+				fileBean = new FileBean(file);
 			}
 			return fileBean;
 		} catch (Exception e) {
@@ -69,9 +68,9 @@ public class FileServiceLocalImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean findFileById(String fileId, UserBean user)
+	public FileBean findFileById(String fileId, UserBean user)
 			throws FileException, CaNanoLabSecurityException {
-		LabFileBean fileBean = null;
+		FileBean fileBean = null;
 		try {
 			fileBean = findFileById(fileId);
 			AuthorizationService auth = new AuthorizationService(
@@ -88,13 +87,13 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	public void saveCopiedFileAndSetVisibility(LabFile copy, UserBean user,
+	public void saveCopiedFileAndSetVisibility(File copy, UserBean user,
 			String oldSampleName, String newSampleName) throws FileException {
 		try {
 			// the copied file has been persisted with the same URI but
 			// createdBy is
 			// COPY
-			LabFile file = findFileByUri(copy.getUri());
+			File file = findFileByUri(copy.getUri());
 			copy.setUri(copy.getUri()
 					.replaceFirst(oldSampleName, newSampleName));
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -106,7 +105,7 @@ public class FileServiceLocalImpl implements FileService {
 
 				AuthorizationService auth = new AuthorizationService(
 						CaNanoLabConstants.CSM_APP_NAME);
-				LabFileBean fileBean = new LabFileBean(file);
+				FileBean fileBean = new FileBean(file);
 				this.retrieveVisibility(fileBean, user);
 				auth.assignVisibility(copy.getId().toString(), fileBean
 						.getVisibilityGroups());
@@ -118,14 +117,14 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	private LabFile findFileByUri(String uri) throws FileException {
-		LabFile file = null;
+	private File findFileByUri(String uri) throws FileException {
+		File file = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria
-					.forClass(LabFile.class)
+					.forClass(File.class)
 					.add(Property.forName("uri").eq(uri))
 					.add(
 							Property
@@ -134,7 +133,7 @@ public class FileServiceLocalImpl implements FileService {
 											CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX));
 			List results = appService.query(crit);
 			if (!results.isEmpty()) {
-				file = (LabFile) results.get(0);
+				file = (File) results.get(0);
 			}
 			return file;
 		} catch (Exception e) {
@@ -153,7 +152,7 @@ public class FileServiceLocalImpl implements FileService {
 	 */
 	private byte[] getFileContent(Long fileId) throws FileException {
 		try {
-			LabFileBean fileBean = findFileById(fileId.toString());
+			FileBean fileBean = findFileById(fileId.toString());
 			if (fileBean == null || fileBean.getDomainFile().getUri() == null) {
 				return null;
 			}
@@ -165,7 +164,7 @@ public class FileServiceLocalImpl implements FileService {
 					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
 
-			File fileObj = new File(fileRoot + File.separator
+			java.io.File fileObj = new java.io.File(fileRoot + java.io.File.separator
 					+ fileBean.getDomainFile().getUri());
 			long fileLength = fileObj.length();
 
@@ -213,19 +212,19 @@ public class FileServiceLocalImpl implements FileService {
 	private void writeFile(byte[] fileContent, String fullFileName)
 			throws IOException {
 		String path = fullFileName.substring(0, fullFileName.lastIndexOf("/"));
-		File pathDir = new File(path);
+		java.io.File pathDir = new java.io.File(path);
 		if (!pathDir.exists())
 			pathDir.mkdirs();
-		File file = new File(fullFileName);
+		java.io.File file = new java.io.File(fullFileName);
 		if (file.exists()) {
 			return; // don't save again
 		}
-		FileOutputStream oStream = new FileOutputStream(new File(fullFileName));
+		FileOutputStream oStream = new FileOutputStream(new java.io.File(fullFileName));
 		oStream.write(fileContent);
 	}
 
 	// save to the file system fileData is not empty
-	public void writeFile(LabFile file, byte[] fileData) throws FileException {
+	public void writeFile(File file, byte[] fileData) throws FileException {
 		try {
 			if (fileData != null) {
 				FileServiceLocalImpl fileService = new FileServiceLocalImpl();
@@ -248,12 +247,12 @@ public class FileServiceLocalImpl implements FileService {
 	 * @param file
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(LabFile file) throws FileException {
+	public void prepareSaveFile(File file) throws FileException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (file.getId() != null) {
-				LabFile dbFile = (LabFile) appService.get(LabFile.class, file
+				File dbFile = (File) appService.get(File.class, file
 						.getId());
 				if (dbFile != null) {
 					// don't change createdBy and createdDate if it is already
@@ -287,7 +286,7 @@ public class FileServiceLocalImpl implements FileService {
 	}
 
 	// retrieve file visibility
-	public void retrieveVisibility(LabFileBean fileBean, UserBean user)
+	public void retrieveVisibility(FileBean fileBean, UserBean user)
 			throws FileException {
 		try {
 			if (fileBean!=null) {
@@ -317,7 +316,7 @@ public class FileServiceLocalImpl implements FileService {
 	}
 	
 	// retrieve file accessibility
-	public void retrieveAccessibility(LabFileBean fileBean, UserBean user)
+	public void retrieveAccessibility(FileBean fileBean, UserBean user)
 			throws FileException {
 		try {
 			if (fileBean!=null) {
@@ -339,7 +338,7 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	public List<LabFile> findFilesByCompositionInfoId(String id,
+	public List<File> findFilesByCompositionInfoId(String id,
 			String className) throws FileException {
 		throw new FileException("Not implemented for local service");
 	}

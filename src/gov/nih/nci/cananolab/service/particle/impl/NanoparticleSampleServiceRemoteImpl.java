@@ -9,8 +9,8 @@ import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
@@ -146,9 +146,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					// sample name
 					particleSample.setName(columns[1]);
 					// source
-					Source source = new Source();
-					source.setOrganizationName(columns[2]);
-					particleSample.setSource(source);
+					Organization org = new Organization();
+					org.setName(columns[2]);
+					particleSample.setPrimaryOrganization(org);
 					ParticleBean particleBean = new ParticleBean(particleSample);
 					// composition, set all compositions as NanoparticleEntity
 					// for now
@@ -229,7 +229,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			NanoparticleSample particleSample) throws Exception {
 		String particleId = particleSample.getId().toString();
 		// source
-		loadSourceForParticleSample(particleSample);
+		loadOrganizationForParticleSample(particleSample);
 		// keyword
 		loadKeywordsForParticleSample(particleSample);
 
@@ -342,16 +342,16 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<Source> findAllParticleSources() throws ParticleException {
+	public SortedSet<Organization> findAllParticleOrganizations() throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<Source> findAllParticleSources(UserBean user)
+	public SortedSet<Organization> findAllParticleOrganizations(UserBean user)
 			throws ParticleException {
-		return findAllParticleSources();
+		return findAllParticleOrganizations();
 	}
 
-	public SortedSet<SortableName> findOtherParticles(String particleSource,
+	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
 			String particleName, UserBean user) throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
@@ -369,11 +369,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 * @throws ParticleException
 	 * 
 	 */
-	private void loadSourceForParticleSample(NanoparticleSample particleSample)
+	private void loadOrganizationForParticleSample(NanoparticleSample particleSample)
 			throws Exception {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.Source");
+		target.setName("gov.nih.nci.cananolab.domain.common.Organization");
 		Association association = new Association();
 		association
 				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
@@ -389,14 +389,14 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		query.setTarget(target);
 		CQLQueryResults results = gridClient.query(query);
 		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.common.Source");
+				.setTargetClassname("gov.nih.nci.cananolab.domain.common.Organization");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		Source source = null;
+		Organization org = null;
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
-			source = (Source) obj;
+			org = (Organization) obj;
 		}
-		particleSample.setSource(source);
+		particleSample.setPrimaryOrganization(org);
 	}
 
 	/**

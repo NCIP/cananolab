@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Biopolymer;
@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Liposome;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Polymer;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -55,7 +55,7 @@ public class NanoparticleEntityBean {
 
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
 
-	private List<LabFileBean> files = new ArrayList<LabFileBean>();
+	private List<FileBean> files = new ArrayList<FileBean>();
 
 	private NanoparticleEntity domainEntity;
 
@@ -88,13 +88,13 @@ public class NanoparticleEntityBean {
 		}
 		Collections.sort(composingElements,
 				new CaNanoLabComparators.ComposingElementBeanDateComparator());
-		if (nanoparticleEntity.getLabFileCollection()!=null){
-			for (LabFile file : nanoparticleEntity.getLabFileCollection()) {
-				files.add(new LabFileBean(file));
+		if (nanoparticleEntity.getFileCollection()!=null){
+			for (File file : nanoparticleEntity.getFileCollection()) {
+				files.add(new FileBean(file));
 			}
 		}
 		Collections.sort(files,
-				new CaNanoLabComparators.LabFileBeanDateComparator());
+				new CaNanoLabComparators.FileBeanDateComparator());
 	}
 
 	public NanoparticleEntity getDomainCopy() {
@@ -136,13 +136,13 @@ public class NanoparticleEntityBean {
 				}
 			}
 		}
-		if (copy.getLabFileCollection().isEmpty()) {
-			copy.setLabFileCollection(null);
+		if (copy.getFileCollection().isEmpty()) {
+			copy.setFileCollection(null);
 		} else {
-			Collection<LabFile> files = copy.getLabFileCollection();
-			copy.setLabFileCollection(new HashSet<LabFile>());
-			copy.getLabFileCollection().addAll(files);
-			for (LabFile file : copy.getLabFileCollection()) {
+			Collection<File> files = copy.getFileCollection();
+			copy.setFileCollection(new HashSet<File>());
+			copy.getFileCollection().addAll(files);
+			for (File file : copy.getFileCollection()) {
 				file.setId(null);
 				file
 						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -180,7 +180,7 @@ public class NanoparticleEntityBean {
 		return emulsion;
 	}
 
-	public List<LabFileBean> getFiles() {
+	public List<FileBean> getFiles() {
 		return files;
 	}
 
@@ -266,15 +266,15 @@ public class NanoparticleEntityBean {
 					domainComposingElement);
 			i++;
 		}
-		if (domainEntity.getLabFileCollection() != null) {
-			domainEntity.getLabFileCollection().clear();
+		if (domainEntity.getFileCollection() != null) {
+			domainEntity.getFileCollection().clear();
 		} else {
-			domainEntity.setLabFileCollection(new HashSet<LabFile>());
+			domainEntity.setFileCollection(new HashSet<File>());
 		}
 		int j=0;
-		for (LabFileBean file : files) {
+		for (FileBean file : files) {
 			file.setupDomainFile(internalUriPath, createdBy, j);
-			domainEntity.getLabFileCollection().add(file.getDomainFile());
+			domainEntity.getFileCollection().add(file.getDomainFile());
 			j++;
 		}
 	}
@@ -291,7 +291,7 @@ public class NanoparticleEntityBean {
 	}
 
 	public void addFile() {
-		files.add(new LabFileBean());
+		files.add(new FileBean());
 	}
 
 	public void removeFile(int ind) {

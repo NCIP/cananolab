@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.SmallMolecule;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -56,7 +56,7 @@ public class FunctionalizingEntityBean {
 
 	private List<FunctionBean> functions = new ArrayList<FunctionBean>();
 
-	private List<LabFileBean> files = new ArrayList<LabFileBean>();
+	private List<FileBean> files = new ArrayList<FileBean>();
 
 	private ActivationMethod activationMethod = new ActivationMethod();
 
@@ -96,13 +96,13 @@ public class FunctionalizingEntityBean {
 		if (functionalizingEntity.getActivationMethod() != null) {
 			activationMethod = functionalizingEntity.getActivationMethod();
 		}
-		if (functionalizingEntity.getLabFileCollection() != null) {
-			for (LabFile file : functionalizingEntity.getLabFileCollection()) {
-				files.add(new LabFileBean(file));
+		if (functionalizingEntity.getFileCollection() != null) {
+			for (File file : functionalizingEntity.getFileCollection()) {
+				files.add(new FileBean(file));
 			}
 		}
 		Collections.sort(files,
-				new CaNanoLabComparators.LabFileBeanDateComparator());
+				new CaNanoLabComparators.FileBeanDateComparator());
 
 	}
 
@@ -148,13 +148,13 @@ public class FunctionalizingEntityBean {
 				}
 			}
 		}
-		if (copy.getLabFileCollection().isEmpty()) {
-			copy.setLabFileCollection(null);
+		if (copy.getFileCollection().isEmpty()) {
+			copy.setFileCollection(null);
 		} else {
-			Collection<LabFile> files = copy.getLabFileCollection();
-			copy.setLabFileCollection(new HashSet<LabFile>());
-			copy.getLabFileCollection().addAll(files);
-			for (LabFile file : copy.getLabFileCollection()) {
+			Collection<File> files = copy.getFileCollection();
+			copy.setFileCollection(new HashSet<File>());
+			copy.getFileCollection().addAll(files);
+			for (File file : copy.getFileCollection()) {
 				file.setId(null);
 				file
 						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
@@ -240,7 +240,7 @@ public class FunctionalizingEntityBean {
 		this.valueUnit = valueUnit;
 	}
 
-	public List<LabFileBean> getFiles() {
+	public List<FileBean> getFiles() {
 		return files;
 	}
 
@@ -305,15 +305,15 @@ public class FunctionalizingEntityBean {
 					functionBean.getDomainFunction());
 			i++;
 		}
-		if (domainEntity.getLabFileCollection() != null) {
-			domainEntity.getLabFileCollection().clear();
+		if (domainEntity.getFileCollection() != null) {
+			domainEntity.getFileCollection().clear();
 		} else {
-			domainEntity.setLabFileCollection(new HashSet<LabFile>());
+			domainEntity.setFileCollection(new HashSet<File>());
 		}
 		int j=0;
-		for (LabFileBean file : files) {
+		for (FileBean file : files) {
 			file.setupDomainFile(internalUriPath, createdBy, j);
-			domainEntity.getLabFileCollection().add(file.getDomainFile());
+			domainEntity.getFileCollection().add(file.getDomainFile());
 			j++;
 		}
 	}
@@ -327,7 +327,7 @@ public class FunctionalizingEntityBean {
 	}
 
 	public void addFile() {
-		files.add(new LabFileBean());
+		files.add(new FileBean());
 	}
 
 	public void removeFile(int ind) {

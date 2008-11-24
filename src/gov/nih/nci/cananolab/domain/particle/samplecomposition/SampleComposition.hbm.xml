@@ -10,10 +10,10 @@
                         </generator>
 		</id>
 		<!-- Associations mapping for the SampleComposition class -->
-		<set name="labFileCollection" table="composition_lab_file" lazy="true" inverse="false" cascade="all-delete-orphan">
+		<set name="fileCollection" table="composition_file" lazy="true" inverse="false" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="composition_pk_id" />
-			<many-to-many class="gov.nih.nci.cananolab.domain.common.LabFile" column="file_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
 		</set>
 		<set name="nanoparticleEntityCollection" lazy="true" inverse="true">
 			<cache usage="read-write" />

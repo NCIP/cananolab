@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -33,7 +33,7 @@ public class PublicationDecorator extends TableDecorator {
 	
 	public SortableName getResearchArea() throws UnsupportedEncodingException {
 		String researchArea = "";		
-		LabFile file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
+		File file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
 		if (researchArea != null) {
 			researchArea = researchArea.replaceAll(";", "<br>");			
@@ -67,7 +67,7 @@ public class PublicationDecorator extends TableDecorator {
 	public SortableName getDownloadURL() throws UnsupportedEncodingException {
 		SortableName sortableLink = null;
 		String actionName = null;
-		LabFileBean file = null;
+		FileBean file = null;
 		actionName = "searchPublication.do";
 		file = (PublicationBean) getCurrentRowObject();;
 				
@@ -99,7 +99,7 @@ public class PublicationDecorator extends TableDecorator {
 	}
 	
 	public SortableName getViewName() {
-		LabFileBean file = null;
+		FileBean file = null;
 		file = (PublicationBean) getCurrentRowObject();
 		String title = file.getDomainFile().getTitle();		
 		SortableName sortableLink = new SortableName(title);

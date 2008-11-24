@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -85,9 +85,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 					.getNanoparticleEntityCollection().add(entity);
 
 			FileService service = new FileServiceLocalImpl();
-			Collection<LabFile> labFiles = entity.getLabFileCollection();
-			if (labFiles != null) {
-				for (LabFile file : labFiles) {
+			Collection<File> Files = entity.getFileCollection();
+			if (Files != null) {
+				for (File file : Files) {
 					service.prepareSaveFile(file);
 				}
 			}
@@ -170,9 +170,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 					.getFunctionalizingEntityCollection().add(entity);
 
 			FileService service = new FileServiceLocalImpl();
-			Collection<LabFile> labFiles = entity.getLabFileCollection();
-			if (labFiles != null) {
-				for (LabFile file : labFiles) {
+			Collection<File> Files = entity.getFileCollection();
+			if (Files != null) {
+				for (File file : Files) {
 					service.prepareSaveFile(file);
 				}
 			}
@@ -224,9 +224,9 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			composition.getChemicalAssociationCollection().add(assoc);
 
 			FileService service = new FileServiceLocalImpl();
-			Collection<LabFile> labFiles = assoc.getLabFileCollection();
-			if (labFiles != null) {
-				for (LabFile file : labFiles) {
+			Collection<File> Files = assoc.getFileCollection();
+			if (Files != null) {
+				for (File file : Files) {
 					service.prepareSaveFile(file);
 				}
 			}
@@ -259,7 +259,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	}
 
 	public void saveCompositionFile(NanoparticleSample particleSample,
-			LabFile file, byte[] fileData) throws ParticleCompositionException {
+			File file, byte[] fileData) throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(file);
@@ -271,10 +271,10 @@ public class NanoparticleCompositionServiceLocalImpl implements
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setNanoparticleSample(
 						particleSample);
-				particleSample.getSampleComposition().setLabFileCollection(
-						new HashSet<LabFile>());
+				particleSample.getSampleComposition().setFileCollection(
+						new HashSet<File>());
 			}
-			particleSample.getSampleComposition().getLabFileCollection().add(
+			particleSample.getSampleComposition().getFileCollection().add(
 					file);
 			if (file.getId() == null) { // because of unidirectional
 				// relationship between composition
@@ -476,7 +476,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
-			for (LabFileBean file : entity.getFiles()) {
+			for (FileBean file : entity.getFiles()) {
 				fileService.retrieveVisibility(file, user);
 			}
 		} catch (Exception e) {
@@ -491,7 +491,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			UserBean user) throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
-			for (LabFileBean file : entity.getFiles()) {
+			for (FileBean file : entity.getFiles()) {
 				fileService.retrieveVisibility(file, user);
 			}
 		} catch (Exception e) {
@@ -506,7 +506,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			throws ParticleCompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
-			for (LabFileBean file : assoc.getFiles()) {
+			for (FileBean file : assoc.getFiles()) {
 				fileService.retrieveVisibility(file, user);
 			}
 		} catch (Exception e) {
@@ -567,11 +567,11 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	}
 
 	public void deleteCompositionFile(NanoparticleSample particleSample,
-			LabFile file) throws ParticleCompositionException {
+			File file) throws ParticleCompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			particleSample.getSampleComposition().getLabFileCollection()
+			particleSample.getSampleComposition().getFileCollection()
 					.remove(file);
 			appService.saveOrUpdate(particleSample.getSampleComposition());
 		} catch (Exception e) {

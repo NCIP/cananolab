@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.Attachment;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -26,7 +26,7 @@ public class ChemicalAssociationBean {
 
 	private Attachment attachment = new Attachment();
 
-	private List<LabFileBean> files = new ArrayList<LabFileBean>();
+	private List<FileBean> files = new ArrayList<FileBean>();
 
 	private AssociatedElementBean associatedElementA = new AssociatedElementBean();
 
@@ -43,12 +43,12 @@ public class ChemicalAssociationBean {
 		description = chemicalAssociation.getDescription();
 		className = ClassUtils.getShortClassName(chemicalAssociation.getClass()
 				.getName());
-		if (chemicalAssociation.getLabFileCollection() != null) {
-			for (LabFile file : chemicalAssociation.getLabFileCollection()) {
-				files.add(new LabFileBean(file));
+		if (chemicalAssociation.getFileCollection() != null) {
+			for (File file : chemicalAssociation.getFileCollection()) {
+				files.add(new FileBean(file));
 			}
 			Collections.sort(files,
-					new CaNanoLabComparators.LabFileBeanDateComparator());
+					new CaNanoLabComparators.FileBeanDateComparator());
 		}
 		associatedElementA = new AssociatedElementBean(chemicalAssociation
 				.getAssociatedElementA());
@@ -94,15 +94,15 @@ public class ChemicalAssociationBean {
 				.getDomainElement());
 		domainAssociation.setAssociatedElementB(associatedElementB
 				.getDomainElement());
-		if (domainAssociation.getLabFileCollection() != null) {
-			domainAssociation.getLabFileCollection().clear();
+		if (domainAssociation.getFileCollection() != null) {
+			domainAssociation.getFileCollection().clear();
 		} else {
-			domainAssociation.setLabFileCollection(new HashSet<LabFile>());
+			domainAssociation.setFileCollection(new HashSet<File>());
 		}
 		int i=0;
-		for (LabFileBean file : files) {
+		for (FileBean file : files) {
 			file.setupDomainFile(internalUriPath, createdBy, i);
-			domainAssociation.getLabFileCollection().add(file.getDomainFile());
+			domainAssociation.getFileCollection().add(file.getDomainFile());
 			i++;
 		}
 	}
@@ -115,7 +115,7 @@ public class ChemicalAssociationBean {
 		return attachment;
 	}
 
-	public List<LabFileBean> getFiles() {
+	public List<FileBean> getFiles() {
 		return files;
 	}
 
@@ -140,7 +140,7 @@ public class ChemicalAssociationBean {
 	}
 
 	public void addFile() {
-		files.add(new LabFileBean());
+		files.add(new FileBean());
 	}
 
 	public void removeFile(int ind) {

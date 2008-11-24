@@ -23,14 +23,18 @@
 			<cache usage="read-write" />
 			<key column="particle_sample_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Keyword" column="keyword_pk_id" />
-		</set>
-		<one-to-one name="sampleManagement" class="gov.nih.nci.cananolab.domain.common.SampleManagement" property-ref="nanoparticleSample" />
+		</set>		
 		<set name="publicationCollection" table="nanoparticle_sample_publication" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="particle_sample_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Publication" column="file_pk_id" />
 		</set>		
-		<many-to-one name="source" class="gov.nih.nci.cananolab.domain.common.Source" column="source_pk_id" lazy="false"/>
+	    <many-to-one name="primaryOrganization" class="gov.nih.nci.cananolab.domain.common.Organization" column="primary_organization_pk_id" unique="true" lazy="proxy" />
 		<one-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition" property-ref="nanoparticleSample" />
+		<set name="otherOrganizationCollection" table="nanoparticle_sample_other_organization" lazy="true" inverse="true">
+			<cache usage="read-write" />
+			<key column="particle_sample_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Organization" column="organization_pk_id" />
+		</set>		
 	</class>
 </hibernate-mapping>

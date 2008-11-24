@@ -19,12 +19,12 @@
 			column="created_date" />
 		<property name="description" type="string" column="description" />
 		<!-- Associations mapping for the ChemicalAssociation class -->
-		<set name="labFileCollection"
-			table="chemical_association_lab_file" lazy="true" inverse="false" cascade="all-delete-orphan">
+		<set name="fileCollection"
+			table="chemical_association_file" lazy="true" inverse="false" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="chemical_association_pk_id" />
 			<many-to-many
-				class="gov.nih.nci.cananolab.domain.common.LabFile"
+				class="gov.nih.nci.cananolab.domain.common.File"
 				column="file_pk_id" />
 		</set>
 		<many-to-one name="associatedElementA"

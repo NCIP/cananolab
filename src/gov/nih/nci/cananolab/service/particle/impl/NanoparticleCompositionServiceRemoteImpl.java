@@ -7,7 +7,7 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
@@ -140,11 +140,11 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadNanoparticleEntityAssociations(NanoparticleEntity entity)
 			throws Exception {
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
-		List<LabFile> files = fileService.findFilesByCompositionInfoId(entity
+		List<File> files = fileService.findFilesByCompositionInfoId(entity
 				.getId().toString(), NanoparticleEntity.class
 				.getCanonicalName());
 		if (files != null && !files.isEmpty()) {
-			entity.setLabFileCollection(new HashSet<LabFile>(files));
+			entity.setFileCollection(new HashSet<File>(files));
 		}
 		loadComposingElementForNanoparticleEntity(entity);
 	}
@@ -237,7 +237,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	}
 
 	public void saveCompositionFile(NanoparticleSample particleSample,
-			LabFile file, byte[] fileData) throws ParticleCompositionException {
+			File file, byte[] fileData) throws ParticleCompositionException {
 		throw new ParticleCompositionException(
 				"Not implemented for grid service");
 	}
@@ -440,11 +440,11 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadFunctionalizingEntityAssociations(
 			FunctionalizingEntity entity) throws Exception {
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
-		List<LabFile> files = fileService.findFilesByCompositionInfoId(entity
+		List<File> files = fileService.findFilesByCompositionInfoId(entity
 				.getId().toString(), NanoparticleEntity.class
 				.getCanonicalName());
 		if (files != null && !files.isEmpty()) {
-			entity.setLabFileCollection(new HashSet<LabFile>(files));
+			entity.setFileCollection(new HashSet<File>(files));
 		}
 		ActivationMethod activationMethod = gridClient
 				.getActivationMethodByFunctionalizingEntityId(entity.getId()
@@ -625,11 +625,11 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadChemicalAssociationAssociations(String particleId,
 			ChemicalAssociation assoc) throws Exception {
 		FileService fileService = new FileServiceRemoteImpl(serviceUrl);
-		List<LabFile> files = fileService.findFilesByCompositionInfoId(assoc
+		List<File> files = fileService.findFilesByCompositionInfoId(assoc
 				.getId().toString(), ChemicalAssociation.class
 				.getCanonicalName());
 		if (files != null && !files.isEmpty()) {
-			assoc.setLabFileCollection(new HashSet<LabFile>(files));
+			assoc.setFileCollection(new HashSet<File>(files));
 		}
 		AssociatedElement associatedElementA = gridClient
 				.getAssociatedElementAByChemicalAssociationId(assoc.getId()
@@ -754,7 +754,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	}
 
 	public void deleteCompositionFile(NanoparticleSample particleSample,
-			LabFile file) throws ParticleCompositionException {
+			File file) throws ParticleCompositionException {
 		throw new ParticleCompositionException(
 				"Not implemented for grid service");
 	}
@@ -844,13 +844,13 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
 									Arrays.asList(assocs)));
 				}
-				LabFile[] files = gridClient
-						.getLabFilesByCompositionInfoId(sampleComposition
+				File[] files = gridClient
+						.getFilesByCompositionInfoId(sampleComposition
 								.getId().toString(),
 								"gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
 				if (files != null && files.length > 0) {
 					sampleComposition
-							.setLabFileCollection(new HashSet<LabFile>(Arrays
+							.setFileCollection(new HashSet<File>(Arrays
 									.asList(files)));
 				}
 			}

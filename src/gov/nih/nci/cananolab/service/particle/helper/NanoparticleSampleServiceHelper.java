@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
@@ -170,7 +170,7 @@ public class NanoparticleSampleServiceHelper {
 				}
 				crit.createAlias("chara.derivedBioAssayDataCollection",
 						"derived", CriteriaSpecification.LEFT_JOIN)
-						.createAlias("derived.labFile", "charFile",
+						.createAlias("derived.File", "charFile",
 								CriteriaSpecification.LEFT_JOIN).createAlias(
 								"charFile.keywordCollection", "keyword2",
 								CriteriaSpecification.LEFT_JOIN);
@@ -415,7 +415,7 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
 		crit
-				.setFetchMode("sampleComposition.labFileCollection",
+				.setFetchMode("sampleComposition.fileCollection",
 						FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
@@ -495,7 +495,7 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
 		crit
-				.setFetchMode("sampleComposition.labFileCollection",
+				.setFetchMode("sampleComposition.fileCollection",
 						FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
@@ -534,35 +534,35 @@ public class NanoparticleSampleServiceHelper {
 		FileServiceHelper fileHelper = new FileServiceHelper();
 		for (Object obj : results) {
 			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
-			// derivedBioAssayData's labfile
-			LabFile labFile = findDerivedBioAssayDataLabFile(derivedBioAssayData
+			// derivedBioAssayData's File
+			File File = findDerivedBioAssayDataFile(derivedBioAssayData
 					.getId().toString());
 
-			// labFile's keyword
-			if (labFile != null) {
+			// File's keyword
+			if (File != null) {
 				List<Keyword> keywords = fileHelper
-						.findKeywordsByFileId(labFile.getId().toString());
-				labFile.setKeywordCollection(new HashSet<Keyword>(keywords));
-				derivedBioAssayData.setLabFile(labFile);
+						.findKeywordsByFileId(File.getId().toString());
+				File.setKeywordCollection(new HashSet<Keyword>(keywords));
+				derivedBioAssayData.setFile(File);
 			}
 			derivedBioAssayDataCollection.add(derivedBioAssayData);
 		}
 		return derivedBioAssayDataCollection;
 	}
 
-	public LabFile findDerivedBioAssayDataLabFile(String derivedId)
+	public File findDerivedBioAssayDataFile(String derivedId)
 			throws Exception {
-		LabFile labFile = null;
+		File File = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select bioassay.labFile from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
+				"select bioassay.File from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
 						+ derivedId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			labFile = (LabFile) obj;
+			File = (File) obj;
 		}
-		return labFile;
+		return File;
 	}
 
 	public List<Keyword> findKeywordsForNanoparticleSampleId(
@@ -710,7 +710,7 @@ public class NanoparticleSampleServiceHelper {
 			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
-			columns.add(particleSample.getSource().getOrganizationName());
+			columns.add(particleSample.getPrimaryOrganization().getName());
 
 			// nanoparticle entities and functionalizing entities are in one
 			// column.

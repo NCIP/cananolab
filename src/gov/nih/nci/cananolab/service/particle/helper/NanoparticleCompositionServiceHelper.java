@@ -50,7 +50,7 @@ public class NanoparticleCompositionServiceHelper {
 				.setFetchMode(
 						"sampleComposition.chemicalAssociationCollection.associatedElementB",
 						FetchMode.JOIN);
-		crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
 		crit.setFetchMode(
 				"composingElementCollection.inherentFunctionCollection",
@@ -72,7 +72,7 @@ public class NanoparticleCompositionServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				FunctionalizingEntity.class).add(
 				Property.forName("id").eq(new Long(entityId)));
-		crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
@@ -105,7 +105,7 @@ public class NanoparticleCompositionServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				ChemicalAssociation.class).add(
 				Property.forName("id").eq(new Long(assocId)));
-		crit.setFetchMode("labFileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementA", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementB", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);

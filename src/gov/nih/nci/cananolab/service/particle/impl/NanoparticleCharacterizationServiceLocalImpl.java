@@ -100,8 +100,8 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			if (achar.getDerivedBioAssayDataCollection() != null) {
 				for (DerivedBioAssayData bioassay : achar
 						.getDerivedBioAssayDataCollection()) {
-					if (bioassay.getLabFile() != null) {
-						fileService.prepareSaveFile(bioassay.getLabFile());
+					if (bioassay.getFile() != null) {
+						fileService.prepareSaveFile(bioassay.getFile());
 					}
 				}
 			}
@@ -193,7 +193,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			}
 		} catch (Exception e) {
 			logger
-					.error("Problem to retrieve all Characterization Sources.",
+					.error("Problem to retrieve all Characterization PrimaryOrganizations.",
 							e);
 			throw new ParticleCharacterizationException(
 					"Problem to retrieve all Characterization Sources ");
@@ -275,7 +275,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		try {
 			for (DerivedBioAssayDataBean bioAssayData : charBean
 					.getDerivedBioAssayDataList()) {
-				fileService.retrieveVisibility(bioAssayData.getLabFileBean(),
+				fileService.retrieveVisibility(bioAssayData.getFileBean(),
 						user);
 			}
 			fileService

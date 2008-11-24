@@ -79,7 +79,7 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 							.getDerivedBioAssayDataList()) {
 						if (fileService instanceof FileServiceLocalImpl) {
 							fileService.retrieveVisibility(
-									derivedBioAssayDataBean.getLabFileBean(),
+									derivedBioAssayDataBean.getFileBean(),
 									user);
 						}
 						Map<String, String> datumMap = new HashMap<String, String>();

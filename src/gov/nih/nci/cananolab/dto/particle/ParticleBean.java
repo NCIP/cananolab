@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -41,7 +41,7 @@ public class ParticleBean {
 	private String[] characterizationClassNames=new String[0];
 
 	public ParticleBean() {
-		domainParticleSample.setSource(new Source());
+		domainParticleSample.setPrimaryOrganization(new Organization());
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {

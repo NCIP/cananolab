@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.common.Source;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -25,13 +24,13 @@ public interface NanoparticleSampleService {
 	 * 
 	 * @return all particle sources
 	 */
-	public SortedSet<Source> findAllParticleSources() throws ParticleException;
+	public SortedSet<Organization> findAllParticleOrganizations() throws ParticleException;
 
 	/**
 	 * 
 	 * @return all particle sources visible to user
 	 */
-	public SortedSet<Source> findAllParticleSources(UserBean user)
+	public SortedSet<Organization> findAllParticleOrganizations(UserBean user)
 			throws ParticleException;
 
 	/**
@@ -47,7 +46,7 @@ public interface NanoparticleSampleService {
 
 	/**
 	 * 
-	 * @param particleSource
+	 * @param particleOrganization
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
 	 * @param functionalizingEntityClassNames
@@ -59,7 +58,7 @@ public interface NanoparticleSampleService {
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particleOrganization,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -80,14 +79,14 @@ public interface NanoparticleSampleService {
 	/**
 	 * Get other particles from the given particle source
 	 * 
-	 * @param particleSource
+	 * @param particleOrganization
 	 * @param particleName
 	 * @param user
 	 * @return
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particleSource,
+	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
 			String particleName, UserBean user) throws ParticleException;
 
 	public void retrieveVisibility(ParticleBean particleBean, UserBean user)

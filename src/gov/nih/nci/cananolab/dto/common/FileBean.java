@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.LabFile;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.DateUtil;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -19,8 +19,8 @@ import org.apache.struts.upload.FormFile;
  * @author pansu
  * 
  */
-public class LabFileBean {
-	protected LabFile domainFile = new LabFile();
+public class FileBean {
+	protected File domainFile = new File();
 
 	private String[] visibilityGroups = new String[0];
 
@@ -45,12 +45,12 @@ public class LabFileBean {
 
 	// or for remote files, it will be the remote download URL
 
-	public LabFileBean() {
+	public FileBean() {
 		domainFile.setUriExternal(false);
 	}
 
-	public LabFileBean(LabFile labFile) {
-		this.domainFile = labFile;
+	public FileBean(File File) {
+		this.domainFile = File;
 		SortedSet<String> keywordStrs = new TreeSet<String>();
 		if (domainFile.getKeywordCollection() != null) {
 			for (Keyword keyword : domainFile.getKeywordCollection()) {
@@ -58,8 +58,8 @@ public class LabFileBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordStrs, "\r\n");
-		if (labFile.getUriExternal() != null && labFile.getUriExternal()) {
-			externalUrl = labFile.getUri();
+		if (File.getUriExternal() != null && File.getUriExternal()) {
+			externalUrl = File.getUri();
 		}
 	}
 
@@ -97,7 +97,7 @@ public class LabFileBean {
 		return image;
 	}
 
-	public LabFile getDomainFile() {
+	public File getDomainFile() {
 		return domainFile;
 	}
 
@@ -201,7 +201,7 @@ public class LabFileBean {
 		this.fullPath = fullPath;
 	}
 
-	public void setDomainFile(LabFile domainFile) {
+	public void setDomainFile(File domainFile) {
 		this.domainFile = domainFile;
 	}
 }

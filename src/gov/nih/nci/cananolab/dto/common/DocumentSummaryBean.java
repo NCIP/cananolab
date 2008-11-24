@@ -15,7 +15,7 @@ import java.util.TreeSet;
 public class DocumentSummaryBean {
 	private SortedSet<String> columnLabels = new TreeSet<String>();
 
-	private List<LabFileBean> documentRows = new ArrayList<LabFileBean>();
+	private List<FileBean> documentRows = new ArrayList<FileBean>();
 
 
 	public DocumentSummaryBean() {
@@ -28,14 +28,14 @@ public class DocumentSummaryBean {
 	/**
 	 * @return the documentRows
 	 */
-	public List<LabFileBean> getDocumentRows() {
+	public List<FileBean> getDocumentRows() {
 		return documentRows;
 	}
 
 	/**
 	 * @param documentRows the documentRows to set
 	 */
-	public void setDocumentRows(List<LabFileBean> documentRows) {
+	public void setDocumentRows(List<FileBean> documentRows) {
 		this.documentRows = documentRows;
 	}
 }

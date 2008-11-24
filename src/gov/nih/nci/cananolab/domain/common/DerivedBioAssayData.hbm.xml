@@ -17,8 +17,8 @@
 		<property name="createdDate" type="java.util.Date"
 			column="created_date" />
 		<!-- Associations mapping for the DerivedBioAssayData class -->
-		<many-to-one name="labFile"
-			class="gov.nih.nci.cananolab.domain.common.LabFile"
+		<many-to-one name="file"
+			class="gov.nih.nci.cananolab.domain.common.File"
 			column="file_pk_id" unique="true" lazy="proxy"
 			cascade="save-update,delete" />
 		<set name="derivedDatumCollection" lazy="false"

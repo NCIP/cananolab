@@ -119,12 +119,12 @@ public class CharacterizationBean {
 				bioassay
 						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
 				bioassay.setCreatedDate(new Date());
-				if (bioassay.getLabFile() != null) {
+				if (bioassay.getFile() != null) {
 
-					bioassay.getLabFile().setId(null);
-					bioassay.getLabFile().setCreatedBy(
+					bioassay.getFile().setId(null);
+					bioassay.getFile().setCreatedBy(
 							CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
-					bioassay.getLabFile().setCreatedDate(new Date());
+					bioassay.getFile().setCreatedDate(new Date());
 				}
 				if (bioassay.getDerivedDatumCollection().isEmpty()
 						|| !copyDerivedDatum) {

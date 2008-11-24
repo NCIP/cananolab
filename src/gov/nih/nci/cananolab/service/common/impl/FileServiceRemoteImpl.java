@@ -6,9 +6,9 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.LabFile;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.FileException;
@@ -41,12 +41,12 @@ public class FileServiceRemoteImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean findFileById(String fileId) throws FileException {
-		LabFileBean fileBean = null;
+	public FileBean findFileById(String fileId) throws FileException {
+		FileBean fileBean = null;
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName("gov.nih.nci.cananolab.domain.common.LabFile");
+			target.setName("gov.nih.nci.cananolab.domain.common.File");
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
@@ -55,16 +55,16 @@ public class FileServiceRemoteImpl implements FileService {
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
 			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.common.LabFile");
+					.setTargetClassname("gov.nih.nci.cananolab.domain.common.File");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			LabFile file = null;
+			File file = null;
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
-				file = (LabFile) obj;
+				file = (File) obj;
 				loadKeywordsForFile(file); 
 			}
 			if (file != null) {
-				fileBean = new LabFileBean(file);
+				fileBean = new FileBean(file);
 			}
 			return fileBean;
 		} catch (Exception e) {
@@ -80,9 +80,9 @@ public class FileServiceRemoteImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public LabFileBean findFileById(String fileId, UserBean user)
+	public FileBean findFileById(String fileId, UserBean user)
 			throws FileException, CaNanoLabSecurityException {
-		LabFileBean fileBean = null;
+		FileBean fileBean = null;
 		try {
 			// remote service already filtered out non-public files
 			fileBean = findFileById(fileId);
@@ -93,14 +93,14 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	public List<LabFile> findFilesByCompositionInfoId(String id,
+	public List<File> findFilesByCompositionInfoId(String id,
 			String className) throws FileException {
 		try {
-			List<LabFile> fileSet = new ArrayList<LabFile>();
-			LabFile[] files = gridClient.getLabFilesByCompositionInfoId(id,
+			List<File> fileSet = new ArrayList<File>();
+			File files = gridClient.getFilesByCompositionInfoId(id,
 					className);
 			if (files != null) {
-				for (LabFile file : files) {
+				for (File file : files) {
 					loadKeywordsForFile(file);
 					fileSet.add(file);
 				}
@@ -113,7 +113,7 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	private void loadKeywordsForFile(LabFile file) throws Exception {
+	private void loadKeywordsForFile(File file) throws Exception {
 		Keyword[] keywords = gridClient.getKeywordsByFileId(file.getId()
 				.toString());
 		if (keywords != null && keywords.length > 0) {
@@ -122,13 +122,13 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	public void saveCopiedFileAndSetVisibility(LabFile copy, UserBean user,
+	public void saveCopiedFileAndSetVisibility(File copy, UserBean user,
 			String oldSampleName, String newSampleName) throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
 
 	// save to the file system fileData is not empty
-	public void writeFile(LabFile file, byte[] fileData) throws FileException {
+	public void writeFile(File file, byte[] fileData) throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
 
@@ -138,18 +138,18 @@ public class FileServiceRemoteImpl implements FileService {
 	 * @param file
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(LabFile file) throws FileException {
+	public void prepareSaveFile(File file) throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
 
 	// retrieve file visibility
-	public void retrieveVisibility(LabFileBean fileBean, UserBean user)
+	public void retrieveVisibility(FileBean fileBean, UserBean user)
 			throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
 	
 	// retrieve file retrieve accessibility
-	public void retrieveAccessibility(LabFileBean fileBean, UserBean user)
+	public void retrieveAccessibility(FileBean fileBean, UserBean user)
 			throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}

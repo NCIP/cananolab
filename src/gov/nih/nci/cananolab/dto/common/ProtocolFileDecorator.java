@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import org.displaytag.decorator.TableDecorator;
 

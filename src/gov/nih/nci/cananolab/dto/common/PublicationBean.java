@@ -19,7 +19,7 @@ import java.util.List;
  * @author tanq
  * 
  */
-public class PublicationBean extends LabFileBean {
+public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
 	
 	private String[] particleNames;
