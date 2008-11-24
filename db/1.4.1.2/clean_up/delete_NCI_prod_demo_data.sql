@@ -49,7 +49,7 @@ from nanoparticle_sample
 where created_by='janedoe');
 
 delete from keyword_lab_file
-where file_pk_id in
+where lab_file_pk_id in
 (select file_pk_id 
 from lab_file
 where created_by='janedoe');
@@ -83,6 +83,12 @@ where created_by='janedoe';
 
 delete from author
 where created_by='janedoe';
+
+delete from keyword_nanoparticle_sample
+where particle_sample_pk_id in
+(select particle_sample_pk_id 
+from nanoparticle_sample
+where created_by='janedoe');
 
 delete from nanoparticle_sample
 where created_by='janedoe';
