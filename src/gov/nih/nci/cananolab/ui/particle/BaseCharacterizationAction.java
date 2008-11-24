@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -99,9 +99,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			if (copy.getDerivedBioAssayDataCollection() != null) {
 				for (DerivedBioAssayData bioassay : copy
 						.getDerivedBioAssayDataCollection()) {
-					if (bioassay.getLabFile() != null) {
+					if (bioassay.getFile() != null) {
 						fileService.saveCopiedFileAndSetVisibility(bioassay
-								.getLabFile(), user, particleSampleName, sample
+								.getFile(), user, particleSampleName, sample
 								.getName());
 					}
 				}
@@ -139,7 +139,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 
 			List<DerivedDatumBean> datumList = derivedBioassayDataBean
 					.getDatumList();
-			LabFileBean lfBean = derivedBioassayDataBean.getLabFileBean();
+			FileBean lfBean = derivedBioassayDataBean.getFileBean();
 
 			// error, if no data input from either the lab file or derived datum
 			boolean noFileError = true;
@@ -213,11 +213,11 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				particleBean.getDomainParticleSample(), charBean
 						.getDomainChar());
 		// save file data to file system and set visibility
-		List<LabFileBean> files = new ArrayList<LabFileBean>();
+		List<FileBean> files = new ArrayList<FileBean>();
 		for (DerivedBioAssayDataBean bioassay : charBean
 				.getDerivedBioAssayDataList()) {
-			if (bioassay.getLabFileBean() != null) {
-				files.add(bioassay.getLabFileBean());
+			if (bioassay.getFileBean() != null) {
+				files.add(bioassay.getFileBean());
 			}
 		}
 		saveFilesToFileSystem(files);
@@ -440,8 +440,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 			// set file full path
 			for (DerivedBioAssayDataBean bioassayBean : charBean
 					.getDerivedBioAssayDataList()) {
-				if (bioassayBean.getLabFileBean() != null) {
-					LabFileBean fileBean = bioassayBean.getLabFileBean();
+				if (bioassayBean.getFileBean() != null) {
+					FileBean fileBean = bioassayBean.getFileBean();
 					if (!fileBean.getDomainFile().getUriExternal()) {
 						String fileRoot = PropertyReader.getProperty(
 								CaNanoLabConstants.FILEUPLOAD_PROPERTY,
@@ -466,8 +466,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					+ "?dispatch=download&location=local&fileId=";
 			for (DerivedBioAssayDataBean bioassayBean : charBean
 					.getDerivedBioAssayDataList()) {
-				if (bioassayBean.getLabFileBean() != null) {
-					LabFileBean fileBean = bioassayBean.getLabFileBean();
+				if (bioassayBean.getFileBean() != null) {
+					FileBean fileBean = bioassayBean.getFileBean();
 					String remoteDownloadUrl = remoteDownloadUrlBase
 							+ fileBean.getDomainFile().getId().toString();
 					fileBean.setFullPath(remoteDownloadUrl);

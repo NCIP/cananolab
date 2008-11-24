@@ -3,8 +3,9 @@ package gov.nih.nci.cananolab.util;
 import java.util.Hashtable;
 import java.util.Stack;
 
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.*;
 
 public class SAXEventSwitcher extends DefaultHandler {
 

@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -141,7 +141,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	private boolean validateAssociationFile(HttpServletRequest request,
 			ChemicalAssociationBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
-		for (LabFileBean filebean : entityBean.getFiles()) {
+		for (FileBean filebean : entityBean.getFiles()) {
 			if (!validateFileBean(request, msgs, filebean)) {
 				return false;
 			}

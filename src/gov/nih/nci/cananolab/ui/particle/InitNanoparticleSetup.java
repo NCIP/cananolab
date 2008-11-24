@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
@@ -59,13 +59,13 @@ public class InitNanoparticleSetup {
 		return new InitNanoparticleSetup();
 	}
 
-	public SortedSet<Source> getNanoparticleSampleSources(
+	public SortedSet<Organization> getNanoparticleSampleOrganizations(
 			HttpServletRequest request, UserBean user) throws Exception {
-		SortedSet<Source> sampleSources = particleService
-				.findAllParticleSources(user);
-		request.getSession().setAttribute("allUserParticleSources",
-				sampleSources);
-		return sampleSources;
+		SortedSet<Organization> sampleOrganizations = particleService
+				.findAllParticleOrganizations(user);
+		request.getSession().setAttribute("allUserParticleOrganizations",
+				sampleOrganizations);
+		return sampleOrganizations;
 	}
 
 	public SortedSet<String> getAllNanoparticleSampleNames(
@@ -328,13 +328,13 @@ public class InitNanoparticleSetup {
 				SortedSet<DataLinkBean> ldataBeans = new TreeSet<DataLinkBean>(
 						new CaNanoLabComparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
-						.getLabFileCollection() != null) {
-					for (LabFile file : particleSample.getSampleComposition()
-							.getLabFileCollection()) {
+						.getFileCollection() != null) {
+					for (File file : particleSample.getSampleComposition()
+							.getFileCollection()) {
 						DataLinkBean dataBean = new DataLinkBean(file.getId()
 								.toString(), "Composition", "compositionFile",
 								file.getCreatedBy(), file.getCreatedDate());
-						dataBean.setDataClassName("LabFile");
+						dataBean.setDataClassName("File");
 						dataBean.setDataDisplayType(file.getType());
 						
 						if(file.getTitle().length() <= 20)
@@ -484,9 +484,9 @@ public class InitNanoparticleSetup {
 
 	public SortedSet<SortableName> getOtherParticleNames(
 			HttpServletRequest request, String particleName,
-			String particleSource, UserBean user) throws Exception {
+			String particleOrganization, UserBean user) throws Exception {
 		SortedSet<SortableName> names = particleService.findOtherParticles(
-				particleSource, particleName, user);
+				particleOrganization, particleName, user);
 		request.getSession().setAttribute("otherParticleNames", names);
 		return names;
 	}
@@ -506,6 +506,6 @@ public class InitNanoparticleSetup {
 
 		appContext.setAttribute("booleanChoices", booleanBeans);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fileTypes", "LabFile", "type", "otherType", true);
+				"fileTypes", "File", "type", "otherType", true);
 	}
 }

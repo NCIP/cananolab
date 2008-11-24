@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Emulsion;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
@@ -110,8 +110,8 @@ public class InitCompositionSetup {
 						functionBean.getImagingFunction().getModality());
 			}
 		}
-		for (LabFileBean fileBean : entityBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+		for (FileBean fileBean : entityBean.getFiles()) {
+			InitSetup.getInstance().persistLookup(request, "File", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
 		
@@ -176,8 +176,8 @@ public class InitCompositionSetup {
 					"modality", "otherModality",
 					functionBean.getImagingFunction().getModality());
 		}
-		for (LabFileBean fileBean : entityBean.getFiles()) {
-			InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+		for (FileBean fileBean : entityBean.getFiles()) {
+			InitSetup.getInstance().persistLookup(request, "File", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
 		setFunctionalizingEntityDropdowns(request);
@@ -206,9 +206,9 @@ public class InitCompositionSetup {
 				"bondType", "otherBondType",
 				assocBean.getAttachment().getBondType());
 		if (assocBean.getFiles() != null) {
-			for (LabFileBean fileBean : assocBean.getFiles()) {
+			for (FileBean fileBean : assocBean.getFiles()) {
 				InitSetup.getInstance()
-						.persistLookup(request, "LabFile", "type", "otherType",
+						.persistLookup(request, "File", "type", "otherType",
 								fileBean.getDomainFile().getType());
 			}
 		}
@@ -216,11 +216,11 @@ public class InitCompositionSetup {
 	}
 
 	public void persistCompositionFileDropdowns(HttpServletRequest request,
-			LabFileBean fileBean) throws Exception {
-		InitSetup.getInstance().persistLookup(request, "LabFile", "type",
+			FileBean fileBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "File", "type",
 				"otherType", fileBean.getDomainFile().getType());
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fileTypes", "LabFile", "type", "otherType", true);
+				"fileTypes", "File", "type", "otherType", true);
 	}
 
 	public SortedSet<String> getFunctionTypes(HttpServletRequest request)

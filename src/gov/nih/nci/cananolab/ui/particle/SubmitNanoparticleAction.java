@@ -54,7 +54,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			visibleGroups[i] = particleSampleBean.getVisibilityGroups()[i];
 		}
 		visibleGroups[visibleGroups.length - 1] = particleSampleBean
-				.getDomainParticleSample().getSource().getOrganizationName();
+				.getDomainParticleSample().getPrimaryOrganization().getName();
 		
 		particleSampleBean = service
 			.findFullNanoparticleSampleById(particleSampleBean.getDomainParticleSample().getId().toString());
@@ -69,17 +69,17 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		forward = mapping.findForward("update");
 		request.setAttribute("theParticle", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getSource().getOrganizationName());
+				.getPrimaryOrganization().getName());
 		setupDataTree(particleSampleBean, request);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getSource().getOrganizationName());
+				.getPrimaryOrganization().getName());
 		return forward;
 	}
 
 	private void setupLookups(HttpServletRequest request, String sampleSource)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getNanoparticleSampleSources(
+		InitNanoparticleSetup.getInstance().getNanoparticleSampleOrganizations(
 				request, user);
 		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutSource(
 				request, sampleSource);
@@ -97,7 +97,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		service.retrieveVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getSource().getOrganizationName());
+				.getPrimaryOrganization().getName());
 		setupDataTree(particleSampleBean, request);
 		
 		//for display "back" button on the publication detail view
@@ -140,8 +140,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		setupLookups(request, null);
-		
+		setupLookups(request, null);	
 		
 		return mapping.getInputForward();
 	}

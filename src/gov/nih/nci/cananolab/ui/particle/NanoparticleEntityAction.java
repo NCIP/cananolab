@@ -8,10 +8,10 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: NanoparticleEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -110,8 +110,8 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			for (NanoparticleSample sample : otherSamples) {
 				compositionService.saveNanoparticleEntity(sample, copy);
 				// update copied filename and save content and set visibility
-				if (copy.getLabFileCollection() != null) {
-					for (LabFile file : copy.getLabFileCollection()) {
+				if (copy.getFileCollection() != null) {
+					for (File file : copy.getFileCollection()) {
 						service.saveCopiedFileAndSetVisibility(file, user,
 								particleBean.getDomainParticleSample()
 										.getName(), sample.getName());
@@ -157,7 +157,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 	private boolean validateEntityFile(HttpServletRequest request,
 			NanoparticleEntityBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
-		for (LabFileBean filebean : entityBean.getFiles()) {
+		for (FileBean filebean : entityBean.getFiles()) {
 			if (!validateFileBean(request, msgs, filebean)) {
 				return false;
 			}

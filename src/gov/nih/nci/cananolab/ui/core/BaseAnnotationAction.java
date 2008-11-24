@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -23,7 +23,6 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.PropertyReader;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.List;
@@ -93,19 +92,19 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
 					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample().getSource()
-							.getOrganizationName(), user);
+					particleBean.getDomainParticleSample().getPrimaryOrganization()
+							.getName(), user);
 		}
 	}
 
-	protected void saveFilesToFileSystem(List<LabFileBean> files)
+	protected void saveFilesToFileSystem(List<FileBean> files)
 			throws Exception {
 		// save file data to file system and set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 
 		FileService fileService = new FileServiceLocalImpl();
-		for (LabFileBean fileBean : files) {
+		for (FileBean fileBean : files) {
 			fileService.writeFile(fileBean.getDomainFile(), fileBean
 					.getNewFileData());
 			authService.assignVisibility(fileBean.getDomainFile().getId()
@@ -195,7 +194,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String location = request.getParameter("location");
 		FileService fileService = null;
 		String remoteServerHostUrl = "";
-		LabFileBean fileBean = null;
+		FileBean fileBean = null;
 		String serviceUrl = null;
 		if (location.equals("local")) {
 			fileService = new FileServiceLocalImpl();
@@ -232,7 +231,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 		String fileRoot = PropertyReader.getProperty(
 				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-		File dFile = new File(fileRoot + File.separator
+		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {
 			response.setContentType("application/octet-stream");
@@ -280,14 +279,14 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	protected boolean validateFileBean(HttpServletRequest request,
-			ActionMessages msgs, LabFileBean fileBean) {
+			ActionMessages msgs, FileBean fileBean) {
 
 		boolean noErrors = true;
 		if (fileBean == null) {
 			return noErrors;
 		}
-		LabFile labfile = fileBean.getDomainFile();
-		if (labfile.getTitle().length() == 0) {
+		File File = fileBean.getDomainFile();
+		if (File.getTitle().length() == 0) {
 			ActionMessage msg = new ActionMessage("errors.required",
 					"file title");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -295,7 +294,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			noErrors = false;
 		}
 
-		if (labfile.getType().length() == 0) {
+		if (File.getType().length() == 0) {
 			ActionMessage msg = new ActionMessage("errors.required",
 					"file type");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -303,7 +302,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			noErrors = false;
 		}
 
-		if (labfile.getUriExternal()) {
+		if (File.getUriExternal()) {
 			if (fileBean.getExternalUrl() == null
 					|| fileBean.getExternalUrl().trim().length() == 0) {
 				ActionMessage msg = new ActionMessage("errors.required",
@@ -342,7 +341,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	public void checkVisibility(HttpServletRequest request, String location,
-			UserBean user, LabFileBean fileBean) throws Exception {
+			UserBean user, FileBean fileBean) throws Exception {
 		if (location.equals("local")) {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.retrieveVisibility(fileBean, user);

@@ -141,10 +141,10 @@ public class InitCharacterizationSetup {
 			CharacterizationBean charBean) throws Exception {
 		for (DerivedBioAssayDataBean bioassay : charBean
 				.getDerivedBioAssayDataList()) {
-			if (bioassay.getLabFileBean() != null) {
-				InitSetup.getInstance().persistLookup(request, "LabFile",
+			if (bioassay.getFileBean() != null) {
+				InitSetup.getInstance().persistLookup(request, "File",
 						"type", "otherType",
-						bioassay.getLabFileBean().getDomainFile().getType());
+						bioassay.getFileBean().getDomainFile().getType());
 			}
 			for (DerivedDatumBean datum : bioassay.getDatumList()) {
 				InitSetup.getInstance().persistLookup(request,

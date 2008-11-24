@@ -1,17 +1,17 @@
 package gov.nih.nci.cananolab.util;
 
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.common.Source;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -34,10 +34,10 @@ import java.util.Comparator;
 
 public class CaNanoLabComparators {
 
-	public static class ParticleSourceComparator implements Comparator<Source> {
-		public int compare(Source source1, Source source2) {
-			int diff = new SortableNameComparator().compare(source1
-					.getOrganizationName(), source2.getOrganizationName());
+	public static class ParticleOrganizationComparator implements Comparator<Organization> {
+		public int compare(Organization org1, Organization org2) {
+			int diff = new SortableNameComparator().compare(org1
+					.getName(), org2.getName());
 			return diff;
 		}
 	}
@@ -188,9 +188,9 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class LabFileTypeDateComparator implements
-			Comparator<LabFile> {
-		public int compare(LabFile file1, LabFile file2) {
+	public static class FileTypeDateComparator implements
+			Comparator<File> {
+		public int compare(File file1, File file2) {
 			if (file1.getType().equals(file2.getType())) {
 				return file1.getCreatedDate().compareTo(file2.getCreatedDate());
 			} else {
@@ -200,8 +200,8 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class LabFileDateComparator implements Comparator<LabFile> {
-		public int compare(LabFile file1, LabFile file2) {
+	public static class FileDateComparator implements Comparator<File> {
+		public int compare(File file1, File file2) {
 			return file1.getCreatedDate().compareTo(file2.getCreatedDate());
 		}
 	}
@@ -216,9 +216,9 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class LabFileBeanDateComparator implements
-			Comparator<LabFileBean> {
-		public int compare(LabFileBean file1, LabFileBean file2) {
+	public static class FileBeanDateComparator implements
+			Comparator<FileBean> {
+		public int compare(FileBean file1, FileBean file2) {
 			return file1.getDomainFile().getCreatedDate().compareTo(
 					file2.getDomainFile().getCreatedDate());
 		}

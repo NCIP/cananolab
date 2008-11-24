@@ -8,10 +8,10 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.LabFile;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
@@ -100,8 +100,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			FunctionalizingEntity copy = entityBean.getDomainCopy();
 			for (NanoparticleSample sample : otherSamples) {
 				compositionService.saveFunctionalizingEntity(sample, copy);
-				if (copy.getLabFileCollection() != null) {
-					for (LabFile file : copy.getLabFileCollection()) {
+				if (copy.getFileCollection() != null) {
+					for (File file : copy.getFileCollection()) {
 						service.saveCopiedFileAndSetVisibility(file, user,
 								particleBean.getDomainParticleSample()
 										.getName(), sample.getName());
@@ -156,7 +156,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	private boolean validateEntityFile(HttpServletRequest request,
 			FunctionalizingEntityBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
-		for (LabFileBean filebean : entityBean.getFiles()) {
+		for (FileBean filebean : entityBean.getFiles()) {
 			if (!validateFileBean(request, msgs, filebean)) {
 				return false;
 			}

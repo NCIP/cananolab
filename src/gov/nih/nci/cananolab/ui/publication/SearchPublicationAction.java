@@ -1,15 +1,12 @@
 package gov.nih.nci.cananolab.ui.publication;
 
-import gov.nih.nci.cananolab.dto.common.LabFileBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
@@ -181,7 +178,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 		}
 
-		List<LabFileBean> foundPublications = new ArrayList<LabFileBean>();
+		List<FileBean> foundPublications = new ArrayList<FileBean>();
 
 		// Publication
 		PublicationService publicationService = null;
@@ -216,13 +213,13 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 
 			if (location.equals("local")) {
-				List<LabFileBean> filteredPublications = new ArrayList<LabFileBean>();
+				List<FileBean> filteredPublications = new ArrayList<FileBean>();
 				// retrieve visibility
 				FileService fileService = new FileServiceLocalImpl();
 				for (PublicationBean publication : publications) {
 					fileService.retrieveAccessibility(publication, user);
 					if (!publication.isHidden()) {
-						filteredPublications.add((LabFileBean) publication);
+						filteredPublications.add((FileBean) publication);
 					}
 				}
 				foundPublications.addAll(filteredPublications);

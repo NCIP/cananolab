@@ -2,8 +2,6 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Arrays;
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;

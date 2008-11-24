@@ -163,8 +163,8 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
 					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample().getSource()
-							.getOrganizationName(), user);
+					particleBean.getDomainParticleSample()
+							.getPrimaryOrganization().getName(), user);
 		}		
 		ActionForward forward = mapping.getInputForward();
 		
