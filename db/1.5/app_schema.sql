@@ -1,3 +1,8 @@
+USE canano
+;
+
+
+
 CREATE TABLE target
 (
 	target_pk_id BIGINT NOT NULL,
@@ -270,8 +275,8 @@ CREATE TABLE composition_file
 	composition_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (composition_pk_id, file_pk_id),
-	KEY (composition_pk_id),
-	KEY (file_pk_id)
+	KEY (file_pk_id),
+	KEY (composition_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -331,8 +336,8 @@ CREATE TABLE chemical_association_file
 	chemical_association_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (chemical_association_pk_id, file_pk_id),
-	KEY (chemical_association_pk_id),
-	KEY (file_pk_id)
+	KEY (file_pk_id),
+	KEY (chemical_association_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -465,8 +470,8 @@ CREATE TABLE keyword_file
 	keyword_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (keyword_pk_id, file_pk_id),
-	KEY (keyword_pk_id),
-	KEY (file_pk_id)
+	KEY (file_pk_id),
+	KEY (keyword_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -489,8 +494,8 @@ CREATE TABLE functionalizing_entity_file
 	functionalizing_entity_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (functionalizing_entity_pk_id, file_pk_id),
-	KEY (functionalizing_entity_pk_id),
-	KEY (file_pk_id)
+	KEY (file_pk_id),
+	KEY (functionalizing_entity_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -754,6 +759,10 @@ ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_asso
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file 
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
 ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication 
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
@@ -772,6 +781,10 @@ ALTER TABLE derived_datum ADD CONSTRAINT FK_derived_datum_derived_bioassay_data
 
 ALTER TABLE composition ADD CONSTRAINT FK_Composition_nanoparticle_sample 
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+;
+
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file 
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
 ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association 
@@ -802,6 +815,10 @@ ALTER TABLE publication ADD CONSTRAINT FK_publication_file
 	FOREIGN KEY (publication_pk_id) REFERENCES file (file_pk_id)
 ;
 
+ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_file 
+	FOREIGN KEY (protocol_file_pk_id) REFERENCES file (file_pk_id)
+;
+
 ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_protocol 
 	FOREIGN KEY (protocol_pk_id) REFERENCES protocol (protocol_pk_id)
 ;
@@ -810,7 +827,7 @@ ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_source 
+ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_organization 
 	FOREIGN KEY (primary_organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
@@ -830,12 +847,20 @@ ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_s
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file 
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
 ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword 
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
 ALTER TABLE instrument_config ADD CONSTRAINT FK_instrument_config_instrument 
 	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
+;
+
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file 
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
 ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity 
