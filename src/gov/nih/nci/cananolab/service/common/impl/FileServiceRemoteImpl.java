@@ -97,6 +97,7 @@ public class FileServiceRemoteImpl implements FileService {
 			String className) throws FileException {
 		try {
 			List<File> fileSet = new ArrayList<File>();
+			/**TODO temporarily commented 
 			File files = gridClient.getFilesByCompositionInfoId(id,
 					className);
 			if (files != null) {
@@ -105,6 +106,7 @@ public class FileServiceRemoteImpl implements FileService {
 					fileSet.add(file);
 				}
 			}
+			*/			
 			return fileSet;
 		} catch (Exception e) {
 			String err = "Error finding files by " + className + "and id " + id;

@@ -275,12 +275,14 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			achar
 					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 			for (DerivedBioAssayData bioassay : bioassayArray) {
+				/**TODO temporarily commented 
 				File file = gridClient
 						.getFileByDerivedBioAssayDataId(bioassay.getId()
 								.toString());
 				if (file != null) {
 					bioassay.setFile(file);
 				}
+				*/
 				DerivedDatum[] datums = gridClient
 						.getDerivedDatumsByDerivedBioAssayDataId(bioassay
 								.getId().toString());

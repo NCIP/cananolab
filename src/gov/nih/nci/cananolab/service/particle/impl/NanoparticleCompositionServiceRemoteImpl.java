@@ -844,6 +844,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
 									Arrays.asList(assocs)));
 				}
+				
+				/**TODO temporarily commented 
 				File[] files = gridClient
 						.getFilesByCompositionInfoId(sampleComposition
 								.getId().toString(),
@@ -853,6 +855,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 							.setFileCollection(new HashSet<File>(Arrays
 									.asList(files)));
 				}
+				*/
 			}
 			return sampleComposition;
 		} catch (Exception e) {
