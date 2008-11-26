@@ -101,7 +101,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 //						.getSampleComposition().getId().toString());
 //			}
 			List<String> accessibleGroups = authService.getAccessibleGroups(
-					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
+					particleSample.getName(), CaNanoLabConstants.CSM_READ_PRIVILEGE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
@@ -186,7 +186,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 //						.getSampleComposition().getId().toString());
 //			}
 			List<String> accessibleGroups = authService.getAccessibleGroups(
-					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
+					particleSample.getName(), CaNanoLabConstants.CSM_READ_PRIVILEGE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
@@ -245,7 +245,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 				removeChemicalAssociationPublicVisibility(authService, assoc);
 			}
 			List<String> accessibleGroups = authService.getAccessibleGroups(
-					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
+					particleSample.getName(), CaNanoLabConstants.CSM_READ_PRIVILEGE);
 			if (assoc.getId() != null && accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {

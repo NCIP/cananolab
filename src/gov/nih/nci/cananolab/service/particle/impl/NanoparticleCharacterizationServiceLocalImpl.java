@@ -110,7 +110,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					CaNanoLabConstants.CSM_APP_NAME);
 			removeCharacterizationPublicVisibility(authService, achar);
 			List<String> accessibleGroups = authService.getAccessibleGroups(
-					particleSample.getName(), CaNanoLabConstants.CSM_READ_ROLE);
+					particleSample.getName(), CaNanoLabConstants.CSM_READ_PRIVILEGE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {

@@ -299,7 +299,7 @@ public class FileServiceLocalImpl implements FileService {
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(
 							fileBean.getDomainFile().getId().toString(),
-							CaNanoLabConstants.CSM_READ_ROLE);
+							CaNanoLabConstants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
 					fileBean.setVisibilityGroups(visibilityGroups);

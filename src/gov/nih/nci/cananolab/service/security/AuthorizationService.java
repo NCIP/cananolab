@@ -9,7 +9,6 @@ import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
-import gov.nih.nci.security.authentication.helper.EncryptedRDBMSHelper;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
@@ -22,6 +21,7 @@ import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
+import gov.nih.nci.security.util.StringEncrypter;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -236,10 +236,8 @@ public class AuthorizationService {
 			throws CaNanoLabSecurityException {
 		try {
 			User user = this.authorizationManager.getUser(loginName);
-			java.util.Map options = SecurityServiceProvider
-					.getLoginModuleOptions(CaNanoLabConstants.CSM_APP_NAME);
-			String encryptedPassword = EncryptedRDBMSHelper.encrypt(
-					newPassword, (String) options.get("hashAlgorithm"));
+			StringEncrypter encrypter = new StringEncrypter();
+			String encryptedPassword = encrypter.encrypt(newPassword);
 			user.setPassword(encryptedPassword);
 			this.userManager.modifyUser(user);
 		} catch (Exception e) {
@@ -413,38 +411,6 @@ public class AuthorizationService {
 	}
 
 	/**
-	 * Get a ProtectionElement object for the given objectId.
-	 * 
-	 * @param objectId
-	 * @return
-	 * @throws CaNanoLabSecurityException
-	 */
-	public ProtectionElement getProtectionElement(String objectId)
-			throws CaNanoLabSecurityException {
-		try {
-			ProtectionElement pe = new ProtectionElement();
-			pe.setObjectId(objectId);
-			pe.setProtectionElementName(objectId);
-			SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
-			List results = this.userManager.getObjects(sc);
-			ProtectionElement doPE = null;
-			for (Object obj : results) {
-				doPE = (ProtectionElement) obj;
-				break;
-			}
-			if (doPE == null) {
-				this.authorizationManager.createProtectionElement(pe);
-				return pe;
-			}
-			return doPE;
-		} catch (Exception e) {
-			logger.error("Error in creating protection element", e);
-			throw new CaNanoLabSecurityException();
-		}
-
-	}
-
-	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
 	 * 
 	 * @param protectionGroupName
@@ -595,25 +561,27 @@ public class AuthorizationService {
 	 */
 	public void secureObject(String objectName, String groupName,
 			String roleName) throws CaNanoLabSecurityException {
-
-		// create protection element
-		ProtectionElement pe = getProtectionElement(objectName);
-
-		// create protection group
-		ProtectionGroup pg = getProtectionGroup(objectName);
-
-		// assign protection element to protection group if not already
-		// exists
-		assignProtectionElementToProtectionGroup(pe, pg);
-
-		// get group and role
-		Group group = getGroup(groupName);
-		Role role = getRole(roleName);
-
-		// this will remove exising roles assigned. In caNanoLab, this is not an
-		// issue since
-		// only the R role has been assigned from the application.
 		try {
+			// create protection element
+			ProtectionElement pe = authorizationManager
+					.getProtectionElement(objectName);
+
+			// create protection group
+			ProtectionGroup pg = getProtectionGroup(objectName);
+
+			// assign protection element to protection group if not already
+			// exists
+			assignProtectionElementToProtectionGroup(pe, pg);
+
+			// get group and role
+			Group group = getGroup(groupName);
+			Role role = getRole(roleName);
+
+			// this will remove exising roles assigned. In caNanoLab, this is
+			// not an
+			// issue since
+			// only the R role has been assigned from the application.
+
 			if (group == null) {
 				group = new Group();
 				group.setGroupName(groupName);
@@ -633,147 +601,20 @@ public class AuthorizationService {
 		}
 	}
 
-	/**
-	 * Get a list of groups the given object is assgined to with the given role
-	 * 
-	 * @param objectName
-	 * @param roleName
-	 * @return
-	 * @throws CaNanoLabSecurityException
-	 */
-	public List<String> getAccessibleGroupsSlow(String objectName,
-			String roleName) throws CaNanoLabSecurityException {
-		List<String> groups = new ArrayList<String>();
-
-		List<String> allGroups = getAllGroups();
-		Role role = getRole(roleName);
+	public List<String> getAccessibleGroups(String objectName,
+			String privilegeName) throws CaNanoLabSecurityException {
+		List<String> groupNames = new ArrayList<String>();
 		try {
-			for (String groupName : allGroups) {
-				Group group = getGroup(groupName);
-				Set contexts = this.userManager
-						.getProtectionGroupRoleContextForGroup(group
-								.getGroupId().toString());
-				for (Object obj : contexts) {
-					ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
-					ProtectionGroup pg = context.getProtectionGroup();
-					Set<Role> roles = new HashSet<Role>(context.getRoles());
-					// contains doesn't work because CSM didn't implement
-					// hashCode
-					// in Role.
-					// if (pg.getProtectionGroupName().equals(objectName)
-					// && roles.contains(role)) {
-					// groups.add(groupName);
-					// }
-					if (pg.getProtectionGroupName().equals(objectName)) {
-						for (Role aRole : roles) {
-							if (aRole.equals(role)) {
-								groups.add(groupName);
-							}
-						}
-					}
-				}
-			}
-			return groups;
-		} catch (Exception e) {
-			logger.error("Error in getting accessible groups", e);
-			throw new CaNanoLabSecurityException();
-		}
-
-	}
-
-	/**
-	 * Directly query CSM schema to improve performance
-	 * 
-	 * @param objectName
-	 * @param roleName
-	 * @return
-	 */
-	public List<String> getAccessibleGroups(String objectName, String roleName)
-			throws CaNanoLabSecurityException {
-		List<String> groups = new ArrayList<String>();
-
-		String query = "select d.group_name group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
-				+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
-				+ "a.protection_group_name='"
-				+ objectName
-				+ "' and b.role_name='" + roleName + "'";
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			String[] columns = new String[] { "group_name" };
-			Object[] columnTypes = new Object[] { Hibernate.STRING };
-			List results = appService.directSQL(query, columns, columnTypes);
-			for (Object obj : results) {
-				String group = (String) obj;
-				groups.add(group);
+			List groups = authorizationManager.getAccessibleGroups(objectName,
+					CaNanoLabConstants.CSM_READ_PRIVILEGE);
+			for (Object group : groups) {
+				groupNames.add(((Group)group).getGroupName());
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
 			throw new CaNanoLabSecurityException();
 		}
-		return groups;
-	}
-
-	/**
-	 * Remove the group the object is assigned to with the given role.
-	 * 
-	 * @param objectName
-	 * @param groupName
-	 * @param roleName
-	 * @throws CaNanoLabSecurityException
-	 */
-	public void removeAccessibleGroupSlow(String objectName, String groupName,
-			String roleName) throws CaNanoLabSecurityException {
-
-		Group group = getGroup(groupName);
-		Role role = getRole(roleName);
-		ProtectionGroup pg = getProtectionGroup(objectName);
-
-		// this method is not implemented in CSM API, try an alternative
-		// userManager.removeGroupRoleFromProtectionGroup(pg
-		// .getProtectionGroupId().toString(), group.getGroupId()
-		// .toString(), new String[] { role.getId().toString() });
-
-		// get existing roles.
-		try {
-			Set contexts = this.userManager
-					.getProtectionGroupRoleContextForGroup(group.getGroupId()
-							.toString());
-			Set<Role> existingRoles = null;
-			for (Object obj : contexts) {
-				ProtectionGroupRoleContext context = (ProtectionGroupRoleContext) obj;
-				if (context.getProtectionGroup().equals(pg)) {
-					existingRoles = new HashSet<Role>(context.getRoles());
-					break;
-				}
-			}
-			// remove role from existing roles
-			// remove doesn't work because CSM didn't implement hashCode for
-			// Role
-			// existingRoles.remove(role);
-
-			Set<Role> updatedRoles = new HashSet<Role>();
-			for (Role aRole : existingRoles) {
-				if (!aRole.equals(role)) {
-					updatedRoles.add(aRole);
-				}
-			}
-			// reassign the roles.
-			String[] roleIds = new String[updatedRoles.size()];
-			int i = 0;
-			for (Object obj : updatedRoles) {
-				Role aRole = (Role) obj;
-				roleIds[i] = aRole.getId().toString();
-				i++;
-			}
-			this.userManager.assignGroupRoleToProtectionGroup(pg
-					.getProtectionGroupId().toString(), group.getGroupId()
-					.toString(), roleIds);
-		} catch (Exception e) {
-			logger.error("Error in remove accessible groups", e);
-			throw new CaNanoLabSecurityException();
-		}
-
+		return groupNames;
 	}
 
 	public void removeExistingVisibleGroups(String objectName, String roleName)

@@ -365,7 +365,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 				// get assigned visible groups
 				List<String> accessibleGroups = auth.getAccessibleGroups(
 						particleBean.getDomainParticleSample().getName(),
-						CaNanoLabConstants.CSM_READ_ROLE);
+						CaNanoLabConstants.CSM_READ_PRIVILEGE);
 				String[] visibilityGroups = accessibleGroups
 						.toArray(new String[0]);
 				particleBean.setVisibilityGroups(visibilityGroups);
