@@ -59,7 +59,7 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.common.Source"
+	<cache name="gov.nih.nci.cananolab.domain.common.Organization"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -166,7 +166,7 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.common.LabFile"
+	<cache name="gov.nih.nci.cananolab.domain.common.File"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -174,20 +174,6 @@
 		overflowToDisk="true"/>
 	
 	<cache name="gov.nih.nci.cananolab.domain.common.LabFile.keywordCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.common.SampleManagement"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.SampleManagement.sampleContainerCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -207,28 +193,7 @@
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.common.SampleContainer"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
 	
-	<cache name="gov.nih.nci.cananolab.domain.common.SampleContainer.aliquotCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.common.SampleContainer.storageElementCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
 	<cache name="gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity"
 		maxElementsInMemory="500"
 		eternal="false"
@@ -766,13 +731,6 @@
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.StorageElement"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
+		overflowToDisk="true"/>		
 	
 </ehcache>
