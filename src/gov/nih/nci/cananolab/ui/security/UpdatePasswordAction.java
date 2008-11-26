@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.security;
 
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -36,9 +35,9 @@ public class UpdatePasswordAction extends Action {
 		Boolean isAuthenticated = loginservice.login(loginId, password);
 
 		if (isAuthenticated) {
-			AuthorizationService authorizationService = new AuthorizationService(
+			LoginService loginService = new LoginService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			authorizationService.updatePassword(loginId, newPassword);
+			loginService.updatePassword(loginId, newPassword);
 			ActionMessages messages = new ActionMessages();
 			ActionMessage message = new ActionMessage("message.password");
 			messages.add("message", message);

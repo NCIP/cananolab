@@ -226,51 +226,6 @@ public class AuthorizationService {
 	}
 
 	/**
-	 * Set a new password for the given user login name
-	 * 
-	 * @param loginName
-	 * @param newPassword
-	 * @throws CaNanoLabSecurityException
-	 */
-	public void updatePassword(String loginName, String newPassword)
-			throws CaNanoLabSecurityException {
-		try {
-			User user = this.authorizationManager.getUser(loginName);
-			StringEncrypter encrypter = new StringEncrypter();
-			String encryptedPassword = encrypter.encrypt(newPassword);
-			user.setPassword(encryptedPassword);
-			this.userManager.modifyUser(user);
-		} catch (Exception e) {
-			logger.error("Error in updating password.", e);
-			throw new CaNanoLabSecurityException();
-		}
-	}
-
-	/**
-	 * Get all users in the application
-	 * 
-	 * @return
-	 * @throws CaNanoLabSecurityException
-	 */
-	public List<UserBean> getAllUsers() throws CaNanoLabSecurityException {
-		try {
-			List<UserBean> users = new ArrayList<UserBean>();
-			User dummy = new User();
-			dummy.setLoginName("*");
-			SearchCriteria sc = new UserSearchCriteria(dummy);
-			List results = this.userManager.getObjects(sc);
-			for (Object obj : results) {
-				User doUser = (User) obj;
-				users.add(new UserBean(doUser));
-			}
-			return users;
-		} catch (Exception e) {
-			logger.error("Error in getting all users.", e);
-			throw new CaNanoLabSecurityException();
-		}
-	}
-
-	/**
 	 * Get all user groups in the application
 	 * 
 	 * @return

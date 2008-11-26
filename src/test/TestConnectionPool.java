@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class TestConnectionPool {
 
 	public void testCSM() {
 		try {
-			AuthorizationService service = new AuthorizationService(
+			LoginService service = new LoginService(
 					CaNanoLabConstants.CSM_APP_NAME);			
 			List<UserBean> users = service.getAllUsers();
 			for (UserBean user:users) {

@@ -39,15 +39,10 @@ public class LoginAction extends Action {
 		String strLoginId = (String) theForm.get("loginId");
 		String strPassword = (String) theForm.get("password");
 
-		// Encrypt the password.
-		// String strEncryptedPass = PasswordService.getInstance().encrypt(
-		// strPassword);
-
 		// Call CSM to authenticate the user.
 		LoginService loginservice = new LoginService(
 				CaNanoLabConstants.CSM_APP_NAME);
-		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);
-		// strEncryptedPass);
+		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);		
 		if (blnAuthenticated == true) {
 			// check if the password is the initial password
 			// redirect to change password page
