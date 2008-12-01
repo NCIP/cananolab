@@ -66,6 +66,8 @@ public class LoginService {
 	public boolean login(String strUsername, String strPassword)
 			throws CaNanoLabSecurityException {
 		try {
+			StringEncrypter encrypter = new StringEncrypter();
+			String str=encrypter.encrypt(strPassword);
 			return authenticationManager.login(strUsername, strPassword);
 		} catch (Exception e) {
 			logger.error(e);
@@ -107,10 +109,8 @@ public class LoginService {
 	public void updatePassword(String loginName, String newPassword)
 			throws CaNanoLabSecurityException {
 		try {
-			User user = this.authorizationManager.getUser(loginName);
-			StringEncrypter encrypter = new StringEncrypter();
-			String encryptedPassword = encrypter.encrypt(newPassword);
-			user.setPassword(encryptedPassword);
+			User user = this.authorizationManager.getUser(loginName);			
+			user.setPassword(newPassword);
 			authorizationManager.modifyUser(user);
 		} catch (Exception e) {
 			logger.error("Error in updating password.", e);
@@ -128,10 +128,9 @@ public class LoginService {
 			throws CaNanoLabSecurityException {
 		try {
 			User user = authorizationManager.getUser(userName);
-			StringEncrypter encrypter = new StringEncrypter();
-			String initialEncryptedPassword = encrypter.encrypt(userName);
-			user.setPassword(initialEncryptedPassword);
-			authorizationManager.modifyUser(user);
+			//encryption is included in setPassword already
+			user.setPassword(userName);
+			authorizationManager.modifyUser(user);			
 		} catch (Exception e) {
 			logger.error(e);
 			throw new CaNanoLabSecurityException("Can't initialize password");
@@ -141,7 +140,7 @@ public class LoginService {
 	public void initializeAllUserPasswords() {
 		try {
 			List<UserBean> users = getAllUsers();
-			for (UserBean user : users) {
+			for (UserBean user : users) {				
 				initializePassword(user.getLoginName());
 			}
 		} catch (Exception e) {
