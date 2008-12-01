@@ -63,14 +63,14 @@ public class NanoparticleSampleServiceHelper {
 				NanoparticleSample.class).setProjection(
 				Projections.distinct(Property.forName("id")));
 
-		// source
-		if (particleSource != null && particleSource.length() > 0) {
-			TextMatchMode sourceMatchMode = new TextMatchMode(particleSource);
-			crit.createAlias("source", "source").add(
-					Restrictions.ilike("source.organizationName",
-							sourceMatchMode.getUpdatedText(), sourceMatchMode
-									.getMatchMode()));
-		}
+		// TODO: update SQL FOR source
+//		if (particleSource != null && particleSource.length() > 0) {
+//			TextMatchMode sourceMatchMode = new TextMatchMode(particleSource);
+//			crit.createAlias("source", "source").add(
+//					Restrictions.ilike("source.organizationName",
+//							sourceMatchMode.getUpdatedText(), sourceMatchMode
+//									.getMatchMode()));
+//		}
 
 		// join composition and nanoparticle entity
 		if (nanoparticleEntityClassNames != null
@@ -409,7 +409,8 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in
+		
+		crit.setFetchMode("primaryOrganization", FetchMode.JOIN); // eager load not set in
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -446,11 +447,11 @@ public class NanoparticleSampleServiceHelper {
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in
+		
+		crit.setFetchMode("primaryOrganization", FetchMode.JOIN); // eager load not set in
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -489,7 +490,8 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("name").eq(particleName));
-		crit.setFetchMode("source", FetchMode.JOIN); // eager load not set in
+		
+		crit.setFetchMode("primaryOrganization", FetchMode.JOIN); // eager load not set in
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",

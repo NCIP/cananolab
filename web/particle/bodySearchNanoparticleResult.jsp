@@ -38,7 +38,7 @@
 				<display:column title="Particle<br> Sample Name"
 					property="${particleURL}" sortable="true" />
 				<display:column title="Particle<br> Source"
-					property="domainParticleSample.source.organizationName"
+					property="domainParticleSample.primaryOrganization.name"
 					sortable="true" />
 				<display:column title="Particle<br> Composition"
 					property="compositionStr" sortable="true" />
