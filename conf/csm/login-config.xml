@@ -192,7 +192,7 @@
 	<application-policy name="caNanoLab">
 		<authentication>
 			<login-module
-				code="gov.nih.nci.security.authentication.loginmodules.EncryptedRDBMSLoginModule"
+				code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule"
 				flag="required">
 				<module-option name="driver">
 					com.mysql.jdbc.Driver
@@ -208,14 +208,14 @@
 					SELECT * FROM csm_user WHERE LOGIN_NAME=? and
 					PASSWORD=?
 				</module-option>
-				<module-option name="hashAlgorithm">SHA</module-option>
+				<module-option name="encyrption-enabled">YES</module-option>
 			</login-module>
 		</authentication>
 	</application-policy>
 	<application-policy name="caNanoLab-upt">
 		<authentication>
 			<login-module
-				code="gov.nih.nci.security.authentication.loginmodules.EncryptedRDBMSLoginModule"
+				code="gov.nih.nci.security.authentication.loginmodules.RDBMSLoginModule"
 				flag="required">
 				<module-option name="driver">
 					com.mysql.jdbc.Driver
@@ -231,7 +231,7 @@
 					SELECT * FROM csm_user WHERE LOGIN_NAME=? and
 					PASSWORD=?
 				</module-option>
-				<module-option name="hashAlgorithm">SHA</module-option>
+				<module-option name="encyrption-enabled">YES</module-option>
 			</login-module>
 		</authentication>
 	</application-policy>
