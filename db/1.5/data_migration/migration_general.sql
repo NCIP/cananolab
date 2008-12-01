@@ -75,7 +75,7 @@ ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-
+ALTER TABLE publication ADD COLUMN abstract TEXT;
 
 ALTER TABLE nanoparticle_sample
 	DROP FOREIGN KEY FK_nanoparticle_sample_source; 
@@ -86,10 +86,6 @@ ALTER TABLE nanoparticle_sample
 ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_organization 
 	FOREIGN KEY (primary_organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
--------------- ?? --------
---ALTER TABLE nanoparticle_sample
---ADD KEY primary_organization_pk_id; 
-
 
 ALTER TABLE composition_lab_file RENAME composition_file;
 ALTER TABLE composition_file
