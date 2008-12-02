@@ -147,6 +147,9 @@ DROP TABLE IF EXISTS storage;
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Manufacturer');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Investigator');
+
  
 -- End of script
 
