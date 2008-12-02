@@ -20,4 +20,11 @@
     <password>DATABASE_PASSWORD</password>
     <driver-class>com.mysql.jdbc.Driver</driver-class>
   </local-tx-datasource>
+  <local-tx-datasource>
+    <jndi-name>csmupt</jndi-name>
+    <connection-url>jdbc:mysql://DATABASE_HOST:DATABASE_PORT/canano</connection-url>
+    <user-name>DATABASE_USER</user-name>
+    <password>DATABASE_PASSWORD</password>
+    <driver-class>com.mysql.jdbc.Driver</driver-class>
+  </local-tx-datasource>
 </datasources>
