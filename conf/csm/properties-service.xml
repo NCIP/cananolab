@@ -61,8 +61,5 @@
 			</attribute>
 			
 		-->
-		<attribute name="Properties">
-			gov.nih.nci.security.configFile=JBOSS_CONF_DIR/ApplicationSecurityConfig.xml
-		</attribute>
 	</mbean>
 </server>
