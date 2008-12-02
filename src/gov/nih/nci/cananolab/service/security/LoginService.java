@@ -9,7 +9,6 @@ import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.dao.UserSearchCriteria;
-import gov.nih.nci.security.util.StringEncrypter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,8 +65,6 @@ public class LoginService {
 	public boolean login(String strUsername, String strPassword)
 			throws CaNanoLabSecurityException {
 		try {
-			StringEncrypter encrypter = new StringEncrypter();
-			String str=encrypter.encrypt(strPassword);
 			return authenticationManager.login(strUsername, strPassword);
 		} catch (Exception e) {
 			logger.error(e);
