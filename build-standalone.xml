@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="caNanoLab-standalone" default="test-connection-pool" basedir=".">
+	<property name="file.separator" value="/" />
+	<property file="deploy.properties" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="conf.dir" value="${basedir}/conf" />
+	<property name="webroot.dir" value="${basedir}/web" />
+	<property name="webapp.lib.dir" value="${webroot.dir}/WEB-INF/lib" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="tmp.dir" value="${build.dir}/standalone_tmp" />
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement
+				location="${lib.dir}/cagrid/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="clean">
+		<delete dir="${build.dir}" quiet="true" />
+	</target>
+
+	<target name="init-application">
+		<!-- create the necessary folders -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${tmp.dir}/classes" />
+		<mkdir dir="${tmp.dir}/lib" />
+	</target>
+
+	<target name="compile" depends="clean, init-application">
+		<echo
+			message="*****************************************************" />
+		<echo message="**   Compiling Java Classes ...          		  **" />
+		<echo
+			message="*****************************************************" />
+		<path id="cp">
+			<fileset dir="${webapp.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<javac srcdir="${src.dir}" destdir="${tmp.dir}/classes"
+			debug="true">
+			<exclude
+				name="gov/nih/nci/cananolab/dto/particle/NanoparticleDecorator.java" />
+			<exclude name="test/TestGrid.java" />
+			<exclude name="gov/nih/nci/cananolab/ui/**" />
+			<exclude
+				name="gov/nih/nci/cananolab/service/common/GridService.java" />
+			<exclude
+				name="gov/nih/nci/cananolab/service/**/impl/*RemoteImpl.java" />
+			<classpath refid="cp" />
+		</javac>
+
+		<!--copy xml and properties files -->
+		<copy todir="${tmp.dir}/classes">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml" />
+				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml"/>
+			</fileset>
+			<fileset dir="${conf.dir}/standalone">
+				<include name="ApplicationSecurityConfig.xml" />
+				<include name="caNanoLab.csm.hibernate.cfg.xml" />
+				<include name="hibernate.cfg.xml" />
+				<include name="log4j.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- copy lib files -->
+		<copy todir="${tmp.dir}/lib">
+			<fileset dir="${webapp.lib.dir}">
+				<include name="*.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}">
+				<include name="log4j.jar" />
+			</fileset>
+			<fileset dir="${conf.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="prepare-database-connection" depends="compile">
+		<!-- replace database connection info -->
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_HOST" value="${database.host}" />
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_PORT" value="${database.port}" />
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_USER" value="${database.user}" />
+		<replace file="${tmp.dir}/classes/hibernate.cfg.xml"
+			token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<!-- use connection pool for CSM database connection-->
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_HOST" value="${database.host}" />
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_PORT" value="${database.port}" />
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_USER" value="${database.user}" />
+		<replace
+			file="${tmp.dir}/classes/caNanoLab.csm.hibernate.cfg.xml"
+			token="DATABASE_PASSWORD" value="${database.password}" />
+
+		<!-- specify directory for CSM hibernate config file location -->
+		<replace file="${tmp.dir}/classes/ApplicationSecurityConfig.xml"
+			token="CONF_PATH" value="${tmp.dir}/classes" />
+	</target>
+
+	<target name="test-connection-pool"
+		depends="prepare-database-connection">
+		<path id="class.path">
+			<fileset dir="${tmp.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${tmp.dir}/classes" />
+		</path>
+
+		<java classname="test.TestConnectionPool" fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />			
+		</java>	
+		
+		<antcall target="clean"/>
+	</target>
+	
+	<target name="run-endnote-loader"
+		depends="prepare-database-connection">
+		<property file="endnote.properties" />
+		<path id="class.path">
+			<fileset dir="${tmp.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${tmp.dir}/classes" />
+		</path>
+
+		<java
+			classname="gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<arg value="${endnote.xml.dir}" />
+		</java>
+	</target>
+
+	<target name="initialize-passwords" depends="prepare-database-connection">		
+		<path id="class.path">
+			<fileset dir="${tmp.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${tmp.dir}/classes" />
+		</path>
+
+		<java
+			classname="gov.nih.nci.cananolab.service.security.LoginService"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+		</java>
+		
+		<antcall target="clean"/>
+	</target>	
+</project>
