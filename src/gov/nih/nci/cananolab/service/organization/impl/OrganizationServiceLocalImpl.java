@@ -1,21 +1,25 @@
 package gov.nih.nci.cananolab.service.organization.impl;
 
-import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.exception.OrganizationException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 import gov.nih.nci.cananolab.service.organization.helper.OrganizationServiceHelper;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of SourceService
@@ -36,139 +40,84 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 	 * 
 	 * @throws OrganizationException
 	 */
-	public void saveOrganization(OrganizationBean primaryOrganization, 
+	public void saveOrganization(String particleId,
+			OrganizationBean primaryOrganization, 
 			List<OrganizationBean> otherOrganizationCollection)
 		throws OrganizationException{
-//		try {
-//			FileService fileService = new FileServiceLocalImpl();
-//			fileService.prepareSaveFile(publication);
-//			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-//			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
-//			if (particleNames != null && particleNames.length > 0) {
-//				for (String name : particleNames) {
-//					NanoparticleSample sample = sampleService
-//							.findNanoparticleSampleByName(name);
-//					particleSamples.add(sample);
-//				}
-//			}
-//
-//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//					.getApplicationService();
-//
-//			if (publication.getNanoparticleSampleCollection() == null) {
-//				publication
-//						.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-//			} else {
-//				publication.getNanoparticleSampleCollection().clear();
-//			}
-//			for (NanoparticleSample sample : particleSamples) {
-//				publication.getNanoparticleSampleCollection().add(sample);
-//				sample.getPublicationCollection().add(publication);
-//			}
-//
-//			AuthorizationService authService = new AuthorizationService(
-//					CaNanoLabConstants.CSM_APP_NAME);
-//
-//			if (publication.getAuthorCollection() == null) {
-//				publication.setAuthorCollection(new HashSet<Author>());
-//			} else {
-//				for (Author author : publication.getAuthorCollection()) {
-//					if (author.getId() != null)
-//						authService
-//								.removePublicGroup(author.getId().toString());
-//				}
-//				publication.getAuthorCollection().clear();
-//			}
-//			if (authors != null) {
-//				Calendar myCal = Calendar.getInstance();
-//				for (Author author : authors) {
-//					if (!StringUtils.isBlank(author.getFirstName())
-//							|| !StringUtils.isBlank(author.getLastName())
-//							|| !StringUtils.isBlank(author.getInitial())) {
-//						if (author.getCreatedDate() == null) {
-//							myCal.add(Calendar.SECOND, 1);
-//							author.setCreatedDate(myCal.getTime());
-//						}
-//						publication.getAuthorCollection().add(author);
-//					}
-//				}
-//			}
-//			appService.saveOrUpdate(publication);
-//			fileService.writeFile(publication, fileData);
-//
-//		} catch (Exception e) {
-//			String err = "Error in saving the publication.";
-//			logger.error(err, e);
-//			throw new PublicationException(err, e);
-//		}
-	}
-
-	public List<OrganizationBean> findOtherOrganizationCollection(String particleId)
-		throws OrganizationException{
+		
+		//TODO: to verify if organization.primaryNanoparticleSampleCollection is empty		
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Publication.class);
-			crit.createAlias("nanoparticleSampleCollection", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
-			
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
-			for (Object obj : results) {
-				Publication publication = (Publication) obj;
-//				if (loadAuthor) {
-//					publicationCollection.add(new PublicationBean(publication,
-//							false, true));
-//				} else {
-//					publicationCollection.add(new PublicationBean(publication));
-//				}
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			NanoparticleSampleService NanoparticleSampleService = new NanoparticleSampleServiceLocalImpl();
+			NanoparticleSample nanoparticleSample = NanoparticleSampleService.findNanoparticleSampleById(particleId).getDomainParticleSample();
+			Collection<NanoparticleSample> primaryNanoparticleSampleCollection = 
+				primaryOrganization.getDomain().getPrimaryNanoparticleSampleCollection();
+			if (primaryNanoparticleSampleCollection!=null &&
+					!primaryNanoparticleSampleCollection.contains(nanoparticleSample)){
+				primaryNanoparticleSampleCollection.add(nanoparticleSample);
 			}
-			//TODO, Qina
-			return null;
+			saveOrganization(primaryOrganization, authService, appService);
+			if (otherOrganizationCollection!=null) {
+				for (OrganizationBean organizationBean: otherOrganizationCollection) {
+					Collection<NanoparticleSample> otherNanoparticleSampleCollection = 
+						organizationBean.getDomain().getNanoparticleSampleCollection();
+					if (otherNanoparticleSampleCollection!=null &&
+							!otherNanoparticleSampleCollection.contains(nanoparticleSample)){
+						otherNanoparticleSampleCollection.add(nanoparticleSample);
+					}
+					saveOrganization(organizationBean, authService, appService);
+				}
+			}
 		} catch (Exception e) {
-			String err = "Problem finding publication collections with the given particle ID.";
+			String err = "Error in saving the organization.";
 			logger.error(err, e);
 			throw new OrganizationException(err, e);
 		}
 	}
 	
+
+	
+	public List<OrganizationBean> findOtherOrganizationCollection(String particleId)
+		throws OrganizationException{
+		return helper.findOtherOrganizationCollection(particleId);		
+	}
+	
 	public OrganizationBean findPrimaryOrganization(String particleId)
 		throws OrganizationException{
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Publication.class);
-			crit.createAlias("nanoparticleSampleCollection", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
-			
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
-			for (Object obj : results) {
-				Publication publication = (Publication) obj;
-//				if (loadAuthor) {
-//					publicationCollection.add(new PublicationBean(publication,
-//							false, true));
-//				} else {
-//					publicationCollection.add(new PublicationBean(publication));
-//				}
+		return helper.findPrimaryOrganization(particleId);	
+	}
+	
+	private void saveOrganization(OrganizationBean organizationBean,
+			AuthorizationService authService, CustomizedApplicationService appService)
+		throws Exception{
+		if (organizationBean.getDomain().getPointOfContactCollection() == null) {
+			organizationBean.getDomain().setPointOfContactCollection(new HashSet<PointOfContact>());
+		} else {
+			for (PointOfContact poc : organizationBean.getDomain().getPointOfContactCollection()) {
+				if (poc.getId() != null)
+					authService
+							.removePublicGroup(poc.getId().toString());
 			}
-			//TODO, Qina
-			return null;
-		} catch (Exception e) {
-			String err = "Problem finding publication collections with the given particle ID.";
-			logger.error(err, e);
-			throw new OrganizationException(err, e);
+			organizationBean.getDomain().getPointOfContactCollection().clear();
 		}
+		if (organizationBean.getPocs() != null) {
+			Calendar myCal = Calendar.getInstance();
+			for (PointOfContact poc : organizationBean.getPocs()) {
+				if (!StringUtils.isBlank(poc.getFirstName())
+						|| !StringUtils.isBlank(poc.getLastName())
+						|| !StringUtils.isBlank(poc.getMiddleInitial())) {
+					if (poc.getCreatedDate() == null) {
+						myCal.add(Calendar.SECOND, 1);
+						poc.setCreatedDate(myCal.getTime());
+					}
+					organizationBean.getDomain().getPointOfContactCollection().add(poc);
+				}
+			}
+		}
+		appService.saveOrUpdate(organizationBean);		
 	}
 
 }

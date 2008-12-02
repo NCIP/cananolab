@@ -35,7 +35,8 @@ public class OrganizationServiceRemoteImpl implements OrganizationService {
 	 * 
 	 * @throws OrganizationException
 	 */
-	public void saveOrganization(OrganizationBean primaryOrganization, 
+	public void saveOrganization(String particleId,
+			OrganizationBean primaryOrganization, 
 			List<OrganizationBean> otherOrganizationCollection)
 		throws OrganizationException{
 		throw new OrganizationException("not implemented for grid service.");

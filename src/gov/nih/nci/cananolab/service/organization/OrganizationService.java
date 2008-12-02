@@ -24,13 +24,13 @@ public interface OrganizationService {
 
 	/**
 	 * Persist a new organization or update an existing organizations
-	 * 
+	 * @param particleId
 	 * @param primaryOrganization
 	 * @param otherOrganizationCollection
 	 * 
 	 * @throws OrganizationException
 	 */	
-	public void saveOrganization(OrganizationBean primaryOrganization, 
+	public void saveOrganization(String particleId, OrganizationBean primaryOrganization, 
 			List<OrganizationBean> otherOrganizationCollection) 
 		throws OrganizationException;
 	
