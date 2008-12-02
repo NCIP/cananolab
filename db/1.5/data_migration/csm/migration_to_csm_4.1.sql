@@ -54,3 +54,6 @@ ALTER TABLE csm_user_pe DROP COLUMN update_date;
 ALTER TABLE csm_filter_clause CHANGE generated_sql generated_sql_user VARCHAR (4000) NOT NULL;
 ALTER TABLE csm_filter_clause ADD COLUMN generated_sql_group VARCHAR (4000) NOT NULL;
 
+# update upt context name to be default value
+update csm_application set application_name='csmupt' where application_name='caNanoLab-upt';
+update csm_protection_element set protection_element_name='csmupt', object_id='csmupt' where protection_element_name='caNanoLab-upt';
