@@ -6,7 +6,6 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.Publication;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +25,8 @@ public class OrganizationBean{
 	private List<PointOfContact> pocs = new ArrayList<PointOfContact>(20);
 	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
+	//TODO: need info for nanoparticleSample??
+	
 	public OrganizationBean() {
 		super();
 		domain = new Organization();
@@ -34,19 +35,18 @@ public class OrganizationBean{
 
 	public OrganizationBean(Organization organization) {
 		domain = organization;
-		//TODO: POCs
-//		Collection<Author> authorCollection =
-//			publication.getAuthorCollection();
-//		if (authorCollection!=null &&
-//				authorCollection.size()>0) {
-//			List<Author> authorslist = new ArrayList<Author>(authorCollection);
-//			Collections.sort(authorslist, 
-//					new Comparator<Author>() {
-//			    public int compare(Author o1, Author o2) {
-//			        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
-//			    }});
-//			authors = authorslist;
-//		}
+		Collection<PointOfContact> pointOfContactCollection =
+			organization.getPointOfContactCollection();
+		if (pointOfContactCollection!=null &&
+				pointOfContactCollection.size()>0) {
+			List<PointOfContact> pointOfContactList = new ArrayList<PointOfContact>(pointOfContactCollection);
+			Collections.sort(pointOfContactList, 
+					new Comparator<PointOfContact>() {
+			    public int compare(PointOfContact o1, PointOfContact o2) {
+			        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
+			    }});
+			pocs = pointOfContactList;
+		}
 	}
 	
 	/**
