@@ -9,6 +9,7 @@ import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
 import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
@@ -237,7 +238,6 @@ public class AuthorizationService {
 			List results = this.userManager.getObjects(sc);
 			for (Object obj : results) {
 				Group doGroup = (Group) obj;
-				groups.add(doGroup.getGroupName());
 			}
 			return groups;
 		} catch (Exception e) {
@@ -560,7 +560,7 @@ public class AuthorizationService {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
 					CaNanoLabConstants.CSM_READ_PRIVILEGE);
 			for (Object group : groups) {
-				groupNames.add(((Group)group).getGroupName());
+				groupNames.add(((Group) group).getGroupName());
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
@@ -711,5 +711,43 @@ public class AuthorizationService {
 			}
 		}
 		return false;
+	}
+
+	public void updateDatabaseConnectionForCSMApplications(String dbDialect,
+			String dbDriver, String dbURL, String dbUserName, String dbPassword) {
+		try {
+			Application caNanoLabApp = authorizationManager
+					.getApplication(CaNanoLabConstants.CSM_APP_NAME);
+			caNanoLabApp.setDatabaseURL(dbURL);
+			caNanoLabApp.setDatabaseDialect(dbDialect);
+			caNanoLabApp.setDatabaseDriver(dbDriver);
+			caNanoLabApp.setDatabaseUserName(dbUserName);
+			caNanoLabApp.setDatabasePassword(dbPassword);
+			authorizationManager.modifyApplication(caNanoLabApp);
+
+			Application csmupt = authorizationManager.getApplication("csmupt");
+			csmupt.setDatabaseURL(dbURL);
+			csmupt.setDatabaseDialect(dbDialect);
+			csmupt.setDatabaseDriver(dbDriver);
+			csmupt.setDatabaseUserName(dbUserName);
+			csmupt.setDatabasePassword(dbPassword);
+			authorizationManager.modifyApplication(csmupt);
+		} catch (Exception e) {
+			logger
+					.error("Can't update database connections for CSM applications");
+		}
+	}
+
+	public static void main(String[] args) {
+		try {
+			AuthorizationService service = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			service.updateDatabaseConnectionForCSMApplications(args[0],
+					args[1], args[2], args[3], args[4]);
+			System.exit(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 }
