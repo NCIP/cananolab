@@ -17,6 +17,7 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleConte
 import gov.nih.nci.security.authorization.domainobjects.Role;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
+import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
@@ -363,6 +364,38 @@ public class AuthorizationService {
 	}
 
 	/**
+	 * Get a ProtectionElement object for the given objectId.
+	 * 
+	 * @param objectId
+	 * @return
+	 * @throws CaNanoLabSecurityException
+	 */
+	public ProtectionElement getProtectionElement(String objectId)
+			throws CaNanoLabSecurityException {
+		try {
+			ProtectionElement pe = new ProtectionElement();
+			pe.setObjectId(objectId);
+			pe.setProtectionElementName(objectId);
+			SearchCriteria sc = new ProtectionElementSearchCriteria(pe);
+			List results = this.userManager.getObjects(sc);
+			ProtectionElement doPE = null;
+			for (Object obj : results) {
+				doPE = (ProtectionElement) obj;
+				break;
+			}
+			if (doPE == null) {
+				this.authorizationManager.createProtectionElement(pe);
+				return pe;
+			}
+			return doPE;
+		} catch (Exception e) {
+			logger.error("Error in creating protection element", e);
+			throw new CaNanoLabSecurityException();
+		}
+
+	}
+
+	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
 	 * 
 	 * @param protectionGroupName
@@ -515,8 +548,7 @@ public class AuthorizationService {
 			String roleName) throws CaNanoLabSecurityException {
 		try {
 			// create protection element
-			ProtectionElement pe = authorizationManager
-					.getProtectionElement(objectName);
+			ProtectionElement pe = getProtectionElement(objectName);
 
 			// create protection group
 			ProtectionGroup pg = getProtectionGroup(objectName);
