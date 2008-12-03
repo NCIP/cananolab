@@ -239,6 +239,7 @@ public class AuthorizationService {
 			List results = this.userManager.getObjects(sc);
 			for (Object obj : results) {
 				Group doGroup = (Group) obj;
+				groups.add(doGroup.getGroupName());
 			}
 			return groups;
 		} catch (Exception e) {
