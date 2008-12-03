@@ -154,4 +154,12 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
+	
+	public ActionForward setupOrganization(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		// setupLookups(request, null);	
+		
+		return mapping.findForward("organization");
+	}
 }

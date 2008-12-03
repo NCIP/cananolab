@@ -21,11 +21,12 @@ import java.util.List;
  * 
  */
 public class OrganizationBean{
-	Organization domain;
+	private Organization domain;
 	private List<PointOfContact> pocs = new ArrayList<PointOfContact>(20);
 	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
 	//TODO: need info for nanoparticleSample??
+	
 	
 	public OrganizationBean() {
 		super();
@@ -105,4 +106,16 @@ public class OrganizationBean{
 		this.hidden = hidden;
 	}
 	
+	private String getOrgAddress(Organization orga) {
+		StringBuffer addressBuf = new StringBuffer();
+		addressBuf.append(orga.getStreetAddress1() + " ");
+		String street2 = orga.getStreetAddress2();
+		if(street2 != null && street2.length() > 0 )
+			addressBuf.append(orga.getStreetAddress2() + " ");
+		
+		addressBuf.append(orga.getCity() + " ");
+		addressBuf.append(orga.getState() + " ");
+		addressBuf.append(orga.getPostalCode());
+		return addressBuf.toString();
+	}
 }
