@@ -9,17 +9,15 @@
 	<property name="jboss.deploy.dir" value="${jboss.server.dir}/deploy" />
 
 	<target name="prepare-csm-conf">
+		<!-- remove old CSM configuration files from JBOSS -->
+		<delete file="${jboss.conf.dir}/ApplicationSecurityConfig.xml" quiet="true" />
+		<delete file="${jboss.conf.dir}/caNanoLab.csm.hibernate.cfg.xml" quiet="true" />
+		
 		<!--copy csm related configuration files -->
-		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/caNanoLab.csm.hibernate.cfg.xml" />
 		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/login-config.xml" />
-		<copy overwrite="true" todir="${jboss.conf.dir}" file="${conf.dir}/csm/ApplicationSecurityConfig.xml" />
 		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/csm/properties-service.xml" />
 		<copy overwrite="true" todir="${jboss.deploy.dir}" file="${conf.dir}/${database}-ds.xml" />
-
-		<!-- replace path to JBOSS HOME -->
-		<replace file="${jboss.conf.dir}/ApplicationSecurityConfig.xml" token="JBOSS_CONF_DIR" value="${jboss.conf.dir}" />
-		<replace file="${jboss.deploy.dir}/properties-service.xml" token="JBOSS_CONF_DIR" value="${jboss.conf.dir}" />
-
+		
 		<!--replace database connection info -->
 		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_HOST" value="${database.host}" />
 		<replace file="${jboss.deploy.dir}/${database}-ds.xml" token="DATABASE_PORT" value="${database.port}" />
