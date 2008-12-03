@@ -61,6 +61,7 @@
 		<copy todir="${tmp.dir}/classes">
 			<fileset dir="${src.dir}">
 				<include name="**/*.xml" />
+				<exclude name="hibernate.cfg.xml" />
 				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml" />
 			</fileset>
 			<fileset dir="${conf.dir}/standalone">
@@ -129,8 +130,9 @@
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 		</java>
-
+	<!-- 
 		<antcall target="clean" />
+		 -->
 	</target>
 
 	<target name="run-endnote-loader"
