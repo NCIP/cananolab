@@ -130,9 +130,7 @@
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 		</java>
-	<!-- 
 		<antcall target="clean" />
-		 -->
 	</target>
 
 	<target name="run-endnote-loader"
