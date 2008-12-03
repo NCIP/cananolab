@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="submitOrganizationForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="orga"
+				type="gov.nih.nci.cananolab.dto.common.OrganizationBean" />
+		</form-bean>
+		
+	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			bundle="organization" key="error.organizationException" path="organization.message"
+			type="gov.nih.nci.cananolab.exception.OrganizationException" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="organizationMessage" path="organization.message" />
+		<forward name="reportDetailPrintView"
+			path="/organization/bodyReportDetailPrintView.jsp" />
+		<forward name="organizationDetailPrintView"
+			path="/organization/bodyOrganizationDetailPrintView.jsp" />
+		<forward name="organizationSummaryPrintView"
+			path="/organization/bodyOrganizationSummaryPrintView.jsp" />
+	</global-forwards>
+	<action-mappings>		
+		<action name="submitOrganizationForm" parameter="dispatch"
+			path="/submitOrganization"
+			type="gov.nih.nci.cananolab.ui.organization.SubmitOrganizationAction"
+			input="input">
+			<forward name="success" path="organization.message" />
+			<forward name="input"
+				path="/submitOrganization.do?dispatch=input&amp;page=0" />
+		</action>
+		
+	</action-mappings>
+</struts-config>
+
