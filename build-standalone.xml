@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="caNanoLab-standalone" default="test-connection-pool" basedir=".">
+<project name="caNanoLab-standalone" default="test-connection-pool"
+	basedir=".">
 	<property name="file.separator" value="/" />
 	<property file="deploy.properties" />
 	<property name="src.dir" value="${basedir}/src" />
@@ -60,13 +61,13 @@
 		<copy todir="${tmp.dir}/classes">
 			<fileset dir="${src.dir}">
 				<include name="**/*.xml" />
-				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml"/>
+				<exclude name="caNanoLab.csm.new.hibernate.cfg.xml" />
 			</fileset>
 			<fileset dir="${conf.dir}/standalone">
 				<include name="ApplicationSecurityConfig.xml" />
 				<include name="caNanoLab.csm.hibernate.cfg.xml" />
 				<include name="hibernate.cfg.xml" />
-				<include name="log4j.properties"/>
+				<include name="log4j.properties" />
 			</fileset>
 		</copy>
 
@@ -126,12 +127,12 @@
 		<java classname="test.TestConnectionPool" fork="true">
 			<classpath refid="class.path" />
 			<sysproperty key="gov.nih.nci.security.configFile"
-				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />			
-		</java>	
-		
-		<antcall target="clean"/>
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+		</java>
+
+		<antcall target="clean" />
 	</target>
-	
+
 	<target name="run-endnote-loader"
 		depends="prepare-database-connection">
 		<property file="endnote.properties" />
@@ -152,7 +153,33 @@
 		</java>
 	</target>
 
-	<target name="initialize-passwords" depends="prepare-database-connection">		
+	<target name="setup-csm-application"
+		depends="prepare-database-connection">
+		<path id="class.path">
+			<fileset dir="${tmp.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${tmp.dir}/classes" />
+		</path>
+
+		<java
+			classname="gov.nih.nci.cananolab.service.security.AuthorizationService"
+			fork="true">
+			<classpath refid="class.path" />
+			<sysproperty key="gov.nih.nci.security.configFile"
+				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
+			<arg value="org.hibernate.dialect.MySQLDialect"/>
+			<arg value="com.mysql.jdbc.Driver"/>					
+			<arg value="jdbc:mysql://${database.host}:${database.port}/canano"/>
+			<arg value="${database.user}" />
+			<arg value="${database.password}" />
+		</java>
+
+		<antcall target="clean" />
+	</target>
+
+	<target name="initialize-passwords"
+		depends="prepare-database-connection">
 		<path id="class.path">
 			<fileset dir="${tmp.dir}/lib">
 				<include name="**/*.jar" />
@@ -167,7 +194,7 @@
 			<sysproperty key="gov.nih.nci.security.configFile"
 				value="${tmp.dir}/classes/ApplicationSecurityConfig.xml" />
 		</java>
-		
-		<antcall target="clean"/>
-	</target>	
+
+		<antcall target="clean" />
+	</target>
 </project>
