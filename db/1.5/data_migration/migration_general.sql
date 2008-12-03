@@ -147,8 +147,14 @@ DROP TABLE IF EXISTS storage;
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Manufacturer');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Investigator');
+
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 
  
 -- End of script
