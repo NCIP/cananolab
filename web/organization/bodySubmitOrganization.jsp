@@ -34,7 +34,7 @@
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Organization Information
+									Primary Organization
 								</div>
 							</td>
 						</tr>
@@ -43,7 +43,7 @@
 								<strong>Name</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:text property="orga.domain.name" size="20" />
+								<html:text property="orga.domain.name" size="50" />
 								&nbsp;
 							</td>
 						</tr>
@@ -169,13 +169,13 @@
 																<td class="leftLabel" valign="top">
 																	<strong>Email</strong>
 																</td>
-																<td class="label" valign="top">
+																<td class="label" valign="top" colspan="2">
 																	<html:text property="orga.pocs[${ind}].email" size="30" />
 																</td>
 																<td class="label" valign="top">
 																	<strong>Email Visibility</strong>
 																</td>
-																<td class="rightLabel" valign="top" colspan="3">
+																<td class="rightLabel" valign="top" colspan="2">
 																	<html:select property="orga.visibilityGroups"
 																		multiple="true" size="6">
 																		<html:options name="allVisibilityGroups" />
@@ -186,13 +186,13 @@
 																<td class="leftLabel" valign="top">
 																	<strong>Phone Number</strong>
 																</td>
-																<td class="label" valign="top">
+																<td class="label" valign="top" colspan="2">
 																	<html:text property="orga.pocs[${ind}].phone" size="30" />
 																</td>
 																<td class="label" valign="top">
 																	<strong>Phone Number Visibility</strong>
 																</td>
-																<td class="rightLabel" valign="top" colspan="3">
+																<td class="rightLabel" valign="top" colspan="2">
 																	<html:select property="orga.visibilityGroups"
 																		multiple="true" size="6">
 																		<html:options name="allVisibilityGroups" />
