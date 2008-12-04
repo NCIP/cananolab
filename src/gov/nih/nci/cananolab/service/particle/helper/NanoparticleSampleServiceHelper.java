@@ -47,7 +47,7 @@ import org.hibernate.criterion.Restrictions;
  */
 public class NanoparticleSampleServiceHelper {
 	public List<NanoparticleSample> findNanoparticleSamplesBy(
-			String particleSource, String[] nanoparticleEntityClassNames,
+			String particleOrganization, String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -64,8 +64,8 @@ public class NanoparticleSampleServiceHelper {
 				Projections.distinct(Property.forName("id")));
 
 		// TODO: update SQL FOR source
-//		if (particleSource != null && particleSource.length() > 0) {
-//			TextMatchMode sourceMatchMode = new TextMatchMode(particleSource);
+//		if (particleOrganization != null && particleOrganization.length() > 0) {
+//			TextMatchMode sourceMatchMode = new TextMatchMode(particleOrganization);
 //			crit.createAlias("source", "source").add(
 //					Restrictions.ilike("source.organizationName",
 //							sourceMatchMode.getUpdatedText(), sourceMatchMode

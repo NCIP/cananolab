@@ -59,7 +59,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 
 	/**
 	 * 
-	 * @param particleSource
+	 * @param particleOrganization
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
 	 * @param functionalizingEntityClassNames
@@ -72,7 +72,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 * @throws ParticleException
 	 */
 	// public List<ParticleBean> findNanoparticleSamplesBy(String
-	// particleSource,
+	// particleOrganization,
 	// String[] nanoparticleEntityClassNames,
 	// String[] otherNanoparticleTypes,
 	// String[] functionalizingEntityClassNames,
@@ -83,7 +83,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	// List<ParticleBean> particles = new ArrayList<ParticleBean>();
 	// try {
 	// NanoparticleSample[] particleSamples = gridClient
-	// .getNanoparticleSamplesBy(particleSource,
+	// .getNanoparticleSamplesBy(particleOrganization,
 	// nanoparticleEntityClassNames,
 	// functionalizingEntityClassNames,
 	// functionClassNames, characterizationClassNames,
@@ -110,7 +110,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	// throw new ParticleException(err, e);
 	// }
 	// }
-	public List<ParticleBean> findNanoparticleSamplesBy(String particleSource,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particleOrganization,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -122,7 +122,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		try {
 			// TODO: add publicationKeywordsStr to grid search
 			String[] particleSampleStrs = gridClient
-					.getNanoparticleSampleViewStrs(particleSource,
+					.getNanoparticleSampleViewStrs(particleOrganization,
 							nanoparticleEntityClassNames,
 							functionalizingEntityClassNames,
 							functionClassNames, characterizationClassNames,

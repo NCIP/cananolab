@@ -70,7 +70,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			}
 			return sampleOrganizations;
 		} catch (Exception e) {
-			String err = "Error in retrieving all nanoparticle sample sources";
+			String err = "Error in retrieving all organization";
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
@@ -78,7 +78,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * 
-	 * @return all particle sources visible to user
+	 * @return all particle Organizations visible to user
 	 */
 	public SortedSet<Organization> findAllParticleOrganizations(UserBean user)
 			throws ParticleException {
@@ -90,24 +90,29 @@ public class NanoparticleSampleServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
+			crit.setFetchMode("primaryNanoparticleSampleCollection", FetchMode.JOIN);
 			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
 			List results = appService.query(crit);
 			for (Object obj : results) {
-				Organization source = (Organization) obj;
-				// if user can access at least one particle from the source, set
+				Organization organization = (Organization) obj;
+				// if user can access at least one particle from the organization, set
 				// access to true
 				List<String> particleNames = new ArrayList<String>();
-				for (NanoparticleSample sample : source
-						.getNanoparticleSampleCollection()) {
+				for (NanoparticleSample sample : 
+					organization.getPrimaryNanoparticleSampleCollection()) {
 					particleNames.add(sample.getName());
 				}
+				for (NanoparticleSample sample : organization
+						.getNanoparticleSampleCollection()) {
+					particleNames.add(sample.getName());
+				}				
 				if (auth.isAllowedAtLeastOne(auth, particleNames, user)) {
 					sampleOrganizations.add((Organization) obj);
 				}
 			}
 			return sampleOrganizations;
 		} catch (Exception e) {
-			String err = "Error in retrieving all nanoparticle sample sources for a user";
+			String err = "Error in retrieving all nanoparticle sample organizations for a user";
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
@@ -134,11 +139,13 @@ public class NanoparticleSampleServiceLocalImpl implements
 					&& !dbParticle.getId().equals(particleSample.getId())) {
 				throw new DuplicateEntriesException();
 			}
+			
 			Organization dbOrganization = (Organization) appService.getObject(Organization.class,
 					"name", particleSample.getPrimaryOrganization()
 							.getName());
 			if (dbOrganization != null) {
 				particleSample.getPrimaryOrganization().setId(dbOrganization.getId());
+				particleSample.setPrimaryOrganization(dbOrganization);
 			}
 			appService.saveOrUpdate(particleSample.getPrimaryOrganization());
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
@@ -289,6 +296,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 						"sampleComposition.functionalizingEntityCollection.functionCollection",
 						FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("primaryOrganization", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -314,7 +322,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 
 	/**
-	 * Get other particles from the given particle source
+	 * Get other particles from the given particle organization
 	 * 
 	 * @param particleOrganization
 	 * @param particleName
@@ -335,8 +343,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			crit.add(Restrictions.ne("name", particleName));
-			crit.createAlias("source", "source").add(
-					Restrictions.eq("source.organizationName", particleOrganization));
+			crit.createAlias("organization", "organization").add(
+					Restrictions.eq("organization.name", particleOrganization));
 
 			List results = appService.query(crit);
 			for (Object obj : results) {
@@ -347,7 +355,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			}
 			return otherParticles;
 		} catch (Exception e) {
-			String err = "Error in retrieving other particles from source "
+			String err = "Error in retrieving other particles from organization "
 					+ particleOrganization;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
@@ -479,7 +487,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.getDomainParticleSample();
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-			// source, need special handle for sharing
+			// organizations, need special handle for sharing
 			if (nanoparticleSample.getPrimaryOrganization() != null) {
 				authService.removePublicGroup(nanoparticleSample.getPrimaryOrganization()
 						.getId().toString());
@@ -573,7 +581,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			 * visibleGroups); } } } } } }
 			 */
 		} else {
-			// source, if private need special handle for sharing
+			// organizations, if private need special handle for sharing
 			if (nanoparticleSample.getPrimaryOrganization() != null) {
 				if (!isExistPublicNanoparticleSampleForOrganization(nanoparticleSample
 						.getPrimaryOrganization().getId().toString())) {
@@ -754,19 +762,19 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 
 	/**
-	 * Check if there exists public nanoparticle sample for given sourceId
+	 * Check if there exists public nanoparticle sample for given organizationId
 	 * 
 	 * @param sourcId
 	 * @return true / false
 	 */
-	public boolean isExistPublicNanoparticleSampleForOrganization(String sourceId)
+	public boolean isExistPublicNanoparticleSampleForOrganization(String organizationId)
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		HQLCriteria crit = new HQLCriteria(
 				"select aParticle.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle "
-						+ " where aParticle.source=" + sourceId);
+						+ " where aParticle.primaryOrganization=" + organizationId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			String name = (String) obj.toString();
