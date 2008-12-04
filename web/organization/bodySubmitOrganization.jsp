@@ -214,7 +214,7 @@
 								<strong>Organization Visibility</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:select property="file.visibilityGroups" multiple="true"
+								<html:select property="orga.visibilityGroups" multiple="true"
 									size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>
