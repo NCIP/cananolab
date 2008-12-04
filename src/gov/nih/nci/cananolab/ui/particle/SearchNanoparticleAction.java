@@ -43,7 +43,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleSource = (String) theForm.get("particleSource");
+		String particleOrganization = (String) theForm.get("particleOrganization");
 
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
@@ -139,7 +139,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 						request, location);
 				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
 			}
-			particles = service.findNanoparticleSamplesBy(particleSource,
+			particles = service.findNanoparticleSamplesBy(particleOrganization,
 					nanoparticleEntityClassNames.toArray(new String[0]),
 					otherNanoparticleEntityTypes.toArray(new String[0]),
 					functionalizingEntityClassNames.toArray(new String[0]),
