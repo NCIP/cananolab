@@ -7,11 +7,13 @@
 # it is.
 #
 
+use canano;
+
 insert into csm_application(APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
 values ("csmupt","CSM UPT Super Admin Application",0,0,sysdate());
 
 insert into csm_user (LOGIN_NAME,FIRST_NAME,LAST_NAME,PASSWORD,UPDATE_DATE)
-values ("@super.admin.user@","@super.admin.first.name@","@super.admin.last.name@","zJPWCwDeSgG8j2uyHEABIQ==",sysdate());
+values ("superadmin","superadmin_first_name","superadmin_lastname","Wm/tfU/h26agmHldOE8ejA==",sysdate());
 
  
 insert into csm_protection_element(PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,APPLICATION_ID,UPDATE_DATE)
@@ -26,11 +28,10 @@ values(1,1);
 #
 
 INSERT INTO csm_application(APPLICATION_NAME,APPLICATION_DESCRIPTION,DECLARATIVE_FLAG,ACTIVE_FLAG,UPDATE_DATE)
-VALUES ("@application.context.name.remote@","@application.context.name.remote@",0,0,sysdate());
+VALUES ("caNanoLab","caNanoLab web application",0,0,sysdate());
 
 insert into csm_protection_element(PROTECTION_ELEMENT_NAME,PROTECTION_ELEMENT_DESCRIPTION,OBJECT_ID,APPLICATION_ID,UPDATE_DATE)
-values("@application.context.name.remote@","@application.context.name.remote@","@application.context.name.remote@",1,sysdate());
-
+values("caNanoLab","caNanoLab web application","caNanoLab",1,sysdate());
 
 #
 # The following entries are Common Set of Privileges

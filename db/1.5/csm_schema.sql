@@ -1,357 +1,357 @@
-﻿# Replace the <<database_name>> with proper database name that is to be created.
+# replace the <<database_name>> with proper database name that is to be created.
 
-#CREATE DATABASE <<database_name>>;
+create database canano;
 
-#USE <<database_name>>;
+use canano;
 
-DROP TABLE IF EXISTS CSM_APPLICATION
+drop table if exists csm_application
 ;
 
-DROP TABLE IF EXISTS CSM_GROUP
+drop table if exists csm_group
 ;
 
-DROP TABLE IF EXISTS CSM_PRIVILEGE
+drop table if exists csm_privilege
 ;
 
-DROP TABLE IF EXISTS CSM_FILTER_CLAUSE
+drop table if exists csm_filter_clause
 ;
 
-DROP TABLE IF EXISTS CSM_PROTECTION_ELEMENT
+drop table if exists csm_protection_element
 ;
 
-DROP TABLE IF EXISTS CSM_PROTECTION_GROUP
+drop table if exists csm_protection_group
 ;
 
-DROP TABLE IF EXISTS CSM_PG_PE
+drop table if exists csm_pg_pe
 ;
 
-DROP TABLE IF EXISTS CSM_ROLE
+drop table if exists csm_role
 ;
 
-DROP TABLE IF EXISTS CSM_ROLE_PRIVILEGE
+drop table if exists csm_role_privilege
 ;
 
-DROP TABLE IF EXISTS CSM_USER
+drop table if exists csm_user
 ;
 
-DROP TABLE IF EXISTS CSM_USER_GROUP
+drop table if exists csm_user_group
 ;
 
-DROP TABLE IF EXISTS CSM_USER_GROUP_ROLE_PG
+drop table if exists csm_user_group_role_pg
 ;
 
-DROP TABLE IF EXISTS CSM_USER_PE
-;
-
-
-CREATE TABLE CSM_APPLICATION ( 
-	APPLICATION_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	APPLICATION_NAME VARCHAR(255) NOT NULL,
-	APPLICATION_DESCRIPTION VARCHAR(200) NOT NULL,
-	DECLARATIVE_FLAG BOOL NOT NULL DEFAULT 0,
-	ACTIVE_FLAG BOOL NOT NULL DEFAULT 0,
-	UPDATE_DATE DATE DEFAULT '0000-00-00',
-	DATABASE_URL VARCHAR(100),
-	DATABASE_USER_NAME VARCHAR(100),
-	DATABASE_PASSWORD VARCHAR(100),
-	DATABASE_DIALECT VARCHAR(100),
-	DATABASE_DRIVER VARCHAR(100),
-	PRIMARY KEY(APPLICATION_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_GROUP ( 
-	GROUP_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	GROUP_NAME VARCHAR(255) NOT NULL,
-	GROUP_DESC VARCHAR(200),
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	APPLICATION_ID BIGINT NOT NULL,
-	PRIMARY KEY(GROUP_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_PRIVILEGE ( 
-	PRIVILEGE_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	PRIVILEGE_NAME VARCHAR(100) NOT NULL,
-	PRIVILEGE_DESCRIPTION VARCHAR(200),
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PRIMARY KEY(PRIVILEGE_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_FILTER_CLAUSE ( 
-	FILTER_CLAUSE_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	CLASS_NAME VARCHAR(100) NOT NULL,
-	FILTER_CHAIN VARCHAR(2000) NOT NULL,
-	TARGET_CLASS_NAME VARCHAR (100) NOT NULL,
-	TARGET_CLASS_ATTRIBUTE_NAME VARCHAR (100) NOT NULL,
-	TARGET_CLASS_ATTRIBUTE_TYPE VARCHAR (100) NOT NULL,
-	TARGET_CLASS_ALIAS VARCHAR (100),
-	TARGET_CLASS_ATTRIBUTE_ALIAS VARCHAR (100),
-	GENERATED_SQL_USER VARCHAR (4000) NOT NULL,
-	GENERATED_SQL_GROUP VARCHAR (4000) NOT NULL,
-	APPLICATION_ID BIGINT NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PRIMARY KEY(FILTER_CLAUSE_ID)	
-)Type=InnoDB 
-;
-
-CREATE TABLE CSM_PROTECTION_ELEMENT ( 
-	PROTECTION_ELEMENT_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	PROTECTION_ELEMENT_NAME VARCHAR(100) NOT NULL,
-	PROTECTION_ELEMENT_DESCRIPTION VARCHAR(200),
-	OBJECT_ID VARCHAR(100) NOT NULL,
-	ATTRIBUTE VARCHAR(100) ,
-	ATTRIBUTE_VALUE VARCHAR(100) ,
-	PROTECTION_ELEMENT_TYPE VARCHAR(100),
-	APPLICATION_ID BIGINT NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PRIMARY KEY(PROTECTION_ELEMENT_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_PROTECTION_GROUP ( 
-	PROTECTION_GROUP_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	PROTECTION_GROUP_NAME VARCHAR(100) NOT NULL,
-	PROTECTION_GROUP_DESCRIPTION VARCHAR(200),
-	APPLICATION_ID BIGINT NOT NULL,
-	LARGE_ELEMENT_COUNT_FLAG BOOL NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PARENT_PROTECTION_GROUP_ID BIGINT,
-	PRIMARY KEY(PROTECTION_GROUP_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_PG_PE ( 
-	PG_PE_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	PROTECTION_GROUP_ID BIGINT NOT NULL,
-	PROTECTION_ELEMENT_ID BIGINT NOT NULL,
-	UPDATE_DATE DATE DEFAULT '0000-00-00',
-	PRIMARY KEY(PG_PE_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_ROLE ( 
-	ROLE_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	ROLE_NAME VARCHAR(100) NOT NULL,
-	ROLE_DESCRIPTION VARCHAR(200),
-	APPLICATION_ID BIGINT NOT NULL,
-	ACTIVE_FLAG BOOL NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PRIMARY KEY(ROLE_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_ROLE_PRIVILEGE ( 
-	ROLE_PRIVILEGE_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	ROLE_ID BIGINT NOT NULL,
-	PRIVILEGE_ID BIGINT NOT NULL,
-	PRIMARY KEY(ROLE_PRIVILEGE_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_USER ( 
-	USER_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	LOGIN_NAME VARCHAR(500) NOT NULL,
-	MIGRATED_FLAG BOOL NOT NULL DEFAULT 0,
-	FIRST_NAME VARCHAR(100) NOT NULL,
-	LAST_NAME VARCHAR(100) NOT NULL,
-	ORGANIZATION VARCHAR(100),
-	DEPARTMENT VARCHAR(100),
-	TITLE VARCHAR(100),
-	PHONE_NUMBER VARCHAR(15),
-	PASSWORD VARCHAR(100),
-	EMAIL_ID VARCHAR(100),
-	START_DATE DATE,
-	END_DATE DATE,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PREMGRT_LOGIN_NAME VARCHAR(100) ,
-	PRIMARY KEY(USER_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_USER_GROUP ( 
-	USER_GROUP_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	USER_ID BIGINT NOT NULL,
-	GROUP_ID BIGINT NOT NULL,
-	PRIMARY KEY(USER_GROUP_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_USER_GROUP_ROLE_PG ( 
-	USER_GROUP_ROLE_PG_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	USER_ID BIGINT,
-	GROUP_ID BIGINT,
-	ROLE_ID BIGINT NOT NULL,
-	PROTECTION_GROUP_ID BIGINT NOT NULL,
-	UPDATE_DATE DATE NOT NULL DEFAULT '0000-00-00',
-	PRIMARY KEY(USER_GROUP_ROLE_PG_ID)
-)Type=InnoDB
-;
-
-CREATE TABLE CSM_USER_PE ( 
-	USER_PROTECTION_ELEMENT_ID BIGINT AUTO_INCREMENT  NOT NULL,
-	PROTECTION_ELEMENT_ID BIGINT NOT NULL,
-	USER_ID BIGINT NOT NULL,
-	PRIMARY KEY(USER_PROTECTION_ELEMENT_ID)
-)Type=InnoDB
+drop table if exists csm_user_pe
 ;
 
 
-
-ALTER TABLE CSM_APPLICATION
-ADD CONSTRAINT UQ_APPLICATION_NAME UNIQUE (APPLICATION_NAME)
-;
-CREATE INDEX idx_APPLICATION_ID ON CSM_GROUP(APPLICATION_ID)
-;
-ALTER TABLE CSM_GROUP
-ADD CONSTRAINT UQ_GROUP_GROUP_NAME UNIQUE (APPLICATION_ID, GROUP_NAME)
-;
-ALTER TABLE CSM_PRIVILEGE
-ADD CONSTRAINT UQ_PRIVILEGE_NAME UNIQUE (PRIVILEGE_NAME)
-;
-CREATE INDEX idx_APPLICATION_ID ON CSM_PROTECTION_ELEMENT(APPLICATION_ID)
-;
-ALTER TABLE CSM_PROTECTION_ELEMENT
-ADD CONSTRAINT UQ_PE_PE_NAME_ATTRIBUTE_VALUE_APP_ID UNIQUE (OBJECT_ID, ATTRIBUTE, ATTRIBUTE_VALUE, APPLICATION_ID)
-;
-CREATE INDEX idx_APPLICATION_ID ON CSM_PROTECTION_GROUP(APPLICATION_ID)
-;
-ALTER TABLE CSM_PROTECTION_GROUP
-ADD CONSTRAINT UQ_PROTECTION_GROUP_PROTECTION_GROUP_NAME UNIQUE (APPLICATION_ID, PROTECTION_GROUP_NAME)
-;
-CREATE INDEX idx_PARENT_PROTECTION_GROUP_ID ON CSM_PROTECTION_GROUP(PARENT_PROTECTION_GROUP_ID)
-;
-CREATE INDEX idx_PROTECTION_ELEMENT_ID ON CSM_PG_PE(PROTECTION_ELEMENT_ID)
-;
-CREATE INDEX idx_PROTECTION_GROUP_ID ON CSM_PG_PE(PROTECTION_GROUP_ID)
-;
-ALTER TABLE CSM_PG_PE
-ADD CONSTRAINT UQ_PROTECTION_GROUP_PROTECTION_ELEMENT_PROTECTION_GROUP_ID UNIQUE (PROTECTION_ELEMENT_ID, PROTECTION_GROUP_ID)
-;
-CREATE INDEX idx_APPLICATION_ID ON CSM_ROLE(APPLICATION_ID)
-;
-ALTER TABLE CSM_ROLE
-ADD CONSTRAINT UQ_ROLE_ROLE_NAME UNIQUE (APPLICATION_ID, ROLE_NAME)
-;
-CREATE INDEX idx_PRIVILEGE_ID ON CSM_ROLE_PRIVILEGE(PRIVILEGE_ID)
-;
-ALTER TABLE CSM_ROLE_PRIVILEGE
-ADD CONSTRAINT UQ_ROLE_PRIVILEGE_ROLE_ID UNIQUE (PRIVILEGE_ID, ROLE_ID)
-;
-CREATE INDEX idx_ROLE_ID ON CSM_ROLE_PRIVILEGE(ROLE_ID)
-;
-ALTER TABLE CSM_USER
-ADD CONSTRAINT UQ_LOGIN_NAME UNIQUE (LOGIN_NAME)
-;
-CREATE INDEX idx_USER_ID ON CSM_USER_GROUP(USER_ID)
-;
-CREATE INDEX idx_GROUP_ID ON CSM_USER_GROUP(GROUP_ID)
-;
-CREATE INDEX idx_GROUP_ID ON CSM_USER_GROUP_ROLE_PG(GROUP_ID)
-;
-CREATE INDEX idx_ROLE_ID ON CSM_USER_GROUP_ROLE_PG(ROLE_ID)
-;
-CREATE INDEX idx_PROTECTION_GROUP_ID ON CSM_USER_GROUP_ROLE_PG(PROTECTION_GROUP_ID)
-;
-CREATE INDEX idx_USER_ID ON CSM_USER_GROUP_ROLE_PG(USER_ID)
-;
-CREATE INDEX idx_USER_ID ON CSM_USER_PE(USER_ID)
-;
-CREATE INDEX idx_PROTECTION_ELEMENT_ID ON CSM_USER_PE(PROTECTION_ELEMENT_ID)
-;
-ALTER TABLE CSM_USER_PE
-ADD CONSTRAINT UQ_USER_PROTECTION_ELEMENT_PROTECTION_ELEMENT_ID UNIQUE (USER_ID, PROTECTION_ELEMENT_ID)
+create table csm_application ( 
+	application_id bigint auto_increment  not null,
+	application_name varchar(255) not null,
+	application_description varchar(200) not null,
+	declarative_flag bool not null default 0,
+	active_flag bool not null default 0,
+	update_date date default '0000-00-00',
+	database_url varchar(100),
+	database_user_name varchar(100),
+	database_password varchar(100),
+	database_dialect varchar(100),
+	database_driver varchar(100),
+	primary key(application_id)
+)type=innodb
 ;
 
-
-ALTER TABLE CSM_GROUP ADD CONSTRAINT FK_APPLICATION_GROUP 
-FOREIGN KEY (APPLICATION_ID) REFERENCES CSM_APPLICATION (APPLICATION_ID)
-ON DELETE CASCADE
+create table csm_group ( 
+	group_id bigint auto_increment  not null,
+	group_name varchar(255) not null,
+	group_desc varchar(200),
+	update_date date not null default '0000-00-00',
+	application_id bigint not null,
+	primary key(group_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_FILTER_CLAUSE ADD CONSTRAINT FK_APPLICATION_FILTER_CLAUSE 
-FOREIGN KEY (APPLICATION_ID) REFERENCES CSM_APPLICATION (APPLICATION_ID)
-ON DELETE CASCADE
+create table csm_privilege ( 
+	privilege_id bigint auto_increment  not null,
+	privilege_name varchar(100) not null,
+	privilege_description varchar(200),
+	update_date date not null default '0000-00-00',
+	primary key(privilege_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_PROTECTION_ELEMENT ADD CONSTRAINT FK_PE_APPLICATION 
-FOREIGN KEY (APPLICATION_ID) REFERENCES CSM_APPLICATION (APPLICATION_ID)
-ON DELETE CASCADE
+create table csm_filter_clause ( 
+	filter_clause_id bigint auto_increment  not null,
+	class_name varchar(100) not null,
+	filter_chain varchar(2000) not null,
+	target_class_name varchar (100) not null,
+	target_class_attribute_name varchar (100) not null,
+	target_class_attribute_type varchar (100) not null,
+	target_class_alias varchar (100),
+	target_class_attribute_alias varchar (100),
+	generated_sql_user varchar (4000) not null,
+	generated_sql_group varchar (4000) not null,
+	application_id bigint not null,
+	update_date date not null default '0000-00-00',
+	primary key(filter_clause_id)	
+)type=innodb 
 ;
 
-ALTER TABLE CSM_PROTECTION_GROUP ADD CONSTRAINT FK_PG_APPLICATION 
-FOREIGN KEY (APPLICATION_ID) REFERENCES CSM_APPLICATION (APPLICATION_ID)
-ON DELETE CASCADE
+create table csm_protection_element ( 
+	protection_element_id bigint auto_increment  not null,
+	protection_element_name varchar(100) not null,
+	protection_element_description varchar(200),
+	object_id varchar(100) not null,
+	attribute varchar(100) ,
+	attribute_value varchar(100) ,
+	protection_element_type varchar(100),
+	application_id bigint not null,
+	update_date date not null default '0000-00-00',
+	primary key(protection_element_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_PROTECTION_GROUP ADD CONSTRAINT FK_PROTECTION_GROUP 
-FOREIGN KEY (PARENT_PROTECTION_GROUP_ID) REFERENCES CSM_PROTECTION_GROUP (PROTECTION_GROUP_ID)
+create table csm_protection_group ( 
+	protection_group_id bigint auto_increment  not null,
+	protection_group_name varchar(100) not null,
+	protection_group_description varchar(200),
+	application_id bigint not null,
+	large_element_count_flag bool not null,
+	update_date date not null default '0000-00-00',
+	parent_protection_group_id bigint,
+	primary key(protection_group_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_PG_PE ADD CONSTRAINT FK_PROTECTION_ELEMENT_PROTECTION_GROUP 
-FOREIGN KEY (PROTECTION_ELEMENT_ID) REFERENCES CSM_PROTECTION_ELEMENT (PROTECTION_ELEMENT_ID)
-ON DELETE CASCADE
+create table csm_pg_pe ( 
+	pg_pe_id bigint auto_increment  not null,
+	protection_group_id bigint not null,
+	protection_element_id bigint not null,
+	update_date date default '0000-00-00',
+	primary key(pg_pe_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_PG_PE ADD CONSTRAINT FK_PROTECTION_GROUP_PROTECTION_ELEMENT 
-FOREIGN KEY (PROTECTION_GROUP_ID) REFERENCES CSM_PROTECTION_GROUP (PROTECTION_GROUP_ID)
-ON DELETE CASCADE
+create table csm_role ( 
+	role_id bigint auto_increment  not null,
+	role_name varchar(100) not null,
+	role_description varchar(200),
+	application_id bigint not null,
+	active_flag bool not null,
+	update_date date not null default '0000-00-00',
+	primary key(role_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_ROLE ADD CONSTRAINT FK_APPLICATION_ROLE 
-FOREIGN KEY (APPLICATION_ID) REFERENCES CSM_APPLICATION (APPLICATION_ID)
-ON DELETE CASCADE
+create table csm_role_privilege ( 
+	role_privilege_id bigint auto_increment  not null,
+	role_id bigint not null,
+	privilege_id bigint not null,
+	primary key(role_privilege_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_ROLE_PRIVILEGE ADD CONSTRAINT FK_PRIVILEGE_ROLE 
-FOREIGN KEY (PRIVILEGE_ID) REFERENCES CSM_PRIVILEGE (PRIVILEGE_ID)
-ON DELETE CASCADE
+create table csm_user ( 
+	user_id bigint auto_increment  not null,
+	login_name varchar(500) not null,
+	migrated_flag bool not null default 0,
+	first_name varchar(100) not null,
+	last_name varchar(100) not null,
+	organization varchar(100),
+	department varchar(100),
+	title varchar(100),
+	phone_number varchar(15),
+	password varchar(100),
+	email_id varchar(100),
+	start_date date,
+	end_date date,
+	update_date date not null default '0000-00-00',
+	premgrt_login_name varchar(100) ,
+	primary key(user_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_ROLE_PRIVILEGE ADD CONSTRAINT FK_ROLE
-FOREIGN KEY (ROLE_ID) REFERENCES CSM_ROLE (ROLE_ID)
-ON DELETE CASCADE
+create table csm_user_group ( 
+	user_group_id bigint auto_increment  not null,
+	user_id bigint not null,
+	group_id bigint not null,
+	primary key(user_group_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_USER_GROUP ADD CONSTRAINT FK_USER_GROUP 
-FOREIGN KEY (USER_ID) REFERENCES CSM_USER (USER_ID)
-ON DELETE CASCADE
+create table csm_user_group_role_pg ( 
+	user_group_role_pg_id bigint auto_increment  not null,
+	user_id bigint,
+	group_id bigint,
+	role_id bigint not null,
+	protection_group_id bigint not null,
+	update_date date not null default '0000-00-00',
+	primary key(user_group_role_pg_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_USER_GROUP ADD CONSTRAINT FK_UG_GROUP 
-FOREIGN KEY (GROUP_ID) REFERENCES CSM_GROUP (GROUP_ID)
-ON DELETE CASCADE
+create table csm_user_pe ( 
+	user_protection_element_id bigint auto_increment  not null,
+	protection_element_id bigint not null,
+	user_id bigint not null,
+	primary key(user_protection_element_id)
+)type=innodb
 ;
 
-ALTER TABLE CSM_USER_GROUP_ROLE_PG ADD CONSTRAINT FK_USER_GROUP_ROLE_PROTECTION_GROUP_GROUPS 
-FOREIGN KEY (GROUP_ID) REFERENCES CSM_GROUP (GROUP_ID)
-ON DELETE CASCADE
+
+
+alter table csm_application
+add constraint uq_application_name unique (application_name)
+;
+create index idx_application_id on csm_group(application_id)
+;
+alter table csm_group
+add constraint uq_group_group_name unique (application_id, group_name)
+;
+alter table csm_privilege
+add constraint uq_privilege_name unique (privilege_name)
+;
+create index idx_application_id on csm_protection_element(application_id)
+;
+alter table csm_protection_element
+add constraint uq_pe_pe_name_attribute_value_app_id unique (object_id, attribute, attribute_value, application_id)
+;
+create index idx_application_id on csm_protection_group(application_id)
+;
+alter table csm_protection_group
+add constraint uq_protection_group_protection_group_name unique (application_id, protection_group_name)
+;
+create index idx_parent_protection_group_id on csm_protection_group(parent_protection_group_id)
+;
+create index idx_protection_element_id on csm_pg_pe(protection_element_id)
+;
+create index idx_protection_group_id on csm_pg_pe(protection_group_id)
+;
+alter table csm_pg_pe
+add constraint uq_protection_group_protection_element_protection_group_id unique (protection_element_id, protection_group_id)
+;
+create index idx_application_id on csm_role(application_id)
+;
+alter table csm_role
+add constraint uq_role_role_name unique (application_id, role_name)
+;
+create index idx_privilege_id on csm_role_privilege(privilege_id)
+;
+alter table csm_role_privilege
+add constraint uq_role_privilege_role_id unique (privilege_id, role_id)
+;
+create index idx_role_id on csm_role_privilege(role_id)
+;
+alter table csm_user
+add constraint uq_login_name unique (login_name)
+;
+create index idx_user_id on csm_user_group(user_id)
+;
+create index idx_group_id on csm_user_group(group_id)
+;
+create index idx_group_id on csm_user_group_role_pg(group_id)
+;
+create index idx_role_id on csm_user_group_role_pg(role_id)
+;
+create index idx_protection_group_id on csm_user_group_role_pg(protection_group_id)
+;
+create index idx_user_id on csm_user_group_role_pg(user_id)
+;
+create index idx_user_id on csm_user_pe(user_id)
+;
+create index idx_protection_element_id on csm_user_pe(protection_element_id)
+;
+alter table csm_user_pe
+add constraint uq_user_protection_element_protection_element_id unique (user_id, protection_element_id)
 ;
 
-ALTER TABLE CSM_USER_GROUP_ROLE_PG ADD CONSTRAINT FK_USER_GROUP_ROLE_PROTECTION_GROUP_ROLE 
-FOREIGN KEY (ROLE_ID) REFERENCES CSM_ROLE (ROLE_ID)
-ON DELETE CASCADE
+
+alter table csm_group add constraint fk_application_group 
+foreign key (application_id) references csm_application (application_id)
+on delete cascade
 ;
 
-ALTER TABLE CSM_USER_GROUP_ROLE_PG ADD CONSTRAINT FK_USER_GROUP_ROLE_PROTECTION_GROUP_PROTECTION_GROUP 
-FOREIGN KEY (PROTECTION_GROUP_ID) REFERENCES CSM_PROTECTION_GROUP (PROTECTION_GROUP_ID)
-ON DELETE CASCADE
+alter table csm_filter_clause add constraint fk_application_filter_clause 
+foreign key (application_id) references csm_application (application_id)
+on delete cascade
 ;
 
-ALTER TABLE CSM_USER_GROUP_ROLE_PG ADD CONSTRAINT FK_USER_GROUP_ROLE_PROTECTION_GROUP_USER 
-FOREIGN KEY (USER_ID) REFERENCES CSM_USER (USER_ID)
-ON DELETE CASCADE
+alter table csm_protection_element add constraint fk_pe_application 
+foreign key (application_id) references csm_application (application_id)
+on delete cascade
 ;
 
-ALTER TABLE CSM_USER_PE ADD CONSTRAINT FK_PE_USER 
-FOREIGN KEY (USER_ID) REFERENCES CSM_USER (USER_ID)
-ON DELETE CASCADE
+alter table csm_protection_group add constraint fk_pg_application 
+foreign key (application_id) references csm_application (application_id)
+on delete cascade
 ;
 
-ALTER TABLE CSM_USER_PE ADD CONSTRAINT FK_PROTECTION_ELEMENT_USER 
-FOREIGN KEY (PROTECTION_ELEMENT_ID) REFERENCES CSM_PROTECTION_ELEMENT (PROTECTION_ELEMENT_ID)
-ON DELETE CASCADE
+alter table csm_protection_group add constraint fk_protection_group 
+foreign key (parent_protection_group_id) references csm_protection_group (protection_group_id)
 ;
 
-COMMIT;
+alter table csm_pg_pe add constraint fk_protection_element_protection_group 
+foreign key (protection_element_id) references csm_protection_element (protection_element_id)
+on delete cascade
+;
+
+alter table csm_pg_pe add constraint fk_protection_group_protection_element 
+foreign key (protection_group_id) references csm_protection_group (protection_group_id)
+on delete cascade
+;
+
+alter table csm_role add constraint fk_application_role 
+foreign key (application_id) references csm_application (application_id)
+on delete cascade
+;
+
+alter table csm_role_privilege add constraint fk_privilege_role 
+foreign key (privilege_id) references csm_privilege (privilege_id)
+on delete cascade
+;
+
+alter table csm_role_privilege add constraint fk_role
+foreign key (role_id) references csm_role (role_id)
+on delete cascade
+;
+
+alter table csm_user_group add constraint fk_user_group 
+foreign key (user_id) references csm_user (user_id)
+on delete cascade
+;
+
+alter table csm_user_group add constraint fk_ug_group 
+foreign key (group_id) references csm_group (group_id)
+on delete cascade
+;
+
+alter table csm_user_group_role_pg add constraint fk_user_group_role_protection_group_groups 
+foreign key (group_id) references csm_group (group_id)
+on delete cascade
+;
+
+alter table csm_user_group_role_pg add constraint fk_user_group_role_protection_group_role 
+foreign key (role_id) references csm_role (role_id)
+on delete cascade
+;
+
+alter table csm_user_group_role_pg add constraint fk_user_group_role_protection_group_protection_group 
+foreign key (protection_group_id) references csm_protection_group (protection_group_id)
+on delete cascade
+;
+
+alter table csm_user_group_role_pg add constraint fk_user_group_role_protection_group_user 
+foreign key (user_id) references csm_user (user_id)
+on delete cascade
+;
+
+alter table csm_user_pe add constraint fk_pe_user 
+foreign key (user_id) references csm_user (user_id)
+on delete cascade
+;
+
+alter table csm_user_pe add constraint fk_protection_element_user 
+foreign key (protection_element_id) references csm_protection_element (protection_element_id)
+on delete cascade
+;
+
+commit;
