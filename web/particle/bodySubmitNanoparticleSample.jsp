@@ -70,7 +70,7 @@
 								<html:select
 									property="particleSampleBean.domainParticleSample.primaryOrganization.name"
 									styleId="sampleOrganization"
-									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleSource');
+									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleOrganization');
 												removeSourceVisibility();">
 									<option />
 									<html:options collection="allUserParticleOrganizations"
