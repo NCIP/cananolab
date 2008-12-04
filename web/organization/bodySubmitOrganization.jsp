@@ -10,7 +10,7 @@
 <c:if test="${param.dispatch eq 'setupUpdate'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-<html:form action="/submitOrganization" >
+<html:form action="/submitOrganization">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -42,28 +42,26 @@
 							<td class="leftLabel">
 								<strong>Name</strong>
 							</td>
-							<td class="label" colspan="3">
+							<td class="rightLabel" colspan="3">
 								<html:text property="orga.domain.name" size="20" />
 								&nbsp;
 							</td>
 						</tr>
 						<tr>
-							<td class="label">
+							<td class="leftLabel">
 								<strong>Address Line1</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:text property="orga.domain.streetAddress1"
-									size="50" />
+								<html:text property="orga.domain.streetAddress1" size="50" />
 								&nbsp;
 							</td>
 						</tr>
 						<tr>
-							<td class="label">
+							<td class="leftLabel">
 								<strong>Address Line2</strong>
 							</td>
 							<td class="rightLabel" colspan="3">
-								<html:text property="orga.domain.streetAddress2"
-									size="50" />
+								<html:text property="orga.domain.streetAddress2" size="50" />
 								&nbsp;
 							</td>
 						</tr>
@@ -88,8 +86,7 @@
 								<strong>Zip/Postal Code</strong>
 							</td>
 							<td class="label">
-								<html:text property="orga.domain.postalCode"
-									size="10" />
+								<html:text property="orga.domain.postalCode" size="10" />
 								&nbsp;
 							</td>
 							<td class="label">
@@ -112,8 +109,7 @@
 											</td>
 											<td id="compEleTd">
 												<logic:iterate name="submitOrganizationForm"
-													property="orag.pointOfContacts" id="pointOfContact"
-													indexId="ind">
+													property="orga.pocs" id="pointOfContact" indexId="ind">
 
 													<table class="topBorderOnly" cellspacing="0"
 														cellpadding="3" width="100%" align="center" summary=""
@@ -135,24 +131,21 @@
 																	<strong>First Name</strong>
 																</td>
 																<td class="labelWithTop" valign="top">
-																	<html:text
-																		property="orga.pointOfContacts[${ind}].firstName"
+																	<html:text property="orga.pocs[${ind}].firstName"
 																		size="15" />
 																</td>
 																<td class="labelWithTop" valign="top">
 																	<strong>Middle Initial</strong>
 																</td>
 																<td class="labelWithTop" valign="top">
-																	<html:text
-																		property="orga.pointOfContacts[${ind}].middleInitial"
+																	<html:text property="orga.pocs[${ind}].middleInitial"
 																		size="5" />
 																</td>
 																<td class="labelWithTop" valign="top">
 																	<strong>Last Name</strong>
 																</td>
 																<td class="rightLabelWithTop" valign="top">
-																	<html:text
-																		property="orga.pointOfContacts[${ind}].lastName"
+																	<html:text property="orga.pocs[${ind}].lastName"
 																		size="15" />
 																</td>
 															</tr>
@@ -162,10 +155,10 @@
 																</td>
 																<td class="rightLabel" valign="top" colspan="5">
 																	<html:select styleId="role${ind}"
-																		property="orga.pointOfContacts[${ind}].role"
+																		property="orga.pocs[${ind}].role"
 																		onchange="javascript:callPrompt('Contact Role', 'role${ind}');">
 																		<option />
-																			<html:options name="contactRoles" />
+																			<%--																			<html:options name="contactRoles" />--%>
 																		<option value="other">
 																			[Other]
 																		</option>
@@ -177,22 +170,15 @@
 																	<strong>Email</strong>
 																</td>
 																<td class="label" valign="top">
-																	<html:text
-																		property="orga.pointOfContacts[${ind}].email"
-																		size="30" />
+																	<html:text property="orga.pocs[${ind}].email" size="30" />
 																</td>
 																<td class="label" valign="top">
 																	<strong>Email Visibility</strong>
 																</td>
 																<td class="rightLabel" valign="top" colspan="3">
-																	<html:select styleId="molFormulaType${ind}"
-																		property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
-																		onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType${ind}');">
-																		<option value="" />
-																			<html:options name="ceMolecularFormulaTypes" />
-																		<option value="other">
-																			[Other]
-																		</option>
+																	<html:select property="orga.visibilityGroups"
+																		multiple="true" size="6">
+																		<html:options name="allVisibilityGroups" />
 																	</html:select>
 																</td>
 															</tr>
@@ -201,22 +187,15 @@
 																	<strong>Phone Number</strong>
 																</td>
 																<td class="label" valign="top">
-																	<html:text
-																		property="orga.pointOfContacts[${ind}].phone"
-																		size="30" />
+																	<html:text property="orga.pocs[${ind}].phone" size="30" />
 																</td>
 																<td class="label" valign="top">
 																	<strong>Phone Number Visibility</strong>
 																</td>
 																<td class="rightLabel" valign="top" colspan="3">
-																	<html:select styleId="molFormulaType${ind}"
-																		property="entity.composingElements[${ind}].domainComposingElement.molecularFormulaType"
-																		onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType${ind}');">
-																		<option value="" />
-																			<html:options name="ceMolecularFormulaTypes" />
-																		<option value="other">
-																			[Other]
-																		</option>
+																	<html:select property="orga.visibilityGroups"
+																		multiple="true" size="6">
+																		<html:options name="allVisibilityGroups" />
 																	</html:select>
 																</td>
 															</tr>

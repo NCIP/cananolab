@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
+<script type='text/javascript' src='javascript/OrganizationManager.js'></script>
 
 <script type="text/javascript"
 	src="javascript/ParticleManager.js"></script>
@@ -63,17 +64,17 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Nanoparticle Sample Source *</strong>
+								<strong>Primary Organization *</strong>
 							</td>
 							<td class="rightLabel">
 								<html:select
-									property="particleSampleBean.domainParticleSample.source.organizationName"
+									property="particleSampleBean.domainParticleSample.primaryOrganization.name"
 									styleId="sampleSource"
-									onchange="javascript:callPrompt('Nanoparticle Sample Source', 'sampleSource');
+									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleSource');
 												removeSourceVisibility();">
 									<option />
-										<html:options collection="allUserParticleSources"
-											labelProperty="organizationName" property="organizationName" />
+<%--										<html:options collection="allUserParticleSources"--%>
+<%--											labelProperty="organizationName" property="organizationName" />--%>
 									<option value="other">
 										[Other]
 									</option>
