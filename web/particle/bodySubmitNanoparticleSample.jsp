@@ -69,12 +69,12 @@
 							<td class="rightLabel">
 								<html:select
 									property="particleSampleBean.domainParticleSample.primaryOrganization.name"
-									styleId="sampleSource"
+									styleId="sampleOrganization"
 									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleSource');
 												removeSourceVisibility();">
 									<option />
-<%--										<html:options collection="allUserParticleSources"--%>
-<%--											labelProperty="organizationName" property="organizationName" />--%>
+									<html:options collection="allUserParticleOrganizations"
+											labelProperty="name" property="name" />
 									<option value="other">
 										[Other]
 									</option>
