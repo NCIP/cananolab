@@ -15,6 +15,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -55,12 +56,19 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 			NanoparticleSample nanoparticleSample = NanoparticleSampleService.findNanoparticleSampleById(particleId).getDomainParticleSample();
 			Collection<NanoparticleSample> primaryNanoparticleSampleCollection = 
 				primaryOrganization.getDomain().getPrimaryNanoparticleSampleCollection();
-			if (primaryNanoparticleSampleCollection!=null &&
-					!primaryNanoparticleSampleCollection.contains(nanoparticleSample)){
+			if (primaryNanoparticleSampleCollection==null) {
+				primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
+			}
+			if (!primaryNanoparticleSampleCollection.contains(nanoparticleSample)){
 				primaryNanoparticleSampleCollection.add(nanoparticleSample);
 			}
+			primaryOrganization.getDomain()
+					.setPrimaryNanoparticleSampleCollection(
+							primaryNanoparticleSampleCollection);
+			
 			saveOrganization(primaryOrganization, authService, appService);
-			if (otherOrganizationCollection!=null) {
+			
+			if (otherOrganizationCollection != null) {
 				for (OrganizationBean organizationBean: otherOrganizationCollection) {
 					Collection<NanoparticleSample> otherNanoparticleSampleCollection = 
 						organizationBean.getDomain().getNanoparticleSampleCollection();
@@ -117,7 +125,10 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 				}
 			}
 		}
-		appService.saveOrUpdate(organizationBean);		
+		if (organizationBean.getDomain().getCreatedDate()==null) {
+			organizationBean.getDomain().setCreatedDate(new Date());
+		}
+		appService.saveOrUpdate(organizationBean.getDomain());		
 	}
 
 }
