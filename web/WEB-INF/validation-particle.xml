@@ -12,10 +12,10 @@
 					key="nanoparticleSampleForm.sampleName" bundle="particle" />
 			</field>
 			<field
-				property="particleSampleBean.domainParticleSample.source.organizationName"
+				property="particleSampleBean.domainParticleSample.primaryOrganization.name"
 				page="1" depends="required">
 				<arg position="0"
-					key="nanoparticleSampleForm.sampleSource" bundle="particle" />
+					key="nanoparticleSampleForm.sampleOrganization" bundle="particle" />
 			</field>
 		</form>
 		<form name="chemicalAssociationForm">
