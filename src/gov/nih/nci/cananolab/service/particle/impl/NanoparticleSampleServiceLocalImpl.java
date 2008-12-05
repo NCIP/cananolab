@@ -104,7 +104,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 					particleNames.add(sample.getName());
 				}
 				for (NanoparticleSample sample : organization
-						.getNanoparticleSampleCollection()) {
+						.getPrimaryNanoparticleSampleCollection()) {
 					particleNames.add(sample.getName());
 				}				
 				if (auth.isAllowedAtLeastOne(auth, particleNames, user)) {

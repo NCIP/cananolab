@@ -69,13 +69,7 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 			saveOrganization(primaryOrganization, authService, appService);
 			
 			if (otherOrganizationCollection != null) {
-				for (OrganizationBean organizationBean: otherOrganizationCollection) {
-					Collection<NanoparticleSample> otherNanoparticleSampleCollection = 
-						organizationBean.getDomain().getNanoparticleSampleCollection();
-					if (otherNanoparticleSampleCollection!=null &&
-							!otherNanoparticleSampleCollection.contains(nanoparticleSample)){
-						otherNanoparticleSampleCollection.add(nanoparticleSample);
-					}
+				for (OrganizationBean organizationBean: otherOrganizationCollection) {					
 					saveOrganization(organizationBean, authService, appService);
 				}
 			}
