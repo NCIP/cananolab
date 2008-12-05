@@ -35,6 +35,10 @@
 			<forward name="success" path="particle.submitOrganization" />
 			<forward name="input"
 				path="particle.submitOrganization" />
+			<forward name="updateParticle"
+				path="particle.updateNanoparticleSample" />
+			<forward name="submitParticle"
+				path="particle.submitNanoparticleSample" />
 		</action>
 		
 	</action-mappings>
