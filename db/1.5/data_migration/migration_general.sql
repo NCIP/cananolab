@@ -66,7 +66,7 @@ CREATE TABLE point_of_contact
 	email VARCHAR(200),
 	created_date DATE NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
-	organization_pk_id BIGINT NOT NULL,
+	organization_pk_id BIGINT,
 	PRIMARY KEY (poc_pk_id),
 	KEY (organization_pk_id)
 ) TYPE=InnoDB
@@ -82,7 +82,7 @@ ALTER TABLE nanoparticle_sample
 ALTER TABLE nanoparticle_sample
 	DROP KEY source_pk_id; 
 ALTER TABLE nanoparticle_sample 
-	CHANGE source_pk_id primary_organization_pk_id BIGINT NOT NULL;
+	CHANGE source_pk_id primary_organization_pk_id BIGINT;
 ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_organization 
 	FOREIGN KEY (primary_organization_pk_id) REFERENCES organization (organization_pk_id)
 ;

@@ -421,7 +421,7 @@ CREATE TABLE point_of_contact
 	email VARCHAR(200),
 	created_date DATE NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
-	organization_pk_id BIGINT NOT NULL,
+	organization_pk_id BIGINT,
 	PRIMARY KEY (poc_pk_id),
 	KEY (organization_pk_id)
 ) TYPE=InnoDB
@@ -434,7 +434,7 @@ CREATE TABLE nanoparticle_sample
 	particle_sample_name VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
-	primary_organization_pk_id BIGINT NOT NULL,
+	primary_organization_pk_id BIGINT,
 	PRIMARY KEY (particle_sample_pk_id),
 	UNIQUE (particle_sample_name),
 	UNIQUE (particle_sample_pk_id),
