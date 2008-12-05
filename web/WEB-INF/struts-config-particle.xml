@@ -131,7 +131,7 @@
 		<action name="nanoparticleSampleForm" parameter="dispatch"
 			path="/submitNanoparticleSample"
 			type="gov.nih.nci.cananolab.ui.particle.SubmitNanoparticleAction"
-			input="input" scope="request">
+			input="input">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateNanoparticleSample"
