@@ -9,6 +9,8 @@
 				initial="0" />
 			<form-property name="orga"
 				type="gov.nih.nci.cananolab.dto.common.OrganizationBean" />
+			<form-property name="otherOrga"
+				type="gov.nih.nci.cananolab.dto.common.OtherOrganizationsBean" />
 		</form-bean>
 		
 	</form-beans>
