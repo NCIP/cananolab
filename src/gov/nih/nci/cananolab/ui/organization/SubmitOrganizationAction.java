@@ -8,24 +8,23 @@ package gov.nih.nci.cananolab.ui.organization;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.OrganizationException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 import gov.nih.nci.cananolab.service.organization.impl.OrganizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.organization.impl.OrganizationServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,8 +34,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitOrganizationAction extends BaseAnnotationAction {
@@ -47,6 +44,68 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 	/**
 	 * create new organization / update organization
 	 */
+//	public ActionForward create(ActionMapping mapping, ActionForm form,
+//			HttpServletRequest request, HttpServletResponse response)
+//			throws Exception {
+//		ActionForward forward = null;
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		String particleId = request.getParameter("particleId");
+//		OrganizationBean primaryOrganization = (OrganizationBean) theForm
+//				.get("orga");
+////		List<OrganizationBean> otherOrganizationCollection = (List<OrganizationBean>) theForm
+////				.get("otherOrganizationCollection");
+//		List<OrganizationBean> otherOrganizationCollection = null;
+//
+//		UserBean user = (UserBean) request.getSession().getAttribute("user");
+//		
+//		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+//		OrganizationService service = new OrganizationServiceLocalImpl();
+//		service.saveOrganization(particleId, primaryOrganization,
+//				otherOrganizationCollection);
+//		// assign organization visibility
+//		AuthorizationService authService = new AuthorizationService(
+//				CaNanoLabConstants.CSM_APP_NAME);
+//		authService.assignVisibility(primaryOrganization.getDomain().getId()
+//				.toString(), primaryOrganization.getVisibilityGroups());
+//		// assign poc visibility
+//		assignPOCVisibility(primaryOrganization, authService);
+//		if (otherOrganizationCollection != null) {
+//			for (OrganizationBean organizationBean : otherOrganizationCollection) {
+//				// assign or ganization visibility
+//				authService.assignVisibility(organizationBean.getDomain()
+//						.getId().toString(), organizationBean
+//						.getVisibilityGroups());
+//				// assign poc visibility
+//				assignPOCVisibility(organizationBean, authService);
+//			}
+//		}
+//		// TODO: assign attribute level visibility (work with Sue)
+//
+//		ActionMessages msgs = new ActionMessages();
+//		ActionMessage msg = new ActionMessage(
+//				"message.submitOrganization.organization", primaryOrganization
+//						.getDomain().getName());
+//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//		saveMessages(request, msgs);
+//		forward = mapping.findForward("success");
+//
+//		// TODO: to verify forward page (Shuang)
+//		HttpSession session = request.getSession();
+//		particleId = (String) session.getAttribute("docParticleId");
+//
+//		if (particleId != null && particleId.length() > 0) {
+//			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+//			ParticleBean particleBean = sampleService
+//					.findNanoparticleSampleById(particleId);
+//			particleBean.setLocation("local");
+//			setupDataTree(particleBean, request);
+//			forward = mapping.findForward("particleSuccess");
+//		}
+//		// session.removeAttribute("particleId");
+//		return forward;
+//	}
+
+	
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -55,58 +114,51 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		OrganizationBean primaryOrganization = (OrganizationBean) theForm
 				.get("orga");
-		List<OrganizationBean> otherOrganizationCollection = (List<OrganizationBean>) theForm
-				.get("otherOrganizationCollection");
-
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		//TODO::
+//		List<OrganizationBean> otherOrganizationCollection = (List<OrganizationBean>) theForm
+//				.get("otherOrganizationCollection");
+		List<OrganizationBean> otherOrganizationCollection = null;
 		
-		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-		OrganizationService service = new OrganizationServiceLocalImpl();
-		service.saveOrganization(particleId, primaryOrganization,
-				otherOrganizationCollection);
-		// assign or ganization visibility
-		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		authService.assignVisibility(primaryOrganization.getDomain().getId()
-				.toString(), primaryOrganization.getVisibilityGroups());
-		// assign poc visibility
-		assignPOCVisibility(primaryOrganization, authService);
-		if (otherOrganizationCollection != null) {
-			for (OrganizationBean organizationBean : otherOrganizationCollection) {
-				// assign or ganization visibility
-				authService.assignVisibility(organizationBean.getDomain()
-						.getId().toString(), organizationBean
-						.getVisibilityGroups());
-				// assign poc visibility
-				assignPOCVisibility(organizationBean, authService);
-			}
+		request.getSession().setAttribute("primaryOrganization", primaryOrganization);
+		request.getSession().setAttribute("otherOrganizationCollection", otherOrganizationCollection);
+		
+		
+		
+		//add new added organization to drop down list
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SortedSet<Organization> sampleOrganizations = InitNanoparticleSetup.getInstance().getNanoparticleSampleOrganizations(
+				request, user);
+		sampleOrganizations.add(primaryOrganization.getDomain());
+		request.getSession().setAttribute("allUserParticleOrganizations",
+				sampleOrganizations);		
+		//set selected primary organization
+		ParticleBean particleSampleBean = 
+			(ParticleBean)request.getSession().getAttribute("theParticle");
+		NanoparticleSample particle = null;
+		if (particleSampleBean!=null) {
+			particle = particleSampleBean.getDomainParticleSample();
+			particleSampleBean.getDomainParticleSample().
+				setPrimaryOrganization(primaryOrganization.getDomain());			
 		}
-		// TODO: assign attribute level visibility (work with Sue)
-
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.submitOrganization.organization", primaryOrganization
-						.getDomain().getName());
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		forward = mapping.findForward("success");
-
-		// TODO: to verify forward page (Shuang)
-		HttpSession session = request.getSession();
-		particleId = (String) session.getAttribute("docParticleId");
-
-		if (particleId != null && particleId.length() > 0) {
-			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-			ParticleBean particleBean = sampleService
-					.findNanoparticleSampleById(particleId);
-			particleBean.setLocation("local");
-			setupDataTree(particleBean, request);
-			forward = mapping.findForward("particleSuccess");
-		}
-		// session.removeAttribute("particleId");
+//		if (particle!=null) {
+//			//set organization to particle
+//			primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+//			particle.setPrimaryOrganization(primaryOrganization.getDomain());		
+//			particle.setOtherOrganizationCollection(otherOrganizationCollection);
+//		}
+		forward = mapping.findForward("updateParticle");
+		
 		return forward;
 	}
 
+	
+//	private void assignOrganizationToParticle(NanoparticleSample particle,
+//			OrganizationBean primaryOrganization, List<OrganizationBean> otherOrganizationCollection,
+//			UserBean user) {
+//		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+//
+//	}
+	
 	/**
 	 * create organization form
 	 */

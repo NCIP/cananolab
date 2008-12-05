@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -146,8 +147,15 @@ public class NanoparticleSampleServiceLocalImpl implements
 			if (dbOrganization != null) {
 				particleSample.getPrimaryOrganization().setId(dbOrganization.getId());
 				particleSample.setPrimaryOrganization(dbOrganization);
+			}else {
+				//new organization
+				Collection primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
+				primaryNanoparticleSampleCollection.add(particleSample);
+				particleSample.getPrimaryOrganization().
+					setPrimaryNanoparticleSampleCollection(primaryNanoparticleSampleCollection);
 			}
-			appService.saveOrUpdate(particleSample.getPrimaryOrganization());
+			//TODO:: cascade save-update, do not need save here??
+			//appService.saveOrUpdate(particleSample.getPrimaryOrganization());
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
 				// turned off cascade save-update in order to share the same
 				// keyword instance with File keywords.
