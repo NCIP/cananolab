@@ -54,7 +54,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
 		OrganizationBean primaryOrganization = (OrganizationBean) theForm
-				.get("primaryOrganization");
+				.get("orga");
 		List<OrganizationBean> otherOrganizationCollection = (List<OrganizationBean>) theForm
 				.get("otherOrganizationCollection");
 
@@ -325,7 +325,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		// pubMedId);
 		//		
 		// return forward;
-		return null;
+		return mapping.getInputForward();
 	}
 
 	// public ActionForward addAuthor(ActionMapping mapping,
@@ -341,12 +341,6 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 	//	
 	public boolean loginRequired() {
 		return true;
-	}
-
-	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PUBLICATION);
 	}
 
 	private void setVisibility(UserBean user, OrganizationBean organizationBean,
@@ -396,6 +390,28 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 				}
 			}
 		}
+	}
+
+	public ActionForward addPointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
+		entity.addPointOfContact();
+
+		return mapping.getInputForward();
+	}
+	
+	public ActionForward removePointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("compInd");
+		int ind = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
+		entity.removePointOfContact(ind);
+
+		return mapping.getInputForward();
 	}
 
 }

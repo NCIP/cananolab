@@ -6,6 +6,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,5 +118,15 @@ public class OrganizationBean{
 		addressBuf.append(orga.getState() + " ");
 		addressBuf.append(orga.getPostalCode());
 		return addressBuf.toString();
+	}
+	
+	public void addPointOfContact() {
+		pocs.add(new PointOfContact());
+	}
+	
+	public void removePointOfContact(int ind) {
+//		PointOfContact elementToRemove = pocs.get(ind);
+		// remove the one at the index
+		pocs.remove(ind);
 	}
 }

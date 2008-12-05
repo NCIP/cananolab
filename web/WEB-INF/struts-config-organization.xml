@@ -20,8 +20,6 @@
 	</global-exceptions>
 	<global-forwards>
 		<forward name="organizationMessage" path="organization.message" />
-		<forward name="reportDetailPrintView"
-			path="/organization/bodyReportDetailPrintView.jsp" />
 		<forward name="organizationDetailPrintView"
 			path="/organization/bodyOrganizationDetailPrintView.jsp" />
 		<forward name="organizationSummaryPrintView"
@@ -32,9 +30,9 @@
 			path="/submitOrganization"
 			type="gov.nih.nci.cananolab.ui.organization.SubmitOrganizationAction"
 			input="input">
-			<forward name="success" path="organization.message" />
+			<forward name="success" path="particle.submitOrganization" />
 			<forward name="input"
-				path="/submitOrganization.do?dispatch=input&amp;page=0" />
+				path="particle.submitOrganization" />
 		</action>
 		
 	</action-mappings>
