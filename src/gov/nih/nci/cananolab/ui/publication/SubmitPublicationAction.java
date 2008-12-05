@@ -472,9 +472,6 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		if (selectedPublicationType!=null) {
 			SortedSet<String> types = (SortedSet<String>)
 				request.getSession().getAttribute("publicationCategories");
-			for(String op: types) {
-		    	System.out.println("options:" + op);
-		    }
 			if (types!=null) {
 				types.add(selectedPublicationType);
 				request.getSession().setAttribute("publicationCategories", types);
