@@ -6,10 +6,6 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript" src="javascript/OrganizationManager.js"></script>
 
-<c:set var="action" value="Submit" scope="request" />
-<c:if test="${param.dispatch eq 'setupUpdate'}">
-	<c:set var="action" value="Update" scope="request" />
-</c:if>
 <html:form action="/submitOrganization">
 	<table width="100%" align="center">
 		<tr>
@@ -28,75 +24,18 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=organization" />
+
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0" id="pubTable">
 					<tbody>
 						<tr class="topBorder">
 							<td class="formTitle" colspan="4">
 								<div align="justify">
-									Primary Organization
+									Organization and Point of Contact
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Name</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<html:text property="orga.domain.name" size="50" />
-								&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Address Line1</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<html:text property="orga.domain.streetAddress1" size="50" />
-								&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Address Line2</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<html:text property="orga.domain.streetAddress2" size="50" />
-								&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>City</strong>
-							</td>
-							<td class="label">
-								<html:text property="orga.domain.city" size="20" />
-								&nbsp;
-							</td>
-							<td class="label">
-								<strong>State/Province</strong>
-							</td>
-							<td class="rightLabel">
-								<html:text property="orga.domain.state" size="20" />
-								&nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Zip/Postal Code</strong>
-							</td>
-							<td class="label">
-								<html:text property="orga.domain.postalCode" size="10" />
-								&nbsp;
-							</td>
-							<td class="label">
-								<strong>Country</strong>
-							</td>
-							<td class="rightLabel">
-								<html:text property="orga.domain.country" size="50" />
-								&nbsp;
-							</td>
-						</tr>
+
 						<tr>
 							<td class="completeLabel" colspan="4">
 								<table border="0" width="100%">
@@ -104,104 +43,23 @@
 										<tr>
 											<td valign="bottom">
 												<a href="#"
-													onclick="javascript:addComponent(submitOrganizationForm, 'submitOrganization', 'addPointOfContact'); return false;">
-													<span class="addLink">Add Point of Contact</span> </a>
+													onclick="javascript:addComponent(submitOrganizationForm, 'submitOrganization', 'addOrganization'); return false;">
+													<span class="addLink">Add Organization</span> </a>
 											</td>
 											<td id="compEleTd">
+												<jsp:include page="/organization/bodyOrganization.jsp" >
+													<jsp:param name="orgTitle" value="Primary Organization" />
+													<jsp:param name="orgBean" value="orga" />
+												</jsp:include>
+												<br>
 												<logic:iterate name="submitOrganizationForm"
-													property="orga.pocs" id="pointOfContact" indexId="ind">
+													property="otherOrga.ortherOrganizations" id="organizations" indexId="orgaIndex">
 
-													<table class="topBorderOnly" cellspacing="0"
-														cellpadding="3" width="100%" align="center" summary=""
-														border="0">
-														<tbody>
-															<tr>
-																<td class="formSubTitleNoRight" colspan="5">
-																	<span>Point of Contact #${ind + 1}</span>
-																</td>
-																<td class="formSubTitleNoLeft" align="right">
-																	<a href="#"
-																		onclick="removeComponent(submitOrganizationForm, 'submitOrganization', ${ind}, 'removePointOfContact');return false;">
-																		<img src="images/delete.gif" border="0"
-																			alt="remove this point of contact"> </a>
-																</td>
-															</tr>
-															<tr>
-																<td class="leftLabelWithTop" valign="top">
-																	<strong>First Name</strong>
-																</td>
-																<td class="labelWithTop" valign="top">
-																	<html:text property="orga.pocs[${ind}].firstName"
-																		size="15" />
-																</td>
-																<td class="labelWithTop" valign="top">
-																	<strong>Middle Initial</strong>
-																</td>
-																<td class="labelWithTop" valign="top">
-																	<html:text property="orga.pocs[${ind}].middleInitial"
-																		size="5" />
-																</td>
-																<td class="labelWithTop" valign="top">
-																	<strong>Last Name</strong>
-																</td>
-																<td class="rightLabelWithTop" valign="top">
-																	<html:text property="orga.pocs[${ind}].lastName"
-																		size="15" />
-																</td>
-															</tr>
-															<tr>
-																<td class="leftLabel" valign="top">
-																	<strong>Role*</strong>
-																</td>
-																<td class="rightLabel" valign="top" colspan="5">
-																	<html:select styleId="role${ind}"
-																		property="orga.pocs[${ind}].role"
-																		onchange="javascript:callPrompt('Contact Role', 'role${ind}');">
-																		<option />
-																			<%--																			<html:options name="contactRoles" />--%>
-																		<option value="other">
-																			[Other]
-																		</option>
-																	</html:select>
-																</td>
-															</tr>
-															<tr>
-																<td class="leftLabel" valign="top">
-																	<strong>Email</strong>
-																</td>
-																<td class="label" valign="top" colspan="2">
-																	<html:text property="orga.pocs[${ind}].email" size="30" />
-																</td>
-																<td class="label" valign="top">
-																	<strong>Email Visibility</strong>
-																</td>
-																<td class="rightLabel" valign="top" colspan="2">
-																	<html:select property="orga.visibilityGroups"
-																		multiple="true" size="6">
-																		<html:options name="allVisibilityGroups" />
-																	</html:select>
-																</td>
-															</tr>
-															<tr>
-																<td class="leftLabel" valign="top">
-																	<strong>Phone Number</strong>
-																</td>
-																<td class="label" valign="top" colspan="2">
-																	<html:text property="orga.pocs[${ind}].phone" size="30" />
-																</td>
-																<td class="label" valign="top">
-																	<strong>Phone Number Visibility</strong>
-																</td>
-																<td class="rightLabel" valign="top" colspan="2">
-																	<html:select property="orga.visibilityGroups"
-																		multiple="true" size="6">
-																		<html:options name="allVisibilityGroups" />
-																	</html:select>
-																</td>
-															</tr>
-														</tbody>
-													</table>
-													<br>
+													<jsp:include page="/organization/bodyOrganization.jsp" >
+														<jsp:param name="orgIndex" value="${orgaIndex}" />
+														<jsp:param name="orgTitle" value="Organization #${orgaIndex + 2}" />
+														<jsp:param name="orgBean" value="otherOrga.ortherOrganizations[${orgaIndex}]" />
+													</jsp:include>
 												</logic:iterate>
 											</td>
 										</tr>
@@ -209,24 +67,12 @@
 								</table>
 							</td>
 						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Organization Visibility</strong>
-							</td>
-							<td class="rightLabel" colspan="3">
-								<html:select property="orga.visibilityGroups" multiple="true"
-									size="6">
-									<html:options name="allVisibilityGroups" />
-								</html:select>
-								<br>
-								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_DataCurator are always selected by
-									default.)</i>
-							</td>
-						</tr>
 					</tbody>
 				</table>
-
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
