@@ -3,6 +3,8 @@
  */
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,4 +28,11 @@ public class OtherOrganizationsBean {
 		this.ortherOrganizations = ortherOrganizations;
 	}
 
+	public void addOrganization() {
+		ortherOrganizations.add(new OrganizationBean());
+	}
+	
+	public void removeOrganization(int ind) {
+		ortherOrganizations.remove(ind);
+	}
 }
