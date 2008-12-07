@@ -125,8 +125,6 @@ public class OrganizationBean{
 	}
 	
 	public void removePointOfContact(int ind) {
-//		PointOfContact elementToRemove = pocs.get(ind);
-		// remove the one at the index
 		pocs.remove(ind);
 	}
 }
