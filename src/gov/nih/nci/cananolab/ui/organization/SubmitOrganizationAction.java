@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
+import gov.nih.nci.cananolab.dto.common.OtherOrganizationsBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.OrganizationException;
@@ -34,6 +35,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitOrganizationAction extends BaseAnnotationAction {
@@ -109,31 +112,34 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
+		
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
-		OrganizationBean primaryOrganization = (OrganizationBean) theForm
-				.get("orga");
-		//TODO::
-//		List<OrganizationBean> otherOrganizationCollection = (List<OrganizationBean>) theForm
-//				.get("otherOrganizationCollection");
-		List<OrganizationBean> otherOrganizationCollection = null;
 		
-		request.getSession().setAttribute("primaryOrganization", primaryOrganization);
-		request.getSession().setAttribute("otherOrganizationCollection", otherOrganizationCollection);
+		OrganizationBean primaryOrganization = 
+			(OrganizationBean) theForm.get("orga");
 		
+		OtherOrganizationsBean otherOrganization = 
+			(OtherOrganizationsBean) theForm.get("otherOrga");
 		
-		
+		List<OrganizationBean> otherOrganizationCollection = 
+			otherOrganization.getOrtherOrganizations();
+	
+		HttpSession session = request.getSession();
+		session.setAttribute("primaryOrganization", primaryOrganization);
+		session.setAttribute("otherOrganizationCollection", otherOrganizationCollection);
+				
 		//add new added organization to drop down list
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SortedSet<Organization> sampleOrganizations = InitNanoparticleSetup.getInstance().getNanoparticleSampleOrganizations(
+		SortedSet<Organization> sampleOrganizations = 
+			InitNanoparticleSetup.getInstance().getNanoparticleSampleOrganizations(
 				request, user);
 		sampleOrganizations.add(primaryOrganization.getDomain());
-		request.getSession().setAttribute("allUserParticleOrganizations",
-				sampleOrganizations);		
+		session.setAttribute("allUserParticleOrganizations", sampleOrganizations);
+		
 		//set selected primary organization
 		ParticleBean particleSampleBean = 
-			(ParticleBean)request.getSession().getAttribute("theParticle");
+			(ParticleBean) session.getAttribute("theParticle");
 		NanoparticleSample particle = null;
 		if (particleSampleBean!=null) {
 			particle = particleSampleBean.getDomainParticleSample();
@@ -146,9 +152,41 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 //			particle.setPrimaryOrganization(primaryOrganization.getDomain());		
 //			particle.setOtherOrganizationCollection(otherOrganizationCollection);
 //		}
-		forward = mapping.findForward("updateParticle");
 		
-		return forward;
+		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+		OrganizationService service = new OrganizationServiceLocalImpl();
+//		service.saveOrganization(particleId, primaryOrganization,
+//				otherOrganizationCollection);
+		
+		// assign or organization visibility
+//		AuthorizationService authService = new AuthorizationService(
+//				CaNanoLabConstants.CSM_APP_NAME);
+//		authService.assignVisibility(primaryOrganization.getDomain().getId()
+//				.toString(), primaryOrganization.getVisibilityGroups());
+		
+		// assign poc visibility
+//		assignPOCVisibility(primaryOrganization, authService);
+//		if (otherOrganizationCollection != null) {
+//			for (OrganizationBean organizationBean : otherOrganizationCollection) {
+//				// assign or ganization visibility
+//				authService.assignVisibility(organizationBean.getDomain()
+//						.getId().toString(), organizationBean
+//						.getVisibilityGroups());
+//				// assign poc visibility
+//				assignPOCVisibility(organizationBean, authService);
+//			}
+//		}
+		// TODO: assign attribute level visibility (work with Sue)
+
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"message.submitOrganization.organization", primaryOrganization
+						.getDomain().getName());
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		
+		return mapping.findForward("updateParticle");
+
 	}
 
 	
@@ -462,6 +500,28 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
 		entity.removePointOfContact(ind);
+
+		return mapping.getInputForward();
+	}
+	
+	public ActionForward addOrganization(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm.get("otherOrga");
+		entity.addOrganization();
+
+		return mapping.getInputForward();
+	}
+	
+	public ActionForward removeOrganization(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("compInd");
+		int ind = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm.get("otherOrga");
+		entity.removeOrganization(ind);
 
 		return mapping.getInputForward();
 	}
