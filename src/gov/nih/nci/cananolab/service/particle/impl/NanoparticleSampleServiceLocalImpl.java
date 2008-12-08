@@ -144,18 +144,15 @@ public class NanoparticleSampleServiceLocalImpl implements
 			Organization dbOrganization = (Organization) appService.getObject(Organization.class,
 					"name", particleSample.getPrimaryOrganization()
 							.getName());
+			
 			if (dbOrganization != null) {
+				dbOrganization = (Organization) appService.load(
+						Organization.class, dbOrganization.getId());
 				particleSample.getPrimaryOrganization().setId(dbOrganization.getId());
 				particleSample.setPrimaryOrganization(dbOrganization);
-			}else {
-				//new organization
-				Collection primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
-				primaryNanoparticleSampleCollection.add(particleSample);
-				particleSample.getPrimaryOrganization().
-					setPrimaryNanoparticleSampleCollection(primaryNanoparticleSampleCollection);
+				//TODO: test
+				//dbOrganization.getPrimaryNanoparticleSampleCollection().add(particleSample);
 			}
-			//TODO:: cascade save-update, do not need save here??
-			//appService.saveOrUpdate(particleSample.getPrimaryOrganization());
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
 				// turned off cascade save-update in order to share the same
 				// keyword instance with File keywords.

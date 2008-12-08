@@ -1,20 +1,19 @@
 package gov.nih.nci.cananolab.service.organization.impl;
 
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.OrganizationException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 import gov.nih.nci.cananolab.service.organization.helper.OrganizationServiceHelper;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +40,7 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 	 * 
 	 * @throws OrganizationException
 	 */
-	public void saveOrganization(String particleId,
+	public void saveOrganization(
 			OrganizationBean primaryOrganization, 
 			List<OrganizationBean> otherOrganizationCollection)
 		throws OrganizationException{
@@ -51,21 +50,14 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			NanoparticleSampleService NanoparticleSampleService = new NanoparticleSampleServiceLocalImpl();
-			NanoparticleSample nanoparticleSample = NanoparticleSampleService.findNanoparticleSampleById(particleId).getDomainParticleSample();
-			Collection<NanoparticleSample> primaryNanoparticleSampleCollection = 
-				primaryOrganization.getDomain().getPrimaryNanoparticleSampleCollection();
-			if (primaryNanoparticleSampleCollection==null) {
-				primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
+					CaNanoLabConstants.CSM_APP_NAME);			
+			Organization dbOrganization = (Organization) appService
+					.getObject(Organization.class, "name", primaryOrganization.getDomain()
+							.getName());
+			if (dbOrganization != null
+					&& !dbOrganization.getId().equals(primaryOrganization.getDomain().getId())) {
+				throw new DuplicateEntriesException();
 			}
-			if (!primaryNanoparticleSampleCollection.contains(nanoparticleSample)){
-				primaryNanoparticleSampleCollection.add(nanoparticleSample);
-			}
-			primaryOrganization.getDomain()
-					.setPrimaryNanoparticleSampleCollection(
-							primaryNanoparticleSampleCollection);
-			
 			saveOrganization(primaryOrganization, authService, appService);
 			
 			if (otherOrganizationCollection != null) {
@@ -95,6 +87,7 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 	private void saveOrganization(OrganizationBean organizationBean,
 			AuthorizationService authService, CustomizedApplicationService appService)
 		throws Exception{
+		String user = organizationBean.getDomain().getCreatedBy();
 		if (organizationBean.getDomain().getPointOfContactCollection() == null) {
 			organizationBean.getDomain().setPointOfContactCollection(new HashSet<PointOfContact>());
 		} else {
@@ -114,7 +107,9 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 					if (poc.getCreatedDate() == null) {
 						myCal.add(Calendar.SECOND, 1);
 						poc.setCreatedDate(myCal.getTime());
+						poc.setCreatedBy(user);
 					}
+					poc.setOrganization(organizationBean.getDomain());
 					organizationBean.getDomain().getPointOfContactCollection().add(poc);
 				}
 			}

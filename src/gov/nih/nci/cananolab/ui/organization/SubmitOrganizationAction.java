@@ -24,6 +24,8 @@ import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -35,8 +37,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitOrganizationAction extends BaseAnnotationAction {
@@ -47,156 +47,169 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 	/**
 	 * create new organization / update organization
 	 */
-//	public ActionForward create(ActionMapping mapping, ActionForm form,
-//			HttpServletRequest request, HttpServletResponse response)
-//			throws Exception {
-//		ActionForward forward = null;
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		String particleId = request.getParameter("particleId");
-//		OrganizationBean primaryOrganization = (OrganizationBean) theForm
-//				.get("orga");
-////		List<OrganizationBean> otherOrganizationCollection = (List<OrganizationBean>) theForm
-////				.get("otherOrganizationCollection");
-//		List<OrganizationBean> otherOrganizationCollection = null;
-//
-//		UserBean user = (UserBean) request.getSession().getAttribute("user");
-//		
-//		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-//		OrganizationService service = new OrganizationServiceLocalImpl();
-//		service.saveOrganization(particleId, primaryOrganization,
-//				otherOrganizationCollection);
-//		// assign organization visibility
-//		AuthorizationService authService = new AuthorizationService(
-//				CaNanoLabConstants.CSM_APP_NAME);
-//		authService.assignVisibility(primaryOrganization.getDomain().getId()
-//				.toString(), primaryOrganization.getVisibilityGroups());
-//		// assign poc visibility
-//		assignPOCVisibility(primaryOrganization, authService);
-//		if (otherOrganizationCollection != null) {
-//			for (OrganizationBean organizationBean : otherOrganizationCollection) {
-//				// assign or ganization visibility
-//				authService.assignVisibility(organizationBean.getDomain()
-//						.getId().toString(), organizationBean
-//						.getVisibilityGroups());
-//				// assign poc visibility
-//				assignPOCVisibility(organizationBean, authService);
-//			}
-//		}
-//		// TODO: assign attribute level visibility (work with Sue)
-//
-//		ActionMessages msgs = new ActionMessages();
-//		ActionMessage msg = new ActionMessage(
-//				"message.submitOrganization.organization", primaryOrganization
-//						.getDomain().getName());
-//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//		saveMessages(request, msgs);
-//		forward = mapping.findForward("success");
-//
-//		// TODO: to verify forward page (Shuang)
-//		HttpSession session = request.getSession();
-//		particleId = (String) session.getAttribute("docParticleId");
-//
-//		if (particleId != null && particleId.length() > 0) {
-//			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-//			ParticleBean particleBean = sampleService
-//					.findNanoparticleSampleById(particleId);
-//			particleBean.setLocation("local");
-//			setupDataTree(particleBean, request);
-//			forward = mapping.findForward("particleSuccess");
-//		}
-//		// session.removeAttribute("particleId");
-//		return forward;
-//	}
-
-	
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		
+		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = request.getParameter("particleId");
-		
-		OrganizationBean primaryOrganization = 
-			(OrganizationBean) theForm.get("orga");
-		
-		OtherOrganizationsBean otherOrganization = 
-			(OtherOrganizationsBean) theForm.get("otherOrga");
-		
-		List<OrganizationBean> otherOrganizationCollection = 
-			otherOrganization.getOtherOrganizations();
-	
-		HttpSession session = request.getSession();
-		session.setAttribute("primaryOrganization", primaryOrganization);
-		session.setAttribute("otherOrganizationCollection", otherOrganizationCollection);
-				
-		//add new added organization to drop down list
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SortedSet<Organization> sampleOrganizations = 
-			InitNanoparticleSetup.getInstance().getNanoparticleSampleOrganizations(
-				request, user);
-		sampleOrganizations.add(primaryOrganization.getDomain());
-		session.setAttribute("allUserParticleOrganizations", sampleOrganizations);
-		
-		//set selected primary organization
-		ParticleBean particleSampleBean = 
-			(ParticleBean) session.getAttribute("theParticle");
-		NanoparticleSample particle = null;
-		if (particleSampleBean!=null) {
-			particle = particleSampleBean.getDomainParticleSample();
-			particleSampleBean.getDomainParticleSample().
-				setPrimaryOrganization(primaryOrganization.getDomain());			
+		OrganizationBean primaryOrganization = (OrganizationBean) theForm
+				.get("orga");
+		OtherOrganizationsBean otherOrganizationsBean = (OtherOrganizationsBean) theForm
+				.get("otherOrga");
+		List<OrganizationBean> otherOrganizationBeanCollection = null;
+		if (otherOrganizationsBean != null) {
+			otherOrganizationBeanCollection = otherOrganizationsBean
+					.getOtherOrganizations();
 		}
-//		if (particle!=null) {
-//			//set organization to particle
-//			primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-//			particle.setPrimaryOrganization(primaryOrganization.getDomain());		
-//			particle.setOtherOrganizationCollection(otherOrganizationCollection);
-//		}
-		
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+		Collection<Organization> otherOrganizationCollection = null;
+		if (otherOrganizationBeanCollection != null) {
+			otherOrganizationCollection = new HashSet<Organization>();
+			for (OrganizationBean organizationBean : otherOrganizationBeanCollection) {
+				organizationBean.getDomain().setCreatedBy(user.getLoginName());
+				otherOrganizationCollection.add(organizationBean.getDomain());
+			}
+		}
+		// created_date set in service
 		OrganizationService service = new OrganizationServiceLocalImpl();
-//		service.saveOrganization(particleId, primaryOrganization,
-//				otherOrganizationCollection);
-		
-		// assign or organization visibility
-//		AuthorizationService authService = new AuthorizationService(
-//				CaNanoLabConstants.CSM_APP_NAME);
-//		authService.assignVisibility(primaryOrganization.getDomain().getId()
-//				.toString(), primaryOrganization.getVisibilityGroups());
-		
-		// assign poc visibility
-//		assignPOCVisibility(primaryOrganization, authService);
-//		if (otherOrganizationCollection != null) {
-//			for (OrganizationBean organizationBean : otherOrganizationCollection) {
-//				// assign or ganization visibility
-//				authService.assignVisibility(organizationBean.getDomain()
-//						.getId().toString(), organizationBean
-//						.getVisibilityGroups());
-//				// assign poc visibility
-//				assignPOCVisibility(organizationBean, authService);
-//			}
-//		}
-		// TODO: assign attribute level visibility (work with Sue)
+		service.saveOrganization(primaryOrganization,
+				otherOrganizationBeanCollection);
+		// assign primary organization visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		authService.assignVisibility(primaryOrganization.getDomain().getId()
+				.toString(), primaryOrganization.getVisibilityGroups());
+		// assign primary organization's poc visibility
+		assignPOCVisibility(primaryOrganization, authService);
+		if (otherOrganizationCollection != null) {
+			for (OrganizationBean organizationBean : otherOrganizationBeanCollection) {
+				// assign other organization visibility
+				authService.assignVisibility(organizationBean.getDomain()
+						.getId().toString(), organizationBean
+						.getVisibilityGroups());
+				// assign other organization's poc visibility
+				assignPOCVisibility(organizationBean, authService);
+			}
+		}
 
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.submitOrganization.organization", primaryOrganization
-						.getDomain().getName());
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		
-		return mapping.findForward("updateParticle");
+		/**
+		 * Prepare for nanoparticle sample form
+		 * 
+		 */
+		// add new added organization to drop down list
+		SortedSet<Organization> sampleOrganizations = InitNanoparticleSetup
+				.getInstance()
+				.getNanoparticleSampleOrganizations(request, user);
+		sampleOrganizations.add(primaryOrganization.getDomain());
+		request.getSession().setAttribute("allUserParticleOrganizations",
+				sampleOrganizations);
 
+		// set selected primary organization
+		DynaValidatorForm particleSampleForm = (DynaValidatorForm) request
+				.getSession().getAttribute("nanoparticleSampleForm");
+		if (particleSampleForm != null) {
+			ParticleBean particleSampleBean = (ParticleBean) particleSampleForm
+					.get("particleSampleBean");
+			if (particleSampleBean != null) {
+				NanoparticleSample particle = particleSampleBean
+						.getDomainParticleSample();
+
+				// set selected organization
+				particle
+						.setPrimaryOrganization(primaryOrganization.getDomain());
+				// set organization to particle
+				if (primaryOrganization.getDomain()
+						.getPrimaryNanoparticleSampleCollection() != null) {
+					primaryOrganization.getDomain()
+							.getPrimaryNanoparticleSampleCollection().add(
+									particle);					
+				} else {
+					Collection<NanoparticleSample> primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
+					primaryNanoparticleSampleCollection.add(particle);
+					primaryOrganization.getDomain()
+							.setPrimaryNanoparticleSampleCollection(
+									primaryNanoparticleSampleCollection);				
+				}
+				//TODO:need??
+				particle.setPrimaryOrganization(primaryOrganization.getDomain());
+
+				if (otherOrganizationCollection != null
+						&& otherOrganizationCollection.size() > 0) {
+					particleSampleBean.getDomainParticleSample()
+							.setOtherOrganizationCollection(
+									otherOrganizationCollection);					
+				}
+				particle
+						.setOtherOrganizationCollection(otherOrganizationCollection);
+			}
+		}
+
+		request.getSession().setAttribute("primaryOrganization",
+				primaryOrganization);
+		request.getSession().setAttribute("otherOrganizationCollection",
+				otherOrganizationCollection);
+
+		request.getSession().removeAttribute("submitOrganizationForm");
+		forward = mapping.findForward("updateParticle");
+		return forward;
 	}
 
-	
-//	private void assignOrganizationToParticle(NanoparticleSample particle,
-//			OrganizationBean primaryOrganization, List<OrganizationBean> otherOrganizationCollection,
-//			UserBean user) {
-//		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-//
-//	}
-	
+	public ActionForward create2(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ActionForward forward = null;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		OrganizationBean primaryOrganization = (OrganizationBean) theForm
+				.get("orga");
+		// TODO::
+		// List<OrganizationBean> otherOrganizationCollection =
+		// (List<OrganizationBean>) theForm
+		// .get("otherOrganizationCollection");
+		List<OrganizationBean> otherOrganizationCollection = null;
+
+		request.getSession().setAttribute("primaryOrganization",
+				primaryOrganization);
+		request.getSession().setAttribute("otherOrganizationCollection",
+				otherOrganizationCollection);
+
+		// add new added organization to drop down list
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SortedSet<Organization> sampleOrganizations = InitNanoparticleSetup
+				.getInstance()
+				.getNanoparticleSampleOrganizations(request, user);
+		sampleOrganizations.add(primaryOrganization.getDomain());
+		request.getSession().setAttribute("allUserParticleOrganizations",
+				sampleOrganizations);
+		// set selected primary organization
+		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
+				.getAttribute("theParticle");
+		NanoparticleSample particle = null;
+		if (particleSampleBean != null) {
+			particle = particleSampleBean.getDomainParticleSample();
+			particleSampleBean.getDomainParticleSample()
+					.setPrimaryOrganization(primaryOrganization.getDomain());
+		}
+		// if (particle!=null) {
+		// //set organization to particle
+		// primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+		// particle.setPrimaryOrganization(primaryOrganization.getDomain());
+		// particle.setOtherOrganizationCollection(otherOrganizationCollection);
+		// }
+		forward = mapping.findForward("updateParticle");
+
+		return forward;
+	}
+
+	// private void assignOrganizationToParticle(NanoparticleSample particle,
+	// OrganizationBean primaryOrganization, List<OrganizationBean>
+	// otherOrganizationCollection,
+	// UserBean user) {
+	// primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+	//
+	// }
+
 	/**
 	 * create organization form
 	 */
@@ -232,7 +245,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 				.findOtherOrganizationCollection(particleId);
 		// TODO:: shuang need to check isHidden() before showing in jsp
 		setVisibility(user, primaryOrganization, true);
-		if (otherOrganizationCollection!=null) {
+		if (otherOrganizationCollection != null) {
 			for (OrganizationBean organizationBean : otherOrganizationCollection) {
 				setVisibility(user, organizationBean, true);
 			}
@@ -320,7 +333,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		List<OrganizationBean> otherOrganizationCollection = organizationService
 				.findOtherOrganizationCollection(particleId);
 		setVisibility(user, primaryOrganization, false);
-		if (otherOrganizationCollection!=null) {
+		if (otherOrganizationCollection != null) {
 			for (OrganizationBean organizationBean : otherOrganizationCollection) {
 				setVisibility(user, organizationBean, false);
 			}
@@ -328,6 +341,9 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("primaryOrganization", primaryOrganization);
 		theForm.set("otherOrganizationCollection", otherOrganizationCollection);
+
+		ActionForward forward = null;
+		forward = mapping.findForward("organizationDetailView");
 
 		String submitType = request.getParameter("submitType");
 		String requestUrl = request.getRequestURL().toString();
@@ -337,7 +353,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
 
-		return mapping.findForward("organizationDetailView");
+		return forward;
 	}
 
 	// TODO::
@@ -430,8 +446,9 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		return true;
 	}
 
-	private void setVisibility(UserBean user, OrganizationBean organizationBean,
-			boolean setVisibilityGroups) throws Exception {
+	private void setVisibility(UserBean user,
+			OrganizationBean organizationBean, boolean setVisibilityGroups)
+			throws Exception {
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
@@ -488,7 +505,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward removePointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -500,24 +517,26 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward addOrganization(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm.get("otherOrga");
+		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
+				.get("otherOrga");
 		entity.addOrganization();
 
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward removeOrganization(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm.get("otherOrga");
+		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
+				.get("otherOrga");
 		entity.removeOrganization(ind);
 
 		return mapping.getInputForward();

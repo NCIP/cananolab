@@ -30,7 +30,7 @@ public interface OrganizationService {
 	 * 
 	 * @throws OrganizationException
 	 */	
-	public void saveOrganization(String particleId, OrganizationBean primaryOrganization, 
+	public void saveOrganization(OrganizationBean primaryOrganization, 
 			List<OrganizationBean> otherOrganizationCollection) 
 		throws OrganizationException;
 	
