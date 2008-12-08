@@ -9,6 +9,7 @@ package gov.nih.nci.cananolab.ui.particle;
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -21,11 +22,8 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,40 +47,52 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				.get("particleSampleBean");
 		particleSampleBean.setupDomainParticleSample();
 
-		OrganizationBean primaryOrganization = (OrganizationBean) request
-				.getSession().getAttribute("primaryOrganization");
-		if (primaryOrganization != null) {
-			// set organization to particle
-			List<OrganizationBean> otherOrganizationBeanCollection = (List<OrganizationBean>) request
-					.getSession().getAttribute("otherOrganizationCollection");
-			primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-			primaryOrganization.getDomain().setCreatedDate(new Date());
-			particleSampleBean.getDomainParticleSample()
-					.setPrimaryOrganization(primaryOrganization.getDomain());
-			if (otherOrganizationBeanCollection != null
-					&& otherOrganizationBeanCollection.size() > 0) {
-				Collection<Organization> otherOrganizationCollection = new HashSet<Organization>();
-				Calendar myCal = Calendar.getInstance();
-				for (OrganizationBean otherOrganization : otherOrganizationBeanCollection) {
-					otherOrganization.getDomain().setCreatedBy(user.getLoginName());
-					myCal.add(Calendar.SECOND, 1);
-					otherOrganization.getDomain().setCreatedDate(myCal.getTime());
-					otherOrganizationCollection.add(otherOrganization
-							.getDomain());
-				}
-				particleSampleBean.getDomainParticleSample()
-						.setOtherOrganizationCollection(
-								otherOrganizationCollection);
-			}
-			// cleanup session
-			request.getSession().removeAttribute("primaryOrganization");
-			request.getSession().removeAttribute("otherOrganizationCollection");
-		}
+//		OrganizationBean primaryOrganization = (OrganizationBean) request
+//				.getSession().getAttribute("primaryOrganization");
+//		HashSet<Organization> otherOrganizationCollection = (HashSet<Organization>) request
+//			.getSession().getAttribute("otherOrganizationCollection");
+//		
+		/**
+		 * relationship with Organization
+		 */
+		// set selected organization
+//		NanoparticleSample particle = particleSampleBean.getDomainParticleSample();
+//		particle
+//				.setPrimaryOrganization(primaryOrganization.getDomain());
+//		// set organization to particle
+//		if (primaryOrganization.getDomain()
+//				.getPrimaryNanoparticleSampleCollection() != null) {
+//			primaryOrganization.getDomain()
+//					.getPrimaryNanoparticleSampleCollection().add(
+//							particle);					
+//		} else {
+//			Collection<NanoparticleSample> primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
+//			primaryNanoparticleSampleCollection.add(particle);
+//			primaryOrganization.getDomain()
+//					.setPrimaryNanoparticleSampleCollection(
+//							primaryNanoparticleSampleCollection);				
+//		}
+//		//TODO:need??
+//		particle.setPrimaryOrganization(primaryOrganization.getDomain());
 
+//		if (otherOrganizationCollection != null
+//				&& otherOrganizationCollection.size() > 0) {
+//			particleSampleBean.getDomainParticleSample()
+//					.setOtherOrganizationCollection(
+//							otherOrganizationCollection);					
+//		}
+//		particle
+//				.setOtherOrganizationCollection(otherOrganizationCollection);
+		
+		//end of relationship with organization
+		
+		
 		// persist in the database
+		String newPrimaryOrganizationName = particleSampleBean.getDomainParticleSample().getPrimaryOrganization().getName();
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
+		
 
 		// set CSM visibility
 		// add sample source as a new CSM_GROUP and assign the sample to
@@ -94,8 +104,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		for (int i = 0; i < visibleGroups.length - 1; i++) {
 			visibleGroups[i] = particleSampleBean.getVisibilityGroups()[i];
 		}
-		visibleGroups[visibleGroups.length - 1] = particleSampleBean
-				.getDomainParticleSample().getPrimaryOrganization().getName();
+		visibleGroups[visibleGroups.length - 1] = newPrimaryOrganizationName;
 
 		particleSampleBean = service
 				.findFullNanoparticleSampleById(particleSampleBean
@@ -107,11 +116,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		// includes remove & assign public visibility
 		service.assignAssociatedPublicVisibility(authService,
 				particleSampleBean, visibleGroups);
-		// TODO: assign organization visibilities
-		if (primaryOrganization != null) {
-
-		}
-
+		
 		particleSampleBean.setLocation("local");
 		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("update");
@@ -188,6 +193,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		request.getSession().removeAttribute("nanoparticleSampleForm");
 		setupLookups(request, null);
 
 		return mapping.getInputForward();
