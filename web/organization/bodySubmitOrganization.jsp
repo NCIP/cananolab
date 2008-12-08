@@ -53,12 +53,12 @@
 												</jsp:include>
 												<br>
 												<logic:iterate name="submitOrganizationForm"
-													property="otherOrga.ortherOrganizations" id="organizations" indexId="orgaIndex">
+													property="otherOrga.otherOrganizations" id="organizations" indexId="orgaIndex">
 
 													<jsp:include page="/organization/bodyOrganization.jsp" >
 														<jsp:param name="orgIndex" value="${orgaIndex}" />
 														<jsp:param name="orgTitle" value="Organization #${orgaIndex + 2}" />
-														<jsp:param name="orgBean" value="otherOrga.ortherOrganizations[${orgaIndex}]" />
+														<jsp:param name="orgBean" value="otherOrga.otherOrganizations[${orgaIndex}]" />
 													</jsp:include>
 												</logic:iterate>
 											</td>
