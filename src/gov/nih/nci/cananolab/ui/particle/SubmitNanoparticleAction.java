@@ -210,4 +210,12 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 
 		return mapping.findForward("organization");
 	}
+	
+	public ActionForward organizationDetailView(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		// setupLookups(request, null);
+
+		return mapping.findForward("organizationDetailView");
+	}
 }

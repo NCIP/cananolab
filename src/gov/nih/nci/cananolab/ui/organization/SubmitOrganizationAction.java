@@ -329,9 +329,6 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		theForm.set("primaryOrganization", primaryOrganization);
 		theForm.set("otherOrganizationCollection", otherOrganizationCollection);
 
-		ActionForward forward = null;
-		forward = mapping.findForward("organizationDetailView");
-
 		String submitType = request.getParameter("submitType");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl
@@ -340,7 +337,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
 
-		return forward;
+		return mapping.findForward("organizationDetailView");
 	}
 
 	// TODO::

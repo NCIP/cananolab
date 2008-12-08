@@ -3,10 +3,8 @@
  */
 package gov.nih.nci.cananolab.dto.common;
 
-import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +24,7 @@ public class OrganizationBean{
 	private List<PointOfContact> pocs = new ArrayList<PointOfContact>(20);
 	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
+	private String address;
 	//TODO: need info for nanoparticleSample??
 	
 	
@@ -120,6 +119,14 @@ public class OrganizationBean{
 		return addressBuf.toString();
 	}
 	
+	public String getAddress() {
+		return getOrgAddress(domain);
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public void addPointOfContact() {
 		pocs.add(new PointOfContact());
 	}

@@ -78,7 +78,9 @@
 									<option value="other">
 										[Other]
 									</option>
-								</html:select>
+								</html:select>&nbsp;
+								<a href="#"	onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'sampleOrganization');">
+									<span class="addLink2">View Detail</span> </a>
 							</td>
 						</tr>
 						<tr>

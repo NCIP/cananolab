@@ -38,6 +38,13 @@
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
+	<definition name="particle.organizationDetailView"
+		extends="calab.home">
+		<put name="calabContent"
+			value="/organization/bodyOrganizationDetailView.jsp" />
+		<put name="menu" value="nanoparticles" />
+	</definition>
+	
 	<definition name="particle.annotationHome" extends="calab.home">
 		<put name="calabSidemenu"
 			value="/particle/sideParticleMenu.jsp" />
