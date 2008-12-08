@@ -123,7 +123,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 			(OtherOrganizationsBean) theForm.get("otherOrga");
 		
 		List<OrganizationBean> otherOrganizationCollection = 
-			otherOrganization.getOrtherOrganizations();
+			otherOrganization.getOtherOrganizations();
 	
 		HttpSession session = request.getSession();
 		session.setAttribute("primaryOrganization", primaryOrganization);
