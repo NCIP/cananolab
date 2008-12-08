@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.service.organization.impl;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.OrganizationException;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -41,8 +41,8 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 	 * @throws OrganizationException
 	 */
 	public void saveOrganization(
-			OrganizationBean primaryOrganization, 
-			List<OrganizationBean> otherOrganizationCollection)
+			Organization primaryOrganization, 
+			Collection<Organization> otherOrganizationCollection)
 		throws OrganizationException{
 		
 		//TODO: to verify if organization.primaryNanoparticleSampleCollection is empty		
@@ -52,17 +52,16 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);			
 			Organization dbOrganization = (Organization) appService
-					.getObject(Organization.class, "name", primaryOrganization.getDomain()
-							.getName());
+					.getObject(Organization.class, "name", primaryOrganization.getName());
 			if (dbOrganization != null
-					&& !dbOrganization.getId().equals(primaryOrganization.getDomain().getId())) {
+					&& !dbOrganization.getId().equals(primaryOrganization.getId())) {
 				throw new DuplicateEntriesException();
 			}
 			saveOrganization(primaryOrganization, authService, appService);
 			
 			if (otherOrganizationCollection != null) {
-				for (OrganizationBean organizationBean: otherOrganizationCollection) {					
-					saveOrganization(organizationBean, authService, appService);
+				for (Organization organization: otherOrganizationCollection) {					
+					saveOrganization(organization, authService, appService);
 				}
 			}
 		} catch (Exception e) {
@@ -84,23 +83,23 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 		return helper.findPrimaryOrganization(particleId);	
 	}
 	
-	private void saveOrganization(OrganizationBean organizationBean,
+	private void saveOrganization(Organization organization,
 			AuthorizationService authService, CustomizedApplicationService appService)
 		throws Exception{
-		String user = organizationBean.getDomain().getCreatedBy();
-		if (organizationBean.getDomain().getPointOfContactCollection() == null) {
-			organizationBean.getDomain().setPointOfContactCollection(new HashSet<PointOfContact>());
+		String user = organization.getCreatedBy();
+		if (organization.getPointOfContactCollection() == null) {
+			organization.setPointOfContactCollection(new HashSet<PointOfContact>());
 		} else {
-			for (PointOfContact poc : organizationBean.getDomain().getPointOfContactCollection()) {
+			for (PointOfContact poc : organization.getPointOfContactCollection()) {
 				if (poc.getId() != null)
 					authService
 							.removePublicGroup(poc.getId().toString());
 			}
-			organizationBean.getDomain().getPointOfContactCollection().clear();
+			organization.getPointOfContactCollection().clear();
 		}
-		if (organizationBean.getPocs() != null) {
+		if (organization.getPointOfContactCollection() != null) {
 			Calendar myCal = Calendar.getInstance();
-			for (PointOfContact poc : organizationBean.getPocs()) {
+			for (PointOfContact poc : organization.getPointOfContactCollection()) {
 				if (!StringUtils.isBlank(poc.getFirstName())
 						|| !StringUtils.isBlank(poc.getLastName())
 						|| !StringUtils.isBlank(poc.getMiddleInitial())) {
@@ -109,15 +108,16 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 						poc.setCreatedDate(myCal.getTime());
 						poc.setCreatedBy(user);
 					}
-					poc.setOrganization(organizationBean.getDomain());
-					organizationBean.getDomain().getPointOfContactCollection().add(poc);
+					poc.setOrganization(organization);
+					organization.getPointOfContactCollection().add(poc);
 				}
 			}
 		}
-		if (organizationBean.getDomain().getCreatedDate()==null) {
-			organizationBean.getDomain().setCreatedDate(new Date());
+		if (organization.getCreatedDate()==null) {
+			//TODO:: myCal.add(Calendar.SECOND, 1);???
+			organization.setCreatedDate(new Date());
 		}
-		appService.saveOrUpdate(organizationBean.getDomain());		
+		appService.saveOrUpdate(organization);		
 	}
 
 }

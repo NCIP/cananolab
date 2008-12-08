@@ -2,11 +2,11 @@ package gov.nih.nci.cananolab.service.organization.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.exception.OrganizationException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -35,8 +35,8 @@ public class OrganizationServiceRemoteImpl implements OrganizationService {
 	 * 
 	 * @throws OrganizationException
 	 */
-	public void saveOrganization(OrganizationBean primaryOrganization, 
-			List<OrganizationBean> otherOrganizationCollection)
+	public void saveOrganization(Organization primaryOrganization, 
+			Collection<Organization> otherOrganizationCollection)
 		throws OrganizationException{
 		throw new OrganizationException("not implemented for grid service.");
 	}

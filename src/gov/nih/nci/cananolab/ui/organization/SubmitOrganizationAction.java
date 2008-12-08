@@ -73,8 +73,8 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		}
 		// created_date set in service
 		OrganizationService service = new OrganizationServiceLocalImpl();
-		service.saveOrganization(primaryOrganization,
-				otherOrganizationBeanCollection);
+		service.saveOrganization(primaryOrganization.getDomain(),
+				otherOrganizationCollection);
 		// assign primary organization visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);

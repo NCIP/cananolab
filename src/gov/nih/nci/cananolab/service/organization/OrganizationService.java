@@ -1,17 +1,10 @@
 package gov.nih.nci.cananolab.service.organization;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.OrganizationException;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,8 +23,8 @@ public interface OrganizationService {
 	 * 
 	 * @throws OrganizationException
 	 */	
-	public void saveOrganization(OrganizationBean primaryOrganization, 
-			List<OrganizationBean> otherOrganizationCollection) 
+	public void saveOrganization(Organization primaryOrganization, 
+			Collection<Organization> otherOrganizationCollection) 
 		throws OrganizationException;
 	
 	public OrganizationBean findPrimaryOrganization(String particleId)
