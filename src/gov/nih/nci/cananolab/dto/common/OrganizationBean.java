@@ -31,7 +31,7 @@ public class OrganizationBean{
 	public OrganizationBean() {
 		super();
 		domain = new Organization();
-		pocs.add(new PointOfContact());
+//		pocs.add(new PointOfContact());
 	}
 
 	public OrganizationBean(Organization organization) {

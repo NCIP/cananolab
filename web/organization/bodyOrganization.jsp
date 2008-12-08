@@ -17,7 +17,7 @@
 					<a href="#"
 					onclick="removeComponent(submitOrganizationForm, 'submitOrganization', ${param.orgIndex}, 'removeOrganization');return false;">
 					<img src="images/delete.gif" border="0"
-						alt="remove this point of contact"> </a>
+						alt="remove this organiation"> </a>
 				</c:if>&nbsp;
 			</td>
 		</tr>
@@ -77,7 +77,7 @@
 				<strong>Country</strong>
 			</td>
 			<td class="rightLabel">
-				<html:text property="${param.orgBean}.domain.country" size="50" />
+				<html:text property="${param.orgBean}.domain.country" size="40" />
 				&nbsp;
 			</td>
 		</tr>
@@ -103,12 +103,10 @@
 													<span>Point of Contact #${ind + 1}</span>
 												</td>
 												<td class="formSubTitleNoLeft" align="right">
-													&nbsp;<c:if test="${ind != 0 }">
 													<a href="#"
 														onclick="removeComponent(submitOrganizationForm, 'submitOrganization', ${ind}, 'removePointOfContact');return false;">
 														<img src="images/delete.gif" border="0"
 															alt="remove this point of contact"> </a>
-													</c:if>
 												</td>
 											</tr>
 											<tr>
