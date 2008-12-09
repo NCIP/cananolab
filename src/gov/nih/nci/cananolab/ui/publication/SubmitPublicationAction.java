@@ -164,7 +164,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 					request,
 					particleBean.getDomainParticleSample().getName(),
 					particleBean.getDomainParticleSample()
-							.getPrimaryOrganization().getName(), user);
+							.getPrimaryPointOfContact().getLastName(), user);
 		}		
 		ActionForward forward = mapping.getInputForward();
 		
