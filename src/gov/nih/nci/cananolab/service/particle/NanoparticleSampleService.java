@@ -46,7 +46,7 @@ public interface NanoparticleSampleService {
 
 	/**
 	 * 
-	 * @param particleOrganization
+	 * @param particlePointOfContact
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
 	 * @param functionalizingEntityClassNames
@@ -58,7 +58,7 @@ public interface NanoparticleSampleService {
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(String particleOrganization,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particlePointOfContact,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -79,14 +79,14 @@ public interface NanoparticleSampleService {
 	/**
 	 * Get other particles from the given particle source
 	 * 
-	 * @param particleOrganization
+	 * @param particlePointOfContact
 	 * @param particleName
 	 * @param user
 	 * @return
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
+	public SortedSet<SortableName> findOtherParticles(String particlePointOfContact,
 			String particleName, UserBean user) throws ParticleException;
 
 	public void retrieveVisibility(ParticleBean particleBean, UserBean user)

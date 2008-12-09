@@ -59,7 +59,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 
 	/**
 	 * 
-	 * @param particleOrganization
+	 * @param particlePointOfContact
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
 	 * @param functionalizingEntityClassNames
@@ -72,7 +72,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 * @throws ParticleException
 	 */
 	// public List<ParticleBean> findNanoparticleSamplesBy(String
-	// particleOrganization,
+	// particlePointOfContact,
 	// String[] nanoparticleEntityClassNames,
 	// String[] otherNanoparticleTypes,
 	// String[] functionalizingEntityClassNames,
@@ -83,7 +83,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	// List<ParticleBean> particles = new ArrayList<ParticleBean>();
 	// try {
 	// NanoparticleSample[] particleSamples = gridClient
-	// .getNanoparticleSamplesBy(particleOrganization,
+	// .getNanoparticleSamplesBy(particlePointOfContact,
 	// nanoparticleEntityClassNames,
 	// functionalizingEntityClassNames,
 	// functionClassNames, characterizationClassNames,
@@ -110,7 +110,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	// throw new ParticleException(err, e);
 	// }
 	// }
-	public List<ParticleBean> findNanoparticleSamplesBy(String particleOrganization,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particlePointOfContact,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -122,7 +122,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		try {
 			// TODO: add publicationKeywordsStr to grid search
 			String[] particleSampleStrs = gridClient
-					.getNanoparticleSampleViewStrs(particleOrganization,
+					.getNanoparticleSampleViewStrs(particlePointOfContact,
 							nanoparticleEntityClassNames,
 							functionalizingEntityClassNames,
 							functionClassNames, characterizationClassNames,
@@ -344,7 +344,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		return findPointOfContacts();
 	}
 
-	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
+	public SortedSet<SortableName> findOtherParticles(String particlePointOfContact,
 			String particleName, UserBean user) throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}

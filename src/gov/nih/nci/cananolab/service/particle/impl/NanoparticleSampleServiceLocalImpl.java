@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -71,7 +70,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			}
 			return pointOfContacts;
 		} catch (Exception e) {
-			String err = "Error in retrieving all organization";
+			String err = "Error in retrieving all point of contacts";
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
@@ -79,7 +78,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * 
-	 * @return all particle Organizations visible to user
+	 * @return all particle point of contacts visible to user
 	 */
 	
 	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
@@ -179,7 +178,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * 
-	 * @param particleOrganizations
+	 * @param particlePointOfContacts
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
 	 * @param functionalizingEntityClassNames
@@ -191,7 +190,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(String particleOrganization,
+	public List<ParticleBean> findNanoparticleSamplesBy(String particlePointOfContact,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -202,7 +201,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
 			List<NanoparticleSample> particleSamples = helper
-					.findNanoparticleSamplesBy(particleOrganization,
+					.findNanoparticleSamplesBy(particlePointOfContact,
 							nanoparticleEntityClassNames,
 							otherNanoparticleTypes,
 							functionalizingEntityClassNames,
@@ -305,7 +304,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 						"sampleComposition.functionalizingEntityCollection.functionCollection",
 						FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("primaryOrganization", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -331,16 +330,16 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 
 	/**
-	 * Get other particles from the given particle organization
+	 * Get other particles from the given particle point of contacts
 	 * 
-	 * @param particleOrganization
+	 * @param particlePointOfContact
 	 * @param particleName
 	 * @param user
 	 * @return
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
+	public SortedSet<SortableName> findOtherParticles(String particlePointOfContact,
 			String particleName, UserBean user) throws ParticleException {
 		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
 		try {
@@ -352,8 +351,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			crit.add(Restrictions.ne("name", particleName));
-			crit.createAlias("organization", "organization").add(
-					Restrictions.eq("organization.name", particleOrganization));
+			crit.createAlias("pointOfContact", "pointOfContact").add(
+					Restrictions.eq("pointOfContact.lastName", particlePointOfContact));
 
 			List results = appService.query(crit);
 			for (Object obj : results) {
@@ -364,8 +363,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 			}
 			return otherParticles;
 		} catch (Exception e) {
-			String err = "Error in retrieving other particles from organization "
-					+ particleOrganization;
+			String err = "Error in retrieving other particles from point of contact "
+					+ particlePointOfContact;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
@@ -496,7 +495,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.getDomainParticleSample();
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-			// organizations, need special handle for sharing
+			// POCs, need special handle for sharing
 			if (nanoparticleSample.getPrimaryPointOfContact() != null) {
 				authService.removePublicGroup(nanoparticleSample.getPrimaryPointOfContact()
 						.getId().toString());
@@ -590,9 +589,10 @@ public class NanoparticleSampleServiceLocalImpl implements
 			 * visibleGroups); } } } } } }
 			 */
 		} else {
-			// organizations, if private need special handle for sharing
+			//TODO: need? to be verify by Sue
+			// POCs, if private need special handle for sharing
 			if (nanoparticleSample.getPrimaryPointOfContact() != null) {
-				if (!isExistPublicNanoparticleSampleForOrganization(nanoparticleSample
+				if (!isExistPublicNanoparticleSampleForPOC(nanoparticleSample
 						.getPrimaryPointOfContact().getId().toString())) {
 					authService.removePublicGroup(nanoparticleSample
 							.getPrimaryPointOfContact().getId().toString());
@@ -771,19 +771,19 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 
 	/**
-	 * Check if there exists public nanoparticle sample for given organizationId
+	 * Check if there exists public nanoparticle sample for given pocId
 	 * 
 	 * @param sourcId
 	 * @return true / false
 	 */
-	public boolean isExistPublicNanoparticleSampleForOrganization(String organizationId)
+	public boolean isExistPublicNanoparticleSampleForPOC(String pocId)
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		HQLCriteria crit = new HQLCriteria(
 				"select aParticle.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle "
-						+ " where aParticle.primaryOrganization=" + organizationId);
+						+ " where aParticle.primaryPointOfContact=" + pocId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			String name = (String) obj.toString();
