@@ -485,9 +485,9 @@ public class InitNanoparticleSetup {
 
 	public SortedSet<SortableName> getOtherParticleNames(
 			HttpServletRequest request, String particleName,
-			String particleOrganization, UserBean user) throws Exception {
+			String particlePointOfContact, UserBean user) throws Exception {
 		SortedSet<SortableName> names = particleService.findOtherParticles(
-				particleOrganization, particleName, user);
+				particlePointOfContact, particleName, user);
 		request.getSession().setAttribute("otherParticleNames", names);
 		return names;
 	}

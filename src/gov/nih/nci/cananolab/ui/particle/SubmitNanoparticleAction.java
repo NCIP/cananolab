@@ -204,19 +204,19 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 
-	public ActionForward setupOrganization(ActionMapping mapping,
+	public ActionForward setupPointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		// setupLookups(request, null);
 
-		return mapping.findForward("organization");
+		return mapping.findForward("pointOfContact");
 	}
 	
-	public ActionForward organizationDetailView(ActionMapping mapping,
+	public ActionForward pointOfContactDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		// setupLookups(request, null);
 
-		return mapping.findForward("organizationDetailView");
+		return mapping.findForward("pointOfContactDetailView");
 	}
 }
