@@ -9,7 +9,7 @@ import gov.nih.nci.cagrid.cqlquery.QueryModifier;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -127,14 +127,6 @@ public class NanoparticleSampleServiceRemoteImpl implements
 							functionalizingEntityClassNames,
 							functionClassNames, characterizationClassNames,
 							wordList);
-			// String[] particleSampleStrs = {
-			// "35444457~~~NCICB-6~~~DNT~~~Carbon nanotube!!!small
-			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
-			// Weight:Oxidative Stress",
-			// "35445457~~~NCICB-60~~~DNT~~~Carbon nanotube!!!small
-			// molecule~~~therapeutic~~~Enzyme Induction:Molecular
-			// Weight:Oxidative Stress",
-			// };
 			if (particleSampleStrs != null) {
 				String[] columns = null;
 				for (String particleSampleStr : particleSampleStrs) {
@@ -145,10 +137,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					particleSample.setId(new Long(columns[0]));
 					// sample name
 					particleSample.setName(columns[1]);
-					// source
-					Organization org = new Organization();
-					org.setName(columns[2]);
-					particleSample.setPrimaryOrganization(org);
+					// primary poc
+					PointOfContact poc = new PointOfContact();
+					poc.setLastName(columns[2]);
+					//TODO: may change to full name + email
+					particleSample.setPrimaryPointOfContact(poc);
 					ParticleBean particleBean = new ParticleBean(particleSample);
 					// composition, set all compositions as NanoparticleEntity
 					// for now
@@ -229,7 +222,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			NanoparticleSample particleSample) throws Exception {
 		String particleId = particleSample.getId().toString();
 		// source
-		loadOrganizationForParticleSample(particleSample);
+		loadPointOfContactForParticleSample(particleSample);
 		// keyword
 		loadKeywordsForParticleSample(particleSample);
 
@@ -342,13 +335,13 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<Organization> findAllParticleOrganizations() throws ParticleException {
+	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<Organization> findAllParticleOrganizations(UserBean user)
+	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
 			throws ParticleException {
-		return findAllParticleOrganizations();
+		return findPointOfContacts();
 	}
 
 	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
@@ -369,12 +362,13 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 * @throws ParticleException
 	 * 
 	 */
-	private void loadOrganizationForParticleSample(NanoparticleSample particleSample)
+	private void loadPointOfContactForParticleSample(NanoparticleSample particleSample)
 			throws Exception {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-		target.setName("gov.nih.nci.cananolab.domain.common.Organization");
+		target.setName("gov.nih.nci.cananolab.domain.common.PointOfContact");
 		Association association = new Association();
+		//TODO: verify if primaryNanoparticleSampleCollection need??
 		association
 				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 		association.setRoleName("nanoparticleSampleCollection");
@@ -389,14 +383,14 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		query.setTarget(target);
 		CQLQueryResults results = gridClient.query(query);
 		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.common.Organization");
+				.setTargetClassname("gov.nih.nci.cananolab.domain.common.PointOfContact");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		Organization org = null;
+		PointOfContact poc = null;
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
-			org = (Organization) obj;
+			poc = (PointOfContact) obj;
 		}
-		particleSample.setPrimaryOrganization(org);
+		particleSample.setPrimaryPointOfContact(poc);
 	}
 
 	/**

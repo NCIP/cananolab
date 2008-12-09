@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -29,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -58,18 +58,18 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * 
 	 * @return all particle sources
 	 */
-	public SortedSet<Organization> findAllParticleOrganizations() throws ParticleException {
-		SortedSet<Organization> sampleOrganizations = new TreeSet<Organization>(
-				new CaNanoLabComparators.ParticleOrganizationComparator());
+	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException {
+		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
+				new CaNanoLabComparators.ParticlePointOfContactComparator());
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
-			List results = appService.getAll(Organization.class);
+			List results = appService.getAll(PointOfContact.class);
 			for (Object obj : results) {
-				sampleOrganizations.add((Organization) obj);
+				pointOfContacts.add((PointOfContact) obj);
 			}
-			return sampleOrganizations;
+			return pointOfContacts;
 		} catch (Exception e) {
 			String err = "Error in retrieving all organization";
 			logger.error(err, e);
@@ -81,43 +81,50 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * 
 	 * @return all particle Organizations visible to user
 	 */
-	public SortedSet<Organization> findAllParticleOrganizations(UserBean user)
-			throws ParticleException {
-		SortedSet<Organization> sampleOrganizations = new TreeSet<Organization>(
-				new CaNanoLabComparators.ParticleOrganizationComparator());
-		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
-			crit.setFetchMode("primaryNanoparticleSampleCollection", FetchMode.JOIN);
-			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Organization organization = (Organization) obj;
-				// if user can access at least one particle from the organization, set
-				// access to true
-				List<String> particleNames = new ArrayList<String>();
-				for (NanoparticleSample sample : 
-					organization.getPrimaryNanoparticleSampleCollection()) {
-					particleNames.add(sample.getName());
-				}
-				for (NanoparticleSample sample : organization
-						.getPrimaryNanoparticleSampleCollection()) {
-					particleNames.add(sample.getName());
-				}				
-				if (auth.isAllowedAtLeastOne(auth, particleNames, user)) {
-					sampleOrganizations.add((Organization) obj);
-				}
-			}
-			return sampleOrganizations;
-		} catch (Exception e) {
-			String err = "Error in retrieving all nanoparticle sample organizations for a user";
-			logger.error(err, e);
-			throw new ParticleException(err, e);
-		}
+	
+	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
+		throws ParticleException {
+		//TODO: filter out base on POC visibility??
+		return findPointOfContacts();
 	}
+	
+//	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
+//			throws ParticleException {
+//		SortedSet<Organization> sampleOrganizations = new TreeSet<PointOfContact>(
+//				new CaNanoLabComparators.ParticleOrganizationComparator());
+//		try {
+//			AuthorizationService auth = new AuthorizationService(
+//					CaNanoLabConstants.CSM_APP_NAME);
+//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//					.getApplicationService();
+//			DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
+//			crit.setFetchMode("primaryNanoparticleSampleCollection", FetchMode.JOIN);
+//			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
+//			List results = appService.query(crit);
+//			for (Object obj : results) {
+//				PointOfContact poc = (PointOfContact) obj;
+//				// if user can access at least one particle from the organization, set
+//				// access to true
+//				List<String> particleNames = new ArrayList<String>();
+//				for (NanoparticleSample sample : 
+//					organization.getPrimaryNanoparticleSampleCollection()) {
+//					particleNames.add(sample.getName());
+//				}
+//				for (NanoparticleSample sample : organization
+//						.getPrimaryNanoparticleSampleCollection()) {
+//					particleNames.add(sample.getName());
+//				}				
+//				if (auth.isAllowedAtLeastOne(auth, particleNames, user)) {
+//					sampleOrganizations.add((Organization) obj);
+//				}
+//			}
+//			return sampleOrganizations;
+//		} catch (Exception e) {
+//			String err = "Error in retrieving all nanoparticle sample organizations for a user";
+//			logger.error(err, e);
+//			throw new ParticleException(err, e);
+//		}
+//	}
 
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
@@ -140,18 +147,15 @@ public class NanoparticleSampleServiceLocalImpl implements
 					&& !dbParticle.getId().equals(particleSample.getId())) {
 				throw new DuplicateEntriesException();
 			}
+			//TODO:: to be change to full name + email
+			PointOfContact dbPointOfContact = (PointOfContact) appService.getObject(PointOfContact.class,
+					"lastName", particleSample.getPrimaryPointOfContact().getLastName());
 			
-			Organization dbOrganization = (Organization) appService.getObject(Organization.class,
-					"name", particleSample.getPrimaryOrganization()
-							.getName());
-			
-			if (dbOrganization != null) {
-				dbOrganization = (Organization) appService.load(
-						Organization.class, dbOrganization.getId());
-				particleSample.getPrimaryOrganization().setId(dbOrganization.getId());
-				particleSample.setPrimaryOrganization(dbOrganization);
-				//TODO: test
-				//dbOrganization.getPrimaryNanoparticleSampleCollection().add(particleSample);
+			if (dbPointOfContact != null) {
+				dbPointOfContact = (PointOfContact) appService.load(
+						PointOfContact.class, dbPointOfContact.getId());
+				particleSample.getPrimaryPointOfContact().setId(dbPointOfContact.getId());
+				particleSample.setPrimaryPointOfContact(dbPointOfContact);
 			}
 			for (Keyword keyword : particleSample.getKeywordCollection()) {
 				// turned off cascade save-update in order to share the same
@@ -493,11 +497,11 @@ public class NanoparticleSampleServiceLocalImpl implements
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
 			// organizations, need special handle for sharing
-			if (nanoparticleSample.getPrimaryOrganization() != null) {
-				authService.removePublicGroup(nanoparticleSample.getPrimaryOrganization()
+			if (nanoparticleSample.getPrimaryPointOfContact() != null) {
+				authService.removePublicGroup(nanoparticleSample.getPrimaryPointOfContact()
 						.getId().toString());
 				authService.assignPublicVisibility(nanoparticleSample
-						.getPrimaryOrganization().getId().toString());
+						.getPrimaryPointOfContact().getId().toString());
 			}
 			// keyword, need special handle for sharing
 			Collection<Keyword> keywordCollection = nanoparticleSample
@@ -587,11 +591,11 @@ public class NanoparticleSampleServiceLocalImpl implements
 			 */
 		} else {
 			// organizations, if private need special handle for sharing
-			if (nanoparticleSample.getPrimaryOrganization() != null) {
+			if (nanoparticleSample.getPrimaryPointOfContact() != null) {
 				if (!isExistPublicNanoparticleSampleForOrganization(nanoparticleSample
-						.getPrimaryOrganization().getId().toString())) {
+						.getPrimaryPointOfContact().getId().toString())) {
 					authService.removePublicGroup(nanoparticleSample
-							.getPrimaryOrganization().getId().toString());
+							.getPrimaryPointOfContact().getId().toString());
 				}
 			}
 			// keyword, if private need special handle for sharing

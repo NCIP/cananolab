@@ -11,6 +11,8 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.OtherOrganizationsBean;
+import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.OrganizationException;
@@ -52,58 +54,59 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 			throws Exception {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OrganizationBean primaryOrganization = (OrganizationBean) theForm
-				.get("orga");
-		OtherOrganizationsBean otherOrganizationsBean = (OtherOrganizationsBean) theForm
-				.get("otherOrga");
-		List<OrganizationBean> otherOrganizationBeanCollection = null;
-		if (otherOrganizationsBean != null) {
-			otherOrganizationBeanCollection = otherOrganizationsBean
-					.getOtherOrganizations();
+		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
+				.get("poc");
+		OtherPointOfContactsBean otherPointOfContactsBean = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");
+		List<PointOfContactBean> otherPointOfContactBeanCollection = null;
+		if (otherPointOfContactsBean != null) {
+			otherPointOfContactBeanCollection = otherPointOfContactsBean
+				.getOtherPointOfContacts();
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-		Collection<Organization> otherOrganizationCollection = null;
-		if (otherOrganizationBeanCollection != null) {
-			otherOrganizationCollection = new HashSet<Organization>();
-			for (OrganizationBean organizationBean : otherOrganizationBeanCollection) {
-				organizationBean.getDomain().setCreatedBy(user.getLoginName());
-				otherOrganizationCollection.add(organizationBean.getDomain());
+		primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
+		Collection<PointOfContact> otherPointOfContactCollection = null;
+		if (otherPointOfContactBeanCollection != null) {
+			otherPointOfContactCollection = new HashSet<PointOfContact>();
+			for (PointOfContactBean pointOfContactBean : otherPointOfContactBeanCollection) {
+				pointOfContactBean.getDomain().setCreatedBy(user.getLoginName());
+				otherPointOfContactCollection.add(pointOfContactBean.getDomain());
 			}
 		}
-		// created_date set in service
-		OrganizationService service = new OrganizationServiceLocalImpl();
-		service.saveOrganization(primaryOrganization.getDomain(),
-				otherOrganizationCollection);
-		// assign primary organization visibility
-		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		authService.assignVisibility(primaryOrganization.getDomain().getId()
-				.toString(), primaryOrganization.getVisibilityGroups());
-		// assign primary organization's poc visibility
-		assignPOCVisibility(primaryOrganization, authService);
-		if (otherOrganizationCollection != null) {
-			for (OrganizationBean organizationBean : otherOrganizationBeanCollection) {
-				// assign other organization visibility
-				authService.assignVisibility(organizationBean.getDomain()
-						.getId().toString(), organizationBean
-						.getVisibilityGroups());
-				// assign other organization's poc visibility
-				assignPOCVisibility(organizationBean, authService);
-			}
-		}
+		
+		//TODO::: 111
+//		// created_date set in service
+//		OrganizationService service = new OrganizationServiceLocalImpl();
+//		service.saveOrganization(primaryOrganization.getDomain(),
+//				otherOrganizationCollection);
+//		// assign primary organization visibility
+//		AuthorizationService authService = new AuthorizationService(
+//				CaNanoLabConstants.CSM_APP_NAME);
+//		authService.assignVisibility(primaryOrganization.getDomain().getId()
+//				.toString(), primaryOrganization.getVisibilityGroups());
+//		// assign primary organization's poc visibility
+//		assignPOCVisibility(primaryOrganization, authService);
+//		if (otherOrganizationCollection != null) {
+//			for (OrganizationBean organizationBean : otherOrganizationBeanCollection) {
+//				// assign other organization visibility
+//				authService.assignVisibility(organizationBean.getDomain()
+//						.getId().toString(), organizationBean
+//						.getVisibilityGroups());
+//				// assign other organization's poc visibility
+//				assignPOCVisibility(organizationBean, authService);
+//			}
+//		}
 
 		/**
 		 * Prepare for nanoparticle sample form
 		 * 
 		 */
 		// add new added organization to drop down list
-		SortedSet<Organization> sampleOrganizations = InitNanoparticleSetup
-				.getInstance()
-				.getNanoparticleSampleOrganizations(request, user);
-		sampleOrganizations.add(primaryOrganization.getDomain());
-		request.getSession().setAttribute("allUserParticleOrganizations",
-				sampleOrganizations);
+		SortedSet<PointOfContact> samplePointOfContacts = InitNanoparticleSetup
+				.getInstance().getNanoparticleSamplePointOfContacts(request, user);
+		samplePointOfContacts.add(primaryPointOfContact.getDomain());
+		request.getSession().setAttribute("allPointOfContacts",
+				samplePointOfContacts);
 
 		// set selected primary organization
 		DynaValidatorForm particleSampleForm = (DynaValidatorForm) request
@@ -117,38 +120,38 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 
 				// set selected organization
 				particle
-						.setPrimaryOrganization(primaryOrganization.getDomain());
+						.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
 				// set organization to particle
-				if (primaryOrganization.getDomain()
+				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
-					primaryOrganization.getDomain()
+					primaryPointOfContact.getDomain()
 							.getPrimaryNanoparticleSampleCollection().add(
 									particle);					
 				} else {
 					Collection<NanoparticleSample> primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
 					primaryNanoparticleSampleCollection.add(particle);
-					primaryOrganization.getDomain()
+					primaryPointOfContact.getDomain()
 							.setPrimaryNanoparticleSampleCollection(
 									primaryNanoparticleSampleCollection);				
 				}
 				//TODO:need??
-				particle.setPrimaryOrganization(primaryOrganization.getDomain());
+				particle.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
 
-				if (otherOrganizationCollection != null
-						&& otherOrganizationCollection.size() > 0) {
+				if (otherPointOfContactCollection != null
+						&& otherPointOfContactCollection.size() > 0) {
 					particleSampleBean.getDomainParticleSample()
-							.setOtherOrganizationCollection(
-									otherOrganizationCollection);					
+							.setOtherPointOfContactCollection(
+									otherPointOfContactCollection);					
 				}
 				particle
-						.setOtherOrganizationCollection(otherOrganizationCollection);
+						.setOtherPointOfContactCollection(otherPointOfContactCollection);
 			}
 		}
 
-		request.getSession().setAttribute("primaryOrganization",
-				primaryOrganization);
-		request.getSession().setAttribute("otherOrganizationCollection",
-				otherOrganizationCollection);
+		request.getSession().setAttribute("primaryPointOfContact",
+				primaryPointOfContact);
+		request.getSession().setAttribute("otherPointOfContactCollection",
+				otherPointOfContactCollection);
 
 		request.getSession().removeAttribute("submitOrganizationForm");
 		forward = mapping.findForward("updateParticle");
@@ -161,7 +164,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
-		OrganizationBean primaryOrganization = (OrganizationBean) theForm
+		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
 				.get("orga");
 		// TODO::
 		// List<OrganizationBean> otherOrganizationCollection =
@@ -169,19 +172,19 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		// .get("otherOrganizationCollection");
 		List<OrganizationBean> otherOrganizationCollection = null;
 
-		request.getSession().setAttribute("primaryOrganization",
-				primaryOrganization);
-		request.getSession().setAttribute("otherOrganizationCollection",
+		request.getSession().setAttribute("primaryPointOfContact",
+				primaryPointOfContact);
+		request.getSession().setAttribute("otherPointOfContactCollection",
 				otherOrganizationCollection);
 
 		// add new added organization to drop down list
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SortedSet<Organization> sampleOrganizations = InitNanoparticleSetup
+		SortedSet<PointOfContact> samplePointOfContacts = InitNanoparticleSetup
 				.getInstance()
-				.getNanoparticleSampleOrganizations(request, user);
-		sampleOrganizations.add(primaryOrganization.getDomain());
-		request.getSession().setAttribute("allUserParticleOrganizations",
-				sampleOrganizations);
+				.getNanoparticleSamplePointOfContacts(request, user);
+		samplePointOfContacts.add(primaryPointOfContact.getDomain());
+		request.getSession().setAttribute("allPointOfContacts",
+				samplePointOfContacts);
 		// set selected primary organization
 		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
 				.getAttribute("theParticle");
@@ -189,7 +192,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		if (particleSampleBean != null) {
 			particle = particleSampleBean.getDomainParticleSample();
 			particleSampleBean.getDomainParticleSample()
-					.setPrimaryOrganization(primaryOrganization.getDomain());
+					.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
 		}
 		// if (particle!=null) {
 		// //set organization to particle

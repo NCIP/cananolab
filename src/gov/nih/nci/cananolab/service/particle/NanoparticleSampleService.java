@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -24,13 +24,13 @@ public interface NanoparticleSampleService {
 	 * 
 	 * @return all particle sources
 	 */
-	public SortedSet<Organization> findAllParticleOrganizations() throws ParticleException;
+	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException;
 
 	/**
 	 * 
 	 * @return all particle sources visible to user
 	 */
-	public SortedSet<Organization> findAllParticleOrganizations(UserBean user)
+	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
 			throws ParticleException;
 
 	/**

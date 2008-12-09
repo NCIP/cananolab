@@ -85,6 +85,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return particleBean;
 	}
 
+	//TODO: verify if needed??
 	public void setOtherParticlesFromTheSameSource(String location,
 			HttpServletRequest request, ParticleBean particleBean, UserBean user)
 			throws Exception {
@@ -92,8 +93,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
 					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample().getPrimaryOrganization()
-							.getName(), user);
+					particleBean.getDomainParticleSample().getPrimaryPointOfContact()
+							.getLastName(), user);
 		}
 	}
 

@@ -712,7 +712,8 @@ public class NanoparticleSampleServiceHelper {
 			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
-			columns.add(particleSample.getPrimaryOrganization().getName());
+			//TODO: may change to full name
+			columns.add(particleSample.getPrimaryPointOfContact().getLastName());
 
 			// nanoparticle entities and functionalizing entities are in one
 			// column.
