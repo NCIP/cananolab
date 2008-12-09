@@ -73,7 +73,7 @@
 									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleOrganization');
 												removeSourceVisibility();">
 									<option />
-									<html:options collection="allUserParticleOrganizations"
+									<html:options collection="allPointOfContacts"
 											labelProperty="name" property="name" />
 									<option value="other">
 										[Other]
