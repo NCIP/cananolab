@@ -84,7 +84,7 @@ ALTER TABLE nanoparticle_sample
 ALTER TABLE nanoparticle_sample 
 	CHANGE source_pk_id primary_contact_pk_id BIGINT;
 ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
-	FOREIGN KEY (primary_poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
+	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE composition_lab_file RENAME composition_file;
