@@ -291,13 +291,13 @@ CREATE TABLE nanoparticle_sample_publication
 ;
 
 
-CREATE TABLE nanoparticle_sample_other_organization
+CREATE TABLE nanoparticle_sample_other_poc
 (
 	particle_sample_pk_id BIGINT NOT NULL,
-	organization_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, organization_pk_id),
+	poc_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
 	KEY (particle_sample_pk_id),
-	KEY (organization_pk_id)
+	KEY (poc_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -434,11 +434,11 @@ CREATE TABLE nanoparticle_sample
 	particle_sample_name VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
-	primary_organization_pk_id BIGINT,
+	primary_contact_pk_id BIGINT,
 	PRIMARY KEY (particle_sample_pk_id),
 	UNIQUE (particle_sample_name),
 	UNIQUE (particle_sample_pk_id),
-	KEY (primary_organization_pk_id)
+	KEY (primary_contact_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -767,12 +767,12 @@ ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sampl
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_other_organization ADD CONSTRAINT FK_nanoparticle_sample_other_organization_nanoparticle_sample 
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample 
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_other_organization ADD CONSTRAINT FK_nanoparticle_sample_other_organization_organization 
-	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc
+	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE derived_datum ADD CONSTRAINT FK_derived_datum_derived_bioassay_data 
@@ -827,8 +827,8 @@ ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_organization 
-	FOREIGN KEY (primary_organization_pk_id) REFERENCES organization (organization_pk_id)
+ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact 
+	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file 
