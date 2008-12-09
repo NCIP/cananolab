@@ -68,7 +68,7 @@
 							</td>
 							<td class="rightLabel">
 								<html:select
-									property="particleSampleBean.domainParticleSample.primaryOrganization.name"
+									property="particleSampleBean.domainParticleSample.primaryPointOfContact.lastName"
 									styleId="sampleOrganization"
 									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleOrganization');
 												removeSourceVisibility();">

@@ -37,8 +37,8 @@
 				decorator="gov.nih.nci.cananolab.dto.particle.NanoparticleDecorator">
 				<display:column title="Particle<br> Sample Name"
 					property="${particleURL}" sortable="true" />
-				<display:column title="Particle<br> Source"
-					property="domainParticleSample.primaryOrganization.name"
+				<display:column title="Primary<br>PointOfContact"
+					property="domainParticleSample.primaryPointOfContact.lastName"
 					sortable="true" />
 				<display:column title="Particle<br> Composition"
 					property="compositionStr" sortable="true" />
