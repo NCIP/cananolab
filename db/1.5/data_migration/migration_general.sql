@@ -38,20 +38,20 @@ where nanoparticle_sample.source_pk_id = source.source_pk_id
 group by nanoparticle_sample.source_pk_id;
 DROP TABLE IF EXISTS source;
 
-CREATE TABLE nanoparticle_sample_other_organization
+CREATE TABLE nanoparticle_sample_other_poc
 (
 	particle_sample_pk_id BIGINT NOT NULL,
-	organization_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, organization_pk_id),
+	poc_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
 	KEY (particle_sample_pk_id),
-	KEY (organization_pk_id)
+	KEY (poc_pk_id)
 ) TYPE=InnoDB
 ;
-ALTER TABLE nanoparticle_sample_other_organization ADD CONSTRAINT FK_nanoparticle_sample_other_organization_nanoparticle_sample 
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample 
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
-ALTER TABLE nanoparticle_sample_other_organization ADD CONSTRAINT FK_nanoparticle_sample_other_organization_organization 
-	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
+	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 
@@ -82,9 +82,9 @@ ALTER TABLE nanoparticle_sample
 ALTER TABLE nanoparticle_sample
 	DROP KEY source_pk_id; 
 ALTER TABLE nanoparticle_sample 
-	CHANGE source_pk_id primary_organization_pk_id BIGINT;
-ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_organization 
-	FOREIGN KEY (primary_organization_pk_id) REFERENCES organization (organization_pk_id)
+	CHANGE source_pk_id primary_contact_pk_id BIGINT;
+ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
+	FOREIGN KEY (primary_poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE composition_lab_file RENAME composition_file;
