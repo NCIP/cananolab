@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.OrganizationException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 import gov.nih.nci.cananolab.service.organization.helper.OrganizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -38,12 +38,12 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 	 * @param primaryOrganization
 	 * @param otherOrganizationCollection
 	 * 
-	 * @throws OrganizationException
+	 * @throws PointOfContactException
 	 */
 	public void saveOrganization(
 			Organization primaryOrganization, 
 			Collection<Organization> otherOrganizationCollection)
-		throws OrganizationException{
+		throws PointOfContactException{
 		
 		//TODO: to verify if organization.primaryNanoparticleSampleCollection is empty		
 		try {
@@ -67,19 +67,19 @@ public class OrganizationServiceLocalImpl implements OrganizationService {
 		} catch (Exception e) {
 			String err = "Error in saving the organization.";
 			logger.error(err, e);
-			throw new OrganizationException(err, e);
+			throw new PointOfContactException(err, e);
 		}
 	}
 	
 
 	
 	public List<OrganizationBean> findOtherOrganizationCollection(String particleId)
-		throws OrganizationException{
+		throws PointOfContactException{
 		return helper.findOtherOrganizationCollection(particleId);		
 	}
 	
 	public OrganizationBean findPrimaryOrganization(String particleId)
-		throws OrganizationException{
+		throws PointOfContactException{
 		return helper.findPrimaryOrganization(particleId);	
 	}
 	

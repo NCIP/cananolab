@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.service.organization.helper;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
-import gov.nih.nci.cananolab.exception.OrganizationException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -27,7 +27,7 @@ public class OrganizationServiceHelper {
 			.getLogger(OrganizationServiceHelper.class);
 
 	public OrganizationBean findPrimaryOrganization(String particleId)
-			throws OrganizationException {
+			throws PointOfContactException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -57,12 +57,12 @@ public class OrganizationServiceHelper {
 		} catch (Exception e) {
 			String err = "Problem finding primary organization with the given particle ID.";
 			logger.error(err, e);
-			throw new OrganizationException(err, e);
+			throw new PointOfContactException(err, e);
 		}
 	}
 
 	public List<OrganizationBean> findOtherOrganizationCollection(
-			String particleId) throws OrganizationException {
+			String particleId) throws PointOfContactException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -96,7 +96,7 @@ public class OrganizationServiceHelper {
 		} catch (Exception e) {
 			String err = "Problem finding other organization collections with the given particle ID.";
 			logger.error(err, e);
-			throw new OrganizationException(err, e);
+			throw new PointOfContactException(err, e);
 		}
 	}
 

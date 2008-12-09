@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.service.organization.impl;
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.dto.common.OrganizationBean;
-import gov.nih.nci.cananolab.exception.OrganizationException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 
 import java.util.Collection;
@@ -33,12 +33,12 @@ public class OrganizationServiceRemoteImpl implements OrganizationService {
 	 * @param primaryOrganization
 	 * @param otherOrganizationCollection
 	 * 
-	 * @throws OrganizationException
+	 * @throws PointOfContactException
 	 */
 	public void saveOrganization(Organization primaryOrganization, 
 			Collection<Organization> otherOrganizationCollection)
-		throws OrganizationException{
-		throw new OrganizationException("not implemented for grid service.");
+		throws PointOfContactException{
+		throw new PointOfContactException("not implemented for grid service.");
 	}
 
 	public OrganizationBean findPrimaryOrganization(String particleId){
