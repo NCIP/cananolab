@@ -277,7 +277,7 @@
 													<input type="hidden" name="file.particleNames"
 														value="${particleName}">
 													<td class="leftLabel" valign="top" width="20%">
-														<strong>Copy to other ${particleOrganization}
+														<strong>Copy to other ${particlePointOfContact}
 															nanoparticle</strong>
 													</td>
 													<td class="rightLabel">
@@ -292,7 +292,7 @@
 											<c:otherwise>
 												<tr>
 													<td class="completeLabel" colspan="2">
-														There are no other particles from source ${particleOrganization}
+														There are no other particles from source ${particlePointOfContact}
 														to copy annotation to.
 													</td>
 												</tr>

@@ -224,7 +224,7 @@
 											<input type="hidden" name="file.particleNames"
 												value="${particleName}">
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Copy to other ${particleOrganization}
+												<strong>Copy to other ${particlePointOfContact}
 													nanoparticle</strong>
 											</td>
 											<td class="rightLabel" colspan="3">
