@@ -94,7 +94,7 @@
 							<strong> Nanoparticle Sample Source </strong>
 						</td>
 						<td class="rightLabel" colspan="5">
-							<html:text property="particleOrganization" size="50" />
+							<html:text property="particlePointOfContact" size="50" />
 							<em>* for searching wildcards</em>
 						</td>
 					</tr>

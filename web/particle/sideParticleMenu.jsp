@@ -28,7 +28,7 @@
 			value="${theParticle.domainParticleSample.name}" scope="session" />
 		<c:set var="particleId" value="${theParticle.domainParticleSample.id}"
 			scope="session" />
-		<c:set var="particleOrganization"
+		<c:set var="particlePointOfContact"
 			value="${theParticle.domainParticleSample.primaryPointOfContact.lastName}"
 			scope="session" />
 		<c:set var="location" value="${theParticle.location}" scope="session" />

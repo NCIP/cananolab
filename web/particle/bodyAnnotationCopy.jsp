@@ -16,7 +16,7 @@
 			<c:when test="${!empty otherParticleNames}">
 				<tr>
 					<td class="leftLabel" valign="top" width="30%">
-						<strong>Copy to other ${particleOrganization} nanoparticle
+						<strong>Copy to other ${particlePointOfContact} nanoparticle
 							samples</strong>
 					</td>
 					<td class="label">
@@ -37,7 +37,7 @@
 			<c:otherwise>
 				<tr>
 					<td class="completeLabel" colspan="3">
-						There are no other particles from source ${particleOrganization} to copy
+						There are no other particles from source ${particlePointOfContact} to copy
 						annotation to.
 					</td>
 			</c:otherwise>
