@@ -15,7 +15,7 @@ import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.OrganizationException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.organization.OrganizationService;
 import gov.nih.nci.cananolab.service.organization.impl.OrganizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.organization.impl.OrganizationServiceRemoteImpl;
@@ -474,7 +474,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 			String err = "Error in setting visibility groups for organization "
 					+ organizationBean.getDomain().getName();
 			logger.error(err, e);
-			throw new OrganizationException(err, e);
+			throw new PointOfContactException(err, e);
 		}
 	}
 
