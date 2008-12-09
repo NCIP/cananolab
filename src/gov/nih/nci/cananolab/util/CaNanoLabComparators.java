@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.util;
 
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -34,10 +34,10 @@ import java.util.Comparator;
 
 public class CaNanoLabComparators {
 
-	public static class ParticleOrganizationComparator implements Comparator<Organization> {
-		public int compare(Organization org1, Organization org2) {
-			int diff = new SortableNameComparator().compare(org1
-					.getName(), org2.getName());
+	public static class ParticlePointOfContactComparator implements Comparator<PointOfContact> {
+		public int compare(PointOfContact poc1, PointOfContact poc2) {
+			int diff = new SortableNameComparator().compare(poc1
+					.getLastName(), poc2.getLastName());
 			return diff;
 		}
 	}

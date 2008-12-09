@@ -8,9 +8,6 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.Organization;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -21,9 +18,6 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-
-import java.util.Collection;
-import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,7 +82,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		
 		
 		// persist in the database
-		String newPrimaryOrganizationName = particleSampleBean.getDomainParticleSample().getPrimaryOrganization().getName();
+		String newPrimaryPointOfContactName = particleSampleBean.getDomainParticleSample().getPrimaryPointOfContact().getLastName();
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
@@ -104,7 +98,8 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		for (int i = 0; i < visibleGroups.length - 1; i++) {
 			visibleGroups[i] = particleSampleBean.getVisibilityGroups()[i];
 		}
-		visibleGroups[visibleGroups.length - 1] = newPrimaryOrganizationName;
+		//TODO: to be verified
+		visibleGroups[visibleGroups.length - 1] = newPrimaryPointOfContactName;
 
 		particleSampleBean = service
 				.findFullNanoparticleSampleById(particleSampleBean
@@ -122,17 +117,17 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		forward = mapping.findForward("update");
 		request.setAttribute("theParticle", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getPrimaryOrganization().getName());
+			.getPrimaryPointOfContact().getLastName());
 		setupDataTree(particleSampleBean, request);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getPrimaryOrganization().getName());
+				.getPrimaryPointOfContact().getLastName());
 		return forward;
 	}
 
 	private void setupLookups(HttpServletRequest request, String sampleSource)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getNanoparticleSampleOrganizations(
+		InitNanoparticleSetup.getInstance().getNanoparticleSamplePointOfContacts(
 				request, user);
 		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutSource(
 				request, sampleSource);
@@ -151,7 +146,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		service.retrieveVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getPrimaryOrganization().getName());
+				.getPrimaryPointOfContact().getLastName());
 		setupDataTree(particleSampleBean, request);
 
 		// for display "back" button on the publication detail view

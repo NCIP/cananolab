@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -59,13 +60,13 @@ public class InitNanoparticleSetup {
 		return new InitNanoparticleSetup();
 	}
 
-	public SortedSet<Organization> getNanoparticleSampleOrganizations(
+	public SortedSet<PointOfContact> getNanoparticleSamplePointOfContacts(
 			HttpServletRequest request, UserBean user) throws Exception {
-		SortedSet<Organization> sampleOrganizations = particleService
-				.findAllParticleOrganizations(user);
-		request.getSession().setAttribute("allUserParticleOrganizations",
-				sampleOrganizations);
-		return sampleOrganizations;
+		SortedSet<PointOfContact> pointOfContacts = particleService
+				.findPointOfContacts(user);
+		request.getSession().setAttribute("allPointOfContacts",
+				pointOfContacts);
+		return pointOfContacts;
 	}
 
 	public SortedSet<String> getAllNanoparticleSampleNames(
