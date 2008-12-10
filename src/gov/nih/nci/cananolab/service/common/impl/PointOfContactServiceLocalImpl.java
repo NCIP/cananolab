@@ -32,8 +32,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	/**
 	 * Persist a new organization or update an existing organizations
 	 * 
-	 * @param primaryOrganization
-	 * @param otherOrganizationCollection
+	 * @param primaryPointOfContact
+	 * @param otherPointOfContactCollection
 	 * 
 	 * @throws PointOfContactException
 	 */
@@ -48,8 +48,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);			
-			//TODO:::: 
-			Organization dbPointOfContact = (Organization) appService
+			//TODO:::: lastName is not unique, lastName+firstName+email
+			PointOfContact dbPointOfContact = (PointOfContact) appService
 					.getObject(PointOfContact.class, "lastName", primaryPointOfContact.getLastName());
 			if (dbPointOfContact != null
 					&& !dbPointOfContact.getId().equals(primaryPointOfContact.getId())) {

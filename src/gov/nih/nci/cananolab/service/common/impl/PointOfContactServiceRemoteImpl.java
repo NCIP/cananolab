@@ -14,7 +14,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 /**
- * Remote implementation of OrganizationService
+ * Remote implementation of PointOfContactService
  * 
  * @author tanq
  * 
@@ -32,8 +32,8 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	/**
 	 * Persist a new organization or update an existing organizations
 	 * 
-	 * @param primaryOrganization
-	 * @param otherOrganizationCollection
+	 * @param primaryPointOfContact
+	 * @param otherPointOfContactCollection
 	 * 
 	 * @throws PointOfContactException
 	 */

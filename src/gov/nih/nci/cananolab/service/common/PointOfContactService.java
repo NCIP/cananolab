@@ -20,8 +20,8 @@ public interface PointOfContactService {
 	/**
 	 * Persist a new organization or update an existing organizations
 	 * @param particleId
-	 * @param primaryOrganization
-	 * @param otherOrganizationCollection
+	 * @param primaryPointOfContact
+	 * @param otherPointOfContactCollection
 	 * 
 	 * @throws PointOfContactException
 	 */	
