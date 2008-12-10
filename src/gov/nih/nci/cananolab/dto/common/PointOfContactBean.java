@@ -6,11 +6,9 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 
-import java.util.List;
-
 
 /**
- * Organization view bean
+ * PointOfContact view bean
  * 
  * @author tanq, cais
  * 
@@ -20,6 +18,7 @@ import java.util.List;
 
 public class PointOfContactBean{
 	private PointOfContact domain;
+	private String POCName;
 	private Organization organization;
 	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
@@ -30,12 +29,22 @@ public class PointOfContactBean{
 	public PointOfContactBean() {
 		super();
 		domain = new PointOfContact();
+		POCName = "";
 	}
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
 		organization =
 			pointOfContact.getOrganization();
+		String firstName = domain.getFirstName();
+		POCName = "";
+		if (firstName!=null) {
+			POCName = firstName +" ";
+		}
+		String lastName = domain.getLastName();
+		if (lastName!=null) {
+			POCName+=lastName;
+		}
 	}
 	
 	/**
@@ -92,6 +101,20 @@ public class PointOfContactBean{
 	 */
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+	}
+
+	/**
+	 * @return the pOCName
+	 */
+	public String getPOCName() {
+		return POCName;
+	}
+
+	/**
+	 * @param name the pOCName to set
+	 */
+	public void setPOCName(String name) {
+		POCName = name;
 	}	
 	
 	

@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -38,6 +39,14 @@ public class CaNanoLabComparators {
 		public int compare(PointOfContact poc1, PointOfContact poc2) {
 			int diff = new SortableNameComparator().compare(poc1
 					.getLastName(), poc2.getLastName());
+			return diff;
+		}
+	}
+	
+	public static class ParticlePointOfContactBeanComparator implements Comparator<PointOfContactBean> {
+		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
+			int diff = new SortableNameComparator().compare(poc1.getDomain()
+					.getLastName(), poc2.getDomain().getLastName());
 			return diff;
 		}
 	}

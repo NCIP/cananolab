@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociati
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -60,13 +60,21 @@ public class InitNanoparticleSetup {
 		return new InitNanoparticleSetup();
 	}
 
-	public SortedSet<PointOfContact> getNanoparticleSamplePointOfContacts(
+	public SortedSet<PointOfContactBean> getNanoparticleSamplePointOfContacts(
 			HttpServletRequest request, UserBean user) throws Exception {
 		SortedSet<PointOfContact> pointOfContacts = particleService
 				.findPointOfContacts(user);
+		SortedSet<PointOfContactBean> pointOfContactBeans = null;
+		if (pointOfContacts!=null && pointOfContacts.size()>0) {
+			pointOfContactBeans = new TreeSet<PointOfContactBean>(					
+					new CaNanoLabComparators.ParticlePointOfContactBeanComparator());
+			for (PointOfContact poc:pointOfContacts) {
+				pointOfContactBeans.add(new PointOfContactBean(poc));
+			}
+		}
 		request.getSession().setAttribute("allPointOfContacts",
-				pointOfContacts);
-		return pointOfContacts;
+				pointOfContactBeans);
+		return pointOfContactBeans;
 	}
 
 	public SortedSet<String> getAllNanoparticleSampleNames(
