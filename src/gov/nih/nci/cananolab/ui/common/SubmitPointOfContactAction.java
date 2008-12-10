@@ -8,8 +8,8 @@ package gov.nih.nci.cananolab.ui.common;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -57,7 +57,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		List<PointOfContactBean> otherPointOfContactBeanCollection = null;
 		if (otherPointOfContactsBean != null) {
 			otherPointOfContactBeanCollection = otherPointOfContactsBean
-				.getOtherPointOfContacts();
+					.getOtherPointOfContacts();
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
@@ -65,13 +65,16 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		if (otherPointOfContactBeanCollection != null) {
 			otherPointOfContactCollection = new HashSet<PointOfContact>();
 			for (PointOfContactBean pointOfContactBean : otherPointOfContactBeanCollection) {
-				pointOfContactBean.getDomain().setCreatedBy(user.getLoginName());
-				otherPointOfContactCollection.add(pointOfContactBean.getDomain());
+				pointOfContactBean.getDomain()
+						.setCreatedBy(user.getLoginName());
+				otherPointOfContactCollection.add(pointOfContactBean
+						.getDomain());
 			}
 		}
-		
-		//TODO::: 111
+
+		// TODO::: 111
 		// created_date set in service
+		String POCName = primaryPointOfContact.getPOCName();
 		PointOfContactService service = new PointOfContactServiceLocalImpl();
 		service.savePointOfContact(primaryPointOfContact.getDomain(),
 				otherPointOfContactCollection);
@@ -79,17 +82,17 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(primaryPointOfContact.getDomain().getId()
-				.toString(), primaryPointOfContact.getOrgVisibilityGroups());
-		//TODO::: assign organization visibility
-		//assignPOCVisibility(primaryPointOfContact, authService);
+				.toString(), primaryPointOfContact.getPocVisibilityGroups());
+		// TODO::: assign organization visibility
+		// assignPOCVisibility(primaryPointOfContact, authService);
 		if (otherPointOfContactCollection != null) {
 			for (PointOfContactBean pointOfContactBean : otherPointOfContactBeanCollection) {
 				// assign other pointOfContact visibility
 				authService.assignVisibility(pointOfContactBean.getDomain()
 						.getId().toString(), pointOfContactBean
-						.getOrgVisibilityGroups());
-				//TODO::: assign organization visibility
-				//assignPOCVisibility(pointOfContactBean, authService);
+						.getPocVisibilityGroups());
+				// TODO::: assign organization visibility
+				// assignPOCVisibility(pointOfContactBean, authService);
 			}
 		}
 
@@ -99,7 +102,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		 */
 		// add new added pointOfContact to drop down list
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance().getNanoparticleSamplePointOfContacts(request, user);
+				.getInstance().getNanoparticleSamplePointOfContacts(request,
+						user);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
@@ -114,30 +118,32 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				NanoparticleSample particle = particleSampleBean
 						.getDomainParticleSample();
 
-				// set selected pointOfContact
-				particle
-						.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
+				// set selected pointOfContact				
+				particle.setPrimaryPointOfContact(primaryPointOfContact
+						.getDomain());
+				particleSampleBean.setPOCName(POCName);
 				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
 					primaryPointOfContact.getDomain()
 							.getPrimaryNanoparticleSampleCollection().add(
-									particle);					
+									particle);
 				} else {
 					Collection<NanoparticleSample> primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
 					primaryNanoparticleSampleCollection.add(particle);
 					primaryPointOfContact.getDomain()
 							.setPrimaryNanoparticleSampleCollection(
-									primaryNanoparticleSampleCollection);				
+									primaryNanoparticleSampleCollection);
 				}
-				//TODO:need??
-				particle.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
+				// TODO:need??
+				particle.setPrimaryPointOfContact(primaryPointOfContact
+						.getDomain());
 
 				if (otherPointOfContactCollection != null
 						&& otherPointOfContactCollection.size() > 0) {
 					particleSampleBean.getDomainParticleSample()
 							.setOtherPointOfContactCollection(
-									otherPointOfContactCollection);					
+									otherPointOfContactCollection);
 				}
 				particle
 						.setOtherPointOfContactCollection(otherPointOfContactCollection);
@@ -176,8 +182,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		// add new added pointOfContact to drop down list
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance()
-				.getNanoparticleSamplePointOfContacts(request, user);
+				.getInstance().getNanoparticleSamplePointOfContacts(request,
+						user);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
@@ -187,7 +193,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		NanoparticleSample particle = null;
 		if (particleSampleBean != null) {
 			particle = particleSampleBean.getDomainParticleSample();
-			particleSampleBean.getDomainParticleSample()
+			particleSampleBean
+					.getDomainParticleSample()
 					.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
 		}
 		// if (particle!=null) {
@@ -250,7 +257,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			}
 		}
 		theForm.set("primaryPointOfContact", primaryPointOfContact);
-		theForm.set("otherPointOfContactCollection", otherPointOfContactCollection);
+		theForm.set("otherPointOfContactCollection",
+				otherPointOfContactCollection);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 
 		// TODO: forward to be verified by Shuang
@@ -274,7 +282,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				forward = mapping
 						.findForward("pointOfContactSubmitPubmedPointOfContact");
 			} else {
-				forward = mapping.findForward("pointOfContactSubmitPointOfContact");
+				forward = mapping
+						.findForward("pointOfContactSubmitPointOfContact");
 			}
 			// request.removeAttribute("particleId");
 		}
@@ -296,7 +305,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		// } else {
 		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 		// request, location);
-		// pointOfContactService = new PointOfContactServiceRemoteImpl(serviceUrl);
+		// pointOfContactService = new
+		// PointOfContactServiceRemoteImpl(serviceUrl);
 		// }
 		// PointOfContactBean pointOfContactBean =
 		// pointOfContactService.findPointOfContactById(pointOfContactId);
@@ -324,7 +334,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			pointOfContactService = new PointOfContactServiceRemoteImpl(serviceUrl);
+			pointOfContactService = new PointOfContactServiceRemoteImpl(
+					serviceUrl);
 		}
 		String particleId = request.getParameter("particleId");
 		PointOfContactBean primaryPointOfContact = pointOfContactService
@@ -339,7 +350,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("primaryPointOfContact", primaryPointOfContact);
-		theForm.set("otherPointOfContactCollection", otherPointOfContactCollection);
+		theForm.set("otherPointOfContactCollection",
+				otherPointOfContactCollection);
 
 		ActionForward forward = null;
 		forward = mapping.findForward("pointOfContactDetailView");
@@ -367,7 +379,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			pointOfContactService = new PointOfContactServiceRemoteImpl(serviceUrl);
+			pointOfContactService = new PointOfContactServiceRemoteImpl(
+					serviceUrl);
 		}
 		// String pointOfContactId = request.getParameter("pointOfContactId");
 		// PointOfContactBean pubBean =
@@ -412,10 +425,12 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		// request.getSession().getAttribute("pointOfContactStatuses");
 		// if (statuses!=null) {
 		// statuses.add(selectedPointOfContactStatus);
-		// request.getSession().setAttribute("pointOfContactStatuses", statuses);
+		// request.getSession().setAttribute("pointOfContactStatuses",
+		// statuses);
 		// }
 		// }
-		// PointOfContact pub = (PointOfContact) pointOfContactBean.getDomainFile();
+		// PointOfContact pub = (PointOfContact)
+		// pointOfContactBean.getDomainFile();
 		//		
 		// theForm.set("file", pointOfContactBean);
 		//
@@ -461,7 +476,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 							CaNanoLabConstants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
-					pointOfContactBean.setOrgVisibilityGroups(visibilityGroups);
+					pointOfContactBean.setPocVisibilityGroups(visibilityGroups);
 				}
 			} else {
 				pointOfContactBean.setHidden(true);
@@ -474,28 +489,29 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 	}
 
-//	private void assignPOCVisibility(PointOfContactBean pointOfContactBean,
-//			AuthorizationService authService) throws Exception {
-//		if (pointOfContactBean.getVisibilityGroups() != null
-//				&& Arrays.asList(pointOfContactBean.getVisibilityGroups())
-//						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-//			PointOfContact pointOfContact = pointOfContactBean.getDomain();
-//			if (pointOfContact.getPointOfContactCollection() != null) {
-//				for (PointOfContact poc : pointOfContact
-//						.getPointOfContactCollection()) {
-//					if (poc != null) {
-//						if (poc.getId() != null
-//								&& poc.getId().toString().trim().length() > 0) {
-//							authService.assignPublicVisibility(poc.getId()
-//									.toString());
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
+	// private void assignPOCVisibility(PointOfContactBean pointOfContactBean,
+	// AuthorizationService authService) throws Exception {
+	// if (pointOfContactBean.getVisibilityGroups() != null
+	// && Arrays.asList(pointOfContactBean.getVisibilityGroups())
+	// .contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+	// PointOfContact pointOfContact = pointOfContactBean.getDomain();
+	// if (pointOfContact.getPointOfContactCollection() != null) {
+	// for (PointOfContact poc : pointOfContact
+	// .getPointOfContactCollection()) {
+	// if (poc != null) {
+	// if (poc.getId() != null
+	// && poc.getId().toString().trim().length() > 0) {
+	// authService.assignPublicVisibility(poc.getId()
+	// .toString());
+	// }
+	// }
+	// }
+	// }
+	// }
+	// }
 
-
+	
+	
 	public ActionForward addPointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
