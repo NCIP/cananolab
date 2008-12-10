@@ -136,7 +136,6 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		System.out.println("########### setupUpdate .......... ");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = setupParticle(theForm, request,
 				"local");
