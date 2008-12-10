@@ -31,17 +31,17 @@
 		<put name="menu" value="nanoparticles" />
 	</definition>
 	
-	<definition name="particle.submitOrganization"
+	<definition name="particle.submitPointOfContact"
 		extends="calab.home">
 		<put name="calabContent"
-			value="/organization/bodySubmitOrganization.jsp" />
+			value="/common/bodySubmitPointOfContact.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 
-	<definition name="particle.organizationDetailView"
+	<definition name="particle.pointOfContactDetailView"
 		extends="calab.home">
 		<put name="calabContent"
-			value="/organization/bodyOrganizationDetailView.jsp" />
+			value="/common/bodyPointOfContactDetailView.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
 	

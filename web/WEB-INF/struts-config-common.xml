@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+		<form-bean name="submitPointOfContactForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="poc"
+				type="gov.nih.nci.cananolab.dto.common.PointOfContactBean" />
+			<form-property name="otherPoc"
+				type="gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean" />
+		</form-bean>
+		
+	</form-beans>
+	<global-exceptions>
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			bundle="pointOfContact" key="error.pointOfContactException" path="pointOfContact.message"
+			type="gov.nih.nci.cananolab.exception.PointOfContactException" />
+	</global-exceptions>
+	<global-forwards>
+		<forward name="pointOfContactMessage" path="pointOfContact.message" />
+		<forward name="pointOfContactDetailPrintView"
+			path="/common/bodyPointOfContactDetailPrintView.jsp" />
+		<forward name="pointOfContactSummaryPrintView"
+			path="/common/bodyPointOfContactSummaryPrintView.jsp" />
+	</global-forwards>
+	<action-mappings>		
+		<action name="submitPointOfContactForm" parameter="dispatch"
+			path="/submitPointOfContact"
+			type="gov.nih.nci.cananolab.ui.common.SubmitPointOfContactAction"
+			input="input">
+			<forward name="success" path="particle.submitPointOfContact" />
+			<forward name="input"
+				path="particle.submitPointOfContact" />
+			<forward name="updateParticle"
+				path="particle.updateNanoparticleSample" />
+			<forward name="submitParticle"
+				path="particle.submitNanoparticleSample" />
+		</action>
+		
+	</action-mappings>
+</struts-config>
+

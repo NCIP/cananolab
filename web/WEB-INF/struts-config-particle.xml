@@ -142,10 +142,10 @@
 				path="particle.updateNanoparticleSample" />
 			<forward name="input"
 				path="particle.submitNanoparticleSample" />
-			<forward name="organization"
-				path="particle.submitOrganization" />
-			<forward name="organizationDetailView"
-				path="particle.organizationDetailView" />
+			<forward name="pointOfContact"
+				path="particle.submitPointOfContact" />
+			<forward name="pointOfContactDetailView"
+				path="particle.pointOfContactDetailView" />
 		</action>
 		<action input="input" name="searchNanoparticleSampleForm"
 			parameter="dispatch" path="/searchNanoparticle"

@@ -139,7 +139,7 @@
 		<set-property property="stopOnFirstError" value="false" />
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
-			      /WEB-INF/validation-organization.xml,
+			      /WEB-INF/validation-common.xml,
 			      /WEB-INF/validation-particle.xml,
 			      /WEB-INF/validation-publication.xml,	      
 			      /WEB-INF/validation-protocol.xml, 
