@@ -64,13 +64,22 @@ public class NanoparticleSampleServiceHelper {
 				Projections.distinct(Property.forName("id")));
 
 		// TODO: update SQL FOR source
-//		if (particlePointOfContact != null && particlePointOfContact.length() > 0) {
-//			TextMatchMode sourceMatchMode = new TextMatchMode(particlePointOfContact);
-//			crit.createAlias("pointOfContact", "pointOfContact").add(
-//					Restrictions.ilike("pointOfContact.lastName",
-//							sourceMatchMode.getUpdatedText(), sourceMatchMode
-//									.getMatchMode()));
-//		}
+		if (particlePointOfContact != null && particlePointOfContact.length() > 0) {
+			TextMatchMode pocMatchMode = new TextMatchMode(particlePointOfContact);
+			
+			
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias("primaryPointOfContact", "pointOfContact");
+			Criterion pocCrit1 = Restrictions.ilike("pointOfContact.lastName",
+					pocMatchMode.getUpdatedText(), pocMatchMode
+					.getMatchMode());			
+			disjunction.add(pocCrit1);
+			Criterion pocCrit2 = Restrictions.ilike("pointOfContact.firstName",
+					pocMatchMode.getUpdatedText(), pocMatchMode
+					.getMatchMode());			
+			disjunction.add(pocCrit2);			
+			crit.add(disjunction);
+		}
 
 		// join composition and nanoparticle entity
 		if (nanoparticleEntityClassNames != null
