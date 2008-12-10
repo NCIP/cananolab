@@ -33,7 +33,7 @@
 		<one-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition" property-ref="nanoparticleSample" />
 		<set name="otherPointOfContactCollection" table="nanoparticle_sample_other_poc" lazy="true" inverse="false" cascade="save-update">
 			<cache usage="read-write" />
-			<key column="nanoparticle_sample_pk_id" />
+			<key column="particle_sample_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.PointOfContact" column="poc_pk_id" />
 		</set>				
 	</class>
