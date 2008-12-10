@@ -7,12 +7,9 @@ package gov.nih.nci.cananolab.ui.common;
  */
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
-import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -25,7 +22,6 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
