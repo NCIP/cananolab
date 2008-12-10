@@ -12,7 +12,7 @@
 					key="nanoparticleSampleForm.sampleName" bundle="particle" />
 			</field>
 			<field
-				property="particleSampleBean.domainParticleSample.primaryOrganization.name"
+				property="particleSampleBean.POCName"
 				page="1" depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleOrganization" bundle="particle" />
