@@ -705,14 +705,13 @@ public class NanoparticleSampleServiceHelper {
 		List<String> particleStrings = new ArrayList<String>(particleSamples
 				.size());
 		// 6 columns
-		List<String> columns = new ArrayList<String>(6);
+		List<String> columns = new ArrayList<String>(7);
 		for (NanoparticleSample particleSample : particleSamples) {
 			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
-			//TODO: may change to full name
+			columns.add(particleSample.getPrimaryPointOfContact().getFirstName());
 			columns.add(particleSample.getPrimaryPointOfContact().getLastName());
-
 			// nanoparticle entities and functionalizing entities are in one
 			// column.
 			SortedSet<String> entities = new TreeSet<String>();
