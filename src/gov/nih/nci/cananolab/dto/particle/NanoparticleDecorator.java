@@ -131,4 +131,19 @@ public class NanoparticleDecorator extends TableDecorator {
 		}
 		return StringUtils.join(charNames, "<br>");
 	}
+	
+	public String getPointOfContactName() throws CaNanoLabException {
+		ParticleBean particle = (ParticleBean) getCurrentRowObject();
+		StringBuilder sb = new StringBuilder();	
+		String firstName = particle.getDomainParticleSample().getPrimaryPointOfContact().getFirstName();
+		if (firstName!=null) {
+			sb.append(firstName);
+			sb.append(" ");
+		}
+		String lastName = particle.getDomainParticleSample().getPrimaryPointOfContact().getLastName();
+		if (lastName!=null) {
+			sb.append(lastName);
+		}
+		return sb.toString();
+	}
 }
