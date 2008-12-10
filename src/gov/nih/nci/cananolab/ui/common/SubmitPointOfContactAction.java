@@ -1,24 +1,24 @@
 package gov.nih.nci.cananolab.ui.common;
 
 /**
- * This class submits organization and assigns visibility  
+ * This class submits PointOfContact and assigns visibility  
  *  
  * @author tanq
  */
 
-import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.dto.common.OrganizationBean;
-import gov.nih.nci.cananolab.dto.common.OtherOrganizationsBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
-import gov.nih.nci.cananolab.service.organization.OrganizationService;
-import gov.nih.nci.cananolab.service.organization.impl.OrganizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.organization.impl.OrganizationServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.common.PointOfContactService;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -47,7 +47,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			.getLogger(SubmitPointOfContactAction.class);
 
 	/**
-	 * create new organization / update organization
+	 * create new pointOfContact / update pointOfContact
 	 */
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -75,40 +75,40 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		
 		//TODO::: 111
-//		// created_date set in service
-//		OrganizationService service = new OrganizationServiceLocalImpl();
-//		service.saveOrganization(primaryOrganization.getDomain(),
-//				otherOrganizationCollection);
-//		// assign primary organization visibility
-//		AuthorizationService authService = new AuthorizationService(
-//				CaNanoLabConstants.CSM_APP_NAME);
-//		authService.assignVisibility(primaryOrganization.getDomain().getId()
-//				.toString(), primaryOrganization.getVisibilityGroups());
-//		// assign primary organization's poc visibility
-//		assignPOCVisibility(primaryOrganization, authService);
-//		if (otherOrganizationCollection != null) {
-//			for (OrganizationBean organizationBean : otherOrganizationBeanCollection) {
-//				// assign other organization visibility
-//				authService.assignVisibility(organizationBean.getDomain()
-//						.getId().toString(), organizationBean
-//						.getVisibilityGroups());
-//				// assign other organization's poc visibility
-//				assignPOCVisibility(organizationBean, authService);
-//			}
-//		}
+		// created_date set in service
+		PointOfContactService service = new PointOfContactServiceLocalImpl();
+		service.savePointOfContact(primaryPointOfContact.getDomain(),
+				otherPointOfContactCollection);
+		// assign primary pointOfContact visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		authService.assignVisibility(primaryPointOfContact.getDomain().getId()
+				.toString(), primaryPointOfContact.getVisibilityGroups());
+		//TODO::: assign organization visibility
+		//assignPOCVisibility(primaryPointOfContact, authService);
+		if (otherPointOfContactCollection != null) {
+			for (PointOfContactBean pointOfContactBean : otherPointOfContactBeanCollection) {
+				// assign other pointOfContact visibility
+				authService.assignVisibility(pointOfContactBean.getDomain()
+						.getId().toString(), pointOfContactBean
+						.getVisibilityGroups());
+				//TODO::: assign organization visibility
+				//assignPOCVisibility(pointOfContactBean, authService);
+			}
+		}
 
 		/**
 		 * Prepare for nanoparticle sample form
 		 * 
 		 */
-		// add new added organization to drop down list
+		// add new added pointOfContact to drop down list
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
 				.getInstance().getNanoparticleSamplePointOfContacts(request, user);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
 
-		// set selected primary organization
+		// set selected primary pointOfContact
 		DynaValidatorForm particleSampleForm = (DynaValidatorForm) request
 				.getSession().getAttribute("nanoparticleSampleForm");
 		if (particleSampleForm != null) {
@@ -118,10 +118,10 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				NanoparticleSample particle = particleSampleBean
 						.getDomainParticleSample();
 
-				// set selected organization
+				// set selected pointOfContact
 				particle
 						.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
-				// set organization to particle
+				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
 					primaryPointOfContact.getDomain()
@@ -153,7 +153,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("otherPointOfContactCollection",
 				otherPointOfContactCollection);
 
-		request.getSession().removeAttribute("submitOrganizationForm");
+		request.getSession().removeAttribute("submitPointOfContactForm");
 		forward = mapping.findForward("updateParticle");
 		return forward;
 	}
@@ -167,17 +167,17 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
 				.get("orga");
 		// TODO::
-		// List<OrganizationBean> otherOrganizationCollection =
-		// (List<OrganizationBean>) theForm
-		// .get("otherOrganizationCollection");
-		List<OrganizationBean> otherOrganizationCollection = null;
+		// List<PointOfContactBean> otherPointOfContactCollection =
+		// (List<PointOfContactBean>) theForm
+		// .get("otherPointOfContactCollection");
+		List<PointOfContactBean> otherPointOfContactCollection = null;
 
 		request.getSession().setAttribute("primaryPointOfContact",
 				primaryPointOfContact);
 		request.getSession().setAttribute("otherPointOfContactCollection",
-				otherOrganizationCollection);
+				otherPointOfContactCollection);
 
-		// add new added organization to drop down list
+		// add new added pointOfContact to drop down list
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
 				.getInstance()
@@ -185,7 +185,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
-		// set selected primary organization
+		// set selected primary pointOfContact
 		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
 				.getAttribute("theParticle");
 		NanoparticleSample particle = null;
@@ -195,26 +195,26 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 					.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
 		}
 		// if (particle!=null) {
-		// //set organization to particle
-		// primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
-		// particle.setPrimaryOrganization(primaryOrganization.getDomain());
-		// particle.setOtherOrganizationCollection(otherOrganizationCollection);
+		// //set pointOfContact to particle
+		// primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
+		// particle.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
+		// particle.setOtherPointOfContactCollection(otherPointOfContactCollection);
 		// }
 		forward = mapping.findForward("updateParticle");
 
 		return forward;
 	}
 
-	// private void assignOrganizationToParticle(NanoparticleSample particle,
-	// OrganizationBean primaryOrganization, List<OrganizationBean>
-	// otherOrganizationCollection,
+	// private void assignPointOfContactToParticle(NanoparticleSample particle,
+	// PointOfContactBean primaryPointOfContact, List<PointOfContactBean>
+	// otherPointOfContactCollection,
 	// UserBean user) {
-	// primaryOrganization.getDomain().setCreatedBy(user.getLoginName());
+	// primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
 	//
 	// }
 
 	/**
-	 * create organization form
+	 * create pointOfContact form
 	 */
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -225,14 +225,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null && !particleId.equals("null")
 				&& particleId.trim().length() > 0) {
-			forward = mapping.findForward("submitOrganization");
+			forward = mapping.findForward("submitPointOfContact");
 		}
 		return forward;
 	}
 
 	// TODO::
 	/**
-	 * update organization form *
+	 * update pointOfContact form *
 	 */
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -241,24 +241,24 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		OrganizationService organizationService = new OrganizationServiceLocalImpl();
-		OrganizationBean primaryOrganization = organizationService
-				.findPrimaryOrganization(particleId);
-		List<OrganizationBean> otherOrganizationCollection = organizationService
-				.findOtherOrganizationCollection(particleId);
+		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
+		PointOfContactBean primaryPointOfContact = pointOfContactService
+				.findPrimaryPointOfContact(particleId);
+		List<PointOfContactBean> otherPointOfContactCollection = pointOfContactService
+				.findOtherPointOfContactCollection(particleId);
 		// TODO:: shuang need to check isHidden() before showing in jsp
-		setVisibility(user, primaryOrganization, true);
-		if (otherOrganizationCollection != null) {
-			for (OrganizationBean organizationBean : otherOrganizationCollection) {
-				setVisibility(user, organizationBean, true);
+		setVisibility(user, primaryPointOfContact, true);
+		if (otherPointOfContactCollection != null) {
+			for (PointOfContactBean pointOfContactBean : otherPointOfContactCollection) {
+				setVisibility(user, pointOfContactBean, true);
 			}
 		}
-		theForm.set("primaryOrganization", primaryOrganization);
-		theForm.set("otherOrganizationCollection", otherOrganizationCollection);
+		theForm.set("primaryPointOfContact", primaryPointOfContact);
+		theForm.set("otherPointOfContactCollection", otherPointOfContactCollection);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 
 		// TODO: forward to be verified by Shuang
-		ActionForward forward = mapping.findForward("submitOrganization");
+		ActionForward forward = mapping.findForward("submitPointOfContact");
 		return forward;
 	}
 
@@ -268,17 +268,17 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		if (particleId != null && particleId.trim().length() > 0) {
 			if (pubMedId != null && pubMedId > 0) {
 				forward = mapping
-						.findForward("particleSubmitPubmedOrganization");
+						.findForward("particleSubmitPubmedPointOfContact");
 			} else {
-				forward = mapping.findForward("particleSubmitOrganization");
+				forward = mapping.findForward("particleSubmitPointOfContact");
 			}
 			// request.setAttribute("particleId", particleId);
 		} else {
 			if (pubMedId != null && pubMedId > 0) {
 				forward = mapping
-						.findForward("organizationSubmitPubmedOrganization");
+						.findForward("pointOfContactSubmitPubmedPointOfContact");
 			} else {
-				forward = mapping.findForward("organizationSubmitOrganization");
+				forward = mapping.findForward("pointOfContactSubmitPointOfContact");
 			}
 			// request.removeAttribute("particleId");
 		}
@@ -292,26 +292,26 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		// DynaValidatorForm theForm = (DynaValidatorForm) form;
 		// HttpSession session = request.getSession();
 		// UserBean user = (UserBean) session.getAttribute("user");
-		// String organizationId = request.getParameter("fileId");
+		// String pointOfContactId = request.getParameter("fileId");
 		// String location = request.getParameter("location");
-		// OrganizationService organizationService = null;
+		// PointOfContactService pointOfContactService = null;
 		// if (location.equals("local")) {
-		// organizationService = new OrganizationServiceLocalImpl();
+		// pointOfContactService = new PointOfContactServiceLocalImpl();
 		// } else {
 		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 		// request, location);
-		// organizationService = new OrganizationServiceRemoteImpl(serviceUrl);
+		// pointOfContactService = new PointOfContactServiceRemoteImpl(serviceUrl);
 		// }
-		// OrganizationBean organizationBean =
-		// organizationService.findOrganizationById(organizationId);
-		// this.checkVisibility(request, location, user, organizationBean);
-		// theForm.set("file", organizationBean);
-		// InitPOCSetup.getInstance().setOrganizationDropdowns(request);
+		// PointOfContactBean pointOfContactBean =
+		// pointOfContactService.findPointOfContactById(pointOfContactId);
+		// this.checkVisibility(request, location, user, pointOfContactBean);
+		// theForm.set("file", pointOfContactBean);
+		// InitPOCSetup.getInstance().setPointOfContactDropdowns(request);
 		// // if particleId is available direct to particle specific page
 		// String particleId = request.getParameter("particleId");
 		// ActionForward forward = mapping.findForward("view");
 		// if (particleId != null) {
-		// forward = mapping.findForward("particleViewOrganization");
+		// forward = mapping.findForward("particleViewPointOfContact");
 		// }
 		// return forward;
 		return null;
@@ -322,31 +322,31 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		OrganizationService organizationService = null;
+		PointOfContactService pointOfContactService = null;
 		if (location.equals("local")) {
-			organizationService = new OrganizationServiceLocalImpl();
+			pointOfContactService = new PointOfContactServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			organizationService = new OrganizationServiceRemoteImpl(serviceUrl);
+			pointOfContactService = new PointOfContactServiceRemoteImpl(serviceUrl);
 		}
 		String particleId = request.getParameter("particleId");
-		OrganizationBean primaryOrganization = organizationService
-				.findPrimaryOrganization(particleId);
-		List<OrganizationBean> otherOrganizationCollection = organizationService
-				.findOtherOrganizationCollection(particleId);
-		setVisibility(user, primaryOrganization, false);
-		if (otherOrganizationCollection != null) {
-			for (OrganizationBean organizationBean : otherOrganizationCollection) {
-				setVisibility(user, organizationBean, false);
+		PointOfContactBean primaryPointOfContact = pointOfContactService
+				.findPrimaryPointOfContact(particleId);
+		List<PointOfContactBean> otherPointOfContactCollection = pointOfContactService
+				.findOtherPointOfContactCollection(particleId);
+		setVisibility(user, primaryPointOfContact, false);
+		if (otherPointOfContactCollection != null) {
+			for (PointOfContactBean pointOfContactBean : otherPointOfContactCollection) {
+				setVisibility(user, pointOfContactBean, false);
 			}
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("primaryOrganization", primaryOrganization);
-		theForm.set("otherOrganizationCollection", otherOrganizationCollection);
+		theForm.set("primaryPointOfContact", primaryPointOfContact);
+		theForm.set("otherPointOfContactCollection", otherPointOfContactCollection);
 
 		ActionForward forward = null;
-		forward = mapping.findForward("organizationDetailView");
+		forward = mapping.findForward("pointOfContactDetailView");
 
 		String submitType = request.getParameter("submitType");
 		String requestUrl = request.getRequestURL().toString();
@@ -365,21 +365,21 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		OrganizationService organizationService = null;
+		PointOfContactService pointOfContactService = null;
 		if (location.equals("local")) {
-			organizationService = new OrganizationServiceLocalImpl();
+			pointOfContactService = new PointOfContactServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			organizationService = new OrganizationServiceRemoteImpl(serviceUrl);
+			pointOfContactService = new PointOfContactServiceRemoteImpl(serviceUrl);
 		}
-		// String organizationId = request.getParameter("organizationId");
-		// OrganizationBean pubBean =
-		// organizationService.findOrganizationById(organizationId);
+		// String pointOfContactId = request.getParameter("pointOfContactId");
+		// PointOfContactBean pubBean =
+		// pointOfContactService.findPointOfContactById(pointOfContactId);
 		// checkVisibility(request, location, user, pubBean);
 		// DynaValidatorForm theForm = (DynaValidatorForm) form;
 		// theForm.set("file", pubBean);
-		return mapping.findForward("organizationDetailPrintView");
+		return mapping.findForward("pointOfContactDetailPrintView");
 	}
 
 	// TODO::
@@ -394,34 +394,34 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		// InitPOCSetup.getInstance().setPOCDropdowns(request);
 		// DynaValidatorForm theForm = (DynaValidatorForm) form;
 		//		
-		// OrganizationBean organizationBean = ((OrganizationBean)
+		// PointOfContactBean pointOfContactBean = ((PointOfContactBean)
 		// theForm.get("file"));
-		// String selectedOrganizationType =
-		// ((Organization)organizationBean.getDomainFile()).getCategory();
-		// if (selectedOrganizationType!=null) {
+		// String selectedPointOfContactType =
+		// ((PointOfContact)pointOfContactBean.getDomainFile()).getCategory();
+		// if (selectedPointOfContactType!=null) {
 		// SortedSet<String> types = (SortedSet<String>)
-		// request.getSession().getAttribute("organizationCategories");
+		// request.getSession().getAttribute("pointOfContactCategories");
 		// for(String op: types) {
 		// System.out.println("options:" + op);
 		// }
 		// if (types!=null) {
-		// types.add(selectedOrganizationType);
-		// request.getSession().setAttribute("organizationCategories", types);
+		// types.add(selectedPointOfContactType);
+		// request.getSession().setAttribute("pointOfContactCategories", types);
 		// }
 		// }
-		// String selectedOrganizationStatus =
-		// ((Organization)organizationBean.getDomainFile()).getStatus();
-		// if (selectedOrganizationStatus!=null) {
+		// String selectedPointOfContactStatus =
+		// ((PointOfContact)pointOfContactBean.getDomainFile()).getStatus();
+		// if (selectedPointOfContactStatus!=null) {
 		// SortedSet<String> statuses = (SortedSet<String>)
-		// request.getSession().getAttribute("organizationStatuses");
+		// request.getSession().getAttribute("pointOfContactStatuses");
 		// if (statuses!=null) {
-		// statuses.add(selectedOrganizationStatus);
-		// request.getSession().setAttribute("organizationStatuses", statuses);
+		// statuses.add(selectedPointOfContactStatus);
+		// request.getSession().setAttribute("pointOfContactStatuses", statuses);
 		// }
 		// }
-		// Organization pub = (Organization) organizationBean.getDomainFile();
+		// PointOfContact pub = (PointOfContact) pointOfContactBean.getDomainFile();
 		//		
-		// theForm.set("file", organizationBean);
+		// theForm.set("file", pointOfContactBean);
 		//
 		// // if pubMedId is available, the related fields should be set to read
 		// only.
@@ -438,7 +438,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	// ActionForm form, HttpServletRequest request,
 	// HttpServletResponse response) throws Exception {
 	// DynaValidatorForm theForm = (DynaValidatorForm) form;
-	// OrganizationBean pbean = (OrganizationBean) theForm
+	// PointOfContactBean pbean = (PointOfContactBean) theForm
 	// .get("file");
 	// pbean.addAuthor();
 	//
@@ -450,99 +450,100 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	}
 
 	private void setVisibility(UserBean user,
-			OrganizationBean organizationBean, boolean setVisibilityGroups)
+			PointOfContactBean pointOfContactBean, boolean setVisibilityGroups)
 			throws Exception {
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
-			if (auth.isUserAllowed(organizationBean.getDomain().getId()
+			if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
 					.toString(), user)) {
-				organizationBean.setHidden(false);
+				pointOfContactBean.setHidden(false);
 				if (setVisibilityGroups) {
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(
-							organizationBean.getDomain().getId().toString(),
+							pointOfContactBean.getDomain().getId().toString(),
 							CaNanoLabConstants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
-					organizationBean.setVisibilityGroups(visibilityGroups);
+					pointOfContactBean.setVisibilityGroups(visibilityGroups);
 				}
 			} else {
-				organizationBean.setHidden(true);
+				pointOfContactBean.setHidden(true);
 			}
 		} catch (Exception e) {
-			String err = "Error in setting visibility groups for organization "
-					+ organizationBean.getDomain().getName();
+			String err = "Error in setting visibility groups for pointOfContact "
+					+ pointOfContactBean.getDomain().getLastName();
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
 	}
 
-	private void assignPOCVisibility(OrganizationBean organizationBean,
-			AuthorizationService authService) throws Exception {
-		if (organizationBean.getVisibilityGroups() != null
-				&& Arrays.asList(organizationBean.getVisibilityGroups())
-						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-			Organization organization = organizationBean.getDomain();
-			if (organization.getPointOfContactCollection() != null) {
-				for (PointOfContact poc : organization
-						.getPointOfContactCollection()) {
-					if (poc != null) {
-						if (poc.getId() != null
-								&& poc.getId().toString().trim().length() > 0) {
-							authService.assignPublicVisibility(poc.getId()
-									.toString());
-						}
-					}
-				}
-			}
-		}
-	}
+//	private void assignPOCVisibility(PointOfContactBean pointOfContactBean,
+//			AuthorizationService authService) throws Exception {
+//		if (pointOfContactBean.getVisibilityGroups() != null
+//				&& Arrays.asList(pointOfContactBean.getVisibilityGroups())
+//						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+//			PointOfContact pointOfContact = pointOfContactBean.getDomain();
+//			if (pointOfContact.getPointOfContactCollection() != null) {
+//				for (PointOfContact poc : pointOfContact
+//						.getPointOfContactCollection()) {
+//					if (poc != null) {
+//						if (poc.getId() != null
+//								&& poc.getId().toString().trim().length() > 0) {
+//							authService.assignPublicVisibility(poc.getId()
+//									.toString());
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 
-	public ActionForward addPointOfContact(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
-		entity.addPointOfContact();
 
-		return mapping.getInputForward();
-	}
-
-	public ActionForward removePointOfContact(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
-		entity.removePointOfContact(ind);
-
-		return mapping.getInputForward();
-	}
-
-	public ActionForward addOrganization(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
-				.get("otherOrga");
-		entity.addOrganization();
-
-		return mapping.getInputForward();
-	}
-
-	public ActionForward removeOrganization(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
-				.get("otherOrga");
-		entity.removeOrganization(ind);
-
-		return mapping.getInputForward();
-	}
+//	public ActionForward addPointOfContact(ActionMapping mapping,
+//			ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
+//		entity.addPointOfContact();
+//
+//		return mapping.getInputForward();
+//	}
+//
+//	public ActionForward removePointOfContact(ActionMapping mapping,
+//			ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) throws Exception {
+//		String indexStr = request.getParameter("compInd");
+//		int ind = Integer.parseInt(indexStr);
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
+//		entity.removePointOfContact(ind);
+//
+//		return mapping.getInputForward();
+//	}
+//
+//	public ActionForward addOrganization(ActionMapping mapping,
+//			ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) throws Exception {
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
+//				.get("otherOrga");
+//		entity.addOrganization();
+//
+//		return mapping.getInputForward();
+//	}
+//
+//	public ActionForward removeOrganization(ActionMapping mapping,
+//			ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) throws Exception {
+//		String indexStr = request.getParameter("compInd");
+//		int ind = Integer.parseInt(indexStr);
+//		DynaValidatorForm theForm = (DynaValidatorForm) form;
+//		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
+//				.get("otherOrga");
+//		entity.removeOrganization(ind);
+//
+//		return mapping.getInputForward();
+//	}
 
 }
