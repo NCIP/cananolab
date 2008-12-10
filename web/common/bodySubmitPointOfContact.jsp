@@ -43,7 +43,7 @@
 										<tr>
 											<td valign="bottom">
 												<a href="#"
-													onclick="javascript:addComponent(submitOrganizationForm, 'submitOrganization', 'addOrganization'); return false;">
+													onclick="javascript:addComponent(submitPointOfContactForm, 'submitPointOfContact', 'addPointOfContact'); return false;">
 													<span class="addLink">Add Secondary<br>Point of Contact</span> </a>
 											</td>
 											<td id="compEleTd">
@@ -52,15 +52,16 @@
 													<jsp:param name="pocBean" value="poc" />
 												</jsp:include>
 												<br>
-<%--												<logic:iterate name="submitPointOfContactForm"--%>
-<%--													property="otherPoc.otherOrganizations" id="organizations" indexId="orgaIndex">--%>
-<%----%>
-<%--													<jsp:include page="/common/bodyPointOfContact.jsp" >--%>
-<%--														<jsp:param name="orgIndex" value="${orgaIndex}" />--%>
-<%--														<jsp:param name="orgTitle" value="Organization #${orgaIndex + 2}" />--%>
-<%--														<jsp:param name="pocBean" value="otherPoc.otherPocs[${orgaIndex}]" />--%>
-<%--													</jsp:include>--%>
-<%--												</logic:iterate>--%>
+												<logic:iterate name="submitPointOfContactForm"
+													property="otherPoc.otherPointOfContacts" id="pocs" indexId="orgaIndex">
+
+													<jsp:include page="/common/bodyPointOfContact.jsp" >
+														<jsp:param name="pocIndex" value="${orgaIndex}" />
+														<jsp:param name="pocTitle" value="Secondary Point of Contact #${orgaIndex + 1}" />
+														<jsp:param name="pocBean" value="otherPoc.otherPointOfContacts[${orgaIndex}]" />
+													</jsp:include>
+													<br>
+												</logic:iterate>
 											</td>
 										</tr>
 									</tbody>
