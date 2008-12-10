@@ -69,7 +69,7 @@
 				<strong>Email Visibility</strong>
 			</td>
 			<td class="rightLabel" valign="top" colspan="2">
-				<html:select property="${param.pocBean}.visibilityGroups"
+				<html:select property="${param.pocBean}.emailVisibilityGroups"
 					multiple="true" size="6">
 					<html:options name="allVisibilityGroups" />
 				</html:select>
@@ -83,16 +83,29 @@
 				<html:text property="${param.pocBean}.domain.phone" size="30" />
 			</td>
 			<td class="label" valign="top">
-				<strong>Phone Number Visibility</strong>
+				<strong>Phone Visibility</strong>
 			</td>
 			<td class="rightLabel" valign="top" colspan="2">
-				<html:select property="${param.pocBean}.visibilityGroups"
+				<html:select property="${param.pocBean}.phoneVisibilityGroups"
 					multiple="true" size="6">
 					<html:options name="allVisibilityGroups" />
 				</html:select>
 			</td>
 		</tr>
-
+		<tr>
+			<td class="leftLabel">
+				<strong>Point of Contact Visibility</strong>
+			</td>
+			<td class="rightLabel" colspan="5">
+				<html:select property="${param.pocBean}.pocVisibilityGroups"
+					multiple="true" size="6">
+					<html:options name="allVisibilityGroups" />
+				</html:select>
+				<br>
+				<i>(${applicationOwner}_Researcher and
+					${applicationOwner}_DataCurator are always selected by default.)</i>
+			</td>
+		</tr>
 
 		<tr>
 			<td class="leftLabel">
@@ -161,7 +174,7 @@
 				<strong>Organization Visibility</strong>
 			</td>
 			<td class="rightLabel" colspan="5">
-				<html:select property="${param.pocBean}.visibilityGroups"
+				<html:select property="${param.pocBean}.orgVisibilityGroups"
 					multiple="true" size="6">
 					<html:options name="allVisibilityGroups" />
 				</html:select>

@@ -79,7 +79,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(primaryPointOfContact.getDomain().getId()
-				.toString(), primaryPointOfContact.getVisibilityGroups());
+				.toString(), primaryPointOfContact.getOrgVisibilityGroups());
 		//TODO::: assign organization visibility
 		//assignPOCVisibility(primaryPointOfContact, authService);
 		if (otherPointOfContactCollection != null) {
@@ -87,7 +87,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				// assign other pointOfContact visibility
 				authService.assignVisibility(pointOfContactBean.getDomain()
 						.getId().toString(), pointOfContactBean
-						.getVisibilityGroups());
+						.getOrgVisibilityGroups());
 				//TODO::: assign organization visibility
 				//assignPOCVisibility(pointOfContactBean, authService);
 			}
@@ -461,7 +461,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 							CaNanoLabConstants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
-					pointOfContactBean.setVisibilityGroups(visibilityGroups);
+					pointOfContactBean.setOrgVisibilityGroups(visibilityGroups);
 				}
 			} else {
 				pointOfContactBean.setHidden(true);

@@ -20,7 +20,10 @@ public class PointOfContactBean{
 	private PointOfContact domain;
 	private String POCName;
 	private Organization organization;
-	private String[] visibilityGroups = new String[0];
+	private String[] orgVisibilityGroups = new String[0];
+	private String[] pocVisibilityGroups = new String[0];
+	private String[] emailVisibilityGroups = new String[0];
+	private String[] phoneVisibilityGroups = new String[0];
 	private boolean hidden = false;
 	private String address;
 	//TODO: need info for nanoparticleSample??
@@ -77,17 +80,59 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @return the visibilityGroups
+	 * @return the orgVisibilityGroups
 	 */
-	public String[] getVisibilityGroups() {
-		return visibilityGroups;
+	public String[] getOrgVisibilityGroups() {
+		return orgVisibilityGroups;
 	}
 
 	/**
-	 * @param visibilityGroups the visibilityGroups to set
+	 * @param orgVisibilityGroups the orgVisibilityGroups to set
 	 */
-	public void setVisibilityGroups(String[] visibilityGroups) {
-		this.visibilityGroups = visibilityGroups;
+	public void setOrgVisibilityGroups(String[] orgVisibilityGroups) {
+		this.orgVisibilityGroups = orgVisibilityGroups;
+	}
+
+	/**
+	 * @return the pocVisibilityGroups
+	 */
+	public String[] getPocVisibilityGroups() {
+		return pocVisibilityGroups;
+	}
+
+	/**
+	 * @param pocVisibilityGroups the pocVisibilityGroups to set
+	 */
+	public void setPocVisibilityGroups(String[] pocVisibilityGroups) {
+		this.pocVisibilityGroups = pocVisibilityGroups;
+	}
+
+	/**
+	 * @return the emailVisibilityGroups
+	 */
+	public String[] getEmailVisibilityGroups() {
+		return emailVisibilityGroups;
+	}
+
+	/**
+	 * @param emailVisibilityGroups the emailVisibilityGroups to set
+	 */
+	public void setEmailVisibilityGroups(String[] emailVisibilityGroups) {
+		this.emailVisibilityGroups = emailVisibilityGroups;
+	}
+
+	/**
+	 * @return the phoneVisibilityGroups
+	 */
+	public String[] getPhoneVisibilityGroups() {
+		return phoneVisibilityGroups;
+	}
+
+	/**
+	 * @param phoneVisibilityGroups the phoneVisibilityGroups to set
+	 */
+	public void setPhoneVisibilityGroups(String[] phoneVisibilityGroups) {
+		this.phoneVisibilityGroups = phoneVisibilityGroups;
 	}
 
 	/**
