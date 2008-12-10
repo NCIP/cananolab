@@ -36,23 +36,6 @@ SELECT DISTINCT
 FROM source, nanoparticle_sample
 where nanoparticle_sample.source_pk_id = source.source_pk_id
 group by nanoparticle_sample.source_pk_id;
-DROP TABLE IF EXISTS source;
-
-CREATE TABLE nanoparticle_sample_other_poc
-(
-	particle_sample_pk_id BIGINT NOT NULL,
-	poc_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
-	KEY (particle_sample_pk_id),
-	KEY (poc_pk_id)
-) TYPE=InnoDB
-;
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample 
-	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
-;
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
-	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
-;
 
 
 CREATE TABLE point_of_contact
@@ -73,6 +56,37 @@ CREATE TABLE point_of_contact
 ;
 ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization 
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
+;
+
+INSERT INTO point_of_contact (poc_pk_id, organization_pk_id, role, last_name, created_date, created_by)
+SELECT DISTINCT
+	source.source_pk_id,
+	source.source_pk_id,
+	'Investigator',
+	organization_name,
+	min(nanoparticle_sample.created_date),
+	nanoparticle_sample.created_by
+FROM source, nanoparticle_sample
+where nanoparticle_sample.source_pk_id = source.source_pk_id
+group by nanoparticle_sample.source_pk_id;
+
+DROP TABLE IF EXISTS source;
+
+
+CREATE TABLE nanoparticle_sample_other_poc
+(
+	particle_sample_pk_id BIGINT NOT NULL,
+	poc_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
+	KEY (particle_sample_pk_id),
+	KEY (poc_pk_id)
+) TYPE=InnoDB
+;
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample 
+	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+;
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
+	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE publication ADD COLUMN abstract TEXT;
