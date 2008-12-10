@@ -30,7 +30,6 @@ public class PointOfContactBean{
 	public PointOfContactBean() {
 		super();
 		domain = new PointOfContact();
-//		pocs.add(new PointOfContact());
 	}
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
