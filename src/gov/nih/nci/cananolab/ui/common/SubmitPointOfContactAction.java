@@ -500,50 +500,27 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 //	}
 
 
-//	public ActionForward addPointOfContact(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
-//		entity.addPointOfContact();
-//
-//		return mapping.getInputForward();
-//	}
-//
-//	public ActionForward removePointOfContact(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		String indexStr = request.getParameter("compInd");
-//		int ind = Integer.parseInt(indexStr);
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		OrganizationBean entity = (OrganizationBean) theForm.get("orga");
-//		entity.removePointOfContact(ind);
-//
-//		return mapping.getInputForward();
-//	}
-//
-//	public ActionForward addOrganization(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
-//				.get("otherOrga");
-//		entity.addOrganization();
-//
-//		return mapping.getInputForward();
-//	}
-//
-//	public ActionForward removeOrganization(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		String indexStr = request.getParameter("compInd");
-//		int ind = Integer.parseInt(indexStr);
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		OtherOrganizationsBean entity = (OtherOrganizationsBean) theForm
-//				.get("otherOrga");
-//		entity.removeOrganization(ind);
-//
-//		return mapping.getInputForward();
-//	}
+	public ActionForward addPointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");
+		entity.addPointOfContact();
+		return mapping.getInputForward();
+	}
+
+	public ActionForward removePointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String indexStr = request.getParameter("compInd");
+		int ind = Integer.parseInt(indexStr);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");
+		entity.removePointOfContact(ind);
+
+		return mapping.getInputForward();
+	}
 
 }
