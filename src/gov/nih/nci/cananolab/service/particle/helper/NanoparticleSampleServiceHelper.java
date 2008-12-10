@@ -450,8 +450,7 @@ public class NanoparticleSampleServiceHelper {
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
 		
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); // eager load not set in
-		// caDSR
+		//crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); 
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
