@@ -78,7 +78,7 @@
 							</td>
 							<td class="rightLabel">
 								<html:select
-									property="particleSampleBean.domainParticleSample.primaryPointOfContact.lastName"
+									property="particleSampleBean.POCName"
 									styleId="primaryPOCList"
 									onchange="javascript:setupPOC(nanoparticleSampleForm, 'primaryPOCList');
 												setPOCDetailLink('primaryPOCList', 'pocDetail');">
