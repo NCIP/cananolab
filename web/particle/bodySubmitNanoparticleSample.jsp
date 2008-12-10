@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
-<script type='text/javascript' src='javascript/OrganizationManager.js'></script>
+<script type='text/javascript' src='javascript/POCManager.js'></script>
 
 <script type="text/javascript"
 	src="javascript/ParticleManager.js"></script>
@@ -19,7 +19,17 @@
 	test="${param.dispatch eq 'setupUpdate' || updateDataTree eq 'true'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
+
 <html:form action="/submitNanoparticleSample">
+<c:choose>
+	<c:when test="${!empty nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.primaryPointOfContact.lastName }" >
+		<c:set var="pocDetailDisplay" value="display: inline;" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="pocDetailDisplay" value="display: none;" />
+	</c:otherwise>
+</c:choose>
+
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -64,22 +74,23 @@
 						</tr>
 						<tr>
 							<td class="leftLabel">
-								<strong>Primary Organization *</strong>
+								<strong>Primary Point of Contact *</strong>
 							</td>
 							<td class="rightLabel">
 								<html:select
 									property="particleSampleBean.domainParticleSample.primaryPointOfContact.lastName"
-									styleId="sampleOrganization"
-									onchange="javascript:setupOrganization(nanoparticleSampleForm, 'sampleOrganization');
-												removeSourceVisibility();">
+									styleId="primaryPOCList"
+									onchange="javascript:setupPOC(nanoparticleSampleForm, 'primaryPOCList');
+												setPOCDetailLink('primaryPOCList', 'pocDetail');">
 									<option />
 									<html:options collection="allPointOfContacts"
-											labelProperty="lastName" property="lastName" />
+											labelProperty="name" property="name" />
 									<option value="other">
 										[Other]
 									</option>
 								</html:select>&nbsp;
-								<a href="#"	onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'sampleOrganization');">
+								<a style="${pocDetailDisplay }" id="pocDetail" href="#"	
+									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'sampleOrganization');">
 									<span class="addLink2">View Detail</span> </a>
 							</td>
 						</tr>
