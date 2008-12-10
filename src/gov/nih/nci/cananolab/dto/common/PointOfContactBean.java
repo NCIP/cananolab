@@ -153,6 +153,15 @@ public class PointOfContactBean{
 	 * @return the pOCName
 	 */
 	public String getPOCName() {
+		String firstName = domain.getFirstName();
+		POCName = "";
+		if (firstName!=null) {
+			POCName = firstName +" ";
+		}
+		String lastName = domain.getLastName();
+		if (lastName!=null) {
+			POCName+=lastName;
+		}
 		return POCName;
 	}
 
