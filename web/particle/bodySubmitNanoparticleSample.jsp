@@ -74,7 +74,7 @@
 												removeSourceVisibility();">
 									<option />
 									<html:options collection="allPointOfContacts"
-											labelProperty="name" property="name" />
+											labelProperty="lastName" property="lastName" />
 									<option value="other">
 										[Other]
 									</option>
