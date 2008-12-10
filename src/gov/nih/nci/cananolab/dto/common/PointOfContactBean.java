@@ -29,6 +29,7 @@ public class PointOfContactBean{
 	public PointOfContactBean() {
 		super();
 		domain = new PointOfContact();
+		organization = new Organization();
 		POCName = "";
 	}
 
