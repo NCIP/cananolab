@@ -84,7 +84,7 @@
 												setPOCDetailLink('primaryPOCList', 'pocDetail');">
 									<option />
 									<html:options collection="allPointOfContacts"
-											labelProperty="name" property="name" />
+											labelProperty="POCName" property="POCName" />
 									<option value="other">
 										[Other]
 									</option>
