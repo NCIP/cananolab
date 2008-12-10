@@ -39,9 +39,11 @@ public class ParticleBean {
 	private String[] functionClassNames=new String[0];
 
 	private String[] characterizationClassNames=new String[0];
+	private String POCName = "";
 
 	public ParticleBean() {
 		domainParticleSample.setPrimaryPointOfContact(new PointOfContact());
+		POCName = "";
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
@@ -53,6 +55,17 @@ public class ParticleBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
+		if (domainParticleSample!=null) {
+			String firstName = domainParticleSample.getPrimaryPointOfContact().getFirstName();
+			POCName = "";
+			if (firstName!=null) {
+				POCName = firstName +" ";
+			}
+			String lastName = domainParticleSample.getPrimaryPointOfContact().getLastName();
+			if (lastName!=null) {
+				POCName+=lastName;
+			}
+		}
 	}
 
 	public String[] getVisibilityGroups() {
@@ -159,5 +172,19 @@ public class ParticleBean {
 
 	public void setCharacterizationClassNames(String[] characterizationClassNames) {
 		this.characterizationClassNames = characterizationClassNames;
+	}
+
+	/**
+	 * @return the pOCName
+	 */
+	public String getPOCName() {
+		return POCName;
+	}
+
+	/**
+	 * @param name the pOCName to set
+	 */
+	public void setPOCName(String name) {
+		POCName = name;
 	}
 }
