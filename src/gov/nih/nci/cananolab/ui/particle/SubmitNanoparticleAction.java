@@ -82,7 +82,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		
 		
 		// persist in the database
-		String newPrimaryPointOfContactName = particleSampleBean.getDomainParticleSample().getPrimaryPointOfContact().getLastName();
+		String newPrimaryPointOfContactName = particleSampleBean.getPOCName();
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
