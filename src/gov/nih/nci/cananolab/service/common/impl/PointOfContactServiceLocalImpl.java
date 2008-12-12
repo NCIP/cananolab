@@ -18,6 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of SourceService
@@ -50,8 +53,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			AuthorizationService authService = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);			
 			//TODO:::: lastName is not unique, lastName+firstName+email
-			PointOfContact dbPointOfContact = (PointOfContact) appService
-					.getObject(PointOfContact.class, "lastName", primaryPointOfContact.getLastName());
+			PointOfContact dbPointOfContact = findPointOfContact(primaryPointOfContact);
 			if (dbPointOfContact != null
 					&& !dbPointOfContact.getId().equals(primaryPointOfContact.getId())) {
 				throw new DuplicateEntriesException();
@@ -59,7 +61,12 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			savePointOfContact(primaryPointOfContact, authService, appService);
 			
 			if (otherPointOfContactCollection != null) {
-				for (PointOfContact poc: otherPointOfContactCollection) {					
+				for (PointOfContact poc: otherPointOfContactCollection) {	
+					dbPointOfContact = findPointOfContact(primaryPointOfContact);
+					if (dbPointOfContact != null
+							&& !dbPointOfContact.getId().equals(primaryPointOfContact.getId())) {
+						throw new DuplicateEntriesException();
+					}
 					savePointOfContact(poc, authService, appService);
 				}
 			}
@@ -82,6 +89,34 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		return helper.findPrimaryPointOfContact(particleId);	
 	}
 	
+	public PointOfContact findPointOfContact(PointOfContact primaryPointOfContact)
+		throws PointOfContactException{
+		PointOfContact dbPointOfContact = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(PointOfContact.class);
+			//crit.setFetchMode("organization", FetchMode.JOIN);
+			crit.add(Restrictions.eq("lastName",primaryPointOfContact.getLastName()));
+			crit.add(Restrictions.eq("firsName",primaryPointOfContact.getFirstName()));
+			crit.add(Restrictions.eq("organization.name",primaryPointOfContact.getOrganization().getName()));
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				dbPointOfContact = (PointOfContact) obj;
+			}
+			return dbPointOfContact;
+		} catch (Exception e) {
+			String err = "Problem finding findPointOfContact with the given lastName, firstName and organization name.";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
+
+	
 	private void savePointOfContact(PointOfContact pointOfContact,
 			AuthorizationService authService, CustomizedApplicationService appService)
 		throws Exception{
@@ -89,6 +124,10 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		//TODO:: association of pointOfContact and organization
 		Organization organization = pointOfContact.getOrganization();
 		if (organization!=null) {
+			//TODO:: re-test (now, org is not from dropdown list, then org.pocCollection==null,
+			//if pri-org and sec-org are the same, pri-org is null after overwritten
+			
+			//if orgID!=null load its POCCollection??
 			if (organization.getPointOfContactCollection()==null) {
 				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
 			}else {
@@ -97,39 +136,21 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			organization.setCreatedBy(user);
 			organization.setCreatedDate(new Date());
 			pointOfContact.setOrganization(organization);
+			//TODO:: test update (get orgID from dropdown list)
+			organization.setId(new Long(10780673));
+			appService.saveOrUpdate(organization);	
+			//pointOfContact.setOrganization(organization);
 		}
-		
-//		if (pointOfContact.getPointOfContactCollection() == null) {
-//			pointOfContact.setPointOfContactCollection(new HashSet<PointOfContact>());
-//		} else {
-//			for (PointOfContact poc : organization.getPointOfContactCollection()) {
-//				if (poc.getId() != null)
-//					authService
-//							.removePublicGroup(poc.getId().toString());
-//			}
-//			organization.getPointOfContactCollection().clear();
-//		}
-//		if (organization.getPointOfContactCollection() != null) {
-//			Calendar myCal = Calendar.getInstance();
-//			for (PointOfContact poc : organization.getPointOfContactCollection()) {
-//				if (!StringUtils.isBlank(poc.getFirstName())
-//						|| !StringUtils.isBlank(poc.getLastName())
-//						|| !StringUtils.isBlank(poc.getMiddleInitial())) {
-//					if (poc.getCreatedDate() == null) {
-//						myCal.add(Calendar.SECOND, 1);
-//						poc.setCreatedDate(myCal.getTime());
-//						poc.setCreatedBy(user);
-//					}
-//					poc.setOrganization(organization);
-//					organization.getPointOfContactCollection().add(poc);
-//				}
-//			}
-//		}
 		if (pointOfContact.getCreatedDate()==null) {
 			//TODO:: myCal.add(Calendar.SECOND, 1);???
 			pointOfContact.setCreatedDate(new Date());
 		}
 		appService.saveOrUpdate(pointOfContact);		
+	}
+	
+	public PointOfContactBean findPointOfContactById(String POCId) 
+		throws PointOfContactException{
+		return helper.findPointOfContactById(POCId);		
 	}
 
 }

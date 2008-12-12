@@ -95,5 +95,32 @@ public class PointOfContactServiceHelper {
 			throw new PointOfContactException(err, e);
 		}
 	}
+	
+	
+	public PointOfContactBean findPointOfContactById(String POCId)
+		throws PointOfContactException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(PointOfContact.class);
+			crit.setFetchMode("organization", FetchMode.JOIN);
+			crit.add(Restrictions.eq("id", new Long(POCId)));
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+			List results = appService.query(crit);
+			PointOfContactBean poc = null;
+			for (Object obj : results) {
+				poc = new PointOfContactBean((PointOfContact) obj);
+			}
+			return poc;
+		} catch (Exception e) {
+			String err = "Problem finding PointOfContact with the given POC ID.";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
+
 
 }

@@ -1,8 +1,6 @@
 package gov.nih.nci.cananolab.service.common;
 
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 
@@ -33,6 +31,9 @@ public interface PointOfContactService {
 		throws PointOfContactException;	
 	
 	public List<PointOfContactBean> findOtherPointOfContactCollection(String particleId)
+		throws PointOfContactException;	
+	
+	public PointOfContactBean findPointOfContactById(String POCId)
 		throws PointOfContactException;	
 	
 	

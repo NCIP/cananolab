@@ -51,6 +51,11 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	public List<PointOfContactBean> findOtherPointOfContactCollection(String particleId){
 		//TODO: grid findOrganizationsByParticleSampleId
 		return null;
-	}	
+	}
+	
+	public PointOfContactBean findPointOfContactById(String POCId) {
+		//TODO: grid findOrganizationsByParticleSampleId
+		return null;
+	}
 	
 }
