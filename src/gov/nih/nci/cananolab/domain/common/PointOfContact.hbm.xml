@@ -19,7 +19,7 @@
 		<property name="phone" type="string" column="phone"/>
 		<property name="role" type="string" column="role"/>
 		<!-- Associations mapping for the PointOfContact class -->
-		<many-to-one name="organization" class="gov.nih.nci.cananolab.domain.common.Organization" column="organization_pk_id" lazy="proxy" />
+		<many-to-one name="organization" class="gov.nih.nci.cananolab.domain.common.Organization" column="organization_pk_id" lazy="false" />
 		<set name="primaryNanoparticleSampleCollection" lazy="true" inverse="true">
 			<cache usage="read-write" />
 			<key column="primary_contact_pk_id" />
