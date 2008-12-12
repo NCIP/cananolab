@@ -63,11 +63,9 @@ public class NanoparticleSampleServiceLocalImpl implements
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
 			DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
 			crit.setFetchMode("organization", FetchMode.JOIN);
 			List results = appService.query(crit);			
-			//List results = appService.getAll(PointOfContact.class);
 			for (Object obj : results) {
 				pointOfContacts.add((PointOfContact) obj);
 			}
@@ -167,7 +165,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 					keyword.setId(dbKeyword.getId());
 				}
 				appService.saveOrUpdate(keyword);
-			}
+			}			
 			appService.saveOrUpdate(particleSample);
 		} catch (DuplicateEntriesException e) {
 			throw e;
