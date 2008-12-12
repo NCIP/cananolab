@@ -78,13 +78,13 @@
 							</td>
 							<td class="rightLabel">
 								<html:select
-									property="particleSampleBean.POCName"
+									property="particleSampleBean.domainParticleSample.primaryPointOfContact.id"
 									styleId="primaryPOCList"
 									onchange="javascript:setupPOC(nanoparticleSampleForm, 'primaryPOCList');
 												setPOCDetailLink('primaryPOCList', 'pocDetail');">
 									<option />
 									<html:options collection="allPointOfContacts"
-											labelProperty="POCName" property="POCName" />
+											labelProperty="POCName" property="domain.id" />
 									<option value="other">
 										[Other]
 									</option>
