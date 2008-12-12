@@ -64,7 +64,10 @@ public class NanoparticleSampleServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
-			List results = appService.getAll(PointOfContact.class);
+			DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
+			crit.setFetchMode("organization", FetchMode.JOIN);
+			List results = appService.query(crit);			
+			//List results = appService.getAll(PointOfContact.class);
 			for (Object obj : results) {
 				pointOfContacts.add((PointOfContact) obj);
 			}
@@ -146,9 +149,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 					&& !dbParticle.getId().equals(particleSample.getId())) {
 				throw new DuplicateEntriesException();
 			}
-			//TODO:: to be change to full name + email
 			PointOfContact dbPointOfContact = (PointOfContact) appService.getObject(PointOfContact.class,
-					"lastName", particleSample.getPrimaryPointOfContact().getLastName());
+					"id", particleSample.getPrimaryPointOfContact().getId());
 			
 			if (dbPointOfContact != null) {
 				dbPointOfContact = (PointOfContact) appService.load(
