@@ -71,9 +71,6 @@ public class CaNanoLabConstants {
 	 */
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
-	// TODO, cleanup
-	// public static final String REPORT = "Report";
-
 	public static final String ASSOCIATED_FILE = "Other Associated File";
 
 	public static final String PROTOCOL_FILE = "Protocol File";
