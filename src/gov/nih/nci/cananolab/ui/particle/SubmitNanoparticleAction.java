@@ -81,13 +81,15 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		//end of relationship with organization
 		
 		
-		// persist in the database
-		String newPrimaryPointOfContactName = particleSampleBean.getPOCName();
+		// persist in the database		
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
-		
-
+		//POCOrganizationName = particleSampleBean.getDomainParticleSample().getPrimaryPointOfContact().getOrganization().getName();
+		//System.out.println("POCOrganizationName2="+POCOrganizationName);
+		System.out.println("POCid="+particleSampleBean.getDomainParticleSample().getPrimaryPointOfContact().getId());
+		//TODO:: get POCOrganizationName  base on POCid
+		String POCOrganizationName = "";
 		// set CSM visibility
 		// add sample source as a new CSM_GROUP and assign the sample to
 		// the new group
@@ -99,7 +101,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			visibleGroups[i] = particleSampleBean.getVisibilityGroups()[i];
 		}
 		//TODO: to be verified
-		visibleGroups[visibleGroups.length - 1] = newPrimaryPointOfContactName;
+		visibleGroups[visibleGroups.length - 1] = POCOrganizationName;
 
 		particleSampleBean = service
 				.findFullNanoparticleSampleById(particleSampleBean
