@@ -464,7 +464,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		
+		//TODO:: primaryPointOfContact.organization??
 		//crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
