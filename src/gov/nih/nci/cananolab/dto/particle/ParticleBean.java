@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -39,11 +40,14 @@ public class ParticleBean {
 	private String[] functionClassNames=new String[0];
 
 	private String[] characterizationClassNames=new String[0];
+	private String POCId = "";
 	private String POCName = "";
+	private String POCOrganizationName = "";
 
 	public ParticleBean() {
 		domainParticleSample.setPrimaryPointOfContact(new PointOfContact());
 		POCName = "";
+		POCId = "";
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
@@ -56,6 +60,7 @@ public class ParticleBean {
 		}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
 		if (domainParticleSample!=null) {
+			POCId = domainParticleSample.getPrimaryPointOfContact().getId().toString();
 			String firstName = domainParticleSample.getPrimaryPointOfContact().getFirstName();
 			POCName = "";
 			if (firstName!=null) {
@@ -64,6 +69,12 @@ public class ParticleBean {
 			String lastName = domainParticleSample.getPrimaryPointOfContact().getLastName();
 			if (lastName!=null) {
 				POCName+=lastName;
+			}
+			if (domainParticleSample.getPrimaryPointOfContact().getOrganization()!=null) {
+				POCOrganizationName = domainParticleSample.getPrimaryPointOfContact().getOrganization().getName();
+				if (POCOrganizationName!=null) {
+					POCName+="("+POCOrganizationName+")";
+				}
 			}
 		}
 	}
@@ -186,5 +197,26 @@ public class ParticleBean {
 	 */
 	public void setPOCName(String name) {
 		POCName = name;
+	}
+
+	/**
+	 * @return the pOCOrganizationName
+	 */
+	public String getPOCOrganizationName() {
+		return POCOrganizationName;
+	}
+
+	/**
+	 * @return the pOCId
+	 */
+	public String getPOCId() {
+		return POCId;
+	}
+
+	/**
+	 * @param id the pOCId to set
+	 */
+	public void setPOCId(String id) {
+		POCId = id;
 	}
 }
