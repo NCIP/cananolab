@@ -71,10 +71,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 						.getDomain());
 			}
 		}
-
 		// TODO::: 111
 		// created_date set in service
-		String POCName = primaryPointOfContact.getPOCName();
+		//String POCName = primaryPointOfContact.getPOCName();
 		PointOfContactService service = new PointOfContactServiceLocalImpl();
 		service.savePointOfContact(primaryPointOfContact.getDomain(),
 				otherPointOfContactCollection);
@@ -121,7 +120,10 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				// set selected pointOfContact				
 				particle.setPrimaryPointOfContact(primaryPointOfContact
 						.getDomain());
-				particleSampleBean.setPOCName(POCName);
+				//TODO:::
+				//particleSampleBean.setPOCName(POCName);
+				//TODO::test
+				particleSampleBean.setPOCId(primaryPointOfContact.getDomain().getId().toString());
 				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
