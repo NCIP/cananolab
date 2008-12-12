@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.util;
 
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -39,14 +40,30 @@ public class CaNanoLabComparators {
 		public int compare(PointOfContact poc1, PointOfContact poc2) {
 			int diff = new SortableNameComparator().compare(poc1
 					.getLastName(), poc2.getLastName());
+			if (diff==0) {
+				diff = new SortableNameComparator().compare(poc1
+						.getFirstName(), poc2.getFirstName());
+				if (diff==0 && poc1.getOrganization()!=null && poc2.getOrganization()!=null) {
+					diff = new SortableNameComparator().compare(poc1
+							.getOrganization().getName(), poc2.getOrganization().getName());
+				}
+			}
 			return diff;
 		}
 	}
 	
 	public static class ParticlePointOfContactBeanComparator implements Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
-			int diff = new SortableNameComparator().compare(poc1.getDomain()
-					.getLastName(), poc2.getDomain().getLastName());
+			int diff = new SortableNameComparator().compare(poc1.getPOCName(), 
+					poc2.getPOCName());
+			return diff;
+		}
+	}
+	
+	public static class OrganizationComparator implements Comparator<Organization> {
+		public int compare(Organization org1, Organization org2) {
+			int diff = new SortableNameComparator().compare(org1.getName(), 
+					org2.getName());
 			return diff;
 		}
 	}
