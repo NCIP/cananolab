@@ -3,12 +3,14 @@ package gov.nih.nci.cananolab.service.common.impl;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.helper.PointOfContactServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -16,6 +18,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -51,8 +55,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);			
-			//TODO:::: lastName is not unique, lastName+firstName+email
+					CaNanoLabConstants.CSM_APP_NAME);	
 			PointOfContact dbPointOfContact = findPointOfContact(primaryPointOfContact);
 			if (dbPointOfContact != null
 					&& !dbPointOfContact.getId().equals(primaryPointOfContact.getId())) {
@@ -97,9 +100,9 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(PointOfContact.class);
-			//crit.setFetchMode("organization", FetchMode.JOIN);
+			crit.createAlias("organization", "organization");
 			crit.add(Restrictions.eq("lastName",primaryPointOfContact.getLastName()));
-			crit.add(Restrictions.eq("firsName",primaryPointOfContact.getFirstName()));
+			crit.add(Restrictions.eq("firstName",primaryPointOfContact.getFirstName()));
 			crit.add(Restrictions.eq("organization.name",primaryPointOfContact.getOrganization().getName()));
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -133,11 +136,18 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}else {
 				organization.getPointOfContactCollection().add(pointOfContact);
 			}
-			organization.setCreatedBy(user);
-			organization.setCreatedDate(new Date());
+			Organization dbOrganization = (Organization) appService.getObject(
+					Organization.class, "name", organization.getName());
+			if (dbOrganization != null) {
+				organization.setId(dbOrganization.getId());		
+			}
+			if (organization.getCreatedBy()==null){			
+				organization.setCreatedBy(user);
+			}
+			if (organization.getCreatedDate()==null){
+				organization.setCreatedDate(new Date());
+			}
 			pointOfContact.setOrganization(organization);
-			//TODO:: test update (get orgID from dropdown list)
-			organization.setId(new Long(10780673));
 			appService.saveOrUpdate(organization);	
 			//pointOfContact.setOrganization(organization);
 		}
@@ -152,5 +162,32 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		throws PointOfContactException{
 		return helper.findPointOfContactById(POCId);		
 	}
+	
+	public SortedSet<Organization> findAllOrganizations(UserBean user)
+		throws PointOfContactException {
+		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);		
+			SortedSet<Organization> organizations = new TreeSet<Organization>(
+					new CaNanoLabComparators.OrganizationComparator());
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();		
+			DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
+			List results = appService.query(crit);
+			//TODO:: to test
+			for (Object obj : results) {
+				Organization org = ((Organization) obj);
+				if (auth.isUserAllowed(org.getId().toString(), user)) {
+					organizations.add(org);
+				}
+			}
+			return organizations;
+		} catch (Exception e) {
+			String err = "Error finding all organization for " + user.getLoginName();
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
+
 
 }
