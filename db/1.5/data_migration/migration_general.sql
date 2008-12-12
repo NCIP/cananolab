@@ -58,12 +58,11 @@ ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-INSERT INTO point_of_contact (poc_pk_id, organization_pk_id, role, last_name, created_date, created_by)
+INSERT INTO point_of_contact (poc_pk_id, organization_pk_id, role, created_date, created_by)
 SELECT DISTINCT
 	source.source_pk_id,
 	source.source_pk_id,
 	'Investigator',
-	organization_name,
 	min(nanoparticle_sample.created_date),
 	nanoparticle_sample.created_by
 FROM source, nanoparticle_sample
