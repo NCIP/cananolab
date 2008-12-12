@@ -14,6 +14,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -85,7 +86,19 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			AuthorizationService authService, CustomizedApplicationService appService)
 		throws Exception{
 		String user = pointOfContact.getCreatedBy();
-		//TODO:: assication of pointOfContact and organization
+		//TODO:: association of pointOfContact and organization
+		Organization organization = pointOfContact.getOrganization();
+		if (organization!=null) {
+			if (organization.getPointOfContactCollection()==null) {
+				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
+			}else {
+				organization.getPointOfContactCollection().add(pointOfContact);
+			}
+			organization.setCreatedBy(user);
+			organization.setCreatedDate(new Date());
+			pointOfContact.setOrganization(organization);
+		}
+		
 //		if (pointOfContact.getPointOfContactCollection() == null) {
 //			pointOfContact.setPointOfContactCollection(new HashSet<PointOfContact>());
 //		} else {
