@@ -54,7 +54,7 @@ public class PointOfContactBean{
 		if (domain.getOrganization()!=null) {
 			String orgName = domain.getOrganization().getName();
 			if (orgName!=null) {
-				POCName+="("+orgName+")";
+				POCName+=" ("+orgName+")";
 			}
 		}
 	}
@@ -173,7 +173,7 @@ public class PointOfContactBean{
 		if (domain.getOrganization()!=null) {
 			String orgName = domain.getOrganization().getName();
 			if (orgName!=null) {
-				POCName+="("+orgName+")";
+				POCName+=" ("+orgName+")";
 			}
 		}
 		return POCName;

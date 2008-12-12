@@ -73,7 +73,7 @@ public class ParticleBean {
 			if (domainParticleSample.getPrimaryPointOfContact().getOrganization()!=null) {
 				POCOrganizationName = domainParticleSample.getPrimaryPointOfContact().getOrganization().getName();
 				if (POCOrganizationName!=null) {
-					POCName+="("+POCOrganizationName+")";
+					POCName+=" ("+POCOrganizationName+")";
 				}
 			}
 		}
