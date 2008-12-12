@@ -62,10 +62,6 @@ public interface PublicationService {
 	public void removePublicationFromParticle(NanoparticleSample particle,
 			Long dataId) 	throws PublicationException;
 
-	//TODO, not need??
-//	public void exportFullSummary(DocumentSummaryBean summaryBean,
-//			OutputStream out) throws IOException ;
-	//TODO
 	public void exportSummary(ParticleBean particleBean,
 			OutputStream out) throws IOException ;
 }
