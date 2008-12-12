@@ -141,14 +141,14 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					PointOfContact poc = new PointOfContact();
 					poc.setFirstName(columns[2]);
 					poc.setLastName(columns[3]);
-					//TODO: may change to full name + email
+					poc.getOrganization().setName(columns[4]);
 					particleSample.setPrimaryPointOfContact(poc);
 					ParticleBean particleBean = new ParticleBean(particleSample);
 					// composition, set all compositions as NanoparticleEntity
 					// for now
-					if (columns.length > 4 && columns[4] != null
-							&& columns[4].length() > 0) {
-						String[] compositionsClazzNames = columns[4]
+					if (columns.length > 5 && columns[5] != null
+							&& columns[5].length() > 0) {
+						String[] compositionsClazzNames = columns[5]
 								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
 						if (compositionsClazzNames != null) {
 							particleBean
@@ -156,9 +156,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 						}
 					}
 					// functionClassNames
-					if (columns.length > 5 && columns[5] != null
-							&& columns[5].length() > 0) {
-						String[] functionClazzNames = columns[5]
+					if (columns.length > 6 && columns[6] != null
+							&& columns[6].length() > 0) {
+						String[] functionClazzNames = columns[6]
 								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
 						if (functionClazzNames != null) {
 							particleBean
@@ -167,9 +167,9 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					}
 
 					// characterizationClassNames
-					if (columns.length > 6 && columns[6] != null
-							&& columns[6].length() > 0) {
-						String[] characterizationClazzNames = columns[6]
+					if (columns.length > 7 && columns[7] != null
+							&& columns[7].length() > 0) {
+						String[] characterizationClazzNames = columns[7]
 								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
 						if (characterizationClazzNames != null) {
 							particleBean
