@@ -1,9 +1,7 @@
 package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
@@ -56,6 +54,6 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	public PointOfContactBean findPointOfContactById(String POCId) {
 		//TODO: grid findOrganizationsByParticleSampleId
 		return null;
-	}
+	}	
 	
 }
