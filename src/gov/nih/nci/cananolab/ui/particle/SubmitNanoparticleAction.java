@@ -8,9 +8,13 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.service.common.PointOfContactService;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
@@ -18,6 +22,9 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,57 +46,11 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
-		particleSampleBean.setupDomainParticleSample();
-
-//		OrganizationBean primaryOrganization = (OrganizationBean) request
-//				.getSession().getAttribute("primaryOrganization");
-//		HashSet<Organization> otherOrganizationCollection = (HashSet<Organization>) request
-//			.getSession().getAttribute("otherOrganizationCollection");
-//		
-		/**
-		 * relationship with Organization
-		 */
-		// set selected organization
-//		NanoparticleSample particle = particleSampleBean.getDomainParticleSample();
-//		particle
-//				.setPrimaryOrganization(primaryOrganization.getDomain());
-//		// set organization to particle
-//		if (primaryOrganization.getDomain()
-//				.getPrimaryNanoparticleSampleCollection() != null) {
-//			primaryOrganization.getDomain()
-//					.getPrimaryNanoparticleSampleCollection().add(
-//							particle);					
-//		} else {
-//			Collection<NanoparticleSample> primaryNanoparticleSampleCollection = new HashSet<NanoparticleSample>();
-//			primaryNanoparticleSampleCollection.add(particle);
-//			primaryOrganization.getDomain()
-//					.setPrimaryNanoparticleSampleCollection(
-//							primaryNanoparticleSampleCollection);				
-//		}
-//		//TODO:need??
-//		particle.setPrimaryOrganization(primaryOrganization.getDomain());
-
-//		if (otherOrganizationCollection != null
-//				&& otherOrganizationCollection.size() > 0) {
-//			particleSampleBean.getDomainParticleSample()
-//					.setOtherOrganizationCollection(
-//							otherOrganizationCollection);					
-//		}
-//		particle
-//				.setOtherOrganizationCollection(otherOrganizationCollection);
-		
-		//end of relationship with organization
-		
-		
+		particleSampleBean.setupDomainParticleSample();		
 		// persist in the database		
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
-				.getDomainParticleSample());
-		//POCOrganizationName = particleSampleBean.getDomainParticleSample().getPrimaryPointOfContact().getOrganization().getName();
-		//System.out.println("POCOrganizationName2="+POCOrganizationName);
-		System.out.println("POCid="+particleSampleBean.getDomainParticleSample().getPrimaryPointOfContact().getId());
-		//TODO:: get POCOrganizationName  base on POCid
-		String POCOrganizationName = "";
+				.getDomainParticleSample());	
 		// set CSM visibility
 		// add sample source as a new CSM_GROUP and assign the sample to
 		// the new group
@@ -100,20 +61,24 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		for (int i = 0; i < visibleGroups.length - 1; i++) {
 			visibleGroups[i] = particleSampleBean.getVisibilityGroups()[i];
 		}
-		//TODO: to be verified
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		PointOfContact dbPointOfContact = pocService.findPointOfContactById(
+				particleSampleBean.getDomainParticleSample()
+						.getPrimaryPointOfContact().getId().toString())
+				.getDomain();
+		String POCOrganizationName = dbPointOfContact.getOrganization()
+				.getName();
 		visibleGroups[visibleGroups.length - 1] = POCOrganizationName;
-
 		particleSampleBean = service
 				.findFullNanoparticleSampleById(particleSampleBean
-						.getDomainParticleSample().getId().toString());
+						.getDomainParticleSample().getId().toString());	
+		//TODO: if public, do not need other groups
 		particleSampleBean.setVisibilityGroups(visibleGroups);
-
 		authService.assignVisibility(particleSampleBean
 				.getDomainParticleSample().getName(), visibleGroups);
 		// includes remove & assign public visibility
 		service.assignAssociatedPublicVisibility(authService,
-				particleSampleBean, visibleGroups);
-		
+				particleSampleBean, visibleGroups);		
 		particleSampleBean.setLocation("local");
 		theForm.set("particleSampleBean", particleSampleBean);
 		forward = mapping.findForward("update");
