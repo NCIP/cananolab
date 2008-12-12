@@ -66,8 +66,6 @@ public class NanoparticleSampleServiceHelper {
 		// TODO: update SQL FOR source
 		if (particlePointOfContact != null && particlePointOfContact.length() > 0) {
 			TextMatchMode pocMatchMode = new TextMatchMode(particlePointOfContact);
-			
-			
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
 			Criterion pocCrit1 = Restrictions.ilike("pointOfContact.lastName",
@@ -77,7 +75,14 @@ public class NanoparticleSampleServiceHelper {
 			Criterion pocCrit2 = Restrictions.ilike("pointOfContact.firstName",
 					pocMatchMode.getUpdatedText(), pocMatchMode
 					.getMatchMode());			
-			disjunction.add(pocCrit2);			
+			disjunction.add(pocCrit2);
+			
+			crit.createAlias("pointOfContact.organization", "organization");
+			Criterion orgCrit = Restrictions.ilike("organization.name",
+					pocMatchMode.getUpdatedText(), pocMatchMode
+					.getMatchMode());			
+			disjunction.add(orgCrit);
+			
 			crit.add(disjunction);
 		}
 
@@ -439,6 +444,7 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		//crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		// crit.setFetchMode("publicationCollection.authorCollection",
 		// FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -459,7 +465,7 @@ public class NanoparticleSampleServiceHelper {
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
 		
-		//crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); 
+		//crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
