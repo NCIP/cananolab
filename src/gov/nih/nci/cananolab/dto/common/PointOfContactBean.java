@@ -33,6 +33,7 @@ public class PointOfContactBean{
 		super();
 		domain = new PointOfContact();
 		organization = new Organization();
+		domain.setOrganization(organization);
 		POCName = "";
 	}
 
@@ -40,6 +41,7 @@ public class PointOfContactBean{
 		domain = pointOfContact;
 		organization =
 			pointOfContact.getOrganization();
+		//TODO:: the following not needed??
 		String firstName = domain.getFirstName();
 		POCName = "";
 		if (firstName!=null) {
@@ -48,6 +50,12 @@ public class PointOfContactBean{
 		String lastName = domain.getLastName();
 		if (lastName!=null) {
 			POCName+=lastName;
+		}
+		if (domain.getOrganization()!=null) {
+			String orgName = domain.getOrganization().getName();
+			if (orgName!=null) {
+				POCName+="("+orgName+")";
+			}
 		}
 	}
 	
@@ -162,6 +170,12 @@ public class PointOfContactBean{
 		if (lastName!=null) {
 			POCName+=lastName;
 		}
+		if (domain.getOrganization()!=null) {
+			String orgName = domain.getOrganization().getName();
+			if (orgName!=null) {
+				POCName+="("+orgName+")";
+			}
+		}
 		return POCName;
 	}
 
@@ -171,6 +185,8 @@ public class PointOfContactBean{
 	public void setPOCName(String name) {
 		POCName = name;
 	}	
+	
+	
 	
 	
 	
