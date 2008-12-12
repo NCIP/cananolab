@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.service.common.helper;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.dto.common.OrganizationBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
