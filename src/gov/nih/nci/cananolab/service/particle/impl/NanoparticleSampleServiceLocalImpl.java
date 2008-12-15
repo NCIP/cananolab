@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -147,25 +148,32 @@ public class NanoparticleSampleServiceLocalImpl implements
 					&& !dbParticle.getId().equals(particleSample.getId())) {
 				throw new DuplicateEntriesException();
 			}
-			PointOfContact dbPointOfContact = (PointOfContact) appService.getObject(PointOfContact.class,
-					"id", particleSample.getPrimaryPointOfContact().getId());
-			
-			if (dbPointOfContact != null) {
-				dbPointOfContact = (PointOfContact) appService.load(
-						PointOfContact.class, dbPointOfContact.getId());
-				particleSample.getPrimaryPointOfContact().setId(dbPointOfContact.getId());
-				particleSample.setPrimaryPointOfContact(dbPointOfContact);
-			}
-			for (Keyword keyword : particleSample.getKeywordCollection()) {
-				// turned off cascade save-update in order to share the same
-				// keyword instance with File keywords.
-				Keyword dbKeyword = (Keyword) appService.getObject(
-						Keyword.class, "name", keyword.getName());
-				if (dbKeyword != null) {
-					keyword.setId(dbKeyword.getId());
+			if (particleSample.getPrimaryPointOfContact().getId() != null) {
+				PointOfContact dbPointOfContact = (PointOfContact) appService
+						.getObject(PointOfContact.class, "id", particleSample
+								.getPrimaryPointOfContact().getId());
+				if (dbPointOfContact != null) {
+					dbPointOfContact = (PointOfContact) appService.load(
+							PointOfContact.class, dbPointOfContact.getId());
+					particleSample.setPrimaryPointOfContact(dbPointOfContact);
 				}
-				appService.saveOrUpdate(keyword);
-			}			
+			}
+			if (particleSample.getKeywordCollection() != null) {
+				Collection<Keyword> keywords = new HashSet<Keyword>(
+						particleSample.getKeywordCollection());
+				particleSample.getKeywordCollection().clear();
+				for (Keyword keyword : keywords) {
+					Keyword dbKeyword = (Keyword) appService.getObject(
+							Keyword.class, "name", keyword.getName());
+					if (dbKeyword != null) {
+						keyword.setId(dbKeyword.getId());
+					}
+					// turned off cascade save-update in order to share the same
+					// keyword instance with File keywords.
+					appService.saveOrUpdate(keyword);
+					particleSample.getKeywordCollection().add(keyword);
+				}
+			}
 			appService.saveOrUpdate(particleSample);
 		} catch (DuplicateEntriesException e) {
 			throw e;
