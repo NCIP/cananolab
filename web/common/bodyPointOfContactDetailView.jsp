@@ -4,13 +4,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<html:form action="/submitOrganization">
+<html:form action="/submitPointOfContact">
 <table width="100%" align="center">
 	<tr>
 		<td>
 			<h4>
 				<br>
-				Organization
+				Point Of Contact
 			</h4>
 		</td>
 		<td align="right" width="35%">
@@ -47,7 +47,7 @@
 								</td>
 								<td align="right" class="formTitle">
 
-									<c:url var="url" value="submitOrganization.do">
+									<c:url var="url" value="submitPointOfContact.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="particleId" value="${param.particleId}" />
@@ -72,7 +72,7 @@
 											title="print contact organization detail" border="0"> </a>
 								</td>
 								<td>
-									<c:url var="exportUrl" value="submitOrganization.do">
+									<c:url var="exportUrl" value="submitPointOfContact.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="exportDetail" />
 										<c:param name="submitType" value="${submitType}" />
@@ -88,77 +88,101 @@
 				</tr>
 				<tr>
 					<th class="leftLabel" valign="top">
-						Primary Organization
-					</th>
-					<td class="rightLabel">
-						${submitOrganizationForm.map.orga.domain.name }&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<th class="leftLabel" valign="top">
-						Address
-					</th>
-					<td class="rightLabel">
-						<bean:write name="submitOrganizationForm" property="orga.address" />
-						&nbsp;
-					</td>
-				</tr>
-				<tr>
-					<th class="leftLabel" valign="top">
-						Point of Contact
+						Primary Point Of Contact
 					</th>
 					<td class="rightLabel">
 						<table class="smalltable" border="0" width="100%">
 							<tr class="smallTableHeader">
-								<th>
-									Contact Type
-								</th>
-								<th>
-									First Name
-								</th>
-								<th>
-									Middle Initial
-								</th>
-								<th>
-									Last Name
-								</th>
-								<th>
-									Email
-								</th>
-								<th>
-									Phone
-								</th>
+								<td width="4">
+								<strong>Name</strong>
+								</td>
+								<td>
+								${submitPointOfContactForm.map.poc.domain.firstName}&nbsp;
+								</td>
+								<td>
+								<strong>Role</strong>
+								</td>
+								<td>
+								${submitPointOfContactForm.map.poc.domain.role}&nbsp;
+								</td>
 							</tr>
-
-							<logic:iterate name="submitOrganizationForm" property="orga.pocs"
-								id="author" indexId="pocInd">
-								<tr>
-									<td>
-										${submitOrganizationForm.map.orga.pocs[pocInd].role}&nbsp;
-									</td>
-									<td>
-										${submitOrganizationForm.map.orga.pocs[pocInd].firstName}&nbsp;
-									</td>
-									<td>
-										${submitOrganizationForm.map.orga.pocs[pocInd].middleInitial}&nbsp;
-									</td>
-									<td>
-										${submitOrganizationForm.map.orga.pocs[pocInd].lastName}&nbsp;
-									</td>
-									<td>
-										${submitOrganizationForm.map.orga.pocs[pocInd].email}&nbsp;
-									</td>
-									<td>
-										${submitOrganizationForm.map.orga.pocs[pocInd].phone}&nbsp;
-									</td>
-								</tr>
-							</logic:iterate>
-
+							<tr class="smallTableHeader">
+								<td>
+								<strong>Organization</strong>
+								</td>
+								<td colspan="3">
+								${submitPointOfContactForm.map.poc.domain.organization.name}&nbsp;
+								</td>
+							</tr>
+							<tr class="smallTableHeader">
+								<td>
+								<strong>Email</strong>
+								</td>
+								<td colspan="3">
+								${submitPointOfContactForm.map.poc.domain.email}&nbsp;
+								</td>
+							</tr>
+							<tr class="smallTableHeader">
+								<td>
+								<strong>Phone</strong>
+								</td>
+								<td colspan="3">
+								${submitPointOfContactForm.map.poc.domain.phone}&nbsp;
+								</td>
+							</tr>
 						</table>
-						&nbsp;
 					</td>
 				</tr>
-
+				<logic:iterate name="submitPointOfContactForm" property="otherPoc.otherPointOfContacts"
+								id="otherPOC" indexId="pocInd">
+					<tr>
+						<th class="leftLabel" valign="top">
+							Secondary Point of Contact #${pocInd+1}
+						</th>
+						<td class="rightLabel">
+							<table class="smalltable" border="0" width="100%">
+								<tr class="smallTableHeader">
+									<td width="4">
+									<strong>Name</strong>
+									</td>
+									<td>
+									${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
+									</td>
+									<td>
+									<strong>Role</strong>
+									</td>
+									<td>
+									${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.role}&nbsp;
+									</td>
+								</tr>
+								<tr class="smallTableHeader">
+									<td>
+									<strong>Organization</strong>
+									</td>
+									<td colspan="3">
+									${submitPointOfContactForm.map.poc.domain.organization.name}&nbsp;
+									</td>
+								</tr>
+								<tr class="smallTableHeader">
+									<td>
+									<strong>Email</strong>
+									</td>
+									<td colspan="3">
+									${submitPointOfContactForm.map.poc.domain.email}&nbsp;
+									</td>
+								</tr>
+								<tr class="smallTableHeader">
+									<td>
+									<strong>Phone</strong>
+									</td>
+									<td colspan="3">
+									${submitPointOfContactForm.map.poc.domain.phone}&nbsp;
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</logic:iterate>
 			</table>
 		</td>
 	</tr>
