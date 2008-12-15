@@ -79,55 +79,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 
 	/**
-	 * 
-	 * @return all particle point of contacts visible to user
-	 */
-	
-	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
-		throws ParticleException {
-		//TODO: filter out base on POC visibility??
-		return findPointOfContacts();
-	}
-	
-//	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
-//			throws ParticleException {
-//		SortedSet<Organization> sampleOrganizations = new TreeSet<PointOfContact>(
-//				new CaNanoLabComparators.ParticleOrganizationComparator());
-//		try {
-//			AuthorizationService auth = new AuthorizationService(
-//					CaNanoLabConstants.CSM_APP_NAME);
-//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//					.getApplicationService();
-//			DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
-//			crit.setFetchMode("primaryNanoparticleSampleCollection", FetchMode.JOIN);
-//			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
-//			List results = appService.query(crit);
-//			for (Object obj : results) {
-//				PointOfContact poc = (PointOfContact) obj;
-//				// if user can access at least one particle from the organization, set
-//				// access to true
-//				List<String> particleNames = new ArrayList<String>();
-//				for (NanoparticleSample sample : 
-//					organization.getPrimaryNanoparticleSampleCollection()) {
-//					particleNames.add(sample.getName());
-//				}
-//				for (NanoparticleSample sample : organization
-//						.getPrimaryNanoparticleSampleCollection()) {
-//					particleNames.add(sample.getName());
-//				}				
-//				if (auth.isAllowedAtLeastOne(auth, particleNames, user)) {
-//					sampleOrganizations.add((Organization) obj);
-//				}
-//			}
-//			return sampleOrganizations;
-//		} catch (Exception e) {
-//			String err = "Error in retrieving all nanoparticle sample organizations for a user";
-//			logger.error(err, e);
-//			throw new ParticleException(err, e);
-//		}
-//	}
-
-	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
 	 * 

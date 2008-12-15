@@ -340,11 +340,6 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
-			throws ParticleException {
-		return findPointOfContacts();
-	}
-
 	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
 			String particleName, UserBean user) throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
