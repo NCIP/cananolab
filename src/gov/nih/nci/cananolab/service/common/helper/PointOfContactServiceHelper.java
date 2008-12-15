@@ -33,7 +33,7 @@ public class PointOfContactServiceHelper {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
-					.forClass(Organization.class);
+					.forClass(PointOfContact.class);
 			crit.createAlias("primaryNanoparticleSampleCollection", "sample",
 					CriteriaSpecification.LEFT_JOIN);
 			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
@@ -63,7 +63,7 @@ public class PointOfContactServiceHelper {
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria
-					.forClass(Organization.class);
+					.forClass(PointOfContact.class);
 			crit.createAlias("nanoparticleSampleCollection", "sample",
 					CriteriaSpecification.LEFT_JOIN);
 			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
