@@ -22,7 +22,7 @@ public class OtherPointOfContactsBean {
 	public List<PointOfContactBean> getOtherPointOfContacts() {
 		return otherPointOfContacts;
 	}
-	public void setOrtherPointOfContacts(List<PointOfContactBean> otherPointOfContacts) {
+	public void setOtherPointOfContacts(List<PointOfContactBean> otherPointOfContacts) {
 		this.otherPointOfContacts = otherPointOfContacts;
 	}
 

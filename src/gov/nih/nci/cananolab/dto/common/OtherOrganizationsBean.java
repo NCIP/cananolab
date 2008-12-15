@@ -22,7 +22,7 @@ public class OtherOrganizationsBean {
 	public List<OrganizationBean> getOtherOrganizations() {
 		return otherOrganizations;
 	}
-	public void setOrtherOrganizations(List<OrganizationBean> otherOrganizations) {
+	public void setOtherOrganizations(List<OrganizationBean> otherOrganizations) {
 		this.otherOrganizations = otherOrganizations;
 	}
 
