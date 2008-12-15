@@ -66,10 +66,9 @@ public class PointOfContactServiceHelper {
 					.forClass(PointOfContact.class);
 			crit.createAlias("nanoparticleSampleCollection", "sample",
 					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("organization", "organization",
+					CriteriaSpecification.LEFT_JOIN);
 			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
-			crit.setFetchMode("organization", FetchMode.JOIN);
-			//TODO: to verify if need?
-			crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
 
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -80,12 +79,6 @@ public class PointOfContactServiceHelper {
 				PointOfContact poc = (PointOfContact) obj;
 				otherPointOfContactCollection.add(new PointOfContactBean(
 						poc));
-				// if (loadAuthor) {
-				// publicationCollection.add(new PublicationBean(publication,
-				// false, true));
-				// } else {
-				// publicationCollection.add(new PublicationBean(publication));
-				// }
 			}
 			return otherPointOfContactCollection;
 		} catch (Exception e) {
