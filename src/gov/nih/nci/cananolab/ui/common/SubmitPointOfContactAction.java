@@ -36,7 +36,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 public class SubmitPointOfContactAction extends BaseAnnotationAction {
 
@@ -51,7 +50,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) form;
 		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
 				.get("poc");
 		OtherPointOfContactsBean otherPointOfContactsBean = (OtherPointOfContactsBean) theForm
@@ -107,7 +105,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				samplePointOfContacts);
 
 		// set selected primary pointOfContact
-
 		DynaValidatorForm particleSampleForm = (DynaValidatorForm) request
 				.getSession().getAttribute("nanoparticleSampleForm");
 		if (particleSampleForm != null) {
@@ -117,14 +114,10 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				NanoparticleSample particle = particleSampleBean
 						.getDomainParticleSample();
 
-				// set selected pointOfContact
+				// set selected pointOfContact				
 				particle.setPrimaryPointOfContact(primaryPointOfContact
 						.getDomain());
-				// TODO:::
-				// particleSampleBean.setPOCName(POCName);
-				// TODO::test
-				particleSampleBean.setPOCId(primaryPointOfContact.getDomain()
-						.getId().toString());
+				particleSampleBean.setPOCId(primaryPointOfContact.getDomain().getId().toString());
 				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
@@ -147,7 +140,22 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 					particleSampleBean.getDomainParticleSample()
 							.setOtherPointOfContactCollection(
 									otherPointOfContactCollection);
+					
+					for (PointOfContact otherPoc:otherPointOfContactCollection) {
+						// set pointOfContact to particle
+						if (otherPoc.getNanoparticleSampleCollection() != null) {
+							otherPoc.getNanoparticleSampleCollection() .add(
+											particle);
+						} else {
+							Collection<NanoparticleSample> nanoparticleSampleCollection = new HashSet<NanoparticleSample>();
+							nanoparticleSampleCollection.add(particle);
+							otherPoc.setNanoparticleSampleCollection(
+									nanoparticleSampleCollection);
+						}
+					}
+					
 				}
+				// TODO:need??
 				particle
 						.setOtherPointOfContactCollection(otherPointOfContactCollection);
 			}
@@ -162,105 +170,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		forward = mapping.findForward("updateParticle");
 		return forward;
 	}
-
-	public ActionForward create2(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		ActionForward forward = null;
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) form;
-		String particleId = request.getParameter("particleId");
-		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
-				.get("orga");
-		// TODO::
-		// List<PointOfContactBean> otherPointOfContactCollection =
-		// (List<PointOfContactBean>) theForm
-		// .get("otherPointOfContactCollection");
-		List<PointOfContactBean> otherPointOfContactCollection = null;
-
-		request.getSession().setAttribute("primaryPointOfContact",
-				primaryPointOfContact);
-		request.getSession().setAttribute("otherPointOfContactCollection",
-				otherPointOfContactCollection);
-
-		// add new added pointOfContact to drop down list		
-		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance().getNanoparticleSamplePointOfContacts(request);
-		samplePointOfContacts.add(primaryPointOfContact);
-		request.getSession().setAttribute("allPointOfContacts",
-				samplePointOfContacts);
-		// set selected primary pointOfContact
-		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
-				.getAttribute("theParticle");
-		NanoparticleSample particle = null;
-		if (particleSampleBean != null) {
-			particle = particleSampleBean.getDomainParticleSample();
-			particleSampleBean
-					.getDomainParticleSample()
-					.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
-		}
-		// if (particle!=null) {
-		// //set pointOfContact to particle
-		// primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
-		// particle.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
-		// particle.setOtherPointOfContactCollection(otherPointOfContactCollection);
-		// }
-		forward = mapping.findForward("updateParticle");
-
-		return forward;
-	}
-
-	// private void assignPointOfContactToParticle(NanoparticleSample particle,
-	// PointOfContactBean primaryPointOfContact, List<PointOfContactBean>
-	// otherPointOfContactCollection,
-	// UserBean user) {
-	// primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
-	//
-	// }
-
-	public ActionForward getPointOfContact(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String pointOfContactId = request.getParameter("pocId");
-		String pocIndex = request.getParameter("pocIndex");
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		PointOfContactBean pocBean = pocService
-				.findPointOfContactById(pointOfContactId);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
-				.get("otherPoc");
-		otherPocsBean.setPointOfContact(pocIndex, pocBean);
-		theForm.set("otherPoc", otherPocsBean);
-
-		return mapping.getInputForward();
-	}
-
-	// public void getPointOfContact(String pocIndexAndId) {
-	//
-	// DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-	// org.directwebremoting.WebContext webContext = dwcb.get();
-	// HttpServletRequest request = webContext.getHttpServletRequest();
-	//
-	// PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-	//
-	// String [] pocIndexIdArray = pocIndexAndId.split("_");
-	//
-	// try {
-	// PointOfContactBean pocBean = pocService
-	// .findPointOfContactById(pocIndexIdArray[1]);
-	// SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) request
-	// // .getAttribute("SubmitPointOfContactForm");
-	// .getSession().getAttribute("SubmitPointOfContactForm");
-	// OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean)
-	// theForm
-	// .get("otherPoc");
-	// otherPocsBean.setPointOfContact(pocIndexIdArray[0], pocBean);
-	// theForm.set("otherPoc", otherPocsBean);
-	// } catch (Exception e) {
-	// System.out.println("getPointOfContact exception.");
-	// e.printStackTrace();
-	// }
-	// }
 
 	/**
 	 * create pointOfContact form
@@ -302,9 +211,11 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				setVisibility(user, pointOfContactBean, true);
 			}
 		}
-		theForm.set("primaryPointOfContact", primaryPointOfContact);
-		theForm.set("otherPointOfContactCollection",
-				otherPointOfContactCollection);
+		
+		theForm.set("poc", primaryPointOfContact);
+		OtherPointOfContactsBean otherPointOfContactsBean = new OtherPointOfContactsBean();
+		otherPointOfContactsBean.setOtherPointOfContacts(otherPointOfContactCollection);
+		theForm.set("otherPoc",otherPointOfContactsBean);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 
 		// TODO: forward to be verified by Shuang
@@ -395,9 +306,10 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			}
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("primaryPointOfContact", primaryPointOfContact);
-		theForm.set("otherPointOfContactCollection",
-				otherPointOfContactCollection);
+		theForm.set("poc", primaryPointOfContact);
+		OtherPointOfContactsBean otherPointOfContactsBean = new OtherPointOfContactsBean();
+		otherPointOfContactsBean.setOtherPointOfContacts(otherPointOfContactCollection);
+		theForm.set("otherPoc",otherPointOfContactsBean);
 
 		ActionForward forward = null;
 		forward = mapping.findForward("pointOfContactDetailView");
@@ -529,33 +441,30 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			}
 		} catch (Exception e) {
 			String err = "Error in setting visibility groups for pointOfContact "
-					+ pointOfContactBean.getDomain().getLastName();
+					+ pointOfContactBean.getDisplayName();
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
 	}
 
-	// private void assignPOCVisibility(PointOfContactBean pointOfContactBean,
-	// AuthorizationService authService) throws Exception {
-	// if (pointOfContactBean.getVisibilityGroups() != null
-	// && Arrays.asList(pointOfContactBean.getVisibilityGroups())
-	// .contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-	// PointOfContact pointOfContact = pointOfContactBean.getDomain();
-	// if (pointOfContact.getPointOfContactCollection() != null) {
-	// for (PointOfContact poc : pointOfContact
-	// .getPointOfContactCollection()) {
-	// if (poc != null) {
-	// if (poc.getId() != null
-	// && poc.getId().toString().trim().length() > 0) {
-	// authService.assignPublicVisibility(poc.getId()
-	// .toString());
-	// }
-	// }
-	// }
-	// }
-	// }
-	// }
+	public ActionForward getPointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String pointOfContactId = request.getParameter("pocId");
+		String pocIndex = request.getParameter("pocIndex");
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		PointOfContactBean pocBean = pocService
+				.findPointOfContactById(pointOfContactId);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");
+		otherPocsBean.setPointOfContact(pocIndex, pocBean);
+		theForm.set("otherPoc", otherPocsBean);
 
+		return mapping.getInputForward();
+	}
+	
+	
 	public ActionForward addPointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
