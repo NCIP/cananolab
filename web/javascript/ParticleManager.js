@@ -22,14 +22,14 @@ function populateParticleNames(particleNames) {
 	}
 	dwr.util.addOptions("particleName", updatedParticleNames);
 }
-function removeSourceVisibility() {
-	var sampleSource = document.getElementById("sampleSource").value;
+function removeOrgVisibility() {
+	var poc = document.getElementById("primaryPOCList").value;
 	
-	if(sampleSource.charAt(0) == "[" &&
-			sampleSource.charAt(otext.length - 1) == "]") 
+	if(poc.charAt(0) == "[" &&
+			poc.charAt(otext.length - 1) == "]") 
 			return false;
 			
-	NanoparticleSampleManager.removeSourceVisibility(sampleSource, function (data) {
+	NanoparticleSampleManager.removeOrgVisibility(poc, function (data) {
 		dwr.util.removeAllOptions("visibilityGroup");
 		dwr.util.addOptions("visibilityGroup", data);
 	});
