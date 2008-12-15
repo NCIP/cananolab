@@ -51,7 +51,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) form;
+		// SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) form;
 		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
 				.get("poc");
 		OtherPointOfContactsBean otherPointOfContactsBean = (OtherPointOfContactsBean) theForm
@@ -107,7 +107,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				samplePointOfContacts);
 
 		// set selected primary pointOfContact
-		
+
 		DynaValidatorForm particleSampleForm = (DynaValidatorForm) request
 				.getSession().getAttribute("nanoparticleSampleForm");
 		if (particleSampleForm != null) {
@@ -168,7 +168,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) form;
+		// SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) form;
 		String particleId = request.getParameter("particleId");
 		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
 				.get("orga");
@@ -183,11 +183,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("otherPointOfContactCollection",
 				otherPointOfContactCollection);
 
-		// add new added pointOfContact to drop down list
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// add new added pointOfContact to drop down list		
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance().getNanoparticleSamplePointOfContacts(request,
-						user);
+				.getInstance().getNanoparticleSamplePointOfContacts(request);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
@@ -220,47 +218,50 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	//
 	// }
 
-	public ActionForward getPointOfContact(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public ActionForward getPointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		String pointOfContactId = request.getParameter("pocId");
 		String pocIndex = request.getParameter("pocIndex");
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		PointOfContactBean pocBean = pocService.findPointOfContactById(pointOfContactId);
+		PointOfContactBean pocBean = pocService
+				.findPointOfContactById(pointOfContactId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm.get("otherPoc");
+		OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");
 		otherPocsBean.setPointOfContact(pocIndex, pocBean);
 		theForm.set("otherPoc", otherPocsBean);
-		
+
 		return mapping.getInputForward();
 	}
-	
-//	public void getPointOfContact(String pocIndexAndId) {
-//
-//		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
-//		org.directwebremoting.WebContext webContext = dwcb.get();
-//		HttpServletRequest request = webContext.getHttpServletRequest();
-//
-//		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-//
-//		String [] pocIndexIdArray = pocIndexAndId.split("_");
-//
-//		try {
-//			PointOfContactBean pocBean = pocService
-//					.findPointOfContactById(pocIndexIdArray[1]);
-//			SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) request
-////				.getAttribute("SubmitPointOfContactForm");
-//					.getSession().getAttribute("SubmitPointOfContactForm");
-//			OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
-//					.get("otherPoc");
-//			otherPocsBean.setPointOfContact(pocIndexIdArray[0], pocBean);
-//			theForm.set("otherPoc", otherPocsBean);
-//		} catch (Exception e) {
-//			System.out.println("getPointOfContact exception.");
-//			e.printStackTrace();
-//		}
-//	}
-	
+
+	// public void getPointOfContact(String pocIndexAndId) {
+	//
+	// DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+	// org.directwebremoting.WebContext webContext = dwcb.get();
+	// HttpServletRequest request = webContext.getHttpServletRequest();
+	//
+	// PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+	//
+	// String [] pocIndexIdArray = pocIndexAndId.split("_");
+	//
+	// try {
+	// PointOfContactBean pocBean = pocService
+	// .findPointOfContactById(pocIndexIdArray[1]);
+	// SubmitPointOfContactForm theForm = (SubmitPointOfContactForm) request
+	// // .getAttribute("SubmitPointOfContactForm");
+	// .getSession().getAttribute("SubmitPointOfContactForm");
+	// OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean)
+	// theForm
+	// .get("otherPoc");
+	// otherPocsBean.setPointOfContact(pocIndexIdArray[0], pocBean);
+	// theForm.set("otherPoc", otherPocsBean);
+	// } catch (Exception e) {
+	// System.out.println("getPointOfContact exception.");
+	// e.printStackTrace();
+	// }
+	// }
+
 	/**
 	 * create pointOfContact form
 	 */
