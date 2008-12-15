@@ -94,7 +94,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					request,
 					particleBean.getDomainParticleSample().getName(),
 					particleBean.getDomainParticleSample().getPrimaryPointOfContact()
-							.getLastName(), user);
+							.getOrganization().getName(), user);
 		}
 	}
 
