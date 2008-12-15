@@ -13,7 +13,7 @@ function setupOrgDetailView(form, selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
 	var org = selectEle.options[selectEle.options.selectedIndex].text;
 	if(org != "[Other]") {
-		form.action = "submitNanoparticleSample.do?dispatch=pointOfContactDetailView&page=0&location=local" + 
+		form.action = "submitPointOfContact.do?dispatch=detailView&page=0&location=local" + 
 			"&organizationName=" + org;
 		form.submit();
 	}
