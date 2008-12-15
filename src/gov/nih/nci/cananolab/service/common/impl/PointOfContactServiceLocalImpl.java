@@ -2,9 +2,11 @@ package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.helper.PointOfContactServiceHelper;
@@ -211,6 +213,29 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			return names;
 		} catch (Exception e) {
 			String err = "Error finding organization for " + user.getLoginName();
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
+
+	// retrieve point of contact accessibility
+	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
+			throws PointOfContactException {
+		try {
+			if (pocBean!=null) {
+				AuthorizationService auth = new AuthorizationService(
+						CaNanoLabConstants.CSM_APP_NAME);
+				if (pocBean.getDomain().getId() != null
+						&& auth.isUserAllowed(pocBean.getDomain().getId()
+								.toString(), user)) {
+					pocBean.setHidden(false);
+				} else {
+					pocBean.setHidden(true);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting point of contact accessibility for "
+					+ pocBean.getDisplayName();
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}

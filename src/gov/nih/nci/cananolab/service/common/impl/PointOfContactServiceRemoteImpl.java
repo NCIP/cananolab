@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.common.impl;
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 
@@ -22,7 +23,6 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 			.getLogger(PointOfContactServiceRemoteImpl.class);
 	private CaNanoLabServiceClient gridClient;
 
-	
 	public PointOfContactServiceRemoteImpl(String serviceUrl) throws Exception {
 		gridClient = new CaNanoLabServiceClient(serviceUrl);
 	}
@@ -35,25 +35,30 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	 * 
 	 * @throws PointOfContactException
 	 */
-	public void savePointOfContact(PointOfContact primaryPointOfContact, 
+	public void savePointOfContact(PointOfContact primaryPointOfContact,
 			Collection<PointOfContact> otherPointOfContactCollection)
-		throws PointOfContactException{
+			throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 
 	public PointOfContactBean findPrimaryPointOfContact(String particleId) {
-		//TODO: grid findPrimaryOrganization
+		// TODO: grid findPrimaryOrganization
 		return null;
 	}
-	
-	public List<PointOfContactBean> findOtherPointOfContactCollection(String particleId){
-		//TODO: grid findOrganizationsByParticleSampleId
+
+	public List<PointOfContactBean> findOtherPointOfContactCollection(
+			String particleId) {
+		// TODO: grid findOrganizationsByParticleSampleId
 		return null;
 	}
-	
-	public PointOfContactBean findPointOfContactById(String POCId) {
-		//TODO: grid findOrganizationsByParticleSampleId
+
+	public PointOfContactBean findPointOfContactById(String pocId) {
+		// TODO: grid findOrganizationsByParticleSampleId
 		return null;
-	}	
-	
+	}
+
+	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
+			throws PointOfContactException {
+		throw new PointOfContactException("not implemented for grid service.");
+	}
 }
