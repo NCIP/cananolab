@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -23,9 +22,6 @@ import gov.nih.nci.cananolab.ui.common.InitPOCSetup;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -92,13 +88,12 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		return forward;
 	}
 
-	private void setupLookups(HttpServletRequest request, String sampleSource)
-			throws Exception {
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+	private void setupLookups(HttpServletRequest request, String sampleOrg)
+			throws Exception {		
 		InitNanoparticleSetup.getInstance().getNanoparticleSamplePointOfContacts(
-				request, user);
-		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutSource(
-				request, sampleSource);
+				request);
+		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
+				request, sampleOrg);
 	}
 
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
