@@ -85,10 +85,10 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		forward = mapping.findForward("update");
 		request.setAttribute("theParticle", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-			.getPrimaryPointOfContact().getLastName());
+			.getPrimaryPointOfContact().getOrganization().getName());
 		setupDataTree(particleSampleBean, request);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getPrimaryPointOfContact().getLastName());
+				.getPrimaryPointOfContact().getOrganization().getName());
 		return forward;
 	}
 
@@ -113,7 +113,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		service.retrieveVisibility(particleSampleBean, user);
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getPrimaryPointOfContact().getLastName());
+				.getPrimaryPointOfContact().getOrganization().getName());
 		setupDataTree(particleSampleBean, request);
 
 		// for display "back" button on the publication detail view
