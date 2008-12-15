@@ -67,6 +67,7 @@
 								<c:if
 									test="${!empty nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}">
 									<html:hidden
+										styleId="particleId"
 										property="particleSampleBean.domainParticleSample.id"
 										value="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}" />
 								</c:if>
@@ -85,13 +86,13 @@
 												removeOrgVisibility();">
 									<option />
 									<html:options collection="allPointOfContacts"
-											labelProperty="POCName" property="domain.id" />
+											labelProperty="displayName" property="domain.id" />
 									<option value="other">
 										[Other]
 									</option>
 								</html:select>&nbsp;
 								<a style="${pocDetailDisplay }" id="pocDetail" href="#"	
-									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'primaryPOCList'); return false;">
+									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'primaryPOCList','particleId'); return false;">
 									<span class="addLink2">View Detail</span> </a>
 							</td>
 						</tr>
