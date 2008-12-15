@@ -339,7 +339,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particlePointOfContact,
+	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
 			String particleName, UserBean user) throws ParticleException {
 		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
 		try {
@@ -351,8 +351,9 @@ public class NanoparticleSampleServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(NanoparticleSample.class);
 			crit.add(Restrictions.ne("name", particleName));
-			crit.createAlias("pointOfContact", "pointOfContact").add(
-					Restrictions.eq("pointOfContact.lastName", particlePointOfContact));
+			crit.createAlias("primaryPointOfContact", "pointOfContact");
+			crit.createAlias("pointOfContact.organization","organization").add(
+					Restrictions.eq("organization.name", particleOrganization));
 
 			List results = appService.query(crit);
 			for (Object obj : results) {
@@ -364,7 +365,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			return otherParticles;
 		} catch (Exception e) {
 			String err = "Error in retrieving other particles from point of contact "
-					+ particlePointOfContact;
+					+ particleOrganization;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}

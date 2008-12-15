@@ -86,7 +86,7 @@ public interface NanoparticleSampleService {
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particlePointOfContact,
+	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
 			String particleName, UserBean user) throws ParticleException;
 
 	public void retrieveVisibility(ParticleBean particleBean, UserBean user)
