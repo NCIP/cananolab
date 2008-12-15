@@ -44,11 +44,11 @@
 					</tr>
 					<tr>
 						<td class="leftLabel">
-							<strong>Nanoparticle Sample Source </strong>
+							<strong>Nanoparticle Sample<br>Point of Contact </strong>
 						</td>
 						<td class="rightLabel">
 							<bean:write name="nanoparticleSampleForm"
-								property="particleSampleBean.domainParticleSample.primaryPointOfContact.lastName" />
+								property="particleSampleBean.POCName" />
 							&nbsp;
 						</td>
 					</tr>
