@@ -39,13 +39,19 @@ public class CaNanoLabComparators {
 	public static class ParticlePointOfContactComparator implements Comparator<PointOfContact> {
 		public int compare(PointOfContact poc1, PointOfContact poc2) {
 			int diff = new SortableNameComparator().compare(poc1
-					.getLastName(), poc2.getLastName());
+					.getFirstName(), poc2.getFirstName());
 			if (diff==0) {
 				diff = new SortableNameComparator().compare(poc1
-						.getFirstName(), poc2.getFirstName());
-				if (diff==0 && poc1.getOrganization()!=null && poc2.getOrganization()!=null) {
-					diff = new SortableNameComparator().compare(poc1
+						.getLastName(), poc2.getLastName());
+				if (diff==0) {
+					if (poc1.getOrganization()!=null && poc2.getOrganization()!=null) {				
+						diff = new SortableNameComparator().compare(poc1
 							.getOrganization().getName(), poc2.getOrganization().getName());
+					}else if (poc1.getOrganization()!=null) {
+						diff = 1;
+					}else {
+						diff = -1;
+					}
 				}
 			}
 			return diff;
@@ -54,7 +60,7 @@ public class CaNanoLabComparators {
 	
 	public static class ParticlePointOfContactBeanComparator implements Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
-			int diff = new SortableNameComparator().compare(poc1.getDisplayName(), 
+			int diff = new SortableNameComparator().compare(poc1.getPOCName(), 
 					poc2.getDisplayName());
 			return diff;
 		}
