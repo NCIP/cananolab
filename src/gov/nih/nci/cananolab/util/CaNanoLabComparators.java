@@ -54,8 +54,8 @@ public class CaNanoLabComparators {
 	
 	public static class ParticlePointOfContactBeanComparator implements Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
-			int diff = new SortableNameComparator().compare(poc1.getPOCName(), 
-					poc2.getPOCName());
+			int diff = new SortableNameComparator().compare(poc1.getDisplayName(), 
+					poc2.getDisplayName());
 			return diff;
 		}
 	}
