@@ -81,8 +81,7 @@
 									property="particleSampleBean.domainParticleSample.primaryPointOfContact.id"
 									styleId="primaryPOCList"
 									onchange="javascript:setupPOC(nanoparticleSampleForm, 'primaryPOCList');
-												setPOCDetailLink('primaryPOCList', 'pocDetail');
-												callPrompt('Primary Point of Contact', 'primaryPOCList');
+												setPOCDetailLink('primaryPOCList', 'pocDetail');												
 												removeOrgVisibility();">
 									<option />
 									<html:options collection="allPointOfContacts"
