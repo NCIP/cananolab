@@ -10,14 +10,13 @@ function setupPOC(form, selectEleId) {
 	return false;
 }
 
-
-
-function setupOrgDetailView(form, selectEleId) {
+function setupOrgDetailView(form, selectEleId, particleIdEle) {
 	var selectEle = document.getElementById(selectEleId);
+	var particleId = document.getElementById(particleIdEle).value;
 	var org = selectEle.options[selectEle.options.selectedIndex].text;
 	if(org != "[Other]") {
 		form.action = "submitPointOfContact.do?dispatch=detailView&page=0&location=local" + 
-			"&organizationName=" + org;
+			"&particleId="+particleId+"&organizationName=" + org;
 		form.submit();
 	}
 	return false;
