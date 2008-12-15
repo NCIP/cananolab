@@ -67,13 +67,13 @@ public class InitSecuritySetup {
 		return groupNames;
 	}
 
-	public SortedSet<String> getAllVisibilityGroupsWithoutSource(
-			HttpServletRequest request, String sampleSource)
+	public SortedSet<String> getAllVisibilityGroupsWithoutOrg(
+			HttpServletRequest request, String sampleOrg)
 			throws CaNanoLabSecurityException {
 		SortedSet<String> groupNames = getAllVisibilityGroups(request);
-		if (sampleSource != null)
-			groupNames.remove(sampleSource);
-		request.getSession().setAttribute("allVisibilityGroupsNoSource",
+		if (sampleOrg != null)
+			groupNames.remove(sampleOrg);
+		request.getSession().setAttribute("allVisibilityGroupsNoOrg",
 				groupNames);
 		return groupNames;
 	}
