@@ -39,6 +39,8 @@
 				path="particle.updateNanoparticleSample" />
 			<forward name="submitParticle"
 				path="particle.submitNanoparticleSample" />
+			<forward name="pointOfContactDetailView"
+				path="particle.pointOfContactDetailView" />
 		</action>
 		
 	</action-mappings>
