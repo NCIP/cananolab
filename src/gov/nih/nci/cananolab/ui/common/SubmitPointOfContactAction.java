@@ -71,9 +71,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 						.getDomain());
 			}
 		}
-		// TODO::: 111
 		// created_date set in service
-		//String POCName = primaryPointOfContact.getPOCName();
 		PointOfContactService service = new PointOfContactServiceLocalImpl();
 		service.savePointOfContact(primaryPointOfContact.getDomain(),
 				otherPointOfContactCollection);
@@ -161,62 +159,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		forward = mapping.findForward("updateParticle");
 		return forward;
 	}
-
-	public ActionForward create2(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		ActionForward forward = null;
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particleId = request.getParameter("particleId");
-		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
-				.get("orga");
-		// TODO::
-		// List<PointOfContactBean> otherPointOfContactCollection =
-		// (List<PointOfContactBean>) theForm
-		// .get("otherPointOfContactCollection");
-		List<PointOfContactBean> otherPointOfContactCollection = null;
-
-		request.getSession().setAttribute("primaryPointOfContact",
-				primaryPointOfContact);
-		request.getSession().setAttribute("otherPointOfContactCollection",
-				otherPointOfContactCollection);
-
-		// add new added pointOfContact to drop down list
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance().getNanoparticleSamplePointOfContacts(request,
-						user);
-		samplePointOfContacts.add(primaryPointOfContact);
-		request.getSession().setAttribute("allPointOfContacts",
-				samplePointOfContacts);
-		// set selected primary pointOfContact
-		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
-				.getAttribute("theParticle");
-		NanoparticleSample particle = null;
-		if (particleSampleBean != null) {
-			particle = particleSampleBean.getDomainParticleSample();
-			particleSampleBean
-					.getDomainParticleSample()
-					.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
-		}
-		// if (particle!=null) {
-		// //set pointOfContact to particle
-		// primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
-		// particle.setPrimaryPointOfContact(primaryPointOfContact.getDomain());
-		// particle.setOtherPointOfContactCollection(otherPointOfContactCollection);
-		// }
-		forward = mapping.findForward("updateParticle");
-
-		return forward;
-	}
-
-	// private void assignPointOfContactToParticle(NanoparticleSample particle,
-	// PointOfContactBean primaryPointOfContact, List<PointOfContactBean>
-	// otherPointOfContactCollection,
-	// UserBean user) {
-	// primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
-	//
-	// }
 
 	/**
 	 * create pointOfContact form
