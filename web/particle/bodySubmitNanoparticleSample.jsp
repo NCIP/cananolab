@@ -22,7 +22,7 @@
 
 <html:form action="/submitNanoparticleSample">
 <c:choose>
-	<c:when test="${!empty nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.primaryPointOfContact.lastName }" >
+	<c:when test="${!empty nanoparticleSampleForm.map.particleSampleBean.POCName}" >
 		<c:set var="pocDetailDisplay" value="display: inline;" />
 	</c:when>
 	<c:otherwise>
@@ -90,7 +90,7 @@
 									</option>
 								</html:select>&nbsp;
 								<a style="${pocDetailDisplay }" id="pocDetail" href="#"	
-									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'sampleOrganization');">
+									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'primaryPOCList'); return false;">
 									<span class="addLink2">View Detail</span> </a>
 							</td>
 						</tr>
