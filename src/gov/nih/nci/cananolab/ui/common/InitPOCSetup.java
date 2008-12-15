@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.SortedSet;
@@ -33,8 +32,6 @@ public class InitPOCSetup {
 						"POC", "contactRole", "otherContactRole", true);		
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
-				request, user);
 		getAllOrganizationNames(request, user);
 	}
 
