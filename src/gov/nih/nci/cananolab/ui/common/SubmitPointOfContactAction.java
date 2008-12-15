@@ -101,8 +101,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		 */
 		// add new added pointOfContact to drop down list
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance().getNanoparticleSamplePointOfContacts(request,
-						user);
+				.getInstance().getNanoparticleSamplePointOfContacts(request);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
@@ -118,13 +117,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				NanoparticleSample particle = particleSampleBean
 						.getDomainParticleSample();
 
-				// set selected pointOfContact				
+				// set selected pointOfContact
 				particle.setPrimaryPointOfContact(primaryPointOfContact
 						.getDomain());
-				//TODO:::
-				//particleSampleBean.setPOCName(POCName);
-				//TODO::test
-				particleSampleBean.setPOCId(primaryPointOfContact.getDomain().getId().toString());
+				// TODO:::
+				// particleSampleBean.setPOCName(POCName);
+				// TODO::test
+				particleSampleBean.setPOCId(primaryPointOfContact.getDomain()
+						.getId().toString());
 				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
@@ -555,8 +555,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	// }
 	// }
 
-	
-	
 	public ActionForward addPointOfContact(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

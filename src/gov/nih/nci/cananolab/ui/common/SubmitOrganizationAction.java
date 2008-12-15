@@ -102,7 +102,7 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		 */
 		// add new added organization to drop down list
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
-				.getInstance().getNanoparticleSamplePointOfContacts(request, user);
+				.getInstance().getNanoparticleSamplePointOfContacts(request);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
@@ -176,11 +176,10 @@ public class SubmitOrganizationAction extends BaseAnnotationAction {
 		request.getSession().setAttribute("otherPointOfContactCollection",
 				otherOrganizationCollection);
 
-		// add new added organization to drop down list
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// add new added organization to drop down list		
 		SortedSet<PointOfContactBean> samplePointOfContacts = InitNanoparticleSetup
 				.getInstance()
-				.getNanoparticleSamplePointOfContacts(request, user);
+				.getNanoparticleSamplePointOfContacts(request);
 		samplePointOfContacts.add(primaryPointOfContact);
 		request.getSession().setAttribute("allPointOfContacts",
 				samplePointOfContacts);
