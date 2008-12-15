@@ -19,6 +19,7 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.common.InitPOCSetup;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -174,6 +175,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		// setupLookups(request, null);
+		InitPOCSetup.getInstance().setPOCDropdowns(request);
 
 		return mapping.findForward("pointOfContact");
 	}

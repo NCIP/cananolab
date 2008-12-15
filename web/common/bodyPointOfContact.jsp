@@ -51,7 +51,7 @@
 					property="${param.pocBean}.domain.role"
 					onchange="javascript:callPrompt('Contact Role', 'role${ind}');">
 					<option />
-						<%--																			<html:options name="contactRoles" />--%>
+						<html:options name="contactRoles" />
 					<option value="other">
 						[Other]
 					</option>

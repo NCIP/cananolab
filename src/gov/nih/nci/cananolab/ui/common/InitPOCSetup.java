@@ -23,10 +23,9 @@ public class InitPOCSetup {
 	}
 
 	public void setPOCDropdowns(HttpServletRequest request) throws Exception {
-		
 		InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "contactTypes",
-						"POC", "contactTypes", "otherContactTypes", true);		
+				.getDefaultAndOtherLookupTypes(request, "contactRoles",
+						"POC", "contactRole", "otherContactRole", true);		
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
@@ -41,8 +40,8 @@ public class InitPOCSetup {
 		 * HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value
 		 */
-		InitSetup.getInstance().persistLookup(request, "POC", "contactTypes",
-				"otherContactTypes",
+		InitSetup.getInstance().persistLookup(request, "POC", "contactRoles",
+				"otherContactRoles",
 				poc.getRole());
 		setPOCDropdowns(request);
 	}	
