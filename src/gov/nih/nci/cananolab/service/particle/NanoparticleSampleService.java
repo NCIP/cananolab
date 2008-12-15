@@ -27,13 +27,6 @@ public interface NanoparticleSampleService {
 	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException;
 
 	/**
-	 * 
-	 * @return all particle sources visible to user
-	 */
-	public SortedSet<PointOfContact> findPointOfContacts(UserBean user)
-			throws ParticleException;
-
-	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
 	 * 
