@@ -2,9 +2,12 @@ package gov.nih.nci.cananolab.ui.common;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+
+import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 public class InitPOCSetup {
+	private PointOfContactServiceLocalImpl pocService = new PointOfContactServiceLocalImpl();
+
 	private InitPOCSetup() {
 	}
 
@@ -30,6 +35,7 @@ public class InitPOCSetup {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
 				request, user);
+		getAllOrganizationNames(request, user);
 	}
 
 	
@@ -45,4 +51,12 @@ public class InitPOCSetup {
 				poc.getRole());
 		setPOCDropdowns(request);
 	}	
+	
+	public SortedSet<String> getAllOrganizationNames(
+			HttpServletRequest request, UserBean user) throws Exception {
+		SortedSet<String> organizationNames = pocService
+				.getAllOrganizationNames(user);
+		request.getSession().setAttribute("allOrganizationNames", organizationNames);
+		return organizationNames;
+	}
 }
