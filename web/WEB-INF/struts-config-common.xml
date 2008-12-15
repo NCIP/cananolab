@@ -31,7 +31,7 @@
 		<action name="submitPointOfContactForm" parameter="dispatch"
 			path="/submitPointOfContact"
 			type="gov.nih.nci.cananolab.ui.common.SubmitPointOfContactAction"
-			input="input" >
+			input="input">
 			<forward name="success" path="particle.submitPointOfContact" />
 			<forward name="input"
 				path="particle.submitPointOfContact" />
@@ -41,6 +41,8 @@
 				path="particle.submitNanoparticleSample" />
 			<forward name="pointOfContactDetailView"
 				path="particle.pointOfContactDetailView" />
+			<forward name="submitPointOfContact"
+				path="particle.submitPointOfContact" />
 		</action>
 		
 	</action-mappings>
