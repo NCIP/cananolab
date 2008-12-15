@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.Collection;
 import java.util.Date;
@@ -188,6 +189,31 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
-
+	
+	public SortedSet<String> getAllOrganizationNames(UserBean user)
+		throws PointOfContactException {
+		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			SortedSet<String> names = new TreeSet<String>(
+					new CaNanoLabComparators.SortableNameComparator());
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select org.name from gov.nih.nci.cananolab.domain.common.Organization org");
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				String name = ((String) obj).trim();
+				if (auth.isUserAllowed(name, user)) {
+					names.add(name);
+				}
+			}
+			return names;
+		} catch (Exception e) {
+			String err = "Error finding organization for " + user.getLoginName();
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
 
 }
