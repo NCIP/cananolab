@@ -2,11 +2,9 @@ package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.helper.PointOfContactServiceHelper;
@@ -133,10 +131,15 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			//TODO:: re-test (now, org is not from dropdown list, then org.pocCollection==null,
 			//if pri-org and sec-org are the same, pri-org is null after overwritten
 			
-			//if orgID!=null load its POCCollection??
+			//TODO:: if orgID!=null load its POCCollection????
+			Organization dbOrganization1 = null;
+			if (organization.getId()!=null) {
+				dbOrganization1 = getDBOrganization(organization);
+			}			
 			if (organization.getPointOfContactCollection()==null) {
 				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
 			}else {
+				organization.setPointOfContactCollection(dbOrganization1.getPointOfContactCollection());
 				organization.getPointOfContactCollection().add(pointOfContact);
 			}
 			Organization dbOrganization = (Organization) appService.getObject(
@@ -165,6 +168,32 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		throws PointOfContactException{
 		return helper.findPointOfContactById(POCId);		
 	}
+	
+	private Organization getDBOrganization(Organization organization) 
+		throws PointOfContactException{
+		Organization dbOrganization = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(Organization.class);
+			crit.add(Restrictions.eq("id", organization.getId()));
+			crit.createAlias("pointOfContactCollection", "poc",
+					CriteriaSpecification.LEFT_JOIN);;
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				dbOrganization = ((Organization) obj);
+			}
+			return dbOrganization;
+		} catch (Exception e) {
+			String err = "Problem finding organization with the given organization ID.";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}	
+}
 	
 	public SortedSet<Organization> findAllOrganizations(UserBean user)
 		throws PointOfContactException {
@@ -217,7 +246,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
-
+	
 	// retrieve point of contact accessibility
 	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException {
