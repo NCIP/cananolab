@@ -91,11 +91,13 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" width="20%" valign="top">
-							<strong> Nanoparticle Sample Source </strong>
+							<strong> Nanoparticle Sample<br>Point of Contact </strong>
 						</td>
-						<td class="rightLabel" colspan="5">
-							<html:text property="particlePointOfContact" size="50" />
+						<td class="rightLabel" colspan="5"><br>						
+							<html:text property="particlePointOfContact" size="60" />
 							<em>* for searching wildcards</em>
+							<br><em>search by organization name and point of contact first name and last name</em>
+							
 						</td>
 					</tr>
 					<tr>
