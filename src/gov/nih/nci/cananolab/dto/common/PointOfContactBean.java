@@ -25,6 +25,7 @@ public class PointOfContactBean{
 	private String[] emailVisibilityGroups = new String[0];
 	private String[] phoneVisibilityGroups = new String[0];
 	private boolean hidden = false;
+	private String pocId;
 	private String address;
 	//TODO: need info for nanoparticleSample??
 	
@@ -71,6 +72,20 @@ public class PointOfContactBean{
 	 */
 	public void setDomain(PointOfContact domain) {
 		this.domain = domain;
+	}
+
+	/**
+	 * @return the pocId
+	 */
+	public String getPocId() {
+		return pocId;
+	}
+
+	/**
+	 * @param pocId the pocId to set
+	 */
+	public void setPocId(String pocId) {
+		this.pocId = pocId;
 	}
 
 	/**

@@ -17,8 +17,9 @@ public class OtherPointOfContactsBean {
 	 * 
 	 */
 	public OtherPointOfContactsBean() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
+	
 	public List<PointOfContactBean> getOtherPointOfContacts() {
 		return otherPointOfContacts;
 	}
@@ -32,5 +33,9 @@ public class OtherPointOfContactsBean {
 	
 	public void removePointOfContact(int ind) {
 		otherPointOfContacts.remove(ind);
+	}
+	
+	public void setPointOfContact(String pocIndex, PointOfContactBean pocBean) {
+		this.otherPointOfContacts.set(Integer.parseInt(pocIndex), pocBean);
 	}
 }
