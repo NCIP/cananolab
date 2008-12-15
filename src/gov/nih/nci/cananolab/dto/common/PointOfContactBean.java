@@ -18,7 +18,7 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 
 public class PointOfContactBean{
 	private PointOfContact domain;
-	private String POCName;
+	private String displayName;
 	private Organization organization;
 	private String[] orgVisibilityGroups = new String[0];
 	private String[] pocVisibilityGroups = new String[0];
@@ -35,7 +35,7 @@ public class PointOfContactBean{
 		domain = new PointOfContact();
 		organization = new Organization();
 		domain.setOrganization(organization);
-		POCName = "";
+		displayName = "";
 	}
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
@@ -44,18 +44,18 @@ public class PointOfContactBean{
 			pointOfContact.getOrganization();
 		//TODO:: the following not needed??
 		String firstName = domain.getFirstName();
-		POCName = "";
+		displayName = "";
 		if (firstName!=null) {
-			POCName = firstName +" ";
+			displayName = firstName +" ";
 		}
 		String lastName = domain.getLastName();
 		if (lastName!=null) {
-			POCName+=lastName;
+			displayName+=lastName;
 		}
 		if (domain.getOrganization()!=null) {
 			String orgName = domain.getOrganization().getName();
 			if (orgName!=null) {
-				POCName+=" ("+orgName+")";
+				displayName+=" ("+orgName+")";
 			}
 		}
 	}
@@ -173,36 +173,32 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @return the pOCName
+	 * @return the displayName
 	 */
-	public String getPOCName() {
+	public String getDisplayName() {
 		String firstName = domain.getFirstName();
-		POCName = "";
+		displayName = "";
 		if (firstName!=null) {
-			POCName = firstName +" ";
+			displayName = firstName +" ";
 		}
 		String lastName = domain.getLastName();
 		if (lastName!=null) {
-			POCName+=lastName;
+			displayName+=lastName;
 		}
 		if (domain.getOrganization()!=null) {
 			String orgName = domain.getOrganization().getName();
 			if (orgName!=null) {
-				POCName+=" ("+orgName+")";
+				displayName+=" ("+orgName+")";
 			}
 		}
-		return POCName;
+		return displayName;
 	}
 
 	/**
-	 * @param name the pOCName to set
+	 * @param name the displayName to set
 	 */
-	public void setPOCName(String name) {
-		POCName = name;
+	public void setDisplayName(String name) {
+		displayName = name;
 	}	
-	
-	
-	
-	
-	
+		
 }
