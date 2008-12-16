@@ -49,7 +49,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	public void savePointOfContact(
 			PointOfContact primaryPointOfContact, 
 			Collection<PointOfContact> otherPointOfContactCollection)
-		throws PointOfContactException{
+		throws PointOfContactException, DuplicateEntriesException {
 		
 		//TODO: to verify if organization.primaryNanoparticleSampleCollection is empty		
 		try {
@@ -74,6 +74,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					savePointOfContact(poc, authService, appService);
 				}
 			}
+		} catch (DuplicateEntriesException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Error in saving the PointOfContact.";
 			logger.error(err, e);
@@ -155,7 +157,6 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			pointOfContact.setOrganization(organization);
 			appService.saveOrUpdate(organization);	
-			//pointOfContact.setOrganization(organization);
 		}
 		if (pointOfContact.getCreatedDate()==null) {
 			//TODO:: myCal.add(Calendar.SECOND, 1);???
@@ -221,7 +222,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 //		}
 //	}
 	
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc) 
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
 		throws PointOfContactException{
 		PointOfContact dbPoc = null;
 		try {
@@ -230,8 +231,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(PointOfContact.class);
 			crit.add(Restrictions.eq("id", poc.getId()));
-			crit.createAlias("nanoparticleSampleCollection", "otherSamples",
-					CriteriaSpecification.LEFT_JOIN);;
+			crit.createAlias(nanoparticleSampleCollection, "otherSamples",
+					CriteriaSpecification.LEFT_JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		
