@@ -22,7 +22,7 @@
 
 <html:form action="/submitNanoparticleSample">
 <c:choose>
-	<c:when test="${!empty nanoparticleSampleForm.map.particleSampleBean.POCName}" >
+	<c:when test="${!empty nanoparticleSampleForm.map.particleSampleBean.pocBean.displayName}" >
 		<c:set var="pocDetailDisplay" value="display: inline;" />
 	</c:when>
 	<c:otherwise>
