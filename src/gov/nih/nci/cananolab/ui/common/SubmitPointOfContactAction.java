@@ -6,6 +6,7 @@ package gov.nih.nci.cananolab.ui.common;
  * @author tanq
  */
 
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
@@ -144,6 +145,12 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 					for (PointOfContact otherPoc:otherPointOfContactCollection) {
 						// set pointOfContact to particle
 						if (otherPoc.getNanoparticleSampleCollection() != null) {
+							//TODO::: test, use to fix lazy loading issue				
+							PointOfContact dbOtherPoc = null;
+							if (otherPoc.getId()!=null) {
+								dbOtherPoc = service.loadPOCNanoparticleSample(otherPoc);
+							}	
+							otherPoc.setNanoparticleSampleCollection(dbOtherPoc.getNanoparticleSampleCollection());
 							otherPoc.getNanoparticleSampleCollection() .add(
 											particle);
 						} else {
