@@ -98,6 +98,11 @@
 								</td>
 								<td>
 								${submitPointOfContactForm.map.poc.domain.firstName}&nbsp;
+								<c:if
+									test="${!empty submitPointOfContactForm.map.poc.domain.middleInitial}">
+									${submitPointOfContactForm.map.poc.domain.middleInitial}&nbsp;
+								</c:if>
+								${submitPointOfContactForm.map.poc.domain.lastName}&nbsp;
 								</td>
 								<td>
 								<strong>Role</strong>
@@ -114,6 +119,23 @@
 								${submitPointOfContactForm.map.poc.domain.organization.name}&nbsp;
 								</td>
 							</tr>
+							<c:if
+								test="${!empty submitPointOfContactForm.map.poc.domain.organization.name &&
+									!empty submitPointOfContactForm.map.poc.domain.organization.streetAddress1}">								
+								<tr class="smallTableHeader">
+									<td>
+									<strong>&nbsp;</strong>
+									</td>
+									<td colspan="3">
+										${submitPointOfContactForm.map.poc.domain.organization.streetAddress1}&nbsp;
+										${submitPointOfContactForm.map.poc.domain.organization.streetAddress2}&nbsp;<br>
+										${submitPointOfContactForm.map.poc.domain.organization.city}&nbsp;
+										${submitPointOfContactForm.map.poc.domain.organization.state}&nbsp;
+										${submitPointOfContactForm.map.poc.domain.organization.postalCode}&nbsp;
+										${submitPointOfContactForm.map.poc.domain.organization.country}&nbsp;									
+									</td>
+								</tr>
+							</c:if>
 							<tr class="smallTableHeader">
 								<td>
 								<strong>Email</strong>
@@ -146,7 +168,12 @@
 									<strong>Name</strong>
 									</td>
 									<td>
-									${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
+										${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
+										<c:if
+											test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}">
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}&nbsp;
+										</c:if>
+										${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.lastName}&nbsp;
 									</td>
 									<td>
 									<strong>Role</strong>
@@ -160,15 +187,32 @@
 									<strong>Organization</strong>
 									</td>
 									<td colspan="3">
-									${submitPointOfContactForm.map.poc.domain.organization.name}&nbsp;
+									${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.name}&nbsp;
 									</td>
 								</tr>
+								<c:if
+									test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.name &&
+										!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress1}">								
+									<tr class="smallTableHeader">
+										<td>
+										<strong>&nbsp;</strong>
+										</td>
+										<td colspan="3">
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress1}&nbsp;
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress2}&nbsp;<br>
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.city}&nbsp;
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.state}&nbsp;
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.postalCode}&nbsp;
+											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.country}&nbsp;									
+										</td>
+									</tr>
+								</c:if>
 								<tr class="smallTableHeader">
 									<td>
 									<strong>Email</strong>
 									</td>
 									<td colspan="3">
-									${submitPointOfContactForm.map.poc.domain.email}&nbsp;
+									${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.email}&nbsp;
 									</td>
 								</tr>
 								<tr class="smallTableHeader">
@@ -176,7 +220,7 @@
 									<strong>Phone</strong>
 									</td>
 									<td colspan="3">
-									${submitPointOfContactForm.map.poc.domain.phone}&nbsp;
+									${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.phone}&nbsp;
 									</td>
 								</tr>
 							</table>
