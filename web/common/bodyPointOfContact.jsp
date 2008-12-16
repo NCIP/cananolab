@@ -3,16 +3,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/POCManager.js"></script>
+<script type="text/javascript" src="javascript/script.js"></script>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
 	<tbody>
 		<tr>
-			<td class="formSubTitleNoRight" colspan="5">
-				<span>${param.pocTitle}</span>
+			<td class="formSubTitleWithBottomNoRight" colspan="5">
+				<span>${param.pocTitle}</span>				
 			</td>
-			<td class="formSubTitleNoLeft" align="right">
+			<td class="formSubTitleWithBottomNoLeft" align="right">
 				&nbsp;
+				<a href="#" onclick="showhide('${param.pocTitle}');">show/hide</a>&nbsp;
 				<c:if test="${param.pocTitle ne 'Primary Point of Contact' }">
 					<a href="#"
 						onclick="removeComponent(submitPointOfContactForm, 'submitPointOfContact', ${param.pocIndex}, 'removePointOfContact');return false;">
@@ -21,13 +23,20 @@
 				</c:if>
 			</td>
 		</tr>
+	</tbody>
+</table>
+
+<div id="${param.pocTitle}" style="display: block;">
+<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+	width="100%" align="center" summary="" border="0">
+	<tbody>		
 		<tr>
 			<c:choose>
 				<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
-					<td class="leftLabelWithTop" valign="top">
+					<td class="leftLabel" valign="top">
 						<strong>Point of Contact Name</strong>
 					</td>
-					<td class="rightLabelWithTop" valign="top" colspan="5">
+					<td class="rightLabel" valign="top" colspan="5">
 						<html:select styleId="pocId_${param.pocIndex}"
 							property="${param.pocBean}.pocId"
 							onchange="javascript:setSecondaryPOC(submitPointOfContactForm, 'pocId_${param.pocIndex }', '${param.pocIndex }' );">
@@ -43,22 +52,22 @@
 			</c:choose>
 		</tr>
 		<tr>
-			<td class="leftLabelWithTop" valign="top">
+			<td class="leftLabel" valign="top">
 				<strong>First Name</strong>
 			</td>
-			<td class="labelWithTop" valign="top">
+			<td class="label" valign="top">
 				<html:text property="${param.pocBean}.domain.firstName" size="15" />
 			</td>
-			<td class="labelWithTop" valign="top">
+			<td class="label" valign="top">
 				<strong>Middle Initial</strong>
 			</td>
-			<td class="labelWithTop" valign="top">
+			<td class="label" valign="top">
 				<html:text property="${param.pocBean}.domain.middleInitial" size="5" />
 			</td>
-			<td class="labelWithTop" valign="top">
+			<td class="label" valign="top">
 				<strong>Last Name</strong>
 			</td>
-			<td class="rightLabelWithTop" valign="top">
+			<td class="rightLabel" valign="top">
 				<html:text property="${param.pocBean}.domain.lastName" size="15" />
 			</td>
 		</tr>
@@ -213,3 +222,4 @@
 			</td>
 		</tr>
 </table>
+</div>
