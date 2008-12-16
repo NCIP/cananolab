@@ -5,13 +5,11 @@
 <form-validation>
 	<formset>
 		<form name="submitOrganizationForm">
-			<field property="orga.domain.name" page="2"
+			<field property="poc.domain.name" page="2"
 				depends="required">
-				<arg position="0" key="submitOrganizationForm.orga.domain.name"
-					bundle="organization" />
+				<arg position="0" key="submitPointOfContactForm.poc.domain.name"
+					bundle="pointOfContact" />
 			</field>
 		</form>
-
-		
 	</formset>
 </form-validation>
