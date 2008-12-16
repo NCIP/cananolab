@@ -193,32 +193,58 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}	
-}
+	}
+	//TODO: not in used
+//	public SortedSet<Organization> findAllOrganizations(UserBean user)
+//		throws PointOfContactException {
+//		try {
+//			AuthorizationService auth = new AuthorizationService(
+//					CaNanoLabConstants.CSM_APP_NAME);		
+//			SortedSet<Organization> organizations = new TreeSet<Organization>(
+//					new CaNanoLabComparators.OrganizationComparator());
+//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//					.getApplicationService();		
+//			DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
+//			List results = appService.query(crit);
+//			//TODO:: to test
+//			for (Object obj : results) {
+//				Organization org = ((Organization) obj);
+//				if (auth.isUserAllowed(org.getId().toString(), user)) {
+//					organizations.add(org);
+//				}
+//			}
+//			return organizations;
+//		} catch (Exception e) {
+//			String err = "Error finding all organization for " + user.getLoginName();
+//			logger.error(err, e);
+//			throw new PointOfContactException(err, e);
+//		}
+//	}
 	
-	public SortedSet<Organization> findAllOrganizations(UserBean user)
-		throws PointOfContactException {
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc) 
+		throws PointOfContactException{
+		PointOfContact dbPoc = null;
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);		
-			SortedSet<Organization> organizations = new TreeSet<Organization>(
-					new CaNanoLabComparators.OrganizationComparator());
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();		
-			DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(PointOfContact.class);
+			crit.add(Restrictions.eq("id", poc.getId()));
+			crit.createAlias("nanoparticleSampleCollection", "otherSamples",
+					CriteriaSpecification.LEFT_JOIN);;
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
 			List results = appService.query(crit);
-			//TODO:: to test
 			for (Object obj : results) {
-				Organization org = ((Organization) obj);
-				if (auth.isUserAllowed(org.getId().toString(), user)) {
-					organizations.add(org);
-				}
+				dbPoc = ((PointOfContact) obj);
 			}
-			return organizations;
+			return dbPoc;
 		} catch (Exception e) {
-			String err = "Error finding all organization for " + user.getLoginName();
+			String err = "Problem finding PointOfContact with the given PointOfContact ID.";
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
-		}
+		}	
 	}
 	
 	public SortedSet<String> getAllOrganizationNames(UserBean user)
@@ -235,9 +261,11 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
-				if (auth.isUserAllowed(name, user)) {
-					names.add(name);
-				}
+				names.add(name);
+				//TODO:: to verify
+//				if (auth.isUserAllowed(name, user)) {
+//					names.add(name);
+//				}
 			}
 			return names;
 		} catch (Exception e) {

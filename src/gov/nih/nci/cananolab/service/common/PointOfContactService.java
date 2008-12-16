@@ -40,4 +40,7 @@ public interface PointOfContactService {
 
 	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException;
+	
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc) 
+		throws PointOfContactException;
 }
