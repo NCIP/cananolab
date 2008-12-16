@@ -23,7 +23,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=organization" />
+				<jsp:include page="/bodyMessage.jsp?bundle=pointOfContact" />
 
 				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 					width="100%" align="center" summary="" border="0" id="pubTable">
