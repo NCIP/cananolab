@@ -21,47 +21,46 @@
 				</c:if>
 			</td>
 		</tr>
-
 		<tr>
 			<c:choose>
-				<c:when test="${param.pocTitle eq 'Primary Point of Contact' }">
+				<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
 					<td class="leftLabelWithTop" valign="top">
-						<strong>First Name</strong>
-					</td>
-					<td class="labelWithTop" valign="top">
-						<html:text property="${param.pocBean}.domain.firstName" size="15" />
-					</td>
-					<td class="labelWithTop" valign="top">
-						<strong>Middle Initial</strong>
-					</td>
-					<td class="labelWithTop" valign="top">
-						<html:text property="${param.pocBean}.domain.middleInitial"
-							size="5" />
-					</td>
-					<td class="labelWithTop" valign="top">
-						<strong>Last Name</strong>
-					</td>
-					<td class="rightLabelWithTop" valign="top">
-						<html:text property="${param.pocBean}.domain.lastName" size="15" />
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td class="leftLabelWithTop" valign="top" >
 						<strong>Point of Contact Name</strong>
 					</td>
 					<td class="rightLabelWithTop" valign="top" colspan="5">
-						<html:select styleId="pocId_${param.pocIndex}" property="${param.pocBean}.pocId"
-							onchange="javascript:setSecondaryPOC(submitPointOfContactForm, 'pocId_${param.pocIndex }', '${param.pocIndex }' );" >
+						<html:select styleId="pocId_${param.pocIndex}"
+							property="${param.pocBean}.pocId"
+							onchange="javascript:setSecondaryPOC(submitPointOfContactForm, 'pocId_${param.pocIndex }', '${param.pocIndex }' );">
 							<option />
 								<html:options collection="allPointOfContacts"
-											labelProperty="displayName" property="domain.id" />
+									labelProperty="displayName" property="domain.id" />
 							<option value="other">
 								[Other]
 							</option>
 						</html:select>
 					</td>
-				</c:otherwise>
+				</c:when>
 			</c:choose>
+		</tr>
+		<tr>
+			<td class="leftLabelWithTop" valign="top">
+				<strong>First Name</strong>
+			</td>
+			<td class="labelWithTop" valign="top">
+				<html:text property="${param.pocBean}.domain.firstName" size="15" />
+			</td>
+			<td class="labelWithTop" valign="top">
+				<strong>Middle Initial</strong>
+			</td>
+			<td class="labelWithTop" valign="top">
+				<html:text property="${param.pocBean}.domain.middleInitial" size="5" />
+			</td>
+			<td class="labelWithTop" valign="top">
+				<strong>Last Name</strong>
+			</td>
+			<td class="rightLabelWithTop" valign="top">
+				<html:text property="${param.pocBean}.domain.lastName" size="15" />
+			</td>
 		</tr>
 		<tr>
 			<td class="leftLabel" valign="top">
