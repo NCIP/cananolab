@@ -51,6 +51,7 @@
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="particleId" value="${param.particleId}" />
+										<c:param name="pocId" value="${param.pocId}" />
 										<c:param name="fileId" value="${param.organizationId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${param.location}" />
@@ -60,7 +61,7 @@
 										test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit organization" title="edit contact organization"
+													alt="edit organization" title="edit point of contact"
 													border="0"> </a>
 										</td>
 									</c:if>
@@ -155,6 +156,10 @@
 						</table>
 					</td>
 				</tr>
+				
+				<c:if
+					test="${!empty submitPointOfContactForm.map.otherPoc &&
+					 !empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts}">										
 				<logic:iterate name="submitPointOfContactForm" property="otherPoc.otherPointOfContacts"
 								id="otherPOC" indexId="pocInd">
 					<tr>
@@ -227,6 +232,7 @@
 						</td>
 					</tr>
 				</logic:iterate>
+				</c:if>
 			</table>
 		</td>
 	</tr>

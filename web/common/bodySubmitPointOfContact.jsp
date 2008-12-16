@@ -52,6 +52,8 @@
 													<jsp:param name="pocBean" value="poc" />
 												</jsp:include>
 												<br>
+												<c:if test="${!empty submitPointOfContactForm.map.otherPoc &&
+					 								!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts}">	
 												<logic:iterate name="submitPointOfContactForm"
 													property="otherPoc.otherPointOfContacts" id="pocs" indexId="orgaIndex">
 
@@ -62,6 +64,7 @@
 													</jsp:include>
 													<br>
 												</logic:iterate>
+												</c:if>
 											</td>
 										</tr>
 									</tbody>
