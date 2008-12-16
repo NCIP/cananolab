@@ -16,7 +16,7 @@ VALUES (1,1,3,sysdate()),
   (3,3,5,sysdate()),
   (4,4,6,sysdate());
 
-INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, attribute, protection_element_type_id, application_id, update_date)
+INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, attribute, protection_element_type, application_id, update_date)
 VALUES  (3, 'protocol', '', 'protocol', '', NULL, 2, sysdate()),
   (4, 'nanoparticle', '', 'nanoparticle', '', NULL, 2, sysdate()),
   (5, 'publication', '', 'publication', '', NULL, 2, sysdate());
@@ -33,20 +33,20 @@ VALUES (1, 'R', 'read only', 2, 1, sysdate()),
   (4, 'CUR', 'create, update, read', 2, 1, sysdate()),
   (5, 'CURD', 'create, update, read, delete', 2, 1, sysdate());
 
-INSERT INTO csm_role_privilege(role_privilege_id, role_id, privilege_id, update_date)
-VALUES (1,2,7, sysdate()),
-  (2,1,3,sysdate()),
-  (3,3,6,sysdate()),
-  (4,4,5,sysdate()),
-  (5,4,1,sysdate()),
-  (6,4,3,sysdate()),
-  (7,5,1,sysdate()),
-  (8,5,6,sysdate()),
-  (9,5,3,sysdate()),
-  (10,5,5,sysdate());
+INSERT INTO csm_role_privilege(role_privilege_id, role_id, privilege_id)
+VALUES (1,2,7),
+  (2,1,3),
+  (3,3,6),
+  (4,4,5),
+  (5,4,1),
+  (6,4,3),
+  (7,5,1),
+  (8,5,6),
+  (9,5,3),
+  (10,5,5);
 
-INSERT INTO csm_user_pe(user_protection_element_id, protection_element_id, user_id, update_date)
-VALUES (2, 2, 1, sysdate());
+INSERT INTO csm_user_pe(user_protection_element_id, protection_element_id, user_id)
+VALUES (2, 2, 1);
 
 INSERT INTO csm_user_group(user_group_id, user_id, group_id)
 VALUES (1, 1, 1);
