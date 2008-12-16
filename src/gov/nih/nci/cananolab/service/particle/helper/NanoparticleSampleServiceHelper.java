@@ -68,21 +68,18 @@ public class NanoparticleSampleServiceHelper {
 			TextMatchMode pocMatchMode = new TextMatchMode(particlePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
-			Criterion pocCrit1 = Restrictions.ilike("pointOfContact.lastName",
-					pocMatchMode.getUpdatedText(), pocMatchMode
-					.getMatchMode());			
-			disjunction.add(pocCrit1);
-			Criterion pocCrit2 = Restrictions.ilike("pointOfContact.firstName",
-					pocMatchMode.getUpdatedText(), pocMatchMode
-					.getMatchMode());			
-			disjunction.add(pocCrit2);
-			
 			crit.createAlias("pointOfContact.organization", "organization");
-			Criterion orgCrit = Restrictions.ilike("organization.name",
-					pocMatchMode.getUpdatedText(), pocMatchMode
-					.getMatchMode());			
-			disjunction.add(orgCrit);
-			
+			crit.createAlias("otherPointOfContactCollection", "otherPoc");
+			crit.createAlias("otherPoc.organization", "otherOrg");
+			String critStrs[] = {"pointOfContact.lastName","pointOfContact.firstName",
+					"organization.name","otherPoc.lastName","otherPoc.firstName",
+					"otherOrg.name"};
+			for (String critStr: critStrs) {
+				Criterion pocCrit = Restrictions.ilike(critStr,
+						pocMatchMode.getUpdatedText(), pocMatchMode
+						.getMatchMode());			
+				disjunction.add(pocCrit);
+			}			
 			crit.add(disjunction);
 		}
 
