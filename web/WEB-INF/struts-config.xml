@@ -114,7 +114,7 @@
 	<message-resources key="sample"
 		parameter="gov.nih.nci.cananolab.resources.sample" null="false" />
 	<message-resources key="organization"
-		parameter="gov.nih.nci.cananolab.resources.organization" null="false" />
+		parameter="gov.nih.nci.cananolab.resources.pointOfContact" null="false" />
 	<message-resources key="protocol"
 		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
 	<message-resources key="particle"
