@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -33,21 +33,18 @@ public class ParticleBean {
 
 	private String location; // e.g. local, caNanoLab-WashU, etc
 
-	private String[] nanoparticleEntityClassNames=new String[0];
+	private String[] nanoparticleEntityClassNames = new String[0];
 
-	private String[] functionalizingEntityClassNames=new String[0];
+	private String[] functionalizingEntityClassNames = new String[0];
 
-	private String[] functionClassNames=new String[0];
+	private String[] functionClassNames = new String[0];
 
-	private String[] characterizationClassNames=new String[0];
-	private String POCId = "";
-	private String POCName = "";
-	private String POCOrganizationName = "";
+	private String[] characterizationClassNames = new String[0];
+
+	private PointOfContactBean pocBean;
 
 	public ParticleBean() {
 		domainParticleSample.setPrimaryPointOfContact(new PointOfContact());
-		POCName = "";
-		POCId = "";
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
@@ -59,23 +56,10 @@ public class ParticleBean {
 			}
 		}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
-		if (domainParticleSample!=null) {
-			POCId = domainParticleSample.getPrimaryPointOfContact().getId().toString();
-			String firstName = domainParticleSample.getPrimaryPointOfContact().getFirstName();
-			POCName = "";
-			if (firstName!=null) {
-				POCName = firstName +" ";
-			}
-			String lastName = domainParticleSample.getPrimaryPointOfContact().getLastName();
-			if (lastName!=null) {
-				POCName+=lastName;
-			}
-			if (domainParticleSample.getPrimaryPointOfContact().getOrganization()!=null) {
-				POCOrganizationName = domainParticleSample.getPrimaryPointOfContact().getOrganization().getName();
-				if (POCOrganizationName!=null) {
-					POCName+=" ("+POCOrganizationName+")";
-				}
-			}
+		if (domainParticleSample != null) {
+			PointOfContact primaryPOC = domainParticleSample
+					.getPrimaryPointOfContact();
+			pocBean = new PointOfContactBean(primaryPOC);
 		}
 	}
 
@@ -181,42 +165,16 @@ public class ParticleBean {
 		return characterizationClassNames;
 	}
 
-	public void setCharacterizationClassNames(String[] characterizationClassNames) {
+	public void setCharacterizationClassNames(
+			String[] characterizationClassNames) {
 		this.characterizationClassNames = characterizationClassNames;
 	}
 
-	/**
-	 * @return the pOCName
-	 */
-	public String getPOCName() {
-		return POCName;
+	public PointOfContactBean getPocBean() {
+		return pocBean;
 	}
 
-	/**
-	 * @param name the pOCName to set
-	 */
-	public void setPOCName(String name) {
-		POCName = name;
-	}
-
-	/**
-	 * @return the pOCOrganizationName
-	 */
-	public String getPOCOrganizationName() {
-		return POCOrganizationName;
-	}
-
-	/**
-	 * @return the pOCId
-	 */
-	public String getPOCId() {
-		return POCId;
-	}
-
-	/**
-	 * @param id the pOCId to set
-	 */
-	public void setPOCId(String id) {
-		POCId = id;
+	public void setPocBean(PointOfContactBean pocBean) {
+		this.pocBean = pocBean;
 	}
 }

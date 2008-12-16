@@ -117,7 +117,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				// set selected pointOfContact				
 				particle.setPrimaryPointOfContact(primaryPointOfContact
 						.getDomain());
-				particleSampleBean.setPOCId(primaryPointOfContact.getDomain().getId().toString());
+				//particleSampleBean.setPOCId(primaryPointOfContact.getDomain().getId().toString());
 				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {

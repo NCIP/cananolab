@@ -6,7 +6,6 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 
-
 /**
  * PointOfContact view bean
  * 
@@ -14,9 +13,8 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
  * 
  */
 
-//TODO: need to revise PointOfContactBean, copy from OrganizationBean
-
-public class PointOfContactBean{
+// TODO: need to revise PointOfContactBean, copy from OrganizationBean
+public class PointOfContactBean {
 	private PointOfContact domain;
 	private String displayName;
 	private Organization organization;
@@ -27,9 +25,9 @@ public class PointOfContactBean{
 	private boolean hidden = false;
 	private String pocId;
 	private String address;
-	//TODO: need info for nanoparticleSample??
-	
-	
+
+	// TODO: need info for nanoparticleSample??
+
 	public PointOfContactBean() {
 		super();
 		domain = new PointOfContact();
@@ -40,26 +38,25 @@ public class PointOfContactBean{
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
-		organization =
-			pointOfContact.getOrganization();
-		//TODO:: the following not needed??
+		organization = pointOfContact.getOrganization();
+		// TODO:: the following not needed??
 		String firstName = domain.getFirstName();
 		displayName = "";
-		if (firstName!=null) {
-			displayName = firstName +" ";
+		if (firstName != null) {
+			displayName = firstName + " ";
 		}
 		String lastName = domain.getLastName();
-		if (lastName!=null) {
-			displayName+=lastName;
+		if (lastName != null) {
+			displayName += lastName;
 		}
-		if (domain.getOrganization()!=null) {
+		if (domain.getOrganization() != null) {
 			String orgName = domain.getOrganization().getName();
-			if (orgName!=null) {
-				displayName+=" ("+orgName+")";
+			if (orgName != null) {
+				displayName += " (" + orgName + ")";
 			}
 		}
 	}
-	
+
 	/**
 	 * @return the domain
 	 */
@@ -68,7 +65,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param domain the domain to set
+	 * @param domain
+	 *            the domain to set
 	 */
 	public void setDomain(PointOfContact domain) {
 		this.domain = domain;
@@ -82,7 +80,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param pocId the pocId to set
+	 * @param pocId
+	 *            the pocId to set
 	 */
 	public void setPocId(String pocId) {
 		this.pocId = pocId;
@@ -96,7 +95,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param pocs the pocs to set
+	 * @param pocs
+	 *            the pocs to set
 	 */
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
@@ -110,7 +110,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param orgVisibilityGroups the orgVisibilityGroups to set
+	 * @param orgVisibilityGroups
+	 *            the orgVisibilityGroups to set
 	 */
 	public void setOrgVisibilityGroups(String[] orgVisibilityGroups) {
 		this.orgVisibilityGroups = orgVisibilityGroups;
@@ -124,7 +125,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param pocVisibilityGroups the pocVisibilityGroups to set
+	 * @param pocVisibilityGroups
+	 *            the pocVisibilityGroups to set
 	 */
 	public void setPocVisibilityGroups(String[] pocVisibilityGroups) {
 		this.pocVisibilityGroups = pocVisibilityGroups;
@@ -138,7 +140,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param emailVisibilityGroups the emailVisibilityGroups to set
+	 * @param emailVisibilityGroups
+	 *            the emailVisibilityGroups to set
 	 */
 	public void setEmailVisibilityGroups(String[] emailVisibilityGroups) {
 		this.emailVisibilityGroups = emailVisibilityGroups;
@@ -152,7 +155,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param phoneVisibilityGroups the phoneVisibilityGroups to set
+	 * @param phoneVisibilityGroups
+	 *            the phoneVisibilityGroups to set
 	 */
 	public void setPhoneVisibilityGroups(String[] phoneVisibilityGroups) {
 		this.phoneVisibilityGroups = phoneVisibilityGroups;
@@ -166,7 +170,8 @@ public class PointOfContactBean{
 	}
 
 	/**
-	 * @param hidden the hidden to set
+	 * @param hidden
+	 *            the hidden to set
 	 */
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
@@ -178,27 +183,31 @@ public class PointOfContactBean{
 	public String getDisplayName() {
 		String firstName = domain.getFirstName();
 		displayName = "";
-		if (firstName!=null) {
-			displayName = firstName +" ";
+		if (firstName != null) {
+			displayName = firstName + " ";
 		}
 		String lastName = domain.getLastName();
-		if (lastName!=null) {
-			displayName+=lastName;
+		if (lastName != null) {
+			displayName += lastName;
 		}
-		if (domain.getOrganization()!=null) {
+		if (domain.getOrganization() != null) {
 			String orgName = domain.getOrganization().getName();
-			if (orgName!=null) {
-				displayName+=" ("+orgName+")";
+			if (orgName != null && firstName != null || lastName != null) {
+				displayName += " (" + orgName + ")";
+			}
+			else {
+				displayName=orgName;
 			}
 		}
 		return displayName;
 	}
 
 	/**
-	 * @param name the displayName to set
+	 * @param name
+	 *            the displayName to set
 	 */
 	public void setDisplayName(String name) {
 		displayName = name;
-	}	
-		
+	}
+
 }

@@ -134,6 +134,6 @@ public class NanoparticleDecorator extends TableDecorator {
 	
 	public String getPointOfContactName() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
-		return particle.getPOCName();
+		return particle.getPocBean().getDisplayName();
 	}
 }

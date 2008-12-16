@@ -39,7 +39,6 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
