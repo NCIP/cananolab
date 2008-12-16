@@ -34,20 +34,6 @@ public class InitPOCSetup {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getAllOrganizationNames(request, user);
 	}
-
-	
-	public void persistPOCDropdowns(HttpServletRequest request,
-			PointOfContact poc) throws Exception {	
-		/**
-		 * 
-		 * HttpServletRequest request, String lookupName,
-			String attribute, String otherAttribute, String value
-		 */
-		InitSetup.getInstance().persistLookup(request, "POC", "contactRoles",
-				"otherContactRoles",
-				poc.getRole());
-		setPOCDropdowns(request);
-	}	
 	
 	public SortedSet<String> getAllOrganizationNames(
 			HttpServletRequest request, UserBean user) throws Exception {
