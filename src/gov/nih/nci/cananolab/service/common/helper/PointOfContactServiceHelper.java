@@ -108,7 +108,7 @@ public class PointOfContactServiceHelper {
 			}
 			return poc;
 		} catch (Exception e) {
-			String err = "Problem finding PointOfContact with the given POC ID.";
+			String err = "Problem finding PointOfContact with the given POC ID "+POCId;
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
