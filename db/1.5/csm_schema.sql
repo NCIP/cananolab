@@ -1,7 +1,5 @@
 # replace the <<database_name>> with proper database name that is to be created.
 
-create database canano;
-
 use canano;
 
 drop table if exists csm_application
