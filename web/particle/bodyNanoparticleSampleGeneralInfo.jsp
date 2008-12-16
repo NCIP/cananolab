@@ -48,7 +48,7 @@
 						</td>
 						<td class="rightLabel">
 							<bean:write name="nanoparticleSampleForm"
-								property="particleSampleBean.POCName" />
+								property="particleSampleBean.pocBean.displayName" />
 							&nbsp;
 						</td>
 					</tr>
