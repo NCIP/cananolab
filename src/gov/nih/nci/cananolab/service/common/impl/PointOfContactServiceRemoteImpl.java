@@ -62,7 +62,7 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 	
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc) 
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
 		throws PointOfContactException{
 		throw new PointOfContactException("not implemented for grid service.");
 	}

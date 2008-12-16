@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.common;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 
 import java.util.Collection;
@@ -27,7 +28,7 @@ public interface PointOfContactService {
 	 */
 	public void savePointOfContact(PointOfContact primaryPointOfContact,
 			Collection<PointOfContact> otherPointOfContactCollection)
-			throws PointOfContactException;
+			throws PointOfContactException, DuplicateEntriesException;
 
 	public PointOfContactBean findPrimaryPointOfContact(String particleId)
 			throws PointOfContactException;
@@ -41,6 +42,6 @@ public interface PointOfContactService {
 	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException;
 	
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc) 
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
 		throws PointOfContactException;
 }
