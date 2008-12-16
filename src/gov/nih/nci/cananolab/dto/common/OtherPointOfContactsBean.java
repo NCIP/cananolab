@@ -28,6 +28,9 @@ public class OtherPointOfContactsBean {
 	}
 
 	public void addPointOfContact() {
+		if (otherPointOfContacts==null) {
+			otherPointOfContacts = new ArrayList<PointOfContactBean>();
+		}
 		otherPointOfContacts.add(new PointOfContactBean());
 	}
 	
