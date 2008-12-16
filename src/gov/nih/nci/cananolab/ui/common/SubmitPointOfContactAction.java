@@ -6,7 +6,6 @@ package gov.nih.nci.cananolab.ui.common;
  * @author tanq
  */
 
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
@@ -122,6 +121,18 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				// set pointOfContact to particle
 				if (primaryPointOfContact.getDomain()
 						.getPrimaryNanoparticleSampleCollection() != null) {
+					//use to fix lazy loading issue				
+					PointOfContact dbPrimaryPoc = null;
+					if (primaryPointOfContact.getDomain().getId() != null) {
+						dbPrimaryPoc = service
+								.loadPOCNanoparticleSample(primaryPointOfContact
+										.getDomain(), "primaryNanoparticleSampleCollection");
+					}
+					primaryPointOfContact
+							.getDomain()
+							.setPrimaryNanoparticleSampleCollection(
+									dbPrimaryPoc
+											.getPrimaryNanoparticleSampleCollection());
 					primaryPointOfContact.getDomain()
 							.getPrimaryNanoparticleSampleCollection().add(
 									particle);
@@ -135,20 +146,19 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				// TODO:need??
 				particle.setPrimaryPointOfContact(primaryPointOfContact
 						.getDomain());
-
+				particleSampleBean.getDomainParticleSample()
+					.setOtherPointOfContactCollection(
+						otherPointOfContactCollection);
 				if (otherPointOfContactCollection != null
-						&& otherPointOfContactCollection.size() > 0) {
-					particleSampleBean.getDomainParticleSample()
-							.setOtherPointOfContactCollection(
-									otherPointOfContactCollection);
-					
+						&& otherPointOfContactCollection.size() > 0) {					
 					for (PointOfContact otherPoc:otherPointOfContactCollection) {
 						// set pointOfContact to particle
 						if (otherPoc.getNanoparticleSampleCollection() != null) {
-							//TODO::: test, use to fix lazy loading issue				
+							//use to fix lazy loading issue				
 							PointOfContact dbOtherPoc = null;
 							if (otherPoc.getId()!=null) {
-								dbOtherPoc = service.loadPOCNanoparticleSample(otherPoc);
+								dbOtherPoc = service.loadPOCNanoparticleSample(otherPoc,
+										"nanoparticleSampleCollection");
 							}	
 							otherPoc.setNanoparticleSampleCollection(dbOtherPoc.getNanoparticleSampleCollection());
 							otherPoc.getNanoparticleSampleCollection() .add(
@@ -159,12 +169,11 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 							otherPoc.setNanoparticleSampleCollection(
 									nanoparticleSampleCollection);
 						}
-					}
-					
+					}	
 				}
 				// TODO:need??
-				particle
-						.setOtherPointOfContactCollection(otherPointOfContactCollection);
+//				particle
+//						.setOtherPointOfContactCollection(otherPointOfContactCollection);
 			}
 		}
 
@@ -186,6 +195,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		String particleId = request.getParameter("particleId");
+		session.removeAttribute("submitPointOfContactForm");
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null && !particleId.equals("null")
@@ -204,13 +214,17 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		String particleId = request.getParameter("particleId");
+		String pocId = request.getParameter("pocId");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
 		PointOfContactBean primaryPointOfContact = pointOfContactService
-				.findPrimaryPointOfContact(particleId);
-		List<PointOfContactBean> otherPointOfContactCollection = pointOfContactService
+			.findPointOfContactById(pocId);
+		List<PointOfContactBean> otherPointOfContactCollection = null;
+		if (particleId!=null && particleId.trim().length()>0) {
+			otherPointOfContactCollection = pointOfContactService
 				.findOtherPointOfContactCollection(particleId);
+		}		
 		// TODO:: shuang need to check isHidden() before showing in jsp
 		setVisibility(user, primaryPointOfContact, true);
 		if (otherPointOfContactCollection != null) {
@@ -302,10 +316,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 					serviceUrl);
 		}
 		String particleId = request.getParameter("particleId");
+		String pocId = request.getParameter("pocId");
 		PointOfContactBean primaryPointOfContact = pointOfContactService
-				.findPrimaryPointOfContact(particleId);
-		List<PointOfContactBean> otherPointOfContactCollection = pointOfContactService
+			.findPointOfContactById(pocId);
+		List<PointOfContactBean> otherPointOfContactCollection = null;
+		if (particleId!=null && particleId.trim().length()>0) {
+			otherPointOfContactCollection = pointOfContactService
 				.findOtherPointOfContactCollection(particleId);
+		}
 		setVisibility(user, primaryPointOfContact, false);
 		if (otherPointOfContactCollection != null) {
 			for (PointOfContactBean pointOfContactBean : otherPointOfContactCollection) {
@@ -478,6 +496,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
+		System.out.println("####### entity="+entity);
 		entity.addPointOfContact();
 		return mapping.getInputForward();
 	}
