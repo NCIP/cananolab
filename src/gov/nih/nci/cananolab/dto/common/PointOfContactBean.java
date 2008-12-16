@@ -39,7 +39,6 @@ public class PointOfContactBean {
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
 		organization = pointOfContact.getOrganization();
-		// TODO:: the following not needed??
 		String firstName = domain.getFirstName();
 		displayName = "";
 		if (firstName != null) {
@@ -52,7 +51,11 @@ public class PointOfContactBean {
 		if (domain.getOrganization() != null) {
 			String orgName = domain.getOrganization().getName();
 			if (orgName != null) {
-				displayName += " (" + orgName + ")";
+				if (displayName.trim().length()>0) {
+					displayName += " (" + orgName + ")";
+				}else {
+					displayName = orgName;
+				}
 			}
 		}
 	}
