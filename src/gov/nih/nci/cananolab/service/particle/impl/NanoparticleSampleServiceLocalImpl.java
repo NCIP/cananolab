@@ -56,8 +56,9 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * 
-	 * @return all particle sources
+	 * @return all PointOfContacts
 	 */
+	//TODO: verify if fetching nanoparticleSampleCollection is necessary on all calls
 	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException {
 		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
 				new CaNanoLabComparators.ParticlePointOfContactComparator());
