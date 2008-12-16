@@ -4,7 +4,7 @@ function setupPOC(form, selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
 	var otext = selectEle.options[selectEle.options.selectedIndex].text;
 	if(otext == "[Other]") {
-		form.action = "submitNanoparticleSample.do?dispatch=setupPointOfContact&page=0&location=local";
+		form.action = "submitPointOfContact.do?dispatch=setup&page=0&location=local";
 		form.submit();
 	}
 	return false;
@@ -12,11 +12,19 @@ function setupPOC(form, selectEleId) {
 
 function setupOrgDetailView(form, selectEleId, particleIdEle) {
 	var selectEle = document.getElementById(selectEleId);
-	var particleId = document.getElementById(particleIdEle).value;
 	var org = selectEle.options[selectEle.options.selectedIndex].text;
+	var pocId = selectEle.options[selectEle.options.selectedIndex].value;
+	var particleId = null;
+	if (document.getElementById(particleIdEle)!=null){
+		particleId = document.getElementById(particleIdEle).value;
+	}
+	var particleStr = "";
+	if (particleId!=null){
+		particleStr = "&particleId="+particleId;
+	}
 	if(org != "[Other]") {
 		form.action = "submitPointOfContact.do?dispatch=detailView&page=0&location=local" + 
-			"&particleId="+particleId+"&organizationName=" + org;
+			particleStr+"&pocId="+pocId+"&organizationName=" + org;
 		form.submit();
 	}
 	return false;
