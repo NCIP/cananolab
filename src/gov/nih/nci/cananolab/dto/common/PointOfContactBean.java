@@ -195,10 +195,9 @@ public class PointOfContactBean {
 		}
 		if (domain.getOrganization() != null) {
 			String orgName = domain.getOrganization().getName();
-			if (orgName != null && firstName != null || lastName != null) {
+			if (displayName.trim().length()>0) {
 				displayName += " (" + orgName + ")";
-			}
-			else {
+			}else {
 				displayName=orgName;
 			}
 		}
