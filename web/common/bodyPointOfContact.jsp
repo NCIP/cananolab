@@ -54,7 +54,7 @@
 							onchange="javascript:setSecondaryPOC(submitPointOfContactForm, 'pocId_${param.pocIndex }', '${param.pocIndex }' );" >
 							<option />
 								<html:options collection="allPointOfContacts"
-											labelProperty="POCName" property="domain.id" />
+											labelProperty="displayName" property="domain.id" />
 							<option value="other">
 								[Other]
 							</option>
