@@ -1,8 +1,6 @@
 USE canano
 ;
 
-
-
 CREATE TABLE target
 (
 	target_pk_id BIGINT NOT NULL,
@@ -392,8 +390,7 @@ CREATE TABLE publication
 	research_area VARCHAR(200),
 	abstract TEXT,
 	PRIMARY KEY (publication_pk_id),
-	UNIQUE (publication_pk_id),
-	INDEX publication_pk_id (publication_pk_id ASC)
+	UNIQUE (publication_pk_id)	
 ) TYPE=InnoDB
 ;
 
@@ -663,9 +660,10 @@ CREATE TABLE activation_method
 ) TYPE=InnoDB
 ;
 
-
-
-
+CREATE TABLE hibernate_unique_key (
+  next_hi BIGINT NOT NULL
+) TYPE=InnoDB
+;
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function 
 	FOREIGN KEY (targeting_function_pk_id) REFERENCES nano_function (function_pk_id)
