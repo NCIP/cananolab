@@ -1191,6 +1191,30 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	border-right: 1px solid #5c5c5c; /* constant: dark gray */
 }
 
+.formSubTitleWithBottomNoRight { /* for header cells (top) of forms */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #AAAAAB; /* constant: lighter gray */
+	color: #000000; /* constant: black */
+	border-top: 1px solid #5c5c5c; /* constant: dark gray */
+	border-bottom: 1px solid #5c5c5c; /* constant: dark gray */
+	border-left: 1px solid #5c5c5c; /* constant: dark gray */
+}
+
+.formSubTitleWithBottomNoLeft { /* for header cells (top) of forms */
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #AAAAAB; /* constant: lighter gray */
+	color: #000000; /* constant: black */
+	border-top: 1px solid #5c5c5c; /* constant: dark gray */
+	border-bottom: 1px solid #5c5c5c; /* constant: dark gray */
+	border-right: 1px solid #5c5c5c; /* constant: dark gray */
+}
+
 .formSubTitleNoRight { /* for header cells (top) of forms */
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
