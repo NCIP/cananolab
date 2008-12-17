@@ -131,7 +131,7 @@
 		<action name="nanoparticleSampleForm" parameter="dispatch"
 			path="/submitNanoparticleSample"
 			type="gov.nih.nci.cananolab.ui.particle.SubmitNanoparticleAction"
-			input="input">
+			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateNanoparticleSample"
@@ -141,11 +141,9 @@
 			<forward name="update"
 				path="particle.updateNanoparticleSample" />
 			<forward name="input"
-				path="particle.submitNanoparticleSample" />
-			<forward name="pointOfContact"
-				path="particle.submitPointOfContact" />
+				path="particle.submitNanoparticleSample" />			
 			<forward name="pointOfContactDetailView"
-				path="particle.pointOfContactDetailView" />
+				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
 		</action>
 		<action input="input" name="searchNanoparticleSampleForm"
 			parameter="dispatch" path="/searchNanoparticle"
