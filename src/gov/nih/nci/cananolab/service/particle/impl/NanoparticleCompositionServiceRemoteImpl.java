@@ -679,7 +679,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		throw new ParticleCompositionException(
 				"Not implemented for grid service");
 	}
-	
+
 	/**
 	 * Return user-defined target types
 	 * 
@@ -691,7 +691,6 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		throw new ParticleCompositionException(
 				"Not implemented for grid service");
 	}
-
 
 	/**
 	 * Return user-defined functionalizing entity types
@@ -844,18 +843,16 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
 									Arrays.asList(assocs)));
 				}
-				
-				/**TODO temporarily commented 
-				File[] files = gridClient
-						.getFilesByCompositionInfoId(sampleComposition
-								.getId().toString(),
-								"gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
-				if (files != null && files.length > 0) {
-					sampleComposition
-							.setFileCollection(new HashSet<File>(Arrays
-									.asList(files)));
-				}
-				*/
+
+				/**
+				 * TODO temporarily commented File[] files = gridClient
+				 * .getFilesByCompositionInfoId(sampleComposition
+				 * .getId().toString(),
+				 * "gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+				 * if (files != null && files.length > 0) { sampleComposition
+				 * .setFileCollection(new HashSet<File>(Arrays
+				 * .asList(files))); }
+				 */
 			}
 			return sampleComposition;
 		} catch (Exception e) {
@@ -914,10 +911,14 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				"Not implemented for grid service");
 	}
 
-	public void assignSampleCompositionPublicVisibility(
-			AuthorizationService authService,
-			NanoparticleSample particleSample)
-			throws ParticleCompositionException {
+	public void assignPublicVisibility(AuthorizationService authService,
+			SampleComposition composition) throws ParticleCompositionException {
+		throw new ParticleCompositionException(
+				"Not implemented for grid service");
+	}
+
+	public void removePublicVisibility(AuthorizationService authService,
+			SampleComposition composition) throws ParticleCompositionException {
 		throw new ParticleCompositionException(
 				"Not implemented for grid service");
 	}

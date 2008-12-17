@@ -110,7 +110,8 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	// throw new ParticleException(err, e);
 	// }
 	// }
-	public List<ParticleBean> findNanoparticleSamplesBy(String particlePointOfContact,
+	public List<ParticleBean> findNanoparticleSamplesBy(
+			String particlePointOfContact,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -336,12 +337,14 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException {
+	public SortedSet<PointOfContact> findPointOfContacts()
+			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
-			String particleName, UserBean user) throws ParticleException {
+	public SortedSet<SortableName> findOtherParticles(
+			String particleOrganization, String particleName, UserBean user)
+			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 
@@ -358,13 +361,13 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	 * @throws ParticleException
 	 * 
 	 */
-	private void loadPointOfContactForParticleSample(NanoparticleSample particleSample)
-			throws Exception {
+	private void loadPointOfContactForParticleSample(
+			NanoparticleSample particleSample) throws Exception {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target.setName("gov.nih.nci.cananolab.domain.common.PointOfContact");
 		Association association = new Association();
-		//TODO: verify if primaryNanoparticleSampleCollection need??
+		// TODO: verify if primaryNanoparticleSampleCollection need??
 		association
 				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 		association.setRoleName("nanoparticleSampleCollection");
@@ -416,15 +419,15 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			NanoparticleSample particleSample) throws Exception {
 		PublicationService publicationService = new PublicationServiceRemoteImpl(
 				serviceUrl);
-		//publication does not include particle nor author
+		// publication does not include particle nor author
 		List<PublicationBean> publications = publicationService
 				.findPublicationsByParticleSampleId(particleSample.getId()
 						.toString(), false, false);
 		if (publications != null && publications.size() > 0) {
 			particleSample.setPublicationCollection(new HashSet<Publication>());
 			for (PublicationBean publication : publications) {
-				particleSample.getPublicationCollection().
-					add((Publication)publication.getDomainFile());
+				particleSample.getPublicationCollection().add(
+						(Publication) publication.getDomainFile());
 			}
 		}
 	}
@@ -457,9 +460,8 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		}
 	}
 
-	public void assignAssociatedPublicVisibility(
-			AuthorizationService authService, ParticleBean particleSampleBean,
-			String[] visibleGroups) throws ParticleException {
+	public void assignVisibility(ParticleBean particleSampleBean)
+			throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 

@@ -27,6 +27,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
@@ -275,14 +276,11 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			achar
 					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 			for (DerivedBioAssayData bioassay : bioassayArray) {
-				/**TODO temporarily commented 
-				File file = gridClient
-						.getFileByDerivedBioAssayDataId(bioassay.getId()
-								.toString());
-				if (file != null) {
-					bioassay.setFile(file);
-				}
-				*/
+				/**
+				 * TODO temporarily commented File file = gridClient
+				 * .getFileByDerivedBioAssayDataId(bioassay.getId()
+				 * .toString()); if (file != null) { bioassay.setFile(file); }
+				 */
 				DerivedDatum[] datums = gridClient
 						.getDerivedDatumsByDerivedBioAssayDataId(bioassay
 								.getId().toString());
@@ -369,16 +367,14 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		}
 	}
 
-	public void removeCharacterizationPublicVisibility(
-			AuthorizationService authService, Characterization aChar)
-			throws ParticleCharacterizationException {
+	public void removePublicVisibility(AuthorizationService authService,
+			Characterization aChar) throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
 				"Not implemented for grid service");
 	}
 
-	public void assignCharacterizationPublicVisibility(
-			AuthorizationService authService, Characterization aChar)
-			throws ParticleCharacterizationException {
+	public void assignPublicVisibility(AuthorizationService authService,
+			Characterization aChar) throws ParticleCharacterizationException {
 		throw new ParticleCharacterizationException(
 				"Not implemented for grid service");
 	}

@@ -12,6 +12,8 @@ import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
+import gov.nih.nci.cananolab.service.common.PointOfContactService;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
@@ -58,16 +60,19 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * 
 	 * @return all PointOfContacts
 	 */
-	//TODO: verify if fetching nanoparticleSampleCollection is necessary on all calls
-	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException {
+	// TODO: verify if fetching nanoparticleSampleCollection is necessary on all
+	// calls
+	public SortedSet<PointOfContact> findPointOfContacts()
+			throws ParticleException {
 		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
 				new CaNanoLabComparators.ParticlePointOfContactComparator());
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(PointOfContact.class);
 			crit.setFetchMode("organization", FetchMode.JOIN);
-			List results = appService.query(crit);			
+			List results = appService.query(crit);
 			for (Object obj : results) {
 				pointOfContacts.add((PointOfContact) obj);
 			}
@@ -150,7 +155,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(String particlePointOfContact,
+	public List<ParticleBean> findNanoparticleSamplesBy(
+			String particlePointOfContact,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -244,9 +250,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection."
 				+ "composingElementCollection.inherentFunctionCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode("sampleComposition.fileCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
 		crit
@@ -299,8 +303,9 @@ public class NanoparticleSampleServiceLocalImpl implements
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
-			String particleName, UserBean user) throws ParticleException {
+	public SortedSet<SortableName> findOtherParticles(
+			String particleOrganization, String particleName, UserBean user)
+			throws ParticleException {
 		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
 		try {
 			AuthorizationService auth = new AuthorizationService(
@@ -312,8 +317,10 @@ public class NanoparticleSampleServiceLocalImpl implements
 					.forClass(NanoparticleSample.class);
 			crit.add(Restrictions.ne("name", particleName));
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
-			crit.createAlias("pointOfContact.organization","organization").add(
-					Restrictions.eq("organization.name", particleOrganization));
+			crit.createAlias("pointOfContact.organization", "organization")
+					.add(
+							Restrictions.eq("organization.name",
+									particleOrganization));
 
 			List results = appService.query(crit);
 			for (Object obj : results) {
@@ -366,7 +373,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			} else if (className
 					.startsWith("gov.nih.nci.cananolab.domain.particle.characterization")) {
 				NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
-				service.removeCharacterizationPublicVisibility(authService,
+				service.removePublicVisibility(authService,
 						findFullCharacterizationById(dataId.toString()));
 			} else if (className
 					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation")) {
@@ -439,142 +446,67 @@ public class NanoparticleSampleServiceLocalImpl implements
 		}
 	}
 
-	public void assignAssociatedPublicVisibility(
-			AuthorizationService authService, ParticleBean particleSampleBean,
-			String[] visibleGroups) throws Exception {
-		// remove public group in all associated records
-		// NanoparticleCharacterizationServiceHelper charHelper = new
-		// NanoparticleCharacterizationServiceHelper();
-		// NanoparticleCompositionServiceHelper compositionHelper = new
-		// NanoparticleCompositionServiceHelper();
+	public void assignVisibility(ParticleBean particleSampleBean)
+			throws Exception {
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		// assign visibility for particle
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		String orgName = pocService.findPointOfContactById(
+				particleSampleBean.getPocBean().getDomain().getId().toString())
+				.getOrganization().getName();
+		authService.assignVisibility(particleSampleBean
+				.getDomainParticleSample().getName(), particleSampleBean
+				.getVisibilityGroups(), orgName);
 
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
-		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
-		removeAssociatedPublicVisibility(authService, particleSampleBean,
-				charService, compositionService);
+		// assign or remove associated public visibility
 		NanoparticleSample nanoparticleSample = particleSampleBean
 				.getDomainParticleSample();
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+		// characterization
+		Collection<Characterization> characterizationCollection = nanoparticleSample
+				.getCharacterizationCollection();
+		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		String[] visibleGroups = particleSampleBean.getVisibilityGroups();
+		
+		// if containing public group, assign associated public visibility
+		// otherwise remove associated public visibility
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-			// POCs, need special handle for sharing
-			if (nanoparticleSample.getPrimaryPointOfContact() != null) {
-				authService.removePublicGroup(nanoparticleSample.getPrimaryPointOfContact()
-						.getId().toString());
-				authService.assignPublicVisibility(nanoparticleSample
-						.getPrimaryPointOfContact().getId().toString());
-			}
-			// keyword, need special handle for sharing
+			//keywords
 			Collection<Keyword> keywordCollection = nanoparticleSample
 					.getKeywordCollection();
 			if (keywordCollection != null) {
 				for (Keyword keyword : keywordCollection) {
 					if (keyword != null) {
-						authService.removePublicGroup(keyword.getId()
-								.toString());
 						authService.assignPublicVisibility(keyword.getId()
 								.toString());
 					}
 				}
 			}
-			// characterization
-			Collection<Characterization> characterizationCollection = nanoparticleSample
-					.getCharacterizationCollection();
+			//characterizations
 			if (characterizationCollection != null) {
 				for (Characterization aChar : characterizationCollection) {
-					charService.assignCharacterizationPublicVisibility(
-							authService, aChar);
+					charService.assignPublicVisibility(authService, aChar);
 				}
 			}
 			// sampleComposition
 			if (nanoparticleSample.getSampleComposition() != null) {
-				authService.assignPublicVisibility(nanoparticleSample
-						.getSampleComposition().getId().toString());
-				// sampleComposition.nanoparticleEntityCollection,
-				Collection<NanoparticleEntity> nanoparticleEntityCollection = nanoparticleSample
-						.getSampleComposition()
-						.getNanoparticleEntityCollection();
-				if (nanoparticleEntityCollection != null) {
-					for (NanoparticleEntity nanoparticleEntity : nanoparticleEntityCollection) {
-						compositionService
-								.assignNanoparicleEntityPublicVisibility(
-										authService, nanoparticleEntity);
-					}
-				}
-				// sampleComposition.functionalizingEntityCollection,
-				Collection<FunctionalizingEntity> functionalizingEntityCollection = nanoparticleSample
-						.getSampleComposition()
-						.getFunctionalizingEntityCollection();
-				if (functionalizingEntityCollection != null) {
-					for (FunctionalizingEntity functionalizingEntity : functionalizingEntityCollection) {
-						compositionService
-								.assignFunctionalizingEntityPublicVisibility(
-										authService, functionalizingEntity);
-
-					}
-				}
-				// sampleComposition.chemicalAssociationCollection
-				Collection<ChemicalAssociation> chemicalAssociationCollection = nanoparticleSample
-						.getSampleComposition()
-						.getChemicalAssociationCollection();
-				if (functionalizingEntityCollection != null) {
-					for (ChemicalAssociation chemicalAssociation : chemicalAssociationCollection) {
-						compositionService
-								.assignChemicalAssociationPublicVisibility(
-										authService, chemicalAssociation);
-					}
-				}
+				compService.assignPublicVisibility(authService,
+						nanoparticleSample.getSampleComposition());
 			}
-			/*
-			 * //do not need now // sample management SampleManagement
-			 * sampleManagement = nanoparticleSample .getSampleManagement(); if
-			 * (sampleManagement != null) {
-			 * authService.assignVisibility(sampleManagement.getId()
-			 * .toString(), visibleGroups); // sampleManagement.sampleContainer
-			 * Collection<SampleContainer> sampleContainerCollection =
-			 * sampleManagement .getSampleContainerCollection(); if
-			 * (sampleContainerCollection != null) { for (SampleContainer
-			 * sampleContainer : sampleContainerCollection) { if
-			 * (sampleContainer != null) {
-			 * authService.assignVisibility(sampleContainer .getId().toString(),
-			 * visibleGroups); } // sampleContainer.storageElement Collection<StorageElement>
-			 * storageElementCollection = sampleContainer
-			 * .getStorageElementCollection(); if (storageElementCollection !=
-			 * null) { for (StorageElement storageElement :
-			 * storageElementCollection) { if (storageElement != null) {
-			 * authService.assignVisibility(storageElement .getId().toString(),
-			 * visibleGroups); } } } // sampleContainer.aliquot Collection<Aliquot>
-			 * sliquotCollection = sampleContainer .getAliquotCollection(); if
-			 * (sliquotCollection != null) { for (Aliquot aliquot :
-			 * sliquotCollection) { if (aliquot != null) {
-			 * authService.assignVisibility(aliquot .getId().toString(),
-			 * visibleGroups); } } } } } }
-			 */
 		} else {
-			//TODO: need? to be verify by Sue
-			// POCs, if private need special handle for sharing
-			if (nanoparticleSample.getPrimaryPointOfContact() != null) {
-				if (!isExistPublicNanoparticleSampleForPOC(nanoparticleSample
-						.getPrimaryPointOfContact().getId().toString())) {
-					authService.removePublicGroup(nanoparticleSample
-							.getPrimaryPointOfContact().getId().toString());
+			//remove associated public visibility
+			if (characterizationCollection != null) {
+				for (Characterization aChar : characterizationCollection) {
+					charService.removePublicVisibility(authService, aChar);
 				}
 			}
-			// keyword, if private need special handle for sharing
-			Collection<Keyword> keywordCollection = nanoparticleSample
-					.getKeywordCollection();
-			if (keywordCollection != null) {
-				for (Keyword keyword : keywordCollection) {
-					if (keyword != null) {
-						if (!isExistPublicNanoparticleSampleForKeyword(keyword
-								.getId().toString())) {
-							authService.removePublicGroup(keyword.getId()
-									.toString());
-						}
-					}
-				}
+			if (nanoparticleSample.getSampleComposition() != null) {
+				compService.assignPublicVisibility(authService,
+						nanoparticleSample.getSampleComposition());
 			}
 		}
-
 	}
 
 	public void removeAssociatedPublicVisibility(
@@ -585,28 +517,12 @@ public class NanoparticleSampleServiceLocalImpl implements
 		NanoparticleSample nanoparticleSample = particleSampleBean
 				.getDomainParticleSample();
 
-		// source, source need special handle
-		// if (nanoparticleSample.getOrganization() != null) {
-		// authService.removePublicGroup(nanoparticleSample.getOrganization()
-		// .getId().toString());
-		// }
-		// keyword, keyword need special handle
-		// Collection<Keyword> keywordCollection = nanoparticleSample
-		// .getKeywordCollection();
-		// if (keywordCollection != null) {
-		// for (Keyword keyword : keywordCollection) {
-		// if (keyword != null) {
-		// authService.removePublicGroup(keyword.getId().toString());
-		// }
-		// }
-		// }
 		// characterization
 		Collection<Characterization> characterizationCollection = nanoparticleSample
 				.getCharacterizationCollection();
 		if (characterizationCollection != null) {
 			for (Characterization aChar : characterizationCollection) {
-				charService.removeCharacterizationPublicVisibility(authService,
-						aChar);
+				charService.removePublicVisibility(authService, aChar);
 			}
 		}
 		// sampleComposition
@@ -645,28 +561,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 				}
 			}
 		}
-		/*
-		 * //sampleManagement do not need now // sample management
-		 * SampleManagement sampleManagement = nanoparticleSample
-		 * .getSampleManagement(); if (sampleManagement != null) {
-		 * authService.removePublicGroup(sampleManagement.getId().toString()); //
-		 * sampleManagement.sampleContainer Collection<SampleContainer>
-		 * sampleContainerCollection = sampleManagement
-		 * .getSampleContainerCollection(); if (sampleContainerCollection !=
-		 * null) { for (SampleContainer sampleContainer :
-		 * sampleContainerCollection) { if (sampleContainer != null) {
-		 * authService.removePublicGroup(sampleContainer.getId() .toString()); } //
-		 * sampleContainer.storageElement Collection<StorageElement>
-		 * storageElementCollection = sampleContainer
-		 * .getStorageElementCollection(); if (storageElementCollection != null) {
-		 * for (StorageElement storageElement : storageElementCollection) { if
-		 * (storageElement != null) {
-		 * authService.removePublicGroup(storageElement .getId().toString()); } } } //
-		 * sampleContainer.aliquot Collection<Aliquot> aliquotCollection =
-		 * sampleContainer .getAliquotCollection(); if (aliquotCollection !=
-		 * null) { for (Aliquot aliquot : aliquotCollection) { if (aliquot !=
-		 * null) { authService.removePublicGroup(aliquot.getId() .toString()); } } } } } }
-		 */
 	}
 
 	public Characterization findFullCharacterizationById(String charId)
@@ -800,6 +694,9 @@ public class NanoparticleSampleServiceLocalImpl implements
 						&& auth.checkReadPermission(user, particleName)) {
 					filtered.add(particle);
 				}
+				// set POC accessibility
+				PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+				pocService.retrieveAccessibility(particle.getPocBean(), user);
 			}
 			return filtered;
 		} catch (Exception e) {
