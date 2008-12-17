@@ -36,10 +36,10 @@
 			<forward name="input"
 				path="particle.submitPointOfContact" />
 			<forward name="updateParticle"
-				path="particle.updateNanoparticleSample" />
+				path="/submitNanoparticleSample.do?dispatch=setupUpdate&amp;page=0" />
 			<forward name="submitParticle"
-				path="particle.submitNanoparticleSample" />
-			<forward name="pointOfContactDetailView"
+				path="/submitNanoparticleSample.do?dispatch=fromPOC&amp;page=0" />
+			<forward name="detailView"
 				path="particle.pointOfContactDetailView" />
 			<forward name="submitPointOfContact"
 				path="particle.submitPointOfContact" />
