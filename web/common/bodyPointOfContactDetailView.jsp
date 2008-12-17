@@ -18,7 +18,10 @@
 					<jsp:param name="topic" value="organization_page_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
-
+				<c:url var="url" value="submitPointOfContact.do">
+					<c:param name="page" value="0" />
+					<c:param name="dispatch" value="cancel" />					
+				</c:url>
 				<a href="${url}" class="helpText">Back</a>
 			</td>
 		</tr>
@@ -46,11 +49,12 @@
 										</c:choose>
 									</td>
 									<td align="right" class="formTitle">
+
 										<c:url var="url" value="submitPointOfContact.do">
 											<c:param name="page" value="0" />
 											<c:param name="dispatch" value="setupUpdate" />
 											<c:param name="particleId" value="${param.particleId}" />
-											<c:param name="pocId" value="${submitPointOfContactForm.map.poc.domain.id}" />											
+											<c:param name="pocId" value="${submitPointOfContactForm.map.poc.domain.id}" />
 											<c:param name="location" value="${param.location}" />
 										</c:url>
 
@@ -63,6 +67,7 @@
 											</td>
 										</c:if>
 									</td>
+									<!-- 
 									<td>
 										<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 												src="images/icon_print_23x.gif"
@@ -82,6 +87,7 @@
 												alt="export organization detail"
 												title="export organization detail" border="0"> </a>
 									</td>
+									 -->
 								</tr>
 							</table>
 						</td>
@@ -92,35 +98,46 @@
 						</th>
 						<td class="rightLabel">
 							<table class="smalltable" border="0" width="100%">
-								<tr class="smallTableHeader">
-									<td width="4">
-										<strong>Name</strong>
-									</td>
-									<td>
-										${submitPointOfContactForm.map.poc.domain.firstName}&nbsp;
-										<c:if
-											test="${!empty submitPointOfContactForm.map.poc.domain.middleInitial}">
-									${submitPointOfContactForm.map.poc.domain.middleInitial}&nbsp;
+								<c:if
+									test="${!empty submitPointOfContactForm.map.poc.domain.firstName ||
+									!empty submitPointOfContactForm.map.poc.domain.middleInitial
+									||!empty submitPointOfContactForm.map.poc.domain.lastName}">
+									<tr class="smallTableHeader">
+										<td width="4">
+											<strong>Name</strong>
+										</td>
+										<td>
+											${submitPointOfContactForm.map.poc.domain.firstName}&nbsp;
+											<c:if
+												test="${!empty submitPointOfContactForm.map.poc.domain.middleInitial}">
+												${submitPointOfContactForm.map.poc.domain.middleInitial}&nbsp;
+											</c:if>
+											${submitPointOfContactForm.map.poc.domain.lastName}&nbsp;
+										</td>
+									</tr>
 								</c:if>
-										${submitPointOfContactForm.map.poc.domain.lastName}&nbsp;
-									</td>
-								</tr>
-								<tr class="smallTableHeader">
-									<td>
-										<strong>Email</strong>
-									</td>
-									<td colspan="3">
-										${submitPointOfContactForm.map.poc.domain.email}&nbsp;
-									</td>
-								</tr>
-								<tr class="smallTableHeader">
-									<td>
-										<strong>Phone</strong>
-									</td>
-									<td colspan="3">
-										${submitPointOfContactForm.map.poc.domain.phone}&nbsp;
-									</td>
-								</tr>
+								<c:if
+									test="${!empty submitPointOfContactForm.map.poc.domain.email}">
+									<tr class="smallTableHeader">
+										<td>
+											<strong>Email</strong>
+										</td>
+										<td colspan="3">
+											${submitPointOfContactForm.map.poc.domain.email}&nbsp;
+										</td>
+									</tr>
+								</c:if>
+								<c:if
+									test="${!empty submitPointOfContactForm.map.poc.domain.phone}">
+									<tr class="smallTableHeader">
+										<td>
+											<strong>Phone</strong>
+										</td>
+										<td colspan="3">
+											${submitPointOfContactForm.map.poc.domain.phone}&nbsp;
+										</td>
+									</tr>
+								</c:if>
 								<tr class="smallTableHeader">
 									<td>
 										<strong>Organization</strong>
@@ -147,14 +164,17 @@
 										</td>
 									</tr>
 								</c:if>
-								<tr class="smallTableHeader">
-									<td>
-										<strong>Role</strong>
-									</td>
-									<td>
-										${submitPointOfContactForm.map.poc.domain.role}&nbsp;
-									</td>
-								</tr>
+								<c:if
+									test="${!empty submitPointOfContactForm.map.poc.domain.role}">
+									<tr class="smallTableHeader">
+										<td>
+											<strong>Role</strong>
+										</td>
+										<td>
+											${submitPointOfContactForm.map.poc.domain.role}&nbsp;
+										</td>
+									</tr>
+								</c:if>
 							</table>
 						</td>
 					</tr>
@@ -171,25 +191,31 @@
 								</th>
 								<td class="rightLabel">
 									<table class="smalltable" border="0" width="100%">
-										<tr class="smallTableHeader">
-											<td width="4">
-												<strong>Name</strong>
-											</td>
-											<td>
-												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
-												<c:if
-													test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}">
-											${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}&nbsp;
-										</c:if>
-												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.lastName}&nbsp;
-											</td>
-											<td>
-												<strong>Role</strong>
-											</td>
-											<td>
-												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.role}&nbsp;
-											</td>
-										</tr>
+									<c:if
+										test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName ||
+										!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial
+										||!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.lastName}">
+											<tr class="smallTableHeader">
+												<td width="4">
+													<strong>Name</strong>
+												</td>
+												<td>
+													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
+													<c:if
+														test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}">
+												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}&nbsp;
+											</c:if>
+													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.lastName}&nbsp;
+												</td>
+												<td>
+													<strong>Role</strong>
+												</td>
+												<td>
+													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.role}&nbsp;
+												</td>
+											</tr>
+									</c:if>
+									
 										<tr class="smallTableHeader">
 											<td>
 												<strong>Organization</strong>
@@ -216,22 +242,29 @@
 												</td>
 											</tr>
 										</c:if>
-										<tr class="smallTableHeader">
-											<td>
-												<strong>Email</strong>
-											</td>
-											<td colspan="3">
-												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.email}&nbsp;
-											</td>
-										</tr>
-										<tr class="smallTableHeader">
-											<td>
-												<strong>Phone</strong>
-											</td>
-											<td colspan="3">
-												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.phone}&nbsp;
-											</td>
-										</tr>
+										<c:if
+											test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.email}">
+											<tr class="smallTableHeader">
+												<td>
+													<strong>Email</strong>
+												</td>
+												<td colspan="3">
+													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.email}&nbsp;
+												</td>
+											</tr>
+										</c:if>
+										<c:if
+											test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.phone}">
+										
+											<tr class="smallTableHeader">
+												<td>
+													<strong>Phone</strong>
+												</td>
+												<td colspan="3">
+													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.phone}&nbsp;
+												</td>
+											</tr>
+										</c:if>
 									</table>
 								</td>
 							</tr>
