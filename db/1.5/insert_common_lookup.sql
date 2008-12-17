@@ -263,7 +263,8 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','r
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vitro');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','in vivo');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','researchArea','clinical trials');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Manufacturer');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Investigator');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('PointOfContact','role','Manufacturer');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('PointOfContact','role','Investigator');
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
