@@ -70,7 +70,7 @@ public class NanoparticleCharacterizationServiceHelper {
 				Property.forName("id").eq(new Long(charId)));
 		crit.createAlias("derivedBioAssayDataCollection", "bioassay",
 				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("bioassay.File", "file",
+		crit.createAlias("bioassay.file", "file",
 				CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
 		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
@@ -134,7 +134,7 @@ public class NanoparticleCharacterizationServiceHelper {
 				CriteriaSpecification.LEFT_JOIN);
 		crit.createAlias("derivedBioAssayDataCollection", "bioassay",
 				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("bioassay.File", "file",
+		crit.createAlias("bioassay.file", "file",
 				CriteriaSpecification.LEFT_JOIN);
 		crit.add(Restrictions.eq("sample.name", particleName));
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
@@ -621,7 +621,7 @@ public class NanoparticleCharacterizationServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select bioassay.File from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
+				"select bioassay.file from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
 						+ derivedId);
 		List results = appService.query(crit);
 		for (Object obj : results) {

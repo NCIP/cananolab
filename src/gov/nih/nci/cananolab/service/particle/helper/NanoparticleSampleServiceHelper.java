@@ -568,7 +568,7 @@ public class NanoparticleSampleServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select bioassay.File from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
+				"select bioassay.file from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
 						+ derivedId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
