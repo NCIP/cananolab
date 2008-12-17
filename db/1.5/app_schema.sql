@@ -411,7 +411,7 @@ CREATE TABLE protocol_file
 CREATE TABLE point_of_contact
 (
 	poc_pk_id BIGINT NOT NULL,
-	role VARCHAR(200) NOT NULL,
+	role VARCHAR(200),
 	first_name VARCHAR(200),
 	last_name VARCHAR(200),
 	middle_initial VARCHAR(50),
