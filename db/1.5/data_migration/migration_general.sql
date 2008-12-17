@@ -152,6 +152,34 @@ ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
+ALTER TABLE nanoparticle_sample_publication
+CHANGE publication_pk_id file_pk_id BIGINT NOT NULL;
+
+CREATE TABLE nanoparticle_sample_publication
+(
+	particle_sample_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	INDEX particle_sample_pk_id (particle_sample_pk_id ASC),
+	INDEX file_pk_id (file_pk_id ASC)
+) TYPE=InnoDB
+;
+	 
+ALTER TABLE nanoparticle_sample_publication
+	DROP FOREIGN KEY FK_nanoparticle_sample_publication_publication, 
+	DROP INDEX particle_sample_pk_id,
+	DROP INDEX file_pk_id
+;
+
+ALTER TABLE nanoparticle_sample_publication
+	CHANGE file_pk_id publication_pk_id BIGINT NOT NULL
+;
+
+ALTER TABLE nanoparticle_sample_publication
+    ADD PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
+	ADD CONSTRAINT FK_nanoparticle_sample_publication_publication FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
+;
+
+
 DROP TABLE IF EXISTS sample_management;
 DROP TABLE IF EXISTS sample_container;
 DROP TABLE IF EXISTS sample_container_storage;
