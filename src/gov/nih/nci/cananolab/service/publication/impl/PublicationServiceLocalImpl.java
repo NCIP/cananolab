@@ -84,17 +84,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				sample.getPublicationCollection().add(publication);
 			}
 
-			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-
 			if (publication.getAuthorCollection() == null) {
 				publication.setAuthorCollection(new HashSet<Author>());
 			} else {
-				for (Author author : publication.getAuthorCollection()) {
-					if (author.getId() != null)
-						authService
-								.removePublicGroup(author.getId().toString());
-				}
 				publication.getAuthorCollection().clear();
 			}
 			if (authors != null) {
