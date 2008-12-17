@@ -23,6 +23,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -170,6 +171,29 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		return helper.findPointOfContactById(POCId);		
 	}
 	
+	public Organization findOrganizationByName(String orgName) 
+		throws PointOfContactException{
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(Organization.class);
+			crit.add(Restrictions.eq("name", orgName));
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
+			List results = appService.query(crit);
+			Organization org = null;
+			for (Object obj : results) {
+				org = (Organization) obj;
+			}
+			return org;
+		} catch (Exception e) {
+			String err = "Problem finding organization with the given name "+orgName;
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}		
+	}
 	private Organization getDBOrganization(Organization organization) 
 		throws PointOfContactException{
 		Organization dbOrganization = null;

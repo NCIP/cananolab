@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.common;
 
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -44,4 +45,5 @@ public interface PointOfContactService {
 	
 	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
 		throws PointOfContactException;
+	public Organization findOrganizationByName(String orgName) throws PointOfContactException;
 }

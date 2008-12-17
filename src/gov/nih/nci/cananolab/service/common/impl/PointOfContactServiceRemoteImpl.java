@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -64,6 +65,9 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	
 	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
 		throws PointOfContactException{
+		throw new PointOfContactException("not implemented for grid service.");
+	}
+	public Organization findOrganizationByName(String orgName) throws PointOfContactException{
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 }
