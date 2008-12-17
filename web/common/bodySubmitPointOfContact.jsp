@@ -19,7 +19,18 @@
 					<jsp:param name="topic" value="submit_publication_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
-			</td>
+				<c:set var="cancelUrl"
+					value="submitPointOfContact.do?page=0&particleId=${particleId }&dispatch=setup&location=local" />
+				<c:if test="${!empty pocId}">
+					<c:set var="cancelUrl"
+						value="submitPointOfContact.do?page=0&particleId=${particleId }&dispatch=setupUpdate&location=local&pocId=${pocId}" />
+				</c:if>
+				<c:url var="cancelUrl" value="submitPointOfContact.do">
+					<c:param name="page" value="0" />
+					<c:param name="dispatch" value="cancel" />					
+				</c:url>
+				<a href="${cancelUrl}" class="helpText">Back</a>
+			</td>			
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -92,11 +103,13 @@
 												<c:set var="dataId"
 													value="${submitOrganizationForm.map.orga.domain.id}" />
 												<c:set var="origUrl"
-													value="submitOrganization.do?page=0&particleId=${docParticleId }&dispatch=setup&location=local" />
-												<c:if test="${!empty dataId}">
+													value="submitPointOfContact.do?page=0&particleId=${particleId }&dispatch=setup&location=local" />
+												<c:if test="${!empty pocId}">
 													<c:set var="origUrl"
-														value="submitOrganization.do?page=0&particleId=${docParticleId }&dispatch=setupUpdate&location=local&fileId=${dataId }" />
+														value="submitPointOfContact.do?page=0&particleId=${particleId }&dispatch=setupUpdate&location=local&pocId=${pocId}" />
 												</c:if>
+												<input type="button" value="Cancel"
+													onclick="javascript:window.location.href='${cancelUrl}'">
 												<input type="reset" value="Reset"
 													onclick="javascript:window.location.href='${origUrl}'">
 												<input type="hidden" name="dispatch" value="create">
