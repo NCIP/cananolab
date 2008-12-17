@@ -87,7 +87,7 @@ public class SubmitPublicationAction extends BaseAnnotationAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(publicationBean.getDomainFile().getId()
-				.toString(), publicationBean.getVisibilityGroups());
+				.toString(), publicationBean.getVisibilityGroups(), null);
 
 		// set author visibility
 		if (publicationBean.getVisibilityGroups()!=null && 

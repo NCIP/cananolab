@@ -51,19 +51,18 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(pfileBean.getDomainFile().getId()
-				.toString(), pfileBean.getVisibilityGroups());
+				.toString(), pfileBean.getVisibilityGroups(), null);
 
 		// remove protocol visibility
 		ProtocolServiceLocalImpl localService = new ProtocolServiceLocalImpl();
 		Protocol dbProtocol = localService.findProtocolBy(protocolFile
 				.getProtocol().getType(), protocolFile.getProtocol().getName());
-		authService.removePublicGroup(dbProtocol.getId().toString());
 		// assign protocol visibility
 		if (pfileBean.getVisibilityStr() != null
 				&& pfileBean.getVisibilityStr().contains(
 						CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
 			authService.assignVisibility(dbProtocol.getId().toString(),
-					new String[] { CaNanoLabConstants.CSM_PUBLIC_GROUP });
+					new String[] { CaNanoLabConstants.CSM_PUBLIC_GROUP }, null);
 		}
 
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
