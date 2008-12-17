@@ -138,8 +138,10 @@
 									<td width="490" height="32">
 										<div align="right">
 											<div align="right">
-												<input type="reset" value="Reset"
-													onclick="javascript:location.href='submitNanoparticleSample.do?dispatch=setup&page=0'">
+												<c:set var="origUrl"
+													value="submitNanoparticleSample.do?page=0&particleId=${particleId}&dispatch=${param.dispatch}&location=local" />
+												<input type="reset" value="Reset" 
+													onclick="javascript:window.location.href='${origUrl}'">												
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
 												<html:hidden property="particleSampleBean.createdBy"
