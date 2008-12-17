@@ -92,10 +92,10 @@
 										[Other]
 									</option>
 								</html:select>
-								&nbsp;
+								&nbsp;								
 								<a style="" id="pocDetail" href="#"
-									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'primaryPOCList','particleId'); return false;">
-									<span class="addLink2">View Detail</span> </a>
+									onclick="javascript:submitAction(nanoparticleSampleForm, 'submitNanoparticleSample', 'pointOfContactDetailView');">
+									<span class="addLink2">View Detail</span> </a>									
 							</td>
 						</tr>
 						<tr>
