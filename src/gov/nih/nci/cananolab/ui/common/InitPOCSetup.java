@@ -29,7 +29,7 @@ public class InitPOCSetup {
 	public void setPOCDropdowns(HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "contactRoles",
-						"POC", "contactRole", "otherContactRole", true);		
+						"PointOfContact", "role", "otherRole", true);		
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getAllOrganizationNames(request, user);
