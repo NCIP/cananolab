@@ -152,7 +152,11 @@ ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity
 ;
 	 
 ALTER TABLE nanoparticle_sample_publication
-	DROP FOREIGN KEY FK_nanoparticle_sample_publication_publication, 
+	DROP FOREIGN KEY FK_nanoparticle_sample_publication_publication,
+	DROP FOREIGN KEY FK_nanoparticle_sample_publication_nanoparticle_sample
+;
+
+ALTER TABLE nanoparticle_sample_publication 
 	DROP INDEX particle_sample_pk_id,
 	DROP INDEX file_pk_id
 ;
@@ -161,9 +165,15 @@ ALTER TABLE nanoparticle_sample_publication
 	CHANGE file_pk_id publication_pk_id BIGINT NOT NULL
 ;
 
+delete
+from nanoparticle_sample_publication
+where particle_sample_pk_id not in
+(select particle_sample_pk_id from nanoparticle_sample);
+
 ALTER TABLE nanoparticle_sample_publication
-    ADD PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
-	ADD CONSTRAINT FK_nanoparticle_sample_publication_publication FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
+   ADD PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
+   ADD CONSTRAINT FK_nanoparticle_sample_publication_nanoparticle_sample FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id),
+   ADD CONSTRAINT FK_nanoparticle_sample_publication FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
 
