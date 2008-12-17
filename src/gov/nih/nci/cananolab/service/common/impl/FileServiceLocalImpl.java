@@ -108,7 +108,7 @@ public class FileServiceLocalImpl implements FileService {
 				FileBean fileBean = new FileBean(file);
 				this.retrieveVisibility(fileBean, user);
 				auth.assignVisibility(copy.getId().toString(), fileBean
-						.getVisibilityGroups());
+						.getVisibilityGroups(), null);
 			}
 		} catch (Exception e) {
 			String err = "Error in saving copied file to the file system and setting visibility of the copied file.";
