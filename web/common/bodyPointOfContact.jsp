@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/POCManager.js"></script>
 <script type="text/javascript" src="javascript/script.js"></script>
+<script type="text/javascript" src="javascript/ParticleManager.js"></script>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
@@ -30,7 +31,6 @@
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
-		<!--  
 			<tr>
 				<c:choose>
 					<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
@@ -54,7 +54,6 @@
 					</c:when>
 				</c:choose>
 			</tr>
-			-->
 			<tr>
 				<td class="leftLabel" valign="top">
 					<strong>First Name</strong>
@@ -98,7 +97,7 @@
 				<td class="label">
 					<html:select property="${param.pocBean}.organization.name"
 						styleId="orgName_${param.pocIndex}"
-						onchange="javascript:callPrompt('Organization Name', 'orgName_${param.pocIndex }');">
+						onchange="javascript:setOrganization(submitPointOfContactForm, 'orgName_${param.pocIndex }', '${param.pocIndex }' );callPrompt('Organization Name', 'orgName_${param.pocIndex }');">
 						<option value="" />
 							<html:options name="allOrganizationNames" />
 						<option value="other">
@@ -153,7 +152,7 @@
 					<strong>State/Province</strong>
 				</td>
 				<td class="label">
-					<html:text property="${param.pocBean}.organization.state" size="20" />
+					<html:text property="${param.pocBean}.organization.state" size="15" />
 					&nbsp;
 				</td>
 				<td class="label">
