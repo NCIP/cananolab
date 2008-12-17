@@ -46,14 +46,11 @@
 										</c:choose>
 									</td>
 									<td align="right" class="formTitle">
-
 										<c:url var="url" value="submitPointOfContact.do">
 											<c:param name="page" value="0" />
 											<c:param name="dispatch" value="setupUpdate" />
 											<c:param name="particleId" value="${param.particleId}" />
-											<c:param name="pocId" value="${param.pocId}" />
-											<c:param name="fileId" value="${param.organizationId}" />
-											<c:param name="submitType" value="${param.submitType}" />
+											<c:param name="pocId" value="${submitPointOfContactForm.map.poc.domain.id}" />											
 											<c:param name="location" value="${param.location}" />
 										</c:url>
 
