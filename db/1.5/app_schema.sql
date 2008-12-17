@@ -283,8 +283,9 @@ CREATE TABLE nanoparticle_sample_publication
 (
 	particle_sample_pk_id BIGINT NOT NULL,
 	publication_pk_id BIGINT NOT NULL,
-	INDEX particle_sample_pk_id (particle_sample_pk_id ASC),
-	INDEX publication_pk_id (publication_pk_id ASC)
+	PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
+	KEY (publication_pk_id),
+	KEY (particle_sample_pk_id)
 ) TYPE=InnoDB
 ;
 
