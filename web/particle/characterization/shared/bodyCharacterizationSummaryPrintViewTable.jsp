@@ -47,19 +47,19 @@
 
 						<td class="RightLabel" valign="top">
 							<c:if
-								test="${!empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.type}">
-								${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.type}
+								test="${!empty summaryRow.derivedBioAssayDataBean.fileBean.domainFile.type}">
+								${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.type}
 								<br>
 							</c:if>
 							<c:if
-								test="${!empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile && !empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.uri}">
+								test="${!empty summaryRow.derivedBioAssayDataBean.fileBean.domainFile && !empty summaryRow.derivedBioAssayDataBean.fileBean.domainFile.uri}">
 								<c:choose>
 									<c:when
-										test="${summaryRow.derivedBioAssayDataBean.labFileBean.hidden eq 'true' }">
+										test="${summaryRow.derivedBioAssayDataBean.fileBean.hidden eq 'true' }">
 										Private file
 									</c:when>
 									<c:otherwise>
-										${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}
+										${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.title}
 									</c:otherwise>
 								</c:choose>
 								<br>

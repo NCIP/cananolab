@@ -144,19 +144,19 @@
 					property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 					indexId="fileInd">
 					<c:if
-						test="${!empty derivedBioAssayData.labFileBean.domainFile.description 
-							&& derivedBioAssayData.labFileBean.hidden ne 'true'}">
+						test="${!empty derivedBioAssayData.fileBean.domainFile.description 
+							&& derivedBioAssayData.fileBean.hidden ne 'true'}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd+1} Description
 							</th>
 							<td class="rightLabel" valign="top">
-								${derivedBioAssayData.labFileBean.domainFile.description}&nbsp;
+								${derivedBioAssayData.fileBean.domainFile.description}&nbsp;
 							</td>
 						</tr>
 					</c:if>
 					<c:if
-						test="${!empty derivedBioAssayData && !empty derivedBioAssayData.labFileBean.domainFile.uri}">
+						test="${!empty derivedBioAssayData && !empty derivedBioAssayData.fileBean.domainFile.uri}">
 						<tr>
 							<th class="leftLabel" valign="top">
 								Characterization File #${fileInd+1}
@@ -164,24 +164,24 @@
 							<td class="rightLabel" valign="top">
 								<c:choose>
 									<c:when
-										test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
+										test="${derivedBioAssayData.fileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
 									<c:otherwise>
 										<c:choose>
 											<c:when
-												test="${derivedBioAssayData.labFileBean.image eq 'true'}">
- 												${derivedBioAssayData.labFileBean.domainFile.title}<br>
+												test="${derivedBioAssayData.fileBean.image eq 'true'}">
+ 												${derivedBioAssayData.fileBean.domainFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}', ${derivedBioAssayData.labFileBean.domainFile.id}, 100, 100)"><img
-														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}"
+													onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.fileBean.domainFile.id}&amp;location=${location}', ${derivedBioAssayData.fileBean.domainFile.id}, 100, 100)"><img
+														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.fileBean.domainFile.id}&amp;location=${location}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}"
-													target="${derivedBioAssayData.labFileBean.urlTarget}">${derivedBioAssayData.labFileBean.domainFile.title}</a>
+													href="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.fileBean.domainFile.id}&amp;location=${location}"
+													target="${derivedBioAssayData.fileBean.urlTarget}">${derivedBioAssayData.fileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>

@@ -73,42 +73,38 @@ ${charBean.protocolFileBean.domainFile.uri}
 						</tr>
 					</c:if>
 					<c:forEach var="derivedBioAssayData"
-						items="${charBean.derivedBioAssayDataList}" varStatus="fileInd">
+						items="${charBean.derivedBioAssayDataList}" fileBeanfileInd">
 						<c:if
-							test="${!empty derivedBioAssayData.labFileBean.domainFile.description 
+							test="${!empty derivedBiofileBeanabFileBean.domainFile.description 
 								&& derivedBioAssayData.labFileBean.hidden ne 'true'}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Characterization File #${fileInd.index+1} Description
-								</th>
-								<td class="rightLabel" valign="top">
+								fileBean				<td class="rightLabel" valign="top">
 									${derivedBioAssayData.labFileBean.domainFile.description}&nbsp;
 								</td>
 							</tr>
-						</c:if>
-						<c:if
+						</c:ifileBeanc:if
 							test="${!empty derivedBioAssayData && !empty derivedBioAssayData.labFileBean.domainFile.uri}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Characterization File #${fileInd.index+1}
 								</th>
-								<td class="rightLabel" valign="top">
+								<tdfileBeanhtLabel" valign="top">
 									<c:if
-										test="${!empty derivedBioAssayData.labFileBean.domainFile.type}">
+										fileBeanpty derivedBioAssayData.labFileBean.domainFile.type}">
 								${derivedBioAssayData.labFileBean.domainFile.type}
-								<br>
-									</c:if>
+								<fileBean			</c:if>
 									<c:choose>
 										<c:when
 											test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
-										<c:otherwise>
+		fileBeanotherwise>
 											<c:choose>
 												<c:when
-													test="${derivedBioAssayData.labFileBean.image eq 'true'}">
-													<img
-														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;location=${location}"
+													test="${derivedBioAssayData.labFileBean.image eq 'true'}fileBean						<img
+														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;locationfileBean}"
 														border="0">
 
 												</c:when>

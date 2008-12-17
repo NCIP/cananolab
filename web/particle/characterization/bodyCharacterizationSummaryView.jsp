@@ -138,26 +138,26 @@
 						</c:forEach>
 						<td class="label" valign="top">
 							<c:if
-								test="${!empty summaryRow.derivedBioAssayDataBean && !empty summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.uri}">
+								test="${!empty summaryRow.derivedBioAssayDataBean && !empty summaryRow.derivedBioAssayDataBean.fileBean.domainFile.uri}">
 								<c:choose>
 									<c:when
-										test="${summaryRow.derivedBioAssayDataBean.labFileBean.hidden eq 'true' }">
+										test="${summaryRow.derivedBioAssayDataBean.fileBean.hidden eq 'true' }">
 										Private file
 									</c:when>
 									<c:otherwise>
 										<c:choose>
 											<c:when
-												test="${summaryRow.derivedBioAssayDataBean.labFileBean.image eq 'true'}">
-												${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}<br>
+												test="${summaryRow.derivedBioAssayDataBean.fileBean.image eq 'true'}">
+												${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event,'${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}&amp;location=${location}', ${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id})"><img
-														src="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}&amp;location=${location}"
+													onclick="popImage(event,'${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id}&amp;location=${location}', ${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id})"><img
+														src="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id}&amp;location=${location}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.id}&amp;location=${location}">${summaryRow.derivedBioAssayDataBean.labFileBean.domainFile.title}</a>
+													href="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id}&amp;location=${location}">${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.title}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:otherwise>
