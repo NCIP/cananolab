@@ -8,16 +8,12 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.common.PointOfContactService;
-import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.common.InitPOCSetup;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -38,59 +34,26 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
-		particleSampleBean.setupDomainParticleSample();		
-		// persist in the database		
+		particleSampleBean.setupDomainParticleSample();
+		// persist in the database
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
-				.getDomainParticleSample());	
-		// set CSM visibility
-		// add sample source as a new CSM_GROUP and assign the sample to
-		// the new group
-		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
-		String[] visibleGroups = new String[particleSampleBean
-				.getVisibilityGroups().length + 1];
-		for (int i = 0; i < visibleGroups.length - 1; i++) {
-			visibleGroups[i] = particleSampleBean.getVisibilityGroups()[i];
-		}
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		PointOfContact dbPointOfContact = pocService.findPointOfContactById(
-				particleSampleBean.getDomainParticleSample()
-						.getPrimaryPointOfContact().getId().toString())
-				.getDomain();
-		String POCOrganizationName = dbPointOfContact.getOrganization()
-				.getName();
-		visibleGroups[visibleGroups.length - 1] = POCOrganizationName;
-		particleSampleBean = service
-				.findFullNanoparticleSampleById(particleSampleBean
-						.getDomainParticleSample().getId().toString());	
-		//TODO: if public, do not need other groups
-		particleSampleBean.setVisibilityGroups(visibleGroups);
-		authService.assignVisibility(particleSampleBean
-				.getDomainParticleSample().getName(), visibleGroups);
-		// includes remove & assign public visibility
-		service.assignAssociatedPublicVisibility(authService,
-				particleSampleBean, visibleGroups);		
-		particleSampleBean.setLocation("local");
-		theForm.set("particleSampleBean", particleSampleBean);
-		forward = mapping.findForward("update");
-		request.setAttribute("theParticle", particleSampleBean);
-		setupLookups(request, particleSampleBean.getDomainParticleSample()
-			.getPrimaryPointOfContact().getOrganization().getName());
-		setupDataTree(particleSampleBean, request);
-		setupLookups(request, particleSampleBean.getDomainParticleSample()
-				.getPrimaryPointOfContact().getOrganization().getName());
-		return forward;
+				.getDomainParticleSample());
+		// assign CSM visibility and associated public visibility
+		service.assignVisibility(particleSampleBean);
+		request.setAttribute("particleId", particleSampleBean
+				.getDomainParticleSample().getId().toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	private void setupLookups(HttpServletRequest request, String sampleOrg)
-			throws Exception {		
-		InitNanoparticleSetup.getInstance().getNanoparticleSamplePointOfContacts(
-				request);
+			throws Exception {
+		InitNanoparticleSetup.getInstance()
+				.getNanoparticleSamplePointOfContacts(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
 				request, sampleOrg);
 	}
@@ -119,7 +82,6 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		} else {
 			session.removeAttribute("docParticleId");
 		}
-
 		return mapping.findForward("update");
 	}
 
@@ -174,7 +136,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 //
 //		return mapping.findForward("pointOfContact");
 //	}
-	
+
 	public ActionForward pointOfContactDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
