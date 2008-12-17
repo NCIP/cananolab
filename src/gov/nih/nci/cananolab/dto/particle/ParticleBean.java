@@ -44,7 +44,7 @@ public class ParticleBean {
 	private PointOfContactBean pocBean;
 
 	public ParticleBean() {
-		domainParticleSample.setPrimaryPointOfContact(new PointOfContact());
+		pocBean = new PointOfContactBean();
 	}
 
 	public ParticleBean(NanoparticleSample particleSample) {
@@ -104,6 +104,9 @@ public class ParticleBean {
 				keyword.setName(str.toUpperCase());
 				domainParticleSample.getKeywordCollection().add(keyword);
 			}
+		}
+		if (pocBean != null) {
+			domainParticleSample.setPrimaryPointOfContact(pocBean.getDomain());
 		}
 	}
 
