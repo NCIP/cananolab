@@ -117,7 +117,7 @@ public class EndNoteXMLHandler {
 	    				authors);
 	    		// set visibility
 				authService.assignVisibility(pubBean.getDomainFile().getId()
-	    				.toString(), pubBean.getVisibilityGroups());
+	    				.toString(), pubBean.getVisibilityGroups(), null);
 
 	    		// set author visibility
 				if (publication.getAuthorCollection()!=null) {
