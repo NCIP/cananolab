@@ -5,8 +5,7 @@
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <script type='text/javascript' src='javascript/POCManager.js'></script>
 
-<script type="text/javascript"
-	src="javascript/ParticleManager.js"></script>
+<script type="text/javascript" src="javascript/ParticleManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/NanoparticleSampleManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
@@ -21,14 +20,15 @@
 </c:if>
 
 <html:form action="/submitNanoparticleSample">
-<c:choose>
-	<c:when test="${!empty nanoparticleSampleForm.map.particleSampleBean.pocBean.displayName}" >
-		<c:set var="pocDetailDisplay" value="display: inline;" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="pocDetailDisplay" value="display: none;" />
-	</c:otherwise>
-</c:choose>
+	<c:choose>
+		<c:when
+			test="${!empty nanoparticleSampleForm.map.particleSampleBean.pocBean.displayName}">
+			<c:set var="pocDetailDisplay" value="display: inline;" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="pocDetailDisplay" value="display: none;" />
+		</c:otherwise>
+	</c:choose>
 
 	<table width="100%" align="center">
 		<tr>
@@ -41,7 +41,7 @@
 				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="submit_nano_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>					
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -63,11 +63,11 @@
 							</td>
 							<td class="rightLabel">
 								<html:text
-									property="particleSampleBean.domainParticleSample.name" size="50"/>
+									property="particleSampleBean.domainParticleSample.name"
+									size="50" />
 								<c:if
 									test="${!empty nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}">
-									<html:hidden
-										styleId="particleId"
+									<html:hidden styleId="particleId"
 										property="particleSampleBean.domainParticleSample.id"
 										value="${nanoparticleSampleForm.map.particleSampleBean.domainParticleSample.id}" />
 								</c:if>
@@ -78,27 +78,30 @@
 								<strong>Primary Point of Contact *</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select
-									property="particleSampleBean.domainParticleSample.primaryPointOfContact.id"
+								<html:select property="particleSampleBean.pocBean.domain.id"
 									styleId="primaryPOCList"
 									onchange="javascript:setupPOC(nanoparticleSampleForm, 'primaryPOCList');
 												setPOCDetailLink('primaryPOCList', 'pocDetail');												
 												removeOrgVisibility();">
 									<option />
-									<html:options collection="allPointOfContacts"
-											labelProperty="displayName" property="domain.id" />
+										<c:if test="${!empty allPointOfContacts}">
+											<html:options collection="allPointOfContacts"
+												labelProperty="displayName" property="domain.id" />
+										</c:if>
 									<option value="other">
 										[Other]
 									</option>
-								</html:select>&nbsp;
-								<a style="${pocDetailDisplay }" id="pocDetail" href="#"	
+								</html:select>
+								&nbsp;
+								<a style="" id="pocDetail" href="#"
 									onclick="javascript:setupOrgDetailView(nanoparticleSampleForm, 'primaryPOCList','particleId'); return false;">
 									<span class="addLink2">View Detail</span> </a>
 							</td>
 						</tr>
 						<tr>
 							<td class="leftLabel" valign="top">
-								<strong>Keywords</strong> <i>(one keyword per line)</i>
+								<strong>Keywords</strong>
+								<i>(one keyword per line)</i>
 							</td>
 							<td class="rightLabel">
 								<html:textarea property="particleSampleBean.keywordsStr"
@@ -116,7 +119,8 @@
 								</html:select>
 								<br>
 								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_DataCurator are always selected by default.)</i>
+									${applicationOwner}_DataCurator are always selected by
+									default.)</i>
 							</td>
 						</tr>
 					</tbody>
@@ -133,8 +137,9 @@
 								<tr>
 									<td width="490" height="32">
 										<div align="right">
-											<div align="right">											
-												<input type="reset" value="Reset" onclick="javascript:location.href='submitNanoparticleSample.do?dispatch=setup&page=0'">		
+											<div align="right">
+												<input type="reset" value="Reset"
+													onclick="javascript:location.href='submitNanoparticleSample.do?dispatch=setup&page=0'">
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="page" value="1">
 												<html:hidden property="particleSampleBean.createdBy"
