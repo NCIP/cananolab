@@ -18,10 +18,7 @@ public class PointOfContactBean {
 	private PointOfContact domain;
 	private String displayName;
 	private Organization organization;
-	private String[] orgVisibilityGroups = new String[0];
-	private String[] pocVisibilityGroups = new String[0];
-	private String[] emailVisibilityGroups = new String[0];
-	private String[] phoneVisibilityGroups = new String[0];
+	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
 	private String pocId;
 	private String address;
@@ -39,25 +36,6 @@ public class PointOfContactBean {
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
 		organization = pointOfContact.getOrganization();
-		String firstName = domain.getFirstName();
-		displayName = "";
-		if (firstName != null) {
-			displayName = firstName + " ";
-		}
-		String lastName = domain.getLastName();
-		if (lastName != null) {
-			displayName += lastName;
-		}
-		if (domain.getOrganization() != null) {
-			String orgName = domain.getOrganization().getName();
-			if (orgName != null) {
-				if (displayName.trim().length()>0) {
-					displayName += " (" + orgName + ")";
-				}else {
-					displayName = orgName;
-				}
-			}
-		}
 	}
 
 	/**
@@ -106,63 +84,18 @@ public class PointOfContactBean {
 	}
 
 	/**
-	 * @return the orgVisibilityGroups
+	 * @return the visibilityGroups
 	 */
-	public String[] getOrgVisibilityGroups() {
-		return orgVisibilityGroups;
+	public String[] getVisibilityGroups() {
+		return visibilityGroups;
 	}
 
 	/**
-	 * @param orgVisibilityGroups
-	 *            the orgVisibilityGroups to set
+	 * @param visibilityGroups
+	 *            the visibilityGroups to set
 	 */
-	public void setOrgVisibilityGroups(String[] orgVisibilityGroups) {
-		this.orgVisibilityGroups = orgVisibilityGroups;
-	}
-
-	/**
-	 * @return the pocVisibilityGroups
-	 */
-	public String[] getPocVisibilityGroups() {
-		return pocVisibilityGroups;
-	}
-
-	/**
-	 * @param pocVisibilityGroups
-	 *            the pocVisibilityGroups to set
-	 */
-	public void setPocVisibilityGroups(String[] pocVisibilityGroups) {
-		this.pocVisibilityGroups = pocVisibilityGroups;
-	}
-
-	/**
-	 * @return the emailVisibilityGroups
-	 */
-	public String[] getEmailVisibilityGroups() {
-		return emailVisibilityGroups;
-	}
-
-	/**
-	 * @param emailVisibilityGroups
-	 *            the emailVisibilityGroups to set
-	 */
-	public void setEmailVisibilityGroups(String[] emailVisibilityGroups) {
-		this.emailVisibilityGroups = emailVisibilityGroups;
-	}
-
-	/**
-	 * @return the phoneVisibilityGroups
-	 */
-	public String[] getPhoneVisibilityGroups() {
-		return phoneVisibilityGroups;
-	}
-
-	/**
-	 * @param phoneVisibilityGroups
-	 *            the phoneVisibilityGroups to set
-	 */
-	public void setPhoneVisibilityGroups(String[] phoneVisibilityGroups) {
-		this.phoneVisibilityGroups = phoneVisibilityGroups;
+	public void setVisibilityGroups(String[] visibilityGroups) {
+		this.visibilityGroups = visibilityGroups;
 	}
 
 	/**
@@ -184,6 +117,9 @@ public class PointOfContactBean {
 	 * @return the displayName
 	 */
 	public String getDisplayName() {
+		if (hidden) {
+			return "private";
+		}
 		String firstName = domain.getFirstName();
 		displayName = "";
 		if (firstName != null) {
@@ -195,9 +131,10 @@ public class PointOfContactBean {
 		}
 		if (domain.getOrganization() != null) {
 			String orgName = domain.getOrganization().getName();
-			if (displayName.trim().length()>0) {
+			if (orgName != null && firstName != null || lastName != null) {
 				displayName += " (" + orgName + ")";
-			}else {
+			}
+			else {
 				displayName=orgName;
 			}
 		}
