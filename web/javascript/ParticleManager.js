@@ -35,6 +35,19 @@ function removeOrgVisibility() {
 	});
 	return false;
 }
+function removeOrgVisibility(selectId) {
+	var poc = document.getElementById(selectId).value;
+	
+	if(poc.charAt(0) == "[" &&
+			poc.charAt(otext.length - 1) == "]") 
+			return false;
+			
+	NanoparticleSampleManager.removeOrgVisibility(poc, function (data) {
+		dwr.util.removeAllOptions("visibilityGroup");
+		dwr.util.addOptions("visibilityGroup", data);
+	});
+	return false;
+}
 
 function setNanoparticleDropdowns() {
 	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
