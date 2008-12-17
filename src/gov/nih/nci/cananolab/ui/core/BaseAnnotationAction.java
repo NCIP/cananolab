@@ -52,7 +52,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			HttpServletRequest request, String location) throws Exception {
 		String particleId = request.getParameter("particleId");
 		if (particleId == null) {
-			particleId = theForm.getString("particleId");
+			particleId = (String)request.getAttribute("particleId");
+			if (particleId == null) {
+				particleId = theForm.getString("particleId");
+			}
 		}
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -85,7 +88,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return particleBean;
 	}
 
-	//TODO: verify if needed??
+	// TODO: verify if needed??
 	public void setOtherParticlesFromTheSameSource(String location,
 			HttpServletRequest request, ParticleBean particleBean, UserBean user)
 			throws Exception {
@@ -93,13 +96,13 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
 					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample().getPrimaryPointOfContact()
-							.getOrganization().getName(), user);
+					particleBean.getDomainParticleSample()
+							.getPrimaryPointOfContact().getOrganization()
+							.getName(), user);
 		}
 	}
 
-	protected void saveFilesToFileSystem(List<FileBean> files)
-			throws Exception {
+	protected void saveFilesToFileSystem(List<FileBean> files) throws Exception {
 		// save file data to file system and set visibility
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
@@ -109,7 +112,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			fileService.writeFile(fileBean.getDomainFile(), fileBean
 					.getNewFileData());
 			authService.assignVisibility(fileBean.getDomainFile().getId()
-					.toString(), fileBean.getVisibilityGroups());
+					.toString(), fileBean.getVisibilityGroups(), null);
 		}
 	}
 
