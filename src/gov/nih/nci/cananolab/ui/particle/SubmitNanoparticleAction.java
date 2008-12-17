@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.ui.common.InitPOCSetup;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -39,12 +38,22 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
 		particleSampleBean.setupDomainParticleSample();
+		Long particleId = particleSampleBean.getDomainParticleSample().getId();
+
 		// persist in the database
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
 		// assign CSM visibility and associated public visibility
-		service.assignVisibility(particleSampleBean);
+		// requires fully loaded particle if particle Id is not null)
+		if (particleId != null) {
+			ParticleBean fullyLoadedParticleBean = service
+					.findFullNanoparticleSampleById(particleSampleBean
+							.getDomainParticleSample().getId().toString());
+			service.assignVisibility(fullyLoadedParticleBean);
+		} else {
+			service.assignVisibility(particleSampleBean);
+		}
 		request.setAttribute("particleId", particleSampleBean
 				.getDomainParticleSample().getId().toString());
 		return setupUpdate(mapping, form, request, response);
@@ -127,15 +136,15 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 				CaNanoLabConstants.CSM_PG_PARTICLE);
 	}
 
-	//TODO:: to remove
-//	public ActionForward setupPointOfContact(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		// setupLookups(request, null);
-//		InitPOCSetup.getInstance().setPOCDropdowns(request);
-//
-//		return mapping.findForward("pointOfContact");
-//	}
+	// TODO:: to remove
+	// public ActionForward setupPointOfContact(ActionMapping mapping,
+	// ActionForm form, HttpServletRequest request,
+	// HttpServletResponse response) throws Exception {
+	// // setupLookups(request, null);
+	// InitPOCSetup.getInstance().setPOCDropdowns(request);
+	//
+	// return mapping.findForward("pointOfContact");
+	// }
 
 	public ActionForward pointOfContactDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
