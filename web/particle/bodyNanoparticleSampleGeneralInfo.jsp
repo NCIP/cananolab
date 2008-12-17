@@ -50,6 +50,17 @@
 							<bean:write name="nanoparticleSampleForm"
 								property="particleSampleBean.pocBean.displayName" />
 							&nbsp;
+							<c:if
+								test="${nanoparticleSampleForm.map.particleSampleBean.pocBean.displayName ne 'private' }">
+								<c:url var="url" value="submitPointOfContact.do">
+									<c:param name="page" value="0" />
+									<c:param name="dispatch" value="detailView" />
+									<c:param name="particleId" value="${param.particleId}" />
+									<c:param name="pocId" value="${nanoparticleSampleForm.map.particleSampleBean.pocBean.domain.id}" />
+									<c:param name="location" value="${param.location}" />
+								</c:url>
+								<a href="${url}">View Detail </a>
+							</c:if>
 						</td>
 					</tr>
 					<tr>
