@@ -64,11 +64,11 @@ public interface NanoparticleCharacterizationService {
 	public List<Characterization> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException;
 
-	public void removeCharacterizationPublicVisibility(
+	public void removePublicVisibility(
 			AuthorizationService authService, Characterization aChar)
 			throws Exception;
 
-	public void assignCharacterizationPublicVisibility(
+	public void assignPublicVisibility(
 			AuthorizationService authService, Characterization aChar) 
 			throws Exception;
 

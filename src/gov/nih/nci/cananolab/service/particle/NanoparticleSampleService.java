@@ -24,7 +24,8 @@ public interface NanoparticleSampleService {
 	 * 
 	 * @return all particle sources
 	 */
-	public SortedSet<PointOfContact> findPointOfContacts() throws ParticleException;
+	public SortedSet<PointOfContact> findPointOfContacts()
+			throws ParticleException;
 
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
@@ -51,7 +52,8 @@ public interface NanoparticleSampleService {
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<ParticleBean> findNanoparticleSamplesBy(String particlePointOfContact,
+	public List<ParticleBean> findNanoparticleSamplesBy(
+			String particlePointOfContact,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -79,8 +81,9 @@ public interface NanoparticleSampleService {
 	 * @throws ParticleException
 	 * @throws CaNanoLabSecurityException
 	 */
-	public SortedSet<SortableName> findOtherParticles(String particleOrganization,
-			String particleName, UserBean user) throws ParticleException;
+	public SortedSet<SortableName> findOtherParticles(
+			String particleOrganization, String particleName, UserBean user)
+			throws ParticleException;
 
 	public void retrieveVisibility(ParticleBean particleBean, UserBean user)
 			throws ParticleException;
@@ -93,9 +96,8 @@ public interface NanoparticleSampleService {
 
 	public int getNumberOfPublicNanoparticleSamples() throws ParticleException;
 
-	public void assignAssociatedPublicVisibility(
-			AuthorizationService authService, ParticleBean particleSampleBean,
-			String[] visibleGroups) throws Exception;
+	public void assignVisibility(ParticleBean particleSampleBean)
+			throws Exception;
 
 	public List<ParticleBean> getUserAccessibleParticles(
 			List<ParticleBean> particles, UserBean user)

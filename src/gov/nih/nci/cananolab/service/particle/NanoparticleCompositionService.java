@@ -72,7 +72,7 @@ public interface NanoparticleCompositionService {
 	 */
 	public SortedSet<String> getAllOtherFunctionTypes()
 			throws ParticleCompositionException;
-	
+
 	/**
 	 * Return user-defined target types
 	 * 
@@ -81,7 +81,6 @@ public interface NanoparticleCompositionService {
 	 */
 	public SortedSet<String> getAllOtherTargetTypes()
 			throws ParticleCompositionException;
-
 
 	/**
 	 * Return user-defined functionalizing entity types
@@ -145,18 +144,15 @@ public interface NanoparticleCompositionService {
 
 	public void assignChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation)
-			throws Exception;
+			ChemicalAssociation chemicalAssociation) throws Exception;
 
 	public void assignNanoparicleEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity)
-			throws Exception;
+			NanoparticleEntity nanoparticleEntity) throws Exception;
 
 	public void assignFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
-			FunctionalizingEntity functionalizingEntity)
-			throws Exception;
+			FunctionalizingEntity functionalizingEntity) throws Exception;
 
 	public void removeNanoparticleEntityPublicVisibility(
 			AuthorizationService authService,
@@ -170,8 +166,6 @@ public interface NanoparticleCompositionService {
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation) throws Exception;
 
-	public void assignSampleCompositionPublicVisibility(
-			AuthorizationService authService,
-			NanoparticleSample particleSample)
-			throws Exception;
+	public void assignPublicVisibility(AuthorizationService authService,
+			SampleComposition composition) throws Exception;
 }
