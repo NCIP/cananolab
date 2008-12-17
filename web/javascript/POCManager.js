@@ -49,6 +49,15 @@ function setSecondaryPOC(form, selectEleId, pocIndex) {
 		form.submit();
 	}
 }
+
+function setOrganization(form, selectEleId, orgIndex) {
+	var selectEle = document.getElementById(selectEleId);
+	var orgName = selectEle.options[selectEle.options.selectedIndex].value;
+	if(orgName != "other" && orgName != "") {
+		form.action = "submitPointOfContact.do?dispatch=getOrganization&orgIndex=" + orgIndex + "&orgName=" + orgName;
+		form.submit();
+	}
+}
 /*
 function setSecondaryPOC(selectEleId, pocIndex) {
 	var selectEle = document.getElementById(selectEleId);
