@@ -632,7 +632,7 @@ public class AuthorizationService {
 		}
 	}
 
-	public void assignVisibility(String dataToProtect, String[] visibleGroups)
+	public void assignVisibility(String dataToProtect, String[] visibleGroups, String owningGroup)
 			throws CaNanoLabSecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,
@@ -653,6 +653,10 @@ public class AuthorizationService {
 				// set default visibilities
 				for (String group : CaNanoLabConstants.VISIBLE_GROUPS) {
 					secureObject(dataToProtect, group,
+							CaNanoLabConstants.CSM_READ_ROLE);
+				}
+				if (owningGroup!=null) {
+					secureObject(dataToProtect, owningGroup,
 							CaNanoLabConstants.CSM_READ_ROLE);
 				}
 			}
