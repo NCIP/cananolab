@@ -24,7 +24,7 @@ function setupOrgDetailView(form, selectEleId, particleIdEle) {
 	}
 	if(org != "[Other]") {
 		form.action = "submitPointOfContact.do?dispatch=detailView&page=0&location=local" + 
-			particleStr+"&pocId="+pocId+"&organizationName=" + org;
+			particleStr+"&pocId="+pocId;
 		form.submit();
 	}
 	return false;
