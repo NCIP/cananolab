@@ -41,7 +41,7 @@ group by nanoparticle_sample.source_pk_id;
 CREATE TABLE point_of_contact
 (
 	poc_pk_id BIGINT NOT NULL,
-	role VARCHAR(200) NOT NULL,
+	role VARCHAR(200),
 	first_name VARCHAR(200),
 	last_name VARCHAR(200),
 	middle_initial VARCHAR(50),
@@ -58,11 +58,10 @@ ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-INSERT INTO point_of_contact (poc_pk_id, organization_pk_id, role, created_date, created_by)
+INSERT INTO point_of_contact (poc_pk_id, organization_pk_id, created_date, created_by)
 SELECT DISTINCT
 	source.source_pk_id,
 	source.source_pk_id,
-	'Investigator',
 	min(nanoparticle_sample.created_date),
 	nanoparticle_sample.created_by
 FROM source, nanoparticle_sample
@@ -179,8 +178,8 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
 
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Manufacturer');
-insert into `common_lookup`(`name`,`attribute`,`value`) values ('POC','contactType','Investigator');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('PointOfContact','role','Manufacturer');
+insert into `common_lookup`(`name`,`attribute`,`value`) values ('PointOfContact','role','Investigator');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
