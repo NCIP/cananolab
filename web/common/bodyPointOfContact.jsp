@@ -14,7 +14,7 @@
 			</td>
 			<td class="formSubTitleWithBottomNoLeft" align="right">
 				&nbsp;
-				<a href="#" onclick="showhide('${param.pocTitle}');">show/hide</a>&nbsp;
+				<!--<a href="#" onclick="showhide('${param.pocTitle}');">show/hide</a>&nbsp;  -->
 				<c:if test="${param.pocTitle ne 'Primary Point of Contact' }">
 					<a href="#"
 						onclick="removeComponent(submitPointOfContactForm, 'submitPointOfContact', ${param.pocIndex}, 'removePointOfContact');return false;">
@@ -30,6 +30,7 @@
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
+		<!--  
 			<tr>
 				<c:choose>
 					<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
@@ -53,6 +54,7 @@
 					</c:when>
 				</c:choose>
 			</tr>
+			-->
 			<tr>
 				<td class="leftLabel" valign="top">
 					<strong>First Name</strong>
