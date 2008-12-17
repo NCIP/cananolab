@@ -6,6 +6,7 @@ package gov.nih.nci.cananolab.ui.common;
  * @author tanq, pansu
  */
 
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
@@ -375,7 +376,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
-		System.out.println("####### entity=" + entity);
 		entity.addPointOfContact();
 		return mapping.getInputForward();
 	}
@@ -391,6 +391,36 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		entity.removePointOfContact(ind);
 
 		return mapping.getInputForward();
+	}
+	
+	public ActionForward getOrganization(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String orgName = request.getParameter("orgName");
+		String orgIndex = request.getParameter("orgIndex");
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		Organization org = pocService
+				.findOrganizationByName(orgName);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		
+		if (orgIndex==null || orgIndex.trim().length()==0) {
+			PointOfContactBean pocBean = (PointOfContactBean) theForm
+				.get("poc");
+			pocBean.setOrganization(org);
+			theForm.set("poc", pocBean);
+		}else {
+			OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");
+			int index = Integer.parseInt(orgIndex);
+			otherPocsBean.getOtherPointOfContacts().get(index).setOrganization(org);
+			theForm.set("otherPoc", otherPocsBean);
+		}
+		return mapping.getInputForward();
+	}
+	public ActionForward cancel(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		return mapping.findForward("updateParticle");
 	}
 
 }
