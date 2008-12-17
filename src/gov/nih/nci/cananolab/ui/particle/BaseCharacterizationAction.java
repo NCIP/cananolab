@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
@@ -70,9 +71,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 
-		// setup other particles from the same source		
-		this.setOtherParticlesFromTheSameSource("local", request,
-				particleBean, user);
+		// setup other particles from the same source
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 
 		// set charclass
 		ServletContext appContext = request.getSession().getServletContext();
@@ -212,6 +213,20 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		charService.saveCharacterization(
 				particleBean.getDomainParticleSample(), charBean
 						.getDomainChar());
+
+		// set public visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				particleBean.getDomainParticleSample().getName(),
+				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+		if (accessibleGroups != null
+				&& accessibleGroups
+						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+			charService.assignPublicVisibility(authService, charBean
+					.getDomainChar());
+		}
+
 		// save file data to file system and set visibility
 		List<FileBean> files = new ArrayList<FileBean>();
 		for (DerivedBioAssayDataBean bioassay : charBean
@@ -288,9 +303,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
 				user, "local");
-		setLookups(request, charBean);		
-		this.setOtherParticlesFromTheSameSource("local", request,
-				particleBean, user);
+		setLookups(request, charBean);
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 		// clear copy to otherParticles
 		theForm.set("otherParticles", new String[0]);
 		theForm.set("copyData", false);

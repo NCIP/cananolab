@@ -8,6 +8,8 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
+import java.util.List;
+
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
@@ -22,6 +24,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -88,6 +91,23 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 		compositionService.saveFunctionalizingEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
+
+		// set visibility
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				particleBean.getDomainParticleSample().getName(),
+				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+		if (accessibleGroups != null
+				&& accessibleGroups
+						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+			//set composition public
+			authService.assignPublicVisibility(particleBean
+					.getDomainParticleSample().getSampleComposition().getId()
+					.toString());
+			compositionService.assignFunctionalizingEntityPublicVisibility(
+					authService, entityBean.getDomainEntity());
+		}
 		// save file data to file system and set visibility
 		saveFilesToFileSystem(entityBean.getFiles());
 
@@ -181,8 +201,9 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");		
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+		UserBean user = (UserBean) session.getAttribute("user");
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 
 		setLookups(request);
 		return mapping.getInputForward();
@@ -201,7 +222,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();

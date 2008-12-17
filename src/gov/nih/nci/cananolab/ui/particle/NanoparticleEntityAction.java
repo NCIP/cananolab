@@ -8,6 +8,8 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: NanoparticleEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
+import java.util.List;
+
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
@@ -22,6 +24,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -68,21 +71,21 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 						.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
 		try {
 			entityBean.setupDomainEntity(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName(), internalUriPath);
-		}catch (ClassCastException ex) {
+					.getDisplayNameToClassNameLookup(
+							request.getSession().getServletContext()), user
+					.getLoginName(), internalUriPath);
+		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
-			if (ex.getMessage()!=null && ex.getMessage().length()>0 &&
-					!ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msg = new ActionMessage("errors.invalidOtherType",
-						entityBean.getType(),"Nanoparticle Entity");
-			}else {
-				msg = new ActionMessage("errors.invalidOtherType",
-						entityBean.getType(),"Nanoparticle Entity");
+			if (ex.getMessage() != null && ex.getMessage().length() > 0
+					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType", entityBean
+						.getType(), "Nanoparticle Entity");
+			} else {
+				msg = new ActionMessage("errors.invalidOtherType", entityBean
+						.getType(), "Nanoparticle Entity");
 				entityBean.setType(null);
-			}		
+			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
 			entityBean.setType(null);
@@ -99,6 +102,24 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 
 		compositionService.saveNanoparticleEntity(particleBean
 				.getDomainParticleSample(), entityBean.getDomainEntity());
+
+		// set visibility
+
+		AuthorizationService authService = new AuthorizationService(
+				CaNanoLabConstants.CSM_APP_NAME);
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				particleBean.getDomainParticleSample().getName(),
+				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+		if (accessibleGroups != null
+				&& accessibleGroups
+						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+			// set composition public
+			authService.assignPublicVisibility(particleBean
+					.getDomainParticleSample().getSampleComposition().getId()
+					.toString());
+			compositionService.assignNanoparicleEntityPublicVisibility(
+					authService, entityBean.getDomainEntity());
+		}
 		// save file data to file system and set visibility
 		saveFilesToFileSystem(entityBean.getFiles());
 
@@ -186,10 +207,11 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("nanoparticleEntityForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean=setupParticle(theForm, request, "local");
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 
 		setLookups(request);
 		return mapping.getInputForward();
@@ -199,11 +221,12 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean=setupParticle(theForm, request, "local");
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		NanoparticleEntityBean entityBean = compService

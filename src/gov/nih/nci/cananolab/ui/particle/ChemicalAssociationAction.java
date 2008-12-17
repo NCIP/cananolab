@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -57,23 +58,23 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 						.getOneWordLowerCaseFirstLetter("Chemical Association");
 		try {
 			assocBean.setupDomainAssociation(InitSetup.getInstance()
-				.getDisplayNameToClassNameLookup(
-						request.getSession().getServletContext()), user
-				.getLoginName(), internalUriPath);
-		}catch (ClassCastException ex) {
+					.getDisplayNameToClassNameLookup(
+							request.getSession().getServletContext()), user
+					.getLoginName(), internalUriPath);
+		} catch (ClassCastException ex) {
 			ActionMessages msgs = new ActionMessages();
 			ActionMessage msg = null;
-			if (ex.getMessage()!=null && ex.getMessage().length()>0 &&
-					!ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msg = new ActionMessage("errors.invalidOtherType",
-						ex.getMessage(),"Chemical Association");
-			}else {
-				msg = new ActionMessage("errors.invalidOtherType",
-						assocBean.getType(),"Chemical Association");
+			if (ex.getMessage() != null && ex.getMessage().length() > 0
+					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType", ex
+						.getMessage(), "Chemical Association");
+			} else {
+				msg = new ActionMessage("errors.invalidOtherType", assocBean
+						.getType(), "Chemical Association");
 				assocBean.setType(null);
-			}			
+			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);			
+			this.saveErrors(request, msgs);
 			return mapping.getInputForward();
 		}
 
@@ -119,7 +120,22 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			compService.saveChemicalAssociation(particleBean
 					.getDomainParticleSample(), assocBean
 					.getDomainAssociation());
-
+			// set visibility
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			List<String> accessibleGroups = authService.getAccessibleGroups(
+					particleBean.getDomainParticleSample().getName(),
+					CaNanoLabConstants.CSM_READ_PRIVILEGE);
+			if (accessibleGroups != null
+					&& accessibleGroups
+							.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+				// set composition public
+				authService.assignPublicVisibility(particleBean
+						.getDomainParticleSample().getSampleComposition()
+						.getId().toString());
+				compService.assignChemicalAssociationPublicVisibility(
+						authService, assocBean.getDomainAssociation());
+			}
 			// save file data to file system and set visibility
 			saveFilesToFileSystem(assocBean.getFiles());
 

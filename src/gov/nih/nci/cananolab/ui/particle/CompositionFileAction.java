@@ -55,7 +55,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(fileBean.getDomainFile().getId()
-				.toString(), fileBean.getVisibilityGroups());
+				.toString(), fileBean.getVisibilityGroups(), null);
 
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
