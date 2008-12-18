@@ -171,7 +171,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		return particleId;
 	}
-
+	
 	private String getPOCId(HttpServletRequest request) {
 		String pocId = null;
 		if (request.getSession().getAttribute("pocParticle") != null) {
@@ -417,10 +417,16 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		return mapping.getInputForward();
 	}
+	
 	public ActionForward cancel(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		return mapping.findForward("updateParticle");
+		String particleId = getParticleId(request);		
+		if (particleId != null) {
+			request.setAttribute("particleId", particleId);
+			return mapping.findForward("updateParticle");
+		} else {
+			return mapping.findForward("submitParticle");
+		}
 	}
-
 }
