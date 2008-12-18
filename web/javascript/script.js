@@ -222,7 +222,7 @@ function clearMultibox(selection) {
 	}
 }
 function submitAction(form, actionName, dispatchName) {
-	form.action = actionName+".do?dispatch="+dispatchName;
+	form.action = actionName+".do?dispatch="+dispatchName+"&page=0";
 	form.submit();
 }
 function addComponent(form, actionName, dispatchName) {
