@@ -18,18 +18,16 @@
 	test="${param.dispatch eq 'setupUpdate' || updateDataTree eq 'true'}">
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
-
 <html:form action="/submitNanoparticleSample">
 	<c:choose>
 		<c:when
-			test="${!empty nanoparticleSampleForm.map.particleSampleBean.pocBean.displayName}">
+			test="${!empty nanoparticleSampleForm.map.particleSampleBean.pocBean.domain.id}">
 			<c:set var="pocDetailDisplay" value="display: inline;" />
 		</c:when>
 		<c:otherwise>
 			<c:set var="pocDetailDisplay" value="display: none;" />
 		</c:otherwise>
 	</c:choose>
-
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -82,7 +80,7 @@
 									styleId="primaryPOCList"
 									onchange="javascript:setupPOC(nanoparticleSampleForm, 'primaryPOCList');
 												setPOCDetailLink('primaryPOCList', 'pocDetail');												
-												removeOrgVisibility();">
+												removeOrgVisibility('primaryPOCList');">
 									<option />
 										<c:if test="${!empty allPointOfContacts}">
 											<html:options collection="allPointOfContacts"
@@ -92,10 +90,10 @@
 										[Other]
 									</option>
 								</html:select>
-								&nbsp;								
-								<a style="" id="pocDetail" href="#"
+								&nbsp;											
+								<a style="${pocDetailDisplay}" id="pocDetail" href="#"
 									onclick="javascript:submitAction(nanoparticleSampleForm, 'submitNanoparticleSample', 'pointOfContactDetailView');">
-									<span class="addLink2">View Detail</span> </a>									
+									<span class="addLink2">View Detail</span> </a>		
 							</td>
 						</tr>
 						<tr>
