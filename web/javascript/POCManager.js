@@ -4,27 +4,7 @@ function setupPOC(form, selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
 	var otext = selectEle.options[selectEle.options.selectedIndex].text;
 	if(otext == "[Other]") {
-		form.action = "submitPointOfContact.do?dispatch=setup&page=0&location=local";
-		form.submit();
-	}
-	return false;
-}
-
-function setupOrgDetailView(form, selectEleId, particleIdEle) {
-	var selectEle = document.getElementById(selectEleId);
-	var org = selectEle.options[selectEle.options.selectedIndex].text;
-	var pocId = selectEle.options[selectEle.options.selectedIndex].value;
-	var particleId = null;
-	if (document.getElementById(particleIdEle)!=null){
-		particleId = document.getElementById(particleIdEle).value;
-	}
-	var particleStr = "";
-	if (particleId!=null){
-		particleStr = "&particleId="+particleId;
-	}
-	if(org != "[Other]") {
-		form.action = "submitPointOfContact.do?dispatch=detailView&page=0&location=local" + 
-			particleStr+"&pocId="+pocId;
+		form.action = "submitNanoparticleSample.do?dispatch=newPointOfContact&page=0";
 		form.submit();
 	}
 	return false;
