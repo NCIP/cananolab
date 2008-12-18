@@ -8,20 +8,13 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
-import java.util.List;
-
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.common.PointOfContactService;
-import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -155,6 +148,16 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
+	public ActionForward newPointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleSampleBean = (ParticleBean) (theForm
+				.get("particleSampleBean"));
+		request.getSession().setAttribute("pocParticle", particleSampleBean);		
+		return mapping.findForward("newPointOfContact");
+	}
+	
 	public ActionForward pointOfContactDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

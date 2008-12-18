@@ -137,13 +137,16 @@
 				key="error.duplicateNanoparticleSample"
 				path="particle.submitNanoparticleSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
-			<forward name="view" path="particle.generalInfo" />			
+			<forward name="view" path="particle.generalInfo" />
 			<forward name="update"
 				path="particle.updateNanoparticleSample" />
 			<forward name="input"
-				path="particle.submitNanoparticleSample" />			
+				path="particle.submitNanoparticleSample" />
 			<forward name="pointOfContactDetailView"
 				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
+			<forward name="newPointOfContact"
+				path="/submitPointOfContact.do?dispatch=setup&amp;location=local&amp;page=0" />
+
 		</action>
 		<action input="input" name="searchNanoparticleSampleForm"
 			parameter="dispatch" path="/searchNanoparticle"
