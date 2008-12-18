@@ -47,29 +47,31 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	 * 
 	 * @throws PointOfContactException
 	 */
-	public void savePointOfContact(
-			PointOfContact primaryPointOfContact, 
+	public void savePointOfContact(PointOfContact primaryPointOfContact,
 			Collection<PointOfContact> otherPointOfContactCollection)
-		throws PointOfContactException, DuplicateEntriesException {
-		
-		//TODO: to verify if organization.primaryNanoparticleSampleCollection is empty		
+			throws PointOfContactException, DuplicateEntriesException {
+
+		// TODO: to verify if organization.primaryNanoparticleSampleCollection
+		// is empty
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);	
+					CaNanoLabConstants.CSM_APP_NAME);
 			PointOfContact dbPointOfContact = findPointOfContact(primaryPointOfContact);
 			if (dbPointOfContact != null
-					&& !dbPointOfContact.getId().equals(primaryPointOfContact.getId())) {
+					&& !dbPointOfContact.getId().equals(
+							primaryPointOfContact.getId())) {
 				throw new DuplicateEntriesException();
 			}
 			savePointOfContact(primaryPointOfContact, authService, appService);
-			
+
 			if (otherPointOfContactCollection != null) {
-				for (PointOfContact poc: otherPointOfContactCollection) {	
+				for (PointOfContact poc : otherPointOfContactCollection) {
 					dbPointOfContact = findPointOfContact(primaryPointOfContact);
 					if (dbPointOfContact != null
-							&& !dbPointOfContact.getId().equals(primaryPointOfContact.getId())) {
+							&& !dbPointOfContact.getId().equals(
+									primaryPointOfContact.getId())) {
 						throw new DuplicateEntriesException();
 					}
 					savePointOfContact(poc, authService, appService);
@@ -83,21 +85,20 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
-	
 
-	
-	public List<PointOfContactBean> findOtherPointOfContactCollection(String particleId)
-		throws PointOfContactException{
-		return helper.findOtherPointOfContactCollection(particleId);		
+	public List<PointOfContactBean> findOtherPointOfContactCollection(
+			String particleId) throws PointOfContactException {
+		return helper.findOtherPointOfContactCollection(particleId);
 	}
-	
+
 	public PointOfContactBean findPrimaryPointOfContact(String particleId)
-		throws PointOfContactException{
-		return helper.findPrimaryPointOfContact(particleId);	
+			throws PointOfContactException {
+		return helper.findPrimaryPointOfContact(particleId);
 	}
-	
-	public PointOfContact findPointOfContact(PointOfContact primaryPointOfContact)
-		throws PointOfContactException{
+
+	public PointOfContact findPointOfContact(
+			PointOfContact primaryPointOfContact)
+			throws PointOfContactException {
 		PointOfContact dbPointOfContact = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -105,9 +106,12 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(PointOfContact.class);
 			crit.createAlias("organization", "organization");
-			crit.add(Restrictions.eq("lastName",primaryPointOfContact.getLastName()));
-			crit.add(Restrictions.eq("firstName",primaryPointOfContact.getFirstName()));
-			crit.add(Restrictions.eq("organization.name",primaryPointOfContact.getOrganization().getName()));
+			crit.add(Restrictions.eq("lastName", primaryPointOfContact
+					.getLastName()));
+			crit.add(Restrictions.eq("firstName", primaryPointOfContact
+					.getFirstName()));
+			crit.add(Restrictions.eq("organization.name", primaryPointOfContact
+					.getOrganization().getName()));
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -123,65 +127,70 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		}
 	}
 
-	
 	private void savePointOfContact(PointOfContact pointOfContact,
-			AuthorizationService authService, CustomizedApplicationService appService)
-		throws Exception{
+			AuthorizationService authService,
+			CustomizedApplicationService appService) throws Exception {
 		String user = pointOfContact.getCreatedBy();
-		//TODO:: association of pointOfContact and organization
+		// TODO:: association of pointOfContact and organization
 		Organization organization = pointOfContact.getOrganization();
-		if (organization!=null) {
-			//TODO:: re-test (now, org is not from dropdown list, then org.pocCollection==null,
-			//if pri-org and sec-org are the same, pri-org is null after overwritten
-			
-			//TODO:: if orgID!=null load its POCCollection????
-//			Organization dbOrganization1 = null;
-//			if (organization.getId()!=null) {
-//				dbOrganization1 = getDBOrganization(organization);
-//			}			
-//			if (organization.getPointOfContactCollection()==null) {
-//				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
-//			}else {
-//				organization.setPointOfContactCollection(dbOrganization1.getPointOfContactCollection());
-//				organization.getPointOfContactCollection().add(pointOfContact);
-//			}
-//			Organization dbOrganization = (Organization) appService.getObject(
-//					Organization.class, "name", organization.getName());
+		if (organization != null) {
+			// TODO:: re-test (now, org is not from dropdown list, then
+			// org.pocCollection==null,
+			// if pri-org and sec-org are the same, pri-org is null after
+			// overwritten
+
+			// TODO:: if orgID!=null load its POCCollection????
+			// Organization dbOrganization1 = null;
+			// if (organization.getId()!=null) {
+			// dbOrganization1 = getDBOrganization(organization);
+			// }
+			// if (organization.getPointOfContactCollection()==null) {
+			// organization.setPointOfContactCollection(new
+			// HashSet<PointOfContact>());
+			// }else {
+			// organization.setPointOfContactCollection(dbOrganization1.getPointOfContactCollection());
+			// organization.getPointOfContactCollection().add(pointOfContact);
+			// }
+			// Organization dbOrganization = (Organization)
+			// appService.getObject(
+			// Organization.class, "name", organization.getName());
 			Organization dbOrganization = getDBOrganization(organization);
 			if (dbOrganization != null) {
-				organization.setId(dbOrganization.getId());		
+				organization.setId(dbOrganization.getId());
 			}
-			if (organization.getPointOfContactCollection()==null) {
-				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
-			}else {
+			if (organization.getPointOfContactCollection() == null) {
+				organization
+						.setPointOfContactCollection(new HashSet<PointOfContact>());
+			} else {
 				if (dbOrganization != null) {
-					organization.setPointOfContactCollection(dbOrganization.getPointOfContactCollection());					
+					organization.setPointOfContactCollection(dbOrganization
+							.getPointOfContactCollection());
 				}
 				organization.getPointOfContactCollection().add(pointOfContact);
 			}
-			if (organization.getCreatedBy()==null){			
+			if (organization.getCreatedBy() == null) {
 				organization.setCreatedBy(user);
 			}
-			if (organization.getCreatedDate()==null){
+			if (organization.getCreatedDate() == null) {
 				organization.setCreatedDate(new Date());
 			}
 			pointOfContact.setOrganization(organization);
-			appService.saveOrUpdate(organization);	
+			appService.saveOrUpdate(organization);
 		}
-		if (pointOfContact.getCreatedDate()==null) {
-			//TODO:: myCal.add(Calendar.SECOND, 1);???
+		if (pointOfContact.getCreatedDate() == null) {
+			// TODO:: myCal.add(Calendar.SECOND, 1);???
 			pointOfContact.setCreatedDate(new Date());
 		}
-		appService.saveOrUpdate(pointOfContact);		
+		appService.saveOrUpdate(pointOfContact);
 	}
-	
-	public PointOfContactBean findPointOfContactById(String POCId) 
-		throws PointOfContactException{
-		return helper.findPointOfContactById(POCId);		
+
+	public PointOfContactBean findPointOfContactById(String POCId)
+			throws PointOfContactException {
+		return helper.findPointOfContactById(POCId);
 	}
-	
-	public Organization findOrganizationByName(String orgName) 
-		throws PointOfContactException{
+
+	public Organization findOrganizationByName(String orgName)
+			throws PointOfContactException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -190,7 +199,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			crit.add(Restrictions.eq("name", orgName));
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		
+
 			List results = appService.query(crit);
 			Organization org = null;
 			for (Object obj : results) {
@@ -198,14 +207,15 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			return org;
 		} catch (Exception e) {
-			String err = "Problem finding organization with the given name "+orgName;
+			String err = "Problem finding organization with the given name "
+					+ orgName;
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
-		}		
+		}
 	}
-	
-	private Organization getDBOrganization(Organization organization) 
-		throws PointOfContactException{
+
+	private Organization getDBOrganization(Organization organization)
+			throws PointOfContactException {
 		Organization dbOrganization = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -214,10 +224,11 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					.forClass(Organization.class);
 			crit.add(Restrictions.eq("name", organization.getName()));
 			crit.createAlias("pointOfContactCollection", "poc",
-					CriteriaSpecification.LEFT_JOIN);;
+					CriteriaSpecification.LEFT_JOIN);
+			;
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		
+
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				dbOrganization = ((Organization) obj);
@@ -227,37 +238,39 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			String err = "Problem finding organization with the given organization ID.";
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
-		}	
+		}
 	}
-	//TODO: not in used
-//	public SortedSet<Organization> findAllOrganizations(UserBean user)
-//		throws PointOfContactException {
-//		try {
-//			AuthorizationService auth = new AuthorizationService(
-//					CaNanoLabConstants.CSM_APP_NAME);		
-//			SortedSet<Organization> organizations = new TreeSet<Organization>(
-//					new CaNanoLabComparators.OrganizationComparator());
-//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//					.getApplicationService();		
-//			DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
-//			List results = appService.query(crit);
-//			//TODO:: to test
-//			for (Object obj : results) {
-//				Organization org = ((Organization) obj);
-//				if (auth.isUserAllowed(org.getId().toString(), user)) {
-//					organizations.add(org);
-//				}
-//			}
-//			return organizations;
-//		} catch (Exception e) {
-//			String err = "Error finding all organization for " + user.getLoginName();
-//			logger.error(err, e);
-//			throw new PointOfContactException(err, e);
-//		}
-//	}
-	
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
-		throws PointOfContactException{
+
+	// TODO: not in used
+	// public SortedSet<Organization> findAllOrganizations(UserBean user)
+	// throws PointOfContactException {
+	// try {
+	// AuthorizationService auth = new AuthorizationService(
+	// CaNanoLabConstants.CSM_APP_NAME);
+	// SortedSet<Organization> organizations = new TreeSet<Organization>(
+	// new CaNanoLabComparators.OrganizationComparator());
+	// CustomizedApplicationService appService = (CustomizedApplicationService)
+	// ApplicationServiceProvider
+	// .getApplicationService();
+	// DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
+	// List results = appService.query(crit);
+	// //TODO:: to test
+	// for (Object obj : results) {
+	// Organization org = ((Organization) obj);
+	// if (auth.isUserAllowed(org.getId().toString(), user)) {
+	// organizations.add(org);
+	// }
+	// }
+	// return organizations;
+	// } catch (Exception e) {
+	// String err = "Error finding all organization for " + user.getLoginName();
+	// logger.error(err, e);
+	// throw new PointOfContactException(err, e);
+	// }
+	// }
+
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
+			String nanoparticleSampleCollection) throws PointOfContactException {
 		PointOfContact dbPoc = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -269,7 +282,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					CriteriaSpecification.LEFT_JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		
+
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				dbPoc = ((PointOfContact) obj);
@@ -279,11 +292,11 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			String err = "Problem finding PointOfContact with the given PointOfContact ID.";
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
-		}	
+		}
 	}
-	
+
 	public SortedSet<String> getAllOrganizationNames(UserBean user)
-		throws PointOfContactException {
+			throws PointOfContactException {
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					CaNanoLabConstants.CSM_APP_NAME);
@@ -297,30 +310,38 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
 				names.add(name);
-				//TODO:: to verify
-//				if (auth.isUserAllowed(name, user)) {
-//					names.add(name);
-//				}
+				// TODO:: to verify
+				// if (auth.isUserAllowed(name, user)) {
+				// names.add(name);
+				// }
 			}
 			return names;
 		} catch (Exception e) {
-			String err = "Error finding organization for " + user.getLoginName();
+			String err = "Error finding organization for "
+					+ user.getLoginName();
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
 	}
-	
+
 	// retrieve point of contact accessibility
 	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException {
 		try {
-			if (pocBean!=null) {
+			if (pocBean != null) {
 				AuthorizationService auth = new AuthorizationService(
 						CaNanoLabConstants.CSM_APP_NAME);
 				if (pocBean.getDomain().getId() != null
 						&& auth.isUserAllowed(pocBean.getDomain().getId()
 								.toString(), user)) {
 					pocBean.setHidden(false);
+					// get assigned visible groups
+					List<String> accessibleGroups = auth.getAccessibleGroups(
+							pocBean.getDomain().getId().toString(),
+							CaNanoLabConstants.CSM_READ_PRIVILEGE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					pocBean.setVisibilityGroups(visibilityGroups);
 				} else {
 					pocBean.setHidden(true);
 				}
