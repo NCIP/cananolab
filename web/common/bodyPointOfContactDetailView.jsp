@@ -20,6 +20,9 @@
 				</jsp:include>
 				<c:url var="url" value="submitPointOfContact.do">
 					<c:param name="page" value="0" />
+					<c:if test="${!empty param.particleId}">
+						<c:param name="particleId" value="${param.particleId}" />
+					</c:if>
 					<c:param name="dispatch" value="cancel" />					
 				</c:url>
 				<a href="${url}" class="helpText">Back</a>

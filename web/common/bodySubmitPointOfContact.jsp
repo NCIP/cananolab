@@ -19,14 +19,12 @@
 					<jsp:param name="topic" value="submit_publication_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
-				<c:set var="cancelUrl"
-					value="submitPointOfContact.do?page=0&particleId=${particleId }&dispatch=setup&location=local" />
-				<c:if test="${!empty pocId}">
-					<c:set var="cancelUrl"
-						value="submitPointOfContact.do?page=0&particleId=${particleId }&dispatch=setupUpdate&location=local&pocId=${pocId}" />
-				</c:if>
 				<c:url var="cancelUrl" value="submitPointOfContact.do">
 					<c:param name="page" value="0" />
+					<c:if test="${!empty param.particleId}">
+						<c:param name="particleId" value="${param.particleId}" />
+					</c:if>
+					<c:param name="pocId" value="${pocId}" />
 					<c:param name="dispatch" value="cancel" />					
 				</c:url>
 				<a href="${cancelUrl}" class="helpText">Back</a>
