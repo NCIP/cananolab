@@ -30,8 +30,24 @@
 		</tr>
 	</tbody>
 </table>
+<c:choose>
+	<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
+		<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+			width="100%" align="center" summary="" border="0">
+			<tbody>
+				<tr>
+					<td class="completeLabelNoTop" valign="top">						
+						<a href="#" onclick="showhide('allPOC_${param.pocTitle}');">
+							<span class="addLink2">Search
+							Existing Point of Contact</span></a>&nbsp;
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-<div id="${param.pocTitle}" style="display: block;">
+	</c:when>
+</c:choose>
+<div id="allPOC_${param.pocTitle}" style="display: none;">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
@@ -39,25 +55,24 @@
 				<c:choose>
 					<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
 						<td class="leftLabel" valign="top">
-							<strong>Point of Contact Name</strong>
+							<strong>&nbsp;&nbsp;&nbsp;&nbsp;</strong>
 						</td>
 						<td class="rightLabel" valign="top" colspan="5">
-							<html:select styleId="pocId_${param.pocIndex}"
-								property="${param.pocBean}.pocId"
-								onchange="javascript:setSecondaryPOC(submitPointOfContactForm, 'pocId_${param.pocIndex }', '${param.pocIndex }' );">
-								<option />
-									<c:if test="${!empty allPointOfContacts}">
-										<html:options collection="allPointOfContacts"
-											labelProperty="displayName" property="domain.id" />
-									</c:if>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
+							<logic:iterate id="existingPocBean" name="allPointOfContacts">
+								<a href="javascript:setSecondaryPOC(submitPointOfContactForm, '${existingPocBean.domain.id}', '${param.pocIndex}');">
+									<bean:write name="existingPocBean" property="displayName"/></a><br>							  
+							</logic:iterate>
 						</td>
 					</c:when>
 				</c:choose>
 			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="${param.pocTitle}" style="display: block;">
+	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+		width="100%" align="center" summary="" border="0">
+		<tbody>			
 			<tr>
 				<td class="leftLabel" valign="top">
 					<strong>First Name</strong>
