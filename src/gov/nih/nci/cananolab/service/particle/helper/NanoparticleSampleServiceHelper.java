@@ -69,9 +69,9 @@ public class NanoparticleSampleServiceHelper {
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
 			crit.createAlias("pointOfContact.organization", "organization");
-			crit.createAlias("otherPointOfContactCollection", "otherPoc");
-			crit.createAlias("otherPoc.organization", "otherOrg");
-			String critStrs[] = {"pointOfContact.lastName","pointOfContact.firstName",
+			crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("otherPoc.organization", "otherOrg", CriteriaSpecification.LEFT_JOIN);
+			String critStrs[] = {"pointOfContact.lastName","pointOfContact.firstName","pointOfContact.role",
 					"organization.name","otherPoc.lastName","otherPoc.firstName",
 					"otherOrg.name"};
 			for (String critStr: critStrs) {
