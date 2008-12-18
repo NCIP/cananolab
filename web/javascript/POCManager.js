@@ -21,11 +21,9 @@ function setPOCDetailLink(selectEleId, linkId) {
 	}
 }
 
-function setSecondaryPOC(form, selectEleId, pocIndex) {
-	var selectEle = document.getElementById(selectEleId);
-	var pocId = selectEle.options[selectEle.options.selectedIndex].value;
+function setSecondaryPOC(form, pocId, pocIndex) {
 	if(pocId != "other" && pocId != "") {
-		form.action = "submitPointOfContact.do?dispatch=getPointOfContact&pocIndex=" + pocIndex + "&pocId=" + pocId;
+		form.action = "submitPointOfContact.do?dispatch=getPointOfContact&page=0&pocIndex=" + pocIndex + "&pocId=" + pocId;
 		form.submit();
 	}
 }
@@ -34,7 +32,7 @@ function setOrganization(form, selectEleId, orgIndex) {
 	var selectEle = document.getElementById(selectEleId);
 	var orgName = selectEle.options[selectEle.options.selectedIndex].value;
 	if(orgName != "other" && orgName != "") {
-		form.action = "submitPointOfContact.do?dispatch=getOrganization&orgIndex=" + orgIndex + "&orgName=" + orgName;
+		form.action = "submitPointOfContact.do?dispatch=getOrganization&page=0&orgIndex=" + orgIndex + "&orgName=" + orgName;
 		form.submit();
 	}
 }
