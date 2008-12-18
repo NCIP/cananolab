@@ -3,8 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/POCManager.js"></script>
-<script type="text/javascript" src="javascript/script.js"></script>
+<script type="text/javascript" src="javascript/script.js"></script>	
 <script type="text/javascript" src="javascript/ParticleManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/NanoparticleSampleManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
 <table class="topBorderOnly" cellspacing="0" cellpadding="3"
 	width="100%" align="center" summary="" border="0">
@@ -92,12 +96,12 @@
 			</tr>
 			<tr>
 				<td class="leftLabel">
-					<strong>Organization Name</strong>
+					<strong>Organization Name*</strong>
 				</td>
 				<td class="label">
 					<html:select property="${param.pocBean}.organization.name"
 						styleId="orgName_${param.pocIndex}"
-						onchange="javascript:setOrganization(submitPointOfContactForm, 'orgName_${param.pocIndex }', '${param.pocIndex }' );callPrompt('Organization Name', 'orgName_${param.pocIndex }');">
+						onchange="javascript:removeOrgVisibilityByName('orgName_${param.pocIndex}', '${param.pocBean}.visibilityGroup');setOrganization(submitPointOfContactForm, 'orgName_${param.pocIndex }', '${param.pocIndex }' );callPrompt('Organization Name', 'orgName_${param.pocIndex }');">
 						<option value="" />
 							<html:options name="allOrganizationNames" />
 						<option value="other">
@@ -111,7 +115,7 @@
 				<td class="rightLabel" valign="top" colspan="4">
 					<html:select styleId="pocRole_${param.pocIndex }"
 						property="${param.pocBean}.domain.role"
-						onchange="javascript:callPrompt('Contact Role', 'pocRole_${param.pocBean}');">
+						onchange="javascript:callPrompt('Contact Role', 'pocRole_${param.pocIndex}');">
 						<option />
 							<html:options name="contactRoles" />
 						<option value="other">
@@ -179,7 +183,7 @@
 					<strong>Visibility</strong>
 				</td>
 				<td class="rightLabel" colspan="5">
-					<html:select property="${param.pocBean}.visibilityGroups"
+					<html:select styleId="${param.pocBean}.visibilityGroup" property="${param.pocBean}.visibilityGroups"
 						multiple="true" size="6">
 						<html:options name="allVisibilityGroups" />
 					</html:select>
