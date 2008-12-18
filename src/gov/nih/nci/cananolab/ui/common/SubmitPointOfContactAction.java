@@ -16,6 +16,8 @@ import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -138,11 +140,18 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
 		PointOfContactBean primaryPointOfContact = pointOfContactService
 				.findPointOfContactById(pocId);
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		// retrieve visibility
+		pointOfContactService
+				.retrieveAccessibility(primaryPointOfContact, user);
 		List<PointOfContactBean> otherPointOfContactCollection = null;
 		if (particleId != null && particleId.trim().length() > 0) {
 			session.setAttribute("pocParticleId", particleId);
 			otherPointOfContactCollection = pointOfContactService
 					.findOtherPointOfContactCollection(particleId);
+			for (PointOfContactBean poc : otherPointOfContactCollection) {
+				pointOfContactService.retrieveAccessibility(poc, user);
+			}
 		} else {
 			session.removeAttribute("pocParticleId");
 		}
@@ -171,7 +180,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		return particleId;
 	}
-	
+
 	private String getPOCId(HttpServletRequest request) {
 		String pocId = null;
 		if (request.getSession().getAttribute("pocParticle") != null) {
@@ -418,10 +427,10 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward cancel(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String particleId = getParticleId(request);		
+	public ActionForward cancel(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		String particleId = getParticleId(request);
 		if (particleId != null) {
 			request.setAttribute("particleId", particleId);
 			return mapping.findForward("updateParticle");
