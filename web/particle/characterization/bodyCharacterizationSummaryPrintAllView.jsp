@@ -73,42 +73,46 @@ ${charBean.protocolFileBean.domainFile.uri}
 						</tr>
 					</c:if>
 					<c:forEach var="derivedBioAssayData"
-						items="${charBean.derivedBioAssayDataList}" fileBeanfileInd">
+						items="${charBean.derivedBioAssayDataList}" varStatus="fileInd">
 						<c:if
-							test="${!empty derivedBiofileBeanabFileBean.domainFile.description 
-								&& derivedBioAssayData.labFileBean.hidden ne 'true'}">
+							test="${!empty derivedBioAssayData.fileBean.domainFile.description 
+								&& derivedBioAssayData.fileBean.hidden ne 'true'}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Characterization File #${fileInd.index+1} Description
-								fileBean				<td class="rightLabel" valign="top">
-									${derivedBioAssayData.labFileBean.domainFile.description}&nbsp;
+								</th>
+								<td class="rightLabel" valign="top">
+									${derivedBioAssayData.fileBean.domainFile.description}&nbsp;
 								</td>
 							</tr>
-						</c:ifileBeanc:if
-							test="${!empty derivedBioAssayData && !empty derivedBioAssayData.labFileBean.domainFile.uri}">
+						</c:if>
+						<c:if
+							test="${!empty derivedBioAssayData && !empty derivedBioAssayData.fileBean.domainFile.uri}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Characterization File #${fileInd.index+1}
 								</th>
-								<tdfileBeanhtLabel" valign="top">
+								<td class="rightLabel" valign="top">
 									<c:if
-										fileBeanpty derivedBioAssayData.labFileBean.domainFile.type}">
-								${derivedBioAssayData.labFileBean.domainFile.type}
-								<fileBean			</c:if>
+										test="${!empty derivedBioAssayData.fileBean.domainFile.type}">
+								${derivedBioAssayData.fileBean.domainFile.type}
+								<br>
+									</c:if>
 									<c:choose>
 										<c:when
-											test="${derivedBioAssayData.labFileBean.hidden eq 'true'}">
+											test="${derivedBioAssayData.fileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
-		fileBeanotherwise>
+										<c:otherwise>
 											<c:choose>
 												<c:when
-													test="${derivedBioAssayData.labFileBean.image eq 'true'}fileBean						<img
-														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.labFileBean.domainFile.id}&amp;locationfileBean}"
+													test="${derivedBioAssayData.fileBean.image eq 'true'}">
+													<img
+														src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.fileBean.domainFile.id}&amp;location=${location}"
 														border="0">
 
 												</c:when>
-												<c:otherwise>${derivedBioAssayData.labFileBean.domainFile.title}
+												<c:otherwise>${derivedBioAssayData.fileBean.domainFile.title}
 												</c:otherwise>
 											</c:choose>
 										</c:otherwise>
