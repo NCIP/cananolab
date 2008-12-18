@@ -94,6 +94,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		 * Prepare for nanoparticle sample form
 		 * 
 		 */
+		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
+				.getAttribute("pocParticle");
+		particleSampleBean.setPocBean(primaryPointOfContact);
 		String particleId = getParticleId(request);
 		if (particleId != null) {
 			request.setAttribute("particleId", particleId);
@@ -110,16 +113,13 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String particleId = request.getParameter("particleId");
+		String particleId = getParticleId(request);
 		session.removeAttribute("submitPointOfContactForm");
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 		ActionForward forward = mapping.getInputForward();
 		if (particleId != null && !particleId.equals("null")
 				&& particleId.trim().length() > 0) {
-			session.setAttribute("pocParticleId", particleId);
 			forward = mapping.findForward("submitPointOfContact");
-		} else {
-			session.removeAttribute("pocParticleId");
 		}
 		return forward;
 	}
@@ -392,32 +392,32 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward getOrganization(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String orgName = request.getParameter("orgName");
 		String orgIndex = request.getParameter("orgIndex");
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		Organization org = pocService
-				.findOrganizationByName(orgName);
+		Organization org = pocService.findOrganizationByName(orgName);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		
-		if (orgIndex==null || orgIndex.trim().length()==0) {
+
+		if (orgIndex == null || orgIndex.trim().length() == 0) {
 			PointOfContactBean pocBean = (PointOfContactBean) theForm
-				.get("poc");
+					.get("poc");
 			pocBean.setOrganization(org);
 			theForm.set("poc", pocBean);
-		}else {
+		} else {
 			OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
-				.get("otherPoc");
+					.get("otherPoc");
 			int index = Integer.parseInt(orgIndex);
-			otherPocsBean.getOtherPointOfContacts().get(index).setOrganization(org);
+			otherPocsBean.getOtherPointOfContacts().get(index).setOrganization(
+					org);
 			theForm.set("otherPoc", otherPocsBean);
 		}
 		return mapping.getInputForward();
 	}
-	
+
 	public ActionForward cancel(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
