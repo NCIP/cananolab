@@ -31,6 +31,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.particle.DWRSampleManager" />
 			<include method="removeOrgVisibility" />
+			<include method="removeOrgNameVisibility" />
 			<include method="getNanoparticleEntityTypes" />
 			<include method="getFunctionalizingEntityTypes" />
 			<include method="getFunctionTypes" />
