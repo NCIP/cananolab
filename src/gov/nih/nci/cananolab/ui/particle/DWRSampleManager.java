@@ -44,6 +44,27 @@ public class DWRSampleManager {
 
 		return new String[] { "" };
 	}
+	
+	/* remove organization name from the visiblity group */
+	public String[] removeOrgNameVisibility(String orgName) {
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		HttpServletRequest request = webContext.getHttpServletRequest();
+		try {
+			SortedSet<String> visibilityGroup = InitSecuritySetup.getInstance()
+					.getAllVisibilityGroups(request);
+			if (!orgName.equalsIgnoreCase("other")) {
+				visibilityGroup.remove(orgName);
+			}
+			String[] eleArray = new String[visibilityGroup.size()];
+			return visibilityGroup.toArray(eleArray);
+
+		} catch (Exception e) {
+			System.out.println("removeOrgNameVisibility exception.");
+			e.printStackTrace();
+		}
+		return new String[] { "" };
+	}
 
 	public String[] getNanoparticleEntityTypes(String searchLocations) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
