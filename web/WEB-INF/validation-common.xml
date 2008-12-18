@@ -4,12 +4,17 @@
 
 <form-validation>
 	<formset>
-		<form name="submitOrganizationForm">
-			<field property="poc.domain.name" page="2"
+		<form name="submitPointOfContactForm">
+			<field property="poc.organization.name" page="2"
 				depends="required">
-				<arg position="0" key="submitPointOfContactForm.poc.domain.name"
+				<arg position="0" key="submitPointOfContactForm.organizationName"
 					bundle="pointOfContact" />
 			</field>
-		</form>
+			<field property="organization.name" page="2" depends="required"
+				indexedListProperty="otherPoc.otherPointOfContacts">
+				<arg position="0" key="submitPointOfContactForm.organizationName"
+					bundle="pointOfContact" />
+			</field>
+		</form>		
 	</formset>
 </form-validation>
