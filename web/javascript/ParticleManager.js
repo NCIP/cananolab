@@ -22,9 +22,13 @@ function populateParticleNames(particleNames) {
 	}
 	dwr.util.addOptions("particleName", updatedParticleNames);
 }
-function removeOrgVisibility() {
-	var poc = document.getElementById("primaryPOCList").value;
-	
+
+function removeOrgVisibility(selectId) {
+	var pocField = document.getElementById(selectId);	
+	if (pocField==null){
+		return false;
+	}
+	var poc = pocField.value;
 	if(poc.charAt(0) == "[" &&
 			poc.charAt(otext.length - 1) == "]") 
 			return false;
@@ -35,16 +39,20 @@ function removeOrgVisibility() {
 	});
 	return false;
 }
-function removeOrgVisibility(selectId) {
-	var poc = document.getElementById(selectId).value;
-	
+
+function removeOrgVisibilityByName(selectId, visibilityGroupName) {
+	var pocField = document.getElementById(selectId);	
+	if (pocField==null){
+		return false;
+	}
+	var poc = pocField.value;
 	if(poc.charAt(0) == "[" &&
 			poc.charAt(otext.length - 1) == "]") 
 			return false;
-			
-	NanoparticleSampleManager.removeOrgVisibility(poc, function (data) {
-		dwr.util.removeAllOptions("visibilityGroup");
-		dwr.util.addOptions("visibilityGroup", data);
+	
+	NanoparticleSampleManager.removeOrgNameVisibility(poc, function (data) {
+		dwr.util.removeAllOptions(visibilityGroupName);
+		dwr.util.addOptions(visibilityGroupName, data);
 	});
 	return false;
 }
