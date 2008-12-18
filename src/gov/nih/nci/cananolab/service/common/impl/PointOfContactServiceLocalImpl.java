@@ -135,20 +135,29 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			//if pri-org and sec-org are the same, pri-org is null after overwritten
 			
 			//TODO:: if orgID!=null load its POCCollection????
-			Organization dbOrganization1 = null;
-			if (organization.getId()!=null) {
-				dbOrganization1 = getDBOrganization(organization);
-			}			
+//			Organization dbOrganization1 = null;
+//			if (organization.getId()!=null) {
+//				dbOrganization1 = getDBOrganization(organization);
+//			}			
+//			if (organization.getPointOfContactCollection()==null) {
+//				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
+//			}else {
+//				organization.setPointOfContactCollection(dbOrganization1.getPointOfContactCollection());
+//				organization.getPointOfContactCollection().add(pointOfContact);
+//			}
+//			Organization dbOrganization = (Organization) appService.getObject(
+//					Organization.class, "name", organization.getName());
+			Organization dbOrganization = getDBOrganization(organization);
+			if (dbOrganization != null) {
+				organization.setId(dbOrganization.getId());		
+			}
 			if (organization.getPointOfContactCollection()==null) {
 				organization.setPointOfContactCollection(new HashSet<PointOfContact>());
 			}else {
-				organization.setPointOfContactCollection(dbOrganization1.getPointOfContactCollection());
+				if (dbOrganization != null) {
+					organization.setPointOfContactCollection(dbOrganization.getPointOfContactCollection());					
+				}
 				organization.getPointOfContactCollection().add(pointOfContact);
-			}
-			Organization dbOrganization = (Organization) appService.getObject(
-					Organization.class, "name", organization.getName());
-			if (dbOrganization != null) {
-				organization.setId(dbOrganization.getId());		
 			}
 			if (organization.getCreatedBy()==null){			
 				organization.setCreatedBy(user);
@@ -194,6 +203,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}		
 	}
+	
 	private Organization getDBOrganization(Organization organization) 
 		throws PointOfContactException{
 		Organization dbOrganization = null;
@@ -202,7 +212,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Organization.class);
-			crit.add(Restrictions.eq("id", organization.getId()));
+			crit.add(Restrictions.eq("name", organization.getName()));
 			crit.createAlias("pointOfContactCollection", "poc",
 					CriteriaSpecification.LEFT_JOIN);;
 			crit
