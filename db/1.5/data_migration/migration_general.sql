@@ -195,5 +195,36 @@ ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 
  
+-- fix, some records exist in csm_protection_group not in csm_protection_element
+ 
+INSERT INTO canano.csm_protection_element ( 
+	protection_element_name,
+	object_id,
+	application_id,
+	update_date
+)SELECT
+	protection_group_name,
+	protection_group_name,
+	application_id,
+	sysdate()
+FROM canano.csm_protection_group
+where protection_group_name not in (
+select protection_element_name from csm_protection_element
+)
+;
+INSERT INTO canano.csm_pg_pe ( 
+	protection_group_id,
+	protection_element_id,
+	update_date
+)SELECT
+	g.protection_group_id,
+	e.protection_element_id,
+	sysdate()
+FROM canano.csm_protection_group g, canano.csm_protection_element e
+where  e.update_date = CURRENT_DATE()
+and g.protection_group_name = e.protection_element_name
+;
+--end of fix
+
 -- End of script
 
