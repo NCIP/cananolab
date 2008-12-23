@@ -68,6 +68,8 @@ public class PointOfContactServiceHelper {
 					CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("organization", "organization",
 					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("organization.pointOfContactCollection", "orgPOC",
+					CriteriaSpecification.LEFT_JOIN);
 			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
 
 			crit
