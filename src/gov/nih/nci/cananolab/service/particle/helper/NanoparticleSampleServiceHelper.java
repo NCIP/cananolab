@@ -441,9 +441,9 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		//crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
-		// crit.setFetchMode("publicationCollection.authorCollection",
-		// FetchMode.JOIN);
+		crit.createAlias("otherPointOfContactCollection", "otherPoc",
+				CriteriaSpecification.LEFT_JOIN);
+		
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -463,6 +463,7 @@ public class NanoparticleSampleServiceHelper {
 				Property.forName("id").eq(new Long(particleId)));
 		//TODO:: primaryPointOfContact.organization??
 		//crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);		
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
