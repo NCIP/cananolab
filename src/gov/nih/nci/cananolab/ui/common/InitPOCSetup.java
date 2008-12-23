@@ -1,11 +1,13 @@
 package gov.nih.nci.cananolab.ui.common;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
+import java.util.Collection;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,23 @@ public class InitPOCSetup {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		getAllOrganizationNames(request, user);
+	}
+	
+	public void persistPOCDropdowns(HttpServletRequest request,
+			PointOfContact primaryPointOfContact, 
+			Collection<PointOfContact> otherPointOfContactCollection ) throws Exception {
+			
+		InitSetup.getInstance().persistLookup(request, "PointOfContact", "role",
+				"otherRole",
+				(primaryPointOfContact.getRole()));
+		if (otherPointOfContactCollection!=null) {
+			for (PointOfContact otherPoc: otherPointOfContactCollection) {
+				InitSetup.getInstance().persistLookup(request, "PointOfContact", "role",
+						"otherRole",
+						(otherPoc.getRole()));
+			}
+		}		
+		setPOCDropdowns(request);
 	}
 	
 	public SortedSet<String> getAllOrganizationNames(
