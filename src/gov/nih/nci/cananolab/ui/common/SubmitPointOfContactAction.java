@@ -16,8 +16,6 @@ import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -48,7 +46,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
 				.get("poc");
@@ -61,13 +58,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
+		String[] primaryVisibilityGroups = primaryPointOfContact.getVisibilityGroups();
 		Collection<PointOfContact> otherPointOfContactCollection = null;
 		if (otherPointOfContactBeanCollection != null) {
 			otherPointOfContactCollection = new HashSet<PointOfContact>();
-			for (PointOfContactBean pointOfContactBean : otherPointOfContactBeanCollection) {
-				pointOfContactBean.getDomain()
+			for (PointOfContactBean otherPocBean : otherPointOfContactBeanCollection) {
+				otherPocBean.getDomain()
 						.setCreatedBy(user.getLoginName());
-				otherPointOfContactCollection.add(pointOfContactBean
+				otherPointOfContactCollection.add(otherPocBean
 						.getDomain());
 			}
 		}
@@ -79,7 +77,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		AuthorizationService authService = new AuthorizationService(
 				CaNanoLabConstants.CSM_APP_NAME);
 		authService.assignVisibility(primaryPointOfContact.getDomain().getId()
-				.toString(), primaryPointOfContact.getVisibilityGroups(),
+				.toString(), primaryVisibilityGroups,
 				primaryPointOfContact.getOrganization().getName());
 
 		if (otherPointOfContactCollection != null) {
@@ -91,6 +89,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 						.getOrganization().getName());
 			}
 		}
+		InitPOCSetup.getInstance().persistPOCDropdowns(request,
+				primaryPointOfContact.getDomain(), otherPointOfContactCollection);
 
 		/**
 		 * Prepare for nanoparticle sample form
@@ -99,6 +99,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
 				.getAttribute("pocParticle");
 		particleSampleBean.setPocBean(primaryPointOfContact);
+		particleSampleBean.getDomainParticleSample().setOtherPointOfContactCollection(otherPointOfContactCollection);
 		String particleId = getParticleId(request);
 		if (particleId != null) {
 			request.setAttribute("particleId", particleId);
@@ -126,45 +127,40 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		return forward;
 	}
 
-	// TODO::
+		
 	/**
 	 * update pointOfContact form *
 	 */
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		HttpSession session = request.getSession();
-		String particleId = request.getParameter("particleId");
-		String pocId = request.getParameter("pocId");
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		PointOfContactService pointOfContactService = 
+			new PointOfContactServiceLocalImpl();		
+		String particleId = getParticleId(request);
+		String pocId = getPOCId(request);
 		PointOfContactBean primaryPointOfContact = pointOfContactService
 				.findPointOfContactById(pocId);
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		// retrieve visibility
-		pointOfContactService
-				.retrieveAccessibility(primaryPointOfContact, user);
 		List<PointOfContactBean> otherPointOfContactCollection = null;
 		if (particleId != null && particleId.trim().length() > 0) {
-			session.setAttribute("pocParticleId", particleId);
 			otherPointOfContactCollection = pointOfContactService
 					.findOtherPointOfContactCollection(particleId);
-			for (PointOfContactBean poc : otherPointOfContactCollection) {
-				pointOfContactService.retrieveAccessibility(poc, user);
-			}
-		} else {
-			session.removeAttribute("pocParticleId");
 		}
-
+		setVisibility(user, primaryPointOfContact, false);
+		if (otherPointOfContactCollection != null) {
+			for (PointOfContactBean pointOfContactBean : otherPointOfContactCollection) {
+				setVisibility(user, pointOfContactBean, false);
+			}
+		}
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("poc", primaryPointOfContact);
 		OtherPointOfContactsBean otherPointOfContactsBean = new OtherPointOfContactsBean();
 		otherPointOfContactsBean
 				.setOtherPointOfContacts(otherPointOfContactCollection);
 		theForm.set("otherPoc", otherPointOfContactsBean);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
-
 		ActionForward forward = mapping.findForward("submitPointOfContact");
-		return forward;
+		return forward;		
 	}
 
 	private String getParticleId(HttpServletRequest request) {
