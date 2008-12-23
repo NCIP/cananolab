@@ -68,11 +68,9 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 
 			if (otherPointOfContactCollection != null) {
 				for (PointOfContact poc : otherPointOfContactCollection) {
-					dbPointOfContact = findPointOfContact(primaryPointOfContact);
-					if (dbPointOfContact != null
-							&& !dbPointOfContact.getId().equals(
-									primaryPointOfContact.getId())) {
-						throw new DuplicateEntriesException();
+					PointOfContact dbOtherPOC = findPointOfContact(poc);
+					if (dbOtherPOC != null) {
+						poc.setId(dbOtherPOC.getId());
 					}
 					savePointOfContact(poc, authService, appService);
 				}
@@ -131,43 +129,23 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			AuthorizationService authService,
 			CustomizedApplicationService appService) throws Exception {
 		String user = pointOfContact.getCreatedBy();
-		// TODO:: association of pointOfContact and organization
+		//TODO::: if pointOfContact is new, pointOfContact.getOrganization got empty organization
 		Organization organization = pointOfContact.getOrganization();
+		if (pointOfContact.getCreatedDate() == null) {
+			// TODO:: myCal.add(Calendar.SECOND, 1);???
+			pointOfContact.setCreatedDate(new Date());
+		}
 		if (organization != null) {
-			// TODO:: re-test (now, org is not from dropdown list, then
-			// org.pocCollection==null,
-			// if pri-org and sec-org are the same, pri-org is null after
-			// overwritten
-
-			// TODO:: if orgID!=null load its POCCollection????
-			// Organization dbOrganization1 = null;
-			// if (organization.getId()!=null) {
-			// dbOrganization1 = getDBOrganization(organization);
-			// }
-			// if (organization.getPointOfContactCollection()==null) {
-			// organization.setPointOfContactCollection(new
-			// HashSet<PointOfContact>());
-			// }else {
-			// organization.setPointOfContactCollection(dbOrganization1.getPointOfContactCollection());
-			// organization.getPointOfContactCollection().add(pointOfContact);
-			// }
-			// Organization dbOrganization = (Organization)
-			// appService.getObject(
-			// Organization.class, "name", organization.getName());
-			Organization dbOrganization = getDBOrganization(organization);
+			Organization dbOrganization = getDBOrganizationByName(organization.getName());
 			if (dbOrganization != null) {
 				organization.setId(dbOrganization.getId());
-			}
-			if (organization.getPointOfContactCollection() == null) {
-				organization
-						.setPointOfContactCollection(new HashSet<PointOfContact>());
-			} else {
-				if (dbOrganization != null) {
-					organization.setPointOfContactCollection(dbOrganization
-							.getPointOfContactCollection());
-				}
+				organization.setPointOfContactCollection(dbOrganization
+						.getPointOfContactCollection());
 				organization.getPointOfContactCollection().add(pointOfContact);
-			}
+			}else {
+				organization
+					.setPointOfContactCollection(new HashSet<PointOfContact>());
+			}			
 			if (organization.getCreatedBy() == null) {
 				organization.setCreatedBy(user);
 			}
@@ -176,11 +154,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			pointOfContact.setOrganization(organization);
 			appService.saveOrUpdate(organization);
-		}
-		if (pointOfContact.getCreatedDate() == null) {
-			// TODO:: myCal.add(Calendar.SECOND, 1);???
-			pointOfContact.setCreatedDate(new Date());
-		}
+		}		
 		appService.saveOrUpdate(pointOfContact);
 	}
 
@@ -214,7 +188,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		}
 	}
 
-	private Organization getDBOrganization(Organization organization)
+	private Organization getDBOrganizationByName(String orgName)
 			throws PointOfContactException {
 		Organization dbOrganization = null;
 		try {
@@ -222,7 +196,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Organization.class);
-			crit.add(Restrictions.eq("name", organization.getName()));
+			crit.add(Restrictions.eq("name", orgName));
 			crit.createAlias("pointOfContactCollection", "poc",
 					CriteriaSpecification.LEFT_JOIN);
 			;
