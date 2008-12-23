@@ -8,6 +8,9 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
+import java.util.Collection;
+
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -37,7 +40,20 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) theForm
 				.get("particleSampleBean");
-		particleSampleBean.setupDomainParticleSample();
+		
+		ParticleBean pocParticleBean = (ParticleBean) request.getSession()
+				.getAttribute("pocParticle");
+		if (pocParticleBean!=null && pocParticleBean.getDomainParticleSample()!=null) {
+			Collection<PointOfContact> otherPointOfContactCollection = pocParticleBean
+					.getDomainParticleSample().getOtherPointOfContactCollection();
+			if (otherPointOfContactCollection!=null) {
+				particleSampleBean
+					.getDomainParticleSample()
+					.setOtherPointOfContactCollection(otherPointOfContactCollection);
+			}
+		}
+		
+		particleSampleBean.setupDomainParticleSample();		
 		Long particleId = particleSampleBean.getDomainParticleSample().getId();
 
 		// persist in the database
@@ -45,11 +61,13 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
 		// assign CSM visibility and associated public visibility
-		// requires fully loaded particle if particle Id is not null)
+		// requires fully loaded particle if particle Id is not null)		
 		if (particleId != null) {
+			String[] visibilityGroups = particleSampleBean.getVisibilityGroups();
 			ParticleBean fullyLoadedParticleBean = service
 					.findFullNanoparticleSampleById(particleSampleBean
 							.getDomainParticleSample().getId().toString());
+			fullyLoadedParticleBean.setVisibilityGroups(visibilityGroups);
 			service.assignVisibility(fullyLoadedParticleBean);
 		} else {
 			service.assignVisibility(particleSampleBean);
