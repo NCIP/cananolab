@@ -350,7 +350,6 @@ CREATE TABLE characterization
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	protocol_file_pk_id BIGINT,
-	instrument_config_pk_id BIGINT,
 	particle_sample_pk_id BIGINT,
 	discriminator VARCHAR(50) NOT NULL,
 	cytotoxicity_cell_line VARCHAR(200),
@@ -363,7 +362,6 @@ CREATE TABLE characterization
 	KEY (protocol_file_pk_id)
 ) TYPE=InnoDB
 ;
-
 
 CREATE TABLE author_publication
 (
@@ -391,7 +389,7 @@ CREATE TABLE publication
 	research_area VARCHAR(200),
 	abstract TEXT,
 	PRIMARY KEY (publication_pk_id),
-	UNIQUE (publication_pk_id)	
+	UNIQUE (publication_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -472,20 +470,6 @@ CREATE TABLE keyword_file
 	KEY (keyword_pk_id)
 ) TYPE=InnoDB
 ;
-
-
-CREATE TABLE instrument_config
-(
-	instrument_config_pk_id BIGINT NOT NULL,
-	description TEXT,
-	instrument_pk_id BIGINT NOT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	PRIMARY KEY (instrument_config_pk_id),
-	KEY (instrument_pk_id)
-) TYPE=InnoDB
-;
-
 
 CREATE TABLE functionalizing_entity_file
 (
@@ -581,19 +565,6 @@ CREATE TABLE keyword
 ) TYPE=InnoDB
 ;
 
-
-CREATE TABLE instrument
-(
-	instrument_pk_id BIGINT NOT NULL,
-	type VARCHAR(200),
-	abbreviation VARCHAR(50),
-	manufacturer VARCHAR(2000),
-	PRIMARY KEY (instrument_pk_id),
-	UNIQUE (instrument_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE file
 (
 	file_pk_id BIGINT NOT NULL,
@@ -618,7 +589,7 @@ CREATE TABLE common_lookup
 	attribute VARCHAR(200) NOT NULL,
 	value VARCHAR(200) NOT NULL,
 	PRIMARY KEY (common_lookup_pk_id)
-) 
+)
 ;
 
 
@@ -661,112 +632,158 @@ CREATE TABLE activation_method
 ) TYPE=InnoDB
 ;
 
+CREATE TABLE technique
+(
+	technique_pk_id BIGINT NOT NULL,
+	type VARCHAR(200) NOT NULL,
+	abbreviation VARCHAR(50),
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	PRIMARY KEY (technique_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE instrument
+(
+	instrument_pk_id BIGINT NOT NULL,
+	type VARCHAR(200) NOT NULL,
+	abbreviation VARCHAR(50),
+	manufacturer VARCHAR(2000),
+	model VARCHAR(200),
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	PRIMARY KEY (instrument_pk_id)
+) TYPE=InnoDB
+;
+
+CREATE TABLE characterization_technique
+(
+	characterization_pk_id BIGINT NOT NULL,
+	technique_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (characterization_pk_id, technique_pk_id),
+	KEY (characterization_pk_id),
+	KEY (technique_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE characterization_instrument
+(
+	characterization_pk_id BIGINT NOT NULL,
+	instrument_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (characterization_pk_id, instrument_pk_id),
+	KEY (characterization_pk_id),
+	KEY (instrument_pk_id)
+) TYPE=InnoDB
+;
+
 CREATE TABLE hibernate_unique_key (
   next_hi BIGINT NOT NULL
 ) TYPE=InnoDB
 ;
 
-ALTER TABLE target ADD CONSTRAINT FK_target_function 
+ALTER TABLE target ADD CONSTRAINT FK_target_function
 	FOREIGN KEY (targeting_function_pk_id) REFERENCES nano_function (function_pk_id)
 ;
 
-ALTER TABLE nano_function ADD CONSTRAINT FK_function_composing_element 
+ALTER TABLE nano_function ADD CONSTRAINT FK_function_composing_element
 	FOREIGN KEY (composing_element_pk_id) REFERENCES composing_element (composing_element_pk_id)
 ;
 
-ALTER TABLE nano_function ADD CONSTRAINT FK_function_functionalizing_entity 
+ALTER TABLE nano_function ADD CONSTRAINT FK_function_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE small_molecule ADD CONSTRAINT FK_small_molecule_functionalizing_entity 
+ALTER TABLE small_molecule ADD CONSTRAINT FK_small_molecule_functionalizing_entity
 	FOREIGN KEY (small_molecule_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanoparticle_entity 
+ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanoparticle_entity
 	FOREIGN KEY (polymer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE other_nanoparticle_entity ADD CONSTRAINT FK_other_nanoparticle_entity_nanoparticle_entity 
+ALTER TABLE other_nanoparticle_entity ADD CONSTRAINT FK_other_nanoparticle_entity_nanoparticle_entity
 	FOREIGN KEY (other_nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE other_functionalizing_entity ADD CONSTRAINT FK_other_functionalizing_entity_functionalizing_entity 
+ALTER TABLE other_functionalizing_entity ADD CONSTRAINT FK_other_functionalizing_entity_functionalizing_entity
 	FOREIGN KEY (other_func_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanoparticle_entity 
+ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanoparticle_entity
 	FOREIGN KEY (liposome_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE fullerene ADD CONSTRAINT FK_fullerene_nanoparticle_entity 
+ALTER TABLE fullerene ADD CONSTRAINT FK_fullerene_nanoparticle_entity
 	FOREIGN KEY (fullerene_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanoparticle_entity 
+ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanoparticle_entity
 	FOREIGN KEY (emulsion_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanoparticle_entity 
+ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanoparticle_entity
 	FOREIGN KEY (dendrimer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_associated_element 
+ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_associated_element
 	FOREIGN KEY (composing_element_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanoparticle_entity 
+ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanoparticle_entity
 	FOREIGN KEY (nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE carbon_nanotube ADD CONSTRAINT FK_carbon_nanotube_nanoparticle_entity 
+ALTER TABLE carbon_nanotube ADD CONSTRAINT FK_carbon_nanotube_nanoparticle_entity
 	FOREIGN KEY (carbon_nanotube_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE biopolymer_p ADD CONSTRAINT FK_biopolymer_p_nanoparticle_entity 
+ALTER TABLE biopolymer_p ADD CONSTRAINT FK_biopolymer_p_nanoparticle_entity
 	FOREIGN KEY (biopolymer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity 
+ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity
 	FOREIGN KEY (biopolymer_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity 
+ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity
 	FOREIGN KEY (antibody_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE surface_chemistry ADD CONSTRAINT FK_surface_chemistry_characterization 
+ALTER TABLE surface_chemistry ADD CONSTRAINT FK_surface_chemistry_characterization
 	FOREIGN KEY (surface_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization 
+ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization
 	FOREIGN KEY (solubility_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE shape ADD CONSTRAINT FK_shape_characterization 
+ALTER TABLE shape ADD CONSTRAINT FK_shape_characterization
 	FOREIGN KEY (shape_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization 
+ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization
 	FOREIGN KEY (physical_state_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method 
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method
 	FOREIGN KEY (activation_method_pk_id) REFERENCES activation_method (activation_method_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element 
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file 
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication 
+ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample 
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
@@ -774,110 +791,110 @@ ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE derived_datum ADD CONSTRAINT FK_derived_datum_derived_bioassay_data 
+ALTER TABLE derived_datum ADD CONSTRAINT FK_derived_datum_derived_bioassay_data
 	FOREIGN KEY (derived_bioassay_data_pk_id) REFERENCES derived_bioassay_data (derived_bioassay_data_pk_id)
 ;
 
-ALTER TABLE composition ADD CONSTRAINT FK_Composition_nanoparticle_sample 
+ALTER TABLE composition ADD CONSTRAINT FK_Composition_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file 
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association 
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association
 	FOREIGN KEY (chemical_association_pk_id) REFERENCES chemical_association (chemical_association_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_instrument_config 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_instrument_config
 	FOREIGN KEY (instrument_config_pk_id) REFERENCES instrument_config (instrument_config_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sample 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
 ;
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author 
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author
 	FOREIGN KEY (author_pk_id) REFERENCES author (author_pk_id)
 ;
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication 
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-ALTER TABLE publication ADD CONSTRAINT FK_publication_file 
+ALTER TABLE publication ADD CONSTRAINT FK_publication_file
 	FOREIGN KEY (publication_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_file 
+ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_file
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_protocol 
+ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_protocol
 	FOREIGN KEY (protocol_pk_id) REFERENCES protocol (protocol_pk_id)
 ;
 
-ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization 
+ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact 
+ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
 	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file 
+ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_nanoparticle_entity 
+ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_nanoparticle_entity
 	FOREIGN KEY (nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
-ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_sample_keyword 
+ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_sample_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
-ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_sample_nanoparticle_sample 
+ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_sample_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
-ALTER TABLE instrument_config ADD CONSTRAINT FK_instrument_config_instrument 
+ALTER TABLE instrument_config ADD CONSTRAINT FK_instrument_config_instrument
 	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file 
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity 
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_file 
+ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_characterization 
+ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_characterization
 	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a 
+ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a
 	FOREIGN KEY (associated_element_a_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b 
+ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
