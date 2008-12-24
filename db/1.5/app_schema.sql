@@ -357,7 +357,6 @@ CREATE TABLE characterization
 	surface_is_hydrophobic TINYINT,
 	characterization_date DATETIME,
 	PRIMARY KEY (characterization_pk_id),
-	KEY (instrument_config_pk_id),
 	KEY (particle_sample_pk_id),
 	KEY (protocol_file_pk_id)
 ) TYPE=InnoDB
@@ -807,10 +806,6 @@ ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_fil
 	FOREIGN KEY (chemical_association_pk_id) REFERENCES chemical_association (chemical_association_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_instrument_config
-	FOREIGN KEY (instrument_config_pk_id) REFERENCES instrument_config (instrument_config_pk_id)
-;
-
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
@@ -871,10 +866,6 @@ ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
-ALTER TABLE instrument_config ADD CONSTRAINT FK_instrument_config_instrument
-	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
-;
-
 ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
@@ -897,4 +888,20 @@ ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associat
 
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
+;
+
+ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_technique
+	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
+;
+
+ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instrument_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instrument_instrument
+	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
 ;
