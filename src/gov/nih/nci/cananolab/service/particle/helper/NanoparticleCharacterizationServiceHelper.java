@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -47,9 +46,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 
 public class NanoparticleCharacterizationServiceHelper {
@@ -215,34 +214,35 @@ public class NanoparticleCharacterizationServiceHelper {
 			}
 		}
 
+		//TODO instrument and technique in exported file
 		// instrument
-		InstrumentConfiguration instrumentConfiguration = achar
-				.getInstrumentConfiguration();
-		Instrument instrument = instrumentConfiguration.getInstrument();
-		if (instrumentConfiguration != null && instrument.getType() != null) {
-			short cellCount = 0;
-			row = sheet.createRow(rowCount++);
-			cell = row.createCell(cellCount++);
-			cell.setCellStyle(headerStyle);
-			cell.setCellValue(new HSSFRichTextString("Instrument"));
-
-			StringBuffer ibuf = new StringBuffer();
-			ibuf.append(instrument.getType());
-			ibuf.append("-");
-			ibuf.append(instrument.getManufacturer());
-			if (instrument.getAbbreviation() != null
-					&& instrument.getAbbreviation().length() > 0) {
-				ibuf.append(" (" + instrument.getAbbreviation() + ")");
-			}
-			row.createCell(cellCount++).setCellValue(
-					new HSSFRichTextString(ibuf.toString()));
-
-			if (instrumentConfiguration.getDescription() != null) {
-				row.createCell(cellCount).setCellValue(
-						new HSSFRichTextString(instrumentConfiguration
-								.getDescription()));
-			}
-		}
+//		InstrumentConfiguration instrumentConfiguration = achar
+//				.getInstrumentConfiguration();
+//		Instrument instrument = instrumentConfiguration.getInstrument();
+//		if (instrumentConfiguration != null && instrument.getType() != null) {
+//			short cellCount = 0;
+//			row = sheet.createRow(rowCount++);
+//			cell = row.createCell(cellCount++);
+//			cell.setCellStyle(headerStyle);
+//			cell.setCellValue(new HSSFRichTextString("Instrument"));
+//
+//			StringBuffer ibuf = new StringBuffer();
+//			ibuf.append(instrument.getType());
+//			ibuf.append("-");
+//			ibuf.append(instrument.getManufacturer());
+//			if (instrument.getAbbreviation() != null
+//					&& instrument.getAbbreviation().length() > 0) {
+//				ibuf.append(" (" + instrument.getAbbreviation() + ")");
+//			}
+//			row.createCell(cellCount++).setCellValue(
+//					new HSSFRichTextString(ibuf.toString()));
+//
+//			if (instrumentConfiguration.getDescription() != null) {
+//				row.createCell(cellCount).setCellValue(
+//						new HSSFRichTextString(instrumentConfiguration
+//								.getDescription()));
+//			}
+//		}
 
 		List<DerivedBioAssayDataBean> derivedBioAssayDataList = achar
 				.getDerivedBioAssayDataList();
@@ -496,28 +496,29 @@ public class NanoparticleCharacterizationServiceHelper {
 				row.createCell(cellCount++); // empty cell
 			}
 
+			//TODO instrument and technique in summary view
 			// instrument
-			InstrumentConfiguration instrumentConfiguration = achar
-					.getInstrumentConfiguration();
-			Instrument instrument = instrumentConfiguration.getInstrument();
-			if (instrumentConfiguration != null && instrument.getType() != null) {
-				StringBuffer sb = new StringBuffer();
-				sb.append(instrument.getType());
-				sb.append("-");
-				sb.append(instrument.getManufacturer());
-
-				if (instrument.getAbbreviation() != null
-						&& instrument.getAbbreviation().length() > 0)
-					sb.append(" (" + instrument.getAbbreviation() + ")");
-
-				if (instrumentConfiguration.getDescription() != null)
-					sb.append("  " + instrumentConfiguration.getDescription());
-
-				cell = row.createCell(cellCount++);
-				cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-				cell.setCellValue(new HSSFRichTextString(sb.toString()));
-				// cell.setCellStyle(newLineStyle);
-			}
+//			InstrumentConfiguration instrumentConfiguration = achar
+//					.getInstrumentConfiguration();
+//			Instrument instrument = instrumentConfiguration.getInstrument();
+//			if (instrumentConfiguration != null && instrument.getType() != null) {
+//				StringBuffer sb = new StringBuffer();
+//				sb.append(instrument.getType());
+//				sb.append("-");
+//				sb.append(instrument.getManufacturer());
+//
+//				if (instrument.getAbbreviation() != null
+//						&& instrument.getAbbreviation().length() > 0)
+//					sb.append(" (" + instrument.getAbbreviation() + ")");
+//
+//				if (instrumentConfiguration.getDescription() != null)
+//					sb.append("  " + instrumentConfiguration.getDescription());
+//
+//				cell = row.createCell(cellCount++);
+//				cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+//				cell.setCellValue(new HSSFRichTextString(sb.toString()));
+//				// cell.setCellStyle(newLineStyle);
+//			}
 
 		} // for sbean
 		return rowCount;
@@ -567,35 +568,37 @@ public class NanoparticleCharacterizationServiceHelper {
 		return derivedBioAssayDataCollection;
 	}
 
-	public Instrument findInstrumentByInstrumentConfigurationId(
-			java.lang.String instrumentConfigurationId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		String hql = "select config.instrument from gov.nih.nci.cananolab.domain.common.InstrumentConfiguration config where config.id="
-				+ instrumentConfigurationId;
-		HQLCriteria crit = new HQLCriteria(hql);
-		List results = appService.query(crit);
-		Instrument instrument = null;
-		for (Object obj : results) {
-			instrument = (Instrument) obj;
-		}
-		return instrument;
-	}
+	//TODO update for grid service
+//	public Instrument findInstrumentByInstrumentConfigurationId(
+//			java.lang.String instrumentConfigurationId) throws Exception {
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		String hql = "select config.instrument from gov.nih.nci.cananolab.domain.common.InstrumentConfiguration config where config.id="
+//				+ instrumentConfigurationId;
+//		HQLCriteria crit = new HQLCriteria(hql);
+//		List results = appService.query(crit);
+//		Instrument instrument = null;
+//		for (Object obj : results) {
+//			instrument = (Instrument) obj;
+//		}
+//		return instrument;
+//	}
 
-	public InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
-			java.lang.String characterizationId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		String hql = "select aChar.instrumentConfiguration from gov.nih.nci.cananolab.domain.particle.characterization.Characterization aChar where aChar.id="
-				+ characterizationId;
-		HQLCriteria crit = new HQLCriteria(hql);
-		List results = appService.query(crit);
-		InstrumentConfiguration instrumentConfiguration = null;
-		for (Object obj : results) {
-			instrumentConfiguration = (InstrumentConfiguration) obj;
-		}
-		return instrumentConfiguration;
-	}
+
+//	public InstrumentConfiguration findInstrumentConfigurationByCharacterizationId(
+//			java.lang.String characterizationId) throws Exception {
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		String hql = "select aChar.instrumentConfiguration from gov.nih.nci.cananolab.domain.particle.characterization.Characterization aChar where aChar.id="
+//				+ characterizationId;
+//		HQLCriteria crit = new HQLCriteria(hql);
+//		List results = appService.query(crit);
+//		InstrumentConfiguration instrumentConfiguration = null;
+//		for (Object obj : results) {
+//			instrumentConfiguration = (InstrumentConfiguration) obj;
+//		}
+//		return instrumentConfiguration;
+//	}
 
 	public List<SurfaceChemistry> findSurfaceChemistriesBySurfaceId(
 			java.lang.String surfaceId) throws Exception {
