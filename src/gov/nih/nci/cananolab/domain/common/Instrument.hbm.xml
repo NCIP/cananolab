@@ -11,7 +11,10 @@
 		</id>
 		<!-- Attributes mapping for the Instrument class -->
 		<property name="abbreviation" type="string" column="abbreviation"/>
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="manufacturer" type="string" column="manufacturer"/>
+		<property name="model" type="string" column="model"/>
 		<property name="type" type="string" column="type"/>
 		<!-- Associations mapping for the Instrument class -->
 	</class>
