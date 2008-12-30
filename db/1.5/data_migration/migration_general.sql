@@ -288,5 +288,8 @@ ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instr
 	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
 ;
 
+update instrument
+set created_by='DATA_MIGRATION',created_date=sysdate();
+
 -- End of script
 
