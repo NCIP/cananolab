@@ -2,95 +2,69 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <table border="0" align="center" cellpadding="3" cellspacing="0"
 	width="100%" class="topBorderOnly" summary="">
 	<tr>
 	<tr class="topBorder">
-		<td class="formTitle" colspan="3">
+		<td class="formTitle" colspan="4">
 			<div align="justify">
 				Instrument Information
 			</div>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel">
-			<strong>Instrument Type </strong>
+		<td class="leftLabel" valign="top">
+			<strong>Instrument</strong>
+			<br>
+			<em>(Manufacturer: Model)</em>
 		</td>
-		<td class="label">
+		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:select styleId="instrumentType"
-						property="achar.instrumentConfiguration.instrument.type"
-						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');retrieveInstrumentAbbreviation();">
+				<c:when
+					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+					<html:select styleId="instrument" property="achar.instruments"
+						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');"
+						multiple="true" size="5">
 						<option value=""></option>
-						<html:options name="instrumentTypes" />
+						<html:options collection="allInstruments"
+							labelProperty="displayName" property="domain.id" />
 						<option value="other">
 							[Other]
 						</option>
 					</html:select>
+					&nbsp;
+					<a href="#" onclick="return false;"><span class="addLink3">View
+							Detail</span> </a>
 				</c:when>
 				<c:otherwise>
 					${characterizationForm.map.achar.instrumentConfiguration.instrument.type}&nbsp;
 				</c:otherwise>
 			</c:choose>
 		</td>
-		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-				<td class="rightLabel" width="20%">
-					<span id="instrumentAbbr">
-					<c:if
-							test="${!empty characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation}">
-							<b>Abbreviation: </b>${characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation}
-					</c:if> </span>&nbsp;
-				</td>
-			</c:when>
-			<c:otherwise>
-				<td class="rightLabel" width="20%">
-					<c:if
-						test="${!empty characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation}">
-						<b>Abbreviation: </b>${characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation}
-					</c:if>
-					&nbsp;
-				</td>
-			</c:otherwise>
-		</c:choose>
-	</tr>
-	<tr>
-		<td class="leftLabel">
-			<strong>Instrument Manufacturer </strong>
-		</td>
-		<td class="rightLabel" colspan="2">
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:select styleId="instrumentManufacturer"
-						property="achar.instrumentConfiguration.instrument.manufacturer"
-						onchange="javascript:callPrompt('Instrument Manufacturer', 'instrumentManufacturer');">
-						<option value=""></option>
-						<html:options name="manufacturers" />
-						<option value="other">
-							[Other]
-						</option>
-					</html:select>
-				</c:when>
-				<c:otherwise>
-						${characterizationForm.map.achar.instrumentConfiguration.instrument.manufacturer}&nbsp;
-				</c:otherwise>
-			</c:choose>
-		</td>
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">
-			<strong>Description</strong>
+			<strong>Technique</strong>
 		</td>
-		<td class="rightLabel" colspan="2">
+		<td class="rightLabel" colspan="3">
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:textarea property="achar.instrumentConfiguration.description"
-						rows="3" cols="80" />
+				<c:when
+					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+					<html:select styleId="technique" property="achar.techniques"
+						onchange="javascript:callPrompt('Technique', 'instrumentType');"
+						multiple="true" size="5">
+						<option value=""></option>
+						<html:options collection="allTechniques"
+							labelProperty="displayName" property="domain.id" />
+					</html:select>
+					&nbsp;
+					<a href="#" onclick="return false;"><span class="addLink3"
+						style="textalign: right;">View Detail</span> </a>
 				</c:when>
-				<c:otherwise> 
-						${characterizationForm.map.achar.instrumentConfiguration.description}&nbsp; 
-					</c:otherwise>
+				<c:otherwise>
+					${characterizationForm.map.achar.instrumentConfiguration.instrument.type}&nbsp;
+				</c:otherwise>
 			</c:choose>
 		</td>
 	</tr>
