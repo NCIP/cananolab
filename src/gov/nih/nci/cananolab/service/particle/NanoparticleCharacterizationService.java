@@ -16,9 +16,9 @@ import java.util.SortedSet;
 
 /**
  * Interface defining service methods involving characterizations
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public interface NanoparticleCharacterizationService {
 
@@ -33,12 +33,6 @@ public interface NanoparticleCharacterizationService {
 
 	public SortedSet<String> findAllCharacterizationSources()
 			throws ParticleCharacterizationException;
-
-	public List<Instrument> findAllInstruments()
-			throws ParticleCharacterizationException;
-
-	public Instrument findInstrumentBy(String instrumentType,
-			String manufacturer) throws ParticleCharacterizationException;
 
 	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
 			String particleName, String className, UserBean user)
@@ -69,7 +63,7 @@ public interface NanoparticleCharacterizationService {
 			throws Exception;
 
 	public void assignPublicVisibility(
-			AuthorizationService authService, Characterization aChar) 
+			AuthorizationService authService, Characterization aChar)
 			throws Exception;
 
 }

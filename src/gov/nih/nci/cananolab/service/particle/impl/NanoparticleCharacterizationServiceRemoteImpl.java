@@ -9,9 +9,7 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -27,7 +25,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
@@ -40,9 +37,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving remote characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class NanoparticleCharacterizationServiceRemoteImpl extends
 		NanoparticleCharacterizationServiceBaseImpl implements
@@ -130,18 +127,6 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 				"Not implemented for grid service");
 	}
 
-	public List<Instrument> findAllInstruments()
-			throws ParticleCharacterizationException {
-		throw new ParticleCharacterizationException(
-				"Not implemented for grid service");
-	}
-
-	public Instrument findInstrumentBy(String instrumentType,
-			String manufacturer) throws ParticleCharacterizationException {
-		throw new ParticleCharacterizationException(
-				"Not implemented for grid service");
-	}
-
 	protected List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className)
 			throws ParticleCharacterizationException {
@@ -201,7 +186,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 
 	/**
 	 * Get all the associated data of a Characterization
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws Exception
 	 */
@@ -218,16 +203,17 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		if (achar instanceof Surface) {
 			loadSurfaceChemistriesForSurface((Surface) achar);
 		}
-		InstrumentConfiguration instrumentConfig = gridClient
-				.getInstrumentConfigurationByCharacterizationId(charId);
-		if (instrumentConfig != null) {
-			Instrument instrument = gridClient
-					.getInstrumentByInstrumentConfigurationId(instrumentConfig
-							.getId().toString());
-			if (instrument != null)
-				instrumentConfig.setInstrument(instrument);
-			achar.setInstrumentConfiguration(instrumentConfig);
-		}
+		//TODO temporarily commented until grid service is updated
+//		InstrumentConfiguration instrumentConfig = gridClient
+//				.getInstrumentConfigurationByCharacterizationId(charId);
+//		if (instrumentConfig != null) {
+//			Instrument instrument = gridClient
+//					.getInstrumentByInstrumentConfigurationId(instrumentConfig
+//							.getId().toString());
+//			if (instrument != null)
+//				instrumentConfig.setInstrument(instrument);
+//			achar.setInstrumentConfiguration(instrumentConfig);
+//		}
 	}
 
 	private void loadProtocolForProtocolFile(ProtocolFile protocolFile)
@@ -312,7 +298,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	/**
 	 * return all characterization with an associated NanoparticleSample whose
 	 * id is equal to particleId
-	 * 
+	 *
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException

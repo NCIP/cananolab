@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.particle.impl;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -39,9 +38,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class NanoparticleCharacterizationServiceLocalImpl extends
 		NanoparticleCharacterizationServiceBaseImpl implements
@@ -83,19 +82,6 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			}
 			achar.setNanoparticleSample(particleSample);
 			particleSample.getCharacterizationCollection().add(achar);
-
-			// load existing instrument
-			if (achar.getInstrumentConfiguration() != null
-					&& achar.getInstrumentConfiguration().getInstrument() != null) {
-				Instrument dbInstrument = findInstrumentBy(
-						achar.getInstrumentConfiguration().getInstrument()
-								.getType(), achar.getInstrumentConfiguration()
-								.getInstrument().getManufacturer());
-				if (dbInstrument != null) {
-					achar.getInstrumentConfiguration().setInstrument(
-							dbInstrument);
-				}
-			}
 
 			if (achar.getDerivedBioAssayDataCollection() != null) {
 				for (DerivedBioAssayData bioassay : achar
@@ -195,52 +181,6 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		return sources;
 	}
 
-	public List<Instrument> findAllInstruments()
-			throws ParticleCharacterizationException {
-		List<Instrument> instruments = new ArrayList<Instrument>();
-
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
-					.add(Restrictions.isNotNull("type"));
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Instrument instrument = (Instrument) obj;
-				instruments.add(instrument);
-			}
-		} catch (Exception e) {
-			String err = "Problem to retrieve all instruments.";
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err);
-		}
-		return instruments;
-	}
-
-	public Instrument findInstrumentBy(String instrumentType,
-			String manufacturer) throws ParticleCharacterizationException {
-		Instrument instrument = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
-					.add(Property.forName("type").eq(instrumentType)).add(
-							Property.forName("manufacturer").eq(manufacturer));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				instrument = (Instrument) obj;
-
-			}
-			return instrument;
-		} catch (Exception e) {
-			String err = "Problem to retrieve instrument.";
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err);
-		}
-	}
-
 	protected List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className)
 			throws ParticleCharacterizationException {
@@ -331,17 +271,19 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					}
 				}
 			}
-			// InstrumentConfiguration
-			if (aChar.getInstrumentConfiguration() != null) {
-				authService.assignPublicVisibility(aChar
-						.getInstrumentConfiguration().getId().toString());
-				// InstrumentConfiguration.Instrument
-				if (aChar.getInstrumentConfiguration().getInstrument() != null) {
-					authService.assignPublicVisibility(aChar
-							.getInstrumentConfiguration().getInstrument()
-							.getId().toString());
-				}
-			}
+
+			//TODO visiblity for instrument and technique
+//			// InstrumentConfiguration
+//			if (aChar.getInstrumentConfiguration() != null) {
+//				authService.assignPublicVisibility(aChar
+//						.getInstrumentConfiguration().getId().toString());
+//				// InstrumentConfiguration.Instrument
+//				if (aChar.getInstrumentConfiguration().getInstrument() != null) {
+//					authService.assignPublicVisibility(aChar
+//							.getInstrumentConfiguration().getInstrument()
+//							.getId().toString());
+//				}
+//			}
 		}
 	}
 
@@ -371,19 +313,20 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					}
 				}
 			}
+			//TODO remove visibility for instrument and technique
 			// InstrumentConfiguration
-			InstrumentConfiguration instrumentConfiguration = aChar
-					.getInstrumentConfiguration();
-			if (instrumentConfiguration != null) {
-				authService.removePublicGroup(instrumentConfiguration.getId()
-						.toString());
-				// InstrumentConfiguration.Instrument
-				if (instrumentConfiguration.getInstrument() != null) {
-					authService.removePublicGroup(aChar
-							.getInstrumentConfiguration().getInstrument()
-							.getId().toString());
-				}
-			}
+//			InstrumentConfiguration instrumentConfiguration = aChar
+//					.getInstrumentConfiguration();
+//			if (instrumentConfiguration != null) {
+//				authService.removePublicGroup(instrumentConfiguration.getId()
+//						.toString());
+//				// InstrumentConfiguration.Instrument
+//				if (instrumentConfiguration.getInstrument() != null) {
+//					authService.removePublicGroup(aChar
+//							.getInstrumentConfiguration().getInstrument()
+//							.getId().toString());
+//				}
+//			}
 		}
 	}
 }
