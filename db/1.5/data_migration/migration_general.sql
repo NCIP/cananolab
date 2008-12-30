@@ -54,7 +54,7 @@ CREATE TABLE point_of_contact
 	KEY (organization_pk_id)
 ) TYPE=InnoDB
 ;
-ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization 
+ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
@@ -80,7 +80,7 @@ CREATE TABLE nanoparticle_sample_other_poc
 	KEY (poc_pk_id)
 ) TYPE=InnoDB
 ;
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample 
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
@@ -90,10 +90,10 @@ ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_
 ALTER TABLE publication ADD COLUMN abstract TEXT;
 
 ALTER TABLE nanoparticle_sample
-	DROP FOREIGN KEY FK_nanoparticle_sample_source; 
+	DROP FOREIGN KEY FK_nanoparticle_sample_source;
 ALTER TABLE nanoparticle_sample
-	DROP KEY source_pk_id; 
-ALTER TABLE nanoparticle_sample 
+	DROP KEY source_pk_id;
+ALTER TABLE nanoparticle_sample
 	CHANGE source_pk_id primary_contact_pk_id BIGINT;
 ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
 	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
@@ -102,18 +102,18 @@ ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_c
 ALTER TABLE composition_lab_file RENAME composition_file;
 ALTER TABLE composition_file
  DROP FOREIGN KEY FK_composition_lab_file_lab_file;
-ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file 
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
 ALTER TABLE chemical_association_lab_file RENAME chemical_association_file;
 ALTER TABLE chemical_association_file
- DROP FOREIGN KEY FK_chemical_association_lab_file_chemical_association; 
+ DROP FOREIGN KEY FK_chemical_association_lab_file_chemical_association;
 ALTER TABLE chemical_association_file
  DROP FOREIGN KEY FK_chemical_association_lab_file_lab_file;
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file 
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id);
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association 
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association
 	FOREIGN KEY (chemical_association_pk_id) REFERENCES chemical_association (chemical_association_pk_id)
 ;
 
@@ -121,42 +121,42 @@ ALTER TABLE nanoparticle_entity_lab_file RENAME nanoparticle_entity_file;
 ALTER TABLE nanoparticle_entity_file
  DROP FOREIGN KEY FK_nanoparticle_entity_lab_file_lab_file;
 ALTER TABLE nanoparticle_entity_file
- DROP FOREIGN KEY FK_nanoparticle_entity_lab_file_nanoparticle_entity; 
-ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file 
+ DROP FOREIGN KEY FK_nanoparticle_entity_lab_file_nanoparticle_entity;
+ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id);
-ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_nanoparticle_entity 
+ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_nanoparticle_entity
 	FOREIGN KEY (nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
 ;
 
 
-ALTER TABLE keyword_lab_file RENAME keyword_file; 
+ALTER TABLE keyword_lab_file RENAME keyword_file;
 ALTER TABLE canano.keyword_file
  DROP FOREIGN KEY FK_keyword_lab_file_keyword,
  DROP FOREIGN KEY FK_keyword_lab_file_lab_file,
  CHANGE lab_file_pk_id file_pk_id BIGINT(20) NOT NULL;
-ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id);
-ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id);
-	
+
 
 ALTER TABLE functionalizing_entity_lab_file RENAME functionalizing_entity_file;
 ALTER TABLE functionalizing_entity_file
 	DROP FOREIGN KEY FK_functionalizing_entity_lab_file_functionalizing_entity;
 ALTER TABLE functionalizing_entity_file
-	DROP FOREIGN KEY FK_functionalizing_entity_lab_file_lab_file; 
-ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file 
+	DROP FOREIGN KEY FK_functionalizing_entity_lab_file_lab_file;
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id);
-ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity 
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
-	 
+
 ALTER TABLE nanoparticle_sample_publication
 	DROP FOREIGN KEY FK_nanoparticle_sample_publication_publication,
 	DROP FOREIGN KEY FK_nanoparticle_sample_publication_nanoparticle_sample
 ;
 
-ALTER TABLE nanoparticle_sample_publication 
+ALTER TABLE nanoparticle_sample_publication
 	DROP INDEX particle_sample_pk_id,
 	DROP INDEX file_pk_id
 ;
@@ -181,7 +181,7 @@ DROP TABLE IF EXISTS sample_management;
 DROP TABLE IF EXISTS sample_container;
 DROP TABLE IF EXISTS sample_container_storage;
 DROP TABLE IF EXISTS storage;
-  
+
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
@@ -194,10 +194,10 @@ insert into `common_lookup`(`name`,`attribute`,`value`) values ('PointOfContact'
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 
- 
+
 -- fix, some records exist in csm_protection_group not in csm_protection_element
- 
-INSERT INTO canano.csm_protection_element ( 
+
+INSERT INTO canano.csm_protection_element (
 	protection_element_name,
 	object_id,
 	application_id,
@@ -212,7 +212,7 @@ where protection_group_name not in (
 select protection_element_name from csm_protection_element
 )
 ;
-INSERT INTO canano.csm_pg_pe ( 
+INSERT INTO canano.csm_pg_pe (
 	protection_group_id,
 	protection_element_id,
 	update_date
@@ -225,6 +225,68 @@ where  e.update_date = CURRENT_DATE()
 and g.protection_group_name = e.protection_element_name
 ;
 --end of fix
+
+--instrument and technique
+
+--TODO add data migration first
+
+ALTER TABLE canano.characterization
+ DROP FOREIGN KEY FK_characterization_instrument_config,
+ DROP instrument_config_pk_id;
+
+DROP TABLE canano.instrument_config;
+
+ALTER TABLE canano.instrument
+ ADD model VARCHAR(200) AFTER manufacturer,
+ ADD created_date DATETIME NOT NULL,
+ ADD created_by VARCHAR(200) NOT NULL;
+
+CREATE TABLE characterization_technique
+(
+	characterization_pk_id BIGINT NOT NULL,
+	technique_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (characterization_pk_id, technique_pk_id),
+	KEY (characterization_pk_id),
+	KEY (technique_pk_id)
+) TYPE=InnoDB
+;
+
+CREATE TABLE characterization_instrument
+(
+	characterization_pk_id BIGINT NOT NULL,
+	instrument_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (characterization_pk_id, instrument_pk_id),
+	KEY (characterization_pk_id),
+	KEY (instrument_pk_id)
+) TYPE=InnoDB
+;
+
+CREATE TABLE technique
+(
+	technique_pk_id BIGINT NOT NULL,
+	type VARCHAR(200) NOT NULL,
+	abbreviation VARCHAR(50),
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	PRIMARY KEY (technique_pk_id)
+) TYPE=InnoDB
+;
+
+ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_technique
+	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
+;
+
+ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instrument_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instrument_instrument
+	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
+;
 
 -- End of script
 
