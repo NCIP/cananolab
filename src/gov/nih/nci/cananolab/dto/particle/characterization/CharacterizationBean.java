@@ -3,10 +3,12 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.InstrumentConfiguration;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.dto.common.InstrumentBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.TechniqueBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -23,9 +25,9 @@ import java.util.Map;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CharacterizationBean {
 	private String characterizationSource;
@@ -36,7 +38,9 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private InstrumentConfiguration instrumentConfiguration = new InstrumentConfiguration();
+	private List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
+
+	private List<TechniqueBean> techniques = new ArrayList<TechniqueBean>();
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
@@ -57,7 +61,6 @@ public class CharacterizationBean {
 	}
 
 	public CharacterizationBean() {
-		instrumentConfiguration.setInstrument(new Instrument());
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -68,12 +71,17 @@ public class CharacterizationBean {
 		this.characterizationSource = chara.getSource();
 		this.dateString = StringUtils.convertDateToString(chara.getDate(),
 				CaNanoLabConstants.DATE_FORMAT);
-		if (chara.getInstrumentConfiguration() != null) {
-			instrumentConfiguration = chara.getInstrumentConfiguration();
+		if (chara.getInstrumentCollection() != null) {
+			for (Instrument instrument : chara.getInstrumentCollection()) {
+				instruments.add(new InstrumentBean(instrument));
+			}
 		}
-		if (instrumentConfiguration.getInstrument() == null) {
-			instrumentConfiguration.setInstrument(new Instrument());
+		if (chara.getTechniqueCollection() != null) {
+			for (Technique technique : chara.getTechniqueCollection()) {
+				techniques.add(new TechniqueBean(technique));
+			}
 		}
+
 		if (chara.getDerivedBioAssayDataCollection() != null) {
 			for (DerivedBioAssayData bioassayData : chara
 					.getDerivedBioAssayDataCollection()) {
@@ -102,9 +110,35 @@ public class CharacterizationBean {
 						+ "_"
 						+ StringUtils.convertDateToString(new Date(),
 								"yyyyMMdd_HH-mm-ss-SSS"));
-		if (copy.getInstrumentConfiguration() != null) {
-			copy.getInstrumentConfiguration().setId(null);
+
+		if (copy.getInstrumentCollection().isEmpty()) {
+			copy.setInstrumentCollection(null);
+		} else {
+			Collection<Instrument> instruments = copy.getInstrumentCollection();
+			copy.setInstrumentCollection(new HashSet<Instrument>());
+			copy.getInstrumentCollection().addAll(instruments);
+			for (Instrument instrument : copy.getInstrumentCollection()) {
+				instrument.setId(null);
+				instrument
+						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				instrument.setCreatedDate(new Date());
+			}
 		}
+
+		if (copy.getTechniqueCollection().isEmpty()) {
+			copy.setTechniqueCollection(null);
+		} else {
+			Collection<Technique> techniques = copy.getTechniqueCollection();
+			copy.setTechniqueCollection(new HashSet<Technique>());
+			copy.getTechniqueCollection().addAll(techniques);
+			for (Technique technique : copy.getTechniqueCollection()) {
+				technique.setId(null);
+				technique
+						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				technique.setCreatedDate(new Date());
+			}
+		}
+
 		if (copy.getDerivedBioAssayDataCollection().isEmpty()) {
 			copy.setDerivedBioAssayDataCollection(null);
 		} else {
@@ -165,17 +199,26 @@ public class CharacterizationBean {
 		domainChar.setDate(StringUtils.convertToDate(dateString,
 				CaNanoLabConstants.DATE_FORMAT));
 
-		if (instrumentConfiguration.getInstrument() != null
-				&& instrumentConfiguration.getInstrument().getType() != null
-				&& instrumentConfiguration.getInstrument().getType().length() > 0) {
-			if (instrumentConfiguration.getId() == null) {
-				instrumentConfiguration.setCreatedBy(createdBy);
-				instrumentConfiguration.setCreatedDate(new Date());
-			}
-			domainChar.setInstrumentConfiguration(instrumentConfiguration);
-		} else {
-			domainChar.setInstrumentConfiguration(null);
+		if (domainChar.getInstrumentCollection()!=null) {
+			domainChar.getInstrumentCollection().clear();
 		}
+		else {
+			domainChar.setInstrumentCollection(new HashSet<Instrument>());
+		}
+		for(InstrumentBean instrument: instruments) {
+			domainChar.getInstrumentCollection().add(instrument.getDomain());
+		}
+
+		if (domainChar.getTechniqueCollection()!=null) {
+			domainChar.getTechniqueCollection().clear();
+		}
+		else {
+			domainChar.setTechniqueCollection(new HashSet<Technique>());
+		}
+		for(TechniqueBean technique: techniques) {
+			domainChar.getTechniqueCollection().add(technique.getDomain());
+		}
+
 		if (protocolFileBean != null
 				&& protocolFileBean.getDomainFile() != null
 				&& protocolFileBean.getDomainFile().getId() != null
@@ -192,7 +235,7 @@ public class CharacterizationBean {
 					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
 		}
 		// set createdBy and createdDate
-		int i=0;
+		int i = 0;
 		for (DerivedBioAssayDataBean bioAssayData : derivedBioAssayDataList) {
 			if (bioAssayData.getDomainBioAssayData().getId() == null) {
 				bioAssayData.getDomainBioAssayData().setCreatedBy(createdBy);
@@ -248,10 +291,6 @@ public class CharacterizationBean {
 		return this.derivedBioAssayDataList;
 	}
 
-	public InstrumentConfiguration getInstrumentConfiguration() {
-		return instrumentConfiguration;
-	}
-
 	public ProtocolFileBean getProtocolFileBean() {
 		return protocolFileBean;
 	}
@@ -266,5 +305,13 @@ public class CharacterizationBean {
 
 	public void setClassName(String className) throws Exception {
 		this.className = className;
+	}
+
+	public List<InstrumentBean> getInstruments() {
+		return instruments;
+	}
+
+	public List<TechniqueBean> getTechniques() {
+		return techniques;
 	}
 }
