@@ -891,7 +891,7 @@ ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associat
 ;
 
 ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (cha racterization_pk_id)
 ;
 
 ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_technique
