@@ -24,8 +24,17 @@
 			<key column="characterization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.DerivedBioAssayData"/>
 		</set>
+		<set name="instrumentCollection" table="characterization_instrument" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="characterization_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Instrument" column="instrument_pk_id" />
+		</set>
+		<set name="techniqueCollection" table="characterization_technique" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="characterization_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Technique" column="technique_pk_id" />
+		</set>
 		<many-to-one name="protocolFile" class="gov.nih.nci.cananolab.domain.common.ProtocolFile" column="protocol_file_pk_id" lazy="proxy"/>
-		<many-to-one name="instrumentConfiguration" class="gov.nih.nci.cananolab.domain.common.InstrumentConfiguration" column="instrument_config_pk_id" lazy="proxy" cascade="save-update, delete"/>
 		<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization" discriminator-value="InvitroCharacterization">
 			<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.Toxicity" discriminator-value="Toxicity">
 				<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.OxidativeStress" discriminator-value="OxidativeStress">
