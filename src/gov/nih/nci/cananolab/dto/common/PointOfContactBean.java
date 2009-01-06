@@ -81,6 +81,7 @@ public class PointOfContactBean {
 	 */
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
+		domain.setOrganization(organization);
 	}
 
 	/**
