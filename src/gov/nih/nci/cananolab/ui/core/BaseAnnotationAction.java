@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -81,6 +82,14 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				}
 				throw new NoAccessException(
 						"You don't have the required privileges to access this particle");
+			}else {
+				PointOfContactBean pointOfContactBean = particleBean.getPocBean();
+				if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
+						.toString(), user)) {
+					pointOfContactBean.setHidden(false);
+				} else {
+					pointOfContactBean.setHidden(true);
+				}
 			}
 		}
 		particleBean.setLocation(location);
