@@ -129,7 +129,8 @@
 			value="/WEB-INF/tiles-defs.xml,  												   
                    /WEB-INF/tiles-defs-protocol.xml,
                    /WEB-INF/tiles-defs-particle.xml,
-                   /WEB-INF/tiles-defs-publication.xml" />
+                   /WEB-INF/tiles-defs-publication.xml,
+                   /WEB-INF/tiles-defs-common.xml" />
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
 		<set-property property="definitions-parser-validate"
