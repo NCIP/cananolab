@@ -146,10 +146,10 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			otherPointOfContactCollection = pointOfContactService
 					.findOtherPointOfContactCollection(particleId);
 		}
-		setVisibility(user, primaryPointOfContact, false);
+		setVisibility(user, primaryPointOfContact, true);
 		if (otherPointOfContactCollection != null) {
 			for (PointOfContactBean pointOfContactBean : otherPointOfContactCollection) {
-				setVisibility(user, pointOfContactBean, false);
+				setVisibility(user, pointOfContactBean, true);
 			}
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -159,7 +159,24 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				.setOtherPointOfContacts(otherPointOfContactCollection);
 		theForm.set("otherPoc", otherPointOfContactsBean);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
-		ActionForward forward = mapping.findForward("submitPointOfContact");
+		
+		ParticleBean sessionParticleSampleBean = (ParticleBean) request
+		.getSession().getAttribute("pocParticle");
+		String sessionParticleId = null;
+		if (sessionParticleSampleBean.getDomainParticleSample().getId() != null) {
+			sessionParticleId = sessionParticleSampleBean
+					.getDomainParticleSample().getId().toString();
+		}
+		if (particleId != null
+				&& !particleId.equals(sessionParticleId)) {
+			request.getSession().removeAttribute("pocParticle");
+		}
+		ActionForward forward = null;
+		if(particleId == null || particleId.trim().length() == 0) {
+			forward = mapping.findForward("submitPointOfContact");
+		} else {
+			forward = mapping.findForward("particleSubmitPointOfContact");
+		}
 		return forward;		
 	}
 
@@ -231,9 +248,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
 				+ "&submitType=" + submitType + "&location=" + location;
 		request.getSession().setAttribute("printDetailViewLinkURL",
-				printLinkURL);
-
-		return mapping.findForward("detailView");
+				printLinkURL);		
+		ActionForward forward = null;
+		if(particleId == null || particleId.length() == 0) {
+			forward = mapping.findForward("detailView");
+		} else {
+			forward = mapping.findForward("particlePOCDetailView");
+		}
+		return forward;
 	}
 
 	// TODO::
@@ -260,71 +282,28 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		return mapping.findForward("pointOfContactDetailPrintView");
 	}
 
-	// TODO::
-	public ActionForward input(ActionMapping mapping, ActionForm form,
+	//TODO:: input, not in used
+	public ActionForward inputxxx(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
-		HttpSession session = request.getSession();
-		String particleId = (String) session.getAttribute("docParticleId");
-
-		// //save new entered other types
-		// InitPOCSetup.getInstance().setPOCDropdowns(request);
-		// DynaValidatorForm theForm = (DynaValidatorForm) form;
-		//		
-		// PointOfContactBean pointOfContactBean = ((PointOfContactBean)
-		// theForm.get("file"));
-		// String selectedPointOfContactType =
-		// ((PointOfContact)pointOfContactBean.getDomainFile()).getCategory();
-		// if (selectedPointOfContactType!=null) {
-		// SortedSet<String> types = (SortedSet<String>)
-		// request.getSession().getAttribute("pointOfContactCategories");
-		// for(String op: types) {
-		// System.out.println("options:" + op);
-		// }
-		// if (types!=null) {
-		// types.add(selectedPointOfContactType);
-		// request.getSession().setAttribute("pointOfContactCategories", types);
-		// }
-		// }
-		// String selectedPointOfContactStatus =
-		// ((PointOfContact)pointOfContactBean.getDomainFile()).getStatus();
-		// if (selectedPointOfContactStatus!=null) {
-		// SortedSet<String> statuses = (SortedSet<String>)
-		// request.getSession().getAttribute("pointOfContactStatuses");
-		// if (statuses!=null) {
-		// statuses.add(selectedPointOfContactStatus);
-		// request.getSession().setAttribute("pointOfContactStatuses",
-		// statuses);
-		// }
-		// }
-		// PointOfContact pub = (PointOfContact)
-		// pointOfContactBean.getDomainFile();
-		//		
-		// theForm.set("file", pointOfContactBean);
-		//
-		// // if pubMedId is available, the related fields should be set to read
-		// only.
-		//		
-		// Long pubMedId = pub.getPubMedId();
-		// ActionForward forward = getReturnForward(mapping, particleId,
-		// pubMedId);
-		//		
-		// return forward;
-		return mapping.getInputForward();
+		HttpSession session = request.getSession();	
+		String particleId = getParticleId(request);
+		//String particleId = request.getParameter("particleId");
+		//TODO:: save new entered other types
+		//InitPublicationSetup.getInstance().setPublicationDropdowns(request);
+		//SubmitPublicationForm theForm = (SubmitPublicationForm) form;
+		
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
+				.get("poc");
+		OtherPointOfContactsBean otherPointOfContactsBean = (OtherPointOfContactsBean) theForm
+				.get("otherPoc");		
+		theForm.set("poc", primaryPointOfContact);	
+		theForm.set("otherPoc", otherPointOfContactsBean);	
+		ActionForward forward = getReturnForward(mapping, particleId);		
+		return forward;
 	}
-
-	// public ActionForward addAuthor(ActionMapping mapping,
-	// ActionForm form, HttpServletRequest request,
-	// HttpServletResponse response) throws Exception {
-	// DynaValidatorForm theForm = (DynaValidatorForm) form;
-	// PointOfContactBean pbean = (PointOfContactBean) theForm
-	// .get("file");
-	// pbean.addAuthor();
-	//
-	// return mapping.getInputForward();
-	// }
-	//	
+	
 	public boolean loginRequired() {
 		return true;
 	}
@@ -370,9 +349,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
 		otherPocsBean.setPointOfContact(pocIndex, pocBean);
-		theForm.set("otherPoc", otherPocsBean);
-
-		return mapping.getInputForward();
+		theForm.set("otherPoc", otherPocsBean);		
+		ActionForward forward = mapping.getInputForward();
+		String particleId = getParticleId(request);
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
+			forward = mapping.findForward("submitPointOfContact");
+		}
+		return forward;
 	}
 
 	public ActionForward addPointOfContact(ActionMapping mapping,
@@ -395,7 +379,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				.get("otherPoc");
 		entity.removePointOfContact(ind);
 
-		return mapping.getInputForward();
+		ActionForward forward = mapping.getInputForward();
+		String particleId = getParticleId(request);
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
+			forward = mapping.findForward("submitPointOfContact");
+		}
+		return forward;
+		//return mapping.getInputForward();
 	}
 
 	public ActionForward getOrganization(ActionMapping mapping,
@@ -406,7 +397,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		Organization org = pocService.findOrganizationByName(orgName);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (orgIndex == null || orgIndex.trim().length() == 0) {
 			PointOfContactBean pocBean = (PointOfContactBean) theForm
 					.get("poc");
@@ -420,13 +411,21 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 					org);
 			theForm.set("otherPoc", otherPocsBean);
 		}
-		return mapping.getInputForward();
+		ActionForward forward = mapping.getInputForward();
+		String particleId = getParticleId(request);
+		if (particleId != null && !particleId.equals("null")
+				&& particleId.trim().length() > 0) {
+			forward = mapping.findForward("submitPointOfContact");
+		}
+		return forward;
+		//return mapping.getInputForward();
 	}
 
 	public ActionForward cancel(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String particleId = getParticleId(request);
+		request.getSession().removeAttribute("pocParticle");
 		if (particleId != null) {
 			request.setAttribute("particleId", particleId);
 			return mapping.findForward("updateParticle");
@@ -434,4 +433,16 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			return mapping.findForward("submitParticle");
 		}
 	}
+	//TODO:: getReturnForward, not in used
+	private ActionForward getReturnForward(ActionMapping mapping, 
+			String particleId) {
+		ActionForward forward = null;
+		if (particleId != null && particleId.trim().length() > 0) {
+			forward = mapping.findForward("particleSubmitPointOfContact");
+		}else {
+			forward = mapping.findForward("submitPointOfContact");			
+		}
+		return forward;
+	}
+	
 }

@@ -29,19 +29,19 @@
 		<put name="calabContent"
 			value="/particle/bodySubmitNanoparticleSample.jsp" />
 		<put name="menu" value="nanoparticles" />
-	</definition>
+	</definition>	
 	
 	<definition name="particle.submitPointOfContact"
-		extends="calab.home">
+		extends="particle.annotationHome">
 		<put name="calabContent"
-			value="/common/bodySubmitPointOfContact.jsp" />
+			value="/common/bodySubmitPointOfContact.jsp"/>
 		<put name="menu" value="nanoparticles" />
 	</definition>
-
+	
 	<definition name="particle.pointOfContactDetailView"
-		extends="calab.home">
+		extends="particle.annotationHome">
 		<put name="calabContent"
-			value="/common/bodyPointOfContactDetailView.jsp" />
+			value="/common/bodyPointOfContactDetailView.jsp"/>
 		<put name="menu" value="nanoparticles" />
 	</definition>
 	

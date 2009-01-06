@@ -39,12 +39,17 @@
 				path="/submitNanoparticleSample.do?dispatch=setupUpdate&amp;page=0" />
 			<forward name="submitParticle"
 				path="/submitNanoparticleSample.do?dispatch=fromPOC&amp;page=0" />
+			<forward name="pointOfContactDetailView"
+				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
 			<forward name="detailView"
+				path="common.pointOfContactDetailView" />
+			<forward name="particlePOCDetailView"
 				path="particle.pointOfContactDetailView" />
 			<forward name="submitPointOfContact"
-				path="particle.submitPointOfContact" />
-		</action>
-		
+				path="common.submitPointOfContact" />
+			<forward name="particleSubmitPointOfContact"
+				path="particle.submitPointOfContact" />			
+		</action>		
 	</action-mappings>
 </struts-config>
 

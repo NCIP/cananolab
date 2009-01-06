@@ -8,4 +8,18 @@
 		<put name="calabContent"
 			value="/bodyMessage.jsp?bundle=pointOfContact" />
 	</definition>
+	
+	<definition name="common.pointOfContactDetailView"
+		extends="calab.home">
+		<put name="calabContent"
+			value="/common/bodyPointOfContactDetailView.jsp" />
+		<put name="menu" value="nanoparticles" />
+	</definition>
+	
+	<definition name="common.submitPointOfContact"
+		extends="calab.home">
+		<put name="calabContent"
+			value="/common/bodySubmitPointOfContact.jsp" />
+		<put name="menu" value="nanoparticles" />
+	</definition>
 </tiles-definitions>
