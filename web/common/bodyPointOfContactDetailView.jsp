@@ -18,14 +18,27 @@
 					<jsp:param name="topic" value="organization_page_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
 				</jsp:include>
-				<c:url var="url" value="submitPointOfContact.do">
-					<c:param name="page" value="0" />
-					<c:if test="${!empty param.particleId}">
-						<c:param name="particleId" value="${param.particleId}" />
-					</c:if>
-					<c:param name="dispatch" value="cancel" />					
-				</c:url>
-				<a href="${url}" class="helpText">Back</a>
+
+				<c:choose>
+					<c:when test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
+						<c:url var="url" value="submitPointOfContact.do">
+							<c:param name="page" value="0" />
+							<c:if test="${!empty param.particleId}">
+								<c:param name="particleId" value="${param.particleId}" />
+							</c:if>
+							<c:param name="dispatch" value="cancel" />
+						</c:url>
+					</c:when>
+					<c:otherwise>
+						<c:url var="url" value="submitNanoparticleSample.do">
+							<c:param name="page" value="0" />
+							<c:param name="particleId" value="${param.particleId}" />
+							<c:param name="dispatch" value="setupView" />
+							<c:param name="location" value="${param.location}" />
+						</c:url>
+					</c:otherwise>
+				</c:choose>
+				<a href="${url}" class="helpText">Back</a>				
 			</td>
 		</tr>
 		<tr>
@@ -158,6 +171,7 @@
 										</td>
 										<td colspan="3">
 											${submitPointOfContactForm.map.poc.domain.organization.streetAddress1}&nbsp;
+											<br>
 											${submitPointOfContactForm.map.poc.domain.organization.streetAddress2}&nbsp;
 											<br>
 											${submitPointOfContactForm.map.poc.domain.organization.city}&nbsp;
@@ -206,16 +220,10 @@
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
 													<c:if
 														test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}">
-												${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}&nbsp;
-											</c:if>
+														${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}&nbsp;
+													</c:if>
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.lastName}&nbsp;
-												</td>
-												<td>
-													<strong>Role</strong>
-												</td>
-												<td>
-													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.role}&nbsp;
-												</td>
+												</td>												
 											</tr>
 									</c:if>
 									
@@ -236,12 +244,24 @@
 												</td>
 												<td colspan="3">
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress1}&nbsp;
+													<br>
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress2}&nbsp;
 													<br>
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.city}&nbsp;
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.state}&nbsp;
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.postalCode}&nbsp;
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.organization.country}&nbsp;
+												</td>
+											</tr>
+										</c:if>
+										<c:if
+											test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.role}">
+											<tr class="smallTableHeader">
+												<td>
+													<strong>Role</strong>
+												</td>
+												<td>
+													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.role}&nbsp;
 												</td>
 											</tr>
 										</c:if>
