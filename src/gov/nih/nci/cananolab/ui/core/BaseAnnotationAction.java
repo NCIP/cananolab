@@ -97,7 +97,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return particleBean;
 	}
 
-	// TODO: verify if needed??
 	public void setOtherParticlesFromTheSameSource(String location,
 			HttpServletRequest request, ParticleBean particleBean, UserBean user)
 			throws Exception {

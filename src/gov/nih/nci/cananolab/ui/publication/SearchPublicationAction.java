@@ -300,7 +300,6 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		if (location.equals("local")) {
 			return super.download(mapping, form, request, response);
 		} else {
-			// TODO, to test
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			PublicationService publicationService = new PublicationServiceRemoteImpl(
