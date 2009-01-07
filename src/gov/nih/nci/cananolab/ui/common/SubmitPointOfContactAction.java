@@ -33,6 +33,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SubmitPointOfContactAction extends BaseAnnotationAction {
@@ -100,6 +102,13 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				.getAttribute("pocParticle");
 		particleSampleBean.setPocBean(primaryPointOfContact);
 		particleSampleBean.getDomainParticleSample().setOtherPointOfContactCollection(otherPointOfContactCollection);
+		
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage(
+				"pointOfContact.updateOtherPOC");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+
 		String particleId = getParticleId(request);
 		if (particleId != null) {
 			request.setAttribute("particleId", particleId);
