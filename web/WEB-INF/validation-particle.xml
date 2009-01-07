@@ -10,13 +10,19 @@
 				depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleName" bundle="particle" />
-			</field>
+			</field>			
 			<field
 				property="particleSampleBean.pocBean.domain.id"
-				page="1" depends="required">
+				page="1" depends="validwhen">			
 				<arg position="0"
 					key="nanoparticleSampleForm.pointOfContact" bundle="particle" />
-			</field>
+				<var>
+					<var-name>test</var-name>
+					<var-value>
+						((*this* != null) and (*this* > 0))
+					</var-value>
+				</var>
+			</field>			
 		</form>
 		<form name="chemicalAssociationForm">
 			<field property="assoc.type" page="2" depends="required">
