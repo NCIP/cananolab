@@ -642,37 +642,38 @@ CREATE TABLE technique
 ) TYPE=InnoDB
 ;
 
-
 CREATE TABLE instrument
 (
 	instrument_pk_id BIGINT NOT NULL,
-	type VARCHAR(200) NOT NULL,
-	abbreviation VARCHAR(50),
+	type VARCHAR(200),
 	manufacturer VARCHAR(2000),
-	model VARCHAR(200),
+	model_name VARCHAR(200),
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	PRIMARY KEY (instrument_pk_id)
 ) TYPE=InnoDB
 ;
 
-CREATE TABLE characterization_technique
+CREATE TABLE experiment_config
 (
+	experiment_config_id BIGINT NOT NULL,
+	description TEXT,
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
 	characterization_pk_id BIGINT NOT NULL,
 	technique_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (characterization_pk_id, technique_pk_id),
+	PRIMARY KEY (experiment_config_id),
 	KEY (characterization_pk_id),
 	KEY (technique_pk_id)
 ) TYPE=InnoDB
 ;
 
-
-CREATE TABLE characterization_instrument
+CREATE TABLE experiment_config_instrument
 (
-	characterization_pk_id BIGINT NOT NULL,
+	experiment_config_pk_id BIGINT NOT NULL,
 	instrument_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (characterization_pk_id, instrument_pk_id),
-	KEY (characterization_pk_id),
+	PRIMARY KEY (experiment_config_pk_id, instrument_pk_id),
+	KEY (experiment_config_pk_id),
 	KEY (instrument_pk_id)
 ) TYPE=InnoDB
 ;
@@ -890,18 +891,18 @@ ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associat
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (cha racterization_pk_id)
+ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
+	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_id)
 ;
 
-ALTER TABLE characterization_technique ADD CONSTRAINT FK_characterization_technique_technique
-	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
+ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_instrument
+	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
 ;
 
-ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instrument_characterization
+ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_characterization
 	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE characterization_instrument ADD CONSTRAINT FK_characterization_instrument_instrument
-	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
+ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
+	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
 ;
