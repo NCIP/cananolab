@@ -123,7 +123,6 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			AuthorizationService authService,
 			CustomizedApplicationService appService) throws Exception {
 		String user = pointOfContact.getCreatedBy();
-		//TODO::: if pointOfContact is new, pointOfContact.getOrganization got empty organization
 		Organization organization = pointOfContact.getOrganization();
 		if (pointOfContact.getCreatedDate() == null) {
 			// TODO:: myCal.add(Calendar.SECOND, 1);???
@@ -250,10 +249,6 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
 				names.add(name);
-				// TODO:: to verify
-				// if (auth.isUserAllowed(name, user)) {
-				// names.add(name);
-				// }
 			}
 			return names;
 		} catch (Exception e) {
