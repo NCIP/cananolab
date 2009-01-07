@@ -6,7 +6,7 @@
 	<definition name="pointOfContact.message"
 		extends="particle.annotationHome">
 		<put name="calabContent"
-			value="/bodyMessage.jsp?bundle=pointOfContact" />
+			value="/bodyMessage.jsp?bundle=common" />
 	</definition>
 	
 	<definition name="common.pointOfContactDetailView"
