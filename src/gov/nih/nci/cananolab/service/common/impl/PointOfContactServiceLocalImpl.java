@@ -23,7 +23,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -87,11 +86,6 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
 			String particleId) throws PointOfContactException {
 		return helper.findOtherPointOfContactCollection(particleId);
-	}
-
-	public PointOfContactBean findPrimaryPointOfContact(String particleId)
-			throws PointOfContactException {
-		return helper.findPrimaryPointOfContact(particleId);
 	}
 
 	public PointOfContact findPointOfContact(
@@ -214,34 +208,6 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
-
-	// TODO: not in used
-	// public SortedSet<Organization> findAllOrganizations(UserBean user)
-	// throws PointOfContactException {
-	// try {
-	// AuthorizationService auth = new AuthorizationService(
-	// CaNanoLabConstants.CSM_APP_NAME);
-	// SortedSet<Organization> organizations = new TreeSet<Organization>(
-	// new CaNanoLabComparators.OrganizationComparator());
-	// CustomizedApplicationService appService = (CustomizedApplicationService)
-	// ApplicationServiceProvider
-	// .getApplicationService();
-	// DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
-	// List results = appService.query(crit);
-	// //TODO:: to test
-	// for (Object obj : results) {
-	// Organization org = ((Organization) obj);
-	// if (auth.isUserAllowed(org.getId().toString(), user)) {
-	// organizations.add(org);
-	// }
-	// }
-	// return organizations;
-	// } catch (Exception e) {
-	// String err = "Error finding all organization for " + user.getLoginName();
-	// logger.error(err, e);
-	// throw new PointOfContactException(err, e);
-	// }
-	// }
 
 	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
 			String nanoparticleSampleCollection) throws PointOfContactException {

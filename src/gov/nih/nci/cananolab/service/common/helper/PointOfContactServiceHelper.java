@@ -27,35 +27,6 @@ public class PointOfContactServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(PointOfContactServiceHelper.class);
 
-	public PointOfContactBean findPrimaryPointOfContact(String particleId)
-			throws PointOfContactException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(PointOfContact.class);
-			crit.createAlias("primaryNanoparticleSampleCollection", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
-			crit.setFetchMode("organization", FetchMode.JOIN);
-			//TODO: to verify if need?
-			crit.setFetchMode("primaryNanoparticleSampleCollection", FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			PointOfContactBean primaryPointOfContact = null;
-			for (Object obj : results) {
-				primaryPointOfContact = new PointOfContactBean((PointOfContact) obj);
-			}
-			return primaryPointOfContact;
-		} catch (Exception e) {
-			String err = "Problem finding primary PointOfContact with the given particle ID.";
-			logger.error(err, e);
-			throw new PointOfContactException(err, e);
-		}
-	}
-
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
 			String particleId) throws PointOfContactException {
 		try {

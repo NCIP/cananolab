@@ -42,11 +42,6 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 
-	public PointOfContactBean findPrimaryPointOfContact(String particleId) {
-		// TODO: grid findPrimaryOrganization
-		return null;
-	}
-
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
 			String particleId) {
 		// TODO: grid findOrganizationsByParticleSampleId

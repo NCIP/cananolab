@@ -31,9 +31,6 @@ public interface PointOfContactService {
 			Collection<PointOfContact> otherPointOfContactCollection)
 			throws PointOfContactException, DuplicateEntriesException;
 
-	public PointOfContactBean findPrimaryPointOfContact(String particleId)
-			throws PointOfContactException;
-
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
 			String particleId) throws PointOfContactException;
 
