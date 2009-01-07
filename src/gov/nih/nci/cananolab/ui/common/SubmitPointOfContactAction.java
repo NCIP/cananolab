@@ -291,27 +291,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		return mapping.findForward("pointOfContactDetailPrintView");
 	}
 
-	//TODO:: input, not in used
-	public ActionForward inputxxx(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		HttpSession session = request.getSession();	
-		String particleId = getParticleId(request);
-		//String particleId = request.getParameter("particleId");
-		//TODO:: save new entered other types
-		//InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		//SubmitPublicationForm theForm = (SubmitPublicationForm) form;
-		
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		PointOfContactBean primaryPointOfContact = (PointOfContactBean) theForm
-				.get("poc");
-		OtherPointOfContactsBean otherPointOfContactsBean = (OtherPointOfContactsBean) theForm
-				.get("otherPoc");		
-		theForm.set("poc", primaryPointOfContact);	
-		theForm.set("otherPoc", otherPointOfContactsBean);	
-		ActionForward forward = getReturnForward(mapping, particleId);		
-		return forward;
-	}
 	
 	public boolean loginRequired() {
 		return true;
@@ -441,17 +420,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		} else {
 			return mapping.findForward("submitParticle");
 		}
-	}
-	//TODO:: getReturnForward, not in used
-	private ActionForward getReturnForward(ActionMapping mapping, 
-			String particleId) {
-		ActionForward forward = null;
-		if (particleId != null && particleId.trim().length() > 0) {
-			forward = mapping.findForward("particleSubmitPointOfContact");
-		}else {
-			forward = mapping.findForward("submitPointOfContact");			
-		}
-		return forward;
 	}
 	
 }
