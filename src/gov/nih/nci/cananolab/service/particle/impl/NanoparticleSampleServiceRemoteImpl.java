@@ -121,7 +121,6 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			throws ParticleException {
 		List<ParticleBean> particles = new ArrayList<ParticleBean>();
 		try {
-			// TODO: add publicationKeywordsStr to grid search
 			String[] particleSampleStrs = gridClient
 					.getNanoparticleSampleViewStrs(particlePointOfContact,
 							nanoparticleEntityClassNames,

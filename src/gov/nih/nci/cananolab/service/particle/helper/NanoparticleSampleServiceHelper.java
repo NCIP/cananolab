@@ -62,8 +62,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).setProjection(
 				Projections.distinct(Property.forName("id")));
-
-		// TODO: update SQL FOR source
+		
 		if (particlePointOfContact != null && particlePointOfContact.length() > 0) {
 			TextMatchMode pocMatchMode = new TextMatchMode(particlePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
@@ -461,8 +460,6 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		//TODO:: primaryPointOfContact.organization??
-		//crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);		
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
