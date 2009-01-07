@@ -13,7 +13,6 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
  * 
  */
 
-// TODO: need to revise PointOfContactBean, copy from OrganizationBean
 public class PointOfContactBean {
 	private PointOfContact domain;
 	private String displayName;
@@ -21,10 +20,7 @@ public class PointOfContactBean {
 	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
 	private String pocId;
-	private String address;
-
-	// TODO: need info for nanoparticleSample??
-
+	
 	public PointOfContactBean() {
 		super();
 		domain = new PointOfContact();

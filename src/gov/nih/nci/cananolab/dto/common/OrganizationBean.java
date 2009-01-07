@@ -24,9 +24,7 @@ public class OrganizationBean{
 	private List<PointOfContact> pocs = new ArrayList<PointOfContact>(20);
 	private String[] visibilityGroups = new String[0];
 	private boolean hidden = false;
-	private String address;
-	//TODO: need info for nanoparticleSample??
-	
+	private String address;	
 	
 	public OrganizationBean() {
 		super();
