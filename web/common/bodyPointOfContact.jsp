@@ -37,7 +37,7 @@
 			<tbody>
 				<tr>
 					<td class="completeLabelNoTop" valign="top">						
-						<a href="#" onclick="showhide('allPOC_${param.pocTitle}');">
+						<a href="javascript:showhide('allPOC_${param.pocTitle}');">
 							<span class="addLink2">Search
 							Existing Point of Contact</span></a>&nbsp;
 					</td>
