@@ -1,8 +1,10 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -10,7 +12,9 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
+import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
@@ -44,14 +48,14 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for characterization actions
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	/**
 	 * Set up the input form for adding new characterization
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -662,5 +666,17 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				"yyyyMMdd_HH-mm-ss-SSS"));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
+	}
+
+	public ActionForward saveExperimentConfig(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		ExperimentConfigBean configBean=achar.getTheExperimentConfig();
+		request.getSession().setAttribute("experimentConfigToSave",
+				configBean);
+		return mapping.findForward("saveExperimentConfig");
 	}
 }
