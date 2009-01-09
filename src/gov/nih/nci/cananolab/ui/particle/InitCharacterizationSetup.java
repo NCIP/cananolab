@@ -7,7 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBe
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
-import gov.nih.nci.cananolab.service.common.ExperiimentConfigService;
+import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
@@ -58,7 +58,7 @@ public class InitCharacterizationSetup {
 				"derivedDatumValueTypes", "DerivedDatum", "valueType",
 				"otherValueType", true);
 
-		ExperiimentConfigService experimentConfigService = new ExperimentConfigServiceLocalImpl();
+		ExperimentConfigService experimentConfigService = new ExperimentConfigServiceLocalImpl();
 
 		List<Technique> techniques = experimentConfigService
 				.findAllTechniques();
