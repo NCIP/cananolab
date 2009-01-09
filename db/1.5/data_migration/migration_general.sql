@@ -243,13 +243,13 @@ INSERT into technique (type,abbreviation,created_date,created_by) values ('Asymm
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Atomic Force Microscopy','AFM',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Capillary Electrophoresis',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Cell Counting',null,sysdate(),'DATA_MIGRATION');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Coagulation Detection',null,sysdate(),'DATA_MIGRATION');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Confocal Laser Scanning Microscopy','CLSM',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Dynamic Light Scattering','DLS',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Electron Microprobe Analysis','EMPA',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Electrophoretic Light Scattering',null,sysdate(),'DATA_MIGRATION');
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Enzyme-Linked ImmunoSorbent Assay','ELISA',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Energy Dispersive Spectroscopy','EDS',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Environmental Transmission Electron Microscopy','ETEM',sysdate(),'DATA_MIGRATION');
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Enzyme Detection',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Flow Cytometry',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Focused Ion Beam - Scanning Electron Microscopy','FIB-SEM',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Gas Sorption',null,sysdate(),'DATA_MIGRATION');
@@ -259,6 +259,8 @@ INSERT into technique (type,abbreviation,created_date,created_by) values ('High 
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Imaging',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Laser Doppler Velocimetry',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Liquid Chromatography','LC',sysdate(),'DATA_MIGRATION');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Microplate Analysis ',null,sysdate(),'DATA_MIGRATION');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight','MALDI-TOF',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Particle Quantitation',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Phase Analysis Light Scattering',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Polymerase Chain Reaction',null,sysdate(),'DATA_MIGRATION');
@@ -273,9 +275,7 @@ INSERT into technique (type,abbreviation,created_date,created_by) values ('Size 
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Spectrophotometry',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Transmission Electron Microscopy','TEM',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('X-Ray Photoelectron Spectroscopy',null,sysdate(),'DATA_MIGRATION');
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Microplate Analysis ',null,sysdate(),'DATA_MIGRATION');
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight','MALDI-TOF',sysdate(),'DATA_MIGRATION');
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Confocal Laser Scanning Microscopy','CLSM',sysdate(),'DATA_MIGRATION');
+
 ALTER TABLE canano.technique
  CHANGE technique_pk_id technique_pk_id BIGINT NOT NULL;
 
@@ -285,7 +285,7 @@ ALTER TABLE canano.instrument
  ADD created_date DATETIME NOT NULL,
  ADD created_by VARCHAR(200) NOT NULL,
  DROP abbreviation;
- 
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
 
@@ -297,10 +297,9 @@ insert into common_lookup(attribute,name,value) values ('instrument','Cell Count
 insert into common_lookup(attribute,name,value) values ('instrument','Dynamic Light Scattering','Dynamic Light Scattering Instrument');
 insert into common_lookup(attribute,name,value) values ('instrument','Electron Microprobe Analysis','Electron Microprobe');
 insert into common_lookup(attribute,name,value) values ('instrument','Electrophoretic Light Scattering','Electrophoretic Light Scattering Instrument');
-insert into common_lookup(attribute,name,value) values ('instrument','Enzyme-Linked ImmunoSorbent Assay','Clot Detection System');
 insert into common_lookup(attribute,name,value) values ('instrument','Energy Dispersive Spectroscopy','Energy Dispersive Spectrometer');
 insert into common_lookup(attribute,name,value) values ('instrument','Environmental Transmission Electron Microscopy','Environmental Transmission Electron Microscope');
-insert into common_lookup(attribute,name,value) values ('instrument','Enzyme Detection','Clot Detection System');
+insert into common_lookup(attribute,name,value) values ('instrument','Coagulation Detection','Coagulation Monitor');
 insert into common_lookup(attribute,name,value) values ('instrument','Gas Sorption','Surface Area and Pore Size Analyzer');
 insert into common_lookup(attribute,name,value) values ('instrument','Flow Cytometry','Flow Cytometer');
 insert into common_lookup(attribute,name,value) values ('instrument','Focused Ion Beam - Scanning Electron Microscopy','Scanning Electron Microscope');
@@ -328,31 +327,6 @@ insert into common_lookup(attribute,name,value) values ('instrument','X-Ray Phot
 insert into common_lookup(attribute,name,value) values ('instrument','Microplate Analysis','Microplate Reader');
 insert into common_lookup(attribute,name,value) values ('instrument','Matrix Assisted Laser Desorption Ionisation - Time Of Flight','Matrix Assisted Laser Desorption Ionisation - Time Of Flight Mass Spectrometer');
 insert into common_lookup(attribute,name,value) values ('instrument','Confocal Laser Scanning Microscopy','Confocal Microscope');
-
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Molecular Imaging');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Beckman/Coulter');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Brookhaven Instruments');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Molecular Devices');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Wyatt Technologies');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Malvern');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','EDAX');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Diagnostica');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Becton Dickinson');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Agilent');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Shimadzu');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Kodak');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Amersham');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Biorad');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Waters');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Thermo Electron');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Tecan');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Molecular Devices');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Quantachrome Instruments');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Hitachi');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','JEOL');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Philips');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Biorad');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Carl Zeiss');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
@@ -395,28 +369,28 @@ CREATE TABLE tmp_technique_id_mapping
 	instrument_pk_id BIGINT NOT NULL
 ) TYPE=InnoDB
 ;
-	
-INSERT INTO tmp_technique_id_mapping(technique_pk_id, instrument_pk_id)	
+
+INSERT INTO tmp_technique_id_mapping(technique_pk_id, instrument_pk_id)
 	SELECT DISTINCT technique.technique_pk_id, instrument.instrument_pk_id
-	FROM technique, instrument, common_lookup	
+	FROM technique, instrument, common_lookup
 	WHERE common_lookup.attribute = 'instrument'
 	and instrument.type = common_lookup.name
 	and technique.type = common_lookup.name
 	and technique_pk_id is not null;
-	
-	
+
+
 -- update technique_pk_id from fresh insert of technique
 UPDATE experiment_config e1, tmp_technique_id_mapping m
 SET e1.technique_pk_id = m.technique_pk_id
 WHERE m.instrument_pk_id=e1.technique_pk_id
 ;
-	  	
+
 -- use created_by as placeholder to store manuafacturer data
 UPDATE instrument_config ic
 SET ic.created_by = '';
 
 UPDATE instrument_config ic, instrument i
-SET ic.created_by = i.manufacturer 
+SET ic.created_by = i.manufacturer
 WHERE ic.instrument_pk_id = i.instrument_pk_id;
 
 
@@ -436,11 +410,11 @@ INSERT into instrument (type,manufacturer,created_date,created_by) values ('Dyna
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Electron Microprobe',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Electrophoretic Light Scattering Instrument','Brookhaven Instruments',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Electrophoretic Light Scattering Instrument','Malvern',sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Clot Detection System',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Coagulation Monitor',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Energy Dispersive Spectrometer','EDAX',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Environmental Transmission Electron Microscope','JEOL',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Environmental Transmission Electron Microscope','Philips',sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Clot Detection System','Diagnostica',sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Coagulation Monitor','Diagnostica Stago',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Flow Cytometer','Becton Dickinson',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Surface Area and Pore Size Analyzer','Quantachrome Instruments',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope','Hitachi',sysdate(),'DATA_MIGRATION');
@@ -491,7 +465,7 @@ ALTER TABLE canano.characterization
 ;
 ALTER TABLE canano.characterization
  DROP instrument_config_pk_id;
- 
+
 
 DROP TABLE canano.instrument_config;
 DROP TABLE tmp_technique_id_mapping;
