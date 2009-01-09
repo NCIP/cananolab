@@ -36,7 +36,7 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private ExperimentConfigBean theExperimentConfig;
+	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
 
 	private List<ExperimentConfigBean> experimentConfigs = new ArrayList<ExperimentConfigBean>();
 
