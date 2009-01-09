@@ -1,15 +1,14 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
-import gov.nih.nci.cananolab.dto.common.InstrumentBean;
-import gov.nih.nci.cananolab.dto.common.TechniqueBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
-import gov.nih.nci.cananolab.service.common.InstrumentTechniqueService;
-import gov.nih.nci.cananolab.service.common.impl.InstrumentTechniqueServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.ExperiimentConfigService;
+import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -59,12 +58,10 @@ public class InitCharacterizationSetup {
 				"derivedDatumValueTypes", "DerivedDatum", "valueType",
 				"otherValueType", true);
 
-		InstrumentTechniqueService instrumentTechniqueService = new InstrumentTechniqueServiceLocalImpl();
-		List<InstrumentBean> instruments = instrumentTechniqueService
-				.findAllInstruments();
-		List<TechniqueBean> techniques = instrumentTechniqueService
+		ExperiimentConfigService experimentConfigService = new ExperimentConfigServiceLocalImpl();
+
+		List<Technique> techniques = experimentConfigService
 				.findAllTechniques();
-		session.setAttribute("allInstruments", instruments);
 		session.setAttribute("allTechniques", techniques);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}

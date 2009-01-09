@@ -32,11 +32,11 @@
 			<c:choose>
 				<c:when test="${'setup' eq param.dispatch }">
 					<c:remove var="dataId" scope="session" />
-				</c:when>										
+				</c:when>
 				<c:when test="${'setupUpdate' eq param.dispatch }">
 					<c:set var="dataId" value="${param.dataId}" scope="session" />
-				</c:when>																			
-			</c:choose>	
+				</c:when>
+			</c:choose>
 			<c:set var="helpTopic" value="char_details_help" />
 			<c:choose>
 				<c:when test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
@@ -44,13 +44,13 @@
 				</c:when>
 				<c:when test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
 					<c:set var="helpTopic" value="add_in_vitro_char_help" />
-				</c:when>				
-			</c:choose>	
+				</c:when>
+			</c:choose>
 			<td align="right" width="20%">
-				<jsp:include page="/helpGlossary.jsp">			
+				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="${helpTopic}" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>			
+				</jsp:include>
 			</td>
 		</tr>
 		<tr>
@@ -66,7 +66,7 @@
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationSummary.jsp" />
 				<jsp:include
-					page="/particle/characterization/shared/bodyCharacterizationInstrument.jsp" />
+					page="/particle/characterization/shared/bodyCharacterizationDesignMethods.jsp" />
 				<c:if test="${!empty characterizationDetailPage}">
 					<jsp:include page="${characterizationDetailPage}" />
 				</c:if>
@@ -94,7 +94,7 @@
 												<td>
 													<logic:iterate name="characterizationForm"
 														property="achar.derivedBioAssayDataList"
-														id="derivedBioAssayData" indexId="fileInd">														
+														id="derivedBioAssayData" indexId="fileInd">
 															<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
 																<jsp:param name="fileInd" value="${fileInd}" />
 																<jsp:param name="form" value="characterizationForm" />
@@ -115,7 +115,7 @@
 																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.image}" />
 																<jsp:param name="fileUriExternal"
 																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.uriExternal}" />
-															</jsp:include>						
+															</jsp:include>
 														<br>
 													</logic:iterate>
 												</td>

@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
@@ -27,29 +28,38 @@ import java.util.Comparator;
 
 /**
  * Contains a list of static comparators for use in caNanoLab
- * 
+ *
  * @author pansu
- * 
+ *
  */
 
 /* CVS $Id: CaNanoLabComparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
 
 public class CaNanoLabComparators {
 
-	public static class ParticlePointOfContactComparator implements Comparator<PointOfContact> {
+	public static class TechniqueComparator implements Comparator<Technique> {
+		public int compare(Technique technique1, Technique technique2) {
+			return technique1.getType().compareTo(technique2.getType());
+		}
+	}
+
+	public static class ParticlePointOfContactComparator implements
+			Comparator<PointOfContact> {
 		public int compare(PointOfContact poc1, PointOfContact poc2) {
-			int diff = new SortableNameComparator().compare(poc1
-					.getFirstName(), poc2.getFirstName());
-			if (diff==0) {
-				diff = new SortableNameComparator().compare(poc1
-						.getLastName(), poc2.getLastName());
-				if (diff==0) {
-					if (poc1.getOrganization()!=null && poc2.getOrganization()!=null) {				
+			int diff = new SortableNameComparator().compare(
+					poc1.getFirstName(), poc2.getFirstName());
+			if (diff == 0) {
+				diff = new SortableNameComparator().compare(poc1.getLastName(),
+						poc2.getLastName());
+				if (diff == 0) {
+					if (poc1.getOrganization() != null
+							&& poc2.getOrganization() != null) {
 						diff = new SortableNameComparator().compare(poc1
-							.getOrganization().getName(), poc2.getOrganization().getName());
-					}else if (poc1.getOrganization()!=null) {
+								.getOrganization().getName(), poc2
+								.getOrganization().getName());
+					} else if (poc1.getOrganization() != null) {
 						diff = 1;
-					}else {
+					} else {
 						diff = -1;
 					}
 				}
@@ -57,18 +67,20 @@ public class CaNanoLabComparators {
 			return diff;
 		}
 	}
-	
-	public static class ParticlePointOfContactBeanComparator implements Comparator<PointOfContactBean> {
+
+	public static class ParticlePointOfContactBeanComparator implements
+			Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
-			int diff = new SortableNameComparator().compare(poc1.getDisplayName(), 
-					poc2.getDisplayName());
+			int diff = new SortableNameComparator().compare(poc1
+					.getDisplayName(), poc2.getDisplayName());
 			return diff;
 		}
 	}
-	
-	public static class OrganizationComparator implements Comparator<Organization> {
+
+	public static class OrganizationComparator implements
+			Comparator<Organization> {
 		public int compare(Organization org1, Organization org2) {
-			int diff = new SortableNameComparator().compare(org1.getName(), 
+			int diff = new SortableNameComparator().compare(org1.getName(),
 					org2.getName());
 			return diff;
 		}
@@ -220,8 +232,7 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class FileTypeDateComparator implements
-			Comparator<File> {
+	public static class FileTypeDateComparator implements Comparator<File> {
 		public int compare(File file1, File file2) {
 			if (file1.getType().equals(file2.getType())) {
 				return file1.getCreatedDate().compareTo(file2.getCreatedDate());
@@ -248,8 +259,7 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class FileBeanDateComparator implements
-			Comparator<FileBean> {
+	public static class FileBeanDateComparator implements Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
 			return file1.getDomainFile().getCreatedDate().compareTo(
 					file2.getDomainFile().getCreatedDate());
