@@ -273,7 +273,9 @@ INSERT into technique (type,abbreviation,created_date,created_by) values ('Size 
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Spectrophotometry',null,sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Transmission Electron Microscopy','TEM',sysdate(),'DATA_MIGRATION');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('X-Ray Photoelectron Spectroscopy',null,sysdate(),'DATA_MIGRATION');
-
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Microplate Analysis ',null,sysdate(),'DATA_MIGRATION');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight','MALDI-TOF',sysdate(),'DATA_MIGRATION');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Confocal Laser Scanning Microscopy','CLSM',sysdate(),'DATA_MIGRATION');
 ALTER TABLE canano.technique
  CHANGE technique_pk_id technique_pk_id BIGINT NOT NULL;
 
@@ -287,60 +289,70 @@ ALTER TABLE canano.instrument
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
 
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering Instrument');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Atomic Force Microscopy','Atomic Force Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Capillary Electrophoresis','Capillary Electrophoresis Instrument');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Cell Counting','Hemocytometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Cell Counting','Coulter Counter');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Dynamic Light Scattering','Dynamic Light Scattering Instrument');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Electron Microprobe Analysis','Electron Microprobe');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Electrophoretic Light Scattering','Electrophoretic Light Scattering Instrument');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Enzyme-Linked ImmunoSorbent Assay','Clot Detection System');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Energy Dispersive Spectroscopy','Energy Dispersive Spectrometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Environmental Transmission Electron Microscopy','Environmental Transmission Electron Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Enzyme Detection','Clot Detection System');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Flow Cytometry','Flow Cytometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Focused Ion Beam - Scanning Electron Microscopy','Scanning Electron Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','High Performance Liquid Chromatography','High Performance Liquid Chromatography System');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','High Resolution Scanning Electron Microscopy','Scanning Electron Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','High Resolution Transmission Electron Microscopy','Transmission Electron Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Imaging','Imaging System');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Laser Doppler Velocimetry','Laser Doppler Velocimeter');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Liquid Chromatography','Liquid Chromatography System');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Particle Quantitation','Hemocytometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Particle Quantitation','Coulter Counter');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Phase Analysis Light Scattering','Phase Light Scattering Instrument');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Polymerase Chain Reaction','Thermal Cycler');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Powder Diffraction','Powder Diffractometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Radiation Quantiation','Scintillation Counter');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Refractometry','Refractometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Scanning Auger Spectrometry','Scanning Auger Spectrometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Scanning Electron Microscopy','Scanning Electron Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Scanning Probe Microscopy','Scanning Probe Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Scanning Tunneling  Microscopy','Scanning Tunneling  Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Size Exclusion Chromatography with Multi-Angle Light Scattering','Size Exclusion Chromatography with Multi-Angle Light Scattering Instrument');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Spectrophotometry','Spectrophotometer');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','Transmission Electron Microscopy','Transmission Electron Microscope');
-insert into common_lookup(name,attribute,value) values ('TechniqueInstrumentMapping','X-Ray Photoelectron Spectroscopy','X-Ray Photoelectron Spectroscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering Instrument');
+insert into common_lookup(attribute,name,value) values ('instrument','Atomic Force Microscopy','Atomic Force Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Capillary Electrophoresis','Capillary Electrophoresis Instrument');
+insert into common_lookup(attribute,name,value) values ('instrument','Cell Counting','Hemocytometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Cell Counting','Coulter Counter');
+insert into common_lookup(attribute,name,value) values ('instrument','Dynamic Light Scattering','Dynamic Light Scattering Instrument');
+insert into common_lookup(attribute,name,value) values ('instrument','Electron Microprobe Analysis','Electron Microprobe');
+insert into common_lookup(attribute,name,value) values ('instrument','Electrophoretic Light Scattering','Electrophoretic Light Scattering Instrument');
+insert into common_lookup(attribute,name,value) values ('instrument','Enzyme-Linked ImmunoSorbent Assay','Clot Detection System');
+insert into common_lookup(attribute,name,value) values ('instrument','Energy Dispersive Spectroscopy','Energy Dispersive Spectrometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Environmental Transmission Electron Microscopy','Environmental Transmission Electron Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Enzyme Detection','Clot Detection System');
+insert into common_lookup(attribute,name,value) values ('instrument','Gas Sorption','Surface Area and Pore Size Analyzer');
+insert into common_lookup(attribute,name,value) values ('instrument','Flow Cytometry','Flow Cytometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Focused Ion Beam - Scanning Electron Microscopy','Scanning Electron Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','High Performance Liquid Chromatography','High Performance Liquid Chromatography System');
+insert into common_lookup(attribute,name,value) values ('instrument','High Resolution Scanning Electron Microscopy','Scanning Electron Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','High Resolution Transmission Electron Microscopy','Transmission Electron Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Imaging','Imaging System');
+insert into common_lookup(attribute,name,value) values ('instrument','Laser Doppler Velocimetry','Laser Doppler Velocimeter');
+insert into common_lookup(attribute,name,value) values ('instrument','Liquid Chromatography','Liquid Chromatography System');
+insert into common_lookup(attribute,name,value) values ('instrument','Particle Quantitation','Hemocytometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Particle Quantitation','Coulter Counter');
+insert into common_lookup(attribute,name,value) values ('instrument','Phase Analysis Light Scattering','Phase Light Scattering Instrument');
+insert into common_lookup(attribute,name,value) values ('instrument','Polymerase Chain Reaction','Thermal Cycler');
+insert into common_lookup(attribute,name,value) values ('instrument','Powder Diffraction','Powder Diffractometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Radiation Quantiation','Scintillation Counter');
+insert into common_lookup(attribute,name,value) values ('instrument','Refractometry','Refractometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Scanning Auger Spectrometry','Scanning Auger Spectrometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Scanning Electron Microscopy','Scanning Electron Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Scanning Probe Microscopy','Scanning Probe Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Scanning Tunneling  Microscopy','Scanning Tunneling  Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Size Exclusion Chromatography with Multi-Angle Light Scattering','Size Exclusion Chromatography with Multi-Angle Light Scattering Instrument');
+insert into common_lookup(attribute,name,value) values ('instrument','Spectrophotometry','Spectrophotometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Transmission Electron Microscopy','Transmission Electron Microscope');
+insert into common_lookup(attribute,name,value) values ('instrument','X-Ray Photoelectron Spectroscopy','X-Ray Photoelectron Spectroscope');
+insert into common_lookup(attribute,name,value) values ('instrument','Microplate Analysis','Microplate Reader');
+insert into common_lookup(attribute,name,value) values ('instrument','Matrix Assisted Laser Desorption Ionisation - Time Of Flight','Matrix Assisted Laser Desorption Ionisation - Time Of Flight Mass Spectrometer');
+insert into common_lookup(attribute,name,value) values ('instrument','Confocal Laser Scanning Microscopy','Confocal Microscope');
 
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Molecular Imaging');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Beckman/Coulter');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Brookhaven Instruments');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Molecular Devices');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Wyatt Technologies');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Malvern');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','EDAX');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Diagnostica');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Becton Dickinson');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Agilent');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Shimadzu');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Kodak');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Amersham');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Biorad');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Waters');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Thermo Electron');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Tecan');
-insert into common_lookup(name,attribute,value) values ('Manufacturer','displayName','Molecular Devices');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Molecular Imaging');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Beckman/Coulter');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Brookhaven Instruments');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Molecular Devices');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Wyatt Technologies');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Malvern');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','EDAX');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Diagnostica');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Becton Dickinson');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Agilent');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Shimadzu');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Kodak');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Amersham');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Biorad');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Waters');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Thermo Electron');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Tecan');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Molecular Devices');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Quantachrome Instruments');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Hitachi');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','JEOL');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Philips');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Biorad');
+insert into common_lookup(name,attribute,value) values ('Manufacturer','type','Carl Zeiss');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
@@ -387,9 +399,9 @@ CREATE TABLE tmp_technique_id_mapping
 INSERT INTO tmp_technique_id_mapping(technique_pk_id, instrument_pk_id)	
 	SELECT DISTINCT technique.technique_pk_id, instrument.instrument_pk_id
 	FROM technique, instrument, common_lookup	
-	WHERE common_lookup.name = 'TechniqueInstrumentMapping'
-	and instrument.type = common_lookup.attribute
-	and technique.type = common_lookup.attribute
+	WHERE common_lookup.attribute = 'instrument'
+	and instrument.type = common_lookup.name
+	and technique.type = common_lookup.name
 	and technique_pk_id is not null;
 	
 	
@@ -426,13 +438,15 @@ INSERT into instrument (type,manufacturer,created_date,created_by) values ('Elec
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Electrophoretic Light Scattering Instrument','Malvern',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Clot Detection System',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Energy Dispersive Spectrometer','EDAX',sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Environmental Transmission Electron Microscope',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Environmental Transmission Electron Microscope','JEOL',sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Environmental Transmission Electron Microscope','Philips',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Clot Detection System','Diagnostica',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Flow Cytometer','Becton Dickinson',sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Surface Area and Pore Size Analyzer','Quantachrome Instruments',sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope','Hitachi',sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope','Brookhaven Instruments',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('High Performance Liquid Chromatography System','Agilent',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('High Performance Liquid Chromatography System','Shimadzu',sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Transmission Electron Microscope',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Imaging System','Kodak',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Laser Doppler Velocimeter',null,sysdate(),'DATA_MIGRATION');
@@ -446,15 +460,17 @@ INSERT into instrument (type,manufacturer,created_date,created_by) values ('Powd
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scintillation Counter','Beckman/Coulter',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Refractometer','Waters',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Auger Spectrometer',null,sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope ',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Electron Microscope',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Probe Microscope',null,sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Tunneling  Microscope',null,sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Size Exclusion Chromatography with Multi-Angle Light Scattering Instrument',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Scanning Tunneling Microscope',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Size Exclusion Chromatography with Multi-Angle Light Scattering Instrument','Wyatt Technologies',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Spectrophotometer','Thermo Electron',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Spectrophotometer','Tecan',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('Spectrophotometer','Molecular Devices',sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,created_date,created_by) values ('Transmission Electron Microscope',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,created_date,created_by) values ('X-Ray Photoelectron Spectroscope',null,sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Microplate Reader','Biorad',sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight Mass Spectrometer','Waters',sysdate(),'DATA_MIGRATION');
+INSERT into instrument (type,manufacturer,created_date,created_by) values ('Confocal Microscope','Carl Zeiss',sysdate(),'DATA_MIGRATION');
 
 ALTER TABLE canano.instrument
  CHANGE instrument_pk_id instrument_pk_id BIGINT NOT NULL;
@@ -462,9 +478,9 @@ ALTER TABLE canano.instrument
 INSERT INTO experiment_config_instrument(experiment_config_pk_id,instrument_pk_id)
 SELECT DISTINCT ec.experiment_config_id, i.instrument_pk_id
 FROM instrument i, experiment_config ec, common_lookup cl, technique t, instrument_config ic
-WHERE cl.name = 'TechniqueInstrumentMapping'
+WHERE cl.attribute = 'instrument'
 AND  t.technique_pk_id = ec.technique_pk_id
-AND t.type = cl.attribute
+AND t.type = cl.name
 AND cl.value = i.type
 AND ec.experiment_config_id = ic.instrument_config_pk_id
 AND i.manufacturer = ic.created_by
