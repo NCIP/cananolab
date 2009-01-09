@@ -12,29 +12,38 @@
 			<form-property name="otherPoc"
 				type="gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean" />
 		</form-bean>
-		
+		<form-bean name="experimentConfigForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="dispatch" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+			<form-property name="experimentConfig"
+				type="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean" />
+		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-			bundle="pointOfContact" key="error.pointOfContactException" path="pointOfContact.message"
+			bundle="pointOfContact" key="error.pointOfContactException"
+			path="pointOfContact.message"
 			type="gov.nih.nci.cananolab.exception.PointOfContactException" />
 	</global-exceptions>
 	<global-forwards>
-		<forward name="pointOfContactMessage" path="pointOfContact.message" />
+		<forward name="pointOfContactMessage"
+			path="pointOfContact.message" />
 		<forward name="pointOfContactDetailPrintView"
 			path="/common/bodyPointOfContactDetailPrintView.jsp" />
 		<forward name="pointOfContactSummaryPrintView"
 			path="/common/bodyPointOfContactSummaryPrintView.jsp" />
 	</global-forwards>
-	<action-mappings>		
+	<action-mappings>
 		<action name="submitPointOfContactForm" parameter="dispatch"
 			path="/submitPointOfContact"
 			type="gov.nih.nci.cananolab.ui.common.SubmitPointOfContactAction"
 			input="input">
-			<forward name="success" path="particle.submitPointOfContact" />
-			<forward name="input"
+			<forward name="success"
 				path="particle.submitPointOfContact" />
+			<forward name="input" path="particle.submitPointOfContact" />
 			<forward name="updateParticle"
 				path="/submitNanoparticleSample.do?dispatch=setupUpdate&amp;page=0" />
 			<forward name="submitParticle"
@@ -48,8 +57,13 @@
 			<forward name="submitPointOfContact"
 				path="common.submitPointOfContact" />
 			<forward name="particleSubmitPointOfContact"
-				path="particle.submitPointOfContact" />			
-		</action>		
+				path="particle.submitPointOfContact" />
+		</action>
+		<action name="experimentConfigForm" parameter="dispatch"
+			path="submitExperimentConfig"
+			type="gov.nih.nci.cananolab.ui.common.SubmitPointOfContactAction "
+			input="input" scope="request">
+		</action>
 	</action-mappings>
 </struts-config>
 
