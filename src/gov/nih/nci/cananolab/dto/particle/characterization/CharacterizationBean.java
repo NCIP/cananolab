@@ -2,13 +2,10 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.dto.common.InstrumentBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.dto.common.TechniqueBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -38,9 +35,9 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private List<InstrumentBean> instruments = new ArrayList<InstrumentBean>();
+	private String[] techniqueTypes = new String[0];
 
-	private List<TechniqueBean> techniques = new ArrayList<TechniqueBean>();
+	private List<ExperimentConfig> experimentConfigs = new ArrayList<ExperimentConfig>();
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
@@ -71,16 +68,6 @@ public class CharacterizationBean {
 		this.characterizationSource = chara.getSource();
 		this.dateString = StringUtils.convertDateToString(chara.getDate(),
 				CaNanoLabConstants.DATE_FORMAT);
-		if (chara.getInstrumentCollection() != null) {
-			for (Instrument instrument : chara.getInstrumentCollection()) {
-				instruments.add(new InstrumentBean(instrument));
-			}
-		}
-		if (chara.getTechniqueCollection() != null) {
-			for (Technique technique : chara.getTechniqueCollection()) {
-				techniques.add(new TechniqueBean(technique));
-			}
-		}
 
 		if (chara.getDerivedBioAssayDataCollection() != null) {
 			for (DerivedBioAssayData bioassayData : chara
@@ -95,6 +82,16 @@ public class CharacterizationBean {
 		}
 		if (chara.getProtocolFile() != null) {
 			protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
+		}
+
+		//set selected technique types
+		if (chara.getExperimentConfigCollection()!=null) {
+			techniqueTypes=new String[chara.getExperimentConfigCollection().size()];
+			int i=0;
+			for (ExperimentConfig config: chara.getExperimentConfigCollection()) {
+				techniqueTypes[i]=config.getTechnique().getType();
+				i++;
+			}
 		}
 	}
 
@@ -111,31 +108,18 @@ public class CharacterizationBean {
 						+ StringUtils.convertDateToString(new Date(),
 								"yyyyMMdd_HH-mm-ss-SSS"));
 
-		if (copy.getInstrumentCollection().isEmpty()) {
-			copy.setInstrumentCollection(null);
+		if (copy.getExperimentConfigCollection().isEmpty()) {
+			copy.setExperimentConfigCollection(null);
 		} else {
-			Collection<Instrument> instruments = copy.getInstrumentCollection();
-			copy.setInstrumentCollection(new HashSet<Instrument>());
-			copy.getInstrumentCollection().addAll(instruments);
-			for (Instrument instrument : copy.getInstrumentCollection()) {
-				instrument.setId(null);
-				instrument
+			Collection<ExperimentConfig> configs = copy
+					.getExperimentConfigCollection();
+			copy.setExperimentConfigCollection(new HashSet<ExperimentConfig>());
+			copy.getExperimentConfigCollection().addAll(configs);
+			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
+				config.setId(null);
+				config
 						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
-				instrument.setCreatedDate(new Date());
-			}
-		}
-
-		if (copy.getTechniqueCollection().isEmpty()) {
-			copy.setTechniqueCollection(null);
-		} else {
-			Collection<Technique> techniques = copy.getTechniqueCollection();
-			copy.setTechniqueCollection(new HashSet<Technique>());
-			copy.getTechniqueCollection().addAll(techniques);
-			for (Technique technique : copy.getTechniqueCollection()) {
-				technique.setId(null);
-				technique
-						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
-				technique.setCreatedDate(new Date());
+				config.setCreatedDate(new Date());
 			}
 		}
 
@@ -199,24 +183,14 @@ public class CharacterizationBean {
 		domainChar.setDate(StringUtils.convertToDate(dateString,
 				CaNanoLabConstants.DATE_FORMAT));
 
-		if (domainChar.getInstrumentCollection()!=null) {
-			domainChar.getInstrumentCollection().clear();
+		if (domainChar.getExperimentConfigCollection() != null) {
+			domainChar.getExperimentConfigCollection().clear();
+		} else {
+			domainChar
+					.setExperimentConfigCollection(new HashSet<ExperimentConfig>());
 		}
-		else {
-			domainChar.setInstrumentCollection(new HashSet<Instrument>());
-		}
-		for(InstrumentBean instrument: instruments) {
-			domainChar.getInstrumentCollection().add(instrument.getDomain());
-		}
-
-		if (domainChar.getTechniqueCollection()!=null) {
-			domainChar.getTechniqueCollection().clear();
-		}
-		else {
-			domainChar.setTechniqueCollection(new HashSet<Technique>());
-		}
-		for(TechniqueBean technique: techniques) {
-			domainChar.getTechniqueCollection().add(technique.getDomain());
+		for (ExperimentConfig config : experimentConfigs) {
+			domainChar.getExperimentConfigCollection().add(config);
 		}
 
 		if (protocolFileBean != null
@@ -307,11 +281,11 @@ public class CharacterizationBean {
 		this.className = className;
 	}
 
-	public List<InstrumentBean> getInstruments() {
-		return instruments;
+	public String[] getTechniqueTypes() {
+		return techniqueTypes;
 	}
 
-	public List<TechniqueBean> getTechniques() {
-		return techniques;
+	public void setTechniqueTypes(String[] techniqueTypes) {
+		this.techniqueTypes = techniqueTypes;
 	}
 }
