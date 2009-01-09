@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -35,9 +36,9 @@ public class CharacterizationBean {
 
 	private String description;
 
-	private String[] techniqueTypes = new String[0];
+	private ExperimentConfigBean theExperimentConfig;
 
-	private List<ExperimentConfig> experimentConfigs = new ArrayList<ExperimentConfig>();
+	private List<ExperimentConfigBean> experimentConfigs = new ArrayList<ExperimentConfigBean>();
 
 	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
 
@@ -84,13 +85,10 @@ public class CharacterizationBean {
 			protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
 		}
 
-		//set selected technique types
-		if (chara.getExperimentConfigCollection()!=null) {
-			techniqueTypes=new String[chara.getExperimentConfigCollection().size()];
-			int i=0;
-			for (ExperimentConfig config: chara.getExperimentConfigCollection()) {
-				techniqueTypes[i]=config.getTechnique().getType();
-				i++;
+		if (chara.getExperimentConfigCollection() != null) {
+			for (ExperimentConfig config : chara
+					.getExperimentConfigCollection()) {
+				experimentConfigs.add(new ExperimentConfigBean(config));
 			}
 		}
 	}
@@ -189,8 +187,8 @@ public class CharacterizationBean {
 			domainChar
 					.setExperimentConfigCollection(new HashSet<ExperimentConfig>());
 		}
-		for (ExperimentConfig config : experimentConfigs) {
-			domainChar.getExperimentConfigCollection().add(config);
+		for (ExperimentConfigBean config : experimentConfigs) {
+			domainChar.getExperimentConfigCollection().add(config.getDomain());
 		}
 
 		if (protocolFileBean != null
@@ -281,11 +279,15 @@ public class CharacterizationBean {
 		this.className = className;
 	}
 
-	public String[] getTechniqueTypes() {
-		return techniqueTypes;
+	public List<ExperimentConfigBean> getExperimentConfigs() {
+		return experimentConfigs;
 	}
 
-	public void setTechniqueTypes(String[] techniqueTypes) {
-		this.techniqueTypes = techniqueTypes;
+	public ExperimentConfigBean getTheExperimentConfig() {
+		return theExperimentConfig;
+	}
+
+	public void setTheExperimentConfig(ExperimentConfigBean theExperimentConfig) {
+		this.theExperimentConfig = theExperimentConfig;
 	}
 }
