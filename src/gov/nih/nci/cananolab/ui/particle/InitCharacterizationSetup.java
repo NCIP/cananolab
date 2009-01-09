@@ -57,12 +57,6 @@ public class InitCharacterizationSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"derivedDatumValueTypes", "DerivedDatum", "valueType",
 				"otherValueType", true);
-
-		ExperimentConfigService experimentConfigService = new ExperimentConfigServiceLocalImpl();
-
-		List<Technique> techniques = experimentConfigService
-				.findAllTechniques();
-		session.setAttribute("allTechniques", techniques);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 

@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -12,14 +11,13 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
-import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.common.InitExperimentConfigSetup;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
@@ -280,6 +278,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, charBean.getClassName());
+		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
+				request);
 		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
 				charBean);
 
@@ -674,9 +674,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		ExperimentConfigBean configBean=achar.getTheExperimentConfig();
-		request.getSession().setAttribute("experimentConfigToSave",
-				configBean);
+		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
+		request.getSession().setAttribute("experimentConfigToSave", configBean);
 		return mapping.findForward("saveExperimentConfig");
 	}
 }
