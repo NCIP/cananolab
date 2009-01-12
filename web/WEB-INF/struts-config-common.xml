@@ -60,8 +60,8 @@
 				path="particle.submitPointOfContact" />
 		</action>
 		<action name="experimentConfigForm" parameter="dispatch"
-			path="submitExperimentConfig"
-			type="gov.nih.nci.cananolab.ui.common.SubmitExperimentConfigAction "
+			path="/submitExperimentConfig"
+			type="gov.nih.nci.cananolab.ui.common.SubmitExperimentConfigAction"
 			input="input" scope="request">
 		</action>
 	</action-mappings>
