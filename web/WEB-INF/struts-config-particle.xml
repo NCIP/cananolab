@@ -199,7 +199,7 @@
 			<forward name="summaryView"
 				path="particle.physicalSummaryView" />
 			<forward name="saveExperimentConfig"
-				path="/submitExperimentConfig.do?dispatch=save&amp;location=local" />
+				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
 		</action>
 		<action name="invitroCharacterizationForm" parameter="dispatch"
 			path="/invitroCharacterization"
@@ -213,7 +213,7 @@
 			<forward name="summaryView"
 				path="particle.invitroSummaryView" />
 			<forward name="saveExperimentConfig"
-				path="/submitExperimentConfig.do?dispatch=save&amp;location=local" />
+				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
 		</action>
 		<action name="compositionFileForm" parameter="dispatch"
 			path="/compositionFile"
