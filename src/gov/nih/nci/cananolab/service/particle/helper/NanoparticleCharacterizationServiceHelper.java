@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.service.particle.helper;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
@@ -73,7 +72,7 @@ public class NanoparticleCharacterizationServiceHelper {
 				CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
 		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
-		crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -138,7 +137,7 @@ public class NanoparticleCharacterizationServiceHelper {
 		crit.add(Restrictions.eq("sample.name", particleName));
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
 		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
-		crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
