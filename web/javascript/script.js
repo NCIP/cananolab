@@ -384,31 +384,14 @@ function getSelectedOptions(selectEle) {
 	return cleanStr;
 }
 function displayLogin() {
-	var loginBlock = document.getElementById('loginBlock');
-	if(loginBlock.style.display == 'none')
-		loginBlock.style.display = 'block';
-	else
-		loginBlock.style.display = 'none';
-		
-	return false;
+	showhide('loginBlock');
+	return false;	
 }
 
-function showhide(layer_ref) {
+function showhide(layer_ref) {	
 	var layerBlock = document.getElementById(layer_ref);
-	var state = layerBlock.style.display;
-	if (state == 'block') {
-		state = 'none';
-	} else {
-		state = 'block';
-	}
-	if (document.all) { // IS IE 4 or 5 (or 6 beta)
-		eval("document.all." + layer_ref + ".style.display = state");
-	}
-	if (document.layers) { // IS NETSCAPE 4 or below
-		document.layers[layer_ref].display = state;
-	}
-	if (document.getElementById && !document.all) {
-		hza = document.getElementById(layer_ref);
-		hza.style.display = state;
-	}
+	if(layerBlock.style.display == 'none')
+		layerBlock.style.display = 'block';
+	else
+		layerBlock.style.display = 'none';
 }
