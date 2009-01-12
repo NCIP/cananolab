@@ -9,37 +9,28 @@
 	<tr class="topBorder">
 		<td class="formTitle" colspan="4">
 			<div align="justify">
-				Technique and Instrument Information
+				Design and Methods
 			</div>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top" width="20%">
-			<strong>Technique</strong>
-		</td>
-		<td class="rightLabel" colspan="3">
-			<c:choose>
-				<c:when
-					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:select styleId="technique" property="achar.techniqueTypes"
-						onchange="javascript:callPrompt('Instrument Type', 'instrumentType');"
-						multiple="true" size="5">
-						<html:options collection="allTechniques"
-							labelProperty="type" property="type" />
-						<option value="other">
-							[Other]
-						</option>
-					</html:select>
-					&nbsp;
-					<a href="#" onclick="return false;"><span class="addLink3">View
-							Detail</span> </a>
-				</c:when>
-				<c:otherwise>
-					${characterizationForm.map.achar.instrumentConfiguration.instrument.type}&nbsp;
-				</c:otherwise>
-			</c:choose>
-		</td>
-	</tr>
+		<td class="completeLabel" valign="top" colspan="4">
+			<strong>Techniques and Instruments</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+			<c:if
+					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">									
+			<a style="block" id="addTechniqueInstrument" 
+				href="javascript:showhide('newExperimentConfig');">
+				<span class="addLink2">Add</span> </a>	
+			</c:if>
+			&nbsp;
+		</td>									
+	</tr>	
 </table>
+
+<div id="newExperimentConfig" style="display: none;">	
+	<jsp:include page="/common/bodySubmitExperimentConfig.jsp">
+		<jsp:param name="formName" value="invitroCharacterizationForm" />
+	</jsp:include>	
+</div>
 <br>
 
