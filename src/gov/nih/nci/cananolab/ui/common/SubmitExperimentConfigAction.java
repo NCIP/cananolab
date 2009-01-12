@@ -22,12 +22,13 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author pansu, tanq
  *
  */
+
 public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 
 	private static Logger logger = Logger
 			.getLogger(SubmitExperimentConfigAction.class);
 
-	ActionForward create(ActionMapping mapping, ActionForm form,
+	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionForward forward = null;
@@ -39,7 +40,6 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 		}
 		return forward;
 	}
-
 
 	public ActionForward addInstrument(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
