@@ -6,20 +6,12 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
-import gov.nih.nci.cananolab.service.common.PointOfContactService;
-import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
@@ -129,32 +121,5 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 				.findNanoparticleSampleById(particleId);
 		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
 		return forward;
-	}
-	
-	public ActionForward submitExperimentConfig(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		ParticleBean particleSampleBean = (ParticleBean) (theForm
-//				.get("particleSampleBean"));
-//		Long particleId = particleSampleBean.getDomainParticleSample().getId();
-//		if (particleId != null && particleId > 0) {
-//			PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
-//			List<PointOfContactBean> otherPointOfContactBeanList = pointOfContactService
-//					.findOtherPointOfContactCollection(particleId.toString());
-//			if (otherPointOfContactBeanList!=null && otherPointOfContactBeanList.size()>0) {
-//				Collection<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>();
-//				for (PointOfContactBean pocBean: otherPointOfContactBeanList) {
-//					otherPointOfContactCollection.add(pocBean.getDomain());
-//				}
-//				particleSampleBean
-//					.getDomainParticleSample()
-//					.setOtherPointOfContactCollection(otherPointOfContactCollection);
-//			}			
-//		}
-//		request.getSession().setAttribute("pocParticle", particleSampleBean);		
-//		return mapping.findForward("pointOfContactDetailView");
-		System.out.println("######### submitExperimentConfig ");
-		return null;
 	}
 }
