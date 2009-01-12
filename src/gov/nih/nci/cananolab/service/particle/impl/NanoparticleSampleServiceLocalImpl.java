@@ -45,9 +45,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving nanoparticle samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanoparticleSampleServiceLocalImpl implements
 		NanoparticleSampleService {
@@ -57,7 +57,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	private NanoparticleSampleServiceHelper helper = new NanoparticleSampleServiceHelper();
 
 	/**
-	 * 
+	 *
 	 * @return all PointOfContacts
 	 */
 	// TODO: verify if fetching nanoparticleSampleCollection is necessary on all
@@ -87,7 +87,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws ParticleException,
 	 *             DuplicateEntriesException
@@ -142,7 +142,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	}
 
 	/**
-	 * 
+	 *
 	 * @param particlePointOfContacts
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
@@ -232,13 +232,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.setFetchMode(
 						"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
 						FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.instrumentConfiguration",
+		crit.setFetchMode("characterizationCollection.experimentConfigCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"characterizationCollection.instrumentConfiguration.instrument",
-						FetchMode.JOIN);
-
 		// sampleComposition
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -296,7 +291,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * Get other particles from the given particle point of contacts
-	 * 
+	 *
 	 * @param particlePointOfContact
 	 * @param particleName
 	 * @param user
@@ -469,7 +464,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.getCharacterizationCollection();
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		String[] visibleGroups = particleSampleBean.getVisibilityGroups();
-		
+
 		// if containing public group, assign associated public visibility
 		// otherwise remove associated public visibility
 		if (Arrays.asList(visibleGroups).contains(
@@ -576,8 +571,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		crit.setFetchMode(
 				"derivedBioAssayDataCollection.derivedDatumCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("instrumentConfiguration", FetchMode.JOIN);
-		crit.setFetchMode("instrumentConfiguration.instrument", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 
 		List result = appService.query(crit);
 		Characterization achar = null;
@@ -628,7 +622,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * Check if there exists public nanoparticle sample for given pocId
-	 * 
+	 *
 	 * @param sourcId
 	 * @return true / false
 	 */
@@ -652,7 +646,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 
 	/**
 	 * Check if there exists public nanoparticle sample for given keywordId
-	 * 
+	 *
 	 * @param keywordId
 	 * @return true / false
 	 */
