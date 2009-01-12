@@ -45,11 +45,12 @@
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${location}" />
 									</c:url>
-									<c:if test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+									<c:if
+										test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
-													alt="edit characterization"
-													title="edit characterization" border="0"> </a>
+													alt="edit characterization" title="edit characterization"
+													border="0"> </a>
 										</td>
 									</c:if>
 								<td>
@@ -70,8 +71,8 @@
 										<c:param name="location" value="${location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export characterization detail" 
-											title="export characterization detail"border="0"> </a>
+											alt="export characterization detail"
+											title="export characterization detail" border="0"> </a>
 								</td>
 							</tr>
 						</table>
@@ -118,25 +119,16 @@
 					</tr>
 				</c:if>
 				<c:if
-					test="${!empty characterizationForm.map.achar.domainChar.instrumentConfiguration && !empty characterizationForm.map.achar.domainChar.instrumentConfiguration.instrument.type}">
+					test="${!empty characterizationForm.map.achar.experimentConfigs }">
 					<tr>
 						<th class="leftLabel" valign="top">
-							Instrument
+							Technique and Instrument
 						</th>
 						<td class="rightLabel" valign="top">
-							${characterizationForm.map.achar.domainChar.instrumentConfiguration.instrument.type}-
-							${characterizationForm.map.achar.domainChar.instrumentConfiguration.instrument.manufacturer}
-							&nbsp;
-							<c:if
-								test="${!empty characterizationForm.map.achar.domainChar.instrumentConfiguration.instrument.abbreviation}">
-							(${characterizationForm.map.achar.domainChar.instrumentConfiguration.instrument.abbreviation})
-							</c:if>
-							<c:if
-								test="${!empty characterizationForm.map.achar.domainChar.instrumentConfiguration.description}">
-								<br>
-								<br>
-							${characterizationForm.map.achar.domainChar.instrumentConfiguration.description}
-							</c:if>
+							<c:forEach var="experimentConfig"
+								items="${characterizationForm.map.achar.experimentConfigs}">
+								${experimentConfig.displayName}<br>
+							</c:forEach>&nbsp;
 						</td>
 					</tr>
 				</c:if>
@@ -144,7 +136,7 @@
 					property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 					indexId="fileInd">
 					<c:if
-						test="${!empty derivedBioAssayData.fileBean.domainFile.description 
+						test="${!empty derivedBioAssayData.fileBean.domainFile.description
 							&& derivedBioAssayData.fileBean.hidden ne 'true'}">
 						<tr>
 							<th class="leftLabel" valign="top">
@@ -163,8 +155,7 @@
 							</th>
 							<td class="rightLabel" valign="top">
 								<c:choose>
-									<c:when
-										test="${derivedBioAssayData.fileBean.hidden eq 'true'}">
+									<c:when test="${derivedBioAssayData.fileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
 									<c:otherwise>
