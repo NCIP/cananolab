@@ -15,22 +15,20 @@
 	</tr>
 	<tr>
 		<td class="completeLabel" valign="top" colspan="4">
-			<strong>Techniques and Instruments</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+			<strong>Technique and Instrument</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if
-					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">									
-			<a style="block" id="addTechniqueInstrument" 
+					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+			<a style="block" id="addTechniqueInstrument"
 				href="javascript:showhide('newExperimentConfig');">
-				<span class="addLink2">Add</span> </a>	
+				<span class="addLink2">Add</span> </a>
 			</c:if>
 			&nbsp;
-		</td>									
-	</tr>	
+		</td>
+	</tr>
 </table>
 
-<div id="newExperimentConfig" style="display: none;">	
-	<jsp:include page="/common/bodySubmitExperimentConfig.jsp">
-		<jsp:param name="formName" value="invitroCharacterizationForm" />
-	</jsp:include>	
+<div id="newExperimentConfig" style="display: none;">
+	<jsp:include page="/common/bodySubmitExperimentConfig.jsp"/>
 </div>
 <br>
 
