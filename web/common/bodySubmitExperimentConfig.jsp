@@ -123,7 +123,7 @@
 											onclick="javascript:window.location.href='${origUrl}'">
 										<input type="button" value="Submit"
 											onclick="javascript:submitAction(document.forms[0],
-										'${action.name}', 'saveExperimentConfig');">
+										'${actionName}', 'saveExperimentConfig');">
 									</div>
 								</td>
 							</tr>
