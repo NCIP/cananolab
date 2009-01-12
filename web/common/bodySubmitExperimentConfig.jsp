@@ -19,7 +19,7 @@
 						<html:select
 							property="achar.theExperimentConfig.domain.technique.type"
 							styleId="techniqueType"
-							onchange="javascript:callPrompt('Technique Type', 'techniqueType');">
+							onchange="javascript:callPrompt('Technique Type', 'techniqueType');retrieveTechniqueAbbreviation();">
 							<option value=""></option>
 							<html:options collection="allTechniques" labelProperty="type"
 								property="id" />
@@ -35,6 +35,7 @@
 					</td>
 					<td class="rightLabel">
 						<html:text
+							styleId="techniqueAbbr"
 							property="achar.theExperimentConfig.domain.technique.abbreviation"
 							size="30" />
 					</td>
