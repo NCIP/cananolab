@@ -12,7 +12,7 @@
 			<form-property name="otherPoc"
 				type="gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean" />
 		</form-bean>
-		<form-bean name="experimentConfigForm"
+		<form-bean name="submitExperimentConfigForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
@@ -59,9 +59,9 @@
 			<forward name="particleSubmitPointOfContact"
 				path="particle.submitPointOfContact" />
 		</action>
-		<action name="experimentConfigForm" parameter="dispatch"
+		<action name="submitExperimentConfigForm" parameter="dispatch"
 			path="submitExperimentConfig"
-			type="gov.nih.nci.cananolab.ui.common.SubmitPointOfContactAction "
+			type="gov.nih.nci.cananolab.ui.common.SubmitExperimentConfigAction"
 			input="input" scope="request">
 		</action>
 	</action-mappings>
