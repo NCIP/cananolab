@@ -115,7 +115,6 @@ public class ExperimentConfigServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					ExperimentConfig.class).add(
 					Property.forName("id").eq(new Long(id)));
-			crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				config = (ExperimentConfig) obj;
