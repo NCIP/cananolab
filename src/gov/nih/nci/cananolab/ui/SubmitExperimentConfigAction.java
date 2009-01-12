@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.ui;
 
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Submits and updates technique and associated instruments of an
@@ -36,5 +39,16 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 			service.saveExperimentConfig(configBean.getDomain());
 		}
 		return forward;
+	}
+	
+	
+	public ActionForward addInstrument(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean aCharbean = (CharacterizationBean) theForm
+				.get("aChar");
+		aCharbean.getTheExperimentConfig().addInstrument();		
+		return mapping.getInputForward();
 	}
 }
