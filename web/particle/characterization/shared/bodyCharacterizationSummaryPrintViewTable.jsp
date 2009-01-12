@@ -27,7 +27,7 @@
 						</th>
 					</c:forEach>
 					<th class="rightLabel">
-						Characterization File / Instrument Info
+						Characterization File / Technique and Instrument Info
 					</th>
 				</tr>
 				<c:forEach var="summaryRow" items="${charSummary.summaryRows}">
@@ -66,19 +66,11 @@
 								<br>
 							</c:if>
 							<c:if
-								test="${!empty summaryRow.charBean.instrumentConfiguration && !empty summaryRow.charBean.instrumentConfiguration.instrument.type}">	${summaryRow.charBean.instrumentConfiguration.instrument.type}-
-									${summaryRow.charBean.instrumentConfiguration.instrument.manufacturer}
-									&nbsp;
-								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfiguration.instrument.abbreviation}">
-									(${summaryRow.charBean.instrumentConfiguration.instrument.abbreviation})
-								</c:if>
-								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfiguration.description}">
-									<br>
-									<br>
-									${summaryRow.charBean.instrumentConfiguration.description}
-								</c:if>
+								test="${!empty characterizationForm.map.achar.experimentConfigs }">
+								<c:forEach var="experimentConfig"
+									items="${characterizationForm.map.achar.experimentConfigs}">
+								${experimentConfig.displayName}<br>
+								</c:forEach>&nbsp;
 							</c:if>
 							&nbsp;
 						</td>

@@ -50,32 +50,24 @@ ${charBean.protocolFileBean.domainFile.uri}
 						</tr>
 					</c:if>
 					<c:if
-						test="${!empty charBean.instrumentConfiguration && !empty charBean.instrumentConfiguration.instrument.type}">
+						test="${!empty characterizationForm.map.achar.experimentConfigs }">
 						<tr>
 							<th class="leftLabel" valign="top">
-								Instrument
+								Technique and Instrument
 							</th>
 							<td class="rightLabel" valign="top">
-								${charBean.instrumentConfiguration.instrument.type}-
-								${charBean.instrumentConfiguration.instrument.manufacturer}
+								<c:forEach var="experimentConfig"
+									items="${characterizationForm.map.achar.experimentConfigs}">
+								${experimentConfig.displayName}<br>
+								</c:forEach>
 								&nbsp;
-								<c:if
-									test="${!empty charBean.instrumentConfiguration.instrument.abbreviation}">
-							(${charBean.instrumentConfiguration.instrument.abbreviation})
-							</c:if>
-								<c:if
-									test="${!empty charBean.instrumentConfiguration.description}">
-									<br>
-									<br>
-							${charBean.instrumentConfiguration.description}
-							</c:if>
 							</td>
 						</tr>
 					</c:if>
 					<c:forEach var="derivedBioAssayData"
 						items="${charBean.derivedBioAssayDataList}" varStatus="fileInd">
 						<c:if
-							test="${!empty derivedBioAssayData.fileBean.domainFile.description 
+							test="${!empty derivedBioAssayData.fileBean.domainFile.description
 								&& derivedBioAssayData.fileBean.hidden ne 'true'}">
 							<tr>
 								<th class="leftLabel" valign="top">

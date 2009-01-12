@@ -27,8 +27,7 @@
 								characterizationForm.map.achar.characterizationSource}
 							</td>
 						</tr>
-						<c:if
-							test="${!empty characterizationForm.map.achar.description}">
+						<c:if test="${!empty characterizationForm.map.achar.description}">
 							<tr>
 								<th class="leftLabel" valign="top">
 									Description
@@ -59,32 +58,25 @@
 							</tr>
 						</c:if>
 						<c:if
-							test="${!empty characterizationForm.map.achar.instrumentConfiguration && !empty characterizationForm.map.achar.instrumentConfiguration.instrument.type}">
+							test="${!empty characterizationForm.map.achar.experimentConfigs }">
 							<tr>
 								<th class="leftLabel" valign="top">
-									Instrument
+									Technique and Instrument
 								</th>
 								<td class="rightLabel" valign="top">
-									${characterizationForm.map.achar.instrumentConfiguration.instrument.type}-
-									${characterizationForm.map.achar.instrumentConfiguration.instrument.manufacturer}
+									<c:forEach var="experimentConfig"
+										items="${characterizationForm.map.achar.experimentConfigs}">
+								${experimentConfig.displayName}<br>
+									</c:forEach>
 									&nbsp;
-									<c:if
-										test="${!empty characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation}">
-							(${characterizationForm.map.achar.instrumentConfiguration.instrument.abbreviation})
-							</c:if>
-									<c:if
-										test="${!empty characterizationForm.map.achar.instrumentConfiguration.description}">
-										<br>
-										<br>
-							${characterizationForm.map.achar.instrumentConfiguration.description}
-							</c:if>
 								</td>
 							</tr>
 						</c:if>
 						<logic:iterate name="characterizationForm"
 							property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 							indexId="fileInd">
-							<c:if test="${!empty derivedBioAssayData.fileBean.domainFile.description 
+							<c:if
+								test="${!empty derivedBioAssayData.fileBean.domainFile.description
 								&& derivedBioAssayData.fileBean.hidden ne 'true'}">
 								<tr>
 									<th class="leftLabel" valign="top">
@@ -102,17 +94,20 @@
 										Characterization File #${fileInd+1}
 									</th>
 									<td class="rightLabel" valign="top">
-										<c:if test="${!empty derivedBioAssayData.fileBean.domainFile.type}">
+										<c:if
+											test="${!empty derivedBioAssayData.fileBean.domainFile.type}">
 								${derivedBioAssayData.fileBean.domainFile.type}
 								<br>
 										</c:if>
 										<c:choose>
-											<c:when test="${derivedBioAssayData.fileBean.hidden eq 'true'}">
+											<c:when
+												test="${derivedBioAssayData.fileBean.hidden eq 'true'}">
 									Private file
 								</c:when>
 											<c:otherwise>
 												<c:choose>
-													<c:when test="${derivedBioAssayData.fileBean.image eq 'true'}">
+													<c:when
+														test="${derivedBioAssayData.fileBean.image eq 'true'}">
 														<img
 															src="${actionName}.do?dispatch=download&amp;fileId=${derivedBioAssayData.fileBean.domainFile.id}&amp;location=${location}"
 															border="0">
@@ -131,11 +126,9 @@
 										Characterization Derived Data #${fileInd+1}
 										<br>
 										<br>
-										<table border="0" cellpadding="3"
-											cellspacing="0">
+										<table border="0" cellpadding="3" cellspacing="0">
 											<tr>
-												<logic:iterate id="datum"
-													name="characterizationForm"
+												<logic:iterate id="datum" name="characterizationForm"
 													property="achar.derivedBioAssayDataList[${fileInd}].datumList"
 													indexId="datumInd">
 													<th class="whiteBorderLessLabel">
@@ -145,8 +138,7 @@
 												</logic:iterate>
 											</tr>
 											<tr>
-												<logic:iterate id="datum"
-													name="characterizationForm"
+												<logic:iterate id="datum" name="characterizationForm"
 													property="achar.derivedBioAssayDataList[${fileInd}].datumList"
 													indexId="datumInd">
 													<td class="whiteBorderLessLabel">
@@ -158,7 +150,7 @@
 									</th>
 								</tr>
 							</c:if>
-							<p style="page-break-before: always"> 
+							<p style="page-break-before: always">
 						</logic:iterate>
 					</table>
 				</td>

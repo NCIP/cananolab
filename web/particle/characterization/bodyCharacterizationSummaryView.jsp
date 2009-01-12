@@ -108,7 +108,7 @@
 						Characterization File
 					</th>
 					<th class="rightLabel">
-						Instrument Info
+						Technique and Instrument
 					</th>
 				</tr>
 				<c:forEach var="summaryRow" items="${charSummary.summaryRows}">
@@ -120,7 +120,8 @@
 								<c:param name="particleId" value="${particleId}" />
 								<c:param name="dataId"
 									value="${summaryRow.charBean.domainChar.id}" />
-								<c:param name="dataClassName" value="${summaryRow.charBean.className}" />
+								<c:param name="dataClassName"
+									value="${summaryRow.charBean.className}" />
 								<c:param name="submitType" value="${param.submitType}" />
 								<c:param name="location" value="${location}" />
 							</c:url>
@@ -166,22 +167,12 @@
 							&nbsp;
 						</td>
 						<td class="RightLabel" valign="top">
-							<c:if
-								test="${!empty summaryRow.charBean.instrumentConfiguration && !empty summaryRow.charBean.instrumentConfiguration.instrument.type}">						
-									${summaryRow.charBean.instrumentConfiguration.instrument.type}-
-									${summaryRow.charBean.instrumentConfiguration.instrument.manufacturer}
-									&nbsp;
-								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfiguration.instrument.abbreviation}">
-									(${summaryRow.charBean.instrumentConfiguration.instrument.abbreviation})
-								</c:if>
-								<c:if
-									test="${!empty summaryRow.charBean.instrumentConfiguration.description}">
-									<br>
-									<br>
-									${summaryRow.charBean.instrumentConfiguration.description}
-								</c:if>
-							</c:if>
+							<c:if test="${!empty summaryRow.charBean.experimentConfigs}">
+								<c:forEach var="experimentConfig"
+									items="${summaryRow.charBean.experimentConfigs}">
+								${experimentConfig.displayName}<br>
+								</c:forEach>&nbsp;
+						</c:if>
 							&nbsp;
 						</td>
 					</tr>
