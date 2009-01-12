@@ -54,9 +54,10 @@
 								</th>
 							</tr>
 							<c:choose>
-								<c:when test="${!empty achar.theExperimentConfig.instruments}">
+								<c:when
+									test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">
 									<tr>
-										<logic:iterate name="${param.formName}"
+										<logic:iterate name="characterizationForm"
 											property="achar.theExperimentConfig.instruments"
 											id="instrument" indexId="instrumentInd">
 											<tr>
@@ -87,8 +88,8 @@
 							<tr>
 								<td class="completeLabel" colspan="4">
 									<a href="#"
-										onclick="javascript:addComponent(${param.formName}, 'submitExperimentConfig', 'addInstrument'); return false;">
-										<span class="addLink2">Add Instrument</span>
+										onclick="javascript:addComponent(document.forms[0], 'submitExperimentConfig', 'addInstrument'); return false;">
+										<span class="addLink2">Add</span>
 								</td>
 							</tr>
 						</table>
@@ -105,8 +106,6 @@
 							cols="80" />
 					</td>
 				</tr>
-
-
 			</table>
 			<br>
 			<table width="100%" border="0" align="center" cellpadding="3"
@@ -122,8 +121,8 @@
 										<input type="reset" value="Reset"
 											onclick="javascript:window.location.href='${origUrl}'">
 										<input type="button" value="Submit"
-											onclick="javascript:submitAction(characterizationForm, 
-										'invitroCharacterization', 'submitExperimentConfig');">
+											onclick="javascript:submitAction(document.forms[0],
+										'${action.name}', 'saveExperimentConfig');">
 									</div>
 								</td>
 							</tr>
@@ -135,7 +134,5 @@
 
 		</td>
 	</tr>
-
-
 </table>
 
