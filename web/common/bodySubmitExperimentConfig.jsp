@@ -82,7 +82,7 @@
 											</tr>
 										</logic:iterate>
 									</tr>
-								</c:when>								
+								</c:when>
 							</c:choose>
 							<tr>
 								<td class="completeLabel" colspan="4">
@@ -105,26 +105,37 @@
 							cols="80" />
 					</td>
 				</tr>
-				
+
+
+			</table>
+			<br>
+			<table width="100%" border="0" align="center" cellpadding="3"
+				cellspacing="0" class="topBorderOnly" summary="">
 				<tr>
-					<td>						
-						<table><tr>
-							<td width="30%" align="right" class="labelNoBottom">
-								<input type="reset" value="Reset"
-									onclick="javascript:window.location.href='${origUrl}'">
-								<input type="button" value="Submit"
-									onclick="javascript:submitAction(invitroCharacterizationForm, 
+					<td>
+						<span class="formMessage"> </span>
+						<br>
+						<table border="0" align="right" cellpadding="4" cellspacing="0">
+							<tr>
+								<td>
+									<div align="right">
+										<input type="reset" value="Reset"
+											onclick="javascript:window.location.href='${origUrl}'">
+										<input type="button" value="Submit"
+											onclick="javascript:submitAction(characterizationForm, 
 										'invitroCharacterization', 'submitExperimentConfig');">
-							</td>
-						</tr>
+									</div>
+								</td>
+							</tr>
 						</table>
+						<div align="right"></div>
 					</td>
 				</tr>
 			</table>
 
 		</td>
 	</tr>
-	
+
 
 </table>
 
