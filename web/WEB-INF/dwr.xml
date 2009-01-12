@@ -23,8 +23,14 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper" />
-			<include method="getInstrumentAbbreviation" />
+			<include method="getTechniqueAbbreviation" />
 			<include method="getDerivedDatumValueUnits" />
+		</create>
+		<create creator="new" javascript="ExperimentConfigManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl" />
+			<include method="findExperimentConfigById" />
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
