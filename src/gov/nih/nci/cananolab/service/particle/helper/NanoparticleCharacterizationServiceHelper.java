@@ -83,25 +83,25 @@ public class NanoparticleCharacterizationServiceHelper {
 	}
 
 	// for dwr ajax
-	public String getInstrumentAbbreviation(String instrumentType) {
-		String instrumentAbbreviation = null;
+	public String getTechniqueAbbreviation(String techniqueId) {
+		String techniqueAbbreviation = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
-					"select distinct instrument.abbreviation from gov.nih.nci.cananolab.domain.common.Instrument instrument where instrument.type='"
-							+ instrumentType
-							+ "' and instrument.abbreviation!=null");
+					"select distinct technique.abbreviation from gov.nih.nci.cananolab.domain.common.Technique technique where technique.id='"
+							+ techniqueId
+							+ "' and technique.abbreviation!=null");
 			List results = appService.query(crit);
 			for (Object obj : results) {
-				instrumentAbbreviation = (String) obj;
+				techniqueAbbreviation = (String) obj;
 			}
 		} catch (Exception e) {
-			String err = "Problem to retrieve instrument abbreviation.";
+			String err = "Problem to retrieve technique abbreviation.";
 			logger.error(err, e);
 			return "";
 		}
-		return instrumentAbbreviation;
+		return techniqueAbbreviation;
 	}
 
 	// use in dwr ajax
