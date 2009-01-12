@@ -69,12 +69,12 @@
 												</td>
 												<td>
 													<html:text
-														property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
+														property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
 														size="17" />
 												</td>
 												<td>
 													<html:text
-														property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
+														property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
 														size="17" />
 												</td>
 												<td>
