@@ -6,74 +6,99 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <script type="text/javascript" src="javascript/POCManager.js"></script>
 
-<html:form action="/submitExperimentConfig">
-	<logic:iterate name="submitExperimentConfigForm"
-		property="experimentConfigs" id="config">
-		<table>
-			<tr>
-				<td>
-					Technique
-				</td>
-				<td>
-					${config.technique.type}
-				</td>
-				<td>
-					Abbreviation
-				</td>
-				<td>
-					<html:text property="" />
-				</td>
-			</tr>
-			<tr>
-				<td colspan="4">
-					<table>
-						<tr>
-							<td>
-								Instrument Type
-							</td>
-							<td>
-								Manufacturer
-							</td>
-							<td>
-								Model Name
-							</td>
-						</tr>
-						<logic:iterate name="config" property="instrumentCollection"
-							id="instrument">
+<table width="100%" border="0" align="center" cellpadding="3"
+	cellspacing="0" class="topBorderOnly" summary="">
+	<tr>
+		<td class="leftLabel">
+			<strong>Technique</strong>
+		</td>
+		<td class="rightLabel">
+			<html:select
+				property="achar.theExperimentConfig.domain.technique.abbreviation"
+				styleId="techniqueType"
+				onchange="javascript:callPrompt('Technique Type', 'techniqueType');">
+				<option value=""></option>
+				<html:options collection="allTechniques"
+						labelProperty="type" property="id" />
+				<option value="other">
+					[Other]
+				</option>
+			</html:select>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftLabel">
+			<strong>Abbreviation</strong>
+		</td>
+		<td class="rightLabel">
+			<html:text
+				property="achar.theExperimentConfig.domain.technique.abbreviation"
+				size="30" />
+		</td>
+	</tr>
+	<tr>
+		<td class="completeLabel" colspan="2" valign="top">
+			<table class="smalltable" border="0" width="100%">
+				<tr class="smallTableHeader">
+					<th>
+						Instrument Type
+					</th>
+					<th>
+						Manufacturer
+					</th>
+					<th colspan="2">
+						Model Name
+					</th>					
+				</tr>
+				<c:choose>
+					<c:when test="${!empty achar.theExperimentConfig.instruments}">	
+					<tr>					
+						<logic:iterate name="${param.formName}" property="achar.theExperimentConfig.instruments"
+							id="instrument" indexId="instrumentInd">
 							<tr>
 								<td>
-									<html:select property="">
-									</html:select>
+									<html:text property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
+										size="17" />
 								</td>
 								<td>
-									<html:select property="">
-									</html:select>
+									<html:text property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
+										size="17" />
 								</td>
 								<td>
-									<html:text property=""></html:text>
+									<html:text property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
+										size="17" />
 								</td>
 								<td>
-									<a href="">Remove</a>
+									<a style="block" id="removeInstrument" 
+										href="#">
+										<span class="addLink2">remove</span> </a>	
+									&nbsp;
 								</td>
 							</tr>
 						</logic:iterate>
-						<tr>
-							<td colspan="4">
-								<a href="">Add Instrument</a>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td valign="top">
-					Description
-				</td>
-				<td colspan="3">
-					<html:textarea property="" />
-				</td>
-			</tr>
-		</table>
-		<br>
-	</logic:iterate>
-</html:form>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					NO COLLECTION
+				</c:otherwise>
+				</c:choose>
+				<tr>
+					<td class="completeLabel" colspan="4">					
+					<a href="#"
+						onclick="javascript:addComponent(${param.formName}, 'submitExperimentConfig', 'addInstrument'); return false;">
+						<span class="addLink2">Add Instrument</span> 					
+					</td>
+				</tr>				
+			</table>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="leftLabel" valign="top">
+			<strong>Description</strong>
+		</td>
+		<td class="rightLabel">
+			<html:textarea property="achar.theExperimentConfig.domain.description" rows="3" cols="80" />
+		</td>
+	</tr>
+</table>
