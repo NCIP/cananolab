@@ -17,7 +17,7 @@
 					</td>
 					<td class="rightLabelWithTop">
 						<html:select
-							property="achar.theExperimentConfig.domain.technique.abbreviation"
+							property="achar.theExperimentConfig.domain.technique.type"
 							styleId="techniqueType"
 							onchange="javascript:callPrompt('Technique Type', 'techniqueType');">
 							<option value=""></option>
