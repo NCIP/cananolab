@@ -1,12 +1,14 @@
-function retrieveInstrumentAbbreviation() {
-	var instrumentType = document.getElementById("instrumentType").value;
-	CharacterizationManager.getInstrumentAbbreviation(instrumentType, writeText);
+function retrieveTechniqueAbbreviation() {
+	var techniqueType = document.getElementById("techniqueType").value;
+	if (techniqueType != null && techniqueType != 'other'){
+		CharacterizationManager.getTechniqueAbbreviation(techniqueType, updateValue);
+	}
 }
-function writeText(textValue) {
-	if (textValue != null) {
-		document.getElementById("instrumentAbbr").innerHTML = "<b>Abbreviation</b>&nbsp;"+textValue;
+function updateValue(textValue) {
+	if (textValue != null) {		
+		document.getElementById("techniqueAbbr").value = textValue;
 	} else {
-		document.getElementById("instrumentAbbr").innerHTML = "";
+		document.getElementById("techniqueAbbr").value = "";
 	}
 }
 
@@ -18,5 +20,19 @@ function getUnit(fileInd, datumInd) {
     		dwr.util.addOptions("unit"+fileInd+"-"+datumInd, data);
     		dwr.util.addOptions("unit"+fileInd+"-"+datumInd, ['[Other]']);
   	});
+}
+
+function setTheExperimentConfig(configId) {
+	alert('setTheExperimentConfig '+configId);
+	ExperimentConfigManager.findExperimentConfigById(configId, updateExperimentConfig);
+}
+
+function updateExperimentConfig(experimentConfig) {	
+	if (experimentConfig != null) {		
+		alert('experimentConfig = '+experimentConfig.id);
+		document.getElementById("techniqueAbbr").value = textValue;
+	} else {
+		alert('Error getting Technique and Instrument data');
+	}
 }
 
