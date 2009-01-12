@@ -17,11 +17,9 @@ public class ExperimentConfigBean {
 	private ExperimentConfig domain;
 	private String displayName;
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
-	
+
 
 	public ExperimentConfigBean() {
-		super();
-		//TODO::  add by Qina temporary (to test)
 		domain = new ExperimentConfig();
 		domain.setTechnique(new Technique());
 		instruments.add(new Instrument());
@@ -49,7 +47,7 @@ public class ExperimentConfigBean {
 		}
 		return displayName;
 	}
-	
+
 	public void addInstrument() {
 		instruments.add(new Instrument());
 	}
