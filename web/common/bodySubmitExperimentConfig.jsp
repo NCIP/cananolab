@@ -113,7 +113,8 @@
 								<input type="reset" value="Reset"
 									onclick="javascript:window.location.href='${origUrl}'">
 								<input type="button" value="Submit"
-									onclick="javascript:submitExperimentConfig()">
+									onclick="javascript:submitAction(invitroCharacterizationForm, 
+										'invitroCharacterization', 'submitExperimentConfig');">
 							</td>
 						</tr>
 						</table>

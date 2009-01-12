@@ -131,7 +131,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 		return forward;
 	}
 	
-	public ActionForward addExperimentConfig(ActionMapping mapping,
+	public ActionForward submitExperimentConfig(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 //		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -154,7 +154,7 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 //		}
 //		request.getSession().setAttribute("pocParticle", particleSampleBean);		
 //		return mapping.findForward("pointOfContactDetailView");
-		System.out.println("######### addExperimentConfig ");
+		System.out.println("######### submitExperimentConfig ");
 		return null;
 	}
 }
