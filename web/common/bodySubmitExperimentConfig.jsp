@@ -58,7 +58,7 @@
 					<th class="greyFont">
 						Model Name
 					</th>
-					<th  class="greyFont" colspan="2">
+					<th class="greyFont" colspan="2">
 						Type
 					</th>
 				</tr>
@@ -129,6 +129,11 @@
 				cols="80" />
 		</td>
 	</tr>
+	<c:if
+		test="${empty characterizationForm.map.achar.theExperimentConfig.domain.id }">
+		<html:hidden styleId="configId"
+			property="achar.theExperimentConfig.domain.id" />
+	</c:if>
 </table>
 <br>
 <table width="80%" border="0" align="center" cellpadding="3"
