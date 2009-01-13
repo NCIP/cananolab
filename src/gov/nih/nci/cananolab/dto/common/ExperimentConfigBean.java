@@ -18,7 +18,11 @@ public class ExperimentConfigBean {
 	private String displayName;
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
 
-
+	//for dwr ajax
+	String techniqueType;
+	String techniqueAbbr;
+	String configDescription;
+	
 	public ExperimentConfigBean() {
 		domain = new ExperimentConfig();
 		domain.setTechnique(new Technique());
@@ -69,5 +73,49 @@ public class ExperimentConfigBean {
 	public void setInstruments(List<Instrument> instruments) {
 		this.instruments = instruments;
 	}
+
+	/**
+	 * @return the techniqueType
+	 */
+	public String getTechniqueType() {
+		return  "test getTechniqueType";
+	}
+
+	/**
+	 * @param techniqueType the techniqueType to set
+	 */
+	public void setTechniqueType(String techniqueType) {
+		this.techniqueType = techniqueType;
+	}
+
+	/**
+	 * @return the techniqueAbbr
+	 */
+	public String getTechniqueAbbr() {
+		return "test TechniqueAbbr";
+	}
+
+	/**
+	 * @param techniqueAbbr the techniqueAbbr to set
+	 */
+	public void setTechniqueAbbr(String techniqueAbbr) {
+		this.techniqueAbbr = techniqueAbbr;
+	}
+
+	/**
+	 * @return the configDescription
+	 */
+	public String getConfigDescription() {
+		return configDescription;
+	}
+
+	/**
+	 * @param configDescription the configDescription to set
+	 */
+	public void setConfigDescription(String configDescription) {
+		this.configDescription = configDescription;
+	}
+
+	
 
 }
