@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.common;
 
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
@@ -36,14 +37,17 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 			ExperimentConfigBean configBean = (ExperimentConfigBean) (request
 					.getSession().getAttribute("experimentConfigToSave"));
 			ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
+			UserBean user = (UserBean) request.getSession()
+					.getAttribute("user");
+			configBean.setupDomain(user.getLoginName());
 			service.saveExperimentConfig(configBean.getDomain());
 		}
 		return forward;
 	}
 
-	public ActionForward addInstrument(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ActionForward addInstrument(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean aCharbean = (CharacterizationBean) theForm
 				.get("aChar");
