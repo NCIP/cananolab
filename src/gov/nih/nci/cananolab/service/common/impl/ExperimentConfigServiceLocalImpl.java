@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.DateUtil;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -35,13 +36,23 @@ public class ExperimentConfigServiceLocalImpl implements
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			// get existing createdDate and createdBy
+			if (config.getId() != null) {
+				ExperimentConfig dbConfig = findExperimentConfigById(config
+						.getId().toString());
+				if (dbConfig != null) {
+					config.setCreatedBy(dbConfig.getCreatedBy());
+					config.setCreatedDate(dbConfig.getCreatedDate());
+				}
+			}
 			Technique technique = config.getTechnique();
 			// check if technique already exists;
-			Technique doTechnique = findTechniqueByType(technique.getType());
-			if (doTechnique != null) {
-				technique.setId(doTechnique.getId());
-			}
-			else {
+			Technique dbTechnique = findTechniqueByType(technique.getType());
+			if (dbTechnique != null) {
+				technique.setId(dbTechnique.getId());
+				technique.setCreatedBy(dbTechnique.getCreatedBy());
+				technique.setCreatedDate(dbTechnique.getCreatedDate());
+			} else {
 				technique.setCreatedBy(config.getCreatedBy());
 				technique.setCreatedDate(new Date());
 			}
@@ -50,15 +61,20 @@ public class ExperimentConfigServiceLocalImpl implements
 				Collection<Instrument> instruments = new HashSet<Instrument>(
 						config.getInstrumentCollection());
 				config.getInstrumentCollection().clear();
+				int i = 0;
 				for (Instrument instrument : instruments) {
 					Instrument dbInstrument = findInstrumentBy(instrument
 							.getType(), instrument.getManufacturer(),
 							instrument.getModelName());
 					if (dbInstrument != null) {
 						instrument.setId(dbInstrument.getId());
+						instrument.setCreatedBy(dbInstrument.getCreatedBy());
+						instrument
+								.setCreatedDate(dbInstrument.getCreatedDate());
 					} else {
 						instrument.setCreatedBy(config.getCreatedBy());
-						instrument.setCreatedDate(new Date());
+						instrument.setCreatedDate(DateUtil
+								.addSecondsToCurrentDate(i));
 					}
 					config.getInstrumentCollection().add(instrument);
 				}
@@ -105,7 +121,7 @@ public class ExperimentConfigServiceLocalImpl implements
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String manufacturer = (String) obj;
-				if (manufacturer!=null && manufacturer.trim().length()>0) {
+				if (manufacturer != null && manufacturer.trim().length() > 0) {
 					manufacturers.add(manufacturer);
 				}
 			}
@@ -116,7 +132,6 @@ public class ExperimentConfigServiceLocalImpl implements
 		}
 		return manufacturers;
 	}
-
 
 	public ExperimentConfig findExperimentConfigById(String id)
 			throws ExperimentConfigException {
@@ -187,17 +202,16 @@ public class ExperimentConfigServiceLocalImpl implements
 		return instrument;
 	}
 
-	
-	public String[] findInstrumentTypesByTechniqueType(String techniqueType) 
-		throws ExperimentConfigException, CaNanoLabException {
+	public String[] findInstrumentTypesByTechniqueType(String techniqueType)
+			throws ExperimentConfigException, CaNanoLabException {
 		SortedSet<String> types = null;
 		types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
 				"instrument", "otherInstrument");
-		if (types!=null && types.size()>0) {
+		if (types != null && types.size() > 0) {
 			String[] typeArray = new String[types.size()];
 			types.toArray(typeArray);
 			return typeArray;
-		}else {
+		} else {
 			return null;
 		}
 	}
