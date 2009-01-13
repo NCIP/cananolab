@@ -24,15 +24,20 @@ function getUnit(fileInd, datumInd) {
 
 function setTheExperimentConfig(configId) {
 	alert('setTheExperimentConfig '+configId);
-	ExperimentConfigManager.findExperimentConfigById(configId, updateExperimentConfig);
+	ExperimentConfigManager.findExperimentConfigById(configId, populateExperimentConfig);
 }
 
-function updateExperimentConfig(experimentConfig) {	
-	if (experimentConfig != null) {		
-		alert('experimentConfig = '+experimentConfig.id);
-		document.getElementById("techniqueAbbr").value = textValue;
+function populateExperimentConfig(experimentConfigBean) {	
+	alert('########### populateExperimentConfig');
+	
+	
+	if (experimentConfigBean != null) {		
+		alert('experimentConfig configDescription = '+configDescription);
 	} else {
 		alert('Error getting Technique and Instrument data');
 	}
+	
+	dwr.util.removeAllOptions("techniqueType");
+	dwr.util.addOptions("techniqueType", experimentConfigBean, "techniqueAbbr", "techniqueAbbr");
 }
 
