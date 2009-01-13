@@ -23,7 +23,6 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper" />
-			<include method="getTechniqueAbbreviation" />
 			<include method="getDerivedDatumValueUnits" />
 		</create>
 		<create creator="new" javascript="ExperimentConfigManager"
@@ -31,6 +30,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl" />
 			<include method="findExperimentConfigById" />
+			<include method="findTechniqueByType" />
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
@@ -75,9 +75,14 @@
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
+			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
 			<param name="include"
-				value="techniqueType, techniqueAbbr, configDescription" />
+				value="technique, description" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Technique">
+			<param name="include"
+				value="type, abbreviation" />
 		</convert>
 	</allow>
 </dwr>
