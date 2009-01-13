@@ -2,8 +2,8 @@ package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -106,7 +105,7 @@ public class ExperimentConfigServiceLocalImpl implements
 		return manufacturers;
 	}
 
-	public ExperimentConfig findExperimentConfigById(String id)
+	public ExperimentConfigBean findExperimentConfigById(String id)
 			throws ExperimentConfigException {
 		ExperimentConfig config = null;
 		try {
@@ -124,7 +123,11 @@ public class ExperimentConfigServiceLocalImpl implements
 			logger.error(err, e);
 			throw new ExperimentConfigException(err);
 		}
-		return config;
+		if (config!=null) {
+			return new ExperimentConfigBean(config);
+		}else {
+			return null;
+		}		
 	}
 
 	public Technique findTechniqueByType(String type)
