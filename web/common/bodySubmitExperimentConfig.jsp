@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type="text/javascript" src="javascript/CharacterizationManager.js"></script>
 <table width="100%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
@@ -102,7 +101,7 @@
 						<strong>Description</strong>
 					</td>
 					<td class="rightLabel">
-						<html:textarea
+						<html:textarea styleId="configDescription"
 							property="achar.theExperimentConfig.domain.description" rows="3"
 							cols="80" />
 					</td>
