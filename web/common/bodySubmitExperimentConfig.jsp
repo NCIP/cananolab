@@ -52,17 +52,16 @@
 		<td class="rightLabel" valign="top">
 			<table class="smalltable" border="0" width="100%">
 				<tr class="smallTableHeader">
-					<th>
+					<th class="greyFont">
 						Manufacturer
 					</th>
-					<th>
+					<th class="greyFont">
 						Model Name
 					</th>
-					<th colspan="2">
+					<th  class="greyFont" colspan="2">
 						Type
 					</th>
 				</tr>
-				<c:set var="instrumentCount" value="0" />
 				<c:choose>
 					<c:when
 						test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">

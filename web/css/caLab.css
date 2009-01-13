@@ -807,7 +807,7 @@ tr.gridTableHeader {
 	width: 400px;
 	border-width: 1px;
 	border-color: #cccccc;
-	border-style: solid;
+	border-style: none;
 	border-collapse: collapse;
 }
 
@@ -826,7 +826,7 @@ tr.gridTableHeader {
 	padding: 5px 0 5px 5px;
 	border-width: 1px;
 	border-color: #cccccc;
-	border-style: solid;
+	border-style: none;
 	vertical-align: middle;
 }
 
@@ -1276,5 +1276,13 @@ visibility: visible;
 top: 0;
 left: 60px; /*position where enlarged image should offset horizontally */
 
+}
+
+.greyFont {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #5C5C5C;
+	text-align: left;
 }
 
