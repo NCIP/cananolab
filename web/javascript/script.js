@@ -402,6 +402,12 @@ function show(layer_ref) {
 		layerBlock.style.display = 'block';
 }
 
+function hide(layer_ref) {	
+	var layerBlock = document.getElementById(layer_ref);
+	if(layerBlock.style.display == 'block')
+		layerBlock.style.display = 'none';
+}
+
 var cellFuncs = [
 	function(data) {return "<input size='15' type='text'>";},
 	function(data) {return "<input size='20' type='text'>";},
