@@ -82,28 +82,6 @@ public class NanoparticleCharacterizationServiceHelper {
 		return achar;
 	}
 
-	// for dwr ajax
-	public String getTechniqueAbbreviation(String techniqueType) {
-		String techniqueAbbreviation = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select distinct technique.abbreviation from gov.nih.nci.cananolab.domain.common.Technique technique where technique.type='"
-							+ techniqueType
-							+ "' and technique.abbreviation!=null");
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				techniqueAbbreviation = (String) obj;
-			}
-		} catch (Exception e) {
-			String err = "Problem to retrieve technique abbreviation.";
-			logger.error(err, e);
-			return "";
-		}
-		return techniqueAbbreviation;
-	}
-
 	// use in dwr ajax
 	public String[] getDerivedDatumValueUnits(String derivedDatumName) {
 		try {
