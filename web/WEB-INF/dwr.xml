@@ -31,6 +31,7 @@
 				value="gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl" />
 			<include method="findExperimentConfigById" />
 			<include method="findTechniqueByType" />
+			<include method="findInstrumentTypesByTechniqueType" />
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
