@@ -104,7 +104,9 @@ public class ExperimentConfigServiceLocalImpl implements
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String manufacturer = (String) obj;
-				manufacturers.add(manufacturer);
+				if (manufacturer!=null && manufacturer.trim().length()>0) {
+					manufacturers.add(manufacturer);
+				}
 			}
 		} catch (Exception e) {
 			String err = "Problem to retrieve all manufacturers.";
