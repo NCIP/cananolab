@@ -11,6 +11,8 @@
 	src="javascript/CharacterizationManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
+<script type="text/javascript"
+	src="javascript/ExperimentConfigManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ExperimentConfigManager.js'></script>
 <script type="text/javascript" src="javascript/ProtocolManager.js"></script>
