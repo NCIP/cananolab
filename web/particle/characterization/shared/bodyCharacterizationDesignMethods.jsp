@@ -19,7 +19,7 @@
 			<c:if
 				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<a style="" id="addTechniqueInstrument"
-					href="javascript:showhide('newExperimentConfig');"> <span
+					href="javascript:resetTheExperimentConfig();"> <span
 					class="addLink2">Add</span> </a>
 			</c:if>
 			&nbsp;
@@ -27,11 +27,11 @@
 				<c:forEach var="experimentConfig"
 					items="${characterizationForm.map.achar.experimentConfigs}">
 					<a
-						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id})">${experimentConfig.displayName}</a>
+						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">${experimentConfig.displayName}</a>
 					<br>
 				</c:forEach>
 				&nbsp;
-				<br>
+				<br> 
 				<div id="newExperimentConfig" style="display: none;">
 					<jsp:include page="/common/bodySubmitExperimentConfig.jsp" />
 				</div>
