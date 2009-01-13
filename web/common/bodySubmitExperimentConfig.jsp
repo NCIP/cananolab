@@ -9,8 +9,8 @@
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 		<td align="right">
-			<a href="javascript:hide('newExperimentConfig');"> <span class="addLink">hide</span>
-			</a>
+			<a href="javascript:hide('newExperimentConfig');"> <span
+				class="addLink">hide</span> </a>
 		</td>
 	</tr>
 </table>
@@ -32,7 +32,7 @@
 				<option value="other">
 					[Other]
 				</option>
-			</html:select>			
+			</html:select>
 		</td>
 	</tr>
 	<tr>
@@ -46,17 +46,20 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="completeLabel" colspan="2" valign="top">
+		<td class="leftLabel" valign="top">
+			<strong>Instrument</strong>
+		</td>
+		<td class="rightLabel" valign="top">
 			<table class="smalltable" border="0" width="100%">
 				<tr class="smallTableHeader">
 					<th>
-						Instrument Type
-					</th>
-					<th>
 						Manufacturer
 					</th>
-					<th colspan="2">
+					<th>
 						Model Name
+					</th>
+					<th colspan="2">
+						Type
 					</th>
 				</tr>
 				<c:set var="instrumentCount" value="0" />
@@ -70,6 +73,23 @@
 								<tr>
 									<td>
 										<html:select
+											property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
+											styleId="instrumentManufacturer${instrumentInd}"
+											onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
+											<option value=""></option>
+											<html:options name="allManufacturers" />
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</td>
+									<td>
+										<html:text
+											property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
+											size="17" styleId="instrumentModelName${instrumentInd}" />
+									</td>
+									<td>
+										<html:select
 											property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
 											styleId="instrumentType${instrumentInd}"
 											onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
@@ -77,24 +97,7 @@
 											<option value="other">
 												[Other]
 											</option>
-										</html:select>										
-									</td>
-									<td>
-										<html:select
-											property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
-											styleId="instrumentManufacturer${instrumentInd}"
-											onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
-											<option value=""></option>
-											<html:options name="allManufacturers"/>
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>										
-									</td>
-									<td>
-										<html:text
-											property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
-											size="17" styleId="instrumentModelName${instrumentInd}" />
+										</html:select>
 									</td>
 									<td>
 										<a style="" id="removeInstrument" href="#"> <span
