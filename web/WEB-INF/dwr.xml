@@ -74,5 +74,10 @@
 			<param name="include"
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
+			<param name="include"
+				value="techniqueType, techniqueAbbr, configDescription" />
+		</convert>
 	</allow>
 </dwr>
