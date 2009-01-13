@@ -9,10 +9,12 @@ import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -34,9 +36,13 @@ public class ExperimentConfigServiceLocalImpl implements
 					.getApplicationService();
 			Technique technique = config.getTechnique();
 			// check if technique already exists;
-			if (technique.getId() == null) {
-				Technique doTechnique = findTechniqueByType(technique.getType());
-				technique = doTechnique;
+			Technique doTechnique = findTechniqueByType(technique.getType());
+			if (doTechnique != null) {
+				technique.setId(doTechnique.getId());
+			}
+			else {
+				technique.setCreatedBy(config.getCreatedBy());
+				technique.setCreatedDate(new Date());
 			}
 			// check if instrument already exists;
 			if (config.getInstrumentCollection() != null) {
@@ -49,6 +55,9 @@ public class ExperimentConfigServiceLocalImpl implements
 							instrument.getModelName());
 					if (dbInstrument != null) {
 						instrument.setId(dbInstrument.getId());
+					} else {
+						instrument.setCreatedBy(config.getCreatedBy());
+						instrument.setCreatedDate(new Date());
 					}
 					config.getInstrumentCollection().add(instrument);
 				}
@@ -105,7 +114,7 @@ public class ExperimentConfigServiceLocalImpl implements
 		return manufacturers;
 	}
 
-	public ExperimentConfigBean findExperimentConfigById(String id)
+	public ExperimentConfig findExperimentConfigById(String id)
 			throws ExperimentConfigException {
 		ExperimentConfig config = null;
 		try {
@@ -123,11 +132,13 @@ public class ExperimentConfigServiceLocalImpl implements
 			logger.error(err, e);
 			throw new ExperimentConfigException(err);
 		}
+		return config;
+		/*
 		if (config!=null) {
 			return new ExperimentConfigBean(config);
 		}else {
 			return null;
-		}		
+		}*/
 	}
 
 	public Technique findTechniqueByType(String type)
@@ -137,7 +148,7 @@ public class ExperimentConfigServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
-					.add(Property.forName("type").eq(new Long(type)));
+					.add(Property.forName("type").eq(new String(type)));
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				technique = (Technique) obj;
@@ -176,6 +187,27 @@ public class ExperimentConfigServiceLocalImpl implements
 			throw new ExperimentConfigException(err);
 		}
 		return instrument;
+	}
 
+	// for dwr ajax
+	public String getTechniqueAbbreviation(String techniqueId) {
+		String techniqueAbbreviation = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select distinct technique.abbreviation from gov.nih.nci.cananolab.domain.common.Technique technique where technique.id='"
+							+ techniqueId
+							+ "' and technique.abbreviation!=null");
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				techniqueAbbreviation = (String) obj;
+			}
+		} catch (Exception e) {
+			String err = "Problem to retrieve technique abbreviation.";
+			logger.error(err, e);
+			return "";
+		}
+		return techniqueAbbreviation;
 	}
 }
