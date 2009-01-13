@@ -78,7 +78,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
 			<param name="include"
-				value="description, technique, instrumentCollection" />
+				value="id, description, technique, instrumentCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Technique">
