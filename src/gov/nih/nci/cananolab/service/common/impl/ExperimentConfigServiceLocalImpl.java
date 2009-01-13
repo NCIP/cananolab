@@ -3,13 +3,13 @@ package gov.nih.nci.cananolab.service.common.impl;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -116,6 +117,7 @@ public class ExperimentConfigServiceLocalImpl implements
 		return manufacturers;
 	}
 
+
 	public ExperimentConfig findExperimentConfigById(String id)
 			throws ExperimentConfigException {
 		ExperimentConfig config = null;
@@ -183,5 +185,20 @@ public class ExperimentConfigServiceLocalImpl implements
 			throw new ExperimentConfigException(err);
 		}
 		return instrument;
+	}
+
+	
+	public String[] findInstrumentTypesByTechniqueType(String techniqueType) 
+		throws ExperimentConfigException, CaNanoLabException {
+		SortedSet<String> types = null;
+		types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
+				"instrument", "otherInstrument");
+		if (types!=null && types.size()>0) {
+			String[] typeArray = new String[types.size()];
+			types.toArray(typeArray);
+			return typeArray;
+		}else {
+			return null;
+		}
 	}
 }
