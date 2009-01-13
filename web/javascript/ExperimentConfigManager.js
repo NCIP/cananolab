@@ -15,9 +15,9 @@ function updateTechniqueAbbreviation(technique) {
 }
 
 function updateInstrumentDropDown(instrumentTypes) {
-	for (var i = 0; i < instrumentCount; i++) {	
+	for (var i = 0; i < instrumentCount; i++) {
 		var id = "instrumentType" + i;
-		var selectedValue = dwr.util.getValue(id);		
+		var selectedValue = dwr.util.getValue(id);
 		dwr.util.removeAllOptions(id);
 		dwr.util.addOptions(id, [""]);
 		dwr.util.addOptions(id, instrumentTypes);
@@ -36,14 +36,15 @@ function populateExperimentConfig(experimentConfig) {
 		dwr.util.setValue("techniqueType", experimentConfig.technique.type);
 		dwr.util.setValue("techniqueAbbr", experimentConfig.technique.abbreviation);
 		dwr.util.setValue("configDescription", experimentConfig.description);
+		dwr.util.setValue("configId", experimentConfig.id);
 		ExperimentConfigManager.findInstrumentTypesByTechniqueType(experimentConfig.technique.type,updateInstrumentDropDown);
 		instrumentCount = experimentConfig.instrumentCollection.length;
 		for (var i = 0; i < experimentConfig.instrumentCollection.length; i++) {
 			dwr.util.setValue("instrumentType" + i, experimentConfig.instrumentCollection[i].type);
 			dwr.util.setValue("instrumentManufacturer" + i, experimentConfig.instrumentCollection[i].manufacturer);
 			dwr.util.setValue("instrumentModelName" + i, experimentConfig.instrumentCollection[i].modelName);
-		}	
-	}	
+		}
+	}
 }
 
 function resetTheExperimentConfig() {
