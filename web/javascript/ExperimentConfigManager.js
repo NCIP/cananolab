@@ -1,3 +1,4 @@
+
 function retrieveTechniqueAbbreviation() {
 	var techniqueType = document.getElementById("techniqueType").value;
 	if (techniqueType != null && techniqueType != "other") {
@@ -19,5 +20,11 @@ function populateExperimentConfig(experimentConfig) {
 		dwr.util.setValue("techniqueType", experimentConfig.technique.type);
 		dwr.util.setValue("techniqueAbbr", experimentConfig.technique.abbreviation);
 		dwr.util.setValue("configDescription", experimentConfig.description);
+		for (var i = 0; i < experimentConfig.instrumentCollection.length; i++) {
+			dwr.util.setValue("instrumentType" + i, experimentConfig.instrumentCollection[i].type);
+			dwr.util.setValue("instrumentManufacturer" + i, experimentConfig.instrumentCollection[i].manufacturer);
+			dwr.util.setValue("instrumentModelName" + i, experimentConfig.instrumentCollection[i].modelName);
+		}
 	}
 }
+
