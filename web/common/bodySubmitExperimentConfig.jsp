@@ -5,17 +5,17 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
-<table width="100%" border="0" align="center" cellpadding="3"
+<table width="80%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 		<td align="right">
-			<a style="" href="javascript:hide('newExperimentConfig');"> <span class="addLink">hide</span>
+			<a href="javascript:hide('newExperimentConfig');"> <span class="addLink">hide</span>
 			</a>
 		</td>
 	</tr>
 </table>
 
-<table width="100%" border="0" align="center" cellpadding="3"
+<table width="80%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 		<td class="leftLabelWithTop">
@@ -129,7 +129,7 @@
 	</tr>
 </table>
 <br>
-<table width="100%" border="0" align="center" cellpadding="3"
+<table width="80%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 		<td>

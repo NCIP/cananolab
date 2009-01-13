@@ -23,19 +23,21 @@
 					class="addLink2">Add</span> </a>
 			</c:if>
 			&nbsp;
-			<blockquote>
-				<c:forEach var="experimentConfig"
-					items="${characterizationForm.map.achar.experimentConfigs}">
-					<a
-						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">${experimentConfig.displayName}</a>
-					<br>
-				</c:forEach>
-				&nbsp;
-				<br> 
-				<div id="newExperimentConfig" style="display: none;">
-					<jsp:include page="/common/bodySubmitExperimentConfig.jsp" />
-				</div>
-			</blockquote>
+			<br>
+			<br>
+			<c:forEach var="experimentConfig"
+				items="${characterizationForm.map.achar.experimentConfigs}">
+				<a
+					href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">${experimentConfig.displayName}</a>
+				<br>
+			</c:forEach>
+			&nbsp;
+			<br>
+			<div id="newExperimentConfig" style="display: none;">
+				<jsp:include page="/common/bodySubmitExperimentConfig.jsp" />
+			</div>
+
+
 		</td>
 	</tr>
 </table>
