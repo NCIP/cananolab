@@ -807,15 +807,15 @@ tr.gridTableHeader {
 	width: 400px;
 	border-width: 1px;
 	border-color: #cccccc;
-	border-style: none;
+	border-style: solid;
 	border-collapse: collapse;
 }
 
 .smalltable th {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.8em;
+	font-size: 0.65em;
 	padding: 5px 30px 10px 30px;
-	border-style: solid;
+	border-style: none;
 	border-width: 1px;
 	border-color: #cccccc;
 }
@@ -1280,7 +1280,7 @@ left: 60px; /*position where enlarged image should offset horizontally */
 
 .greyFont {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.7em;
+	font-size: 0.3;
 	background-color: #f4f4f5;
 	color: #5C5C5C;
 	text-align: left;
