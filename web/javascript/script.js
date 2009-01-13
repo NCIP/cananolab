@@ -395,3 +395,18 @@ function showhide(layer_ref) {
 	else
 		layerBlock.style.display = 'none';
 }
+
+function show(layer_ref) {	
+	var layerBlock = document.getElementById(layer_ref);
+	if(layerBlock.style.display == 'none')
+		layerBlock.style.display = 'block';
+}
+
+var cellFuncs = [
+	function(data) {return "<input size='15' type='text'>";},
+	function(data) {return "<input size='20' type='text'>";},
+    function(data) {return "<input size='20' type='text'>";}
+];
+function addRows(tableId) {
+	dwr.util.addRows( tableId, [''], cellFuncs, { escapeHtml:false });
+}

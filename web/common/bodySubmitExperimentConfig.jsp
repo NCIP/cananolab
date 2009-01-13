@@ -48,6 +48,7 @@
 						Model Name
 					</th>
 				</tr>
+				<c:set var="instrumentCount" value="0" />
 				<c:choose>
 					<c:when
 						test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">
@@ -57,14 +58,27 @@
 								indexId="instrumentInd">
 								<tr>
 									<td>
-										<html:text
+										<html:select
 											property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
-											size="17" styleId="instrumentType${instrumentInd}" />
+											styleId="instrumentType${instrumentInd}"
+											onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
+											<option value=""></option>
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>										
 									</td>
 									<td>
-										<html:text
+										<html:select
 											property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
-											size="17" styleId="instrumentManufacturer${instrumentInd}" />
+											styleId="instrumentManufacturer${instrumentInd}"
+											onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
+											<option value=""></option>
+											<html:options name="allManufacturers"/>
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>										
 									</td>
 									<td>
 										<html:text
@@ -76,6 +90,7 @@
 											class="addLink2">remove</span> </a> &nbsp;
 									</td>
 								</tr>
+								<c:set var="instrumentCount" value="${instrumentInd}" />
 							</logic:iterate>
 						</tr>
 					</c:when>
