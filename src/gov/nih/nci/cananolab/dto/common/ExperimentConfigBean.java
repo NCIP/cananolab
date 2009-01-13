@@ -5,6 +5,8 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -18,20 +20,17 @@ public class ExperimentConfigBean {
 	private String displayName;
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
 
-	//for dwr ajax
-	String techniqueType;
-	String techniqueAbbr;
-	String configDescription;
-	
 	public ExperimentConfigBean() {
 		domain = new ExperimentConfig();
 		domain.setTechnique(new Technique());
 		instruments.add(new Instrument());
-		domain.setInstrumentCollection(instruments);
 	}
 
 	public ExperimentConfigBean(ExperimentConfig config) {
 		domain = config;
+		for (Instrument instrument : config.getInstrumentCollection()) {
+			instruments.add(instrument);
+		}
 	}
 
 	public ExperimentConfig getDomain() {
@@ -68,54 +67,25 @@ public class ExperimentConfigBean {
 	}
 
 	/**
-	 * @param instruments the instruments to set
+	 * @param instruments
+	 *            the instruments to set
 	 */
 	public void setInstruments(List<Instrument> instruments) {
 		this.instruments = instruments;
 	}
 
-	/**
-	 * @return the techniqueType
-	 */
-	public String getTechniqueType() {
-		return  "test getTechniqueType";
+	public void setupDomain(String createdBy) throws Exception {
+		if (domain.getId() == null) {
+			domain.setCreatedBy(createdBy);
+			domain.setCreatedDate(new Date());
+		}
+		if (domain.getInstrumentCollection() != null) {
+			domain.getInstrumentCollection().clear();
+		} else {
+			domain.setInstrumentCollection(new HashSet<Instrument>());
+		}
+		for (Instrument instrument : instruments) {
+			domain.getInstrumentCollection().add(instrument);
+		}
 	}
-
-	/**
-	 * @param techniqueType the techniqueType to set
-	 */
-	public void setTechniqueType(String techniqueType) {
-		this.techniqueType = techniqueType;
-	}
-
-	/**
-	 * @return the techniqueAbbr
-	 */
-	public String getTechniqueAbbr() {
-		return "test TechniqueAbbr";
-	}
-
-	/**
-	 * @param techniqueAbbr the techniqueAbbr to set
-	 */
-	public void setTechniqueAbbr(String techniqueAbbr) {
-		this.techniqueAbbr = techniqueAbbr;
-	}
-
-	/**
-	 * @return the configDescription
-	 */
-	public String getConfigDescription() {
-		return configDescription;
-	}
-
-	/**
-	 * @param configDescription the configDescription to set
-	 */
-	public void setConfigDescription(String configDescription) {
-		this.configDescription = configDescription;
-	}
-
-	
-
 }
