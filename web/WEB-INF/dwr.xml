@@ -75,14 +75,14 @@
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
-			<param name="include"
-				value="technique, description" />
-		</convert>
+			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig" />
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Technique">
-			<param name="include"
-				value="type, abbreviation" />
+			<param name="include" value="type, abbreviation" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Instrument">
+			<param name="include" value="type, manufacturer, modelName" />
 		</convert>
 	</allow>
 </dwr>
