@@ -15,26 +15,28 @@
 	</tr>
 	<tr>
 		<td class="completeLabel" valign="top" colspan="4">
-			<strong>Technique and Instrument</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+			<strong>Technique and Instrument</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if
-					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">									
-			<a style="block" id="addTechniqueInstrument" 
-				href="javascript:showhide('newExperimentConfig');">
-				<span class="addLink2">Add</span> </a>	
+				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+				<a style="" id="addTechniqueInstrument"
+					href="javascript:showhide('newExperimentConfig');"> <span
+					class="addLink2">Add</span> </a>
 			</c:if>
 			&nbsp;
-			<br><a href="javascript:setTheExperimentConfig(3997696)">TestConfig1</a><br>
-			<c:forEach var="experimentConfig"
-				items="${characterizationForm.map.achar.experimentConfigs}">
-				<a href="javascript:setTheExperimentConfig(${experimentConfig.domain.id})">${experimentConfig.displayName}</a><br>
-			</c:forEach>&nbsp;		
-		</td>		
-		<br>					
-	</tr>	
+			<blockquote>
+				<c:forEach var="experimentConfig"
+					items="${characterizationForm.map.achar.experimentConfigs}">
+					<a
+						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id})">${experimentConfig.displayName}</a>
+					<br>
+				</c:forEach>
+				&nbsp;
+				<br>
+				<div id="newExperimentConfig" style="display: none;">
+					<jsp:include page="/common/bodySubmitExperimentConfig.jsp" />
+				</div>
+			</blockquote>
+		</td>
+	</tr>
 </table>
-<div id="newExperimentConfig" style="display: none;">	
-	<jsp:include page="/common/bodySubmitExperimentConfig.jsp">
-		<jsp:param name="formName" value="invitroCharacterizationForm" />
-	</jsp:include>	
-</div>
 <br>
