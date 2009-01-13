@@ -133,12 +133,6 @@ public class ExperimentConfigServiceLocalImpl implements
 			throw new ExperimentConfigException(err);
 		}
 		return config;
-		/*
-		if (config!=null) {
-			return new ExperimentConfigBean(config);
-		}else {
-			return null;
-		}*/
 	}
 
 	public Technique findTechniqueByType(String type)
@@ -187,27 +181,5 @@ public class ExperimentConfigServiceLocalImpl implements
 			throw new ExperimentConfigException(err);
 		}
 		return instrument;
-	}
-
-	// for dwr ajax
-	public String getTechniqueAbbreviation(String techniqueId) {
-		String techniqueAbbreviation = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select distinct technique.abbreviation from gov.nih.nci.cananolab.domain.common.Technique technique where technique.id='"
-							+ techniqueId
-							+ "' and technique.abbreviation!=null");
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				techniqueAbbreviation = (String) obj;
-			}
-		} catch (Exception e) {
-			String err = "Problem to retrieve technique abbreviation.";
-			logger.error(err, e);
-			return "";
-		}
-		return techniqueAbbreviation;
 	}
 }
