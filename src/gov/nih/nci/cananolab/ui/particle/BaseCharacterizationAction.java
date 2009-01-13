@@ -674,8 +674,11 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
+		setupDomainChar(request, theForm, achar);
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
+		configBean.getDomain().setCharacterization(achar.getDomainChar());
 		request.getSession().setAttribute("experimentConfigToSave", configBean);
+		String url=request.getRequestURL().toString();
 		return mapping.findForward("saveExperimentConfig");
 	}
 }
