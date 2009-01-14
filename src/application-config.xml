@@ -57,12 +57,13 @@
 	</bean>
 
 	<bean name="SessionFactoryHolder"
-		class="gov.nih.nci.cananolab.system.dao.SessionFactoryHolder"/>
+		class="gov.nih.nci.cananolab.system.dao.SessionFactoryHolder" />
 
 	<bean id="HibernateTransactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory">
-			<bean factory-bean="SessionFactoryHolder" factory-method="getInstance" />
+			<bean factory-bean="SessionFactoryHolder"
+				factory-method="getInstance" />
 		</property>
 	</bean>
 
@@ -76,17 +77,23 @@
 				<prop key="save*">
 					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
 				</prop>
+				<prop key="delete*">
+					PROPAGATION_REQUIRED,-gov.nih.nci.system.applicationservice.ApplicationException,-gov.nih.nci.system.dao.DAOException
+				</prop>
 				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
 			</props>
 		</property>
 	</bean>
-	
-	<bean id="ORMDAO" class="org.springframework.aop.framework.ProxyFactoryBean" singleton="true">
+
+	<bean id="ORMDAO"
+		class="org.springframework.aop.framework.ProxyFactoryBean"
+		singleton="true">
 		<property name="target" ref="ORMDAOFactory" />
-		<property name="interfaces" value="gov.nih.nci.cananolab.system.dao.CustomizedORMDAO" />
+		<property name="interfaces"
+			value="gov.nih.nci.cananolab.system.dao.CustomizedORMDAO" />
 		<property name="interceptorNames">
 			<list>
-				<idref local="TxInterceptor" />				
+				<idref local="TxInterceptor" />
 			</list>
 		</property>
 	</bean>
