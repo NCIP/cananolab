@@ -11,7 +11,9 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
+import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
@@ -678,7 +680,21 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		configBean.getDomain().setCharacterization(achar.getDomainChar());
 		request.getSession().setAttribute("experimentConfigToSave", configBean);
-		String url=request.getRequestURL().toString();
+		String url = request.getRequestURL().toString();
 		return mapping.findForward("saveExperimentConfig");
+	}
+
+	public ActionForward deleteExperimentConfig(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		setupDomainChar(request, theForm, achar);
+		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
+		configBean.getDomain().setCharacterization(achar.getDomainChar());
+		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
+		service.deleteExperimentConfig(configBean.getDomain());
+		return null;
 	}
 }
