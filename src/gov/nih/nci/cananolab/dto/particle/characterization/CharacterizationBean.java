@@ -290,4 +290,16 @@ public class CharacterizationBean {
 	public void setTheExperimentConfig(ExperimentConfigBean theExperimentConfig) {
 		this.theExperimentConfig = theExperimentConfig;
 	}
+
+	public void addExperimentConfig(ExperimentConfigBean experimentConfigBean) {
+		//if an old one exists, remove it first
+		if (experimentConfigs.contains(experimentConfigBean)) {
+			removeExperimentConfig(experimentConfigBean);
+		}
+		experimentConfigs.add(experimentConfigBean);
+	}
+
+	public void removeExperimentConfig(ExperimentConfigBean experimentConfigBean) {
+		experimentConfigs.remove(experimentConfigBean);
+	}
 }
