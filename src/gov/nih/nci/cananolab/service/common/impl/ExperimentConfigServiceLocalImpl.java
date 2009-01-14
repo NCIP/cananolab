@@ -87,6 +87,69 @@ public class ExperimentConfigServiceLocalImpl implements
 		}
 	}
 
+	public void deleteExperimentConfig(ExperimentConfig config)
+			throws ExperimentConfigException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// get existing createdDate and createdBy
+			if (config.getId() != null) {
+				ExperimentConfig dbConfig = findExperimentConfigById(config
+						.getId().toString());
+				if (dbConfig != null) {
+					config.setCreatedBy(dbConfig.getCreatedBy());
+					config.setCreatedDate(dbConfig.getCreatedDate());
+				}
+			}
+			Technique technique = config.getTechnique();
+			// check if technique already exists;
+			Technique dbTechnique = findTechniqueByType(technique.getType());
+			if (dbTechnique != null) {
+				technique.setId(dbTechnique.getId());
+				technique.setCreatedBy(dbTechnique.getCreatedBy());
+				technique.setCreatedDate(dbTechnique.getCreatedDate());
+			} else {
+				technique.setCreatedBy(config.getCreatedBy());
+				technique.setCreatedDate(new Date());
+				// need to save the transient object before deleting the
+				// experiment config
+				appService.saveOrUpdate(technique);
+			}
+			// check if instrument already exists;
+			if (config.getInstrumentCollection() != null) {
+				Collection<Instrument> instruments = new HashSet<Instrument>(
+						config.getInstrumentCollection());
+				config.getInstrumentCollection().clear();
+				int i = 0;
+				for (Instrument instrument : instruments) {
+					Instrument dbInstrument = findInstrumentBy(instrument
+							.getType(), instrument.getManufacturer(),
+							instrument.getModelName());
+					if (dbInstrument != null) {
+						instrument.setId(dbInstrument.getId());
+						instrument.setCreatedBy(dbInstrument.getCreatedBy());
+						instrument
+								.setCreatedDate(dbInstrument.getCreatedDate());
+					} else {
+						instrument.setCreatedBy(config.getCreatedBy());
+						instrument.setCreatedDate(DateUtil
+								.addSecondsToCurrentDate(i));
+						// need to save the transient object before deleting the
+						// experiment config
+						appService.saveOrUpdate(instrument);
+					}
+					config.getInstrumentCollection().add(instrument);
+				}
+			}
+
+			appService.delete(config);
+		} catch (Exception e) {
+			String err = "Error in deleting the technique and associated instruments";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err, e);
+		}
+	}
+
 	public List<Technique> findAllTechniques() throws ExperimentConfigException {
 		List<Technique> techniques = new ArrayList<Technique>();
 		try {
