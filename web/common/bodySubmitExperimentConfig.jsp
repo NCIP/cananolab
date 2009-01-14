@@ -5,7 +5,7 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
-<table width="80%" border="0" align="center" cellpadding="3"
+<table border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 		<td class="leftLabelWithTop">
@@ -52,56 +52,56 @@
 						Type
 					</th>
 				</tr>
-				<c:choose>
-					<c:when
-						test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">
-						<tr>
-							<logic:iterate name="characterizationForm"
-								property="achar.theExperimentConfig.instruments" id="instrument"
-								indexId="instrumentInd">
-								<tr>
-									<td>
-										<html:select
-											property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
-											styleId="instrumentManufacturer${instrumentInd}"
-											onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
-											<option value=""></option>
-											<html:options name="allManufacturers" />
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
-									</td>
-									<td>
-										<html:text
-											property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
-											size="17" styleId="instrumentModelName${instrumentInd}" />
-									</td>
-									<td>
-										<html:select
-											property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
-											styleId="instrumentType${instrumentInd}"
-											onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
-											<option value=""></option>
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
-									</td>
-									<td>
-										<a style="" id="removeInstrument" href="#"> <span
-											class="addLink2">remove</span> </a> &nbsp;
-									</td>
-								</tr>
-								<c:set var="instrumentCount" value="${instrumentInd}" />
-							</logic:iterate>
-						</tr>
-					</c:when>
-				</c:choose>
+				<tbody id="instrumentRows">
+					<c:choose>
+						<c:when
+							test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">
+							<tr>
+								<logic:iterate name="characterizationForm"
+									property="achar.theExperimentConfig.instruments" id="instrument"
+									indexId="instrumentInd">
+									<tr>
+										<td>
+											<html:select
+												property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
+												styleId="instrumentManufacturer${instrumentInd}"
+												onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
+												<option value=""></option>
+												<html:options name="allManufacturers" />
+												<option value="other">
+													[Other]
+												</option>
+											</html:select>
+										</td>
+										<td>
+											<html:text 
+												property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
+												size="17" styleId="instrumentModelName${instrumentInd}" />
+										</td>
+										<td>
+											<html:select
+												property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
+												styleId="instrumentType${instrumentInd}"
+												onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
+												<option value=""></option>
+												<option value="other">
+													[Other]
+												</option>
+											</html:select>
+										</td>
+										<td>
+											<a style="" id="removeInstrument" href="#"> <span
+												class="addLink2">remove</span> </a> &nbsp;
+										</td>
+									</tr>
+								</logic:iterate>
+							</tr>
+						</c:when>
+					</c:choose>
+				</tbody>
 				<tr>
 					<td class="completeLabel" colspan="4">
-						<a href="#"
-							onclick="javascript:addComponent(document.forms[0], 'submitExperimentConfig', 'addInstrument'); return false;">
+						<a href="javascript:addRows(instrumentRows);">
 							<span class="addLink2">Add</span>
 					</td>
 				</tr>
@@ -116,7 +116,7 @@
 		<td class="rightLabelNoBottom">
 			<html:textarea styleId="configDescription"
 				property="achar.theExperimentConfig.domain.description" rows="3"
-				cols="80" />
+				cols="95" />
 			<br>
 		</td>
 	</tr>

@@ -1209,7 +1209,7 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	font-weight: bold;
 	padding-left: 0.8em;
 	background-color: #AAAAAB; /* constant: lighter gray */
-	color: #000000; /* constant: black */
+	color: #000000; /* constant: black */ 
 	border-top: 1px solid #5c5c5c; /* constant: dark gray */
 	border-bottom: 1px solid #5c5c5c; /* constant: dark gray */
 	border-right: 1px solid #5c5c5c; /* constant: dark gray */
@@ -1284,5 +1284,10 @@ left: 60px; /*position where enlarged image should offset horizontally */
 	background-color: #f4f4f5;
 	color: #5C5C5C;
 	text-align: left;
+}
+
+input,textArea,submit,reset,option,select{
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 11px;
 }
 
