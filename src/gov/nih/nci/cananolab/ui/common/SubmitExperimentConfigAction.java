@@ -40,6 +40,10 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 			UserBean user = (UserBean) request.getSession()
 					.getAttribute("user");
 			configBean.setupDomain(user.getLoginName());
+			String configId = request.getParameter("configId");
+			if (configId==null) {
+				configBean.getDomain().setId(null);
+			}			
 			service.saveExperimentConfig(configBean.getDomain());
 			// TODO save user-entered values in common lookup
 		}
