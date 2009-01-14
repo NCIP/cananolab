@@ -16,6 +16,9 @@ public interface ExperimentConfigService {
 	public void saveExperimentConfig(ExperimentConfig experimentConfig)
 			throws ExperimentConfigException;
 
+	public void deleteExperimentConfig(ExperimentConfig experimentConfig)
+			throws ExperimentConfigException;
+
 	public List<Technique> findAllTechniques() throws ExperimentConfigException;
 
 	public List<String> getAllManufacturers() throws ExperimentConfigException;
