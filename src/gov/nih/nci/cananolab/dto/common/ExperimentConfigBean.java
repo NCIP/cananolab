@@ -91,4 +91,20 @@ public class ExperimentConfigBean {
 			domain.getInstrumentCollection().add(instrument);
 		}
 	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof ExperimentConfigBean) {
+			ExperimentConfigBean c = (ExperimentConfigBean) obj;
+			Long thisId = this.domain.getId();
+			if (thisId != null && thisId.equals(c.getDomain().getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public int hashCode() {
+		return domain.hashCode();
+	}
 }
