@@ -215,4 +215,25 @@ public class ExperimentConfigServiceLocalImpl implements
 			return null;
 		}
 	}
+
+	public String[] findInstrumentTypesByConfigId(String configId)
+			throws ExperimentConfigException, CaNanoLabException {
+		String techniqueType = null;
+		SortedSet<String> types = null;
+		ExperimentConfig config = findExperimentConfigById(configId);
+
+		if (config != null && config.getTechnique() != null
+				&& config.getTechnique().getType() != null) {
+			techniqueType = config.getTechnique().getType();
+			types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
+					"instrument", "otherInstrument");
+		}
+		if (types != null && types.size() > 0) {
+			String[] typeArray = new String[types.size()];
+			types.toArray(typeArray);
+			return typeArray;
+		} else {
+			return null;
+		}
+	}
 }
