@@ -69,6 +69,7 @@ function resetTheExperimentConfig(isShow) {
 	dwr.util.setValue("techniqueType", "");
 	dwr.util.setValue("techniqueAbbr", "");
 	dwr.util.setValue("configDescription", "");
+	dwr.util.setValue("configId", "0");
 	instrumentCount = 1;
 	for ( var i = 0; i < instrumentCount; i++) {
 		var id = "instrumentType" + i;
