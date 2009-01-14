@@ -32,6 +32,7 @@
 			<include method="findExperimentConfigById" />
 			<include method="findTechniqueByType" />
 			<include method="findInstrumentTypesByTechniqueType" />
+			<include method="findInstrumentTypesByConfigId" />
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
