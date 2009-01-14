@@ -32,7 +32,7 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		ActionForward forward = null;
+
 		if (request.getSession().getAttribute("experimentConfigToSave") != null) {
 			ExperimentConfigBean configBean = (ExperimentConfigBean) (request
 					.getSession().getAttribute("experimentConfigToSave"));
@@ -41,8 +41,10 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 					.getAttribute("user");
 			configBean.setupDomain(user.getLoginName());
 			service.saveExperimentConfig(configBean.getDomain());
-			//TODO save user-entered values in common lookup
+			// TODO save user-entered values in common lookup
 		}
+		ActionForward forward = (ActionForward) request
+				.getAttribute("experimentConfigSourcePage");
 		return forward;
 	}
 

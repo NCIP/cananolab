@@ -680,7 +680,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		configBean.getDomain().setCharacterization(achar.getDomainChar());
 		request.getSession().setAttribute("experimentConfigToSave", configBean);
-		String url = request.getRequestURL().toString();
+		achar.addExperimentConfig(configBean);
+		ActionForward inputForward=mapping.getInputForward();
+		request.setAttribute("experimentConfigSourcePage", inputForward);
 		return mapping.findForward("saveExperimentConfig");
 	}
 
@@ -695,6 +697,7 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		configBean.getDomain().setCharacterization(achar.getDomainChar());
 		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 		service.deleteExperimentConfig(configBean.getDomain());
-		return null;
+		achar.removeExperimentConfig(configBean);
+		return mapping.getInputForward();
 	}
 }
