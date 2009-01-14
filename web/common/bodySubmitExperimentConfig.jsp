@@ -8,16 +8,6 @@
 <table width="80%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
-		<td align="right">
-			<a href="javascript:hide('newExperimentConfig');"> <span
-				class="addLink">hide</span> </a>
-		</td>
-	</tr>
-</table>
-
-<table width="80%" border="0" align="center" cellpadding="3"
-	cellspacing="0" class="topBorderOnly" summary="">
-	<tr>
 		<td class="leftLabelWithTop">
 			<strong>Technique</strong>
 		</td>
@@ -120,13 +110,30 @@
 	</tr>
 
 	<tr>
-		<td class="leftLabel" valign="top">
+		<td class="leftLabelNoBottom" valign="top">
 			<strong>Description</strong>
 		</td>
-		<td class="rightLabel">
+		<td class="rightLabelNoBottom">
 			<html:textarea styleId="configDescription"
 				property="achar.theExperimentConfig.domain.description" rows="3"
 				cols="80" />
+			<br>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftLabel" valign="top">
+			<input type="button" value="Delete"
+				onclick="javascript:submitAction(document.forms[0],
+										'${actionName}', 'deleteExperimentConfig');">
+		</td>
+		<td class="rightLabel" align="right">
+			<div align="right">
+				<input type="reset" value="Reset"
+					onclick="javascript:window.location.href='${origUrl}'">
+				<input type="button" value="Submit"
+					onclick="javascript:submitAction(document.forms[0],
+										'${actionName}', 'saveExperimentConfig');">
+			</div>
 		</td>
 	</tr>
 	<c:if
@@ -135,28 +142,3 @@
 			property="achar.theExperimentConfig.domain.id" />
 	</c:if>
 </table>
-<br>
-<table width="80%" border="0" align="center" cellpadding="3"
-	cellspacing="0" class="topBorderOnly" summary="">
-	<tr>
-		<td>
-			<span class="formMessage"> </span>
-			<br>
-			<table border="0" align="right" cellpadding="4" cellspacing="0">
-				<tr>
-					<td>
-						<div align="right">
-							<input type="reset" value="Reset"
-								onclick="javascript:window.location.href='${origUrl}'">
-							<input type="button" value="Submit"
-								onclick="javascript:submitAction(document.forms[0],
-										'${actionName}', 'saveExperimentConfig');">
-						</div>
-					</td>
-				</tr>
-			</table>
-			<div align="right"></div>
-		</td>
-	</tr>
-</table>
-
