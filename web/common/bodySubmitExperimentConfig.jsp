@@ -9,7 +9,7 @@
 	cellspacing="0" class="topBorderOnly" summary="">
 	<tr>
 		<td class="leftLabelWithTop">
-			<strong>Technique</strong>
+			<strong>Technique*</strong>
 		</td>
 		<td class="rightLabelWithTop">
 			<html:select
@@ -128,11 +128,13 @@
 		</td>
 		<td class="rightLabel" align="right">
 			<div align="right">
+				<input type="reset" value="Cancel"
+					onclick="javascript:resetTheExperimentConfig(false);">
 				<input type="reset" value="Reset"
 					onclick="javascript:window.location.href='${origUrl}'">
-				<input type="button" value="Submit"
+				<input type="button" value="Save"
 					onclick="javascript:submitAction(document.forms[0],
-										'${actionName}', 'saveExperimentConfig');">
+										'${actionName}', 'saveExperimentConfig');">	
 			</div>
 		</td>
 	</tr>

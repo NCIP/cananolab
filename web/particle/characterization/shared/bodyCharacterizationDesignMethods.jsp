@@ -15,12 +15,12 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="completeLabel" valign="top" colspan="4">
+		<td class="completeLabelNoBottom" valign="top" colspan="4">
 			<strong>Technique and Instrument</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if
 				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<a style="" id="addTechniqueInstrument"
-					href="javascript:resetTheExperimentConfig();"> <span
+					href="javascript:resetTheExperimentConfig(true);"> <span
 					class="addLink2">Add</span> </a>
 			</c:if>
 		</td>
@@ -29,7 +29,7 @@
 		<td class="leftLabel" valign="top" colspan="1">
 			<c:forEach var="experimentConfig"
 				items="${characterizationForm.map.achar.experimentConfigs}">
-				<a
+				&nbsp;&nbsp;<a
 					href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">
 					${fn:substring(experimentConfig.displayName,0,40)}</a>
 				<br>
@@ -40,7 +40,7 @@
 			<div id="newExperimentConfig" style="display: none;">
 				<jsp:include page="/common/bodySubmitExperimentConfig.jsp" />
 			</div>
-
+			&nbsp;
 		</td>
 	</tr>
 </table>

@@ -60,8 +60,12 @@ function populateExperimentConfig(experimentConfig) {
 	}	
 }
 
-function resetTheExperimentConfig() {
-	show('newExperimentConfig');
+function resetTheExperimentConfig(isShow) {
+	if (isShow){
+		show('newExperimentConfig');
+	}else{
+		hide('newExperimentConfig');
+	}
 	dwr.util.setValue("techniqueType", "");
 	dwr.util.setValue("techniqueAbbr", "");
 	dwr.util.setValue("configDescription", "");
