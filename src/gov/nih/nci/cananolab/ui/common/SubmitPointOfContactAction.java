@@ -21,6 +21,7 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -103,17 +104,19 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		particleSampleBean.setPocBean(primaryPointOfContact);
 		particleSampleBean.getDomainParticleSample().setOtherPointOfContactCollection(otherPointOfContactCollection);
 		
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"pointOfContact.updateOtherPOC");
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-
+		//remove blue warning message
+//		ActionMessages msgs = new ActionMessages();
+//		ActionMessage msg = new ActionMessage(
+//				"pointOfContact.updateOtherPOC");
+//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+//		saveMessages(request, msgs);
+		
 		String particleId = getParticleId(request);
 		if (particleId != null) {
 			request.setAttribute("particleId", particleId);
 			return mapping.findForward("updateParticle");
 		} else {
+			request.getSession().setAttribute("submitPOCProcessing", "true");
 			return mapping.findForward("submitParticle");
 		}
 	}
@@ -351,9 +354,27 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		PointOfContactBean primaryPointOfContactBean = (PointOfContactBean) theForm
+			.get("poc");
 		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
 		entity.addPointOfContact();
+		PointOfContact primaryPointOfContact = null;
+		if (primaryPointOfContactBean!=null) {
+			primaryPointOfContact = primaryPointOfContactBean.getDomain();
+		}
+		Collection<PointOfContact> otherPointOfContactCollection = new ArrayList<PointOfContact>();
+		if (entity!=null) {
+			List<PointOfContactBean> otherPOCList = entity.getOtherPointOfContacts();
+			if (otherPOCList!=null) {
+				for (PointOfContactBean otherPOCBean: otherPOCList) {
+					otherPointOfContactCollection.add(otherPOCBean.getDomain());
+				}
+			}
+		}
+		InitPOCSetup.getInstance().persistPOCDropdowns(request, 
+				primaryPointOfContact, otherPointOfContactCollection);
+		
 		return mapping.getInputForward();
 	}
 

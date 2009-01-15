@@ -23,6 +23,10 @@
 		<c:when
 			test="${!empty nanoparticleSampleForm.map.particleSampleBean.pocBean.domain.id}">
 			<c:set var="pocDetailDisplay" value="display: inline;" />
+			<c:if
+				test="${submitPOCProcessing eq 'true'}">
+				<c:set var="pocDetailDisplay" value="display: none;" />
+			</c:if>			
 		</c:when>
 		<c:otherwise>
 			<c:set var="pocDetailDisplay" value="display: none;" />
