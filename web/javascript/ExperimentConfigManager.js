@@ -80,13 +80,17 @@ function resetTheExperimentConfig(isShow) {
 		dwr.util.setValue("instrumentModelName" + i, "");
 	}
 }
-
+achar.theExperimentConfig.instruments["+data+"].manufacturer
 
 var cellFuncs = [
-	function(data) {return "<select name='manufacturer'>" +
-		"<option value='Malvern'>Malvern</option></select>"},
-    function(data) {return "<input size='17' type='text'>";},
-	function(data) {return "<select name='type'>" +
+	function(data) {return "<select name='achar.theExperimentConfig.instruments["+data+"].manufacturer'>" +
+		" id=\"instrumentManufacturer"+data+"\"" +
+		" <option value='Malvern'>Malvern</option></select>"},
+    function(data) {return "<input size='17' name='achar.theExperimentConfig.instruments["+data+"].modelName' " +
+			" id=\"instrumentModelName"+data+"\"" +
+			" type='text'>";},
+	function(data) {return "<select name='achar.theExperimentConfig.instruments["+data+"].type' " +
+			" id=\"instrumentType"+data+"\">" +
 			"<option value='Dynamic Light Scattering'>Dynamic Light Scattering</option></select>"},
     function(data) {return "<a href='javascript:deleteRow(\"instrumentTable\","+data+",\"true\");'>" +
     		"<span class='addLink2'>remove</span></a>&nbsp;";}
