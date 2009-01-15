@@ -678,10 +678,12 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		setupDomainChar(request, theForm, achar);
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
-		configBean.getDomain().setCharacterization(achar.getDomainChar());
+		if (achar.getDomainChar().getId() != null) {
+			configBean.getDomain().setCharacterization(achar.getDomainChar());
+		}
 		request.getSession().setAttribute("experimentConfigToSave", configBean);
 		achar.addExperimentConfig(configBean);
-		ActionForward inputForward=mapping.getInputForward();
+		ActionForward inputForward = mapping.getInputForward();
 		request.setAttribute("experimentConfigSourcePage", inputForward);
 		return mapping.findForward("saveExperimentConfig");
 	}
