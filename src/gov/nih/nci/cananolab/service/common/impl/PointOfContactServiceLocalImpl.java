@@ -288,5 +288,24 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
+	
+	public void saveOrganization(Organization organization, String user) 
+		throws Exception {
+		if (organization != null && organization.getName()!=null) {
+			Organization dbOrganization = getDBOrganizationByName(organization.getName());
+			if (dbOrganization == null) {
+				CustomizedApplicationService appService = 
+					(CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+				if (organization.getCreatedBy() == null) {
+					organization.setCreatedBy(user);
+				}
+				if (organization.getCreatedDate() == null) {
+					organization.setCreatedDate(new Date());
+				}
+				appService.saveOrUpdate(organization);
+			}
+		}	
+	}
 
 }
