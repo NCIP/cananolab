@@ -89,6 +89,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("particleId", particleSampleBean
 				.getDomainParticleSample().getId().toString());
+		request.getSession().removeAttribute("submitPOCProcessing");
 		return setupUpdate(mapping, form, request, response);
 	}
 
