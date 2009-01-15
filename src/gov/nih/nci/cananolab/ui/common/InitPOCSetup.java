@@ -40,12 +40,19 @@ public class InitPOCSetup {
 	public void persistPOCDropdowns(HttpServletRequest request,
 			PointOfContact primaryPointOfContact, 
 			Collection<PointOfContact> otherPointOfContactCollection ) throws Exception {
-			
+		UserBean userBean = (UserBean) request.getSession().getAttribute("user");
+		String user = userBean.getLoginName();
+		if (primaryPointOfContact!=null) {
+			pocService.saveOrganization(primaryPointOfContact.getOrganization(), user);
+		}
 		InitSetup.getInstance().persistLookup(request, "PointOfContact", "role",
 				"otherRole",
 				(primaryPointOfContact.getRole()));
 		if (otherPointOfContactCollection!=null) {
 			for (PointOfContact otherPoc: otherPointOfContactCollection) {
+				if (otherPoc!=null) {
+					pocService.saveOrganization(otherPoc.getOrganization(), user);
+				}
 				InitSetup.getInstance().persistLookup(request, "PointOfContact", "role",
 						"otherRole",
 						(otherPoc.getRole()));
