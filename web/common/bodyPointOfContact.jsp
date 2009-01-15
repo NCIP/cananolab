@@ -128,9 +128,9 @@
 					<strong>Role</strong>
 				</td>
 				<td class="rightLabel" valign="top" colspan="4">
-					<html:select styleId="pocRole_${param.pocIndex }"
+					<html:select styleId="${param.pocBean}_Role_${param.pocIndex }"
 						property="${param.pocBean}.domain.role"
-						onchange="javascript:callPrompt('Contact Role', 'pocRole_${param.pocIndex}');">
+						onchange="javascript:callPrompt('Contact Role', '${param.pocBean}_Role_${param.pocIndex}');">
 						<option />
 							<html:options name="contactRoles" />
 						<option value="other">
