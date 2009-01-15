@@ -408,16 +408,5 @@ function hide(layer_ref) {
 		layerBlock.style.display = 'none';
 }
 
-var cellFuncs = [
-	function(data) {return "<select name='manufacturer'>";},
-    function(data) {return "<input size='17' type='text'>";},
-	function(data) {return "<select name='manufacturer'>" +
-			"<option value='GATECH_EMORY'>GATECH_EMORY</option></select>"},
-    function(data) {return "<a id='removeInstrument' href='#'><span " +
-		"class='addLink2'>remove</span></a>";}
-];
-function addRows_test(tableId) {
-	dwr.util.addRows( tableId, [''], cellFuncs, { escapeHtml:false });
-}
-function addRows(tableId) {
-}
+
+

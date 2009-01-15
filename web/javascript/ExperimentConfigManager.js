@@ -81,3 +81,30 @@ function resetTheExperimentConfig(isShow) {
 	}
 }
 
+
+var cellFuncs = [
+	function(data) {return "<select name='manufacturer'>" +
+		"<option value='Malvern'>Malvern</option></select>"},
+    function(data) {return "<input size='17' type='text'>";},
+	function(data) {return "<select name='type'>" +
+			"<option value='Dynamic Light Scattering'>Dynamic Light Scattering</option></select>"},
+    function(data) {return "<a href='javascript:deleteRow(\"instrumentTable\","+data+",\"true\");'>" +
+    		"<span class='addLink2'>remove</span></a>&nbsp;";}
+];
+function addRows_test(tableId) {
+	dwr.util.addRows( tableId, [''], cellFuncs, { escapeHtml:false });
+}
+var rowCount = 0;
+function addRows(tableId) {    
+	rowCount = document.getElementById("instrumentTable").rows.length;
+	rowCount = rowCount-3;
+	dwr.util.addRows( tableId, [rowCount], cellFuncs, { escapeHtml:false });
+}
+
+function deleteRow(tableId, i, hasHeader){
+	var index = i;
+	if (hasHeader == 'true'){
+		index = i+1;
+	}
+    document.getElementById(tableId).deleteRow(index);
+}

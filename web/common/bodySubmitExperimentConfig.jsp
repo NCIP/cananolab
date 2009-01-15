@@ -40,7 +40,8 @@
 			<strong>Instrument</strong>
 		</td>
 		<td class="rightLabel" valign="top">
-			<table class="smalltable" border="0" width="100%">
+			<table id="instrumentTable" class="smalltable" border="0"
+				width="100%">
 				<tr class="smallTableHeader">
 					<th class="greyFont">
 						Manufacturer
@@ -90,8 +91,9 @@
 											</html:select>
 										</td>
 										<td>
-											<a style="" id="removeInstrument" href="#"> <span
-												class="addLink2">remove</span> </a> &nbsp;
+											<a href="javascript:deleteRow('instrumentTable','0','true');"><span
+												class="addLink2">remove</span>
+											</a>&nbsp;
 										</td>
 									</tr>
 								</logic:iterate>
@@ -140,4 +142,5 @@
 	</tr>
 	<html:hidden styleId="configId"
 		property="achar.theExperimentConfig.domain.id" />
+
 </table>
