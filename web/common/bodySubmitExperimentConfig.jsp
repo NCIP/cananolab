@@ -5,8 +5,8 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
-<table border="0" align="center" cellpadding="3"
-	cellspacing="0" class="topBorderOnly" summary="">
+<table border="0" align="center" cellpadding="3" cellspacing="0"
+	class="topBorderOnly" summary="">
 	<tr>
 		<td class="leftLabelWithTop">
 			<strong>Technique*</strong>
@@ -58,8 +58,8 @@
 							test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">
 							<tr>
 								<logic:iterate name="characterizationForm"
-									property="achar.theExperimentConfig.instruments" id="instrument"
-									indexId="instrumentInd">
+									property="achar.theExperimentConfig.instruments"
+									id="instrument" indexId="instrumentInd">
 									<tr>
 										<td>
 											<html:select
@@ -74,7 +74,7 @@
 											</html:select>
 										</td>
 										<td>
-											<html:text 
+											<html:text
 												property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
 												size="17" styleId="instrumentModelName${instrumentInd}" />
 										</td>
@@ -101,8 +101,8 @@
 				</tbody>
 				<tr>
 					<td class="completeLabel" colspan="4">
-						<a href="javascript:addRows(instrumentRows);">
-							<span class="addLink2">Add</span>
+						<a href="javascript:addRows(instrumentRows);"> <span
+							class="addLink2">Add</span>
 					</td>
 				</tr>
 			</table>
@@ -134,13 +134,10 @@
 					onclick="javascript:window.location.href='${origUrl}'">
 				<input type="button" value="Save"
 					onclick="javascript:submitAction(document.forms[0],
-										'${actionName}', 'saveExperimentConfig');">	
+										'${actionName}', 'saveExperimentConfig');">
 			</div>
 		</td>
 	</tr>
-	<c:if
-		test="${empty characterizationForm.map.achar.theExperimentConfig.domain.id }">
-		<html:hidden styleId="configId"
-			property="achar.theExperimentConfig.domain.id" />
-	</c:if>
+	<html:hidden styleId="configId"
+		property="achar.theExperimentConfig.domain.id" />
 </table>
