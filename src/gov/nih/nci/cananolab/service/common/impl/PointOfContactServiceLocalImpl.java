@@ -136,6 +136,9 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 						.getPointOfContactCollection());
 				organization.getPointOfContactCollection().add(pointOfContact);
 			}else {
+				organization.setId(null);
+				organization.setCreatedBy(user);
+				organization.setCreatedDate(new Date());
 				organization
 					.setPointOfContactCollection(new HashSet<PointOfContact>());
 			}			
@@ -294,15 +297,14 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		if (organization != null && organization.getName()!=null) {
 			Organization dbOrganization = getDBOrganizationByName(organization.getName());
 			if (dbOrganization == null) {
+				organization.setId(null);
+				organization
+					.setPointOfContactCollection(new HashSet<PointOfContact>());
+				organization.setCreatedBy(user);
+				organization.setCreatedDate(new Date());
 				CustomizedApplicationService appService = 
 					(CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-				if (organization.getCreatedBy() == null) {
-					organization.setCreatedBy(user);
-				}
-				if (organization.getCreatedDate() == null) {
-					organization.setCreatedDate(new Date());
-				}
 				appService.saveOrUpdate(organization);
 			}
 		}	
