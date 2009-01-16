@@ -42,7 +42,8 @@ public class ExperimentConfigBean {
 	}
 
 	public String getDisplayName() {
-		if (domain.getTechnique().getAbbreviation() != null) {
+		if (domain.getTechnique().getAbbreviation() != null
+				&& domain.getTechnique().getAbbreviation().trim().length() > 0) {
 			displayName = domain.getTechnique().getType() + "("
 					+ domain.getTechnique().getAbbreviation() + ")";
 		} else {
