@@ -14,7 +14,7 @@
 					Point of Contact
 				</h3>
 			</td>
-			<td align="right" width="20%">
+			<td align="right" width="40%">
 				<jsp:include page="/helpGlossary.jsp">
 					<jsp:param name="topic" value="submit_publication_help" />
 					<jsp:param name="glossaryTopic" value="glossary_help" />
