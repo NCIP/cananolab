@@ -41,7 +41,8 @@ public class SubmitExperimentConfigAction extends BaseAnnotationAction {
 					.getAttribute("user");
 			configBean.setupDomain(user.getLoginName());
 			service.saveExperimentConfig(configBean.getDomain());
-			// TODO save user-entered values in common lookup
+			InitExperimentConfigSetup.getInstance()
+					.persistExperimentConfigDropdowns(request, configBean);
 		}
 		ActionForward forward = (ActionForward) request
 				.getAttribute("experimentConfigSourcePage");
