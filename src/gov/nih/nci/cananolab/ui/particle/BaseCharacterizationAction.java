@@ -349,8 +349,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		setupDomainChar(request, theForm, achar);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
-		InitCharacterizationSetup.getInstance()
-				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
 	}
 
@@ -678,13 +676,15 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		setupDomainChar(request, theForm, achar);
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
-		if (achar.getDomainChar().getId() != null) {
-			configBean.getDomain().setCharacterization(achar.getDomainChar());
-		}
+		// if (achar.getDomainChar().getId() != null) {
+		// configBean.getDomain().setCharacterization(achar.getDomainChar());
+		// }
 		request.getSession().setAttribute("experimentConfigToSave", configBean);
 		achar.addExperimentConfig(configBean);
 		ActionForward inputForward = mapping.getInputForward();
 		request.setAttribute("experimentConfigSourcePage", inputForward);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
 		return mapping.findForward("saveExperimentConfig");
 	}
 
@@ -700,6 +700,8 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 		service.deleteExperimentConfig(configBean.getDomain());
 		achar.removeExperimentConfig(configBean);
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
 	}
 }
