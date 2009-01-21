@@ -217,6 +217,15 @@ public class ExperimentConfigServiceLocalImpl implements
 		}
 		return config;
 	}
+	
+	public ExperimentConfig getANewExperimentConfig()
+		throws ExperimentConfigException {
+		//add by Qina tempory
+		ExperimentConfig config = new ExperimentConfig();
+		config.setTechnique(new Technique());
+		config.setInstrumentCollection(new ArrayList<Instrument>());
+		return config;
+	}
 
 	public Technique findTechniqueByType(String type)
 			throws ExperimentConfigException {
