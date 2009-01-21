@@ -33,7 +33,12 @@
 			<include method="findTechniqueByType" />
 			<include method="findInstrumentTypesByTechniqueType" />
 			<include method="findInstrumentTypesByConfigId" />
+			<include method="getAllManufacturers" />
+			<include method="getANewExperimentConfig" />
 		</create>
+		<create creator="new" javascript="ExperimentConfigBean" scope="script">		
+	      	<param name="class" value="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean"/>
+	    </create>	   		
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
 			<param name="class"
@@ -87,7 +92,7 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Instrument">
-			<param name="include" value="type, manufacturer, modelName" />
+			<param name="include" value="id, type, manufacturer, modelName" />
 		</convert>
 	</allow>
 </dwr>
