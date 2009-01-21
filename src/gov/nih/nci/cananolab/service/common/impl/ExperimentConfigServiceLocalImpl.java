@@ -188,6 +188,7 @@ public class ExperimentConfigServiceLocalImpl implements
 					manufacturers.add(manufacturer);
 				}
 			}
+			Collections.sort(manufacturers);
 		} catch (Exception e) {
 			String err = "Problem to retrieve all manufacturers.";
 			logger.error(err, e);
