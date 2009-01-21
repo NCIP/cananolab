@@ -54,62 +54,68 @@
 					</th>
 				</tr>
 				<tbody id="instrumentRows">
-					<c:choose>
-						<c:when
-							test="${!empty characterizationForm.map.achar.theExperimentConfig.instruments}">
-							<tr>
-								<logic:iterate name="characterizationForm"
-									property="achar.theExperimentConfig.instruments"
-									id="instrument" indexId="instrumentInd">
-									<tr>
-										<td>
-											<html:select
-												property="achar.theExperimentConfig.instruments[${instrumentInd}].manufacturer"
-												styleId="instrumentManufacturer${instrumentInd}"
-												onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
-												<option value=""></option>
-												<html:options name="allManufacturers" />
-												<option value="other">
-													[Other]
-												</option>
-											</html:select>
-										</td>
-										<td>
-											<html:text
-												property="achar.theExperimentConfig.instruments[${instrumentInd}].modelName"
-												size="17" styleId="instrumentModelName${instrumentInd}" />
-										</td>
-										<td>
-											<html:select
-												property="achar.theExperimentConfig.instruments[${instrumentInd}].type"
-												styleId="instrumentType${instrumentInd}"
-												onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
-												<option value=""></option>
-												<option value="other">
-													[Other]
-												</option>
-											</html:select>
-										</td>
-										<td>
-											<a href="javascript:deleteRow('instrumentTable','0','true');"><span
-												class="addLink2">remove</span>
-											</a>&nbsp;
-										</td>
-									</tr>
-								</logic:iterate>
-							</tr>
-						</c:when>
-					</c:choose>
+					<tr id="pattern" style="display: none;">
+						<td>
+							<span id="instrumentId">ID</span>						
+							<span id="instrumentManufacturer">Manufacturer</span>
+						</td>
+						<td>
+							<span id="instrumentModelName">ModelName</span>
+						</td>
+						<td>
+							<span id="instrumentType">Type</span>
+						</td>
+						<td>
+							EDIT
+						</td>
+					</tr>
 				</tbody>
-				<tr>
-					<td class="completeLabel" colspan="4">
-						<a href="javascript:addRows(instrumentRows);"> <span
-							class="addLink2">Add</span>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftLabel" valign="top">
+			<strong>&nbsp;</strong>
+		</td>
+		<td class="rightLabel" valign="top">
+			<table>
+				<tr id="pattern">
+					<td>
+						<html:hidden property="newInstrument.id" size="17"
+							styleId="newInstrumentId" />
+						<html:select property="newInstrument.manufacturer"
+							styleId="newInstrumentManufacturer"
+							onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
+							<option value=""></option>
+							<html:options name="allManufacturers" />
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
+					</td>
+					<td>
+						<html:text property="newInstrument.modelName" size="17"
+							styleId="newInstrumentModelName" />
+					</td>
+					<td>
+						<html:select property="newInstrument.type"
+							styleId="newInstrumentType"
+							onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
+							<option value=""></option>
+							<option value="other">
+								[Other]
+							</option>
+						</html:select>
+					</td>
+					<td>
+						<a href="javascript:addAInstrument();"> <span class="addLink">Add
+								Row</span> </a>&nbsp;
 					</td>
 				</tr>
 			</table>
 		</td>
 	</tr>
+
 
 	<tr>
 		<td class="leftLabelNoBottom" valign="top">
