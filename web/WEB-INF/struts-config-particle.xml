@@ -96,8 +96,6 @@
 				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
-			<form-property name="newInstrument"
-				type="gov.nih.nci.cananolab.domain.common.Instrument" />
 		</form-bean>
 	</form-beans>
 	<global-exceptions>
