@@ -3,10 +3,8 @@ package gov.nih.nci.cananolab.service.common.impl;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.DateUtil;
@@ -18,7 +16,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -217,15 +214,6 @@ public class ExperimentConfigServiceLocalImpl implements
 		}
 		return config;
 	}
-	
-	public ExperimentConfig getANewExperimentConfig()
-		throws ExperimentConfigException {
-		//add by Qina tempory
-		ExperimentConfig config = new ExperimentConfig();
-		config.setTechnique(new Technique());
-		config.setInstrumentCollection(new ArrayList<Instrument>());
-		return config;
-	}
 
 	public Technique findTechniqueByType(String type)
 			throws ExperimentConfigException {
@@ -273,40 +261,5 @@ public class ExperimentConfigServiceLocalImpl implements
 			throw new ExperimentConfigException(err);
 		}
 		return instrument;
-	}
-
-	public String[] findInstrumentTypesByTechniqueType(String techniqueType)
-			throws ExperimentConfigException, CaNanoLabException {
-		SortedSet<String> types = null;
-		types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
-				"instrument", "otherInstrument");
-		if (types != null && types.size() > 0) {
-			String[] typeArray = new String[types.size()];
-			types.toArray(typeArray);
-			return typeArray;
-		} else {
-			return null;
-		}
-	}
-
-	public String[] findInstrumentTypesByConfigId(String configId)
-			throws ExperimentConfigException, CaNanoLabException {
-		String techniqueType = null;
-		SortedSet<String> types = null;
-		ExperimentConfig config = findExperimentConfigById(configId);
-
-		if (config != null && config.getTechnique() != null
-				&& config.getTechnique().getType() != null) {
-			techniqueType = config.getTechnique().getType();
-			types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
-					"instrument", "otherInstrument");
-		}
-		if (types != null && types.size() > 0) {
-			String[] typeArray = new String[types.size()];
-			types.toArray(typeArray);
-			return typeArray;
-		} else {
-			return null;
-		}
 	}
 }
