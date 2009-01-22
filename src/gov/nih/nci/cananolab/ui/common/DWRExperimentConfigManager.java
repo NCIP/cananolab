@@ -32,6 +32,7 @@ public class DWRExperimentConfigManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		charBean.setTheExperimentConfig(new ExperimentConfigBean());
+		charBean.setTheInstrument(new Instrument());
 	}
 
 	public ExperimentConfig findExperimentConfigById(String id)
