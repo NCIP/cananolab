@@ -35,7 +35,8 @@
 			<include method="findInstrumentTypesByConfigId" />
 			<include method="getAllManufacturers" />
 			<include method="resetExperimentConfig" />
-			<include method="getANewExperimentConfig" />
+			<include method="getANewExperimentConfig" />	
+			<include method="addInstrument" />
 		</create>
 		<create creator="new" javascript="ExperimentConfigBean" scope="script">
 	      	<param name="class" value="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean"/>
