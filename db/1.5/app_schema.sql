@@ -660,7 +660,7 @@ CREATE TABLE experiment_config
 	description TEXT,
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
-	characterization_pk_id BIGINT NOT NULL,
+	characterization_pk_id BIGINT,
 	technique_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (experiment_config_id),
 	KEY (characterization_pk_id),
