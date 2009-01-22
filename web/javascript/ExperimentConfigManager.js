@@ -1,10 +1,10 @@
 function init() {
-  fillTable();
+	fillTable();
 }
 
 var currentExperimentConfig = null;
 
-var instrumentCache = { };
+var instrumentCache = {};
 var viewed = -1;
 function retrieveTechniqueAbbreviation() {
 	var techniqueType = document.getElementById("techniqueType").value;
@@ -60,7 +60,6 @@ function doSetTheExperimentConfig() {
 
 var instrumentCount = 1;
 
-
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
 		currentExperimentConfig = experimentConfig;
@@ -82,39 +81,19 @@ function resetTheExperimentConfig(isShow) {
 	} else {
 		hide('newExperimentConfig');
 	}
-	ExperimentConfigManager.resetExperimentConfig(function(experimentConfig) {
-				currentExperimentConfig = experimentConfig;
-			});	
-	
+	ExperimentConfigManager.resetExperimentConfig( function(experimentConfig) {
+		currentExperimentConfig = experimentConfig;
+	});
+	dwr.util.setValue("techniqueType", "");
+	dwr.util.setValue("techniqueAbbr", "");
+	dwr.util.setValue("configDescription", "");
+	dwr.util.setValue("configId",  "0");
+	dwr.util.removeAllRows("instrumentRows", {
+		filter : function(tr) {
+			return (tr.id != "pattern" && tr.id != "patternHeader");
+		}
+	});
 }
-
-var cellFuncs = [
-		function(data) {
-			return "<select name='achar.theExperimentConfig.instruments["
-					+ data + "].manufacturer' " + " id='instrumentManufacturer"
-					+ data + "'>"
-					+ " <option value='Malvern'>Malvern</option></select>"
-		},
-		function(data) {
-			return "<input size='17' name='achar.theExperimentConfig.instruments["
-					+ data
-					+ "].modelName' "
-					+ " id='instrumentModelName"
-					+ data + "'" + " type='text'>";
-		},
-		function(data) {
-			return "<select name='achar.theExperimentConfig.instruments["
-					+ data
-					+ "].type' "
-					+ " id='instrumentType"
-					+ data
-					+ "'>"
-					+ "<option value='Dynamic Light Scattering Instrument'>Dynamic Light Scattering Instrument</option></select>"
-		},
-		function(data) {
-			return "<input class=\"invisibleButton\" type='button' value='Remove"
-					+ data + "' onClick='deleteRow(this)'>&nbsp;";
-		} ];
 
 var rowCount = 0;
 
@@ -125,63 +104,58 @@ function addInitRow(tableId) {
 	});
 }
 
-function addAInstrument() {;
-//alert("####### settimeout11 addAInstrument ");
-//alert("manufacturer =  "+dwr.util.getValue("manufacturer"));
-	var instrument = {id:null, manufacturer:null, modelName:null, type:null};
-	dwr.util.getValues(instrument);
-	 //alert("newInstrument id="+ instrument.id+" Manufacturer="+ instrument.manufacturer+" type="+ instrument.type);
-	//instrument.type = "ABCType";
-	//instrument.modelName = "ABCmodelName";
-	ExperimentConfigManager.addInstrument(currentExperimentConfig,
-			instrument, function(experimentConfig) {
-				alert("#######11111111111 updateCurrentExperimentConfig ");
+function addInstrument() {
+	var instrument = {
+		newInstrumentId :null,
+		newInstrumentManufacturer :null,
+		newInstrumentModelName :null,
+		newInstrumentType :null
+	};
+	instrument.id = dwr.util.getValue(newInstrumentId);
+	instrument.manufacturer = dwr.util.getValue(newInstrumentManufacturer);
+	instrument.modelName = dwr.util.getValue(newInstrumentModelName);
+	instrument.type = dwr.util.getValue(newInstrumentType);
+	ExperimentConfigManager.addInstrument(currentExperimentConfig, instrument,
+			function(experimentConfig) {
 				currentExperimentConfig = experimentConfig;
-				var instruments = currentExperimentConfig.instrumentCollection;
-			   // alert('updateCurrentExperimentConfig instruments.length= '+instruments.length);
-			    var instrument = instruments[0];
-			    alert(" id="+ instrument.id+" Manufacturer="+ instrument.manufacturer+" type="+ instrument.type);
 			});
-	//fillTable();
-	window.setTimeout("fillTable()", 2000);
-	//clearInstrument();
+	window.setTimeout("fillTable()", 1000);
 }
-
 
 function clearInstrument() {
 	viewed = -1;
-	dwr.util.setValues({instrumentId:null, instrumentManufacturer:null, instrumentModel:null, instrumentType:null});
+	document.getElementById("newInstrumentId").value = "";
+	document.getElementById("newInstrumentManufacturer").value = "";
+	document.getElementById("newInstrumentModelName").value = "";
+	document.getElementById("newInstrumentType").value = "";
 }
 
-
 function fillTable() {
-	alert("xxxfillTable");
-		var instruments = currentExperimentConfig.instrumentCollection;
-    	$("pattern").style.display = "block";
-    	dwr.util.removeAllRows("instrumentRows", { filter:function(tr) {
-    	      return (tr.id != "pattern");
-    	}});
-	    var instrument, id;
-	    alert('instruments.length= '+instruments.length);
-	    for (var i = 0; i < instruments.length; i++) {
-	      instrument = instruments[i];
-	      if (instrument.id==null){
-	    	  instrument.id = i+1;
-	      }
-	      id = instrument.id;
-	      alert('i = '+i + " id="+ instrument.id+" type="+ instrument.type+" manufacturer="+ instrument.manufacturer);
-	     // alert(i+'  instrument.id '+id+ ' '+instrument.manufacturer);
-	      dwr.util.cloneNode("pattern", { idSuffix:id});
-	      dwr.util.setValue("instrumentId"+id, instrument.id);
-	      dwr.util.setValue("instrumentManufacturer"+id, instrument.manufacturer);
-	      dwr.util.setValue("instrumentModelName"+id, instrument.modelName);
-	      dwr.util.setValue("instrumentType"+id, instrument.type);
-	     // $("pattern"+id).style.display = "table-row";
-	      alert("instrumentType"+id+" == "+dwr.util.getValue("instrumentType"+id));
-	      instrumentCache[id] = instrument;
-       }
-	    $("pattern").style.display = "none";
-
+	var instruments = currentExperimentConfig.instrumentCollection;
+	dwr.util.removeAllRows("instrumentRows", {
+		filter : function(tr) {
+			return (tr.id != "pattern" && tr.id != "patternHeader");
+		}
+	});
+	var instrument, id;
+	for ( var i = 0; i < instruments.length; i++) {
+		instrument = instruments[i];
+		if (instrument.id == null) {
+			instrument.id = i + 1;
+		}
+		id = instrument.id;
+		dwr.util.cloneNode("pattern", {
+			idSuffix :id
+		});
+		dwr.util.setValue("instrumentId" + id, instrument.id);
+		dwr.util.setValue("instrumentManufacturer" + id,
+				instrument.manufacturer);
+		dwr.util.setValue("instrumentModelName" + id, instrument.modelName);
+		dwr.util.setValue("instrumentType" + id, instrument.type);
+		 $("pattern"+id).style.display = "table-row";
+		instrumentCache[id] = instrument;
+	}
+	clearInstrument();
 }
 
 function deleteRow(target) {

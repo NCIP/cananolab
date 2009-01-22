@@ -42,21 +42,21 @@
 		<td class="rightLabel" valign="top">
 			<table id="instrumentTable" class="smalltable" border="0"
 				width="100%">
-				<tr class="smallTableHeader">
-					<th class="greyFont">
-						Manufacturer
-					</th>
-					<th class="greyFont">
-						Model Name
-					</th>
-					<th class="greyFont" colspan="2">
-						Type
-					</th>
-				</tr>
+				
 				<tbody id="instrumentRows">
+					<tr id="patternHeader" class="smallTableHeader">
+						<th class="greyFont">
+							Manufacturer
+						</th>
+						<th class="greyFont">
+							Model Name
+						</th>
+						<th class="greyFont" colspan="2">
+							Type
+						</th>
+					</tr>
 					<tr id="pattern" style="display: none;">
 						<td>
-							<span id="instrumentId">ID</span>
 							<span id="instrumentManufacturer">Manufacturer</span>
 						</td>
 						<td>
@@ -82,9 +82,9 @@
 				<tr>
 					<td>
 						<html:hidden property="achar.theInstrument.id"
-							styleId="id" />
+							styleId="newInstrumentId" />
 						<html:select property="achar.theInstrument.manufacturer"
-							styleId="manufacturer"
+							styleId="newInstrumentManufacturer"
 							onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
 							<option value=""></option>
 							<html:options name="allManufacturers" />
@@ -95,11 +95,11 @@
 					</td>
 					<td>
 						<html:text property="achar.theInstrument.modelName" size="17"
-							styleId="modelName" />
+							styleId="newInstrumentModelName" />
 					</td>
 					<td>
 						<html:select property="achar.theInstrument.type"
-							styleId="type"
+							styleId="newInstrumentType"
 							onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
 							<option value=""></option>
 							<option value="other">
@@ -108,8 +108,8 @@
 						</html:select>
 					</td>
 					<td>
-						<a href="javascript:addAInstrument();"> <span class="addLink">Add
-								Row</span> </a>&nbsp;
+						<a href="javascript:addInstrument();"> <span class="addLink">Add
+								Row</span></a>&nbsp;
 					</td>
 				</tr>
 			</table>
