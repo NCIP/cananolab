@@ -79,12 +79,12 @@
 		</td>
 		<td class="rightLabel" valign="top">
 			<table>
-				<tr id="pattern">
+				<tr>
 					<td>
 						<html:hidden property="achar.theInstrument.id"
-							styleId="newInstrumentId" />
+							styleId="id" />
 						<html:select property="achar.theInstrument.manufacturer"
-							styleId="newInstrumentManufacturer"
+							styleId="manufacturer"
 							onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
 							<option value=""></option>
 							<html:options name="allManufacturers" />
@@ -95,11 +95,11 @@
 					</td>
 					<td>
 						<html:text property="achar.theInstrument.modelName" size="17"
-							styleId="newInstrumentModelName" />
+							styleId="modelName" />
 					</td>
 					<td>
 						<html:select property="achar.theInstrument.type"
-							styleId="newInstrumentType"
+							styleId="type"
 							onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
 							<option value=""></option>
 							<option value="other">
