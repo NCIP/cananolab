@@ -242,13 +242,13 @@ public class ExperimentConfigServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
-			if (type != null || type.length() > 0) {
+			if (type != null && type.length() > 0) {
 				crit.add(Restrictions.eq("type", type));
 			}
-			if (manufacturer != null || manufacturer.length() > 0) {
+			if (manufacturer != null && manufacturer.length() > 0) {
 				crit.add(Restrictions.eq("manufacturer", manufacturer));
 			}
-			if (modelName != null || modelName.length() > 0) {
+			if (modelName != null && modelName.length() > 0) {
 				crit.add(Restrictions.eq("modelName", modelName));
 			}
 			List results = appService.query(crit);
