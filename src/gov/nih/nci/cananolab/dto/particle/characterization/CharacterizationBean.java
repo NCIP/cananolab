@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -37,6 +38,8 @@ public class CharacterizationBean {
 	private String description;
 
 	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
+
+	private Instrument theInstrument = new Instrument();
 
 	private List<ExperimentConfigBean> experimentConfigs = new ArrayList<ExperimentConfigBean>();
 
@@ -292,7 +295,7 @@ public class CharacterizationBean {
 	}
 
 	public void addExperimentConfig(ExperimentConfigBean experimentConfigBean) {
-		//if an old one exists, remove it first
+		// if an old one exists, remove it first
 		if (experimentConfigs.contains(experimentConfigBean)) {
 			removeExperimentConfig(experimentConfigBean);
 		}
@@ -301,5 +304,13 @@ public class CharacterizationBean {
 
 	public void removeExperimentConfig(ExperimentConfigBean experimentConfigBean) {
 		experimentConfigs.remove(experimentConfigBean);
+	}
+
+	public Instrument getTheInstrument() {
+		return theInstrument;
+	}
+
+	public void setTheInstrument(Instrument theInstrument) {
+		this.theInstrument = theInstrument;
 	}
 }
