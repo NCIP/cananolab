@@ -28,17 +28,18 @@
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl" />
+				value="gov.nih.nci.cananolab.ui.common.DWRExperimentConfigManager" />
 			<include method="findExperimentConfigById" />
 			<include method="findTechniqueByType" />
 			<include method="findInstrumentTypesByTechniqueType" />
 			<include method="findInstrumentTypesByConfigId" />
 			<include method="getAllManufacturers" />
+			<include method="resetExperimentConfig" />
 			<include method="getANewExperimentConfig" />
 		</create>
-		<create creator="new" javascript="ExperimentConfigBean" scope="script">		
+		<create creator="new" javascript="ExperimentConfigBean" scope="script">
 	      	<param name="class" value="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean"/>
-	    </create>	   		
+	    </create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
 			<param name="class"
