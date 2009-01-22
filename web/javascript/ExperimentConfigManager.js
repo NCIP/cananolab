@@ -82,9 +82,10 @@ function resetTheExperimentConfig(isShow) {
 	} else {
 		hide('newExperimentConfig');
 	}
+	ExperimentConfigManager.resetExperimentConfig();
 	alert("######## resetTheExperimentConfig");
 	ExperimentConfigManager.getANewExperimentConfig(
-			populateExperimentConfig);	
+			populateExperimentConfig);
 }
 
 var cellFuncs = [
@@ -140,13 +141,13 @@ function clearInstrument() {
 }
 
 
-function fillTable() {   
+function fillTable() {
 	alert("########### fillTable");
 		var instruments = currentExperimentConfig.instrumentCollection;
-    	$("pattern").style.display = "block"; 
+    	$("pattern").style.display = "block";
     	dwr.util.removeAllRows("instrumentRows", { filter:function(tr) {
     	      return (tr.id != "pattern");
-    	}});    		
+    	}});
 	    var instrument, id;
 	    alert('instruments.length= '+instruments.length);
 	    for (var i = 0; i < instruments.length; i++) {
@@ -161,8 +162,8 @@ function fillTable() {
 	      dwr.util.setValue("instrumentType"+id, instrument.type);
 	      instrumentCache[id] = instrument;
        }
-	    $("pattern").style.display = "none"; 
- 
+	    $("pattern").style.display = "none";
+
 }
 
 function deleteRow(target) {
