@@ -12,14 +12,6 @@
 			<form-property name="otherPoc"
 				type="gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean" />
 		</form-bean>
-		<form-bean name="experimentConfigForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="experimentConfig"
-				type="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean" />
-		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception
@@ -58,11 +50,6 @@
 				path="common.submitPointOfContact" />
 			<forward name="particleSubmitPointOfContact"
 				path="particle.submitPointOfContact" />
-		</action>
-		<action name="experimentConfigForm" parameter="dispatch"
-			path="/submitExperimentConfig"
-			type="gov.nih.nci.cananolab.ui.common.SubmitExperimentConfigAction"
-			input="input" scope="request">
 		</action>
 	</action-mappings>
 </struts-config>
