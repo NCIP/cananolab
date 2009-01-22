@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.SortedSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
@@ -26,13 +27,15 @@ import org.directwebremoting.WebContextFactory;
 public class DWRExperimentConfigManager {
 	private ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 
-	public void resetExperimentConfig() {
+	public ExperimentConfig resetExperimentConfig() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheExperimentConfig(new ExperimentConfigBean());
+		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
+		charBean.setTheExperimentConfig(newExperimentConfigBean);
 		charBean.setTheInstrument(new Instrument());
+		return newExperimentConfigBean.getDomain();
 	}
 
 	public ExperimentConfig findExperimentConfigById(String id)
@@ -87,5 +90,26 @@ public class DWRExperimentConfigManager {
 		config.setTechnique(new Technique());
 		config.setInstrumentCollection(new ArrayList<Instrument>());
 		return config;
+	}
+	
+	public ExperimentConfig addInstrument(ExperimentConfig theExperimentConfig,
+			Instrument instrument)
+		throws ExperimentConfigException {
+		if (theExperimentConfig==null) {
+			return null;
+		}else if (theExperimentConfig.getInstrumentCollection()!=null) {
+			theExperimentConfig.getInstrumentCollection().add(instrument);
+		}else {
+			Collection<Instrument> instrumentCollection
+				= new ArrayList<Instrument>();
+			instrumentCollection.add(instrument);
+			theExperimentConfig.setInstrumentCollection(instrumentCollection);
+		}
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		charBean.setTheExperimentConfig(new ExperimentConfigBean(theExperimentConfig));
+		return theExperimentConfig;
 	}
 }
