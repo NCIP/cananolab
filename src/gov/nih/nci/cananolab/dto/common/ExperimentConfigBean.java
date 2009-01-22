@@ -89,7 +89,14 @@ public class ExperimentConfigBean {
 			domain.setInstrumentCollection(new HashSet<Instrument>());
 		}
 		for (Instrument instrument : instruments) {
-			domain.getInstrumentCollection().add(instrument);
+			if (instrument.getType() != null
+					&& instrument.getType().length() > 0
+					|| instrument.getManufacturer() != null
+					&& instrument.getManufacturer().length() > 0
+					|| instrument.getModelName() != null
+					&& instrument.getModelName().length() > 0) {
+				domain.getInstrumentCollection().add(instrument);
+			}
 		}
 	}
 
