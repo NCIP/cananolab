@@ -56,7 +56,7 @@
 				<tbody id="instrumentRows">
 					<tr id="pattern" style="display: none;">
 						<td>
-							<span id="instrumentId">ID</span>						
+							<span id="instrumentId">ID</span>
 							<span id="instrumentManufacturer">Manufacturer</span>
 						</td>
 						<td>
@@ -81,9 +81,9 @@
 			<table>
 				<tr id="pattern">
 					<td>
-						<html:hidden property="newInstrument.id" size="17"
+						<html:hidden property="achar.theInstrument.id"
 							styleId="newInstrumentId" />
-						<html:select property="newInstrument.manufacturer"
+						<html:select property="achar.theInstrument.manufacturer"
 							styleId="newInstrumentManufacturer"
 							onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
 							<option value=""></option>
@@ -94,11 +94,11 @@
 						</html:select>
 					</td>
 					<td>
-						<html:text property="newInstrument.modelName" size="17"
+						<html:text property="achar.theInstrument.modelName" size="17"
 							styleId="newInstrumentModelName" />
 					</td>
 					<td>
-						<html:select property="newInstrument.type"
+						<html:select property="achar.theInstrument.type"
 							styleId="newInstrumentType"
 							onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
 							<option value=""></option>
