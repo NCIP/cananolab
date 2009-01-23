@@ -42,7 +42,7 @@
 		<td class="rightLabel" valign="top">
 			<table id="instrumentTable" class="smalltable" border="0"
 				width="100%">
-				
+
 				<tbody id="instrumentRows">
 					<tr id="patternHeader" class="smallTableHeader">
 						<th class="greyFont">
@@ -51,9 +51,45 @@
 						<th class="greyFont">
 							Model Name
 						</th>
-						<th class="greyFont" colspan="2">
+						<th class="greyFont">
 							Type
 						</th>
+						<th class="greyFont" colspan="2">
+							&nbsp;
+						</th>
+					</tr>
+					<tr id="patternAddRow">
+						<td>
+							<html:hidden property="achar.theInstrument.id"
+								styleId="id" />
+							<html:select property="achar.theInstrument.manufacturer"
+								styleId="manufacturer"
+								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
+								<option value=""></option>
+								<html:options name="allManufacturers" />
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+						<td>
+							<html:text property="achar.theInstrument.modelName" size="17"
+								styleId="modelName" />
+						</td>
+						<td>
+							<html:select property="achar.theInstrument.type"
+								styleId="type"
+								onchange="javascript:callPrompt('Instrment Type', 'type');">
+								<option value=""></option>
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+						<td colspan="2">
+							<a href="javascript:addInstrument();"> <span class="addLink2">Add
+								</span></a>&nbsp;
+						</td>
 					</tr>
 					<tr id="pattern" style="display: none;">
 						<td>
@@ -66,52 +102,13 @@
 							<span id="instrumentType">Type</span>
 						</td>
 						<td>
-							EDIT
+							<input id="edit" type="button" value="Edit" onclick="editClicked(this.id)"/>
+						</td>
+						<td>
+							<input id="delete" type="button" value="Delete" onclick="deleteClicked(this.id)"/>
 						</td>
 					</tr>
 				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td class="leftLabel" valign="top">
-			<strong>&nbsp;</strong>
-		</td>
-		<td class="rightLabel" valign="top">
-			<table>
-				<tr>
-					<td>
-						<html:hidden property="achar.theInstrument.id"
-							styleId="newInstrumentId" />
-						<html:select property="achar.theInstrument.manufacturer"
-							styleId="newInstrumentManufacturer"
-							onchange="javascript:callPrompt('Manufacturer', 'instrumentManufacturer${instrumentInd}');">
-							<option value=""></option>
-							<html:options name="allManufacturers" />
-							<option value="other">
-								[Other]
-							</option>
-						</html:select>
-					</td>
-					<td>
-						<html:text property="achar.theInstrument.modelName" size="17"
-							styleId="newInstrumentModelName" />
-					</td>
-					<td>
-						<html:select property="achar.theInstrument.type"
-							styleId="newInstrumentType"
-							onchange="javascript:callPrompt('Instrment Type', 'instrumentType${instrumentInd}');">
-							<option value=""></option>
-							<option value="other">
-								[Other]
-							</option>
-						</html:select>
-					</td>
-					<td>
-						<a href="javascript:addInstrument();"> <span class="addLink">Add
-								Row</span></a>&nbsp;
-					</td>
-				</tr>
 			</table>
 		</td>
 	</tr>
