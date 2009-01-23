@@ -36,119 +36,124 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabelNoBottom" valign="top">
+		<td class="leftLabel" valign="top">
 			<strong>Instrument</strong>
 		</td>
-		<td class="rightLabelNoBottom" valign="top">
-			<a href="javascript:show('patternHeader');show('patternAddRow');">
-				<span class="addLink2">Add</span> </a>&nbsp;
-			<br>
-			<div id="patternAddRow" style="display: none;">		
-				<br>			
-				<table class="smalltable" border="0"
-					width="100%">
-					<tr class="smallTableHeader">
-						<td class="greyFont">
-							<strong>Manufacturer</strong>
-						</td>
-						<td>
-							<html:hidden property="achar.theInstrument.id" styleId="id" />
-							<html:select property="achar.theInstrument.manufacturer"
-								styleId="manufacturer"
-								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
-								<option value=""></option>
-								<html:options name="allManufacturers" />
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-						</td>
-					</tr>
-					<tr class="smallTableHeader">
-						<td class="greyFont">
-							<strong>Model Name</strong>
-						</td>
-						<td>
-							<html:text property="achar.theInstrument.modelName" size="17"
-								styleId="modelName" />
-						</td>
-					</tr>
-					<tr class="smallTableHeader">
-						<td class="greyFont">
-							<strong>Type</strong>
-						</td>
-						<td>
-							<html:select property="achar.theInstrument.type" styleId="type"
-								onchange="javascript:callPrompt('Instrment Type', 'type');">
-								<option value=""></option>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							&nbsp;
-						</td>
-						<td align="right" class="greyFont">
-							<input class="noBorderButton" type="button"
-								value="Save" onclick="addInstrument()" />
-							&nbsp;
-							<input class="noBorderButton" type="button"
-								value="Cancel" onclick="hide('patternAddRow')" />
-						</td>
-					</tr>
-				</table>
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td class="leftLabel" valign="top">
-			&nbsp;
-		</td>
 		<td class="rightLabel" valign="top">
-			<table id="instrumentTable" class="smalltable" border="0"
-				width="100%">
-				<tbody id="instrumentRows">
-					<tr id="patternHeader" class="smallTableHeader">
-						<th width="300" class="greyFont">
-							Manufacturer
-						</th>
-						<th width="30" class="greyFont">
-							Model Name
-						</th>
-						<th width="30" class="greyFont">
-							Type
-						</th>
-						<th width="30" class="greyFont" colspan="2">
-							&nbsp;
-						</th>
-					</tr>
-					<tr id="pattern" style="display: none;">
-						<td>
-							<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
-						</td>
-						<td>
-							<span id="instrumentModelName" class="greyFont2">ModelName</span>
-						</td>
-						<td>
-							<span id="instrumentType" class="greyFont2">Type</span>
-						</td>
-						<td>
-							<input class="noBorderButton" id="edit" type="button"
-								value="Edit" onclick="editClicked(this.id)" />
-						</td>
-						<td>
-							<input class="noBorderButton" id="delete" type="button"
-								value="Delete" onclick="deleteClicked(this.id)" />
-						</td>
-					</tr>
-				</tbody>
+			<a href="javascript:show('patternHeader');show('patternAddRow');">
+				<span class="addLink2">Add</span> </a>
+			<br>
+			<table>
+				<tr>
+					<td>
+						<div id="patternAddRow" style="display: none;">
+							<table class="smalltable" border="0" width="100%">
+								<tr class="smallTableHeader">
+									<td class="greyFont">
+										<strong>Manufacturer</strong>
+									</td>
+									<td>
+										<html:hidden property="achar.theInstrument.id" styleId="id" />
+										<html:select property="achar.theInstrument.manufacturer"
+											styleId="manufacturer"
+											onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
+											<option value=""></option>
+											<html:options name="allManufacturers" />
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</td>
+								</tr>
+								<tr class="smallTableHeader">
+									<td class="greyFont">
+										<strong>Model Name</strong>
+									</td>
+									<td>
+										<html:text property="achar.theInstrument.modelName" size="17"
+											styleId="modelName" />
+									</td>
+								</tr>
+								<tr class="smallTableHeader">
+									<td class="greyFont">
+										<strong>Type</strong>
+									</td>
+									<td>
+										<html:select property="achar.theInstrument.type"
+											styleId="type"
+											onchange="javascript:callPrompt('Instrment Type', 'type');">
+											<option value=""></option>
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										&nbsp;
+									</td>
+									<td align="right" class="greyFont">
+										<input class="noBorderButton" type="button" value="Save"
+											onclick="addInstrument()" />
+										&nbsp;
+										<input class="noBorderButton" type="button" value="Cancel"
+											onclick="hide('patternAddRow')" />
+									</td>
+								</tr>
+							</table>
+						</div>
+					</td>
+					<td class="labelNoBottom" valign="top">
+						<div id="instrumentTableDiv" style="display: none;">
+							<table id="instrumentTable" class="smalltable" border="0"
+								width="100%">
+								<tbody id="instrumentRows">
+									<tr id="patternHeader" class="smallTableHeader">
+										<th width="300" class="greyFont">
+											Manufacturer
+										</th>
+										<th width="30" class="greyFont">
+											Model Name
+										</th>
+										<th width="30" class="greyFont">
+											Type
+										</th>
+										<th width="30" class="greyFont" colspan="2">
+											&nbsp;
+										</th>
+									</tr>
+									<tr id="pattern" style="display: none;">
+										<td>
+											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
+										</td>
+										<td>
+											<span id="instrumentModelName" class="greyFont2">ModelName</span>
+										</td>
+										<td>
+											<span id="instrumentType" class="greyFont2">Type</span>
+										</td>
+										<td>
+											<input class="noBorderButton" id="edit" type="button"
+												value="Edit" onclick="editClicked(this.id)" />
+										</td>
+										<td>
+											<input class="noBorderButton" id="delete" type="button"
+												value="Delete" onclick="deleteClicked(this.id)" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						&nbsp;
+					</td>
+
+
+
+				</tr>
 			</table>
 		</td>
 	</tr>
-
 
 	<tr>
 		<td class="leftLabelNoBottom" valign="top">
