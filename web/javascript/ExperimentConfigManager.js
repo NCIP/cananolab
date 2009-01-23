@@ -96,8 +96,7 @@ function resetTheExperimentConfig(isShow) {
 					});
 	clearInstrument();
 	hide('patternAddRow');
-	alert('hide instrumentTable');
-	hide('instrumentTable');
+	hide('instrumentTableDiv');
 }
 
 var rowCount = 0;
@@ -138,6 +137,10 @@ function fillTable() {
 						}
 					});
 	var instrument, id;
+	hide('patternAddRow');
+	if (instruments.length>0){
+		show('instrumentTableDiv');
+	}
 	for ( var i = 0; i < instruments.length; i++) {
 		instrument = instruments[i];
 		if (instrument.id == null) {

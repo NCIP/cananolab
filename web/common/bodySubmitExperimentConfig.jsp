@@ -104,7 +104,7 @@
 							</table>
 						</div>
 					</td>
-					<td class="labelNoBottom" valign="top">
+					<td valign="top">
 						<div id="instrumentTableDiv" style="display: none;">
 							<table id="instrumentTable" class="smalltable" border="0"
 								width="100%">
@@ -147,9 +147,6 @@
 						</div>
 						&nbsp;
 					</td>
-
-
-
 				</tr>
 			</table>
 		</td>
