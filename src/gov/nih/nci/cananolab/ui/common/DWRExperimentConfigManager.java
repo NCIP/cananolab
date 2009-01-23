@@ -32,7 +32,6 @@ public class DWRExperimentConfigManager {
 				.get("achar"));
 		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
 		charBean.setTheExperimentConfig(newExperimentConfigBean);
-		//charBean.setTheInstrument(new Instrument());
 		return newExperimentConfigBean.getDomain();
 	}
 
@@ -87,7 +86,6 @@ public class DWRExperimentConfigManager {
 		if (theExperimentConfig == null) {
 			return null;
 		}
-		//instrument.setId(null);
 		theExperimentConfig.addInstrument(instrument);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
