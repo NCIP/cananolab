@@ -170,7 +170,7 @@
 							<c:if test="${!empty summaryRow.charBean.experimentConfigs}">
 								<c:forEach var="experimentConfig"
 									items="${summaryRow.charBean.experimentConfigs}">
-								${experimentConfig.displayName}<br>
+								${experimentConfig.displayDetailString}<br>
 								</c:forEach>&nbsp;
 						</c:if>
 							&nbsp;

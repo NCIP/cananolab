@@ -21,6 +21,7 @@ import java.util.List;
 public class ExperimentConfigBean {
 	private ExperimentConfig domain;
 	private String displayName;
+	private String displayDetailString;
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
 
 	public ExperimentConfigBean() {
@@ -126,4 +127,44 @@ public class ExperimentConfigBean {
 	public int hashCode() {
 		return domain.hashCode();
 	}
+
+	/**
+	 * @return the configDetailString
+	 */
+	public String getDisplayDetailString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(getDisplayName());
+		sb.append("<br>");
+		
+		if (this.getInstruments()!=null && this.getInstruments().size()>0) {
+			for (Instrument instrument: this.getInstruments()) {
+				sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+				sb.append(getInstrumentDisplayName(instrument));
+				sb.append("<br>");
+			}
+		}
+		displayDetailString = sb.toString();
+		return displayDetailString;
+	}
+	
+	private String getInstrumentDisplayName(Instrument instrument) {
+		StringBuffer sb = new StringBuffer();
+		if (instrument.getManufacturer()!=null && 
+				instrument.getManufacturer().trim().length()>0) {
+			sb.append(instrument.getManufacturer());
+			sb.append(" ");
+		}else if (instrument.getType()!=null && 
+				instrument.getType().trim().length()>0) {
+			sb.append(instrument.getType());
+			sb.append(" ");
+		}
+		if (instrument.getModelName()!=null && 
+				instrument.getModelName().trim().length()>0) {
+			sb.append(instrument.getModelName());
+			sb.append(" ");
+		}
+		return sb.toString();
+	}
+
+	
 }

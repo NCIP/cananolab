@@ -66,7 +66,7 @@
 								<td class="rightLabel" valign="top">
 									<c:forEach var="experimentConfig"
 										items="${characterizationForm.map.achar.experimentConfigs}">
-								${experimentConfig.displayName}<br>
+								${experimentConfig.displayDetailString}<br>
 									</c:forEach>
 									&nbsp;
 								</td>
