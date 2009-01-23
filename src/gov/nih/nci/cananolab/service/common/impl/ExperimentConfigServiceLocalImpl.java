@@ -57,7 +57,7 @@ public class ExperimentConfigServiceLocalImpl implements
 			if (config.getInstrumentCollection() != null) {
 				Collection<Instrument> instruments = new HashSet<Instrument>(
 						config.getInstrumentCollection());
-				config.getInstrumentCollection().clear();
+				config.setInstrumentCollection(new HashSet<Instrument>());
 				int i = 0;
 				for (Instrument instrument : instruments) {
 					Instrument dbInstrument = findInstrumentBy(instrument
@@ -72,6 +72,7 @@ public class ExperimentConfigServiceLocalImpl implements
 						instrument.setCreatedBy(config.getCreatedBy());
 						instrument.setCreatedDate(DateUtil
 								.addSecondsToCurrentDate(i));
+						instrument.setId(null);
 					}
 					config.getInstrumentCollection().add(instrument);
 				}
