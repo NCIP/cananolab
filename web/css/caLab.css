@@ -1291,3 +1291,11 @@ input,textArea,submit,reset,option,select{
 	font-size: 11px;
 }
 
+input.noBorderButton { 
+	color: #a90101; /* constant: red */
+	font-weight: bold;
+	font-size: 1em;	
+	border:0px solid; 
+	background-color: white; 
+} 
+

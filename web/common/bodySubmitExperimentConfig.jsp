@@ -40,26 +40,34 @@
 			<strong>Instrument</strong>
 		</td>
 		<td class="rightLabel" valign="top">
+			<a href="javascript:show('patternHeader');show('patternAddRow');">
+				<span class="addLink2">Add</span></a>&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="leftLabel" valign="top">
+			&nbsp;
+		</td>
+		<td class="rightLabel" valign="top">
 			<table id="instrumentTable" class="smalltable" border="0"
 				width="100%">
-
 				<tbody id="instrumentRows">
 					<tr id="patternHeader" class="smallTableHeader">
-						<th class="greyFont">
+						<th width="30" class="greyFont">
 							Manufacturer
 						</th>
-						<th class="greyFont">
+						<th width="30" class="greyFont">
 							Model Name
 						</th>
-						<th class="greyFont">
+						<th width="30" class="greyFont">
 							Type
 						</th>
-						<th class="greyFont" colspan="2">
+						<th width="30" class="greyFont" colspan="2">
 							&nbsp;
 						</th>
 					</tr>
-					<tr id="patternAddRow">
-						<td>
+					<tr id="patternAddRow" style="display:none;">
+						<td width="30">
 							<html:hidden property="achar.theInstrument.id"
 								styleId="id" />
 							<html:select property="achar.theInstrument.manufacturer"
@@ -72,11 +80,11 @@
 								</option>
 							</html:select>
 						</td>
-						<td>
+						<td width="30">
 							<html:text property="achar.theInstrument.modelName" size="17"
 								styleId="modelName" />
 						</td>
-						<td>
+						<td width="30">
 							<html:select property="achar.theInstrument.type"
 								styleId="type"
 								onchange="javascript:callPrompt('Instrment Type', 'type');">
@@ -86,9 +94,13 @@
 								</option>
 							</html:select>
 						</td>
-						<td colspan="2">
-							<a href="javascript:addInstrument();"> <span class="addLink2">Add
-								</span></a>&nbsp;
+						<td colspan="1" width="30">
+							<a href="javascript:addInstrument();">
+							<span class="addLink2">Save</span></a>&nbsp;
+						</td>
+						<td colspan="1" width="30">
+							<a href="javascript:hide('patternAddRow');">
+							<span class="addLink2">Cancel</span></a>&nbsp;
 						</td>
 					</tr>
 					<tr id="pattern" style="display: none;">
@@ -102,10 +114,10 @@
 							<span id="instrumentType">Type</span>
 						</td>
 						<td>
-							<input id="edit" type="button" value="Edit" onclick="editClicked(this.id)"/>
+							<input class="noBorderButton"  id="edit" type="button" value="Edit" onclick="editClicked(this.id)"/>
 						</td>
 						<td>
-							<input id="delete" type="button" value="Delete" onclick="deleteClicked(this.id)"/>
+							<input class="noBorderButton" id="delete" type="button" value="Delete" onclick="deleteClicked(this.id)"/>
 						</td>
 					</tr>
 				</tbody>

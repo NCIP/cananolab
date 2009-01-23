@@ -1,6 +1,3 @@
-function init() {
-	fillTable();
-}
 
 var currentExperimentConfig = null;
 
@@ -113,6 +110,8 @@ function addInstrument() {
 			function(experimentConfig) {
 				currentExperimentConfig = experimentConfig;
 			});
+	alert('hide patternAddRow');
+	hide('patternAddRow');
 	window.setTimeout("fillTable()", 200);
 }
 
@@ -160,13 +159,14 @@ function editClicked(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var instrument = instrumentCache[eleid.substring(4)];
 	dwr.util.setValues(instrument);
+	show('patternAddRow');
 }
 
 function deleteClicked(eleid) {
 	// we were an id of the form "delete{id}", eg "delete42". We lookup the "42"
 	var instrument = instrumentCache[eleid.substring(6)];
-	if (confirm("Are you sure you want to delete " + instrument.manufacturer
-			+ " " + instrument.modelName+"?")) {
+	if (confirm("Are you sure you want to delete '" + instrument.manufacturer
+			+ " " + instrument.modelName+"'?")) {
 		ExperimentConfigManager.deleteInstrument(currentExperimentConfig,
 				instrument, function(experimentConfig) {
 					currentExperimentConfig = experimentConfig;
