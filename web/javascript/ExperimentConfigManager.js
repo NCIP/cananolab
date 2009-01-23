@@ -94,6 +94,10 @@ function resetTheExperimentConfig(isShow) {
 									&& tr.id != "patternHeader" && tr.id != "patternAddRow");
 						}
 					});
+	clearInstrument();
+	hide('patternAddRow');
+	alert('hide instrumentTable');
+	hide('instrumentTable');
 }
 
 var rowCount = 0;
@@ -110,7 +114,6 @@ function addInstrument() {
 			function(experimentConfig) {
 				currentExperimentConfig = experimentConfig;
 			});
-	alert('hide patternAddRow');
 	hide('patternAddRow');
 	window.setTimeout("fillTable()", 200);
 }

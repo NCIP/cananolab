@@ -1280,10 +1280,25 @@ left: 60px; /*position where enlarged image should offset horizontally */
 
 .greyFont {
 	font-family: arial, helvetica, verdana, sans-serif;
-	font-size: 0.3;
+	font-size: 11px;
 	background-color: #f4f4f5;
 	color: #5C5C5C;
 	text-align: left;
+}
+
+.greyFont2 {
+	font-family: arial, helvetica, verdana, sans-serif;
+	background-color: #f4f4f5;
+	color: #5C5C5C;
+	text-align: left;
+}
+
+.greyFont3 {
+	font-family: arial, helvetica, verdana, sans-serif;
+	background-color: #f4f4f5;
+	color: #5C5C5C;
+	text-align: left;
+	font-size: 9px;
 }
 
 input,textArea,submit,reset,option,select{
@@ -1296,6 +1311,6 @@ input.noBorderButton {
 	font-weight: bold;
 	font-size: 1em;	
 	border:0px solid; 
-	background-color: white; 
+	background-color: #f4f4f5;
 } 
 
