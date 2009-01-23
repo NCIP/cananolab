@@ -45,7 +45,50 @@
 			<br>
 			<table>
 				<tr>
-					<td>
+					<td valign="top">
+						<div id="instrumentTableDiv" style="display: none;">
+							<table id="instrumentTable" class="smalltable" border="0"
+								width="100%">
+								<tbody id="instrumentRows">
+									<tr id="patternHeader" class="smallTableHeader">
+										<th width="300" class="greyFont">
+											Manufacturer
+										</th>
+										<th width="30" class="greyFont">
+											Model Name
+										</th>
+										<th width="30" class="greyFont">
+											Type
+										</th>
+										<th width="30" class="greyFont" colspan="2">
+											&nbsp;
+										</th>
+									</tr>
+									<tr id="pattern" style="display: none;">
+										<td>
+											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
+										</td>
+										<td>
+											<span id="instrumentModelName" class="greyFont2">ModelName</span>
+										</td>
+										<td>
+											<span id="instrumentType" class="greyFont2">Type</span>
+										</td>
+										<td>
+											<input class="noBorderButton" id="edit" type="button"
+												value="Edit" onclick="editClicked(this.id)" />
+										</td>
+										<td>
+											<input class="noBorderButton" id="delete" type="button"
+												value="Delete" onclick="deleteClicked(this.id)" />
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						&nbsp;
+					</td>
+					<td valign="top">
 						<div id="patternAddRow" style="display: none;">
 							<table class="smalltable" border="0" width="100%">
 								<tr class="smallTableHeader">
@@ -104,49 +147,7 @@
 							</table>
 						</div>
 					</td>
-					<td valign="top">
-						<div id="instrumentTableDiv" style="display: none;">
-							<table id="instrumentTable" class="smalltable" border="0"
-								width="100%">
-								<tbody id="instrumentRows">
-									<tr id="patternHeader" class="smallTableHeader">
-										<th width="300" class="greyFont">
-											Manufacturer
-										</th>
-										<th width="30" class="greyFont">
-											Model Name
-										</th>
-										<th width="30" class="greyFont">
-											Type
-										</th>
-										<th width="30" class="greyFont" colspan="2">
-											&nbsp;
-										</th>
-									</tr>
-									<tr id="pattern" style="display: none;">
-										<td>
-											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
-										</td>
-										<td>
-											<span id="instrumentModelName" class="greyFont2">ModelName</span>
-										</td>
-										<td>
-											<span id="instrumentType" class="greyFont2">Type</span>
-										</td>
-										<td>
-											<input class="noBorderButton" id="edit" type="button"
-												value="Edit" onclick="editClicked(this.id)" />
-										</td>
-										<td>
-											<input class="noBorderButton" id="delete" type="button"
-												value="Delete" onclick="deleteClicked(this.id)" />
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						&nbsp;
-					</td>
+
 				</tr>
 			</table>
 		</td>
