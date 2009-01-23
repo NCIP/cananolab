@@ -11,9 +11,6 @@ import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.SortedSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
@@ -35,13 +32,13 @@ public class DWRExperimentConfigManager {
 				.get("achar"));
 		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
 		charBean.setTheExperimentConfig(newExperimentConfigBean);
-		charBean.setTheInstrument(new Instrument());
+		//charBean.setTheInstrument(new Instrument());
 		return newExperimentConfigBean.getDomain();
 	}
 
-	public ExperimentConfig findExperimentConfigById(String id)
+	public ExperimentConfigBean findExperimentConfigById(String id)
 			throws ExperimentConfigException {
-		return service.findExperimentConfigById(id);
+		return new ExperimentConfigBean(service.findExperimentConfigById(id));
 	}
 
 	public Technique findTechniqueByType(String type)
@@ -67,11 +64,11 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException, CaNanoLabException {
 		String techniqueType = null;
 		SortedSet<String> types = null;
-		ExperimentConfig config = findExperimentConfigById(configId);
+		ExperimentConfigBean config = findExperimentConfigById(configId);
 
-		if (config != null && config.getTechnique() != null
-				&& config.getTechnique().getType() != null) {
-			techniqueType = config.getTechnique().getType();
+		if (config != null && config.getDomain().getTechnique() != null
+				&& config.getDomain().getTechnique().getType() != null) {
+			techniqueType = config.getDomain().getTechnique().getType();
 			types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
 					"instrument", "otherInstrument");
 		}
@@ -84,52 +81,31 @@ public class DWRExperimentConfigManager {
 		}
 	}
 
-	public ExperimentConfig getANewExperimentConfig()
+	public ExperimentConfigBean addInstrument(
+			ExperimentConfigBean theExperimentConfig, Instrument instrument)
 			throws ExperimentConfigException {
-		// add by Qina tempory
-		ExperimentConfig config = new ExperimentConfig();
-		config.setTechnique(new Technique());
-		config.setInstrumentCollection(new ArrayList<Instrument>());
-		return config;
-	}
-	
-	public ExperimentConfig addInstrument(ExperimentConfig theExperimentConfig,
-			Instrument instrument)
-		throws ExperimentConfigException {
-		if (theExperimentConfig==null) {
+		if (theExperimentConfig == null) {
 			return null;
-		}else if (theExperimentConfig.getInstrumentCollection()!=null) {
-			theExperimentConfig.getInstrumentCollection().add(instrument);
-		}else {
-			Collection<Instrument> instrumentCollection
-				= new HashSet<Instrument>();
-			instrumentCollection.add(instrument);
-			theExperimentConfig.setInstrumentCollection(instrumentCollection);
 		}
+		//instrument.setId(null);
+		theExperimentConfig.addInstrument(instrument);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheExperimentConfig(new ExperimentConfigBean(theExperimentConfig));
+		charBean.setTheExperimentConfig(theExperimentConfig);
 		return theExperimentConfig;
 	}
-	
-	public ExperimentConfig deleteInstrument(ExperimentConfig theExperimentConfig,
-			Instrument instrument)
-		throws ExperimentConfigException {
-		if (theExperimentConfig==null || 
-				theExperimentConfig.getInstrumentCollection()==null) {
-			return theExperimentConfig;
-		}else {
-			theExperimentConfig.getInstrumentCollection().remove(instrument);
-		}
+
+	public ExperimentConfigBean deleteInstrument(
+			ExperimentConfigBean theExperimentConfig, Instrument instrument)
+			throws ExperimentConfigException {
+		theExperimentConfig.removeInstrument(instrument);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheExperimentConfig(new ExperimentConfigBean(theExperimentConfig));
+		charBean.setTheExperimentConfig(theExperimentConfig);
 		return theExperimentConfig;
 	}
 }
-
-
