@@ -60,12 +60,12 @@ var instrumentCount = 1;
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
 		currentExperimentConfig = experimentConfig;
-		dwr.util.setValue("techniqueType", experimentConfig.technique.type);
+		dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
 		dwr.util.setValue("techniqueAbbr",
-				experimentConfig.technique.abbreviation);
-		dwr.util.setValue("configDescription", experimentConfig.description);
-		dwr.util.setValue("configId", experimentConfig.id);
-		instrumentCount = experimentConfig.instrumentCollection.length;
+				experimentConfig.domain.technique.abbreviation);
+		dwr.util.setValue("configDescription", experimentConfig.domain.description);
+		dwr.util.setValue("configId", experimentConfig.domain.id);
+		instrumentCount = experimentConfig.instruments.length;
 		rowCount = document.getElementById("instrumentRows").rows.length;
 		fillTable();
 	}
@@ -126,7 +126,7 @@ function clearInstrument() {
 }
 
 function fillTable() {
-	var instruments = currentExperimentConfig.instrumentCollection;
+	var instruments = currentExperimentConfig.instruments;
 	dwr.util
 			.removeAllRows(
 					"instrumentRows",
@@ -144,7 +144,7 @@ function fillTable() {
 	for ( var i = 0; i < instruments.length; i++) {
 		instrument = instruments[i];
 		if (instrument.id == null) {
-			instrument.id = i + 1;
+			instrument.id = i + 1000;
 		}
 		id = instrument.id;
 		dwr.util.cloneNode("pattern", {
