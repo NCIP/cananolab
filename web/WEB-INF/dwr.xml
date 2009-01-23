@@ -35,13 +35,9 @@
 			<include method="findInstrumentTypesByConfigId" />
 			<include method="getAllManufacturers" />
 			<include method="resetExperimentConfig" />
-			<include method="getANewExperimentConfig" />	
 			<include method="addInstrument" />
-			<include method="deleteInstrument" />			
+			<include method="deleteInstrument" />
 		</create>
-		<create creator="new" javascript="ExperimentConfigBean" scope="script">
-	      	<param name="class" value="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean"/>
-	    </create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
 			<param name="class"
@@ -83,6 +79,11 @@
 			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">
 			<param name="include"
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
+			<param name="include"
+				value="domain, instruments" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
