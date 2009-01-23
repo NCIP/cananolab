@@ -3,8 +3,11 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +33,8 @@ public class ExperimentConfigBean {
 		for (Instrument instrument : config.getInstrumentCollection()) {
 			instruments.add(instrument);
 		}
+		Collections.sort(instruments,
+				new CaNanoLabComparators.InstrumentCreationDateComparator());
 	}
 
 	public ExperimentConfig getDomain() {
@@ -90,6 +95,7 @@ public class ExperimentConfigBean {
 		} else {
 			domain.setInstrumentCollection(new HashSet<Instrument>());
 		}
+		int i = 0;
 		for (Instrument instrument : instruments) {
 			if (instrument.getType() != null
 					&& instrument.getType().length() > 0
@@ -97,7 +103,10 @@ public class ExperimentConfigBean {
 					&& instrument.getManufacturer().length() > 0
 					|| instrument.getModelName() != null
 					&& instrument.getModelName().length() > 0) {
+				instrument.setCreatedBy(createdBy);
+				instrument.setCreatedDate(DateUtil.addSecondsToCurrentDate(i));
 				domain.getInstrumentCollection().add(instrument);
+				i++;
 			}
 		}
 	}
