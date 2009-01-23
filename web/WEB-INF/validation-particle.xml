@@ -10,10 +10,10 @@
 				depends="required">
 				<arg position="0"
 					key="nanoparticleSampleForm.sampleName" bundle="particle" />
-			</field>			
+			</field>
 			<field
 				property="particleSampleBean.pocBean.domain.id"
-				page="1" depends="validwhen">			
+				page="1" depends="validwhen">
 				<arg position="0"
 					key="nanoparticleSampleForm.pointOfContact" bundle="particle" />
 				<var>
@@ -22,7 +22,7 @@
 						((*this* != null) and (*this* > 0))
 					</var-value>
 				</var>
-			</field>			
+			</field>
 		</form>
 		<form name="chemicalAssociationForm">
 			<field property="assoc.type" page="2" depends="required">
@@ -258,14 +258,14 @@
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
-			<field property="achar.instrumentConfiguration.instrument.type"
+			<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen">
-				<arg position="0" key="achar.instrument.type"
+				<arg position="0" key="achar.technique.type"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.instrumentConfiguration.description==null) or
+						((achar.theExperimentConfig==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
@@ -316,7 +316,7 @@
 				</var>
 			</field>
 			<field property="achar.solubility.criticalConcentration"
-				page="2" depends="float">				
+				page="2" depends="float">
 				<arg position="0"
 					key="solubility.criticalConcentrationValue" bundle="particle" />
 			</field>
