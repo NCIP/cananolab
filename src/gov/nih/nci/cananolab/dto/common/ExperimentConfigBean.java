@@ -23,7 +23,6 @@ public class ExperimentConfigBean {
 	public ExperimentConfigBean() {
 		domain = new ExperimentConfig();
 		domain.setTechnique(new Technique());
-		instruments.add(new Instrument());
 	}
 
 	public ExperimentConfigBean(ExperimentConfig config) {
@@ -52,12 +51,15 @@ public class ExperimentConfigBean {
 		return displayName;
 	}
 
-	public void addInstrument() {
-		instruments.add(new Instrument());
+	public void addInstrument(Instrument instrument) {
+		if (instruments.contains(instrument)) {
+			instruments.remove(instrument);
+		}
+		instruments.add(instrument);
 	}
 
-	public void removeInstrument(int ind) {
-		instruments.remove(ind);
+	public void removeInstrument(Instrument instrument) {
+		instruments.remove(instrument);
 	}
 
 	/**
