@@ -681,9 +681,9 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 		service.saveExperimentConfig(configBean.getDomain());
 
-		// if (achar.getDomainChar().getId() != null) {
-		// configBean.getDomain().setCharacterization(achar.getDomainChar());
-		// }
+		if (achar.getDomainChar().getId() != null) {
+			configBean.getDomain().setCharacterization(achar.getDomainChar());
+		}
 
 		achar.addExperimentConfig(configBean);
 
