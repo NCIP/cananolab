@@ -68,10 +68,7 @@ public class ExperimentConfigServiceLocalImpl implements
 						instrument.setCreatedBy(dbInstrument.getCreatedBy());
 						instrument
 								.setCreatedDate(dbInstrument.getCreatedDate());
-					} else {
-						instrument.setCreatedBy(config.getCreatedBy());
-						instrument.setCreatedDate(DateUtil
-								.addSecondsToCurrentDate(i));
+					} else {						
 						instrument.setId(null);
 					}
 					config.getInstrumentCollection().add(instrument);
