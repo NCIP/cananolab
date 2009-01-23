@@ -69,7 +69,7 @@
 								test="${!empty characterizationForm.map.achar.experimentConfigs }">
 								<c:forEach var="experimentConfig"
 									items="${characterizationForm.map.achar.experimentConfigs}">
-								${experimentConfig.displayName}<br>
+								${experimentConfig.displayDetailString}<br>
 								</c:forEach>&nbsp;
 							</c:if>
 							&nbsp;
