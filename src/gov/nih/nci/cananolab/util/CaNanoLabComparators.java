@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.util;
 
 import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
@@ -40,6 +41,14 @@ public class CaNanoLabComparators {
 	public static class TechniqueComparator implements Comparator<Technique> {
 		public int compare(Technique technique1, Technique technique2) {
 			return technique1.getType().compareTo(technique2.getType());
+		}
+	}
+
+	public static class InstrumentCreationDateComparator implements
+			Comparator<Instrument> {
+		public int compare(Instrument instrument1, Instrument instrument2) {
+			return instrument1.getCreatedDate().compareTo(
+					instrument2.getCreatedDate());
 		}
 	}
 
