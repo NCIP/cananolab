@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImp
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.SortedSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
@@ -101,7 +102,7 @@ public class DWRExperimentConfigManager {
 			theExperimentConfig.getInstrumentCollection().add(instrument);
 		}else {
 			Collection<Instrument> instrumentCollection
-				= new ArrayList<Instrument>();
+				= new HashSet<Instrument>();
 			instrumentCollection.add(instrument);
 			theExperimentConfig.setInstrumentCollection(instrumentCollection);
 		}
@@ -112,4 +113,23 @@ public class DWRExperimentConfigManager {
 		charBean.setTheExperimentConfig(new ExperimentConfigBean(theExperimentConfig));
 		return theExperimentConfig;
 	}
+	
+	public ExperimentConfig deleteInstrument(ExperimentConfig theExperimentConfig,
+			Instrument instrument)
+		throws ExperimentConfigException {
+		if (theExperimentConfig==null || 
+				theExperimentConfig.getInstrumentCollection()==null) {
+			return theExperimentConfig;
+		}else {
+			theExperimentConfig.getInstrumentCollection().remove(instrument);
+		}
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		charBean.setTheExperimentConfig(new ExperimentConfigBean(theExperimentConfig));
+		return theExperimentConfig;
+	}
 }
+
+
