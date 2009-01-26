@@ -40,7 +40,7 @@
 			<strong>Instrument</strong>
 		</td>
 		<td class="rightLabel" valign="top">
-			<a href="javascript:show('patternHeader');show('patternAddRow');">
+			<a href="javascript:addClicked();">
 				<span class="addLink2">Add</span> </a>
 			<br>
 			<table>
@@ -177,8 +177,7 @@
 				<input type="reset" value="Reset"
 					onclick="javascript:window.location.href='${origUrl}'">
 				<input type="button" value="Save"
-					onclick="javascript:submitAction(document.forms[0],
-										'${actionName}', 'saveExperimentConfig');">
+					onclick="javascript:validateSaveConfig('${actionName}');">
 			</div>
 		</td>
 	</tr>

@@ -101,6 +101,19 @@ function resetTheExperimentConfig(isShow) {
 
 var rowCount = 0;
 
+function validateSaveConfig(actionName){
+	var techniqueType = document.getElementById('techniqueType');
+	if (techniqueType.value==''){
+		alert('Please select a technique');
+		return false;
+	}
+	var patternAddRow = document.getElementById('patternAddRow');
+	if(patternAddRow.style.display == 'block'){
+		addInstrument();
+	}
+	submitAction(document.forms[0],
+			actionName, 'saveExperimentConfig');
+}
 function addInstrument() {
 	var instrument = {
 		id :null,
@@ -109,12 +122,18 @@ function addInstrument() {
 		type :null
 	};
 	dwr.util.getValues(instrument);
-	ExperimentConfigManager.addInstrument(currentExperimentConfig, instrument,
-			function(experimentConfig) {
-				currentExperimentConfig = experimentConfig;
-			});
-	hide('patternAddRow');
-	window.setTimeout("fillTable()", 200);
+	if (instrument.manufacturer!='' || 
+			instrument.modelName!='' ||
+			instrument.type!=''){
+		ExperimentConfigManager.addInstrument(currentExperimentConfig, instrument,
+				function(experimentConfig) {
+					currentExperimentConfig = experimentConfig;
+				});
+		hide('patternAddRow');
+		window.setTimeout("fillTable()", 200);
+	}else{
+		alert('Please fill in values');
+	}
 }
 
 function clearInstrument() {
@@ -140,11 +159,13 @@ function fillTable() {
 	hide('patternAddRow');
 	if (instruments.length>0){
 		show('instrumentTableDiv');
+	}else{
+		hide('instrumentTableDiv');
 	}
 	for ( var i = 0; i < instruments.length; i++) {
 		instrument = instruments[i];
 		if (instrument.id == null) {
-			instrument.id = i + 1000;
+			instrument.id = -i - 1;
 		}
 		id = instrument.id;
 		dwr.util.cloneNode("pattern", {
@@ -165,7 +186,8 @@ function editClicked(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var instrument = instrumentCache[eleid.substring(4)];
 	dwr.util.setValues(instrument);
-	show('patternAddRow');
+	show('patternAddRow');	
+	document.getElementById("manufacturer").focus();
 }
 
 function deleteClicked(eleid) {
@@ -181,15 +203,9 @@ function deleteClicked(eleid) {
 	}
 }
 
-function deleteRow(target) {
-	do {
-		if (target.nodeName.toUpperCase() == 'TR') {
-			target.parentNode.removeChild(target);
-			break;
-		}
-	} while (target = target.parentNode);
+function addClicked() {
+	show('patternHeader');
+	show('patternAddRow');
+	document.getElementById("manufacturer").focus();	
 }
 
-function deleteRowByIndex(index) {
-	document.getElementById("instrumentRows").deleteRow(index);
-}
