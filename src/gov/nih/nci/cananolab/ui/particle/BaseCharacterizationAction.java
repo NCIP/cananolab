@@ -679,11 +679,10 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
 		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
-		service.saveExperimentConfig(configBean.getDomain());
-
 		if (achar.getDomainChar().getId() != null) {
 			configBean.getDomain().setCharacterization(achar.getDomainChar());
 		}
+		service.saveExperimentConfig(configBean.getDomain());
 
 		achar.addExperimentConfig(configBean);
 
