@@ -1307,9 +1307,9 @@ input,textArea,submit,reset,option,select{
 }
 
 input.noBorderButton { 
-	color: #a90101; /* constant: red */
 	font-weight: bold;
 	font-size: 1em;	
+	text-decoration: underline;
 	border:0px solid; 
 	background-color: #f4f4f5;
 } 
