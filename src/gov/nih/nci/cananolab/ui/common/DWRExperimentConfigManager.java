@@ -80,6 +80,7 @@ public class DWRExperimentConfigManager {
 		}
 	}
 
+	//addInstrument includes the function add and edit
 	public ExperimentConfigBean addInstrument(
 			ExperimentConfigBean theExperimentConfig, Instrument instrument)
 			throws ExperimentConfigException {
