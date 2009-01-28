@@ -1,6 +1,5 @@
 USE canano
 ;
-
 CREATE TABLE target
 (
 	target_pk_id BIGINT NOT NULL,
@@ -273,48 +272,19 @@ CREATE TABLE composition_file
 	composition_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (composition_pk_id, file_pk_id),
-	KEY (file_pk_id),
-	KEY (composition_pk_id)
-) TYPE=InnoDB
-;
-
-
-CREATE TABLE nanoparticle_sample_publication
-(
-	particle_sample_pk_id BIGINT NOT NULL,
-	publication_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
-	KEY (publication_pk_id),
-	KEY (particle_sample_pk_id)
+	KEY (composition_pk_id),
+	KEY (file_pk_id)
 ) TYPE=InnoDB
 ;
 
 
 CREATE TABLE nanoparticle_sample_other_poc
 (
-	particle_sample_pk_id BIGINT NOT NULL,
+	nanoparticle_sample_pk_id BIGINT NOT NULL,
 	poc_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
-	KEY (particle_sample_pk_id),
+	PRIMARY KEY (nanoparticle_sample_pk_id, poc_pk_id),
+	KEY (nanoparticle_sample_pk_id),
 	KEY (poc_pk_id)
-) TYPE=InnoDB
-;
-
-
-CREATE TABLE derived_datum
-(
-	datum_pk_id BIGINT NOT NULL,
-	datum_name VARCHAR(200) NOT NULL,
-	value DECIMAL(22,3) NOT NULL,
-	value_type VARCHAR(200),
-	value_unit VARCHAR(200),
-	description TEXT,
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	derived_bioassay_data_pk_id BIGINT,
-	PRIMARY KEY (datum_pk_id),
-	UNIQUE (datum_pk_id),
-	KEY (derived_bioassay_data_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -330,21 +300,10 @@ CREATE TABLE composition
 ;
 
 
-CREATE TABLE chemical_association_file
-(
-	chemical_association_pk_id BIGINT NOT NULL,
-	file_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (chemical_association_pk_id, file_pk_id),
-	KEY (file_pk_id),
-	KEY (chemical_association_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE characterization
 (
 	characterization_pk_id BIGINT NOT NULL,
-	source VARCHAR(200),
+	poc_pk_id BIGINT,
 	description TEXT,
 	identifier_name VARCHAR(500),
 	created_date DATETIME NOT NULL,
@@ -357,10 +316,70 @@ CREATE TABLE characterization
 	surface_is_hydrophobic TINYINT,
 	characterization_date DATETIME,
 	PRIMARY KEY (characterization_pk_id),
+	KEY (poc_pk_id),
 	KEY (particle_sample_pk_id),
 	KEY (protocol_file_pk_id)
 ) TYPE=InnoDB
 ;
+
+
+CREATE TABLE nanoparticle_sample_publication
+(
+	particle_sample_pk_id BIGINT NOT NULL,
+	publication_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
+	KEY (publication_pk_id),
+	KEY (particle_sample_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE nanoparticle_sample
+(
+	particle_sample_pk_id BIGINT NOT NULL,
+	particle_sample_name VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	primary_contact_pk_id BIGINT,
+	PRIMARY KEY (particle_sample_pk_id),
+	UNIQUE (particle_sample_name),
+	UNIQUE (particle_sample_pk_id),
+	KEY (primary_contact_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE datum
+(
+	datum_pk_id BIGINT NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	value VARCHAR(200) NOT NULL,
+	value_type VARCHAR(200),
+	value_unit VARCHAR(200),
+	description TEXT,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
+	derived_bioassay_data_pk_id BIGINT,
+	data_set_pk_id BIGINT NOT NULL,
+	data_row_pk_id BIGINT NOT NULL,
+	characterization_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (datum_pk_id),
+	KEY (characterization_pk_id),
+	KEY (data_row_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE chemical_association_file
+(
+	chemical_association_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (chemical_association_pk_id, file_pk_id),
+	KEY (chemical_association_pk_id),
+	KEY (file_pk_id)
+) TYPE=InnoDB
+;
+
 
 CREATE TABLE author_publication
 (
@@ -388,7 +407,8 @@ CREATE TABLE publication
 	research_area VARCHAR(200),
 	abstract TEXT,
 	PRIMARY KEY (publication_pk_id),
-	UNIQUE (publication_pk_id)
+	UNIQUE (publication_pk_id),
+	INDEX publication_pk_id (publication_pk_id ASC)
 ) TYPE=InnoDB
 ;
 
@@ -408,7 +428,7 @@ CREATE TABLE protocol_file
 CREATE TABLE point_of_contact
 (
 	poc_pk_id BIGINT NOT NULL,
-	role VARCHAR(200),
+	role VARCHAR(200) NOT NULL,
 	first_name VARCHAR(200),
 	last_name VARCHAR(200),
 	middle_initial VARCHAR(50),
@@ -419,21 +439,6 @@ CREATE TABLE point_of_contact
 	organization_pk_id BIGINT,
 	PRIMARY KEY (poc_pk_id),
 	KEY (organization_pk_id)
-) TYPE=InnoDB
-;
-
-
-CREATE TABLE nanoparticle_sample
-(
-	particle_sample_pk_id BIGINT NOT NULL,
-	particle_sample_name VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	primary_contact_pk_id BIGINT,
-	PRIMARY KEY (particle_sample_pk_id),
-	UNIQUE (particle_sample_name),
-	UNIQUE (particle_sample_pk_id),
-	KEY (primary_contact_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -470,6 +475,7 @@ CREATE TABLE keyword_file
 ) TYPE=InnoDB
 ;
 
+
 CREATE TABLE functionalizing_entity_file
 (
 	functionalizing_entity_pk_id BIGINT NOT NULL,
@@ -481,16 +487,50 @@ CREATE TABLE functionalizing_entity_file
 ;
 
 
-CREATE TABLE derived_bioassay_data
+CREATE TABLE experiment_config_instrument
 (
-	derived_bioassay_data_pk_id BIGINT NOT NULL,
-	characterization_pk_id BIGINT,
-	file_pk_id BIGINT,
-	created_by VARCHAR(200) NOT NULL,
+	experiment_config_pk_id BIGINT NOT NULL,
+	instrument_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (experiment_config_pk_id, instrument_pk_id),
+	KEY (experiment_config_pk_id),
+	KEY (instrument_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE experiment_config
+(
+	experiment_config_id BIGINT NOT NULL,
+	description TEXT,
 	created_date DATETIME NOT NULL,
-	PRIMARY KEY (derived_bioassay_data_pk_id),
-	KEY (file_pk_id),
-	KEY (characterization_pk_id)
+	created_by VARCHAR(200) NOT NULL,
+	characterization_pk_id BIGINT,
+	technique_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (experiment_config_id),
+	KEY (characterization_pk_id),
+	KEY (technique_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE datum_condition
+(
+	datum_pk_id BIGINT NOT NULL,
+	condition_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (datum_pk_id, condition_pk_id),
+	KEY (condition_pk_id),
+	KEY (datum_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE data_set
+(
+	data_set_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT,
+	PRIMARY KEY (data_set_pk_id),
+	UNIQUE (data_set_pk_id),
+	KEY (file_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -515,11 +555,34 @@ CREATE TABLE chemical_association
 ;
 
 
+CREATE TABLE characterization_file
+(
+	characterization_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (characterization_pk_id, file_pk_id),
+	KEY (characterization_pk_id),
+	KEY (file_pk_id)
+)
+;
+
+
 CREATE TABLE associated_file
 (
 	associated_file_pk_id BIGINT NOT NULL,
 	PRIMARY KEY (associated_file_pk_id),
 	KEY (associated_file_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE technique
+(
+	technique_pk_id BIGINT NOT NULL,
+	type VARCHAR(200) NOT NULL,
+	abbreviation VARCHAR(50),
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	PRIMARY KEY (technique_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -564,6 +627,20 @@ CREATE TABLE keyword
 ) TYPE=InnoDB
 ;
 
+
+CREATE TABLE instrument
+(
+	instrument_pk_id BIGINT NOT NULL,
+	type VARCHAR(200),
+	manufacturer VARCHAR(2000),
+	model_name VARCHAR(200),
+	created_date DATETIME NOT NULL,
+	created_by VARCHAR(200) NOT NULL,
+	PRIMARY KEY (instrument_pk_id)
+) TYPE=InnoDB
+;
+
+
 CREATE TABLE file
 (
 	file_pk_id BIGINT NOT NULL,
@@ -577,6 +654,26 @@ CREATE TABLE file
 	file_type VARCHAR(200),
 	is_uri_external TINYINT NOT NULL,
 	PRIMARY KEY (file_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE data_row
+(
+	data_row_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (data_row_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE condition
+(
+	condition_pk_id BIGINT NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	value VARCHAR(200) NOT NULL,
+	value_unit VARCHAR(200),
+	value_type VARCHAR(200),
+	PRIMARY KEY (condition_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -631,57 +728,9 @@ CREATE TABLE activation_method
 ) TYPE=InnoDB
 ;
 
-CREATE TABLE technique
-(
-	technique_pk_id BIGINT NOT NULL,
-	type VARCHAR(200) NOT NULL,
-	abbreviation VARCHAR(50),
-	created_date DATETIME NOT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	PRIMARY KEY (technique_pk_id)
-) TYPE=InnoDB
-;
 
-CREATE TABLE instrument
-(
-	instrument_pk_id BIGINT NOT NULL,
-	type VARCHAR(200),
-	manufacturer VARCHAR(2000),
-	model_name VARCHAR(200),
-	created_date DATETIME NOT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	PRIMARY KEY (instrument_pk_id)
-) TYPE=InnoDB
-;
 
-CREATE TABLE experiment_config
-(
-	experiment_config_id BIGINT NOT NULL,
-	description TEXT,
-	created_date DATETIME NOT NULL,
-	created_by VARCHAR(200) NOT NULL,
-	characterization_pk_id BIGINT,
-	technique_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (experiment_config_id),
-	KEY (characterization_pk_id),
-	KEY (technique_pk_id)
-) TYPE=InnoDB
-;
 
-CREATE TABLE experiment_config_instrument
-(
-	experiment_config_pk_id BIGINT NOT NULL,
-	instrument_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (experiment_config_pk_id, instrument_pk_id),
-	KEY (experiment_config_pk_id),
-	KEY (instrument_pk_id)
-) TYPE=InnoDB
-;
-
-CREATE TABLE hibernate_unique_key (
-  next_hi BIGINT NOT NULL
-) TYPE=InnoDB
-;
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function
 	FOREIGN KEY (targeting_function_pk_id) REFERENCES nano_function (function_pk_id)
@@ -779,32 +828,20 @@ ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication
-	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
-;
-
 ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample
-	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+	FOREIGN KEY (nanoparticle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc
+ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
-;
-
-ALTER TABLE derived_datum ADD CONSTRAINT FK_derived_datum_derived_bioassay_data
-	FOREIGN KEY (derived_bioassay_data_pk_id) REFERENCES derived_bioassay_data (derived_bioassay_data_pk_id)
 ;
 
 ALTER TABLE composition ADD CONSTRAINT FK_Composition_nanoparticle_sample
 	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file
-	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
-;
-
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association
-	FOREIGN KEY (chemical_association_pk_id) REFERENCES chemical_association (chemical_association_pk_id)
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_point_of_contact
+	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sample
@@ -813,6 +850,30 @@ ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sam
 
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
+;
+
+ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication
+	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
+;
+
+ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
+	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
+;
+
+ALTER TABLE datum ADD CONSTRAINT FK_datum_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE datum ADD CONSTRAINT FK_datum_data_row
+	FOREIGN KEY (data_row_pk_id) REFERENCES data_row (data_row_pk_id)
+;
+
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association
+	FOREIGN KEY (chemical_association_pk_id) REFERENCES chemical_association (chemical_association_pk_id)
+;
+
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
 ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author
@@ -837,10 +898,6 @@ ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_protocol
 
 ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
-;
-
-ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
-	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
 ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file
@@ -875,22 +932,6 @@ ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_file
-	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
-;
-
-ALTER TABLE derived_bioassay_data ADD CONSTRAINT FK_derived_bioassay_data_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a
-	FOREIGN KEY (associated_element_a_pk_id) REFERENCES associated_element (associated_element_pk_id)
-;
-
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b
-	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
-;
-
 ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
 	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_id)
 ;
@@ -905,4 +946,37 @@ ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_characterizati
 
 ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
 	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
+;
+
+ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_condition
+	FOREIGN KEY (condition_pk_id) REFERENCES condition (condition_pk_id)
+;
+
+ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_data_row
+	FOREIGN KEY (datum_pk_id) REFERENCES datum (datum_pk_id)
+;
+
+ALTER TABLE data_set ADD CONSTRAINT FK_data_set_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
+ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a
+	FOREIGN KEY (associated_element_a_pk_id) REFERENCES associated_element (associated_element_pk_id)
+;
+
+ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b
+	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
+;
+
+ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
+CREATE TABLE hibernate_unique_key (
+  next_hi BIGINT NOT NULL
+) TYPE=InnoDB
 ;
