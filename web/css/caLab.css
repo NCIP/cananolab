@@ -856,8 +856,8 @@ tr.smallTableHeader {
 
 .smalltableNoBorder td {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
-	padding: 5px 0 5px 5px;
+	font-size: 0.65em;
+	padding: 2px 0px 2px 2px;
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: none;
@@ -1325,7 +1325,7 @@ input,textArea,submit,reset,option,select{
 
 input.noBorderButton { 
 	font-weight: bold;
-	font-size: 1em;	
+	font-size: 1.02em;	
 	text-decoration: underline;
 	border:0px solid; 
 	background-color: #f4f4f5;

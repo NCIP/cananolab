@@ -89,7 +89,7 @@
 									</td>
 								</tr>
 								<tr>									
-									<td colspan="2" style="text-align:right" class="greyFont">
+									<td colspan="2" style="text-align:right">
 									    <input class="noBorderButton" type="button" value="New"
 											onclick="clearInstrument()" />
 										&nbsp;
@@ -126,16 +126,16 @@
 										</th>
 									</tr>
 									<tr id="pattern" style="display: none;">
-										<td>
+										<td valign="top">
 											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
 										</td>
-										<td>
+										<td valign="top">
 											<span id="instrumentModelName" class="greyFont2">ModelName</span>
 										</td>
-										<td>
+										<td valign="top">
 											<span id="instrumentType" class="greyFont2">Type</span>
 										</td>
-										<td>
+										<td valign="top">
 											<input class="noBorderButton" id="edit" type="button"
 												value="Select" onclick="editClicked(this.id)" />
 										</td>										
