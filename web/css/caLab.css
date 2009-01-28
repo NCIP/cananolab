@@ -835,9 +835,34 @@ tr.smallTableHeader {
 	font-size: 0.85em;
 	font-weight: normal;
 }
-	
-	
-	
+
+
+.smalltableNoBorder {
+	width: 400px;
+	border-width: 0px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+}
+
+.smalltableNoBorder th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 5px 30px 10px 30px;
+	border-style: none;
+	border-width: 1px;
+	border-color: #cccccc;
+}
+
+.smalltableNoBorder td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 5px 0 5px 5px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: none;
+	vertical-align: middle;
+}
 	
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
 
@@ -1291,14 +1316,6 @@ left: 60px; /*position where enlarged image should offset horizontally */
 	background-color: #f4f4f5;
 	color: #5C5C5C;
 	text-align: left;
-}
-
-.greyFont3 {
-	font-family: arial, helvetica, verdana, sans-serif;
-	background-color: #f4f4f5;
-	color: #5C5C5C;
-	text-align: left;
-	font-size: 9px;
 }
 
 input,textArea,submit,reset,option,select{
