@@ -15,10 +15,5 @@
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="type" type="string" column="type"/>
 		<!-- Associations mapping for the Technique class -->
-		<set name="experimentConfigCollection" lazy="true" inverse="true">
-			<cache usage="read-write" />
-			<key column="technique_pk_id" />
-			<one-to-many class="gov.nih.nci.cananolab.domain.common.ExperimentConfig"/>
-		</set>
 	</class>
 </hibernate-mapping>
