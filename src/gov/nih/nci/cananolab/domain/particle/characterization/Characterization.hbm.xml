@@ -16,7 +16,6 @@
 		<property name="date" type="java.util.Date" column="characterization_date"/>
 		<property name="description" type="string" column="description"/>
 		<property name="identificationName" type="string" column="identifier_name"/>
-		<property name="source" type="string" column="source"/>
 		<!-- Associations mapping for the Characterization class -->
 		<many-to-one name="nanoparticleSample" class="gov.nih.nci.cananolab.domain.particle.NanoparticleSample" column="particle_sample_pk_id" lazy="proxy" cascade="save-update"/>
 		<set name="experimentConfigCollection" inverse="false" lazy="true" cascade="save-update, delete">
@@ -24,12 +23,18 @@
 			<key column="characterization_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.ExperimentConfig"/>
 		</set>
-		<set name="derivedBioAssayDataCollection" lazy="true" inverse="false" cascade="all-delete-orphan">
+		<many-to-one name="protocolFile" class="gov.nih.nci.cananolab.domain.common.ProtocolFile" column="protocol_file_pk_id" lazy="proxy"/>
+		<many-to-one name="pointOfContact" class="gov.nih.nci.cananolab.domain.common.PointOfContact" column="poc_pk_id" lazy="proxy" />
+		<set name="fileCollection" table="characterization_file" lazy="true">
 			<cache usage="read-write" />
 			<key column="characterization_pk_id" />
-			<one-to-many class="gov.nih.nci.cananolab.domain.common.DerivedBioAssayData"/>
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true"/>
 		</set>
-		<many-to-one name="protocolFile" class="gov.nih.nci.cananolab.domain.common.ProtocolFile" column="protocol_file_pk_id" lazy="proxy"/>
+		<set name="datumCollection" lazy="true">
+			<cache usage="read-write" />
+			<key column="characterization_pk_id" />
+			<one-to-many class="gov.nih.nci.cananolab.domain.particle.characterization.Datum"/>
+		</set>
 		<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization" discriminator-value="InvitroCharacterization">
 			<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.Toxicity" discriminator-value="Toxicity">
 				<subclass name="gov.nih.nci.cananolab.domain.particle.characterization.invitro.OxidativeStress" discriminator-value="OxidativeStress">
