@@ -95,8 +95,6 @@ function resetTheExperimentConfig(isShow) {
 						}
 					});
 	clearInstrument();
-	hide('patternAddRow');
-	hide('instrumentTableDiv');
 }
 
 var rowCount = 0;
@@ -108,9 +106,9 @@ function validateSaveConfig(actionName){
 		return false;
 	}
 	var patternAddRow = document.getElementById('patternAddRow');
-	if(patternAddRow.style.display == 'block'){
-		addInstrument();
-	}
+	//if(patternAddRow.style.display == 'block'){
+		//addInstrument();
+	//}
 	submitAction(document.forms[0],
 			actionName, 'saveExperimentConfig');
 }
@@ -129,7 +127,6 @@ function addInstrument() {
 				function(experimentConfig) {
 					currentExperimentConfig = experimentConfig;
 				});
-		hide('patternAddRow');
 		window.setTimeout("fillTable()", 200);
 	}else{
 		alert('Please fill in values');
@@ -156,12 +153,11 @@ function fillTable() {
 						}
 					});
 	var instrument, id;
-	hide('patternAddRow');
-	if (instruments.length>0){
-		show('instrumentTableDiv');
-	}else{
-		hide('instrumentTableDiv');
-	}
+	//if (instruments.length>0){
+	//	show('instrumentTableDiv');
+	//}else{
+	//	hide('instrumentTableDiv');
+	//}
 	for ( var i = 0; i < instruments.length; i++) {
 		instrument = instruments[i];
 		if (instrument.id == null) {
@@ -186,26 +182,27 @@ function editClicked(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var instrument = instrumentCache[eleid.substring(4)];
 	dwr.util.setValues(instrument);
-	show('patternAddRow');	
 	document.getElementById("manufacturer").focus();
 }
 
-function deleteClicked(eleid) {
+function deleteClicked() {
+	var eleid = document.getElementById("id").value;
 	// we were an id of the form "delete{id}", eg "delete42". We lookup the "42"
-	var instrument = instrumentCache[eleid.substring(6)];
-	if (confirm("Are you sure you want to delete '" + instrument.manufacturer
-			+ " " + instrument.modelName+"'?")) {
-		ExperimentConfigManager.deleteInstrument(currentExperimentConfig,
-				instrument, function(experimentConfig) {
-					currentExperimentConfig = experimentConfig;
-				});
-		window.setTimeout("fillTable()", 200);
+	//var instrument = instrumentCache[eleid.substring(6)];
+	if (eleid!=''){
+		var instrument = instrumentCache[eleid];
+		if (confirm("Are you sure you want to delete '" + instrument.manufacturer
+				+ " " + instrument.modelName+"'?")) {
+			ExperimentConfigManager.deleteInstrument(currentExperimentConfig,
+					instrument, function(experimentConfig) {
+						currentExperimentConfig = experimentConfig;
+					});
+			window.setTimeout("fillTable()", 200);
+		}
 	}
 }
 
 function addClicked() {
-	show('patternHeader');
-	show('patternAddRow');
 	document.getElementById("manufacturer").focus();	
 }
 
