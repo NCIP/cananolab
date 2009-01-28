@@ -40,57 +40,13 @@
 			<strong>Instrument</strong>
 		</td>
 		<td class="rightLabel" valign="top">
-			<a href="javascript:addClicked();">
-				<span class="addLink2">Add</span> </a>
 			<br>
 			<table>
 				<tr>
-					<td valign="top">
-						<div id="instrumentTableDiv" style="display: none;">
-							<table id="instrumentTable" class="smalltable" border="0"
-								width="100%">
-								<tbody id="instrumentRows">
-									<tr id="patternHeader" class="smallTableHeader">
-										<th width="300" class="greyFont">
-											Manufacturer
-										</th>
-										<th width="30" class="greyFont">
-											Model Name
-										</th>
-										<th width="30" class="greyFont">
-											Type
-										</th>
-										<th width="30" class="greyFont" colspan="2">
-											&nbsp;
-										</th>
-									</tr>
-									<tr id="pattern" style="display: none;">
-										<td>
-											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
-										</td>
-										<td>
-											<span id="instrumentModelName" class="greyFont2">ModelName</span>
-										</td>
-										<td>
-											<span id="instrumentType" class="greyFont2">Type</span>
-										</td>
-										<td>
-											<input class="noBorderButton" id="edit" type="button"
-												value="Edit" onclick="editClicked(this.id)" />
-										</td>
-										<td>
-											<input class="noBorderButton" id="delete" type="button"
-												value="Delete" onclick="deleteClicked(this.id)" />
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						&nbsp;
-					</td>
-					<td valign="top">
-						<div id="patternAddRow" style="display: none;">
-							<table class="smalltable" border="0" width="100%">
+					<td valign="top" width="80">
+						<div id="patternAddRow" style="display: block;">
+							<table border="0" width="100%" class="smalltableNoBorder">
+							  <tbody>
 								<tr class="smallTableHeader">
 									<td class="greyFont">
 										<strong>Manufacturer</strong>
@@ -132,22 +88,63 @@
 										</html:select>
 									</td>
 								</tr>
-								<tr>
-									<td>
+								<tr>									
+									<td colspan="2" style="text-align:right" class="greyFont">
+									    <input class="noBorderButton" type="button" value="New"
+											onclick="clearInstrument()" />
 										&nbsp;
-									</td>
-									<td align="right" class="greyFont">
 										<input class="noBorderButton" type="button" value="Save"
 											onclick="addInstrument()" />
 										&nbsp;
-										<input class="noBorderButton" type="button" value="Cancel"
-											onclick="hide('patternAddRow')" />
+										<input class="noBorderButton" id="delete" type="button"
+												value="Delete" onclick="deleteClicked()" />
 									</td>
 								</tr>
+								</tbody>
 							</table>
 						</div>
 					</td>
-
+				</tr>
+				<tr>
+					<td valign="top">
+						<div id="instrumentTableDiv" style="display: block;">
+							<table id="instrumentTable" class="smalltable" border="0"
+								width="80%">
+								<tbody id="instrumentRows">
+									<tr id="patternHeader" class="smallTableHeader">
+										<th class="greyFont">
+											Manufacturer
+										</th>
+										<th class="greyFont">
+											Model Name
+										</th>
+										<th class="greyFont">
+											Type
+										</th>
+										<th class="greyFont" colspan="1">
+											&nbsp;
+										</th>
+									</tr>
+									<tr id="pattern" style="display: none;">
+										<td>
+											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
+										</td>
+										<td>
+											<span id="instrumentModelName" class="greyFont2">ModelName</span>
+										</td>
+										<td>
+											<span id="instrumentType" class="greyFont2">Type</span>
+										</td>
+										<td>
+											<input class="noBorderButton" id="edit" type="button"
+												value="Select" onclick="editClicked(this.id)" />
+										</td>										
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						&nbsp;
+					</td>
 				</tr>
 			</table>
 		</td>
@@ -160,7 +157,7 @@
 		<td class="rightLabelNoBottom">
 			<html:textarea styleId="configDescription"
 				property="achar.theExperimentConfig.domain.description" rows="3"
-				cols="95" />
+				cols="70" />
 			<br>
 		</td>
 	</tr>
