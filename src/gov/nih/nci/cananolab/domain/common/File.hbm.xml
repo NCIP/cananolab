@@ -12,14 +12,15 @@
 		<!-- Attributes mapping for the File class -->
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
-		<property name="description" type="string" column="description"/>		
+		<property name="description" type="string" column="description"/>
 		<property name="name" type="string" column="file_name"/>
 		<property name="title" type="string" column="title"/>
 		<property name="type" type="string" column="file_type"/>
 		<property name="uri" type="string" column="file_uri"/>
-		<property name="uriExternal" type="boolean" column="is_uri_external"/>		
+		<property name="uriExternal" type="boolean" column="is_uri_external"/>
 		<property name="version" type="string" column="version"/>
 		<!-- Associations mapping for the File class -->
+    	<one-to-one name="dataSet" class="gov.nih.nci.cananolab.domain.common.DataSet" property-ref="file" />
 		<set name="keywordCollection" table="keyword_file" lazy="false" inverse="false">
 			<cache usage="read-write" />
 			<key column="file_pk_id" />
@@ -27,7 +28,7 @@
 		</set>
 		<joined-subclass name="gov.nih.nci.cananolab.domain.common.Publication" table="publication" lazy="true">
 			<key column="publication_pk_id" />
-			<!-- Attributes mapping for the Publication class -->			
+			<!-- Attributes mapping for the Publication class -->
 			<property name="abstractText" type="string" column="abstract"/>
 			<property name="category" type="string" column="category"/>
 			<property name="digitalObjectId" type="string" column="digital_object_id"/>
@@ -44,7 +45,7 @@
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.Author" column="author_pk_id" />
-			</set>			
+			</set>
 			<set name="nanoparticleSampleCollection" table="nanoparticle_sample_publication" lazy="true" cascade="save-update">
 				<cache usage="read-write" />
 				<key column="publication_pk_id" />
