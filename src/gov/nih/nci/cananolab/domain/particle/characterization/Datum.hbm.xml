@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle.characterization" auto-import="false">
+	<class name="Datum" table="datum" lazy="true" polymorphism="explicit">
+		<cache usage="read-write" />
+		<id name="id" type="long" column="datum_pk_id">
+			<generator class="hilo">
+                          <param name="table">hibernate_unique_key</param>
+                          <param name="column">next_hi</param>
+                        </generator>
+		</id>
+		<!-- Attributes mapping for the Datum class -->
+		<property name="createdBy" type="string" column="created_by"/>
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="description" type="string" column="description"/>
+		<property name="name" type="string" column="name"/>
+		<property name="value" type="string" column="value"/>
+		<property name="valueType" type="string" column="value_type"/>
+		<property name="valueUnit" type="string" column="value_unit"/>
+		<!-- Associations mapping for the Datum class -->
+		<many-to-one name="dataSet" class="gov.nih.nci.cananolab.domain.common.DataSet" column="data_set_pk_id" lazy="proxy" />
+		<many-to-one name="dataRow" class="gov.nih.nci.cananolab.domain.common.DataRow" column="data_row_pk_id" lazy="proxy" />
+		<many-to-one name="characterization" class="gov.nih.nci.cananolab.domain.particle.characterization.Characterization" column="characterization_pk_id" lazy="proxy" />
+		<set name="conditionCollection" table="datum_condition" lazy="true" inverse="false">
+			<cache usage="read-write" />
+			<key column="datum_pk_id" />
+			<many-to-many class="gov.nih.nci.cananolab.domain.particle.characterization.Condition" column="condition_pk_id" />
+		</set>
+	</class>
+</hibernate-mapping>
