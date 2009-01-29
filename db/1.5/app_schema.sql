@@ -359,7 +359,6 @@ CREATE TABLE datum
 	description TEXT,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
-	derived_bioassay_data_pk_id BIGINT,
 	data_set_pk_id BIGINT NOT NULL,
 	data_row_pk_id BIGINT NOT NULL,
 	characterization_pk_id BIGINT NOT NULL,
