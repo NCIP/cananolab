@@ -487,6 +487,121 @@ ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
 ;
 
 
+-- todo: derived datum
+CREATE TABLE datum
+(
+	datum_pk_id BIGINT NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	value VARCHAR(200) NOT NULL,
+	value_type VARCHAR(200),
+	value_unit VARCHAR(200),
+	description TEXT,
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
+	data_set_pk_id BIGINT NOT NULL,
+	data_row_pk_id BIGINT NOT NULL,
+	characterization_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (datum_pk_id),
+	KEY (characterization_pk_id),
+	KEY (data_row_pk_id)
+) TYPE=InnoDB
+;
+
+CREATE TABLE datum_condition
+(
+	datum_pk_id BIGINT NOT NULL,
+	condition_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (datum_pk_id, condition_pk_id),
+	KEY (condition_pk_id),
+	KEY (datum_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE data_set
+(
+	data_set_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT,
+	PRIMARY KEY (data_set_pk_id),
+	UNIQUE (data_set_pk_id),
+	KEY (file_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE data_row
+(
+	data_row_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (data_row_pk_id)
+) TYPE=InnoDB
+;
+
+CREATE TABLE experiment_condition
+(
+	condition_pk_id BIGINT NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	value VARCHAR(200) NOT NULL,
+	value_unit VARCHAR(200),
+	value_type VARCHAR(200),
+	PRIMARY KEY (condition_pk_id)
+) TYPE=InnoDB
+;
+
+ALTER TABLE datum ADD CONSTRAINT FK_datum_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE datum ADD CONSTRAINT FK_datum_data_row
+	FOREIGN KEY (data_row_pk_id) REFERENCES data_row (data_row_pk_id)
+;
+
+ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_condition
+	FOREIGN KEY (condition_pk_id) REFERENCES experiment_condition (condition_pk_id)
+;
+
+ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_data_row
+	FOREIGN KEY (datum_pk_id) REFERENCES datum (datum_pk_id)
+;
+
+ALTER TABLE data_set ADD CONSTRAINT FK_data_set_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
+INSERT INTO data_set(data_set_pk_id, file_pk_id)
+	SELECT derived_bioassay_data_pk_id, file_pk_id
+	FROM derived_bioassay_data
+;
+	
+INSERT INTO data_row(data_row_pk_id)
+SELECT datum_pk_id
+FROM derived_datum
+;
+
+INSERT INTO datum(datum_pk_id, name, value, value_type, value_unit,
+	description, created_by, created_date, data_set_pk_id, data_row_pk_id,
+	characterization_pk_id)
+	SELECT dd.datum_pk_id, dd.datum_name, dd.value, dd.value_type,
+		dd.value_unit, dd.description, dd.created_by, dd.created_date,
+		dd.derived_bioassay_data_pk_id, dd.datum_pk_id,
+		b.characterization_pk_id		
+	FROM derived_datum dd, derived_bioassay_data b
+	WHERE dd.derived_bioassay_data_pk_id = b.derived_bioassay_data_pk_id
+;
+
+ALTER TABLE characterization ADD COLUMN poc_pk_id BIGINT;
+
+UPDATE characterization c, point_of_contact p, organization o
+SET c.poc_pk_id = p.poc_pk_id
+WHERE p.organization_pk_id = o.organization_pk_id
+AND o.name = c.source
+;
+
+	 
+--ALTER TABLE characterization DROP COLUMN source;
+--DROP TABLE derived_datum;
+--DROP TABLE derived_bioassay_data;
+	 
+	 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
