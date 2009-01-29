@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.common;
 
-import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
