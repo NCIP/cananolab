@@ -21,7 +21,7 @@
 		<set name="experimentConfigCollection" inverse="false" lazy="true" cascade="save-update, delete">
 			<cache usage="read-write" />
 			<key column="characterization_pk_id" />
-			<one-to-many class="gov.nih.nci.cananolab.domain.common.ExperimentConfig"/>
+			<one-to-many class="gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig"/>
 		</set>
 		<many-to-one name="protocolFile" class="gov.nih.nci.cananolab.domain.common.ProtocolFile" column="protocol_file_pk_id" lazy="proxy"/>
 		<many-to-one name="pointOfContact" class="gov.nih.nci.cananolab.domain.common.PointOfContact" column="poc_pk_id" lazy="proxy" />
