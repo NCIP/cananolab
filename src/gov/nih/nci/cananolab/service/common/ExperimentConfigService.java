@@ -1,10 +1,9 @@
 package gov.nih.nci.cananolab.service.common;
 
-import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
+import gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-
 import java.util.List;
 
 /**

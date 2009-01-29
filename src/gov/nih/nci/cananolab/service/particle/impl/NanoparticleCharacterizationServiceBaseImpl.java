@@ -5,8 +5,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -73,43 +71,44 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 			for (Characterization chara : charas) {
 				CharacterizationBean charBean = new CharacterizationBean(chara);
 				charSummary.getCharBeans().add(charBean);
-				if (charBean.getDerivedBioAssayDataList() != null
-						&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
-					for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
-							.getDerivedBioAssayDataList()) {
-						if (fileService instanceof FileServiceLocalImpl) {
-							fileService.retrieveVisibility(
-									derivedBioAssayDataBean.getFileBean(),
-									user);
-						}
-						Map<String, String> datumMap = new HashMap<String, String>();
-						for (DerivedDatumBean data : derivedBioAssayDataBean
-								.getDatumList()) {
-							String datumLabel = data.getDomainDerivedDatum()
-									.getName();
-							if (data.getDomainDerivedDatum().getValueUnit() != null
-									&& data.getDomainDerivedDatum().getValueUnit().length() > 0) {
-								datumLabel += "(" + data.getDomainDerivedDatum().getValueUnit() + ")";
-							}
-							datumMap
-									.put(datumLabel, data.getValueStr());
-						}
-						CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
-						charSummaryRow.setCharBean(charBean);
-						charSummaryRow.setDatumMap(datumMap);
-						charSummaryRow
-								.setDerivedBioAssayDataBean(derivedBioAssayDataBean);
-						charSummary.getSummaryRows().add(charSummaryRow);
-						if (datumMap != null && !datumMap.isEmpty()) {
-							charSummary.getColumnLabels().addAll(
-									datumMap.keySet());
-						}
-					}
-				} else {
-					CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
-					charSummaryRow.setCharBean(charBean);
-					charSummary.getSummaryRows().add(charSummaryRow);
-				}
+				//TODO:
+//				if (charBean.getDerivedBioAssayDataList() != null
+//						&& !charBean.getDerivedBioAssayDataList().isEmpty()) {
+//					for (DerivedBioAssayDataBean derivedBioAssayDataBean : charBean
+//							.getDerivedBioAssayDataList()) {
+//						if (fileService instanceof FileServiceLocalImpl) {
+//							fileService.retrieveVisibility(
+//									derivedBioAssayDataBean.getFileBean(),
+//									user);
+//						}
+//						Map<String, String> datumMap = new HashMap<String, String>();
+//						for (DerivedDatumBean data : derivedBioAssayDataBean
+//								.getDatumList()) {
+//							String datumLabel = data.getDomainDerivedDatum()
+//									.getName();
+//							if (data.getDomainDerivedDatum().getValueUnit() != null
+//									&& data.getDomainDerivedDatum().getValueUnit().length() > 0) {
+//								datumLabel += "(" + data.getDomainDerivedDatum().getValueUnit() + ")";
+//							}
+//							datumMap
+//									.put(datumLabel, data.getValueStr());
+//						}
+//						CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
+//						charSummaryRow.setCharBean(charBean);
+//						charSummaryRow.setDatumMap(datumMap);
+//						charSummaryRow
+//								.setDerivedBioAssayDataBean(derivedBioAssayDataBean);
+//						charSummary.getSummaryRows().add(charSummaryRow);
+//						if (datumMap != null && !datumMap.isEmpty()) {
+//							charSummary.getColumnLabels().addAll(
+//									datumMap.keySet());
+//						}
+//					}
+//				} else {
+//					CharacterizationSummaryRowBean charSummaryRow = new CharacterizationSummaryRowBean();
+//					charSummaryRow.setCharBean(charBean);
+//					charSummary.getSummaryRows().add(charSummaryRow);
+//				}
 			}
 			return charSummary;
 		} catch (Exception e) {

@@ -1,11 +1,12 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -28,7 +29,8 @@ import java.util.Map;
  *
  */
 public class CharacterizationBean {
-	private String characterizationSource;
+	//private String characterizationSource;
+	private PointOfContactBean pocBean;
 
 	// used to distinguish different instances of characterizations, which are
 	// shown as different links on the view pages.
@@ -42,25 +44,21 @@ public class CharacterizationBean {
 
 	private List<ExperimentConfigBean> experimentConfigs = new ArrayList<ExperimentConfigBean>();
 
-	private List<DerivedBioAssayDataBean> derivedBioAssayDataList = new ArrayList<DerivedBioAssayDataBean>();
+	private List<DatumBean> datumCollection = new ArrayList<DatumBean>();
 
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
 	protected Characterization domainChar;
-
+	
 	private String className;
 
 	protected String dateString;
 
-	public String getDateString() {
-		return dateString;
-	}
-
-	public void setDateString(String dateString) {
-		this.dateString = dateString;
-	}
+	
+	
 
 	public CharacterizationBean() {
+		pocBean = new PointOfContactBean();
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -68,20 +66,27 @@ public class CharacterizationBean {
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDescription();
 		this.viewTitle = chara.getIdentificationName();
-		this.characterizationSource = chara.getSource();
+		if (chara != null) {
+			PointOfContact poc = chara.getPointOfContact();
+			pocBean = new PointOfContactBean(poc);
+		}
+		if (pocBean != null) {
+			domainChar.setPointOfContact(pocBean.getDomain());
+		}
 		this.dateString = StringUtils.convertDateToString(chara.getDate(),
 				CaNanoLabConstants.DATE_FORMAT);
 
-		if (chara.getDerivedBioAssayDataCollection() != null) {
-			for (DerivedBioAssayData bioassayData : chara
-					.getDerivedBioAssayDataCollection()) {
-				derivedBioAssayDataList.add(new DerivedBioAssayDataBean(
-						bioassayData));
+		if (chara.getDatumCollection() != null) {
+			for (Datum datum : chara
+					.getDatumCollection()) {
+				datumCollection.add(new DatumBean(
+						datum));
 			}
-			Collections
-					.sort(
-							derivedBioAssayDataList,
-							new CaNanoLabComparators.DerivedBioAssayDataBeanDateComparator());
+			//TODO: may not need to sort, or sort by dataRow id
+//			Collections
+//					.sort(
+//							datumCollection,
+//							new CaNanoLabComparators.DatumBeanDateComparator());
 		}
 		if (chara.getProtocolFile() != null) {
 			protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
@@ -123,44 +128,44 @@ public class CharacterizationBean {
 			}
 		}
 
-		if (copy.getDerivedBioAssayDataCollection().isEmpty()) {
-			copy.setDerivedBioAssayDataCollection(null);
+		if (copy.getDatumCollection().isEmpty()) {
+			copy.setDatumCollection(null);
 		} else {
-			Collection<DerivedBioAssayData> bioassays = copy
-					.getDerivedBioAssayDataCollection();
+			Collection<Datum> data = copy
+					.getDatumCollection();
 			copy
-					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
-			copy.getDerivedBioAssayDataCollection().addAll(bioassays);
-			for (DerivedBioAssayData bioassay : copy
-					.getDerivedBioAssayDataCollection()) {
-				bioassay.setId(null);
-				bioassay
+					.setDatumCollection(new HashSet<Datum>());
+			copy.getDatumCollection().addAll(data);
+			for (Datum datum : copy.getDatumCollection()) {
+				datum.setId(null);
+				datum
 						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
-				bioassay.setCreatedDate(new Date());
-				if (bioassay.getFile() != null) {
-
-					bioassay.getFile().setId(null);
-					bioassay.getFile().setCreatedBy(
-							CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
-					bioassay.getFile().setCreatedDate(new Date());
-				}
-				if (bioassay.getDerivedDatumCollection().isEmpty()
-						|| !copyDerivedDatum) {
-					bioassay.setDerivedDatumCollection(null);
-				} else {
-					Collection<DerivedDatum> data = bioassay
-							.getDerivedDatumCollection();
-					bioassay
-							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
-					bioassay.getDerivedDatumCollection().addAll(data);
-					for (DerivedDatum datum : bioassay
-							.getDerivedDatumCollection()) {
-						datum.setId(null);
-						datum
-								.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
-						datum.setCreatedDate(new Date());
-					}
-				}
+				datum.setCreatedDate(new Date());
+				//TODO:: 
+//				if (bioassay.getFile() != null) {
+//
+//					bioassay.getFile().setId(null);
+//					bioassay.getFile().setCreatedBy(
+//							CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+//					bioassay.getFile().setCreatedDate(new Date());
+//				}
+//				if (bioassay.getDerivedDatumCollection().isEmpty()
+//						|| !copyDerivedDatum) {
+//					bioassay.setDerivedDatumCollection(null);
+//				} else {
+//					Collection<DerivedDatum> data = bioassay
+//							.getDerivedDatumCollection();
+//					bioassay
+//							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
+//					bioassay.getDerivedDatumCollection().addAll(data);
+//					for (DerivedDatum datum : bioassay
+//							.getDerivedDatumCollection()) {
+//						datum.setId(null);
+//						datum
+//								.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+//						datum.setCreatedDate(new Date());
+//					}
+//				}
 			}
 		}
 		return copy;
@@ -179,7 +184,9 @@ public class CharacterizationBean {
 		}
 		domainChar.setDescription(description);
 		domainChar.setIdentificationName(viewTitle);
-		domainChar.setSource(characterizationSource);
+		if (pocBean != null) {
+			domainChar.setPointOfContact(pocBean.getDomain());
+		}
 		domainChar.setDate(StringUtils.convertToDate(dateString,
 				CaNanoLabConstants.DATE_FORMAT));
 
@@ -202,35 +209,29 @@ public class CharacterizationBean {
 		} else {
 			domainChar.setProtocolFile(null);
 		}
-		if (domainChar.getDerivedBioAssayDataCollection() != null) {
-			domainChar.getDerivedBioAssayDataCollection().clear();
+		if (domainChar.getDatumCollection() != null) {
+			domainChar.getDatumCollection().clear();
 		} else {
 			domainChar
-					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+					.setDatumCollection(new HashSet<Datum>());
 		}
 		// set createdBy and createdDate
 		int i = 0;
-		for (DerivedBioAssayDataBean bioAssayData : derivedBioAssayDataList) {
-			if (bioAssayData.getDomainBioAssayData().getId() == null) {
-				bioAssayData.getDomainBioAssayData().setCreatedBy(createdBy);
-				bioAssayData.getDomainBioAssayData().setCreatedDate(new Date());
-			}
-			bioAssayData.setupDomainBioAssayData(typeToClass, createdBy,
-					internalUriPath, i);
-			domainChar.getDerivedBioAssayDataCollection().add(
-					bioAssayData.getDomainBioAssayData());
+		//TODO::
+		for (DatumBean datumBean : datumCollection) {
+//			if (bioAssayData.getDomainBioAssayData().getId() == null) {
+//				bioAssayData.getDomainBioAssayData().setCreatedBy(createdBy);
+//				bioAssayData.getDomainBioAssayData().setCreatedDate(new Date());
+//			}
+//			bioAssayData.setupDomainBioAssayData(typeToClass, createdBy,
+//					internalUriPath, i);
+//			domainChar.getDerivedBioAssayDataCollection().add(
+//					bioAssayData.getDomainBioAssayData());
 			i++;
 		}
 	}
 
-	public String getCharacterizationSource() {
-		return this.characterizationSource;
-	}
-
-	public void setCharacterizationSource(String characterizationSource) {
-		this.characterizationSource = characterizationSource;
-	}
-
+	
 	public String getViewTitle() {
 		// get only the first number of characters of the title
 		if (this.viewTitle != null
@@ -245,13 +246,13 @@ public class CharacterizationBean {
 		this.viewTitle = viewTitle;
 	}
 
-	public void addDerivedBioAssayData() {
-		derivedBioAssayDataList.add(new DerivedBioAssayDataBean());
-	}
-
-	public void removeDerivedBioAssayData(int ind) {
-		derivedBioAssayDataList.remove(ind);
-	}
+//	public void addDerivedBioAssayData() {
+//		derivedBioAssayDataList.add(new DerivedBioAssayDataBean());
+//	}
+//
+//	public void removeDerivedBioAssayData(int ind) {
+//		derivedBioAssayDataList.remove(ind);
+//	}
 
 	public String getDescription() {
 		return this.description;
@@ -261,9 +262,9 @@ public class CharacterizationBean {
 		this.description = description;
 	}
 
-	public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
-		return this.derivedBioAssayDataList;
-	}
+//	public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
+//		return this.derivedBioAssayDataList;
+//	}
 
 	public ProtocolFileBean getProtocolFileBean() {
 		return protocolFileBean;
@@ -311,5 +312,35 @@ public class CharacterizationBean {
 
 	public void setTheInstrument(Instrument theInstrument) {
 		this.theInstrument = theInstrument;
+	}
+	
+	public String getDateString() {
+		return dateString;
+	}
+	
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
+	
+	public PointOfContactBean getPocBean() {
+		return pocBean;
+	}
+
+	public void setPocBean(PointOfContactBean pocBean) {
+		this.pocBean = pocBean;
+	}
+
+	/**
+	 * @return the datumCollection
+	 */
+	public List<DatumBean> getDatumCollection() {
+		return datumCollection;
+	}
+
+	/**
+	 * @param datumCollection the datumCollection to set
+	 */
+	public void setDatumCollection(List<DatumBean> datumCollection) {
+		this.datumCollection = datumCollection;
 	}
 }

@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -12,7 +11,6 @@ import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Nanoparticle
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -23,7 +21,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -531,34 +528,34 @@ public class NanoparticleSampleServiceHelper {
 		return particleSample;
 	}
 
-	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
-			String charId) throws Exception {
-		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
-						+ charId);
-		List results = appService.query(crit);
-		FileServiceHelper fileHelper = new FileServiceHelper();
-		for (Object obj : results) {
-			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
-			// derivedBioAssayData's File
-			File File = findDerivedBioAssayDataFile(derivedBioAssayData
-					.getId().toString());
-
-			// File's keyword
-			if (File != null) {
-				List<Keyword> keywords = fileHelper
-						.findKeywordsByFileId(File.getId().toString());
-				File.setKeywordCollection(new HashSet<Keyword>(keywords));
-				derivedBioAssayData.setFile(File);
-			}
-			derivedBioAssayDataCollection.add(derivedBioAssayData);
-		}
-		return derivedBioAssayDataCollection;
-	}
+//	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
+//			String charId) throws Exception {
+//		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+//
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		HQLCriteria crit = new HQLCriteria(
+//				"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
+//						+ charId);
+//		List results = appService.query(crit);
+//		FileServiceHelper fileHelper = new FileServiceHelper();
+//		for (Object obj : results) {
+//			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
+//			// derivedBioAssayData's File
+//			File File = findDerivedBioAssayDataFile(derivedBioAssayData
+//					.getId().toString());
+//
+//			// File's keyword
+//			if (File != null) {
+//				List<Keyword> keywords = fileHelper
+//						.findKeywordsByFileId(File.getId().toString());
+//				File.setKeywordCollection(new HashSet<Keyword>(keywords));
+//				derivedBioAssayData.setFile(File);
+//			}
+//			derivedBioAssayDataCollection.add(derivedBioAssayData);
+//		}
+//		return derivedBioAssayDataCollection;
+//	}
 
 	public File findDerivedBioAssayDataFile(String derivedId)
 			throws Exception {

@@ -1,7 +1,5 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
@@ -11,8 +9,6 @@ import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -221,129 +217,130 @@ public class NanoparticleCharacterizationServiceHelper {
 //			}
 //		}
 
-		List<DerivedBioAssayDataBean> derivedBioAssayDataList = achar
-				.getDerivedBioAssayDataList();
-		int fileIndex = 1;
-
-		for (DerivedBioAssayDataBean derivedBioAssayData : derivedBioAssayDataList) {
-			short cellCount = 0;
-			if (derivedBioAssayData.getFileBean() != null) {
-				String dDescription = derivedBioAssayData.getFileBean()
-						.getDomainFile().getDescription();
-				if (dDescription != null) {
-					row = sheet.createRow(rowCount++);
-					cell = row.createCell(cellCount++);
-					cell.setCellStyle(headerStyle);
-					cell.setCellValue(new HSSFRichTextString(
-							"Characterization File #" + fileIndex
-									+ " Description"));
-					row.createCell(cellCount++).setCellValue(
-							new HSSFRichTextString(dDescription));
-
-				}
-			}
-			if (derivedBioAssayData != null
-					&& derivedBioAssayData.getFileBean() != null
-					&& derivedBioAssayData.getFileBean().getDomainFile()
-							.getUri() != null) {
-				row = sheet.createRow(rowCount++);
-				cellCount = 0;
-				cell = row.createCell(cellCount++);
-				cell.setCellStyle(headerStyle);
-				cell.setCellValue(new HSSFRichTextString(
-						"Characterization File #" + fileIndex));
-				/*
-				 * if(derivedBioAssayData.getType() != null) {
-				 * row.createCell(cellCount++).setCellValue(new
-				 * HSSFRichTextString(derivedBioAssayData.getType())); }
-				 */
-				if (derivedBioAssayData.getFileBean().isHidden()) {
-					row.createCell(cellCount++).setCellValue(
-							new HSSFRichTextString("Private file"));
-				} else {
-					if (derivedBioAssayData.getFileBean().isImage()) {
-						row.createCell(cellCount).setCellValue(
-								new HSSFRichTextString(derivedBioAssayData
-										.getFileBean().getDomainFile()
-										.getTitle()));
-						try {
-							String filePath = derivedBioAssayData
-									.getFileBean().getFullPath();
-							HSSFClientAnchor anchor;
-							short topLeftCell = cellCount;
-							short bottomRightCell = (short) (cellCount + 7);
-							int topLeftRow = rowCount + 1;
-							int bottomRightRow = rowCount + 22;
-							anchor = new HSSFClientAnchor(0, 0, 0, 255,
-									topLeftCell, topLeftRow, bottomRightCell,
-									bottomRightRow);
-							anchor.setAnchorType(2);
-							patriarch.createPicture(anchor, ExportUtils
-									.loadPicture(filePath, wb));
-							cellCount = bottomRightCell;
-							rowCount = (short) (bottomRightRow + 3);
-						} catch (IOException ioe) {
-							logger
-									.error(
-											"Input/output problem to export detail view image data ",
-											ioe);
-						}
-
-					} else { // question? download the whole file to a cell
-						// if not image?
-						row.createCell(cellCount++).setCellValue(
-								new HSSFRichTextString(derivedBioAssayData
-										.getFileBean().getDomainFile()
-										.getTitle()));
-					}
-
-				}
-			}
-
-			List<DerivedDatumBean> datumList = derivedBioAssayData
-					.getDatumList();
-			if (datumList != null && !datumList.isEmpty()) {
-				cellCount = 0;
-				row = sheet.createRow(rowCount);
-				rowCount++;
-				cell = row.createCell(cellCount++);
-				cell.setCellStyle(headerStyle);
-				cell.setCellValue(new HSSFRichTextString(
-						"Characterization Derived Data #" + fileIndex));
-
-				row = sheet.createRow(rowCount++);
-				row = sheet.createRow(rowCount++);
-
-				short ccount = 0;
-				for (DerivedDatumBean datum : datumList) {
-					if (datum.getDomainDerivedDatum().getValueUnit() != null
-							&& datum.getDomainDerivedDatum().getValueUnit()
-									.trim().length() > 0) {
-						cell = row.createCell(ccount++);
-						cell.setCellStyle(headerStyle);
-						cell.setCellValue(new HSSFRichTextString(datum
-								.getDomainDerivedDatum().getName()
-								+ " ("
-								+ datum.getDomainDerivedDatum().getValueUnit()
-								+ ")"));
-					} else {
-						cell = row.createCell(ccount++);
-						cell.setCellStyle(headerStyle);
-						cell.setCellValue(new HSSFRichTextString(datum
-								.getDomainDerivedDatum().getName()));
-					}
-				}
-
-				row = sheet.createRow(rowCount++);
-				ccount = 0;
-				for (DerivedDatumBean datum : datumList) {
-					row.createCell(ccount++).setCellValue(
-							new HSSFRichTextString(datum.getValueStr()));
-				}
-				rowCount++;
-			}
-			fileIndex++;
-		}
+		//TODO: datum in exported file
+//		List<DerivedBioAssayDataBean> derivedBioAssayDataList = achar
+//				.getDerivedBioAssayDataList();
+//		int fileIndex = 1;
+//
+//		for (DerivedBioAssayDataBean derivedBioAssayData : derivedBioAssayDataList) {
+//			short cellCount = 0;
+//			if (derivedBioAssayData.getFileBean() != null) {
+//				String dDescription = derivedBioAssayData.getFileBean()
+//						.getDomainFile().getDescription();
+//				if (dDescription != null) {
+//					row = sheet.createRow(rowCount++);
+//					cell = row.createCell(cellCount++);
+//					cell.setCellStyle(headerStyle);
+//					cell.setCellValue(new HSSFRichTextString(
+//							"Characterization File #" + fileIndex
+//									+ " Description"));
+//					row.createCell(cellCount++).setCellValue(
+//							new HSSFRichTextString(dDescription));
+//
+//				}
+//			}
+//			if (derivedBioAssayData != null
+//					&& derivedBioAssayData.getFileBean() != null
+//					&& derivedBioAssayData.getFileBean().getDomainFile()
+//							.getUri() != null) {
+//				row = sheet.createRow(rowCount++);
+//				cellCount = 0;
+//				cell = row.createCell(cellCount++);
+//				cell.setCellStyle(headerStyle);
+//				cell.setCellValue(new HSSFRichTextString(
+//						"Characterization File #" + fileIndex));
+//				/*
+//				 * if(derivedBioAssayData.getType() != null) {
+//				 * row.createCell(cellCount++).setCellValue(new
+//				 * HSSFRichTextString(derivedBioAssayData.getType())); }
+//				 */
+//				if (derivedBioAssayData.getFileBean().isHidden()) {
+//					row.createCell(cellCount++).setCellValue(
+//							new HSSFRichTextString("Private file"));
+//				} else {
+//					if (derivedBioAssayData.getFileBean().isImage()) {
+//						row.createCell(cellCount).setCellValue(
+//								new HSSFRichTextString(derivedBioAssayData
+//										.getFileBean().getDomainFile()
+//										.getTitle()));
+//						try {
+//							String filePath = derivedBioAssayData
+//									.getFileBean().getFullPath();
+//							HSSFClientAnchor anchor;
+//							short topLeftCell = cellCount;
+//							short bottomRightCell = (short) (cellCount + 7);
+//							int topLeftRow = rowCount + 1;
+//							int bottomRightRow = rowCount + 22;
+//							anchor = new HSSFClientAnchor(0, 0, 0, 255,
+//									topLeftCell, topLeftRow, bottomRightCell,
+//									bottomRightRow);
+//							anchor.setAnchorType(2);
+//							patriarch.createPicture(anchor, ExportUtils
+//									.loadPicture(filePath, wb));
+//							cellCount = bottomRightCell;
+//							rowCount = (short) (bottomRightRow + 3);
+//						} catch (IOException ioe) {
+//							logger
+//									.error(
+//											"Input/output problem to export detail view image data ",
+//											ioe);
+//						}
+//
+//					} else { // question? download the whole file to a cell
+//						// if not image?
+//						row.createCell(cellCount++).setCellValue(
+//								new HSSFRichTextString(derivedBioAssayData
+//										.getFileBean().getDomainFile()
+//										.getTitle()));
+//					}
+//
+//				}
+//			}
+//
+//			List<DerivedDatumBean> datumList = derivedBioAssayData
+//					.getDatumList();
+//			if (datumList != null && !datumList.isEmpty()) {
+//				cellCount = 0;
+//				row = sheet.createRow(rowCount);
+//				rowCount++;
+//				cell = row.createCell(cellCount++);
+//				cell.setCellStyle(headerStyle);
+//				cell.setCellValue(new HSSFRichTextString(
+//						"Characterization Derived Data #" + fileIndex));
+//
+//				row = sheet.createRow(rowCount++);
+//				row = sheet.createRow(rowCount++);
+//
+//				short ccount = 0;
+//				for (DerivedDatumBean datum : datumList) {
+//					if (datum.getDomainDerivedDatum().getValueUnit() != null
+//							&& datum.getDomainDerivedDatum().getValueUnit()
+//									.trim().length() > 0) {
+//						cell = row.createCell(ccount++);
+//						cell.setCellStyle(headerStyle);
+//						cell.setCellValue(new HSSFRichTextString(datum
+//								.getDomainDerivedDatum().getName()
+//								+ " ("
+//								+ datum.getDomainDerivedDatum().getValueUnit()
+//								+ ")"));
+//					} else {
+//						cell = row.createCell(ccount++);
+//						cell.setCellStyle(headerStyle);
+//						cell.setCellValue(new HSSFRichTextString(datum
+//								.getDomainDerivedDatum().getName()));
+//					}
+//				}
+//
+//				row = sheet.createRow(rowCount++);
+//				ccount = 0;
+//				for (DerivedDatumBean datum : datumList) {
+//					row.createCell(ccount++).setCellValue(
+//							new HSSFRichTextString(datum.getValueStr()));
+//				}
+				//rowCount++;
+			//}
+			//fileIndex++;
+		//}
 		return rowCount;
 	}
 
@@ -445,33 +442,34 @@ public class NanoparticleCharacterizationServiceHelper {
 						new HSSFRichTextString((String) datumMap.get(label)));
 			}
 
-			DerivedBioAssayDataBean charFile = sbean
-					.getDerivedBioAssayDataBean();
-			if (charFile != null) {
-				StringBuffer sbuf = new StringBuffer();
-				if (charFile.getFileBean() != null
-						&& charFile.getFileBean().getDomainFile().getType() != null
-						&& charFile.getFileBean().getDomainFile().getType()
-								.length() > 0) {
-					sbuf.append(charFile.getFileBean().getDomainFile()
-							.getType()
-							+ " ");
-				}
-				if (charFile.getFileBean() != null
-						&& charFile.getFileBean().getDomainFile().getUri() != null) {
-					if (charFile.getFileBean().isHidden()) {
-						sbuf.append("Private file");
-					} else if (charFile.getFileBean().getDomainFile()
-							.getTitle() != null) {
-						sbuf.append(charFile.getFileBean().getDomainFile()
-								.getTitle());
-					}
-				}
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString(sbuf.toString()));
-			} else {
-				row.createCell(cellCount++); // empty cell
-			}
+			//TODO: 
+//			DerivedBioAssayDataBean charFile = sbean
+//					.getDerivedBioAssayDataBean();
+//			if (charFile != null) {
+//				StringBuffer sbuf = new StringBuffer();
+//				if (charFile.getFileBean() != null
+//						&& charFile.getFileBean().getDomainFile().getType() != null
+//						&& charFile.getFileBean().getDomainFile().getType()
+//								.length() > 0) {
+//					sbuf.append(charFile.getFileBean().getDomainFile()
+//							.getType()
+//							+ " ");
+//				}
+//				if (charFile.getFileBean() != null
+//						&& charFile.getFileBean().getDomainFile().getUri() != null) {
+//					if (charFile.getFileBean().isHidden()) {
+//						sbuf.append("Private file");
+//					} else if (charFile.getFileBean().getDomainFile()
+//							.getTitle() != null) {
+//						sbuf.append(charFile.getFileBean().getDomainFile()
+//								.getTitle());
+//					}
+//				}
+//				row.createCell(cellCount++).setCellValue(
+//						new HSSFRichTextString(sbuf.toString()));
+//			} else {
+//				row.createCell(cellCount++); // empty cell
+//			}
 
 			//TODO instrument and technique in summary view
 			// instrument
@@ -517,33 +515,33 @@ public class NanoparticleCharacterizationServiceHelper {
 		return protocolFile;
 	}
 
-	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
-			java.lang.String characterizationId) throws Exception {
-		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
-						+ characterizationId);
-		List results = appService.query(crit);
-		FileServiceHelper fileHelper = new FileServiceHelper();
-		for (Object obj : results) {
-			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
-			// derivedBioAssayData's File
-			File File = findFileByDerivedBioAssayDataId(derivedBioAssayData
-					.getId().toString());
-
-			// File's keyword
-			if (File != null) {
-				List<Keyword> keywordCollection = fileHelper
-						.findKeywordsByFileId(File.getId().toString());
-				File.setKeywordCollection(keywordCollection);
-				derivedBioAssayData.setFile(File);
-			}
-			derivedBioAssayDataCollection.add(derivedBioAssayData);
-		}
-		return derivedBioAssayDataCollection;
-	}
+//	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharacterizationId(
+//			java.lang.String characterizationId) throws Exception {
+//		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		HQLCriteria crit = new HQLCriteria(
+//				"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
+//						+ characterizationId);
+//		List results = appService.query(crit);
+//		FileServiceHelper fileHelper = new FileServiceHelper();
+//		for (Object obj : results) {
+//			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
+//			// derivedBioAssayData's File
+//			File File = findFileByDerivedBioAssayDataId(derivedBioAssayData
+//					.getId().toString());
+//
+//			// File's keyword
+//			if (File != null) {
+//				List<Keyword> keywordCollection = fileHelper
+//						.findKeywordsByFileId(File.getId().toString());
+//				File.setKeywordCollection(keywordCollection);
+//				derivedBioAssayData.setFile(File);
+//			}
+//			derivedBioAssayDataCollection.add(derivedBioAssayData);
+//		}
+//		return derivedBioAssayDataCollection;
+//	}
 
 	//TODO update for grid service
 //	public Instrument findInstrumentByInstrumentConfigurationId(
@@ -610,19 +608,19 @@ public class NanoparticleCharacterizationServiceHelper {
 		return File;
 	}
 
-	public List<DerivedDatum> findDerivedDatumListByDerivedBioAssayDataId(
-			String derivedBioAssayDataId) throws Exception {
-		List<DerivedDatum> datumList = new ArrayList<DerivedDatum>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select bioassay.derivedDatumCollection from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
-						+ derivedBioAssayDataId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			datumList.add((DerivedDatum) obj);
-		}
-		return datumList;
-	}
+//	public List<DerivedDatum> findDerivedDatumListByDerivedBioAssayDataId(
+//			String derivedBioAssayDataId) throws Exception {
+//		List<DerivedDatum> datumList = new ArrayList<DerivedDatum>();
+//
+//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+//				.getApplicationService();
+//		HQLCriteria crit = new HQLCriteria(
+//				"select bioassay.derivedDatumCollection from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
+//						+ derivedBioAssayDataId);
+//		List results = appService.query(crit);
+//		for (Object obj : results) {
+//			datumList.add((DerivedDatum) obj);
+//		}
+//		return datumList;
+//	}
 }

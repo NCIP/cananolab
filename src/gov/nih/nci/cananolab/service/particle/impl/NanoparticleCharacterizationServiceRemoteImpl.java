@@ -7,9 +7,6 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -199,7 +196,8 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			loadProtocolForProtocolFile(protocolFile);
 			achar.setProtocolFile(protocolFile);
 		}
-		loadDerivedBioAssayDataForCharacterization(achar);
+		//TODO:: temporarily commented until grid service is updated
+		//loadDerivedBioAssayDataForCharacterization(achar);
 		if (achar instanceof Surface) {
 			loadSurfaceChemistriesForSurface((Surface) achar);
 		}
@@ -253,34 +251,34 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		}
 	}
 
-	private void loadDerivedBioAssayDataForCharacterization(
-			Characterization achar) throws Exception {
-		DerivedBioAssayData[] bioassayArray = gridClient
-				.getDerivedBioAssayDatasByCharacterizationId(achar.getId()
-						.toString());
-		if (bioassayArray != null && bioassayArray.length > 0) {
-			achar
-					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
-			for (DerivedBioAssayData bioassay : bioassayArray) {
-				/**
-				 * TODO temporarily commented File file = gridClient
-				 * .getFileByDerivedBioAssayDataId(bioassay.getId()
-				 * .toString()); if (file != null) { bioassay.setFile(file); }
-				 */
-				DerivedDatum[] datums = gridClient
-						.getDerivedDatumsByDerivedBioAssayDataId(bioassay
-								.getId().toString());
-				if (datums != null && datums.length > 0) {
-					bioassay
-							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
-					for (DerivedDatum datum : datums) {
-						bioassay.getDerivedDatumCollection().add(datum);
-					}
-				}
-				achar.getDerivedBioAssayDataCollection().add(bioassay);
-			}
-		}
-	}
+//	private void loadDerivedBioAssayDataForCharacterization(
+//			Characterization achar) throws Exception {
+//		DerivedBioAssayData[] bioassayArray = gridClient
+//				.getDerivedBioAssayDatasByCharacterizationId(achar.getId()
+//						.toString());
+//		if (bioassayArray != null && bioassayArray.length > 0) {
+//			achar
+//					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+//			for (DerivedBioAssayData bioassay : bioassayArray) {
+//				/**
+//				 * TODO temporarily commented File file = gridClient
+//				 * .getFileByDerivedBioAssayDataId(bioassay.getId()
+//				 * .toString()); if (file != null) { bioassay.setFile(file); }
+//				 */
+//				DerivedDatum[] datums = gridClient
+//						.getDerivedDatumsByDerivedBioAssayDataId(bioassay
+//								.getId().toString());
+//				if (datums != null && datums.length > 0) {
+//					bioassay
+//							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
+//					for (DerivedDatum datum : datums) {
+//						bioassay.getDerivedDatumCollection().add(datum);
+//					}
+//				}
+//				achar.getDerivedBioAssayDataCollection().add(bioassay);
+//			}
+//		}
+//	}
 
 	private void loadSurfaceChemistriesForSurface(Surface surface)
 			throws Exception {

@@ -1,13 +1,9 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.common.DerivedBioAssayData;
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
@@ -21,7 +17,6 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -83,14 +78,14 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			achar.setNanoparticleSample(particleSample);
 			particleSample.getCharacterizationCollection().add(achar);
 
-			if (achar.getDerivedBioAssayDataCollection() != null) {
-				for (DerivedBioAssayData bioassay : achar
-						.getDerivedBioAssayDataCollection()) {
-					if (bioassay.getFile() != null) {
-						fileService.prepareSaveFile(bioassay.getFile());
-					}
-				}
-			}
+//			if (achar.getDerivedBioAssayDataCollection() != null) {
+//				for (DerivedBioAssayData bioassay : achar
+//						.getDerivedBioAssayDataCollection()) {
+//					if (bioassay.getFile() != null) {
+//						fileService.prepareSaveFile(bioassay.getFile());
+//					}
+//				}
+//			}
 			appService.saveOrUpdate(achar);
 		} catch (DuplicateEntriesException e) {
 			throw e;
@@ -204,11 +199,11 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException {
 		try {
-			for (DerivedBioAssayDataBean bioAssayData : charBean
-					.getDerivedBioAssayDataList()) {
-				fileService
-						.retrieveVisibility(bioAssayData.getFileBean(), user);
-			}
+//			for (DerivedBioAssayDataBean bioAssayData : charBean
+//					.getDerivedBioAssayDataList()) {
+//				fileService
+//						.retrieveVisibility(bioAssayData.getFileBean(), user);
+//			}
 			fileService
 					.retrieveVisibility(charBean.getProtocolFileBean(), user);
 		} catch (Exception e) {
@@ -249,28 +244,28 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		if (aChar != null) {
 			authService.assignPublicVisibility(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection
-			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
-					.getDerivedBioAssayDataCollection();
-			if (derivedBioAssayDataCollection != null) {
-				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
-					if (aDerived != null) {
-						authService.assignPublicVisibility(aDerived.getId()
-								.toString());
-					}
-					// derived.derivedDatum
-					Collection<DerivedDatum> derivedDatumCollection = aDerived
-							.getDerivedDatumCollection();
-					if (derivedDatumCollection != null) {
-						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
-							if (aDerivedDatum != null) {
-								authService
-										.assignPublicVisibility(aDerivedDatum
-												.getId().toString());
-							}
-						}
-					}
-				}
-			}
+//			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
+//					.getDerivedBioAssayDataCollection();
+//			if (derivedBioAssayDataCollection != null) {
+//				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
+//					if (aDerived != null) {
+//						authService.assignPublicVisibility(aDerived.getId()
+//								.toString());
+//					}
+//					// derived.derivedDatum
+//					Collection<DerivedDatum> derivedDatumCollection = aDerived
+//							.getDerivedDatumCollection();
+//					if (derivedDatumCollection != null) {
+//						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
+//							if (aDerivedDatum != null) {
+//								authService
+//										.assignPublicVisibility(aDerivedDatum
+//												.getId().toString());
+//							}
+//						}
+//					}
+//				}
+//			}
 
 			//TODO visiblity for instrument and technique
 //			// InstrumentConfiguration
@@ -292,27 +287,27 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		if (aChar != null) {
 			authService.removePublicGroup(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection
-			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
-					.getDerivedBioAssayDataCollection();
-			if (derivedBioAssayDataCollection != null) {
-				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
-					if (aDerived != null) {
-						authService.removePublicGroup(aDerived.getId()
-								.toString());
-					}
-					// derived.derivedDatum
-					Collection<DerivedDatum> derivedDatumCollection = aDerived
-							.getDerivedDatumCollection();
-					if (derivedDatumCollection != null) {
-						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
-							if (aDerivedDatum != null) {
-								authService.removePublicGroup(aDerivedDatum
-										.getId().toString());
-							}
-						}
-					}
-				}
-			}
+//			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
+//					.getDerivedBioAssayDataCollection();
+//			if (derivedBioAssayDataCollection != null) {
+//				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
+//					if (aDerived != null) {
+//						authService.removePublicGroup(aDerived.getId()
+//								.toString());
+//					}
+//					// derived.derivedDatum
+//					Collection<DerivedDatum> derivedDatumCollection = aDerived
+//							.getDerivedDatumCollection();
+//					if (derivedDatumCollection != null) {
+//						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
+//							if (aDerivedDatum != null) {
+//								authService.removePublicGroup(aDerivedDatum
+//										.getId().toString());
+//							}
+//						}
+//					}
+//				}
+//			}
 			//TODO remove visibility for instrument and technique
 			// InstrumentConfiguration
 //			InstrumentConfiguration instrumentConfiguration = aChar

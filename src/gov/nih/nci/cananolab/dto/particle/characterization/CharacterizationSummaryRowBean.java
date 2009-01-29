@@ -15,7 +15,8 @@ public class CharacterizationSummaryRowBean {
 
 	private Map<String, String> datumMap = new HashMap<String, String>();
 
-	private DerivedBioAssayDataBean derivedBioAssayDataBean;
+	//private DerivedBioAssayDataBean derivedBioAssayDataBean;
+	private DatumBean datumBean;
 
 	public CharacterizationSummaryRowBean() {
 	}
@@ -36,12 +37,19 @@ public class CharacterizationSummaryRowBean {
 		this.charBean = charBean;
 	}
 
-	public DerivedBioAssayDataBean getDerivedBioAssayDataBean() {
-		return derivedBioAssayDataBean;
+	/**
+	 * @return the datumBean
+	 */
+	public DatumBean getDatumBean() {
+		return datumBean;
 	}
 
-	public void setDerivedBioAssayDataBean(
-			DerivedBioAssayDataBean derivedBioAssayDataBean) {
-		this.derivedBioAssayDataBean = derivedBioAssayDataBean;
+	/**
+	 * @param datumBean the datumBean to set
+	 */
+	public void setDatumBean(DatumBean datumBean) {
+		this.datumBean = datumBean;
 	}
+
+	
 }
