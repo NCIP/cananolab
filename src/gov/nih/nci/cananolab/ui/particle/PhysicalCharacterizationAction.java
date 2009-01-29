@@ -63,10 +63,10 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 				.persistCharacterizationDropdowns(request, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistPhysicalCharacterizationDropdowns(request, charBean);
-
-		if (!validateDerivedDatum(request, charBean)) {
-			return mapping.getInputForward();
-		}
+		//TODO::
+//		if (!validateDerivedDatum(request, charBean)) {
+//			return mapping.getInputForward();
+//		}
 
 		saveCharacterization(request, theForm, charBean);
 

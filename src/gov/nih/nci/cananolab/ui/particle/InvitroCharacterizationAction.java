@@ -59,10 +59,10 @@ public class InvitroCharacterizationAction extends BaseCharacterizationAction {
 				.persistCharacterizationDropdowns(request, charBean);
 		InitCharacterizationSetup.getInstance()
 				.persistInvitroCharacterizationDropdowns(request, charBean);
-
-		if (!validateDerivedDatum(request, charBean)) {
-			return mapping.getInputForward();
-		}
+		//TODO::
+//		if (!validateDerivedDatum(request, charBean)) {
+//			return mapping.getInputForward();
+//		}
 
 		saveCharacterization(request, theForm, charBean);
 

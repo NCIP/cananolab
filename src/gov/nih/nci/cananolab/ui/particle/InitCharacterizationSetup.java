@@ -1,21 +1,15 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
-import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
-import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
@@ -38,9 +32,10 @@ public class InitCharacterizationSetup {
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String className) throws Exception {
 		HttpSession session = request.getSession();
-		SortedSet<String> charSources = charService
-				.findAllCharacterizationSources();
-		session.setAttribute("characterizationSources", charSources);
+		//TODO: to test if allPointOfContacts in session
+//		SortedSet<String> charSources = charService
+//				.findAllCharacterizationSources();
+//		session.setAttribute("characterizationSources", charSources);
 		SortedSet<String> derivedDatumNames = InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "derivedDatumNames",
 						className, "derivedDatumName", "otherDerivedDatumName",
@@ -128,29 +123,30 @@ public class InitCharacterizationSetup {
 		setInvitroCharacterizationDropdowns(request);
 	}
 
+	//TODO::
 	public void persistCharacterizationDropdowns(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
-		for (DerivedBioAssayDataBean bioassay : charBean
-				.getDerivedBioAssayDataList()) {
-			if (bioassay.getFileBean() != null) {
-				InitSetup.getInstance().persistLookup(request, "File", "type",
-						"otherType",
-						bioassay.getFileBean().getDomainFile().getType());
-			}
-			for (DerivedDatumBean datum : bioassay.getDatumList()) {
-				InitSetup.getInstance().persistLookup(request,
-						datum.getDomainDerivedDatum().getName(), "unit",
-						"otherUnit",
-						datum.getDomainDerivedDatum().getValueUnit());
-				InitSetup.getInstance().persistLookup(request, "DerivedDatum",
-						"valueType", "otherValueType",
-						datum.getDomainDerivedDatum().getValueType());
-				InitSetup.getInstance().persistLookup(request,
-						charBean.getClassName(), "derivedDatumName",
-						"otherDerivedDatumName",
-						datum.getDomainDerivedDatum().getName());
-			}
-		}
+//		for (DerivedBioAssayDataBean bioassay : charBean
+//				.getDerivedBioAssayDataList()) {
+//			if (bioassay.getFileBean() != null) {
+//				InitSetup.getInstance().persistLookup(request, "File", "type",
+//						"otherType",
+//						bioassay.getFileBean().getDomainFile().getType());
+//			}
+//			for (DerivedDatumBean datum : bioassay.getDatumList()) {
+//				InitSetup.getInstance().persistLookup(request,
+//						datum.getDomainDerivedDatum().getName(), "unit",
+//						"otherUnit",
+//						datum.getDomainDerivedDatum().getValueUnit());
+//				InitSetup.getInstance().persistLookup(request, "DerivedDatum",
+//						"valueType", "otherValueType",
+//						datum.getDomainDerivedDatum().getValueType());
+//				InitSetup.getInstance().persistLookup(request,
+//						charBean.getClassName(), "derivedDatumName",
+//						"otherDerivedDatumName",
+//						datum.getDomainDerivedDatum().getName());
+//			}
+//		}
 		setCharactierizationDropDowns(request, charBean.getClassName());
 	}
 }

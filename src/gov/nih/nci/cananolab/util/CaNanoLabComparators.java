@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.util;
 
-import gov.nih.nci.cananolab.domain.common.DerivedDatum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Organization;
@@ -19,8 +18,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedBioAssayDataBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DerivedDatumBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.DatumBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -258,13 +256,13 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class DerivedBioAssayDataBeanDateComparator implements
-			Comparator<DerivedBioAssayDataBean> {
-		public int compare(DerivedBioAssayDataBean bioassay1,
-				DerivedBioAssayDataBean bioassay2) {
-			return bioassay1.getDomainBioAssayData().getCreatedDate()
+	public static class DatumBeanDateComparator implements
+			Comparator<DatumBean> {
+		public int compare(DatumBean datum1,
+				DatumBean datum2) {
+			return datum1.getDomainDatum().getCreatedDate()
 					.compareTo(
-							bioassay2.getDomainBioAssayData().getCreatedDate());
+							datum2.getDomainDatum().getCreatedDate());
 		}
 	}
 
@@ -275,20 +273,20 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class DerivedDatumBeanDateComparator implements
-			Comparator<DerivedDatumBean> {
-		public int compare(DerivedDatumBean data1, DerivedDatumBean data2) {
-			return data1.getDomainDerivedDatum().getCreatedDate().compareTo(
-					data2.getDomainDerivedDatum().getCreatedDate());
-		}
-	}
-
-	public static class DerivedDatumDateComparator implements
-			Comparator<DerivedDatum> {
-		public int compare(DerivedDatum data1, DerivedDatum data2) {
-			return data1.getCreatedDate().compareTo(data2.getCreatedDate());
-		}
-	}
+//	public static class DerivedDatumBeanDateComparator implements
+//			Comparator<DerivedDatumBean> {
+//		public int compare(DerivedDatumBean data1, DerivedDatumBean data2) {
+//			return data1.getDomainDerivedDatum().getCreatedDate().compareTo(
+//					data2.getDomainDerivedDatum().getCreatedDate());
+//		}
+//	}
+//
+//	public static class DerivedDatumDateComparator implements
+//			Comparator<DerivedDatum> {
+//		public int compare(DerivedDatum data1, DerivedDatum data2) {
+//			return data1.getCreatedDate().compareTo(data2.getCreatedDate());
+//		}
+//	}
 
 	public static class FunctionBeanDateComparator implements
 			Comparator<FunctionBean> {
