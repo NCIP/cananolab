@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<hibernate-mapping package="gov.nih.nci.cananolab.domain.characterization" auto-import="false">
+<hibernate-mapping package="gov.nih.nci.cananolab.domain.particle.characterization" auto-import="false">
 	<class name="ExperimentConfig" table="experiment_config" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
 		<id name="id" type="long" column="experiment_config_id">
