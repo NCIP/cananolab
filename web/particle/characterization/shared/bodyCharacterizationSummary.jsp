@@ -21,18 +21,19 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:select property="achar.characterizationSource"
+					<html:select property="achar.pocBean.displayName"
 						styleId="charSource"
-						onchange="javascript:callPrompt('Characterization Source', 'charSource');">
+						onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
 						<option value=""></option>
-						<html:options name="characterizationSources" />
+						<html:options collection="allPointOfContacts"
+							labelProperty="displayName" property="domain.id" />
 						<option value="other">
 							[Other]
 						</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
-						${characterizationForm.map.achar.characterizationSource}&nbsp;
+						${characterizationForm.map.achar.pocBean.displayName}&nbsp;
 				</c:otherwise>
 			</c:choose>
 		</td>
