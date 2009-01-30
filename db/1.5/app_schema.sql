@@ -1,5 +1,5 @@
-USE canano
-;
+USE canano;
+
 CREATE TABLE target
 (
 	target_pk_id BIGINT NOT NULL,
@@ -405,8 +405,7 @@ CREATE TABLE publication
 	research_area VARCHAR(200),
 	abstract TEXT,
 	PRIMARY KEY (publication_pk_id),
-	UNIQUE (publication_pk_id),
-	INDEX publication_pk_id (publication_pk_id ASC)
+	KEY (publication_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -560,7 +559,7 @@ CREATE TABLE characterization_file
 	PRIMARY KEY (characterization_pk_id, file_pk_id),
 	KEY (characterization_pk_id),
 	KEY (file_pk_id)
-)
+) TYPE=InnoDB
 ;
 
 
@@ -683,7 +682,7 @@ CREATE TABLE common_lookup
 	attribute VARCHAR(200) NOT NULL,
 	value VARCHAR(200) NOT NULL,
 	PRIMARY KEY (common_lookup_pk_id)
-)
+) TYPE=InnoDB
 ;
 
 
