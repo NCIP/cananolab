@@ -6,16 +6,15 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
 import gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig;
+import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +38,8 @@ public class CharacterizationBean {
 	private String description;
 
 	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
+
+	private DataSetBean theDataSet = new DataSetBean();
 
 	private Instrument theInstrument = new Instrument();
 
@@ -342,5 +343,19 @@ public class CharacterizationBean {
 	 */
 	public void setDatumCollection(List<DatumBean> datumCollection) {
 		this.datumCollection = datumCollection;
+	}
+
+	/**
+	 * @return the theDataSet
+	 */
+	public DataSetBean getTheDataSet() {
+		return theDataSet;
+	}
+
+	/**
+	 * @param theDataSet the theDataSet to set
+	 */
+	public void setTheDataSet(DataSetBean theDataSet) {
+		this.theDataSet = theDataSet;
 	}
 }

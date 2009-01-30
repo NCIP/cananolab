@@ -1,6 +1,12 @@
-package gov.nih.nci.cananolab.dto.particle.characterization;
+package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.DataSet;
+import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.dto.particle.characterization.DatumBean;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * View bean for Datum
@@ -8,16 +14,27 @@ import gov.nih.nci.cananolab.domain.common.DataSet;
  * @author pansu, tanq
  * 
  */
-public class DataSetBean {
+public class DataRowBean {
 	private DataSet domainDataSet = new DataSet();
+	private List<Datum> data = new ArrayList<Datum>();
 
-	public DataSetBean() {
+	public DataRowBean() {
 	}
 
-	public DataSetBean(DataSet dataSet) {
+	public DataRowBean(DataSet dataSet) {
 		domainDataSet = dataSet;
 	}
 
+	public void addDatum(Datum datum) {
+		if (data.contains(datum)) {
+			data.remove(datum);
+		}
+		data.add(datum);
+	}
+
+	public void removeDatum(Datum datum) {
+		data.remove(datum);
+	}
 	
 	public void setDomainDataSet(String createdBy, int index) throws Exception {
 //		if (domainDerivedDatum.getId() == null
@@ -57,6 +74,13 @@ public class DataSetBean {
 	 */
 	public void setDomainDataSet(DataSet domainDataSet) {
 		this.domainDataSet = domainDataSet;
+	}
+
+	/**
+	 * @return the data
+	 */
+	public Collection<Datum> getData() {
+		return data;
 	}
 
 	
