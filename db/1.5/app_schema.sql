@@ -356,7 +356,6 @@ CREATE TABLE datum
 	value VARCHAR(200) NOT NULL,
 	value_type VARCHAR(200),
 	value_unit VARCHAR(200),
-	description TEXT,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
 	data_set_pk_id BIGINT NOT NULL,
@@ -665,7 +664,7 @@ CREATE TABLE data_row
 ;
 
 
-CREATE TABLE condition
+CREATE TABLE experiment_condition
 (
 	condition_pk_id BIGINT NOT NULL,
 	name VARCHAR(200) NOT NULL,
@@ -948,7 +947,7 @@ ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
 ;
 
 ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_condition
-	FOREIGN KEY (condition_pk_id) REFERENCES condition (condition_pk_id)
+	FOREIGN KEY (condition_pk_id) REFERENCES experiment_condition (condition_pk_id)
 ;
 
 ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_data_row
