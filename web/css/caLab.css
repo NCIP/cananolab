@@ -1069,6 +1069,23 @@ img.img { /* for images that need a border */
 	text-align: left;
 }
 
+.labelNoBottomRightAlign {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	text-align: right;
+}
+
+.rightLabelNoBottomRightAlign {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	text-align: right;
+	border-right: 1px solid #5c5c5c;
+}
+
 .rightLabelNoBottom {
 	font-family: arial, helvetica, verdana, sans-serif;
 	font-size: 0.7em;
@@ -1084,6 +1101,36 @@ img.img { /* for images that need a border */
 	background-color: #f4f4f5;
 	color: #000000;
 	text-align: left;
+	border-left: 1px solid #5c5c5c;	
+}
+
+
+.labelWithTopNoBottom {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	border-top: 1px solid #5c5c5c;
+	text-align: left;
+}
+
+.rightLabelWithTopNoBottom {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	text-align: left;
+	border-top: 1px solid #5c5c5c;
+	border-right: 1px solid #5c5c5c;	
+}
+
+.leftLabelWithTopNoBottom {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	background-color: #f4f4f5;
+	color: #000000;
+	text-align: left;
+	border-top: 1px solid #5c5c5c;
 	border-left: 1px solid #5c5c5c;	
 }
 
