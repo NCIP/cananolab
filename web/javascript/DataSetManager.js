@@ -1,5 +1,5 @@
 
-var currentExperimentConfig = null;
+var currentDataSet = null;
 
 var instrumentCache = {};
 var viewed = -1;
@@ -55,18 +55,15 @@ function doSetTheExperimentConfig() {
 			populateExperimentConfig);
 }
 
-var instrumentCount = 1;
 
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
-		currentExperimentConfig = experimentConfig;
+		currentDataSet = experimentConfig;
 		dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
 		dwr.util.setValue("techniqueAbbr",
 				experimentConfig.domain.technique.abbreviation);
 		dwr.util.setValue("configDescription", experimentConfig.domain.description);
 		dwr.util.setValue("configId", experimentConfig.domain.id);
-		instrumentCount = experimentConfig.instruments.length;
-		rowCount = document.getElementById("instrumentRows").rows.length;
 		fillTable();
 	}
 }
@@ -78,9 +75,9 @@ function resetTheDataSet(isShow) {
 	} else {
 		hide('newDataSet');
 	}
-//	ExperimentConfigManager.resetExperimentConfig( function(experimentConfig) {
-//		currentExperimentConfig = experimentConfig;
-//	});
+	DataSetManager.resetDataSet( function(theDataSet) {
+		currentDataSet = theDataSet;
+	});
 //	dwr.util.setValue("techniqueType", "");
 //	dwr.util.setValue("techniqueAbbr", "");
 //	dwr.util.setValue("configDescription", "");
@@ -96,8 +93,6 @@ function resetTheDataSet(isShow) {
 //					});
 //	clearInstrument();
 }
-
-var rowCount = 0;
 
 function validateSaveConfig(actionName){
 	var techniqueType = document.getElementById('techniqueType');
@@ -123,9 +118,9 @@ function addInstrument() {
 	if (instrument.manufacturer!='' || 
 			instrument.modelName!='' ||
 			instrument.type!=''){
-		ExperimentConfigManager.addInstrument(currentExperimentConfig, instrument,
+		ExperimentConfigManager.addInstrument(currentDataSet, instrument,
 				function(experimentConfig) {
-					currentExperimentConfig = experimentConfig;
+					currentDataSet = experimentConfig;
 				});
 		window.setTimeout("fillTable()", 200);
 	}else{
@@ -134,24 +129,72 @@ function addInstrument() {
 }
 
 function addDatumColumn() {
+	var datumOrCondition = document.getElementById("datumOrCondition").value;
 	var datum = {
 		name :null,
 		valueType :null,
 		valueUnit :null
 	};
+	
 	dwr.util.getValues(datum);
 	if (datum.name!='' || 
 			datum.valueType!='' ||
 			datum.valueUnit!=''){
-		alert('name='+datum.name);
-//		ExperimentConfigManager.addInstrument(currentExperimentConfig, instrument,
+		DataSetManager.addColumnHeader(datum,
+				function(theDataSet) {
+					currentDataSet = theDataSet;
+				});
+		window.setTimeout("fillColumnTable()", 200);
+//		ExperimentConfigManager.addInstrument(currentDataSet, instrument,
 //				function(experimentConfig) {
-//					currentExperimentConfig = experimentConfig;
+//					currentDataSet = experimentConfig;
 //				});
 //		window.setTimeout("fillTable()", 200);
 	}else{
 		alert('Please fill in values');
 	}
+}
+
+
+function addRow() {
+	var id = -1;	
+	var datumArray = new Array();
+	for ( var i = 0; i < columnCount; i++) {
+		id = -i - 1;
+		var datum = {
+			name :null,
+			valueType :null,
+			valueUnit :null
+		};
+		dwr.util.getValues(datum);
+		datum.name = dwr.util.getValue("datumColumnName" + id);
+		datum.valueType = dwr.util.getValue("datumColumnValueType" + id);
+		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
+		datum.value = dwr.util.getValue("datumColumnValue" + id);
+		alert('name='+datum.name+' valueType='+datum.valueType+
+				' valueUnit='+datum.valueUnit+' value='+datum.value);
+		datumArray[i] = datum;
+		if (datum.name!='' || 
+				datum.valueType!='' ||
+				datum.valueUnit!=''){
+			
+			//window.setTimeout("fillColumnTable()", 200);
+	//		ExperimentConfigManager.addInstrument(currentDataSet, instrument,
+	//				function(experimentConfig) {
+	//					currentDataSet = experimentConfig;
+	//				});
+	//		window.setTimeout("fillTable()", 200);
+		}else{
+			alert('Please fill in values');
+		}
+		
+	}
+	alert('bef');
+	DataSetManager.addRow(datumArray,
+			function(theDataSet) {
+				currentDataSet = theDataSet;
+			});
+	alert('done');
 }
 
 function clearInstrument() {
@@ -162,41 +205,42 @@ function clearInstrument() {
 	document.getElementById("type").value = "";
 }
 
-function fillTable() {
-	var instruments = currentExperimentConfig.instruments;
-	dwr.util
-			.removeAllRows(
-					"instrumentRows",
-					{
-						filter : function(tr) {
-							return (tr.id != "pattern"
-									&& tr.id != "patternHeader" && tr.id != "patternAddRow");
-						}
-					});
-	var instrument, id;
-	//if (instruments.length>0){
-	//	show('instrumentTableDiv');
-	//}else{
-	//	hide('instrumentTableDiv');
-	//}
-	for ( var i = 0; i < instruments.length; i++) {
-		instrument = instruments[i];
-		if (instrument.id == null) {
-			instrument.id = -i - 1;
+var columnCount = 0;
+
+function fillColumnTable() {
+	var data = currentDataSet.theDataRow.data;
+//	dwr.util
+//			.removeAllRows(
+//					"instrumentRows",
+//					{
+//						filter : function(tr) {
+//							return (tr.id != "pattern"
+//									&& tr.id != "patternHeader" && tr.id != "patternAddRow");
+//						}
+//					});
+	var datum, id;	
+	columnCount = 0;
+	for ( var i = 0; i < data.length; i++) {
+		columnCount++;
+		datum = data[i];
+		if (datum.id == null) {
+			datum.id = -i - 1;
 		}
-		id = instrument.id;
-		dwr.util.cloneNode("pattern", {
+		id = datum.id;
+		alert(id+" datum.name="+datum.name+" datum.value="+datum.value);
+		dwr.util.cloneNode("datumColumnPattern", {
 			idSuffix :id
 		});
-		dwr.util.setValue("instrumentId" + id, instrument.id);
-		dwr.util.setValue("instrumentManufacturer" + id,
-				instrument.manufacturer);
-		dwr.util.setValue("instrumentModelName" + id, instrument.modelName);
-		dwr.util.setValue("instrumentType" + id, instrument.type);
-		$("pattern" + id).style.display = "";
-		instrumentCache[id] = instrument;
+		dwr.util.setValue("datumColumnName" + id, datum.name);
+		dwr.util.setValue("datumColumnValueType" + id, datum.valueType);
+		dwr.util.setValue("datumColumnValueUnit" + id, datum.valueUnit);
+		if (i==data.length-1){
+			dwr.util.setValue("datumColumnValue" + id, document.getElementById("value").value);
+		}
+		$("datumColumnPattern" + id).style.display = "";
+		//instrumentCache[id] = instrument;
 	}
-	clearInstrument();
+	//clearInstrument();
 }
 
 function editClicked(eleid) {
@@ -214,9 +258,9 @@ function deleteClicked() {
 		var instrument = instrumentCache[eleid];
 		if (confirm("Are you sure you want to delete '" + instrument.manufacturer
 				+ " " + instrument.modelName+"'?")) {
-			ExperimentConfigManager.deleteInstrument(currentExperimentConfig,
+			ExperimentConfigManager.deleteInstrument(currentDataSet,
 					instrument, function(experimentConfig) {
-						currentExperimentConfig = experimentConfig;
+						currentDataSet = experimentConfig;
 					});
 			window.setTimeout("fillTable()", 200);
 		}

@@ -9,24 +9,14 @@
 	class="topBorderOnly" summary="">
 	<tr>
 		<td class="leftLabelWithTopNoBottom">
-			<strong>Datum</strong>
-		</td>
-		<td class="labelWithTopNoBottom">
-			<strong>Name</strong>
-		</td>
-		<td class="labelWithTopNoBottom">
-			<html:select
-				property="achar.theExperimentConfig.domain.technique.type"
-				styleId="techniqueType"
-				onchange="javascript:callPrompt('Technique Type', 'techniqueType');retrieveTechniqueAbbreviation();">
-				<option value=""></option>
-				<option value="other">
-					[Other]
+			<select id="datumOrCondition">
+				<option value="Datum">
+					Datum
 				</option>
-			</html:select>
-		</td>
-		<td class="labelWithTopNoBottom">
-			<strong>Condition</strong>
+				<option value="Condition">
+					Condition
+					</ption>
+			</select>
 		</td>
 		<td class="labelWithTopNoBottom">
 			<strong>Name</strong>
@@ -34,9 +24,12 @@
 		<td class="rightLabelWithTopNoBottom">
 			<html:select
 				property="achar.theExperimentConfig.domain.technique.type"
-				styleId="techniqueType"
-				onchange="javascript:callPrompt('Technique Type', 'techniqueType');retrieveTechniqueAbbreviation();">
+				styleId="name"
+				onchange="javascript:callPrompt('Name', 'name');">				
 				<option value=""></option>
+				<option value="test">
+					test
+				</option>
 				<option value="other">
 					[Other]
 				</option>
@@ -50,75 +43,79 @@
 		<td class="labelNoBottom">
 			<strong>Value Type</strong>
 		</td>
-		<td class="labelNoBottom">
-			<html:text property="achar.theExperimentConfig.domain.technique.type" />
-		</td>
-		<td class="labelNoBottom">
-			&nbsp;
-		</td>
-		<td class="labelNoBottom">
-			<strong>Value Type</strong>
-		</td>
 		<td class="rightLabelNoBottom">
-			<html:text property="achar.theExperimentConfig.domain.technique.type" />
+			<html:text styleId="valueType"
+				property="achar.theExperimentConfig.domain.technique.type" />
 		</td>
 	</tr>
 	<tr>
 		<td class="leftLabelNoBottom">
-			&nbsp;
-		</td>
-		<td class="labelNoBottom">
-			<strong>Value Unit</strong>
-		</td>
-		<td class="labelNoBottom">
-			<html:text property="achar.theExperimentConfig.domain.technique.type" />
-		</td>
-		<td class="labelNoBottom">
-			&nbsp;
+			<strong>&nbsp;</strong>
 		</td>
 		<td class="labelNoBottom">
 			<strong>Value Unit</strong>
 		</td>
 		<td class="rightLabelNoBottom">
-			<html:text property="achar.theExperimentConfig.domain.technique.type" />
+			<html:text styleId="valueUnit"
+				property="achar.theExperimentConfig.domain.technique.type" />
 		</td>
 	</tr>
-
 	<tr>
-		<td class="leftLabelNoBottom" colspan="2">
-			&nbsp;
-		</td>
-		<td align="right" class="labelNoBottomRightAlign">
-			 <input class="noBorderButton" type="button" value="Add"
-					onclick="addDatumColumn()" />
-		</td>
-		<td class="labelNoBottom">
-			&nbsp;
+		<td class="leftLabelNoBottom">
+			<strong>&nbsp;</strong>
 		</td>
 		<td class="labelNoBottom">
 			<strong>Constant Value</strong>
 		</td>
 		<td class="rightLabelNoBottom">
-			<html:text property="achar.theExperimentConfig.domain.technique.type" />
+			<html:text styleId="value"
+				property="achar.theExperimentConfig.domain.technique.type" />
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabelNoBottom" colspan="5">
+		<td class="leftLabelNoBottom" colspan="2">
 			&nbsp;
-		</td>		
+		</td>
 		<td class=rightLabelNoBottomRightAlign>
-			 <input class="noBorderButton" type="button" value="Add"
-				 onclick="addConditionColumn()" />
+			<input class="noBorderButton" type="button" value="Add to Header"
+				onclick="addDatumColumn()" />
 		</td>
 	</tr>
+	<tr>
+		<td class="leftLabelNoBottom" valign="top" colspan="2">
+			<div id="datumColumnsDiv" style="display: block;">
+				<table id="datumColumnsTable" class="smalltable" border="1"
+					width="80%">
+					<tbody id="datumColumns">
+						<tr>
+							<td id="datumColumnPattern" style="display: none;">
+								<span id="datumColumnName" class="greyFont2">Name</span>
+								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
+								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
+								<br>								
+								<input id="datumColumnValue"  type="text" size="3"
+										 value="datumColumnValue"/>
+								
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			&nbsp;
+		</td>
+		<td class="rightLabelNoBottom">
+			<input class="noBorderButton" type="button" value="Save"
+				onclick="addRow()" />
+		</td>
 
+	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
 				onclick="javascript:submitAction(document.forms[0],
 										'${actionName}', 'deleteExperimentConfig');">
 		</td>
-		<td class="rightLabel" align="right" colspan="5">
+		<td class="rightLabel" align="right" colspan="2">
 			<div align="right">
 				<input type="reset" value="Cancel"
 					onclick="javascript:resetTheDataSet(false);">
@@ -129,6 +126,7 @@
 			</div>
 		</td>
 	</tr>
+
 	<html:hidden styleId="configId"
 		property="achar.theExperimentConfig.domain.id" />
 

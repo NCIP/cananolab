@@ -14,9 +14,11 @@
 <script type="text/javascript"
 	src="javascript/ExperimentConfigManager.js"></script>
 <script type="text/javascript"
-	src="javascript/DatumManager.js"></script>
+	src="javascript/DataSetManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ExperimentConfigManager.js'></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/DataSetManager.js'></script>
 <script type="text/javascript" src="javascript/ProtocolManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
