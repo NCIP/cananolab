@@ -13,6 +13,8 @@
 	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
 <script type="text/javascript"
 	src="javascript/ExperimentConfigManager.js"></script>
+<script type="text/javascript"
+	src="javascript/DatumManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ExperimentConfigManager.js'></script>
 <script type="text/javascript" src="javascript/ProtocolManager.js"></script>
@@ -74,96 +76,8 @@
 				<c:if test="${!empty characterizationDetailPage}">
 					<jsp:include page="${characterizationDetailPage}" />
 				</c:if>
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-					width="100%" align="center" summary="" border="0">
-					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
-								<div align="justify">
-									Derived Bioassay Data Information
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="completeLabel" colspan="4">
-								<table border="0" width="100%">
-									<tr>
-										<c:choose>
-											<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-												<td valign="bottom" width="10%">
-													<a href="#"
-														onclick="javascript:addComponent(document.forms[0], '${actionName}', 'addDerivedBioAssayData')"><span
-														class="addLink">Add Derived Bioassay Data</span> </a>
-												</td>
-												<td>
-													<logic:iterate name="characterizationForm"
-														property="achar.derivedBioAssayDataList"
-														id="derivedBioAssayData" indexId="fileInd">
-															<jsp:include page="/particle/bodyLoadFileUpdate.jsp">
-																<jsp:param name="fileInd" value="${fileInd}" />
-																<jsp:param name="form" value="characterizationForm" />
-																<jsp:param name="action" value="${actionName}" />
-																<jsp:param name="removeCmd"
-																	value="\'removeDerivedBioAssayData\'" />
-																<jsp:param name="fileBean"
-																	value="achar.derivedBioAssayDataList[${fileInd}].fileBean" />
-																<jsp:param name="fileId"
-																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.id}" />
-																<jsp:param name="fileUri"
-																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.uri}" />
-																<jsp:param name="fileTitle"
-																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.title}" />
-																<jsp:param name="fileHidden"
-																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.hidden}" />
-																<jsp:param name="fileImage"
-																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.image}" />
-																<jsp:param name="fileUriExternal"
-																	value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.uriExternal}" />
-															</jsp:include>
-														<br>
-													</logic:iterate>
-												</td>
-											</c:when>
-											<c:otherwise>
-												<td>
-													<logic:iterate name="characterizationForm"
-														property="achar.derivedBioAssayDataList"
-														id="derivedBioAssayData" indexId="fileInd">
-														<jsp:include page="/particle/bodyLoadFileReadOnly.jsp">
-															<jsp:param name="fileInd" value="${fileInd}" />
-															<jsp:param name="action" value="${actionName}" />
-															<jsp:param name="domainFile"
-																value="achar.derivedBioAssayDataList[${fileInd}].fileBean.domainFile" />
-															<jsp:param name="fileId"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.id}" />
-															<jsp:param name="fileUri"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.uri}" />
-															<jsp:param name="fileType"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.type}" />
-															<jsp:param name="fileTitle"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.title}" />
-															<jsp:param name="fileKeywordsStr"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.keywordsStr}" />
-															<jsp:param name="visibilityStr"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.visibilityStr}" />
-															<jsp:param name="uriExternal"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.domainFile.uriExternal}" />
-															<jsp:param name="fileImage"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.image}" />
-															<jsp:param name="fileHidden"
-																value="${characterizationForm.map.achar.derivedBioAssayDataList[fileInd].fileBean.hidden}" />
-														</jsp:include>
-														<br>
-													</logic:iterate>
-												</td>
-											</c:otherwise>
-										</c:choose>
-									</tr>
-								</table>
-							</td>
-						</tr>
-				</table>
-				<br>
+				<jsp:include
+					page="/particle/characterization/shared/bodyCharacterizationResults.jsp" />
 				<jsp:include page="/particle/bodyAnnotationCopy.jsp" />
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationSubmit.jsp" />
