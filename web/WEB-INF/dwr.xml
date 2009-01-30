@@ -38,6 +38,15 @@
 			<include method="addInstrument" />
 			<include method="deleteInstrument" />
 		</create>
+		<create creator="new" javascript="DataSetManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.common.DWRDataSetManager" />
+			<include method="addColumnHeader" />
+			<include method="resetDataSet" />
+			<include method="addRow" />
+			
+		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
 			<param name="class"
@@ -81,12 +90,12 @@
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
+			match="gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean">
 			<param name="include"
 				value="domain, instruments" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
+			match="gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig">
 			<param name="include"
 				value="id, description, technique, instrumentCollection" />
 		</convert>
@@ -97,6 +106,24 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Instrument">
 			<param name="include" value="id, type, manufacturer, modelName" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.particle.characterization.Datum">
+			<param name="include" value="id, name, value, valueType, valueUnit" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.particle.characterization.Condition">
+			<param name="include" value="id, name, value, valueType, valueUnit" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
+			<param name="include"
+				value="theDataRow" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.DataRowBean">
+			<param name="include"
+				value="data" />
 		</convert>
 	</allow>
 </dwr>
