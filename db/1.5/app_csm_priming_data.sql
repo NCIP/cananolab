@@ -13,8 +13,7 @@ VALUES (1, 'Public', 'caBIG and public', sysdate(), 2);
 INSERT INTO csm_pg_pe(pg_pe_id, protection_group_id, protection_element_id, update_date)
 VALUES (1,1,3,sysdate()),
   (2,2,4,sysdate()),
-  (3,3,5,sysdate()),
-  (4,4,6,sysdate());
+  (3,3,5,sysdate());
 
 INSERT INTO csm_protection_element(protection_element_id, protection_element_name, protection_element_description, object_id, attribute, protection_element_type, application_id, update_date)
 VALUES  (3, 'protocol', '', 'protocol', '', NULL, 2, sysdate()),
@@ -53,8 +52,7 @@ VALUES (1, 1, 1);
 
 INSERT INTO csm_user_group_role_pg(user_group_role_pg_id, user_id, group_id, role_id, protection_group_id, update_date)
 VALUES (1, NULL, 1, 1, 2, sysdate()),
-  (2, NULL, 1, 1, 3, sysdate()),
-  (3, NULL, 1, 1, 4, sysdate());
+  (2, NULL, 1, 1, 3, sysdate());
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
