@@ -1,27 +1,29 @@
 package gov.nih.nci.cananolab.service.common.helper;
 
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of OrganizationService and grid service *
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PointOfContactServiceHelper {
 	private static Logger logger = Logger
@@ -33,25 +35,20 @@ public class PointOfContactServiceHelper {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(PointOfContact.class);
-			crit.createAlias("nanoparticleSampleCollection", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("organization", "organization",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("organization.pointOfContactCollection", "orgPOC",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
-
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					NanoparticleSample.class).add(
+					Property.forName("id").eq(new Long(particleId)));
+			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 			List results = appService.query(crit);
 			List<PointOfContactBean> otherPointOfContactCollection = new ArrayList<PointOfContactBean>();
 			for (Object obj : results) {
-				PointOfContact poc = (PointOfContact) obj;
-				otherPointOfContactCollection.add(new PointOfContactBean(
-						poc));
+				NanoparticleSample particle = (NanoparticleSample) obj;
+				Collection<PointOfContact> otherPOCs = particle
+						.getOtherPointOfContactCollection();
+				for (PointOfContact poc : otherPOCs) {
+					otherPointOfContactCollection.add(new PointOfContactBean(
+							poc));
+				}
 			}
 			return otherPointOfContactCollection;
 		} catch (Exception e) {
@@ -60,10 +57,9 @@ public class PointOfContactServiceHelper {
 			throw new PointOfContactException(err, e);
 		}
 	}
-	
-	
+
 	public PointOfContactBean findPointOfContactById(String POCId)
-		throws PointOfContactException {
+			throws PointOfContactException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -73,7 +69,7 @@ public class PointOfContactServiceHelper {
 			crit.add(Restrictions.eq("id", new Long(POCId)));
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		
+
 			List results = appService.query(crit);
 			PointOfContactBean poc = null;
 			for (Object obj : results) {
@@ -81,11 +77,11 @@ public class PointOfContactServiceHelper {
 			}
 			return poc;
 		} catch (Exception e) {
-			String err = "Problem finding PointOfContact with the given POC ID "+POCId;
+			String err = "Problem finding PointOfContact with the given POC ID "
+					+ POCId;
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}
 	}
-
 
 }
