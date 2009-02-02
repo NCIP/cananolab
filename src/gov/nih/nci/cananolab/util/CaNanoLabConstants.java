@@ -67,7 +67,7 @@ public class CaNanoLabConstants {
 
 	/*
 	 * The following Strings are nano specific
-	 * 
+	 *
 	 */
 	public static final String[] DEFAULT_CHARACTERIZATION_SOURCES = new String[] { APP_OWNER };
 
@@ -122,8 +122,6 @@ public class CaNanoLabConstants {
 	public static final String CSM_DELETE_PRIVILEGE = "DELETE";
 
 	public static final String CSM_CREATE_PRIVILEGE = "CREATE";
-
-	public static final String CSM_PG_SAMPLE = "sample";
 
 	public static final String CSM_PG_PROTOCOL = "protocol";
 
