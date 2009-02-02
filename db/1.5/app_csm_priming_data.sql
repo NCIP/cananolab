@@ -51,8 +51,9 @@ INSERT INTO csm_user_group(user_group_id, user_id, group_id)
 VALUES (1, 1, 1);
 
 INSERT INTO csm_user_group_role_pg(user_group_role_pg_id, user_id, group_id, role_id, protection_group_id, update_date)
-VALUES (1, NULL, 1, 1, 2, sysdate()),
-  (2, NULL, 1, 1, 3, sysdate());
+VALUES (1, NULL, 1, 1, 1, sysdate()),
+ (2, NULL, 1, 1, 2, sysdate()),
+  (3, NULL, 1, 1, 3, sysdate());
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
