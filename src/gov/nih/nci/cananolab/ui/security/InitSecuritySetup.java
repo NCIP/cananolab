@@ -12,9 +12,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  * This class sets up information required for CSM.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class InitSecuritySetup {
 	private static AuthorizationService authorizationService;
@@ -91,9 +91,6 @@ public class InitSecuritySetup {
 		// assign PI group to role CURD on sample, protocol, nanopoarticle and
 		// publication
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_SAMPLE,
-				CaNanoLabConstants.CSM_CURD_ROLE);
-		authorizationService.assignGroupToProtectionGroupWithRole(
 				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PROTOCOL,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
@@ -101,12 +98,6 @@ public class InitSecuritySetup {
 				CaNanoLabConstants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
 				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PARTICLE,
-				CaNanoLabConstants.CSM_CURD_ROLE);
-
-		// assign CSM_RESEARCHER to role CURD on sample
-		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_RESEARCHER,
-				CaNanoLabConstants.CSM_PG_SAMPLE,
 				CaNanoLabConstants.CSM_CURD_ROLE);
 	}
 }
