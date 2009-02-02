@@ -280,10 +280,10 @@ CREATE TABLE composition_file
 
 CREATE TABLE nanoparticle_sample_other_poc
 (
-	nanoparticle_sample_pk_id BIGINT NOT NULL,
+	particle_sample_pk_id BIGINT NOT NULL,
 	poc_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (nanoparticle_sample_pk_id, poc_pk_id),
-	KEY (nanoparticle_sample_pk_id),
+	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
+	KEY (particle_sample_pk_id),
 	KEY (poc_pk_id)
 ) TYPE=InnoDB
 ;
@@ -826,7 +826,7 @@ ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 ;
 
 ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample
-	FOREIGN KEY (nanoparticle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
 ;
 
 ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
