@@ -1,74 +1,10 @@
 
 var currentDataSet = null;
-
-var instrumentCache = {};
+var rowCount = 0;
+var dataRowCache = {};
 var viewed = -1;
-function retrieveTechniqueAbbreviation() {
-	var techniqueType = document.getElementById("techniqueType").value;
-	if (techniqueType != null && techniqueType != "other") {
-		ExperimentConfigManager.findInstrumentTypesByTechniqueType(
-				techniqueType, updateInstrumentDropDown);
-		ExperimentConfigManager.findTechniqueByType(techniqueType,
-				updateTechniqueAbbreviation);
-	}
-}
-function updateTechniqueAbbreviation(technique) {
-	if (technique != null) {
-		dwr.util.setValue("techniqueAbbr", technique.abbreviation);
-	} else {
-		document.getElementById("techniqueAbbr").value = "";
-	}
-}
-
-function updateInstrumentDropDown(instrumentTypes) {
-	var id = "type";
-	var selectedValue = dwr.util.getValue(id);
-	dwr.util.removeAllOptions(id);
-	dwr.util.addOptions(id, [ "" ]);
-	dwr.util.addOptions(id, instrumentTypes);
-	dwr.util.addOptions(id, [ "[Other]" ]);
-	dwr.util.setValue(id, selectedValue);
-}
-
-function setManufacturerOptions(manufacturerTypes) {
-	dwr.util.removeAllOptions("instrumentManufacturer"
-			+ instrumentManufacturerIndex);
-	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex,
-			[ "" ]);
-	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex,
-			manufacturerTypes);
-	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex,
-			[ "[Other]" ]);
-}
-
-var thisConfigId = 0;
-function setTheExperimentConfig(configId) {
-	show('newExperimentConfig');
-	ExperimentConfigManager.findInstrumentTypesByConfigId(configId,
-			updateInstrumentDropDown);
-	thisConfigId = configId;
-	window.setTimeout("doSetTheExperimentConfig()", 300);
-}
-
-function doSetTheExperimentConfig() {
-	ExperimentConfigManager.findExperimentConfigById(thisConfigId,
-			populateExperimentConfig);
-}
 
 
-function populateExperimentConfig(experimentConfig) {
-	if (experimentConfig != null) {
-		currentDataSet = experimentConfig;
-		dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
-		dwr.util.setValue("techniqueAbbr",
-				experimentConfig.domain.technique.abbreviation);
-		dwr.util.setValue("configDescription", experimentConfig.domain.description);
-		dwr.util.setValue("configId", experimentConfig.domain.id);
-		fillTable();
-	}
-}
-
-var instrumentManufacturerIndex = 0;
 function resetTheDataSet(isShow) {
 	if (isShow) {
 		show('newDataSet');
@@ -107,28 +43,8 @@ function validateSaveConfig(actionName){
 	submitAction(document.forms[0],
 			actionName, 'saveExperimentConfig');
 }
-function addInstrument() {
-	var instrument = {
-		id :null,
-		manufacturer :null,
-		modelName :null,
-		type :null
-	};
-	dwr.util.getValues(instrument);
-	if (instrument.manufacturer!='' || 
-			instrument.modelName!='' ||
-			instrument.type!=''){
-		ExperimentConfigManager.addInstrument(currentDataSet, instrument,
-				function(experimentConfig) {
-					currentDataSet = experimentConfig;
-				});
-		window.setTimeout("fillTable()", 200);
-	}else{
-		alert('Please fill in values');
-	}
-}
 
-function addDatumColumn() {
+function addDatumColumn() {	
 	var datumOrCondition = document.getElementById("datumOrCondition").value;
 	var datum = {
 		name :null,
@@ -144,23 +60,53 @@ function addDatumColumn() {
 				function(theDataSet) {
 					currentDataSet = theDataSet;
 				});
+		$("addRowButtons").style.display = "";
 		window.setTimeout("fillColumnTable()", 200);
-//		ExperimentConfigManager.addInstrument(currentDataSet, instrument,
-//				function(experimentConfig) {
-//					currentDataSet = experimentConfig;
-//				});
-//		window.setTimeout("fillTable()", 200);
 	}else{
 		alert('Please fill in values');
 	}
 }
 
+function createMatrixPattern(){
+	var matrixHeader = document.getElementById("matrixHeader");
+	for (var i=1; i<columnCount+1; i++){
+		 var cell = document.createElement("TD");
+		 var span = document.createElement('SPAN');
+		 span.setAttribute("id", "matrixHeaderColumn"+i);
+		 span.setAttribute("class", "greyFont2");
+		 span.appendChild(document.createTextNode('Header'));
+		 cell.appendChild(span);	 		 
+		 matrixHeader.appendChild(cell);
+	}
+	$("matrixHeader").style.display = "";
+	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");			    
+	for (var i=1; i<columnCount+1; i++){
+		 var cell = document.createElement("TD");
+		 var span = document.createElement('SPAN');
+		 span.setAttribute("id", "datumMatrixValue"+i);
+		 span.setAttribute("class", "greyFont2");
+		 span.appendChild(document.createTextNode('Value'));
+		 cell.appendChild(span);		 		 
+		 datumMatrixPatternRow.appendChild(cell);
+	}
+	var buttonCell = document.createElement("TD");
+	var button = document.createElement('input');
+	button.setAttribute("id", "edit");
+	button.setAttribute("type", "button");
+	button.setAttribute("class", "noBorderButton");
+	button.setAttribute("value", "Select");
+	button.setAttribute("onclick", "editClicked(this.id)");
+	buttonCell.appendChild(button);		 		 
+	datumMatrixPatternRow.appendChild(buttonCell);	
+}
+
 
 function addRow() {
 	var id = -1;	
-	var datumArray = new Array();
+	
+	var datumArray = new Array();	
 	for ( var i = 0; i < columnCount; i++) {
-		id = -i - 1;
+		id = i+1;
 		var datum = {
 			name :null,
 			valueType :null,
@@ -171,63 +117,43 @@ function addRow() {
 		datum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
 		datum.value = dwr.util.getValue("datumColumnValue" + id);
-		alert('name='+datum.name+' valueType='+datum.valueType+
-				' valueUnit='+datum.valueUnit+' value='+datum.value);
 		datumArray[i] = datum;
 		if (datum.name!='' || 
 				datum.valueType!='' ||
-				datum.valueUnit!=''){
-			
-			//window.setTimeout("fillColumnTable()", 200);
-	//		ExperimentConfigManager.addInstrument(currentDataSet, instrument,
-	//				function(experimentConfig) {
-	//					currentDataSet = experimentConfig;
-	//				});
-	//		window.setTimeout("fillTable()", 200);
+				datum.valueUnit!=''){			
 		}else{
 			alert('Please fill in values');
+			return;
 		}
 		
 	}
-	alert('bef');
 	DataSetManager.addRow(datumArray,
 			function(theDataSet) {
 				currentDataSet = theDataSet;
-			});
-	alert('done');
+			});			
+	if (rowCount==0){
+		createMatrixPattern();
+	}
+	rowCount++;
+	window.setTimeout("fillMatrix()", 200);
 }
 
-function clearInstrument() {
-	viewed = -1;
-	document.getElementById("id").value = "";
-	document.getElementById("manufacturer").value = "";
-	document.getElementById("modelName").value = "";
-	document.getElementById("type").value = "";
+function clearTheDataRow() {
+	
 }
 
 var columnCount = 0;
 
 function fillColumnTable() {
 	var data = currentDataSet.theDataRow.data;
-//	dwr.util
-//			.removeAllRows(
-//					"instrumentRows",
-//					{
-//						filter : function(tr) {
-//							return (tr.id != "pattern"
-//									&& tr.id != "patternHeader" && tr.id != "patternAddRow");
-//						}
-//					});
+
 	var datum, id;	
 	columnCount = 0;
 	for ( var i = 0; i < data.length; i++) {
 		columnCount++;
 		datum = data[i];
-		if (datum.id == null) {
-			datum.id = -i - 1;
-		}
+		datum.id = i+1;
 		id = datum.id;
-		alert(id+" datum.name="+datum.name+" datum.value="+datum.value);
 		dwr.util.cloneNode("datumColumnPattern", {
 			idSuffix :id
 		});
@@ -238,31 +164,68 @@ function fillColumnTable() {
 			dwr.util.setValue("datumColumnValue" + id, document.getElementById("value").value);
 		}
 		$("datumColumnPattern" + id).style.display = "";
-		//instrumentCache[id] = instrument;
 	}
-	//clearInstrument();
 }
 
+
+function fillMatrix() {
+	alert("fillMatrix");
+	dwr.util
+			.removeAllRows(
+					"datumMatrix",
+					{
+						filter : function(tr) {
+							return (tr.id != "datumMatrixPatternRow" &&
+									tr.id != "matrixHeader");
+						}
+					});
+	var datum, id;	
+	var rowId;
+	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
+		var data = currentDataSet.dataRows[row].data;
+		rowId = currentDataSet.dataRows[row].domain.id;
+		rowId = row + 1;
+		dwr.util.cloneNode("datumMatrixPatternRow", {
+			idSuffix :rowId
+		});					
+		for ( var i = 0; i < data.length; i++) {	
+			datum = data[i];
+			datum.id = i+1;
+			id = datum.id;
+			id = rowId;
+			if (row == 0){
+				dwr.util.setValue("matrixHeaderColumn"+(i+1), datum.name+" "+datum.valueType
+						+" "+datum.valueUnit);
+			}
+			dwr.util.setValue("datumMatrixValue"+(i+1)+"" + id, datum.value);
+		}
+		$("datumMatrixPatternRow" + rowId).style.display = "";
+		dataRowCache[rowId] = currentDataSet.dataRows[row];
+	}
+	clearTheDataRow();
+}
+
+var editRowId = -1;
 function editClicked(eleid) {
+	editRowId = eleid.substring(4);
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
-	var instrument = instrumentCache[eleid.substring(4)];
-	dwr.util.setValues(instrument);
-	document.getElementById("manufacturer").focus();
+	var data = dataRowCache[eleid.substring(4)].data;
+	for ( var i = 0; i < data.length; i++) {	
+		datum = data[i];
+		document.getElementById("datumColumnValue"+(i+1)).value=datum.value;		
+	}
 }
 
-function deleteClicked() {
-	var eleid = document.getElementById("id").value;
+function deleteClicked() {	
 	// we were an id of the form "delete{id}", eg "delete42". We lookup the "42"
 	//var instrument = instrumentCache[eleid.substring(6)];
-	if (eleid!=''){
-		var instrument = instrumentCache[eleid];
-		if (confirm("Are you sure you want to delete '" + instrument.manufacturer
-				+ " " + instrument.modelName+"'?")) {
-			ExperimentConfigManager.deleteInstrument(currentDataSet,
-					instrument, function(experimentConfig) {
-						currentDataSet = experimentConfig;
+	if (editRowId!='' && editRowId!='-1'){
+		if (confirm("Are you sure you want to delete this row ?")) {
+			DataSetManager.deleteDataRow(dataRowCache[editRowId],
+					function(theDataSet) {
+						currentDataSet = theDataSet;
 					});
-			window.setTimeout("fillTable()", 200);
+			window.setTimeout("fillMatrix()", 200);
 		}
 	}
 }

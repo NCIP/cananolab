@@ -24,8 +24,7 @@
 		<td class="rightLabelWithTopNoBottom">
 			<html:select
 				property="achar.theExperimentConfig.domain.technique.type"
-				styleId="name"
-				onchange="javascript:callPrompt('Name', 'name');">				
+				styleId="name" onchange="javascript:callPrompt('Name', 'name');">
 				<option value=""></option>
 				<option value="test">
 					test
@@ -92,22 +91,40 @@
 								<span id="datumColumnName" class="greyFont2">Name</span>
 								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
 								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
-								<br>								
-								<input id="datumColumnValue"  type="text" size="3"
-										 value="datumColumnValue"/>
-								
+								<br>
+								<input id="datumColumnValue" type="text" size="2"
+									value="datumColumnValue" />
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 			&nbsp;
-		</td>
-		<td class="rightLabelNoBottom">
+		</td>	
+		<td id="addRowButtons" class="rightLabelNoBottom" valign="top" colspan="1" style="display: none;">
+			<input class="noBorderButton" type="button" value="New"
+				onclick="clearTheDataRow()" />
 			<input class="noBorderButton" type="button" value="Save"
 				onclick="addRow()" />
+			<input class="noBorderButton" type="button" value="Delete"
+				onclick="deleteClicked()" />
 		</td>
-
+	</tr>
+	<tr>
+		<td class="completeLabelNoTopBottom" valign="top" colspan="3">
+			<div id="datumMatrixDiv" style="display: block;">
+				<table id="datumMatrixTable" class="smalltable" border="1"
+					width="80%">
+					<tbody id="datumMatrix">
+						<tr id="matrixHeader" style="display: none;">
+						</tr>
+						<tr id="datumMatrixPatternRow" style="display: none;">
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			&nbsp;
+		</td>
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">

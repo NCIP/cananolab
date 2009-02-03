@@ -1,10 +1,9 @@
 package gov.nih.nci.cananolab.ui.common;
 
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
 import gov.nih.nci.cananolab.exception.DataSetException;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
@@ -55,22 +54,30 @@ public class DWRDataSetManager {
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
 		if (data!=null) {
+			DataRowBean dataRowBean = new DataRowBean();
+			boolean hasData = false;
 			for (Datum datum: data) {
-				System.out.println("########### name="+datum.getName());
+				dataRowBean.addDatum(datum);
+				hasData = true;
 			}
-		}
+			if (hasData) {
+				theDataSet.addDataRow(dataRowBean);
+			}
+		}		
 		return theDataSet;
 	}
 
-	public ExperimentConfigBean deleteInstrument(
-			ExperimentConfigBean theExperimentConfig, Instrument instrument)
+	public DataSetBean deleteDataRow(DataRowBean dataRowBean)
 			throws DataSetException {
-		theExperimentConfig.removeInstrument(instrument);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheExperimentConfig(theExperimentConfig);
-		return theExperimentConfig;
+		DataSetBean theDataSet = charBean.getTheDataSet();
+		if (dataRowBean!=null) {
+			//TODO:: remove base on rowID?? or row index??
+			theDataSet.removeDataRow(dataRowBean);
+		}	
+		return theDataSet;
 	}
 }

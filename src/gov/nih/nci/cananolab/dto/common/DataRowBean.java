@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
-import gov.nih.nci.cananolab.dto.particle.characterization.DatumBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,14 +15,14 @@ import java.util.List;
  * 
  */
 public class DataRowBean {
-	private DataSet domainDataSet = new DataSet();
+	private DataRow domain = new DataRow();
 	private List<Datum> data = new ArrayList<Datum>();
 
 	public DataRowBean() {
 	}
 
-	public DataRowBean(DataSet dataSet) {
-		domainDataSet = dataSet;
+	public DataRowBean(DataRow dataRow) {
+		domain = dataRow;
 	}
 
 	public void addDatum(Datum datum) {
@@ -63,24 +63,24 @@ public class DataRowBean {
 	}
 
 	/**
-	 * @return the domainDataSet
-	 */
-	public DataSet getDomainDataSet() {
-		return domainDataSet;
-	}
-
-	/**
-	 * @param domainDataSet the domainDataSet to set
-	 */
-	public void setDomainDataSet(DataSet domainDataSet) {
-		this.domainDataSet = domainDataSet;
-	}
-
-	/**
 	 * @return the data
 	 */
 	public Collection<Datum> getData() {
 		return data;
+	}
+
+	/**
+	 * @return the domain
+	 */
+	public DataRow getDomain() {
+		return domain;
+	}
+
+	/**
+	 * @param domain the domain to set
+	 */
+	public void setDomain(DataRow domain) {
+		this.domain = domain;
 	}
 
 	
