@@ -89,21 +89,25 @@ function createMatrixPattern(){
 		 cell.appendChild(span);		 		 
 		 datumMatrixPatternRow.appendChild(cell);
 	}
+	
 	var buttonCell = document.createElement("TD");
 	var button = document.createElement('input');
-	button.setAttribute("id", "edit");
+	button.setAttribute("id", "editDatumRow");
 	button.setAttribute("type", "button");
 	button.setAttribute("class", "noBorderButton");
 	button.setAttribute("value", "Select");
-	button.setAttribute("onclick", "editClicked(this.id)");
+	button.setAttribute("style", "border:0px solid;text-decoration: underline;");
 	buttonCell.appendChild(button);		 		 
 	datumMatrixPatternRow.appendChild(buttonCell);	
 }
 
 
+function test() {
+	alert('test');
+	return false;
+}
 function addRow() {
 	var id = -1;	
-	
 	var datumArray = new Array();	
 	for ( var i = 0; i < columnCount; i++) {
 		id = i+1;
@@ -169,7 +173,7 @@ function fillColumnTable() {
 
 
 function fillMatrix() {
-	alert("fillMatrix");
+	//alert("fillMatrix 1122");
 	dwr.util
 			.removeAllRows(
 					"datumMatrix",
@@ -199,6 +203,11 @@ function fillMatrix() {
 			}
 			dwr.util.setValue("datumMatrixValue"+(i+1)+"" + id, datum.value);
 		}
+		//select button
+		var editRow = document.getElementById("editDatumRow"+rowId);
+		editRow.onclick = function(){editClicked(this.id)};		
+		editRow.setAttribute("style", "border:0px solid;");
+		//editRow.style = "border:0px solid;text-decoration: underline;";
 		$("datumMatrixPatternRow" + rowId).style.display = "";
 		dataRowCache[rowId] = currentDataSet.dataRows[row];
 	}
@@ -207,9 +216,8 @@ function fillMatrix() {
 
 var editRowId = -1;
 function editClicked(eleid) {
-	editRowId = eleid.substring(4);
-	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
-	var data = dataRowCache[eleid.substring(4)].data;
+	// we were an id of the form "editDatumRow{id}", eg "editDatumRow42". We lookup the "42"
+	var data = dataRowCache[eleid.substring(12)].data;
 	for ( var i = 0; i < data.length; i++) {	
 		datum = data[i];
 		document.getElementById("datumColumnValue"+(i+1)).value=datum.value;		

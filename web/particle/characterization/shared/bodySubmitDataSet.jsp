@@ -19,7 +19,7 @@
 			</select>
 		</td>
 		<td class="labelWithTopNoBottom">
-			<strong>Name</strong>
+			<strong>Name*</strong>
 		</td>
 		<td class="rightLabelWithTopNoBottom">
 			<html:select
@@ -101,13 +101,16 @@
 			</div>
 			&nbsp;
 		</td>	
-		<td id="addRowButtons" class="rightLabelNoBottom" valign="top" colspan="1" style="display: none;">
-			<input class="noBorderButton" type="button" value="New"
-				onclick="clearTheDataRow()" />
-			<input class="noBorderButton" type="button" value="Save"
-				onclick="addRow()" />
-			<input class="noBorderButton" type="button" value="Delete"
-				onclick="deleteClicked()" />
+		<td class="rightLabelNoBottom" valign="top" colspan="1">
+			<div id="addRowButtons" style="display: none;">
+				<input class="noBorderButton" type="button" value="New"
+					onclick="clearTheDataRow()" />
+				<input class="noBorderButton" type="button" value="Save"
+					onclick="addRow()" />
+				<input class="noBorderButton" type="button" value="Delete"
+					onclick="deleteClicked()" />
+			</div>
+			&nbsp;
 		</td>
 	</tr>
 	<tr>
@@ -116,9 +119,9 @@
 				<table id="datumMatrixTable" class="smalltable" border="1"
 					width="80%">
 					<tbody id="datumMatrix">
-						<tr id="matrixHeader" style="display: none;">
+						<tr id="matrixHeader" class="greyFont2" style="display: none;">
 						</tr>
-						<tr id="datumMatrixPatternRow" style="display: none;">
+						<tr id="datumMatrixPatternRow" class="greyFont2" style="display: none;">
 						</tr>
 					</tbody>
 				</table>
