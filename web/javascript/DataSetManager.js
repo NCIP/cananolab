@@ -6,6 +6,8 @@ var viewed = -1;
 
 
 function resetTheDataSet(isShow) {
+	//alert('reset');
+	columnCount = 0;
 	if (isShow) {
 		show('newDataSet');
 	} else {
@@ -14,20 +16,51 @@ function resetTheDataSet(isShow) {
 	DataSetManager.resetDataSet( function(theDataSet) {
 		currentDataSet = theDataSet;
 	});
-//	dwr.util.setValue("techniqueType", "");
-//	dwr.util.setValue("techniqueAbbr", "");
-//	dwr.util.setValue("configDescription", "");
-//	dwr.util.setValue("configId", "0");
-//	dwr.util
-//			.removeAllRows(
-//					"instrumentRows",
-//					{
-//						filter : function(tr) {
-//							return (tr.id != "pattern"
-//									&& tr.id != "patternHeader" && tr.id != "patternAddRow");
-//						}
-//					});
-//	clearInstrument();
+	dwr.util.setValue("name", "");
+	dwr.util.setValue("valueType", "");
+	dwr.util.setValue("valueUnit", "");
+	dwr.util.setValue("value", "");
+	dwr.util
+	  	.removeAllRows(
+			"datumMatrix",
+			{
+				filter : function(tr) {
+					return (tr.id != "datumMatrixPatternRow" &&
+							tr.id != "matrixHeader");
+				}
+			});	
+	
+	var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
+	var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
+	var aCellLength = aCells.length;
+	var toDelete = new Array();	
+	var i =0;
+	for(var j=0;j<aCellLength;j++){
+		if (aCells[j].id!='datumColumnPattern'){
+			toDelete[i]=aCells[j].id;
+			i++;
+		}
+	}
+	for(var j=0;j<toDelete.length;j++){
+		datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
+	}
+	
+	for (var i=1; i<columnCount+1; i++){
+		 var cell = document.createElement("TD");
+		 var span = document.createElement('SPAN');
+		 span.setAttribute("id", "matrixHeaderColumn"+i);
+		 span.setAttribute("class", "greyFont2");
+		 span.appendChild(document.createTextNode('Header'));
+		 cell.appendChild(span);	 		 
+		 matrixHeader.appendChild(cell);
+	}
+	$("matrixHeader").style.display = "";
+	$("datumMatrixPatternRow").style.display = "none";
+	$("matrixHeader").style.display = "none";
+	$("datumColumnPattern").style.display = "none";
+	$("datumColumnPatternRow").style.display = "none";
+	$("addRowButtons").style.display = "none";
+	clearTheDataRow();
 }
 
 function validateSaveConfig(actionName){
@@ -67,7 +100,7 @@ function addDatumColumn() {
 	}
 }
 
-function createMatrixPattern(){
+function createMatrixPattern(){	
 	var matrixHeader = document.getElementById("matrixHeader");
 	for (var i=1; i<columnCount+1; i++){
 		 var cell = document.createElement("TD");
@@ -101,16 +134,12 @@ function createMatrixPattern(){
 	datumMatrixPatternRow.appendChild(buttonCell);	
 }
 
-
-function test() {
-	alert('test');
-	return false;
-}
 function addRow() {
 	var id = -1;	
 	var datumArray = new Array();	
 	for ( var i = 0; i < columnCount; i++) {
-		id = i+1;
+		//id = i+1;
+		id = -i-1;
 		var datum = {
 			name :null,
 			valueType :null,
@@ -150,13 +179,14 @@ var columnCount = 0;
 
 function fillColumnTable() {
 	var data = currentDataSet.theDataRow.data;
-
 	var datum, id;	
-	columnCount = 0;
-	for ( var i = 0; i < data.length; i++) {
+	//columnCount = 0;
+	$("datumColumnPatternRow").style.display = "";
+	$("datumColumnPattern").style.display = "none";
+	for ( var i = data.length - 1; i < data.length; i++) {
 		columnCount++;
 		datum = data[i];
-		datum.id = i+1;
+		datum.id = -i-1;
 		id = datum.id;
 		dwr.util.cloneNode("datumColumnPattern", {
 			idSuffix :id
@@ -173,7 +203,7 @@ function fillColumnTable() {
 
 
 function fillMatrix() {
-	//alert("fillMatrix 1122");
+	//alert("fillMatrix");
 	dwr.util
 			.removeAllRows(
 					"datumMatrix",
@@ -188,13 +218,13 @@ function fillMatrix() {
 	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
 		var data = currentDataSet.dataRows[row].data;
 		rowId = currentDataSet.dataRows[row].domain.id;
-		rowId = row + 1;
+		rowId = -row - 1;
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
 		});					
 		for ( var i = 0; i < data.length; i++) {	
 			datum = data[i];
-			datum.id = i+1;
+			datum.id = -i-1;
 			id = datum.id;
 			id = rowId;
 			if (row == 0){
@@ -220,7 +250,7 @@ function editClicked(eleid) {
 	var data = dataRowCache[eleid.substring(12)].data;
 	for ( var i = 0; i < data.length; i++) {	
 		datum = data[i];
-		document.getElementById("datumColumnValue"+(i+1)).value=datum.value;		
+		document.getElementById("datumColumnValue"+(-i-1)).value=datum.value;		
 	}
 }
 

@@ -86,7 +86,7 @@
 				<table id="datumColumnsTable" class="smalltable" border="1"
 					width="80%">
 					<tbody id="datumColumns">
-						<tr>
+						<tr id="datumColumnPatternRow">
 							<td id="datumColumnPattern" style="display: none;">
 								<span id="datumColumnName" class="greyFont2">Name</span>
 								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
