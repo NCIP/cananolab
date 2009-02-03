@@ -45,6 +45,7 @@
 			<include method="addColumnHeader" />
 			<include method="resetDataSet" />
 			<include method="addRow" />
+			<include method="deleteDataRow" />
 			
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
@@ -118,12 +119,17 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
 			<param name="include"
-				value="theDataRow" />
+				value="theDataRow, dataRows" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataRowBean">
 			<param name="include"
-				value="data" />
+				value="data, domain" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.DataRow">
+			<param name="include"
+				value="id" />
 		</convert>
 	</allow>
 </dwr>
