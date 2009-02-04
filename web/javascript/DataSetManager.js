@@ -6,8 +6,10 @@ var viewed = -1;
 
 
 function resetTheDataSet(isShow) {
-	//alert('reset');
+	//alert('reset 222');
+	datumColumnCount = 0;
 	columnCount = 0;
+	rowCount = 0;
 	if (isShow) {
 		show('newDataSet');
 	} else {
@@ -30,21 +32,6 @@ function resetTheDataSet(isShow) {
 				}
 			});	
 	
-	var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
-	var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
-	var aCellLength = aCells.length;
-	var toDelete = new Array();	
-	var i =0;
-	for(var j=0;j<aCellLength;j++){
-		if (aCells[j].id!='datumColumnPattern'){
-			toDelete[i]=aCells[j].id;
-			i++;
-		}
-	}
-	for(var j=0;j<toDelete.length;j++){
-		datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
-	}
-	
 	for (var i=1; i<columnCount+1; i++){
 		 var cell = document.createElement("TD");
 		 var span = document.createElement('SPAN');
@@ -60,6 +47,7 @@ function resetTheDataSet(isShow) {
 	$("datumColumnPattern").style.display = "none";
 	$("datumColumnPatternRow").style.display = "none";
 	$("addRowButtons").style.display = "none";
+	
 	clearTheDataRow();
 }
 
@@ -76,8 +64,25 @@ function validateSaveConfig(actionName){
 	submitAction(document.forms[0],
 			actionName, 'saveExperimentConfig');
 }
-
+var datumColumnCount = 0;
 function addDatumColumn() {	
+	if (datumColumnCount==0){		
+		var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
+		var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
+		var aCellLength = aCells.length;
+		var toDelete = new Array();	
+		i =0;
+		for(var j=0;j<aCellLength;j++){
+			if (aCells[j].id!='datumColumnPattern'){
+				toDelete[i]=aCells[j].id;
+				i++;
+			}
+		}
+		for(var j=0;j<toDelete.length;j++){
+			datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
+		}
+		
+	}
 	var datumOrCondition = document.getElementById("datumOrCondition").value;
 	var datum = {
 		name :null,
@@ -94,14 +99,17 @@ function addDatumColumn() {
 					currentDataSet = theDataSet;
 				});
 		$("addRowButtons").style.display = "";
+		datumColumnCount++;
 		window.setTimeout("fillColumnTable()", 200);
 	}else{
 		alert('Please fill in values');
 	}
 }
 
-function createMatrixPattern(){	
+function createMatrixPattern(){
+	
 	var matrixHeader = document.getElementById("matrixHeader");
+	matrixHeader = removeAllColumns(matrixHeader);	
 	for (var i=1; i<columnCount+1; i++){
 		 var cell = document.createElement("TD");
 		 var span = document.createElement('SPAN');
@@ -112,7 +120,8 @@ function createMatrixPattern(){
 		 matrixHeader.appendChild(cell);
 	}
 	$("matrixHeader").style.display = "";
-	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");			    
+	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");
+	datumMatrixPatternRow = removeAllColumns(datumMatrixPatternRow);
 	for (var i=1; i<columnCount+1; i++){
 		 var cell = document.createElement("TD");
 		 var span = document.createElement('SPAN');
@@ -136,7 +145,8 @@ function createMatrixPattern(){
 
 function addRow() {
 	var id = -1;	
-	var datumArray = new Array();	
+	var datumArray = new Array();
+	var idstr = "";
 	for ( var i = 0; i < columnCount; i++) {
 		//id = i+1;
 		id = -i-1;
@@ -146,6 +156,7 @@ function addRow() {
 			valueUnit :null
 		};
 		dwr.util.getValues(datum);
+		idstr+=" "+id;
 		datum.name = dwr.util.getValue("datumColumnName" + id);
 		datum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
@@ -160,6 +171,7 @@ function addRow() {
 		}
 		
 	}
+	
 	DataSetManager.addRow(datumArray,
 			function(theDataSet) {
 				currentDataSet = theDataSet;
@@ -206,7 +218,7 @@ function fillMatrix() {
 	//alert("fillMatrix");
 	dwr.util
 			.removeAllRows(
-					"datumMatrix",
+					"datusMatrix",
 					{
 						filter : function(tr) {
 							return (tr.id != "datumMatrixPatternRow" &&
@@ -214,14 +226,17 @@ function fillMatrix() {
 						}
 					});
 	var datum, id;	
-	var rowId;
+	var rowId;	
+	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");
+	var aCells = datumMatrixPatternRow.getElementsByTagName('td')//cells collection in this row
+	var aCellLength = aCells.length;
 	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
 		var data = currentDataSet.dataRows[row].data;
 		rowId = currentDataSet.dataRows[row].domain.id;
 		rowId = -row - 1;
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
-		});					
+		});				
 		for ( var i = 0; i < data.length; i++) {	
 			datum = data[i];
 			datum.id = -i-1;
@@ -270,5 +285,29 @@ function deleteClicked() {
 
 function addClicked() {
 	document.getElementById("manufacturer").focus();	
+}
+
+function removeAllColumns(theRow) {
+	var aCells = theRow.getElementsByTagName('TD')//cells collection in this row
+	var aCellLength = aCells.length;
+	var toDelete = new Array();	
+	var i = 0;
+	//aCells[j] is dynamically updated if removeChild
+	//so put it to toDelete, then removeChild
+	for(var j=0;j<aCellLength;j++){
+		toDelete[j]=aCells[j];		
+	}
+	for(var j=0;j<toDelete.length;j++){
+		theRow.removeChild(toDelete[j]);
+	}	
+	checkNumOfColumns(theRow.id);	
+	return theRow;
+}
+//for dbug
+function checkNumOfColumns(rowId) {
+	var theRow = document.getElementById(rowId);
+	var aCells = theRow.getElementsByTagName('TD')//cells collection in this row
+	var aCellLength = aCells.length;
+	alert(rowId+' has '+aCellLength+" columns");
 }
 
