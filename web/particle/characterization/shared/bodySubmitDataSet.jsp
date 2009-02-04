@@ -80,7 +80,7 @@
 				onclick="addDatumColumn()" />
 		</td>
 	</tr>
-	<tr>
+	<tr id="datumColumnsDivRow">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
 			<div id="datumColumnsDiv" style="display: block;">
 				<table id="datumColumnsTable" class="smalltable" border="1"
@@ -113,7 +113,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	<tr>
+	<tr id="datumMatrixDivRow">
 		<td class="completeLabelNoTopBottom" valign="top" colspan="3">
 			<div id="datumMatrixDiv" style="display: block;">
 				<table id="datumMatrixTable" class="smalltable" border="1"

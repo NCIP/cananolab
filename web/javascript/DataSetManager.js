@@ -6,7 +6,7 @@ var viewed = -1;
 var datumColumnCount = 0;
 
 function resetTheDataSet(isShow) {
-	alert('reset 666');
+	//alert('reset 999');
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
@@ -47,7 +47,8 @@ function resetTheDataSet(isShow) {
 	$("datumColumnPattern").style.display = "none";
 	$("datumColumnPatternRow").style.display = "none";
 	$("addRowButtons").style.display = "none";
-	
+	$("datumColumnsDivRow").style.display = "none";	
+	$("datumMatrixDivRow").style.display = "none";	
 	clearTheDataRow();
 }
 
@@ -77,7 +78,7 @@ function addDatumColumn() {
 		for(var j=0;j<toDelete.length;j++){
 			datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
 		}
-		
+		$("datumColumnsDivRow").style.display = "block";
 	}
 	var datumOrCondition = document.getElementById("datumOrCondition").value;
 	var datum = {
@@ -173,6 +174,7 @@ function addRow() {
 			});			
 	if (rowCount==0){
 		createMatrixPattern();
+		$("datumMatrixDivRow").style.display = "block";	
 	}
 	rowCount++;
 	window.setTimeout("fillMatrix()", 200);
