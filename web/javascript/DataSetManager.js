@@ -3,10 +3,10 @@ var currentDataSet = null;
 var rowCount = 0;
 var dataRowCache = {};
 var viewed = -1;
-
+var datumColumnCount = 0;
 
 function resetTheDataSet(isShow) {
-	//alert('reset 222');
+	alert('reset 666');
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
@@ -58,13 +58,9 @@ function validateSaveConfig(actionName){
 		return false;
 	}
 	var patternAddRow = document.getElementById('patternAddRow');
-	//if(patternAddRow.style.display == 'block'){
-		//addInstrument();
-	//}
 	submitAction(document.forms[0],
 			actionName, 'saveExperimentConfig');
 }
-var datumColumnCount = 0;
 function addDatumColumn() {	
 	if (datumColumnCount==0){		
 		var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
@@ -110,7 +106,7 @@ function createMatrixPattern(){
 	
 	var matrixHeader = document.getElementById("matrixHeader");
 	matrixHeader = removeAllColumns(matrixHeader);	
-	for (var i=1; i<columnCount+1; i++){
+	for (var i=1; i<datumColumnCount+1; i++){
 		 var cell = document.createElement("TD");
 		 var span = document.createElement('SPAN');
 		 span.setAttribute("id", "matrixHeaderColumn"+i);
@@ -122,7 +118,7 @@ function createMatrixPattern(){
 	$("matrixHeader").style.display = "";
 	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");
 	datumMatrixPatternRow = removeAllColumns(datumMatrixPatternRow);
-	for (var i=1; i<columnCount+1; i++){
+	for (var i=1; i<datumColumnCount+1; i++){
 		 var cell = document.createElement("TD");
 		 var span = document.createElement('SPAN');
 		 span.setAttribute("id", "datumMatrixValue"+i);
@@ -146,8 +142,8 @@ function createMatrixPattern(){
 function addRow() {
 	var id = -1;	
 	var datumArray = new Array();
-	var idstr = "";
-	for ( var i = 0; i < columnCount; i++) {
+	//alert('datumColumnCount='+datumColumnCount);
+	for ( var i = 0; i < datumColumnCount; i++) {
 		//id = i+1;
 		id = -i-1;
 		var datum = {
@@ -156,7 +152,6 @@ function addRow() {
 			valueUnit :null
 		};
 		dwr.util.getValues(datum);
-		idstr+=" "+id;
 		datum.name = dwr.util.getValue("datumColumnName" + id);
 		datum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
@@ -187,16 +182,13 @@ function clearTheDataRow() {
 	
 }
 
-var columnCount = 0;
-
 function fillColumnTable() {
 	var data = currentDataSet.theDataRow.data;
 	var datum, id;	
-	//columnCount = 0;
 	$("datumColumnPatternRow").style.display = "";
 	$("datumColumnPattern").style.display = "none";
+	//alert('data.length='+data.length+'  datumColumnCount='+datumColumnCount);
 	for ( var i = data.length - 1; i < data.length; i++) {
-		columnCount++;
 		datum = data[i];
 		datum.id = -i-1;
 		id = datum.id;
@@ -233,13 +225,18 @@ function fillMatrix() {
 	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
 		var data = currentDataSet.dataRows[row].data;
 		rowId = currentDataSet.dataRows[row].domain.id;
-		rowId = -row - 1;
+		if (rowId==null || rowId==''){
+			rowId = -row - 1;
+		}
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
 		});				
 		for ( var i = 0; i < data.length; i++) {	
 			datum = data[i];
-			datum.id = -i-1;
+			if (datum.id==null || datum.id==''){
+				datum.id = -i-1;
+			}
+			//TODO:: how to deal with rowId/datumID??			
 			id = datum.id;
 			id = rowId;
 			if (row == 0){
@@ -300,7 +297,6 @@ function removeAllColumns(theRow) {
 	for(var j=0;j<toDelete.length;j++){
 		theRow.removeChild(toDelete[j]);
 	}	
-	checkNumOfColumns(theRow.id);	
 	return theRow;
 }
 //for dbug
@@ -308,6 +304,5 @@ function checkNumOfColumns(rowId) {
 	var theRow = document.getElementById(rowId);
 	var aCells = theRow.getElementsByTagName('TD')//cells collection in this row
 	var aCellLength = aCells.length;
-	alert(rowId+' has '+aCellLength+" columns");
 }
 
