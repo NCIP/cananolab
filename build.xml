@@ -11,6 +11,7 @@
 
 	<import file="build-deploy.xml" />
 	<import file="build-grid.xml" />
+	<import file="build-standalone.xml"/>
 
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		<classpath>

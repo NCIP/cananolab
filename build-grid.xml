@@ -4,10 +4,6 @@
 	<property name="grid.service.name" value="CaNanoLabService" />
 	<import file="build-grid-deploy.xml" />
 
-	<target name="clean">
-		<delete dir="${build.dir}" quiet="true" />
-	</target>
-
 	<target name="init-grid">
 		<!-- create the necessary folders -->
 		<mkdir dir="${build.dir}" />
