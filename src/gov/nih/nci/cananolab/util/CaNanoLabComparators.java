@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
@@ -18,7 +19,6 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.DatumBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -256,13 +256,13 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class DatumBeanDateComparator implements
-			Comparator<DatumBean> {
-		public int compare(DatumBean datum1,
-				DatumBean datum2) {
-			return datum1.getDomainDatum().getCreatedDate()
+	public static class DatumDateComparator implements
+			Comparator<Datum> {
+		public int compare(Datum datum1,
+				Datum datum2) {
+			return datum1.getCreatedDate()
 					.compareTo(
-							datum2.getDomainDatum().getCreatedDate());
+							datum2.getCreatedDate());
 		}
 	}
 
