@@ -253,6 +253,7 @@
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
+			<!-- 
 			<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.technique.type"
@@ -260,11 +261,12 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((achar.theExperimentConfig==null) or
+						((achar.theExperimentConfig.domain.id==null) or
 						(*this*!=null))
 					</var-value>
 				</var>
 			</field>
+			-->
 			<field property="achar.shape.maxDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.maxDimension"
@@ -360,39 +362,9 @@
 <!--			</field>-->
 		</form>
 		<form name="invitroCharacterizationForm">
-			<field property="achar.characterizationSource" page="2"
-				depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="particle" />
-			</field>
 			<field property="achar.viewTitle" page="2"
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
-			</field>
-			<field property="achar.instrumentConfiguration.instrument.type"
-				page="2" depends="validwhen">
-				<arg position="0" key="achar.instrument.type"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((achar.instrumentConfiguration.description==null) or
-						(*this*!=null))
-					</var-value>
-				</var>
-			</field>
-			<field
-				property="achar.instrumentConfiguration.instrument.manufacturer" page="2"
-				depends="validwhen">
-				<arg position="0" key="achar.instrument.manufacturer"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((achar.instrumentConfiguration.instrument.type==null)
-						or (*this*!=null))
-					</var-value>
-				</var>
 			</field>
 <!--			<field property="labFileBean.domainFile.title" page="2"-->
 <!--				depends="required,mask"-->
