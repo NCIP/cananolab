@@ -84,7 +84,7 @@
 					</th>
 					<td class="rightLabel">
 						${ characterizationForm.map.achar.viewTitle} - ${
-						characterizationForm.map.achar.characterizationSource}
+						characterizationForm.map.achar.pocBean.displayName}
 					</td>
 				</tr>
 				<c:if test="${!empty characterizationForm.map.achar.description}">
@@ -132,6 +132,7 @@
 						</td>
 					</tr>
 				</c:if>
+				<%--
 				<logic:iterate name="characterizationForm"
 					property="achar.derivedBioAssayDataList" id="derivedBioAssayData"
 					indexId="fileInd">
@@ -212,6 +213,7 @@
 						</tr>
 					</c:if>
 				</logic:iterate>
+				--%>
 			</table>
 		</td>
 	</tr>
