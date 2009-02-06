@@ -38,7 +38,7 @@
 		</td>
 		<td class="rightLabel" valign="top" colspan="3">
 			<div id="newExperimentConfig" style="display: none;">
-				<jsp:include page="/common/bodySubmitExperimentConfig.jsp" />
+				<jsp:include page="bodySubmitExperimentConfig.jsp" />
 			</div>
 			&nbsp;
 		</td>
