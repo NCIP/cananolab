@@ -21,7 +21,7 @@
 		<td class="label">
 			<c:choose>
 				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:select property="achar.pocBean.displayName"
+					<html:select property="achar.pocBean.domain.id"
 						styleId="charSource"
 						onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
 						<option value=""></option>
