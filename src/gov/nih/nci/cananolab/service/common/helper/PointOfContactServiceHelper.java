@@ -9,7 +9,9 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -34,14 +36,15 @@ public class PointOfContactServiceHelper {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					NanoparticleSample.class).add(
 					Property.forName("id").eq(new Long(particleId)));
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-			List results = appService.query(crit);
+			crit
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);		
 			List<PointOfContactBean> otherPointOfContactCollection = new ArrayList<PointOfContactBean>();
-			for (Object obj : results) {
+			for (Object obj : results) {				
 				NanoparticleSample particle = (NanoparticleSample) obj;
 				Collection<PointOfContact> otherPOCs = particle
 						.getOtherPointOfContactCollection();

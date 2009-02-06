@@ -140,6 +140,39 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
+	
+	
+	/**
+	 * Persist a new nanoparticle sample or update an existing nanoparticle
+	 * sample
+	 *
+	 * @param particleSample
+	 * @throws ParticleException,
+	 *             DuplicateEntriesException
+	 */
+	public void saveOtherPOCs(NanoparticleSample particleSample)
+			throws ParticleException, DuplicateEntriesException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			NanoparticleSample dbParticle = (NanoparticleSample) appService
+					.getObject(NanoparticleSample.class, "name", particleSample
+							.getName());
+			if (dbParticle != null
+					&& !dbParticle.getId().equals(particleSample.getId())) {
+				throw new DuplicateEntriesException();
+			}			
+			dbParticle.setOtherPointOfContactCollection(
+					particleSample.getOtherPointOfContactCollection());
+			appService.saveOrUpdate(dbParticle);
+		} catch (DuplicateEntriesException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Error in saving OtherPOCs.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
 
 	/**
 	 *

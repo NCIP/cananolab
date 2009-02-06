@@ -179,5 +179,6 @@ public class ParticleBean {
 
 	public void setPocBean(PointOfContactBean pocBean) {
 		this.pocBean = pocBean;
+		this.domainParticleSample.setPrimaryPointOfContact(pocBean.getDomain());
 	}
 }
