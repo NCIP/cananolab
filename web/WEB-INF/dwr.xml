@@ -28,7 +28,7 @@
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.common.DWRExperimentConfigManager" />
+				value="gov.nih.nci.cananolab.ui.particle.DWRExperimentConfigManager" />
 			<include method="findExperimentConfigById" />
 			<include method="findTechniqueByType" />
 			<include method="findInstrumentTypesByTechniqueType" />
@@ -41,12 +41,12 @@
 		<create creator="new" javascript="DataSetManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.common.DWRDataSetManager" />
+				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager" />
 			<include method="addColumnHeader" />
 			<include method="resetDataSet" />
 			<include method="addRow" />
 			<include method="deleteDataRow" />
-			
+
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
