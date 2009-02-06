@@ -78,14 +78,6 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			achar.setNanoparticleSample(particleSample);
 			particleSample.getCharacterizationCollection().add(achar);
 
-//			if (achar.getDerivedBioAssayDataCollection() != null) {
-//				for (DerivedBioAssayData bioassay : achar
-//						.getDerivedBioAssayDataCollection()) {
-//					if (bioassay.getFile() != null) {
-//						fileService.prepareSaveFile(bioassay.getFile());
-//					}
-//				}
-//			}
 			appService.saveOrUpdate(achar);
 		} catch (DuplicateEntriesException e) {
 			throw e;

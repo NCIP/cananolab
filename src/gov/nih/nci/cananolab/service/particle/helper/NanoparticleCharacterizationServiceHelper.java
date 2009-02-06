@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
@@ -10,9 +9,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -26,7 +23,6 @@ import java.util.SortedSet;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -62,13 +58,10 @@ public class NanoparticleCharacterizationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
-		crit.createAlias("derivedBioAssayDataCollection", "bioassay",
-				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("bioassay.file", "file",
-				CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
-		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("datumCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -102,16 +95,11 @@ public class NanoparticleCharacterizationServiceHelper {
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Class
 				.forName(className));
-		crit.createAlias("nanoparticleSample", "sample",
-				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("derivedBioAssayDataCollection", "bioassay",
-				CriteriaSpecification.LEFT_JOIN);
-		crit.createAlias("bioassay.file", "file",
-				CriteriaSpecification.LEFT_JOIN);
 		crit.add(Restrictions.eq("sample.name", particleName));
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
-		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("datumCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -442,7 +430,7 @@ public class NanoparticleCharacterizationServiceHelper {
 						new HSSFRichTextString((String) datumMap.get(label)));
 			}
 
-			//TODO: 
+			//TODO:
 //			DerivedBioAssayDataBean charFile = sbean
 //					.getDerivedBioAssayDataBean();
 //			if (charFile != null) {
