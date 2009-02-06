@@ -76,8 +76,10 @@
 			&nbsp;
 		</td>
 		<td class=rightLabelNoBottomRightAlign>
-			<input class="noBorderButton" type="button" value="Add to Header"
+			<input class="noBorderButton" type="button" value="Save Column"
 				onclick="addDatumColumn()" />
+			<input class="noBorderButton" type="button" value="Delete Column"
+				onclick="deleteDatumColumn()" />
 		</td>
 	</tr>
 	<tr id="datumColumnsDivRow">
@@ -88,7 +90,9 @@
 					<tbody id="datumColumns">
 						<tr id="datumColumnPatternRow">
 							<td id="datumColumnPattern" style="display: none;">
-								<span id="datumColumnName" class="greyFont2">Name</span>
+								<input  class="noBorderButton" 
+									id="datumColumnName" type="button" size="2"
+									value="datumColumnName" onclick="editColumn(this.id)"/>
 								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
 								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
 								<br>

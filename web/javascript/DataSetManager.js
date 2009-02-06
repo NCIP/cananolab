@@ -2,12 +2,13 @@
 var currentDataSet = null;
 var rowCount = 0;
 var dataRowCache = {};
+var dataColumnCache = {};
 var viewed = -1;
 var datumColumnCount = 0;
 var addNewColumn = true;
 
 function resetTheDataSet(isShow) {
-	alert('reset 999');
+	//alert('reset 333');
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
@@ -199,8 +200,23 @@ function fillColumnTable() {
 		dwr.util.setValue("datumColumnValueType" + id, datum.valueType);
 		dwr.util.setValue("datumColumnValueUnit" + id, datum.valueUnit);
 		if (i==data.length-1){
+			dwr.util.setValue("datumColumnName" + id, document.getElementById("name").value);
 			dwr.util.setValue("datumColumnValue" + id, document.getElementById("value").value);
-		}
+		}		
+		var colDatum = {
+				name :null,
+				valueType :null,
+				valueUnit :null
+			};		
+		dwr.util.getValues(colDatum);
+		colDatum.name = dwr.util.getValue("datumColumnName" + id);
+		colDatum.valueType = dwr.util.getValue("datumColumnValueType" + id);
+		colDatum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
+		colDatum.value = dwr.util.getValue("datumColumnValue" + id);
+		dataColumnCache[datum.id] = colDatum;
+		//TODO:: XXXXXX
+		//alert('dataColumnCache'+datum.id+": "+dataColumnCache[datum.id].name+"= "+
+			//	dataColumnCache[datum.id].value);
 		$("datumColumnPattern" + id).style.display = "";
 	}
 }
@@ -271,6 +287,15 @@ function editClicked(eleid) {
 	}
 }
 
+function editColumn(eleid) {
+	var id = eleid.substring(15);
+	var datum = dataColumnCache[id];
+	document.getElementById("name").value=datum.name;	
+	document.getElementById("valueType").value=datum.valueType;	
+	document.getElementById("valueUnit").value=datum.valueUnit;	
+	document.getElementById("value").value=datum.value;	
+}
+
 function deleteClicked() {	
 	// we were an id of the form "delete{id}", eg "delete42". We lookup the "42"
 	//var instrument = instrumentCache[eleid.substring(6)];
@@ -283,6 +308,54 @@ function deleteClicked() {
 			window.setTimeout("fillMatrix()", 200);
 		}
 	}
+}
+
+function deleteDatumColumn() {	
+	alert('Under Constrution');
+//	if (datumColumnCount==0){		
+//		var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
+//		var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
+//		var aCellLength = aCells.length;
+//		var toDelete = new Array();	
+//		i =0;
+//		for(var j=0;j<aCellLength;j++){
+//			if (aCells[j].id!='datumColumnPattern'){
+//				toDelete[i]=aCells[j].id;
+//				i++;
+//			}
+//		}
+//		for(var j=0;j<toDelete.length;j++){
+//			datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
+//		}
+//		$("datumColumnsDivRow").style.display = "";
+//	}
+//	var datumOrCondition = document.getElementById("datumOrCondition").value;
+//	var datum = {
+//		name :null,
+//		valueType :null,
+//		valueUnit :null
+//	};
+//	
+//	dwr.util.getValues(datum);
+//	if (datum.name!='' || 
+//			datum.valueType!='' ||
+//			datum.valueUnit!=''){		
+//		addNewColumn = true;
+//		DataSetManager.addColumnHeader(datum,
+//				function(theDataSet) {
+//					currentDataSet = theDataSet;
+//				});
+//		$("addRowButtons").style.display = "";
+//		datumColumnCount++;
+//		createMatrixPattern();
+//		window.setTimeout("fillColumnTable()", 200);
+//		if (rowCount>0){
+//			window.setTimeout("fillMatrix()", 200);
+//		}
+//	}else{
+//		alert('Please fill in values');
+//	}
+	
 }
 
 function addClicked() {
