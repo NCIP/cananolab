@@ -27,9 +27,6 @@
 						<option value=""></option>
 						<html:options collection="allPointOfContacts"
 							labelProperty="displayName" property="domain.id" />
-						<option value="other">
-							[Other]
-						</option>
 					</html:select>
 				</c:when>
 				<c:otherwise>
