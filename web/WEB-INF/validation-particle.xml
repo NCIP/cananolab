@@ -249,11 +249,6 @@
 			</field>
 		</form>
 		<form name="physicalCharacterizationForm">
-			<field property="achar.characterizationSource" page="2"
-				depends="required">
-				<arg position="0" key="characterizationSource"
-					bundle="particle" />
-			</field>
 			<field property="achar.viewTitle" page="2"
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
@@ -267,19 +262,6 @@
 					<var-value>
 						((achar.theExperimentConfig==null) or
 						(*this*!=null))
-					</var-value>
-				</var>
-			</field>
-			<field
-				property="achar.instrumentConfiguration.instrument.manufacturer" page="2"
-				depends="validwhen">
-				<arg position="0" key="achar.instrument.manufacturer"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((achar.instrumentConfiguration.instrument.type==null)
-						or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
