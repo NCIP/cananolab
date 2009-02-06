@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
@@ -9,8 +8,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -23,10 +20,9 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 	private static Logger logger = Logger
 			.getLogger(NanoparticleCharacterizationResultServiceLocalImpl.class);
 
-	public SortedMap<DataRow, List<Datum>> getDataForDataSet(String dataSetId)
+	public List<Datum> getDataForDataSet(String dataSetId)
 			throws CharacterizationResultException {
-
-		SortedMap<DataRow, List<Datum>> dataMap = new TreeMap<DataRow, List<Datum>>();
+		List<Datum> data = new ArrayList<Datum>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -34,18 +30,12 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 					Restrictions.eq("DataSet.id", dataSetId)).addOrder(
 					Order.asc("createdDate"));
 			List result = appService.query(crit);
-			List<Datum> data = null;
+
 			for (Object obj : result) {
 				Datum datum = (Datum) obj;
-				if (dataMap.containsKey(datum.getDataRow())) {
-					data = dataMap.get(datum.getDataRow());
-				} else {
-					data = new ArrayList<Datum>();
-					dataMap.put(datum.getDataRow(), data);
-				}
 				data.add(datum);
 			}
-			return dataMap;
+			return data;
 		} catch (Exception e) {
 			String err = "Error getting data from data set " + dataSetId;
 			logger.error(err, e);

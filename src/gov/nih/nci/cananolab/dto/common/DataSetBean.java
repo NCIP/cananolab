@@ -47,14 +47,6 @@ public class DataSetBean {
 		}
 	}
 
-	public DataSetBean(SortedMap<DataRow, List<Datum>> dataMap) {
-		for (Map.Entry<DataRow, List<Datum>> entry : dataMap.entrySet()) {
-			List<Datum> data = entry.getValue();
-			DataRowBean dataRowBean = new DataRowBean(data);
-			dataRows.add(dataRowBean);
-		}
-	}
-
 	/**
 	 * @return the theDataRow
 	 */

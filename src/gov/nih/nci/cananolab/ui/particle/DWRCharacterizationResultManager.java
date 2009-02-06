@@ -81,8 +81,8 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public DataSetBean getDataSetBeanBy(String dataSetId) throws Exception{
-		SortedMap<DataRow, List<Datum>> dataMap=service.getDataForDataSet(dataSetId);
-		DataSetBean dataSetBean=new DataSetBean(dataMap);
+		List<Datum> data=service.getDataForDataSet(dataSetId);
+		DataSetBean dataSetBean=new DataSetBean(data);
 		return dataSetBean;
 	}
 }
