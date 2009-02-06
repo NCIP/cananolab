@@ -53,15 +53,9 @@ function resetTheDataSet(isShow) {
 	clearTheDataRow();
 }
 
-function validateSaveConfig(actionName){
-	var techniqueType = document.getElementById('techniqueType');
-	if (techniqueType.value==''){
-		alert('Please select a technique');
-		return false;
-	}
-	var patternAddRow = document.getElementById('patternAddRow');
+function saveDataSet(actionName){
 	submitAction(document.forms[0],
-			actionName, 'saveExperimentConfig');
+			actionName, 'saveDataSet');
 }
 function addDatumColumn() {
 	if (datumColumnCount==0){		

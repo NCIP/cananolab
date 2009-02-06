@@ -142,7 +142,7 @@
 				<input type="reset" value="Reset"
 					onclick="javascript:window.location.href='${origUrl}'">
 				<input type="button" value="Save"
-					onclick="javascript:validateSaveConfig('${actionName}');">
+					onclick="javascript:saveDataSet('${actionName}');">
 			</div>
 		</td>
 	</tr>
