@@ -4,9 +4,10 @@ var rowCount = 0;
 var dataRowCache = {};
 var viewed = -1;
 var datumColumnCount = 0;
+var addNewColumn = true;
 
 function resetTheDataSet(isShow) {
-	//alert('reset 000');
+	alert('reset 999');
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
@@ -62,7 +63,7 @@ function validateSaveConfig(actionName){
 	submitAction(document.forms[0],
 			actionName, 'saveExperimentConfig');
 }
-function addDatumColumn() {	
+function addDatumColumn() {
 	if (datumColumnCount==0){		
 		var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
 		var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
@@ -90,21 +91,25 @@ function addDatumColumn() {
 	dwr.util.getValues(datum);
 	if (datum.name!='' || 
 			datum.valueType!='' ||
-			datum.valueUnit!=''){
+			datum.valueUnit!=''){		
+		addNewColumn = true;
 		DataSetManager.addColumnHeader(datum,
 				function(theDataSet) {
 					currentDataSet = theDataSet;
 				});
 		$("addRowButtons").style.display = "";
 		datumColumnCount++;
+		createMatrixPattern();
 		window.setTimeout("fillColumnTable()", 200);
+		if (rowCount>0){
+			window.setTimeout("fillMatrix()", 200);
+		}
 	}else{
 		alert('Please fill in values');
 	}
 }
 
 function createMatrixPattern(){
-	
 	var matrixHeader = document.getElementById("matrixHeader");
 	matrixHeader = removeAllColumns(matrixHeader);	
 	for (var i=1; i<datumColumnCount+1; i++){
@@ -141,6 +146,7 @@ function createMatrixPattern(){
 }
 
 function addRow() {
+	addNewColumn = false;
 	var id = -1;	
 	var datumArray = new Array();
 	//alert('datumColumnCount='+datumColumnCount);
@@ -165,15 +171,13 @@ function addRow() {
 			alert('Please fill in values');
 			return;
 		}
-		
 	}
-	
 	DataSetManager.addRow(datumArray,
 			function(theDataSet) {
 				currentDataSet = theDataSet;
 			});			
 	if (rowCount==0){
-		createMatrixPattern();
+		//createMatrixPattern();
 		$("datumMatrixDivRow").style.display = "";	
 	}
 	rowCount++;
@@ -222,6 +226,7 @@ function fillMatrix() {
 	var datum, id;	
 	var rowId;	
 	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");
+	//checkNumOfColumns("datumMatrixPatternRow");
 	var aCells = datumMatrixPatternRow.getElementsByTagName('td')//cells collection in this row
 	var aCellLength = aCells.length;
 	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
@@ -229,6 +234,10 @@ function fillMatrix() {
 		rowId = currentDataSet.dataRows[row].domain.id;
 		if (rowId==null || rowId==''){
 			rowId = -row - 1;
+		}
+		if (addNewColumn && 
+				document.getElementById("datumMatrixPatternRow"+rowId)!=null){
+			removeNode("datumMatrixPatternRow"+rowId);
 		}
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
@@ -306,5 +315,15 @@ function checkNumOfColumns(rowId) {
 	var theRow = document.getElementById(rowId);
 	var aCells = theRow.getElementsByTagName('TD')//cells collection in this row
 	var aCellLength = aCells.length;
+	alert(rowId +" has "+aCellLength+" columns");
 }
+
+function removeNode(elementId) {
+	dwr.util._temp = dwr.util.byId(elementId);
+	if (dwr.util._temp) {
+		dwr.util._temp.parentNode.removeChild(dwr.util._temp);
+		dwr.util._temp = null;
+	}
+}
+
 

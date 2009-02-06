@@ -42,6 +42,13 @@ public class DWRDataSetManager {
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
 		theDataSet.getTheDataRow().addDatum(datum);
+		if (theDataSet.getDataRows()!=null) {
+			List<DataRowBean> dataRowBeans = theDataSet.getDataRows();
+			for (DataRowBean dataRowBean: dataRowBeans) {
+				dataRowBean.addDatum(datum);
+			}
+			//theDataSet.setDataRows(dataRowBeans);
+		}
 		return theDataSet;
 	}
 	
