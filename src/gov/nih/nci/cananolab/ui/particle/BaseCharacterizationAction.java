@@ -2,30 +2,30 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
-import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.particle.impl.ExperimentConfigServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.common.InitExperimentConfigSetup;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,8 +39,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -98,17 +96,17 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		for (NanoparticleSample sample : otherSamples) {
 			charService.saveCharacterization(sample, copy);
 			// update copied filename and save content and set visibility
-			//TODO
-//			if (copy.getDerivedBioAssayDataCollection() != null) {
-//				for (DerivedBioAssayData bioassay : copy
-//						.getDerivedBioAssayDataCollection()) {
-//					if (bioassay.getFile() != null) {
-//						fileService.saveCopiedFileAndSetVisibility(bioassay
-//								.getFile(), user, particleSampleName, sample
-//								.getName());
-//					}
-//				}
-//			}
+			// TODO
+			// if (copy.getDerivedBioAssayDataCollection() != null) {
+			// for (DerivedBioAssayData bioassay : copy
+			// .getDerivedBioAssayDataCollection()) {
+			// if (bioassay.getFile() != null) {
+			// fileService.saveCopiedFileAndSetVisibility(bioassay
+			// .getFile(), user, particleSampleName, sample
+			// .getName());
+			// }
+			// }
+			// }
 		}
 	}
 
@@ -132,76 +130,76 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 	}
 
-//	protected boolean validateDerivedDatum(HttpServletRequest request,
-//			CharacterizationBean charBean) throws Exception {
-//
-//		ActionMessages msgs = new ActionMessages();
-//		boolean noErrors = true;
-//		for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
-//				.getDerivedBioAssayDataList()) {
-//
-//			List<DerivedDatumBean> datumList = derivedBioassayDataBean
-//					.getDatumList();
-//			FileBean lfBean = derivedBioassayDataBean.getFileBean();
-//
-//			// error, if no data input from either the lab file or derived datum
-//			boolean noFileError = true;
-//			if (datumList == null || datumList.size() == 0) {
-//				noFileError = validateFileBean(request, msgs, lfBean);
-//				if (!noFileError) {
-//					ActionMessage msg = new ActionMessage("errors.required",
-//							"If no derived datum entered, the file data");
-//					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//					this.saveErrors(request, msgs);
-//					noErrors = false;
-//				}
-//			}
-//
-//			for (DerivedDatumBean datum : datumList) {
-//				// if value field is populated, so does the name field.
-//				if (datum.getDomainDerivedDatum().getName().length() == 0) {
-//					ActionMessage msg = new ActionMessage("errors.required",
-//							"Derived data name");
-//					msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//					this.saveErrors(request, msgs);
-//					noErrors = false;
-//				}
-//				try {
-//					Float value = new Float(datum.getValueStr());
-//					// for boolean type, the value must be 0/1
-//					if (datum.getDomainDerivedDatum().getValueType()
-//							.equalsIgnoreCase("boolean")
-//							&& value != 0.0 && value != 1.0) {
-//						ActionMessage msg = new ActionMessage(
-//								"error.booleanValue", "Derived data value");
-//						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//						saveErrors(request, msgs);
-//						noErrors = false;
-//					}
-//				} catch (NumberFormatException e) {
-//					// for boolean type, the value must be true/false
-//					if (datum.getDomainDerivedDatum().getValueType()
-//							.equalsIgnoreCase("boolean")
-//							&& !datum.getValueStr().equalsIgnoreCase("true")
-//							&& !datum.getValueStr().equalsIgnoreCase("false")) {
-//						ActionMessage msg = new ActionMessage(
-//								"error.booleanValue", "Derived data value");
-//						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//						saveErrors(request, msgs);
-//						noErrors = false;
-//					} else if (!datum.getDomainDerivedDatum().getValueType()
-//							.equalsIgnoreCase("boolean")) {
-//						ActionMessage msg = new ActionMessage(
-//								"error.derivedDatumValue", "Derived data value");
-//						msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//						saveErrors(request, msgs);
-//						noErrors = false;
-//					}
-//				}
-//			}
-//		}
-//		return noErrors;
-//	}
+	// protected boolean validateDerivedDatum(HttpServletRequest request,
+	// CharacterizationBean charBean) throws Exception {
+	//
+	// ActionMessages msgs = new ActionMessages();
+	// boolean noErrors = true;
+	// for (DerivedBioAssayDataBean derivedBioassayDataBean : charBean
+	// .getDerivedBioAssayDataList()) {
+	//
+	// List<DerivedDatumBean> datumList = derivedBioassayDataBean
+	// .getDatumList();
+	// FileBean lfBean = derivedBioassayDataBean.getFileBean();
+	//
+	// // error, if no data input from either the lab file or derived datum
+	// boolean noFileError = true;
+	// if (datumList == null || datumList.size() == 0) {
+	// noFileError = validateFileBean(request, msgs, lfBean);
+	// if (!noFileError) {
+	// ActionMessage msg = new ActionMessage("errors.required",
+	// "If no derived datum entered, the file data");
+	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+	// this.saveErrors(request, msgs);
+	// noErrors = false;
+	// }
+	// }
+	//
+	// for (DerivedDatumBean datum : datumList) {
+	// // if value field is populated, so does the name field.
+	// if (datum.getDomainDerivedDatum().getName().length() == 0) {
+	// ActionMessage msg = new ActionMessage("errors.required",
+	// "Derived data name");
+	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+	// this.saveErrors(request, msgs);
+	// noErrors = false;
+	// }
+	// try {
+	// Float value = new Float(datum.getValueStr());
+	// // for boolean type, the value must be 0/1
+	// if (datum.getDomainDerivedDatum().getValueType()
+	// .equalsIgnoreCase("boolean")
+	// && value != 0.0 && value != 1.0) {
+	// ActionMessage msg = new ActionMessage(
+	// "error.booleanValue", "Derived data value");
+	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+	// saveErrors(request, msgs);
+	// noErrors = false;
+	// }
+	// } catch (NumberFormatException e) {
+	// // for boolean type, the value must be true/false
+	// if (datum.getDomainDerivedDatum().getValueType()
+	// .equalsIgnoreCase("boolean")
+	// && !datum.getValueStr().equalsIgnoreCase("true")
+	// && !datum.getValueStr().equalsIgnoreCase("false")) {
+	// ActionMessage msg = new ActionMessage(
+	// "error.booleanValue", "Derived data value");
+	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+	// saveErrors(request, msgs);
+	// noErrors = false;
+	// } else if (!datum.getDomainDerivedDatum().getValueType()
+	// .equalsIgnoreCase("boolean")) {
+	// ActionMessage msg = new ActionMessage(
+	// "error.derivedDatumValue", "Derived data value");
+	// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+	// saveErrors(request, msgs);
+	// noErrors = false;
+	// }
+	// }
+	// }
+	// }
+	// return noErrors;
+	// }
 
 	protected void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
@@ -231,13 +229,13 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 
 		// save file data to file system and set visibility
 		List<FileBean> files = new ArrayList<FileBean>();
-		//TODO::
-//		for (DerivedBioAssayDataBean bioassay : charBean
-//				.getDerivedBioAssayDataList()) {
-//			if (bioassay.getFileBean() != null) {
-//				files.add(bioassay.getFileBean());
-//			}
-//		}
+		// TODO::
+		// for (DerivedBioAssayDataBean bioassay : charBean
+		// .getDerivedBioAssayDataList()) {
+		// if (bioassay.getFileBean() != null) {
+		// files.add(bioassay.getFileBean());
+		// }
+		// }
 		saveFilesToFileSystem(files);
 
 		// save to other particles
@@ -338,82 +336,82 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		return chara;
 	}
 
-//	public ActionForward addDerivedBioAssayData(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		achar.addDerivedBioAssayData();
-//		setupDomainChar(request, theForm, achar);
-//		InitCharacterizationSetup.getInstance()
-//				.persistCharacterizationDropdowns(request, achar);
-//		return mapping.getInputForward();
-//	}
+	// public ActionForward addDerivedBioAssayData(ActionMapping mapping,
+	// ActionForm form, HttpServletRequest request,
+	// HttpServletResponse response) throws Exception {
+	// DynaValidatorForm theForm = (DynaValidatorForm) form;
+	// CharacterizationBean achar = (CharacterizationBean) theForm
+	// .get("achar");
+	// achar.addDerivedBioAssayData();
+	// setupDomainChar(request, theForm, achar);
+	// InitCharacterizationSetup.getInstance()
+	// .persistCharacterizationDropdowns(request, achar);
+	// return mapping.getInputForward();
+	// }
 
-//	public ActionForward removeDerivedBioAssayData(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		// if user pressed cancel in load characterization file
-//		String cancel = request.getParameter("cancel");
-//		if (cancel != null) {
-//			return mapping.getInputForward();
-//		}
-//		String fileIndexStr = (String) request.getParameter("compInd");
-//		int fileInd = Integer.parseInt(fileIndexStr);
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		achar.removeDerivedBioAssayData(fileInd);
-//		InitCharacterizationSetup.getInstance()
-//				.persistCharacterizationDropdowns(request, achar);
-//
-//		return mapping.getInputForward();
-//	}
+	// public ActionForward removeDerivedBioAssayData(ActionMapping mapping,
+	// ActionForm form, HttpServletRequest request,
+	// HttpServletResponse response) throws Exception {
+	// // if user pressed cancel in load characterization file
+	// String cancel = request.getParameter("cancel");
+	// if (cancel != null) {
+	// return mapping.getInputForward();
+	// }
+	// String fileIndexStr = (String) request.getParameter("compInd");
+	// int fileInd = Integer.parseInt(fileIndexStr);
+	// DynaValidatorForm theForm = (DynaValidatorForm) form;
+	// CharacterizationBean achar = (CharacterizationBean) theForm
+	// .get("achar");
+	// achar.removeDerivedBioAssayData(fileInd);
+	// InitCharacterizationSetup.getInstance()
+	// .persistCharacterizationDropdowns(request, achar);
+	//
+	// return mapping.getInputForward();
+	// }
 
-//	public ActionForward addDerivedDatum(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		String fileIndexStr = (String) request.getParameter("compInd");
-//		int fileInd = Integer.parseInt(fileIndexStr);
-//		DerivedBioAssayDataBean derivedBioAssayData = achar
-//				.getDerivedBioAssayDataList().get(fileInd);
-//		derivedBioAssayData.addDerivedDatum();
-//		setupDomainChar(request, theForm, achar);
-//		InitCharacterizationSetup.getInstance()
-//				.persistCharacterizationDropdowns(request, achar);
-//
-//		return mapping.getInputForward();
-//	}
+	// public ActionForward addDerivedDatum(ActionMapping mapping,
+	// ActionForm form, HttpServletRequest request,
+	// HttpServletResponse response) throws Exception {
+	// DynaValidatorForm theForm = (DynaValidatorForm) form;
+	// CharacterizationBean achar = (CharacterizationBean) theForm
+	// .get("achar");
+	// String fileIndexStr = (String) request.getParameter("compInd");
+	// int fileInd = Integer.parseInt(fileIndexStr);
+	// DerivedBioAssayDataBean derivedBioAssayData = achar
+	// .getDerivedBioAssayDataList().get(fileInd);
+	// derivedBioAssayData.addDerivedDatum();
+	// setupDomainChar(request, theForm, achar);
+	// InitCharacterizationSetup.getInstance()
+	// .persistCharacterizationDropdowns(request, achar);
+	//
+	// return mapping.getInputForward();
+	// }
 
-//	public ActionForward removeDerivedDatum(ActionMapping mapping,
-//			ActionForm form, HttpServletRequest request,
-//			HttpServletResponse response) throws Exception {
-//		// if user pressed cancel in load characterization file
-//		String cancel = request.getParameter("cancel");
-//		if (cancel != null) {
-//			return mapping.getInputForward();
-//		}
-//		DynaValidatorForm theForm = (DynaValidatorForm) form;
-//		CharacterizationBean achar = (CharacterizationBean) theForm
-//				.get("achar");
-//		String fileIndexStr = (String) request.getParameter("compInd");
-//		int fileInd = Integer.parseInt(fileIndexStr);
-//		String dataIndexStr = (String) request.getParameter("childCompInd");
-//		int dataInd = Integer.parseInt(dataIndexStr);
-//		DerivedBioAssayDataBean derivedBioAssayData = achar
-//				.getDerivedBioAssayDataList().get(fileInd);
-//		derivedBioAssayData.removeDerivedDatum(dataInd);
-//		InitCharacterizationSetup.getInstance()
-//				.persistCharacterizationDropdowns(request, achar);
-//
-//		return mapping.getInputForward();
-//		// return mapping.getInputForward(); this gives an
-//		// IndexOutOfBoundException in the jsp page
-//	}
+	// public ActionForward removeDerivedDatum(ActionMapping mapping,
+	// ActionForm form, HttpServletRequest request,
+	// HttpServletResponse response) throws Exception {
+	// // if user pressed cancel in load characterization file
+	// String cancel = request.getParameter("cancel");
+	// if (cancel != null) {
+	// return mapping.getInputForward();
+	// }
+	// DynaValidatorForm theForm = (DynaValidatorForm) form;
+	// CharacterizationBean achar = (CharacterizationBean) theForm
+	// .get("achar");
+	// String fileIndexStr = (String) request.getParameter("compInd");
+	// int fileInd = Integer.parseInt(fileIndexStr);
+	// String dataIndexStr = (String) request.getParameter("childCompInd");
+	// int dataInd = Integer.parseInt(dataIndexStr);
+	// DerivedBioAssayDataBean derivedBioAssayData = achar
+	// .getDerivedBioAssayDataList().get(fileInd);
+	// derivedBioAssayData.removeDerivedDatum(dataInd);
+	// InitCharacterizationSetup.getInstance()
+	// .persistCharacterizationDropdowns(request, achar);
+	//
+	// return mapping.getInputForward();
+	// // return mapping.getInputForward(); this gives an
+	// // IndexOutOfBoundException in the jsp page
+	// }
 
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -455,23 +453,23 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 	private void setCharacterizationFileFullPath(HttpServletRequest request,
 			CharacterizationBean charBean, String location) throws Exception {
 		if (location.equals("local")) {
-			//TODO::
+			// TODO::
 			// set file full path
-//			for (DerivedBioAssayDataBean bioassayBean : charBean
-//					.getDerivedBioAssayDataList()) {
-//				if (bioassayBean.getFileBean() != null) {
-//					FileBean fileBean = bioassayBean.getFileBean();
-//					if (!fileBean.getDomainFile().getUriExternal()) {
-//						String fileRoot = PropertyReader.getProperty(
-//								CaNanoLabConstants.FILEUPLOAD_PROPERTY,
-//								"fileRepositoryDir");
-//						fileBean.setFullPath(fileRoot + File.separator
-//								+ fileBean.getDomainFile().getUri());
-//					} else {
-//						fileBean.setFullPath(fileBean.getDomainFile().getUri());
-//					}
-//				}
-//			}
+			// for (DerivedBioAssayDataBean bioassayBean : charBean
+			// .getDerivedBioAssayDataList()) {
+			// if (bioassayBean.getFileBean() != null) {
+			// FileBean fileBean = bioassayBean.getFileBean();
+			// if (!fileBean.getDomainFile().getUriExternal()) {
+			// String fileRoot = PropertyReader.getProperty(
+			// CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+			// "fileRepositoryDir");
+			// fileBean.setFullPath(fileRoot + File.separator
+			// + fileBean.getDomainFile().getUri());
+			// } else {
+			// fileBean.setFullPath(fileBean.getDomainFile().getUri());
+			// }
+			// }
+			// }
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
@@ -483,16 +481,16 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
 			String remoteDownloadUrlBase = remoteServerHostUrl + actionPath
 					+ "?dispatch=download&location=local&fileId=";
-			//TODO::
-//			for (DerivedBioAssayDataBean bioassayBean : charBean
-//					.getDerivedBioAssayDataList()) {
-//				if (bioassayBean.getFileBean() != null) {
-//					FileBean fileBean = bioassayBean.getFileBean();
-//					String remoteDownloadUrl = remoteDownloadUrlBase
-//							+ fileBean.getDomainFile().getId().toString();
-//					fileBean.setFullPath(remoteDownloadUrl);
-//				}
-//			}
+			// TODO::
+			// for (DerivedBioAssayDataBean bioassayBean : charBean
+			// .getDerivedBioAssayDataList()) {
+			// if (bioassayBean.getFileBean() != null) {
+			// FileBean fileBean = bioassayBean.getFileBean();
+			// String remoteDownloadUrl = remoteDownloadUrlBase
+			// + fileBean.getDomainFile().getId().toString();
+			// fileBean.setFullPath(remoteDownloadUrl);
+			// }
+			// }
 		}
 	}
 
@@ -680,18 +678,32 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
 		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
-		if (achar.getDomainChar().getId() != null) {
-			configBean.getDomain().setCharacterization(achar.getDomainChar());
-		}
 		service.saveExperimentConfig(configBean.getDomain());
-
 		achar.addExperimentConfig(configBean);
-		//TODO::
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		InitExperimentConfigSetup.getInstance()
 				.persistExperimentConfigDropdowns(request, configBean);
 
+		return mapping.getInputForward();
+	}
+
+	public ActionForward saveDataSet(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		setupDomainChar(request, theForm, achar);
+		DataSetBean dataSetBean = achar.getTheDataSet();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		dataSetBean.setupDomain(user.getLoginName());
+		NanoparticleCharacterizationResultService service = new NanoparticleCharacterizationResultServiceLocalImpl();
+		service.saveData(dataSetBean.getData());
+		achar.addDataSet(dataSetBean);
+
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();
 	}
 
