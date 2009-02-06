@@ -28,13 +28,13 @@ import java.util.Map;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class CharacterizationBean {
 	// private String characterizationSource;
-	private PointOfContactBean pocBean;
+	private PointOfContactBean pocBean=new PointOfContactBean();
 
 	// used to distinguish different instances of characterizations, which are
 	// shown as different links on the view pages.
@@ -61,7 +61,6 @@ public class CharacterizationBean {
 	protected String dateString;
 
 	public CharacterizationBean() {
-		pocBean = new PointOfContactBean();
 	}
 
 	public CharacterizationBean(Characterization chara) {
@@ -71,11 +70,10 @@ public class CharacterizationBean {
 		this.viewTitle = chara.getIdentificationName();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
-			pocBean = new PointOfContactBean(poc);
+			if (poc != null) 
+				pocBean = new PointOfContactBean(poc);
 		}
-		if (pocBean != null) {
-			domainChar.setPointOfContact(pocBean.getDomain());
-		}
+
 		this.dateString = StringUtils.convertDateToString(chara.getDate(),
 				CaNanoLabConstants.DATE_FORMAT);
 
@@ -203,8 +201,11 @@ public class CharacterizationBean {
 		}
 		domainChar.setDescription(description);
 		domainChar.setIdentificationName(viewTitle);
-		if (pocBean != null) {
+		if (pocBean != null && pocBean.getDomain().getId() != null
+				&& pocBean.getDomain().getId() != 0) {
 			domainChar.setPointOfContact(pocBean.getDomain());
+		} else {
+			domainChar.setPointOfContact(null);
 		}
 		domainChar.setDate(StringUtils.convertToDate(dateString,
 				CaNanoLabConstants.DATE_FORMAT));
@@ -217,7 +218,7 @@ public class CharacterizationBean {
 		}
 		for (ExperimentConfigBean config : experimentConfigs) {
 			domainChar.getExperimentConfigCollection().add(config.getDomain());
-			if (domainChar.getId()!=null) {
+			if (domainChar.getId() != null) {
 				config.getDomain().setCharacterization(domainChar);
 			}
 		}
@@ -242,7 +243,7 @@ public class CharacterizationBean {
 			for (DataRowBean dataRowBean : dataSetBean.getDataRows()) {
 				for (Datum datum : dataRowBean.getData()) {
 					domainChar.getDatumCollection().add(datum);
-					if (domainChar.getId()!=null) {
+					if (domainChar.getId() != null) {
 						datum.setCharacterization(domainChar);
 					}
 				}
