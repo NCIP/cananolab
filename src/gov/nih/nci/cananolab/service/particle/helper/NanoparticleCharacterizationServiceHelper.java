@@ -58,6 +58,8 @@ public class NanoparticleCharacterizationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("datumCollection", FetchMode.JOIN);
@@ -96,6 +98,8 @@ public class NanoparticleCharacterizationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Class
 				.forName(className));
 		crit.add(Restrictions.eq("sample.name", particleName));
+		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("datumCollection", FetchMode.JOIN);
