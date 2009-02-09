@@ -28,9 +28,9 @@ import java.util.Map;
 /**
  * This class represents shared characterization properties to be shown in
  * characterization view pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CharacterizationBean {
 	// private String characterizationSource;
@@ -70,7 +70,7 @@ public class CharacterizationBean {
 		this.viewTitle = chara.getIdentificationName();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
-			if (poc != null) 
+			if (poc != null)
 				pocBean = new PointOfContactBean(poc);
 		}
 
@@ -97,7 +97,7 @@ public class CharacterizationBean {
 		// get all DataSets in order of creation date
 		List<DataSet> dataSetList = new ArrayList<DataSet>();
 		for (Datum datum : data) {
-			if (!dataSets.contains(datum.getDataSet())) {
+			if (!dataSetList.contains(datum.getDataSet())) {
 				dataSetList.add(datum.getDataSet());
 			}
 		}
@@ -381,5 +381,5 @@ public class CharacterizationBean {
 	 */
 	public List<DataSetBean> getDataSets() {
 		return dataSets;
-	}	
+	}
 }
