@@ -109,7 +109,7 @@
 			<div id="addRowButtons" style="display: none;">
 				<input class="noBorderButton" type="button" value="New"
 					onclick="clearTheDataRow()" />
-				<input class="noBorderButton" type="button" value="Save"
+				<input class="noBorderButton" type="button" value="Save Row"
 					onclick="addRow()" />
 				<input class="noBorderButton" type="button" value="Delete"
 					onclick="deleteClicked()" />

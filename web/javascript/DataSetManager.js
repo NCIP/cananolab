@@ -8,7 +8,7 @@ var datumColumnCount = 0;
 var addNewColumn = true;
 
 function resetTheDataSet(isShow) {
-	//alert('reset 333');
+	alert('reset 555');
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
@@ -16,6 +16,7 @@ function resetTheDataSet(isShow) {
 		show('newDataSet');
 	} else {
 		hide('newDataSet');
+		return;
 	}
 	DataSetManager.resetDataSet( function(theDataSet) {
 		currentDataSet = theDataSet;
@@ -59,34 +60,35 @@ function saveDataSet(actionName){
 			actionName, 'saveDataSet');
 }
 function addDatumColumn() {
-	if (datumColumnCount==0){		
-		var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
-		var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
-		var aCellLength = aCells.length;
-		var toDelete = new Array();	
-		i =0;
-		for(var j=0;j<aCellLength;j++){
-			if (aCells[j].id!='datumColumnPattern'){
-				toDelete[i]=aCells[j].id;
-				i++;
-			}
-		}
-		for(var j=0;j<toDelete.length;j++){
-			datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
-		}
-		$("datumColumnsDivRow").style.display = "";
-	}
 	var datumOrCondition = document.getElementById("datumOrCondition").value;
 	var datum = {
 		name :null,
 		valueType :null,
 		valueUnit :null
-	};
-	
+	};	
 	dwr.util.getValues(datum);
 	if (datum.name!='' || 
 			datum.valueType!='' ||
-			datum.valueUnit!=''){		
+			datum.valueUnit!=''){			
+		
+		if (datumColumnCount==0){		
+			var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
+			var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
+			var aCellLength = aCells.length;
+			var toDelete = new Array();	
+			i =0;
+			for(var j=0;j<aCellLength;j++){
+				if (aCells[j].id!='datumColumnPattern'){
+					toDelete[i]=aCells[j].id;
+					i++;
+				}
+			}
+			for(var j=0;j<toDelete.length;j++){
+				datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
+			}
+			$("datumColumnsDivRow").style.display = "";
+		}
+		
 		addNewColumn = true;
 		DataSetManager.addColumnHeader(datum,
 				function(theDataSet) {
