@@ -21,11 +21,10 @@ public class DataSetBean {
 	private DataRowBean theDataRow = new DataRowBean();
 	private List<DataRowBean> dataRows = new ArrayList<DataRowBean>();
 	private List<Datum> data = new ArrayList<Datum>();
-
+	
 	public DataSetBean() {
 
 	}
-
 	public DataSetBean(List<Datum> data) {
 		domain=data.get(0).getDataSet();
 		Map<DataRow, List<Datum>> dataMap = new HashMap<DataRow, List<Datum>>();
@@ -106,4 +105,12 @@ public class DataSetBean {
 			}
 		}
 	}
+
+	/**
+	 * @return the domain
+	 */
+	public DataSet getDomain() {
+		return domain;
+	}
+	
 }
