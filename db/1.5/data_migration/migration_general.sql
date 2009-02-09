@@ -498,9 +498,9 @@ CREATE TABLE datum
 	description TEXT,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
-	data_set_pk_id BIGINT NOT NULL,
-	data_row_pk_id BIGINT NOT NULL,
-	characterization_pk_id BIGINT NOT NULL,
+	data_set_pk_id BIGINT,
+	data_row_pk_id BIGINT,
+	characterization_pk_id BIGINT,
 	PRIMARY KEY (datum_pk_id),
 	KEY (characterization_pk_id),
 	KEY (data_row_pk_id)
@@ -571,7 +571,7 @@ INSERT INTO data_set(data_set_pk_id, file_pk_id)
 	SELECT derived_bioassay_data_pk_id, file_pk_id
 	FROM derived_bioassay_data
 ;
-	
+
 INSERT INTO data_row(data_row_pk_id)
 SELECT datum_pk_id
 FROM derived_datum
@@ -583,7 +583,7 @@ INSERT INTO datum(datum_pk_id, name, value, value_type, value_unit,
 	SELECT dd.datum_pk_id, dd.datum_name, dd.value, dd.value_type,
 		dd.value_unit, dd.description, dd.created_by, dd.created_date,
 		dd.derived_bioassay_data_pk_id, dd.datum_pk_id,
-		b.characterization_pk_id		
+		b.characterization_pk_id
 	FROM derived_datum dd, derived_bioassay_data b
 	WHERE dd.derived_bioassay_data_pk_id = b.derived_bioassay_data_pk_id
 ;
@@ -596,12 +596,12 @@ WHERE p.organization_pk_id = o.organization_pk_id
 AND o.name = c.source
 ;
 
-	 
+
 --ALTER TABLE characterization DROP COLUMN source;
 --DROP TABLE derived_datum;
 --DROP TABLE derived_bioassay_data;
-	 
-	 
+
+
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 

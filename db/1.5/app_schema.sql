@@ -358,9 +358,9 @@ CREATE TABLE datum
 	value_unit VARCHAR(200),
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
-	data_set_pk_id BIGINT NOT NULL,
-	data_row_pk_id BIGINT NOT NULL,
-	characterization_pk_id BIGINT NOT NULL,
+	data_set_pk_id BIGINT,
+	data_row_pk_id BIGINT,
+	characterization_pk_id BIGINT,
 	PRIMARY KEY (datum_pk_id),
 	KEY (characterization_pk_id),
 	KEY (data_row_pk_id)
