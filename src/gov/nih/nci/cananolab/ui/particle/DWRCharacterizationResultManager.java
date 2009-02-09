@@ -5,7 +5,9 @@ import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
+import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
@@ -84,5 +86,11 @@ public class DWRCharacterizationResultManager {
 		List<Datum> data=service.getDataForDataSet(dataSetId);
 		DataSetBean dataSetBean=new DataSetBean(data);
 		return dataSetBean;
+	}
+	
+	public DataSetBean findDataSetById(String dataSetId)
+		throws CharacterizationResultException {
+		List<Datum> data = service.getDataForDataSet(dataSetId);
+		return new DataSetBean(data);
 	}
 }

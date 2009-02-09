@@ -46,6 +46,7 @@
 			<include method="resetDataSet" />
 			<include method="addRow" />
 			<include method="deleteDataRow" />
+			<include method="findDataSetById" />
 
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
