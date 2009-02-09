@@ -16,7 +16,7 @@
 	</tr>
 	<tr>
 		<td class="completeLabelNoBottom" valign="top" colspan="4">
-			<strong>Data</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<strong>DataSet</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if
 				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 				<a style="" id="addDataSet"
@@ -26,12 +26,33 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top" colspan="1">
-			<c:forEach var="experimentConfig"
-				items="${characterizationForm.map.achar.experimentConfigs}">
-				&nbsp;&nbsp;<a
-					href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">
-					${fn:substring(experimentConfig.displayName,0,40)}</a>
+		<td class="leftLabel" valign="top" colspan="1">			
+			<c:forEach var="dataSet" varStatus="dataSetIndex"
+				items="${characterizationForm.map.achar.dataSets}">	
+				DataSet #${dataSetIndex.index+1}&nbsp;
+				<a
+					href="javascript:setTheDataSet(${dataSet.domain.id});">
+					edit</a>
+					<br>
+				<table>			
+					<c:forEach var="dataRow" varStatus="dataRowIndex"
+						items="${dataSet.dataRows}">
+						<c:if test="${dataRowIndex.index eq 0}">
+							<tr>
+								<c:forEach var="datum"
+									items="${dataRow.data}">
+									<td>${datum.name}&nbsp;${datum.valueType}&nbsp;${datum.valueUnit}</td>						
+								</c:forEach>
+							</tr>
+						</c:if> 
+						<tr>
+						<c:forEach var="datum"
+							items="${dataRow.data}">
+							<td>${datum.value}</td>						
+						</c:forEach>
+						</tr>
+					</c:forEach>
+				</table>
 				<br>
 			</c:forEach>
 			&nbsp;
