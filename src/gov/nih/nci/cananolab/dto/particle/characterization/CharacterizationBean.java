@@ -375,4 +375,11 @@ public class CharacterizationBean {
 	public void removeDataSet(DataSetBean dataSetBean) {
 		dataSets.remove(dataSetBean);
 	}
+
+	/**
+	 * @return the dataSets
+	 */
+	public List<DataSetBean> getDataSets() {
+		return dataSets;
+	}	
 }
