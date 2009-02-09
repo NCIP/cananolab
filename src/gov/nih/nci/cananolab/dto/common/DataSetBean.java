@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.DataRow;
+import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
 import gov.nih.nci.cananolab.util.DateUtil;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  *
  */
 public class DataSetBean {
+	private DataSet domain=new DataSet();
 	private DataRowBean theDataRow = new DataRowBean();
 	private List<DataRowBean> dataRows = new ArrayList<DataRowBean>();
 	private List<Datum> data = new ArrayList<Datum>();
@@ -25,6 +27,7 @@ public class DataSetBean {
 	}
 
 	public DataSetBean(List<Datum> data) {
+		domain=data.get(0).getDataSet();
 		Map<DataRow, List<Datum>> dataMap = new HashMap<DataRow, List<Datum>>();
 		List<DataRow> rows = new ArrayList<DataRow>();
 		List<Datum> dataPerRow = null;
@@ -98,6 +101,7 @@ public class DataSetBean {
 			for (Datum datum : dataRowBean.getData()) {
 				datum.setCreatedBy(createdBy);
 				datum.setCreatedDate(DateUtil.addSecondsToCurrentDate(i));
+				datum.setDataSet(domain);
 				i++;
 			}
 		}
