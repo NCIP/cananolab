@@ -55,6 +55,30 @@ function resetTheDataSet(isShow) {
 	clearTheDataRow();
 }
 
+function setTheDataSet(dataSetId) {
+	show('newDataSet');
+	DataSetManager.findDataSetById(dataSetId,
+			populateDataSet);	
+}
+
+function populateDataSet(dataSet) {
+	if (dataSet != null) {
+		currentDataSet = dataSet;
+		alert(populateDataSet);
+//		dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
+//		dwr.util.setValue("techniqueAbbr",
+//				experimentConfig.domain.technique.abbreviation);
+//		dwr.util.setValue("configDescription", experimentConfig.domain.description);
+//		dwr.util.setValue("configId", experimentConfig.domain.id);
+//		instrumentCount = experimentConfig.instruments.length;
+//		rowCount = document.getElementById("instrumentRows").rows.length;
+//		fillTable();
+		//TODO:: otherPattern;
+		fillMatrix();
+	}
+}
+
+
 function saveDataSet(actionName){
 	submitAction(document.forms[0],
 			actionName, 'saveDataSet');
@@ -69,8 +93,7 @@ function addDatumColumn() {
 	dwr.util.getValues(datum);
 	if (datum.name!='' || 
 			datum.valueType!='' ||
-			datum.valueUnit!=''){			
-		
+			datum.valueUnit!=''){	
 		if (datumColumnCount==0){		
 			var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
 			var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
