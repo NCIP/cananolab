@@ -27,7 +27,7 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Datum.class).add(
-					Restrictions.eq("DataSet.id", dataSetId)).addOrder(
+					Restrictions.eq("dataSet.id", new Long(dataSetId))).addOrder(
 					Order.asc("createdDate"));
 			List result = appService.query(crit);
 
