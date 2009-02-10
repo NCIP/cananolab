@@ -6,9 +6,10 @@ var dataColumnCache = {};
 var viewed = -1;
 var datumColumnCount = 0;
 var addNewColumn = true;
+var editDataSet = false;
 
 function resetTheDataSet(isShow) {
-	alert('reset 555');
+	editDataSet = false;
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
@@ -56,7 +57,8 @@ function resetTheDataSet(isShow) {
 }
 
 function setTheDataSet(dataSetId) {
-	show('newDataSet');
+	resetTheDataSet(true);
+	editDataSet = true;
 	DataSetManager.findDataSetById(dataSetId,
 			populateDataSet);	
 }
@@ -64,17 +66,27 @@ function setTheDataSet(dataSetId) {
 function populateDataSet(dataSet) {
 	if (dataSet != null) {
 		currentDataSet = dataSet;
-		alert(populateDataSet);
-//		dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
-//		dwr.util.setValue("techniqueAbbr",
-//				experimentConfig.domain.technique.abbreviation);
-//		dwr.util.setValue("configDescription", experimentConfig.domain.description);
-//		dwr.util.setValue("configId", experimentConfig.domain.id);
-//		instrumentCount = experimentConfig.instruments.length;
-//		rowCount = document.getElementById("instrumentRows").rows.length;
-//		fillTable();
-		//TODO:: otherPattern;
-		fillMatrix();
+		if (currentDataSet.dataRows==null || currentDataSet.dataRows.length==0){
+			 return;
+		}	
+		for (var index=0; index<currentDataSet.dataRows.length; index++) {
+			var data = currentDataSet.dataRows[index].data;
+			var datum, id;	
+			setTheDataRow(currentDataSet.dataRows[index]);
+			datumColumnCount = 0;
+			for ( var i = 0; i < data.length; i++) {
+				datum = data[i];
+				addDatumColumn(datum);
+			}		
+		}
+		
+		for (var index=0; index<currentDataSet.dataRows.length; index++) {
+			var data = currentDataSet.dataRows[index].data;
+			var datum, id;	
+			setTheDataRow(currentDataSet.dataRows[index]);
+			addRow2(currentDataSet.theDataRow);
+		}
+		window.setTimeout("fillMatrix()", 200);
 	}
 }
 
@@ -83,7 +95,11 @@ function saveDataSet(actionName){
 	submitAction(document.forms[0],
 			actionName, 'saveDataSet');
 }
-function addDatumColumn() {
+
+function addDatumColumn(){
+	addDatumColumn(null);
+}
+function addDatumColumn(myDatum) {
 	var datumOrCondition = document.getElementById("datumOrCondition").value;
 	var datum = {
 		name :null,
@@ -91,6 +107,10 @@ function addDatumColumn() {
 		valueUnit :null
 	};	
 	dwr.util.getValues(datum);
+	
+	if (myDatum!=null){
+		datum = myDatum;
+	}
 	if (datum.name!='' || 
 			datum.valueType!='' ||
 			datum.valueUnit!=''){	
@@ -113,10 +133,12 @@ function addDatumColumn() {
 		}
 		
 		addNewColumn = true;
-		DataSetManager.addColumnHeader(datum,
-				function(theDataSet) {
-					currentDataSet = theDataSet;
-				});
+		if (myDatum==null){
+			DataSetManager.addColumnHeader(datum,
+					function(theDataSet) {
+						currentDataSet = theDataSet;
+					});
+		}
 		$("addRowButtons").style.display = "";
 		datumColumnCount++;
 		createMatrixPattern();
@@ -131,7 +153,7 @@ function addDatumColumn() {
 
 function createMatrixPattern(){
 	var matrixHeader = document.getElementById("matrixHeader");
-	matrixHeader = removeAllColumns(matrixHeader);	
+	matrixHeader = removeAllColumns(matrixHeader);		
 	for (var i=1; i<datumColumnCount+1; i++){
 		 var cell = document.createElement("TD");
 		 var span = document.createElement('SPAN');
@@ -169,7 +191,6 @@ function addRow() {
 	addNewColumn = false;
 	var id = -1;	
 	var datumArray = new Array();
-	//alert('datumColumnCount='+datumColumnCount);
 	for ( var i = 0; i < datumColumnCount; i++) {
 		//id = i+1;
 		id = -i-1;
@@ -197,7 +218,6 @@ function addRow() {
 				currentDataSet = theDataSet;
 			});			
 	if (rowCount==0){
-		//createMatrixPattern();
 		$("datumMatrixDivRow").style.display = "";	
 	}
 	rowCount++;
@@ -208,13 +228,25 @@ function clearTheDataRow() {
 	
 }
 
+function setTheDataRow(dataRow) {
+	currentDataSet.theDataRow = dataRow;
+	//var datum = currentDataSet.theDataRow.data[datumColumnCount-1];
+	//document.getElementById("name").value = datum.name;
+	//document.getElementById("value").value = datum.value;
+	//document.getElementById("name").value = datum.name;
+	//document.getElementById("name").value = datum.name;	
+}
+
 function fillColumnTable() {
 	var data = currentDataSet.theDataRow.data;
 	var datum, id;	
 	$("datumColumnPatternRow").style.display = "";
 	$("datumColumnPattern").style.display = "none";
-	//alert('data.length='+data.length+'  datumColumnCount='+datumColumnCount);
-	for ( var i = data.length - 1; i < data.length; i++) {
+	var start = data.length-1;
+	if (editDataSet){
+		start = 0;
+	}
+	for ( var i = start; i < data.length; i++) {
 		datum = data[i];
 		datum.id = -i-1;
 		id = datum.id;
@@ -224,7 +256,9 @@ function fillColumnTable() {
 		dwr.util.setValue("datumColumnName" + id, datum.name);
 		dwr.util.setValue("datumColumnValueType" + id, datum.valueType);
 		dwr.util.setValue("datumColumnValueUnit" + id, datum.valueUnit);
-		if (i==data.length-1){
+		dwr.util.setValue("datumColumnValue" + id, datum.value);
+		if (!editDataSet){
+			//TODO::: why need??
 			dwr.util.setValue("datumColumnName" + id, document.getElementById("name").value);
 			dwr.util.setValue("datumColumnValue" + id, document.getElementById("value").value);
 		}		
@@ -240,15 +274,12 @@ function fillColumnTable() {
 		colDatum.value = dwr.util.getValue("datumColumnValue" + id);
 		dataColumnCache[datum.id] = colDatum;
 		//TODO:: XXXXXX
-		//alert('dataColumnCache'+datum.id+": "+dataColumnCache[datum.id].name+"= "+
-			//	dataColumnCache[datum.id].value);
 		$("datumColumnPattern" + id).style.display = "";
 	}
 }
 
 
 function fillMatrix() {
-	//alert("fillMatrix");
 	dwr.util
 			.removeAllRows(
 					"datusMatrix",
@@ -263,25 +294,32 @@ function fillMatrix() {
 	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");
 	//checkNumOfColumns("datumMatrixPatternRow");
 	var aCells = datumMatrixPatternRow.getElementsByTagName('td')//cells collection in this row
-	var aCellLength = aCells.length;
+	var aCellLength = aCells.length;	
 	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
 		var data = currentDataSet.dataRows[row].data;
 		rowId = currentDataSet.dataRows[row].domain.id;
-		if (rowId==null || rowId==''){
-			rowId = -row - 1;
-		}
-		if (addNewColumn && 
-				document.getElementById("datumMatrixPatternRow"+rowId)!=null){
-			removeNode("datumMatrixPatternRow"+rowId);
-		}
+		rowId = -row - 1;
+		//TODO:: how to deal with rowId/datumID??	
+//		if (rowId==null || rowId==''){
+//			rowId = -row - 1;
+//		}
+		//TODO::: 
+//		if (addNewColumn && 
+//				document.getElementById("datumMatrixPatternRow"+rowId)!=null){
+//			removeNode("datumMatrixPatternRow"+rowId);
+//		}
+		//removeNode("datumMatrixPatternRow"+rowId);
+		//alert('clone '+rowId);
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
 		});				
 		for ( var i = 0; i < data.length; i++) {	
 			datum = data[i];
-			if (datum.id==null || datum.id==''){
-				datum.id = -i-1;
-			}
+			//TODO:: how to deal with rowId/datumID??	
+//			if (datum.id==null || datum.id==''){
+//				datum.id = -i-1;
+//			}
+			datum.id = -i-1;
 			//TODO:: how to deal with rowId/datumID??			
 			id = datum.id;
 			id = rowId;
@@ -418,4 +456,12 @@ function removeNode(elementId) {
 	}
 }
 
+function addRow2(theDataRow) {
+	addNewColumn = false;	
+	if (rowCount==0){
+		$("datumMatrixDivRow").style.display = "";	
+	}
+	rowCount++;
+	//window.setTimeout("fillMatrix()", 200);
+}
 

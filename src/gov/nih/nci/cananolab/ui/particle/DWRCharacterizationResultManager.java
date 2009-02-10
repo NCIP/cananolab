@@ -91,6 +91,13 @@ public class DWRCharacterizationResultManager {
 	public DataSetBean findDataSetById(String dataSetId)
 		throws CharacterizationResultException {
 		List<Datum> data = service.getDataForDataSet(dataSetId);
-		return new DataSetBean(data);
+		DataSetBean dataSetBean = new DataSetBean(data);
+		dataSetBean.setTheDataRow(dataSetBean.getDataRows().get(0));
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		charBean.setTheDataSet(dataSetBean);
+		return dataSetBean;
 	}
 }
