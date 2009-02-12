@@ -42,16 +42,34 @@
 				<option value="PDI">
 					PDI
 				</option>
-				<option value="z-avg">
-					z-avg
+				<option value="peak1">
+					peak1
 				</option>
-				<option value="temperature">
-					temperature
+				<option value="RMS-size">
+					RMS-size
 				</option>
-				<option value="z-avg">
-					z-avg
+				<option value="Z-average">
+					Z-average
+				</option><!--
+				
+				for condition
+				
+				
+				<option value="molecular weight">
+					molecular weight
 				</option>
-				<option value="other">
+				<option value="peak1">
+					peak1
+				</option>
+				<option value="RMS-size">
+					RMS-size
+				</option>
+				<option value="Z-average">
+					Z-average
+				</option>
+				
+				
+				--><option value="other">
 					[Other]
 				</option>
 			</html:select>
