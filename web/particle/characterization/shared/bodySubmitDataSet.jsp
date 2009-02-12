@@ -119,8 +119,8 @@
 									<tr id="datumColumnPatternRowDisplay">
 										<td id="datumColumnPatternDisplay" style="display: none;">
 											<span id="datumColumnNameDisplay" class="greyFont2">datumColumnName</span>
-											<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>
-											<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>
+											(<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>,
+											<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>)
 										</td>
 									</tr>
 								</tbody>
@@ -170,11 +170,8 @@
 								-->
 								<input class="noBorderButton" id="datumColumnName" type="button"
 									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
-								(
-								<span id="datumColumnValueType" class="greyFont2"><strong>ValueType</strong>
-								</span> ,
-								<span id="datumColumnValueUnit" class="greyFont2"><strong>ValueUnit</strong>
-								</span> )
+								(<span id="datumColumnValueType" class="greyFont2"><strong>ValueType</strong></span>,
+								<span id="datumColumnValueUnit" class="greyFont2"><strong>ValueUnit</strong></span>)
 							</td>
 							<td>
 								<input id="datumColumnValue" type="text" size="6"

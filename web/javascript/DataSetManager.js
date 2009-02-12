@@ -53,7 +53,7 @@ function resetTheDataSet(isShow) {
 	$("matrixHeader").style.display = "none";
 	$("datumColumnPattern").style.display = "none";
 	$("datumColumnPatternDisplay").style.display = "none";
-	$("datumColumnPatternRow").style.display = "none";
+	$("datumColumns").style.display = "none";
 	$("datumColumnPatternRowDisplay").style.display = "none";
 	$("addRowButtons").style.display = "none";
 	$("datumColumnsDivRow").style.display = "none";		
@@ -124,20 +124,21 @@ function addDatumColumn(myDatum) {
 			datum.valueType!='' ||
 			datum.valueUnit!=''){	
 		if (datumColumnCount==0){		
-			var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
-			var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
-			var aCellLength = aCells.length;
-			var toDelete = new Array();	
-			i =0;
-			for(var j=0;j<aCellLength;j++){
-				if (aCells[j].id!='datumColumnPattern'){
-					toDelete[i]=aCells[j].id;
-					i++;
-				}
-			}
-			for(var j=0;j<toDelete.length;j++){
-				datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
-			}
+			//TODO::
+//			var datumColumnPatternRow = document.getElementById("datumColumnPatternRow");
+//			var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells collection in this row
+//			var aCellLength = aCells.length;
+//			var toDelete = new Array();	
+//			i =0;
+//			for(var j=0;j<aCellLength;j++){
+//				if (aCells[j].id!='datumColumnPattern'){
+//					toDelete[i]=aCells[j].id;
+//					i++;
+//				}
+//			}
+//			for(var j=0;j<toDelete.length;j++){
+//				datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
+//			}
 			$("datumColumnsDivRow").style.display = "";
 			
 			
@@ -285,7 +286,7 @@ function setTheDataRow(dataRow) {
 function fillColumnTable() {
 	var data = currentDataSet.theDataRow.data;
 	var datum, id;	
-	$("datumColumnPatternRow").style.display = "";
+	$("datumColumns").style.display = "";
 	$("datumColumnPatternRowDisplay").style.display = "";
 	$("datumColumnPattern").style.display = "none";
 	$("datumColumnPatternDisplay").style.display = "none";
