@@ -98,8 +98,7 @@
 					<tr>
 						<td valign="top" colspan="1" class="subformTitle">
 							<a
-								href="javascript:showhide('submitDatum');hide('populateDataTableButton');"><b>Add/Update
-									Data</b>
+								href="javascript:showhide('submitDatum');hide('populateDataTableButton');"><b>Data</b>
 							</a>
 						</td>
 					</tr>
@@ -115,9 +114,7 @@
 
 					<tr>
 						<td valign="top" colspan="1" class="subformTitle">
-							<a href="javascript:showhide('loadDatumFile');"><b>Load
-									File</b>
-							</a>
+							<a href="javascript:showhide('loadDatumFile');"><b>File</b> </a>
 						</td>
 					</tr>
 					<tr>
@@ -125,7 +122,7 @@
 							<div id="loadDatumFile" style="display: none;" align="center">
 								<jsp:include page="bodyCharacterizationFile.jsp">
 									<jsp:param name="form" value="characterizationForm" />
-									<jsp:param name="action" value="${actionName}" />								
+									<jsp:param name="action" value="${actionName}" />
 								</jsp:include>
 							</div>
 							&nbsp;

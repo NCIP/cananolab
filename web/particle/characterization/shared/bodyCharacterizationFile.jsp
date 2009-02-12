@@ -4,30 +4,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-
 <table width="100%" align="center">
-	<tr>
-		<td>
-			<h3>
-				${particleName} Characterization - Result File
-			</h3>
-		</td>
-		<td align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="compo_file_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>	
-		</td>
-	</tr>
 	<tr>
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=characterization" />
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<%@ include file="bodyCharacterizationFileUpdate.jsp"%>
+				<c:when
+					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+					<jsp:include
+						page="bodyCharacterizationFileUpdate.jsp"/>
 				</c:when>
 				<c:otherwise>
-					<%@ include file="bodyCharacterizationFileReadOnly.jsp"%>
+					<jsp:include
+						page="bodyCharacterizationFileReadOnly.jsp"/>
 				</c:otherwise>
 			</c:choose>
 		</td>

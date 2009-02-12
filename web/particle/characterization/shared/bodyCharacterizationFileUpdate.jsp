@@ -11,7 +11,7 @@ function confirmDeletion()
 	{
 		this.document.forms[0].dispatch.value="delete";
 		this.document.forms[0].page.value="1";
-		this.document.forms[0].submit(); 
+		this.document.forms[0].submit();
 		return true;
 	}
 }
@@ -22,7 +22,7 @@ function confirmDeletion()
 		width="100%" align="center" summary="" border="0">
 		<tbody>
 			<tr class="topBorder">
-				<td class="formTitle" colspan="3">
+				<td class="subformTitle" colspan="3">
 					<div align="justify">
 						Result File Information
 					</div>
@@ -30,10 +30,10 @@ function confirmDeletion()
 			</tr>
 			<c:choose>
 				<c:when
-					test="${characterizationForm.map.achar.protocolFileBean.hidden eq 'false' }">
+					test="${characterizationForm.map.achar.theDataSet.file.hidden eq 'false' }">
 					<c:choose>
 						<c:when
-							test="${characterizationForm.map.achar.protocolFileBean.domainFile.uriExternal eq 'true' }">
+							test="${characterizationForm.map.achar.theDataSet.file.domainFile.uriExternal eq 'true' }">
 							<c:set var="linkDisplay" value="display: inline" />
 							<c:set var="loadDisplay" value="display: none" />
 						</c:when>
@@ -45,63 +45,64 @@ function confirmDeletion()
 					<tr>
 						<td class="leftLabel">
 							<html:radio styleId="external0"
-								property="protocolFileBean.domainFile.uriExternal" value="false"
+								property="achar.theDataSet.file.domainFile.uriExternal" value="false"
 								onclick="radLinkOrUpload()" />
 							<strong>Upload File</strong>
 							<br>
 							&nbsp;&nbsp;or
 							<br>
 							<html:radio styleId="external1"
-								property="protocolFileBean.domainFile.uriExternal" value="true"
+								property="achar.theDataSet.file.domainFile.uriExternal" value="true"
 								onclick="radLinkOrUpload()" />
 							<strong>Enter File URL</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
 							<span id="load"> <html:file
-									property="protocolFileBean.uploadedFile" size="60" /> &nbsp;&nbsp; </span>
+									property="achar.theDataSet.file.uploadedFile" size="60" />
+								&nbsp;&nbsp; </span>
 							<br>
 							<br>
 							<span id="link" style=""><html:text
-									property="protocolFileBean.externalUrl" size="60" /> </span>&nbsp;
+									property="achar.theDataSet.file.externalUrl" size="60" /> </span>&nbsp;
 						</td>
-						</tr>
-						<c:if
-							test="${!empty characterizationForm.map.achar.protocolFileBean.domainFile.uri }">
-							<tr>
-								<td class="completeLabel" colspan="3">
-									<c:choose>
-										<c:when
-											test="${characterizationForm.map.achar.protocolFileBean.image eq 'true'}">
-						 				${characterizationForm.map.achar.protocolFileBean.domainFile.title}<br>
-											<br>
-											<a href="#"
-												onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}', 
-														${characterizationForm.map.achar.protocolFileBean.domainFile.id}, 100, 100)"><img
-													src="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}"
-													border="0" width="150"> </a>
-										</c:when>
-										<c:otherwise>
-											<strong>Uploaded File</strong> &nbsp;&nbsp;
+					</tr>
+					<c:if
+						test="${!empty characterizationForm.map.achar.theDataSet.file.domainFile.uri }">
+						<tr>
+							<td class="completeLabel" colspan="3">
+								<c:choose>
+									<c:when
+										test="${characterizationForm.map.achar.theDataSet.file.image eq 'true'}">
+						 				${characterizationForm.map.achar.theDataSet.file.domainFile.title}<br>
+										<br>
+										<a href="#"
+											onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theDataSet.file.domainFile.id}&amp;location=${location}',
+														${characterizationForm.map.achar.theDataSet.file.domainFile.id}, 100, 100)"><img
+												src="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theDataSet.file.domainFile.id}&amp;location=${location}"
+												border="0" width="150"> </a>
+									</c:when>
+									<c:otherwise>
+										<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
-												href="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}"
-												target="${characterizationForm.map.achar.protocolFileBean.urlTarget}">
-												${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
+											href="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theDataSet.file.domainFile.id}&amp;location=${location}"
+											target="${characterizationForm.map.achar.theDataSet.file.urlTarget}">
+											${characterizationForm.map.achar.theDataSet.file.domainFile.uri}</a>
 
 
-											<br>
-										</c:otherwise>
-									</c:choose>
-								</td>
+										<br>
+									</c:otherwise>
+								</c:choose>
+							</td>
 
-							</tr>
-						</c:if>
+						</tr>
+					</c:if>
 					<tr>
 						<td class="leftLabel">
 							<strong>File Type*</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
 							<html:select styleId="fileType"
-								property="protocolFileBean.domainFile.type"
+								property="achar.theDataSet.file.domainFile.type"
 								onchange="javascript:callPrompt('File Type', 'fileType');">
 								<option value="" />
 									<html:options name="fileTypes" />
@@ -116,7 +117,7 @@ function confirmDeletion()
 							<strong>File Title*</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							<html:text property="protocolFileBean.domainFile.title" size="60" />
+							<html:text property="achar.theDataSet.file.domainFile.title" size="60" />
 						</td>
 					</tr>
 					<tr>
@@ -124,7 +125,7 @@ function confirmDeletion()
 							<strong>Keywords <em>(one word per line)</em> </strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							<html:textarea property="protocolFileBean.keywordsStr" rows="3" />
+							<html:textarea property="achar.theDataSet.file.keywordsStr" rows="3" />
 							&nbsp;
 						</td>
 					</tr>
@@ -133,13 +134,14 @@ function confirmDeletion()
 							<strong>Visibility</strong>
 						</td>
 						<td class="rightLabel" colspan="2">
-							<html:select property="protocolFileBean.visibilityGroups" multiple="true"
-								size="6">
+							<html:select property="achar.theDataSet.file.visibilityGroups"
+								multiple="true" size="6">
 								<html:options name="allVisibilityGroups" />
 							</html:select>
 							<br>
-							<i>(${applicationOwner}_Researcher and ${applicationOwner}_DataCurator
-								are defaults if none of above is selected.)</i>
+							<i>(${applicationOwner}_Researcher and
+								${applicationOwner}_DataCurator are defaults if none of above is
+								selected.)</i>
 						</td>
 					</tr>
 				</c:when>
@@ -154,13 +156,15 @@ function confirmDeletion()
 					</tr>
 				</c:otherwise>
 			</c:choose>
-			<c:if test="${!empty characterizationForm.map.achar.protocolFileBean.domainFile.id }">
-				<html:hidden property="protocolFileBean.domainFile.id" />
-				<html:hidden property="protocolFileBean.domainFile.uri" />
+
+			<c:if
+				test="${!empty characterizationForm.map.achar.theDataSet.file.domainFile.id }">
+				<html:hidden property="achar.theDataSet.file.domainFile.id" />
+				<html:hidden property="achar.theDataSet.file.domainFile.uri" />
 			</c:if>
-		</tbody>
 	</table>
 	<br>
+
 	<table width="100%" border="0" align="center" cellpadding="3"
 		cellspacing="0" class="topBorderOnly" summary="">
 		<tr>
@@ -183,10 +187,11 @@ function confirmDeletion()
 						</table>
 					</c:when>
 				</c:choose>
-				<table width="498" height="32" border="0" align="right"
+
+				<table width="498" border="0" align="right"
 					cellpadding="4" cellspacing="0">
 					<tr>
-						<td width="490" height="32">
+						<td width="490">
 							<div align="right">
 								<div align="right">
 									<c:choose>
@@ -199,9 +204,6 @@ function confirmDeletion()
 										</c:otherwise>
 									</c:choose>
 
-									<input type="reset" value="Reset"
-										onclick="javascript:location.href='compositionFile.do?submitType=Composition+File&dispatch=setup&page=0&particleId=${particleId }&location=${location }'" />
-<%--										onclick="javascript:window.location.reload();">--%>
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
 									<input type="hidden" name="submitType"
@@ -217,4 +219,3 @@ function confirmDeletion()
 		</tr>
 	</table>
 </html:form>
-
