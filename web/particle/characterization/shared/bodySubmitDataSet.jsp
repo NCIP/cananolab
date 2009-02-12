@@ -107,40 +107,50 @@
 
 	<tr id="datumColumnsDivRowDisplay">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
-			<div id="datumColumnsDivDisplay" style="display: block;">
-				<table id="datumColumnsTableDisplay" class="smalltable" border="1">
-					<tbody id="datumColumnsDisplay">
-						<tr id="datumColumnPatternRowDisplay">
-							<td id="datumColumnPatternDisplay" style="display: none;">
-								<span id="datumColumnNameDisplay" class="greyFont2">datumColumnName</span>
-								<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>
-								<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			&nbsp;
-		</td>
-	</tr>
 
-	<tr id="populateDataTableButton" style="display: none;">
-		<td class="completeLabelNoBottom" colspan="2">
-			<input class="noBorderButton" type="button"
-				value="Populate Data Table" onclick="show('populateDataTable')" />
+			<table>
+				<tr>
+					<td colspan="2">
+
+						<div id="datumColumnsDivDisplay" style="display: block;">
+							<table id="datumColumnsTableDisplay" class="smalltable"
+								border="1">
+								<tbody id="datumColumnsDisplay">
+									<tr id="datumColumnPatternRowDisplay">
+										<td id="datumColumnPatternDisplay" style="display: none;">
+											<span id="datumColumnNameDisplay" class="greyFont2">datumColumnName</span>
+											<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>
+											<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td>
+						&nbsp;
+					</td>
+					<td align="right">
+						<input class="noBorderButton" type="button"
+							value="Populate Data Table" onclick="show('populateDataTable')" />
+					</td>
+				</tr>
+			</table>
 		</td>
+
 	</tr>
 </table>
 
 <table border="0" align="center" class="smalltable3"
 	id="populateDataTable" style="display: none;" width="90%">
-
 	<tr>
 		<td valign="top" colspan="2" class="subformTitle">
 			Populate Data Table
 		</td>
 	</tr>
-
 	<tr id="datumColumnsDivRow">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
 			<div id="datumColumnsDiv" style="display: block;">
@@ -158,16 +168,19 @@
 									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
 								
 								-->
-								<span id="datumColumnName" class="greyFont2">datumColumnName</span>
-								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
-								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
+								<input class="noBorderButton" id="datumColumnName" type="button"
+									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
+								(
+								<span id="datumColumnValueType" class="greyFont2"><strong>ValueType</strong>
+								</span> ,
+								<span id="datumColumnValueUnit" class="greyFont2"><strong>ValueUnit</strong>
+								</span> )
 							</td>
 							<td>
 								<input id="datumColumnValue" type="text" size="6"
 									value="datumColumnValue" />
 							</td>
 						</tr>
-
 						<tr id="datumColumnsDivRow2">
 							<td>
 								&nbsp;
