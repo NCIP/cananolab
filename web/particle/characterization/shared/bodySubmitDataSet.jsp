@@ -6,7 +6,8 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
 <table border="0" align="center" cellpadding="3" cellspacing="0"
-	class="topBorderOnly"  style="display: block" id="designDataTable" width="90%">
+	class="topBorderOnly" style="display: block" id="designDataTable"
+	width="90%">
 	<tr>
 		<td valign="top" colspan="2" class="subformTitle">
 			Design Data Table
@@ -37,7 +38,7 @@
 			<html:select
 				property="achar.theExperimentConfig.domain.technique.type"
 				styleId="name" onchange="javascript:callPrompt('Name', 'name');">
-				<option value=""></option>				
+				<option value=""></option>
 				<option value="PDI">
 					PDI
 				</option>
@@ -96,7 +97,7 @@
 			<input class="noBorderButton" type="button" value="Delete Column"
 				onclick="deleteDatumColumn()" />
 		-->
-		
+
 			<input class="noBorderButton" type="button" value="Save"
 				onclick="addDatumColumn(); show('populateDataTableButton');" />
 			<input class="noBorderButton" type="button" value="Delete"
@@ -122,12 +123,11 @@
 			&nbsp;
 		</td>
 	</tr>
-	
+
 	<tr id="populateDataTableButton" style="display: none;">
 		<td class="completeLabelNoBottom" colspan="2">
 			<input class="noBorderButton" type="button"
-				value="Populate Data Table"
-				onclick="show('populateDataTable')" />
+				value="Populate Data Table" onclick="show('populateDataTable')" />
 		</td>
 	</tr>
 </table>
@@ -144,10 +144,10 @@
 	<tr id="datumColumnsDivRow">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
 			<div id="datumColumnsDiv" style="display: block;">
-				<table id="datumColumnsTable" class="smalltable" border="1">
+				<table id="datumColumnsTable" class="smalltable" border="0">
 					<tbody id="datumColumns">
-						<tr id="datumColumnPatternRow">
-							<td id="datumColumnPattern" style="display: none;">
+						<tr id="datumColumnPattern" style="display: none;">
+							<td>
 								<input id="datumColumnId" type="hidden" value="datumColumnId" />
 								<input id="datumColumnDataRowId" type="hidden"
 									value="datumColumnDataRowId" />
@@ -161,21 +161,21 @@
 								<span id="datumColumnName" class="greyFont2">datumColumnName</span>
 								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
 								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
-								&nbsp;&nbsp;&nbsp;&nbsp;
-								<input id="datumColumnValue" type="text" size="2"
+							</td>
+							<td>
+								<input id="datumColumnValue" type="text" size="6"
 									value="datumColumnValue" />
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			&nbsp;
-		</td>
-	</tr>
-	<tr id="datumColumnsDivRow2" style="display: block">
-		<td class="rightLabelNoBottom" valign="top" align="right" colspan="2">
-			<div id="addRowButtons" style="display: none;">
-				<!--<input class="noBorderButton" type="button" value="New"
+
+						<tr id="datumColumnsDivRow2">
+							<td>
+								&nbsp;
+							</td>
+							<td class="rightLabelNoBottom" valign="top" align="right"
+								colspan="1">
+								<div id="addRowButtons" style="display: none;">
+									<!--<input class="noBorderButton" type="button" value="New"
 					onclick="clearTheDataRow()" />
 				<input class="noBorderButton" type="button" value="Save Row"
 					onclick="addRow()" />
@@ -183,14 +183,22 @@
 					onclick="deleteClicked()" />
 			-->
 
-				<input class="noBorderButton" type="button" value="Save"
-					onclick="addRow()" />
-				<input class="noBorderButton" type="button" value="Delete"
-					onclick="deleteClicked()" />
+									<input class="noBorderButton" type="button" value="Save"
+										onclick="addRow()" />
+									<input class="noBorderButton" type="button" value="Delete"
+										onclick="deleteClicked()" />
+								</div>
+								&nbsp;
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
 			</div>
 			&nbsp;
 		</td>
 	</tr>
+
 
 	<tr id="datumMatrixDivRow">
 		<td class="completeLabelNoTopBottom" valign="top" colspan="2">
@@ -208,7 +216,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
