@@ -267,6 +267,25 @@ CREATE TABLE functionalizing_entity
 ;
 
 
+CREATE TABLE datum
+(
+	datum_pk_id BIGINT NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	value VARCHAR(200) NOT NULL,
+	value_type VARCHAR(200),
+	value_unit VARCHAR(200),
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
+	characterization_pk_id BIGINT,
+	data_set_pk_id BIGINT,
+	data_row_pk_id BIGINT,
+	PRIMARY KEY (datum_pk_id),
+	KEY (characterization_pk_id),
+	KEY (data_row_pk_id)
+) TYPE=InnoDB
+;
+
+
 CREATE TABLE composition_file
 (
 	composition_pk_id BIGINT NOT NULL,
@@ -304,7 +323,7 @@ CREATE TABLE characterization
 (
 	characterization_pk_id BIGINT NOT NULL,
 	poc_pk_id BIGINT,
-	description TEXT,
+	design_method_description TEXT,
 	identifier_name VARCHAR(500),
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
@@ -315,6 +334,10 @@ CREATE TABLE characterization
 	cytotoxicity_cell_death_method VARCHAR(200),
 	surface_is_hydrophobic TINYINT,
 	characterization_date DATETIME,
+	analysis_conclusion TEXT,
+	other_char_assay_category VARCHAR(200),
+	other_char_name VARCHAR(200),
+	assay_type VARCHAR(200),
 	PRIMARY KEY (characterization_pk_id),
 	KEY (poc_pk_id),
 	KEY (particle_sample_pk_id),
@@ -345,25 +368,6 @@ CREATE TABLE nanoparticle_sample
 	UNIQUE (particle_sample_name),
 	UNIQUE (particle_sample_pk_id),
 	KEY (primary_contact_pk_id)
-) TYPE=InnoDB
-;
-
-
-CREATE TABLE datum
-(
-	datum_pk_id BIGINT NOT NULL,
-	name VARCHAR(200) NOT NULL,
-	value VARCHAR(200) NOT NULL,
-	value_type VARCHAR(200),
-	value_unit VARCHAR(200),
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	data_set_pk_id BIGINT,
-	data_row_pk_id BIGINT,
-	characterization_pk_id BIGINT,
-	PRIMARY KEY (datum_pk_id),
-	KEY (characterization_pk_id),
-	KEY (data_row_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -563,15 +567,6 @@ CREATE TABLE characterization_file
 ;
 
 
-CREATE TABLE associated_file
-(
-	associated_file_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (associated_file_pk_id),
-	KEY (associated_file_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE technique
 (
 	technique_pk_id BIGINT NOT NULL,
@@ -655,14 +650,6 @@ CREATE TABLE file
 ;
 
 
-CREATE TABLE data_row
-(
-	data_row_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (data_row_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE experiment_condition
 (
 	condition_pk_id BIGINT NOT NULL,
@@ -671,6 +658,14 @@ CREATE TABLE experiment_condition
 	value_unit VARCHAR(200),
 	value_type VARCHAR(200),
 	PRIMARY KEY (condition_pk_id)
+) TYPE=InnoDB
+;
+
+
+CREATE TABLE data_row
+(
+	data_row_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (data_row_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -726,7 +721,10 @@ CREATE TABLE activation_method
 ;
 
 
-
+CREATE TABLE hibernate_unique_key (
+  next_hi BIGINT NOT NULL
+) TYPE=InnoDB
+;
 
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function
@@ -821,6 +819,14 @@ ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_asso
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
+ALTER TABLE datum ADD CONSTRAINT FK_datum_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE datum ADD CONSTRAINT FK_datum_data_row
+	FOREIGN KEY (data_row_pk_id) REFERENCES data_row (data_row_pk_id)
+;
+
 ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
@@ -855,14 +861,6 @@ ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sampl
 
 ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
 	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
-;
-
-ALTER TABLE datum ADD CONSTRAINT FK_datum_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE datum ADD CONSTRAINT FK_datum_data_row
-	FOREIGN KEY (data_row_pk_id) REFERENCES data_row (data_row_pk_id)
 ;
 
 ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association
@@ -971,9 +969,4 @@ ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_charac
 
 ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
-;
-
-CREATE TABLE hibernate_unique_key (
-  next_hi BIGINT NOT NULL
-) TYPE=InnoDB
 ;
