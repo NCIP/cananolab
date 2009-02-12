@@ -240,10 +240,14 @@ function addRow() {
 		datum.value = dwr.util.getValue("datumColumnValue" + id);
 		datum.id = datumid;
 		
-		datum.dataSet = currentDataSet;
-		datum.dataRow = currentDataSet.theDataRow;
-		datum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);
-		datum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
+		if (currentDataSet.domain.id!=null){
+			datum.dataSet = currentDataSet;
+			datum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
+		}
+		if (currentDataSet.theDataRow.domain.id!=null){
+			datum.dataRow = currentDataSet.theDataRow;
+			datum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);
+		}		
 		
 		datumArray[i] = datum;
 		if (datum.name!='' || 
@@ -304,10 +308,14 @@ function fillColumnTable() {
 		});
 		dwr.util.setValue("datumColumnId" + id, datumid);
 		
-		datum.dataSet = currentDataSet;
-		datum.dataRow = currentDataSet.theDataRow;
-		dwr.util.setValue("datumColumnDataRowId" + id, datum.dataRow.id);
-		dwr.util.setValue("datumColumnDataSetId" + id, datum.dataSet.id);
+		if (currentDataSet.domain.id!=null){
+			datum.dataSet = currentDataSet;
+			dwr.util.setValue("datumColumnDataSetId" + id, datum.dataSet.id);
+		}
+		if (currentDataSet.theDataRow.domain.id!=null){
+			datum.dataRow = currentDataSet.theDataRow;
+			dwr.util.setValue("datumColumnDataRowId" + id, datum.dataRow.id);
+		}
 		
 		dwr.util.setValue("datumColumnName" + id, datum.name);
 		dwr.util.setValue("datumColumnValueType" + id, datum.valueType);
@@ -330,10 +338,17 @@ function fillColumnTable() {
 			};		
 		dwr.util.getValues(colDatum);
 		colDatum.id = dwr.util.getValue("datumColumnId" + id);
-		colDatum.dataSet = currentDataSet;
-		colDatum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
-		colDatum.dataRow = currentDataSet.theDataRow;
-		colDatum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);		
+		
+		
+		if (currentDataSet.domain.id!=null){
+			colDatum.dataSet
+			colDatum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
+		}
+		if (currentDataSet.theDataRow.domain.id!=null){
+			colDatum.dataRow = currentDataSet.theDataRow;
+			colDatum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);
+		}		
+		
 		colDatum.name = dwr.util.getValue("datumColumnName" + id);
 		colDatum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		colDatum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
@@ -415,10 +430,15 @@ function editDatumClicked(eleid) {
 		document.getElementById("datumColumnValue"+(-i-1)).value=datum.value;	
 		document.getElementById("datumColumnId"+(-i-1)).id=datum.id;
 		
-		datum.dataSet = currentDataSet;
-		datum.dataRow = currentDataSet.theDataRow;
-		document.getElementById("datumColumnDataRowId"+(-i-1)).id=datum.dataRow.id;
-		document.getElementById("datumColumnDataSetId"+(-i-1)).id=datum.dataSet.id;
+		
+		if (currentDataSet.domain.id!=null){
+			datum.dataSet = currentDataSet;
+			document.getElementById("datumColumnDataSetId"+(-i-1)).id=datum.dataSet.id;
+		}
+		if (currentDataSet.theDataRow.domain.id!=null){
+			datum.dataRow = currentDataSet.theDataRow;
+			document.getElementById("datumColumnDataRowId"+(-i-1)).id=datum.dataRow.id;
+		}
 	}
 }
 
