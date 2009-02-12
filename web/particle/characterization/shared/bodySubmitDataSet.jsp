@@ -6,7 +6,7 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
 <table border="0" align="center" cellpadding="3" cellspacing="0"
-	class="topBorderOnly" style="display: block" id="designDataTable"
+	class="smallTable3" style="display: block" id="designDataTable"
 	width="90%">
 	<tr>
 		<td valign="top" colspan="2" class="subformTitle">
@@ -117,8 +117,9 @@
 								border="1">
 								<tbody id="datumColumnsDisplay">
 									<tr id="datumColumnPatternRowDisplay">
-										<td id="datumColumnPatternDisplay" style="display: none;">
-											<span id="datumColumnNameDisplay" class="greyFont2">datumColumnName</span>
+										<td id="datumColumnPatternDisplay" style="display: none;">										
+										<input class="noBorderButton" id="datumColumnNameDisplay" type="button"
+											size="2" value="datumColumnNameDisplay" onclick="editColumn(this.id)" />
 											(<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>,
 											<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>)
 										</td>
@@ -143,7 +144,7 @@
 
 	</tr>
 </table>
-
+<br>
 <table border="0" align="center" class="smalltable3"
 	id="populateDataTable" style="display: none;" width="90%">
 	<tr>
@@ -168,9 +169,8 @@
 									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
 								
 								-->
-								<input class="noBorderButton" id="datumColumnName" type="button"
-									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
-								(<span id="datumColumnValueType" class="greyFont2"><strong>ValueType</strong></span>,
+								<span id="datumColumnName" class="greyFont2">datumColumnName</span>
+								(<span id="datumColumnValueType" class="greyFont2">ValueType</span>,
 								<span id="datumColumnValueUnit" class="greyFont2"><strong>ValueUnit</strong></span>)
 							</td>
 							<td>
