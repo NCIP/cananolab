@@ -96,8 +96,11 @@
 			<input class="noBorderButton" type="button" value="Delete Column"
 				onclick="deleteDatumColumn()" />
 		-->
-			<input class="noBorderButton" type="button" value="Add Column"
+		
+			<input class="noBorderButton" type="button" value="Save"
 				onclick="addDatumColumn(); show('populateDataTableButton');" />
+			<input class="noBorderButton" type="button" value="Delete"
+				onclick="deleteDatumColumn()" />
 		</td>
 	</tr>
 
@@ -124,7 +127,7 @@
 		<td class="completeLabelNoBottom" colspan="2">
 			<input class="noBorderButton" type="button"
 				value="Populate Data Table"
-				onclick="hide('designDataTable');show('populateDataTable')" />
+				onclick="show('populateDataTable')" />
 		</td>
 	</tr>
 </table>
@@ -158,7 +161,7 @@
 								<span id="datumColumnName" class="greyFont2">datumColumnName</span>
 								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
 								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
-								<br>
+								&nbsp;&nbsp;&nbsp;&nbsp;
 								<input id="datumColumnValue" type="text" size="2"
 									value="datumColumnValue" />
 							</td>
@@ -180,8 +183,10 @@
 					onclick="deleteClicked()" />
 			-->
 
-				<input class="noBorderButton" type="button" value="Add Row"
+				<input class="noBorderButton" type="button" value="Save"
 					onclick="addRow()" />
+				<input class="noBorderButton" type="button" value="Delete"
+					onclick="deleteClicked()" />
 			</div>
 			&nbsp;
 		</td>
