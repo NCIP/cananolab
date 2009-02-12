@@ -8,10 +8,10 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
+import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +91,7 @@ public class TestGrid {
 		// Report report = (Report) obj;
 		// System.out.println(report.getId());
 		// }
-		//		
+		//
 		// CQLQuery query = new CQLQuery();
 		// gov.nih.nci.cagrid.cqlquery.Object target = new
 		// gov.nih.nci.cagrid.cqlquery.Object();
@@ -110,7 +110,7 @@ public class TestGrid {
 		// java.lang.Object obj = iter.next();
 		// count = ((Long) obj).intValue();
 		// }
-		//		
+		//
 		// CQLQuery query = new CQLQuery();
 		// gov.nih.nci.cagrid.cqlquery.Object target = new
 		// gov.nih.nci.cagrid.cqlquery.Object();
@@ -130,7 +130,7 @@ public class TestGrid {
 		// count = ((Long) obj).intValue();
 		// }
 		// System.out.println(count);
-		//		
+		//
 		// CQLQuery query = new CQLQuery();
 		// gov.nih.nci.cagrid.cqlquery.Object target = new
 		// gov.nih.nci.cagrid.cqlquery.Object();
@@ -298,7 +298,8 @@ public class TestGrid {
 		// for (ProtocolFile pf : protocolFiles) {
 		// System.out.println("PF: " + pf.getName());
 		// }
-
+		//TODO fix grid client
+/*
 		String composingElementId = "1409024";
 		Function[] functions = gridClient
 				.getInherentFunctionsByComposingElementId(composingElementId);
@@ -320,6 +321,7 @@ public class TestGrid {
 		AssociatedElement eleB = gridClient
 				.getAssociatedElementBByChemicalAssociationId(assocId);
 		System.out.println(eleA+" "+eleB);
+	*/
 	}
 
 	public static void main(String[] args) {
