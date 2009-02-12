@@ -1,18 +1,18 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -46,9 +46,9 @@ import org.apache.struts.util.LabelValueBean;
 
 /**
  * This class sets up information required for nanoparticle forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitNanoparticleSetup {
 	private InitNanoparticleSetup() {
@@ -380,7 +380,7 @@ public class InitNanoparticleSetup {
 						.getCharacterizationCollection()) {
 					String category = "";
 					String link = "";
-					if (achar instanceof PhysicalCharacterization) {
+					if (achar instanceof PhysicoChemicalCharacterization) {
 						category = "Physical Characterization";
 						link = "physicalCharacterization";
 						hasPhysicalData = true;

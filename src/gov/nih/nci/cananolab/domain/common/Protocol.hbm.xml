@@ -15,7 +15,7 @@
 		<property name="name" type="string" column="protocol_name"/>
 		<property name="type" type="string" column="protocol_type"/>
 		<!-- Associations mapping for the Protocol class -->
-		<set name="protocolFileCollection" lazy="false" inverse="true">
+		<set name="protocolFileCollection" lazy="false">
 			<cache usage="read-write" />
 			<key column="protocol_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.ProtocolFile"/>

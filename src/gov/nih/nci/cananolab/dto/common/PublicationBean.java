@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cananolab.dto.common;
 
@@ -15,13 +15,13 @@ import java.util.List;
 
 /**
  * Publication view bean
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
-	
+
 	private String[] particleNames;
 	private String[] researchAreas;
 	private List<Author> authors = new ArrayList<Author>(20);
@@ -38,19 +38,21 @@ public class PublicationBean extends FileBean {
 	public PublicationBean(Publication publication) {
 		this(publication, false, false);
 	}
-	
+
 	public PublicationBean(Publication publication, boolean loadSamples,
 			boolean loadAuthors) {
 		super(publication);
 		this.domainFile = publication;
-		
-		String researchAreasStr = 
+
+		String researchAreasStr =
 			publication.getResearchArea();
 		if (researchAreasStr!=null && researchAreasStr.length()>0) {
 			researchAreas = researchAreasStr.split(delimiter);
 		}else {
 			researchAreas = null;
-		}		
+		}
+		//TODO fix dependency on sample
+		/*
 		if (loadSamples) {
 			particleNames = new String[publication.getNanoparticleSampleCollection()
 					.size()];
@@ -60,14 +62,14 @@ public class PublicationBean extends FileBean {
 				particleNames[i] = particle.getName();
 				i++;
 			}
-		}
+		}*/
 		if (loadAuthors) {
 			Collection<Author> authorCollection =
 				publication.getAuthorCollection();
 			if (authorCollection!=null &&
 					authorCollection.size()>0) {
 				List<Author> authorslist = new ArrayList<Author>(authorCollection);
-				Collections.sort(authorslist, 
+				Collections.sort(authorslist,
 						new Comparator<Author>() {
 				    public int compare(Author o1, Author o2) {
 				        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
@@ -75,7 +77,7 @@ public class PublicationBean extends FileBean {
 				authors = authorslist;
 			}
 		}
-		
+
 	}
 
 	public boolean equals(Object obj) {
@@ -138,8 +140,8 @@ public class PublicationBean extends FileBean {
 //	public void setAuthorsStr(String authorsStr) {
 //		this.authorsStr = authorsStr;
 //	}
-	
-	
+
+
 	public void addAuthor() {
 		authors.add(new Author());
 	}
@@ -156,6 +158,6 @@ public class PublicationBean extends FileBean {
 		this.foundPubMedArticle = foundPubMedArticle;
 	}
 
-	
-	
+
+
 }

@@ -1,16 +1,16 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -38,9 +38,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of NanoparticleSampleService and grid service *
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class NanoparticleSampleServiceHelper {
 	public List<NanoparticleSample> findNanoparticleSamplesBy(
@@ -59,7 +59,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).setProjection(
 				Projections.distinct(Property.forName("id")));
-		
+
 		if (particlePointOfContact != null && particlePointOfContact.length() > 0) {
 			TextMatchMode pocMatchMode = new TextMatchMode(particlePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
@@ -73,9 +73,9 @@ public class NanoparticleSampleServiceHelper {
 			for (String critStr: critStrs) {
 				Criterion pocCrit = Restrictions.ilike(critStr,
 						pocMatchMode.getUpdatedText(), pocMatchMode
-						.getMatchMode());			
+						.getMatchMode());
 				disjunction.add(pocCrit);
-			}			
+			}
 			crit.add(disjunction);
 		}
 
@@ -279,7 +279,7 @@ public class NanoparticleSampleServiceHelper {
 	/**
 	 * Return all stored functionalizing entity class names. In case of
 	 * OtherFunctionalizingEntity, store the OtherFunctionalizingEntity type
-	 * 
+	 *
 	 * @param particleSample
 	 * @return
 	 */
@@ -308,7 +308,7 @@ public class NanoparticleSampleServiceHelper {
 	/**
 	 * Return all stored function class names. In case of OtherFunction, store
 	 * the otherFunction type
-	 * 
+	 *
 	 * @param particleSample
 	 * @return
 	 */
@@ -370,7 +370,7 @@ public class NanoparticleSampleServiceHelper {
 	/**
 	 * Return all stored nanoparticle entity class names. In case of
 	 * OtherNanoparticleEntity, store the otherNanoparticleEntity type
-	 * 
+	 *
 	 * @param particleSample
 	 * @return
 	 */
@@ -416,7 +416,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		
+
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -439,7 +439,7 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.createAlias("otherPointOfContactCollection", "otherPoc",
 				CriteriaSpecification.LEFT_JOIN);
-		
+
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -457,7 +457,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);		
+		crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -495,7 +495,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("name").eq(particleName));
-		
+
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); // eager load not set in
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);

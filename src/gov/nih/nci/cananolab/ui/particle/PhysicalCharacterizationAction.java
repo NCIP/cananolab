@@ -1,15 +1,15 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class allows user to submit physical characterization data. 
- *  
+ * This class allows user to submit physical characterization data.
+ *
  * @author pansu
  */
 
 /* CVS $Id: PhysicalCharacterizationAction.java,v 1.33 2008-07-03 17:15:09 pansu Exp $ */
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -45,7 +45,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 
 	/**
 	 * Add or update the data to database
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -94,7 +94,7 @@ public class PhysicalCharacterizationAction extends BaseCharacterizationAction {
 			DynaValidatorForm theForm, Characterization chara, UserBean user,
 			String location) throws Exception {
 		PhysicalCharacterizationBean charBean = new PhysicalCharacterizationBean(
-				(PhysicalCharacterization) chara);
+				(PhysicoChemicalCharacterization) chara);
 		if (location.equals("local")) {
 			// set file visibility
 			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();

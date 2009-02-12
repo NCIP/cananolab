@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.Attachment;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.linkage.Attachment;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;

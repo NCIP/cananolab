@@ -1,10 +1,10 @@
-package gov.nih.nci.cananolab.service.particle.impl;
+package gov.nih.nci.cananolab.service.common.impl;
 
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.service.particle.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.DateUtil;

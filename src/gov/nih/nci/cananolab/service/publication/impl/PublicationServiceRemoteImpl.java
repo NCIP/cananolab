@@ -33,9 +33,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of PublicationService
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -48,12 +48,12 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 * @param particleNames
 	 * @param fileData
 	 * @param authors
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication,
@@ -176,14 +176,15 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			NanoparticleSample particleSample = null;
-			publication
-					.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				particleSample = (NanoparticleSample) obj;
-				publication.getNanoparticleSampleCollection().add(
-						particleSample);
-			}
+			//TODO fix dependency on sample
+//			publication
+//					.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
+//			while (iter.hasNext()) {
+//				java.lang.Object obj = iter.next();
+//				particleSample = (NanoparticleSample) obj;
+//				publication.getNanoparticleSampleCollection().add(
+//						particleSample);
+//			}
 		} catch (Exception e) {
 			String err = "Problem loading nanoparticle samples for the publication : "
 					+ publication.getId();
@@ -225,17 +226,17 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			}
 
 			// CQLQuery query = new CQLQuery();
-			//			
+			//
 			// gov.nih.nci.cagrid.cqlquery.Object target = new
 			// gov.nih.nci.cagrid.cqlquery.Object();
 			// target
 			// .setName("gov.nih.nci.cananolab.domain.common.Author");
-			//		
+			//
 			// Attribute attribute = new Attribute();
 			// attribute.setName("id");
 			// attribute.setPredicate(Predicate.EQUAL_TO);
 			// attribute.setValue("6881282");
-			//		
+			//
 			// target.setAttribute(attribute);
 			// query.setTarget(target);
 			// CQLQueryResults results = gridClient.query(query);

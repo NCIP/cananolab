@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
@@ -108,18 +108,20 @@ public class InitCharacterizationSetup {
 	public void persistInvitroCharacterizationDropdowns(
 			HttpServletRequest request, InvitroCharacterizationBean charBean)
 			throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-				"cellDeathMethod", "otherCellDeathMethod",
-				charBean.getCellViability().getCellDeathMethod());
-		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-				"cellDeathMethod", "otherCellDeathMethod",
-				charBean.getCaspase3Activation().getCellDeathMethod());
-		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-				"cellLine", "otherCellLine",
-				charBean.getCellViability().getCellLine());
-		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-				"cellLine", "otherCellLine",
-				charBean.getCaspase3Activation().getCellLine());
+		//TODO fix in vitro chara
+//
+//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+//				"cellDeathMethod", "otherCellDeathMethod",
+//				charBean.getCellDeathMethod());
+//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+//				"cellDeathMethod", "otherCellDeathMethod",
+//				charBean.getCaspase3Activation().getCellDeathMethod());
+//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+//				"cellLine", "otherCellLine",
+//				charBean.getCellViability().getCellLine());
+//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+//				"cellLine", "otherCellLine",
+//				charBean.getCaspase3Activation().getCellLine());
 		setInvitroCharacterizationDropdowns(request);
 	}
 

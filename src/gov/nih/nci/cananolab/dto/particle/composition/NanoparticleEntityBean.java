@@ -1,18 +1,18 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Biopolymer;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.CarbonNanotube;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Dendrimer;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Emulsion;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Fullerene;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Liposome;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Polymer;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
+import gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube;
+import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
+import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
+import gov.nih.nci.cananolab.domain.nanomaterial.Fullerene;
+import gov.nih.nci.cananolab.domain.nanomaterial.Liposome;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.nanomaterial.Polymer;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -28,9 +28,9 @@ import java.util.Map;
 
 /**
  * Represents the view bean for the NanoparticleEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanoparticleEntityBean {
 	private String type;

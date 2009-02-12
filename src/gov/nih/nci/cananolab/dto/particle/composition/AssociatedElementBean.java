@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Map;

@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Antigen;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
+import gov.nih.nci.cananolab.domain.function.Antigen;
+import gov.nih.nci.cananolab.domain.function.OtherTarget;
+import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.DateUtil;
@@ -11,9 +11,9 @@ import java.util.Map;
 
 /**
  * Represents the view bean for the Target domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class TargetBean {
 	private String type;
@@ -106,7 +106,7 @@ public class TargetBean {
 				|| (domainTarget.getCreatedBy() != null && domainTarget
 						.getCreatedBy().equals(
 								CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX))) {
-			domainTarget.setCreatedBy(createdBy);			
+			domainTarget.setCreatedBy(createdBy);
 			//domainTarget.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds

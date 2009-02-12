@@ -10,11 +10,11 @@
                         </generator>
 		</id>
 		<!-- Attributes mapping for the Author class -->
-		<property name="firstName" type="string" column="first_name"/>
-		<property name="lastName" type="string" column="last_name"/>
-		<property name="initial" type="string" column="initial"/>
 		<property name="createdBy" type="string" column="created_by"/>
-		<property name="createdDate" type="java.util.Date" column="created_date"/>		
+		<property name="createdDate" type="java.util.Date" column="created_date"/>
+		<property name="firstName" type="string" column="first_name"/>
+		<property name="initial" type="string" column="initial"/>
+		<property name="lastName" type="string" column="last_name"/>
 		<!-- Associations mapping for the Author class -->
 		<set name="publicationCollection" table="author_publication" lazy="true" inverse="true">
 			<cache usage="read-write" />
@@ -23,4 +23,3 @@
 		</set>
 	</class>
 </hibernate-mapping>
-

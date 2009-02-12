@@ -1,11 +1,11 @@
 package gov.nih.nci.cananolab.service.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;

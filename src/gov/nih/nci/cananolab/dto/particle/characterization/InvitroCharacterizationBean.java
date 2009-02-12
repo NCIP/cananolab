@@ -1,17 +1,14 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.Caspase3Activation;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.CellViability;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
+import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Map;
 
 public class InvitroCharacterizationBean extends CharacterizationBean {
-	private Caspase3Activation caspase3Activation = new Caspase3Activation();
-
-	private CellViability cellViability = new CellViability();
+	private Cytotoxicity cytotoxicity = new Cytotoxicity();
 
 	public InvitroCharacterizationBean() {
 		super();
@@ -19,19 +16,9 @@ public class InvitroCharacterizationBean extends CharacterizationBean {
 
 	public InvitroCharacterizationBean(InvitroCharacterization chara) {
 		super(chara);
-		if (chara instanceof Caspase3Activation) {
-			caspase3Activation = (Caspase3Activation) chara;
-		} else if (chara instanceof CellViability) {
-			cellViability = (CellViability) chara;
+		if (chara instanceof Cytotoxicity) {
+			cytotoxicity = (Cytotoxicity) chara;
 		}
-	}
-
-	public Caspase3Activation getCaspase3Activation() {
-		return caspase3Activation;
-	}
-
-	public CellViability getCellViability() {
-		return cellViability;
 	}
 
 	public void setupDomainChar(Map<String, String> typeToClass,
@@ -42,10 +29,8 @@ public class InvitroCharacterizationBean extends CharacterizationBean {
 			Class clazz = ClassUtils.getFullClass(getClassName());
 			domainChar = (Characterization) clazz.newInstance();
 		}
-		if (domainChar instanceof Caspase3Activation) {
-			domainChar = caspase3Activation;
-		} else if (domainChar instanceof CellViability) {
-			domainChar = cellViability;
+		if (domainChar instanceof Cytotoxicity) {
+			domainChar = cytotoxicity;
 		}
 		super.setupDomainChar(typeToClass, createdBy, internalUriPath);
 	}

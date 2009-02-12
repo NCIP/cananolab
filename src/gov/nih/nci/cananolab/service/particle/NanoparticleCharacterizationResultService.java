@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 
 import java.util.List;

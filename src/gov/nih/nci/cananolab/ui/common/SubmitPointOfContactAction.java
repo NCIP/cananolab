@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;

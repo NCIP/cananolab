@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;

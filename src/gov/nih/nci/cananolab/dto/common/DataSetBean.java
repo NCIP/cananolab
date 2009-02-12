@@ -2,8 +2,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.DataSet;
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;

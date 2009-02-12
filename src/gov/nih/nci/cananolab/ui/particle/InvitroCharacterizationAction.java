@@ -6,8 +6,8 @@ package gov.nih.nci.cananolab.ui.particle;
  * @author pansu
  */
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;

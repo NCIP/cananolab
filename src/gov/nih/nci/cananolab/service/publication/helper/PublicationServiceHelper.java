@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;

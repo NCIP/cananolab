@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
+import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;

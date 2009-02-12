@@ -1,12 +1,12 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalState;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Shape;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Solubility;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
+import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
+import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
@@ -28,7 +28,7 @@ public class PhysicalCharacterizationBean extends CharacterizationBean {
 		super();
 	}
 
-	public PhysicalCharacterizationBean(PhysicalCharacterization chara) {
+	public PhysicalCharacterizationBean(PhysicoChemicalCharacterization chara) {
 		super(chara);
 		if (chara instanceof Surface) {
 			surfaceBean = new SurfaceBean((Surface) chara);

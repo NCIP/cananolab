@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.DateUtil;
@@ -14,9 +14,9 @@ import java.util.Map;
 
 /**
  * Represents the view bean for ComposingElement domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ComposingElementBean {
 	private ComposingElement domainComposingElement = new ComposingElement();

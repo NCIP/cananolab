@@ -1,20 +1,20 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
+import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.service.particle.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
@@ -715,7 +715,6 @@ public abstract class BaseCharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		setupDomainChar(request, theForm, achar);
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
-		configBean.getDomain().setCharacterization(achar.getDomainChar());
 		ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 		service.deleteExperimentConfig(configBean.getDomain());
 		achar.removeExperimentConfig(configBean);

@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.common;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;

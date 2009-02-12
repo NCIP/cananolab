@@ -2,9 +2,9 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
-import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
-import gov.nih.nci.cananolab.service.particle.ExperimentConfigService;
-import gov.nih.nci.cananolab.service.particle.impl.ExperimentConfigServiceLocalImpl;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.List;

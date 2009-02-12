@@ -1,15 +1,15 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.Antibody;
+import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Antibody;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.Biopolymer;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.SmallMolecule;
+import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
@@ -25,9 +25,9 @@ import java.util.Map;
 
 /**
  * Represents the view bean for the FunctionalizingEntity domain object
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FunctionalizingEntityBean {
 	private String type;
@@ -275,7 +275,7 @@ public class FunctionalizingEntityBean {
 		domainEntity.setName(name);
 		domainEntity.setValue(value);
 		domainEntity.setValueUnit(valueUnit);
-		
+
 		if (activationMethod != null
 				&& ((activationMethod.getActivationEffect() != null && activationMethod
 						.getActivationEffect().trim().length() > 0) || (activationMethod
@@ -284,8 +284,8 @@ public class FunctionalizingEntityBean {
 			domainEntity.setActivationMethod(activationMethod);
 		} else {
 			domainEntity.setActivationMethod(null);
-		}		
-		
+		}
+
 		if (domainEntity.getId() == null
 				|| domainEntity.getCreatedBy() != null
 				&& domainEntity.getCreatedBy().equals(

@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.Emulsion;
+import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;

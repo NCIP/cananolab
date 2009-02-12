@@ -1,18 +1,14 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.common.DataRow;
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
-import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
 import java.util.List;
-import java.util.SortedMap;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContextFactory;

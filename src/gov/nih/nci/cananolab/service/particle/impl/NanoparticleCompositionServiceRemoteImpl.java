@@ -8,17 +8,17 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -40,9 +40,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Service methods involving composition.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanoparticleCompositionServiceRemoteImpl implements
 		NanoparticleCompositionService {
@@ -151,7 +151,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	/**
 	 * load all ComposingElement for an associated NanoparticleEntity
-	 * 
+	 *
 	 * @param nanoEntityId
 	 * @return
 	 * @throws ParticleCompositionException
@@ -204,6 +204,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadInherentFunctionByComposingElement(
 			ComposingElement composingElement)
 			throws ParticleCompositionException {
+		//TODO fix for grid client
+		/*
 		try {
 			Function[] functions = gridClient
 					.getInherentFunctionsByComposingElementId(composingElement
@@ -221,7 +223,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					+ composingElement.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
-		}
+		}*/
 	}
 
 	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
@@ -335,7 +337,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	/**
 	 * load all NanoparticleEntity Collection for an associated Composition
-	 * 
+	 *
 	 */
 	private void loadNanoparticleEntityForComposition(
 			SampleComposition composition, String[] entityClassNames)
@@ -446,17 +448,22 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		if (files != null && !files.isEmpty()) {
 			entity.setFileCollection(new HashSet<File>(files));
 		}
+		//TODO fix for grid client
+		/*
 		ActivationMethod activationMethod = gridClient
 				.getActivationMethodByFunctionalizingEntityId(entity.getId()
 						.toString());
 		if (activationMethod != null) {
 			entity.setActivationMethod(activationMethod);
 		}
+		*/
 		loadFunctionsForFunctionalizingEntity(entity);
 	}
 
 	private void loadFunctionsForFunctionalizingEntity(
 			FunctionalizingEntity entity) throws ParticleCompositionException {
+		//TODO fix for grid client
+		/*
 		try {
 			Function[] functions = gridClient
 					.getFunctionsByFunctionalizingEntityId(entity.getId()
@@ -485,12 +492,12 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					+ entity.getId();
 			logger.error(err, e);
 			throw new ParticleCompositionException(err, e);
-		}
+		}*/
 	}
 
 	/**
 	 * load all NanoparticleEntity for associated ComposingElement
-	 * 
+	 *
 	 * @param composingElement
 	 * @return
 	 * @throws ParticleCompositionException
@@ -631,6 +638,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		if (files != null && !files.isEmpty()) {
 			assoc.setFileCollection(new HashSet<File>(files));
 		}
+		//TODO fix for grid client
+		/*
 		AssociatedElement associatedElementA = gridClient
 				.getAssociatedElementAByChemicalAssociationId(assoc.getId()
 						.toString());
@@ -653,12 +662,12 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		}
 		if (associatedElementB != null) {
 			assoc.setAssociatedElementB(associatedElementB);
-		}
+		}*/
 	}
 
 	/**
 	 * Return user-defined functionalizing entity types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -670,7 +679,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	/**
 	 * Return user-defined function types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -682,7 +691,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	/**
 	 * Return user-defined target types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -694,7 +703,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	/**
 	 * Return user-defined functionalizing entity types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -706,7 +715,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 
 	/**
 	 * Return user-defined chemical association types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -787,7 +796,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	/**
 	 * return all sample composition with an associated NanoparticleSample whose
 	 * id is equal to particleId
-	 * 
+	 *
 	 * @param particleId
 	 * @return
 	 * @throws ParticleCompositionException
@@ -835,6 +844,8 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					loadFunctionalizingEntityForComposition(sampleComposition,
 							functionalizingEntityClasses);
 				}
+				//TODO fix for grid client
+				/*
 				ChemicalAssociation[] assocs = gridClient
 						.getChemicalAssociationsByCompositionId(sampleComposition
 								.getId().toString());
@@ -842,7 +853,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					sampleComposition
 							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
 									Arrays.asList(assocs)));
-				}
+				}*/
 
 				/**
 				 * TODO temporarily commented File[] files = gridClient

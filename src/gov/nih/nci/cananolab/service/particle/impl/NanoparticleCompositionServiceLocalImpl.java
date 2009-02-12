@@ -1,18 +1,18 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.function.OtherTarget;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherTarget;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -40,9 +40,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of NanoparticleCompositionService.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanoparticleCompositionServiceLocalImpl implements
 		NanoparticleCompositionService {
@@ -291,7 +291,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 	/**
 	 * Return user-defined functionalizing entity types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -317,7 +317,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 	/**
 	 * Return user-defined function types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -343,7 +343,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 	/**
 	 * Return user-defined function types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -369,7 +369,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 	/**
 	 * Return user-defined functionalizing entity types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
@@ -395,7 +395,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 	/**
 	 * Return user-defined chemical association types
-	 * 
+	 *
 	 * @return
 	 * @throws ParticleCompositionException
 	 */

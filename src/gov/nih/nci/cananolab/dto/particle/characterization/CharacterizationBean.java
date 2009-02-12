@@ -1,14 +1,15 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.common.DataSet;
+import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
-import gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
@@ -66,7 +67,7 @@ public class CharacterizationBean {
 	public CharacterizationBean(Characterization chara) {
 		domainChar = chara;
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
-		this.description = chara.getDescription();
+		this.description = chara.getDesignMethodsDescription();
 		this.viewTitle = chara.getIdentificationName();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
@@ -199,7 +200,7 @@ public class CharacterizationBean {
 			domainChar.setCreatedBy(createdBy);
 			domainChar.setCreatedDate(new Date());
 		}
-		domainChar.setDescription(description);
+		domainChar.setDesignMethodsDescription(description);
 		domainChar.setIdentificationName(viewTitle);
 		if (pocBean != null && pocBean.getDomain().getId() != null
 				&& pocBean.getDomain().getId() != 0) {
@@ -218,9 +219,6 @@ public class CharacterizationBean {
 		}
 		for (ExperimentConfigBean config : experimentConfigs) {
 			domainChar.getExperimentConfigCollection().add(config.getDomain());
-			if (domainChar.getId() != null) {
-				config.getDomain().setCharacterization(domainChar);
-			}
 		}
 
 		if (protocolFileBean != null
@@ -243,9 +241,6 @@ public class CharacterizationBean {
 			for (DataRowBean dataRowBean : dataSetBean.getDataRows()) {
 				for (Datum datum : dataRowBean.getData()) {
 					domainChar.getDatumCollection().add(datum);
-					if (domainChar.getId() != null) {
-						datum.setCharacterization(domainChar);
-					}
 				}
 			}
 		}

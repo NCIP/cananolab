@@ -7,12 +7,12 @@ import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
+import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
+import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
@@ -282,6 +282,8 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 
 	private void loadSurfaceChemistriesForSurface(Surface surface)
 			throws Exception {
+		//TODO fix for grid client
+		/*
 		SurfaceChemistry[] chemistries = gridClient
 				.getSurfaceChemistriesBySurfaceId(surface.getId().toString());
 		if (chemistries != null && chemistries.length > 0) {
@@ -290,7 +292,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			for (SurfaceChemistry chem : chemistries) {
 				surface.getSurfaceChemistryCollection().add(chem);
 			}
-		}
+		}*/
 	}
 
 	/**

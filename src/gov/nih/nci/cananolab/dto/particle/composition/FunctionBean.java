@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.ImagingFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.OtherFunction;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.TargetingFunction;
+import gov.nih.nci.cananolab.domain.function.ImagingFunction;
+import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ *
  * Represents the view bean for Function domain object
- * 
+ *
  * @author pansu
- * 
- * 
+ *
+ *
  */
 public class FunctionBean {
 	private String type;

@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;

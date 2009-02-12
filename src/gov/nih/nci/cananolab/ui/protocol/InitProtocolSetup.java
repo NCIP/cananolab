@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
+import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -22,9 +22,9 @@ import org.apache.log4j.Logger;
 /**
  * This class sets up session level or servlet context level variables to be
  * used in various actions during the setup of query forms.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class InitProtocolSetup {
 	Logger logger = Logger.getLogger(InitProtocolSetup.class);
@@ -50,7 +50,7 @@ public class InitProtocolSetup {
 		Class clazz = ClassUtils.getFullClass(charBean.getClassName());
 		if (clazz!=null) {
 			Characterization achar = (Characterization) clazz.newInstance();
-			if (achar instanceof PhysicalCharacterization) {
+			if (achar instanceof PhysicoChemicalCharacterization) {
 				protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
 			} else if (achar instanceof InvitroCharacterization) {
 				protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;

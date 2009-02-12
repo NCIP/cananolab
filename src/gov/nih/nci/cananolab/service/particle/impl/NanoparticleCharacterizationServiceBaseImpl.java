@@ -1,20 +1,16 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Characterization;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryRowBean;
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 

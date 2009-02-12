@@ -1,13 +1,13 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Function;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.Target;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.AssociatedElement;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.function.Target;
+import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
+import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -22,9 +22,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving composition.
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class NanoparticleCompositionServiceHelper {
 	public NanoparticleCompositionServiceHelper() {

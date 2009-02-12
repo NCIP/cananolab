@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;

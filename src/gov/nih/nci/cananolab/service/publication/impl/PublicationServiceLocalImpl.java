@@ -38,9 +38,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of PublicationService
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PublicationServiceLocalImpl implements PublicationService {
 	private static Logger logger = Logger
@@ -49,7 +49,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication,
 	 *            particleNames, fileData, authors
 	 * @throws Exception
@@ -72,7 +72,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
+			//TODO fix dependency on sample
+/*
 			if (publication.getNanoparticleSampleCollection() == null) {
 				publication
 						.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
@@ -83,7 +84,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				publication.getNanoparticleSampleCollection().add(sample);
 				sample.getPublicationCollection().add(publication);
 			}
-
+*/
 			if (publication.getAuthorCollection() == null) {
 				publication.setAuthorCollection(new HashSet<Author>());
 			} else {
@@ -273,6 +274,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					.getApplicationService();
 			Object publicationObject = appService.getObject(Publication.class,
 					"id", dataId);
+			//TODO fix dependency on sample
+			/*
 			if (publicationObject != null) {
 				Publication publication = publicationService
 						.findDomainPublicationById(dataId.toString());
@@ -297,7 +300,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					nanoparticleSampleCollection.remove(particle);
 					appService.saveOrUpdate(publication);
 				}
-			}
+			}*/
 		} catch (Exception e) {
 			String err = "Error deleting publication by ID " + dataId;
 			logger.error(err, e);
