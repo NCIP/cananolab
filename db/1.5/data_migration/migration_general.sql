@@ -596,10 +596,19 @@ WHERE p.organization_pk_id = o.organization_pk_id
 AND o.name = c.source
 ;
 
+ALTER TABLE characterization change description design_method_description TEXT;
+
+ALTER TABLE characterization ADD COLUMN
+analysis_conclusion TEXT,
+other_char_assay_category VARCHAR(200),
+other_char_name VARCHAR(200),
+assay_type VARCHAR(200);
 
 --ALTER TABLE characterization DROP COLUMN source;
 --DROP TABLE derived_datum;
 --DROP TABLE derived_bioassay_data;
+
+DROP TABLE associated_file;
 
 
 -- Re-enable foreign key checks
