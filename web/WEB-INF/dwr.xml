@@ -111,11 +111,11 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.characterization.Datum">
-			<param name="include" value="id, name, value, valueType, valueUnit" />
+			<param name="include" value="id, name, value, valueType, valueUnit, dataRow, dataSet" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.characterization.Condition">
-			<param name="include" value="id, name, value, valueType, valueUnit" />
+			<param name="include" value="id, name, value, valueType, valueUnit, datumCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
@@ -129,6 +129,11 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataRow">
+			<param name="include"
+				value="id" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.DataSet">
 			<param name="include"
 				value="id" />
 		</convert>
