@@ -54,10 +54,14 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
-		if (data != null) {
+		if (data != null) {			
+			//TODO:: if rowid!=null, get the row then update
 			DataRowBean dataRowBean = new DataRowBean();
 			boolean hasData = false;
 			for (Datum datum : data) {
+				if (theDataSet.getDomain().getId()!=null) {
+					datum.setDataSet(theDataSet.getDomain());
+				}
 				dataRowBean.addDatum(datum);
 				hasData = true;
 			}

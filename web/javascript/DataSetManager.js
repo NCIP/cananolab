@@ -9,14 +9,17 @@ var addNewColumn = true;
 var editDataSet = false;
 
 function resetTheDataSet(isShow) {
+	//alert('reset 1');
 	editDataSet = false;
 	datumColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
 	if (isShow) {
 		show('newDataSet');
+		hide('existingDataSet');
 	} else {
 		hide('newDataSet');
+		show('existingDataSet');
 		return;
 	}
 	DataSetManager.resetDataSet( function(theDataSet) {
@@ -49,10 +52,15 @@ function resetTheDataSet(isShow) {
 	$("datumMatrixPatternRow").style.display = "none";
 	$("matrixHeader").style.display = "none";
 	$("datumColumnPattern").style.display = "none";
+	$("datumColumnPatternDisplay").style.display = "none";
 	$("datumColumnPatternRow").style.display = "none";
+	$("datumColumnPatternRowDisplay").style.display = "none";
 	$("addRowButtons").style.display = "none";
-	$("datumColumnsDivRow").style.display = "none";	
+	$("datumColumnsDivRow").style.display = "none";		
 	$("datumMatrixDivRow").style.display = "none";	
+	
+	$("datumColumnsDivRowDisplay").style.display = "none";	
+	
 	clearTheDataRow();
 }
 
@@ -64,6 +72,7 @@ function setTheDataSet(dataSetId) {
 }
 
 function populateDataSet(dataSet) {
+	//alert('populateDataSet 00 ');
 	if (dataSet != null) {
 		currentDataSet = dataSet;
 		if (currentDataSet.dataRows==null || currentDataSet.dataRows.length==0){
@@ -130,6 +139,25 @@ function addDatumColumn(myDatum) {
 				datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
 			}
 			$("datumColumnsDivRow").style.display = "";
+			
+			
+			
+			var datumColumnPatternRowDisplay = document.getElementById("datumColumnPatternRowDisplay");
+			var aCellsDisplay = datumColumnPatternRowDisplay.getElementsByTagName('td')//cells collection in this row
+			var aCellLengthDisplay = aCellsDisplay.length;
+			//TODO:: delete may not need to columnDisplay
+			var toDeleteDisplay = new Array();	
+			i =0;
+			for(var j=0;j<aCellLengthDisplay;j++){
+				if (aCellsDisplay[j].id!='datumColumnPatternDisplay'){
+					toDeleteDisplay[i]=aCellsDisplay[j].id;
+					i++;
+				}
+			}
+			for(var j=0;j<toDeleteDisplay.length;j++){
+				datumColumnPatternRowDisplay.removeChild(document.getElementById(toDeleteDisplay[j]));
+			}
+			$("datumColumnsDivRowDisplay").style.display = "";
 		}
 		
 		addNewColumn = true;
@@ -191,19 +219,32 @@ function addRow() {
 	addNewColumn = false;
 	var id = -1;	
 	var datumArray = new Array();
+	var datumid = null;
 	for ( var i = 0; i < datumColumnCount; i++) {
-		//id = i+1;
-		id = -i-1;
 		var datum = {
 			name :null,
 			valueType :null,
 			valueUnit :null
 		};
 		dwr.util.getValues(datum);
+		//datum.id = dwr.util.getValue("datumColumnId" + id);		
+		datumid = dwr.util.getValue("datumColumnId" + id);	
+		//TODO::
+		id = datum.id;
+		id = -i-1;
+		
+		
 		datum.name = dwr.util.getValue("datumColumnName" + id);
 		datum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
 		datum.value = dwr.util.getValue("datumColumnValue" + id);
+		datum.id = datumid;
+		
+		datum.dataSet = currentDataSet;
+		datum.dataRow = currentDataSet.theDataRow;
+		datum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);
+		datum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
+		
 		datumArray[i] = datum;
 		if (datum.name!='' || 
 				datum.valueType!='' ||
@@ -241,22 +282,42 @@ function fillColumnTable() {
 	var data = currentDataSet.theDataRow.data;
 	var datum, id;	
 	$("datumColumnPatternRow").style.display = "";
+	$("datumColumnPatternRowDisplay").style.display = "";
 	$("datumColumnPattern").style.display = "none";
+	$("datumColumnPatternDisplay").style.display = "none";
 	var start = data.length-1;
 	if (editDataSet){
 		start = 0;
 	}
+	var datumid = null;
 	for ( var i = start; i < data.length; i++) {
 		datum = data[i];
+		//TODO::::
+		datumid = datum.id;
 		datum.id = -i-1;
 		id = datum.id;
 		dwr.util.cloneNode("datumColumnPattern", {
 			idSuffix :id
 		});
+		dwr.util.cloneNode("datumColumnPatternDisplay", {
+			idSuffix :id
+		});
+		dwr.util.setValue("datumColumnId" + id, datumid);
+		
+		datum.dataSet = currentDataSet;
+		datum.dataRow = currentDataSet.theDataRow;
+		dwr.util.setValue("datumColumnDataRowId" + id, datum.dataRow.id);
+		dwr.util.setValue("datumColumnDataSetId" + id, datum.dataSet.id);
+		
 		dwr.util.setValue("datumColumnName" + id, datum.name);
 		dwr.util.setValue("datumColumnValueType" + id, datum.valueType);
 		dwr.util.setValue("datumColumnValueUnit" + id, datum.valueUnit);
 		dwr.util.setValue("datumColumnValue" + id, datum.value);
+		
+		dwr.util.setValue("datumColumnNameDisplay" + id, datum.name);
+		dwr.util.setValue("datumColumnValueTypeDisplay" + id, datum.valueType);
+		dwr.util.setValue("datumColumnValueUnitDisplay" + id, datum.valueUnit);
+		
 		if (!editDataSet){
 			//TODO::: why need??
 			dwr.util.setValue("datumColumnName" + id, document.getElementById("name").value);
@@ -268,6 +329,11 @@ function fillColumnTable() {
 				valueUnit :null
 			};		
 		dwr.util.getValues(colDatum);
+		colDatum.id = dwr.util.getValue("datumColumnId" + id);
+		colDatum.dataSet = currentDataSet;
+		colDatum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
+		colDatum.dataRow = currentDataSet.theDataRow;
+		colDatum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);		
 		colDatum.name = dwr.util.getValue("datumColumnName" + id);
 		colDatum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		colDatum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
@@ -275,6 +341,7 @@ function fillColumnTable() {
 		dataColumnCache[datum.id] = colDatum;
 		//TODO:: XXXXXX
 		$("datumColumnPattern" + id).style.display = "";
+		$("datumColumnPatternDisplay" + id).style.display = "";
 	}
 }
 
@@ -292,34 +359,30 @@ function fillMatrix() {
 	var datum, id;	
 	var rowId;	
 	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow");
-	//checkNumOfColumns("datumMatrixPatternRow");
 	var aCells = datumMatrixPatternRow.getElementsByTagName('td')//cells collection in this row
 	var aCellLength = aCells.length;	
 	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
 		var data = currentDataSet.dataRows[row].data;
 		rowId = currentDataSet.dataRows[row].domain.id;
-		rowId = -row - 1;
 		//TODO:: how to deal with rowId/datumID??	
-//		if (rowId==null || rowId==''){
-//			rowId = -row - 1;
-//		}
+		if (rowId==null || rowId==''){
+			rowId = -row - 1;
+		}
 		//TODO::: 
 //		if (addNewColumn && 
 //				document.getElementById("datumMatrixPatternRow"+rowId)!=null){
 //			removeNode("datumMatrixPatternRow"+rowId);
-//		}
-		//removeNode("datumMatrixPatternRow"+rowId);
-		//alert('clone '+rowId);
+//		}		
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
 		});				
 		for ( var i = 0; i < data.length; i++) {	
 			datum = data[i];
 			//TODO:: how to deal with rowId/datumID??	
-//			if (datum.id==null || datum.id==''){
-//				datum.id = -i-1;
-//			}
-			datum.id = -i-1;
+			if (datum.id==null || datum.id==''){
+				datum.id = -i-1;
+			}
+			//datum.id = -i-1;
 			//TODO:: how to deal with rowId/datumID??			
 			id = datum.id;
 			id = rowId;
@@ -327,11 +390,12 @@ function fillMatrix() {
 				dwr.util.setValue("matrixHeaderColumn"+(i+1), datum.name+" "+datum.valueType
 						+" "+datum.valueUnit);
 			}
+			//TODO::: 
 			dwr.util.setValue("datumMatrixValue"+(i+1)+"" + id, datum.value);
 		}
 		//select button
 		var editRow = document.getElementById("editDatumRow"+rowId);
-		editRow.onclick = function(){editClicked(this.id)};		
+		editRow.onclick = function(){editDatumClicked(this.id)};		
 		editRow.setAttribute("style", "border:0px solid;");
 		//editRow.style = "border:0px solid;text-decoration: underline;";
 		$("datumMatrixPatternRow" + rowId).style.display = "";
@@ -341,12 +405,20 @@ function fillMatrix() {
 }
 
 var editRowId = -1;
-function editClicked(eleid) {
+function editDatumClicked(eleid) {
 	// we were an id of the form "editDatumRow{id}", eg "editDatumRow42". We lookup the "42"
 	var data = dataRowCache[eleid.substring(12)].data;
 	for ( var i = 0; i < data.length; i++) {	
 		datum = data[i];
-		document.getElementById("datumColumnValue"+(-i-1)).value=datum.value;		
+		alert('edit datum '+datum.id);
+		//TODO:::
+		document.getElementById("datumColumnValue"+(-i-1)).value=datum.value;	
+		document.getElementById("datumColumnId"+(-i-1)).id=datum.id;
+		
+		datum.dataSet = currentDataSet;
+		datum.dataRow = currentDataSet.theDataRow;
+		document.getElementById("datumColumnDataRowId"+(-i-1)).id=datum.dataRow.id;
+		document.getElementById("datumColumnDataSetId"+(-i-1)).id=datum.dataSet.id;
 	}
 }
 

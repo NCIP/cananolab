@@ -6,9 +6,17 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
 <table border="0" align="center" cellpadding="3" cellspacing="0"
-	class="topBorderOnly" summary="">
+	class="topBorderOnly"  style="display: block" id="designDataTable" width="90%">
+	<tr>
+		<td valign="top" colspan="2" class="subformTitle">
+			Design Data Table
+		</td>
+	</tr>
 	<tr>
 		<td class="leftLabelWithTopNoBottom">
+			<strong>Column Type</strong>
+		</td>
+		<td class="rightLabelWithTopNoBottom">
 			<select id="datumOrCondition">
 				<option value="Datum">
 					Datum
@@ -18,16 +26,29 @@
 					</ption>
 			</select>
 		</td>
-		<td class="labelWithTopNoBottom">
-			<strong>Name*</strong>
+	</tr>
+
+	<tr>
+		<td class="leftLabelWithTopNoBottom">
+			<strong>Column Name*</strong>
 		</td>
+
 		<td class="rightLabelWithTopNoBottom">
 			<html:select
 				property="achar.theExperimentConfig.domain.technique.type"
 				styleId="name" onchange="javascript:callPrompt('Name', 'name');">
-				<option value=""></option>
-				<option value="test">
-					test
+				<option value=""></option>				
+				<option value="PDI">
+					PDI
+				</option>
+				<option value="z-avg">
+					z-avg
+				</option>
+				<option value="temperature">
+					temperature
+				</option>
+				<option value="z-avg">
+					z-avg
 				</option>
 				<option value="other">
 					[Other]
@@ -35,24 +56,20 @@
 			</html:select>
 		</td>
 	</tr>
+
+
 	<tr>
 		<td class="leftLabelNoBottom">
-			<strong>&nbsp;</strong>
+			<strong>Column Value Type</strong>
 		</td>
-		<td class="labelNoBottom">
-			<strong>Value Type</strong>
-		</td>
-		<td class="rightLabelNoBottom">
+		<td class="rightLabelNoBottom" align="left">
 			<html:text styleId="valueType"
 				property="achar.theExperimentConfig.domain.technique.type" />
 		</td>
 	</tr>
 	<tr>
 		<td class="leftLabelNoBottom">
-			<strong>&nbsp;</strong>
-		</td>
-		<td class="labelNoBottom">
-			<strong>Value Unit</strong>
+			<strong>Column Value Unit</strong>
 		</td>
 		<td class="rightLabelNoBottom">
 			<html:text styleId="valueUnit"
@@ -60,11 +77,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabelNoBottom">
-			<strong>&nbsp;</strong>
-		</td>
-		<td class="labelNoBottom">
-			<strong>Constant Value</strong>
+		<td class="leftLabelNoBottom" colspan="1">
+			<strong>Is column value constant?</strong>
+			<input type="checkbox">
 		</td>
 		<td class="rightLabelNoBottom">
 			<html:text styleId="value"
@@ -72,27 +87,75 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabelNoBottom" colspan="2">
+		<td class="leftLabelNoBottom" colspan="1">
 			&nbsp;
 		</td>
-		<td class=rightLabelNoBottomRightAlign>
-			<input class="noBorderButton" type="button" value="Save Column"
+		<td class="rightLabelNoBottomRightAlign">
+			<!--<input class="noBorderButton" type="button" value="Save Column"
 				onclick="addDatumColumn()" />
 			<input class="noBorderButton" type="button" value="Delete Column"
 				onclick="deleteDatumColumn()" />
+		-->
+			<input class="noBorderButton" type="button" value="Add Column"
+				onclick="addDatumColumn(); show('populateDataTableButton');" />
 		</td>
 	</tr>
+
+	<tr id="datumColumnsDivRowDisplay">
+		<td class="leftLabelNoBottom" valign="top" colspan="2">
+			<div id="datumColumnsDivDisplay" style="display: block;">
+				<table id="datumColumnsTableDisplay" class="smalltable" border="1">
+					<tbody id="datumColumnsDisplay">
+						<tr id="datumColumnPatternRowDisplay">
+							<td id="datumColumnPatternDisplay" style="display: none;">
+								<span id="datumColumnNameDisplay" class="greyFont2">datumColumnName</span>
+								<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>
+								<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			&nbsp;
+		</td>
+	</tr>
+	
+	<tr id="populateDataTableButton" style="display: none;">
+		<td class="completeLabelNoBottom" colspan="2">
+			<input class="noBorderButton" type="button"
+				value="Populate Data Table"
+				onclick="hide('designDataTable');show('populateDataTable')" />
+		</td>
+	</tr>
+</table>
+
+<table border="0" align="center" class="smalltable3"
+	id="populateDataTable" style="display: none;" width="90%">
+
+	<tr>
+		<td valign="top" colspan="2" class="subformTitle">
+			Populate Data Table
+		</td>
+	</tr>
+
 	<tr id="datumColumnsDivRow">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
 			<div id="datumColumnsDiv" style="display: block;">
-				<table id="datumColumnsTable" class="smalltable" border="1"
-					width="80%">
+				<table id="datumColumnsTable" class="smalltable" border="1">
 					<tbody id="datumColumns">
 						<tr id="datumColumnPatternRow">
 							<td id="datumColumnPattern" style="display: none;">
-								<input  class="noBorderButton" 
-									id="datumColumnName" type="button" size="2"
-									value="datumColumnName" onclick="editColumn(this.id)"/>
+								<input id="datumColumnId" type="hidden" value="datumColumnId" />
+								<input id="datumColumnDataRowId" type="hidden"
+									value="datumColumnDataRowId" />
+								<input id="datumColumnDataSetId" type="hidden"
+									value="datumColumnDataSetId" />
+								<!--
+								<input class="noBorderButton" id="datumColumnName" type="button"
+									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
+								
+								-->
+								<span id="datumColumnName" class="greyFont2">datumColumnName</span>
 								<span id="datumColumnValueType" class="greyFont2">ValueType</span>
 								<span id="datumColumnValueUnit" class="greyFont2">ValueUnit</span>
 								<br>
@@ -104,28 +167,35 @@
 				</table>
 			</div>
 			&nbsp;
-		</td>	
-		<td class="rightLabelNoBottom" valign="top" colspan="1">
+		</td>
+	</tr>
+	<tr id="datumColumnsDivRow2" style="display: block">
+		<td class="rightLabelNoBottom" valign="top" align="right" colspan="2">
 			<div id="addRowButtons" style="display: none;">
-				<input class="noBorderButton" type="button" value="New"
+				<!--<input class="noBorderButton" type="button" value="New"
 					onclick="clearTheDataRow()" />
 				<input class="noBorderButton" type="button" value="Save Row"
 					onclick="addRow()" />
 				<input class="noBorderButton" type="button" value="Delete"
 					onclick="deleteClicked()" />
+			-->
+
+				<input class="noBorderButton" type="button" value="Add Row"
+					onclick="addRow()" />
 			</div>
 			&nbsp;
 		</td>
 	</tr>
+
 	<tr id="datumMatrixDivRow">
-		<td class="completeLabelNoTopBottom" valign="top" colspan="3">
+		<td class="completeLabelNoTopBottom" valign="top" colspan="2">
 			<div id="datumMatrixDiv" style="display: block;">
-				<table id="datumMatrixTable" class="smalltable" border="1"
-					width="80%">
+				<table id="datumMatrixTable" class="smalltable" border="1">
 					<tbody id="datumMatrix">
 						<tr id="matrixHeader" class="greyFont2" style="display: none;">
 						</tr>
-						<tr id="datumMatrixPatternRow" class="greyFont2" style="display: none;">
+						<tr id="datumMatrixPatternRow" class="greyFont2"
+							style="display: none;">
 						</tr>
 					</tbody>
 				</table>
@@ -133,25 +203,23 @@
 			&nbsp;
 		</td>
 	</tr>
+	
 	<tr>
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
 				onclick="javascript:submitAction(document.forms[0],
 										'${actionName}', 'deleteExperimentConfig');">
 		</td>
-		<td class="rightLabel" align="right" colspan="2">
+		<td class="rightLabel" align="right" colspan="1">
 			<div align="right">
 				<input type="reset" value="Cancel"
 					onclick="javascript:resetTheDataSet(false);">
-				<input type="reset" value="Reset"
-					onclick="javascript:window.location.href='${origUrl}'">
 				<input type="button" value="Save"
 					onclick="javascript:saveDataSet('${actionName}');">
 			</div>
 		</td>
 	</tr>
 
-	<html:hidden styleId="configId"
-		property="achar.theExperimentConfig.domain.id" />
-
 </table>
+
+<html:hidden styleId="dataSetId" property="achar.theDataSet.domain.id" />
