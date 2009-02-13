@@ -19,9 +19,10 @@
 			<strong>DataSet</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if
 				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-				<a style="" id="addDataSet" href="javascript:resetTheDataSet(true);">
-					<span class="addLink2">Add</span> </a>
-			</c:if>
+				<a id="addDataSet" href="javascript:resetTheDataSet(true);">
+					<span class="addLink2">Add</span></a>
+				&nbsp;&nbsp;
+			</c:if>			
 		</td>
 	</tr>
 	<tr>
@@ -125,6 +126,14 @@
 									<jsp:param name="action" value="${actionName}" />
 								</jsp:include>
 							</div>
+							&nbsp;
+						</td>
+					</tr>
+					
+					<tr>
+						<td valign="top" align="right">
+							<input type="reset" value="Cancel"
+								onclick="javascript:hide('newDataSet');show('existingDataSet');">
 							&nbsp;
 						</td>
 					</tr>
