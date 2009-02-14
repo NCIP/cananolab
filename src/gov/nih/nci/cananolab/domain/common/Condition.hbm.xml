@@ -11,6 +11,7 @@
 		</id>
 		<!-- Attributes mapping for the Condition class -->
 		<property name="name" type="string" column="name"/>
+		<property name="property" type="string" column="property"/>
 		<property name="value" type="string" column="value"/>
 		<property name="valueType" type="string" column="value_type"/>
 		<property name="valueUnit" type="string" column="value_unit"/>
