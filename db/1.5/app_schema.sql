@@ -185,23 +185,6 @@ CREATE TABLE antibody
 ) TYPE=InnoDB
 ;
 
-
-CREATE TABLE surface_chemistry
-(
-	surface_chemistry_pk_id BIGINT NOT NULL,
-	molecule_name VARCHAR(200),
-	number_molecule INTEGER,
-	molecular_formula_type VARCHAR(200),
-	molecular_formula TEXT,
-	surface_pk_id BIGINT,
-	created_by VARCHAR(200) NOT NULL,
-	created_date DATETIME NOT NULL,
-	PRIMARY KEY (surface_chemistry_pk_id),
-	KEY (surface_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE solubility
 (
 	solubility_pk_id BIGINT NOT NULL,
@@ -654,6 +637,7 @@ CREATE TABLE experiment_condition
 (
 	condition_pk_id BIGINT NOT NULL,
 	name VARCHAR(200) NOT NULL,
+	property VARCHAR(200),
 	value VARCHAR(200) NOT NULL,
 	value_unit VARCHAR(200),
 	value_type VARCHAR(200),
@@ -793,10 +777,6 @@ ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity
 
 ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity
 	FOREIGN KEY (antibody_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
-;
-
-ALTER TABLE surface_chemistry ADD CONSTRAINT FK_surface_chemistry_characterization
-	FOREIGN KEY (surface_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
 ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization

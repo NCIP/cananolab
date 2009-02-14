@@ -540,6 +540,7 @@ CREATE TABLE experiment_condition
 (
 	condition_pk_id BIGINT NOT NULL,
 	name VARCHAR(200) NOT NULL,
+	property VARCHAR(200),
 	value VARCHAR(200) NOT NULL,
 	value_unit VARCHAR(200),
 	value_type VARCHAR(200),
