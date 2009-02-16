@@ -45,6 +45,8 @@ insert into common_lookup(name,attribute,value) values ('ImagingFunction','displ
 insert into common_lookup(name,attribute,value) values ('ImmuneCellFunction','displayName','Immune Cell Function');
 insert into common_lookup(name,attribute,value) values ('InvitroCharacterization','displayName','In Vitro Characterization');
 insert into common_lookup(name,attribute,value) values ('InvivoCharacterization','displayName','In Vivo Characterization');
+insert into common_lookup(name,attribute,value) values ('Pharmacokinetics','displayName','Pharmacokinetics');
+insert into common_lookup(name,attribute,value) values ('Toxicology','displayName','Toxicology');
 insert into common_lookup(name,attribute,value) values ('Liposome','displayName','liposome');
 insert into common_lookup(name,attribute,value) values ('MetalParticle','displayName','metal particle');
 insert into common_lookup(name,attribute,value) values ('MolecularWeight','displayName','Molecular Weight');
