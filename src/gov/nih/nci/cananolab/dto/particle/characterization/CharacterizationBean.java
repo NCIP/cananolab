@@ -1,5 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
+import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
+import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
+import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
@@ -34,7 +38,6 @@ import java.util.Map;
  *
  */
 public class CharacterizationBean {
-	// private String characterizationSource;
 	private PointOfContactBean pocBean=new PointOfContactBean();
 
 	// used to distinguish different instances of characterizations, which are
@@ -55,11 +58,21 @@ public class CharacterizationBean {
 
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
-	protected Characterization domainChar;
+	private Characterization domainChar;
 
 	private String className;
 
-	protected String dateString;
+	private String dateString;
+
+	private String characterizationType;
+
+	private Cytotoxicity cytotoxicity = new Cytotoxicity();
+
+	private PhysicalState physicalState = new PhysicalState();
+
+	private Shape shape = new Shape();
+
+	private Solubility solubility = new Solubility();
 
 	public CharacterizationBean() {
 	}
@@ -90,6 +103,15 @@ public class CharacterizationBean {
 					.getExperimentConfigCollection()) {
 				experimentConfigs.add(new ExperimentConfigBean(config));
 			}
+		}
+		if (chara instanceof Shape) {
+			shape = (Shape) chara;
+		} else if (chara instanceof PhysicalState) {
+			physicalState = (PhysicalState) chara;
+		} else if (chara instanceof Solubility) {
+			solubility = (Solubility) chara;
+		} else if (chara instanceof Cytotoxicity) {
+			cytotoxicity = (Cytotoxicity) chara;
 		}
 	}
 
@@ -193,6 +215,10 @@ public class CharacterizationBean {
 			String createdBy, String internalUriPath) throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
+		if (domainChar == null) {
+			Class clazz = ClassUtils.getFullClass(getClassName());
+			domainChar = (Characterization) clazz.newInstance();
+		}
 		if (domainChar.getId() == null
 				|| domainChar.getCreatedBy() != null
 				&& domainChar.getCreatedBy().equals(
@@ -200,6 +226,17 @@ public class CharacterizationBean {
 			domainChar.setCreatedBy(createdBy);
 			domainChar.setCreatedDate(new Date());
 		}
+
+		if (domainChar instanceof Shape) {
+			domainChar = shape;
+		} else if (domainChar instanceof Solubility) {
+			domainChar = solubility;
+		} else if (domainChar instanceof PhysicalState) {
+			domainChar = physicalState;
+		} else if (domainChar instanceof Cytotoxicity) {
+			domainChar = cytotoxicity;
+		}
+
 		domainChar.setDesignMethodsDescription(description);
 		domainChar.setIdentificationName(viewTitle);
 		if (pocBean != null && pocBean.getDomain().getId() != null
@@ -376,5 +413,45 @@ public class CharacterizationBean {
 	 */
 	public List<DataSetBean> getDataSets() {
 		return dataSets;
+	}
+
+	public String getAssayCategory() {
+		return characterizationType;
+	}
+
+	public void setAssayCategory(String assayCategory) {
+		this.characterizationType = assayCategory;
+	}
+
+	public Cytotoxicity getCytotoxicity() {
+		return cytotoxicity;
+	}
+
+	public void setCytotoxicity(Cytotoxicity cytotoxicity) {
+		this.cytotoxicity = cytotoxicity;
+	}
+
+	public PhysicalState getPhysicalState() {
+		return physicalState;
+	}
+
+	public void setPhysicalState(PhysicalState physicalState) {
+		this.physicalState = physicalState;
+	}
+
+	public Shape getShape() {
+		return shape;
+	}
+
+	public void setShape(Shape shape) {
+		this.shape = shape;
+	}
+
+	public Solubility getSolubility() {
+		return solubility;
+	}
+
+	public void setSolubility(Solubility solubility) {
+		this.solubility = solubility;
 	}
 }
