@@ -62,10 +62,10 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="physicalCharacterizationForm"
+		<form-bean name="characterizationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="achar"
-				type="gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean" />
+				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
@@ -81,19 +81,6 @@
 				type="gov.nih.nci.cananolab.dto.common.LabFileBean" />
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-		</form-bean>
-		<form-bean name="invitroCharacterizationForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="achar"
-				type="gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean" />
-			<form-property name="particleId" type="java.lang.String" />
-			<form-property name="otherParticles"
-				type="java.lang.String[]" />
-			<form-property name="idsToDelete" type="java.lang.String[]" />
-			<form-property name="copyData" type="java.lang.Boolean"
-				initial="false" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -182,36 +169,22 @@
 				path="particle.composition.chemicalAssociation" />
 			<forward name="success" path="particle.annotationMessage" />
 		</action>
-		<action name="physicalCharacterizationForm" parameter="dispatch"
-			path="/physicalCharacterization"
-			type="gov.nih.nci.cananolab.ui.particle.PhysicalCharacterizationAction"
+		<action name="characterizationForm" parameter="dispatch"
+			path="/characterization"
+			type="gov.nih.nci.cananolab.ui.particle.characterizationAction"
 			input="input" validate="true">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateCharacterizationViewTitle"
-				path="particle.physicalCharacterization"
+				path="particle.characterization"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="input"
-				path="particle.physicalCharacterization" />
+				path="particle.characterization" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="detailView"
-				path="particle.physicalDetailView" />
+				path="particle.characterizationDetailView" />
 			<forward name="summaryView"
-				path="particle.physicalSummaryView" />
-			<forward name="saveExperimentConfig"
-				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
-		</action>
-		<action name="invitroCharacterizationForm" parameter="dispatch"
-			path="/invitroCharacterization"
-			type="gov.nih.nci.cananolab.ui.particle.InvitroCharacterizationAction"
-			input="input">
-			<forward name="input"
-				path="particle.invitroCharacterization" />
-			<forward name="success" path="particle.annotationMessage" />
-			<forward name="detailView"
-				path="particle.invitroDetailView" />
-			<forward name="summaryView"
-				path="particle.invitroSummaryView" />
+				path="particle.characterizationSummaryView" />
 			<forward name="saveExperimentConfig"
 				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
 		</action>

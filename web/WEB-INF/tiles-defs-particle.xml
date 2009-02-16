@@ -29,22 +29,22 @@
 		<put name="calabContent"
 			value="/particle/bodySubmitNanoparticleSample.jsp" />
 		<put name="menu" value="nanoparticles" />
-	</definition>	
-	
+	</definition>
+
 	<definition name="particle.submitPointOfContact"
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/common/bodySubmitPointOfContact.jsp"/>
 		<put name="menu" value="nanoparticles" />
 	</definition>
-	
+
 	<definition name="particle.pointOfContactDetailView"
 		extends="particle.annotationHome">
 		<put name="calabContent"
 			value="/common/bodyPointOfContactDetailView.jsp"/>
 		<put name="menu" value="nanoparticles" />
 	</definition>
-	
+
 	<definition name="particle.annotationHome" extends="calab.home">
 		<put name="calabSidemenu"
 			value="/particle/sideParticleMenu.jsp" />
@@ -65,7 +65,7 @@
 			value="/particle/bodyNanoparticleSampleGeneralInfo.jsp" />
 		<put name="menu" value="nanoparticles" />
 	</definition>
-	
+
 	<definition name="particle.publicationInfo"
 		extends="particle.annotationHome">
 		<put name="calabContent"
@@ -119,40 +119,14 @@
 		<put name="actionName" value="compositionFile" />
 	</definition>
 
-	<definition name="particle.physicalCharacterization"
+	<definition name="particle.characterizationDetailView"
 		extends="particle.characterization">
-		<put name="pageTitle" value="Physical Characterization" />
-		<put name="actionName" value="physicalCharacterization" />
-		<put name="subfolder" value="physical" />
-	</definition>
-
-	<definition name="particle.invitroCharacterization"
-		extends="particle.characterization">
-		<put name="pageTitle" value="In Vitro Characterization" />
-		<put name="actionName" value="invitroCharacterization" />
-		<put name="subfolder" value="invitro" />
-	</definition>
-
-	<definition name="particle.physicalDetailView"
-		extends="particle.physicalCharacterization">
 		<put name="calabContent"
 			value="/particle/characterization/bodyCharacterizationDetailView.jsp" />
 	</definition>
 
-	<definition name="particle.invitroDetailView"
-		extends="particle.invitroCharacterization">
-		<put name="calabContent"
-			value="/particle/characterization/bodyCharacterizationDetailView.jsp" />
-	</definition>
-
-	<definition name="particle.physicalSummaryView"
-		extends="particle.physicalCharacterization">
-		<put name="calabContent"
-			value="/particle/characterization/bodyCharacterizationSummaryView.jsp" />
-	</definition>
-
-	<definition name="particle.invitroSummaryView"
-		extends="particle.invitroCharacterization">
+	<definition name="particle.characterizationSummaryView"
+		extends="particle.characterization">
 		<put name="calabContent"
 			value="/particle/characterization/bodyCharacterizationSummaryView.jsp" />
 	</definition>
@@ -170,13 +144,6 @@
 			value="/particle/bodyLoadCharacterizationFile.jsp" />
 	</definition>
 
-	<!-- definition for the nanoparticle function page -->
-	<definition name="particle.function"
-		extends="particle.annotationHome">
-		<put name="calabContent"
-			value="/particle/function/bodyParticleFunction.jsp" />
-	</definition>
-
 	<!-- definition for the view publication page -->
 	<definition name="particle.submitPublication"
 		extends="particle.annotationHome">
@@ -188,23 +155,13 @@
 		<put name="calabContent" value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
 		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
-	
-	<!-- definition for the view report/associated file page -->
-	<definition name="particle.submitReport"
-		extends="particle.annotationHome">
-		<put name="calabContent" value="/publication/bodySubmitReport.jsp" />
-		<put name="onloadJavascript" value="radLinkOrUpload()" />
-	</definition>
-	<definition name="particle.viewReport"
-		extends="particle.annotationHome">
-		<put name="calabContent" value="/report/bodyViewReportFile.jsp" />
-	</definition>
+
 	<definition name="particle.detailViewPublication" extends="particle.annotationHome">
 		<put name="calabContent" value="/publication/bodyPublicationDetailView.jsp" />
 	</definition>
 		<definition name="particle.detailViewReport" extends="particle.annotationHome">
 		<put name="calabContent" value="/publication/bodyReportDetailView.jsp" />
-	</definition>	
+	</definition>
 
 	<!-- definition for the search nanoparticle page -->
 	<definition name="particle.searchNanoparticle"

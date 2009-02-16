@@ -248,12 +248,12 @@
 				<arg position="0" key="file.type" bundle="particle" />
 			</field>
 		</form>
-		<form name="physicalCharacterizationForm">
+		<form name="characterizationForm">
 			<field property="achar.viewTitle" page="2"
 				depends="required">
 				<arg position="0" key="viewTitle" bundle="particle" />
 			</field>
-			<!-- 
+			<!--
 			<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.technique.type"
@@ -267,6 +267,7 @@
 				</var>
 			</field>
 			-->
+			<!-- TODO add type
 			<field property="achar.shape.maxDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.maxDimension"
@@ -276,28 +277,6 @@
 				depends="float">
 				<arg position="0" key="shape.minDimension"
 					bundle="particle" />
-			</field>
-<!--			<field-->
-<!--				property="achar.surfaceBean.domainSurface.surfaceArea" page="2"-->
-<!--				depends="float">-->
-<!--				<arg position="0" key="surface.surfaceAreaValue"-->
-<!--					bundle="particle" />-->
-<!--			</field>-->
-<!--			<field-->
-<!--				property="achar.surfaceBean.domainSurface.zetaPotential" page="2"-->
-<!--				depends="float">-->
-<!--				<arg position="0" key="surface.zetaPotentialValue"-->
-<!--					bundle="particle" />-->
-<!--			</field>-->
-			<field property="numberOfMolecule" page="2"
-				depends="integer, validwhen"
-				indexedListProperty="achar.surfaceBean.domainSurface.surfaceChemistryCollection">
-				<arg position="0" key="surface.numberOfMolecules"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>(*this*!=null)</var-value>
-				</var>
 			</field>
 			<field property="achar.solubility.criticalConcentration"
 				page="2" depends="float">
@@ -316,56 +295,7 @@
 					</var-value>
 				</var>
 			</field>
-<!--			<field property="labFileBean.domainFile.title" page="2"-->
-<!--				depends="required,mask"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="file.title" bundle="particle" />-->
-<!--				<msg name="mask" key="file.title.invalid" />-->
-<!--				<var>-->
-<!--					<var-name>mask</var-name>-->
-<!--					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>-->
-<!--				</var>-->
-<!--			</field>-->
-<!--			<field property="labFileBean.domainFile.type" page="2"-->
-<!--				depends="required"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="file.type" bundle="particle" />-->
-<!--			</field>-->
-<!--			<field property="labFileBean.externalUrl" page="2"-->
-<!--				depends="validwhen"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="externalUrl"-->
-<!--					bundle="particle" />-->
-<!--				<var>-->
-<!--					<var-name>test</var-name>-->
-<!--					<var-value>-->
-<!--						(((*this*!=null) and-->
-<!--						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true")) or-->
-<!--						 (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))-->
-<!--					</var-value>-->
-<!--				</var>-->
-<!--			</field>-->
-<!--			<field property="labFileBean.uploadedFile" page="2"-->
-<!--				depends="validwhen"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="uploadedFile"-->
-<!--					bundle="particle" />-->
-<!--				<var>-->
-<!--					<var-name>test</var-name>-->
-<!--					<var-value>-->
-<!--						(((achar.derivedBioAssayDataList[].labFileBean.domainFile.uri!=null) or-->
-<!--						 ((*this*!=null) and-->
-<!--						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))) or-->
-<!--						(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))-->
-<!--					</var-value>-->
-<!--				</var>-->
-<!--			</field>-->
-		</form>
-		<form name="invitroCharacterizationForm">
-			<field property="achar.viewTitle" page="2"
-				depends="required">
-				<arg position="0" key="viewTitle" bundle="particle" />
-			</field>
+			-->
 <!--			<field property="labFileBean.domainFile.title" page="2"-->
 <!--				depends="required,mask"-->
 <!--				indexedListProperty="achar.derivedBioAssayDataList">-->
