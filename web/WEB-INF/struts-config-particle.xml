@@ -171,7 +171,7 @@
 		</action>
 		<action name="characterizationForm" parameter="dispatch"
 			path="/characterization"
-			type="gov.nih.nci.cananolab.ui.particle.characterizationAction"
+			type="gov.nih.nci.cananolab.ui.particle.CharacterizationAction"
 			input="input" validate="true">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
