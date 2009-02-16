@@ -45,8 +45,8 @@
 										Local
 									</html:option>
 									<c:if test="${! empty allGridNodes}">
-										<html:options collection="allGridNodes"
-											property="hostName" labelProperty="hostName" />
+										<html:options collection="allGridNodes" property="hostName"
+											labelProperty="hostName" />
 									</c:if>
 								</html:select> </strong>
 						</td>
@@ -64,8 +64,9 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Search by nanoparticle characterization keywords, publication keywords
-								and text in characterization descriptions</strong>
+							<strong>Search by nanoparticle characterization
+								keywords, publication keywords and text in characterization
+								descriptions</strong>
 							<br>
 						</td>
 						<td class="rightLabel" colspan="5">
@@ -91,15 +92,19 @@
 					</tr>
 					<tr>
 						<td class="leftLabel" width="20%" valign="top">
-							<strong> Nanoparticle Sample<br>Point of Contact </strong>							
+							<strong> Nanoparticle Sample<br>Point of Contact </strong>
 						</td>
-						<td class="rightLabel" colspan="5"><br>						
+						<td class="rightLabel" colspan="5">
+							<br>
 							<html:text property="particlePointOfContact" size="60" />
 							<em>* for searching wildcards</em>
 							<br>
-							<br><em>case insensitive</em>
-							<br><em>searching organization name or first name or last name of a person</em>
-							
+							<br>
+							<em>case insensitive</em>
+							<br>
+							<em>searching organization name or first name or last name
+								of a person</em>
+
 						</td>
 					</tr>
 					<tr>
@@ -140,17 +145,7 @@
 						</td>
 						<td class="label">
 							<c:forEach var="charType" items="${characterizationTypes}">
-								<c:choose>
-									<c:when test="${charType.key.hasGrandChildrenFlag eq false}">
-										<span class="indented${charType.key.indentLevel}"><a
-											href="#"
-											onclick="javascript:dynamicDropdown('${charType.key.nodeName}', document.searchNanoparticleSampleForm.characterizations, charTypeChars); setHiddenCharType('${charType.key.nodeName}')">${charType.key.nodeName}
-										</a> </span>
-									</c:when>
-									<c:otherwise>
-										<span class="indented${charType.key.indentLevel}">${charType.key.nodeName}</span>
-									</c:otherwise>
-								</c:choose>
+								<span class="indented0"><a href="#">${charType} </a> </span>
 								<br>
 							</c:forEach>
 						</td>
@@ -166,8 +161,8 @@
 									</c:forEach>
 								</html:select> </strong>
 						</td>
-					</tr>		
-					
+					</tr>
+
 				</table>
 				<br>
 
@@ -182,7 +177,7 @@
 									<td>
 										<div align="right">
 											<input type="reset" value="Reset"
-												onclick="javascript:location.href='searchNanoparticle.do?dispatch=setup&page=0'">												
+												onclick="javascript:location.href='searchNanoparticle.do?dispatch=setup&page=0'">
 											<input type="hidden" name="dispatch" value="search">
 											<input type="hidden" name="page" value="1">
 											<html:submit value="Search" />
@@ -198,24 +193,3 @@
 		</tr>
 	</table>
 </html:form>
-<script language="JavaScript">
-<!--//
-
-/* populate a hashtable containing characterization type characterizations */
-  var charTypeChars=new Array();    
-  <c:forEach var="item" items="${characterizationTypes}">  
-    var chars=new Array();    
-  
-   <c:forEach var="achar" items="${characterizationTypes[item.key]}" varStatus="count">
-  		chars[${count.index}]='${achar}'; 
-    </c:forEach>
-    charTypeChars['${item.key.nodeName}']=chars;
-  </c:forEach>  
-  
-   function setHiddenCharType(charType) { 
-     document.getElementById("characterizationType").value=charType;          
-   }
-  
-//-->
-</script>
-<!--_____ main content ends _____-->
