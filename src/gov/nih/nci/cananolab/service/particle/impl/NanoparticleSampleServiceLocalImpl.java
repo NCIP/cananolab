@@ -140,8 +140,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throw new ParticleException(err, e);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
@@ -161,7 +161,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			if (dbParticle != null
 					&& !dbParticle.getId().equals(particleSample.getId())) {
 				throw new DuplicateEntriesException();
-			}			
+			}
 			dbParticle.setOtherPointOfContactCollection(
 					particleSample.getOtherPointOfContactCollection());
 			appService.saveOrUpdate(dbParticle);
@@ -400,12 +400,12 @@ public class NanoparticleSampleServiceLocalImpl implements
 					CaNanoLabConstants.CSM_APP_NAME);
 			if (className == null) {
 			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.particle.characterization")) {
+					.startsWith("gov.nih.nci.cananolab.domain.characterization")) {
 				NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
 				service.removePublicVisibility(authService,
 						findFullCharacterizationById(dataId.toString()));
 			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation")) {
+					.startsWith("gov.nih.nci.cananolab.domain.linkage")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 				ChemicalAssociation chemicalAssociation = service
 						.findChemicalAssociationById(dataId.toString())
@@ -413,14 +413,14 @@ public class NanoparticleSampleServiceLocalImpl implements
 				service.removeChemicalAssociationPublicVisibility(authService,
 						chemicalAssociation);
 			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization")) {
+					.startsWith("gov.nih.nci.cananolab.domain.agentmaterial")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 				service.removeFunctionalizingEntityPublicVisibility(
 						authService, this
 								.findFullFunctionalizingEntityById(dataId
 										.toString()));
 			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity")) {
+					.startsWith("gov.nih.nci.cananolab.domain.nanomaterial")) {
 				NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
 				service.removeNanoparticleEntityPublicVisibility(authService,
 						this.findFullNanoparticleEntityById(dataId.toString()));

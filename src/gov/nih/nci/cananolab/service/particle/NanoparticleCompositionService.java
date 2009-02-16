@@ -18,9 +18,9 @@ import java.util.SortedSet;
 
 /**
  * Service methods involving composition.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public interface NanoparticleCompositionService {
 	public void saveNanoparticleEntity(NanoparticleSample particleSample,
@@ -53,51 +53,6 @@ public interface NanoparticleCompositionService {
 
 	public ChemicalAssociationBean findChemicalAssociationById(
 			String particleId, String assocId, String assocClassName)
-			throws ParticleCompositionException;
-
-	/**
-	 * Return user-defined functionalizing entity types
-	 * 
-	 * @return
-	 * @throws ParticleCompositionException
-	 */
-	public SortedSet<String> getAllOtherFunctionalizingEntityTypes()
-			throws ParticleCompositionException;
-
-	/**
-	 * Return user-defined function types
-	 * 
-	 * @return
-	 * @throws ParticleCompositionException
-	 */
-	public SortedSet<String> getAllOtherFunctionTypes()
-			throws ParticleCompositionException;
-
-	/**
-	 * Return user-defined target types
-	 * 
-	 * @return
-	 * @throws ParticleCompositionException
-	 */
-	public SortedSet<String> getAllOtherTargetTypes()
-			throws ParticleCompositionException;
-
-	/**
-	 * Return user-defined functionalizing entity types
-	 * 
-	 * @return
-	 * @throws ParticleCompositionException
-	 */
-	public SortedSet<String> getAllOtherNanoparticleEntityTypes()
-			throws ParticleCompositionException;
-
-	/**
-	 * Return user-defined chemical association types
-	 * 
-	 * @return
-	 * @throws ParticleCompositionException
-	 */
-	public SortedSet<String> getAllOtherChemicalAssociationTypes()
 			throws ParticleCompositionException;
 
 	public void retrieveVisibility(NanoparticleEntityBean entity, UserBean user)

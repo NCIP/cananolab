@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /**
  * This class searches nanoparticle metadata based on user supplied criteria
- * 
+ *
  * @author pansu
  */
 
@@ -43,7 +43,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particlePointOfContact = (String) theForm.get("particlePointOfContact");
+		String particlePointOfContact = (String) theForm
+				.get("particlePointOfContact");
 
 		String[] nanoparticleEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
@@ -139,8 +140,9 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 						request, location);
 				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
 			}
-			particles = service.findNanoparticleSamplesBy(particlePointOfContact,
-					nanoparticleEntityClassNames.toArray(new String[0]),
+			particles = service.findNanoparticleSamplesBy(
+					particlePointOfContact, nanoparticleEntityClassNames
+							.toArray(new String[0]),
 					otherNanoparticleEntityTypes.toArray(new String[0]),
 					functionalizingEntityClassNames.toArray(new String[0]),
 					otherFunctionalizingTypes.toArray(new String[0]),
@@ -151,10 +153,9 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 				particle.setLocation(location);
 			}
 			if (location.equals("local")) {
-				//get user accessible particles
-				List<ParticleBean> filteredParticles =
-					service.getUserAccessibleParticles(
-							particles, user);
+				// get user accessible particles
+				List<ParticleBean> filteredParticles = service
+						.getUserAccessibleParticles(particles, user);
 				foundParticles.addAll(filteredParticles);
 			} else {
 				foundParticles.addAll(particles);
@@ -192,20 +193,11 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 		if ("local".equals(selectedLocations[0])
 				&& selectedLocations.length == 1) {
-
-			InitCompositionSetup.getInstance().getNanoparticleEntityTypes(
-					request);
-
-			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
-					request);
-			InitCompositionSetup.getInstance().getFunctionTypes(request);
+			InitNanoparticleSetup.getInstance()
+					.setLocalSearchDropdowns(request);
 		} else {
-			InitCompositionSetup.getInstance()
-					.getDefaultNanoparticleEntityTypes(request);
-
-			InitCompositionSetup.getInstance()
-					.getDefaultFunctionalizingEntityTypes(request);
-			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
+			InitNanoparticleSetup.getInstance().setRemoteSearchDropdowns(
+					request);
 		}
 
 		return mapping.getInputForward();

@@ -1,7 +1,14 @@
 package gov.nih.nci.cananolab.service.common;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.CommonLookup;
+import gov.nih.nci.cananolab.domain.function.OtherFunction;
+import gov.nih.nci.cananolab.domain.function.OtherTarget;
+import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -20,9 +27,9 @@ import org.hibernate.criterion.Property;
 /**
  * The service returns prepopulated lookup data that are shared across different
  * views.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 /* CVS $Id: LookupService.java,v 1.9 2008-09-16 15:54:50 tanq Exp $ */
 
@@ -32,7 +39,7 @@ public class LookupService {
 	/**
 	 * get all lookup name, attribute, values and stored it in a map of map of
 	 * ordered list of strings.
-	 * 
+	 *
 	 * @return
 	 * @throws CaNanoLabException
 	 */
@@ -78,10 +85,10 @@ public class LookupService {
 			String attribute) throws CaNanoLabException {
 		SortedSet<String> lookupValues = new TreeSet<String>(
 				new Comparator<String>() {
-		    public int compare(String s1, String s2) {
-		        return s1.toLowerCase () .compareTo ( s2.toLowerCase());
-		    }}
-		);
+					public int compare(String s1, String s2) {
+						return s1.toLowerCase().compareTo(s2.toLowerCase());
+					}
+				});
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -125,7 +132,7 @@ public class LookupService {
 
 	/**
 	 * Retrieve lookup values from database based type and otherType
-	 * 
+	 *
 	 * @param lookupName
 	 * @param lookupAttribute
 	 * @param otherTypeAttribute
@@ -141,6 +148,42 @@ public class LookupService {
 				lookupName, otherTypeAttribute);
 		types.addAll(otherTypes);
 		return types;
+	}
+
+	public static SortedSet<String> getAllOtherObjectTypes(String fullClassName)
+			throws ParticleCompositionException {
+		SortedSet<String> types = new TreeSet<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			Class clazz = Class.forName(fullClassName);
+			List results = appService.getAll(clazz);
+			for (Object obj : results) {
+				if (obj instanceof OtherFunction) {
+					types.add(((OtherFunction) obj).getType());
+				} else if (obj instanceof OtherNanoparticleEntity) {
+					types.add(((OtherNanoparticleEntity) obj).getType());
+				} else if (obj instanceof OtherNanoparticleEntity) {
+					types.add(((OtherNanoparticleEntity) obj).getType());
+				} else if (obj instanceof OtherFunctionalizingEntity) {
+					types.add(((OtherFunctionalizingEntity) obj).getType());
+				} else if (obj instanceof OtherChemicalAssociation) {
+					types.add(((OtherChemicalAssociation) obj).getType());
+				} else if (obj instanceof OtherCharacterization) {
+					types.add(((OtherCharacterization) obj).getName());
+				} else if (obj instanceof OtherFunction) {
+					types.add(((OtherFunction) obj).getType());
+				} else if (obj instanceof OtherTarget) {
+					types.add(((OtherTarget) obj).getType());
+				}
+			}
+			return types;
+		} catch (Exception e) {
+			String err = "Error in retrieving other object types for: "
+					+ fullClassName;
+			logger.error(err, e);
+			throw new ParticleCompositionException(err, e);
+		}
 	}
 
 	public static void saveOtherType(String lookupName, String otherAttribute,

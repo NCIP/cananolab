@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class sets up information required for composition forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitCompositionSetup {
 
@@ -38,9 +38,20 @@ public class InitCompositionSetup {
 
 	public void setNanoparticleEntityDropdowns(HttpServletRequest request)
 			throws Exception {
-		getNanoparticleEntityTypes(request);
 		getEmulsionComposingElementTypes(request);
-		getFunctionTypes(request);
+		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
+				request, "functionTypes",
+				"gov.nih.nci.cananolab.domain.particle.Function",
+				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
+
+		InitSetup
+				.getInstance()
+				.getReflectionDefaultAndOtherLookupTypes(
+						request,
+						"nanoparticleEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
+						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
+						true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
@@ -114,16 +125,31 @@ public class InitCompositionSetup {
 			InitSetup.getInstance().persistLookup(request, "File", "type",
 					"otherType", fileBean.getDomainFile().getType());
 		}
-		
+
 		setNanoparticleEntityDropdowns(request);
 	}
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
 			throws Exception {
 		// reload function types
-		getFunctionTypes(request);
-		getFunctionalizingEntityTypes(request);
-		getTargetTypes(request);
+		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
+				request, "functionTypes",
+				"gov.nih.nci.cananolab.domain.particle.Function",
+				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
+
+		InitSetup
+				.getInstance()
+				.getReflectionDefaultAndOtherLookupTypes(
+						request,
+						"functionalizingEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+						true);
+		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
+				request, "allTargetTypes",
+				"gov.nih.nci.cananolab.domain.Function.Target",
+				"gov.nih.nci.cananolab.domain.Function.OtherTarget", true);
+
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"antibodyTypes", "Antibody", "type", "otherType", true);
 		InitSetup.getInstance()
@@ -195,7 +221,15 @@ public class InitCompositionSetup {
 				.setAttribute("associationCompositionTypes", compositionTypes);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"bondTypes", "Attachment", "bondType", "otherBondType", true);
-		InitCompositionSetup.getInstance().getChemicalAssociationTypes(request);
+		InitSetup
+				.getInstance()
+				.getReflectionDefaultAndOtherLookupTypes(
+						request,
+						"allChemicalAssociationTypes",
+						"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation",
+						"gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation",
+						true);
+
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
@@ -207,9 +241,8 @@ public class InitCompositionSetup {
 				assocBean.getAttachment().getBondType());
 		if (assocBean.getFiles() != null) {
 			for (FileBean fileBean : assocBean.getFiles()) {
-				InitSetup.getInstance()
-						.persistLookup(request, "File", "type", "otherType",
-								fileBean.getDomainFile().getType());
+				InitSetup.getInstance().persistLookup(request, "File", "type",
+						"otherType", fileBean.getDomainFile().getType());
 			}
 		}
 		setChemicalAssociationDropdowns(request, hasFunctionalizingEntity);
@@ -221,112 +254,6 @@ public class InitCompositionSetup {
 				"otherType", fileBean.getDomainFile().getType());
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "File", "type", "otherType", true);
-	}
-
-	public SortedSet<String> getFunctionTypes(HttpServletRequest request)
-			throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultFunctionTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		SortedSet<String> otherTypes = compService.getAllOtherFunctionTypes();
-		if (otherTypes != null)
-			types.addAll(otherTypes);
-		request.getSession().setAttribute("functionTypes", types);
-		return types;
-	}
-
-	public SortedSet<String> getDefaultFunctionTypes(HttpServletRequest request)
-			throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultFunctionTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-		request.getSession().setAttribute("functionTypes", defaultTypes);
-		return defaultTypes;
-	}
-
-	public SortedSet<String> getNanoparticleEntityTypes(
-			HttpServletRequest request) throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultNanoparticleEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		SortedSet<String> otherTypes = compService
-				.getAllOtherNanoparticleEntityTypes();
-		if (otherTypes != null)
-			types.addAll(otherTypes);
-		request.getSession().setAttribute("nanoparticleEntityTypes", types);
-		return types;
-	}
-
-	public SortedSet<String> getDefaultNanoparticleEntityTypes(
-			HttpServletRequest request) throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultNanoparticleEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
-		request.getSession().setAttribute("nanoparticleEntityTypes",
-				defaultTypes);
-		return defaultTypes;
-	}
-
-	public SortedSet<String> getFunctionalizingEntityTypes(
-			HttpServletRequest request) throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultFunctionalizingEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		SortedSet<String> otherTypes = compService
-				.getAllOtherFunctionalizingEntityTypes();
-		if (otherTypes != null)
-			types.addAll(otherTypes);
-		request.getSession().setAttribute("functionalizingEntityTypes", types);
-		return types;
-	}
-
-	public SortedSet<String> getDefaultFunctionalizingEntityTypes(
-			HttpServletRequest request) throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultFunctionalizingEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-		request.getSession().setAttribute("functionalizingEntityTypes",
-				defaultTypes);
-		return defaultTypes;
-	}
-
-	public SortedSet<String> getChemicalAssociationTypes(
-			HttpServletRequest request) throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultAssociationTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation");
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		SortedSet<String> otherTypes = compService
-				.getAllOtherChemicalAssociationTypes();
-		if (otherTypes != null) {
-			types.addAll(otherTypes);
-		}
-		request.getSession().setAttribute("chemicalAssociationTypes", types);
-		return types;
 	}
 
 	public SortedSet<String> getEmulsionComposingElementTypes(
@@ -342,21 +269,4 @@ public class InitCompositionSetup {
 				emulsionCETypes);
 		return emulsionCETypes;
 	}
-
-	public SortedSet<String> getTargetTypes(HttpServletRequest request)
-			throws Exception {
-		SortedSet<String> defaultTypes = InitSetup
-				.getInstance()
-				.getServletContextDefaultTypesByReflection(
-						request.getSession().getServletContext(),
-						"defaultTargetTypes",
-						"gov.nih.nci.cananolab.domain.particle.samplecomposition.Target");
-		SortedSet<String> types = new TreeSet<String>(defaultTypes);
-		SortedSet<String> otherTypes = compService.getAllOtherTargetTypes();
-		if (otherTypes != null)
-			types.addAll(otherTypes);
-		request.getSession().setAttribute("targetTypes", types);
-		return types;
-	}
-
 }

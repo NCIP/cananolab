@@ -18,9 +18,9 @@ import org.apache.struts.config.ModuleConfig;
 /**
  * Creates default CSM groups and sample types and initialize Hibernate
  * configurations as soon as server starts up.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CustomPlugIn implements PlugIn {
 	Logger logger = Logger.getLogger(CustomPlugIn.class);
@@ -36,26 +36,33 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getClassNameToDisplayNameLookup(appContext);
 			InitSetup
 					.getInstance()
-					.getServletContextDefaultTypesByReflection(
-							appContext,
+					.getServletContextDefaultTypesByReflection(appContext,
 							"defaultFunctionalizingEntityTypes",
-							"gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity");
-			InitSetup
-					.getInstance()
-					.getServletContextDefaultTypesByReflection(
-							appContext,
-							"defaultNanoparticleEntityTypes",
-							"gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+					appContext, "defaultNanoparticleEntityTypes",
+					"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+					appContext, "defaultFunctionTypes",
+					"gov.nih.nci.cananolab.domain.particle.Function");
+			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+					appContext, "defaultTargetTypes",
+					"gov.nih.nci.cananolab.domain.function.Target");
 			InitSetup
 					.getInstance()
 					.getServletContextDefaultTypesByReflection(appContext,
-							"defaultFunctionTypes",
-							"gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
+							"defaultPhysicalCharacterizationNames",
+							"gov.nih.nci.cananolab.domain.characterization.PhysicalCharacterization");
 			InitSetup
 					.getInstance()
 					.getServletContextDefaultTypesByReflection(appContext,
-							"defaultTargetTypes",
-							"gov.nih.nci.cananolab.domain.particle.samplecomposition.Target");
+							"defaultInvitroCharacterizationNames",
+							"gov.nih.nci.cananolab.domain.characterization.InvitroCharacterization");
+			InitSetup
+					.getInstance()
+					.getServletContextDefaultTypesByReflection(appContext,
+							"defaultInvivoCharacterizationNames",
+							"gov.nih.nci.cananolab.domain.characterization.InvivoCharacterization");
 
 			actionServlet.getServletContext().setAttribute("applicationOwner",
 					CaNanoLabConstants.APP_OWNER);

@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
@@ -44,7 +43,8 @@ import org.hibernate.criterion.Restrictions;
  */
 public class NanoparticleSampleServiceHelper {
 	public List<NanoparticleSample> findNanoparticleSamplesBy(
-			String particlePointOfContact, String[] nanoparticleEntityClassNames,
+			String particlePointOfContact,
+			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -60,20 +60,24 @@ public class NanoparticleSampleServiceHelper {
 				NanoparticleSample.class).setProjection(
 				Projections.distinct(Property.forName("id")));
 
-		if (particlePointOfContact != null && particlePointOfContact.length() > 0) {
-			TextMatchMode pocMatchMode = new TextMatchMode(particlePointOfContact);
+		if (particlePointOfContact != null
+				&& particlePointOfContact.length() > 0) {
+			TextMatchMode pocMatchMode = new TextMatchMode(
+					particlePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
 			crit.createAlias("pointOfContact.organization", "organization");
-			crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("otherPoc.organization", "otherOrg", CriteriaSpecification.LEFT_JOIN);
-			String critStrs[] = {"pointOfContact.lastName","pointOfContact.firstName","pointOfContact.role",
-					"organization.name","otherPoc.lastName","otherPoc.firstName",
-					"otherOrg.name"};
-			for (String critStr: critStrs) {
-				Criterion pocCrit = Restrictions.ilike(critStr,
-						pocMatchMode.getUpdatedText(), pocMatchMode
-						.getMatchMode());
+			crit.createAlias("otherPointOfContactCollection", "otherPoc",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("otherPoc.organization", "otherOrg",
+					CriteriaSpecification.LEFT_JOIN);
+			String critStrs[] = { "pointOfContact.lastName",
+					"pointOfContact.firstName", "pointOfContact.role",
+					"organization.name", "otherPoc.lastName",
+					"otherPoc.firstName", "otherOrg.name" };
+			for (String critStr : critStrs) {
+				Criterion pocCrit = Restrictions.ilike(critStr, pocMatchMode
+						.getUpdatedText(), pocMatchMode.getMatchMode());
 				disjunction.add(pocCrit);
 			}
 			crit.add(disjunction);
@@ -417,29 +421,11 @@ public class NanoparticleSampleServiceHelper {
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
 
-		// caDSR
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode("sampleComposition.fileCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementA",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementB",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.createAlias("otherPointOfContactCollection", "otherPoc",
-				CriteriaSpecification.LEFT_JOIN);
-
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -457,7 +443,11 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				NanoparticleSample.class).add(
 				Property.forName("id").eq(new Long(particleId)));
-		crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
@@ -496,14 +486,14 @@ public class NanoparticleSampleServiceHelper {
 				NanoparticleSample.class).add(
 				Property.forName("name").eq(particleName));
 
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); // eager load not set in
+		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); // eager
+		// load not
+		// set in
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
 				FetchMode.JOIN);
-		crit
-				.setFetchMode("sampleComposition.fileCollection",
-						FetchMode.JOIN);
+		crit.setFetchMode("sampleComposition.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
 		crit
@@ -526,50 +516,6 @@ public class NanoparticleSampleServiceHelper {
 			particleSample = (NanoparticleSample) result.get(0);
 		}
 		return particleSample;
-	}
-
-//	public List<DerivedBioAssayData> findDerivedBioAssayDataByCharId(
-//			String charId) throws Exception {
-//		List<DerivedBioAssayData> derivedBioAssayDataCollection = new ArrayList<DerivedBioAssayData>();
-//
-//		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//				.getApplicationService();
-//		HQLCriteria crit = new HQLCriteria(
-//				"select achar.derivedBioAssayDataCollection from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.id = "
-//						+ charId);
-//		List results = appService.query(crit);
-//		FileServiceHelper fileHelper = new FileServiceHelper();
-//		for (Object obj : results) {
-//			DerivedBioAssayData derivedBioAssayData = (DerivedBioAssayData) obj;
-//			// derivedBioAssayData's File
-//			File File = findDerivedBioAssayDataFile(derivedBioAssayData
-//					.getId().toString());
-//
-//			// File's keyword
-//			if (File != null) {
-//				List<Keyword> keywords = fileHelper
-//						.findKeywordsByFileId(File.getId().toString());
-//				File.setKeywordCollection(new HashSet<Keyword>(keywords));
-//				derivedBioAssayData.setFile(File);
-//			}
-//			derivedBioAssayDataCollection.add(derivedBioAssayData);
-//		}
-//		return derivedBioAssayDataCollection;
-//	}
-
-	public File findDerivedBioAssayDataFile(String derivedId)
-			throws Exception {
-		File File = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select bioassay.file from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
-						+ derivedId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			File = (File) obj;
-		}
-		return File;
 	}
 
 	public List<Keyword> findKeywordsForNanoparticleSampleId(
@@ -668,7 +614,7 @@ public class NanoparticleSampleServiceHelper {
 	public String[] getNanoparticleEntityClassNames(String particleId)
 			throws Exception {
 		String hql = "select distinct entity.class from "
-				+ " gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity entity"
+				+ " gov.nih.nci.cananolab.domain.particle.NanoparticleEntity entity"
 				+ " where entity.class!='OtherNanoparticleEntity' and entity.sampleComposition.nanoparticleSample.id = "
 				+ particleId;
 
@@ -678,7 +624,7 @@ public class NanoparticleSampleServiceHelper {
 			names.addAll(Arrays.asList(classNames));
 		}
 		String hql2 = "select distinct entity.type from "
-				+ " gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanoparticleEntity entity"
+				+ " gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity entity"
 				+ " where entity.sampleComposition.nanoparticleSample.id = "
 				+ particleId;
 		String[] otherTypes = this.getClassNames(hql2);
@@ -717,8 +663,11 @@ public class NanoparticleSampleServiceHelper {
 			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
-			columns.add(particleSample.getPrimaryPointOfContact().getFirstName());
-			columns.add(particleSample.getPrimaryPointOfContact().getLastName());
+			columns.add(particleSample.getPrimaryPointOfContact()
+					.getFirstName());
+			columns
+					.add(particleSample.getPrimaryPointOfContact()
+							.getLastName());
 			// nanoparticle entities and functionalizing entities are in one
 			// column.
 			SortedSet<String> entities = new TreeSet<String>();

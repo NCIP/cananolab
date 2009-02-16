@@ -60,6 +60,55 @@ public class InitNanoparticleSetup {
 		return new InitNanoparticleSetup();
 	}
 
+	public void setLocalSearchDropdowns(HttpServletRequest request)
+			throws Exception {
+		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
+				request, "functionTypes",
+				"gov.nih.nci.cananolab.domain.particle.Function",
+				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
+		InitSetup
+				.getInstance()
+				.getReflectionDefaultAndOtherLookupTypes(
+						request,
+						"nanoparticleEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
+						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
+						true);
+		InitSetup
+				.getInstance()
+				.getReflectionDefaultAndOtherLookupTypes(
+						request,
+						"functionalizingEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+						true);
+		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
+				request, "characterizationTypes",
+				"gov.nih.nci.cananolab.domain.particle.Characterization",
+				"gov.nih.nci.cananolab.domain.characterization.OtherCharacterization",
+				true);
+	}
+
+	public void setRemoteSearchDropdowns(HttpServletRequest request)
+			throws Exception {
+		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+				request.getSession().getServletContext(),
+				"defaultFunctionalizingEntityTypes",
+				"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+				request.getSession().getServletContext(),
+				"defaultFunctionTypes",
+				"gov.nih.nci.cananolab.domain.particle.Function");
+		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+				request.getSession().getServletContext(),
+				"defaultNanoparticleEntityTypes",
+				"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+				request.getSession().getServletContext(),
+				"defaultCharacterizationTypes",
+				"gov.nih.nci.cananolab.domain.particle.Characterization");
+	}
+
 	public SortedSet<PointOfContactBean> getNanoparticleSamplePointOfContacts(
 			HttpServletRequest request) throws Exception {
 		SortedSet<PointOfContact> pointOfContacts = particleService

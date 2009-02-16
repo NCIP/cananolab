@@ -1,9 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.InvitroCharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.PhysicalCharacterizationBean;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -32,10 +29,10 @@ public class InitCharacterizationSetup {
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String className) throws Exception {
 		HttpSession session = request.getSession();
-		//TODO: to test if allPointOfContacts in session
-//		SortedSet<String> charSources = charService
-//				.findAllCharacterizationSources();
-//		session.setAttribute("characterizationSources", charSources);
+		SortedSet<String> charTypes = InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request,
+						"characterizationTypes", "characterization", "type",
+						"other", true);
 		SortedSet<String> derivedDatumNames = InitSetup.getInstance()
 				.getDefaultAndOtherLookupTypes(request, "derivedDatumNames",
 						className, "derivedDatumName", "otherDerivedDatumName",
@@ -88,7 +85,7 @@ public class InitCharacterizationSetup {
 	}
 
 	public void persistPhysicalCharacterizationDropdowns(
-			HttpServletRequest request, PhysicalCharacterizationBean charBean)
+			HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
 		InitSetup.getInstance().persistLookup(request, "Shape", "type",
 				"otherType", charBean.getShape().getType());
@@ -96,59 +93,53 @@ public class InitCharacterizationSetup {
 				"otherType", charBean.getShape().getType());
 		InitSetup.getInstance().persistLookup(request, "Solubility", "solvent",
 				"otherSolvent", charBean.getShape().getType());
-		for (SurfaceChemistry chem : charBean.getSurfaceBean()
-				.getSurfaceChemistryList()) {
-			InitSetup.getInstance().persistLookup(request, "SurfaceChemistry",
-					"molecularFormulaType", "otherMolecularFormulaType",
-					chem.getMolecularFormulaType());
-		}
 		setPhysicalCharacterizationDropdowns(request);
 	}
 
 	public void persistInvitroCharacterizationDropdowns(
-			HttpServletRequest request, InvitroCharacterizationBean charBean)
+			HttpServletRequest request, CharacterizationBean charBean)
 			throws Exception {
-		//TODO fix in vitro chara
-//
-//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-//				"cellDeathMethod", "otherCellDeathMethod",
-//				charBean.getCellDeathMethod());
-//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-//				"cellDeathMethod", "otherCellDeathMethod",
-//				charBean.getCaspase3Activation().getCellDeathMethod());
-//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-//				"cellLine", "otherCellLine",
-//				charBean.getCellViability().getCellLine());
-//		InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-//				"cellLine", "otherCellLine",
-//				charBean.getCaspase3Activation().getCellLine());
+		// TODO fix in vitro chara
+		//
+		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+		// "cellDeathMethod", "otherCellDeathMethod",
+		// charBean.getCellDeathMethod());
+		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+		// "cellDeathMethod", "otherCellDeathMethod",
+		// charBean.getCaspase3Activation().getCellDeathMethod());
+		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+		// "cellLine", "otherCellLine",
+		// charBean.getCellViability().getCellLine());
+		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
+		// "cellLine", "otherCellLine",
+		// charBean.getCaspase3Activation().getCellLine());
 		setInvitroCharacterizationDropdowns(request);
 	}
 
-	//TODO::
+	// TODO::
 	public void persistCharacterizationDropdowns(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
-//		for (DerivedBioAssayDataBean bioassay : charBean
-//				.getDerivedBioAssayDataList()) {
-//			if (bioassay.getFileBean() != null) {
-//				InitSetup.getInstance().persistLookup(request, "File", "type",
-//						"otherType",
-//						bioassay.getFileBean().getDomainFile().getType());
-//			}
-//			for (DerivedDatumBean datum : bioassay.getDatumList()) {
-//				InitSetup.getInstance().persistLookup(request,
-//						datum.getDomainDerivedDatum().getName(), "unit",
-//						"otherUnit",
-//						datum.getDomainDerivedDatum().getValueUnit());
-//				InitSetup.getInstance().persistLookup(request, "DerivedDatum",
-//						"valueType", "otherValueType",
-//						datum.getDomainDerivedDatum().getValueType());
-//				InitSetup.getInstance().persistLookup(request,
-//						charBean.getClassName(), "derivedDatumName",
-//						"otherDerivedDatumName",
-//						datum.getDomainDerivedDatum().getName());
-//			}
-//		}
+		// for (DerivedBioAssayDataBean bioassay : charBean
+		// .getDerivedBioAssayDataList()) {
+		// if (bioassay.getFileBean() != null) {
+		// InitSetup.getInstance().persistLookup(request, "File", "type",
+		// "otherType",
+		// bioassay.getFileBean().getDomainFile().getType());
+		// }
+		// for (DerivedDatumBean datum : bioassay.getDatumList()) {
+		// InitSetup.getInstance().persistLookup(request,
+		// datum.getDomainDerivedDatum().getName(), "unit",
+		// "otherUnit",
+		// datum.getDomainDerivedDatum().getValueUnit());
+		// InitSetup.getInstance().persistLookup(request, "DerivedDatum",
+		// "valueType", "otherValueType",
+		// datum.getDomainDerivedDatum().getValueType());
+		// InitSetup.getInstance().persistLookup(request,
+		// charBean.getClassName(), "derivedDatumName",
+		// "otherDerivedDatumName",
+		// datum.getDomainDerivedDatum().getName());
+		// }
+		// }
 		setCharactierizationDropDowns(request, charBean.getClassName());
 	}
 }

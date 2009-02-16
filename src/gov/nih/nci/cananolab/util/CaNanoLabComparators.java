@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.util;
 
-import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
@@ -319,13 +318,6 @@ public class CaNanoLabComparators {
 			Comparator<Characterization> {
 		public int compare(Characterization chara1, Characterization chara2) {
 			return chara1.getCreatedDate().compareTo(chara2.getCreatedDate());
-		}
-	}
-
-	public static class SurfaceChemistryDateComparator implements
-			Comparator<SurfaceChemistry> {
-		public int compare(SurfaceChemistry chem1, SurfaceChemistry chem2) {
-			return chem1.getCreatedDate().compareTo(chem2.getCreatedDate());
 		}
 	}
 

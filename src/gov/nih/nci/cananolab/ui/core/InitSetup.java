@@ -27,9 +27,9 @@ import org.apache.struts.upload.FormFile;
 
 /**
  * This class sets up information required for all forms.
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class InitSetup {
 
@@ -56,7 +56,7 @@ public class InitSetup {
 
 	/**
 	 * Returns a map between an object name and its display name
-	 * 
+	 *
 	 * @param appContext
 	 * @return
 	 * @throws CaNanoLabException
@@ -77,7 +77,7 @@ public class InitSetup {
 
 	/**
 	 * Returns a map between a display name and its corresponding object name
-	 * 
+	 *
 	 * @param appContext
 	 * @return
 	 * @throws CaNanoLabException
@@ -105,7 +105,7 @@ public class InitSetup {
 	/**
 	 * Returns a map between a display name and its corresponding full class
 	 * name
-	 * 
+	 *
 	 * @param appContext
 	 * @return
 	 * @throws CaNanoLabException
@@ -153,9 +153,9 @@ public class InitSetup {
 	}
 
 	/**
-	 * Retrieve lookup attribute and other attribute for lookup name from the
-	 * database and store in the application context
-	 * 
+	 * Retrieve lookup attribute for lookup name from the database and store in
+	 * the application context
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -177,7 +177,7 @@ public class InitSetup {
 	/**
 	 * Retrieve lookup attribute and other attribute for lookup name from the
 	 * database and store in the session
-	 * 
+	 *
 	 * @param request
 	 * @param sessionAttribute
 	 * @param lookupName
@@ -204,33 +204,43 @@ public class InitSetup {
 		return types;
 	}
 
-	public List<String> getDefaultFunctionTypes(ServletContext appContext)
-			throws Exception {
-		if (appContext.getAttribute("defaultFunctionTypes") == null) {
-			List<String> functionTypes = new ArrayList<String>();
-			List<String> functionClassNames = ClassUtils
-					.getChildClassNames("gov.nih.nci.cananolab.domain.particle.samplecomposition.Function");
-			for (String name : functionClassNames) {
+	public SortedSet<String> getReflectionDefaultAndOtherLookupTypes(
+			HttpServletRequest request, String sessionAttribute,
+			String fullParentClassName, String otherFullParentClassName,
+			boolean updateSession) throws Exception {
+		SortedSet<String> types = null;
+		if (updateSession) {
+
+			ServletContext appContext = request.getSession()
+					.getServletContext();
+			SortedSet<String> defaultTypes = new TreeSet<String>();
+			List<String> classNames = ClassUtils
+					.getChildClassNames(fullParentClassName);
+			for (String name : classNames) {
 				if (!name.contains("Other")) {
 					String displayName = InitSetup.getInstance()
 							.getDisplayName(ClassUtils.getShortClassName(name),
 									appContext);
-					functionTypes.add(displayName);
+					defaultTypes.add(displayName);
 				}
 			}
-			appContext.setAttribute("defaultFunctionTypes", functionTypes);
-			return functionTypes;
+			types = new TreeSet<String>(defaultTypes);
+			SortedSet<String> otherTypes = LookupService
+					.getAllOtherObjectTypes(otherFullParentClassName);
+			if (otherTypes != null)
+				types.addAll(otherTypes);
+			request.getSession().setAttribute(sessionAttribute, types);
 		} else {
-			return new ArrayList<String>((List<? extends String>) appContext
-					.getAttribute("defaultFunctionTypes"));
+			types = new TreeSet<String>((SortedSet<? extends String>) (request
+					.getSession().getAttribute(sessionAttribute)));
 		}
-
+		return types;
 	}
 
 	/**
 	 * Retrieve lookup attribute and other attribute for lookup name based on
 	 * reflection and store in the application context
-	 * 
+	 *
 	 * @param appContext
 	 * @param contextAttribute
 	 * @param lookupName
@@ -343,8 +353,8 @@ public class InitSetup {
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
 				localGridURL);
-		//don't remove from original list
-		List<GridNodeBean> remoteNodes=new ArrayList<GridNodeBean>();
+		// don't remove from original list
+		List<GridNodeBean> remoteNodes = new ArrayList<GridNodeBean>();
 		remoteNodes.addAll(gridNodes);
 		if (localGrid != null) {
 			remoteNodes.remove(localGrid);

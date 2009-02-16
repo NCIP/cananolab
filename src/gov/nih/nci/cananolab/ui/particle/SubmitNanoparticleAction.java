@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /**
  * This class sets up the submit a new nanoparticle sample page and submits a new nanoparticle sample
- *  
+ *
  * @author pansu
  */
 
@@ -49,36 +49,40 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
 			List<PointOfContactBean> otherPointOfContactBeanList = pointOfContactService
 					.findOtherPointOfContactCollection(particleId.toString());
-			if (otherPointOfContactBeanList!=null && otherPointOfContactBeanList.size()>0) {
+			if (otherPointOfContactBeanList != null
+					&& otherPointOfContactBeanList.size() > 0) {
 				Collection<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>();
-				for (PointOfContactBean pocBean: otherPointOfContactBeanList) {
+				for (PointOfContactBean pocBean : otherPointOfContactBeanList) {
 					otherPointOfContactCollection.add(pocBean.getDomain());
 				}
-				particleSampleBean
-					.getDomainParticleSample()
-					.setOtherPointOfContactCollection(otherPointOfContactCollection);
-			}			
+				particleSampleBean.getDomainParticleSample()
+						.setOtherPointOfContactCollection(
+								otherPointOfContactCollection);
+			}
 		}
-		
+
 		ParticleBean pocParticleBean = (ParticleBean) request.getSession()
 				.getAttribute("pocParticle");
-		if (pocParticleBean!=null && pocParticleBean.getDomainParticleSample()!=null) {
+		if (pocParticleBean != null
+				&& pocParticleBean.getDomainParticleSample() != null) {
 			Collection<PointOfContact> otherPointOfContactCollection = pocParticleBean
-					.getDomainParticleSample().getOtherPointOfContactCollection();
-			particleSampleBean
-				.getDomainParticleSample()
-				.setOtherPointOfContactCollection(otherPointOfContactCollection);
+					.getDomainParticleSample()
+					.getOtherPointOfContactCollection();
+			particleSampleBean.getDomainParticleSample()
+					.setOtherPointOfContactCollection(
+							otherPointOfContactCollection);
 		}
-		
-		particleSampleBean.setupDomainParticleSample();		
+
+		particleSampleBean.setupDomainParticleSample();
 		// persist in the database
 		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
 		service.saveNanoparticleSample(particleSampleBean
 				.getDomainParticleSample());
 		// assign CSM visibility and associated public visibility
-		// requires fully loaded particle if particle Id is not null)		
+		// requires fully loaded particle if particle Id is not null)
 		if (particleId != null) {
-			String[] visibilityGroups = particleSampleBean.getVisibilityGroups();
+			String[] visibilityGroups = particleSampleBean
+					.getVisibilityGroups();
 			ParticleBean fullyLoadedParticleBean = service
 					.findFullNanoparticleSampleById(particleSampleBean
 							.getDomainParticleSample().getId().toString());
@@ -114,34 +118,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		theForm.set("particleSampleBean", particleSampleBean);
 		setupLookups(request, particleSampleBean.getDomainParticleSample()
 				.getPrimaryPointOfContact().getOrganization().getName());
-		setupDataTree(particleSampleBean, request);
-
-		// for display "back" button on the publication detail view
-		String particleId = request.getParameter("particleId");
-		HttpSession session = request.getSession();
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
-			session.setAttribute("docParticleId", particleId);
-		} else {
-			session.removeAttribute("docParticleId");
-			ParticleBean sessionParticleSampleBean = (ParticleBean) request
-				.getSession().getAttribute("pocParticle");
-			//if update the particle, remove the previous particle data from session
-			String sessionParticleId = null;
-			if (sessionParticleSampleBean!=null &&
-					sessionParticleSampleBean.getDomainParticleSample()!=null &&
-					sessionParticleSampleBean.getDomainParticleSample().getId() != null) {
-				sessionParticleId = sessionParticleSampleBean
-						.getDomainParticleSample().getId().toString();
-			}
-			if (particleSampleBean != null
-					&& particleSampleBean.getDomainParticleSample() != null
-					&& particleSampleBean.getDomainParticleSample().getId() != null
-					&& !particleSampleBean.getDomainParticleSample()
-							.getId().toString().equals(sessionParticleId)) {
-				session.removeAttribute("pocParticle");
-			}
-		}
+		// setupDataTree(particleSampleBean, request);
 		return mapping.findForward("update");
 	}
 
@@ -153,18 +130,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		ParticleBean particleSampleBean = setupParticle(theForm, request,
 				location);
 		theForm.set("particleSampleBean", particleSampleBean);
-		setupDataTree(particleSampleBean, request);
-
-		// for display "back" button on the publication detail view
-		String particleId = request.getParameter("particleId");
-		HttpSession session = request.getSession();
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
-			session.setAttribute("docParticleId", particleId);
-		} else {
-			session.removeAttribute("docParticleId");
-		}
-
+		request.getSession().setAttribute("theParticle", particleSampleBean);
 		return mapping.findForward("view");
 	}
 
@@ -205,10 +171,10 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ParticleBean particleSampleBean = (ParticleBean) (theForm
 				.get("particleSampleBean"));
-		request.getSession().setAttribute("pocParticle", particleSampleBean);		
+		request.getSession().setAttribute("pocParticle", particleSampleBean);
 		return mapping.findForward("newPointOfContact");
 	}
-	
+
 	public ActionForward pointOfContactDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -220,17 +186,18 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 			PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
 			List<PointOfContactBean> otherPointOfContactBeanList = pointOfContactService
 					.findOtherPointOfContactCollection(particleId.toString());
-			if (otherPointOfContactBeanList!=null && otherPointOfContactBeanList.size()>0) {
+			if (otherPointOfContactBeanList != null
+					&& otherPointOfContactBeanList.size() > 0) {
 				Collection<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>();
-				for (PointOfContactBean pocBean: otherPointOfContactBeanList) {
+				for (PointOfContactBean pocBean : otherPointOfContactBeanList) {
 					otherPointOfContactCollection.add(pocBean.getDomain());
 				}
-				particleSampleBean
-					.getDomainParticleSample()
-					.setOtherPointOfContactCollection(otherPointOfContactCollection);
-			}			
+				particleSampleBean.getDomainParticleSample()
+						.setOtherPointOfContactCollection(
+								otherPointOfContactCollection);
+			}
 		}
-		request.getSession().setAttribute("pocParticle", particleSampleBean);		
+		request.getSession().setAttribute("pocParticle", particleSampleBean);
 		return mapping.findForward("pointOfContactDetailView");
 	}
 }

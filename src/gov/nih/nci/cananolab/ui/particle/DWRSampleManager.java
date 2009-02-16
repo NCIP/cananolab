@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.SortedSet;
@@ -44,7 +45,7 @@ public class DWRSampleManager {
 
 		return new String[] { "" };
 	}
-	
+
 	/* remove organization name from the visiblity group */
 	public String[] removeOrgNameVisibility(String orgName) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
@@ -77,12 +78,23 @@ public class DWRSampleManager {
 			}
 			SortedSet<String> types = null;
 			if (isLocal) {
-				types = InitCompositionSetup.getInstance()
-						.getNanoparticleEntityTypes(request);
+				types = InitSetup
+						.getInstance()
+						.getReflectionDefaultAndOtherLookupTypes(
+								request,
+								"nanoparticleEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
+								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
+								true);
 			} else {
-				types = InitCompositionSetup.getInstance()
-						.getDefaultNanoparticleEntityTypes(request);
+				types = InitSetup
+						.getInstance()
+						.getServletContextDefaultTypesByReflection(
+								request.getSession().getServletContext(),
+								"defaultNanoparticleEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
 			}
+
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
 		} catch (Exception e) {
@@ -103,12 +115,23 @@ public class DWRSampleManager {
 			}
 			SortedSet<String> types = null;
 			if (isLocal) {
-				types = InitCompositionSetup.getInstance()
-						.getFunctionalizingEntityTypes(request);
+				types = InitSetup
+						.getInstance()
+						.getReflectionDefaultAndOtherLookupTypes(
+								request,
+								"functionalizingEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
+								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
+								true);
 			} else {
-				types = InitCompositionSetup.getInstance()
-						.getDefaultFunctionalizingEntityTypes(request);
+				types = InitSetup
+						.getInstance()
+						.getServletContextDefaultTypesByReflection(
+								request.getSession().getServletContext(),
+								"defaultFunctionalizingEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 			}
+
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
 		} catch (Exception e) {
@@ -129,11 +152,21 @@ public class DWRSampleManager {
 			}
 			SortedSet<String> types = null;
 			if (isLocal) {
-				types = InitCompositionSetup.getInstance().getFunctionTypes(
-						request);
+				types = InitSetup
+						.getInstance()
+						.getReflectionDefaultAndOtherLookupTypes(
+								request,
+								"functionTypes",
+								"gov.nih.nci.cananolab.domain.particle.Function",
+								"gov.nih.nci.cananolab.domain.function.OtherFunction",
+								true);
 			} else {
-				types = InitCompositionSetup.getInstance()
-						.getDefaultFunctionTypes(request);
+				types = InitSetup
+						.getInstance()
+						.getServletContextDefaultTypesByReflection(
+								request.getSession().getServletContext(),
+								"defaultFunctionTypes",
+								"gov.nih.nci.cananolab.domain.particle.Function");
 			}
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);

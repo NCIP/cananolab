@@ -1,18 +1,12 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.FetchMode;
@@ -133,123 +127,4 @@ public class NanoparticleCompositionServiceHelper {
 		}
 		return assoc;
 	}
-
-	public List<Function> findInherentFunctionsByComposingElementId(
-			java.lang.String composingElementId) throws Exception {
-		List<Function> functions = new ArrayList<Function>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select cElement.inherentFunctionCollection from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.base.ComposingElement cElement where cElement.id = "
-						+ composingElementId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			Function function = (Function) obj;
-			functions.add(function);
-		}
-		return functions;
-	}
-
-	public List<Function> findFunctionsByFunctionalizingEntityId(
-			java.lang.String functionalizingEntityId) throws Exception {
-		List<Function> functions = new ArrayList<Function>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select entity.functionCollection from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity entity where entity.id = "
-						+ functionalizingEntityId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			Function function = (Function) obj;
-			functions.add(function);
-		}
-		return functions;
-	}
-
-	public List<Target> findTargetsByFunctionId(java.lang.String functionId)
-			throws Exception {
-		List<Target> targets = new ArrayList<Target>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select function.targetCollection from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.Function function where function.id = "
-						+ functionId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			Target target = (Target) obj;
-			targets.add(target);
-		}
-		return targets;
-	}
-
-	public ActivationMethod findActivationMethodByFunctionalizingEntityId(
-			java.lang.String functionalizingEntityId) throws Exception {
-		ActivationMethod activationMethod = null;
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select functionEntity.activationMethod from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.FunctionalizingEntity functionEntity where functionEntity.id = "
-						+ functionalizingEntityId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			activationMethod = (ActivationMethod) obj;
-		}
-		return activationMethod;
-	}
-
-	public List<ChemicalAssociation> findChemicalAssociationsByCompositionId(
-			java.lang.String compositionId) throws Exception {
-		List<ChemicalAssociation> assocs = new ArrayList<ChemicalAssociation>();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select sampleComposition.chemicalAssociationCollection from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition sampleComposition where sampleComposition.id = "
-						+ compositionId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			ChemicalAssociation chemicalAssociation = (ChemicalAssociation) obj;
-			assocs.add(chemicalAssociation);
-		}
-		return assocs;
-	}
-
-	public AssociatedElement findAssociatedElementA(
-			java.lang.String chemicalAssociationId) throws Exception {
-		AssociatedElement element = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select chemicalassociation.associatedElementA from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation chemicalassociation where chemicalassociation.id = "
-						+ chemicalAssociationId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			element = (AssociatedElement) obj;
-		}
-		return element;
-	}
-
-	public AssociatedElement findAssociatedElementB(
-			java.lang.String chemicalAssociationId) throws Exception {
-		AssociatedElement element = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select chemicalassociation.associatedElementB from "
-						+ "gov.nih.nci.cananolab.domain.particle.samplecomposition.chemicalassociation.ChemicalAssociation chemicalassociation where chemicalassociation.id = "
-						+ chemicalAssociationId);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			element = (AssociatedElement) obj;
-		}
-		return element;
-	}
-
 }

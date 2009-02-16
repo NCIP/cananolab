@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteIm
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitCompositionSetup;
+import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -34,7 +35,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class searches nanoparticle publication based on user supplied criteria
- * 
+ *
  * @author tanq
  */
 
@@ -246,7 +247,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		InitSetup.getInstance().getGridNodesInContext(request);;
+		InitSetup.getInstance().getGridNodesInContext(request);
+		;
 
 		String[] selectedLocations = new String[] { "local" };
 		String gridNodeHostStr = (String) request
@@ -257,20 +259,11 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 
 		if ("local".equals(selectedLocations[0])
 				&& selectedLocations.length == 1) {
-
-			InitCompositionSetup.getInstance().getNanoparticleEntityTypes(
-					request);
-
-			InitCompositionSetup.getInstance().getFunctionalizingEntityTypes(
-					request);
-			InitCompositionSetup.getInstance().getFunctionTypes(request);
+			InitNanoparticleSetup.getInstance()
+					.setLocalSearchDropdowns(request);
 		} else {
-			InitCompositionSetup.getInstance()
-					.getDefaultNanoparticleEntityTypes(request);
-
-			InitCompositionSetup.getInstance()
-					.getDefaultFunctionalizingEntityTypes(request);
-			InitCompositionSetup.getInstance().getDefaultFunctionTypes(request);
+			InitNanoparticleSetup.getInstance().setRemoteSearchDropdowns(
+					request);
 		}
 
 		InitPublicationSetup.getInstance().setDefaultResearchAreas(request);
@@ -306,7 +299,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 					serviceUrl);
 			PublicationBean fileBean = publicationService
 					.findPublicationById(fileId);
-			checkVisibility(request,  location, user,  fileBean);			
+			checkVisibility(request, location, user, fileBean);
 			if (fileBean.getDomainFile().getUriExternal()) {
 				response.sendRedirect(fileBean.getDomainFile().getUri());
 				return null;
@@ -333,8 +326,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
 		ParticleBean particleBean = setupParticle(theForm, request, location);
-		this.setOtherParticlesFromTheSameSource("local", request,
-				particleBean, user);
+		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
+				user);
 		String fileName = getExportFileName(particleBean
 				.getDomainParticleSample().getName(), "summaryView");
 		response.setContentType("application/vnd.ms-execel");
@@ -363,9 +356,10 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
-	public ActionForward summaryView(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		String location = request.getParameter("location");
 		String particleId = request.getParameter("particleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -377,9 +371,9 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 					request, location);
 			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		//publication includes author, not include particle sample data
+		// publication includes author, not include particle sample data
 		List<PublicationBean> publicationCollection = service
-				.findPublicationsByParticleSampleId(particleId, false, true);		
+				.findPublicationsByParticleSampleId(particleId, false, true);
 		List<PublicationBean> foundPublications = new ArrayList<PublicationBean>();
 		if (location.equals("local")) {
 			List<PublicationBean> filteredPublications = new ArrayList<PublicationBean>();
@@ -395,9 +389,9 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		} else {
 			foundPublications.addAll(publicationCollection);
 		}
-			
+
 		HttpSession session = request.getSession();
-    	session.setAttribute("publicationCollection", foundPublications);
+		session.setAttribute("publicationCollection", foundPublications);
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
 				+ "&dispatch=printSummaryView" + "&location=" + location;

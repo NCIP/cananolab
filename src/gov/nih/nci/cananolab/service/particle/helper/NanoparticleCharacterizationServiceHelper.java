@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -567,37 +567,38 @@ public class NanoparticleCharacterizationServiceHelper {
 //		return instrumentConfiguration;
 //	}
 
-	public List<SurfaceChemistry> findSurfaceChemistriesBySurfaceId(
-			java.lang.String surfaceId) throws Exception {
-		List<SurfaceChemistry> chemistries = new ArrayList<SurfaceChemistry>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		String hql = "select surface.surfaceChemistryCollection from gov.nih.nci.cananolab.domain.particle.characterization.physical.Surface surface where surface.id="
-				+ surfaceId;
-		HQLCriteria crit = new HQLCriteria(hql);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			SurfaceChemistry surfaceChemistry = (SurfaceChemistry) obj;
-			chemistries.add(surfaceChemistry);
-		}
-		return chemistries;
-	}
-
-	public File findFileByDerivedBioAssayDataId(String derivedId)
+	public List<Datum> findDataByCharacterizationId(String charId)
 			throws Exception {
-		File File = null;
+		List<Datum> datumCollection = new ArrayList<Datum>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select bioassay.file from gov.nih.nci.cananolab.domain.common.DerivedBioAssayData bioassay where bioassay.id = "
-						+ derivedId);
+				"select achar.datumCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
+						+ charId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			File = (File) obj;
+			Datum datum = (Datum) obj;
+			datumCollection.add(datum);
 		}
-		return File;
+		return datumCollection;
+	}
+
+	public List<File> findFilesByCharacterizationId(String charId)
+			throws Exception {
+		List<File> fileCollection = new ArrayList<File>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select achar.fileCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
+						+ charId);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			File file = (File) obj;
+			fileCollection.add(file);
+		}
+		return fileCollection;
 	}
 
 //	public List<DerivedDatum> findDerivedDatumListByDerivedBioAssayDataId(

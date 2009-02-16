@@ -39,9 +39,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote grid client implementation of NanoparticleSampleSearchInterface
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanoparticleSampleServiceRemoteImpl implements
 		NanoparticleSampleService {
@@ -57,7 +57,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	}
 
 	/**
-	 * 
+	 *
 	 * @param particlePointOfContact
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
@@ -214,7 +214,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 
 	/**
 	 * Get all the associated data of a nanoparticle sample
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws Exception
 	 */
@@ -353,11 +353,11 @@ public class NanoparticleSampleServiceRemoteImpl implements
 
 	/**
 	 * load the source for an associated NanoparticleSample
-	 * 
+	 *
 	 * @param particleId
 	 * @return
 	 * @throws ParticleException
-	 * 
+	 *
 	 */
 	private void loadPointOfContactForParticleSample(
 			NanoparticleSample particleSample) throws Exception {
@@ -393,7 +393,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	/**
 	 * load all keywords for an associated NanoparticleSample equal to
 	 * particleId
-	 * 
+	 *
 	 */
 	private void loadKeywordsForParticleSample(NanoparticleSample particleSample)
 			throws Exception {
@@ -411,7 +411,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	/**
 	 * load all publications for an associated NanoparticleSample equal to
 	 * particleId
-	 * 
+	 *
 	 */
 	private void loadPublicationsForParticleSample(
 			NanoparticleSample particleSample) throws Exception {
