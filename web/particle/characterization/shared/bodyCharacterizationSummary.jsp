@@ -16,23 +16,30 @@
 	</tr>
 	<tr>
 		<td class="leftLabel">
+			<strong>Characterization Type * </strong>
+		</td>
+		<td class="label">
+			<html:select property="achar.characterizationType" styleId="charType"
+				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
+				<option value=""></option>
+				<html:options name="characterizationTypes" />
+			</html:select>
+		</td>
+		<td class="rightLabel" colspan="2">
+			<strong>Characterization*</strong>
+		</td>
+	</tr>
+	<tr>
+		<td class="leftLabel">
 			<strong>Characterization Source* </strong>
 		</td>
 		<td class="label">
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:select property="achar.pocBean.domain.id"
-						styleId="charSource"
-						onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
-						<option value=""></option>
-						<html:options collection="allPointOfContacts"
-							labelProperty="displayName" property="domain.id" />
-					</html:select>
-				</c:when>
-				<c:otherwise>
-						${characterizationForm.map.achar.pocBean.displayName}&nbsp;
-				</c:otherwise>
-			</c:choose>
+			<html:select property="achar.pocBean.domain.id" styleId="charSource"
+				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
+				<option value=""></option>
+				<html:options collection="allPointOfContacts"
+					labelProperty="displayName" property="domain.id" />
+			</html:select>
 		</td>
 		<td class="label">
 			<strong>View Title*</strong>
@@ -40,14 +47,7 @@
 			<em>(text will be truncated after 20 characters)</em>
 		</td>
 		<td class="rightLabel">
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:text property="achar.viewTitle" size="30" />
-				</c:when>
-				<c:otherwise>
-						${characterizationForm.map.achar.viewTitle}&nbsp;
-					</c:otherwise>
-			</c:choose>
+			<html:text property="achar.viewTitle" size="30" />
 		</td>
 	</tr>
 	<tr>
@@ -55,84 +55,42 @@
 			<strong>Characterization Date</strong>
 		</td>
 		<td class="rightLabel" colspan="3">
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:text property="achar.dateString" size="10" styleId="charDate" />
-					<a href="javascript:cal1.popup();"><img
-							src="images/calendar-icon.gif" width="22" height="18" border="0"
-							alt="Click Here to Pick up the date" 
-							title="Click Here to Pick up the date" align="middle">
-					</a>
-				</c:when>
-				<c:otherwise>
-						${characterizationForm.map.achar.dateString}&nbsp;
-				</c:otherwise>
-			</c:choose>
+			<html:text property="achar.dateString" size="10" styleId="charDate" />
+			<a href="javascript:cal1.popup();"><img
+					src="images/calendar-icon.gif" width="22" height="18" border="0"
+					alt="Click Here to Pick up the date"
+					title="Click Here to Pick up the date" align="middle"> </a>
 		</td>
 	<tr>
 		<td class="leftLabel">
 			<strong>Protocol Name - Version</strong>
 		</td>
-		<c:choose>
-			<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-				<html:hidden styleId="updatedUri" property="achar.protocolFileBean.domainFile.uri" />
-				<td class="rightLabel" colspan="3">
-					<c:choose>
-						<c:when test="${!empty characterizationProtocolFiles}">
-							<html:select styleId="protocolFileId"
-								property="achar.protocolFileBean.domainFile.id"
-								onchange="retrieveProtocolFile()">
-								<option />
-									<html:options collection="characterizationProtocolFiles"
-										property="domainFile.id" labelProperty="displayName" />
-							</html:select> &nbsp;<span id="protocolFileLink"><a
-								href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
-							</span>
-						</c:when>
-						<c:otherwise>
+		<html:hidden styleId="updatedUri"
+			property="achar.protocolFileBean.domainFile.uri" />
+		<td class="rightLabel" colspan="3">
+			<c:choose>
+				<c:when test="${!empty characterizationProtocolFiles}">
+					<html:select styleId="protocolFileId"
+						property="achar.protocolFileBean.domainFile.id"
+						onchange="retrieveProtocolFile()">
+						<option />
+							<html:options collection="characterizationProtocolFiles"
+								property="domainFile.id" labelProperty="displayName" />
+					</html:select> &nbsp;<span id="protocolFileLink"><a
+						href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
+					</span>
+				</c:when>
+				<c:otherwise>
 						    No protocols available.
 						</c:otherwise>
-					</c:choose>
-				</td>
-			</c:when>
-			<c:otherwise>
-				<td class="rightLabel" colspan="3">
-					<c:choose>
-						<c:when
-							test="${empty characterizationForm.map.achar.protocolFileBean.domainFile.id}">
-									No protocol loaded
-						</c:when>
-						<c:otherwise>
-							<c:choose>
-								<c:when
-									test="${characterizationForm.map.achar.protocolFileBean.hidden eq 'false'}">
-						${characterizationForm.map.achar.protocolFileBean.displayName}&nbsp;
-						<a
-										href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolFileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolFileBean.domainFile.uri}</a>
-								</c:when>
-								<c:otherwise>
-									The protocol file is private
-								</c:otherwise>
-							</c:choose>
-						</c:otherwise>
-					</c:choose>
-				</td>
-			</c:otherwise>
-		</c:choose>
+			</c:choose>
+		</td>
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">
-			<strong>Description</strong>
+			<strong>Assay Endpoint</strong>
 		</td>
 		<td class="rightLabel" colspan="3">
-			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-					<html:textarea property="achar.description" rows="3" cols="80" />
-				</c:when>
-				<c:otherwise>
-						${characterizationForm.map.achar.description}&nbsp;
-					</c:otherwise>
-			</c:choose>
 		</td>
 	</tr>
 </table>
