@@ -19,12 +19,6 @@
 			<include method="getAssociatedElementOptions" />
 			<include method="getAssociatedComposingElements" />
 		</create>
-		<create creator="new" javascript="CharacterizationManager"
-			scope="session">
-			<param name="class"
-				value="gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper" />
-			<include method="getDerivedDatumValueUnits" />
-		</create>
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
 			<param name="class"
@@ -47,7 +41,12 @@
 			<include method="addRow" />
 			<include method="deleteDataRow" />
 			<include method="findDataSetById" />
-
+		</create>
+		<create creator="new" javascript="CharacterizationManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationManager" />
+			<include method="getCharacterizationOptions" />
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">
@@ -93,8 +92,7 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean">
-			<param name="include"
-				value="domain, instruments" />
+			<param name="include" value="domain, instruments" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig">
@@ -107,35 +105,34 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Instrument">
-			<param name="include" value="id, type, manufacturer, modelName" />
+			<param name="include"
+				value="id, type, manufacturer, modelName" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.characterization.Datum">
-			<param name="include" value="id, name, value, valueType, valueUnit, dataRow, dataSet" />
+			<param name="include"
+				value="id, name, value, valueType, valueUnit, dataRow, dataSet" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.characterization.Condition">
-			<param name="include" value="id, name, value, valueType, valueUnit, datumCollection" />
+			<param name="include"
+				value="id, name, value, valueType, valueUnit, datumCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
-			<param name="include"
-				value="theDataRow, dataRows,domain" />
+			<param name="include" value="theDataRow, dataRows,domain" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataRowBean">
-			<param name="include"
-				value="data, domain" />
+			<param name="include" value="data, domain" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataRow">
-			<param name="include"
-				value="id" />
+			<param name="include" value="id" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataSet">
-			<param name="include"
-				value="id" />
+			<param name="include" value="id" />
 		</convert>
 	</allow>
 </dwr>
