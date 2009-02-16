@@ -1,5 +1,5 @@
 /*##########
-INSTRUCTIONS      
+INSTRUCTIONS
 /*##########
 #1. comments that start with constant: indicate colors that don     't change among the color schemes
 #2. comments with the words lighter or darker indicate the colors that do change depending on the color scheme
@@ -13,20 +13,20 @@ INSTRUCTIONS
 /*########## GREEN COLOR SCHEME ##########
  #6A8989 = darker green
  #98B7B7 = lighter green
- 
+
 /*########## PURPLE COLOR SCHEME ##########
  #797C9C = darker purple
  #9FA2BA = lighter purple
- 
+
 /*########## TAN COLOR SCHEME ##########
  #706C60 = darker tan
  #B3AE9C = lighter tan
- 
+
 /*########## GRAY COLOR SCHEME ##########
  #838386 = darker gray
  #AAAAAB = lighter gray
 
-/*########## COMMON AMONG ALL COLOR SCHEMES ########## 
+/*########## COMMON AMONG ALL COLOR SCHEMES ##########
  #A90101 = red
  #5C5C5C = dark gray
  #CCCCCC = medium gray
@@ -39,7 +39,7 @@ INSTRUCTIONS
 }
 
 /*###############
-HDR AND FTR BEGINS 
+HDR AND FTR BEGINS
 ###############*/
 .hdrBG { /* for the cell that contains the required cancer.gov header */
 	background-color: #a90101; /* constant: red */
@@ -54,7 +54,7 @@ HDR AND FTR BEGINS
 }
 
 /*###############
-MENU BEGINS 
+MENU BEGINS
 ###############*/
 td.mainMenu {
 	background-color: #5c5c5c; /* constant: dark gray */
@@ -192,8 +192,8 @@ td.footerVersion { /* for the items under the sub-menu title elements */
 	color: #000000; /* constant: black */
 }
 
-/*############### 
-LINKS BEGIN 
+/*###############
+LINKS BEGIN
 ###############*/
 a:link,a:visited,a:active { /* default links */
 	color: #333333; /* constant: dark gray */
@@ -287,8 +287,8 @@ a:link.register,a:visited.register,a:active.register {
 	color: #000000; /* constant: black */
 }
 
-/*############### 
-FORM BEGINS 
+/*###############
+FORM BEGINS
 ###############*/
 .formRequiredNotice { /* for the asterisk cell */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -404,8 +404,8 @@ input.actionButton { /* optional style for form and action buttons */
 	border: 1px solid #5c5c5c; /* constant: dark gray */
 }
 
-/*############### 
-SIDEBAR BEGINS 
+/*###############
+SIDEBAR BEGINS
 ###############*/
 .sidebarSection { /* for the individual sidebar sections */
 	background-color: #f4f4f5; /* constant: light gray */
@@ -482,7 +482,7 @@ SIDEBAR BEGINS
 .sidebarContentBottom { /* for the areas under the sidebar titles and requires text */
 	font-size: 1em;
 	padding: 0 0 0.8em 0.8em;
-	
+
 }
 
 .sidebarContentBottom ul {
@@ -496,7 +496,7 @@ SIDEBAR BEGINS
 }
 
 /*###############
-DATA TABLE BEGINS 
+DATA TABLE BEGINS
 ###############*/
 .dataTablePrimaryLabel { /* for the first row */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -591,11 +591,11 @@ DATA TABLE BEGINS
 }
 
 .actionSection { /* for the cell that contains the action buttons table */ /*border-left:1px solid #5C5C5C; /* constant: dark gray */ /*border-right:1px solid #5C5C5C; /* constant: dark gray */ /*border-bottom:1px solid #5C5C5C; /* constant: dark gray */
-	
+
 }
 
 /*###############
-STANDARD CONTENT BEGINS 
+STANDARD CONTENT BEGINS
 ###############*/
 table.contentPage { /* for overall top style for a content page */
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -813,8 +813,8 @@ tr.gridTableHeader {
 	font-size: 0.85em;
 	font-weight: normal;
 }
-	
-	
+
+
 .smalltable {
 	width: 400px;
 	border-width: 1px;
@@ -875,7 +875,7 @@ tr.smallTableHeader {
 	border-style: none;
 	vertical-align: middle;
 }
-	
+
 #publicLinks, ul { /* for the public links below the welcome content of the home page */
 
 	font-family: arial, helvetica, verdana, sans-serif;
@@ -904,7 +904,7 @@ tr.smallTableHeader {
 	font-weight: normal;
 	line-height: 1.3em;
 }
-label.toplabel {  
+label.toplabel {
 	display: block;
 	font-size: 0.9em;
 	padding-bottom: 5px;
@@ -1104,7 +1104,7 @@ img.img { /* for images that need a border */
 	background-color: #f4f4f5;
 	color: #000000;
 	text-align: left;
-	border-right: 1px solid #5c5c5c;	
+	border-right: 1px solid #5c5c5c;
 }
 
 .leftLabelNoBottom {
@@ -1113,7 +1113,7 @@ img.img { /* for images that need a border */
 	background-color: #f4f4f5;
 	color: #000000;
 	text-align: left;
-	border-left: 1px solid #5c5c5c;	
+	border-left: 1px solid #5c5c5c;
 }
 
 
@@ -1133,7 +1133,7 @@ img.img { /* for images that need a border */
 	color: #000000;
 	text-align: left;
 	border-top: 1px solid #5c5c5c;
-	border-right: 1px solid #5c5c5c;	
+	border-right: 1px solid #5c5c5c;
 }
 
 .leftLabelWithTopNoBottom {
@@ -1143,7 +1143,7 @@ img.img { /* for images that need a border */
 	color: #000000;
 	text-align: left;
 	border-top: 1px solid #5c5c5c;
-	border-left: 1px solid #5c5c5c;	
+	border-left: 1px solid #5c5c5c;
 }
 
 .assocEleBlock {
@@ -1243,14 +1243,14 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 .addLink {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
-	font-size: 0.7em;	
+	font-size: 0.7em;
 }
 
 
 .addLink2 {
 	color: #a90101; /* constant: red */
 	font-weight: bold;
-	font-size: 1em;	
+	font-size: 1em;
 }
 
 .removeLink {
@@ -1293,7 +1293,7 @@ td.secondMenuItemOver { /* for the over state of the main menu (top) cells */
 	font-weight: bold;
 	padding-left: 0.8em;
 	background-color: #AAAAAB; /* constant: lighter gray */
-	color: #000000; /* constant: black */ 
+	color: #000000; /* constant: black */
 	border-top: 1px solid #5c5c5c; /* constant: dark gray */
 	border-bottom: 1px solid #5c5c5c; /* constant: dark gray */
 	border-right: 1px solid #5c5c5c; /* constant: dark gray */
@@ -1382,15 +1382,15 @@ input,textArea,submit,reset,option,select{
 	font-size: 11px;
 }
 
-input.noBorderButton { 
+input.noBorderButton {
 	font-weight: bold;
-	font-size: 1.02em;	
+	font-size: 1.02em;
 	text-decoration: underline;
-	border:0px solid; 
+	border:0px solid;
 	background-color: #f4f4f5;
 }
 
-	
+
 .smalltable3 {
 	border-width: 1px;
 	border-color: #cccccc;
@@ -1399,7 +1399,7 @@ input.noBorderButton {
 	color: #5C5C5C;
 }
 
-	
+
 .smalltable2 {
 	width: 600px;
 	border-width: 1px;
@@ -1430,3 +1430,23 @@ input.noBorderButton {
 	color: #5C5C5C;
 }
 
+body {
+	margin:0;
+	padding:0;
+	background:#fff;
+	font:11px verdana,arial,helvetica,sans-serif;
+	color:#4A49A8;
+}
+p {
+	text-align:center;
+	padding:0 20px;
+	margin:70px 0 0 0;
+	line-height:14px;
+}
+p.pText {
+	margin-top:40px;
+}
+ul, ol {
+	font-size:12px;
+	line-height:14px;
+}
