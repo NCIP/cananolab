@@ -215,7 +215,7 @@ public class TestGrid {
 		// gov.nih.nci.cagrid.cqlquery.Object target = new
 		// gov.nih.nci.cagrid.cqlquery.Object();
 		// target
-		// .setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+		// .setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
 		// Association association = new Association();
 		// association
 		// .setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
@@ -232,7 +232,7 @@ public class TestGrid {
 		// query.setTarget(target);
 		// CQLQueryResults results = gridClient.query(query);
 		// results
-		// .setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+		// .setTargetClassname("gov.nih.nci.cananolab.domain.particle.SampleComposition");
 		// CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 		// SampleComposition sampleComposition = null;
 		// while (iter.hasNext()) {
@@ -244,10 +244,10 @@ public class TestGrid {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
-				.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
 		Association association = new Association();
 		association
-				.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+				.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
 		association.setRoleName("sampleComposition");
 
 		Attribute attribute = new Attribute();
@@ -260,7 +260,7 @@ public class TestGrid {
 		query.setTarget(target);
 		CQLQueryResults results = gridClient.query(query);
 		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.samplecomposition.base.NanoparticleEntity");
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 		NanoparticleEntity nanoEntity = null;
 
