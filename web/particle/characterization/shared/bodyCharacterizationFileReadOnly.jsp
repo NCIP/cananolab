@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<html:form action="/compositionFile">
+<html:form action="/characterization">
 	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
@@ -40,7 +40,7 @@
 						 				${compositionFileForm.map.compFile.domainFile.uri}<br>
 											<br>
 											<a href="#"
-												onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}', 
+												onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}',
 														${compositionFileForm.map.compFile.domainFile.id}, 100, 100)"><img
 													src="compositionFile.do?dispatch=download&amp;fileId=${compositionFileForm.map.compFile.domainFile.id}&amp;location=${location}"
 													border="0" width="150"> </a>

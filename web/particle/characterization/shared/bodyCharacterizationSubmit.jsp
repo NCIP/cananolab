@@ -11,7 +11,7 @@ function confirmDeletion()
 	{
 		this.document.forms[0].dispatch.value="delete";
 		this.document.forms[0].page.value="1";
-		this.document.forms[0].submit(); 
+		this.document.forms[0].submit();
 		return true;
 	}
 }
@@ -41,29 +41,24 @@ function confirmDeletion()
 				</c:when>
 			</c:choose>
 			<c:choose>
-				<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+				<c:when
+					test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
 					<table height="32" border="0" align="right" cellpadding="4"
 						cellspacing="0">
 						<tr>
 							<td width="490" height="32">
-								<div align="right">			
+								<div align="right">
 									<c:choose>
 										<c:when test="${'setup' eq param.dispatch }">
 											<c:remove var="dataId" scope="session" />
-										</c:when>										
+										</c:when>
 										<c:when test="${'setupUpdate' eq param.dispatch }">
 											<c:set var="dataId" value="${param.dataId}" scope="session" />
-										</c:when>																			
-									</c:choose>	
-									<c:choose>
-										<c:when	test="${!empty param.submitType }">
-											<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${param.submitType}&page=0&dispatch=setup&location=${location}" scope="session"/>
-											<c:if test="${!empty dataId}">
-												<c:set var="origUrl" value="${actionName}.do?particleId=${particleId}&submitType=${param.submitType}&page=0&dispatch=setupUpdate&location=${location}&dataId=${dataId}" scope="session"/>
-											</c:if>		
 										</c:when>
-									</c:choose>									
-									<input type="reset" value="Reset" onclick="javascript:window.location.href='${origUrl}'">
+									</c:choose>
+
+									<input type="reset" value="Reset"
+										onclick="javascript:window.location.href='${origUrl}'">
 									<input type="hidden" name="dispatch" value="create">
 									<input type="hidden" name="page" value="2">
 									<c:choose>
@@ -74,9 +69,7 @@ function confirmDeletion()
 										<c:otherwise>
 											<html:hidden property="particleId" />
 										</c:otherwise>
-									</c:choose>									
-									<input type="hidden" name="submitType"
-										value="${param.submitType}" />
+									</c:choose>
 									<html:hidden property="achar.createdBy"
 										value="${user.loginName }" />
 									<html:submit />

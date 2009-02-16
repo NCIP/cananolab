@@ -5,75 +5,85 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
-<script type="text/javascript" src="javascript/sidemenu.js"></script>
-<script type="text/javascript" src="javascript/particleEntity.js"></script>
-<script type="text/javascript" src="javascript/functionalizingEntity.js"></script>
 
-<c:choose>
-	<c:when test="${!empty submitType }">
-		<c:set var="displaytype" value="${submitType}" scope="session" />
-	</c:when>
-	<c:otherwise>
-		<c:if test="${!empty param.submitType }">
-			<c:set var="displaytype" value="${param.submitType}" scope="session" />
-		</c:if>
-	</c:otherwise>
-</c:choose>
-<c:if test="${particleId ne theParticle.domainParticleSample.id }">
-	<c:set var="displaytype" value="" scope="session"/>
-</c:if>
+<c:set var="dispatch" value="summaryView" />
 <c:choose>
 	<c:when test="${!empty theParticle}">
 		<c:set var="particleName"
 			value="${theParticle.domainParticleSample.name}" scope="session" />
 		<c:set var="particleId" value="${theParticle.domainParticleSample.id}"
 			scope="session" />
-		<c:set var="particlePointOfContact"
-			value="${theParticle.domainParticleSample.primaryPointOfContact.organization.name}"
-			scope="session" />
 		<c:set var="location" value="${theParticle.location}" scope="session" />
 	</c:when>
 </c:choose>
-<c:choose>
-	<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-		<c:set var="dispatchValue" value="setupUpdate" scope="session" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="dispatchValue" value="setupView" scope="session" />
-	</c:otherwise>
-</c:choose>
 <table summary="" cellpadding="0" cellspacing="0" border="0"
-	height="100%" width="250">
+	height="100%" width="150">
 	<tr>
 		<td class="subMenuPrimaryTitle" height="21">
-			NAVIGATION TREE ${form}
+			NAVIGATION TREE
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<ul class="slidingmenu" id="menuroot">
-
-				<li id="view_particle">
-					<b>${fn:toUpperCase(location)} PARTICLE:</b><br>					
-					<span class="pname"><c:out value="${particleName}" /></span>
-				</li>
-				<li class="controlList">
-					<c:url var="url" value="submitNanoparticleSample.do">
-						<c:param name="dispatch" value="${dispatchValue}" />
-						<c:param name="particleId" value="${particleId}" />
-						<c:param name="location" value="${location}" />
-					</c:url>
-					<a href="${url}" class="subMenuSecondary">GENERAL INFORMATION</a>
-				</li>
-				<jsp:include page="sideParticleCompositionMenu.jsp"></jsp:include>
-				<jsp:include page="sideParticleCharacterizationMenu.jsp"></jsp:include>
-				<jsp:include page="sideParticlePublicationMenu.jsp"></jsp:include>
-
-				<li class="nodatali" id="invivolist">
-					IN VIVO CHARACTERIZATIONS
-				</li>
-			</ul>
-
+		<td class="subMenuPrimaryTitle" height="20">
+			${fn:toUpperCase(location)} PARTICLE
+			<br>
+			<span class="pname"><c:out value="${particleName}" /> </span>
+		</td>
+	</tr>
+	<tr>
+		<c:url var="sampleUrl" value="submitNanoparticleSample.do">
+			<c:param name="dispatch" value="${dispatch}" />
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="location" value="${location}" />
+		</c:url>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onclick="gotoPage('${sampleUrl}')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			height="20">
+			<a class="subMenuSecondary">SAMPLE</a>
+		</td>
+	</tr>
+	<tr>
+		<c:url var="compUrl" value="composition.do">
+			<c:param name="dispatch" value="${dispatch}" />
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="location" value="${location}" />
+		</c:url>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onclick="gotoPage('${compUrl}')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			height="20">
+			<a class="subMenuSecondary">COMPOSITION</a>
+		</td>
+	</tr>
+	<tr>
+		<c:url var="charUrl" value="characterization.do">
+			<c:param name="dispatch" value="${dispatch}" />
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="location" value="${location}" />
+		</c:url>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onclick="gotoPage('${charUrl}');changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			height="20">
+			<a class="subMenuSecondary">CHARACTERIZATION</a>
+		</td>
+	</tr>
+	<tr>
+		<c:url var="pubUrl" value="submitNanoparticleSample.do">
+			<c:param name="dispatch" value="${dispatch}" />
+			<c:param name="particleId" value="${particleId}" />
+			<c:param name="location" value="${location}" />
+		</c:url>
+		<td class="subMenuSecondaryTitle"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onclick="gotoPage('${pubUrl}')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			height="20">
+			<a class="subMenuSecondary">PUBLICATION</a>
 		</td>
 	</tr>
 	<tr>
@@ -88,18 +98,18 @@
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
 			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
 			<a class="subMenuSecondary">caNanoLab Wiki</a>
 		</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
 			onclick="openWindow('http://www.cancer.gov', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
 			<a class="subMenuSecondary">NCI HOME</a>
 		</td>

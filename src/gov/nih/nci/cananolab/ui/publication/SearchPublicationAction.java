@@ -142,7 +142,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
 		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getObjectName(
+			String className = InitSetup.getInstance().getClassName(
 					nanoparticleEntityTypes[i], session.getServletContext());
 			if (className.length() == 0) {
 				className = "OtherNanoparticleEntity";
@@ -154,7 +154,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getObjectName(
+			String className = InitSetup.getInstance().getClassName(
 					functionalizingEntityTypes[i], session.getServletContext());
 			if (className.length() == 0) {
 				className = "OtherFunctionalizingEntity";
@@ -168,7 +168,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		if (functionTypes != null) {
 			for (int i = 0; i < functionTypes.length; i++) {
-				String className = InitSetup.getInstance().getObjectName(
+				String className = InitSetup.getInstance().getClassName(
 						functionTypes[i], session.getServletContext());
 				if (className.length() == 0) {
 					className = "OtherFunction";

@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/caLab.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<body onload="window.print();self.close()">

@@ -43,9 +43,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Base action for all annotation actions
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
@@ -168,7 +168,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String submitType = request.getParameter("submitType");
-		String className = InitSetup.getInstance().getObjectName(submitType,
+		String className = InitSetup.getInstance().getClassName(submitType,
 				request.getSession().getServletContext());
 		String fullClassName = ClassUtils.getFullClass(className)
 				.getCanonicalName();
@@ -193,7 +193,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
 	 * Download action to handle file downloading and viewing
-	 * 
+	 *
 	 * @param
 	 * @return
 	 */

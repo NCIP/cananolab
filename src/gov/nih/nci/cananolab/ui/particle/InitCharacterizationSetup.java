@@ -29,26 +29,14 @@ public class InitCharacterizationSetup {
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String className) throws Exception {
 		HttpSession session = request.getSession();
-		SortedSet<String> charTypes = InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request,
-						"characterizationTypes", "characterization", "type",
-						"other", true);
-		SortedSet<String> derivedDatumNames = InitSetup.getInstance()
-				.getDefaultAndOtherLookupTypes(request, "derivedDatumNames",
-						className, "derivedDatumName", "otherDerivedDatumName",
+		InitSetup
+				.getInstance()
+				.getReflectionDefaultAndOtherLookupTypes(
+						request,
+						"characterizationTypes",
+						"gov.nih.nci.cananolab.domain.particle.Characterization",
+						"gov.nih.nci.cananolab.domain.characterization.OtherCharacterization",
 						true);
-		Map<String, SortedSet<String>> unitMap = new HashMap<String, SortedSet<String>>();
-		for (String name : derivedDatumNames) {
-			SortedSet<String> units = InitSetup.getInstance()
-					.getDefaultAndOtherLookupTypes(request,
-							"derivedDatumUnits", name, "unit", "otherUnit",
-							true);
-			unitMap.put(name, units);
-		}
-		session.setAttribute("unitMap", unitMap);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"derivedDatumValueTypes", "DerivedDatum", "valueType",
-				"otherValueType", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 

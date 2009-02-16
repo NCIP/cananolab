@@ -76,7 +76,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
 		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
 		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getObjectName(
+			String className = InitSetup.getInstance().getClassName(
 					nanoparticleEntityTypes[i], session.getServletContext());
 			if (className.length() == 0) {
 				className = "OtherNanoparticleEntity";
@@ -91,7 +91,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		List<String> functionalizingEntityClassNames = new ArrayList<String>();
 		List<String> otherFunctionalizingTypes = new ArrayList<String>();
 		for (int i = 0; i < functionalizingEntityTypes.length; i++) {
-			String className = InitSetup.getInstance().getObjectName(
+			String className = InitSetup.getInstance().getClassName(
 					functionalizingEntityTypes[i], session.getServletContext());
 			if (className.length() == 0) {
 				className = "OtherFunctionalizingEntity";
@@ -105,7 +105,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		List<String> functionClassNames = new ArrayList<String>();
 		List<String> otherFunctionTypes = new ArrayList<String>();
 		for (int i = 0; i < functionTypes.length; i++) {
-			String className = InitSetup.getInstance().getObjectName(
+			String className = InitSetup.getInstance().getClassName(
 					functionTypes[i], session.getServletContext());
 			if (className.length() == 0) {
 				className = "OtherFunction";
@@ -118,7 +118,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		// convert characterization display names into short class names
 		String[] charaClassNames = new String[characterizations.length];
 		for (int i = 0; i < characterizations.length; i++) {
-			charaClassNames[i] = InitSetup.getInstance().getObjectName(
+			charaClassNames[i] = InitSetup.getInstance().getClassName(
 					characterizations[i], session.getServletContext());
 		}
 

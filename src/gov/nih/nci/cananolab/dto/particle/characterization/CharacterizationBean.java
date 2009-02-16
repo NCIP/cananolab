@@ -58,13 +58,15 @@ public class CharacterizationBean {
 
 	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
-	private Characterization domainChar;
+	private Characterization domainChar=new Characterization();
 
 	private String className;
 
 	private String dateString;
 
 	private String characterizationType;
+
+	private String characterizationName;
 
 	private Cytotoxicity cytotoxicity = new Cytotoxicity();
 
@@ -453,5 +455,21 @@ public class CharacterizationBean {
 
 	public void setSolubility(Solubility solubility) {
 		this.solubility = solubility;
+	}
+
+	public String getCharacterizationType() {
+		return characterizationType;
+	}
+
+	public void setCharacterizationType(String characterizationType) {
+		this.characterizationType = characterizationType;
+	}
+
+	public String getCharacterizationName() {
+		return characterizationName;
+	}
+
+	public void setCharacterizationName(String characterizationName) {
+		this.characterizationName = characterizationName;
 	}
 }

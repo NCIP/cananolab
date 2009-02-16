@@ -51,10 +51,6 @@ function mclick(e, targetElement) {
 					for (var u = 0; u < uls.length; u++) {
 						if (uls[u].className != "sublist_5_control" && uls[u].className != "sublist_3_control") {
 							uls[u].style.display = "block";
-							var immuUl = document.getElementById("Immunotoxicity");
-							if (immuUl != null && immuUl.style.display == "none") {
-								immuUl.style.display = "block";
-							}
 						}
 					}
 				} else {

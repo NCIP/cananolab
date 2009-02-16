@@ -6,7 +6,7 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/caLab.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<body onload="window.print();self.close()">
@@ -18,7 +18,7 @@
 				Publications
 			</h4>
 		</td>
-		
+
 	</tr>
 
 	<tr>
@@ -28,9 +28,9 @@
 				<tr>
 					<td class="formTitle"
 						colspan="4" align="center">
-						
+
 							${fn:toUpperCase(location)} ${particleName} - Publications
-						
+
 					</td>
 				</tr>
 				<tr>
@@ -50,14 +50,14 @@
 				<c:forEach var="pubObj" items="${particleSampleBean.domainParticleSample.publicationCollection}">
 				<tr>
 					<td class="leftLabel">
-						
+
 						<c:choose>
 							<c:when test="${pubObj.pubMedId != null && pubObj.pubMedId != 0}">
 								PMID: ${pubObj.pubMedId }
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${pubObj.digitalObjectId != null && 
+									<c:when test="${pubObj.digitalObjectId != null &&
 										pubObj.digitalObjectId ne ''}">
 										DOI: ${pubObj.digitalObjectId }
 									</c:when>
@@ -77,11 +77,11 @@
 								items="${pubObj.documentAuthorCollection}">
 									${author.lastName};
 							</c:forEach>
-						</c:if>		
-						
+						</c:if>
+
 						&nbsp;
 					</td>
-					
+
 					<td class="rightLabel">
 						<c:if test="${pubObj.year!=0}">
 							${pubObj.year}
@@ -89,7 +89,7 @@
 						&nbsp;
 					</td>
 				</tr>
-				</c:forEach>				
+				</c:forEach>
 			</table>
 		</td>
 	</tr>

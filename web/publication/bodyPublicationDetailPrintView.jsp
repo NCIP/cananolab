@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/caLab.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<body onload="window.print();self.close()">
@@ -16,8 +16,8 @@
 						<br>
 						Publication
 					</h4>
-				</td>				
-			</tr>			
+				</td>
+			</tr>
 			<tr>
 				<td colspan="2">
 					<table width="100%" border="0" align="center" cellpadding="3"
@@ -33,7 +33,7 @@
 							</th>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${submitPublicationForm.map.file.domainFile.pubMedId != null && 
+									<c:when test="${submitPublicationForm.map.file.domainFile.pubMedId != null &&
 												submitPublicationForm.map.file.domainFile.pubMedId != 0}">
 										PMID: ${submitPublicationForm.map.file.domainFile.pubMedId }
 									</c:when>
@@ -82,7 +82,7 @@
 								&nbsp;
 							</td>
 						</tr>
-						
+
 						<tr>
 							<th class="leftLabel" valign="top">
 								Title
@@ -126,7 +126,7 @@
 									<bean:write name="submitPublicationForm"
 											property="file.domainFile.year" />
 								</c:if>
-								&nbsp;								
+								&nbsp;
 							</td>
 						</tr>
 						<tr>
@@ -144,7 +144,7 @@
 								Pages
 							</th>
 							<td class="rightLabel">
-								<c:if test="${submitPublicationForm.map.file.domainFile.startPage != null && 
+								<c:if test="${submitPublicationForm.map.file.domainFile.startPage != null &&
 												submitPublicationForm.map.file.domainFile.startPage != 0}">
 								<bean:write name="submitPublicationForm"
 										property="file.domainFile.startPage" /> - <bean:write name="submitPublicationForm"
@@ -153,10 +153,10 @@
 								&nbsp;
 							</td>
 						</tr>
-		
+
 						<c:choose>
 							<c:when
-								test="${submitPublicationForm.map.file.domainFile.pubMedId != null && 
+								test="${submitPublicationForm.map.file.domainFile.pubMedId != null &&
 												submitPublicationForm.map.file.domainFile.pubMedId != 0}">
 								<tr>
 									<th class="leftLabel" valign="top">
@@ -172,7 +172,7 @@
 								</tr>
 							</c:when>
 						</c:choose>
-		
+
 						<tr>
 							<th class="leftLabel" valign="top">
 								Description
@@ -186,7 +186,7 @@
 
 						<c:choose>
 							<c:when
-								test="${submitPublicationForm.map.file.domainFile.pubMedId == null || 
+								test="${submitPublicationForm.map.file.domainFile.pubMedId == null ||
 										submitPublicationForm.map.file.domainFile.pubMedId == 0}">
 								<tr>
 									<th class="leftLabel" valign="top">

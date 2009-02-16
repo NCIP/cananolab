@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="css/caLab.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<body onload="window.print();self.close()">
@@ -16,8 +16,8 @@
 						<br>
 						Report
 					</h4>
-				</td>				
-			</tr>			
+				</td>
+			</tr>
 			<tr>
 				<td colspan="2">
 					<table width="100%" border="0" align="center" cellpadding="3"

@@ -22,9 +22,9 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * Work with DWR to set up drop-downs required in the composition pages
- * 
+ *
  * @author pansu, cais
- * 
+ *
  */
 public class DWRCompositionManager {
 	public DWRCompositionManager() {
@@ -35,7 +35,7 @@ public class DWRCompositionManager {
 		try {
 			WebContext wctx = WebContextFactory.get();
 			ServletContext appContext = wctx.getServletContext();
-			String entityClassName = InitSetup.getInstance().getObjectName(
+			String entityClassName = InitSetup.getInstance().getClassName(
 					entityType, appContext);
 			String page = pagePath + "/bodyNew" + entityClassName + "Info.jsp";
 			String content = wctx.forwardToString(page);
@@ -121,7 +121,7 @@ public class DWRCompositionManager {
 		}
 		return new String[] { "" };
 	}
-	
+
 	public String[] getCarbonNanotubeDiameterUnitOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("carbon nanotube")) {
 
@@ -130,7 +130,7 @@ public class DWRCompositionManager {
 			HttpServletRequest request = webContext.getHttpServletRequest();
 			try {
 				SortedSet<String> typeList = InitSetup.getInstance()
-						.getDefaultAndOtherLookupTypes(request, 
+						.getDefaultAndOtherLookupTypes(request,
 								"carbonNanotubeDiameterUnit", "CarbonNanotube",
 								"diameterUnit", "otherDiameterUnit", true);
 				String[] eleArray = new String[typeList.size()];
@@ -143,7 +143,7 @@ public class DWRCompositionManager {
 		}
 		return new String[] { "" };
 	}
-	
+
 	public String[] getCarbonNanotubeAverageLengthUnitOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("carbon nanotube")) {
 
@@ -152,7 +152,7 @@ public class DWRCompositionManager {
 			HttpServletRequest request = webContext.getHttpServletRequest();
 			try {
 				SortedSet<String> typeList = InitSetup.getInstance()
-						.getDefaultAndOtherLookupTypes(request, 
+						.getDefaultAndOtherLookupTypes(request,
 								"carbonNanotubeAverageLengthUnit", "CarbonNanotube",
 								"averageLengthUnit", "otherAverageLengthUnit", true);
 				String[] eleArray = new String[typeList.size()];
@@ -165,7 +165,7 @@ public class DWRCompositionManager {
 		}
 		return new String[] { "" };
 	}
-	
+
 	public String[] getFullereneAverageDiameterUnitOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("fullerene")) {
 
@@ -174,7 +174,7 @@ public class DWRCompositionManager {
 			HttpServletRequest request = webContext.getHttpServletRequest();
 			try {
 				SortedSet<String> typeList = InitSetup.getInstance()
-						.getDefaultAndOtherLookupTypes(request, 
+						.getDefaultAndOtherLookupTypes(request,
 								"fullereneAverageDiameterUnit", "Fullerene",
 								"averageDiameterUnit", "otherAverageDiameterUnit", true);
 				String[] eleArray = new String[typeList.size()];
@@ -187,7 +187,7 @@ public class DWRCompositionManager {
 		}
 		return new String[] { "" };
 	}
-	
+
 	public String[] getAntibodyTypeOptions(String nanoparticleEntityType) {
 		if (nanoparticleEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();

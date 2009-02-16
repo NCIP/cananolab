@@ -3,6 +3,12 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/calendar2.js"></script>
+<script type="text/javascript"
+	src="javascript/CharacterizationManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
 <table width="100%" border="0" align="center" cellpadding="3"
 	cellspacing="0" class="topBorderOnly" summary="">
@@ -20,49 +26,42 @@
 		</td>
 		<td class="label">
 			<html:select property="achar.characterizationType" styleId="charType"
-				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
+				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharType('charName')">
 				<option value=""></option>
 				<html:options name="characterizationTypes" />
+				<option value="other">
+					[Other]
+				</option>
 			</html:select>
 		</td>
-		<td class="rightLabel" colspan="2">
+		<td class="label">
 			<strong>Characterization*</strong>
 		</td>
+		<td class="rightLabel">
+			<html:select property="achar.characterizationName" styleId="charName"
+				onchange="javascript:callPrompt('Characterization', 'charName');">
+				<option value=""></option>
+				<option value="other">
+					[Other]
+				</option>
+			</html:select>
+		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel">
-			<strong>Characterization Source* </strong>
+		<td class="leftLabel" valign="top">
+			<strong>Assay Endpoint</strong>
 		</td>
 		<td class="label">
-			<html:select property="achar.pocBean.domain.id" styleId="charSource"
-				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
+			<html:select property="achar.domainChar.assayType"
+				styleId="assayType"
+				onchange="javascript:callPrompt('Assay Endpoint', 'assayType');">
 				<option value=""></option>
-				<html:options collection="allPointOfContacts"
-					labelProperty="displayName" property="domain.id" />
+				<option value="other">
+					[Other]
+				</option>
 			</html:select>
 		</td>
 		<td class="label">
-			<strong>View Title*</strong>
-			<br>
-			<em>(text will be truncated after 20 characters)</em>
-		</td>
-		<td class="rightLabel">
-			<html:text property="achar.viewTitle" size="30" />
-		</td>
-	</tr>
-	<tr>
-		<td class="leftLabel">
-			<strong>Characterization Date</strong>
-		</td>
-		<td class="rightLabel" colspan="3">
-			<html:text property="achar.dateString" size="10" styleId="charDate" />
-			<a href="javascript:cal1.popup();"><img
-					src="images/calendar-icon.gif" width="22" height="18" border="0"
-					alt="Click Here to Pick up the date"
-					title="Click Here to Pick up the date" align="middle"> </a>
-		</td>
-	<tr>
-		<td class="leftLabel">
 			<strong>Protocol Name - Version</strong>
 		</td>
 		<html:hidden styleId="updatedUri"
@@ -87,12 +86,41 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top">
-			<strong>Assay Endpoint</strong>
+		<td class="leftLabel">
+			<strong>Characterization Source* </strong>
 		</td>
-		<td class="rightLabel" colspan="3">
+		<td class="label">
+			<html:select property="achar.pocBean.domain.id" styleId="charSource"
+				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
+				<option value=""></option>
+				<%--
+				<html:options collection="allPointOfContacts"
+					labelProperty="displayName" property="domain.id" />
+				--%>
+			</html:select>
+		</td>
+		<td class="label">
+			<strong>View Title*</strong>
+			<br>
+			<em>(text will be truncated after 20 characters)</em>
+		</td>
+		<td class="rightLabel">
+			<html:text property="achar.viewTitle" size="30" />
 		</td>
 	</tr>
+	<tr>
+		<td class="leftLabel">
+			<strong>Characterization Date</strong>
+		</td>
+		<td class="rightLabel" colspan="3">
+			<html:text property="achar.dateString" size="10" styleId="charDate" />
+			<a href="javascript:cal1.popup();"><img
+					src="images/calendar-icon.gif" width="22" height="18" border="0"
+					alt="Click Here to Pick up the date"
+					title="Click Here to Pick up the date" align="middle"> </a>
+		</td>
+	</tr>
+
 </table>
 <br>
 <script language="JavaScript">

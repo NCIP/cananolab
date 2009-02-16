@@ -5,8 +5,8 @@
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%">
 	<tr>
-		<td valign="top" width="450">
-			<img src="images/bannerhome.jpg" width="450">
+		<td valign="top" width="600">
+			<img src="images/bannerhome.jpg" width="600">
 			<table summary="" cellpadding="0" cellspacing="0" border="0"
 				height="100%">
 				<tr>
@@ -18,16 +18,16 @@
 					<td class="welcomeContent" valign="top">
 						Welcome to the
 						<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
-						portal. caNanoLab is a data sharing portal designed to facilitate 
-						information sharing in the biomedical nanotechnology research community 
-						to expedite and validate the use of nanotechnology in biomedicine.  
-						caNanoLab allows researchers to share information on nanoparticles 
-						including the composition of the particle, the functions (e.g. therapeutic, 
-						targeting, diagnostic imaging) of the particle, the characterizations of 
-						the particle from physical (e.g. size, molecular weight) and in vitro 
-						(e.g. cytotoxicity, immunotoxicity) nanoparticle assays, and the protocols 
+						portal. caNanoLab is a data sharing portal designed to facilitate
+						information sharing in the biomedical nanotechnology research community
+						to expedite and validate the use of nanotechnology in biomedicine.
+						caNanoLab allows researchers to share information on nanoparticles
+						including the composition of the particle, the functions (e.g. therapeutic,
+						targeting, diagnostic imaging) of the particle, the characterizations of
+						the particle from physical (e.g. size, molecular weight) and in vitro
+						(e.g. cytotoxicity, immunotoxicity) nanoparticle assays, and the protocols
 						of these characterization.
-						
+
 						<div class="message">
 							<jsp:include page="/bodyMessage.jsp" />
 						</div>

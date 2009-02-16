@@ -109,7 +109,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -130,7 +130,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
 		String submitType = request.getParameter("submitType");
-		String charClass = InitSetup.getInstance().getObjectName(submitType,
+		String charClass = InitSetup.getInstance().getClassName(submitType,
 				appContext);
 		charBean.setClassName(charClass);
 		setLookups(request, charBean);
@@ -344,8 +344,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		deleteCharacterization(request, theForm, charBean, user.getLoginName());
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage(
-				"message.deleteCharacterization");
+		ActionMessage msg = new ActionMessage("message.deleteCharacterization");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
@@ -403,6 +402,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return charBean;
 	}
 
+	public ActionForward setupView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleBean = setupParticle(theForm, request, "local");
+
+		request.getSession().setAttribute("characterizationForm", theForm);
+		return mapping.findForward("summaryView");
+	}
+
 	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -422,7 +431,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		theForm.set("otherParticles", new String[0]);
 		theForm.set("copyData", false);
 
-		return mapping.getInputForward();
+		return mapping.findForward("summaryView");
 	}
 
 	// used in many dispatch methods
@@ -564,7 +573,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 
 		String submitType = request.getParameter("submitType");
-		String className = InitSetup.getInstance().getObjectName(submitType,
+		String className = InitSetup.getInstance().getClassName(submitType,
 				request.getSession().getServletContext());
 		String fullClassName = ClassUtils.getFullClass(className)
 				.getCanonicalName();
@@ -594,16 +603,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
-		String submitType = request.getParameter("submitType");
-		setupCharSummary(theForm, request);
+		//setupCharSummary(theForm, request);
+
 		String location = request.getParameter("location");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
-				+ "&submitType=" + submitType + "&dispatch=printSummaryView"
-				+ "&location=" + location;
+				+ "&submitType=" + "&dispatch=printSummaryView" + "&location="
+				+ location;
 		String printAllLinkURL = requestUrl + "?page=0&particleId="
-				+ particleId + "&submitType=" + submitType
-				+ "&dispatch=printFullSummaryView" + "&location=" + location;
+				+ particleId + "&dispatch=printFullSummaryView" + "&location="
+				+ location;
 		request.getSession().setAttribute("printSummaryViewLinkURL",
 				printLinkURL);
 		request.getSession().setAttribute("printFullSummaryViewLinkURL",

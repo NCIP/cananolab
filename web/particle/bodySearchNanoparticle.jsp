@@ -7,7 +7,10 @@
 	src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
+<script type="text/javascript"
+	src="javascript/CharacterizationManager.js"></script>
+<script type="text/javascript"
+	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
 
 <html:form action="searchNanoparticle">
 	<table align="center" width="100%">
@@ -145,7 +148,9 @@
 						</td>
 						<td class="label">
 							<c:forEach var="charType" items="${characterizationTypes}">
-								<span class="indented0"><a href="#">${charType} </a> </span>
+								<a href="#"
+									onclick="javascript:setCharacterizationOptions('${charType}', 'charName')">${charType}
+								</a>
 								<br>
 							</c:forEach>
 						</td>
@@ -154,7 +159,7 @@
 						</td>
 						<td class="rightLabel" valign="top" colspan="3">
 							<strong> <html:select property="characterizations"
-									multiple="true" size="4">
+									styleId="charName" multiple="true" size="4">
 									<c:forEach var="achar"
 										items="${searchNanoparticleSampleForm.map.characterizations}">
 										<html:option value="${achar}">${achar}</html:option>
@@ -162,7 +167,6 @@
 								</html:select> </strong>
 						</td>
 					</tr>
-
 				</table>
 				<br>
 

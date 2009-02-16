@@ -13,8 +13,7 @@
 	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
 <script type="text/javascript"
 	src="javascript/ExperimentConfigManager.js"></script>
-<script type="text/javascript"
-	src="javascript/DataSetManager.js"></script>
+<script type="text/javascript" src="javascript/DataSetManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ExperimentConfigManager.js'></script>
 <script type='text/javascript'
@@ -28,7 +27,7 @@
 
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-<html:form action="/${actionName}" enctype="multipart/form-data">
+<html:form action="/characterization" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -36,7 +35,8 @@
 					${fn:toUpperCase(param.location)} ${particleName} ${pageTitle}
 				</h4>
 			</td>
-			<c_rt:set var='dispatch' value='<%=request.getParameter("dispatch")%>'/>
+			<c_rt:set var='dispatch'
+				value='<%=request.getParameter("dispatch")%>' />
 			<c:choose>
 				<c:when test="${'setup' eq param.dispatch }">
 					<c:remove var="dataId" scope="session" />
@@ -47,10 +47,12 @@
 			</c:choose>
 			<c:set var="helpTopic" value="char_details_help" />
 			<c:choose>
-				<c:when test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
+				<c:when
+					test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
 					<c:set var="helpTopic" value="add_physical_char_help" />
 				</c:when>
-				<c:when test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
+				<c:when
+					test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
 					<c:set var="helpTopic" value="add_in_vitro_char_help" />
 				</c:when>
 			</c:choose>

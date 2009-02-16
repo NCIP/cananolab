@@ -1,80 +1,62 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:choose>
-	<c:when
-		test="${displaytype == 'Composition' ||
-				displaytype == 'Nanoparticle Entity' ||
-				displaytype == 'Functionalizing Entity' ||
-				displaytype == 'Chemical Association' ||
-				displaytype == 'Composition File'}">
+	<c:when test="${displaytype == 'composition'}">
 		<c:set var="compDisplay" value="display: block;" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="compDisplay" value="display: none;" />
 	</c:otherwise>
 </c:choose>
-<c:choose>
-	<c:when
-		test="${hasCompositionData eq 'true' || (canCreateNanoparticle eq 'true' && location eq 'local')}">
-		<c:set var="compositionType" value="Composition" />
-		<li class="controlList">
-			<a href="#" class="subMenuSecondary">SAMPLE COMPOSITION</a>
-
-			<ul class="sublist_4" style="${compDisplay }">
-				<c:forEach var="compoDataBean"
-					items="${compositionTypes[compositionType]}">
-					<li>
-						<jsp:include page="sideParticleCharacterizationMenuButtons.jsp">
-							<jsp:param name="charType"
-								value="${compoDataBean.dataDisplayType}" />
-							<jsp:param name="charTypeStyle" value="sublist_4" />
-							<jsp:param name="charTypeLabelStyle" value="titleCell2" />
-							<jsp:param name="noDataLabelStyle" value="titleCell2NoData" />
-							<jsp:param name="tableStyle" value="charTitle" />
-							<jsp:param name="addLinkStyle" value="addCell" />
-							<jsp:param name="addAction" value="${compoDataBean.dataLink}" />
-							<jsp:param name="location" value="${location}" />
-						</jsp:include>
-						<c:if
-							test="${!empty particleDataTree[compoDataBean.dataDisplayType] }">
-							<ul class="sublist_5" style="${compDisplay }">
-								<c:forEach var="dataLinkBean"
-									items="${particleDataTree[compoDataBean.dataDisplayType]}">
-									<c:url var="url" value="${dataLinkBean.dataLink}.do">
-										<c:param name="page" value="0" />
-										<c:param name="dispatch" value="${dispatchValue}" />
-										<c:param name="particleId" value="${particleId}" />
-										<c:param name="dataId" value="${dataLinkBean.dataId}" />
-										<c:param name="dataClassName"
-											value="${dataLinkBean.dataClassName}" />
-										<c:param name="submitType"
-											value="${compoDataBean.dataDisplayType}" />
-										<c:param name="location" value="${location}" />
-									</c:url>
-									<li id="complist">
-										<c:choose>
-											<c:when test="${dataLinkBean.viewColor != null}">
-												<c:set var="viewTitleDisplay"
-													value="color: ${dataLinkBean.viewColor};" />
-												<a href="${url}" class="sublist_5" style=""> <span
-													class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
-											</c:when>
-											<c:otherwise>
-												<a href="${url}" class="sublist_5"><span
-													class="data_anchar">>&nbsp;</span>${dataLinkBean.viewTitle}</a>
-											</c:otherwise>
-										</c:choose>
-									</li>
-								</c:forEach>
-							</ul>
-						</c:if>
-					</li>
-				</c:forEach>
-			</ul>
+<li class="controlList">
+	<c:url var="url" value="submitNanoparticleSample.do">
+		<c:param name="dispatch" value="setupUpdate" />
+		<c:param name="particleId" value="${particleId}" />
+		<c:param name="location" value="${location}" />
+		<c:param name="submitType" value="composition" />
+	</c:url>
+	<a href="${url}" class="subMenuSecondary">SAMPLE COMPOSITION</a>
+	<ul class="sublist_4" style="${compDislay}">
+		<li>
+			<c:url var="submitUrl" value="nanoparticleEntityAction.do">
+				<c:param name="particleId" value="${particleId}" />
+				<c:param name="page" value="0" />
+				<c:param name="dispatch" value="setupUpdate" />
+				<c:param name="location" value="${param.location}" />
+			</c:url>
+			<a href="${submitUrl}" class="addlink">Nanoparticle Entity <img
+					src="images/btn_add.gif" border="0" /> </a>
 		</li>
-	</c:when>
-	<c:otherwise>
-		<li class="nodatali">
-			SAMPLE COMPOSITION
+		<li>
+			<c:url var="submitUrl" value="functionalizingEntityAction.do">
+				<c:param name="particleId" value="${particleId}" />
+				<c:param name="page" value="0" />
+				<c:param name="dispatch" value="setupUpdate" />
+				<c:param name="location" value="${param.location}" />
+			</c:url>
+			<a href="${submitUrl}" class="addlink">Functionalizing Entity <img
+					src="images/btn_add.gif" border="0" /> </a>
 		</li>
-	</c:otherwise>
-</c:choose>
+		<li>
+			<c:url var="submitUrl" value="chemicalAssociationAction.do">
+				<c:param name="particleId" value="${particleId}" />
+				<c:param name="page" value="0" />
+				<c:param name="dispatch" value="setupUpdate" />
+				<c:param name="location" value="${param.location}" />
+			</c:url>
+			<a href="${submitUrl}" class="addlink">Chemical Association <img
+					src="images/btn_add.gif" border="0" /> </a>
+		</li>
+		<li>
+			<c:url var="submitUrl" value="compositionFile.do">
+				<c:param name="particleId" value="${particleId}" />
+				<c:param name="page" value="0" />
+				<c:param name="dispatch" value="setupUpdate" />
+				<c:param name="location" value="${param.location}" />
+			</c:url>
+			<a href="${submitUrl}" class="addlink">Composition File <img
+					src="images/btn_add.gif" border="0" /> </a>
+			<br>
+		</li>
+	</ul>
+</li>

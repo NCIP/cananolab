@@ -113,7 +113,7 @@ public class InitSetup {
 	public Map<String, String> getDisplayNameToFullClassNameLookup(
 			ServletContext appContext) throws Exception {
 		Map<String, String> lookup = null;
-		if (appContext.getAttribute("displayNameReverseLookup") == null) {
+		if (appContext.getAttribute("displayNameFullClassReverseLookup") == null) {
 			Map<String, String> displayLookup = LookupService
 					.findSingleAttributeLookupMap("displayName");
 			lookup = new HashMap<String, String>();
@@ -123,28 +123,38 @@ public class InitSetup {
 						.getCanonicalName();
 				lookup.put(entry.getValue().toString(), fullClassName);
 			}
-			appContext.setAttribute("displayNameReverseLookup", lookup);
+			appContext.setAttribute("displayNameFullClassReverseLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
 					(Map<? extends String, String>) (appContext
-							.getAttribute("displayNameReverseLookup")));
+							.getAttribute("displayNameFullClassReverseLookup")));
 		}
 		return lookup;
 	}
 
-	public String getDisplayName(String objectName, ServletContext appContext)
+	public String getDisplayName(String className, ServletContext appContext)
 			throws CaNanoLabException {
 		Map<String, String> lookup = getClassNameToDisplayNameLookup(appContext);
-		if (lookup.get(objectName) != null) {
-			return lookup.get(objectName);
+		if (lookup.get(className) != null) {
+			return lookup.get(className);
 		} else {
 			return "";
 		}
 	}
 
-	public String getObjectName(String displayName, ServletContext appContext)
+	public String getClassName(String displayName, ServletContext appContext)
 			throws Exception {
 		Map<String, String> lookup = getDisplayNameToClassNameLookup(appContext);
+		if (lookup.get(displayName) != null) {
+			return lookup.get(displayName);
+		} else {
+			return "";
+		}
+	}
+
+	public String getFullClassName(String displayName, ServletContext appContext)
+			throws Exception {
+		Map<String, String> lookup = getDisplayNameToFullClassNameLookup(appContext);
 		if (lookup.get(displayName) != null) {
 			return lookup.get(displayName);
 		} else {
