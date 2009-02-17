@@ -33,7 +33,7 @@
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
 							nanoparticle samples in the database. Please make sure to <html:link
-								page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
+								page="/nanoparticleSample.do?dispatch=setupNew&page=0&location=${location}"
 								scope="page">create
 							a new nanoparticle sample</html:link> first. </font>
 					</td>
@@ -105,12 +105,12 @@
 									<td class="leftLabel" valign="top">
 										<strong>PubMed ID</strong>
 									</td>
-									<td class="rightLabel" colspan="7">	
+									<td class="rightLabel" colspan="7">
 										<a
 												href="http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}"
 												target="_pubmed">
 												Click to look up PubMed Identifier</a>
-										<br>									
+										<br>
 										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
 											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
 										<br><i>After entering a valid PubMed ID and clicking outside of the text field, <br>the related fields (DOI, title, journal, author, etc)
@@ -213,7 +213,7 @@
 									<td class="leftLabel" valign="top">
 										<strong>Keywords<br></strong>
 										<i>(one keyword per line)</i>
-										
+
 									</td>
 									<td class="rightLabel" colspan="7">
 										<html:textarea property="file.keywordsStr" rows="3" cols="70" />

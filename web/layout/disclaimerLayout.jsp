@@ -23,12 +23,12 @@
 								<tr>
 									<td height="50">
 										<%-- include caNanoLab header --%>
-										<tiles:insert attribute="calabHeader" />
+										<tiles:insert attribute="cananoHeader" />
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<tiles:insert attribute="calabContent" />
+										<tiles:insert attribute="cananoContent" />
 									</td>
 								</tr>
 							</tbody>
@@ -38,7 +38,7 @@
 				<tr>
 					<td class="footerMenu" width="100%" height="20">
 						<%-- include caNanoLab footer --%>
-						<tiles:insert attribute="calabFooter" />
+						<tiles:insert attribute="cananoFooter" />
 					</td>
 				</tr>
 				<tr>

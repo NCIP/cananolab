@@ -32,13 +32,13 @@
 								<tr>
 									<td colspan="2" height="50">
 										<%-- include caNanoLab header --%>
-										<tiles:insert attribute="calabHeader" />
+										<tiles:insert attribute="cananoHeader" />
 									</td>
 								</tr>
 								<tr>
 									<td class="sideMenu" valign="top" width="150">
 										<%-- include sidemenu on the left --%>
-										<tiles:insert attribute="calabSidemenu" />
+										<tiles:insert attribute="cananoSidemenu" />
 									</td>
 
 									<td valign="top" width="100%">
@@ -48,20 +48,20 @@
 												<tr>
 													<td class="mainMenu" width="100%" height="20">
 														<%-- include caNanoLab main menu --%>
-														<tiles:insert attribute="calabMainmenu" />
+														<tiles:insert attribute="cananoMainmenu" />
 													</td>
 												</tr>
 												<tr>
 													<td width="800" valign="top">
 														<%-- include caNanoLab main content --%>
 														<%--main content starts --%>
-														<tiles:insert attribute="calabContent" />
+														<tiles:insert attribute="cananoContent" />
 													</td>
 												</tr>
 												<tr>
 													<td class="footerMenu" width="100%" height="20">
 														<%-- include caNanoLab footer --%>
-														<tiles:insert attribute="calabFooter" />
+														<tiles:insert attribute="cananoFooter" />
 													</td>
 												</tr>
 											</tbody>

@@ -32,7 +32,7 @@
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
 							nanoparticle samples in the database. Please make sure to <html:link
-								page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
+								page="/nanoparticleSample.do?dispatch=setupNew&page=0&location=${location}"
 								scope="page">create
 							a new nanoparticle sample</html:link> first. </font>
 					</td>

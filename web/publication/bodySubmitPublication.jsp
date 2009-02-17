@@ -41,7 +41,7 @@
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
 							nanoparticle samples in the database. Please make sure to <html:link
-								page="/submitNanoparticleSample.do?dispatch=setup&page=0&location=local"
+								page="/nanoparticleSample.do?dispatch=setupNew&page=0&location=local"
 								scope="page">create
 							a new nanoparticle sample</html:link> first. </font>
 					</td>
@@ -310,7 +310,7 @@
 						 				${submitPublicationForm.map.file.domainFile.title}<br>
 														<br>
 														<a href="#"
-															onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local', 
+															onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local',
 														${submitPublicationForm.map.file.domainFile.id}, 100, 100)"><img
 																src="compositionFile.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
 																border="0" width="150"> </a>
@@ -387,7 +387,7 @@
 																		property="name" labelProperty="name" />
 																</html:select>
 															</td>
-														</tr>		
+														</tr>
 													</c:when>
 													<c:otherwise>
 														<tr>

@@ -60,7 +60,7 @@
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
 					<area
-						href="submitNanoparticleSample.do?dispatch=setup&page=0&location=${location}"
+						href="nanoparticleSample.do?dispatch=setupNew&page=0&location=${location}"
 						shape="rect" coords="265,100,360,160" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreatePublication eq 'true'}">
@@ -68,13 +68,13 @@
 						coords="360,445,445,480" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreateNanoparticle eq 'true'}">
-					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="355,175,450,220" alt="rectangle" />
-					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="355,280,450,315" alt="rectangle" />
-					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="360,370,455,420" alt="rectangle" />
-					<area href="submitNanoparticleSample.do?dispatch=setup&page=0"
+					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="475,155,620,420" alt="rectangle" />
 				</c:if>
 			</map>

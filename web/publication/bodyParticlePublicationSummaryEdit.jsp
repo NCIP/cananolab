@@ -3,7 +3,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+under construction
+<%--
 <link rel="StyleSheet" type="text/css" href="css/printExport.css">
 <script type="text/javascript" src="javascript/printExport.js"></script>
 <table width="100%" align="center">
@@ -30,8 +31,8 @@
 						<ul class="pemenu" id="printChara">
 							<li class="pelist">
 								<a href="javascript:printPage('${printSummaryViewLinkURL}')"><img src="images/icon_print_23x.gif" border="0"
-										title="Print Summary" 
-										alt="Print Summary" 
+										title="Print Summary"
+										alt="Print Summary"
 										align="middle"> </a>
 							</li>
 						</ul>
@@ -49,8 +50,8 @@
 							<li class="pelist">
 								<a href="${sumUrl}"><img src="images/icon_excel_23x.gif" border="0"
 										align="middle"
-										title="Export Summary" 
-										alt="Export Summary" > </a>								
+										title="Export Summary"
+										alt="Export Summary" > </a>
 							</li>
 						</ul>
 					</td>
@@ -101,7 +102,7 @@
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${pubObj.digitalObjectId != null && 
+									<c:when test="${pubObj.digitalObjectId != null &&
 										pubObj.digitalObjectId ne ''}">
 										<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
 									</c:when>
@@ -121,10 +122,10 @@
 								items="${pubBean.authors}">
 									${author.lastName};
 							</c:forEach>
-						</c:if>		
-						
+						</c:if>
+
 						&nbsp;
-					</td>					
+					</td>
 					<td class="rightLabel">
 						<c:if test="${pubObj.year!=0}">
 							${pubObj.year}
@@ -132,8 +133,9 @@
 						&nbsp;
 					</td>
 				</tr>
-				</c:forEach>				
+				</c:forEach>
 			</table>
 		</td>
 	</tr>
 </table>
+--%>

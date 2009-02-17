@@ -6,7 +6,6 @@
 
 <link rel="StyleSheet" type="text/css" href="css/sidemenu.css">
 
-<c:set var="dispatch" value="summaryView" />
 <c:choose>
 	<c:when test="${!empty theParticle}">
 		<c:set var="particleName"
@@ -16,6 +15,17 @@
 		<c:set var="location" value="${theParticle.location}" scope="session" />
 	</c:when>
 </c:choose>
+
+<c:choose>
+	<c:when
+		test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
+		<c:set var="dispatch" value="summaryEdit" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="dispatch" value="summaryView" />
+	</c:otherwise>
+</c:choose>
+
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	height="100%" width="150">
 	<tr>
@@ -31,7 +41,7 @@
 		</td>
 	</tr>
 	<tr>
-		<c:url var="sampleUrl" value="submitNanoparticleSample.do">
+		<c:url var="sampleUrl" value="nanoparticleSample.do">
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
@@ -73,7 +83,7 @@
 		</td>
 	</tr>
 	<tr>
-		<c:url var="pubUrl" value="submitNanoparticleSample.do">
+		<c:url var="pubUrl" value="publication.do">
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
