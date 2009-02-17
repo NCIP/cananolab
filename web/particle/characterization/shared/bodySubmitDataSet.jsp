@@ -16,6 +16,7 @@
 	<tr>
 		<td class="leftLabelWithTopNoBottom">
 			<strong>Column Type</strong>
+			<input type="hidden" id="columnId">
 		</td>
 		<td class="rightLabelWithTopNoBottom">
 			<select id="datumOrCondition">
@@ -140,7 +141,7 @@
 		-->
 
 			<input class="noBorderButton" type="button" value="Save"
-				onclick="addDatumColumn(); show('populateDataTableButton');" />
+				onclick="addDatumColumn();" />
 			<input class="noBorderButton" type="button" value="Delete"
 				onclick="deleteDatumColumn()" />
 		</td>

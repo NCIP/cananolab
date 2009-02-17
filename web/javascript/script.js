@@ -2,6 +2,12 @@
 function changeMenuStyle(obj, new_style) {
 	obj.className = new_style;
 }
+function showCursor() {
+	document.body.style.cursor = "hand";
+}
+function hideCursor() {
+	document.body.style.cursor = "default";
+}
 function confirmDelete() {
 	if (confirm("Are you sure you want to delete?")) {
 		return true;
@@ -289,16 +295,16 @@ function popImage(event, imgSrc, imgId) {
 	if (width>height){
 		if (width>maxHeight){
 		 	ratio = maxHeight/width;
-		    width = maxHeight+2;
+		    width = maxHeight+2;	 
 		    height = ratio * height;
-		}
+		}	
 	}else{
 		if (height>maxHeight){
 		 	ratio = maxHeight/height*100;
-		    height = maxHeight+2;
-		    width = ratio * width/100;
+		    height = maxHeight+2;	 
+		    width = ratio * width/100;  
 		}
-	}
+	}	
 //    leftPos=event.clientX-width-200;
 //    topPos=event.clientY-200;
 	leftPos = 50;
@@ -379,10 +385,10 @@ function getSelectedOptions(selectEle) {
 }
 function displayLogin() {
 	showhide('loginBlock');
-	return false;
+	return false;	
 }
 
-function showhide(layer_ref) {
+function showhide(layer_ref) {	
 	var layerBlock = document.getElementById(layer_ref);
 	if(layerBlock.style.display == 'none')
 		layerBlock.style.display = 'block';
@@ -390,14 +396,22 @@ function showhide(layer_ref) {
 		layerBlock.style.display = 'none';
 }
 
-function show(layer_ref) {
+function show(layer_ref) {	
 	var layerBlock = document.getElementById(layer_ref);
+	if (layerBlock==null){
+		alert(layer_ref +" is null (cannot show)");
+		return;
+	}
 	if(layerBlock.style.display == 'none')
 		layerBlock.style.display = 'block';
 }
 
-function hide(layer_ref) {
+function hide(layer_ref) {	
 	var layerBlock = document.getElementById(layer_ref);
+	if (layerBlock==null){
+		alert(layer_ref +" is null (cannot show)");
+		return;
+	}
 	if(layerBlock.style.display == 'block')
 		layerBlock.style.display = 'none';
 }

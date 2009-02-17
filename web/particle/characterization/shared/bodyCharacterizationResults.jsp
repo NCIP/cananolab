@@ -99,7 +99,7 @@
 					<tr>
 						<td valign="top" colspan="1" class="subformTitle">
 							<a
-								href="javascript:showhide('submitDatum');hide('populateDataTableButton');"><b>Data</b>
+								href="javascript:showhide('submitDatum');"><b>Data</b>
 							</a>
 						</td>
 					</tr>
