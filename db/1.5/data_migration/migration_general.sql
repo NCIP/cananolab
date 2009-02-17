@@ -327,6 +327,10 @@ insert into common_lookup(attribute,name,value) values ('instrument','X-Ray Phot
 insert into common_lookup(attribute,name,value) values ('instrument','Microplate Analysis','Microplate Reader');
 insert into common_lookup(attribute,name,value) values ('instrument','Matrix Assisted Laser Desorption Ionisation - Time Of Flight','Matrix Assisted Laser Desorption Ionisation - Time Of Flight Mass Spectrometer');
 insert into common_lookup(attribute,name,value) values ('instrument','Confocal Laser Scanning Microscopy','Confocal Microscope');
+insert into common_lookup(name,attribute,value) values ('PhysicoChemicalCharacterization','displayName','Physico-Chemical Characterization');
+insert into common_lookup(name,attribute,value) values ('InvivoCharacterization','displayName','In Vivo Characterization');
+insert into common_lookup(name,attribute,value) values ('Pharmacokinetics','displayName','Pharmacokinetics');
+insert into common_lookup(name,attribute,value) values ('Toxicology','displayName','Toxicology');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
