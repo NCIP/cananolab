@@ -16,6 +16,7 @@ function resetTheDataSet(isShow) {
 	rowCount = 0;
 	if (isShow) {
 		show('newDataSet');
+		hide('populateDataTable');
 		hide('existingDataSet');
 	} else {
 		hide('newDataSet');
@@ -175,7 +176,7 @@ function addDatumColumn(myDatum) {
 		//TODO:: if edit existing column, datumColumnCount++ not work
 		datumColumnCount++;		
 		createMatrixPattern();
-		window.setTimeout("fillColumnTable()", 200);
+		window.setTimeout("fillColumnTable()", 100);
 		clearTheDataColumn();
 		//if (rowCount>0 && !editDataSet){
 		if (rowCount>0){
@@ -341,8 +342,8 @@ function fillColumnTable() {
 //			datum.id = -i-1;
 //		}
 		//the column input always use -1, -2, not actual id
-		datum.id = -i-1;
-		id = datum.id;
+		//datum.id = -i-200;
+		id = -i-1;
 		dwr.util.cloneNode("datumColumnPattern", {
 			idSuffix :id
 		});
@@ -401,7 +402,7 @@ function fillColumnTable() {
 		colDatum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		colDatum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
 		colDatum.value = dwr.util.getValue("datumColumnValue" + id);
-		dataColumnCache[datum.id] = colDatum;
+		dataColumnCache[datumid] = colDatum;
 		//TODO:: XXXXXX
 		$("datumColumnPattern" + id).style.display = "";
 		$("datumColumnPatternDisplay" + id).style.display = "";
@@ -514,7 +515,6 @@ function editDatumClicked(eleid) {
 function editColumn(eleid) {
 	var id = eleid.substring(22);
 	var datum = dataColumnCache[id];
-	alert("id="+id+" datum.id="+datum.id);
 	document.getElementById("columnId").value=datum.id;
 	document.getElementById("name").value=datum.name;	
 	document.getElementById("valueType").value=datum.valueType;	
