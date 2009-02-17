@@ -162,9 +162,10 @@
 										<td id="datumColumnPatternDisplay" style="display: none;">										
 										<input class="noBorderButton" id="datumColumnNameDisplay" type="button"
 											size="2" value="datumColumnNameDisplay" onclick="editColumn(this.id)" />
+											<span id="datumColumnValueTypeUnitDisplay" class="greyFont2">ValueTypeUnit</span><!--
 											(<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>,
 											<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>)
-										</td>
+										--></td>
 									</tr>
 								</tbody>
 							</table>
@@ -194,7 +195,7 @@
 			Populate Data Table
 		</td>
 	</tr>
-	<tr id="datumColumnsDivRow">
+	<tr id="datumColumnsDivRow" style="display: none;">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
 			<div id="datumColumnsDiv" style="display: block;">
 				<table id="datumColumnsTable" class="smalltable" border="0">
@@ -206,11 +207,6 @@
 									value="datumColumnDataRowId" />
 								<input id="datumColumnDataSetId" type="hidden"
 									value="datumColumnDataSetId" />
-								<!--
-								<input class="noBorderButton" id="datumColumnName" type="button"
-									size="2" value="datumColumnName" onclick="editColumn(this.id)" />
-								
-								-->
 								<span id="datumColumnName" class="greyFont2">datumColumnName</span>
 								(<span id="datumColumnValueType" class="greyFont2">ValueType</span>,
 								<span id="datumColumnValueUnit" class="greyFont2"><strong>ValueUnit</strong></span>)
@@ -227,14 +223,6 @@
 							<td class="rightLabelNoBottom" valign="top" align="right"
 								colspan="1">
 								<div id="addRowButtons" style="display: none;">
-									<!--<input class="noBorderButton" type="button" value="New"
-					onclick="clearTheDataRow()" />
-				<input class="noBorderButton" type="button" value="Save Row"
-					onclick="addRow()" />
-				<input class="noBorderButton" type="button" value="Delete"
-					onclick="deleteClicked()" />
-			-->
-
 									<input class="noBorderButton" type="button" value="Save"
 										onclick="addRow()" />
 									<input class="noBorderButton" type="button" value="Delete"
