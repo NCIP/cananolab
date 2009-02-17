@@ -5,7 +5,6 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -8,9 +8,6 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
@@ -18,8 +15,11 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 
 import java.util.Comparator;
@@ -193,58 +193,71 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class NanoparticleEntityTypeDateComparator implements
-			Comparator<NanoparticleEntity> {
-		public int compare(NanoparticleEntity entity1,
-				NanoparticleEntity entity2) {
-			if (entity1.getClass().getCanonicalName().equals(
-					entity2.getClass().getCanonicalName())) {
-				return entity1.getCreatedDate().compareTo(
-						entity2.getCreatedDate());
+	public static class NanoparticleEntityBeanTypeDateComparator implements
+			Comparator<NanoparticleEntityBean> {
+		public int compare(NanoparticleEntityBean entity1,
+				NanoparticleEntityBean entity2) {
+			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
+					entity2.getDomainEntity().getClass().getCanonicalName())) {
+				return entity1.getDomainEntity().getCreatedDate().compareTo(
+						entity2.getDomainEntity().getCreatedDate());
 			} else {
-				return entity1.getClass().getCanonicalName().compareTo(
-						entity2.getClass().getCanonicalName());
+				return entity1.getDomainEntity().getClass().getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
 			}
 		}
 	}
 
-	public static class FunctionalizingEntityTypeDateComparator implements
-			Comparator<FunctionalizingEntity> {
-		public int compare(FunctionalizingEntity entity1,
-				FunctionalizingEntity entity2) {
-			if (entity1.getClass().getCanonicalName().equals(
-					entity2.getClass().getCanonicalName())) {
-				return entity1.getCreatedDate().compareTo(
-						entity2.getCreatedDate());
+	public static class FunctionalizingEntityBeanTypeDateComparator implements
+			Comparator<FunctionalizingEntityBean> {
+		public int compare(FunctionalizingEntityBean entity1,
+				FunctionalizingEntityBean entity2) {
+			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
+					entity2.getDomainEntity().getClass().getCanonicalName())) {
+				return entity1.getDomainEntity().getCreatedDate().compareTo(
+						entity2.getDomainEntity().getCreatedDate());
 			} else {
-				return entity1.getClass().getCanonicalName().compareTo(
-						entity2.getClass().getCanonicalName());
+				return entity1.getDomainEntity().getClass().getCanonicalName()
+						.compareTo(
+								entity2.getDomainEntity().getClass()
+										.getCanonicalName());
 			}
 		}
 	}
 
-	public static class ChemicalAssociationTypeDateComparator implements
-			Comparator<ChemicalAssociation> {
-		public int compare(ChemicalAssociation assoc1,
-				ChemicalAssociation assoc2) {
-			if (assoc1.getClass().getCanonicalName().equals(
-					assoc2.getClass().getCanonicalName())) {
-				return assoc1.getCreatedDate().compareTo(
-						assoc2.getCreatedDate());
+	public static class ChemicalAssociationBeanTypeDateComparator implements
+			Comparator<ChemicalAssociationBean> {
+		public int compare(ChemicalAssociationBean assoc1,
+				ChemicalAssociationBean assoc2) {
+			if (assoc1.getDomainAssociation().getClass().getCanonicalName()
+					.equals(
+							assoc2.getDomainAssociation().getClass()
+									.getCanonicalName())) {
+				return assoc1.getDomainAssociation().getCreatedDate()
+						.compareTo(
+								assoc2.getDomainAssociation().getCreatedDate());
 			} else {
-				return assoc1.getClass().getCanonicalName().compareTo(
-						assoc2.getClass().getCanonicalName());
+				return assoc1.getDomainAssociation().getClass()
+						.getCanonicalName().compareTo(
+								assoc2.getDomainAssociation().getClass()
+										.getCanonicalName());
 			}
 		}
 	}
 
-	public static class FileTypeDateComparator implements Comparator<File> {
-		public int compare(File file1, File file2) {
-			if (file1.getType().equals(file2.getType())) {
-				return file1.getCreatedDate().compareTo(file2.getCreatedDate());
+	public static class FileBeanTypeDateComparator implements Comparator<FileBean> {
+		public int compare(FileBean file1, FileBean file2) {
+			if (file1.getDomainFile().getType().equals(
+					file2.getDomainFile().getType())) {
+				return file1.getDomainFile().getCreatedDate().compareTo(
+						file2.getDomainFile().getCreatedDate());
 			} else {
-				return file1.getClass().getCanonicalName().compareTo(
-						file2.getClass().getCanonicalName());
+				return file1.getDomainFile().getClass().getCanonicalName()
+						.compareTo(
+								file2.getDomainFile().getClass()
+										.getCanonicalName());
 			}
 		}
 	}
@@ -255,13 +268,9 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class DatumDateComparator implements
-			Comparator<Datum> {
-		public int compare(Datum datum1,
-				Datum datum2) {
-			return datum1.getCreatedDate()
-					.compareTo(
-							datum2.getCreatedDate());
+	public static class DatumDateComparator implements Comparator<Datum> {
+		public int compare(Datum datum1, Datum datum2) {
+			return datum1.getCreatedDate().compareTo(datum2.getCreatedDate());
 		}
 	}
 
@@ -272,20 +281,20 @@ public class CaNanoLabComparators {
 		}
 	}
 
-//	public static class DerivedDatumBeanDateComparator implements
-//			Comparator<DerivedDatumBean> {
-//		public int compare(DerivedDatumBean data1, DerivedDatumBean data2) {
-//			return data1.getDomainDerivedDatum().getCreatedDate().compareTo(
-//					data2.getDomainDerivedDatum().getCreatedDate());
-//		}
-//	}
-//
-//	public static class DerivedDatumDateComparator implements
-//			Comparator<DerivedDatum> {
-//		public int compare(DerivedDatum data1, DerivedDatum data2) {
-//			return data1.getCreatedDate().compareTo(data2.getCreatedDate());
-//		}
-//	}
+	// public static class DerivedDatumBeanDateComparator implements
+	// Comparator<DerivedDatumBean> {
+	// public int compare(DerivedDatumBean data1, DerivedDatumBean data2) {
+	// return data1.getDomainDerivedDatum().getCreatedDate().compareTo(
+	// data2.getDomainDerivedDatum().getCreatedDate());
+	// }
+	// }
+	//
+	// public static class DerivedDatumDateComparator implements
+	// Comparator<DerivedDatum> {
+	// public int compare(DerivedDatum data1, DerivedDatum data2) {
+	// return data1.getCreatedDate().compareTo(data2.getCreatedDate());
+	// }
+	// }
 
 	public static class FunctionBeanDateComparator implements
 			Comparator<FunctionBean> {

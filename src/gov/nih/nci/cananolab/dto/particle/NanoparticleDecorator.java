@@ -13,9 +13,9 @@ import org.displaytag.decorator.TableDecorator;
 /**
  * This decorator is used to for decorate different properties of a nanoparticle
  * to be shown properly in the view page using display tag lib.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class NanoparticleDecorator extends TableDecorator {
 	public SortableName getEditParticleURL() {
@@ -30,9 +30,9 @@ public class NanoparticleDecorator extends TableDecorator {
 //				+ particleId+"&location=local";
 //		String link = "<a href=" + editParticleURL + ">" + particleName
 //				+ "</a>";
-		
+
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitNanoparticleSample.do?submitType=&dispatch=setupUpdate&particleId=");
+		sb.append("nanoparticleSample.do?dispatch=summaryEdit&particleId=");
 		sb.append(particleId);
 		sb.append("&location=local>");
 		sb.append(particleName);
@@ -53,9 +53,9 @@ public class NanoparticleDecorator extends TableDecorator {
 //		;
 //		String link = "<a href=" + viewParticleURL + ">" + particleName
 //				+ "</a>";
-		
+
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitNanoparticleSample.do?dispatch=setupView&particleId=");
+		sb.append("nanoparticleSample.do?dispatch=summaryView&particleId=");
 		sb.append(particleId);
 		sb.append("&location=");
 		sb.append(particle.getLocation());
@@ -131,7 +131,7 @@ public class NanoparticleDecorator extends TableDecorator {
 		}
 		return StringUtils.join(charNames, "<br>");
 	}
-	
+
 	public String getPointOfContactName() throws CaNanoLabException {
 		ParticleBean particle = (ParticleBean) getCurrentRowObject();
 		return particle.getPocBean().getDisplayName();

@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -190,11 +192,11 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException {
 		try {
-//			for (DerivedBioAssayDataBean bioAssayData : charBean
-//					.getDerivedBioAssayDataList()) {
-//				fileService
-//						.retrieveVisibility(bioAssayData.getFileBean(), user);
-//			}
+			// for (DerivedBioAssayDataBean bioAssayData : charBean
+			// .getDerivedBioAssayDataList()) {
+			// fileService
+			// .retrieveVisibility(bioAssayData.getFileBean(), user);
+			// }
 			fileService
 					.retrieveVisibility(charBean.getProtocolFileBean(), user);
 		} catch (Exception e) {
@@ -223,10 +225,46 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		}
 	}
 
-	public List<Characterization> findCharsByParticleSampleId(String particleId)
-			throws ParticleCharacterizationException {
-		throw new ParticleCharacterizationException(
-				"Not implemented for local service");
+	public List<CharacterizationBean> findCharsByParticleSampleId(
+			String particleId) throws ParticleCharacterizationException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(Characterization.class);
+			crit.createAlias("nanoparticleSample", "sample");
+			crit.add(Property.forName("sample.id").eq(new Long(particleId)));
+			// fully load characterization
+			crit.setFetchMode("protocolFile", FetchMode.JOIN);
+			crit.setFetchMode("protocolFile.protocol", FetchMode.JOIN);
+			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+			crit.setFetchMode("experimentConfigCollection.technique",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"experimentConfigCollection.instrumentColleciton",
+					FetchMode.JOIN);
+			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("datumCollection", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.conditionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List result = appService.query(crit);
+			List<CharacterizationBean> chars = new ArrayList<CharacterizationBean>();
+			if (!result.isEmpty()) {
+				Characterization chara = (Characterization) result.get(0);
+				chars.add(new CharacterizationBean(chara));
+			}
+			return chars;
+		} catch (Exception e) {
+			throw new ParticleCharacterizationException(
+					"Error finding characterizations by particle ID: "
+							+ particleId);
+		}
 	}
 
 	public void assignPublicVisibility(AuthorizationService authService,
@@ -235,41 +273,43 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		if (aChar != null) {
 			authService.assignPublicVisibility(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection
-//			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
-//					.getDerivedBioAssayDataCollection();
-//			if (derivedBioAssayDataCollection != null) {
-//				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
-//					if (aDerived != null) {
-//						authService.assignPublicVisibility(aDerived.getId()
-//								.toString());
-//					}
-//					// derived.derivedDatum
-//					Collection<DerivedDatum> derivedDatumCollection = aDerived
-//							.getDerivedDatumCollection();
-//					if (derivedDatumCollection != null) {
-//						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
-//							if (aDerivedDatum != null) {
-//								authService
-//										.assignPublicVisibility(aDerivedDatum
-//												.getId().toString());
-//							}
-//						}
-//					}
-//				}
-//			}
+			// Collection<DerivedBioAssayData> derivedBioAssayDataCollection =
+			// aChar
+			// .getDerivedBioAssayDataCollection();
+			// if (derivedBioAssayDataCollection != null) {
+			// for (DerivedBioAssayData aDerived :
+			// derivedBioAssayDataCollection) {
+			// if (aDerived != null) {
+			// authService.assignPublicVisibility(aDerived.getId()
+			// .toString());
+			// }
+			// // derived.derivedDatum
+			// Collection<DerivedDatum> derivedDatumCollection = aDerived
+			// .getDerivedDatumCollection();
+			// if (derivedDatumCollection != null) {
+			// for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
+			// if (aDerivedDatum != null) {
+			// authService
+			// .assignPublicVisibility(aDerivedDatum
+			// .getId().toString());
+			// }
+			// }
+			// }
+			// }
+			// }
 
-			//TODO visiblity for instrument and technique
-//			// InstrumentConfiguration
-//			if (aChar.getInstrumentConfiguration() != null) {
-//				authService.assignPublicVisibility(aChar
-//						.getInstrumentConfiguration().getId().toString());
-//				// InstrumentConfiguration.Instrument
-//				if (aChar.getInstrumentConfiguration().getInstrument() != null) {
-//					authService.assignPublicVisibility(aChar
-//							.getInstrumentConfiguration().getInstrument()
-//							.getId().toString());
-//				}
-//			}
+			// TODO visiblity for instrument and technique
+			// // InstrumentConfiguration
+			// if (aChar.getInstrumentConfiguration() != null) {
+			// authService.assignPublicVisibility(aChar
+			// .getInstrumentConfiguration().getId().toString());
+			// // InstrumentConfiguration.Instrument
+			// if (aChar.getInstrumentConfiguration().getInstrument() != null) {
+			// authService.assignPublicVisibility(aChar
+			// .getInstrumentConfiguration().getInstrument()
+			// .getId().toString());
+			// }
+			// }
 		}
 	}
 
@@ -278,41 +318,43 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		if (aChar != null) {
 			authService.removePublicGroup(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection
-//			Collection<DerivedBioAssayData> derivedBioAssayDataCollection = aChar
-//					.getDerivedBioAssayDataCollection();
-//			if (derivedBioAssayDataCollection != null) {
-//				for (DerivedBioAssayData aDerived : derivedBioAssayDataCollection) {
-//					if (aDerived != null) {
-//						authService.removePublicGroup(aDerived.getId()
-//								.toString());
-//					}
-//					// derived.derivedDatum
-//					Collection<DerivedDatum> derivedDatumCollection = aDerived
-//							.getDerivedDatumCollection();
-//					if (derivedDatumCollection != null) {
-//						for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
-//							if (aDerivedDatum != null) {
-//								authService.removePublicGroup(aDerivedDatum
-//										.getId().toString());
-//							}
-//						}
-//					}
-//				}
-//			}
-			//TODO remove visibility for instrument and technique
+			// Collection<DerivedBioAssayData> derivedBioAssayDataCollection =
+			// aChar
+			// .getDerivedBioAssayDataCollection();
+			// if (derivedBioAssayDataCollection != null) {
+			// for (DerivedBioAssayData aDerived :
+			// derivedBioAssayDataCollection) {
+			// if (aDerived != null) {
+			// authService.removePublicGroup(aDerived.getId()
+			// .toString());
+			// }
+			// // derived.derivedDatum
+			// Collection<DerivedDatum> derivedDatumCollection = aDerived
+			// .getDerivedDatumCollection();
+			// if (derivedDatumCollection != null) {
+			// for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
+			// if (aDerivedDatum != null) {
+			// authService.removePublicGroup(aDerivedDatum
+			// .getId().toString());
+			// }
+			// }
+			// }
+			// }
+			// }
+			// TODO remove visibility for instrument and technique
 			// InstrumentConfiguration
-//			InstrumentConfiguration instrumentConfiguration = aChar
-//					.getInstrumentConfiguration();
-//			if (instrumentConfiguration != null) {
-//				authService.removePublicGroup(instrumentConfiguration.getId()
-//						.toString());
-//				// InstrumentConfiguration.Instrument
-//				if (instrumentConfiguration.getInstrument() != null) {
-//					authService.removePublicGroup(aChar
-//							.getInstrumentConfiguration().getInstrument()
-//							.getId().toString());
-//				}
-//			}
+			// InstrumentConfiguration instrumentConfiguration = aChar
+			// .getInstrumentConfiguration();
+			// if (instrumentConfiguration != null) {
+			// authService.removePublicGroup(instrumentConfiguration.getId()
+			// .toString());
+			// // InstrumentConfiguration.Instrument
+			// if (instrumentConfiguration.getInstrument() != null) {
+			// authService.removePublicGroup(aChar
+			// .getInstrumentConfiguration().getInstrument()
+			// .getId().toString());
+			// }
+			// }
 		}
 	}
 }

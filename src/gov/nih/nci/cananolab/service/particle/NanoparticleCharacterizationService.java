@@ -54,7 +54,7 @@ public interface NanoparticleCharacterizationService {
 	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
 			OutputStream out) throws IOException;
 
-	public List<Characterization> findCharsByParticleSampleId(String particleId)
+	public List<CharacterizationBean> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException;
 
 	public void removePublicVisibility(

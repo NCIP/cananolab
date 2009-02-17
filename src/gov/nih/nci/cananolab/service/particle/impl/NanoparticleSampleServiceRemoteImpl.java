@@ -13,10 +13,11 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
-import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
@@ -229,17 +230,18 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		// characterization
 		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceRemoteImpl(
 				serviceUrl);
-		List<Characterization> characterizationCollection = charService
+		List<CharacterizationBean> characterizationCollection = charService
 				.findCharsByParticleSampleId(particleId);
-		particleSample
-				.setCharacterizationCollection(new HashSet<Characterization>(
-						characterizationCollection));
+		//TODO fix remote method
+//		particleSample
+//				.setCharacterizationCollection(new HashSet<Characterization>(
+//						characterizationCollection));
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceRemoteImpl(
 				serviceUrl);
-		SampleComposition sampleComposition = compService
+		CompositionBean compBean = compService
 				.findCompositionByParticleSampleId(particleId);
-		if (sampleComposition != null) {
-			particleSample.setSampleComposition(sampleComposition);
+		if (compBean != null) {
+			particleSample.setSampleComposition(compBean.getDomain());
 		}
 		loadPublicationsForParticleSample(particleSample);
 	}

@@ -194,22 +194,22 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 			loadProtocolForProtocolFile(protocolFile);
 			achar.setProtocolFile(protocolFile);
 		}
-		//TODO:: temporarily commented until grid service is updated
-		//loadDerivedBioAssayDataForCharacterization(achar);
+		// TODO:: temporarily commented until grid service is updated
+		// loadDerivedBioAssayDataForCharacterization(achar);
 		if (achar instanceof Surface) {
 			loadSurfaceChemistriesForSurface((Surface) achar);
 		}
-		//TODO temporarily commented until grid service is updated
-//		InstrumentConfiguration instrumentConfig = gridClient
-//				.getInstrumentConfigurationByCharacterizationId(charId);
-//		if (instrumentConfig != null) {
-//			Instrument instrument = gridClient
-//					.getInstrumentByInstrumentConfigurationId(instrumentConfig
-//							.getId().toString());
-//			if (instrument != null)
-//				instrumentConfig.setInstrument(instrument);
-//			achar.setInstrumentConfiguration(instrumentConfig);
-//		}
+		// TODO temporarily commented until grid service is updated
+		// InstrumentConfiguration instrumentConfig = gridClient
+		// .getInstrumentConfigurationByCharacterizationId(charId);
+		// if (instrumentConfig != null) {
+		// Instrument instrument = gridClient
+		// .getInstrumentByInstrumentConfigurationId(instrumentConfig
+		// .getId().toString());
+		// if (instrument != null)
+		// instrumentConfig.setInstrument(instrument);
+		// achar.setInstrumentConfiguration(instrumentConfig);
+		// }
 	}
 
 	private void loadProtocolForProtocolFile(ProtocolFile protocolFile)
@@ -249,48 +249,46 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 		}
 	}
 
-//	private void loadDerivedBioAssayDataForCharacterization(
-//			Characterization achar) throws Exception {
-//		DerivedBioAssayData[] bioassayArray = gridClient
-//				.getDerivedBioAssayDatasByCharacterizationId(achar.getId()
-//						.toString());
-//		if (bioassayArray != null && bioassayArray.length > 0) {
-//			achar
-//					.setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
-//			for (DerivedBioAssayData bioassay : bioassayArray) {
-//				/**
-//				 * TODO temporarily commented File file = gridClient
-//				 * .getFileByDerivedBioAssayDataId(bioassay.getId()
-//				 * .toString()); if (file != null) { bioassay.setFile(file); }
-//				 */
-//				DerivedDatum[] datums = gridClient
-//						.getDerivedDatumsByDerivedBioAssayDataId(bioassay
-//								.getId().toString());
-//				if (datums != null && datums.length > 0) {
-//					bioassay
-//							.setDerivedDatumCollection(new HashSet<DerivedDatum>());
-//					for (DerivedDatum datum : datums) {
-//						bioassay.getDerivedDatumCollection().add(datum);
-//					}
-//				}
-//				achar.getDerivedBioAssayDataCollection().add(bioassay);
-//			}
-//		}
-//	}
+	// private void loadDerivedBioAssayDataForCharacterization(
+	// Characterization achar) throws Exception {
+	// DerivedBioAssayData[] bioassayArray = gridClient
+	// .getDerivedBioAssayDatasByCharacterizationId(achar.getId()
+	// .toString());
+	// if (bioassayArray != null && bioassayArray.length > 0) {
+	// achar
+	// .setDerivedBioAssayDataCollection(new HashSet<DerivedBioAssayData>());
+	// for (DerivedBioAssayData bioassay : bioassayArray) {
+	// /**
+	// * TODO temporarily commented File file = gridClient
+	// * .getFileByDerivedBioAssayDataId(bioassay.getId()
+	// * .toString()); if (file != null) { bioassay.setFile(file); }
+	// */
+	// DerivedDatum[] datums = gridClient
+	// .getDerivedDatumsByDerivedBioAssayDataId(bioassay
+	// .getId().toString());
+	// if (datums != null && datums.length > 0) {
+	// bioassay
+	// .setDerivedDatumCollection(new HashSet<DerivedDatum>());
+	// for (DerivedDatum datum : datums) {
+	// bioassay.getDerivedDatumCollection().add(datum);
+	// }
+	// }
+	// achar.getDerivedBioAssayDataCollection().add(bioassay);
+	// }
+	// }
+	// }
 
 	private void loadSurfaceChemistriesForSurface(Surface surface)
 			throws Exception {
-		//TODO fix for grid client
+		// TODO fix for grid client
 		/*
-		SurfaceChemistry[] chemistries = gridClient
-				.getSurfaceChemistriesBySurfaceId(surface.getId().toString());
-		if (chemistries != null && chemistries.length > 0) {
-			surface
-					.setSurfaceChemistryCollection(new HashSet<SurfaceChemistry>());
-			for (SurfaceChemistry chem : chemistries) {
-				surface.getSurfaceChemistryCollection().add(chem);
-			}
-		}*/
+		 * SurfaceChemistry[] chemistries = gridClient
+		 * .getSurfaceChemistriesBySurfaceId(surface.getId().toString()); if
+		 * (chemistries != null && chemistries.length > 0) { surface
+		 * .setSurfaceChemistryCollection(new HashSet<SurfaceChemistry>()); for
+		 * (SurfaceChemistry chem : chemistries) {
+		 * surface.getSurfaceChemistryCollection().add(chem); } }
+		 */
 	}
 
 	/**
@@ -301,12 +299,12 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 	 * @return
 	 * @throws ParticleException
 	 */
-	public List<Characterization> findCharsByParticleSampleId(String particleId)
-			throws ParticleCharacterizationException {
+	public List<CharacterizationBean> findCharsByParticleSampleId(
+			String particleId) throws ParticleCharacterizationException {
 		try {
 			String[] charNames = gridClient
 					.getCharacterizationClassNamesByParticleId(particleId);
-			List<Characterization> characterizationCollection = new ArrayList<Characterization>();
+			List<CharacterizationBean> characterizationCollection = new ArrayList<CharacterizationBean>();
 			if (charNames != null) {
 				for (String name : charNames) {
 					CQLQuery query = new CQLQuery();
@@ -338,7 +336,8 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 						java.lang.Object obj = iter.next();
 						chara = (Characterization) obj;
 						// loadCharacterizationAssociations(chara);
-						characterizationCollection.add(chara);
+						characterizationCollection
+								.add(new CharacterizationBean(chara));
 					}
 				}
 			}

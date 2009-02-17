@@ -1,11 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.function.OtherFunction;
-import gov.nih.nci.cananolab.domain.function.OtherTarget;
-import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -17,6 +12,7 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -33,10 +29,12 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of NanoparticleCompositionService.
@@ -464,10 +462,68 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		return true;
 	}
 
-	public SampleComposition findCompositionByParticleSampleId(String particleId)
+	public CompositionBean findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException {
-		throw new ParticleCompositionException(
-				"Not implemented for local service");
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(SampleComposition.class);
+			crit.createAlias("nanoparticleSample", "sample");
+			crit.add(Property.forName("sample.id").eq(new Long(particleId)));
+			// fully load composition
+			crit.setFetchMode("nanoparticleEntityCollection", FetchMode.JOIN);
+			crit.setFetchMode("nanoparticleEntityCollection.fileCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"nanoparticleEntityCollection.fileCollection.keywordCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"nanoparticleEntityCollection.compositionElementCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"nanoparticleEntityCollection.compositionElementCollection.inherentFunctionCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode("functionalizingEntityCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode("functionalizingEntityCollection.fileCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"functionalizingEntityCollection.fileCollection.keywordCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode(
+					"functionalizingEntityCollection.functionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
+			crit.setFetchMode("chemicalAssociationCollection.fileCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"chemicalAssociationCollection.associatedElementA",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"chemicalAssociationCollection.associatedElementB",
+					FetchMode.JOIN);
+			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List result = appService.query(crit);
+			CompositionBean comp = null;
+			if (!result.isEmpty()) {
+				comp = new CompositionBean((SampleComposition) result.get(0));
+
+			}
+			return comp;
+		} catch (Exception e) {
+			throw new ParticleCompositionException(
+					"Error finding composition by particle ID: " + particleId);
+		}
 	}
 
 	public void assignChemicalAssociationPublicVisibility(
@@ -542,7 +598,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 					}
 				}
 			}
-			//TODO activation method
+			// TODO activation method
 		}
 	}
 

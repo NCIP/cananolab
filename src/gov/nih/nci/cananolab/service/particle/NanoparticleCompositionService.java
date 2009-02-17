@@ -9,12 +9,11 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-
-import java.util.SortedSet;
 
 /**
  * Service methods involving composition.
@@ -94,7 +93,7 @@ public interface NanoparticleCompositionService {
 			FunctionalizingEntityBean entityBean)
 			throws ParticleCompositionException;
 
-	public SampleComposition findCompositionByParticleSampleId(String particleId)
+	public CompositionBean findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException;
 
 	public void assignChemicalAssociationPublicVisibility(

@@ -8,13 +8,8 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.domain.function.TargetingFunction;
-import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
-import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -22,6 +17,7 @@ import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
 import gov.nih.nci.cananolab.exception.ParticleCompositionException;
@@ -31,10 +27,8 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 
@@ -204,26 +198,19 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	private void loadInherentFunctionByComposingElement(
 			ComposingElement composingElement)
 			throws ParticleCompositionException {
-		//TODO fix for grid client
+		// TODO fix for grid client
 		/*
-		try {
-			Function[] functions = gridClient
-					.getInherentFunctionsByComposingElementId(composingElement
-							.getId().toString());
-			if (functions != null && functions.length > 0) {
-				composingElement
-						.setInherentFunctionCollection(new HashSet<Function>());
-				for (Function function : functions) {
-					composingElement.getInherentFunctionCollection().add(
-							function);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Problem finding the inherentFunctionCollection for composingElement id: "
-					+ composingElement.getId();
-			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
-		}*/
+		 * try { Function[] functions = gridClient
+		 * .getInherentFunctionsByComposingElementId(composingElement
+		 * .getId().toString()); if (functions != null && functions.length > 0) {
+		 * composingElement .setInherentFunctionCollection(new HashSet<Function>());
+		 * for (Function function : functions) {
+		 * composingElement.getInherentFunctionCollection().add( function); } } }
+		 * catch (Exception e) { String err = "Problem finding the
+		 * inherentFunctionCollection for composingElement id: " +
+		 * composingElement.getId(); logger.error(err, e); throw new
+		 * ParticleCompositionException(err, e); }
+		 */
 	}
 
 	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
@@ -448,51 +435,35 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		if (files != null && !files.isEmpty()) {
 			entity.setFileCollection(new HashSet<File>(files));
 		}
-		//TODO fix for grid client
+		// TODO fix for grid client
 		/*
-		ActivationMethod activationMethod = gridClient
-				.getActivationMethodByFunctionalizingEntityId(entity.getId()
-						.toString());
-		if (activationMethod != null) {
-			entity.setActivationMethod(activationMethod);
-		}
-		*/
+		 * ActivationMethod activationMethod = gridClient
+		 * .getActivationMethodByFunctionalizingEntityId(entity.getId()
+		 * .toString()); if (activationMethod != null) {
+		 * entity.setActivationMethod(activationMethod); }
+		 */
 		loadFunctionsForFunctionalizingEntity(entity);
 	}
 
 	private void loadFunctionsForFunctionalizingEntity(
 			FunctionalizingEntity entity) throws ParticleCompositionException {
-		//TODO fix for grid client
+		// TODO fix for grid client
 		/*
-		try {
-			Function[] functions = gridClient
-					.getFunctionsByFunctionalizingEntityId(entity.getId()
-							.toString());
-			if (functions != null && functions.length > 0) {
-				entity.setFunctionCollection(new HashSet<Function>());
-				for (Function function : functions) {
-					if (function instanceof TargetingFunction) {
-						Target[] targets = gridClient
-								.getTargetsByFunctionId(function.getId()
-										.toString());
-						if (targets != null) {
-							((TargetingFunction) function)
-									.setTargetCollection(new HashSet<Target>());
-							for (Target target : targets) {
-								((TargetingFunction) function)
-										.getTargetCollection().add(target);
-							}
-						}
-					}
-					entity.getFunctionCollection().add(function);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Problem loading the functionCollection for FunctionalizingEntity id: "
-					+ entity.getId();
-			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
-		}*/
+		 * try { Function[] functions = gridClient
+		 * .getFunctionsByFunctionalizingEntityId(entity.getId() .toString());
+		 * if (functions != null && functions.length > 0) {
+		 * entity.setFunctionCollection(new HashSet<Function>()); for (Function
+		 * function : functions) { if (function instanceof TargetingFunction) {
+		 * Target[] targets = gridClient
+		 * .getTargetsByFunctionId(function.getId() .toString()); if (targets !=
+		 * null) { ((TargetingFunction) function) .setTargetCollection(new
+		 * HashSet<Target>()); for (Target target : targets) {
+		 * ((TargetingFunction) function) .getTargetCollection().add(target); } } }
+		 * entity.getFunctionCollection().add(function); } } } catch (Exception
+		 * e) { String err = "Problem loading the functionCollection for
+		 * FunctionalizingEntity id: " + entity.getId(); logger.error(err, e);
+		 * throw new ParticleCompositionException(err, e); }
+		 */
 	}
 
 	/**
@@ -638,31 +609,26 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 		if (files != null && !files.isEmpty()) {
 			assoc.setFileCollection(new HashSet<File>(files));
 		}
-		//TODO fix for grid client
+		// TODO fix for grid client
 		/*
-		AssociatedElement associatedElementA = gridClient
-				.getAssociatedElementAByChemicalAssociationId(assoc.getId()
-						.toString());
-		if (associatedElementA != null
-				&& associatedElementA instanceof ComposingElement) {
-			loadNanoparticleEntityForComposingElement(particleId,
-					(ComposingElement) associatedElementA);
-		}
-		AssociatedElement associatedElementB = gridClient
-				.getAssociatedElementBByChemicalAssociationId(assoc.getId()
-						.toString());
-		if (associatedElementB != null
-				&& associatedElementB instanceof ComposingElement) {
-			loadNanoparticleEntityForComposingElement(particleId,
-					(ComposingElement) associatedElementB);
-		}
-
-		if (associatedElementA != null) {
-			assoc.setAssociatedElementA(associatedElementA);
-		}
-		if (associatedElementB != null) {
-			assoc.setAssociatedElementB(associatedElementB);
-		}*/
+		 * AssociatedElement associatedElementA = gridClient
+		 * .getAssociatedElementAByChemicalAssociationId(assoc.getId()
+		 * .toString()); if (associatedElementA != null && associatedElementA
+		 * instanceof ComposingElement) {
+		 * loadNanoparticleEntityForComposingElement(particleId,
+		 * (ComposingElement) associatedElementA); } AssociatedElement
+		 * associatedElementB = gridClient
+		 * .getAssociatedElementBByChemicalAssociationId(assoc.getId()
+		 * .toString()); if (associatedElementB != null && associatedElementB
+		 * instanceof ComposingElement) {
+		 * loadNanoparticleEntityForComposingElement(particleId,
+		 * (ComposingElement) associatedElementB); }
+		 *
+		 * if (associatedElementA != null) {
+		 * assoc.setAssociatedElementA(associatedElementA); } if
+		 * (associatedElementB != null) {
+		 * assoc.setAssociatedElementB(associatedElementB); }
+		 */
 	}
 
 	public void retrieveVisibility(NanoparticleEntityBean entity, UserBean user)
@@ -741,7 +707,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 	 * @return
 	 * @throws ParticleCompositionException
 	 */
-	public SampleComposition findCompositionByParticleSampleId(String particleId)
+	public CompositionBean findCompositionByParticleSampleId(String particleId)
 			throws ParticleCompositionException {
 		try {
 			CQLQuery query = new CQLQuery();
@@ -784,16 +750,14 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 					loadFunctionalizingEntityForComposition(sampleComposition,
 							functionalizingEntityClasses);
 				}
-				//TODO fix for grid client
+				// TODO fix for grid client
 				/*
-				ChemicalAssociation[] assocs = gridClient
-						.getChemicalAssociationsByCompositionId(sampleComposition
-								.getId().toString());
-				if (assocs != null && assocs.length > 0) {
-					sampleComposition
-							.setChemicalAssociationCollection(new HashSet<ChemicalAssociation>(
-									Arrays.asList(assocs)));
-				}*/
+				 * ChemicalAssociation[] assocs = gridClient
+				 * .getChemicalAssociationsByCompositionId(sampleComposition
+				 * .getId().toString()); if (assocs != null && assocs.length >
+				 * 0) { sampleComposition .setChemicalAssociationCollection(new
+				 * HashSet<ChemicalAssociation>( Arrays.asList(assocs))); }
+				 */
 
 				/**
 				 * TODO temporarily commented File[] files = gridClient
@@ -805,7 +769,7 @@ public class NanoparticleCompositionServiceRemoteImpl implements
 				 * .asList(files))); }
 				 */
 			}
-			return sampleComposition;
+			return new CompositionBean(sampleComposition);
 		} catch (Exception e) {
 			String err = "Problem finding the sampleComposition by particle id: "
 					+ particleId;

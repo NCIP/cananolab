@@ -35,7 +35,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SubmitNanoparticleAction extends BaseAnnotationAction {
+public class NanoparticleSampleAction extends BaseAnnotationAction {
 	NanoparticleSampleServiceHelper helper = new NanoparticleSampleServiceHelper();
 
 	public ActionForward create(ActionMapping mapping, ActionForm form,
@@ -122,6 +122,41 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		return mapping.findForward("update");
 	}
 
+
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleSampleBean = setupParticle(theForm, request,
+				"local");
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		// set visibility
+		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
+		service.retrieveVisibility(particleSampleBean, user);
+		theForm.set("particleSampleBean", particleSampleBean);
+		setupLookups(request, particleSampleBean.getDomainParticleSample()
+				.getPrimaryPointOfContact().getOrganization().getName());
+		// setupDataTree(particleSampleBean, request);
+		return mapping.findForward("summaryView");
+	}
+
+	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		ParticleBean particleSampleBean = setupParticle(theForm, request,
+				"local");
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		// set visibility
+		NanoparticleSampleService service = new NanoparticleSampleServiceLocalImpl();
+		service.retrieveVisibility(particleSampleBean, user);
+		theForm.set("particleSampleBean", particleSampleBean);
+		setupLookups(request, particleSampleBean.getDomainParticleSample()
+				.getPrimaryPointOfContact().getOrganization().getName());
+		// setupDataTree(particleSampleBean, request);
+		return mapping.findForward("summaryEdit");
+	}
+
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -134,7 +169,7 @@ public class SubmitNanoparticleAction extends BaseAnnotationAction {
 		return mapping.findForward("view");
 	}
 
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("pocParticle");

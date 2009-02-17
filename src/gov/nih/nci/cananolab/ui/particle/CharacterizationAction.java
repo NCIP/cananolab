@@ -620,6 +620,28 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryView");
 	}
 
+	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		//setupCharSummary(theForm, request);
+
+		String location = request.getParameter("location");
+		String requestUrl = request.getRequestURL().toString();
+		String printLinkURL = requestUrl + "?page=0&particleId=" + particleId
+				+ "&submitType=" + "&dispatch=printSummaryView" + "&location="
+				+ location;
+		String printAllLinkURL = requestUrl + "?page=0&particleId="
+				+ particleId + "&dispatch=printFullSummaryView" + "&location="
+				+ location;
+		request.getSession().setAttribute("printSummaryViewLinkURL",
+				printLinkURL);
+		request.getSession().setAttribute("printFullSummaryViewLinkURL",
+				printAllLinkURL);
+		return mapping.findForward("summaryEdit");
+	}
+
 	public ActionForward printSummaryView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

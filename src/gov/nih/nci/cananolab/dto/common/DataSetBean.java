@@ -2,8 +2,7 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.DataSet;
-import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class DataSetBean {
 	private List<DataRowBean> dataRows = new ArrayList<DataRowBean>();
 	private List<Datum> data = new ArrayList<Datum>();
 	private FileBean file=new FileBean();
-	
+
 
 	public DataSetBean() {
 
@@ -125,7 +124,7 @@ public class DataSetBean {
 	public void setFile(FileBean file) {
 		this.file = file;
 	}
-	
+
 	public DataRowBean getDataRowBean(Datum myDatum) {
 		DataRowBean dataRowBean = null;
 		for (DataRowBean drb: this.dataRows) {

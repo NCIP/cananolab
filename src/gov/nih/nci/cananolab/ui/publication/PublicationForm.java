@@ -14,10 +14,10 @@ import org.apache.struts.validator.DynaValidatorForm;
  * @author tanq
  *
  */
-public class SubmitPublicationForm extends DynaValidatorForm{
+public class PublicationForm extends DynaValidatorForm{
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
-		SubmitPublicationForm form = 
-			(SubmitPublicationForm)request.getSession().getAttribute("submitPublicationForm");
+		PublicationForm form = 
+			(PublicationForm)request.getSession().getAttribute("submitPublicationForm");
 		if (form!=null) {
 			String dispatch = (String)form.get("dispatch");
 			//if addAuthor and validator fail, do not reset
