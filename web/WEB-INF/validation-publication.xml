@@ -4,7 +4,7 @@
 
 <form-validation>
 	<formset>
-		<form name="submitPublicationForm">
+		<form name="publicationForm">
 			<field property="file.domainFile.category" page="2"
 				depends="required">
 				<arg position="0" key="submitPublicationForm.file.category"

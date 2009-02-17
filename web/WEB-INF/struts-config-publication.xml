@@ -2,8 +2,8 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
 <struts-config>
 	<form-beans>
-		<form-bean name="submitPublicationForm"
-			type="gov.nih.nci.cananolab.ui.publication.SubmitPublicationForm">
+		<form-bean name="publicationForm"
+			type="gov.nih.nci.cananolab.ui.publication.PublicationForm">
 			<form-property name="dispatch" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
@@ -11,7 +11,7 @@
 				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 		</form-bean>
-		
+
 		<form-bean name="searchPublicationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="particleSampleBean"
@@ -30,10 +30,10 @@
 			<form-property name="category"
 				type="java.lang.String" />
 			<form-property name="searchLocations"
-				type="java.lang.String[]"/>			
+				type="java.lang.String[]"/>
 			<form-property name="authorsStr" type="java.lang.String" />
 			<form-property name="pubMedId" type="java.lang.String" />
-			<form-property name="digitalObjectId" type="java.lang.String" />			
+			<form-property name="digitalObjectId" type="java.lang.String" />
 			<form-property name="keywordsStr" type="java.lang.String" />
 			<form-property name="nanoparticleName" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
@@ -55,10 +55,10 @@
 		<forward name="publicationSummaryPrintView"
 			path="/publication/bodyPublicationSummaryPrintView.jsp" />
 	</global-forwards>
-	<action-mappings>		
-		<action name="submitPublicationForm" parameter="dispatch"
-			path="/submitPublication"
-			type="gov.nih.nci.cananolab.ui.publication.SubmitPublicationAction"
+	<action-mappings>
+		<action name="publicationForm" parameter="dispatch"
+			path="/publication"
+			type="gov.nih.nci.cananolab.ui.publication.PublicationAction"
 			input="input">
 			<forward name="success" path="publication.message" />
 			<forward name="particleSuccess" path="particle.annotationMessage" />
@@ -67,6 +67,8 @@
 			<forward name="view" path="publication.viewPublication" />
 			<forward name="particleDetailView" path="particle.detailViewPublication" />
 			<forward name="publicationDetailView" path="publication.detailViewPublication" />
+			<forward name="summaryView" path="particle.publication.summaryView" />
+			<forward name="summaryEdit" path="particle.publication.summaryEdit" />
 			<forward name="publicationSubmitPublication"
 				path="publication.submitPublication" />
 			<forward name="particleSubmitPublication"
@@ -94,7 +96,7 @@
 			<forward name="input" path="publication.searchPublication" />
 			<forward name="success" path="publication.searchPublicationResult" />
 			<forward name="publicationView" path="particle.publicationInfo" />
-		</action>		
+		</action>
 		<action path="/managePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="publication.managePublication" scope="request" />

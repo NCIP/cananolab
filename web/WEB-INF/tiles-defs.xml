@@ -4,15 +4,15 @@
        "http://struts.apache.org/dtds/tiles-config_1_1.dtd">
 <tiles-definitions>
 	<!--  Main layout definition for the login page of caNanoLab -->
-	<definition name="calab.login"
+	<definition name="canano.login"
 		path="/layout/mainLayoutNoContentSpace.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="calabHeader" value="/html/calabHeader.html" />
-		<put name="calabSidemenu" value="/html/calabBaseSidemenu.html" />
-		<put name="calabMainmenu" value="/calabMainmenu.jsp" />
-		<put name="calabContent" value="/bodyLogin.jsp" />
-		<put name="calabFooter" value="/html/calabFooter.html" />
+		<put name="cananoHeader" value="/html/cananoHeader.html" />
+		<put name="cananoSidemenu" value="/html/cananoBaseSidemenu.html" />
+		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
+		<put name="cananoContent" value="/bodyLogin.jsp" />
+		<put name="cananoFooter" value="/html/cananoFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
 		<putList name="items">
@@ -24,13 +24,13 @@
 		</putList>
 	</definition>
 	<!--  Main layout definition for pages after log in-->
-	<definition name="calab.home" path="/layout/mainLayout.jsp">
+	<definition name="canano.home" path="/layout/mainLayout.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="calabHeader" value="/html/calabHeader.html" />
-		<put name="calabSidemenu" value="/html/calabBaseSidemenu.html" />
-		<put name="calabMainmenu" value="/calabMainmenu.jsp" />
-		<put name="calabFooter" value="/html/calabFooter.html" />
+		<put name="cananoHeader" value="/html/cananoHeader.html" />
+		<put name="cananoSidemenu" value="/html/cananoBaseSidemenu.html" />
+		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
+		<put name="cananoFooter" value="/html/cananoFooter.html" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 		<put name="menu" value="home" />
 		<put name="onloadJavascript" value="" />
@@ -49,29 +49,29 @@
 			<item value="LOGOUT" link="gotoPage('logout.do')" />
 		</putList>
 	</definition>
-	<definition name="home.error" extends="calab.home">
-		<put name="calabContent" value="/bodyMessage.jsp" />
+	<definition name="home.error" extends="canano.home">
+		<put name="cananoContent" value="/bodyMessage.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="calab.help" extends="calab.login">
-		<put name="calabContent" value="/help/bodyOnlineHelp.jsp" />
+	<definition name="canano.help" extends="canano.login">
+		<put name="cananoContent" value="/help/bodyOnlineHelp.jsp" />
 		<put name="menu" value="help" />
 	</definition>
-	<definition name="calab.welcome" extends="calab.home">
-		<put name="calabContent" value="/bodyWelcome.jsp" />
+	<definition name="canano.welcome" extends="canano.home">
+		<put name="cananoContent" value="/bodyWelcome.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="calab.password" extends="calab.home">
-		<put name="calabContent" value="/bodyUpdatePassword.jsp" />
+	<definition name="canano.password" extends="canano.home">
+		<put name="cananoContent" value="/bodyUpdatePassword.jsp" />
 		<put name="menu" value="home" />
 	</definition>
-	<definition name="calab.disclaimer"
+	<definition name="canano.disclaimer"
 		path="/layout/disclaimerLayout.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="calabHeader" value="/html/calabHeader.html" />
-		<put name="calabContent" value="/bodyDisclaimer.jsp" />
-		<put name="calabFooter" value="/bodyMessage.jsp" />
+		<put name="cananoHeader" value="/html/cananoHeader.html" />
+		<put name="cananoContent" value="/bodyDisclaimer.jsp" />
+		<put name="cananoFooter" value="/bodyMessage.jsp" />
 		<put name="nciFooter" value="/html/nciFooter.html" />
 	</definition>
 </tiles-definitions>

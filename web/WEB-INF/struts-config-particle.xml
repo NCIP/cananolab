@@ -30,7 +30,14 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-
+		<form-bean name="compositionForm"
+			type="org.apache.struts.action.DynaActionForm">
+			<form-property name="comp"
+				type="gov.nih.nci.cananolab.dto.particle.composition.CompositionBean" />
+			<form-property name="particleId" type="java.lang.String" />
+			<form-property name="page" type="java.lang.Integer"
+				initial="0" />
+		</form-bean>
 		<form-bean name="nanoparticleEntityForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="entity"
@@ -116,15 +123,16 @@
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="particle.manageNanoparticle" scope="request" />
 		<action name="nanoparticleSampleForm" parameter="dispatch"
-			path="/submitNanoparticleSample"
-			type="gov.nih.nci.cananolab.ui.particle.SubmitNanoparticleAction"
+			path="/nanoparticleSample"
+			type="gov.nih.nci.cananolab.ui.particle.NanoparticleSampleAction"
 			input="input" scope="request">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateNanoparticleSample"
 				path="particle.submitNanoparticleSample"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
-			<forward name="view" path="particle.generalInfo" />
+			<forward name="summaryView" path="particle.summaryView" />
+			<forward name="summaryEdit" path="particle.summaryEdit" />
 			<forward name="update"
 				path="particle.updateNanoparticleSample" />
 			<forward name="input"
@@ -142,6 +150,17 @@
 			<forward name="input" path="particle.searchNanoparticle" />
 			<forward name="success"
 				path="particle.searchNanoparticleResult" />
+		</action>
+		<action name="compositionForm" parameter="dispatch"
+			path="/composition"
+			type="gov.nih.nci.cananolab.ui.particle.CompositionAction"
+			input="input">
+			<forward name="input"
+				path="particle.composition.summaryview" />
+			<forward name="summaryView"
+				path="particle.composition.summaryView" />
+			<forward name="summaryEdit"
+				path="particle.composition.summaryEdit" />
 		</action>
 		<action name="nanoparticleEntityForm" parameter="dispatch"
 			path="/nanoparticleEntity"
@@ -178,13 +197,14 @@
 				key="error.duplicateCharacterizationViewTitle"
 				path="particle.characterization"
 				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
-			<forward name="input"
-				path="particle.characterization" />
+			<forward name="input" path="particle.characterization" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="detailView"
 				path="particle.characterizationDetailView" />
 			<forward name="summaryView"
-				path="particle.characterizationSummaryView" />
+				path="particle.characterization.summaryView" />
+			<forward name="summaryEdit"
+				path="particle.characterization.summaryEdit" />
 			<forward name="saveExperimentConfig"
 				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
 		</action>

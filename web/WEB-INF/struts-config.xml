@@ -52,9 +52,9 @@
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="/home.jsp"
 				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
-			<forward name="success" path="calab.welcome" />
+			<forward name="success" path="canano.welcome" />
 			<forward name="input" path="/welcome.do" />
-			<forward name="changePassword" path="calab.password" />
+			<forward name="changePassword" path="canano.password" />
 		</action>
 		<action name="updatePasswordForm" path="/updatePassword"
 			scope="request"
@@ -62,10 +62,10 @@
 			input="input">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.securityException" path="calab.password"
+				key="error.securityException" path="canano.password"
 				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
 			<forward name="success" path="/welcome.do" />
-			<forward name="input" path="calab.password" />
+			<forward name="input" path="canano.password" />
 		</action>
 		<action path="/logout" scope="request"
 			type="gov.nih.nci.cananolab.ui.security.LogoutAction">
@@ -73,33 +73,33 @@
 		</action>
 		<action path="/welcome"
 			type="gov.nih.nci.cananolab.ui.core.WelcomeAction"
-			parameter="calab.login" scope="request">
+			parameter="canano.login" scope="request">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.autodiscover" path="calab.login"
+				key="error.grid.autodiscover" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.GridAutoDiscoveryException" />
 		</action>
 		<action path="/publicCount" parameter="dispatch"
 			type="gov.nih.nci.cananolab.ui.core.CountAction">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.down" path="calab.login"
+				key="error.grid.down" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.GridDownException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.report.query" path="calab.login"
+				key="error.grid.report.query" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.ReportException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.document.query" path="calab.login"
+				key="error.grid.document.query" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.DocumentException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.protocol.query" path="calab.login"
+				key="error.grid.protocol.query" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.ProtocolException" />
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.grid.particle.query" path="calab.login"
+				key="error.grid.particle.query" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.ParticleException" />
 		</action>
 	</action-mappings>	 
