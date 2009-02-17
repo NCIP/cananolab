@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.DataRow;
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +58,7 @@ public class DataRowBean {
 	public void setDomain(DataRow domain) {
 		this.domain = domain;
 	}
-	
+
 	/**
 	* Compares <code>obj</code> to it self and returns true if they both are same
 	*
@@ -66,15 +66,15 @@ public class DataRowBean {
 	**/
 	public boolean equals(Object obj)
 	{
-		if(obj instanceof DataRowBean) 
+		if(obj instanceof DataRowBean)
 		{
-			DataRowBean dataRowBean =(DataRowBean)obj; 			 
+			DataRowBean dataRowBean =(DataRowBean)obj;
 			if(getDomain().getId() != null && getDomain().getId().equals(dataRowBean.getDomain().getId()))
 				return true;
 		}
 		return false;
 	}
-		
+
 	/**
 	* Returns hash code for the primary key of the object
 	**/
