@@ -18,7 +18,7 @@
 		<put name="itemDescription"
 			value="/particle/bodyNanoparticleDescription.jsp" />
 		<put name="createLink"
-			value="submitNanoparticleSample.do?dispatch=setup&amp;page=0" />
+			value="nanoparticleSample.do?dispatch=setupNew&amp;page=0" />
 		<put name="searchLink"
 			value="searchNanoparticle.do?dispatch=setup" />
 	</definition>

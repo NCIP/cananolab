@@ -40,7 +40,7 @@
 										<ul>
 												<li>
 													<html:link
-														page="/submitPublication.do?dispatch=setup&amp;page=0"
+														page="/publication.do?dispatch=setupNew&amp;page=0"
 														scope="page">
 													Submit a New Publication</html:link>
 													<br>
@@ -59,7 +59,7 @@
 								</tr>
 							</c:if>
 							<tr>
-								
+
 								<td class="sidebarContentBottom">
 									<c:if test="${canCreate ne 'true'}">
 										<br>

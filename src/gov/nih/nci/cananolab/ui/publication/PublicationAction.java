@@ -451,7 +451,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		String particleId = request.getParameter("particleId");
 		List<PublicationBean> publications = publicationService
-				.findPublicationsByParticleSampleId(particleId, false, true);
+				.findPublicationsByParticleSampleId(particleId);
 		request.setAttribute("publications", publications);
 		// TODO fill in detail
 		// String location = request.getParameter("location");

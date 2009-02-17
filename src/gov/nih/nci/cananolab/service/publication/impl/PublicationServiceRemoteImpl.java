@@ -86,8 +86,10 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 							false));
 				}
 			}
-			Collections.sort(publicationBeans,
-					new CaNanoLabComparators.PublicationBeanTitleComparator());
+			Collections
+					.sort(
+							publicationBeans,
+							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 		} catch (RemoteException e) {
 			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
@@ -176,15 +178,16 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			NanoparticleSample particleSample = null;
-			//TODO fix dependency on sample
-//			publication
-//					.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-//			while (iter.hasNext()) {
-//				java.lang.Object obj = iter.next();
-//				particleSample = (NanoparticleSample) obj;
-//				publication.getNanoparticleSampleCollection().add(
-//						particleSample);
-//			}
+			// TODO fix dependency on sample
+			// publication
+			// .setNanoparticleSampleCollection(new
+			// HashSet<NanoparticleSample>());
+			// while (iter.hasNext()) {
+			// java.lang.Object obj = iter.next();
+			// particleSample = (NanoparticleSample) obj;
+			// publication.getNanoparticleSampleCollection().add(
+			// particleSample);
+			// }
 		} catch (Exception e) {
 			String err = "Problem loading nanoparticle samples for the publication : "
 					+ publication.getId();
@@ -360,4 +363,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			Long dataId) throws PublicationException {
 		throw new PublicationException("not implemented for grid service.");
 	}
+
+	public List<PublicationBean> findPublicationsByParticleSampleId(
+			String particleId) throws PublicationException {
+		// TODO implement
+		return null;
+	}
+
 }

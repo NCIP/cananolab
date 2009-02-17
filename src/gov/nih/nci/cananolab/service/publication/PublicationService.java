@@ -15,30 +15,30 @@ import java.util.List;
 
 /**
  * Interface defining methods invovled in submiting and searching publications.
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public interface PublicationService {
 
 	/**
 	 * Persist a new publication or update an existing publication
-	 * 
+	 *
 	 * @param publication
 	 * @param particleNames
 	 * @param fileData
 	 * @param authors
-	 * 
+	 *
 	 * @throws Exception
 	 */
-	public void savePublication(Publication publication, String[] particleNames,
-			byte[] fileData, Collection<Author> authors) throws PublicationException;
+	public void savePublication(Publication publication,
+			String[] particleNames, byte[] fileData, Collection<Author> authors)
+			throws PublicationException;
 
-	
 	public List<PublicationBean> findPublicationsBy(String publicationTitle,
-			String publicationCategory, String nanoparticleName, 
-			String[] researchArea, String keywordsStr,
-			String pubMedId, String digitalObjectId, String authorsStr,
+			String publicationCategory, String nanoparticleName,
+			String[] researchArea, String keywordsStr, String pubMedId,
+			String digitalObjectId, String authorsStr,
 			String[] nanoparticleEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -46,22 +46,27 @@ public interface PublicationService {
 			String[] functionClassNames, String[] otherFunctionTypes)
 			throws PublicationException, CaNanoLabSecurityException;
 
-	public PublicationBean findPublicationById(String publicationId) throws PublicationException;
+	public PublicationBean findPublicationById(String publicationId)
+			throws PublicationException;
 
-	public Publication findDomainPublicationById(String publicationId) throws PublicationException;
+	public Publication findDomainPublicationById(String publicationId)
+			throws PublicationException;
 
 	public void exportDetail(PublicationBean aPub, OutputStream out)
-		throws PublicationException;
+			throws PublicationException;
 
-	public List<PublicationBean> findPublicationsByParticleSampleId(String particleId,
-			boolean loadParticle, boolean loadAuthor)
-		throws PublicationException;
-	
+	public List<PublicationBean> findPublicationsByParticleSampleId(
+			String particleId, boolean loadParticle, boolean loadAuthor)
+			throws PublicationException;
+
+	public List<PublicationBean> findPublicationsByParticleSampleId(
+			String particleId) throws PublicationException;
+
 	public int getNumberOfPublicPublications() throws PublicationException;
 
 	public void removePublicationFromParticle(NanoparticleSample particle,
-			Long dataId) 	throws PublicationException;
+			Long dataId) throws PublicationException;
 
-	public void exportSummary(ParticleBean particleBean,
-			OutputStream out) throws IOException ;
+	public void exportSummary(ParticleBean particleBean, OutputStream out)
+			throws IOException;
 }

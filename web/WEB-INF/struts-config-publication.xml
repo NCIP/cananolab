@@ -63,7 +63,7 @@
 			<forward name="success" path="publication.message" />
 			<forward name="particleSuccess" path="particle.annotationMessage" />
 			<forward name="input"
-				path="/submitPublication.do?dispatch=input&amp;page=0" />
+				path="/publication.do?dispatch=input&amp;page=0" />
 			<forward name="view" path="publication.viewPublication" />
 			<forward name="particleDetailView" path="particle.detailViewPublication" />
 			<forward name="publicationDetailView" path="publication.detailViewPublication" />

@@ -30,7 +30,7 @@
 						</c:url>
 					</c:when>
 					<c:otherwise>
-						<c:url var="url" value="submitNanoparticleSample.do">
+						<c:url var="url" value="nanoparticleSample.do">
 							<c:param name="page" value="0" />
 							<c:param name="particleId" value="${param.particleId}" />
 							<c:param name="dispatch" value="setupView" />
@@ -38,7 +38,7 @@
 						</c:url>
 					</c:otherwise>
 				</c:choose>
-				<a href="${url}" class="helpText">Back</a>				
+				<a href="${url}" class="helpText">Back</a>
 			</td>
 		</tr>
 		<tr>
@@ -83,7 +83,7 @@
 											</td>
 										</c:if>
 									</td>
-									<!-- 
+									<!--
 									<td>
 										<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 												src="images/icon_print_23x.gif"
@@ -223,10 +223,10 @@
 														${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.middleInitial}&nbsp;
 													</c:if>
 													${submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.lastName}&nbsp;
-												</td>												
+												</td>
 											</tr>
 									</c:if>
-									
+
 										<tr class="smallTableHeader">
 											<td>
 												<strong>Organization</strong>
@@ -278,7 +278,7 @@
 										</c:if>
 										<c:if
 											test="${!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts[pocInd].domain.phone}">
-										
+
 											<tr class="smallTableHeader">
 												<td>
 													<strong>Phone</strong>

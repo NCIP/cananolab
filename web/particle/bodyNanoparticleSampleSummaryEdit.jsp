@@ -96,7 +96,7 @@
 								</html:select>
 								&nbsp;
 								<a style="${pocDetailDisplay}" id="pocDetail" href="#"
-									onclick="javascript:submitAction(nanoparticleSampleForm, 'submitNanoparticleSample', 'pointOfContactDetailView');">
+									onclick="javascript:submitAction(nanoparticleSampleForm, 'nanoparticleSample', 'pointOfContactDetailView');">
 									<span class="addLink2">View Detail</span> </a>
 							</td>
 						</tr>
@@ -141,7 +141,7 @@
 										<div align="right">
 											<div align="right">
 												<c:set var="origUrl"
-													value="submitNanoparticleSample.do?page=0&particleId=${particleId}&dispatch=${param.dispatch}&location=local" />
+													value="anoparticleSample.do?page=0&particleId=${particleId}&dispatch=${param.dispatch}&location=local" />
 												<input type="reset" value="Reset"
 													onclick="javascript:window.location.href='${origUrl}'">
 												<input type="hidden" name="dispatch" value="create">

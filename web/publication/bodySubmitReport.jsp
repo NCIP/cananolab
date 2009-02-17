@@ -10,7 +10,7 @@
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 
-<html:form action="/submitPublication" enctype="multipart/form-data">
+<html:form action="/publication" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -152,7 +152,7 @@
 									</td>
 									<td class="label" colspan="2" valign="top">
 										<table class="smalltable" border="0">
-											<%--											<logic:notEmpty name="submitPublicationForm"
+											<%--											<logic:notEmpty name="publicationForm"
 														property="file.authors" > --%>
 											<tr class="smallTableHeader">
 												<th>
@@ -165,7 +165,7 @@
 													Initials
 												</th>
 											<tr>
-												<logic:iterate name="submitPublicationForm"
+												<logic:iterate name="publicationForm"
 													property="file.authors" id="author" indexId="authorInd">
 													<tr>
 														<td>
@@ -192,7 +192,7 @@
 									</td>
 									<td class="rightLabel" colspan="2" valign="top">
 										<a href="#"
-											onclick="javascript:addComponent(submitPublicationForm, 'submitPublication', 'addAuthor'); return false;">
+											onclick="javascript:addComponent(publicationForm, 'publication', 'addAuthor'); return false;">
 											<span class="addLink2">Add Author</span> </a>
 									</td>
 								</tr>

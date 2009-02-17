@@ -18,6 +18,7 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -72,19 +73,15 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			//TODO fix dependency on sample
-/*
-			if (publication.getNanoparticleSampleCollection() == null) {
-				publication
-						.setNanoparticleSampleCollection(new HashSet<NanoparticleSample>());
-			} else {
-				publication.getNanoparticleSampleCollection().clear();
-			}
-			for (NanoparticleSample sample : particleSamples) {
-				publication.getNanoparticleSampleCollection().add(sample);
-				sample.getPublicationCollection().add(publication);
-			}
-*/
+			// TODO fix dependency on sample
+			/*
+			 * if (publication.getNanoparticleSampleCollection() == null) {
+			 * publication .setNanoparticleSampleCollection(new HashSet<NanoparticleSample>()); }
+			 * else { publication.getNanoparticleSampleCollection().clear(); }
+			 * for (NanoparticleSample sample : particleSamples) {
+			 * publication.getNanoparticleSampleCollection().add(sample);
+			 * sample.getPublicationCollection().add(publication); }
+			 */
 			if (publication.getAuthorCollection() == null) {
 				publication.setAuthorCollection(new HashSet<Author>());
 			} else {
@@ -138,8 +135,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 							false));
 				}
 			}
-			Collections.sort(publicationBeans,
-					new CaNanoLabComparators.PublicationBeanTitleComparator());
+			Collections
+					.sort(
+							publicationBeans,
+							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 
 		} catch (Exception e) {
@@ -155,6 +154,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			String query = "select publicationCollection publication left join fetch publication.authorCollection from NanoparticleSample where id="
+					+ particleId;
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Publication.class);
 			crit.createAlias("nanoparticleSampleCollection", "sample",
@@ -177,6 +178,40 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					publicationCollection.add(new PublicationBean(publication));
 				}
 			}
+			return publicationCollection;
+		} catch (Exception e) {
+			String err = "Problem finding publication collections with the given particle ID.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
+	}
+
+	public List<PublicationBean> findPublicationsByParticleSampleId(
+			String particleId) throws PublicationException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// HQLCriteria crit = new HQLCriteria(
+			// "select publicationCollection publication left join fetch
+			// publication.authorCollection left join fetch
+			// publication.keywordCollection from NanoparticleSample where id="
+			// + particleId);
+			HQLCriteria crit = new HQLCriteria(
+					"select publicationCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample sample where sample.id="
+							+ particleId);
+			List results = appService.query(crit);
+			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
+			for (Object obj : results) {
+				Publication publication = (Publication) obj;
+				publication.getAuthorCollection();
+				publication.getKeywordCollection();
+				publicationCollection.add(new PublicationBean(
+						(Publication) obj, false, true));
+			}
+			Collections
+					.sort(
+							publicationCollection,
+							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
 			return publicationCollection;
 		} catch (Exception e) {
 			String err = "Problem finding publication collections with the given particle ID.";
@@ -274,33 +309,25 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					.getApplicationService();
 			Object publicationObject = appService.getObject(Publication.class,
 					"id", dataId);
-			//TODO fix dependency on sample
+			// TODO fix dependency on sample
 			/*
-			if (publicationObject != null) {
-				Publication publication = publicationService
-						.findDomainPublicationById(dataId.toString());
-				Collection<NanoparticleSample> nanoparticleSampleCollection = publication
-						.getNanoparticleSampleCollection();
-				if (nanoparticleSampleCollection == null
-						|| nanoparticleSampleCollection.size() == 0) {
-					// something wrong
-					throw new PublicationException();
-				} else if (nanoparticleSampleCollection.size() == 1) {
-					// delete
-					authService.removePublicGroup(dataId.toString());
-					if (publication.getAuthorCollection() != null) {
-						for (Author author : publication.getAuthorCollection()) {
-							authService.removePublicGroup(author.getId()
-									.toString());
-						}
-					}
-					appService.delete(publication);
-				} else {// size>1
-					// remove nanoparticleSample association
-					nanoparticleSampleCollection.remove(particle);
-					appService.saveOrUpdate(publication);
-				}
-			}*/
+			 * if (publicationObject != null) { Publication publication =
+			 * publicationService .findDomainPublicationById(dataId.toString());
+			 * Collection<NanoparticleSample> nanoparticleSampleCollection =
+			 * publication .getNanoparticleSampleCollection(); if
+			 * (nanoparticleSampleCollection == null ||
+			 * nanoparticleSampleCollection.size() == 0) { // something wrong
+			 * throw new PublicationException(); } else if
+			 * (nanoparticleSampleCollection.size() == 1) { // delete
+			 * authService.removePublicGroup(dataId.toString()); if
+			 * (publication.getAuthorCollection() != null) { for (Author author :
+			 * publication.getAuthorCollection()) {
+			 * authService.removePublicGroup(author.getId() .toString()); } }
+			 * appService.delete(publication); } else {// size>1 // remove
+			 * nanoparticleSample association
+			 * nanoparticleSampleCollection.remove(particle);
+			 * appService.saveOrUpdate(publication); } }
+			 */
 		} catch (Exception e) {
 			String err = "Error deleting publication by ID " + dataId;
 			logger.error(err, e);

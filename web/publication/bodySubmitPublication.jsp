@@ -12,14 +12,14 @@
 </c:if>
 <c:choose>
 	<c:when
-		test="${submitPublicationForm.map.file.domainFile.category eq 'report'}">
+		test="${publicationForm.map.file.domainFile.category eq 'report'}">
 		<c:set var="reportStyle" value="display:none" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="reportStyle" value="" />
 	</c:otherwise>
 </c:choose>
-<html:form action="/submitPublication" enctype="multipart/form-data">
+<html:form action="/publication" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -48,7 +48,7 @@
 				</tr>
 			</c:when>
 			<c:otherwise>
-				<c:if test="${!empty submitPublicationForm.map.file.domainFile.id}">
+				<c:if test="${!empty publicationForm.map.file.domainFile.id}">
 					<html:hidden property="file.domainFile.id" />
 				</c:if>
 				<tr>
@@ -120,7 +120,7 @@
 										<br>
 										<html:text property="file.domainFile.pubMedId" size="30"
 											styleId="pubmedId"
-											onchange="javascript:addPubmed(submitPublicationForm, '${docParticleId}'); return false;" />
+											onchange="javascript:addPubmed(publicationForm, '${docParticleId}'); return false;" />
 										<br>
 										<i>After entering a valid PubMed ID and clicking outside
 											of the text field, <br>the related fields (DOI, title,
@@ -172,7 +172,7 @@
 													Initials
 												</th>
 											<tr>
-												<logic:iterate name="submitPublicationForm"
+												<logic:iterate name="publicationForm"
 													property="file.authors" id="author" indexId="authorInd">
 													<tr>
 														<td>
@@ -199,7 +199,7 @@
 									</td>
 									<td class="rightLabel" valign="top">
 										<a href="#"
-											onclick="javascript:addComponent(submitPublicationForm, 'submitPublication', 'addAuthor'); return false;">
+											onclick="javascript:addComponent(publicationForm, 'publication', 'addAuthor'); return false;">
 											<span class="addLink2">Add Author</span> </a>
 									</td>
 								</tr>
@@ -267,7 +267,7 @@
 								</tr>
 								<c:choose>
 									<c:when
-										test="${submitPublicationForm.map.file.domainFile.uriExternal eq 'true' }">
+										test="${publicationForm.map.file.domainFile.uriExternal eq 'true' }">
 										<c:set var="linkDisplay" value="display: inline" />
 										<c:set var="loadDisplay" value="display: none" />
 									</c:when>
@@ -301,26 +301,26 @@
 									</td>
 								</tr>
 									<c:if
-										test="${!empty submitPublicationForm.map.file.domainFile.uri }">
+										test="${!empty publicationForm.map.file.domainFile.uri }">
 								<tr>
 											<td class="completeLabel" colspan="3">
 												<c:choose>
 													<c:when
-														test="${submitPublicationForm.map.file.image eq 'true'}">
-						 				${submitPublicationForm.map.file.domainFile.title}<br>
+														test="${publicationForm.map.file.image eq 'true'}">
+						 				${publicationForm.map.file.domainFile.title}<br>
 														<br>
 														<a href="#"
-															onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local',
-														${submitPublicationForm.map.file.domainFile.id}, 100, 100)"><img
-																src="compositionFile.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
+															onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=local',
+														${publicationForm.map.file.domainFile.id}, 100, 100)"><img
+																src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=local"
 																border="0" width="150"> </a>
 													</c:when>
 													<c:otherwise>
 														<strong>Submitted Publication</strong> &nbsp;&nbsp;
 										<a
-															href="submitPublication.do?dispatch=download&amp;fileId=${submitPublicationForm.map.file.domainFile.id}&amp;location=local"
-															target="${submitPublicationForm.map.file.urlTarget}">
-															${submitPublicationForm.map.file.domainFile.uri}</a>
+															href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=local"
+															target="${publicationForm.map.file.urlTarget}">
+															${publicationForm.map.file.domainFile.uri}</a>
 
 
 														<br>
@@ -446,12 +446,12 @@
 															<div align="right">
 																<div align="right">
 																	<c:set var="dataId"
-																		value="${submitPublicationForm.map.file.domainFile.id}" />
+																		value="${publicationForm.map.file.domainFile.id}" />
 																	<c:set var="origUrl"
-																		value="submitPublication.do?page=0&particleId=${docParticleId }&dispatch=setup&location=local" />
+																		value="publication.do?page=0&particleId=${docParticleId }&dispatch=setupNew&location=local" />
 																	<c:if test="${!empty dataId}">
 																		<c:set var="origUrl"
-																			value="submitPublication.do?page=0&particleId=${docParticleId }&dispatch=setupUpdate&location=local&fileId=${dataId }" />
+																			value="publication.do?page=0&particleId=${docParticleId }&dispatch=setupUpdate&location=local&fileId=${dataId }" />
 																	</c:if>
 																	<input type="reset" value="Reset"
 																		onclick="javascript:window.location.href='${origUrl}'">

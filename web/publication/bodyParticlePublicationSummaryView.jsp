@@ -90,7 +90,7 @@ under construction
 				<c:set var="pubObj" value="${pubBean.domainFile}"/>
 				<tr>
 					<td class="leftLabel">
-						<c:url var="pubUrl" value="submitPublication.do">
+						<c:url var="pubUrl" value="publication.do">
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="dispatch" value="detailView" />

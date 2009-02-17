@@ -4,6 +4,58 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 under construction
+<table>
+	<c:forEach var="pubBean" items="${publications}">
+		<c:set var="pubObj" value="${pubBean.domainFile}" />
+		<tr>
+			<td class="leftLabel">
+				<c:url var="pubUrl" value="publication.do">
+					<c:param name="submitType" value="${submitType}" />
+					<c:param name="particleId" value="${particleId}" />
+					<c:param name="dispatch" value="detailView" />
+					<c:param name="publicationId" value="${pubObj.id}" />
+					<c:param name="location" value="${location}" />
+				</c:url>
+				<c:choose>
+					<c:when test="${pubObj.pubMedId != null && pubObj.pubMedId != 0}">
+						<a href="${pubUrl }">PMID: ${pubObj.pubMedId }</a>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+							<c:when
+								test="${pubObj.digitalObjectId != null &&
+										pubObj.digitalObjectId ne ''}">
+								<a href="${pubUrl }">DOI: ${pubObj.digitalObjectId }</a>
+							</c:when>
+							<c:otherwise>
+								<a href="${pubUrl }">${pubObj.category}:
+									${fn:substring(pubObj.title,0,50)}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:otherwise>
+				</c:choose>
+			</td>
+			<td class="label">
+				${pubObj.title}&nbsp;
+			</td>
+			<td class="label">
+				<c:if test="${!empty pubBean.authors}">
+					<c:forEach var="author" items="${pubBean.authors}">
+									${author.lastName};
+							</c:forEach>
+				</c:if>
+
+				&nbsp;
+			</td>
+			<td class="rightLabel">
+				<c:if test="${pubObj.year!=0}">
+							${pubObj.year}
+						</c:if>
+				&nbsp;
+			</td>
+		</tr>
+	</c:forEach>
+</table>
 <%--
 <link rel="StyleSheet" type="text/css" href="css/printExport.css">
 <script type="text/javascript" src="javascript/printExport.js"></script>
@@ -89,7 +141,7 @@ under construction
 				<c:set var="pubObj" value="${pubBean.domainFile}"/>
 				<tr>
 					<td class="leftLabel">
-						<c:url var="pubUrl" value="submitPublication.do">
+						<c:url var="pubUrl" value="publication.do">
 							<c:param name="submitType" value="${submitType}" />
 							<c:param name="particleId" value="${particleId}" />
 							<c:param name="dispatch" value="detailView" />

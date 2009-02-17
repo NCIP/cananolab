@@ -33,15 +33,15 @@
 							</th>
 							<td class="rightLabel">
 								<c:choose>
-									<c:when test="${submitPublicationForm.map.file.domainFile.pubMedId != null &&
-												submitPublicationForm.map.file.domainFile.pubMedId != 0}">
-										PMID: ${submitPublicationForm.map.file.domainFile.pubMedId }
+									<c:when test="${publicationForm.map.file.domainFile.pubMedId != null &&
+												publicationForm.map.file.domainFile.pubMedId != 0}">
+										PMID: ${publicationForm.map.file.domainFile.pubMedId }
 									</c:when>
 									<c:otherwise>
 										<c:choose>
-											<c:when test="${submitPublicationForm.map.file.domainFile.digitalObjectId != null
-												&& submitPublicationForm.map.file.domainFile.digitalObjectId ne ''}">
-												DOI: ${submitPublicationForm.map.file.domainFile.digitalObjectId }
+											<c:when test="${publicationForm.map.file.domainFile.digitalObjectId != null
+												&& publicationForm.map.file.domainFile.digitalObjectId ne ''}">
+												DOI: ${publicationForm.map.file.domainFile.digitalObjectId }
 											</c:when>
 											<c:otherwise>
 												&nbsp;
@@ -57,7 +57,7 @@
 								Publication Type
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 										property="file.domainFile.category" />
 									&nbsp;
 							</td>
@@ -67,7 +67,7 @@
 								Publication Status
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 										property="file.domainFile.status" />
 									&nbsp;
 							</td>
@@ -77,7 +77,7 @@
 								Research Category
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 									property="file.domainFile.researchArea" />
 								&nbsp;
 							</td>
@@ -88,7 +88,7 @@
 								Title
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 										property="file.domainFile.title" />
 									&nbsp;
 							</td>
@@ -98,7 +98,7 @@
 								Journal
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 										property="file.domainFile.journalName" />
 								&nbsp;
 							</td>
@@ -108,9 +108,9 @@
 								Authors
 							</th>
 							<td class="rightLabel">
-								<c:if test="${!empty submitPublicationForm.map.file.authors}">
+								<c:if test="${!empty publicationForm.map.file.authors}">
 									<c:forEach var="author"
-										items="${submitPublicationForm.map.file.authors}">
+										items="${publicationForm.map.file.authors}">
 											${author.firstName}&nbsp;${author.lastName}&nbsp;${author.initial}<br>
 									</c:forEach>
 								</c:if>
@@ -122,8 +122,8 @@
 								Year
 							</th>
 							<td class="rightLabel">
-								<c:if test="${submitPublicationForm.map.file.domainFile.year!=0}">
-									<bean:write name="submitPublicationForm"
+								<c:if test="${publicationForm.map.file.domainFile.year!=0}">
+									<bean:write name="publicationForm"
 											property="file.domainFile.year" />
 								</c:if>
 								&nbsp;
@@ -134,7 +134,7 @@
 								Volume
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 										property="file.domainFile.volume" />
 								&nbsp;
 							</td>
@@ -144,10 +144,10 @@
 								Pages
 							</th>
 							<td class="rightLabel">
-								<c:if test="${submitPublicationForm.map.file.domainFile.startPage != null &&
-												submitPublicationForm.map.file.domainFile.startPage != 0}">
-								<bean:write name="submitPublicationForm"
-										property="file.domainFile.startPage" /> - <bean:write name="submitPublicationForm"
+								<c:if test="${publicationForm.map.file.domainFile.startPage != null &&
+												publicationForm.map.file.domainFile.startPage != 0}">
+								<bean:write name="publicationForm"
+										property="file.domainFile.startPage" /> - <bean:write name="publicationForm"
 										property="file.domainFile.endPage" />
 								</c:if>
 								&nbsp;
@@ -156,8 +156,8 @@
 
 						<c:choose>
 							<c:when
-								test="${submitPublicationForm.map.file.domainFile.pubMedId != null &&
-												submitPublicationForm.map.file.domainFile.pubMedId != 0}">
+								test="${publicationForm.map.file.domainFile.pubMedId != null &&
+												publicationForm.map.file.domainFile.pubMedId != 0}">
 								<tr>
 									<th class="leftLabel" valign="top">
 										Abstract in
@@ -165,8 +165,8 @@
 										PubMed
 									</th>
 									<td class="rightLabel">
-										<a target="_pubmed" href="http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}">PMID:
-											${submitPublicationForm.map.file.domainFile.pubMedId }</a> &nbsp;
+										<a target="_pubmed" href="http://www.ncbi.nlm.nih.gov/pubmed/${publicationForm.map.file.domainFile.pubMedId}">PMID:
+											${publicationForm.map.file.domainFile.pubMedId }</a> &nbsp;
 										&nbsp;
 									</td>
 								</tr>
@@ -178,7 +178,7 @@
 								Description
 							</th>
 							<td class="rightLabel">
-								<bean:write name="submitPublicationForm"
+								<bean:write name="publicationForm"
 										property="file.domainFile.description" />
 									&nbsp;
 							</td>
@@ -186,8 +186,8 @@
 
 						<c:choose>
 							<c:when
-								test="${submitPublicationForm.map.file.domainFile.pubMedId == null ||
-										submitPublicationForm.map.file.domainFile.pubMedId == 0}">
+								test="${publicationForm.map.file.domainFile.pubMedId == null ||
+										publicationForm.map.file.domainFile.pubMedId == 0}">
 								<tr>
 									<th class="leftLabel" valign="top">
 										<c:choose>
@@ -202,7 +202,7 @@
 									</th>
 									<td class="rightLabel">
 										<a href="#" target="_file">
-											${submitPublicationForm.map.file.domainFile.uri}</a>&nbsp;
+											${publicationForm.map.file.domainFile.uri}</a>&nbsp;
 									</td>
 								</tr>
 							</c:when>

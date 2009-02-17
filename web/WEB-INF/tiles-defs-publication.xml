@@ -12,7 +12,7 @@
 		<put name="itemDescription"
 			value="/publication/bodyPublicationDescription.jsp" />
 		<put name="createLink"
-			value="submitPublication.do?dispatch=setup&amp;page=0" />
+			value="publication.do?dispatch=setupNew&amp;page=0" />
 		<put name="searchLink"
 			value="searchPublication.do?dispatch=setup" />
 	</definition>

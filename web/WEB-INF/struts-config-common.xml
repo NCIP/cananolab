@@ -37,9 +37,9 @@
 				path="particle.submitPointOfContact" />
 			<forward name="input" path="particle.submitPointOfContact" />
 			<forward name="updateParticle"
-				path="/submitNanoparticleSample.do?dispatch=setupUpdate&amp;page=0" />
+				path="/nanoparticleSample.do?dispatch=setupUpdate&amp;page=0" />
 			<forward name="submitParticle"
-				path="/submitNanoparticleSample.do?dispatch=fromPOC&amp;page=0" />
+				path="/nanoparticleSample.do?dispatch=fromPOC&amp;page=0" />
 			<forward name="pointOfContactDetailView"
 				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
 			<forward name="detailView"

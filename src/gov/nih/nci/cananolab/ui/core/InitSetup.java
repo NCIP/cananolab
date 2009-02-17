@@ -123,7 +123,8 @@ public class InitSetup {
 						.getCanonicalName();
 				lookup.put(entry.getValue().toString(), fullClassName);
 			}
-			appContext.setAttribute("displayNameFullClassReverseLookup", lookup);
+			appContext
+					.setAttribute("displayNameFullClassReverseLookup", lookup);
 		} else {
 			lookup = new HashMap<String, String>(
 					(Map<? extends String, String>) (appContext

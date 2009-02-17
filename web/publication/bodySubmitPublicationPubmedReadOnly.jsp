@@ -11,7 +11,7 @@
 	<c:set var="action" value="Update" scope="request" />
 </c:if>
 
-<html:form action="/submitPublication" enctype="multipart/form-data">
+<html:form action="/publication" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
 			<td>
@@ -40,7 +40,7 @@
 				</tr>
 			</c:when>
 			<c:otherwise>
-				<c:if test="${!empty submitPublicationForm.map.file.domainFile.id}">
+				<c:if test="${!empty publicationForm.map.file.domainFile.id}">
 					<html:hidden property="file.domainFile.id" />
 				</c:if>
 				<tr>
@@ -63,7 +63,7 @@
 									<td class="label" colspan="3">
 										<html:select property="file.domainFile.category"
 											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');
-													setupReport(submitPublicationForm, '${param.particleId}');"
+													setupReport(publicationForm, '${param.particleId}');"
 											styleId="file.domainFile.category">
 											<option value=""></option>
 											<html:options name="publicationCategories" />
@@ -107,14 +107,17 @@
 									</td>
 									<td class="rightLabel" colspan="7">
 										<a
-												href="http://www.ncbi.nlm.nih.gov/pubmed/${submitPublicationForm.map.file.domainFile.pubMedId}"
-												target="_pubmed">
-												Click to look up PubMed Identifier</a>
+											href="http://www.ncbi.nlm.nih.gov/pubmed/${publicationForm.map.file.domainFile.pubMedId}"
+											target="_pubmed"> Click to look up PubMed Identifier</a>
 										<br>
-										<html:text property="file.domainFile.pubMedId" size="30" styleId="pubmedId"
-											onchange="javascript:addPubmed(submitPublicationForm, '${param.particleId}'); return false;"/>
-										<br><i>After entering a valid PubMed ID and clicking outside of the text field, <br>the related fields (DOI, title, journal, author, etc)
-										are auto-populated by PubMed and become read-only.</i>
+										<html:text property="file.domainFile.pubMedId" size="30"
+											styleId="pubmedId"
+											onchange="javascript:addPubmed(publicationForm, '${param.particleId}'); return false;" />
+										<br>
+										<i>After entering a valid PubMed ID and clicking outside
+											of the text field, <br>the related fields (DOI, title,
+											journal, author, etc) are auto-populated by PubMed and become
+											read-only.</i>
 									</td>
 								</tr>
 								<tr id="doiRow">
@@ -122,9 +125,10 @@
 										<strong>Digital Object ID</strong>
 									</td>
 									<td class="rightLabel" colspan="7">
-										${submitPublicationForm.map.file.domainFile.digitalObjectId }&nbsp;
-<%--										<html:text property="file.domainFile.digitalObjectId"--%>
-<%--											size="30" />--%>
+										${publicationForm.map.file.domainFile.digitalObjectId
+										}&nbsp;
+										<%--										<html:text property="file.domainFile.digitalObjectId"--%>
+										<%--											size="30" />--%>
 									</td>
 								</tr>
 								<tr>
@@ -132,7 +136,7 @@
 										<strong>Title* </strong>
 									</td>
 									<td class="rightLabel" colspan="7">
-										${submitPublicationForm.map.file.domainFile.title }&nbsp;
+										${publicationForm.map.file.domainFile.title }&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -140,7 +144,7 @@
 										<strong>Journal </strong>
 									</td>
 									<td class="rightLabel" colspan="7">
-										${submitPublicationForm.map.file.domainFile.journalName}&nbsp;
+										${publicationForm.map.file.domainFile.journalName}&nbsp;
 									</td>
 								</tr>
 								<tr>
@@ -161,17 +165,17 @@
 													Initials
 												</th>
 											<tr>
-												<logic:iterate name="submitPublicationForm"
+												<logic:iterate name="publicationForm"
 													property="file.authors" id="author" indexId="authorInd">
 													<tr>
 														<td>
-															${submitPublicationForm.map.file.authors[authorInd].firstName}&nbsp;
+															${publicationForm.map.file.authors[authorInd].firstName}&nbsp;
 														</td>
 														<td>
-															${submitPublicationForm.map.file.authors[authorInd].lastName}&nbsp;
+															${publicationForm.map.file.authors[authorInd].lastName}&nbsp;
 														</td>
 														<td>
-															${submitPublicationForm.map.file.authors[authorInd].initial}&nbsp;
+															${publicationForm.map.file.authors[authorInd].initial}&nbsp;
 														</td>
 													</tr>
 												</logic:iterate>
@@ -188,30 +192,33 @@
 										<strong>Year of Publication</strong>
 									</td>
 									<td class="label">
-										${submitPublicationForm.map.file.domainFile.year}&nbsp;
+										${publicationForm.map.file.domainFile.year}&nbsp;
 									</td>
-									<td class="label" align="right" style="padding-left: 3em; padding-right: 0">
+									<td class="label" align="right"
+										style="padding-left: 3em; padding-right: 0">
 										<strong id="volumeTitle">Volume</strong>&nbsp;
 									</td>
 									<td class="label">
-										${submitPublicationForm.map.file.domainFile.volume}&nbsp;
+										${publicationForm.map.file.domainFile.volume}&nbsp;
 									</td>
-									<td class="label" align="right" valign="middle" style="padding-left: 5em; padding-right: 0;">
+									<td class="label" align="right" valign="middle"
+										style="padding-left: 5em; padding-right: 0;">
 										<strong id="spageTitle">Start Page</strong>&nbsp;
 									</td>
 									<td class="label">
-										${submitPublicationForm.map.file.domainFile.startPage}&nbsp;
+										${publicationForm.map.file.domainFile.startPage}&nbsp;
 									</td>
 									<td class="label" align="right">
-										<strong id="epageTitle" >End Page</strong>&nbsp;
+										<strong id="epageTitle">End Page</strong>&nbsp;
 									</td>
 									<td class="rightLabel">
-										${submitPublicationForm.map.file.domainFile.endPage}&nbsp;
+										${publicationForm.map.file.domainFile.endPage}&nbsp;
 									</td>
 								</tr>
 								<tr>
 									<td class="leftLabel" valign="top">
-										<strong>Keywords<br></strong>
+										<strong>Keywords<br>
+										</strong>
 										<i>(one keyword per line)</i>
 
 									</td>
@@ -292,8 +299,8 @@
 											<c:otherwise>
 												<tr>
 													<td class="completeLabel" colspan="2">
-														There are no other particles from source ${particlePointOfContact}
-														to copy annotation to.
+														There are no other particles from source
+														${particlePointOfContact} to copy annotation to.
 													</td>
 												</tr>
 											</c:otherwise>
@@ -345,23 +352,24 @@
 												<div align="right">
 													<div align="right">
 														<c:set var="dataId"
-															value="${submitPublicationForm.map.file.domainFile.id}" />
+															value="${publicationForm.map.file.domainFile.id}" />
 														<c:set var="origUrl"
-															value="submitPublication.do?page=0&dispatch=setup&particleId=${docParticleId }&location=${location}" />
+															value="publication.do?page=0&dispatch=setupNew&particleId=${docParticleId }&location=${location}" />
 														<c:if test="${!empty dataId}">
 															<c:set var="origUrl"
-																value="submitPublication.do?page=0&dispatch=setupUpdate&particleId=${docParticleId }&location=${location}&fileId=${dataId }" />
+																value="publication.do?page=0&dispatch=setupUpdate&particleId=${docParticleId }&location=${location}&fileId=${dataId }" />
 														</c:if>
 														<input type="reset" value="Reset"
 															onclick="javascript:window.location.href='${origUrl}'">
 														<input type="hidden" name="dispatch" value="create">
 														<input type="hidden" name="page" value="2">
 														<input type="hidden" name="location" value="local">
-														<input type="hidden" name="submitType" value="publications">
-<%--														<c:if test="${!empty param.particleId}">--%>
-<%--															<input type="hidden" name="particleId"--%>
-<%--																value="${param.particleId}">--%>
-<%--														</c:if>--%>
+														<input type="hidden" name="submitType"
+															value="publications">
+														<%--														<c:if test="${!empty param.particleId}">--%>
+														<%--															<input type="hidden" name="particleId"--%>
+														<%--																value="${param.particleId}">--%>
+														<%--														</c:if>--%>
 														<html:submit />
 													</div>
 												</div>

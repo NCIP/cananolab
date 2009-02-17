@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
@@ -247,7 +248,8 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class FileBeanTypeDateComparator implements Comparator<FileBean> {
+	public static class FileBeanTypeDateComparator implements
+			Comparator<FileBean> {
 		public int compare(FileBean file1, FileBean file2) {
 			if (file1.getDomainFile().getType().equals(
 					file2.getDomainFile().getType())) {
@@ -352,11 +354,17 @@ public class CaNanoLabComparators {
 		}
 	}
 
-	public static class PublicationBeanTitleComparator implements
+	public static class PublicationBeanCategoryTitleComparator implements
 			Comparator<PublicationBean> {
 		public int compare(PublicationBean file1, PublicationBean file2) {
-			return file1.getDomainFile().getTitle().compareTo(
-					file2.getDomainFile().getTitle());
+			Publication pub1 = (Publication) (file1.getDomainFile());
+			Publication pub2 = (Publication) (file2.getDomainFile());
+			if (pub1.getCategory().equals(pub2.getCategory())) {
+				return file1.getDomainFile().getTitle().compareTo(
+						file2.getDomainFile().getTitle());
+			} else {
+				return pub1.getCategory().compareTo(pub2.getCategory());
+			}
 		}
 	}
 
@@ -366,5 +374,4 @@ public class CaNanoLabComparators {
 			return node1.getHostName().compareTo(node2.getHostName());
 		}
 	}
-
 }
