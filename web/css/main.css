@@ -1413,6 +1413,11 @@ input.noBorderButton {
 	background-color: #f4f4f5;
 }
 
+input.noBorderText { 
+	font-size: 1.02em;	
+	border:0px solid; 
+	background-color: #f4f4f5;
+}
 
 .smalltable3 {
 	border-width: 1px;
