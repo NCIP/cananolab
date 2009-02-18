@@ -9,7 +9,7 @@ var editDataSet = false;
 var fixId = "-10000";
 
 function resetTheDataSet(isShow) {
-	// alert('reset 2');
+	alert('reset 4');
 	editDataSet = false;
 	datumColumnCount = 0;
 	columnCount = 0;
@@ -338,14 +338,16 @@ function addRow() {
 }
 
 function clearTheDataRow() {
+	//IE works only set value = '' instead of null
 	for ( var i = 0; i < datumColumnCount; i++) {
-		document.getElementById("datumColumnId" + (-i - 1)).value = null;
+		document.getElementById("datumColumnId" + (-i - 1)).value = '';
 		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
 	}
 }
 
 function clearTheDataColumn() {
-	document.getElementById("columnId").value = null;
+	//IE works only set value = '' instead of null
+	document.getElementById("columnId").value = '';
 	document.getElementById("datumOrCondition").value = "";
 	document.getElementById("name").value = "";
 	document.getElementById("valueUnit").value = "";
