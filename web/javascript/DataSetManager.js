@@ -9,7 +9,7 @@ var editDataSet = false;
 var fixId = "-10000";
 
 function resetTheDataSet(isShow) {
-	alert('reset 4');
+	//alert('reset 4');
 	editDataSet = false;
 	datumColumnCount = 0;
 	columnCount = 0;
@@ -250,7 +250,7 @@ function createMatrixPattern() {
 		// span.appendChild(document.createTextNode('Value'));
 		// cell.appendChild(span);
 		// datumMatrixPatternRow.appendChild(cell);
-
+		//TODO:: may need to change for IE
 		var textValue = document.createElement('input');
 		textValue.setAttribute("id", "datumMatrixValue" + i);
 		textValue.setAttribute("type", "text");
@@ -546,10 +546,10 @@ function fillMatrix() {
 		// data[0].id='+dataRowCache[rowId].data[0].id );
 	}
 	clearTheDataRow();
-	cloneExtractRow();
+	cloneEditRow();
 }
 
-function cloneExtractRow() {
+function cloneEditRow() {
 	$("datumMatrixDivRow").style.display = "";
 	var rowIndex = rowCount;
 	var rowId = fixId;
