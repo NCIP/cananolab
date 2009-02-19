@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -479,18 +480,13 @@ public class NanoparticleCompositionServiceLocalImpl implements
 					.setFetchMode(
 							"nanoparticleEntityCollection.fileCollection.keywordCollection",
 							FetchMode.JOIN);
-			crit
-					.setFetchMode(
-							"nanoparticleEntityCollection.composingElementCollection",
-							FetchMode.JOIN);
+			crit.setFetchMode(
+					"nanoparticleEntityCollection.composingElementCollection",
+					FetchMode.JOIN);
 			crit
 					.setFetchMode(
 							"nanoparticleEntityCollection.composingElementCollection.inherentFunctionCollection",
 							FetchMode.JOIN);
-			crit
-				.setFetchMode(
-					"nanoparticleEntityCollection.composingElementCollection.function",
-					FetchMode.JOIN);
 			crit
 					.setFetchMode("functionalizingEntityCollection",
 							FetchMode.JOIN);
@@ -520,13 +516,67 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			List result = appService.query(crit);
 			CompositionBean comp = null;
 			if (!result.isEmpty()) {
-				comp = new CompositionBean((SampleComposition) result.get(0));
+				SampleComposition composition = (SampleComposition) result
+						.get(0);
+				loadTargetsForTargetingFunction(composition);
+				comp = new CompositionBean(composition);
 
 			}
 			return comp;
 		} catch (Exception e) {
 			throw new ParticleCompositionException(
 					"Error finding composition by particle ID: " + particleId);
+		}
+	}
+
+	private void loadTargetsForTargetingFunction(TargetingFunction function)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				TargetingFunction.class).add(
+				Property.forName("id").eq(function.getId()));
+		crit.setFetchMode("targetCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			TargetingFunction aFunction = (TargetingFunction) result.get(0);
+
+		}
+	}
+
+	private void loadTargetsForTargetingFunction(SampleComposition composition)
+			throws Exception {
+		// load targetCollection
+		if (composition.getNanoparticleEntityCollection() != null) {
+			for (NanoparticleEntity entity : composition
+					.getNanoparticleEntityCollection()) {
+				if (entity.getComposingElementCollection() != null) {
+					for (ComposingElement element : entity
+							.getComposingElementCollection()) {
+						if (element.getInherentFunctionCollection() != null) {
+							for (Function function : element
+									.getInherentFunctionCollection()) {
+								if (function instanceof TargetingFunction) {
+									helper.loadTargetsForTargetingFunction((TargetingFunction) function);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (composition.getFunctionalizingEntityCollection() != null) {
+			for (FunctionalizingEntity entity : composition
+					.getFunctionalizingEntityCollection()) {
+				if (entity.getFunctionCollection() != null) {
+					for (Function function : entity.getFunctionCollection()) {
+						if (function instanceof TargetingFunction) {
+							helper.loadTargetsForTargetingFunction((TargetingFunction) function);
+						}
+					}
+				}
+			}
 		}
 	}
 
