@@ -1427,6 +1427,28 @@ input.noBorderText {
 	color: #5C5C5C;
 }
 
+.smalltable3 th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 5px 30px 10px 30px;
+	border-style: none;
+	border-width: 1px;
+	border-color: #cccccc;
+	color: #5C5C5C;
+}
+
+.smalltable3 td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 5px 0 5px 5px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: none;
+	vertical-align: middle;
+	color: #5C5C5C;
+}
+
+
 
 .smalltable2 {
 	width: 600px;
