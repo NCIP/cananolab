@@ -1,18 +1,14 @@
 package gov.nih.nci.cananolab.ui.particle;
 
-import gov.nih.nci.cananolab.domain.common.DataRow;
-import gov.nih.nci.cananolab.domain.particle.characterization.Datum;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
-import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
 import java.util.List;
-import java.util.SortedMap;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContextFactory;
@@ -55,7 +51,7 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
-		if (data != null) {			
+		if (data != null) {
 			//TODO:: if rowid!=null, get the row then update
 			//DataRowBean dataRowBean = theDataSet.getTheDataRow();
 			DataRowBean dataRowBean = null;
@@ -66,12 +62,12 @@ public class DWRCharacterizationResultManager {
 					datum.setDataSet(theDataSet.getDomain());
 				}
 				if (i==0) {
-					dataRowBean = theDataSet.getDataRowBean(datum);	
+					dataRowBean = theDataSet.getDataRowBean(datum);
 					if (dataRowBean == null){
 						dataRowBean = new DataRowBean();
 					}
 				}
-				
+
 				dataRowBean.addDatum(datum);
 				hasData = true;
 				i++;
@@ -102,7 +98,7 @@ public class DWRCharacterizationResultManager {
 		DataSetBean dataSetBean=new DataSetBean(data);
 		return dataSetBean;
 	}
-	
+
 	public DataSetBean findDataSetById(String dataSetId)
 		throws CharacterizationResultException {
 		List<Datum> data = service.getDataForDataSet(dataSetId);
