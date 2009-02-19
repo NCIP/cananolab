@@ -56,10 +56,6 @@ public interface PublicationService {
 			throws PublicationException;
 
 	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId, boolean loadParticle, boolean loadAuthor)
-			throws PublicationException;
-
-	public List<PublicationBean> findPublicationsByParticleSampleId(
 			String particleId) throws PublicationException;
 
 	public int getNumberOfPublicPublications() throws PublicationException;

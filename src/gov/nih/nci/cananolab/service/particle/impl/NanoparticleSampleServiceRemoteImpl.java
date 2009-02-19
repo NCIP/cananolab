@@ -422,7 +422,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		// publication does not include particle nor author
 		List<PublicationBean> publications = publicationService
 				.findPublicationsByParticleSampleId(particleSample.getId()
-						.toString(), false, false);
+						.toString());
 		if (publications != null && publications.size() > 0) {
 			particleSample.setPublicationCollection(new HashSet<Publication>());
 			for (PublicationBean publication : publications) {

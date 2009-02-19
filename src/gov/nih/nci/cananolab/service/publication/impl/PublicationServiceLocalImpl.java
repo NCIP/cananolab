@@ -18,7 +18,6 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,7 +35,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of PublicationService
@@ -129,7 +128,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			if (publications != null) {
 				NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 				for (Publication publication : publications) {
-					//retrieve particleNames
+					// retrieve particleNames
 					SortedSet<String> particleNames = sampleService
 							.findParticleNamesByPublicationId(publication
 									.getId().toString());
@@ -153,59 +152,33 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	}
 
 	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId, boolean loadParticle, boolean loadAuthor)
-			throws PublicationException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			String query = "select publicationCollection publication left join fetch publication.authorCollection from NanoparticleSample where id="
-					+ particleId;
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Publication.class);
-			crit.createAlias("nanoparticleSampleCollection", "sample",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.add(Restrictions.eq("sample.id", new Long(particleId)));
-			if (loadAuthor) {
-				crit.setFetchMode("authorCollection", FetchMode.JOIN);
-			}
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
-			for (Object obj : results) {
-				Publication publication = (Publication) obj;
-				publicationCollection.add(new PublicationBean(publication));
-			}
-			return publicationCollection;
-		} catch (Exception e) {
-			String err = "Problem finding publication collections with the given particle ID.";
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-	}
-
-	public List<PublicationBean> findPublicationsByParticleSampleId(
 			String particleId) throws PublicationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select publicationCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample sample where sample.id="
-							+ particleId);
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					NanoparticleSample.class).add(
+					Property.forName("id").eq(new Long(particleId)));
+			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+			crit.setFetchMode("publicationCollection.authorCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("publicationCollection.keywordCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
+			List<PublicationBean> publications = new ArrayList<PublicationBean>();
 			for (Object obj : results) {
-				Publication publication = (Publication) obj;
-				publication.getAuthorCollection();
-				publication.getKeywordCollection();
-				publicationCollection.add(new PublicationBean(publication));
+				NanoparticleSample sample = (NanoparticleSample) obj;
+				for (Publication pub : sample.getPublicationCollection()) {
+					publications.add(new PublicationBean(pub));
+				}
 			}
 			Collections
 					.sort(
-							publicationCollection,
+							publications,
 							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
-			return publicationCollection;
+			return publications;
 		} catch (Exception e) {
 			String err = "Problem finding publication collections with the given particle ID.";
 			logger.error(err, e);

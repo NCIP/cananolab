@@ -11,13 +11,14 @@ import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.struts.upload.FormFile;
 
 /**
  * This class represents attributes of a lab file to be viewed in a view page.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FileBean {
 	protected File domainFile = new File();
@@ -41,9 +42,11 @@ public class FileBean {
 	private String location; // e.g. local, caNanoLab-WashU
 
 	private String fullPath; // e.g.
-								// C:/temp/caNanoLab/fileUpload/particles/NCL-23/...,
+	// C:/temp/caNanoLab/fileUpload/particles/NCL-23/...,
 
 	// or for remote files, it will be the remote download URL
+
+	private String createdDateStr;
 
 	public FileBean() {
 		domainFile.setUriExternal(false);
@@ -204,4 +207,11 @@ public class FileBean {
 	public void setDomainFile(File domainFile) {
 		this.domainFile = domainFile;
 	}
+
+	public String getCreatedDateStr() {
+		createdDateStr = StringUtils.convertDateToString(domainFile
+				.getCreatedDate(), CaNanoLabConstants.DATE_FORMAT);
+		return createdDateStr;
+	}
+
 }

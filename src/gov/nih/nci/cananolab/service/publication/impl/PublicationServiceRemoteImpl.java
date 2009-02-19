@@ -106,8 +106,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	}
 
 	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId, boolean loadParticle, boolean loadAuthor)
-			throws PublicationException {
+			String particleId) throws PublicationException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -361,11 +360,4 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			Long dataId) throws PublicationException {
 		throw new PublicationException("not implemented for grid service.");
 	}
-
-	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId) throws PublicationException {
-		// TODO implement
-		return null;
-	}
-
 }

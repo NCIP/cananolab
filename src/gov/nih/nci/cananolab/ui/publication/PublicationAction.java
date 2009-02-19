@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
@@ -454,7 +455,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		List<PublicationBean> publications = publicationService
 				.findPublicationsByParticleSampleId(particleId);
-		request.setAttribute("publications", publications);
+		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
+				publications);
+		request.setAttribute("publicationSummaryView", summaryView);
 		// TODO fill in detail
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");

@@ -371,9 +371,9 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 					request, location);
 			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		// publication includes author, not include particle sample data
+
 		List<PublicationBean> publicationCollection = service
-				.findPublicationsByParticleSampleId(particleId, false, true);
+				.findPublicationsByParticleSampleId(particleId);
 		List<PublicationBean> foundPublications = new ArrayList<PublicationBean>();
 		if (location.equals("local")) {
 			List<PublicationBean> filteredPublications = new ArrayList<PublicationBean>();

@@ -27,6 +27,8 @@ public class PublicationBean extends FileBean {
 
 	private boolean foundPubMedArticle = false;
 
+	private String bibliographyInfo = "";;
+
 	public PublicationBean() {
 		super();
 		domainFile = new Publication();
@@ -142,4 +144,23 @@ public class PublicationBean extends FileBean {
 		this.foundPubMedArticle = foundPubMedArticle;
 	}
 
+	public String getBibliographyInfo() {
+		Publication pub = (Publication) domainFile;
+
+		if (pub.getJournalName() != null) {
+			bibliographyInfo = pub.getJournalName();
+		}
+		if (pub.getYear() != null) {
+			bibliographyInfo += ", " + pub.getYear();
+		}
+		if (pub.getVolume() != null) {
+			bibliographyInfo += ". Volume " + pub.getVolume();
+		}
+		if (pub.getStartPage() != null && pub.getEndPage() != null) {
+			bibliographyInfo += ", pp." + pub.getStartPage() + "-"
+					+ pub.getEndPage();
+		}
+
+		return bibliographyInfo;
+	}
 }
