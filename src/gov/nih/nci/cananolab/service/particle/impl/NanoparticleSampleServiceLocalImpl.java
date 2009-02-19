@@ -141,7 +141,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 		}
 	}
 
-
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
@@ -162,8 +161,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 					&& !dbParticle.getId().equals(particleSample.getId())) {
 				throw new DuplicateEntriesException();
 			}
-			dbParticle.setOtherPointOfContactCollection(
-					particleSample.getOtherPointOfContactCollection());
+			dbParticle.setOtherPointOfContactCollection(particleSample
+					.getOtherPointOfContactCollection());
 			appService.saveOrUpdate(dbParticle);
 		} catch (DuplicateEntriesException e) {
 			throw e;
@@ -265,7 +264,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 				.setFetchMode(
 						"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
 						FetchMode.JOIN);
-		crit.setFetchMode("characterizationCollection.experimentConfigCollection",
+		crit.setFetchMode(
+				"characterizationCollection.experimentConfigCollection",
 				FetchMode.JOIN);
 		// sampleComposition
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
@@ -297,7 +297,8 @@ public class NanoparticleSampleServiceLocalImpl implements
 						FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.createAlias("otherPointOfContactCollection", "otherPoc", CriteriaSpecification.LEFT_JOIN);
+		crit.createAlias("otherPointOfContactCollection", "otherPoc",
+				CriteriaSpecification.LEFT_JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -502,7 +503,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		// otherwise remove associated public visibility
 		if (Arrays.asList(visibleGroups).contains(
 				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
-			//keywords
+			// keywords
 			Collection<Keyword> keywordCollection = nanoparticleSample
 					.getKeywordCollection();
 			if (keywordCollection != null) {
@@ -513,7 +514,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 					}
 				}
 			}
-			//characterizations
+			// characterizations
 			if (characterizationCollection != null) {
 				for (Characterization aChar : characterizationCollection) {
 					charService.assignPublicVisibility(authService, aChar);
@@ -525,7 +526,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 						nanoparticleSample.getSampleComposition());
 			}
 		} else {
-			//remove associated public visibility
+			// remove associated public visibility
 			if (characterizationCollection != null) {
 				for (Characterization aChar : characterizationCollection) {
 					charService.removePublicVisibility(authService, aChar);
@@ -734,4 +735,15 @@ public class NanoparticleSampleServiceLocalImpl implements
 		}
 	}
 
+	public List<String> findParticleNamesByPublicationId(String publicationId)
+			throws ParticleException {
+		try {
+			return helper.findParticleNamesByPublicationId(publicationId);
+		} catch (Exception e) {
+			String err = "Error in retrieving particle names for publication: "
+					+ publicationId;
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
 }

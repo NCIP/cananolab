@@ -126,8 +126,16 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes);
 			if (publications != null) {
+				NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 				for (Publication publication : publications) {
-					publicationBeans.add(new PublicationBean(publication));
+					//retrieve particleNames
+					List<String> particleNames = sampleService
+							.findParticleNamesByPublicationId(publication
+									.getId().toString());
+					PublicationBean pubBean = new PublicationBean(publication,
+							particleNames.toArray(new String[particleNames
+									.size()]));
+					publicationBeans.add(pubBean);
 				}
 			}
 			Collections

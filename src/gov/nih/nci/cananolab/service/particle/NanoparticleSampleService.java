@@ -14,13 +14,13 @@ import java.util.SortedSet;
 
 /**
  * Interface defining service methods involving nanoparticle samples
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public interface NanoparticleSampleService {
 	/**
-	 * 
+	 *
 	 * @return all particle sources
 	 */
 	public SortedSet<PointOfContact> findPointOfContacts()
@@ -29,7 +29,7 @@ public interface NanoparticleSampleService {
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
-	 * 
+	 *
 	 * @param particleSample
 	 * @throws ParticleException,
 	 *             DuplicateEntriesException
@@ -38,7 +38,7 @@ public interface NanoparticleSampleService {
 			throws ParticleException, DuplicateEntriesException;
 
 	/**
-	 * 
+	 *
 	 * @param particlePointOfContact
 	 * @param nanoparticleEntityClassNames
 	 * @param otherNanoparticleTypes
@@ -72,7 +72,7 @@ public interface NanoparticleSampleService {
 
 	/**
 	 * Get other particles from the given particle source
-	 * 
+	 *
 	 * @param particlePointOfContact
 	 * @param particleName
 	 * @param user
@@ -101,4 +101,8 @@ public interface NanoparticleSampleService {
 	public List<ParticleBean> getUserAccessibleParticles(
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException;
+
+	public List<String> findParticleNamesByPublicationId(String publicationId)
+			throws ParticleException;
+
 }

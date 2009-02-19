@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -425,7 +426,8 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -446,7 +448,8 @@ public class NanoparticleSampleServiceHelper {
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+		crit.setFetchMode("otherPointOfContactCollection.organization",
+				FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
@@ -689,5 +692,22 @@ public class NanoparticleSampleServiceHelper {
 		}
 		String[] particleStrArray = new String[particleStrings.size()];
 		return particleStrings.toArray(particleStrArray);
+	}
+
+	public List<String> findParticleNamesByPublicationId(String publicationId)
+			throws Exception {
+		DetachedCriteria crit = DetachedCriteria
+				.forClass(NanoparticleSample.class);
+		crit.createAlias("publicationCollection", "pub").add(
+				Property.forName("pub.id").eq(new Long(publicationId)));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		List<String> names = new ArrayList<String>();
+		for (Object obj : results) {
+			NanoparticleSample particleSample = (NanoparticleSample) obj;
+			names.add(particleSample.getName());
+		}
+		return names;
 	}
 }

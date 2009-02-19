@@ -232,10 +232,10 @@ public class NanoparticleSampleServiceRemoteImpl implements
 				serviceUrl);
 		List<CharacterizationBean> characterizationCollection = charService
 				.findCharsByParticleSampleId(particleId);
-		//TODO fix remote method
-//		particleSample
-//				.setCharacterizationCollection(new HashSet<Characterization>(
-//						characterizationCollection));
+		// TODO fix remote method
+		// particleSample
+		// .setCharacterizationCollection(new HashSet<Characterization>(
+		// characterizationCollection));
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceRemoteImpl(
 				serviceUrl);
 		CompositionBean compBean = compService
@@ -468,6 +468,12 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	public List<ParticleBean> getUserAccessibleParticles(
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException {
+		throw new ParticleException("Not implemented for grid service");
+	}
+
+	public List<String> findParticleNamesByPublicationId(String publicationId)
+			throws ParticleException {
+		//TODO add implementation detail
 		throw new ParticleException("Not implemented for grid service");
 	}
 }
