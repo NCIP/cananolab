@@ -73,15 +73,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			// TODO fix dependency on sample
-			/*
-			 * if (publication.getNanoparticleSampleCollection() == null) {
-			 * publication .setNanoparticleSampleCollection(new HashSet<NanoparticleSample>()); }
-			 * else { publication.getNanoparticleSampleCollection().clear(); }
-			 * for (NanoparticleSample sample : particleSamples) {
-			 * publication.getNanoparticleSampleCollection().add(sample);
-			 * sample.getPublicationCollection().add(publication); }
-			 */
+			for (NanoparticleSample sample : particleSamples) {
+				sample.getPublicationCollection().add(publication);
+				appService.saveOrUpdate(sample);
+			}
+
 			if (publication.getAuthorCollection() == null) {
 				publication.setAuthorCollection(new HashSet<Author>());
 			} else {
@@ -131,8 +127,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					otherFunctionTypes);
 			if (publications != null) {
 				for (Publication publication : publications) {
-					publicationBeans.add(new PublicationBean(publication, true,
-							false));
+					publicationBeans.add(new PublicationBean(publication));
 				}
 			}
 			Collections
@@ -171,12 +166,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			List<PublicationBean> publicationCollection = new ArrayList<PublicationBean>();
 			for (Object obj : results) {
 				Publication publication = (Publication) obj;
-				if (loadAuthor) {
-					publicationCollection.add(new PublicationBean(publication,
-							false, true));
-				} else {
-					publicationCollection.add(new PublicationBean(publication));
-				}
+				publicationCollection.add(new PublicationBean(publication));
 			}
 			return publicationCollection;
 		} catch (Exception e) {
@@ -191,11 +181,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			// HQLCriteria crit = new HQLCriteria(
-			// "select publicationCollection publication left join fetch
-			// publication.authorCollection left join fetch
-			// publication.keywordCollection from NanoparticleSample where id="
-			// + particleId);
 			HQLCriteria crit = new HQLCriteria(
 					"select publicationCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample sample where sample.id="
 							+ particleId);
@@ -205,8 +190,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				Publication publication = (Publication) obj;
 				publication.getAuthorCollection();
 				publication.getKeywordCollection();
-				publicationCollection.add(new PublicationBean(
-						(Publication) obj, false, true));
+				publicationCollection.add(new PublicationBean(publication));
 			}
 			Collections
 					.sort(
@@ -224,8 +208,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throws PublicationException {
 		try {
 			Publication publication = helper.findPublicationById(publcationId);
-			PublicationBean publicationBean = new PublicationBean(publication,
-					false, true);
+			PublicationBean publicationBean = new PublicationBean(publication);
 			return publicationBean;
 		} catch (Exception e) {
 			String err = "Problem finding the publcation by id: "

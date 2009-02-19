@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * This class sets up information required for publication forms.
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class InitPublicationSetup {
 	private InitPublicationSetup() {
@@ -35,14 +35,11 @@ public class InitPublicationSetup {
 				"Publication", "researchArea", "otherResearchArea", true);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
-				request, user);
 	}
 
-	
 	public void persistPublicationDropdowns(HttpServletRequest request,
 			PublicationBean publication) throws Exception {
-			
+
 		InitSetup.getInstance().persistLookup(request, "Publication", "category",
 				"otherCategory",
 				((Publication) (publication.getDomainFile())).getCategory());
@@ -51,7 +48,7 @@ public class InitPublicationSetup {
 				((Publication) (publication.getDomainFile())).getStatus());
 		setPublicationDropdowns(request);
 	}
-	
+
 	public void setDefaultResearchAreas(
 			HttpServletRequest request) throws Exception {
 		InitSetup.getInstance()

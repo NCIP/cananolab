@@ -35,48 +35,31 @@ public class PublicationBean extends FileBean {
 	}
 
 	public PublicationBean(Publication publication) {
-		this(publication, false, false);
-	}
-
-	public PublicationBean(Publication publication, boolean loadSamples,
-			boolean loadAuthors) {
 		super(publication);
 		this.domainFile = publication;
 
-		String researchAreasStr =
-			publication.getResearchArea();
-		if (researchAreasStr!=null && researchAreasStr.length()>0) {
+		String researchAreasStr = publication.getResearchArea();
+		if (researchAreasStr != null && researchAreasStr.length() > 0) {
 			researchAreas = researchAreasStr.split(delimiter);
-		}else {
+		} else {
 			researchAreas = null;
 		}
-		//TODO fix dependency on sample
-		/*
-		if (loadSamples) {
-			particleNames = new String[publication.getNanoparticleSampleCollection()
-					.size()];
-			int i = 0;
-			for (NanoparticleSample particle : publication
-					.getNanoparticleSampleCollection()) {
-				particleNames[i] = particle.getName();
-				i++;
-			}
-		}*/
-		if (loadAuthors) {
-			Collection<Author> authorCollection =
-				publication.getAuthorCollection();
-			if (authorCollection!=null &&
-					authorCollection.size()>0) {
-				List<Author> authorslist = new ArrayList<Author>(authorCollection);
-				Collections.sort(authorslist,
-						new Comparator<Author>() {
-				    public int compare(Author o1, Author o2) {
-				        return (int)(o1.getCreatedDate().compareTo(o2.getCreatedDate()));
-				    }});
-				authors = authorslist;
-			}
+		Collection<Author> authorCollection = publication.getAuthorCollection();
+		if (authorCollection != null && authorCollection.size() > 0) {
+			List<Author> authorslist = new ArrayList<Author>(authorCollection);
+			Collections.sort(authorslist, new Comparator<Author>() {
+				public int compare(Author o1, Author o2) {
+					return (int) (o1.getCreatedDate().compareTo(o2
+							.getCreatedDate()));
+				}
+			});
+			authors = authorslist;
 		}
+	}
 
+	public PublicationBean(Publication publication, String[] particleNames) {
+		this(publication);
+		this.particleNames = particleNames;
 	}
 
 	public boolean equals(Object obj) {
@@ -98,6 +81,7 @@ public class PublicationBean extends FileBean {
 	public void setParticleNames(String[] particleNames) {
 		this.particleNames = particleNames;
 	}
+
 	/**
 	 * @return the researchAreas
 	 */
@@ -106,7 +90,8 @@ public class PublicationBean extends FileBean {
 	}
 
 	/**
-	 * @param researchAreas the researchAreas to set
+	 * @param researchAreas
+	 *            the researchAreas to set
 	 */
 	public void setResearchAreas(String[] researchAreas) {
 		this.researchAreas = researchAreas;
@@ -120,26 +105,26 @@ public class PublicationBean extends FileBean {
 	}
 
 	/**
-	 * @param authors the authors to set
+	 * @param authors
+	 *            the authors to set
 	 */
 	public void setAuthors(List<Author> authors) {
 		this.authors = authors;
 	}
 
-//	/**
-//	 * @return the authorsStr
-//	 */
-//	public String getAuthorsStr() {
-//		return authorsStr;
-//	}
-//
-//	/**
-//	 * @param authorsStr the authorsStr to set
-//	 */
-//	public void setAuthorsStr(String authorsStr) {
-//		this.authorsStr = authorsStr;
-//	}
-
+	// /**
+	// * @return the authorsStr
+	// */
+	// public String getAuthorsStr() {
+	// return authorsStr;
+	// }
+	//
+	// /**
+	// * @param authorsStr the authorsStr to set
+	// */
+	// public void setAuthorsStr(String authorsStr) {
+	// this.authorsStr = authorsStr;
+	// }
 
 	public void addAuthor() {
 		authors.add(new Author());
@@ -156,7 +141,5 @@ public class PublicationBean extends FileBean {
 	public void setFoundPubMedArticle(boolean foundPubMedArticle) {
 		this.foundPubMedArticle = foundPubMedArticle;
 	}
-
-
 
 }

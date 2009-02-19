@@ -152,15 +152,18 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		session.removeAttribute("submitPublicationForm");
+		session.removeAttribute("publicationForm");
 		String particleId = request.getParameter("particleId");
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
+				request, user);
 		if (particleId != null && particleId.trim().length() > 0
 				&& session.getAttribute("otherParticleNames") == null) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 			ParticleBean particleBean = sampleService
 					.findNanoparticleSampleById(particleId);
-			UserBean user = (UserBean) session.getAttribute("user");
+
 			InitNanoparticleSetup.getInstance().getOtherParticleNames(
 					request,
 					particleBean.getDomainParticleSample().getName(),

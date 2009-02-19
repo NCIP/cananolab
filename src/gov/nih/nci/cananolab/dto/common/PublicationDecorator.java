@@ -11,52 +11,55 @@ import java.util.Arrays;
 import org.displaytag.decorator.TableDecorator;
 
 /**
- * This decorator is used to for decorate different properties of a publication to be
- * shown properly in the view page using display tag lib.
- * 
+ * This decorator is used to for decorate different properties of a publication
+ * to be shown properly in the view page using display tag lib.
+ *
  * @author tanq
- * 
+ *
  */
 public class PublicationDecorator extends TableDecorator {
-	
-	public SortableName getPublicationType() throws UnsupportedEncodingException {
+
+	public SortableName getPublicationType()
+			throws UnsupportedEncodingException {
 		String publicationType = null;
 		PublicationBean publicationBean = (PublicationBean) getCurrentRowObject();
-		Publication publication = (Publication)publicationBean.getDomainFile();
+		Publication publication = (Publication) publicationBean.getDomainFile();
 		String category = publication.getCategory();
-		if (category!=null) {
-			publicationType = publication.getCategory();		
+		if (category != null) {
+			publicationType = publication.getCategory();
 		}
 		SortableName sortableLink = new SortableName(publicationType);
 		return sortableLink;
 	}
-	
+
 	public SortableName getResearchArea() throws UnsupportedEncodingException {
-		String researchArea = "";		
+		String researchArea = "";
 		File file = ((PublicationBean) getCurrentRowObject()).getDomainFile();
 		researchArea = ((Publication) file).getResearchArea();
 		if (researchArea != null) {
-			researchArea = researchArea.replaceAll(";", "<br>");			
+			researchArea = researchArea.replaceAll(";", "<br>");
 		}
 
 		SortableName sortableLink = new SortableName(researchArea);
 		return sortableLink;
 	}
-			
-	public SortableName getEditPublicationURL() throws UnsupportedEncodingException {
+
+	public SortableName getEditPublicationURL()
+			throws UnsupportedEncodingException {
 		PublicationBean file = (PublicationBean) getCurrentRowObject();
 		String fileId = file.getDomainFile().getId().toString();
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitPublication.do?submitType=none&page=0&dispatch=detailView&publicationId=");
+		sb
+				.append("publication.do?page=0&dispatch=detailView&publicationId=");
 		sb.append(fileId);
 		sb.append("&location=");
 		sb.append(file.getLocation());
 		sb.append(">");
-		if (file.getDomainFile().getTitle().length()>30) {
+		if (file.getDomainFile().getTitle().length() > 30) {
 			sb.append(file.getDomainFile().getTitle().substring(0, 30));
-		}else {
+		} else {
 			sb.append(file.getDomainFile().getTitle());
-		}		
+		}
 		sb.append("</a>");
 		String link = sb.toString();
 		SortableName sortableLink = new SortableName(file.getDomainFile()
@@ -69,8 +72,9 @@ public class PublicationDecorator extends TableDecorator {
 		String actionName = null;
 		FileBean file = null;
 		actionName = "searchPublication.do";
-		file = (PublicationBean) getCurrentRowObject();;
-				
+		file = (PublicationBean) getCurrentRowObject();
+		;
+
 		if (file.getDomainFile().getName() != null) {
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append(actionName);
@@ -93,16 +97,19 @@ public class PublicationDecorator extends TableDecorator {
 	}
 
 	public String getParticleNames() {
-		String[] particleNames = null;
-		particleNames = ((PublicationBean) getCurrentRowObject()).getParticleNames();
+		String[] particleNames = ((PublicationBean) getCurrentRowObject())
+				.getParticleNames();
+		if (particleNames == null) {
+			return "";
+		}
 		return StringUtils.sortJoin(Arrays.asList(particleNames), "<br>");
 	}
-	
+
 	public SortableName getViewName() {
 		FileBean file = null;
 		file = (PublicationBean) getCurrentRowObject();
-		String title = file.getDomainFile().getTitle();		
+		String title = file.getDomainFile().getTitle();
 		SortableName sortableLink = new SortableName(title);
 		return sortableLink;
-	}	
+	}
 }

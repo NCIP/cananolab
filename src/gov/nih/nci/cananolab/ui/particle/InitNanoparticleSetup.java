@@ -330,7 +330,7 @@ public class InitNanoparticleSetup {
 									.getCategory();
 							DataLinkBean dataBean = new DataLinkBean(
 									publication.getId().toString(),
-									"Publication", "submitPublication",
+									"Publication", "publication",
 									publication.getCreatedBy(), publication
 											.getCreatedDate());
 							dataBean.setDataDisplayType(publicationCategory);

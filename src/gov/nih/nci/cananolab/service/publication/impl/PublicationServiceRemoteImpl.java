@@ -82,8 +82,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			if (publications != null) {
 				for (Publication publication : publications) {
 					loadParticleSamplesForPublication(publication);
-					publicationBeans.add(new PublicationBean(publication, true,
-							false));
+					publicationBeans.add(new PublicationBean(publication));
 				}
 			}
 			Collections
@@ -266,8 +265,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			throws PublicationException {
 		try {
 			Publication publication = findDomainPublicationById(publicationId);
-			PublicationBean publicationBean = new PublicationBean(publication,
-					false, true);
+			PublicationBean publicationBean = new PublicationBean(publication);
 			return publicationBean;
 		} catch (Exception e) {
 			String err = "Problem finding the publication by id: "
