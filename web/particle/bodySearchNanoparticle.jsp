@@ -146,7 +146,7 @@
 							<html:hidden styleId="characterizationType"
 								property="characterizationType" />
 						</td>
-						<td class="label">
+						<td class="label" valign="top">
 							<c:forEach var="charType" items="${characterizationTypes}">
 								<a href="#"
 									onclick="javascript:setCharacterizationOptions('${charType}', 'charName')">${charType}
@@ -160,10 +160,10 @@
 						<td class="rightLabel" valign="top" colspan="3">
 							<strong> <html:select property="characterizations"
 									styleId="charName" multiple="true" size="4">
-									<c:forEach var="achar"
+									<%--<c:forEach var="achar"
 										items="${searchNanoparticleSampleForm.map.characterizations}">
 										<html:option value="${achar}">${achar}</html:option>
-									</c:forEach>
+									</c:forEach>--%>
 								</html:select> </strong>
 						</td>
 					</tr>
