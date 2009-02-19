@@ -11,13 +11,15 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
-	width="90%">
+<table class="smalltable3" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 		<th colspan="4" align="left">
 			Nanoparticle Entity &nbsp;&nbsp;&nbsp;
 			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-					src="images/btn_add.gif" border="0" /> </a>
+					src="images/btn_add.gif" border="0" /></a>
+			&nbsp;&nbsp;&nbsp;
+			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+					src="images/btn_delete.gif" border="0" /></a>
 		</th>
 	</tr>
 	<tr>
@@ -32,14 +34,14 @@
 				<tr>
 					<td>
 						<div class="indented4">
-						<table class="smalltable2" cellpadding="0" cellspacing="0"
-							border="0">
+						<table class="summarytable" cellpadding="0" cellspacing="0"
+							border="0" width="90%">
 							<tr>
-								<td valign="top" colspan="2"><a href="#">${entity.className}</a></td>
+								<th valign="top" align="left">${entity.className}</th>
+								<th valign="top" align="right">Edit</th>
 							</tr>
 							<tr>
-								<td valign="top" align="left">&nbsp;</td>
-								<td valign="top" align="left">
+								<td valign="top" colspan="2" align="left">
 									<jsp:include
 										page="/particle/composition/nanoparticleEntity/body${entity.className}Info.jsp">
 										<jsp:param name="entityIndex"
@@ -48,7 +50,7 @@
 								</td>
 							</tr>
 						</table>
-						</div>
+						</div>&nbsp;&nbsp;
 					</td>
 				</tr>
 			</c:if>
