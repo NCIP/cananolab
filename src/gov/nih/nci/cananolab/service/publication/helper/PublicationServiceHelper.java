@@ -44,9 +44,9 @@ import org.hibernate.criterion.Restrictions;
 /**
  * Helper class providing implementations of search methods needed for both
  * local implementation of PublicationService and grid service *
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class PublicationServiceHelper {
 
@@ -317,7 +317,6 @@ public class PublicationServiceHelper {
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.add(Property.forName("id").eq(new Long(publicationId)));
-		crit.setFetchMode("nanoparticleSampleCollection", FetchMode.JOIN);
 		crit.setFetchMode("authorCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
