@@ -31,7 +31,7 @@
 				initial="0" />
 		</form-bean>
 		<form-bean name="compositionForm"
-			type="org.apache.struts.action.DynaActionForm">
+			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="comp"
 				type="gov.nih.nci.cananolab.dto.particle.composition.CompositionBean" />
 			<form-property name="particleId" type="java.lang.String" />
