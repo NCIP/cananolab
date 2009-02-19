@@ -529,21 +529,6 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	private void loadTargetsForTargetingFunction(TargetingFunction function)
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				TargetingFunction.class).add(
-				Property.forName("id").eq(function.getId()));
-		crit.setFetchMode("targetCollection", FetchMode.JOIN);
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			TargetingFunction aFunction = (TargetingFunction) result.get(0);
-
-		}
-	}
-
 	private void loadTargetsForTargetingFunction(SampleComposition composition)
 			throws Exception {
 		// load targetCollection
@@ -557,7 +542,8 @@ public class NanoparticleCompositionServiceLocalImpl implements
 							for (Function function : element
 									.getInherentFunctionCollection()) {
 								if (function instanceof TargetingFunction) {
-									helper.loadTargetsForTargetingFunction((TargetingFunction) function);
+									helper
+											.loadTargetsForTargetingFunction((TargetingFunction) function);
 								}
 							}
 						}
@@ -572,7 +558,8 @@ public class NanoparticleCompositionServiceLocalImpl implements
 				if (entity.getFunctionCollection() != null) {
 					for (Function function : entity.getFunctionCollection()) {
 						if (function instanceof TargetingFunction) {
-							helper.loadTargetsForTargetingFunction((TargetingFunction) function);
+							helper
+									.loadTargetsForTargetingFunction((TargetingFunction) function);
 						}
 					}
 				}
