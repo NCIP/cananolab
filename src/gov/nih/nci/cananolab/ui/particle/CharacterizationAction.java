@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
@@ -194,7 +195,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.getLoginName(), internalUriPath);
 	}
 
-	//TODO for datum and condition
+	// TODO for datum and condition
 	// protected boolean validateDerivedDatum(HttpServletRequest request,
 	// CharacterizationBean charBean) throws Exception {
 	//
@@ -603,7 +604,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
-		//setupCharSummary(theForm, request);
+		// setupCharSummary(theForm, request);
 
 		String location = request.getParameter("location");
 		String requestUrl = request.getRequestURL().toString();
@@ -625,7 +626,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String particleId = request.getParameter("particleId");
-		//setupCharSummary(theForm, request);
+		NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
+		List<CharacterizationBean> charBeans = service
+				.findCharsByParticleSampleId(particleId);
+		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
+				charBeans);
+		request.setAttribute("characterizationSummaryView", summaryView);
+		// setupCharSummary(theForm, request);
 
 		String location = request.getParameter("location");
 		String requestUrl = request.getRequestURL().toString();

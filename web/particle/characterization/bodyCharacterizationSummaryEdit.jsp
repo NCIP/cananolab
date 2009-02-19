@@ -3,187 +3,166 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-under construction
-<br>
-<a href="characterization.do?dispatch=setupNew&particleId=${param.particleId }">add new </a>
-
-<%--
-<link rel="StyleSheet" type="text/css" href="css/printExport.css">
-<script type="text/javascript" src="javascript/printExport.js"></script>
-<table width="100%" align="center">
+<table summary="" cellpadding="0" cellspacing="0" border="0"
+	width="100%">
 	<tr>
-		<td>
-			<h4>
-				<br>
-				${pageTitle} ${param.submitType}
-			</h4>
-		</td>
-		<td align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="char_summary_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" align="left">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			<table>
-				<tr>
-					<td>
-						<ul class="pemenu" id="printChara">
-							<li class="pelist">
-								<a href="#"><img src="images/icon_print_23x.gif" border="0"
-										align="middle"> </a>
-								<ul>
-									<li>
-										<a href="javascript:printPage('${printSummaryViewLinkURL}')">Print
-											Summary </a>
-									</li>
-									<li>
-										<a
-											href="javascript:printPage('${printFullSummaryViewLinkURL}')">Print
-											Full Summary </a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</td>
-					<td></td>
-					<td>
-						<c:url var="sumUrl" value="${actionName}.do">
-							<c:param name="particleId" value="${particleId}" />
-							<c:param name="submitType" value="${param.submitType}" />
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="exportSummary" />
-							<c:param name="location" value="${location}" />
-						</c:url>
-						<c:url var="fullSumUrl" value="${actionName}.do">
-							<c:param name="particleId" value="${particleId}" />
-							<c:param name="submitType" value="${param.submitType}" />
-							<c:param name="page" value="0" />
-							<c:param name="dispatch" value="exportFullSummary" />
-							<c:param name="location" value="${location}" />
-						</c:url>
-						<ul class="pemenu" id="exportChara">
-							<li class="pelist">
-								<a href="#"><img src="images/icon_excel_23x.gif" border="0"
-										align="middle"> </a>
-								<ul>
-									<li>
-										<a href="${sumUrl}">Export Summary</a>
-									</li>
-									<li>
-										<a href="${fullSumUrl}">Export Full Summary</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<table width="100%" border="0" align="center" cellpadding="3"
-				cellspacing="0" class="topBorderOnly" summary="">
-				<tr>
-					<td class="formTitle"
-						colspan="${3+fn:length(charSummary.columnLabels)}">
-						<div align="justify">
-							${fn:toUpperCase(param.location)} ${particleName} - ${
-							param.submitType} Characterizations
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<th class="leftLabel">
-						View Title /
-						<br>
-						Description
-					</th>
-					<c:forEach var="label" items="${charSummary.columnLabels}">
-						<th class="label">
-							${label}
-						</th>
-					</c:forEach>
-					<th class="label">
-						Characterization File
-					</th>
-					<th class="rightLabel">
-						Technique and Instrument
-					</th>
-				</tr>
-				<c:forEach var="summaryRow" items="${charSummary.summaryRows}">
-					<tr>
-						<td class="leftLabel" valign="top" width="15%">
-							<c:url var="url" value="${actionName}.do">
-								<c:param name="page" value="0" />
-								<c:param name="dispatch" value="detailView" />
-								<c:param name="particleId" value="${particleId}" />
-								<c:param name="dataId"
-									value="${summaryRow.charBean.domainChar.id}" />
-								<c:param name="dataClassName"
-									value="${summaryRow.charBean.className}" />
-								<c:param name="submitType" value="${param.submitType}" />
-								<c:param name="location" value="${location}" />
-							</c:url>
-							<a href="${url}">${summaryRow.charBean.viewTitle}</a>
-							<c:if test="${!empty summaryRow.charBean.description}">
-								<br>
-								<br>${summaryRow.charBean.description}
-							</c:if>
-						</td>
-
-						<c:forEach var="label" items="${charSummary.columnLabels}">
-							<td class="label" valign="top">
-								${summaryRow.datumMap[label]}&nbsp;
-							</td>
-						</c:forEach>
-						<td class="label" valign="top">
-							<c:if
-								test="${!empty summaryRow.derivedBioAssayDataBean && !empty summaryRow.derivedBioAssayDataBean.fileBean.domainFile.uri}">
-								<c:choose>
-									<c:when
-										test="${summaryRow.derivedBioAssayDataBean.fileBean.hidden eq 'true' }">
-										Private file
-									</c:when>
-									<c:otherwise>
-										<c:choose>
-											<c:when
-												test="${summaryRow.derivedBioAssayDataBean.fileBean.image eq 'true'}">
-												${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.title}<br>
-												<br>
-												<a href="#"
-													onclick="popImage(event,'${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id}&amp;location=${location}', ${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id})"><img
-														src="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id}&amp;location=${location}"
-														border="0" width="150"> </a>
-											</c:when>
-											<c:otherwise>
-												<a
-													href="${actionName}.do?dispatch=download&amp;fileId=${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.id}&amp;location=${location}">${summaryRow.derivedBioAssayDataBean.fileBean.domainFile.title}</a>
-											</c:otherwise>
-										</c:choose>
-									</c:otherwise>
-								</c:choose>
-							</c:if>
-							&nbsp;
-						</td>
-						<td class="RightLabel" valign="top">
-							<c:if test="${!empty summaryRow.charBean.experimentConfigs}">
-								<c:forEach var="experimentConfig"
-									items="${summaryRow.charBean.experimentConfigs}">
-								${experimentConfig.displayDetailString}<br>
-								</c:forEach>&nbsp;
-						</c:if>
-							&nbsp;
-						</td>
-					</tr>
-				</c:forEach>
-			</table>
+		<c:forEach var="type" items="${characterizationTypes}">
+			<th class="borderlessLabel">
+				<a href="#${type}">${type}</a>
+			</th>
+		</c:forEach>
+		<td class="borderlessLabel">
+			<a
+				href="characterization.do?dispatch=setupNew&particleId=${param.particleId }">add
+				new </a>
 		</td>
 	</tr>
 </table>
---%>
+<br>
+
+<c:forEach var="type" items="${characterizationTypes}">
+	<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
+		width="90%">
+		<tr>
+			<th colspan="4" align="left">
+				${type} &nbsp;&nbsp;&nbsp;
+				<a href="#" class="addlink"><img align="absmiddle"
+						src="images/btn_add.gif" border="0" /> </a>&nbsp;&nbsp;
+				<a><img align="absmiddle" src="images/btn_delete.gif" border="0" />
+				</a>
+			</th>
+		</tr>
+		<tr>
+			<td colspan="4" align="left">
+				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<%--
+				<c:if
+					test="${!empty characterizationSummaryView.type2Characterizations[type] }">
+					<c:forEach var="charBean"
+						items="${characterizationSummaryView.type2Characterizations[type]}">
+						<c:set var="charObj" value="${charBean.domainChar}" />
+						<table class="smalltable2" width="100%" border="0" align="center"
+							cellpadding="3" cellspacing="0" class="topBorderOnly" summary="">
+							<tr>
+								<td class="formTitle">
+									${charBean.characterizationName} ${charBean.viewTitle}
+									${charBean.dateString }
+								</td>
+
+							</tr>
+							<tr>
+								<td>
+									<table>
+
+										<tr>
+											<td>
+												Design Methods Description
+											</td>
+											<td>
+												${charObj.designMethodsDescription}
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Assay Endpoint
+											</td>
+											<td>
+												${charObj.assayType}
+											</td>
+										</tr>
+
+										<tr>
+											<td>
+												Protocol
+											</td>
+											<td>
+												${charBean.protocolFileBean.displayName}
+											</td>
+										</tr>
+
+										<tr>
+											<td>
+												Instruments/Techniques
+											</td>
+											<td>
+												<c:forEach var="experimentConfig"
+													items="charBean.experimentConfigs">
+									${experimentConfig.displayName}<br>
+												</c:forEach>
+											</td>
+										</tr>
+										<tr>
+											<td valign="top">
+												Data/Files
+											</td>
+											<td valign="top">
+
+												<c:forEach var="dataSetBean" items="charBean.dataSets">
+													<table>
+														<tr>
+
+															<td valign="top">
+																<table>
+																	<tr>
+																		<c:forEach var="col" items="dataSetBean.columns">
+																			<th>
+																				${col}
+																			</th>
+																		</c:forEach>
+																	</tr>
+																	<c:forEach var="dataRow" items="dataSetBean.dataRows">
+																		<tr>
+																			<c:forEach var="datum" items="dataRow.data">
+																				<td>
+																					${datum.value}
+																				</td>
+																			</c:forEach>
+																			<c:forEach var="condition" items="dataRow.conditions">
+																				<td>
+																					${condition.value}
+																				</td>
+																			</c:forEach>
+																		</tr>
+																	</c:forEach>
+																</table>
+															</td>
+
+															<td>
+																<c:choose>
+																	<c:when test="${dataSetBean.file.image eq 'true' }">
+																		<a href="#"
+																			onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}', ${dataSetBean.file.domainFile.id}, 100, 100)"><img
+																				src="characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}"
+																				border="0" width="150"> </a>
+																	</c:when>
+																	<c:otherwise>
+																		<a
+																			href="characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}"
+																			target="${dataSetBean.file.urlTarget}">${dataSetBean.file.domainFile.title}</a>
+																	</c:otherwise>
+																</c:choose>
+															</td>
+														</tr>
+													</table>
+													<br>
+												</c:forEach>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						<br>
+					</c:forEach>
+				</c:if>
+				--%>
+				<br>
+			</td>
+		</tr>
+	</table>
+	<br>
+</c:forEach>

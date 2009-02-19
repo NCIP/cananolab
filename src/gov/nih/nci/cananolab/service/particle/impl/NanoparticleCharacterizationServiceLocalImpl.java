@@ -241,7 +241,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			crit.setFetchMode("experimentConfigCollection.technique",
 					FetchMode.JOIN);
 			crit.setFetchMode(
-					"experimentConfigCollection.instrumentColleciton",
+					"experimentConfigCollection.instrumentCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("fileCollection", FetchMode.JOIN);
 			crit.setFetchMode("fileCollection.keywordCollection",
