@@ -125,6 +125,13 @@ public class InitNanoparticleSetup {
 		return sampleNames;
 	}
 
+	public SortedSet<String> getAllParticleNames(HttpServletRequest request)
+			throws Exception {
+		SortedSet<String> sampleNames = particleService.findAllParticleNames();
+		request.getSession().setAttribute("allParticleNames", sampleNames);
+		return sampleNames;
+	}
+
 	public Map<String, SortedSet<DataLinkBean>> getDataTree(
 			ParticleBean particleBean, HttpServletRequest request)
 			throws Exception {
@@ -330,8 +337,8 @@ public class InitNanoparticleSetup {
 									.getCategory();
 							DataLinkBean dataBean = new DataLinkBean(
 									publication.getId().toString(),
-									"Publication", "publication",
-									publication.getCreatedBy(), publication
+									"Publication", "publication", publication
+											.getCreatedBy(), publication
 											.getCreatedDate());
 							dataBean.setDataDisplayType(publicationCategory);
 							pubmedid = publication.getPubMedId();

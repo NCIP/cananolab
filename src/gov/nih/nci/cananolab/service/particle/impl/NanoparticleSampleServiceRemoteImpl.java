@@ -471,9 +471,13 @@ public class NanoparticleSampleServiceRemoteImpl implements
 		throw new ParticleException("Not implemented for grid service");
 	}
 
-	public List<String> findParticleNamesByPublicationId(String publicationId)
+	public SortedSet<String> findParticleNamesByPublicationId(String publicationId)
 			throws ParticleException {
-		//TODO add implementation detail
+		// TODO add implementation detail
+		throw new ParticleException("Not implemented for grid service");
+	}
+
+	public SortedSet<String> findAllParticleNames() throws ParticleException {
 		throw new ParticleException("Not implemented for grid service");
 	}
 }

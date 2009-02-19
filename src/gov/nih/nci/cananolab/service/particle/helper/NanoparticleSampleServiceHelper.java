@@ -694,7 +694,7 @@ public class NanoparticleSampleServiceHelper {
 		return particleStrings.toArray(particleStrArray);
 	}
 
-	public List<String> findParticleNamesByPublicationId(String publicationId)
+	public SortedSet<String> findParticleNamesByPublicationId(String publicationId)
 			throws Exception {
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(NanoparticleSample.class);
@@ -703,7 +703,7 @@ public class NanoparticleSampleServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
-		List<String> names = new ArrayList<String>();
+		SortedSet<String> names = new TreeSet<String>();
 		for (Object obj : results) {
 			NanoparticleSample particleSample = (NanoparticleSample) obj;
 			names.add(particleSample.getName());

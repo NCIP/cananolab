@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -129,7 +130,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
 				for (Publication publication : publications) {
 					//retrieve particleNames
-					List<String> particleNames = sampleService
+					SortedSet<String> particleNames = sampleService
 							.findParticleNamesByPublicationId(publication
 									.getId().toString());
 					PublicationBean pubBean = new PublicationBean(publication,

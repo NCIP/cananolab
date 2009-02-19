@@ -102,7 +102,9 @@ public interface NanoparticleSampleService {
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException;
 
-	public List<String> findParticleNamesByPublicationId(String publicationId)
+	public SortedSet<String> findParticleNamesByPublicationId(String publicationId)
 			throws ParticleException;
+
+	public SortedSet<String> findAllParticleNames() throws ParticleException;
 
 }

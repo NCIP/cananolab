@@ -156,8 +156,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String particleId = request.getParameter("particleId");
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getAllNanoparticleSampleNames(
-				request, user);
+		InitNanoparticleSetup.getInstance().getAllParticleNames(request);
 		if (particleId != null && particleId.trim().length() > 0
 				&& session.getAttribute("otherParticleNames") == null) {
 			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();

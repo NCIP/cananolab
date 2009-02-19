@@ -28,7 +28,7 @@
 		</tr>
 		<c:choose>
 			<c:when
-				test="${empty allUserParticleNames && param.dispatch eq 'setup'}">
+				test="${empty allParticleNames && param.dispatch eq 'setup'}">
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
@@ -260,7 +260,7 @@
 											<td class="rightLabel">
 												<html:select property="file.particleNames" multiple="true"
 													size="5">
-													<html:options name="allUserParticleNames" />
+													<html:options name="allParticleNames" />
 												</html:select>
 											</td>
 										</tr>
