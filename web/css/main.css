@@ -1480,6 +1480,38 @@ input.noBorderText {
 	color: #5C5C5C;
 }
 
+
+
+.summarytable {
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+}
+
+.summarytable th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 5px 30px 10px 30px;
+	border-style: none;
+	border-width: 1px;
+	border-color: #cccccc;
+	color: #5C5C5C;
+	background-color:#CCCCCC;
+}
+
+.summarytable td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 5px 0 5px 5px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: none;
+	vertical-align: middle;
+	color: #5C5C5C;
+}
+
 body {
 	margin:0;
 	padding:0;
