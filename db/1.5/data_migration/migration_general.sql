@@ -614,6 +614,16 @@ ALTER TABLE characterization ADD COLUMN assay_type VARCHAR(200);
 
 DROP TABLE associated_file;
 
+CREATE TABLE characterization_file
+(
+	characterization_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (characterization_pk_id, file_pk_id),
+	KEY (characterization_pk_id),
+	KEY (file_pk_id)
+) TYPE=InnoDB
+;
+
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
