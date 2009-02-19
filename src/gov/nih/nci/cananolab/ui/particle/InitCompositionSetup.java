@@ -40,7 +40,7 @@ public class InitCompositionSetup {
 			throws Exception {
 		getEmulsionComposingElementTypes(request);
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "functionTypes",
+				request, "defaultFunctionTypes", "functionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function",
 				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
 
@@ -48,6 +48,7 @@ public class InitCompositionSetup {
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
+						"defaultNanoparticleEntityTypes",
 						"nanoparticleEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
 						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
@@ -133,7 +134,7 @@ public class InitCompositionSetup {
 			throws Exception {
 		// reload function types
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "functionTypes",
+				request, "defaultFunctionTypes", "functionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function",
 				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
 
@@ -141,12 +142,13 @@ public class InitCompositionSetup {
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
+						"defaultFunctionalizingEntityTypes",
 						"functionalizingEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
 						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 						true);
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "allTargetTypes",
+				request, "defaultTargetTypes", "targetTypes",
 				"gov.nih.nci.cananolab.domain.Function.Target",
 				"gov.nih.nci.cananolab.domain.Function.OtherTarget", true);
 
@@ -225,7 +227,8 @@ public class InitCompositionSetup {
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
-						"allChemicalAssociationTypes",
+						"defaultChemicalAssociationTypes",
+						"chemicalAssociationTypes",
 						"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation",
 						"gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation",
 						true);

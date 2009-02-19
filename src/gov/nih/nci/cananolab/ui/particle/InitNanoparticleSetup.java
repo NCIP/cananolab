@@ -27,16 +27,11 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.SortableName;
-import gov.nih.nci.cananolab.util.TreeNodeBean;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
@@ -63,13 +58,14 @@ public class InitNanoparticleSetup {
 	public void setLocalSearchDropdowns(HttpServletRequest request)
 			throws Exception {
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "functionTypes",
+				request, "defaultFunctionTypes", "functionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function",
 				"gov.nih.nci.cananolab.domain.function.OtherFunction", true);
 		InitSetup
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
+						"defaultNanoparticleEntityTypes",
 						"nanoparticleEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
 						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
@@ -78,35 +74,30 @@ public class InitNanoparticleSetup {
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
+						"defaultFunctionalizingEntityTypes",
 						"functionalizingEntityTypes",
 						"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
 						"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 						true);
-		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
-				request, "characterizationTypes",
-				"gov.nih.nci.cananolab.domain.particle.Characterization",
-				"gov.nih.nci.cananolab.domain.characterization.OtherCharacterization",
-				true);
+		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
+				request);
 	}
 
 	public void setRemoteSearchDropdowns(HttpServletRequest request)
 			throws Exception {
+		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				request.getSession().getServletContext(),
-				"defaultFunctionalizingEntityTypes",
+				appContext, "defaultFunctionalizingEntityTypes",
 				"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				request.getSession().getServletContext(),
-				"defaultFunctionTypes",
-				"gov.nih.nci.cananolab.domain.particle.Function");
-		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				request.getSession().getServletContext(),
-				"defaultNanoparticleEntityTypes",
+				appContext, "defaultNanoparticleEntityTypes",
 				"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
 		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				request.getSession().getServletContext(),
-				"defaultCharacterizationTypes",
-				"gov.nih.nci.cananolab.domain.particle.Characterization");
+				appContext, "defaultFunctionTypes",
+				"gov.nih.nci.cananolab.domain.particle.Function");
+
+		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
+				request);
 	}
 
 	public SortedSet<PointOfContactBean> getNanoparticleSamplePointOfContacts(
@@ -132,147 +123,6 @@ public class InitNanoparticleSetup {
 				.findAllNanoparticleSampleNames(user);
 		request.getSession().setAttribute("allUserParticleNames", sampleNames);
 		return sampleNames;
-	}
-
-	public SortedMap<TreeNodeBean, List<String>> getDefaultCharacterizationTypes(
-			ServletContext appContext) throws Exception {
-		if (appContext.getAttribute("characterizationTypes") == null) {
-
-			SortedMap<TreeNodeBean, List<String>> charaMap = new TreeMap<TreeNodeBean, List<String>>();
-			Map<String, String> charaClassNameMap = new HashMap<String, String>();
-			Map<TreeNodeBean, List<String>> physicalMap = getDefaultPhysicalCharacterizationTypes(
-					appContext, charaClassNameMap);
-			Map<TreeNodeBean, List<String>> invitroMap = getDefaultInvitroCharacterizationTypes(
-					appContext, charaClassNameMap);
-
-			charaMap.putAll(physicalMap);
-			charaMap.putAll(invitroMap);
-
-			appContext.setAttribute("charaClassNameMap", charaClassNameMap);
-			appContext.setAttribute("characterizationTypes", charaMap);
-
-			return charaMap;
-
-		} else {
-			return new TreeMap<TreeNodeBean, List<String>>(
-					(SortedMap<? extends TreeNodeBean, List<String>>) appContext
-							.getAttribute("characterizationTypes"));
-		}
-	}
-
-	public Map<String, List<DataLinkBean>> getDefaultCompositionTypes(
-			ServletContext appContext) throws Exception {
-
-		Map<String, List<DataLinkBean>> compositionMap = new HashMap<String, List<DataLinkBean>>();
-		List<DataLinkBean> compList = new ArrayList<DataLinkBean>(4);
-
-		compList.add(new DataLinkBean("Nanoparticle Entity",
-				"NanoparticleEntity", "nanoparticleEntity", "composition"));
-		compList
-				.add(new DataLinkBean("Functionalizing Entity",
-						"FunctionalizingEntity", "functionalizingEntity",
-						"composition"));
-		compList.add(new DataLinkBean("Chemical Association",
-				"ChemicalAssociation", "chemicalAssociation", "composition"));
-		compList.add(new DataLinkBean("Composition File", "CompositionFile",
-				"compositionFile", "composition"));
-
-		compositionMap.put("Composition", compList);
-		appContext.setAttribute("compositionTypes", compositionMap);
-		return compositionMap;
-	}
-
-	@SuppressWarnings("unchecked")
-	public Map<TreeNodeBean, List<String>> getDefaultPhysicalCharacterizationTypes(
-			ServletContext appContext, Map<String, String> charaClassNameMap)
-			throws Exception {
-
-		Map<String, List<String>> physicalCharaMap = new HashMap<String, List<String>>();
-		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
-		short indentLevel = -1;
-
-		setSubclassMap(
-				appContext,
-				charaClassNameMap,
-				physicalCharaMap,
-				searchTreeMap,
-				"gov.nih.nci.cananolab.domain.particle.characterization.physical.PhysicalCharacterization",
-				indentLevel);
-		appContext.setAttribute("physicalTypes", physicalCharaMap);
-
-		return searchTreeMap;
-	}
-
-	@SuppressWarnings("unchecked")
-	public Map<TreeNodeBean, List<String>> getDefaultInvitroCharacterizationTypes(
-			ServletContext appContext, Map<String, String> charaClassNameMap)
-			throws Exception {
-
-		Map<String, List<String>> invitroCharaMap = new HashMap<String, List<String>>();
-		Map<TreeNodeBean, List<String>> searchTreeMap = new HashMap<TreeNodeBean, List<String>>();
-
-		short indentLevel = -1;
-		setSubclassMap(
-				appContext,
-				charaClassNameMap,
-				invitroCharaMap,
-				searchTreeMap,
-				"gov.nih.nci.cananolab.domain.particle.characterization.invitro.InvitroCharacterization",
-				indentLevel);
-		appContext.setAttribute("invitroTypes", invitroCharaMap);
-		return searchTreeMap;
-	}
-
-	private static void setSubclassMap(ServletContext appContext,
-			Map<String, String> classNameMap,
-			Map<String, List<String>> typeMap,
-			Map<TreeNodeBean, List<String>> searchTreeMap,
-			String parentClassName, int indentLevel) {
-		try {
-			List<String> subclassList = ClassUtils
-					.getChildClassNames(parentClassName);
-
-			if (subclassList == null || subclassList.size() == 0) {
-				return;
-			}
-			List<String> tempList = new ArrayList<String>();
-
-			String shortParentClassName = ClassUtils
-					.getShortClassName(parentClassName);
-			String parentDisplayName = InitSetup.getInstance().getDisplayName(
-					shortParentClassName, appContext);
-
-			classNameMap.put(parentDisplayName, shortParentClassName);
-
-			TreeNodeBean nodeBean = new TreeNodeBean(parentDisplayName,
-					CaNanoLabConstants.CHARACTERIZATION_ORDER_MAP
-							.get(parentDisplayName), new Integer(indentLevel));
-
-			indentLevel++;
-			String subclassName = null;
-			for (String sclassName : subclassList) {
-				String displayName = InitSetup.getInstance().getDisplayName(
-						ClassUtils.getShortClassName(sclassName), appContext);
-				tempList.add(displayName);
-
-				String shortClassName = ClassUtils
-						.getShortClassName(sclassName);
-				classNameMap.put(displayName, shortClassName);
-
-				setSubclassMap(appContext, classNameMap, typeMap,
-						searchTreeMap, sclassName, indentLevel);
-				subclassName = sclassName;
-
-			}
-
-			nodeBean.setHasGrandChildrenFlag(ClassUtils
-					.hasChildrenClasses(subclassName));
-			typeMap.put(parentDisplayName, tempList);
-			searchTreeMap.put(nodeBean, tempList);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public Map<String, SortedSet<DataLinkBean>> getDataTree(
@@ -473,7 +323,7 @@ public class InitNanoparticleSetup {
 					FileService fileService = new FileServiceLocalImpl();
 					for (Publication publication : publicationCollection) {
 						PublicationBean pubBean = new PublicationBean(
-								publication, false, false);
+								publication);
 						fileService.retrieveVisibility(pubBean, user);
 						if (!pubBean.isHidden()) {
 							String publicationCategory = publication

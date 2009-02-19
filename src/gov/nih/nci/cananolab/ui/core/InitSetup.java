@@ -216,25 +216,17 @@ public class InitSetup {
 	}
 
 	public SortedSet<String> getReflectionDefaultAndOtherLookupTypes(
-			HttpServletRequest request, String sessionAttribute,
-			String fullParentClassName, String otherFullParentClassName,
-			boolean updateSession) throws Exception {
+			HttpServletRequest request, String contextAttributeForDefaults,
+			String sessionAttribute, String fullParentClassName,
+			String otherFullParentClassName, boolean updateSession)
+			throws Exception {
+
+		ServletContext appContext = request.getSession().getServletContext();
+		SortedSet<String> defaultTypes = getServletContextDefaultTypesByReflection(
+				appContext, contextAttributeForDefaults, fullParentClassName);
+
 		SortedSet<String> types = null;
 		if (updateSession) {
-
-			ServletContext appContext = request.getSession()
-					.getServletContext();
-			SortedSet<String> defaultTypes = new TreeSet<String>();
-			List<String> classNames = ClassUtils
-					.getChildClassNames(fullParentClassName);
-			for (String name : classNames) {
-				if (!name.contains("Other")) {
-					String displayName = InitSetup.getInstance()
-							.getDisplayName(ClassUtils.getShortClassName(name),
-									appContext);
-					defaultTypes.add(displayName);
-				}
-			}
 			types = new TreeSet<String>(defaultTypes);
 			SortedSet<String> otherTypes = LookupService
 					.getAllOtherObjectTypes(otherFullParentClassName);

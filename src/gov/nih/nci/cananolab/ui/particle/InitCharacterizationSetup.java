@@ -1,15 +1,17 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -26,17 +28,27 @@ public class InitCharacterizationSetup {
 		return new InitCharacterizationSetup();
 	}
 
+	public List<String> getCharacterizationTypes(HttpServletRequest request)
+			throws Exception {
+		ServletContext appContext = request.getSession().getServletContext();
+		List<String> types = new ArrayList<String>();
+		types.add(InitSetup.getInstance().getDisplayName(
+				"PhysicoChemicalCharacterization", appContext));
+		types.add(InitSetup.getInstance().getDisplayName(
+				"InvitroCharacterization", appContext));
+		types.add(InitSetup.getInstance().getDisplayName(
+				"InvivoCharacterization", appContext));
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
+		types.addAll(otherTypes);
+		request.getSession().setAttribute("characterizationTypes", types);
+		return types;
+	}
+
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String className) throws Exception {
 		HttpSession session = request.getSession();
-		InitSetup
-				.getInstance()
-				.getReflectionDefaultAndOtherLookupTypes(
-						request,
-						"characterizationTypes",
-						"gov.nih.nci.cananolab.domain.particle.Characterization",
-						"gov.nih.nci.cananolab.domain.characterization.OtherCharacterization",
-						true);
+		getCharacterizationTypes(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 

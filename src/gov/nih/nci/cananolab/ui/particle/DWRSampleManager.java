@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
 import java.util.SortedSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -71,6 +72,7 @@ public class DWRSampleManager {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
+		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
 			if ("local".equals(searchLocations)) {
@@ -82,6 +84,7 @@ public class DWRSampleManager {
 						.getInstance()
 						.getReflectionDefaultAndOtherLookupTypes(
 								request,
+								"defaultNanoparticleEntityTypes",
 								"nanoparticleEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
 								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
@@ -89,8 +92,7 @@ public class DWRSampleManager {
 			} else {
 				types = InitSetup
 						.getInstance()
-						.getServletContextDefaultTypesByReflection(
-								request.getSession().getServletContext(),
+						.getServletContextDefaultTypesByReflection(appContext,
 								"defaultNanoparticleEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
 			}
@@ -108,6 +110,7 @@ public class DWRSampleManager {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
+		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
 			if ("local".equals(searchLocations)) {
@@ -119,15 +122,15 @@ public class DWRSampleManager {
 						.getInstance()
 						.getReflectionDefaultAndOtherLookupTypes(
 								request,
+								"defaultFunctionalizingEntityTypes",
 								"functionalizingEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity",
 								"gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity",
 								true);
 			} else {
-				types = InitSetup
+				InitSetup
 						.getInstance()
-						.getServletContextDefaultTypesByReflection(
-								request.getSession().getServletContext(),
+						.getServletContextDefaultTypesByReflection(appContext,
 								"defaultFunctionalizingEntityTypes",
 								"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 			}
@@ -145,6 +148,8 @@ public class DWRSampleManager {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
+		ServletContext appContext = request.getSession().getServletContext();
+
 		try {
 			boolean isLocal = false;
 			if ("local".equals(searchLocations)) {
@@ -156,15 +161,15 @@ public class DWRSampleManager {
 						.getInstance()
 						.getReflectionDefaultAndOtherLookupTypes(
 								request,
+								"defaultFunctionTypes",
 								"functionTypes",
 								"gov.nih.nci.cananolab.domain.particle.Function",
 								"gov.nih.nci.cananolab.domain.function.OtherFunction",
 								true);
 			} else {
-				types = InitSetup
+				InitSetup
 						.getInstance()
-						.getServletContextDefaultTypesByReflection(
-								request.getSession().getServletContext(),
+						.getServletContextDefaultTypesByReflection(appContext,
 								"defaultFunctionTypes",
 								"gov.nih.nci.cananolab.domain.particle.Function");
 			}

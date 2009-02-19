@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 
@@ -48,31 +47,12 @@ public class CustomPlugIn implements PlugIn {
 			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
 					appContext, "defaultTargetTypes",
 					"gov.nih.nci.cananolab.domain.function.Target");
-			InitSetup
-					.getInstance()
-					.getServletContextDefaultTypesByReflection(appContext,
-							"defaultPhysicalCharacterizationNames",
-							"gov.nih.nci.cananolab.domain.characterization.PhysicalCharacterization");
-			InitSetup
-					.getInstance()
-					.getServletContextDefaultTypesByReflection(appContext,
-							"defaultInvitroCharacterizationNames",
-							"gov.nih.nci.cananolab.domain.characterization.InvitroCharacterization");
-			InitSetup
-					.getInstance()
-					.getServletContextDefaultTypesByReflection(appContext,
-							"defaultInvivoCharacterizationNames",
-							"gov.nih.nci.cananolab.domain.characterization.InvivoCharacterization");
+			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
+					appContext, "defaultChemicalAssociationTypes",
+					"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			actionServlet.getServletContext().setAttribute("applicationOwner",
 					CaNanoLabConstants.APP_OWNER);
-
-			InitNanoparticleSetup.getInstance()
-					.getDefaultCharacterizationTypes(
-							actionServlet.getServletContext());
-
-			InitNanoparticleSetup.getInstance().getDefaultCompositionTypes(
-					actionServlet.getServletContext());
 
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
 					appContext, "antigenSpecies", "Antigen", "species");
