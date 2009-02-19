@@ -22,14 +22,7 @@
 		<td class="borderlessLabel">
 			<a href="#Composition File"><strong>Composition File
 					</strong> </a>
-		</td>
-
-		<td class="borderlessLabel" align="right" width="20%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="nano_entity_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
+		</td>		
 	</tr>
 </table>
 <br>
