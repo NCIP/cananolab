@@ -481,11 +481,11 @@ public class NanoparticleCompositionServiceLocalImpl implements
 							FetchMode.JOIN);
 			crit
 					.setFetchMode(
-							"nanoparticleEntityCollection.compositionElementCollection",
+							"nanoparticleEntityCollection.composingElementCollection",
 							FetchMode.JOIN);
 			crit
 					.setFetchMode(
-							"nanoparticleEntityCollection.compositionElementCollection.inherentFunctionCollection",
+							"nanoparticleEntityCollection.composingElementCollection.inherentFunctionCollection",
 							FetchMode.JOIN);
 			crit
 					.setFetchMode("functionalizingEntityCollection",
