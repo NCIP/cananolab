@@ -5,86 +5,69 @@
 <c:set var="entity"
 	value="${compositionForm.map.comp.nanoparticleEntities[param.entityIndex]}" />
 
-<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
+<table cellspacing="0" cellpadding="3"
+	width="85%" align="center" border="0">
 	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify" id="compEleInfoTitle">
-					Composing Element Information
-				</div>
-			</td>
-		</tr>
 		<tr>
-			<td class="completeLabel" colspan="4">
-				<table border="0" width="100%">
+			<td colspan="4">
+				<table border="0" width="85%">
 					<tr>
 						<td></td>
 						<td>
-							<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-								width="100%" align="center" summary="" border="0">
+							<table class="smalltable2" 
+								width="85%" align="center" border="1">
 								<tbody>
 									<tr>
-										<td class="leftLabelWithTop" valign="top">
+										<td valign="top">
 											<strong>Composing Element Type</strong>
 										</td>
-										<td class="labelWithTop" valign="top">
+										<td valign="top">
 											<strong>Chemical Name</strong>
 										</td>
-										<td class="labelWithTop" valign="top">
+										<td valign="top">
 											<strong>Description</strong>
 										</td>
-										<td class="labelWithTop" valign="top">
+										<td valign="top">
 											<strong>Molecular Formula Type</strong>
 										</td>
-										<td class="labelWithTop" valign="top">
+										<td valign="top">
 											<strong>Molecular Formula</strong>
 										</td>
-										<td class="labelWithTop" valign="top">
+										<td valign="top">
 											<strong>Amount</strong>
 										</td>
-										<td class="labelWithTop" valign="top">
+										<td valign="top">
 											<strong>Amount Unit</strong>
 										</td>
-										<td class="rightLabelWithTop" valign="top">
+										<td  valign="top">
 											<strong>Inherent Functions</strong>
 										</td>
 									</tr>
-									<logic:iterate name="nanoparticleEntityForm"
-										property="entity.composingElements" id="composingElement"
+									<logic:iterate name="entity"
+										property="composingElements" id="composingElement"
 										indexId="ind">
 										<tr>
-											<td class="leftLabel" valign="top">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.type}&nbsp;
+											<td valign="top">
+												${composingElement.domainComposingElement.type}&nbsp;
 											</td>
-											<td class="label" valign="top">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.name}&nbsp;
-					`						</td>
-											<td class="label" valign="top" width="15%">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.description}&nbsp;
+											<td valign="top">
+												${composingElement.domainComposingElement.name}&nbsp;
 											</td>
-											<td class="label" valign="top">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}&nbsp;
+											<td valign="top" width="15%">
+												${composingElement.domainComposingElement.description}&nbsp;
 											</td>
-											<td class="label" valign="top" width="15%">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}&nbsp;
+											<td valign="top">
+												${composingElement.domainComposingElement.molecularFormulaType}&nbsp;
 											</td>
-											<td class="label" valign="top">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.value}&nbsp;
+											<td valign="top" style="{white-space: pre-wrap; word-wrap: break-word;overflow: hidden;}">
+												${composingElement.domainComposingElement.molecularFormula}&nbsp;
+											</td>
+											<td valign="top">
+												${composingElement.domainComposingElement.value}&nbsp;
 											</td>
 
-											<td class="label" valign="top">
-												${nanoparticleEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}&nbsp;
-											</td>
-											<td colspan="4" class="rightLabel">
-												<c:if
-													test="${! empty nanoparticleEntityForm.map.entity.composingElements[ind].inherentFunctions}">
-													<jsp:include
-														page="/particle/composition/nanoparticleEntity/bodyFunctionReadOnly.jsp">
-														<jsp:param name="compEleInd" value="${ind}" />
-													</jsp:include>
-												</c:if>
-												&nbsp;
+											<td valign="top">
+												${composingElement.domainComposingElement.valueUnit}&nbsp;
 											</td>
 										</tr>
 									</logic:iterate>

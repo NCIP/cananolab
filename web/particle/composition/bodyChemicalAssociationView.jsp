@@ -11,13 +11,16 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
-	width="90%">
+<table class="smalltable3" cellpadding="0" cellspacing="0" border="0">
 	<tr>
 		<th colspan="4" align="left">
 			Chemical Association &nbsp;&nbsp;&nbsp;
 			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-					src="images/btn_add.gif" border="0" /> </a>
+					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
+			<c:if test="${empty compositionForm.map.comp.nanoparticleEntities}">
+				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+					src="images/btn_delete.gif" border="0" /></a>
+			</c:if>
 		</th>
 	</tr>
 	<tr>
@@ -25,37 +28,78 @@
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 		</td>
 	</tr>
-	<c:if test="${!empty compositionForm.map.comp.nanoparticleEntities}">
-		<logic:iterate name="compositionForm"
-			property="comp.nanoparticleEntities" id="entity" indexId="ind">
-			<c:if test="${!empty entity.className}">
-				<tr>
-					<td>
-						<div class="indented4">
-						<table class="smalltable2" cellpadding="0" cellspacing="0"
-							border="0">
-							<tr>
-								<td valign="top" colspan="2"><a href="#">${entity.className}</a></td>
-							</tr>
-							<tr>
-								<td valign="top" align="left">&nbsp;</td>
-								<td valign="top" align="left">
-									<jsp:include
-										page="/particle/composition/nanoparticleEntity/body${entity.className}Info.jsp">
+	<c:choose>
+		<c:when test="${empty compositionForm.map.comp.nanoparticleEntities}">
+			<logic:iterate name="compositionForm"
+				property="comp.nanoparticleEntities" id="entity" indexId="ind">
+				<c:if test="${!empty entity.className}">
+					<tr>
+						<td>
+							<div class="indented4">
+								<table class="summarytable" cellpadding="0" cellspacing="0"
+									border="0" width="90%">
+									<tr>
+										<th valign="top" align="left">
+											${entity.className}
+										</th>
+										<th valign="top" align="right">
+											Edit
+										</th>
+									</tr>
+									<tr>
+										<td valign="top" colspan="2">
+											Description:
+										</td>
+									</tr>
+									<tr>
+										<td valign="top" colspan="2">
+											${entity.emulsion.description}
+										</td>
+									</tr>
+
+									<tr>
+										<td valign="top" colspan="2" align="left">
+											<jsp:include
+												page="/particle/composition/nanoparticleEntity/body${entity.className}Info.jsp">
+												<jsp:param name="entityIndex" value="${ind}" />
+											</jsp:include><br>
+											Composing Element:
+											<br>
+											<!--<jsp:include
+										page="bodyComposingElementView.jsp">
 										<jsp:param name="entityIndex"
 											value="${ind}" />
 									</jsp:include>
+								-->
+										</td>
+									</tr>
+								</table>
+							</div>
+							&nbsp;&nbsp;
+						</td>
+					</tr>
+				</c:if>
+			</logic:iterate>
+		</c:when>
+		<c:otherwise>
+			<tr>
+				<td>
+					<div class="indented4">
+						<table class="summarytable" 
+							border="0">
+							<tr>
+								<td>
+									&nbsp;No data available&nbsp;&nbsp;
 								</td>
 							</tr>
 						</table>
-						</div>
-					</td>
-				</tr>
-			</c:if>
-		</logic:iterate>
-
-	</c:if>
-
+						&nbsp;
+					</div>
+					&nbsp;
+				</td>
+			</tr>
+		</c:otherwise>
+	</c:choose>
 
 </table>
 
