@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cananolab.dto.common;
 
@@ -10,13 +10,13 @@ import java.util.Date;
 
 /**
  * Protocol File view bean
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolFileBean extends FileBean {
 	/**
-	 * 
+	 *
 	 */
 	String domainFileId; // used for ajax
 
@@ -42,8 +42,12 @@ public class ProtocolFileBean extends FileBean {
 	}
 
 	public String getDisplayName() {
-		return ((ProtocolFile) domainFile).getProtocol().getName() + "-"
-				+ domainFile.getVersion();
+		if (((ProtocolFile) domainFile).getProtocol().getName() != null) {
+			return ((ProtocolFile) domainFile).getProtocol().getName() + "-"
+					+ domainFile.getVersion();
+		} else {
+			return "";
+		}
 	}
 
 	public String getDomainFileId() {
@@ -102,10 +106,10 @@ public class ProtocolFileBean extends FileBean {
 
 	public void setupDomainFile(String internalUriPath, String createdBy)
 			throws Exception {
-		if (updatedFileUri!=null && updatedFileUri.trim().length()>0){
+		if (updatedFileUri != null && updatedFileUri.trim().length() > 0) {
 			domainFile.setUri(updatedFileUri);
 		}
-		if (updatedFileName!=null && updatedFileName.trim().length()>0){
+		if (updatedFileName != null && updatedFileName.trim().length() > 0) {
 			domainFile.setName(updatedFileName);
 		}
 		if (updatedFileVersion.length() > 0) {
