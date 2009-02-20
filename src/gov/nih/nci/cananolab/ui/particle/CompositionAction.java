@@ -45,6 +45,23 @@ public class CompositionAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = request.getParameter("location");
+		//setupParticle(theForm, request, location);
+		HttpSession session = request.getSession();
+		UserBean user = (UserBean) session.getAttribute("user");
+		String particleId = request.getParameter("particleId");
+		NanoparticleCompositionService compService = null;
+		if (location.equals("local")) {
+			compService = new NanoparticleCompositionServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			compService = new NanoparticleCompositionServiceRemoteImpl(
+					serviceUrl);
+		}
+		CompositionBean compositionBean = compService.findCompositionByParticleSampleId(particleId);
+		theForm.set("comp", compositionBean);		
 		return mapping.findForward("summaryEdit");
 	}
 }
