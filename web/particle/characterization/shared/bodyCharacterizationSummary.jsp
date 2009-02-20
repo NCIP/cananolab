@@ -93,10 +93,8 @@
 			<html:select property="achar.pocBean.domain.id" styleId="charSource"
 				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
 				<option value=""></option>
-				<%--
-				<html:options collection="allPointOfContacts"
+				<html:options collection="particlePointOfContacts"
 					labelProperty="displayName" property="domain.id" />
-				--%>
 			</html:select>
 		</td>
 		<td class="label">

@@ -57,34 +57,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 	private NanoparticleSampleServiceHelper helper = new NanoparticleSampleServiceHelper();
 
 	/**
-	 *
-	 * @return all PointOfContacts
-	 */
-	// TODO: verify if fetching nanoparticleSampleCollection is necessary on all
-	// calls
-	public SortedSet<PointOfContact> findPointOfContacts()
-			throws ParticleException {
-		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
-				new CaNanoLabComparators.ParticlePointOfContactComparator());
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(PointOfContact.class);
-			crit.setFetchMode("organization", FetchMode.JOIN);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				pointOfContacts.add((PointOfContact) obj);
-			}
-			return pointOfContacts;
-		} catch (Exception e) {
-			String err = "Error in retrieving all point of contacts";
-			logger.error(err, e);
-			throw new ParticleException(err, e);
-		}
-	}
-
-	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample
 	 *

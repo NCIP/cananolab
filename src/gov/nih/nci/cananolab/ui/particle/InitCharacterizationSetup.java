@@ -1,7 +1,10 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
+import gov.nih.nci.cananolab.service.common.PointOfContactService;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -50,6 +53,14 @@ public class InitCharacterizationSetup {
 		HttpSession session = request.getSession();
 		getCharacterizationTypes(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
+	}
+
+	public void setPointOfContacts(HttpServletRequest request, String particleId)
+			throws Exception {
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		List<PointOfContactBean> pocs = pocService
+				.findPointOfContactsByParticleId(particleId);
+		request.getSession().setAttribute("particlePointOfContacts", pocs);
 	}
 
 	public void setPhysicalCharacterizationDropdowns(HttpServletRequest request)

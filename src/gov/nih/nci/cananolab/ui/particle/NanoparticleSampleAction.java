@@ -99,8 +99,7 @@ public class NanoparticleSampleAction extends BaseAnnotationAction {
 
 	private void setupLookups(HttpServletRequest request, String sampleOrg)
 			throws Exception {
-		InitNanoparticleSetup.getInstance()
-				.getNanoparticleSamplePointOfContacts(request);
+		InitNanoparticleSetup.getInstance().getAllPointOfContacts(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
 				request, sampleOrg);
 	}
@@ -121,7 +120,6 @@ public class NanoparticleSampleAction extends BaseAnnotationAction {
 		// setupDataTree(particleSampleBean, request);
 		return mapping.findForward("update");
 	}
-
 
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)

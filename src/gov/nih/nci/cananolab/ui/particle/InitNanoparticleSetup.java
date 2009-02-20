@@ -18,7 +18,9 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -100,10 +102,11 @@ public class InitNanoparticleSetup {
 				request);
 	}
 
-	public SortedSet<PointOfContactBean> getNanoparticleSamplePointOfContacts(
+	public SortedSet<PointOfContactBean> getAllPointOfContacts(
 			HttpServletRequest request) throws Exception {
-		SortedSet<PointOfContact> pointOfContacts = particleService
-				.findPointOfContacts();
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		SortedSet<PointOfContact> pointOfContacts = pocService
+				.findAllPointOfContacts();
 		SortedSet<PointOfContactBean> pointOfContactBeans = null;
 		if (pointOfContacts != null && pointOfContacts.size() > 0) {
 			pointOfContactBeans = new TreeSet<PointOfContactBean>(

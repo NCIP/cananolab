@@ -8,9 +8,9 @@ import java.util.TreeSet;
 /**
  * This class represents summary view characterization properties to be shown in
  * characterization summary view pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CharacterizationSummaryBean {
 	private List<CharacterizationSummaryRowBean> summaryRows = new ArrayList<CharacterizationSummaryRowBean>();
@@ -20,6 +20,8 @@ public class CharacterizationSummaryBean {
 	private List<CharacterizationBean> charBeans = new ArrayList<CharacterizationBean>();
 
 	private String characterizationClassName;
+
+	private SortedSet<String> allCharacterizationTypes;
 
 	public CharacterizationSummaryBean() {
 	}

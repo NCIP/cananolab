@@ -15,6 +15,14 @@
 		</td>
 	</tr>
 	<tr>
+		<td class="leftLabelNoBottom" valign="top">
+			<strong>Description</strong>
+		</td>
+		<td class="rightLabelNoBottom" colspan="3">
+			<html:textarea property="achar.domainChar.designMethodsDescription" />
+		</td>
+	</tr>
+	<tr>
 		<td class="completeLabelNoBottom" valign="top" colspan="4">
 			<strong>Technique and Instrument</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if

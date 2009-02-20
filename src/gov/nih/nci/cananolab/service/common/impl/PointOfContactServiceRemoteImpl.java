@@ -10,14 +10,15 @@ import gov.nih.nci.cananolab.service.common.PointOfContactService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of PointOfContactService
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	private static Logger logger = Logger
@@ -30,10 +31,10 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 
 	/**
 	 * Persist a new organization or update an existing organizations
-	 * 
+	 *
 	 * @param primaryPointOfContact
 	 * @param otherPointOfContactCollection
-	 * 
+	 *
 	 * @throws PointOfContactException
 	 */
 	public void savePointOfContact(PointOfContact primaryPointOfContact,
@@ -57,12 +58,24 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 			throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
-	
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
-		throws PointOfContactException{
+
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
+			String nanoparticleSampleCollection) throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
-	public Organization findOrganizationByName(String orgName) throws PointOfContactException{
+
+	public Organization findOrganizationByName(String orgName)
+			throws PointOfContactException {
+		throw new PointOfContactException("not implemented for grid service.");
+	}
+
+	public SortedSet<PointOfContact> findAllPointOfContacts()
+			throws PointOfContactException {
+		throw new PointOfContactException("not implemented for grid service.");
+	}
+
+	public List<PointOfContactBean> findPointOfContactsByParticleId(String particleId)
+			throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 }

@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.particle;
 
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
@@ -19,13 +18,6 @@ import java.util.SortedSet;
  *
  */
 public interface NanoparticleSampleService {
-	/**
-	 *
-	 * @return all particle sources
-	 */
-	public SortedSet<PointOfContact> findPointOfContacts()
-			throws ParticleException;
-
 	/**
 	 * Persist a new nanoparticle sample or update an existing nanoparticle
 	 * sample

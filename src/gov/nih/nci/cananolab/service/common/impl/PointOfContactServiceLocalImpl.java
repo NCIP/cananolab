@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -15,6 +16,7 @@ import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -23,15 +25,17 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
  * Local implementation of SourceService
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	private static Logger logger = Logger
@@ -40,10 +44,10 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 
 	/**
 	 * Persist a new organization or update an existing organizations
-	 * 
+	 *
 	 * @param primaryPointOfContact
 	 * @param otherPointOfContactCollection
-	 * 
+	 *
 	 * @throws PointOfContactException
 	 */
 	public void savePointOfContact(PointOfContact primaryPointOfContact,
@@ -129,19 +133,20 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			pointOfContact.setCreatedDate(new Date());
 		}
 		if (organization != null) {
-			Organization dbOrganization = getDBOrganizationByName(organization.getName());
+			Organization dbOrganization = getDBOrganizationByName(organization
+					.getName());
 			if (dbOrganization != null) {
 				organization.setId(dbOrganization.getId());
 				organization.setPointOfContactCollection(dbOrganization
 						.getPointOfContactCollection());
 				organization.getPointOfContactCollection().add(pointOfContact);
-			}else {
+			} else {
 				organization.setId(null);
 				organization.setCreatedBy(user);
 				organization.setCreatedDate(new Date());
 				organization
-					.setPointOfContactCollection(new HashSet<PointOfContact>());
-			}			
+						.setPointOfContactCollection(new HashSet<PointOfContact>());
+			}
 			if (organization.getCreatedBy() == null) {
 				organization.setCreatedBy(user);
 			}
@@ -150,7 +155,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			pointOfContact.setOrganization(organization);
 			appService.saveOrUpdate(organization);
-		}		
+		}
 		appService.saveOrUpdate(pointOfContact);
 	}
 
@@ -291,23 +296,85 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
-	
-	public void saveOrganization(Organization organization, String user) 
-		throws Exception {
-		if (organization != null && organization.getName()!=null) {
-			Organization dbOrganization = getDBOrganizationByName(organization.getName());
+
+	public void saveOrganization(Organization organization, String user)
+			throws Exception {
+		if (organization != null && organization.getName() != null) {
+			Organization dbOrganization = getDBOrganizationByName(organization
+					.getName());
 			if (dbOrganization == null) {
 				organization.setId(null);
 				organization
-					.setPointOfContactCollection(new HashSet<PointOfContact>());
+						.setPointOfContactCollection(new HashSet<PointOfContact>());
 				organization.setCreatedBy(user);
 				organization.setCreatedDate(new Date());
-				CustomizedApplicationService appService = 
-					(CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
+				CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+						.getApplicationService();
 				appService.saveOrUpdate(organization);
 			}
-		}	
+		}
 	}
 
+	/**
+	 *
+	 * @return all PointOfContacts
+	 */
+	// TODO: verify if fetching nanoparticleSampleCollection is necessary on all
+	// calls
+	public SortedSet<PointOfContact> findAllPointOfContacts()
+			throws PointOfContactException {
+		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
+				new CaNanoLabComparators.ParticlePointOfContactComparator());
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria
+					.forClass(PointOfContact.class);
+			crit.setFetchMode("organization", FetchMode.JOIN);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				pointOfContacts.add((PointOfContact) obj);
+			}
+			return pointOfContacts;
+		} catch (Exception e) {
+			String err = "Error in retrieving all point of contacts";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
+
+	public List<PointOfContactBean> findPointOfContactsByParticleId(
+			String particleId) throws PointOfContactException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					NanoparticleSample.class).add(
+					Property.forName("id").eq(new Long(particleId)));
+			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+			crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			List<PointOfContactBean> pointOfContactCollection = new ArrayList<PointOfContactBean>();
+			for (Object obj : results) {
+				NanoparticleSample particle = (NanoparticleSample) obj;
+				PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
+				Collection<PointOfContact> otherPOCs = particle
+						.getOtherPointOfContactCollection();
+				pointOfContactCollection
+						.add(new PointOfContactBean(primaryPOC));
+				for (PointOfContact poc : otherPOCs) {
+					pointOfContactCollection.add(new PointOfContactBean(poc));
+				}
+			}
+			return pointOfContactCollection;
+		} catch (Exception e) {
+			String err = "Problem finding all PointOfContact collections with the given particle ID.";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
 }

@@ -114,6 +114,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String particleId = request.getParameter("particleId");
+		InitCharacterizationSetup.getInstance().setPointOfContacts(request,
+				particleId);
 		clearForm(theForm);
 		// characterizationForm is either physicalCharacterizationForm or
 		// invitroCharacterizationForm to use in bodyCharacterization.jsp
@@ -375,7 +378,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.setPhysicalCharacterizationDropdowns(request);
 		InitCharacterizationSetup.getInstance()
 				.setInvitroCharacterizationDropdowns(request);
-
 		String detailPage = setupDetailPage(charBean);
 		request.getSession().setAttribute("characterizationDetailPage",
 				detailPage);

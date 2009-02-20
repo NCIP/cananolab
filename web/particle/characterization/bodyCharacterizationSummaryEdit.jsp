@@ -72,7 +72,7 @@
 												<tr>
 													<td>
 														ASSAY ENDPOINT
-														<div class="indented5">
+														<div class="indented5">N/A
 															${charObj.assayType}
 														</div>
 													</td>
@@ -81,7 +81,7 @@
 												<tr>
 													<td>
 														PROTOCOL
-														<div class="indented5">
+														<div class="indented5">N/A
 															${charBean.protocolFileBean.displayName}
 														</div>
 													</td>
@@ -170,7 +170,7 @@
 								<tr>
 									<td colspan="2" valign="top" align="left"
 										class="borderlessLabel">
-										No data available
+										N/A
 									</td>
 								</tr>
 							</table>

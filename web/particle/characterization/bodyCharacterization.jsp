@@ -82,8 +82,10 @@
 				</c:if>
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationResults.jsp" />
-					<%--
+				<%--
 				<jsp:include page="/particle/bodyAnnotationCopy.jsp" />--%>
+				<jsp:include
+					page="/particle/characterization/shared/bodyCharacterizationConclusion.jsp" />
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationSubmit.jsp" />
 			</td>

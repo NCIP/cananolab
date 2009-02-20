@@ -9,22 +9,23 @@ import gov.nih.nci.cananolab.exception.PointOfContactException;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Interface defining methods invovled in submiting and searching organizations.
- * 
+ *
  * @author tanq
- * 
+ *
  */
 public interface PointOfContactService {
 
 	/**
 	 * Persist a new organization or update an existing organizations
-	 * 
+	 *
 	 * @param particleId
 	 * @param primaryPointOfContact
 	 * @param otherPointOfContactCollection
-	 * 
+	 *
 	 * @throws PointOfContactException
 	 */
 	public void savePointOfContact(PointOfContact primaryPointOfContact,
@@ -39,8 +40,16 @@ public interface PointOfContactService {
 
 	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException;
-	
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc, String nanoparticleSampleCollection) 
-		throws PointOfContactException;
-	public Organization findOrganizationByName(String orgName) throws PointOfContactException;
+
+	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
+			String nanoparticleSampleCollection) throws PointOfContactException;
+
+	public Organization findOrganizationByName(String orgName)
+			throws PointOfContactException;
+
+	public SortedSet<PointOfContact> findAllPointOfContacts()
+			throws PointOfContactException;
+
+	public List<PointOfContactBean> findPointOfContactsByParticleId(String particleId)
+			throws PointOfContactException;
 }
