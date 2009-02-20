@@ -1230,6 +1230,7 @@ img.img { /* for images that need a border */
 
 .indented4 {
 	padding-left: 18pt;
+	padding-right: 18pt;
 }
 
 .largerText {
