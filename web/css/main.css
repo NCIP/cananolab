@@ -1233,6 +1233,11 @@ img.img { /* for images that need a border */
 	padding-right: 18pt;
 }
 
+.indented5 {
+	padding-left: 8pt;
+	padding-right: 8pt;
+}
+
 .largerText {
 	font-size: 1.1em;
 	font-weight: bold;
