@@ -19,7 +19,7 @@
 			<strong>Description</strong>
 		</td>
 		<td class="rightLabelNoBottom" colspan="3">
-			<html:textarea property="achar.domainChar.designMethodsDescription" />
+			<html:textarea property="achar.domainChar.designMethodsDescription" cols="100"/>
 		</td>
 	</tr>
 	<tr>
