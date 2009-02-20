@@ -9,6 +9,8 @@
 			content="nano informatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence">
 		<meta name="description"
 			content="caNanoLab is a data sharing portal designed to facilitate information sharing in the biomedical nanotechnology research community to expedite and validate the use of nanotechnology in biomedicine">
+		<link rel="icon" href="images/favicon.ico" />
+		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 		<%-- doesn't work in FireFox
 		<c:if test="${!empty printLinkURL}">
