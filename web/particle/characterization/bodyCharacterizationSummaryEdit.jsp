@@ -22,12 +22,14 @@
 
 <c:forEach var="type" items="${characterizationTypes}">
 	<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
-		width="90%">
+		width="100%">
 		<tr>
 			<th colspan="4" align="left">
 				${type} &nbsp;&nbsp;&nbsp;
-				<a href="#" class="addlink"><img align="absmiddle"
-						src="images/btn_add.gif" border="0" /></a>&nbsp;&nbsp;
+				<a
+					href="characterization.do?dispatch=setupNew&particleId=${param.particleId }"
+					class="addlink"><img align="absmiddle" src="images/btn_add.gif"
+						border="0" /></a>&nbsp;&nbsp;
 				<a><img align="absmiddle" src="images/btn_delete.gif" border="0" />
 				</a>
 			</th>
@@ -47,7 +49,7 @@
 							<c:set var="charObj" value="${charBean.domainChar}" />
 							<div class="indented4">
 								<table class="summarytable" cellpadding="0" cellspacing="0"
-									border="0" width="90%">
+									border="0" width="100%">
 									<tr>
 										<th align="left">
 											Size (${charBean.viewTitle} ${charBean.dateString })
@@ -58,79 +60,77 @@
 									</tr>
 									<tr>
 										<td colspan="2">
-
 											<table border="0">
-
 												<tr>
 													<td>
-														Design Methods Description
-													</td>
-													<td colspan="2">
-														${charObj.designMethodsDescription}
+														DESCRIPTION
+														<div class="indented5">
+															${charObj.designMethodsDescription}
+														</div>
 													</td>
 												</tr>
 												<tr>
 													<td>
-														Assay Endpoint
-													</td>
-													<td>
-														${charObj.assayType}
-													</td>
-												</tr>
-
-												<tr>
-													<td>
-														Protocol
-													</td>
-													<td>
-														${charBean.protocolFileBean.displayName}
+														ASSAY ENDPOINT
+														<div class="indented5">
+															${charObj.assayType}
+														</div>
 													</td>
 												</tr>
 
 												<tr>
 													<td>
-														Instruments/Techniques
+														PROTOCOL
+														<div class="indented5">
+															${charBean.protocolFileBean.displayName}
+														</div>
 													</td>
+												</tr>
+
+												<tr>
 													<td>
-														<c:forEach var="experimentConfig"
-															items="${charBean.experimentConfigs}">
+														TECHNIQUES AND INSTRUMENTS
+														<div class="indented5">
+															<c:forEach var="experimentConfig"
+																items="${charBean.experimentConfigs}">
 									${experimentConfig.displayName}<br>
-														</c:forEach>
+															</c:forEach>
+														</div>
 													</td>
 												</tr>
 												<tr>
 													<td valign="top">
-														Data/Files
-													</td>
-													<td valign="top">
-														<c:forEach var="dataSetBean" items="${charBean.dataSets}">
-															<table border="0">
-																<tr>
-																	<td valign="top">
-																		<table>
-																			<tr>
-																				<c:forEach var="col" items="${dataSetBean.columns}">
-																					<td>
-																						${col}
-																					</td>
-																				</c:forEach>
-																			</tr>
-																			<c:forEach var="dataRow" items="${dataSetBean.dataRows}">
+														DATA AND FILES
+														<div class="indented5">
+															<c:forEach var="dataSetBean" items="${charBean.dataSets}">
+																<table align="left">
+																	<tr>
+																		<td valign="top">
+																			<table class="smalltable2" border="1">
 																				<tr>
-																					<c:forEach var="datum" items="${dataRow.data}">
+																					<c:forEach var="col" items="${dataSetBean.columns}">
 																						<td>
-																							${datum.value}
-																						</td>
-																					</c:forEach>
-																					<c:forEach var="condition"
-																						items="${dataRow.conditions}">
-																						<td>
-																							${condition.value}
+																							<strong>${col}</strong>
 																						</td>
 																					</c:forEach>
 																				</tr>
-																			</c:forEach>
-																		</table>
+																				<c:forEach var="dataRow"
+																					items="${dataSetBean.dataRows}">
+																					<tr>
+																						<c:forEach var="datum" items="${dataRow.data}">
+																							<td>
+																								${datum.value}
+																							</td>
+																						</c:forEach>
+																						<c:forEach var="condition"
+																							items="${dataRow.conditions}">
+																							<td>
+																								${condition.value}
+																							</td>
+																						</c:forEach>
+																					</tr>
+																				</c:forEach>
+																			</table>
 																	</td>
 
 																	<td>
@@ -148,11 +148,11 @@
 																			</c:otherwise>
 																		</c:choose>
 																	</td>
-																</tr>
-															</table>
-															<br>
-														</c:forEach>
-
+																	</tr>
+																</table>
+																<br>
+															</c:forEach>
+														</div>
 													</td>
 												</tr>
 											</table>
@@ -166,7 +166,7 @@
 					<c:otherwise>
 						<div class="indented4">
 							<table class="summarytable" cellpadding="0" cellspacing="0"
-								border="0" width="90%">
+								border="0" width="100%">
 								<tr>
 									<td colspan="2" valign="top" align="left"
 										class="borderlessLabel">

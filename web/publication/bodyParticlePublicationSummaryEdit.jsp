@@ -22,8 +22,7 @@
 <c:forEach var="category"
 	items="${publicationSummaryView.publicationCategories}">
 
-	<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
-		width="90%">
+	<table class="smalltable3" cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
 			<th align="left">
 				<a name="${category}" id="${category}">${category}</a>
@@ -42,7 +41,7 @@
 		<tr>
 			<td>
 				<div class="indented4">
-					<table class="summarytable" width="90%" border="0" cellpadding="0"
+					<table class="summarytable" width="100%" border="0" cellpadding="0"
 						cellspacing="0" summary="">
 						<tr>
 							<th width="20%">
