@@ -1234,8 +1234,9 @@ img.img { /* for images that need a border */
 }
 
 .indented5 {
+	padding-top: 5pt;
+	padding-bottom: 5pt;
 	padding-left: 8pt;
-	padding-right: 8pt;
 }
 
 .largerText {
