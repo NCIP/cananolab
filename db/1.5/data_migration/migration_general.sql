@@ -603,7 +603,9 @@ AND o.name = c.source
 
 ALTER TABLE characterization change description design_method_description TEXT;
 
+ALTER TABLE characterization DROP COLUMN cytotoxicity_cell_death_method;
 ALTER TABLE characterization ADD COLUMN analysis_conclusion TEXT;
+ALTER TABLE characterization ADD COLUMN enzyme_induction_enzyme VARCHAR(200);
 ALTER TABLE characterization ADD COLUMN other_char_assay_category VARCHAR(200);
 ALTER TABLE characterization ADD COLUMN other_char_name VARCHAR(200);
 ALTER TABLE characterization ADD COLUMN assay_type VARCHAR(200);
@@ -624,6 +626,7 @@ CREATE TABLE characterization_file
 ) TYPE=InnoDB
 ;
 
+ALTER TABLE protocol ADD COLUMN abbreviation VARCHAR(200);
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
