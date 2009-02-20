@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.Datum;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public class DataRowBean {
 	private DataRow domain = new DataRow();
 	private List<Datum> data = new ArrayList<Datum>();
+	private List<Condition> conditions= new ArrayList<Condition>();
 
 	public DataRowBean() {
 	}
@@ -35,28 +37,27 @@ public class DataRowBean {
 
 	public void addDatumColumn(Datum datum) {
 		datum.setDataRow(domain);
-//		System.out.println("debug XXXXXXXXXX  add ");
-//		if (datum.getValue()!=null && datum.getValue().length()>0) {
-//			for (Datum thisDatum: data) {
-//				if (thisDatum.getValue()==null || thisDatum.getValue().length()==0) {
-//					thisDatum.setValue(datum.getValue());
-//				}
-//			}
-//		}
+		// System.out.println("debug XXXXXXXXXX add ");
+		// if (datum.getValue()!=null && datum.getValue().length()>0) {
+		// for (Datum thisDatum: data) {
+		// if (thisDatum.getValue()==null || thisDatum.getValue().length()==0) {
+		// thisDatum.setValue(datum.getValue());
+		// }
+		// }
+		// }
 		System.out.println("XXXXXXXXXX end of debug ");
 		if (data.contains(datum)) {
-			for (Datum thisDatum: data) {
+			for (Datum thisDatum : data) {
 				if (thisDatum.getId().equals(datum.getId())) {
 					thisDatum.setName(datum.getName());
 					thisDatum.setValueType(datum.getValueType());
 					thisDatum.setValueUnit(datum.getValueUnit());
 				}
 			}
-		}else {
+		} else {
 			data.add(datum);
 		}
 	}
-
 
 	public void removeDatum(Datum datum) {
 		data.remove(datum);
@@ -85,28 +86,32 @@ public class DataRowBean {
 	}
 
 	/**
-	* Compares <code>obj</code> to it self and returns true if they both are same
-	*
-	* @param obj
-	**/
-	public boolean equals(Object obj)
-	{
-		if(obj instanceof DataRowBean)
-		{
-			DataRowBean dataRowBean =(DataRowBean)obj;
-			if(getDomain().getId() != null && getDomain().getId().equals(dataRowBean.getDomain().getId()))
+	 * Compares <code>obj</code> to it self and returns true if they both are
+	 * same
+	 *
+	 * @param obj
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof DataRowBean) {
+			DataRowBean dataRowBean = (DataRowBean) obj;
+			if (getDomain().getId() != null
+					&& getDomain().getId().equals(
+							dataRowBean.getDomain().getId()))
 				return true;
 		}
 		return false;
 	}
 
 	/**
-	* Returns hash code for the primary key of the object
-	**/
-	public int hashCode()
-	{
-		if(getDomain().getId() != null)
+	 * Returns hash code for the primary key of the object
+	 */
+	public int hashCode() {
+		if (getDomain().getId() != null)
 			return getDomain().getId().hashCode();
 		return 0;
+	}
+
+	public List<Condition> getConditions() {
+		return conditions;
 	}
 }

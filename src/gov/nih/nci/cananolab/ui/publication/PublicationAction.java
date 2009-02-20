@@ -451,6 +451,9 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"publicationCategories", "Publication", "category",
+				"otherCategory", true);
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		String particleId = request.getParameter("particleId");
 		List<PublicationBean> publications = publicationService

@@ -56,7 +56,7 @@ public class CharacterizationBean {
 
 	private List<DataSetBean> dataSets = new ArrayList<DataSetBean>();
 
-	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
+	private ProtocolFileBean protocolFileBean;
 
 	private Characterization domainChar=new Characterization();
 

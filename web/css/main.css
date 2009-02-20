@@ -1413,9 +1413,9 @@ input.noBorderButton {
 	background-color: #f4f4f5;
 }
 
-input.noBorderText { 
-	font-size: 1.02em;	
-	border:0px solid; 
+input.noBorderText {
+	font-size: 1.02em;
+	border:0px solid;
 	background-color: #f4f4f5;
 }
 
@@ -1492,23 +1492,25 @@ input.noBorderText {
 
 .summarytable th {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
-	padding: 5px 30px 10px 30px;
+	font-size: 0.65em;
+	padding: 5px 10px 10px 5px;
 	border-style: none;
 	border-width: 1px;
 	border-color: #cccccc;
 	color: #5C5C5C;
 	background-color:#CCCCCC;
+	text-align:left;
 }
 
 .summarytable td {
 	font-family: verdana, arial, helvetica, sans-serif;
-	font-size: 0.7em;
+	font-size: 0.65em;
 	padding: 5px 0 5px 5px;
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: none;
-	vertical-align: middle;
+	vertical-align: top;
+	text-align:left;
 	color: #5C5C5C;
 }
 

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
@@ -18,18 +19,19 @@ import java.util.Map;
  *
  */
 public class DataSetBean {
-	private DataSet domain=new DataSet();
+	private DataSet domain = new DataSet();
 	private DataRowBean theDataRow = new DataRowBean();
 	private List<DataRowBean> dataRows = new ArrayList<DataRowBean>();
 	private List<Datum> data = new ArrayList<Datum>();
-	private FileBean file=new FileBean();
-
+	private FileBean file = new FileBean();
+	private List<String> columns = new ArrayList<String>();
 
 	public DataSetBean() {
 
 	}
+
 	public DataSetBean(List<Datum> data) {
-		domain=data.get(0).getDataSet();
+		domain = data.get(0).getDataSet();
 		Map<DataRow, List<Datum>> dataMap = new HashMap<DataRow, List<Datum>>();
 		List<DataRow> rows = new ArrayList<DataRow>();
 		List<Datum> dataPerRow = null;
@@ -48,6 +50,16 @@ public class DataSetBean {
 		for (DataRow row : rows) {
 			DataRowBean rowBean = new DataRowBean(dataMap.get(row));
 			dataRows.add(rowBean);
+		}
+
+		// get column information from first data row
+		for (Datum datum : dataRows.get(0).getData()) {
+			// TODO add other info to column
+			columns.add(datum.getName());
+		}
+		for (Condition condition : dataRows.get(0).getConditions()) {
+			// TODO add other info to column
+			columns.add(condition.getName());
 		}
 	}
 
@@ -94,7 +106,7 @@ public class DataSetBean {
 	}
 
 	public List<Datum> getData() {
-		for(DataRowBean row: dataRows) {
+		for (DataRowBean row : dataRows) {
 			data.addAll(row.getData());
 		}
 		return data;
@@ -118,16 +130,18 @@ public class DataSetBean {
 	public DataSet getDomain() {
 		return domain;
 	}
+
 	public FileBean getFile() {
 		return file;
 	}
+
 	public void setFile(FileBean file) {
 		this.file = file;
 	}
 
 	public DataRowBean getDataRowBean(Datum myDatum) {
 		DataRowBean dataRowBean = null;
-		for (DataRowBean drb: this.dataRows) {
+		for (DataRowBean drb : this.dataRows) {
 			Collection<Datum> datumColletion = drb.getData();
 			if (datumColletion.contains(myDatum)) {
 				dataRowBean = drb;
@@ -135,6 +149,10 @@ public class DataSetBean {
 			}
 		}
 		return dataRowBean;
+	}
+
+	public List<String> getColumns() {
+		return columns;
 	}
 
 }
