@@ -35,7 +35,7 @@
 		<create creator="new" javascript="DataSetManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager" />
+				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager"/>
 			<include method="addColumnHeader" />
 			<include method="resetDataSet" />
 			<include method="addRow" />
@@ -91,11 +91,11 @@
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.particle.characterization.ExperimentConfigBean">
+			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
 			<param name="include" value="domain, instruments" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.particle.characterization.ExperimentConfig">
+			match="gov.nih.nci.cananolab.dto.common.ExperimentConfig">
 			<param name="include"
 				value="id, description, technique, instrumentCollection" />
 		</convert>
@@ -109,12 +109,12 @@
 				value="id, type, manufacturer, modelName" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.particle.characterization.Datum">
+			match="gov.nih.nci.cananolab.domain.common.Datum">
 			<param name="include"
 				value="id, name, value, valueType, valueUnit, dataRow, dataSet" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.particle.characterization.Condition">
+			match="gov.nih.nci.cananolab.domain.common.Condition">
 			<param name="include"
 				value="id, name, value, valueType, valueUnit, datumCollection" />
 		</convert>
