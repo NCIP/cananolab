@@ -7,7 +7,7 @@
 
 <table cellpadding="0" cellspacing="0" border="0">
 	<tr>
-		<td>
+		<td valign="top">
 			Polymer Name:&nbsp;${entity.emulsion.polymerName} &nbsp;
 			<c:choose>
 				<c:when test="${entity.emulsion.polymerized eq 'true' }">

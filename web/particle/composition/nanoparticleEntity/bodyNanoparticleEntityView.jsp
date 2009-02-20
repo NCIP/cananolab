@@ -11,7 +11,7 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table class="smalltable3" cellpadding="0" cellspacing="0" border="0">
+<table class="smalltable3" cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<th colspan="4" align="left">
 			Nanoparticle Entity &nbsp;&nbsp;&nbsp;
@@ -43,34 +43,41 @@
 											${entity.className}
 										</th>
 										<th valign="top" align="right">
-											Edit
+											<a href="#">Edit</a>
 										</th>
 									</tr>
 									<tr>
 										<td valign="top" colspan="2">
-											Description:
+											${fn:toUpperCase('Description')}
+											<div class="indented5">
+												${entity.emulsion.description}
+											</div>
 										</td>
-									</tr>
+									</tr>	
+									
 									<tr>
 										<td valign="top" colspan="2">
-											${entity.emulsion.description}
-										</td>
-									</tr>
-
-									<tr>
-										<td valign="top" colspan="2" align="left">
-											<jsp:include
+											PROPERTIES
+											<div class="indented5">
+												<jsp:include
 												page="/particle/composition/nanoparticleEntity/body${entity.className}Info.jsp">
 												<jsp:param name="entityIndex" value="${ind}" />
-											</jsp:include><br>
-											Composing Element:
+											</jsp:include>
+											</div>
+										</td>
+									</tr>	
+														
+								
+									<tr>
+										<td valign="top" colspan="2" align="left">
+											COMPOSING ELEMENTS:
 											<br>
-											<!--<jsp:include
+											<jsp:include
 										page="bodyComposingElementView.jsp">
 										<jsp:param name="entityIndex"
 											value="${ind}" />
 									</jsp:include>
-								-->
+								
 										</td>
 									</tr>
 								</table>
@@ -86,7 +93,7 @@
 				<td>
 					<div class="indented4">
 						<table class="summarytable" 
-							border="0">
+							border="0" width="90%">
 							<tr>
 								<td>
 									&nbsp;No data available&nbsp;&nbsp;

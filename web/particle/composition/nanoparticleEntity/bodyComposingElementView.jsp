@@ -15,7 +15,7 @@
 						<td></td>
 						<td>
 							<table class="smalltable2" 
-								width="85%" align="center" border="1">
+								width="80%" align="center" border="1">
 								<tbody>
 									<tr>
 										<td valign="top">
