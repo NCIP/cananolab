@@ -12,6 +12,7 @@ function setCharacterizationOptionsByCharType() {
 	var charType = document.getElementById("charType").value;
 	CharacterizationManager.getCharacterizationOptions(charType, function (data) {
 		dwr.util.removeAllOptions("charName");
+		dwr.util.addOptions("charName", [""]);
 		dwr.util.addOptions("charName", data);
 		dwr.util.addOptions("charName", ["[Other]"]);
 	});
@@ -24,3 +25,12 @@ function setCharacterizationOptions(charType, elementName) {
 	});
 }
 
+function setAssayEndpointOptionsByCharName() {
+	var charName = document.getElementById("charName").value;
+	CharacterizationManager.getAssayEndpointOptions(charName, function (data) {
+		dwr.util.removeAllOptions("assayType");
+		dwr.util.addOptions("assayType", [""]);
+		dwr.util.addOptions("assayType", data);
+		dwr.util.addOptions("assayType", ["[Other]"]);
+	});
+}

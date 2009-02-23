@@ -47,6 +47,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationManager" />
 			<include method="getCharacterizationOptions" />
+			<include method="getAssayEndpointOptions"/>
 		</create>
 		<create creator="new" javascript="NanoparticleSampleManager"
 			scope="session">

@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -41,5 +42,17 @@ public class DWRCharacterizationManager {
 		String[] charNameArray = new String[charNames.size()];
 		charNames.toArray(charNameArray);
 		return charNameArray;
+	}
+
+	public String[] getAssayEndpointOptions(String characterizationName)
+			throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		ServletContext appContext = wctx.getServletContext();
+		String charClassName = InitSetup.getInstance().getClassName(
+				characterizationName, appContext);
+		SortedSet<String> assayTypes = LookupService
+				.getDefaultAndOtherLookupTypes(charClassName, "assayType",
+						"otherAssayType");
+		return assayTypes.toArray(new String[assayTypes.size()]);
 	}
 }
