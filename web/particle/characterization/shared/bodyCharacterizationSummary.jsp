@@ -39,7 +39,7 @@
 		</td>
 		<td class="rightLabel">
 			<html:select property="achar.characterizationName" styleId="charName"
-				onchange="javascript:callPrompt('Characterization', 'charName');">
+				onchange="javascript:callPrompt('Characterization', 'charName');setAssayEndpointOptionsByCharName()">
 				<option value=""></option>
 				<option value="other">
 					[Other]
