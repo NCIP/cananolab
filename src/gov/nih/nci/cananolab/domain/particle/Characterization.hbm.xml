@@ -83,6 +83,8 @@
 			<subclass
 				name="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction"
 				discriminator-value="EnzymeInduction">
+                   <!-- Attributes mapping for the EnzymeInduction class -->
+				   <property name="enzyme" type="string" column="enzyme_induction_enzyme"/>
 
 			</subclass>
 			<subclass
@@ -99,8 +101,6 @@
 				name="gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity"
 				discriminator-value="Cytotoxcity">
 				<!-- Attributes mapping for the Cytotoxicity class -->
-				<property name="cellDeathMethod" type="string"
-					column="cytotoxicity_cell_death_method" />
 				<property name="cellLine" type="string"
 					column="cytotoxicity_cell_line" />
 
