@@ -689,7 +689,7 @@ CREATE TABLE characterization_file
 ) TYPE=InnoDB
 ;
 
-ALTER TABLE protocol ADD COLUMN abbreviation VARCHAR(200);
+ALTER TABLE protocol ADD COLUMN protocol_abbreviation VARCHAR(200);
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
