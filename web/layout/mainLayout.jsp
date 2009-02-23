@@ -12,6 +12,7 @@
 		<link rel="icon" href="images/favicon.ico" />
 		<link rel="shortcut icon" href="images/favicon.ico" />
 		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="css/tabmenu.css">
 		<%-- doesn't work in FireFox
 		<c:if test="${!empty printLinkURL}">
 			<link rel="alternate" name="printlink" media="print"

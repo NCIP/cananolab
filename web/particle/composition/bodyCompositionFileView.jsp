@@ -11,7 +11,7 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
+<table id="compositionSection4" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0"
 	width="100%">
 	<tr>
 		<th colspan="4" align="left">
@@ -47,8 +47,8 @@
 			&nbsp;
 		</td>
 	</tr>
-
 </table>
+<div id="compositionSeparator4"><br></div>
 
 
 

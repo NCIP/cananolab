@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table summary="" cellpadding="0" cellspacing="0" border="0"
+<!--<table summary="" cellpadding="0" cellspacing="0" border="0"
 	width="100%">
 	<tr>
 		<td class="borderlessLabel">
@@ -25,23 +25,50 @@
 		</td>		
 	</tr>
 </table>
-<br>
+
+--> 
+<div class="animatedtabs">
+	<ul>
+		<li class="selected">
+			<a href="javascript:showComposition('ALL')" title="Summary"><span>Summary</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('1')" title="Nanoparticle Entity">
+			<span>Nanoparticle Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('2')" title="Functionalizing Entity">
+			<span>Functionalizing Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('3')" title="Chemical Association"><span>
+				Chemical Association</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('4')" title="Composition File"><span>Composition File</span>
+			</a>
+		</li>	
+	</ul>
+</div>
+
+<br><br>
 <jsp:include page="nanoparticleEntity/bodyNanoparticleEntityView.jsp">
 	<jsp:param name="particleId" value="${param.particleId}" />
 </jsp:include>
-<br>
-<jsp:include page="functionalizingEntity/bodyFunctionalizingEntityView.jsp">
+<jsp:include
+	page="functionalizingEntity/bodyFunctionalizingEntityView.jsp">
 	<jsp:param name="particleId" value="${param.particleId}" />
 </jsp:include>
-<br>
 <jsp:include page="bodyChemicalAssociationView.jsp">
 	<jsp:param name="particleId" value="${param.particleId}" />
 </jsp:include>
-<br>
 <jsp:include page="bodyCompositionFileView.jsp">
 	<jsp:param name="particleId" value="${param.particleId}" />
 </jsp:include>
-<br>
 
 
 
