@@ -22,8 +22,6 @@
 			column="characterization_date" />
 		<property name="designMethodsDescription" type="string"
 			column="design_method_description" />
-		<property name="identificationName" type="string"
-			column="identifier_name" />
 		<property name="assayType" type="string" column="assay_type" />
 		<!-- Associations mapping for the Characterization class -->
 		<many-to-one name="nanoparticleSample"

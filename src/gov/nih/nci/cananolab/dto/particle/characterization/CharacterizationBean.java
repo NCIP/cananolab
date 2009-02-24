@@ -83,7 +83,6 @@ public class CharacterizationBean {
 		domainChar = chara;
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDesignMethodsDescription();
-		this.viewTitle = chara.getIdentificationName();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
 			if (poc != null)
@@ -151,12 +150,6 @@ public class CharacterizationBean {
 		copy.setId(null);
 		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
-		copy
-				.setIdentificationName(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX
-						+ "_"
-						+ StringUtils.convertDateToString(new Date(),
-								"yyyyMMdd_HH-mm-ss-SSS"));
-
 		if (copy.getExperimentConfigCollection().isEmpty()) {
 			copy.setExperimentConfigCollection(null);
 		} else {
@@ -240,7 +233,6 @@ public class CharacterizationBean {
 		}
 
 		domainChar.setDesignMethodsDescription(description);
-		domainChar.setIdentificationName(viewTitle);
 		if (pocBean != null && pocBean.getDomain().getId() != null
 				&& pocBean.getDomain().getId() != 0) {
 			domainChar.setPointOfContact(pocBean.getDomain());

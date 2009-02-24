@@ -308,7 +308,6 @@ public class InitNanoparticleSetup {
 					String charName = InitSetup.getInstance().getDisplayName(
 							dataBean.getDataClassName(), appContext);
 					dataBean.setDataDisplayType(charName);
-					dataBean.setViewTitle(achar.getIdentificationName());
 					if (dataTree.get(charName) != null) {
 						cdataBeans = (TreeSet<DataLinkBean>) dataTree
 								.get(charName);
