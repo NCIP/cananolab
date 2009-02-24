@@ -27,7 +27,9 @@
 </table>
 
 --> 
-<div class="animatedtabs">
+
+<!--  may has a better way for showing selected tabs, use this temporary -->
+<div class="animatedtabs" id="compositionTabALL">
 	<ul>
 		<li class="selected">
 			<a href="javascript:showComposition('ALL')" title="Summary"><span>Summary</span>
@@ -48,7 +50,116 @@
 				Chemical Association</span>
 			</a>
 		</li>
+		<li> 
+			<a href="javascript:showComposition('4')" title="Composition File"><span>Composition File</span>
+			</a>
+		</li>	
+	</ul>
+</div>
+
+<div class="animatedtabs" id="compositionTab1" style="display: none;">
+	<ul>
 		<li>
+			<a href="javascript:showComposition('ALL')" title="Summary"><span>Summary</span>
+			</a>
+		</li>
+		<li class="selected">
+			<a href="javascript:showComposition('1')" title="Nanoparticle Entity">
+			<span>Nanoparticle Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('2')" title="Functionalizing Entity">
+			<span>Functionalizing Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('3')" title="Chemical Association"><span>
+				Chemical Association</span>
+			</a>
+		</li>
+		<li> 
+			<a href="javascript:showComposition('4')" title="Composition File"><span>Composition File</span>
+			</a>
+		</li>	
+	</ul>
+</div>
+<div class="animatedtabs" id="compositionTab2" style="display: none;">
+	<ul>
+		<li>
+			<a href="javascript:showComposition('ALL')" title="Summary"><span>Summary</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('1')" title="Nanoparticle Entity">
+			<span>Nanoparticle Entity</span>
+			</a>
+		</li>
+		<li class="selected">
+			<a href="javascript:showComposition('2')" title="Functionalizing Entity">
+			<span>Functionalizing Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('3')" title="Chemical Association"><span>
+				Chemical Association</span>
+			</a>
+		</li>
+		<li> 
+			<a href="javascript:showComposition('4')" title="Composition File"><span>Composition File</span>
+			</a>
+		</li>	
+	</ul>
+</div>
+<div class="animatedtabs" id="compositionTab3" style="display: none;">
+	<ul>
+		<li>
+			<a href="javascript:showComposition('ALL')" title="Summary"><span>Summary</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('1')" title="Nanoparticle Entity">
+			<span>Nanoparticle Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('2')" title="Functionalizing Entity">
+			<span>Functionalizing Entity</span>
+			</a>
+		</li>
+		<li class="selected">
+			<a href="javascript:showComposition('3')" title="Chemical Association"><span>
+				Chemical Association</span>
+			</a>
+		</li>
+		<li> 
+			<a href="javascript:showComposition('4')" title="Composition File"><span>Composition File</span>
+			</a>
+		</li>	
+	</ul>
+</div>
+<div class="animatedtabs" id="compositionTab4" style="display: none;">
+	<ul>
+		<li>
+			<a href="javascript:showComposition('ALL')" title="Summary"><span>Summary</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('1')" title="Nanoparticle Entity">
+			<span>Nanoparticle Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('2')" title="Functionalizing Entity">
+			<span>Functionalizing Entity</span>
+			</a>
+		</li>
+		<li>
+			<a href="javascript:showComposition('3')" title="Chemical Association"><span>
+				Chemical Association</span>
+			</a>
+		</li>
+		<li class="selected"> 
 			<a href="javascript:showComposition('4')" title="Composition File"><span>Composition File</span>
 			</a>
 		</li>	

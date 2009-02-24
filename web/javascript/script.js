@@ -416,19 +416,24 @@ function hide(layer_ref) {
 		layerBlock.style.display = 'none';
 }
 
-function showComposition(layer_ref) {	
+function showComposition(layer_ref) {
 	if (layer_ref=='ALL'){
+		document.getElementById("compositionTabALL").style.display = 'block';
 		for (var i=1; i<5; i++){
 			document.getElementById("compositionSection"+i).style.display = 'block';
 			document.getElementById("compositionSeparator"+i).style.display = 'block';
+			document.getElementById("compositionTab"+i).style.display = 'none';
 		}	
 		return;
 	}
-	for (var i=1; i<5; i++){
+	document.getElementById("compositionTabALL").style.display = 'none';
+	for (var i=1; i<5; i++){		
 		if (layer_ref==i){
+			document.getElementById("compositionTab"+i).style.display = 'block';
 			document.getElementById("compositionSection"+i).style.display = 'block';
 			document.getElementById("compositionSeparator"+i).style.display = 'block';
 		}else{
+			document.getElementById("compositionTab"+i).style.display = 'none';
 			document.getElementById("compositionSection"+i).style.display = 'none';
 			document.getElementById("compositionSeparator"+i).style.display = 'none';
 		}
