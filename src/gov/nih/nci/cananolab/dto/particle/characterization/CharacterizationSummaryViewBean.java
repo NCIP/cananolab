@@ -14,7 +14,6 @@ public class CharacterizationSummaryViewBean {
 		List<CharacterizationBean> typeChars = null;
 		for (CharacterizationBean achar : chars) {
 			String type = achar.getCharacterizationType();
-			type="Physico-Chemical Characterization";
 			if (type2Characterizations.get(type) != null) {
 				typeChars = type2Characterizations.get(type);
 			} else {
