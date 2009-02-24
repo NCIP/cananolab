@@ -375,7 +375,7 @@ insert into common_lookup(name,attribute,value) values('Sterility', 'assayType',
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Plasma Protein Binding (2D PAGE)');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Hemolysis');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Platelet Aggregation');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Platelet Aggregation');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Coagulation');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Complement Activation');
 insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'CFU-GM');
 insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Leukocyte Proliferation');
@@ -690,6 +690,77 @@ CREATE TABLE characterization_file
 ;
 
 ALTER TABLE protocol ADD COLUMN protocol_abbreviation VARCHAR(200);
+
+--in vitro data migration
+update characterization
+set discriminator='Cytotoxicity',
+assay_type='Cell Viability'
+where discriminator ='CellViability';
+
+update characterization
+set discriminator='Cytotoxicity',
+assay_type='Caspase 3 Apoptosis'
+where discriminator ='Caspase3Activation';
+
+update characterization
+set discriminator='BloodContact',
+assay_type='Plasma Protein Binding (2D PAGE)'
+where discriminator ='PlasmaProteinBinding';
+
+update characterization
+set discriminator='BloodContact',
+assay_type='Hemolysis'
+where discriminator ='Hemolysis';
+
+update characterization
+set discriminator='BloodContact',
+assay_type='Platelet Aggregation'
+where discriminator ='PlateletAggregation';
+
+update characterization
+set discriminator='BloodContact',
+assay_type='Coagulation'
+where discriminator ='Coagulation';
+
+update characterization
+set discriminator='BloodContact',
+assay_type='Complement Activation'
+where discriminator ='ComplementActivation';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='CFU-GM'
+where discriminator ='CFU_GM';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='Leukocyte Proliferation'
+where discriminator ='LeukocyteProliferation';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='Phagocytosis'
+where discriminator ='Phagocytosis';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='Cytokine Induction'
+where discriminator ='CytokineInduction';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='Chemotaxis'
+where discriminator ='Chemotaxis';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='Oxidative Burst'
+where discriminator ='OxidativeBurst';
+
+update characterization
+set discriminator='ImmuneCellFunction',
+assay_type='Cytotoxic Activity of NK Cells'
+where discriminator ='NKCellCytotoxicActivity';
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
