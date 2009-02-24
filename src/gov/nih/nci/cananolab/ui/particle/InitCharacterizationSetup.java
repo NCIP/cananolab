@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -9,6 +10,7 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationServic
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,5 +154,24 @@ public class InitCharacterizationSetup {
 		// }
 		// }
 		setCharactierizationDropDowns(request, charBean.getClassName());
+	}
+
+	public void setCharacterizationType(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
+		Characterization domainChar = charBean.getDomainChar();
+		String charType = InitSetup.getInstance().getDisplayName(
+				ClassUtils.getShortClassName(domainChar.getClass()
+						.getSuperclass().getName()),
+				request.getSession().getServletContext());
+		charBean.setCharacterizationType(charType);
+	}
+
+	public void setCharacterizationName(HttpServletRequest request,
+			CharacterizationBean charBean) throws Exception {
+		Characterization domainChar = charBean.getDomainChar();
+		String charName = InitSetup.getInstance().getDisplayName(
+				ClassUtils.getShortClassName(domainChar.getClass().getName()),
+				request.getSession().getServletContext());
+		charBean.setCharacterizationName(charName);
 	}
 }
