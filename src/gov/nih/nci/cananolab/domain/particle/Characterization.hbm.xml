@@ -99,7 +99,7 @@
 			</subclass>
 			<subclass
 				name="gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity"
-				discriminator-value="Cytotoxcity">
+				discriminator-value="Cytotoxicity">
 				<!-- Attributes mapping for the Cytotoxicity class -->
 				<property name="cellLine" type="string"
 					column="cytotoxicity_cell_line" />
