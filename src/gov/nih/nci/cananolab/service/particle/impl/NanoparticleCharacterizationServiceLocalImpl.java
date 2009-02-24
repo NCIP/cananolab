@@ -235,6 +235,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			crit.createAlias("nanoparticleSample", "sample");
 			crit.add(Property.forName("sample.id").eq(new Long(particleId)));
 			// fully load characterization
+			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 			crit.setFetchMode("protocolFile", FetchMode.JOIN);
 			crit.setFetchMode("protocolFile.protocol", FetchMode.JOIN);
 			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
