@@ -39,7 +39,7 @@
 			<include method="addColumnHeader" />
 			<include method="resetDataSet" />
 			<include method="addRow" />
-			<include method="deleteDataRow" />
+			<include method="deleteRow" />
 			<include method="findDataSetById" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
