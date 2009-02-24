@@ -343,7 +343,7 @@ insert into common_lookup(name,attribute,value) values('Sterility', 'assayType',
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Plasma Protein Binding (2D PAGE)');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Hemolysis');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Platelet Aggregation');
-insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Platelet Aggregation');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Coagulation');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Complement Activation');
 insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'CFU-GM');
 insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'assayType', 'Leukocyte Proliferation');
