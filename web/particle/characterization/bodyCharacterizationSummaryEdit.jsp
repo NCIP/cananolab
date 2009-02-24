@@ -28,9 +28,9 @@
 				${type} &nbsp;&nbsp;&nbsp;
 				<a
 					href="characterization.do?dispatch=setupNew&particleId=${param.particleId }"
-					class="addlink"><img align="absmiddle" src="images/btn_add.gif"
+					class="addlink"><img align="middle" src="images/btn_add.gif"
 						border="0" /></a>&nbsp;&nbsp;
-				<a><img align="absmiddle" src="images/btn_delete.gif" border="0" />
+				<a><img align="middle" src="images/btn_delete.gif" border="0" />
 				</a>
 			</th>
 		</tr>
@@ -49,10 +49,10 @@
 							<c:set var="charObj" value="${charBean.domainChar}" />
 							<div class="indented4">
 								<table class="summarytable" cellpadding="0" cellspacing="0"
-									border="0" width="100%">
+									border="0" width="90%">
 									<tr>
 										<th align="left">
-											Size (${charBean.viewTitle} ${charBean.dateString })
+											${charBean.characterizationName}&nbsp; ${charBean.dateString }
 										</th>
 										<th align="right">
 											<a href="#">Edit</a>
@@ -72,7 +72,7 @@
 												<tr>
 													<td>
 														ASSAY ENDPOINT
-														<div class="indented5">N/A
+														<div class="indented5">
 															${charObj.assayType}
 														</div>
 													</td>
@@ -81,7 +81,7 @@
 												<tr>
 													<td>
 														PROTOCOL
-														<div class="indented5">N/A
+														<div class="indented5">
 															${charBean.protocolFileBean.displayName}
 														</div>
 													</td>
