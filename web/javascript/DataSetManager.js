@@ -9,7 +9,6 @@ var editDataSet = false;
 var fixId = "-10000";
 
 function resetTheDataSet(isShow) {
-	//alert('reset 4');
 	editDataSet = false;
 	datumColumnCount = 0;
 	columnCount = 0;
@@ -137,26 +136,6 @@ function addDatumColumn(myDatum) {
 	}
 	if (datum.name != '' || datum.valueType != '' || datum.valueUnit != '') {
 		if (datumColumnCount == 0) {
-			// TODO::
-			// var datumColumnPatternRow =
-			// document.getElementById("datumColumnPatternRow");
-			// var aCells =
-			// datumColumnPatternRow.getElementsByTagName('td')//cells
-			// collection in this row
-			// var aCellLength = aCells.length;
-			// var toDelete = new Array();
-			// i =0;
-			// for(var j=0;j<aCellLength;j++){
-			// if (aCells[j].id!='datumColumnPattern'){
-			// toDelete[i]=aCells[j].id;
-			// i++;
-			// }
-			// }
-			// for(var j=0;j<toDelete.length;j++){
-			// datumColumnPatternRow.removeChild(document.getElementById(toDelete[j]));
-			// }
-			// $("datumColumnsDivRow").style.display = "";
-
 			var datumColumnPatternRowDisplay = document
 					.getElementById("datumColumnPatternRowDisplay");
 			var aCellsDisplay = datumColumnPatternRowDisplay
@@ -266,6 +245,7 @@ function createMatrixPattern() {
 	}
 
 	var buttonCell = document.createElement("TD");
+	buttonCell.setAttribute("id", "selectButtonCell");
 	var button = document.createElement('input');
 	button.setAttribute("id", "editDatumRow");
 	button.setAttribute("type", "button");
@@ -306,6 +286,10 @@ function addRow() {
 		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
 		datum.value = dwr.util.getValue("datumColumnValue" + id);
 		datum.id = datumid;
+		if (datum.id==null || datum.id==''){
+			datum.id = (-rowCount-1)*1000+(-i-1);
+		}
+		//alert('datum.id='+datum.id);
 
 		// if (currentDataSet.domain.id!=null){
 		// datum.dataSet = currentDataSet;
@@ -320,9 +304,6 @@ function addRow() {
 		// // if datum.id<0, it is not compatible with DataSetManager.addRow
 		// datum.id = null;
 		// }
-		// alert('xxxxxxxxxx addRow::: datum.dataSet.id='+datum.dataSet.id);
-		// alert('xxxxxxxxxx addRow::: datum.dataRow.id='+datum.dataRow.id);
-		// alert('xxxxxxxxxx addRow::: datum.id='+datum.id);
 		datumArray[i] = datum;
 	}
 
@@ -337,7 +318,27 @@ function addRow() {
 	window.setTimeout("fillMatrix()", 200);
 }
 
+function deleteRow() {
+	var datumArray = new Array();
+	for ( var i = 0; i < datumColumnCount; i++) {
+		var datum = {
+			name :null,
+			valueType :null,
+			valueUnit :null
+		};
+		dwr.util.getValues(datum);
+		datum.id = dwr.util.getValue("datumColumnId" + (-i - 1));
+		datumArray[i] = datum;
+	}
+	DataSetManager.deleteRow(datumArray, function(theDataSet) {
+		currentDataSet = theDataSet;
+	});	
+	rowCount--;
+	window.setTimeout("fillMatrix()", 200);
+}
+
 function clearTheDataRow() {
+	//alert('clearTheDataRow rowCount='+rowCount);
 	//IE works only set value = '' instead of null
 	for ( var i = 0; i < datumColumnCount; i++) {
 		document.getElementById("datumColumnId" + (-i - 1)).value = '';
@@ -571,6 +572,7 @@ function cloneEditRow() {
 		datum.id = -i - 1;
 		id = rowId;
 		dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
+		
 		var editRow = document.getElementById("editDatumRow" + rowId);
 		editRow.onclick = function() {
 			saveRowClicked(this.id)
@@ -586,6 +588,22 @@ function cloneEditRow() {
 		tempValue.setAttribute("style", "border:1px solid;");
 		tempValue.removeAttribute("readonly");
 
+		if (document.getElementById("deleteDatumRow")==null){		
+			var selectButtonCell = document.getElementById("selectButtonCell" + rowId);			
+			var deleteButton = document.createElement("input");
+			deleteButton.setAttribute("id", "deleteDatumRow");
+			deleteButton.setAttribute("type", "button");
+			deleteButton.setAttribute("class", "noBorderButton");
+			deleteButton.setAttribute("value", "Delete");
+			deleteButton
+					.setAttribute("style",
+							"border:0px solid;text-decoration: underline;");
+			deleteButton.onclick = function() {
+				deleteRowClicked(this.id)
+			};
+			selectButtonCell.appendChild(deleteButton);			
+		}
+		
 		$("datumMatrixPatternRow" + rowId).style.display = "";
 	}
 }
@@ -637,6 +655,15 @@ function saveRowClicked(eleid) {
 	}
 	addRow();
 }
+
+function deleteRowClicked(eleid) {
+	for ( var i = 1; i < datumColumnCount + 1; i++) {
+		document.getElementById("datumColumnValue" + (-i)).value = dwr.util
+				.getValue("datumMatrixValue" + i + fixId);
+	}
+	deleteRow();
+}
+
 
 function editColumn(eleid) {
 	var id = eleid.substring(22);
