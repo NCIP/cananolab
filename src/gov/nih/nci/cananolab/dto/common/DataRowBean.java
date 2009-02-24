@@ -37,15 +37,6 @@ public class DataRowBean {
 
 	public void addDatumColumn(Datum datum) {
 		datum.setDataRow(domain);
-		// System.out.println("debug XXXXXXXXXX add ");
-		// if (datum.getValue()!=null && datum.getValue().length()>0) {
-		// for (Datum thisDatum: data) {
-		// if (thisDatum.getValue()==null || thisDatum.getValue().length()==0) {
-		// thisDatum.setValue(datum.getValue());
-		// }
-		// }
-		// }
-		System.out.println("XXXXXXXXXX end of debug ");
 		if (data.contains(datum)) {
 			for (Datum thisDatum : data) {
 				if (thisDatum.getId().equals(datum.getId())) {
