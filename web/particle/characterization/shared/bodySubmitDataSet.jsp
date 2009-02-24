@@ -19,7 +19,7 @@
 			<input type="hidden" id="columnId">
 		</td>
 		<td class="rightLabelWithTopNoBottom">
-			<select id="datumOrCondition">
+			<select id="datumOrCondition" onChange="showDatumConditionInfo()">
 				<option value="Datum">
 					Datum
 				</option>
@@ -27,6 +27,14 @@
 					Condition
 					</ption>
 			</select>
+		</td>
+	</tr>
+	<tr id="conditionProperty" style="display: none;">
+		<td class="leftLabelNoBottom">
+			<strong>Property</strong>
+		</td>
+		<td class="rightLabelNoBottom">
+			<input type="text" id="property">
 		</td>
 	</tr>
 
@@ -40,7 +48,7 @@
 				property="achar.theExperimentConfig.domain.technique.type"
 				styleId="name" onchange="javascript:callPrompt('Name', 'name');">
 				<option value=""></option>
-				<!--<option value="PDI">
+				<option value="PDI">
 					PDI
 				</option>
 				<option value="peak1">
@@ -52,8 +60,7 @@
 				<option value="Z-average">
 					Z-average
 				</option>
-				
-				--><option value="Centrifugation">
+				<option value="Centrifugation">
 					Centrifugation
 				</option>
 				<option value="Culture Media">
@@ -106,8 +113,7 @@
 			<strong>Column Value Type</strong>
 		</td>
 		<td class="rightLabelNoBottom" align="left">
-			<html:text styleId="valueType"
-				property="achar.theExperimentConfig.domain.technique.type" />
+			<input type="text" id="valueType">
 		</td>
 	</tr>
 	<tr>
@@ -115,8 +121,7 @@
 			<strong>Column Value Unit</strong>
 		</td>
 		<td class="rightLabelNoBottom">
-			<html:text styleId="valueUnit"
-				property="achar.theExperimentConfig.domain.technique.type" />
+			<input type="text" id="valueUnit">
 		</td>
 	</tr>
 	<tr>
@@ -125,8 +130,7 @@
 			<input type="checkbox">
 		</td>
 		<td class="rightLabelNoBottom">
-			<html:text styleId="value"
-				property="achar.theExperimentConfig.domain.technique.type" />
+			<input type="text" id="value">
 		</td>
 	</tr>
 	<tr>
@@ -134,12 +138,6 @@
 			&nbsp;
 		</td>
 		<td class="rightLabelNoBottomRightAlign">
-			<!--<input class="noBorderButton" type="button" value="Save Column"
-				onclick="addDatumColumn()" />
-			<input class="noBorderButton" type="button" value="Delete Column"
-				onclick="deleteDatumColumn()" />
-		-->
-
 			<input class="noBorderButton" type="button" value="Save"
 				onclick="addDatumColumn();" />
 			<input class="noBorderButton" type="button" value="Delete"
@@ -149,11 +147,9 @@
 
 	<tr id="datumColumnsDivRowDisplay">
 		<td class="leftLabelNoBottom" valign="top" colspan="2">
-
 			<table>
 				<tr>
 					<td colspan="2">
-
 						<div id="datumColumnsDivDisplay" style="display: block;">
 							<table id="datumColumnsTableDisplay" class="smalltable"
 								border="1">
@@ -162,10 +158,8 @@
 										<td id="datumColumnPatternDisplay" style="display: none;">										
 										<input class="noBorderButton" id="datumColumnNameDisplay" type="button"
 											size="2" value="datumColumnNameDisplay" onclick="editColumn(this.id)" />
-											<span id="datumColumnValueTypeUnitDisplay" class="greyFont2">ValueTypeUnit</span><!--
-											(<span id="datumColumnValueTypeDisplay" class="greyFont2">ValueType</span>,
-											<span id="datumColumnValueUnitDisplay" class="greyFont2">ValueUnit</span>)
-										--></td>
+											<span id="datumColumnValueTypeUnitDisplay" class="greyFont2">ValueTypeUnit</span>
+										</td>
 									</tr>
 								</tbody>
 							</table>

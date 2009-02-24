@@ -8,6 +8,15 @@ var addNewColumn = true;
 var editDataSet = false;
 var fixId = "-10000";
 
+
+function showDatumConditionInfo(){
+	if (document.getElementById('datumOrCondition').value=='Condition'){
+		$("conditionProperty").style.display = "";
+	}else{
+		$("conditionProperty").style.display = 'none';
+	}
+	//change drop down list
+}
 function resetTheDataSet(isShow) {
 	editDataSet = false;
 	datumColumnCount = 0;
