@@ -98,19 +98,9 @@
 			</html:select>
 		</td>
 		<td class="label">
-			<strong>View Title*</strong>
-			<br>
-			<em>(text will be truncated after 20 characters)</em>
-		</td>
-		<td class="rightLabel">
-			<html:text property="achar.viewTitle" size="30" />
-		</td>
-	</tr>
-	<tr>
-		<td class="leftLabel">
 			<strong>Characterization Date</strong>
 		</td>
-		<td class="rightLabel" colspan="3">
+		<td class="rightLabel">
 			<html:text property="achar.dateString" size="10" styleId="charDate" />
 			<a href="javascript:cal1.popup();"><img
 					src="images/calendar-icon.gif" width="22" height="18" border="0"
