@@ -631,6 +631,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
 		List<CharacterizationBean> charBeans = service
 				.findCharsByParticleSampleId(particleId);
+		// set characterization types
+		for (CharacterizationBean charBean : charBeans) {
+			InitCharacterizationSetup.getInstance().setCharacterizationType(
+					request, charBean);
+			InitCharacterizationSetup.getInstance().setCharacterizationName(
+					request, charBean);
+		}
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
