@@ -177,6 +177,8 @@ public class DataSetBean {
 					thisColumnBean.setName(columnBean.getName());
 					thisColumnBean.setValueType(columnBean.getValueType());
 					thisColumnBean.setValueUnit(columnBean.getValueUnit());
+					thisColumnBean.setDatumOrCondition(columnBean.getDatumOrCondition());
+					thisColumnBean.setProperty(columnBean.getProperty());
 				}
 			}
 		} else {
