@@ -110,6 +110,9 @@
 				value="id, type, manufacturer, modelName" />
 		</convert>
 		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.DataColumnBean">
+		</convert>
+		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Datum">
 			<param name="include"
 				value="id, name, value, valueType, valueUnit, dataRow, dataSet" />
@@ -134,10 +137,6 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataSet">
 			<param name="include" value="id" />
-		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.DataColumnBean">
-			<param name="include" value="id, name, property, value, valueType, valueUnit, displayName, datumOrCondition" />
-		</convert>
+		</convert>		
 	</allow>
 </dwr>
