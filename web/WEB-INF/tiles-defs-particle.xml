@@ -154,13 +154,13 @@
 	</definition>
 
 	<definition name="particle.characterization.summaryView"
-		extends="particle.characterization">
+		extends="particle.annotationHome">
 		<put name="cananoContent"
 			value="/particle/characterization/bodyCharacterizationSummaryView.jsp" />
 	</definition>
 
 	<definition name="particle.characterization.summaryEdit"
-		extends="particle.characterization">
+		extends="particle.annotationHome">
 		<put name="cananoContent"
 			value="/particle/characterization/bodyCharacterizationSummaryEdit.jsp" />
 	</definition>
