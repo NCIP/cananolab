@@ -1,17 +1,12 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.List;
 
@@ -43,21 +38,19 @@ public class InitProtocolSetup {
 	}
 
 	public List<ProtocolFileBean> getProtocolFilesByChar(
-			HttpServletRequest request, CharacterizationBean charBean)
+			HttpServletRequest request, String characterizationType)
 			throws Exception {
 		String protocolType = null;
-		//create a new instance of type className
-		Class clazz = ClassUtils.getFullClass(charBean.getClassName());
-		if (clazz!=null) {
-			Characterization achar = (Characterization) clazz.newInstance();
-			if (achar instanceof PhysicoChemicalCharacterization) {
-				protocolType = CaNanoLabConstants.PHYSICAL_ASSAY_PROTOCOL;
-			} else if (achar instanceof InvitroCharacterization) {
-				protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
-			} else {
-				protocolType = null; // update if in vivo is implemented
-			}
+		if (characterizationType.equals("Physico-Chemical Characterization")) {
+			protocolType = CaNanoLabConstants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
 		}
+		else if (characterizationType.equals("In Vitro Characterization")) {
+			protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
+		}
+		else {
+			protocolType = null; // update if in vivo is implemented
+		}
+
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
 				protocolType, null, null);
