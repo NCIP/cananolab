@@ -26,7 +26,7 @@
 		</td>
 		<td class="label">
 			<html:select property="achar.characterizationType" styleId="charType"
-				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharType('charName')">
+				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharType()">
 				<option value=""></option>
 				<html:options name="characterizationTypes" />
 				<option value="other">
@@ -41,6 +41,7 @@
 			<html:select property="achar.characterizationName" styleId="charName"
 				onchange="javascript:callPrompt('Characterization', 'charName');setAssayEndpointOptionsByCharName()">
 				<option value=""></option>
+				<html:options name="charTypeChars" />
 				<option value="other">
 					[Other]
 				</option>
@@ -56,6 +57,7 @@
 				styleId="assayType"
 				onchange="javascript:callPrompt('Assay Endpoint', 'assayType');">
 				<option value=""></option>
+				<html:options name="charNameAssays" />
 				<option value="other">
 					[Other]
 				</option>
@@ -87,7 +89,7 @@
 	</tr>
 	<tr>
 		<td class="leftLabel">
-			<strong>Characterization Source* </strong>
+			<strong>Characterization Source </strong>
 		</td>
 		<td class="label">
 			<html:select property="achar.pocBean.domain.id" styleId="charSource"
