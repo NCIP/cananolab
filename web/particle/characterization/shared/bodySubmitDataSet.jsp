@@ -158,7 +158,7 @@
 										<td id="datumColumnPatternDisplay" style="display: none;">										
 										<input class="noBorderButton" id="datumColumnNameDisplay" type="button"
 											size="2" value="datumColumnNameDisplay" onclick="editColumn(this.id)" />
-											<span id="datumColumnValueTypeUnitDisplay" class="greyFont2">ValueTypeUnit</span>
+											<span id="columnDisplayName" class="greyFont2">columnDisplayName</span>
 										</td>
 									</tr>
 								</tbody>
@@ -197,6 +197,8 @@
 						<tr id="datumColumnPattern" style="display: none;">
 							<td>
 								<input id="datumColumnId" type="hidden" value="datumColumnId" />
+								<input id="datumOrConditionColumn" type="hidden" value="datumOrConditionColumn" />
+								<input id="conditionColumnProperty" type="hidden" value="conditionColumnProperty" />
 								<input id="datumColumnDataRowId" type="hidden"
 									value="datumColumnDataRowId" />
 								<input id="datumColumnDataSetId" type="hidden"
