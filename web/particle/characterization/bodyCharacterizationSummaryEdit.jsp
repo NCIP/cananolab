@@ -27,7 +27,7 @@
 			<th colspan="4" align="left">
 				${type} &nbsp;&nbsp;&nbsp;
 				<a
-					href="characterization.do?dispatch=setupNew&particleId=${param.particleId }"
+					href="characterization.do?dispatch=setupNew&particleId=${param.particleId}&charType=${type}"
 					class="addlink"><img align="middle" src="images/btn_add.gif"
 						border="0" /></a>&nbsp;&nbsp;
 				<a><img align="middle" src="images/btn_delete.gif" border="0" />
@@ -52,10 +52,10 @@
 									border="0" width="90%">
 									<tr>
 										<th align="left">
-											${charBean.characterizationName}&nbsp; ${charBean.dateString }
+											${charBean.characterizationName} (${charBean.pocBean.displayName}${charBean.dateString })
 										</th>
 										<th align="right">
-											<a href="#">Edit</a>
+											<a href="characterization.do?dispatch=setupUpdate&particleId=${param.particleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
 										</th>
 									</tr>
 									<tr>
