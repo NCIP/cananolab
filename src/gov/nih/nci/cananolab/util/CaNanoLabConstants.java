@@ -164,7 +164,7 @@ public class CaNanoLabConstants {
 	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
 			"setupUpdate", "setupDeleteAll", "add", "remove" };
 
-	public static final String PHYSICAL_ASSAY_PROTOCOL = "physical assay";
+	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
 
 	public static final String NODE_UNAVAILABLE = "Unable to connect to the grid location that you selected";
