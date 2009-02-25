@@ -316,7 +316,7 @@ function addRow() {
 		datumArray[i] = datum;
 	}
 
-	DataSetManager.addRow(datumArray, function(theDataSet) {
+	DataSetManager.addRow(datumArray, null, function(theDataSet) {
 		currentDataSet = theDataSet;
 	});
 	// alert('after DataSetManager.addRow =');
