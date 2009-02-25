@@ -236,6 +236,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			crit.add(Property.forName("sample.id").eq(new Long(particleId)));
 			// fully load characterization
 			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 			crit.setFetchMode("protocolFile", FetchMode.JOIN);
 			crit.setFetchMode("protocolFile.protocol", FetchMode.JOIN);
 			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
@@ -252,8 +253,8 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
-//			crit
-//					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
 			List<CharacterizationBean> chars = new ArrayList<CharacterizationBean>();
 			for (Object obj : results) {
