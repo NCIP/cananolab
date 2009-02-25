@@ -35,29 +35,16 @@ public class DWRCharacterizationResultManager {
 		return newDataSetBean;
 	}
 
-	// addColumnHeader includes the function add and edit
-	//RETIRED
-	public DataSetBean addColumnHeader(Datum datum)
-			throws CharacterizationResultException {
+	public DataSetBean addColumnHeader(DataColumnBean columnBean)
+		throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
-		theDataSet.getTheDataRow().addDatumColumn(datum);
+		theDataSet.addColumnBean(columnBean);
 		return theDataSet;
 	}
-	
-//	public DataSetBean addColumnHeader(DataColumnBean columnBean)
-//		throws CharacterizationResultException {
-//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-//				.get().getSession().getAttribute("characterizationForm"));
-//		CharacterizationBean charBean = (CharacterizationBean) (charForm
-//				.get("achar"));
-//		DataSetBean theDataSet = charBean.getTheDataSet();
-//		theDataSet.addColumnBean(columnBean);
-//		return theDataSet;
-//	}
 	
 	public DataSetBean addConditionColumnHeader(Condition condition)
 			throws CharacterizationResultException {
