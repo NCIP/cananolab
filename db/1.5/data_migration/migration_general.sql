@@ -16,6 +16,15 @@ DROP TABLE IF EXISTS associated_file;
 ALTER TABLE publication ADD COLUMN abstract TEXT;
 ALTER TABLE protocol ADD COLUMN protocol_abbreviation VARCHAR(200);
 
+--update protocol_abbreviation to be the same as protocol name
+update protocol
+set protocol_abbreviation=protocol_name;
+
+update common_lookup
+set value='physico-chemical assay'
+where name='Protocol' and attribute='type'
+and value='physical assay';
+
 --change lab_file to file
 ALTER TABLE lab_file RENAME file;
 ALTER TABLE composition_lab_file RENAME composition_file;
