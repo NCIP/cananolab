@@ -33,11 +33,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -114,30 +113,88 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		setupInputForm(request, theForm);
+		// reset characterizationBean
+		CharacterizationBean charBean = new CharacterizationBean();
+		theForm.set("achar", charBean);
+		String charType = request.getParameter("charType");
+		if (charType != null) {
+			charBean.setCharacterizationType(charType);
+		}
+		return mapping.getInputForward();
+	}
+
+	/**
+	 * Set up drop-downs need for the input form
+	 *
+	 * @param request
+	 * @param theForm
+	 * @throws Exception
+	 */
+	private void setupInputForm(HttpServletRequest request,
+			DynaValidatorForm theForm) throws Exception {
 		String particleId = request.getParameter("particleId");
-		InitCharacterizationSetup.getInstance().setPointOfContacts(request,
-				particleId);
-		clearForm(theForm);
-		// characterizationForm is either physicalCharacterizationForm or
-		// invitroCharacterizationForm to use in bodyCharacterization.jsp
-		request.getSession().setAttribute("characterizationForm", theForm);
+		String charType = request.getParameter("charType");
+		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
+				request, particleId);
+		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
+				request);
+		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
+				charType);
+		InitCharacterizationSetup.getInstance()
+				.setPhysicalCharacterizationDropdowns(request);
+		InitCharacterizationSetup.getInstance()
+				.setInvitroCharacterizationDropdowns(request);
+		// String detailPage = setupDetailPage(charBean);
+		// request.getSession().setAttribute("characterizationDetailPage",
+		// detailPage);
+		// set up other particles from the same source
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
+		setOtherParticlesFromTheSameSource("local", request, particleBean, user);
+		// clear copy to otherParticles
+		theForm.set("otherParticles", new String[0]);
+		theForm.set("copyData", false);
+	}
 
-		// setup other particles from the same source
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
-				user);
+	/**
+	 * Set up the input form for editing existing characterization
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String charId = request.getParameter("charId");
+		String charClass = request.getParameter("charClassName");
+		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+		Characterization chara = charService.findCharacterizationById(charId,
+				charClass);
+		CharacterizationBean charBean = new CharacterizationBean(chara);
+		//setup correct display for characterization name and characterization type
+		InitCharacterizationSetup.getInstance().setCharacterizationName(
+				request, charBean);
+		InitCharacterizationSetup.getInstance().setCharacterizationType(
+				request, charBean);
+		//setup dropdown for existing characterization
+		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
+				.getCharNamesByCharType(request,
+						charBean.getCharacterizationType());
+		request.setAttribute("charTypeChars", charNames);
+		SortedSet<String> assayEndpoints = InitCharacterizationSetup
+				.getInstance().getAssayEndpointsByCharName(request,
+						charBean.getCharacterizationName());
+		request.setAttribute("charNameAssays", assayEndpoints);
+		theForm.set("achar", charBean);
+		setupInputForm(request, theForm);
 
-		// set charclass
-		ServletContext appContext = request.getSession().getServletContext();
-		CharacterizationBean charBean = (CharacterizationBean) theForm
-				.get("achar");
-		String submitType = request.getParameter("submitType");
-		String charClass = InitSetup.getInstance().getClassName(submitType,
-				appContext);
-		charBean.setClassName(charClass);
-		setLookups(request, charBean);
 		return mapping.getInputForward();
 	}
 
@@ -361,28 +418,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return forward;
 	}
 
-	private void clearForm(DynaValidatorForm theForm) {
-		theForm.set("achar", new CharacterizationBean());
-	}
-
-	private void setLookups(HttpServletRequest request,
-			CharacterizationBean charBean) throws Exception {
-		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
-		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
-				request, charBean.getClassName());
-		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
-				request);
-		InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
-				charBean);
-		InitCharacterizationSetup.getInstance()
-				.setPhysicalCharacterizationDropdowns(request);
-		InitCharacterizationSetup.getInstance()
-				.setInvitroCharacterizationDropdowns(request);
-		String detailPage = setupDetailPage(charBean);
-		request.getSession().setAttribute("characterizationDetailPage",
-				detailPage);
-	}
-
 	public void validateNumber(HttpServletRequest request,
 			CharacterizationBean charBean, ActionMessages msgs)
 			throws Exception {
@@ -390,108 +425,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			ActionMessage msg = new ActionMessage("message.invalidNumber");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
-	}
-
-	private CharacterizationBean getCharacterizationBean(
-			DynaValidatorForm theForm, Characterization chara, UserBean user,
-			String location) throws Exception {
-		CharacterizationBean charBean = new CharacterizationBean(chara);
-		if (location.equals("local")) {
-			// set file visibility
-			NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
-			charService.retrieveVisiblity(charBean, user);
-		}
-		theForm.set("achar", charBean);
-		return charBean;
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-
-		request.getSession().setAttribute("characterizationForm", theForm);
-		return mapping.findForward("summaryView");
-	}
-
-	public ActionForward setupUpdate(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-
-		request.getSession().setAttribute("characterizationForm", theForm);
-		Characterization chara = prepareCharacterization(theForm, request,
-				"local");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
-				user, "local");
-		setLookups(request, charBean);
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
-				user);
-		// clear copy to otherParticles
-		theForm.set("otherParticles", new String[0]);
-		theForm.set("copyData", false);
-
-		return mapping.findForward("summaryView");
-	}
-
-	// used in many dispatch methods
-	private Characterization prepareCharacterization(DynaValidatorForm theForm,
-			HttpServletRequest request, String location) throws Exception {
-		String charId = request.getParameter("dataId");
-		String charClass = request.getParameter("dataClassName");
-		NanoparticleCharacterizationService charService = null;
-		if (location.equals("local")) {
-			charService = new NanoparticleCharacterizationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			charService = new NanoparticleCharacterizationServiceRemoteImpl(
-					serviceUrl);
-		}
-		Characterization chara = charService.findCharacterizationById(charId,
-				charClass);
-		request.getSession().setAttribute("characterizationForm", theForm);
-		return chara;
-	}
-
-	public ActionForward detailView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		setupParticle(theForm, request, location);
-		Characterization chara = prepareCharacterization(theForm, request,
-				location);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		getCharacterizationBean(theForm, chara, user, location);
-		String particleId = request.getParameter("particleId");
-		String characterizationId = request.getParameter("dataId");
-		String className = request.getParameter("dataClassName");
-		String submitType = request.getParameter("submitType");
-		String requestUrl = request.getRequestURL().toString();
-		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
-				+ "&dataId=" + characterizationId + "&dataClassName="
-				+ className + "&submitType=" + submitType + "&location="
-				+ location;
-		request.getSession().setAttribute("printDetailViewLinkURL",
-				printLinkURL);
-		return mapping.findForward("detailView");
-	}
-
-	public ActionForward printDetailView(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		Characterization chara = prepareCharacterization(theForm, request,
-				location);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		getCharacterizationBean(theForm, chara, user, location);
-		return mapping.findForward("detailPrintView");
 	}
 
 	private void setCharacterizationFileFullPath(HttpServletRequest request,
@@ -536,39 +469,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			// }
 			// }
 		}
-	}
-
-	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		ParticleBean particleBean = setupParticle(theForm, request, location);
-		Characterization chara = prepareCharacterization(theForm, request,
-				location);
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		CharacterizationBean charBean = getCharacterizationBean(theForm, chara,
-				user, location);
-		String fileName = this.getExportFileName(particleBean
-				.getDomainParticleSample().getName(), "detailView", charBean
-				.getClassName());
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ fileName + ".xls\"");
-		NanoparticleCharacterizationService service = null;
-		setCharacterizationFileFullPath(request, charBean, location);
-		if (location.equals("local")) {
-			service = new NanoparticleCharacterizationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new NanoparticleCharacterizationServiceRemoteImpl(
-					serviceUrl);
-		}
-		service.exportDetail(charBean, response.getOutputStream());
-
-		return null;
 	}
 
 	private CharacterizationSummaryBean setupCharSummary(

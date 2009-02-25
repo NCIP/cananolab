@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
+import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
@@ -15,10 +16,10 @@ import gov.nih.nci.cananolab.util.ClassUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * This class sets up information required for characterization forms.
@@ -51,18 +52,14 @@ public class InitCharacterizationSetup {
 	}
 
 	public void setCharactierizationDropDowns(HttpServletRequest request,
-			String className) throws Exception {
-		HttpSession session = request.getSession();
+			String particleId) throws Exception {
 		getCharacterizationTypes(request);
-		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
-	}
-
-	public void setPointOfContacts(HttpServletRequest request, String particleId)
-			throws Exception {
+		// set point of contacts
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		List<PointOfContactBean> pocs = pocService
 				.findPointOfContactsByParticleId(particleId);
 		request.getSession().setAttribute("particlePointOfContacts", pocs);
+		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
 	public void setPhysicalCharacterizationDropdowns(HttpServletRequest request)
@@ -156,6 +153,13 @@ public class InitCharacterizationSetup {
 		setCharactierizationDropDowns(request, charBean.getClassName());
 	}
 
+	/**
+	 * Set characterization type of an existing characterization bean
+	 *
+	 * @param request
+	 * @param charBean
+	 * @throws Exception
+	 */
 	public void setCharacterizationType(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
 		Characterization domainChar = charBean.getDomainChar();
@@ -166,6 +170,13 @@ public class InitCharacterizationSetup {
 		charBean.setCharacterizationType(charType);
 	}
 
+	/**
+	 * Set the display name for an existing characterization bean
+	 *
+	 * @param request
+	 * @param charBean
+	 * @throws Exception
+	 */
 	public void setCharacterizationName(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
 		Characterization domainChar = charBean.getDomainChar();
@@ -173,5 +184,40 @@ public class InitCharacterizationSetup {
 				ClassUtils.getShortClassName(domainChar.getClass().getName()),
 				request.getSession().getServletContext());
 		charBean.setCharacterizationName(charName);
+	}
+
+	public SortedSet<String> getCharNamesByCharType(HttpServletRequest request,
+			String charType) throws Exception {
+		NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
+		ServletContext appContext = request.getSession().getServletContext();
+		String fullCharTypeClass = InitSetup.getInstance().getFullClassName(
+				charType, appContext);
+		SortedSet<String> charNames = new TreeSet<String>();
+		List<String> charClassNames = ClassUtils
+				.getChildClassNames(fullCharTypeClass);
+		for (String charClass : charClassNames) {
+			if (!charClass.startsWith("Other")) {
+				String shortClassName = ClassUtils.getShortClassName(charClass);
+				charNames.add(InitSetup.getInstance().getDisplayName(
+						shortClassName, appContext));
+			}
+		}
+
+		List<String> otherCharNames = helper
+				.findOtherCharacterizationByAssayCategory(charType);
+		if (!otherCharNames.isEmpty()) {
+			charNames.addAll(otherCharNames);
+		}
+		return charNames;
+	}
+
+	public SortedSet<String> getAssayEndpointsByCharName(
+			HttpServletRequest request, String charName) throws Exception {
+		String charClassName = InitSetup.getInstance().getClassName(charName,
+				request.getSession().getServletContext());
+		SortedSet<String> assayTypes = LookupService
+				.getDefaultAndOtherLookupTypes(charClassName, "assayType",
+						"otherAssayType");
+		return assayTypes;
 	}
 }
