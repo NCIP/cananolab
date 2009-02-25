@@ -3,7 +3,7 @@ var rowCount = 0;
 var dataRowCache = {};
 var dataColumnCache = {};
 var viewed = -1;
-var datumColumnCount = 0;
+var headerColumnCount = 0;
 var addNewColumn = true;
 var editDataSet = false;
 var fixId = "-10000";
@@ -19,7 +19,7 @@ function showDatumConditionInfo(){
 }
 function resetTheDataSet(isShow) {
 	editDataSet = false;
-	datumColumnCount = 0;
+	headerColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
 	if (isShow) {
@@ -88,7 +88,7 @@ function populateDataSet(dataSet) {
 			if (index == 0) {
 				setTheDataRow(currentDataSet.dataRows[index]);
 			}
-			datumColumnCount = 0;
+			headerColumnCount = 0;
 			for ( var i = 0; i < data.length; i++) {
 				addDatumColumn(data[i]);
 			}
@@ -109,10 +109,10 @@ function populateDataSet(dataSet) {
 
 function saveDataSet(actionName) {
 	var rowValue, cellValue;
-	alert('DEBUG::: saveDataSet TODO rowCount='+rowCount+' datumColumnCount='+datumColumnCount);
+	alert('DEBUG::: saveDataSet TODO rowCount='+rowCount+' headerColumnCount='+headerColumnCount);
 	for ( var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
 		rowValue = '';
-		for ( var i = 1; i < datumColumnCount + 1; i++) {
+		for ( var i = 1; i < headerColumnCount + 1; i++) {
 			cellValue = document.getElementById("datumColumnValue" + (-i)).value = 
 				dwr.util.getValue("datumMatrixValue" + i + (-rowIndex - 1));
 			rowValue += cellValue + " ||"
@@ -138,13 +138,13 @@ function addDatumColumn(myDatum) {
 	datum.id = document.getElementById("columnId").value;
 	// do not know why datum.id == 'null' sometimes, it happens in IE only
 	if (datum.id == null || datum.id == '' || datum.id == 'null') {
-		datum.id == -datumColumnCount - 1;
+		datum.id == -headerColumnCount - 1;
 	}
 	if (myDatum != null) {
 		datum = myDatum;
 	}
 	if (datum.name != '' || datum.valueType != '' || datum.valueUnit != '') {
-		if (datumColumnCount == 0) {
+		if (headerColumnCount == 0) {
 			var datumColumnPatternRowDisplay = document
 					.getElementById("datumColumnPatternRowDisplay");
 			var aCellsDisplay = datumColumnPatternRowDisplay
@@ -170,7 +170,7 @@ function addDatumColumn(myDatum) {
 		if (myDatum == null) {
 			// TODO:: need?? add to test IE, still not work, not detail error msg
 			if (datum.id == null || datum.id == '' || datum.id == 'null') {
-				datum.id == -datumColumnCount - 1;
+				datum.id == -headerColumnCount - 1;
 			}
 			if (datum.id != null && datum.id < 0) {
 				datum.id = null;
@@ -181,7 +181,7 @@ function addDatumColumn(myDatum) {
 		}
 		$("addRowButtons").style.display = "";
 		// createMatrixPattern();
-		//if edit existing column, datumColumnCount++ not work, use incrementColumnCount
+		//if edit existing column, headerColumnCount++ not work, use incrementColumnCount
 		window.setTimeout("incrementColumnCount()", 80);
 		window.setTimeout("fillColumnTable()", 100);
 		window.setTimeout("createMatrixPattern()", 150);
@@ -193,14 +193,14 @@ function addDatumColumn(myDatum) {
 }
 
 function incrementColumnCount() {
-	datumColumnCount = currentDataSet.theDataRow.data.length;
+	headerColumnCount = currentDataSet.theDataRow.data.length;
 }
 
 function createMatrixPattern() {
 	var matrixHeader = document.getElementById("matrixHeader");
 	matrixHeader = removeAllColumns(matrixHeader);
 	var headerName, headerValueType, headerValueUnit;
-	for ( var i = 1; i < datumColumnCount + 1; i++) {
+	for ( var i = 1; i < headerColumnCount + 1; i++) {
 		var cell = document.createElement("TD");
 		var span = document.createElement('SPAN');
 		span.setAttribute("id", "matrixHeaderColumn" + i);
@@ -230,7 +230,7 @@ function createMatrixPattern() {
 	var datumMatrixPatternRow = document
 			.getElementById("datumMatrixPatternRow");
 	datumMatrixPatternRow = removeAllColumns(datumMatrixPatternRow);
-	for ( var i = 1; i < datumColumnCount + 1; i++) {
+	for ( var i = 1; i < headerColumnCount + 1; i++) {
 		var cell = document.createElement("TD");
 		// var span = document.createElement('SPAN');
 		// span.setAttribute("id", "datumMatrixValue"+i);
@@ -272,7 +272,7 @@ function addRow() {
 	var id = -1;
 	var datumArray = new Array();
 	var datumid = null;
-	for ( var i = 0; i < datumColumnCount; i++) {
+	for ( var i = 0; i < headerColumnCount; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -329,7 +329,7 @@ function addRow() {
 
 function deleteRow() {
 	var datumArray = new Array();
-	for ( var i = 0; i < datumColumnCount; i++) {
+	for ( var i = 0; i < headerColumnCount; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -349,7 +349,7 @@ function deleteRow() {
 function clearTheDataRow() {
 	//alert('clearTheDataRow rowCount='+rowCount);
 	//IE works only set value = '' instead of null
-	for ( var i = 0; i < datumColumnCount; i++) {
+	for ( var i = 0; i < headerColumnCount; i++) {
 		document.getElementById("datumColumnId" + (-i - 1)).value = '';
 		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
 	}
@@ -367,7 +367,7 @@ function clearTheDataColumn() {
 
 function setTheDataRow(dataRow) {
 	currentDataSet.theDataRow = dataRow;
-	// var datum = currentDataSet.theDataRow.data[datumColumnCount-1];
+	// var datum = currentDataSet.theDataRow.data[headerColumnCount-1];
 	// document.getElementById("name").value = datum.name;
 	// document.getElementById("value").value = datum.value;
 	// document.getElementById("name").value = datum.name;
@@ -571,7 +571,7 @@ function cloneEditRow() {
 	dwr.util.cloneNode("datumMatrixPatternRow", {
 		idSuffix :rowId
 	});
-	for ( var i = 0; i < datumColumnCount; i++) {
+	for ( var i = 0; i < headerColumnCount; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -658,7 +658,7 @@ function editDatumClicked(eleid) {
 }
 
 function saveRowClicked(eleid) {
-	for ( var i = 1; i < datumColumnCount + 1; i++) {
+	for ( var i = 1; i < headerColumnCount + 1; i++) {
 		document.getElementById("datumColumnValue" + (-i)).value = dwr.util
 				.getValue("datumMatrixValue" + i + fixId);
 	}
@@ -666,7 +666,7 @@ function saveRowClicked(eleid) {
 }
 
 function deleteRowClicked(eleid) {
-	for ( var i = 1; i < datumColumnCount + 1; i++) {
+	for ( var i = 1; i < headerColumnCount + 1; i++) {
 		document.getElementById("datumColumnValue" + (-i)).value = dwr.util
 				.getValue("datumMatrixValue" + i + fixId);
 	}
@@ -700,7 +700,7 @@ function deleteClicked() {
 
 function deleteDatumColumn() {
 	alert('Under Constrution');
-	// if (datumColumnCount==0){
+	// if (headerColumnCount==0){
 	// var datumColumnPatternRow =
 	// document.getElementById("datumColumnPatternRow");
 	// var aCells = datumColumnPatternRow.getElementsByTagName('td')//cells
@@ -736,7 +736,7 @@ function deleteDatumColumn() {
 	// currentDataSet = theDataSet;
 	// });
 	// $("addRowButtons").style.display = "";
-	// datumColumnCount++;
+	// headerColumnCount++;
 	// createMatrixPattern();
 	// window.setTimeout("fillColumnTable()", 200);
 	// if (rowCount>0){
