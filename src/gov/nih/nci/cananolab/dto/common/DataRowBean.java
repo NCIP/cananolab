@@ -105,4 +105,19 @@ public class DataRowBean {
 	public List<Condition> getConditions() {
 		return conditions;
 	}
+	
+	public void addConditionColumn(Condition condition) {
+		//condition.setDataRow(domain);
+		if (conditions.contains(condition)) {
+			for (Condition thisCondition : conditions) {
+				if (thisCondition.getId().equals(condition.getId())) {
+					thisCondition.setName(condition.getName());
+					thisCondition.setValueType(condition.getValueType());
+					thisCondition.setValueUnit(condition.getValueUnit());
+				}
+			}
+		} else {
+			conditions.add(condition);
+		}
+	}
 }

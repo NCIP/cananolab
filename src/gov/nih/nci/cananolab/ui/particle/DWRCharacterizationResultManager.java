@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.ui.particle;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.dto.common.DataColumnBean;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -34,6 +36,7 @@ public class DWRCharacterizationResultManager {
 	}
 
 	// addColumnHeader includes the function add and edit
+	//RETIRED
 	public DataSetBean addColumnHeader(Datum datum)
 			throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
@@ -44,9 +47,32 @@ public class DWRCharacterizationResultManager {
 		theDataSet.getTheDataRow().addDatumColumn(datum);
 		return theDataSet;
 	}
+	
+//	public DataSetBean addColumnHeader(DataColumnBean columnBean)
+//		throws CharacterizationResultException {
+//		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+//				.get().getSession().getAttribute("characterizationForm"));
+//		CharacterizationBean charBean = (CharacterizationBean) (charForm
+//				.get("achar"));
+//		DataSetBean theDataSet = charBean.getTheDataSet();
+//		theDataSet.addColumnBean(columnBean);
+//		return theDataSet;
+//	}
+	
+	public DataSetBean addConditionColumnHeader(Condition condition)
+			throws CharacterizationResultException {
+		System.out.println("########### addConditionColumnHeader");
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		DataSetBean theDataSet = charBean.getTheDataSet();
+		theDataSet.getTheDataRow().addConditionColumn(condition);
+		return theDataSet;
+	}
 
 	// addRow includes the function add and edit
-	public DataSetBean addRow(List<Datum> data)
+	public DataSetBean addRow(List<Datum> data, List<Condition> conditions)
 			throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));

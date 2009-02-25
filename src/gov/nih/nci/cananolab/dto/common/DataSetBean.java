@@ -25,6 +25,7 @@ public class DataSetBean {
 	private List<Datum> data = new ArrayList<Datum>();
 	private FileBean file = new FileBean();
 	private List<String> columns = new ArrayList<String>();
+	private List<DataColumnBean> columnBeans = new ArrayList<DataColumnBean>();
 
 	public DataSetBean() {
 
@@ -153,6 +154,34 @@ public class DataSetBean {
 
 	public List<String> getColumns() {
 		return columns;
+	}
+
+	/**
+	 * @return the columnBeans
+	 */
+	public List<DataColumnBean> getColumnBeans() {
+		return columnBeans;
+	}
+
+	/**
+	 * @param columnBeans the columnBeans to set
+	 */
+	public void setColumnBeans(List<DataColumnBean> columnBeans) {
+		this.columnBeans = columnBeans;
+	}
+	
+	public void addColumnBean(DataColumnBean columnBean) {		
+		if (columnBeans.contains(columnBean)) {
+			for (DataColumnBean thisColumnBean : columnBeans) {
+				if (thisColumnBean.getId().equals(columnBean.getId())) {
+					thisColumnBean.setName(columnBean.getName());
+					thisColumnBean.setValueType(columnBean.getValueType());
+					thisColumnBean.setValueUnit(columnBean.getValueUnit());
+				}
+			}
+		} else {
+			columnBeans.add(columnBean);
+		}
 	}
 
 }

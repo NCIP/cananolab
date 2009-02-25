@@ -36,7 +36,7 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager"/>
-			<include method="addColumnHeader" />
+			<include method="addColumnHeader" />		
 			<include method="resetDataSet" />
 			<include method="addRow" />
 			<include method="deleteRow" />
@@ -117,15 +117,15 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Condition">
 			<param name="include"
-				value="id, name, value, valueType, valueUnit, datumCollection" />
+				value="id, name, value, valueType, valueUnit, property, datumCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
-			<param name="include" value="theDataRow, dataRows,domain" />
+			<param name="include" value="theDataRow, dataRows,domain, columnBeans" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataRowBean">
-			<param name="include" value="data, domain" />
+			<param name="include" value="data, conditions, domain" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataRow">
@@ -134,6 +134,10 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataSet">
 			<param name="include" value="id" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.DataColumnBean">
+			<param name="include" value="id, name, property, value, valueType, valueUnit, displayName, datumOrCondition" />
 		</convert>
 	</allow>
 </dwr>
