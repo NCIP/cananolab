@@ -41,7 +41,9 @@
 			<html:select property="achar.characterizationName" styleId="charName"
 				onchange="javascript:callPrompt('Characterization', 'charName');setAssayEndpointOptionsByCharName()">
 				<option value=""></option>
-				<html:options name="charTypeChars" />
+				<c:if test="${!empty charTypeChars }">
+					<html:options name="charTypeChars" />
+				</c:if>
 				<option value="other">
 					[Other]
 				</option>
@@ -57,7 +59,9 @@
 				styleId="assayType"
 				onchange="javascript:callPrompt('Assay Endpoint', 'assayType');">
 				<option value=""></option>
-				<html:options name="charNameAssays" />
+				<c:if test="${!empty charNameAssays }">
+					<html:options name="charNameAssays" />
+				</c:if>
 				<option value="other">
 					[Other]
 				</option>
