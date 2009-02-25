@@ -156,7 +156,7 @@ insert into common_lookup(name,attribute,value) values ('PhysicalState','type','
 insert into common_lookup(name,attribute,value) values ('PhysicalState','type','solid-fibril');
 insert into common_lookup(name,attribute,value) values ('Protocol','type','in vitro assay');
 insert into common_lookup(name,attribute,value) values ('Protocol','type','in vivo assay');
-insert into common_lookup(name,attribute,value) values ('Protocol','type','physical assay');
+insert into common_lookup(name,attribute,value) values ('Protocol','type','physico-chemical assay');
 insert into common_lookup(name,attribute,value) values ('Protocol','type','radio labeling');
 insert into common_lookup(name,attribute,value) values ('Protocol','type','safety');
 insert into common_lookup(name,attribute,value) values ('Protocol','type','sample preparation');
