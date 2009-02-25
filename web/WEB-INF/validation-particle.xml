@@ -249,9 +249,13 @@
 			</field>
 		</form>
 		<form name="characterizationForm">
-			<field property="achar.viewTitle" page="2"
+			<field property="achar.characterizationType" page="2"
 				depends="required">
-				<arg position="0" key="viewTitle" bundle="particle" />
+				<arg position="0" key="characterizationType" bundle="particle" />
+			</field>
+			<field property="achar.characterizationName" page="2"
+				depends="required">
+				<arg position="0" key="characterizationName" bundle="particle" />
 			</field>
 			<!--
 			<field property="achar.theExperimentConfig.domain.technique.type"
