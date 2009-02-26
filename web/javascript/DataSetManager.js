@@ -173,9 +173,9 @@ function addDatumColumn(myDatum) {
 			if (columnBean.id == null || columnBean.id == '' || columnBean.id == 'null') {
 				columnBean.id == -headerColumnCount - 1;
 			}
-			if (columnBean.id != null && columnBean.id < 0) {
-				columnBean.id = null;
-			}
+//			if (columnBean.id != null && columnBean.id < 0) {
+//				columnBean.id = null;
+//			}
 			DataSetManager.addColumnHeader(columnBean, function(theDataSet) {
 				currentDataSet = theDataSet;
 			});
@@ -284,6 +284,8 @@ function addRow() {
 		datumOrCondition  = dwr.util.getValue("datumOrConditionColumn" + id);
 		if (datumOrCondition=='Condition'){
 			datum.property = dwr.util.getValue("conditionColumnProperty" + id);
+		}else{
+			datum.property = '';
 		}
 		datum.id = datumid;
 		if (datum.id==null || datum.id==''){
@@ -313,21 +315,29 @@ function addRow() {
 
 function deleteRow() {
 	var datumArray = new Array();
+	var conditionArray = new Array();
+	var datumIndex = 0, conditionIndex = 0;
 	for ( var i = 0; i < headerColumnCount; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
-			valueUnit :null
+			datumOrCondition :null
 		};
 		dwr.util.getValues(datum);
 		datum.id = dwr.util.getValue("datumColumnId" + (-i - 1));
-		datumArray[i] = datum;
+		if (datum.datumOrCondition=='Condition'){
+			conditionArray[conditionIndex] = datum;
+		}else{
+			datumArray[datumIndex] = datum;
+		}
+		conditionIndex++;
+		datumIndex++;
 	}
-	DataSetManager.deleteRow(datumArray, function(theDataSet) {
-		currentDataSet = theDataSet;
+	DataSetManager.deleteRow(datumArray, conditionArray, function(theDataSet) {
+			currentDataSet = theDataSet;
 	});	
 	rowCount--;
-	window.setTimeout("fillMatrix()", 200);
+	window.setTimeout("fillMatrix()", 200);	
 }
 
 function clearTheDataRow() {
@@ -358,29 +368,58 @@ function setTheDataRow(dataRow) {
 	// document.getElementById("name").value = datum.name;
 }
 
-function fillColumnTable() {
-	var columnBeans = currentDataSet.columnBeans;
-	var columnBean, id;
+function removeColumns(columnName, exceptColumn){
+	//remove datumColumnPatternRowDisplay all column except datumColumnPatternDisplay
+	var columnVariable = document
+		.getElementById(columnName);
+	var aCellsDisplay = columnVariable
+		.getElementsByTagName('td')// cells collection in this row
+	var aCellLengthDisplay = aCellsDisplay.length;
+	var toDeleteDisplay = new Array();
+	i = 0;
+	for ( var j = 0; j < aCellLengthDisplay; j++) {
+	if (aCellsDisplay[j].id != exceptColumn) {
+		toDeleteDisplay[i] = aCellsDisplay[j].id;
+		i++;
+	}
+	}
+	for ( var j = 0; j < toDeleteDisplay.length; j++) {
+	datumColumnPatternRowDisplay.removeChild(document
+			.getElementById(toDeleteDisplay[j]));
+	}
+	//$("datumColumnsDivRowDisplay").style.display = "";
+
+}
+
+function fillColumnTable() {	
 	$("datumColumns").style.display = "";
 	$("datumColumnPatternRowDisplay").style.display = "";
 	$("datumColumnPattern").style.display = "none";
 	$("datumColumnPatternDisplay").style.display = "none";
-	var start = columnBeans.length - 1;
-	if (editDataSet) {
-		start = 0;
-	}
+	var columnBeans = currentDataSet.columnBeans;
+	var start = 0;
+	var columnBean, id;
 	var columnBeanid = null;
 	var valueTypeUnit = null;
+	
+	
+	//REMOVE
+	//remove datumColumnPatternRowDisplay all column except datumColumnPatternDisplay
+	removeColumns('datumColumnPatternRowDisplay', 'datumColumnPatternDisplay')	
+	//remove "datumColumns" all rows except datumColumnPattern
+	dwr.util
+			.removeAllRows(
+					"datumColumns",
+					{
+						filter : function(tr) {
+							return (tr.id != "datumColumnPattern" && tr.id != "datumColumnsDivRow2");
+						}
+	});
+	
+	//TODO:: verify when editing, i< columnBeans.length or  i<columnBeans.length+start
 	for ( var i = start; i < columnBeans.length; i++) {
 		columnBean = columnBeans[i];
-		// TODO::::
 		columnBeanid = columnBean.id;
-		// if (datum.id==null){
-		// datum.id = -i-1;
-		// }
-		// the column input always use -1, -2, not actual id
-		// datum.id = -i-200;
-
 		id = -i - 1;
 		if (columnBeanid == null) {
 			columnBeanid = id;
@@ -393,40 +432,16 @@ function fillColumnTable() {
 		});
 		dwr.util.setValue("datumColumnId" + id, columnBeanid);
 		// TODO:::?? this one or the one above??
-		// dwr.util.setValue("datumColumnId" + (-i-1), datumid);		
-
+		// dwr.util.setValue("datumColumnId" + (-i-1), datumid);
 		dwr.util.setValue("datumColumnName" + id, columnBean.name);
 		dwr.util.setValue("datumColumnValueType" + id, columnBean.valueType);
 		dwr.util.setValue("datumColumnValueUnit" + id, columnBean.valueUnit);
 		dwr.util.setValue("datumColumnValue" + id, columnBean.value);
 		dwr.util.setValue("datumOrConditionColumn" + id, columnBean.datumOrCondition);
 		dwr.util.setValue("conditionColumnProperty" + id, columnBean.property);
-
-		dwr.util.setValue("datumColumnNameDisplay" + id, columnBean.displayName);
-		//TODO:: to remove
-//		valueTypeUnit = '';
-//		if (datum.valueType != '' || datum.valueUnit != '') {
-//			valueTypeUnit += '('
-//			if (datum.valueType != '') {
-//				valueTypeUnit += datum.valueType
-//				if (datum.valueUnit != '') {
-//					valueTypeUnit += ',';
-//				}
-//			}
-//			if (datum.valueUnit != '') {
-//				valueTypeUnit += datum.valueUnit;
-//			}
-//			valueTypeUnit += ')'
-//		}
-//		dwr.util
-//				.setValue("columnDisplayName" + id, valueTypeUnit);
+		dwr.util.setValue("datumColumnNameDisplay" + id, columnBean.displayName);		
 		dwr.util
 			.setValue("columnDisplayName" + id, columnBean.displayName);
-		// dwr.util.setValue("datumColumnValueTypeDisplay" + id,
-		// datum.valueType);
-		// dwr.util.setValue("datumColumnValueUnitDisplay" + id,
-		// datum.valueUnit);
-
 		if (!editDataSet) {
 			// TODO:: how to handle both situation??
 			// if change column name, do not need it
@@ -454,16 +469,74 @@ function fillColumnTable() {
 		colDatum.datumOrCondition = dwr.util.getValue("datumOrConditionColumn" + id);
 		colDatum.property = dwr.util.getValue("conditionColumnProperty" + id);
 		colDatum.displayName = dwr.util.getValue("columnDisplayName" + id);
-		
-		// TODO:: always use id instead of datumid, datumid is set in
-		// datumColumnId
-		// dataColumnCache[datumid] = colDatum;
 		dataColumnCache[id] = colDatum;
-		// TODO:: XXXXXX
 		$("datumColumnPattern" + id).style.display = "";
 		$("datumColumnPatternDisplay" + id).style.display = "";
 	}
 }
+
+//function fillColumns_retired(editDataSet, start, columnBeans){
+//	var columnBean, id;
+//	var columnBeanid = null;
+//	var valueTypeUnit = null;
+//	//TODO:: verify when editing, i< columnBeans.length or  i<columnBeans.length+start
+//	for ( var i = start; i < columnBeans.length; i++) {
+//		columnBean = columnBeans[i];
+//		columnBeanid = columnBean.id;
+//		id = -i - 1;
+//		if (columnBeanid == null) {
+//			columnBeanid = id;
+//		}
+//		dwr.util.cloneNode("datumColumnPattern", {
+//			idSuffix :id
+//		});
+//		dwr.util.cloneNode("datumColumnPatternDisplay", {
+//			idSuffix :id
+//		});
+//		dwr.util.setValue("datumColumnId" + id, columnBeanid);
+//		// TODO:::?? this one or the one above??
+//		// dwr.util.setValue("datumColumnId" + (-i-1), datumid);
+//		dwr.util.setValue("datumColumnName" + id, columnBean.name);
+//		dwr.util.setValue("datumColumnValueType" + id, columnBean.valueType);
+//		dwr.util.setValue("datumColumnValueUnit" + id, columnBean.valueUnit);
+//		dwr.util.setValue("datumColumnValue" + id, columnBean.value);
+//		dwr.util.setValue("datumOrConditionColumn" + id, columnBean.datumOrCondition);
+//		dwr.util.setValue("conditionColumnProperty" + id, columnBean.property);
+//		dwr.util.setValue("datumColumnNameDisplay" + id, columnBean.displayName);		
+//		dwr.util
+//			.setValue("columnDisplayName" + id, columnBean.displayName);
+//		if (!editDataSet) {
+//			// TODO:: how to handle both situation??
+//			// if change column name, do not need it
+//			// TODO::: why need??, add row and get value from the name/value
+//			// dwr.util.setValue("datumColumnName" + id,
+//			// document.getElementById("name").value);
+//			dwr.util.setValue("datumColumnValue" + id, document
+//					.getElementById("value").value);
+//			dwr.util.setValue("datumColumnId" + id, document
+//					.getElementById("columnId").value);
+//		}
+//		//dummmy get data, todo: check if needed,
+//		//actually getting data from colDatum.name = dwr.util.getValue("datumColumnName" + id); etc...
+//		var colDatum = {
+//			name :null,
+//			valueType :null,
+//			valueUnit :null
+//		};
+//		dwr.util.getValues(colDatum);
+//		colDatum.id = dwr.util.getValue("datumColumnId" + id);// ==datumid		
+//		colDatum.name = dwr.util.getValue("datumColumnName" + id);
+//		colDatum.valueType = dwr.util.getValue("datumColumnValueType" + id);
+//		colDatum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
+//		colDatum.value = dwr.util.getValue("datumColumnValue" + id);		
+//		colDatum.datumOrCondition = dwr.util.getValue("datumOrConditionColumn" + id);
+//		colDatum.property = dwr.util.getValue("conditionColumnProperty" + id);
+//		colDatum.displayName = dwr.util.getValue("columnDisplayName" + id);
+//		dataColumnCache[id] = colDatum;
+//		$("datumColumnPattern" + id).style.display = "";
+//		$("datumColumnPatternDisplay" + id).style.display = "";
+//	}	
+//}
 
 function fillMatrix() {
 	dwr.util
@@ -504,8 +577,9 @@ function fillMatrix() {
 			id = rowId;
 			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + rowId,
 					datum.value);
+			
 		}
-		colIndex = data.length - 1;
+		colIndex = data.length;
 		//CONDITION
 		var conditions = currentDataSet.dataRows[row].conditions;
 		for (var i=0; i < conditions.length; i++) {
@@ -529,6 +603,7 @@ function fillMatrix() {
 		// editRow.style = "border:0px solid;text-decoration: underline;";
 		$("datumMatrixPatternRow" + rowId).style.display = "";
 		dataRowCache[rowId] = currentDataSet.dataRows[row];
+		//TODO::: if editing, ok??
 		dataRowCache[rowId].domain.id = rowId;
 	}
 	clearTheDataRow();
@@ -599,6 +674,7 @@ function editDatumClicked(eleid) {
 		//var datumid = datum.id;
 		document.getElementById("datumColumnId" + (-i - 1)).value = datum.id;
 		document.getElementById("datumMatrixValue" + (i + 1) + fixId).value = datum.value;
+		//alert("########datum  datumMatrixValue "+(i + 1) + fixId + " ==>"+datum.value);
 		// TODO:: put constant value to new added column datum
 		// if (document.getElementById("datumColumnValue" + (-i - 1))!=null){
 		// document.getElementById("datumColumnValue" + (-i - 1)).value =
@@ -606,16 +682,14 @@ function editDatumClicked(eleid) {
 		// }
 	}
 	var conditions = dataRowCache[rowid].conditions;
+	var condIndex = data.length;
 	for ( var i = 0; i < conditions.length; i++) {
 		condition = conditions[i];
 		//var conditionid = condition.id;
-		document.getElementById("datumColumnId" + (-i - 1)).value = condition.id;
-		document.getElementById("datumMatrixValue" + (i + 1) + fixId).value = condition.value;
-		// TODO:: put constant value to new added column datum
-		// if (document.getElementById("datumColumnValue" + (-i - 1))!=null){
-		// document.getElementById("datumColumnValue" + (-i - 1)).value =
-		// datum.value;
-		// }
+		document.getElementById("datumColumnId" + (-condIndex - 1)).value = condition.id;
+		document.getElementById("datumMatrixValue" + (condIndex + 1) + fixId).value = condition.value;
+		//alert("######## condition datumMatrixValue "+(condIndex + 1) + fixId + " ==>"+condition.value);
+		condIndex++;
 	}
 }
 
