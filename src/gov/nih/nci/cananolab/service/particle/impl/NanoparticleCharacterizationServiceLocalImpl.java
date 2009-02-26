@@ -20,7 +20,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -30,7 +29,6 @@ import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
@@ -63,22 +61,14 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					throw new ParticleCharacterizationException(err);
 				}
 			}
-			// check for existing view title
-//			Boolean redundantViewTitle = checkRedundantViewTitle(
-//					particleSample, achar);
-//			if (redundantViewTitle) {
-//				throw new DuplicateEntriesException();
+//			if (particleSample.getCharacterizationCollection() != null) {
+//				particleSample.getCharacterizationCollection().clear();
+//			} else {
+//				particleSample
+//						.setCharacterizationCollection(new HashSet<Characterization>());
 //			}
-
-			if (particleSample.getCharacterizationCollection() != null) {
-				particleSample.getCharacterizationCollection().clear();
-			} else {
-				particleSample
-						.setCharacterizationCollection(new HashSet<Characterization>());
-			}
 			achar.setNanoparticleSample(particleSample);
-			particleSample.getCharacterizationCollection().add(achar);
-
+			//particleSample.getCharacterizationCollection().add(achar);
 			appService.saveOrUpdate(achar);
 		} catch (DuplicateEntriesException e) {
 			throw e;
@@ -201,7 +191,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					.retrieveVisibility(charBean.getProtocolFileBean(), user);
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "
-					+ charBean.getViewTitle();
+					+ charBean.getDomainChar().getId();
 			logger.error(err, e);
 			throw new ParticleCharacterizationException(err, e);
 		}

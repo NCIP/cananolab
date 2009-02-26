@@ -8,8 +8,6 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSumma
 import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -41,18 +39,8 @@ public interface NanoparticleCharacterizationService {
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws ParticleCharacterizationException;
 
-	public void exportDetail(CharacterizationBean achar, OutputStream out)
-		throws ParticleCharacterizationException;
-
-
-	public void exportSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out) throws IOException;
-
 	public void deleteCharacterization(Characterization chara)
 			throws ParticleCharacterizationException;
-
-	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out) throws IOException;
 
 	public List<CharacterizationBean> findCharsByParticleSampleId(String particleId)
 			throws ParticleCharacterizationException;

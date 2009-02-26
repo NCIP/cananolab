@@ -332,6 +332,13 @@ public class CaNanoLabComparators {
 		}
 	}
 
+	public static class CharacterizationBeanNameDateComparator implements
+			Comparator<Characterization> {
+		public int compare(Characterization chara1, Characterization chara2) {
+			return chara1.getCreatedDate().compareTo(chara2.getCreatedDate());
+		}
+	}
+
 	public static class ProtocolFileBeanNameVersionComparator implements
 			Comparator<ProtocolFileBean> {
 		public int compare(ProtocolFileBean protocolFile1,

@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;

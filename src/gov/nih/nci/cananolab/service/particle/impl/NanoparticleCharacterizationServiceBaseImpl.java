@@ -8,8 +8,6 @@ import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,9 +15,9 @@ import org.apache.log4j.Logger;
 /**
  * Base implementation of NanoparticleCharacterizationService, shared by local
  * impl and remote impl.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public abstract class NanoparticleCharacterizationServiceBaseImpl {
 	private static Logger logger = Logger
@@ -27,28 +25,6 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 
 	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
 	protected FileService fileService;
-
-	public void exportDetail(CharacterizationBean achar, OutputStream out)
-			throws ParticleCharacterizationException {
-		try {
-			helper.exportDetail(achar, out);
-		} catch (Exception e) {
-			String err = "error exporting detail view for "
-					+ achar.getViewTitle();
-			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
-		}
-	}
-
-	public void exportFullSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out) throws IOException {
-		helper.exportFullSummary(summaryBean, out);
-	}
-
-	public void exportSummary(CharacterizationSummaryBean summaryBean,
-			OutputStream out) throws IOException {
-		helper.exportSummary(summaryBean, out);
-	}
 
 	protected abstract List<Characterization> findParticleCharacterizationsByClass(
 			String particleName, String className) throws Exception;

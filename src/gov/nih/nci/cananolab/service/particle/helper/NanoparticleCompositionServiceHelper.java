@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.particle.helper;
 
-import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -9,9 +8,7 @@ import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;

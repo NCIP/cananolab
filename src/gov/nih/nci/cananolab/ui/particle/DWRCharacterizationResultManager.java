@@ -10,7 +10,6 @@ import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.struts.validator.DynaValidatorForm;
