@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -68,7 +69,7 @@ public class ExperimentConfigServiceLocalImpl implements
 						instrument.setCreatedBy(dbInstrument.getCreatedBy());
 						instrument
 								.setCreatedDate(dbInstrument.getCreatedDate());
-					} else {						
+					} else {
 						instrument.setId(null);
 					}
 					config.getInstrumentCollection().add(instrument);
@@ -201,6 +202,8 @@ public class ExperimentConfigServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria.forClass(
 					ExperimentConfig.class).add(
 					Property.forName("id").eq(new Long(id)));
+			crit.setFetchMode("technique", FetchMode.JOIN);
+			crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				config = (ExperimentConfig) obj;
