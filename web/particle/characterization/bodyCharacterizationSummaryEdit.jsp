@@ -20,6 +20,8 @@
 </table>
 <br>
 
+<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+
 <c:forEach var="type" items="${characterizationTypes}">
 	<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
 		width="100%">
@@ -35,11 +37,6 @@
 			</th>
 		</tr>
 		<tr>
-			<td colspan="4" align="left">
-				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			</td>
-		</tr>
-		<tr>
 			<td colspan="4">
 				<c:choose>
 					<c:when
@@ -52,10 +49,12 @@
 									border="0" width="90%">
 									<tr>
 										<th align="left">
-											${charBean.characterizationName} (${charBean.pocBean.displayName}${charBean.dateString })
+											${charBean.characterizationName}
+											(${charBean.pocBean.displayName}${charBean.dateString })
 										</th>
 										<th align="right">
-											<a href="characterization.do?dispatch=setupUpdate&particleId=${param.particleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
+											<a
+												href="characterization.do?dispatch=setupUpdate&particleId=${param.particleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
 										</th>
 									</tr>
 									<tr>
@@ -131,23 +130,23 @@
 																					</tr>
 																				</c:forEach>
 																			</table>
-																	</td>
+																		</td>
 
-																	<td>
-																		<c:choose>
-																			<c:when test="${dataSetBean.file.image eq 'true' }">
-																				<a href="#"
-																					onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}', ${dataSetBean.file.domainFile.id}, 100, 100)"><img
-																						src="characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}"
-																						border="0" width="150"> </a>
-																			</c:when>
-																			<c:otherwise>
-																				<a
-																					href="characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}"
-																					target="${dataSetBean.file.urlTarget}">${dataSetBean.file.domainFile.title}</a>
-																			</c:otherwise>
-																		</c:choose>
-																	</td>
+																		<td>
+																			<c:choose>
+																				<c:when test="${dataSetBean.file.image eq 'true' }">
+																					<a href="#"
+																						onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}', ${dataSetBean.file.domainFile.id}, 100, 100)"><img
+																							src="characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}"
+																							border="0" width="150"> </a>
+																				</c:when>
+																				<c:otherwise>
+																					<a
+																						href="characterization.do?dispatch=download&amp;fileId=${dataSetBean.file.domainFile.id}&amp;location=${location}"
+																						target="${dataSetBean.file.urlTarget}">${dataSetBean.file.domainFile.title}</a>
+																				</c:otherwise>
+																			</c:choose>
+																		</td>
 																	</tr>
 																</table>
 																<br>
