@@ -19,75 +19,77 @@
 			<strong>DataSet</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<c:if
 				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-				<a id="addDataSet" href="javascript:resetTheDataSet(true);">
-					<span class="addLink2">Add</span></a>
+				<a id="addDataSet" href="javascript:resetTheDataSet(true);"> <span
+					class="addLink2">Add</span> </a>
 				&nbsp;&nbsp;
-			</c:if>			
+			</c:if>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top" colspan="1">
+		<td class="leftLabel" valign="top">
 			<div id="existingDataSet" style="display: block;">
 				<c:forEach var="dataSet" varStatus="dataSetIndex"
 					items="${characterizationForm.map.achar.dataSets}">
-					<table class="smalltable2" border="0">
-						<tr>
-							<td class="subformTitle" colspan="2">
-								<b>DataSet #${dataSetIndex.index+1}&nbsp; <a
-									href="javascript:setTheDataSet(${dataSet.domain.id});">
-										edit</a> </b>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<b>Data</b>
-							</td>
-						</tr>
+					<div class="indented4">
+						<table class="smalltable2" border="0">
+							<tr>
+								<td class="subformTitle" colspan="2">
+									<b>DataSet #${dataSetIndex.index+1}&nbsp; <a
+										href="javascript:setTheDataSet(${dataSet.domain.id});">
+											edit</a> </b>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<b>Data</b>
+								</td>
+							</tr>
 
-						<tr>
-							<td>
-								&nbsp;
-							</td>
-							<td>
-								<table class="smalltable3" border="1">
-									<c:forEach var="dataRow" varStatus="dataRowIndex"
-										items="${dataSet.dataRows}">
-										<c:if test="${dataRowIndex.index eq 0}">
-											<tr class="smallTableHeader">
-												<c:forEach var="datum" items="${dataRow.data}">
-													<td class="greyFont">
-														<b>${datum.name}(${datum.valueType}&nbsp;${datum.valueUnit})</b>
-													</td>
-												</c:forEach>
-											</tr>
-										</c:if>
+							<tr>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									<table class="smalltable3" border="1">
 										<tr>
-											<c:forEach var="datum" items="${dataRow.data}">
-												<td class="greyFont">
-													${datum.value}
+											<c:forEach var="col" items="${dataSet.columns}">
+												<td>
+													<strong>${col}</strong>
 												</td>
 											</c:forEach>
 										</tr>
-									</c:forEach>
-								</table>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<b>File</b>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								&nbsp;
-							</td>
-							<td>
-								<a href="">characterization/20071109_11-15-38-098_test_upload.txt</a>
-							</td>
-						</tr>
-
-					</table>
+										<c:forEach var="dataRow" items="${dataSet.dataRows}">
+											<tr>
+												<c:forEach var="datum" items="${dataRow.data}">
+													<td>
+														${datum.value}
+													</td>
+												</c:forEach>
+												<c:forEach var="condition" items="${dataRow.conditions}">
+													<td>
+														${condition.value}
+													</td>
+												</c:forEach>
+											</tr>
+										</c:forEach>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<b>File</b>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									&nbsp;
+								</td>
+								<td>
+									<a href="">characterization/20071109_11-15-38-098_test_upload.txt</a>
+								</td>
+							</tr>
+						</table>
+					</div>
 					<br>
 				</c:forEach>
 			</div>
@@ -95,49 +97,46 @@
 		</td>
 		<td class="rightLabel" valign="top" colspan="3">
 			<div id="newDataSet" style="display: none;">
-				<table class="smalltable2" border="0">
-					<tr>
-						<td valign="top" colspan="1" class="subformTitle">
-							<a
-								href="javascript:showhide('submitDatum');"><b>Data</b>
-							</a>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">
-							<div id="submitDatum" style="display: none;" align="center">
-								<jsp:include
-									page="/particle/characterization/shared/bodySubmitDataSet.jsp" />
-							</div>
-							&nbsp;
-						</td>
-					</tr>
-
-					<tr>
-						<td valign="top" colspan="1" class="subformTitle">
-							<a href="javascript:showhide('loadDatumFile');"><b>File</b> </a>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top">
-							<div id="loadDatumFile" style="display: none;" align="center">
-								<jsp:include page="bodyCharacterizationFile.jsp">
-									<jsp:param name="form" value="characterizationForm" />
-									<jsp:param name="action" value="${actionName}" />
-								</jsp:include>
-							</div>
-							&nbsp;
-						</td>
-					</tr>
-					
-					<tr>
-						<td valign="top" align="right">
-							<input type="reset" value="Cancel"
-								onclick="javascript:hide('newDataSet');show('existingDataSet');">
-							&nbsp;
-						</td>
-					</tr>
-				</table>
+				<div class="indented4">
+					<table class="smalltable2" border="0">
+						<tr>
+							<td valign="top" colspan="1" class="subformTitle">
+								<a href="javascript:showhide('submitDatum');"><b>Data</b> </a>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top">
+								<div id="submitDatum" style="display: none;" align="center">
+									<jsp:include
+										page="/particle/characterization/shared/bodySubmitDataSet.jsp" />
+								</div>
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" colspan="1" class="subformTitle">
+								<a href="javascript:showhide('loadDatumFile');"><b>File</b>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top">
+								<div id="loadDatumFile" style="display: none;" align="center">
+									<jsp:include
+										page="/particle/characterization/shared/bodyCharacterizationFile.jsp" />
+								</div>
+								&nbsp;
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" align="right">
+								<input type="reset" value="Cancel"
+									onclick="javascript:hide('newDataSet');show('existingDataSet');">
+								&nbsp;
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 			&nbsp;
 		</td>
