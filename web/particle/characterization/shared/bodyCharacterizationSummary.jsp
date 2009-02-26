@@ -55,7 +55,7 @@
 			<strong>Assay Endpoint</strong>
 		</td>
 		<td class="label">
-			<html:select property="achar.domainChar.assayType"
+			<html:select property="achar.assayType"
 				styleId="assayType"
 				onchange="javascript:callPrompt('Assay Endpoint', 'assayType');">
 				<option value=""></option>

@@ -16,7 +16,7 @@
 	<tr>
 		<td class="completeLabel" colspan="4">
 			<strong><html:textarea
-					property="achar.domainChar.analysisConclusion" cols="120"
+					property="achar.conclusion" cols="120"
 					rows="8" />
 			</strong>&nbsp;
 		</td>
