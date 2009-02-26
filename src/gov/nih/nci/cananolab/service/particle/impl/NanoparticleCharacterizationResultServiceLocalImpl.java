@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -29,6 +30,7 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria.forClass(Datum.class).add(
 					Restrictions.eq("dataSet.id", new Long(dataSetId))).addOrder(
 					Order.asc("createdDate"));
+			crit.setFetchMode("dataRow", FetchMode.JOIN);
 			List result = appService.query(crit);
 
 			for (Object obj : result) {
