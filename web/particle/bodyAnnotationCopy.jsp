@@ -16,19 +16,20 @@
 			<c:when test="${!empty otherParticleNames}">
 				<tr>
 					<td class="leftLabel" valign="top" width="30%">
-						<strong>Copy to other ${particlePointOfContact} nanoparticle
-							samples</strong>
+						<strong>Copy to other nanoparticle samples with the same
+							primary point of contact</strong>
 					</td>
+
 					<td class="label">
-						<html:select property="otherParticles" size="5" multiple="true">
+						<html:select property="otherParticles" size="10" multiple="true">
 							<html:options collection="otherParticleNames" property="name"
 								labelProperty="name" />
 						</html:select>
 					</td>
 					<td class="rightLabel" valign="top">
-						<c:if test="${actionName ne 'nanoparticleEntity' and actionName ne 'functionalizingEntity'}">
+						<c:if test="${param.annotation eq 'characterization'}">
 							<html:checkbox property="copyData" />
-							<strong>Also copy derived data?</strong>
+							<strong>Also copy characterization results?</strong>
 						</c:if>
 						&nbsp;
 					</td>
@@ -37,8 +38,7 @@
 			<c:otherwise>
 				<tr>
 					<td class="completeLabel" colspan="3">
-						There are no other particles from source ${particlePointOfContact} to copy
-						annotation to.
+						There are no other particles to copy annotation to.
 					</td>
 			</c:otherwise>
 		</c:choose>
