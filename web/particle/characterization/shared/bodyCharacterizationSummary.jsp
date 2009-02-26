@@ -39,7 +39,7 @@
 		</td>
 		<td class="rightLabel">
 			<html:select property="achar.characterizationName" styleId="charName"
-				onchange="javascript:callPrompt('Characterization', 'charName');setAssayEndpointOptionsByCharName()">
+				onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();setDatumNameOptionsByCharName()">
 				<option value=""></option>
 				<c:if test="${!empty charTypeChars }">
 					<html:options name="charTypeChars" />
@@ -52,12 +52,12 @@
 	</tr>
 	<tr>
 		<td class="leftLabel" valign="top">
-			<strong>Assay Endpoint</strong>
+			<strong>Assay Type</strong>
 		</td>
 		<td class="label">
 			<html:select property="achar.assayType"
 				styleId="assayType"
-				onchange="javascript:callPrompt('Assay Endpoint', 'assayType');">
+				onchange="javascript:callPrompt('Assay Type', 'assayType');">
 				<option value=""></option>
 				<c:if test="${!empty charNameAssays }">
 					<html:options name="charNameAssays" />
