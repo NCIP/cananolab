@@ -150,7 +150,7 @@ public class InitCharacterizationSetup {
 		// datum.getDomainDerivedDatum().getName());
 		// }
 		// }
-		setCharactierizationDropDowns(request, charBean.getClassName());
+		//setCharactierizationDropDowns(request, charBean.getDomainChar().getId().toString());
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class InitCharacterizationSetup {
 		return charNames;
 	}
 
-	public SortedSet<String> getAssayEndpointsByCharName(
+	public SortedSet<String> getAssayTypesByCharName(
 			HttpServletRequest request, String charName) throws Exception {
 		String charClassName = InitSetup.getInstance().getClassName(charName,
 				request.getSession().getServletContext());
@@ -219,5 +219,15 @@ public class InitCharacterizationSetup {
 				.getDefaultAndOtherLookupTypes(charClassName, "assayType",
 						"otherAssayType");
 		return assayTypes;
+	}
+
+	public SortedSet<String> getDatumNamesByCharName(
+			HttpServletRequest request, String charName) throws Exception {
+		String charClassName = InitSetup.getInstance().getClassName(charName,
+				request.getSession().getServletContext());
+		SortedSet<String> names = LookupService
+				.getDefaultAndOtherLookupTypes(charClassName, "datumName",
+						"otherDatumName");
+		return names;
 	}
 }
