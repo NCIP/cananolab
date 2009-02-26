@@ -71,19 +71,20 @@
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationSummary.jsp" />
-				<jsp:include
-					page="/particle/characterization/shared/bodyCharacterizationDesignMethods.jsp" />
 				<c:if test="${!empty characterizationDetailPage}">
 					<jsp:include page="${characterizationDetailPage}" />
 				</c:if>
 				<jsp:include
+					page="/particle/characterization/shared/bodyCharacterizationDesignMethods.jsp" />
+				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationResults.jsp" />
-				<%--
-				<jsp:include page="/particle/bodyAnnotationCopy.jsp" />--%>
 				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationConclusion.jsp" />
 				<jsp:include
+					page="/particle/bodyAnnotationCopy.jsp?annotation=characterization" />
+				<jsp:include
 					page="/particle/characterization/shared/bodyCharacterizationSubmit.jsp" />
+				${achar.pocBean }
 			</td>
 		</tr>
 	</table>
