@@ -194,7 +194,7 @@
 			<div id="datumColumnsDiv" style="display: block;">
 				<table id="datumColumnsTable" class="smalltable" border="0">
 					<tbody id="datumColumns">
-						<tr id="datumColumnPattern" style="display: none;">
+						<tr id="datumColumnPattern" style="display: none;">						
 							<td>
 								<input id="datumColumnId" type="hidden" value="datumColumnId" />
 								<input id="datumOrConditionColumn" type="hidden" value="datumOrConditionColumn" />
@@ -227,15 +227,13 @@
 								&nbsp;
 							</td>
 						</tr>
-
 					</tbody>
 				</table>
 			</div>
 			&nbsp;
 		</td>
 	</tr>
-
-
+	
 	<tr id="datumMatrixDivRow">
 		<td class="completeLabelNoTopBottom" valign="top" colspan="2">
 			<div id="datumMatrixDiv" style="display: block;">
@@ -252,7 +250,6 @@
 			&nbsp;
 		</td>
 	</tr>
-
 	<tr>
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
