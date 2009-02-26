@@ -124,7 +124,7 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
-			<param name="include" value="theDataRow, dataRows,domain, columnBeans" />
+			<param name="include" value="theDataRow, dataRows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataRowBean">
