@@ -42,7 +42,11 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
-		theDataSet.addColumnBean(columnBean);
+		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
+			theDataSet.addConditionColumnBean(columnBean);
+		}else {
+			theDataSet.addDatumColumnBean(columnBean);
+		}
 		return theDataSet;
 	}
 
@@ -72,11 +76,13 @@ public class DWRCharacterizationResultManager {
 				if (conditions != null) {					
 					datum.setConditionCollection(conditions);
 				}
+				dataRowBean.setConditions(conditions);
 				dataRowBean.addDatum(datum);
 				hasData = true;
 				i++;
 			}
 			if (hasData) {
+				
 				// if dataRowBean.id is null, set a negative id temporary
 				// need to handle set nagative id to null when save to db
 				if (dataRowBean.getDomain().getId() == null) {
@@ -89,7 +95,7 @@ public class DWRCharacterizationResultManager {
 	}
 
 	// addRow includes the function add and edit
-	public DataSetBean deleteRow(List<Datum> data)
+	public DataSetBean deleteRow(List<Datum> data, List<Condition> conditions)
 			throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
@@ -107,16 +113,20 @@ public class DWRCharacterizationResultManager {
 					dataRowBean = theDataSet.getDataRowBean(datum);
 					if (dataRowBean == null) {
 						return theDataSet;
+					}					
+				}		
+				if (conditions!=null && conditions.size()>0) {
+					for (Condition condition : conditions) {
+						dataRowBean.removeCondition(condition);
 					}
 				}
 				dataRowBean.removeDatum(datum);
 				i++;
 			}
+			
 			if (dataRowBean != null
 					&& (dataRowBean.getData() == null || dataRowBean.getData()
-							.size() == 0)
-					&& (dataRowBean.getConditions() == null || dataRowBean
-							.getConditions().size() == 0)) {
+							.size() == 0)) {
 				theDataSet.removeDataRow(dataRowBean);
 			}
 		}
