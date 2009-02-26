@@ -25,8 +25,10 @@ public class DataSetBean {
 	private List<Datum> data = new ArrayList<Datum>();
 	private FileBean file = new FileBean();
 	private List<String> columns = new ArrayList<String>();
+	private List<DataColumnBean> datumColumnBeans = new ArrayList<DataColumnBean>();
+	private List<DataColumnBean> conditionColumnBeans = new ArrayList<DataColumnBean>();
 	private List<DataColumnBean> columnBeans = new ArrayList<DataColumnBean>();
-
+	
 	public DataSetBean() {
 
 	}
@@ -156,23 +158,11 @@ public class DataSetBean {
 		return columns;
 	}
 
-	/**
-	 * @return the columnBeans
-	 */
-	public List<DataColumnBean> getColumnBeans() {
-		return columnBeans;
-	}
 
-	/**
-	 * @param columnBeans the columnBeans to set
-	 */
-	public void setColumnBeans(List<DataColumnBean> columnBeans) {
-		this.columnBeans = columnBeans;
-	}
 	
-	public void addColumnBean(DataColumnBean columnBean) {		
-		if (columnBeans.contains(columnBean)) {
-			for (DataColumnBean thisColumnBean : columnBeans) {
+	public void addDatumColumnBean(DataColumnBean columnBean) {		
+		if (datumColumnBeans.contains(columnBean)) {
+			for (DataColumnBean thisColumnBean : datumColumnBeans) {
 				if (thisColumnBean.getId().equals(columnBean.getId())) {
 					thisColumnBean.setName(columnBean.getName());
 					thisColumnBean.setValueType(columnBean.getValueType());
@@ -182,8 +172,64 @@ public class DataSetBean {
 				}
 			}
 		} else {
-			columnBeans.add(columnBean);
+			datumColumnBeans.add(columnBean);
 		}
+	}
+	
+	
+	public void addConditionColumnBean(DataColumnBean columnBean) {		
+		if (conditionColumnBeans.contains(columnBean)) {
+			for (DataColumnBean thisColumnBean : conditionColumnBeans) {
+				if (thisColumnBean.getId().equals(columnBean.getId())) {
+					thisColumnBean.setName(columnBean.getName());
+					thisColumnBean.setValueType(columnBean.getValueType());
+					thisColumnBean.setValueUnit(columnBean.getValueUnit());
+					thisColumnBean.setDatumOrCondition(columnBean.getDatumOrCondition());
+					thisColumnBean.setProperty(columnBean.getProperty());
+				}
+			}
+		} else {
+			conditionColumnBeans.add(columnBean);
+		}
+	}
+
+	/**
+	 * @return the datumColumnBeans
+	 */
+	public List<DataColumnBean> getDatumColumnBeans() {
+		return datumColumnBeans;
+	}
+
+	/**
+	 * @param datumColumnBeans the datumColumnBeans to set
+	 */
+	public void setDatumColumnBeans(List<DataColumnBean> datumColumnBeans) {
+		this.datumColumnBeans = datumColumnBeans;
+	}
+
+	/**
+	 * @return the conditionColumnBeans
+	 */
+	public List<DataColumnBean> getConditionColumnBeans() {
+		return conditionColumnBeans;
+	}
+
+	/**
+	 * @param conditionColumnBeans the conditionColumnBeans to set
+	 */
+	public void setConditionColumnBeans(List<DataColumnBean> conditionColumnBeans) {
+		this.conditionColumnBeans = conditionColumnBeans;
+	}
+
+	/**
+	 * @return the columnBeans
+	 */
+	public List<DataColumnBean> getColumnBeans() {
+		columnBeans.clear();
+		columnBeans.addAll(datumColumnBeans);
+		columnBeans.addAll(conditionColumnBeans);
+		//System.out.println("####### columnBeans="+columnBeans.size()+" "+columnBeans);
+		return columnBeans;
 	}
 
 }

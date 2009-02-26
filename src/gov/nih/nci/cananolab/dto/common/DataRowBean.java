@@ -33,6 +33,14 @@ public class DataRowBean {
 		}
 		datum.setDataRow(domain);
 		data.add(datum);
+		if (datum.getConditionCollection()!=null) {
+			//add only once, otherwise, conditions will be duplicated with same id
+			for (Condition condition: datum.getConditionCollection()) {
+				if (!conditions.contains(condition)) {
+					conditions.add(condition);
+				}
+			}
+		}
 	}
 
 	public void addDatumColumn(Datum datum) {
@@ -60,6 +68,11 @@ public class DataRowBean {
 	public Collection<Datum> getData() {
 		return data;
 	}
+	
+	public void removeCondition(Condition condition) {
+		conditions.remove(condition);
+	}
+
 
 	/**
 	 * @return the domain
@@ -119,5 +132,12 @@ public class DataRowBean {
 		} else {
 			conditions.add(condition);
 		}
+	}
+
+	/**
+	 * @param conditions the conditions to set
+	 */
+	public void setConditions(List<Condition> conditions) {
+		this.conditions = conditions;
 	}
 }
