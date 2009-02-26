@@ -38,13 +38,13 @@ import java.util.Map;
  *
  */
 public class CharacterizationBean {
-	private PointOfContactBean pocBean=new PointOfContactBean();
+	private PointOfContactBean pocBean = new PointOfContactBean();
 
-	// used to distinguish different instances of characterizations, which are
-	// shown as different links on the view pages.
-	private String viewTitle;
+	private String conclusion;
 
 	private String description;
+
+	private String assayType;
 
 	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
 
@@ -56,9 +56,9 @@ public class CharacterizationBean {
 
 	private List<DataSetBean> dataSets = new ArrayList<DataSetBean>();
 
-	private ProtocolFileBean protocolFileBean=new ProtocolFileBean();
+	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
 
-	private Characterization domainChar=new Characterization();
+	private Characterization domainChar;
 
 	private String className;
 
@@ -83,6 +83,8 @@ public class CharacterizationBean {
 		domainChar = chara;
 		className = ClassUtils.getShortClassName(chara.getClass().getName());
 		this.description = chara.getDesignMethodsDescription();
+		this.assayType = chara.getAssayType();
+		this.conclusion = chara.getAnalysisConclusion();
 		if (chara != null) {
 			PointOfContact poc = chara.getPointOfContact();
 			if (poc != null)
@@ -206,12 +208,12 @@ public class CharacterizationBean {
 		return copy;
 	}
 
-	public void setupDomainChar(Map<String, String> typeToClass,
-			String createdBy, String internalUriPath) throws Exception {
+	public void setupDomainChar(String createdBy, String internalUriPath)
+			throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
 		if (domainChar == null) {
-			Class clazz = ClassUtils.getFullClass(getClassName());
+			Class clazz = ClassUtils.getFullClass(className);
 			domainChar = (Characterization) clazz.newInstance();
 		}
 		if (domainChar.getId() == null
@@ -233,6 +235,8 @@ public class CharacterizationBean {
 		}
 
 		domainChar.setDesignMethodsDescription(description);
+		domainChar.setAssayType(assayType);
+		domainChar.setAnalysisConclusion(conclusion);
 		if (pocBean != null && pocBean.getDomain().getId() != null
 				&& pocBean.getDomain().getId() != 0) {
 			domainChar.setPointOfContact(pocBean.getDomain());
@@ -277,28 +281,6 @@ public class CharacterizationBean {
 		}
 	}
 
-	public String getViewTitle() {
-		// get only the first number of characters of the title
-		if (this.viewTitle != null
-				&& this.viewTitle.length() > CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH) {
-			return this.viewTitle.substring(0,
-					CaNanoLabConstants.MAX_VIEW_TITLE_LENGTH);
-		}
-		return this.viewTitle;
-	}
-
-	public void setViewTitle(String viewTitle) {
-		this.viewTitle = viewTitle;
-	}
-
-	// public void addDerivedBioAssayData() {
-	// derivedBioAssayDataList.add(new DerivedBioAssayDataBean());
-	// }
-	//
-	// public void removeDerivedBioAssayData(int ind) {
-	// derivedBioAssayDataList.remove(ind);
-	// }
-
 	public String getDescription() {
 		return this.description;
 	}
@@ -306,10 +288,6 @@ public class CharacterizationBean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	// public List<DerivedBioAssayDataBean> getDerivedBioAssayDataList() {
-	// return this.derivedBioAssayDataList;
-	// }
 
 	public ProtocolFileBean getProtocolFileBean() {
 		return protocolFileBean;
@@ -463,5 +441,21 @@ public class CharacterizationBean {
 
 	public void setCharacterizationName(String characterizationName) {
 		this.characterizationName = characterizationName;
+	}
+
+	public String getConclusion() {
+		return conclusion;
+	}
+
+	public void setConclusion(String conclusion) {
+		this.conclusion = conclusion;
+	}
+
+	public String getAssayType() {
+		return assayType;
+	}
+
+	public void setAssayType(String assayType) {
+		this.assayType = assayType;
 	}
 }
