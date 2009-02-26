@@ -36,7 +36,7 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager"/>
-			<include method="addColumnHeader" />		
+			<include method="addColumnHeader" />
 			<include method="resetDataSet" />
 			<include method="addRow" />
 			<include method="deleteRow" />
@@ -96,7 +96,7 @@
 			<param name="include" value="domain, instruments" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.ExperimentConfig">
+			match="gov.nih.nci.cananolab.domain.common.ExperimentConfig">
 			<param name="include"
 				value="id, description, technique, instrumentCollection" />
 		</convert>
@@ -137,6 +137,6 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.DataSet">
 			<param name="include" value="id" />
-		</convert>		
+		</convert>
 	</allow>
 </dwr>
