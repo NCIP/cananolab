@@ -88,7 +88,7 @@
 										</html:select>
 									</td>
 								</tr>
-								<tr>									
+								<tr>
 									<td colspan="2" style="text-align:right">
 									    <input class="noBorderButton" type="button" value="New"
 											onclick="clearInstrument()" />
@@ -138,7 +138,7 @@
 										<td valign="top">
 											<input class="noBorderButton" id="edit" type="button"
 												value="Select" onclick="editClicked(this.id)" />
-										</td>										
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -165,7 +165,7 @@
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
 				onclick="javascript:submitAction(document.forms[0],
-										'${actionName}', 'deleteExperimentConfig');">
+										'characterization', 'deleteExperimentConfig');">
 		</td>
 		<td class="rightLabel" align="right">
 			<div align="right">
@@ -174,7 +174,7 @@
 				<input type="reset" value="Reset"
 					onclick="javascript:window.location.href='${origUrl}'">
 				<input type="button" value="Save"
-					onclick="javascript:validateSaveConfig('${actionName}');">
+					onclick="javascript:validateSaveConfig('characterization');">
 			</div>
 		</td>
 	</tr>
