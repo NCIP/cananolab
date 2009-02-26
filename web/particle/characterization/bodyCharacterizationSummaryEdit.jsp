@@ -50,7 +50,7 @@
 									<tr>
 										<th align="left">
 											${charBean.characterizationName}
-											(${charBean.pocBean.displayName}${charBean.dateString })
+											(${charBean.pocBean.displayName} ${charBean.dateString })
 										</th>
 										<th align="right">
 											<a

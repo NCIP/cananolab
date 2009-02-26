@@ -45,6 +45,7 @@
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
+			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
@@ -59,6 +60,7 @@
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
+			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
@@ -73,6 +75,7 @@
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
+			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
@@ -87,6 +90,7 @@
 			<c:param name="dispatch" value="${dispatch}" />
 			<c:param name="particleId" value="${particleId}" />
 			<c:param name="location" value="${location}" />
+			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
