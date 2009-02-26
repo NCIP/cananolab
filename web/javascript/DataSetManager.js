@@ -206,23 +206,9 @@ function createMatrixPattern() {
 		var span = document.createElement('SPAN');
 		span.setAttribute("id", "matrixHeaderColumn" + i);
 		span.setAttribute("class", "greyFont2");
-
 		headerName = dwr.util.getValue("columnDisplayName" + (-i));
 		headerValueType = dwr.util.getValue("datumColumnValueType" + (-i));
 		headerValueUnit = dwr.util.getValue("datumColumnValueUnit" + (-i));
-//		if (headerValueType != '' || headerValueUnit != '') {
-//			headerName += '('
-//			if (headerValueType != '') {
-//				headerName += headerValueType;
-//				if (headerValueUnit != '') {
-//					headerName += ','
-//				}
-//			}
-//			if (headerValueUnit != '') {
-//				headerName += headerValueUnit;
-//			}
-//			headerName += ')'
-//		}
 		span.appendChild(document.createTextNode(headerName));
 		cell.appendChild(span);
 		matrixHeader.appendChild(cell);
@@ -272,7 +258,10 @@ function addRow() {
 	addNewColumn = false;
 	var id = -1;
 	var datumArray = new Array();
+	var conditionArray = new Array();
 	var datumid = null;
+	var datumOrCondition = null;
+	var datumIndex = 0, conditionIndex = 0;
 	for ( var i = 0; i < headerColumnCount; i++) {
 		var datum = {
 			name :null,
@@ -280,46 +269,41 @@ function addRow() {
 			valueUnit :null
 		};
 		dwr.util.getValues(datum);
-		// datum.id = dwr.util.getValue("datumColumnId" + id);
 		datumid = dwr.util.getValue("datumColumnId" + (-i - 1));
 		if (datumid == null || datumid == 'datumColumnId') {
 			datumid = null;
 		}
-		// TODO::
 		id = datum.id;
 		if (id == null) {
-			// id = (-rowCount-1)+""+(-i-1);
 			id = (-i - 1);
 		}
 		datum.name = dwr.util.getValue("datumColumnName" + id);
 		datum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		datum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
 		datum.value = dwr.util.getValue("datumColumnValue" + id);
+		datumOrCondition  = dwr.util.getValue("datumOrConditionColumn" + id);
+		if (datumOrCondition=='Condition'){
+			datum.property = dwr.util.getValue("conditionColumnProperty" + id);
+		}
 		datum.id = datumid;
 		if (datum.id==null || datum.id==''){
 			datum.id = (-rowCount-1)*1000+(-i-1);
 		}
-		//alert('datum.id='+datum.id);
-
-		// if (currentDataSet.domain.id!=null){
-		// datum.dataSet = currentDataSet;
-		// datum.dataSet.id = dwr.util.getValue("datumColumnDataSetId" + id);
-		//			
-		// }
-		// if (currentDataSet.theDataRow.domain.id!=null){
-		// datum.dataRow = currentDataSet.theDataRow;
-		// datum.dataRow.id = dwr.util.getValue("datumColumnDataRowId" + id);
-		// }
-		// if (datum.id == null || datum.id < 0) {
-		// // if datum.id<0, it is not compatible with DataSetManager.addRow
-		// datum.id = null;
-		// }
-		datumArray[i] = datum;
+		if (datumOrCondition=='Condition'){
+			conditionArray[conditionIndex] = datum;
+			conditionIndex++;
+		}else{
+			datumArray[datumIndex] = datum;
+			datumIndex++;
+		}
 	}
-	DataSetManager.addRow(datumArray, null, function(theDataSet) {
-		currentDataSet = theDataSet;
-	});
-	// alert('after DataSetManager.addRow =');
+	if (datumIndex>0){
+		DataSetManager.addRow(datumArray, conditionArray, function(theDataSet) {
+			currentDataSet = theDataSet;
+		});
+	}else{
+		alert('Please fill in at least one Datum');
+	}
 	if (rowCount == 0) {
 		$("datumMatrixDivRow").style.display = "";
 	}
@@ -418,7 +402,7 @@ function fillColumnTable() {
 		dwr.util.setValue("datumOrConditionColumn" + id, columnBean.datumOrCondition);
 		dwr.util.setValue("conditionColumnProperty" + id, columnBean.property);
 
-		dwr.util.setValue("datumColumnNameDisplay" + id, columnBean.name);
+		dwr.util.setValue("datumColumnNameDisplay" + id, columnBean.displayName);
 		//TODO:: to remove
 //		valueTypeUnit = '';
 //		if (datum.valueType != '' || datum.valueUnit != '') {
@@ -490,7 +474,7 @@ function fillMatrix() {
 							return (tr.id != "datumMatrixPatternRow" && tr.id != "matrixHeader");
 						}
 					});
-	var datum, id;
+	var datum, condition, id;
 	var rowId;
 	var datumMatrixPatternRow = document
 			.getElementById("datumMatrixPatternRow");
@@ -499,40 +483,43 @@ function fillMatrix() {
 	// in this
 	// row
 	var aCellLength = aCells.length;
-	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {
+	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {		
+		//DATUM
 		var data = currentDataSet.dataRows[row].data;
 		rowId = currentDataSet.dataRows[row].domain.id;
 		// TODO:: how to deal with rowId/datumID??
 		if (rowId == null || rowId == '') {
 			rowId = -row - 1;
 		}
-		// TODO:::
-		// if (addNewColumn &&
-		// document.getElementById("datumMatrixPatternRow"+rowId)!=null){
-		// removeNode("datumMatrixPatternRow"+rowId);
-		// }
 		dwr.util.cloneNode("datumMatrixPatternRow", {
 			idSuffix :rowId
 		});
-		for ( var i = 0; i < data.length; i++) {
+		var colIndex = 0;
+		for (var i = 0; i < data.length; i++) {
 			datum = data[i];
-			// TODO:: how to deal with rowId/datumID??
 			if (datum.id == null || datum.id == '') {
 				datum.id = -i - 1;
 			}
-			// datum.id = -i-1;
-			// TODO:: how to deal with rowId/datumID??
 			id = datum.id;
 			id = rowId;
-			// SET IN fillColumnTable
-			// if (row == 0) {
-			// dwr.util.setValue("matrixHeaderColumn" + (i + 1), datum.name
-			// + " " + datum.valueType + " " + datum.valueUnit);
-			// }
-			// TODO:::
-			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
+			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + rowId,
 					datum.value);
 		}
+		colIndex = data.length - 1;
+		//CONDITION
+		var conditions = currentDataSet.dataRows[row].conditions;
+		for (var i=0; i < conditions.length; i++) {
+			condition = conditions[i];
+			if (condition.id == null || condition.id == '') {
+				condition.id = -colIndex - 1;
+			}
+			id = condition.id;
+			id = rowId;
+			dwr.util.setValue("datumMatrixValue" + (colIndex + 1) + "" + rowId,
+					condition.value);
+			colIndex++;
+		}
+		
 		// select button
 		var editRow = document.getElementById("editDatumRow" + rowId);
 		editRow.onclick = function() {
@@ -543,10 +530,6 @@ function fillMatrix() {
 		$("datumMatrixPatternRow" + rowId).style.display = "";
 		dataRowCache[rowId] = currentDataSet.dataRows[row];
 		dataRowCache[rowId].domain.id = rowId;
-		// alert('dataRowCache['+rowId+'].length=
-		// '+dataRowCache[rowId].data.length);
-		// alert('fillMatrix::: row: '+rowId+' edit datum ==>
-		// data[0].id='+dataRowCache[rowId].data[0].id );
 	}
 	clearTheDataRow();
 	cloneEditRow();
@@ -608,35 +591,26 @@ function cloneEditRow() {
 var editRowId = -1;
 function editDatumClicked(eleid) {
 	currentDataSet.theDataRow = dataRowCache[eleid.substring(12)];
-	var data = dataRowCache[eleid.substring(12)].data;
-
 	var rowid = eleid.substring(12);
+	var data = dataRowCache[rowid].data;
+	var datum, condition;
 	for ( var i = 0; i < data.length; i++) {
 		datum = data[i];
-		// alert('edit datum '+datum.id +"xx"+datumColumnValue+(-i-1)+"xx");
-		var datumid = datum.id;
-		// alert('row: '+eleid.substring(12)+' edit datum '+i+" "+data[i].id );
-		// TODO:::
-		// if (datum.id==null){
-		// document.getElementById("datumColumnValue"+(-i-1)).value=datum.value;
-		// document.getElementById("datumColumnId"+(-i-1)).id=datum.id;
-		//			
-		// //
-		// document.getElementById("datumColumnValue"+(-i-1)).value=datum.value;
-		// // document.getElementById("datumColumnId"+(-i-1)).id=datum.id;
-		// }else{
-		// document.getElementById("datumColumnValue"+(datumid)).value=datum.value;
-		// document.getElementById("datumColumnId"+(datumid)).id=datum.id;
-		// }
-
-		// if (datum.id!=null && datum.id>0){
-		// document.getElementById("datumColumnValue"+(datum.id)).value=datum.value;
-		// document.getElementById("datumColumnId"+(datum.id)).value=datum.id;
-		// }
-
+		//var datumid = datum.id;
 		document.getElementById("datumColumnId" + (-i - 1)).value = datum.id;
 		document.getElementById("datumMatrixValue" + (i + 1) + fixId).value = datum.value;
-
+		// TODO:: put constant value to new added column datum
+		// if (document.getElementById("datumColumnValue" + (-i - 1))!=null){
+		// document.getElementById("datumColumnValue" + (-i - 1)).value =
+		// datum.value;
+		// }
+	}
+	var conditions = dataRowCache[rowid].conditions;
+	for ( var i = 0; i < conditions.length; i++) {
+		condition = conditions[i];
+		//var conditionid = condition.id;
+		document.getElementById("datumColumnId" + (-i - 1)).value = condition.id;
+		document.getElementById("datumMatrixValue" + (i + 1) + fixId).value = condition.value;
 		// TODO:: put constant value to new added column datum
 		// if (document.getElementById("datumColumnValue" + (-i - 1))!=null){
 		// document.getElementById("datumColumnValue" + (-i - 1)).value =

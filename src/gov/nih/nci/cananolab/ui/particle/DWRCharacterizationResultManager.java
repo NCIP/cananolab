@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.struts.validator.DynaValidatorForm;
@@ -45,18 +46,7 @@ public class DWRCharacterizationResultManager {
 		theDataSet.addColumnBean(columnBean);
 		return theDataSet;
 	}
-	
-	public DataSetBean addConditionColumnHeader(Condition condition)
-			throws CharacterizationResultException {
-		System.out.println("########### addConditionColumnHeader");
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		DataSetBean theDataSet = charBean.getTheDataSet();
-		theDataSet.getTheDataRow().addConditionColumn(condition);
-		return theDataSet;
-	}
+
 
 	// addRow includes the function add and edit
 	public DataSetBean addRow(List<Datum> data, List<Condition> conditions)
@@ -66,10 +56,8 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		DataSetBean theDataSet = charBean.getTheDataSet();
+		DataRowBean dataRowBean = null;
 		if (data != null) {
-			// TODO:: if rowid!=null, get the row then update
-			// DataRowBean dataRowBean = theDataSet.getTheDataRow();
-			DataRowBean dataRowBean = null;
 			boolean hasData = false;
 			int i = 0;
 			for (Datum datum : data) {
@@ -81,6 +69,9 @@ public class DWRCharacterizationResultManager {
 					if (dataRowBean == null) {
 						dataRowBean = new DataRowBean();
 					}
+				}				
+				if (conditions != null) {					
+					datum.setConditionCollection(conditions);
 				}
 				dataRowBean.addDatum(datum);
 				hasData = true;
@@ -94,7 +85,7 @@ public class DWRCharacterizationResultManager {
 				}
 				theDataSet.addDataRow(dataRowBean);
 			}
-		}
+		}		
 		return theDataSet;
 	}
 

@@ -158,7 +158,7 @@
 										<td id="datumColumnPatternDisplay" style="display: none;">										
 										<input class="noBorderButton" id="datumColumnNameDisplay" type="button"
 											size="2" value="datumColumnNameDisplay" onclick="editColumn(this.id)" />
-											<span id="columnDisplayName" class="greyFont2">columnDisplayName</span>
+											<span id="columnDisplayName" class="greyFont2" style="display: none;">columnDisplayName</span>
 										</td>
 									</tr>
 								</tbody>
