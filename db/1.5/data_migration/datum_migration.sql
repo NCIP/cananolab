@@ -137,6 +137,59 @@ insert into common_lookup(name,attribute, value) values ('Freeze Thaw', 'unit','
 insert into common_lookup(name,attribute, value) values ('bandwidth', 'unit','Hz');
 insert into common_lookup(name,attribute, value) values ('frequency', 'unit','Hz');
 insert into common_lookup(name,attribute, value) values ('wavelength', 'unit','nm');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', '% purity for compound of interest');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'peak1');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', '% compound plus exipients');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'T1');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'T2');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'R1');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'R2');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'extinction coefficient');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'attenuation coefficient');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'quantum yield');
+insert into common_lookup(name,attribute,value) values('Purity', 'datumName', 'quantum efficiency');
+insert into common_lookup(name,attribute,value) values('Targeting', 'datumName', 'mean celluar fluorescence');
+insert into common_lookup(name,attribute,value) values('Targeting', 'datumName', 'fraction fluorescence (control vs. treated)');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'Z score');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', '% of cells showing signal of caspase activation');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'amount of caspase 3 in control cells');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', '% normalized amount of treated vs untreated');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', '% control caspase');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'mean fluorescence');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'LC50');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'red to green fluorescence ratio');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'fluorescence ratio');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'luminescence signal');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', '% NVA equivalent (normalized to total celluar protein)');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'odds ratio, % of targeted cell population (control vs. treated)');
+insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'datumName', 'fraction (control vs. treated)');
+insert into common_lookup(name,attribute,value) values('luminescence signal', 'unit', 'volt');
+insert into common_lookup(name,attribute,value) values('EnzymeInduction', 'datumName', 'relative activity');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', 'prothrombin time(PT)');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', 'activated partial thromboplastin time(APTT)');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', ' thrombin time');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', ' reptilase time');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', ' is blocking agent');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', ' is above threshold');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', ' % platelet aggregation');
+insert into common_lookup(name,attribute,value) values('BloodContact', 'datumName', '% collagen induced platelet aggregation ');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' number of CFU GM colonies');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', '% chemotaxis');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', 'Is complement activation induced');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', 'IL10 cytokine');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' IL1 Beta cytokine');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' IL8 cytokine');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' IL6 cytokine');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' TNF Alpha cytokine');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' % leukocyte proliferation');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' % cytotoxicity');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' effector to target (E:T) ratio');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' is induced?');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' fold phagocytosis induction');
+insert into common_lookup(name,attribute,value) values('ImmuneCellFunction', 'datumName', ' is phagocytosis suppressed');
+insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datumName', '%GSH amount in particle vs control');
+insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datumName', '% ROS fluorescent dye in particle vs control');
+insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datumName', ' hyperperoxides in cell');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
@@ -144,3 +197,4 @@ ALTER TABLE canano.common_lookup
 --TODO migrate data from derived_datum to datum
 --DROP TABLE derived_datum;
 --DROP TABLE derived_bioassay_data;
+--set datum drop down for assay endpoints

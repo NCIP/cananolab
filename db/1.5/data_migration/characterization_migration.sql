@@ -49,6 +49,8 @@ insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayTyp
 insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Mitochondrial Membrane Potential');
 insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Mitochondrial Function');
 insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Gene Expression');
+insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Cell Binding/Internalization');
+insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Gene Expression');
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
