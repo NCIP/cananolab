@@ -95,8 +95,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		ActionMessage msg = new ActionMessage("message.addCharacterization");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		return forward;
+		return summaryEdit(mapping, form, request, response);
 	}
 
 	/**
@@ -120,6 +119,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String charType = request.getParameter("charType");
 		if (charType != null) {
 			charBean.setCharacterizationType(charType);
+			SortedSet<String> charNames = InitCharacterizationSetup
+					.getInstance().getCharNamesByCharType(request,
+							charBean.getCharacterizationType());
+			request.getSession().setAttribute("charTypeChars", charNames);
 		}
 		return mapping.getInputForward();
 	}
@@ -149,13 +152,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// String detailPage = setupDetailPage(charBean);
 		// request.getSession().setAttribute("characterizationDetailPage",
 		// detailPage);
-		// set up other particles from the same source
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		setOtherParticlesFromTheSameSource("local", request, particleBean, user);
-		// clear copy to otherParticles
-		theForm.set("otherParticles", new String[0]);
-		theForm.set("copyData", false);
+
+		// set up other particles with the same primary point of contact
+		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
+				particleId);
 	}
 
 	/**
@@ -178,20 +178,21 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		Characterization chara = charService.findCharacterizationById(charId,
 				charClass);
 		CharacterizationBean charBean = new CharacterizationBean(chara);
-		//setup correct display for characterization name and characterization type
+		// setup correct display for characterization name and characterization
+		// type
 		InitCharacterizationSetup.getInstance().setCharacterizationName(
 				request, charBean);
 		InitCharacterizationSetup.getInstance().setCharacterizationType(
 				request, charBean);
-		//setup dropdown for existing characterization
+		// setup dropdown for existing characterization
 		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
 				.getCharNamesByCharType(request,
 						charBean.getCharacterizationType());
-		request.setAttribute("charTypeChars", charNames);
+		request.getSession().setAttribute("charTypeChars", charNames);
 		SortedSet<String> assayEndpoints = InitCharacterizationSetup
 				.getInstance().getAssayEndpointsByCharName(request,
 						charBean.getCharacterizationName());
-		request.setAttribute("charNameAssays", assayEndpoints);
+		request.getSession().setAttribute("charNameAssays", assayEndpoints);
 		theForm.set("achar", charBean);
 		setupInputForm(request, theForm);
 

@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui.particle;
 
 /**
  * This class allows users to submit functionalizing entity data under sample composition.
- *  
+ *
  * @author pansu
  */
 
@@ -186,7 +186,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Set up the input form for adding new nanoparticle entity
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -198,13 +198,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("functionalizingEntityForm");
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
-				user);
-
+		String particleId=request.getParameter("particleId");
+		// set up other particles with the same primary point of contact
+		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
+				particleId);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -219,16 +216,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
-				user);
+		String particleId=request.getParameter("particleId");
+		// set up other particles with the same primary point of contact
+		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
+				particleId);
 
 		String entityId = request.getParameter("dataId");
 		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
+		UserBean user = (UserBean) session.getAttribute("user");
 		compService.retrieveVisibility(entityBean, user);
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
@@ -374,10 +372,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		 * session = request.getSession();
 		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
-		 * 
+		 *
 		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
 		 * updatePolymerEditable(session, polymer);
-		 * 
+		 *
 		 * DendrimerBean dendrimer = (DendrimerBean) theForm.get("dendrimer");
 		 * updateDendrimerEditable(session, dendrimer);
 		 */

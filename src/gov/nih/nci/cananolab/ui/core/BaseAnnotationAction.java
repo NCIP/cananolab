@@ -53,7 +53,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			HttpServletRequest request, String location) throws Exception {
 		String particleId = request.getParameter("particleId");
 		if (particleId == null) {
-			particleId = (String)request.getAttribute("particleId");
+			particleId = (String) request.getAttribute("particleId");
 			if (particleId == null) {
 				particleId = theForm.getString("particleId");
 			}
@@ -82,8 +82,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				}
 				throw new NoAccessException(
 						"You don't have the required privileges to access this particle");
-			}else {
-				PointOfContactBean pointOfContactBean = particleBean.getPocBean();
+			} else {
+				PointOfContactBean pointOfContactBean = particleBean
+						.getPocBean();
 				if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
 						.toString(), user)) {
 					pointOfContactBean.setHidden(false);
@@ -95,19 +96,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		particleBean.setLocation(location);
 		request.setAttribute("theParticle", particleBean);
 		return particleBean;
-	}
-
-	public void setOtherParticlesFromTheSameSource(String location,
-			HttpServletRequest request, ParticleBean particleBean, UserBean user)
-			throws Exception {
-		if (location.equals("local")) {
-			InitNanoparticleSetup.getInstance().getOtherParticleNames(
-					request,
-					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample()
-							.getPrimaryPointOfContact().getOrganization()
-							.getName(), user);
-		}
 	}
 
 	protected void saveFilesToFileSystem(List<FileBean> files) throws Exception {

@@ -160,16 +160,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitNanoparticleSetup.getInstance().getAllParticleNames(request);
 		if (particleId != null && particleId.trim().length() > 0
 				&& session.getAttribute("otherParticleNames") == null) {
-			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-			ParticleBean particleBean = sampleService
-					.findNanoparticleSampleById(particleId);
-
-			InitNanoparticleSetup.getInstance().getOtherParticleNames(
-					request,
-					particleBean.getDomainParticleSample().getName(),
-					particleBean.getDomainParticleSample()
-							.getPrimaryPointOfContact().getOrganization()
-							.getName(), user);
+			InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
+					particleId);
 		}
 		ActionForward forward = mapping.getInputForward();
 
@@ -295,9 +287,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		if (particleId != null && particleId.trim().length() > 0) {
 			session.setAttribute("docParticleId", particleId);
-			ParticleBean particleBean = setupParticle(theForm, request, "local");
-			this.setOtherParticlesFromTheSameSource("local", request,
-					particleBean, user);
+			// set up other particles with the same primary point of contact
+			InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
+					particleId);
 		} else {
 			session.removeAttribute("docParticleId");
 		}

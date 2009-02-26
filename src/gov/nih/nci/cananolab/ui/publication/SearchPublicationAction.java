@@ -326,8 +326,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
 		ParticleBean particleBean = setupParticle(theForm, request, location);
-		this.setOtherParticlesFromTheSameSource("local", request, particleBean,
-				user);
+		// setOtherParticlesFromTheSameSource("local", request, particleBean,
+		// user);
 		String fileName = getExportFileName(particleBean
 				.getDomainParticleSample().getName(), "summaryView");
 		response.setContentType("application/vnd.ms-execel");

@@ -62,20 +62,6 @@ public interface NanoparticleSampleService {
 	public NanoparticleSample findNanoparticleSampleByName(String particleName)
 			throws ParticleException;
 
-	/**
-	 * Get other particles from the given particle source
-	 *
-	 * @param particlePointOfContact
-	 * @param particleName
-	 * @param user
-	 * @return
-	 * @throws ParticleException
-	 * @throws CaNanoLabSecurityException
-	 */
-	public SortedSet<SortableName> findOtherParticles(
-			String particleOrganization, String particleName, UserBean user)
-			throws ParticleException;
-
 	public void retrieveVisibility(ParticleBean particleBean, UserBean user)
 			throws ParticleException;
 
@@ -94,9 +80,11 @@ public interface NanoparticleSampleService {
 			List<ParticleBean> particles, UserBean user)
 			throws ParticleException;
 
-	public SortedSet<String> findParticleNamesByPublicationId(String publicationId)
-			throws ParticleException;
+	public SortedSet<String> findParticleNamesByPublicationId(
+			String publicationId) throws ParticleException;
 
 	public SortedSet<String> findAllParticleNames() throws ParticleException;
 
+	public SortedSet<SortableName> findOtherParticlesFromSamePointOfContact(
+			String particleId) throws ParticleException;
 }

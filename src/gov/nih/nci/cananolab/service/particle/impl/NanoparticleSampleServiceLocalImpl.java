@@ -295,51 +295,6 @@ public class NanoparticleSampleServiceLocalImpl implements
 		}
 	}
 
-	/**
-	 * Get other particles from the given particle point of contacts
-	 *
-	 * @param particlePointOfContact
-	 * @param particleName
-	 * @param user
-	 * @return
-	 * @throws ParticleException
-	 * @throws CaNanoLabSecurityException
-	 */
-	public SortedSet<SortableName> findOtherParticles(
-			String particleOrganization, String particleName, UserBean user)
-			throws ParticleException {
-		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
-		try {
-			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
-
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(NanoparticleSample.class);
-			crit.add(Restrictions.ne("name", particleName));
-			crit.createAlias("primaryPointOfContact", "pointOfContact");
-			crit.createAlias("pointOfContact.organization", "organization")
-					.add(
-							Restrictions.eq("organization.name",
-									particleOrganization));
-
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				NanoparticleSample particle = (NanoparticleSample) obj;
-				if (auth.isUserAllowed(particle.getName(), user)) {
-					otherParticles.add(new SortableName(particle.getName()));
-				}
-			}
-			return otherParticles;
-		} catch (Exception e) {
-			String err = "Error in retrieving other particles from point of contact "
-					+ particleOrganization;
-			logger.error(err, e);
-			throw new ParticleException(err, e);
-		}
-	}
-
 	public void retrieveVisibility(ParticleBean particleBean, UserBean user)
 			throws ParticleException {
 		try {
@@ -734,6 +689,34 @@ public class NanoparticleSampleServiceLocalImpl implements
 			return names;
 		} catch (Exception e) {
 			String err = "Error in retrieving all particle names.";
+			logger.error(err, e);
+			throw new ParticleException(err, e);
+		}
+	}
+
+	public SortedSet<SortableName> findOtherParticlesFromSamePointOfContact(
+			String particleId) throws ParticleException {
+		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
+		try {
+			AuthorizationService auth = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			HQLCriteria crit = new HQLCriteria(
+					"select other.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample as other "
+							+ "where exists ("
+							+ "select sample.name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample as sample "
+							+ "where sample.primaryPointOfContact=other.primaryPointOfContact and sample.id="
+							+ particleId + " and other.name!=sample.name)");
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				String name = (String) obj.toString();
+				otherParticles.add(new SortableName(name));
+			}
+			return otherParticles;
+		} catch (Exception e) {
+			String err = "Error in retrieving other particles from the same point of contact "
+					+ particleId;
 			logger.error(err, e);
 			throw new ParticleException(err, e);
 		}
