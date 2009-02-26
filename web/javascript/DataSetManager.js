@@ -171,8 +171,8 @@ function addDatumColumn(myDatum) {
 		if (myDatum == null) {
 			// TODO:: need?? add to test IE, still not work, not detail error msg
 			if (columnBean.id == null || columnBean.id == '' || columnBean.id == 'null') {
-				columnBean.id == -headerColumnCount - 1;
-			}
+				columnBean.id = -headerColumnCount - 1;
+			}			
 //			if (columnBean.id != null && columnBean.id < 0) {
 //				columnBean.id = null;
 //			}
@@ -462,6 +462,9 @@ function fillColumnTable() {
 		};
 		dwr.util.getValues(colDatum);
 		colDatum.id = dwr.util.getValue("datumColumnId" + id);// ==datumid		
+		if (colDatum.id=='' || colDatum.id==null){
+			colDatum.id = id;
+		}
 		colDatum.name = dwr.util.getValue("datumColumnName" + id);
 		colDatum.valueType = dwr.util.getValue("datumColumnValueType" + id);
 		colDatum.valueUnit = dwr.util.getValue("datumColumnValueUnit" + id);
