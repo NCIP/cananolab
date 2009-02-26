@@ -105,6 +105,14 @@
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.characterization" path="particle.annotationMessage"
 			type="gov.nih.nci.cananolab.exception.ParticleCharacterizationException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.characterization" path="particle.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.ExperimentConfigException" />
+		<exception
+			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
+			key="error.characterization" path="particle.annotationMessage"
+			type="gov.nih.nci.cananolab.exception.CharacterizationResultException" />
 	</global-exceptions>
 	<global-forwards>
 		<forward name="particleMessage"
@@ -192,11 +200,6 @@
 			path="/characterization"
 			type="gov.nih.nci.cananolab.ui.particle.CharacterizationAction"
 			input="input" validate="true">
-			<exception
-				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
-				key="error.duplicateCharacterizationViewTitle"
-				path="particle.characterization"
-				type="gov.nih.nci.cananolab.exception.DuplicateEntriesException" />
 			<forward name="input" path="particle.characterization" />
 			<forward name="success" path="particle.annotationMessage" />
 			<forward name="detailView"
