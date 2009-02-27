@@ -25,6 +25,7 @@ insert into common_lookup(name,attribute,value) values ('Relaxivity','displayNam
 insert into common_lookup(name,attribute,value) values ('Sterility','displayName','Sterility');
 insert into common_lookup(name,attribute,value) values ('Targeting','displayName','Targeting');
 insert into common_lookup(name,attribute,value) values ('MetabolicStability','displayName','Metabolic Stability');
+insert into common_lookup(name,attribute,value) values ('Entrapment','displayName','Entrapment');
 insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Endotoxin');
 insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Bacterial/Yeast/Mold');
 insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Mycoplasma');
@@ -51,6 +52,10 @@ insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayTyp
 insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Gene Expression');
 insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Cell Binding/Internalization');
 insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Gene Expression');
+
+delete from common_lookup
+where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability', 'Toxicity', 'Caspase3Activation', 'Chemotaxis', 'Coagulation', 'ComplementActivation', 'CytokineInduction', 'Immunotoxicity', 'LeukocyteProliferation', 'NKCellCytotoxicActivity', 'OxidativeBurst', 'LabFile', 'Phagocytosis', 'PlasmaProteinBinding')
+and attribute='displayName';
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;

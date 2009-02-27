@@ -55,6 +55,8 @@ CREATE TABLE experiment_condition
 	value VARCHAR(200) NOT NULL,
 	value_unit VARCHAR(200),
 	value_type VARCHAR(200),
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
 	PRIMARY KEY (condition_pk_id)
 ) TYPE=InnoDB
 ;
@@ -103,9 +105,23 @@ INSERT INTO datum(datum_pk_id, name, value, value_type, value_unit,
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
 
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Solvent Media');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Culture Media');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Sample Concentration');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Short Term Storage');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Long Term Storage');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Ph');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Temperature');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Centrifugation');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Freeze Thaw');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Lyophilization');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Sonication');
+insert into common_lookup(name,attribute, value) values ('Condition', 'name','Electromagnetic Radiation');
 insert into common_lookup(name,attribute, value) values ('Lyophilization', 'property','time');
-insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','with Serum');
+insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','with serum');
+insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','ion concentration');
 insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','ionic strength');
+insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','osmolality');
 insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','molecular formula');
 insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','with serum');
 insert into common_lookup(name,attribute, value) values ('Solvent Media', 'property','with serum');
@@ -117,14 +133,15 @@ insert into common_lookup(name,attribute, value) values ('Centrifugation', 'prop
 insert into common_lookup(name,attribute, value) values ('Electromagnetic Radiation', 'property','bandwidth');
 insert into common_lookup(name,attribute, value) values ('Electromagnetic Radiation', 'property','frequency');
 insert into common_lookup(name,attribute, value) values ('Electromagnetic Radiation', 'property','wavelength');
-insert into common_lookup(name,attribute, value) values ('Ionic Strength/Osmality', 'property','ion concentration');
 insert into common_lookup(name,attribute, value) values ('Sonication', 'property','time');
 insert into common_lookup(name,attribute, value) values ('Sonication', 'property','power');
 insert into common_lookup(name,attribute, value) values ('Sample Concentration', 'unit','mg/mL');
 insert into common_lookup(name,attribute, value) values ('Sample Concentration', 'unit','g/mL');
 insert into common_lookup(name,attribute, value) values ('Sample Concentration', 'unit','mg/mL');
 insert into common_lookup(name,attribute, value) values ('Sample Concentration', 'unit','ug/uL');
-insert into common_lookup(name,attribute, value) values ('Ion Concentration', 'unit','mol/L');
+insert into common_lookup(name,attribute, value) values ('ion concentration', 'unit','mol/L');
+insert into common_lookup(name,attribute, value) values ('ionic strength', 'unit','mol/L');
+insert into common_lookup(name,attribute, value) values ('osmolality', 'unit','osmol/kg');
 insert into common_lookup(name,attribute, value) values ('time', 'unit','second');
 insert into common_lookup(name,attribute, value) values ('time', 'unit','hour');
 insert into common_lookup(name,attribute, value) values ('time', 'unit','Minute');
@@ -192,8 +209,16 @@ insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datum
 insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datumName', ' hyperperoxides in cell');
 
 update common_lookup
+set name='Datum'
+where name='DerivedDatum';
+
+update common_lookup
 set attribute='datumName'
 where attribute='derivedDatumName';
+
+delete from common_lookup
+where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability')
+and attribute='datumName';
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
