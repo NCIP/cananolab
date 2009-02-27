@@ -99,7 +99,7 @@
 				<option value="Temperature">
 					Temperature
 				</option>
-				
+
 				<option value="other">
 					[Other]
 				</option>
@@ -155,7 +155,7 @@
 								border="1">
 								<tbody id="datumColumnsDisplay">
 									<tr id="datumColumnPatternRowDisplay">
-										<td id="datumColumnPatternDisplay" style="display: none;">										
+										<td id="datumColumnPatternDisplay" style="display: none;">
 										<input class="noBorderButton" id="datumColumnNameDisplay" type="button"
 											size="2" value="datumColumnNameDisplay" onclick="editColumn(this.id)" />
 											<span id="columnDisplayName" class="greyFont2" style="display: none;">columnDisplayName</span>
@@ -194,7 +194,7 @@
 			<div id="datumColumnsDiv" style="display: block;">
 				<table id="datumColumnsTable" class="smalltable" border="0">
 					<tbody id="datumColumns">
-						<tr id="datumColumnPattern" style="display: none;">						
+						<tr id="datumColumnPattern" style="display: none;">
 							<td>
 								<input id="datumColumnId" type="hidden" value="datumColumnId" />
 								<input id="datumOrConditionColumn" type="hidden" value="datumOrConditionColumn" />
@@ -233,7 +233,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	
+
 	<tr id="datumMatrixDivRow">
 		<td class="completeLabelNoTopBottom" valign="top" colspan="2">
 			<div id="datumMatrixDiv" style="display: block;">
@@ -254,14 +254,14 @@
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
 				onclick="javascript:submitAction(document.forms[0],
-										'${actionName}', 'deleteExperimentConfig');">
+										'characterization', 'deleteExperimentConfig');">
 		</td>
 		<td class="rightLabel" align="right" colspan="1">
 			<div align="right">
 				<input type="reset" value="Cancel"
 					onclick="javascript:resetTheDataSet(false);">
 				<input type="button" value="Save"
-					onclick="javascript:saveDataSet('${actionName}');">
+					onclick="javascript:saveDataSet('characterization');">
 			</div>
 		</td>
 	</tr>
