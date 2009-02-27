@@ -91,7 +91,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		ActionMessages msgs = new ActionMessages();
 		// validate number by javascript filterFloatingNumber
 		// validateNumber(request, charBean, msgs);
-		ActionMessage msg = new ActionMessage("message.addCharacterization", charBean.getCharacterizationName());
+		ActionMessage msg = new ActionMessage("message.addCharacterization",
+				charBean.getCharacterizationName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		return summaryEdit(mapping, form, request, response);
@@ -189,7 +190,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 						charBean.getCharacterizationType());
 		request.getSession().setAttribute("charTypeChars", charNames);
 		SortedSet<String> assayEndpoints = InitCharacterizationSetup
-				.getInstance().getAssayEndpointsByCharName(request,
+				.getInstance().getAssayTypesByCharName(request,
 						charBean.getCharacterizationName());
 		request.getSession().setAttribute("charNameAssays", assayEndpoints);
 		theForm.set("achar", charBean);
@@ -376,7 +377,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					.getDomainParticleSample().getName(), otherSamples);
 		}
 		particleBean = setupParticle(theForm, request, "local");
-		//setupDataTree(particleBean, request);
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
@@ -564,7 +564,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		setupDomainChar(request, theForm, achar);
+		// setupDomainChar(request, theForm, achar);
 		ExperimentConfigBean configBean = achar.getTheExperimentConfig();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
