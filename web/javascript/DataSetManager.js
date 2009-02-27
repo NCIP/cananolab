@@ -598,7 +598,6 @@ function fillColumns(editDataSet, start, columnBeans){
 		colDatum.property = dwr.util.getValue("conditionColumnProperty" + id);
 		colDatum.displayName = dwr.util.getValue("columnDisplayName" + id);
 		dataColumnCache[id] = colDatum;
-		alert('put dataColumnCache['+id+']='+colDatum.id+"=="+colDatum.displayName);
 		$("datumColumnPattern" + id).style.display = "";
 		$("datumColumnPatternDisplay" + id).style.display = "";
 	}
