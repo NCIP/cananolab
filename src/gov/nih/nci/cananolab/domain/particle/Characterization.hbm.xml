@@ -36,7 +36,7 @@
 				column="file_pk_id" />
 		</set>
 		<set name="experimentConfigCollection" lazy="true"
-			cascade="save-update, delete">
+			cascade="delete">
 			<cache usage="read-write" />
 			<key column="characterization_pk_id" />
 			<one-to-many
@@ -48,8 +48,7 @@
 		<many-to-one name="pointOfContact"
 			class="gov.nih.nci.cananolab.domain.common.PointOfContact"
 			column="poc_pk_id" lazy="proxy" />
-		<set name="datumCollection" lazy="true"
-			cascade="save-update, delete">
+		<set name="datumCollection" lazy="true" cascade="delete">
 			<cache usage="read-write" />
 			<key column="characterization_pk_id" />
 			<one-to-many
