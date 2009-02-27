@@ -131,28 +131,20 @@ function populateDataSet(dataSet) {
 		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
 			var conditions = currentDataSet.dataRows[index].conditions;
 			var id;
-//			if (index == 0) {
-//				setTheDataRow(currentDataSet.dataRows[index]);
-//			}
-//			headerColumnCount = 0;
-//			datumHeaderColumnCount = 0;
-//			conditionHeaderColumnCount = 0;
 			for ( var i = 0; i < conditions.length; i++) {
 				addDatumColumn(conditions[i]);
 			}
 		}
 		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
-			//var data = currentDataSet.dataRows[index].data;
-			//var datum, id;		
 			if (rowCount == 0) {
 				addNewColumn = false;
 				$("datumMatrixDivRow").style.display = "";
 			}
 			rowCount++;
 		}
-		window.setTimeout("fillMatrix()", 200);
 	}
 }
+
 
 function saveDataSet(actionName) {
 	submitAction(document.forms[0], actionName, 'saveDataSet');
@@ -694,7 +686,7 @@ function fillMatrix() {
 		dataRowCache[rowId] = currentDataSet.dataRows[row];
 		//TODO::: if editing, ok??
 		dataRowCache[rowId].domain.id = rowId;
-	}
+	}	
 	clearTheDataRow();
 	cloneEditRow();
 }
@@ -715,8 +707,10 @@ function cloneEditRow() {
 		dwr.util.getValues(datum);
 		datum.id = -i - 1;
 		id = rowId;
-		dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
-		
+		//XXXXXXXXXXX
+//		if (!editDataSet){
+//			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
+//		}
 		var editRow = document.getElementById("editDatumRow" + rowId);
 		editRow.onclick = function() {
 			saveRowClicked(this.id)
