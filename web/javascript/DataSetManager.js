@@ -814,22 +814,22 @@ function saveRowClicked(eleid) {
 }
 
 function deleteRowClicked(eleid) {
-	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
-		document.getElementById("datumColumnValue" + (-i)).value = dwr.util
-				.getValue("datumMatrixValue" + i + fixId);
+	if (confirm("Are you sure you want to delete this row ?")) {
+		for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
+			document.getElementById("datumColumnValue" + (-i)).value = dwr.util
+					.getValue("datumMatrixValue" + i + fixId);
+		}
+		for ( var i = fixConditionColIndex+1; i < conditionHeaderColumnCount + fixConditionColIndex+1; i++) {
+			document.getElementById("datumColumnValue" + (-i)).value = dwr.util
+					.getValue("datumMatrixValue" + i + fixId);
+		}
+		deleteRow();
 	}
-	for ( var i = fixConditionColIndex+1; i < conditionHeaderColumnCount + fixConditionColIndex+1; i++) {
-		document.getElementById("datumColumnValue" + (-i)).value = dwr.util
-				.getValue("datumMatrixValue" + i + fixId);
-	}
-	deleteRow();
 }
-
 
 function editColumn(eleid) {
 	var id = eleid.substring(22);
 	var datum = dataColumnCache[id];
-	alert('retrive dataColumnCache['+id+']='+datum.id+"=="+datum.displayName);
 	//TODO:: after delete id mess up, delete error
 	document.getElementById("columnId").value = datum.id;
 	document.getElementById("datumOrCondition").value = datum.datumOrCondition;
@@ -844,20 +844,6 @@ function editColumn(eleid) {
 	document.getElementById("valueUnit").value = datum.valueUnit;
 	document.getElementById("value").value = datum.value;
 	
-}
-
-function deleteClicked() {
-	// we were an id of the form "delete{id}", eg "delete42". We lookup the "42"
-	// var instrument = instrumentCache[eleid.substring(6)];
-	if (editRowId != '' && editRowId != '-1') {
-		if (confirm("Are you sure you want to delete this row ?")) {
-			DataSetManager.deleteDataRow(dataRowCache[editRowId], function(
-					theDataSet) {
-				currentDataSet = theDataSet;
-			});
-			window.setTimeout("fillMatrix()", 200);
-		}
-	}
 }
 
 function deleteDatumColumn() {
