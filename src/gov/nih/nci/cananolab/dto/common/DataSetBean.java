@@ -176,7 +176,10 @@ public class DataSetBean {
 		}
 	}
 	
-	
+	public void removeDatumColumnBean(DataColumnBean columnBean) {	
+		datumColumnBeans.remove(columnBean);
+	}
+
 	public void addConditionColumnBean(DataColumnBean columnBean) {		
 		if (conditionColumnBeans.contains(columnBean)) {
 			for (DataColumnBean thisColumnBean : conditionColumnBeans) {
@@ -191,6 +194,10 @@ public class DataSetBean {
 		} else {
 			conditionColumnBeans.add(columnBean);
 		}
+	}
+	
+	public void removeConditionColumnBean(DataColumnBean columnBean) {	
+		conditionColumnBeans.remove(columnBean);
 	}
 
 	/**
@@ -228,8 +235,6 @@ public class DataSetBean {
 		columnBeans.clear();
 		columnBeans.addAll(datumColumnBeans);
 		columnBeans.addAll(conditionColumnBeans);
-		//System.out.println("####### columnBeans="+columnBeans.size()+" "+columnBeans);
 		return columnBeans;
 	}
-
 }
