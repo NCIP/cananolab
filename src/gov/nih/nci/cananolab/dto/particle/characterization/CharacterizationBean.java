@@ -216,13 +216,6 @@ public class CharacterizationBean {
 			Class clazz = ClassUtils.getFullClass(className);
 			domainChar = (Characterization) clazz.newInstance();
 		}
-		if (domainChar.getId() == null
-				|| domainChar.getCreatedBy() != null
-				&& domainChar.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
-			domainChar.setCreatedBy(createdBy);
-			domainChar.setCreatedDate(new Date());
-		}
 
 		if (domainChar instanceof Shape) {
 			domainChar = shape;
@@ -234,6 +227,13 @@ public class CharacterizationBean {
 			domainChar = cytotoxicity;
 		}
 
+		if (domainChar.getId() == null
+				|| domainChar.getCreatedBy() != null
+				&& domainChar.getCreatedBy().equals(
+						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domainChar.setCreatedBy(createdBy);
+			domainChar.setCreatedDate(new Date());
+		}
 		domainChar.setDesignMethodsDescription(description);
 		domainChar.setAssayType(assayType);
 		domainChar.setAnalysisConclusion(conclusion);
@@ -271,8 +271,13 @@ public class CharacterizationBean {
 			domainChar.setDatumCollection(new HashSet<Datum>());
 		}
 
+		if (domainChar.getDatumCollection()!=null) {
+			domainChar.getDatumCollection().clear();
+		}
+		else {
+			domainChar.setDatumCollection(new HashSet<Datum>());
+		}
 		for (DataSetBean dataSetBean : dataSets) {
-			dataSetBean.setupDomain(createdBy);
 			for (DataRowBean dataRowBean : dataSetBean.getDataRows()) {
 				for (Datum datum : dataRowBean.getData()) {
 					domainChar.getDatumCollection().add(datum);
