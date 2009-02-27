@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.util.DateUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class DataSetBean {
 	private List<DataColumnBean> datumColumnBeans = new ArrayList<DataColumnBean>();
 	private List<DataColumnBean> conditionColumnBeans = new ArrayList<DataColumnBean>();
 	private List<DataColumnBean> columnBeans = new ArrayList<DataColumnBean>();
-	
+
 	public DataSetBean() {
 
 	}
@@ -117,10 +118,44 @@ public class DataSetBean {
 
 	public void setupDomain(String createdBy) {
 		int i = 0;
+		if (domain.getId() != null && domain.getId() <= 0) {
+			domain.setId(null);
+		}
 		for (DataRowBean dataRowBean : dataRows) {
 			for (Datum datum : dataRowBean.getData()) {
-				datum.setCreatedBy(createdBy);
-				datum.setCreatedDate(DateUtil.addSecondsToCurrentDate(i));
+				if (datum.getId() != null && datum.getId() <= 0) {
+					datum.setId(null);
+				}
+				// if new
+				if (datum.getId() == null) {
+					datum.setCreatedBy(createdBy);
+					datum.setCreatedDate(DateUtil.addSecondsToCurrentDate(i));
+				}
+				if (datum.getDataRow().getId() != null
+						&& datum.getDataRow().getId() <= 0) {
+					datum.getDataRow().setId(null);
+				}
+				// if (datum.getDataSet().getId() != null
+				// && datum.getDataSet().getId() <= 0) {
+				// datum.getDataSet().setId(null);
+				// }
+				if (datum.getConditionCollection() == null) {
+					datum.setConditionCollection(new HashSet<Condition>());
+				} else {
+					datum.getConditionCollection().clear();
+				}
+				for (Condition condition : dataRowBean.getConditions()) {
+					if (condition.getId() != null && condition.getId() <= 0) {
+						condition.setId(null);
+					}
+					// if new
+					if (condition.getId() == null) {
+						condition.setCreatedBy(createdBy);
+						condition.setCreatedDate(DateUtil
+								.addSecondsToCurrentDate(i));
+					}
+					datum.getConditionCollection().add(condition);
+				}
 				datum.setDataSet(domain);
 				i++;
 			}
@@ -158,16 +193,15 @@ public class DataSetBean {
 		return columns;
 	}
 
-
-	
-	public void addDatumColumnBean(DataColumnBean columnBean) {		
+	public void addDatumColumnBean(DataColumnBean columnBean) {
 		if (datumColumnBeans.contains(columnBean)) {
 			for (DataColumnBean thisColumnBean : datumColumnBeans) {
 				if (thisColumnBean.getId().equals(columnBean.getId())) {
 					thisColumnBean.setName(columnBean.getName());
 					thisColumnBean.setValueType(columnBean.getValueType());
 					thisColumnBean.setValueUnit(columnBean.getValueUnit());
-					thisColumnBean.setDatumOrCondition(columnBean.getDatumOrCondition());
+					thisColumnBean.setDatumOrCondition(columnBean
+							.getDatumOrCondition());
 					thisColumnBean.setProperty(columnBean.getProperty());
 				}
 			}
@@ -175,19 +209,20 @@ public class DataSetBean {
 			datumColumnBeans.add(columnBean);
 		}
 	}
-	
-	public void removeDatumColumnBean(DataColumnBean columnBean) {	
+
+	public void removeDatumColumnBean(DataColumnBean columnBean) {
 		datumColumnBeans.remove(columnBean);
 	}
 
-	public void addConditionColumnBean(DataColumnBean columnBean) {		
+	public void addConditionColumnBean(DataColumnBean columnBean) {
 		if (conditionColumnBeans.contains(columnBean)) {
 			for (DataColumnBean thisColumnBean : conditionColumnBeans) {
 				if (thisColumnBean.getId().equals(columnBean.getId())) {
 					thisColumnBean.setName(columnBean.getName());
 					thisColumnBean.setValueType(columnBean.getValueType());
 					thisColumnBean.setValueUnit(columnBean.getValueUnit());
-					thisColumnBean.setDatumOrCondition(columnBean.getDatumOrCondition());
+					thisColumnBean.setDatumOrCondition(columnBean
+							.getDatumOrCondition());
 					thisColumnBean.setProperty(columnBean.getProperty());
 				}
 			}
@@ -195,8 +230,8 @@ public class DataSetBean {
 			conditionColumnBeans.add(columnBean);
 		}
 	}
-	
-	public void removeConditionColumnBean(DataColumnBean columnBean) {	
+
+	public void removeConditionColumnBean(DataColumnBean columnBean) {
 		conditionColumnBeans.remove(columnBean);
 	}
 
@@ -208,7 +243,8 @@ public class DataSetBean {
 	}
 
 	/**
-	 * @param datumColumnBeans the datumColumnBeans to set
+	 * @param datumColumnBeans
+	 *            the datumColumnBeans to set
 	 */
 	public void setDatumColumnBeans(List<DataColumnBean> datumColumnBeans) {
 		this.datumColumnBeans = datumColumnBeans;
@@ -222,9 +258,11 @@ public class DataSetBean {
 	}
 
 	/**
-	 * @param conditionColumnBeans the conditionColumnBeans to set
+	 * @param conditionColumnBeans
+	 *            the conditionColumnBeans to set
 	 */
-	public void setConditionColumnBeans(List<DataColumnBean> conditionColumnBeans) {
+	public void setConditionColumnBeans(
+			List<DataColumnBean> conditionColumnBeans) {
 		this.conditionColumnBeans = conditionColumnBeans;
 	}
 
