@@ -22,16 +22,20 @@ function setConditionPropertyOptionsByCharName(){
 		dwr.util.addOptions("property", ["[Other]"]);
 	});
 }
+
+function setDatumNameOptionsByCharName(){
+	var charName = document.getElementById("charName").value;
+	DataSetManager.getDatumNameOptions(charName, function (data) {
+		dwr.util.removeAllOptions("name");
+		dwr.util.addOptions("name", [""]);
+		dwr.util.addOptions("name", data);
+		dwr.util.addOptions("name", ["[Other]"]);
+	});
+}
 function showDatumConditionInfo(){
 	if (document.getElementById('datumOrCondition').value=='Condition'){
 		$("conditionProperty").style.display = "";
-		var charName = document.getElementById("charName").value;
-		DataSetManager.getDatumNameOptions(charName, function (data) {
-			dwr.util.removeAllOptions("name");
-			dwr.util.addOptions("name", [""]);
-			dwr.util.addOptions("name", data);
-			dwr.util.addOptions("name", ["[Other]"]);
-		});
+		setDatumNameOptionsByCharName();
 	}else{
 		$("conditionProperty").style.display = 'none';
 		var charName = document.getElementById("charName").value;
@@ -125,9 +129,21 @@ function populateDataSet(dataSet) {
 			}
 		}
 		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
-			var data = currentDataSet.dataRows[index].data;
-			var datum, id;
-			// setTheDataRow(currentDataSet.dataRows[index]);			
+			var conditions = currentDataSet.dataRows[index].conditions;
+			var id;
+//			if (index == 0) {
+//				setTheDataRow(currentDataSet.dataRows[index]);
+//			}
+//			headerColumnCount = 0;
+//			datumHeaderColumnCount = 0;
+//			conditionHeaderColumnCount = 0;
+			for ( var i = 0; i < conditions.length; i++) {
+				addDatumColumn(conditions[i]);
+			}
+		}
+		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
+			//var data = currentDataSet.dataRows[index].data;
+			//var datum, id;		
 			if (rowCount == 0) {
 				addNewColumn = false;
 				$("datumMatrixDivRow").style.display = "";
@@ -154,19 +170,20 @@ function addDatumColumn(myDatum) {
 		value :null,
 		property :null,
 		datumOrCondition :null
-	};
-	dwr.util.getValues(columnBean);
-	columnBean.id = document.getElementById("columnId").value;
-	// do not know why datum.id == 'null' sometimes, it happens in IE only
-	if (columnBean.id == null || columnBean.id == '' || columnBean.id == 'null') {
-		if (columnBean.datumOrCondition == 'Condition'){
-			columnBean.id = -fixConditionColIndex-conditionHeaderColumnCount - 1;
-		}else{
-			columnBean.id = -datumHeaderColumnCount - 1;
-		}
-	}
+	};	
 	if (myDatum != null) {
 		columnBean = myDatum;
+	}else{
+		dwr.util.getValues(columnBean);
+		columnBean.id = document.getElementById("columnId").value;
+		// do not know why datum.id == 'null' sometimes, it happens in IE only
+		if (columnBean.id == null || columnBean.id == '' || columnBean.id == 'null') {
+			if (columnBean.datumOrCondition == 'Condition'){
+				columnBean.id = -fixConditionColIndex-conditionHeaderColumnCount - 1;
+			}else{
+				columnBean.id = -datumHeaderColumnCount - 1;
+			}
+		}
 	}
 	if (columnBean.name != '' || columnBean.valueType != '' || columnBean.valueUnit != '') {
 		if (headerColumnCount == 0) {
@@ -221,6 +238,9 @@ function updateColumnCount() {
 	headerColumnCount = currentDataSet.columnBeans.length;
 	datumHeaderColumnCount = currentDataSet.datumColumnBeans.length;
 	conditionHeaderColumnCount = currentDataSet.conditionColumnBeans.length;
+//	alert('######## headerColumnCount='+headerColumnCount+
+//			'\n datumHeaderColumnCount='+datumHeaderColumnCount+
+//			'\n conditionHeaderColumnCount='+conditionHeaderColumnCount);
 }
 
 function createMatrixPattern() {
