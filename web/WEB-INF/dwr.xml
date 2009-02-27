@@ -37,10 +37,14 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager"/>
 			<include method="addColumnHeader" />
+			<include method="removeColumnHeader" />
 			<include method="resetDataSet" />
 			<include method="addRow" />
 			<include method="deleteRow" />
 			<include method="findDataSetById" />
+			<include method="getConditionOptions" />
+			<include method="getConditionPropertyOptions" />
+			<include method="getDatumNameOptions" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">
