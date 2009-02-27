@@ -36,6 +36,8 @@
 		</td>
 		<td class="rightLabelWithTopNoBottom">
 			<select id="name" onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName();">
+			<option value=""></option>
+			<option value="[Other]">[Other]</option>
 			</select>			
 		</td>
 	</tr>
