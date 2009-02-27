@@ -642,6 +642,8 @@ CREATE TABLE experiment_condition
 	value VARCHAR(200) NOT NULL,
 	value_unit VARCHAR(200),
 	value_type VARCHAR(200),
+	created_by VARCHAR(200) NOT NULL,
+	created_date DATETIME NOT NULL,
 	PRIMARY KEY (condition_pk_id)
 ) TYPE=InnoDB
 ;
