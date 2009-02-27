@@ -191,6 +191,10 @@ insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datum
 insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datumName', '% ROS fluorescent dye in particle vs control');
 insert into common_lookup(name,attribute,value) values('OxidativeStress', 'datumName', ' hyperperoxides in cell');
 
+update common_lookup
+set attribute='datumName'
+where attribute='derivedDatumName';
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
 
