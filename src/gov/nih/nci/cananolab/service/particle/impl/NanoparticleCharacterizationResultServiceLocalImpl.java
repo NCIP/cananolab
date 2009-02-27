@@ -31,6 +31,8 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 					Restrictions.eq("dataSet.id", new Long(dataSetId))).addOrder(
 					Order.asc("createdDate"));
 			crit.setFetchMode("dataRow", FetchMode.JOIN);
+			crit.setFetchMode("dataSet", FetchMode.JOIN);
+			crit.setFetchMode("conditionCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 
 			for (Object obj : result) {
