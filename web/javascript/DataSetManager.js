@@ -13,11 +13,34 @@ var fixId = "-10000";
 var fixConditionColIndex = 10000;
 
 
+function setConditionPropertyOptionsByCharName(){
+	var charName = document.getElementById("charName").value;
+	DataSetManager.getConditionPropertyOptions(charName, function (data) {
+		dwr.util.removeAllOptions("property");
+		dwr.util.addOptions("property", [""]);
+		dwr.util.addOptions("property", data);
+		dwr.util.addOptions("property", ["[Other]"]);
+	});
+}
 function showDatumConditionInfo(){
 	if (document.getElementById('datumOrCondition').value=='Condition'){
 		$("conditionProperty").style.display = "";
+		var charName = document.getElementById("charName").value;
+		DataSetManager.getDatumNameOptions(charName, function (data) {
+			dwr.util.removeAllOptions("name");
+			dwr.util.addOptions("name", [""]);
+			dwr.util.addOptions("name", data);
+			dwr.util.addOptions("name", ["[Other]"]);
+		});
 	}else{
 		$("conditionProperty").style.display = 'none';
+		var charName = document.getElementById("charName").value;
+		DataSetManager.getConditionOptions(charName, function (data) {
+			dwr.util.removeAllOptions("name");
+			dwr.util.addOptions("name", [""]);
+			dwr.util.addOptions("name", data);
+			dwr.util.addOptions("name", ["[Other]"]);
+		});
 	}
 	//change drop down list
 }
@@ -116,25 +139,7 @@ function populateDataSet(dataSet) {
 }
 
 function saveDataSet(actionName) {
-	var rowValue, cellValue;
-	alert('DEBUG::: saveDataSet TODO rowCount='+rowCount+' headerColumnCount='+headerColumnCount);
-	for ( var rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-		rowValue = '';
-		for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
-			
-			cellValue = document.getElementById("datumColumnValue" + (-i)).value = 
-				dwr.util.getValue("datumMatrixValue" + i + (-rowIndex - 1));
-			rowValue += cellValue + " ||"
-		}
-		for ( var i = fixConditionColIndex+1; i < conditionHeaderColumnCount + fixConditionColIndex+1; i++) {
-			//TODO::datumColumnValue fixConditionColIndex???
-			cellValue = document.getElementById("datumColumnValue" + (-i)).value = 
-				dwr.util.getValue("datumMatrixValue" + i + (-rowIndex - 1));
-			rowValue += cellValue + " ||"
-		}
-		//alert('rowValue='+rowValue);
-	}
-	// submitAction(document.forms[0], actionName, 'saveDataSet');
+	submitAction(document.forms[0], actionName, 'saveDataSet');
 }
 
 function addDatumColumn() {
@@ -452,8 +457,6 @@ function deleteRow() {
 }
 
 function clearTheDataRow() {
-	//alert('clearTheDataRow rowCount='+rowCount);
-	//IE works only set value = '' instead of null
 	for ( var i = 0; i < datumHeaderColumnCount; i++) {
 		document.getElementById("datumColumnId" + (-i - 1)).value = '';
 		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
@@ -469,7 +472,7 @@ function clearTheDataColumn() {
 	document.getElementById("columnId").value = '';
 	document.getElementById("datumOrCondition").value = "Datum";
 	document.getElementById("property").value = "";
-	$("conditionProperty").style.display = "none";
+	showDatumConditionInfo();
 	document.getElementById("name").value = "";
 	document.getElementById("valueUnit").value = "";
 	document.getElementById("valueType").value = "";
@@ -834,11 +837,9 @@ function editColumn(eleid) {
 	document.getElementById("columnId").value = datum.id;
 	document.getElementById("datumOrCondition").value = datum.datumOrCondition;
 	if (datum.datumOrCondition=='Condition'){
-		$("conditionProperty").style.display = "";
 		document.getElementById("property").value = datum.property;
-	}else{
-		$("conditionProperty").style.display = "none";
 	}
+	showDatumConditionInfo();
 	document.getElementById("name").value = datum.name;
 	document.getElementById("valueType").value = datum.valueType;
 	document.getElementById("valueUnit").value = datum.valueUnit;
@@ -853,7 +854,6 @@ function deleteDatumColumn() {
 		};
 		dwr.util.getValues(columnBean);
 		columnBean.id = document.getElementById("columnId").value;
-		alert('delete '+columnBean.datumOrCondition+" id="+columnBean.id);
 		DataSetManager.removeColumnHeader(columnBean, function(theDataSet) {
 			currentDataSet = theDataSet;
 		});
