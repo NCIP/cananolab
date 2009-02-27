@@ -25,13 +25,4 @@ public class DWRCharacterizationManager {
 						characterizationName);
 		return assayTypes.toArray(new String[assayTypes.size()]);
 	}
-
-	public String[] getDatumNameOptions(String characterizationName)
-			throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> names = InitCharacterizationSetup.getInstance()
-				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
-						characterizationName);
-		return names.toArray(new String[names.size()]);
-	}
 }

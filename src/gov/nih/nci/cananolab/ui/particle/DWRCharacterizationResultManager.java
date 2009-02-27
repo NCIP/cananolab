@@ -172,4 +172,13 @@ public class DWRCharacterizationResultManager {
 						"otherProperty");
 		return properties.toArray(new String[properties.size()]);
 	}
+
+	public String[] getDatumNameOptions(String characterizationName)
+			throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		SortedSet<String> names = InitCharacterizationSetup.getInstance()
+				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
+						characterizationName);
+		return names.toArray(new String[names.size()]);
+	}
 }
