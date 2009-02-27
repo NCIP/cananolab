@@ -7,12 +7,15 @@ import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
+import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
+import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
 /**
@@ -168,29 +171,29 @@ public class DWRCharacterizationResultManager {
 	}
 	
 	
-//	public String[] getConditionOptions() throws Exception {
-//		WebContext wctx = WebContextFactory.get();
-//		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
-//				.getConditions(wctx.getHttpServletRequest());
-//		return conditions.toArray(new String[conditions.size()]);
-//	}
-//
-//	public String[] getConditionPropertyOptions(String conditionName)
-//			throws Exception {
-//		WebContext wctx = WebContextFactory.get();
-//
-//		SortedSet<String> properties = LookupService
-//				.getDefaultAndOtherLookupTypes(conditionName, "property",
-//						"otherProperty");
-//		return properties.toArray(new String[properties.size()]);
-//	}
-//
-//	public String[] getDatumNameOptions(String characterizationName)
-//			throws Exception {
-//		WebContext wctx = WebContextFactory.get();
-//		SortedSet<String> names = InitCharacterizationSetup.getInstance()
-//				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
-//						characterizationName);
-//		return names.toArray(new String[names.size()]);
-//	}
+	public String[] getConditionOptions() throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
+				.getConditions(wctx.getHttpServletRequest());
+		return conditions.toArray(new String[conditions.size()]);
+	}
+
+	public String[] getConditionPropertyOptions(String conditionName)
+			throws Exception {
+		WebContext wctx = WebContextFactory.get();
+
+		SortedSet<String> properties = LookupService
+				.getDefaultAndOtherLookupTypes(conditionName, "property",
+						"otherProperty");
+		return properties.toArray(new String[properties.size()]);
+	}
+
+	public String[] getDatumNameOptions(String characterizationName)
+			throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		SortedSet<String> names = InitCharacterizationSetup.getInstance()
+				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
+						characterizationName);
+		return names.toArray(new String[names.size()]);
+	}
 }
