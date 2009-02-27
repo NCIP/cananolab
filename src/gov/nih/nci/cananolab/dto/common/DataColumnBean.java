@@ -1,5 +1,8 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
+
 /**
  * View bean for Data Column
  * 
@@ -16,6 +19,29 @@ public class DataColumnBean {
 	private String datumOrCondition;
 	private String displayName;
 
+
+	public DataColumnBean() {
+		
+	}
+	
+	public DataColumnBean(Datum datum) {
+		this.id = datum.getId();
+		this.name = datum.getName();
+		this.value = datum.getValue();
+		this.valueType = datum.getValueType();
+		this.valueUnit = datum.getValueUnit();
+		this.datumOrCondition = "Datum";	
+	}
+	
+	public DataColumnBean(Condition condition) {
+		this.id = condition.getId();
+		this.name = condition.getName();
+		this.property = condition.getProperty();
+		this.value = condition.getValue();
+		this.valueType = condition.getValueType();
+		this.valueUnit = condition.getValueUnit();
+		this.datumOrCondition = "Condition";			
+	}
 	/**
 	 * @return the id
 	 */

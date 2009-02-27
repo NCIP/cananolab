@@ -31,9 +31,7 @@ public class DataSetBean {
 	private List<DataColumnBean> columnBeans = new ArrayList<DataColumnBean>();
 
 	public DataSetBean() {
-
 	}
-
 	public DataSetBean(List<Datum> data) {
 		domain = data.get(0).getDataSet();
 		Map<DataRow, List<Datum>> dataMap = new HashMap<DataRow, List<Datum>>();
@@ -60,10 +58,16 @@ public class DataSetBean {
 		for (Datum datum : dataRows.get(0).getData()) {
 			// TODO add other info to column
 			columns.add(datum.getName());
+			DataColumnBean dataColumnBean = new DataColumnBean(datum);
+			columnBeans.add(dataColumnBean);
+			datumColumnBeans.add(dataColumnBean);
 		}
 		for (Condition condition : dataRows.get(0).getConditions()) {
 			// TODO add other info to column
 			columns.add(condition.getName());
+			DataColumnBean conditionColumnBean = new DataColumnBean(condition);
+			columnBeans.add(conditionColumnBean);
+			conditionColumnBeans.add(conditionColumnBean);
 		}
 	}
 
