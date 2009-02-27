@@ -7,23 +7,19 @@ import gov.nih.nci.cananolab.dto.common.DataRowBean;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
 
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
-import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- *
+ * 
  * @author pansu, tanq
- *
+ * 
  */
 public class DWRCharacterizationResultManager {
 	long tempDataRowId = -1;
@@ -40,7 +36,7 @@ public class DWRCharacterizationResultManager {
 	}
 
 	public DataSetBean addColumnHeader(DataColumnBean columnBean)
-			throws CharacterizationResultException {
+		throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
@@ -48,11 +44,27 @@ public class DWRCharacterizationResultManager {
 		DataSetBean theDataSet = charBean.getTheDataSet();
 		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
 			theDataSet.addConditionColumnBean(columnBean);
-		} else {
+		}else {
 			theDataSet.addDatumColumnBean(columnBean);
 		}
 		return theDataSet;
 	}
+	
+	public DataSetBean removeColumnHeader(DataColumnBean columnBean)
+		throws CharacterizationResultException {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		DataSetBean theDataSet = charBean.getTheDataSet();
+		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
+			theDataSet.removeConditionColumnBean(columnBean);
+		}else {
+			theDataSet.removeDatumColumnBean(columnBean);
+		}
+		return theDataSet;
+	}
+
 
 	// addRow includes the function add and edit
 	public DataSetBean addRow(List<Datum> data, List<Condition> conditions)
@@ -75,17 +87,17 @@ public class DWRCharacterizationResultManager {
 					if (dataRowBean == null) {
 						dataRowBean = new DataRowBean();
 					}
-				}
-				if (conditions != null) {
-					datum.setConditionCollection(new TreeSet<Condition>(conditions));
-				}
+				}				
+//				if (conditions != null) {					
+//					datum.setConditionCollection(conditions);
+//				}
 				dataRowBean.setConditions(conditions);
 				dataRowBean.addDatum(datum);
 				hasData = true;
 				i++;
 			}
 			if (hasData) {
-
+				
 				// if dataRowBean.id is null, set a negative id temporary
 				// need to handle set nagative id to null when save to db
 				if (dataRowBean.getDomain().getId() == null) {
@@ -93,7 +105,7 @@ public class DWRCharacterizationResultManager {
 				}
 				theDataSet.addDataRow(dataRowBean);
 			}
-		}
+		}		
 		return theDataSet;
 	}
 
@@ -116,9 +128,9 @@ public class DWRCharacterizationResultManager {
 					dataRowBean = theDataSet.getDataRowBean(datum);
 					if (dataRowBean == null) {
 						return theDataSet;
-					}
-				}
-				if (conditions != null && conditions.size() > 0) {
+					}					
+				}		
+				if (conditions!=null && conditions.size()>0) {
 					for (Condition condition : conditions) {
 						dataRowBean.removeCondition(condition);
 					}
@@ -126,7 +138,7 @@ public class DWRCharacterizationResultManager {
 				dataRowBean.removeDatum(datum);
 				i++;
 			}
-
+			
 			if (dataRowBean != null
 					&& (dataRowBean.getData() == null || dataRowBean.getData()
 							.size() == 0)) {
@@ -154,30 +166,31 @@ public class DWRCharacterizationResultManager {
 		charBean.setTheDataSet(dataSetBean);
 		return dataSetBean;
 	}
-
-	public String[] getConditionOptions() throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
-				.getConditions(wctx.getHttpServletRequest());
-		return conditions.toArray(new String[conditions.size()]);
-	}
-
-	public String[] getConditionPropertyOptions(String conditionName)
-			throws Exception {
-		WebContext wctx = WebContextFactory.get();
-
-		SortedSet<String> properties = LookupService
-				.getDefaultAndOtherLookupTypes(conditionName, "property",
-						"otherProperty");
-		return properties.toArray(new String[properties.size()]);
-	}
-
-	public String[] getDatumNameOptions(String characterizationName)
-			throws Exception {
-		WebContext wctx = WebContextFactory.get();
-		SortedSet<String> names = InitCharacterizationSetup.getInstance()
-				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
-						characterizationName);
-		return names.toArray(new String[names.size()]);
-	}
+	
+	
+//	public String[] getConditionOptions() throws Exception {
+//		WebContext wctx = WebContextFactory.get();
+//		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
+//				.getConditions(wctx.getHttpServletRequest());
+//		return conditions.toArray(new String[conditions.size()]);
+//	}
+//
+//	public String[] getConditionPropertyOptions(String conditionName)
+//			throws Exception {
+//		WebContext wctx = WebContextFactory.get();
+//
+//		SortedSet<String> properties = LookupService
+//				.getDefaultAndOtherLookupTypes(conditionName, "property",
+//						"otherProperty");
+//		return properties.toArray(new String[properties.size()]);
+//	}
+//
+//	public String[] getDatumNameOptions(String characterizationName)
+//			throws Exception {
+//		WebContext wctx = WebContextFactory.get();
+//		SortedSet<String> names = InitCharacterizationSetup.getInstance()
+//				.getDatumNamesByCharName(wctx.getHttpServletRequest(),
+//						characterizationName);
+//		return names.toArray(new String[names.size()]);
+//	}
 }
