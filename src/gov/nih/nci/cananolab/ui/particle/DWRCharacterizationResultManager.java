@@ -13,8 +13,7 @@ import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationR
 
 import java.util.List;
 import java.util.SortedSet;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.TreeSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
@@ -78,7 +77,7 @@ public class DWRCharacterizationResultManager {
 					}
 				}
 				if (conditions != null) {
-					datum.setConditionCollection(conditions);
+					datum.setConditionCollection(new TreeSet<Condition>(conditions));
 				}
 				dataRowBean.setConditions(conditions);
 				dataRowBean.addDatum(datum);
