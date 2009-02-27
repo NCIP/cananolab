@@ -4,7 +4,7 @@ USE canano;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
 --migration to csm 4.1
-source data_migration/csm/migration_to_csm_4.1.sql
+source csm/migration_to_csm_4.1.sql
 
 --drop obsolete tables
 DROP TABLE IF EXISTS sample_management;
@@ -134,16 +134,16 @@ and g.protection_group_name = e.protection_element_name
 --end of csm fix
 
 --source enhancement
-source data_migration/poc_migration.sql
+source poc_migration.sql
 
 --instrument and technique
-source data_migration/instrument_migration.sql
+source instrument_migration.sql
 
 -- datum and condition
-source data_migration/datum_migration.sql
+source datum_migration.sql
 
 --characterization
-source data_migration/characterization_migration.sql
+source characterization_migration.sql
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
