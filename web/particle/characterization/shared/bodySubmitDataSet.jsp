@@ -29,84 +29,26 @@
 			</select>
 		</td>
 	</tr>
+	
+	<tr>
+		<td class="leftLabelWithTopNoBottom">
+			<strong>Column Name*</strong>
+		</td>
+		<td class="rightLabelWithTopNoBottom">
+			<select id="name" onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName();">
+			</select>			
+		</td>
+	</tr>
 	<tr id="conditionProperty" style="display: none;">
 		<td class="leftLabelNoBottom">
 			<strong>Property</strong>
 		</td>
 		<td class="rightLabelNoBottom">
-			<input type="text" id="property">
+			<select id="property" onchange="javascript:callPrompt('Condition Property', 'property');">
+			</select>
 		</td>
 	</tr>
-
-	<tr>
-		<td class="leftLabelWithTopNoBottom">
-			<strong>Column Name*</strong>
-		</td>
-
-		<td class="rightLabelWithTopNoBottom">
-			<html:select
-				property="achar.theExperimentConfig.domain.technique.type"
-				styleId="name" onchange="javascript:callPrompt('Name', 'name');">
-				<option value=""></option>
-				<option value="PDI">
-					PDI
-				</option>
-				<option value="peak1">
-					peak1
-				</option>
-				<option value="RMS-size">
-					RMS-size
-				</option>
-				<option value="Z-average">
-					Z-average
-				</option>
-				<option value="Centrifugation">
-					Centrifugation
-				</option>
-				<option value="Culture Media">
-					Culture Media
-				</option>
-				<option value="Electromagnetic Radiation">
-					Electromagnetic Radiation
-				</option>
-				<option value="Freeze Thaw">
-					Freeze Thaw
-				</option>
-				<option value="Ionic Strength (Osmality)">
-					Ionic Strength (Osmality)
-				</option>
-				<option value="Long Term Storage">
-					Long Term Storage
-				</option>
-				<option value="Lyophilization">
-					Lyophilization
-				</option>
-				<option value="Ph">
-					Ph
-				</option>
-				<option value="Sample Concentration">
-					Sample Concentration
-				</option>
-				<option value="Short Term Storage">
-					Short Term Storage
-				</option>
-				<option value="Solvent Media">
-					Solvent Media
-				</option>
-				<option value="Sonication">
-					Sonication
-				</option>
-				<option value="Temperature">
-					Temperature
-				</option>
-
-				<option value="other">
-					[Other]
-				</option>
-			</html:select>
-		</td>
-	</tr>
-
+	
 
 	<tr>
 		<td class="leftLabelNoBottom">
