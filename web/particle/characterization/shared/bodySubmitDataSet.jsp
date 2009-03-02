@@ -19,7 +19,7 @@
 			<input type="hidden" id="columnId">
 		</td>
 		<td class="rightLabelWithTopNoBottom">
-			<select id="datumOrCondition" onChange="showDatumConditionInfo()">
+			<select id="datumOrCondition" onChange="showDatumConditionInfo(null)">
 				<option value="Datum">
 					Datum
 				</option>
@@ -35,7 +35,7 @@
 			<strong>Column Name*</strong>
 		</td>
 		<td class="rightLabelWithTopNoBottom">
-			<select id="name" onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName();">
+			<select id="name" onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName(null);">
 			<option value=""></option>
 			<option value="[Other]">[Other]</option>
 			</select>			
