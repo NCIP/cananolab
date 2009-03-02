@@ -62,6 +62,12 @@ function showDatumConditionInfo(datumName){
 	}
 }
 
+function cancelDataSet(){
+	if (confirm("Are you sure you want to discard all the changes you made??")) {
+		resetTheDataSet(false);
+	}
+	return;
+}
 function resetTheDataSet(isShow) {
 	editDataSet = false;
 	headerColumnCount = 0;
@@ -719,12 +725,14 @@ function cloneEditRow() {
 		dwr.util.getValues(datum);
 		datum.id = -i - 1;
 		id = rowId;
-		var editRow = document.getElementById("editDatumRow" + rowId);
-		editRow.onclick = function() {
-			saveRowClicked(this.id)
+		
+		var newRow = document.getElementById("editDatumRow" + rowId);
+		newRow.onclick = function() {
+			newRowClicked(this.id)
 		};
-		editRow.setAttribute("value", "Save");
-		editRow.setAttribute("style", "border:0px solid;");
+		newRow.setAttribute("value", "New");
+		newRow.setAttribute("style", "border:0px solid;");
+		
 		if (currentDataSet.datumColumnBeans[i].id<0){
 			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
 				currentDataSet.datumColumnBeans[i].value);
@@ -734,22 +742,8 @@ function cloneEditRow() {
 				+ "" + id);
 		tempValue.setAttribute("style", "border:1px solid;");
 		tempValue.removeAttribute("readonly");
-
-		if (document.getElementById("deleteDatumRow")==null){		
-			var selectButtonCell = document.getElementById("selectButtonCell" + rowId);			
-			var deleteButton = document.createElement("input");
-			deleteButton.setAttribute("id", "deleteDatumRow");
-			deleteButton.setAttribute("type", "button");
-			deleteButton.setAttribute("class", "noBorderButton");
-			deleteButton.setAttribute("value", "Delete");
-			deleteButton
-					.setAttribute("style",
-							"border:0px solid;text-decoration: underline;");
-			deleteButton.onclick = function() {
-				deleteRowClicked(this.id)
-			};
-			selectButtonCell.appendChild(deleteButton);			
-		}
+		addSaveRowButton(rowId);		
+		addDeleteButton(rowId);
 	}
 	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount+fixConditionColIndex; i++) {
 			var datum = {
@@ -761,13 +755,14 @@ function cloneEditRow() {
 			datum.id = -i - 1-fixConditionColIndex;
 			id = rowId;
 			//dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
-			
-			var editRow = document.getElementById("editDatumRow" + rowId);
-			editRow.onclick = function() {
-				saveRowClicked(this.id)
-			};
-			editRow.setAttribute("value", "Save");
-			editRow.setAttribute("style", "border:0px solid;");
+			if (datumHeaderColumnCount==0){
+				var editRow = document.getElementById("editDatumRow" + rowId);
+				editRow.onclick = function() {
+					saveRowClicked(this.id)
+				};
+				editRow.setAttribute("value", "Save");
+				editRow.setAttribute("style", "border:0px solid;");
+			}
 			//fixConditionColIndex
 			if (currentDataSet.conditionColumnBeans[i-fixConditionColIndex].id<0){				
 				dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
@@ -779,21 +774,8 @@ function cloneEditRow() {
 			tempValue.setAttribute("style", "border:1px solid;");
 			tempValue.removeAttribute("readonly");
 
-			if (document.getElementById("deleteDatumRow")==null){		
-				var selectButtonCell = document.getElementById("selectButtonCell" + rowId);			
-				var deleteButton = document.createElement("input");
-				deleteButton.setAttribute("id", "deleteDatumRow");
-				deleteButton.setAttribute("type", "button");
-				deleteButton.setAttribute("class", "noBorderButton");
-				deleteButton.setAttribute("value", "Delete");
-				deleteButton
-						.setAttribute("style",
-								"border:0px solid;text-decoration: underline;");
-				deleteButton.onclick = function() {
-					deleteRowClicked(this.id)
-				};
-				selectButtonCell.appendChild(deleteButton);			
-			}
+			addSaveRowButton(rowId);
+			addDeleteButton(rowId);
 		}		
 		$("datumMatrixPatternRow" + rowId).style.display = "";
 	
@@ -849,6 +831,26 @@ function deleteRowClicked(eleid) {
 		deleteRow();
 	}
 }
+
+function newRowClicked(eleid) {
+	clearTheDataRow();
+	var row = fixId;
+	for (var i = 0; i < datumHeaderColumnCount; i++) {		
+		dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + fixId,
+				'');
+		
+	}
+	//colIndex = data.length;
+	var colIndex = fixConditionColIndex;
+	//CONDITION
+	for (var i=0; i < conditionHeaderColumnCount; i++) {		
+		dwr.util.setValue("datumMatrixValue" + (colIndex + 1) + "" + fixId,
+			'');
+		colIndex++;
+	}
+	
+}
+
 
 function editColumn(eleid) {
 	var id = eleid.substring(22);
@@ -940,6 +942,60 @@ function removeNode(elementId) {
 	if (dwr.util._temp) {
 		dwr.util._temp.parentNode.removeChild(dwr.util._temp);
 		dwr.util._temp = null;
+	}
+}
+
+function addSaveRowButton(rowId){
+	if (document.getElementById("saveDatumRow")==null){		
+		var selectButtonCell = document.getElementById("selectButtonCell" + rowId);			
+		var saveRowButton = document.createElement("input");
+		saveRowButton.setAttribute("id", "saveDatumRow");
+		saveRowButton.setAttribute("type", "button");
+		saveRowButton.setAttribute("class", "noBorderButton");
+		saveRowButton.setAttribute("value", "Save");
+		saveRowButton
+				.setAttribute("style",
+						"border:0px solid;text-decoration: underline;");
+		saveRowButton.onclick = function() {
+			saveRowClicked(this.id)
+		};
+		selectButtonCell.appendChild(saveRowButton);			
+	}
+}
+
+function addEditButton(rowId){
+	if (document.getElementById("editDatumRow")==null){		
+		var selectButtonCell = document.getElementById("selectButtonCell" + rowId);			
+		var editButton = document.createElement("input");
+		editButton.setAttribute("id", "editDatumRow");
+		editButton.setAttribute("type", "button");
+		editButton.setAttribute("class", "noBorderButton");
+		editButton.setAttribute("value", "Save");
+		editButton
+				.setAttribute("style",
+						"border:0px solid;text-decoration: underline;");
+		editButton.onclick = function() {
+			editRowClicked(this.id)
+		};
+		selectButtonCell.appendChild(editButton);			
+	}
+}
+
+function addDeleteButton(rowId){
+	if (document.getElementById("deleteDatumRow")==null){		
+		var selectButtonCell = document.getElementById("selectButtonCell" + rowId);			
+		var deleteButton = document.createElement("input");
+		deleteButton.setAttribute("id", "deleteDatumRow");
+		deleteButton.setAttribute("type", "button");
+		deleteButton.setAttribute("class", "noBorderButton");
+		deleteButton.setAttribute("value", "Delete");
+		deleteButton
+				.setAttribute("style",
+						"border:0px solid;text-decoration: underline;");
+		deleteButton.onclick = function() {
+			deleteRowClicked(this.id)
+		};
+		selectButtonCell.appendChild(deleteButton);			
 	}
 }
 
