@@ -11,16 +11,20 @@ var addNewColumn = true;
 var editDataSet = false;
 var fixId = "-10000";
 var fixConditionColIndex = 10000;
+var tempDatum = null;
 
-
-function setConditionPropertyOptionsByCharName(){
-	var conditionName = document.getElementById("name").value;
-	DataSetManager.getConditionPropertyOptions(conditionName, function (data) {
-		dwr.util.removeAllOptions("property");
-		dwr.util.addOptions("property", [""]);
-		dwr.util.addOptions("property", data);
-		dwr.util.addOptions("property", ["[Other]"]);
-	});
+function setConditionPropertyOptionsByCharName(conditionName){
+	if (document.getElementById('datumOrCondition').value=='Condition'){
+		if (conditionName==null){
+			conditionName = document.getElementById("name").value;
+		}	
+		DataSetManager.getConditionPropertyOptions(conditionName, function (data) {
+			dwr.util.removeAllOptions("property");
+			dwr.util.addOptions("property", [""]);
+			dwr.util.addOptions("property", data);
+			dwr.util.addOptions("property", ["[Other]"]);
+		});
+	}
 }
 
 function setDatumNameOptionsByCharName(){
@@ -43,18 +47,21 @@ function setConditionOptionsByCharName(){
 	});
 }
 
-function showDatumConditionInfo(){
+function showDatumConditionInfo(datumName){
 	if (document.getElementById('datumOrCondition').value=='Condition'){
 		$("conditionProperty").style.display = "";
 		var charName = document.getElementById("charName").value;
 		setConditionOptionsByCharName();
-		setConditionPropertyOptionsByCharName();
+		if (datumName!=null){
+			document.getElementById("name").value = datumName;
+		}
+		setConditionPropertyOptionsByCharName(datumName);
 	}else{
 		$("conditionProperty").style.display = 'none';
-		setDatumNameOptionsByCharName();		
+		setDatumNameOptionsByCharName();	
 	}
-	//change drop down list
 }
+
 function resetTheDataSet(isShow) {
 	editDataSet = false;
 	headerColumnCount = 0;
@@ -491,11 +498,9 @@ function clearTheDataColumn() {
 	document.getElementById("columnId").value = '';
 	document.getElementById("datumOrCondition").value = "Datum";
 	document.getElementById("property").value = "";
-	showDatumConditionInfo();
-	document.getElementById("name").value = "";
-	document.getElementById("valueUnit").value = "";
-	document.getElementById("valueType").value = "";
-	document.getElementById("value").value = "";
+	showDatumConditionInfo(null);
+	tempDatum = null;
+	window.setTimeout("setDatumValues()", 100);
 }
 
 function setTheDataRow(dataRow) {
@@ -805,12 +810,6 @@ function editDatumClicked(eleid) {
 		//var datumid = datum.id;
 		document.getElementById("datumColumnId" + (-i - 1)).value = datum.id;
 		document.getElementById("datumMatrixValue" + (i + 1) + fixId).value = datum.value;
-		//alert("########datum  datumMatrixValue "+(i + 1) + fixId + " ==>"+datum.value);
-		// TODO:: put constant value to new added column datum
-		// if (document.getElementById("datumColumnValue" + (-i - 1))!=null){
-		// document.getElementById("datumColumnValue" + (-i - 1)).value =
-		// datum.value;
-		// }
 	}
 	var conditions = dataRowCache[rowid].conditions;
 	//var condIndex = data.length;
@@ -854,18 +853,39 @@ function deleteRowClicked(eleid) {
 function editColumn(eleid) {
 	var id = eleid.substring(22);
 	var datum = dataColumnCache[id];
+	tempDatum = datum;
 	//TODO:: after delete id mess up, delete error
 	document.getElementById("columnId").value = datum.id;
-	document.getElementById("datumOrCondition").value = datum.datumOrCondition;
-	if (datum.datumOrCondition=='Condition'){
-		document.getElementById("property").value = datum.property;
-	}
-	showDatumConditionInfo();
+	document.getElementById("datumOrCondition").value = datum.datumOrCondition;	
 	document.getElementById("name").value = datum.name;
-	document.getElementById("valueType").value = datum.valueType;
-	document.getElementById("valueUnit").value = datum.valueUnit;
-	document.getElementById("value").value = datum.value;
+	showDatumConditionInfo(datum.name);
+//	document.getElementById("name").value = datum.name;
+//	if (datum.datumOrCondition=='Condition'){
+//		document.getElementById("property").value = datum.property;
+//	}	
+//	document.getElementById("valueType").value = datum.valueType;
+//	document.getElementById("valueUnit").value = datum.valueUnit;
+//	document.getElementById("value").value = datum.value;
+	window.setTimeout("setDatumValues()", 100);
 	
+}
+
+function setDatumValues(){
+	if (tempDatum!=null){
+		document.getElementById("name").value = tempDatum.name;
+		if (tempDatum.datumOrCondition=='Condition'){
+			document.getElementById("property").value = tempDatum.property;
+		}	
+		document.getElementById("valueType").value = tempDatum.valueType;
+		document.getElementById("valueUnit").value = tempDatum.valueUnit;
+		document.getElementById("value").value = tempDatum.value;
+		tempDatum = null;
+	}else{
+		document.getElementById("name").value = "";
+		document.getElementById("valueUnit").value = "";
+		document.getElementById("valueType").value = "";
+		document.getElementById("value").value = "";
+	}
 }
 
 function deleteDatumColumn() {
