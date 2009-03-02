@@ -719,18 +719,16 @@ function cloneEditRow() {
 		dwr.util.getValues(datum);
 		datum.id = -i - 1;
 		id = rowId;
-		//XXXXXXXXXXX
-//		if (!editDataSet){
-//			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
-//		}
 		var editRow = document.getElementById("editDatumRow" + rowId);
 		editRow.onclick = function() {
 			saveRowClicked(this.id)
 		};
 		editRow.setAttribute("value", "Save");
 		editRow.setAttribute("style", "border:0px solid;");
-		dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
-				currentDataSet.columnBeans[i].value);
+		if (currentDataSet.datumColumnBeans[i].id<0){
+			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
+				currentDataSet.datumColumnBeans[i].value);
+		}
 
 		var tempValue = document.getElementById("datumMatrixValue" + (i + 1)
 				+ "" + id);
@@ -762,7 +760,7 @@ function cloneEditRow() {
 			dwr.util.getValues(datum);
 			datum.id = -i - 1-fixConditionColIndex;
 			id = rowId;
-			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
+			//dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id, datum.value);
 			
 			var editRow = document.getElementById("editDatumRow" + rowId);
 			editRow.onclick = function() {
@@ -771,9 +769,11 @@ function cloneEditRow() {
 			editRow.setAttribute("value", "Save");
 			editRow.setAttribute("style", "border:0px solid;");
 			//fixConditionColIndex
-			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
-					currentDataSet.columnBeans[i-fixConditionColIndex].value);
-
+			if (currentDataSet.conditionColumnBeans[i-fixConditionColIndex].id<0){				
+				dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
+					currentDataSet.conditionColumnBeans[i-fixConditionColIndex].value);
+			}
+			
 			var tempValue = document.getElementById("datumMatrixValue" + (i + 1)
 					+ "" + id);
 			tempValue.setAttribute("style", "border:1px solid;");
