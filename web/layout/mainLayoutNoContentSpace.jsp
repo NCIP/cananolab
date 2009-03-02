@@ -15,7 +15,7 @@
 		<script type="text/javascript" src="javascript/browseGrid.js"></script>
 	</head>
 	<tiles:importAttribute scope="session" />
-	<body onload="getLocalCounts('location');">
+	<body style="cursor:default" onload="getLocalCounts('location');">
 		<table height="100%" cellspacing="0" cellpadding="0" width="100%"
 			summary="" border="0" align="center">
 			<!-- nci hdr begins -->

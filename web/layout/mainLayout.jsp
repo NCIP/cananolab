@@ -25,10 +25,10 @@
 	<tiles:importAttribute name="onloadJavascript" />
 	<c:choose>
 		<c:when test="${! empty onloadJavascript}">
-			<body onload="${onloadJavascript}">
+			<body style="cursor:default" onload="${onloadJavascript}">
 		</c:when>
 		<c:otherwise>
-			<body>
+			<body style="cursor:default">
 		</c:otherwise>
 	</c:choose>
 	<body>

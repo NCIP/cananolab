@@ -49,10 +49,9 @@
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onclick="gotoPage('${sampleUrl}')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
-			<a class="subMenuSecondary">SAMPLE</a>
+			<a href="javascript:gotoPage('${sampleUrl}')" class="subMenuSecondary">SAMPLE</a>
 		</td>
 	</tr>
 	<tr>
@@ -64,10 +63,9 @@
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onclick="gotoPage('${compUrl}')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
-			<a class="subMenuSecondary">COMPOSITION</a>
+			<a href="javascript:gotoPage('${compUrl}')" class="subMenuSecondary">COMPOSITION</a>
 		</td>
 	</tr>
 	<tr>
@@ -79,10 +77,10 @@
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onclick="gotoPage('${charUrl}');changeMenuStyle(this,'subMenuSecondaryTitleOver')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
-			<a class="subMenuSecondary">CHARACTERIZATION</a>
+			<a href="javascript:gotoPage('${charUrl}');changeMenuStyle(this,'subMenuSecondaryTitleOver')" 
+				class="subMenuSecondary">CHARACTERIZATION</a>
 		</td>
 	</tr>
 	<tr>
@@ -94,10 +92,10 @@
 		</c:url>
 		<td class="subMenuSecondaryTitle"
 			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onclick="gotoPage('${pubUrl}')"
 			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
 			height="20">
-			<a class="subMenuSecondary">PUBLICATION</a>
+			<a href="javascript:gotoPage('${pubUrl}')" 
+				class="subMenuSecondary">PUBLICATION</a>
 		</td>
 	</tr>
 	<tr>
@@ -110,11 +108,11 @@
 			QUICK LINKS
 		</td>
 	</tr>
-	<tr>
+	<tr>		
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver');"
 			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle');"
 			height="20">
 			<a class="subMenuSecondary">caNanoLab Wiki</a>
 		</td>
