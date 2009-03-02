@@ -82,6 +82,8 @@
 			&nbsp;
 		</td>
 		<td class="rightLabelNoBottomRightAlign">
+			<input class="noBorderButton" type="button" value="New"
+				onclick="clearTheDataColumn();" />
 			<input class="noBorderButton" type="button" value="Save"
 				onclick="addDatumColumn();" />
 			<input class="noBorderButton" type="button" value="Delete"
@@ -163,6 +165,8 @@
 							<td class="rightLabelNoBottom" valign="top" align="right"
 								colspan="1">
 								<div id="addRowButtons" style="display: none;">
+									<input class="noBorderButton" type="button" value="New"
+										onclick="clearTheDataRow();" />
 									<input class="noBorderButton" type="button" value="Save"
 										onclick="addRow()" />
 									<input class="noBorderButton" type="button" value="Delete"
@@ -198,12 +202,12 @@
 		<td class="leftLabel" valign="top">
 			<input type="button" value="Delete"
 				onclick="javascript:submitAction(document.forms[0],
-										'characterization', 'deleteExperimentConfig');">
+										'characterization', 'deleteDataSet');">
 		</td>
 		<td class="rightLabel" align="right" colspan="1">
 			<div align="right">
-				<input type="reset" value="Cancel"
-					onclick="javascript:resetTheDataSet(false);">
+				<input type="button" value="Cancel"
+					onclick="javascript:cancelDataSet();">
 				<input type="button" value="Save"
 					onclick="javascript:saveDataSet('characterization');">
 			</div>
