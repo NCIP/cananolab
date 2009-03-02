@@ -14,8 +14,8 @@ var fixConditionColIndex = 10000;
 
 
 function setConditionPropertyOptionsByCharName(){
-	var charName = document.getElementById("charName").value;
-	DataSetManager.getConditionPropertyOptions(charName, function (data) {
+	var conditionName = document.getElementById("name").value;
+	DataSetManager.getConditionPropertyOptions(conditionName, function (data) {
 		dwr.util.removeAllOptions("property");
 		dwr.util.addOptions("property", [""]);
 		dwr.util.addOptions("property", data);
@@ -32,19 +32,26 @@ function setDatumNameOptionsByCharName(){
 		dwr.util.addOptions("name", ["[Other]"]);
 	});
 }
+
+function setConditionOptionsByCharName(){
+	var charName = document.getElementById("charName").value;
+	DataSetManager.getConditionOptions(function (data) {
+		dwr.util.removeAllOptions("name");
+		dwr.util.addOptions("name", [""]);
+		dwr.util.addOptions("name", data);
+		dwr.util.addOptions("name", ["[Other]"]);
+	});
+}
+
 function showDatumConditionInfo(){
 	if (document.getElementById('datumOrCondition').value=='Condition'){
 		$("conditionProperty").style.display = "";
-		setDatumNameOptionsByCharName();
+		var charName = document.getElementById("charName").value;
+		setConditionOptionsByCharName();
+		setConditionPropertyOptionsByCharName();
 	}else{
 		$("conditionProperty").style.display = 'none';
-		var charName = document.getElementById("charName").value;
-		DataSetManager.getConditionOptions(charName, function (data) {
-			dwr.util.removeAllOptions("name");
-			dwr.util.addOptions("name", [""]);
-			dwr.util.addOptions("name", data);
-			dwr.util.addOptions("name", ["[Other]"]);
-		});
+		setDatumNameOptionsByCharName();		
 	}
 	//change drop down list
 }
