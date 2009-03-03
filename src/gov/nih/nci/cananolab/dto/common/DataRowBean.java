@@ -3,9 +3,11 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ import java.util.List;
 public class DataRowBean {
 	private DataRow domain = new DataRow();
 	private List<Datum> data = new ArrayList<Datum>();
-	private List<Condition> conditions= new ArrayList<Condition>();
+	private List<Condition> conditions = new ArrayList<Condition>();
 
 	public DataRowBean() {
 	}
@@ -25,18 +27,24 @@ public class DataRowBean {
 	public DataRowBean(List<Datum> data) {
 		domain = data.get(0).getDataRow();
 		this.data = data;
+		for (Datum datum : data) {
+			conditions.addAll(datum.getConditionCollection());
+		}
+		Collections.sort(conditions,
+				new CaNanoLabComparators.ConditionDateComparator());
 	}
 
 	public void addDatum(Datum datum) {
 		if (data.contains(datum)) {
 			setCreatedByNDate(datum);
 			data.remove(datum);
-		}		
+		}
 		datum.setDataRow(domain);
 		data.add(datum);
-		if (datum.getConditionCollection()!=null) {
-			//add only once, otherwise, conditions will be duplicated with same id
-			for (Condition condition: datum.getConditionCollection()) {
+		if (datum.getConditionCollection() != null) {
+			// add only once, otherwise, conditions will be duplicated with same
+			// id
+			for (Condition condition : datum.getConditionCollection()) {
 				if (!conditions.contains(condition)) {
 					conditions.add(condition);
 				}
@@ -69,11 +77,10 @@ public class DataRowBean {
 	public Collection<Datum> getData() {
 		return data;
 	}
-	
+
 	public void removeCondition(Condition condition) {
 		conditions.remove(condition);
 	}
-
 
 	/**
 	 * @return the domain
@@ -119,9 +126,9 @@ public class DataRowBean {
 	public List<Condition> getConditions() {
 		return conditions;
 	}
-	
+
 	public void addConditionColumn(Condition condition) {
-		//condition.setDataRow(domain);
+		// condition.setDataRow(domain);
 		if (conditions.contains(condition)) {
 			for (Condition thisCondition : conditions) {
 				if (thisCondition.getId().equals(condition.getId())) {
@@ -136,23 +143,25 @@ public class DataRowBean {
 	}
 
 	/**
-	 * @param conditions the conditions to set
+	 * @param conditions
+	 *            the conditions to set
 	 */
 	public void setConditions(List<Condition> conditions) {
 		this.conditions = conditions;
 	}
-	
+
 	private void setCreatedByNDate(Datum datum) {
-		for (Datum thisDatum: data) {
-			if (thisDatum.getId()!=null && thisDatum.getId().equals(datum.getId())) {
-				if (datum.getCreatedBy()==null) {
+		for (Datum thisDatum : data) {
+			if (thisDatum.getId() != null
+					&& thisDatum.getId().equals(datum.getId())) {
+				if (datum.getCreatedBy() == null) {
 					datum.setCreatedBy(thisDatum.getCreatedBy());
 				}
-				if (datum.getCreatedDate()==null) {
+				if (datum.getCreatedDate() == null) {
 					datum.setCreatedDate(thisDatum.getCreatedDate());
 				}
 				break;
 			}
-		}		
+		}
 	}
 }
