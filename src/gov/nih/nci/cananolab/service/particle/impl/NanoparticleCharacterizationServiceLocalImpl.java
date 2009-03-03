@@ -242,6 +242,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			crit.setFetchMode("datumCollection.conditionCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.dataSet.file", FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
