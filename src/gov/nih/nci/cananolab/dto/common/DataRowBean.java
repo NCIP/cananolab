@@ -29,8 +29,9 @@ public class DataRowBean {
 
 	public void addDatum(Datum datum) {
 		if (data.contains(datum)) {
+			setCreatedByNDate(datum);
 			data.remove(datum);
-		}
+		}		
 		datum.setDataRow(domain);
 		data.add(datum);
 		if (datum.getConditionCollection()!=null) {
@@ -139,5 +140,19 @@ public class DataRowBean {
 	 */
 	public void setConditions(List<Condition> conditions) {
 		this.conditions = conditions;
+	}
+	
+	private void setCreatedByNDate(Datum datum) {
+		for (Datum thisDatum: data) {
+			if (thisDatum.getId()!=null && thisDatum.getId().equals(datum.getId())) {
+				if (datum.getCreatedBy()==null) {
+					datum.setCreatedBy(thisDatum.getCreatedBy());
+				}
+				if (datum.getCreatedDate()==null) {
+					datum.setCreatedDate(thisDatum.getCreatedDate());
+				}
+				break;
+			}
+		}		
 	}
 }
