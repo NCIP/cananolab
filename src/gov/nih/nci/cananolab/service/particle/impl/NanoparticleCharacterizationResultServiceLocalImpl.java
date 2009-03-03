@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
+import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 public class NanoparticleCharacterizationResultServiceLocalImpl implements
@@ -21,6 +23,31 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 	private static Logger logger = Logger
 			.getLogger(NanoparticleCharacterizationResultServiceLocalImpl.class);
 
+	public DataSet findDataSetById(String dataSetId)
+			throws CharacterizationResultException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(DataSet.class)
+					.add(Property.forName("id").eq(new Long(dataSetId)));
+			crit.setFetchMode("datumCollection", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.conditionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("file", FetchMode.JOIN);
+			List result = appService.query(crit);
+			DataSet dataSet = null;
+			if (!result.isEmpty()) {
+				dataSet = (DataSet) result.get(0);
+			}
+			return dataSet;
+		} catch (Exception e) {
+			String err = "Error getting data set of ID " + dataSetId;
+			logger.error(err, e);
+			throw new CharacterizationResultException(err, e);
+		}
+	}
+
 	public List<Datum> getDataForDataSet(String dataSetId)
 			throws CharacterizationResultException {
 		List<Datum> data = new ArrayList<Datum>();
@@ -28,8 +55,8 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Datum.class).add(
-					Restrictions.eq("dataSet.id", new Long(dataSetId))).addOrder(
-					Order.asc("createdDate"));
+					Restrictions.eq("dataSet.id", new Long(dataSetId)))
+					.addOrder(Order.asc("createdDate"));
 			crit.setFetchMode("dataRow", FetchMode.JOIN);
 			crit.setFetchMode("dataSet", FetchMode.JOIN);
 			crit.setFetchMode("conditionCollection", FetchMode.JOIN);
