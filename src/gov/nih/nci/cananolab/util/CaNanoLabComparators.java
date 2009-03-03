@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.util;
 
+import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
@@ -273,6 +274,12 @@ public class CaNanoLabComparators {
 	public static class DatumDateComparator implements Comparator<Datum> {
 		public int compare(Datum datum1, Datum datum2) {
 			return datum1.getCreatedDate().compareTo(datum2.getCreatedDate());
+		}
+	}
+
+	public static class ConditionDateComparator implements Comparator<Condition> {
+		public int compare(Condition condition1, Condition condition2) {
+			return condition1.getCreatedDate().compareTo(condition2.getCreatedDate());
 		}
 	}
 
