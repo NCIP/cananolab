@@ -4,10 +4,12 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,8 +34,14 @@ public class DataSetBean {
 
 	public DataSetBean() {
 	}
-	public DataSetBean(List<Datum> data) {
-		domain = data.get(0).getDataSet();
+
+	public DataSetBean(DataSet dataSet) {
+		domain = dataSet;
+		data = new ArrayList<Datum>(dataSet.getDatumCollection());
+		Collections.sort(data, new CaNanoLabComparators.DatumDateComparator());
+		if (dataSet.getFile() != null) {
+			file = new FileBean(dataSet.getFile());
+		}
 		Map<DataRow, List<Datum>> dataMap = new HashMap<DataRow, List<Datum>>();
 		List<DataRow> rows = new ArrayList<DataRow>();
 		List<Datum> dataPerRow = null;
@@ -71,6 +79,10 @@ public class DataSetBean {
 		}
 	}
 
+	public DataSetBean(List<Datum> data) {
+		this(data.get(0).getDataSet());
+	}
+
 	/**
 	 * @return the theDataRow
 	 */
@@ -104,10 +116,10 @@ public class DataSetBean {
 
 	public void addDataRow(DataRowBean dataRow) {
 		int index = dataRows.indexOf(dataRow);
-		if (index!=-1) {
+		if (index != -1) {
 			dataRows.remove(dataRow);
 			dataRows.add(index, dataRow);
-		}else {
+		} else {
 			dataRows.add(dataRow);
 		}
 	}
