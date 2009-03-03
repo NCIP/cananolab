@@ -103,10 +103,13 @@ public class DataSetBean {
 	}
 
 	public void addDataRow(DataRowBean dataRow) {
-		if (dataRows.contains(dataRow)) {
+		int index = dataRows.indexOf(dataRow);
+		if (index!=-1) {
 			dataRows.remove(dataRow);
+			dataRows.add(index, dataRow);
+		}else {
+			dataRows.add(dataRow);
 		}
-		dataRows.add(dataRow);
 	}
 
 	public void removeDataRow(DataRowBean dataRow) {
