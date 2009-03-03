@@ -80,7 +80,45 @@ public class DataSetBean {
 	}
 
 	public DataSetBean(List<Datum> data) {
-		this(data.get(0).getDataSet());
+		domain = data.get(0).getDataSet();
+		if (domain.getFile() != null) {
+			file = new FileBean(domain.getFile());
+		}
+		Map<DataRow, List<Datum>> dataMap = new HashMap<DataRow, List<Datum>>();
+		List<DataRow> rows = new ArrayList<DataRow>();
+		List<Datum> dataPerRow = null;
+		for (Datum datum : data) {
+			if (!rows.contains(datum.getDataRow())) {
+				rows.add(datum.getDataRow());
+			}
+			if (dataMap.containsKey(datum.getDataRow())) {
+				dataPerRow = dataMap.get(datum.getDataRow());
+			} else {
+				dataPerRow = new ArrayList<Datum>();
+				dataMap.put(datum.getDataRow(), dataPerRow);
+			}
+			dataPerRow.add(datum);
+		}
+		for (DataRow row : rows) {
+			DataRowBean rowBean = new DataRowBean(dataMap.get(row));
+			dataRows.add(rowBean);
+		}
+
+		// get column information from first data row
+		for (Datum datum : dataRows.get(0).getData()) {
+			// TODO add other info to column
+			columns.add(datum.getName());
+			DataColumnBean dataColumnBean = new DataColumnBean(datum);
+			columnBeans.add(dataColumnBean);
+			datumColumnBeans.add(dataColumnBean);
+		}
+		for (Condition condition : dataRows.get(0).getConditions()) {
+			// TODO add other info to column
+			columns.add(condition.getName());
+			DataColumnBean conditionColumnBean = new DataColumnBean(condition);
+			columnBeans.add(conditionColumnBean);
+			conditionColumnBeans.add(conditionColumnBean);
+		}
 	}
 
 	/**
