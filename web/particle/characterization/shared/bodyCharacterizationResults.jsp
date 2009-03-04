@@ -52,22 +52,22 @@
 								<td>
 									<table class="smalltable3" border="1">
 										<tr>
-											<c:forEach var="col" items="${dataSet.columns}">
+											<c:forEach var="col" items="${dataSet.columnBeans}">
 												<td>
-													<strong>${col}</strong>
+													<strong>${col.displayName}</strong>
 												</td>
 											</c:forEach>
 										</tr>
 										<c:forEach var="dataRow" items="${dataSet.dataRows}">
 											<tr>
-												<c:forEach var="datum" items="${dataRow.data}">
-													<td>
-														${datum.value}
-													</td>
-												</c:forEach>
 												<c:forEach var="condition" items="${dataRow.conditions}">
 													<td>
 														${condition.value}
+													</td>
+												</c:forEach>
+												<c:forEach var="datum" items="${dataRow.data}">
+													<td>
+														${datum.value}
 													</td>
 												</c:forEach>
 											</tr>
