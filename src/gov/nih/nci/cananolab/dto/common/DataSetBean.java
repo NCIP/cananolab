@@ -27,7 +27,6 @@ public class DataSetBean {
 	private List<DataRowBean> dataRows = new ArrayList<DataRowBean>();
 	private List<Datum> data = new ArrayList<Datum>();
 	private FileBean file = new FileBean();
-	private List<String> columns = new ArrayList<String>();
 	private List<DataColumnBean> datumColumnBeans = new ArrayList<DataColumnBean>();
 	private List<DataColumnBean> conditionColumnBeans = new ArrayList<DataColumnBean>();
 	private List<DataColumnBean> columnBeans = new ArrayList<DataColumnBean>();
@@ -62,20 +61,18 @@ public class DataSetBean {
 			dataRows.add(rowBean);
 		}
 
-		// get column information from first data row
-		for (Datum datum : dataRows.get(0).getData()) {
-			// TODO add other info to column
-			columns.add(datum.getName());
-			DataColumnBean dataColumnBean = new DataColumnBean(datum);
-			columnBeans.add(dataColumnBean);
-			datumColumnBeans.add(dataColumnBean);
-		}
 		for (Condition condition : dataRows.get(0).getConditions()) {
 			// TODO add other info to column
-			columns.add(condition.getName());
 			DataColumnBean conditionColumnBean = new DataColumnBean(condition);
 			columnBeans.add(conditionColumnBean);
 			conditionColumnBeans.add(conditionColumnBean);
+		}
+		// get column information from first data row
+		for (Datum datum : dataRows.get(0).getData()) {
+			// TODO add other info to column
+			DataColumnBean dataColumnBean = new DataColumnBean(datum);
+			columnBeans.add(dataColumnBean);
+			datumColumnBeans.add(dataColumnBean);
 		}
 	}
 
@@ -105,19 +102,17 @@ public class DataSetBean {
 		}
 
 		// get column information from first data row
-		for (Datum datum : dataRows.get(0).getData()) {
-			// TODO add other info to column
-			columns.add(datum.getName());
-			DataColumnBean dataColumnBean = new DataColumnBean(datum);
-			columnBeans.add(dataColumnBean);
-			datumColumnBeans.add(dataColumnBean);
-		}
 		for (Condition condition : dataRows.get(0).getConditions()) {
 			// TODO add other info to column
-			columns.add(condition.getName());
 			DataColumnBean conditionColumnBean = new DataColumnBean(condition);
 			columnBeans.add(conditionColumnBean);
 			conditionColumnBeans.add(conditionColumnBean);
+		}
+		for (Datum datum : dataRows.get(0).getData()) {
+			// TODO add other info to column
+			DataColumnBean dataColumnBean = new DataColumnBean(datum);
+			columnBeans.add(dataColumnBean);
+			datumColumnBeans.add(dataColumnBean);
 		}
 	}
 
@@ -246,10 +241,6 @@ public class DataSetBean {
 		return dataRowBean;
 	}
 
-	public List<String> getColumns() {
-		return columns;
-	}
-
 	public void addDatumColumnBean(DataColumnBean columnBean) {
 		if (datumColumnBeans.contains(columnBean)) {
 			for (DataColumnBean thisColumnBean : datumColumnBeans) {
@@ -328,8 +319,8 @@ public class DataSetBean {
 	 */
 	public List<DataColumnBean> getColumnBeans() {
 		columnBeans.clear();
-		columnBeans.addAll(datumColumnBeans);
 		columnBeans.addAll(conditionColumnBeans);
+		columnBeans.addAll(datumColumnBeans);
 		return columnBeans;
 	}
 }
