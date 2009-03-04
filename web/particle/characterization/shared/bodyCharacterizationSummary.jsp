@@ -39,7 +39,7 @@
 		</td>
 		<td class="rightLabel">
 			<html:select property="achar.characterizationName" styleId="charName"
-				onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();setDatumNameOptionsByCharName()">
+				onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();">
 				<option value=""></option>
 				<c:if test="${!empty charTypeChars }">
 					<html:options name="charTypeChars" />

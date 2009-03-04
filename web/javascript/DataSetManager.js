@@ -58,7 +58,12 @@ function showDatumConditionInfo(datumName) {
 		setConditionPropertyOptionsByCharName(datumName);
 	} else {
 		$("conditionProperty").style.display = 'none';
-		setDatumNameOptionsByCharName();
+		if (document.getElementById('datumOrCondition').value == 'Datum') {
+			setDatumNameOptionsByCharName();
+		}else{
+			dwr.util.removeAllOptions("name");
+			dwr.util.addOptions("name", [ "" ]);
+		}
 	}
 }
 
@@ -122,7 +127,6 @@ function resetTheDataSet(isShow) {
 	$("datumMatrixDivRow").style.display = "none";
 	$("datumColumnsDivRowDisplay").style.display = "none";
 	clearTheDataRow();
-	setDatumNameOptionsByCharName();
 }
 
 function setTheDataSet(dataSetId) {
@@ -484,7 +488,7 @@ function clearTheDataRow() {
 function clearTheDataColumn() {
 	// IE works only set value = '' instead of null
 	document.getElementById("columnId").value = '';
-	document.getElementById("datumOrCondition").value = "Datum";
+	document.getElementById("datumOrCondition").value = "";
 	document.getElementById("property").value = "";
 	showDatumConditionInfo(null);
 	tempDatum = null;

@@ -15,7 +15,7 @@
 	</tr>
 	<tr>
 		<td class="leftLabelWithTopNoBottom">
-			<strong>Column Type</strong>
+			<strong>Column Type*</strong>
 			<input type="hidden" id="columnId">
 		</td>
 		<td class="rightLabelWithTopNoBottom">
