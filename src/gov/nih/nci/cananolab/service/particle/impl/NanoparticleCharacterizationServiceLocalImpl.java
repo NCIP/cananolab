@@ -61,14 +61,14 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					throw new ParticleCharacterizationException(err);
 				}
 			}
-//			if (particleSample.getCharacterizationCollection() != null) {
-//				particleSample.getCharacterizationCollection().clear();
-//			} else {
-//				particleSample
-//						.setCharacterizationCollection(new HashSet<Characterization>());
-//			}
+			// if (particleSample.getCharacterizationCollection() != null) {
+			// particleSample.getCharacterizationCollection().clear();
+			// } else {
+			// particleSample
+			// .setCharacterizationCollection(new HashSet<Characterization>());
+			// }
 			achar.setNanoparticleSample(particleSample);
-			//particleSample.getCharacterizationCollection().add(achar);
+			// particleSample.getCharacterizationCollection().add(achar);
 			appService.saveOrUpdate(achar);
 		} catch (DuplicateEntriesException e) {
 			throw e;
@@ -96,40 +96,42 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		return findCharacterizationById(charId);
 	}
 
-//	private Boolean checkRedundantViewTitle(NanoparticleSample particleSample,
-//			Characterization chara) throws ParticleCharacterizationException {
-//		Boolean exist = false;
-//		try {
-//			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-//					.getApplicationService();
-//			DetachedCriteria crit = DetachedCriteria.forClass(
-//					Characterization.class).add(
-//					Property.forName("identificationName").eq(
-//							chara.getIdentificationName()));
-//			crit.createAlias("nanoparticleSample", "sample").add(
-//					Restrictions.eq("sample.name", particleSample.getName()));
-//			crit
-//					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-//			List results = appService.query(crit);
-//			if (!results.isEmpty()) {
-//				for (Object obj : results) {
-//					Characterization achar = (Characterization) obj;
-//					// same characterization class with different IDs can't have
-//					// the same view titles.
-//					if (achar.getClass().getCanonicalName().equals(
-//							chara.getClass().getCanonicalName())
-//							&& !achar.getId().equals(chara.getId())) {
-//						return true;
-//					}
-//				}
-//			}
-//			return exist;
-//		} catch (Exception e) {
-//			logger
-//					.error("Problem checking whether the view title already exists.");
-//			throw new ParticleCharacterizationException();
-//		}
-//	}
+	// private Boolean checkRedundantViewTitle(NanoparticleSample
+	// particleSample,
+	// Characterization chara) throws ParticleCharacterizationException {
+	// Boolean exist = false;
+	// try {
+	// CustomizedApplicationService appService = (CustomizedApplicationService)
+	// ApplicationServiceProvider
+	// .getApplicationService();
+	// DetachedCriteria crit = DetachedCriteria.forClass(
+	// Characterization.class).add(
+	// Property.forName("identificationName").eq(
+	// chara.getIdentificationName()));
+	// crit.createAlias("nanoparticleSample", "sample").add(
+	// Restrictions.eq("sample.name", particleSample.getName()));
+	// crit
+	// .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+	// List results = appService.query(crit);
+	// if (!results.isEmpty()) {
+	// for (Object obj : results) {
+	// Characterization achar = (Characterization) obj;
+	// // same characterization class with different IDs can't have
+	// // the same view titles.
+	// if (achar.getClass().getCanonicalName().equals(
+	// chara.getClass().getCanonicalName())
+	// && !achar.getId().equals(chara.getId())) {
+	// return true;
+	// }
+	// }
+	// }
+	// return exist;
+	// } catch (Exception e) {
+	// logger
+	// .error("Problem checking whether the view title already exists.");
+	// throw new ParticleCharacterizationException();
+	// }
+	// }
 
 	public SortedSet<String> findAllCharacterizationSources()
 			throws ParticleCharacterizationException {
@@ -208,8 +210,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			appService.delete(chara);
 
 		} catch (Exception e) {
-			String err = "Error deleting characterization "
-					+ chara.getId();
+			String err = "Error deleting characterization " + chara.getId();
 			logger.error(err, e);
 			throw new ParticleCharacterizationException(err, e);
 		}
@@ -243,6 +244,8 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataSet.file", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.dataSet.file.keywordCollection",
+					FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
