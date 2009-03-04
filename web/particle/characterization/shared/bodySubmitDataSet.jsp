@@ -20,6 +20,8 @@
 		</td>
 		<td class="rightLabelWithTopNoBottom">
 			<select id="datumOrCondition" onChange="showDatumConditionInfo(null)">
+				<option value="">					
+				</option>
 				<option value="Datum">
 					Datum
 				</option>
