@@ -119,12 +119,12 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Datum">
 			<param name="include"
-				value="id, name, value, valueType, valueUnit, dataRow, dataSet" />
+				value="id, name, value, valueType, valueUnit, dataRow, dataSet, createdDate, createdBy" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Condition">
 			<param name="include"
-				value="id, name, value, valueType, valueUnit, property, datumCollection" />
+				value="id, name, value, valueType, valueUnit, property, createdDate, createdBy" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
