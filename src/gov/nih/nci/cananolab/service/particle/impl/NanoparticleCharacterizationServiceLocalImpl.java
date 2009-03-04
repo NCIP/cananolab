@@ -257,9 +257,9 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			}
 			return chars;
 		} catch (Exception e) {
-			throw new ParticleCharacterizationException(
-					"Error finding characterizations by particle ID: "
-							+ particleId);
+			String err = "Error finding characterization by particle ID " + particleId;
+			logger.error(err, e);
+			throw new ParticleCharacterizationException(err);
 		}
 	}
 
