@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.dto.common.DataColumnBean;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
@@ -20,9 +21,9 @@ import org.directwebremoting.WebContextFactory;
 
 /**
  * Methods for DWR Ajax
- * 
+ *
  * @author pansu, tanq
- * 
+ *
  */
 public class DWRCharacterizationResultManager {
 	long tempDataRowId = -1;
@@ -52,7 +53,7 @@ public class DWRCharacterizationResultManager {
 		}
 		return theDataSet;
 	}
-	
+
 	public DataSetBean removeColumnHeader(DataColumnBean columnBean)
 		throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
@@ -90,8 +91,8 @@ public class DWRCharacterizationResultManager {
 					if (dataRowBean == null) {
 						dataRowBean = new DataRowBean();
 					}
-				}				
-//				if (conditions != null) {					
+				}
+//				if (conditions != null) {
 //					datum.setConditionCollection(conditions);
 //				}
 				dataRowBean.setConditions(conditions);
@@ -100,7 +101,7 @@ public class DWRCharacterizationResultManager {
 				i++;
 			}
 			if (hasData) {
-				
+
 				// if dataRowBean.id is null, set a negative id temporary
 				// need to handle set nagative id to null when save to db
 				if (dataRowBean.getDomain().getId() == null) {
@@ -108,7 +109,7 @@ public class DWRCharacterizationResultManager {
 				}
 				theDataSet.addDataRow(dataRowBean);
 			}
-		}		
+		}
 		return theDataSet;
 	}
 
@@ -131,8 +132,8 @@ public class DWRCharacterizationResultManager {
 					dataRowBean = theDataSet.getDataRowBean(datum);
 					if (dataRowBean == null) {
 						return theDataSet;
-					}					
-				}		
+					}
+				}
 				if (conditions!=null && conditions.size()>0) {
 					for (Condition condition : conditions) {
 						dataRowBean.removeCondition(condition);
@@ -141,7 +142,7 @@ public class DWRCharacterizationResultManager {
 				dataRowBean.removeDatum(datum);
 				i++;
 			}
-			
+
 			if (dataRowBean != null
 					&& (dataRowBean.getData() == null || dataRowBean.getData()
 							.size() == 0)) {
@@ -151,16 +152,12 @@ public class DWRCharacterizationResultManager {
 		return theDataSet;
 	}
 
-	public DataSetBean getDataSetBeanBy(String dataSetId) throws Exception {
-		List<Datum> data = service.getDataForDataSet(dataSetId);
-		DataSetBean dataSetBean = new DataSetBean(data);
-		return dataSetBean;
-	}
-
 	public DataSetBean findDataSetById(String dataSetId)
 			throws CharacterizationResultException {
-		List<Datum> data = service.getDataForDataSet(dataSetId);
-		DataSetBean dataSetBean = new DataSetBean(data);
+//		List<Datum> data = service.getDataForDataSet(dataSetId);
+//		DataSetBean dataSetBean = new DataSetBean(data);
+		DataSet dataSet=service.findDataSetById(dataSetId);
+		DataSetBean dataSetBean=new DataSetBean(dataSet);
 		dataSetBean.setTheDataRow(dataSetBean.getDataRows().get(0));
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
@@ -169,8 +166,8 @@ public class DWRCharacterizationResultManager {
 		charBean.setTheDataSet(dataSetBean);
 		return dataSetBean;
 	}
-	
-	
+
+
 	public String[] getConditionOptions() throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
