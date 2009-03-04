@@ -140,8 +140,10 @@ public class CharacterizationBean {
 		}
 
 		for (DataSet set : dataSetList) {
-			DataSetBean dataSetBean = new DataSetBean(dataMap.get(set));
-			dataSets.add(dataSetBean);
+			if (set != null) {
+				DataSetBean dataSetBean = new DataSetBean(dataMap.get(set));
+				dataSets.add(dataSetBean);
+			}
 		}
 	}
 
@@ -271,10 +273,9 @@ public class CharacterizationBean {
 			domainChar.setDatumCollection(new HashSet<Datum>());
 		}
 
-		if (domainChar.getDatumCollection()!=null) {
+		if (domainChar.getDatumCollection() != null) {
 			domainChar.getDatumCollection().clear();
-		}
-		else {
+		} else {
 			domainChar.setDatumCollection(new HashSet<Datum>());
 		}
 		for (DataSetBean dataSetBean : dataSets) {
