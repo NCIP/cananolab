@@ -8,6 +8,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
@@ -49,7 +50,6 @@
 		</ul>
 	</div>
 </c:forEach>
-<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 <br>
 <br>
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
