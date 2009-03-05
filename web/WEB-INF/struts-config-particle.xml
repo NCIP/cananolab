@@ -76,6 +76,8 @@
 			<form-property name="particleId" type="java.lang.String" />
 			<form-property name="otherParticles"
 				type="java.lang.String[]" />
+			<form-property name="theDataSetId"
+				type="java.lang.String" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="copyData" type="java.lang.Boolean"
 				initial="false" />
