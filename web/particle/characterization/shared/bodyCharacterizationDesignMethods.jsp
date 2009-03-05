@@ -19,18 +19,15 @@
 			<strong>Description</strong>
 		</td>
 		<td class="rightLabelNoBottom" colspan="3">
-			<html:textarea property="achar.description" cols="120" rows="8"/>
+			<html:textarea property="achar.description" cols="120" rows="8" />
 		</td>
 	</tr>
 	<tr>
 		<td class="completeLabelNoBottom" valign="top" colspan="4">
 			<strong>Technique and Instrument</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<c:if
-				test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-				<a style="" id="addTechniqueInstrument"
-					href="javascript:resetTheExperimentConfig(true);"> <span
-					class="addLink2">Add</span> </a>
-			</c:if>
+			<a style="" id="addTechniqueInstrument"
+				href="javascript:resetTheExperimentConfig(true);"> <span
+				class="addLink2">Add</span> </a>
 		</td>
 	</tr>
 	<tr>
