@@ -3,28 +3,29 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%
+	String[] compositionSections = { "Nanoparticle Entity",
+			"Functionalizing Entity", "Chemical Association",
+			"Composition File" };
+	pageContext
+			.setAttribute("compositionSections", compositionSections);
+%>
+
+<c:set var="sectionTitles" value="" />
+
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a href="javascript:showSummary('ALL')" title="Summary"><span>Summary</span>
+			<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
 			</a>
 		</li>
-		<li>
-			<a href="javascript:showSummary('1')" title="Nanoparticle Entity">
-				<span>Nanoparticle Entity</span> </a>
-		</li>
-		<li>
-			<a href="javascript:showSummary('2')" title="Functionalizing Entity">
-				<span>Functionalizing Entity</span> </a>
-		</li>
-		<li>
-			<a href="javascript:showSummary('3')" title="Chemical Association"><span>
-					Chemical Association</span> </a>
-		</li>
-		<li>
-			<a href="javascript:showSummary('4')" title="Composition File"><span>Composition
-					File</span> </a>
-		</li>
+		<c:forEach var="type" items="${compositionSections}" varStatus="ind">
+			<li>
+				<a href="javascript:showSummary('${ind.count}')" title="${type}">
+					<span>${type}</span> </a>
+			</li>
+		</c:forEach>
 	</ul>
 </div>
 <c:forEach var='item' begin='1' end='4'>
@@ -34,22 +35,20 @@
 				<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
 				</a>
 			</li>
-			<li class="selected">
-				<a href="javascript:showSummary('1')" title="Nanoparticle Entity">
-					<span>Nanoparticle Entity</span> </a>
-			</li>
-			<li>
-				<a href="javascript:showSummary('2')" title="Functionalizing Entity">
-					<span>Functionalizing Entity</span> </a>
-			</li>
-			<li>
-				<a href="javascript:showSummary('3')" title="Chemical Association"><span>
-						Chemical Association</span> </a>
-			</li>
-			<li>
-				<a href="javascript:showSummary('4')" title="Composition File"><span>Composition
-						File</span> </a>
-			</li>
+			<c:forEach var="type" items="${compositionSections}" varStatus="ind">
+				<c:choose>
+					<c:when test="${item eq ind.count }">
+						<c:set var="selectedClass" value="selected" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="selectedClass" value="" />
+					</c:otherwise>
+				</c:choose>
+				<li class="${selectedClass}">
+					<a href="javascript:showSummary('${ind.count}')" title="${type}">
+						<span>${type}</span> </a>
+				</li>
+			</c:forEach>
 		</ul>
 	</div>
 </c:forEach>
