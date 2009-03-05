@@ -585,7 +585,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		DataSetBean dataSetBean = achar.getTheDataSet();
+		DataSetBean dataSetBean = achar.getTheDataSet();		
+		String theDataSetId = (String) theForm
+			.get("theDataSetId");
+		if (theDataSetId!=null) {
+			dataSetBean.getDomain().setId(new Long(theDataSetId));
+		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		dataSetBean.setupDomain(user.getLoginName());
 		NanoparticleCharacterizationResultService service = new NanoparticleCharacterizationResultServiceLocalImpl();
