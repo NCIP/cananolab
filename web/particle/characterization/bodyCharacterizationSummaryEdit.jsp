@@ -3,28 +3,63 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table summary="" cellpadding="0" cellspacing="0" border="0"
-	width="100%">
-	<tr>
-		<c:forEach var="type" items="${characterizationTypes}">
-			<th class="borderlessLabel">
-				<a href="#${type}">${type}</a>
-			</th>
-		</c:forEach>
-		<td class="borderlessLabel">
+<div class="animatedtabs" id="summaryTabALL">
+	<ul>
+		<li class="selected">
+			<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
+			</a>
+		</li>
+		<li>
+			<c:forEach var="type" items="${characterizationTypes}"
+				varStatus="ind">
+				<a href="javascript:showSummary('${ind.count}')" title="${type}"><span>${type}</span>
+				</a>
+			</c:forEach>
+		</li>
+		<li>
 			<a
-				href="characterization.do?dispatch=setupNew&particleId=${particleId }">add
-				new </a>
-		</td>
-	</tr>
-</table>
-<br>
-
+				href="characterization.do?dispatch=setupNew&particleId=${particleId }"><span>New</span>
+			</a>
+		</li>
+	</ul>
+</div>
+<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
+	<div class="animatedtabs" id="summaryTab${ind.count}"
+		style="display: none;">
+		<ul>
+			<li>
+				<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
+				</a>
+			</li>
+			<c:forEach var="type" items="${characterizationTypes}"
+				varStatus="ind2">
+				<c:choose>
+					<c:when test="${ind.count eq ind2.count }">
+						<c:set var="selectedClass" value="selected" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="selectedClass" value="" />
+					</c:otherwise>
+				</c:choose>
+				<li class="${selectedClass}">
+					<a href="javascript:showSummary('${ind2.count}')" title="${type}"><span>${type}</span>
+					</a>
+				</li>
+			</c:forEach>
+			<li>
+				<a
+					href="characterization.do?dispatch=setupNew&particleId=${particleId }"><span>New</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</c:forEach>
 <jsp:include page="/bodyMessage.jsp?bundle=particle" />
-
-<c:forEach var="type" items="${characterizationTypes}">
-	<table class="smalltable3" cellpadding="0" cellspacing="0" border="0"
-		width="100%">
+<br>
+<br>
+<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
+	<table id="summarySection${ind.count}" class="smalltable3"
+		cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
 			<th colspan="4" align="left">
 				${type} &nbsp;&nbsp;&nbsp;
@@ -107,7 +142,8 @@
 																		<td valign="top">
 																			<table class="smalltable3" border="1">
 																				<tr>
-																					<c:forEach var="col" items="${dataSetBean.columnBeans}">
+																					<c:forEach var="col"
+																						items="${dataSetBean.columnBeans}">
 																						<td>
 																							<strong>${col.displayName}</strong>
 																						</td>
@@ -158,7 +194,7 @@
 										</td>
 									</tr>
 								</table>
-								<br>
+							<br>
 							</div>
 						</c:forEach>
 					</c:when>
@@ -180,5 +216,7 @@
 			</td>
 		</tr>
 	</table>
-	<br>
+	<div id="summarySeparator${ind.count}">
+		<br>
+	</div>
 </c:forEach>
