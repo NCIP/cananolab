@@ -11,8 +11,8 @@
 		</id>
 		<!-- Attributes mapping for the DataSet class -->
 		<!-- Associations mapping for the DataSet class -->
-		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" />
-		<set name="datumCollection" lazy="true" inverse="true">
+		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" cascade="all"/>
+		<set name="datumCollection" lazy="true" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="data_set_pk_id" />
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.Datum"/>

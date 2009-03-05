@@ -11,9 +11,15 @@ public interface NanoparticleCharacterizationResultService {
 	public void saveData(List<Datum> data)
 			throws CharacterizationResultException;
 
+	public void saveDataSet(DataSet dataSet)
+			throws CharacterizationResultException;
+
 	public List<Datum> getDataForDataSet(String dataSetId)
 			throws CharacterizationResultException;
 
 	public DataSet findDataSetById(String dataSetId)
+			throws CharacterizationResultException;
+
+	public void deleteDataSet(DataSet dataSet)
 			throws CharacterizationResultException;
 }

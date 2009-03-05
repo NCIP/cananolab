@@ -173,6 +173,12 @@ public class DataSetBean {
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
 		}
+		if (domain.getDatumCollection() != null) {
+			domain.getDatumCollection().clear();
+		}
+		else {
+			domain.setDatumCollection(new HashSet<Datum>());
+		}
 		for (DataRowBean dataRowBean : dataRows) {
 			for (Datum datum : dataRowBean.getData()) {
 				if (datum.getId() != null && datum.getId() <= 0) {
@@ -187,11 +193,6 @@ public class DataSetBean {
 						&& datum.getDataRow().getId() <= 0) {
 					datum.getDataRow().setId(null);
 				}
-				// if (datum.getDataSet().getId() != null
-				// && datum.getDataSet().getId() <= 0) {
-				// datum.getDataSet().setId(null);
-				// }
-				setDatumColumnValuesToDatum(datum);				
 				if (datum.getConditionCollection() == null) {
 					datum.setConditionCollection(new HashSet<Condition>());
 				} else {
@@ -211,6 +212,7 @@ public class DataSetBean {
 					setDatumColumnValuesToCondition(condition);
 					datum.getConditionCollection().add(condition);
 				}
+				domain.getDatumCollection().add(datum);
 				datum.setDataSet(domain);
 				i++;
 			}
@@ -326,7 +328,7 @@ public class DataSetBean {
 		columnBeans.addAll(datumColumnBeans);
 		return columnBeans;
 	}
-	
+
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
@@ -352,10 +354,10 @@ public class DataSetBean {
 			return getDomain().getId().hashCode();
 		return 0;
 	}
-	
+
 	private void setDatumColumnValuesToDatum(Datum datum) {
 		for (DataColumnBean dataColumnBean: datumColumnBeans) {
-			if (dataColumnBean!=null) {	
+			if (dataColumnBean!=null) {
 				datum.setName(dataColumnBean.getName());
 				datum.setValueType(dataColumnBean.getValueType());
 				datum.setValueUnit(dataColumnBean.getValueUnit());
@@ -365,7 +367,7 @@ public class DataSetBean {
 
 	private void setDatumColumnValuesToCondition(Condition condition) {
 		for (DataColumnBean dataColumnBean: conditionColumnBeans) {
-			if (dataColumnBean!=null) {	
+			if (dataColumnBean!=null) {
 				condition.setName(dataColumnBean.getName());
 				condition.setProperty(dataColumnBean.getProperty());
 				condition.setValueType(dataColumnBean.getValueType());

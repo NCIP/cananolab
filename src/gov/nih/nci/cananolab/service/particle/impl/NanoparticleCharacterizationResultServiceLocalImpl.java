@@ -2,9 +2,14 @@ package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
+import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
+import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -84,6 +89,37 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 			}
 		} catch (Exception e) {
 			String err = "Error saving characterization result data. ";
+			logger.error(err, e);
+			throw new CharacterizationResultException(err, e);
+		}
+	}
+
+	public void saveDataSet(DataSet dataSet)
+			throws CharacterizationResultException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			appService.saveOrUpdate(dataSet);
+			//TODO special handling for file
+		} catch (Exception e) {
+			String err = "Error saving characterization result data set. ";
+			logger.error(err, e);
+			throw new CharacterizationResultException(err, e);
+		}
+	}
+
+	public void deleteDataSet(DataSet dataSet)
+			throws CharacterizationResultException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			AuthorizationService authService = new AuthorizationService(
+					CaNanoLabConstants.CSM_APP_NAME);
+			authService.removePublicGroup(dataSet.getId().toString());
+			appService.delete(dataSet);
+
+		} catch (Exception e) {
+			String err = "Error deleting data set " + dataSet.getId();
 			logger.error(err, e);
 			throw new CharacterizationResultException(err, e);
 		}
