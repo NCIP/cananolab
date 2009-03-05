@@ -295,16 +295,16 @@ function popImage(event, imgSrc, imgId) {
 	if (width>height){
 		if (width>maxHeight){
 		 	ratio = maxHeight/width;
-		    width = maxHeight+2;	 
+		    width = maxHeight+2;
 		    height = ratio * height;
-		}	
+		}
 	}else{
 		if (height>maxHeight){
 		 	ratio = maxHeight/height*100;
-		    height = maxHeight+2;	 
-		    width = ratio * width/100;  
+		    height = maxHeight+2;
+		    width = ratio * width/100;
 		}
-	}	
+	}
 //    leftPos=event.clientX-width-200;
 //    topPos=event.clientY-200;
 	leftPos = 50;
@@ -385,10 +385,10 @@ function getSelectedOptions(selectEle) {
 }
 function displayLogin() {
 	showhide('loginBlock');
-	return false;	
+	return false;
 }
 
-function showhide(layer_ref) {	
+function showhide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if(layerBlock.style.display == 'none')
 		layerBlock.style.display = 'block';
@@ -396,7 +396,7 @@ function showhide(layer_ref) {
 		layerBlock.style.display = 'none';
 }
 
-function show(layer_ref) {	
+function show(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock==null){
 		alert(layer_ref +" is null (cannot show)");
@@ -406,7 +406,7 @@ function show(layer_ref) {
 		layerBlock.style.display = 'block';
 }
 
-function hide(layer_ref) {	
+function hide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
 	if (layerBlock==null){
 		alert(layer_ref +" is null (cannot show)");
@@ -423,11 +423,11 @@ function showComposition(layer_ref) {
 			document.getElementById("compositionSection"+i).style.display = 'block';
 			document.getElementById("compositionSeparator"+i).style.display = 'block';
 			document.getElementById("compositionTab"+i).style.display = 'none';
-		}	
+		}
 		return;
 	}
 	document.getElementById("compositionTabALL").style.display = 'none';
-	for (var i=1; i<5; i++){		
+	for (var i=1; i<5; i++){
 		if (layer_ref==i){
 			document.getElementById("compositionTab"+i).style.display = 'block';
 			document.getElementById("compositionSection"+i).style.display = 'block';
@@ -437,8 +437,31 @@ function showComposition(layer_ref) {
 			document.getElementById("compositionSection"+i).style.display = 'none';
 			document.getElementById("compositionSeparator"+i).style.display = 'none';
 		}
-	}	
+	}
 }
 
+function showSummary(layer_ref) {
+	if (layer_ref=='ALL'){
+		document.getElementById("summaryTabALL").style.display = 'block';
+		for (var i=1; i<5; i++){
+			document.getElementById("summarySection"+i).style.display = 'block';
+			document.getElementById("summarySeparator"+i).style.display = 'block';
+			document.getElementById("summaryTab"+i).style.display = 'none';
+		}
+		return;
+	}
+	document.getElementById("summaryTabALL").style.display = 'none';
+	for (var i=1; i<5; i++){
+		if (layer_ref==i){
+			document.getElementById("summaryTab"+i).style.display = 'block';
+			document.getElementById("summarySection"+i).style.display = 'block';
+			document.getElementById("summarySeparator"+i).style.display = 'block';
+		}else{
+			document.getElementById("summaryTab"+i).style.display = 'none';
+			document.getElementById("summarySection"+i).style.display = 'none';
+			document.getElementById("summarySeparator"+i).style.display = 'none';
+		}
+	}
+}
 
 
