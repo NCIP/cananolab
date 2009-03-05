@@ -217,5 +217,6 @@
 	</tr>
 
 </table>
-
+<input name="theDataSetId" id="theDataSetId" 
+	type="hidden" value="${characterizationForm.map.achar.theDataSet.domain.id}">
 <html:hidden styleId="dataSetId" property="achar.theDataSet.domain.id" />
