@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.ParticleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -26,7 +25,6 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
@@ -549,9 +547,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		DataSetBean dataSetBean = achar.getTheDataSet();
-		String theDataSetId = (String) theForm
-			.get("theDataSetId");
-		if (theDataSetId!=null && theDataSetId.trim().length()>0) {
+		String theDataSetId = (String) theForm.get("theDataSetId");
+		if (theDataSetId != null && !theDataSetId.equals("null")
+				&& theDataSetId.trim().length() > 0) {
 			dataSetBean.getDomain().setId(new Long(theDataSetId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
