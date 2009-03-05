@@ -147,6 +147,16 @@ public class DataRowBean {
 	 *            the conditions to set
 	 */
 	public void setConditions(List<Condition> conditions) {
+		if (this.conditions!=null) {
+			for (Condition originalCondition : this.conditions) {
+				int index = conditions.indexOf(originalCondition);
+				if (index!=-1) {
+					//copy createBy and createDate
+					conditions.get(index).setCreatedBy(originalCondition.getCreatedBy());
+					conditions.get(index).setCreatedDate(originalCondition.getCreatedDate());
+				}				
+			}
+		}
 		this.conditions = conditions;
 	}
 
