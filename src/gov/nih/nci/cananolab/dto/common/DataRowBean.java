@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,9 +26,9 @@ public class DataRowBean {
 	public DataRowBean(List<Datum> data) {
 		domain = data.get(0).getDataRow();
 		this.data = data;
-		for (Datum datum : data) {
-			conditions.addAll(datum.getConditionCollection());
-		}
+		//use condition for the first data is sufficent
+		conditions = new ArrayList<Condition>(data.get(0)
+				.getConditionCollection());
 		Collections.sort(conditions,
 				new CaNanoLabComparators.ConditionDateComparator());
 	}
@@ -74,7 +73,7 @@ public class DataRowBean {
 	/**
 	 * @return the data
 	 */
-	public Collection<Datum> getData() {
+	public List<Datum> getData() {
 		return data;
 	}
 
@@ -147,14 +146,16 @@ public class DataRowBean {
 	 *            the conditions to set
 	 */
 	public void setConditions(List<Condition> conditions) {
-		if (this.conditions!=null) {
+		if (this.conditions != null) {
 			for (Condition originalCondition : this.conditions) {
 				int index = conditions.indexOf(originalCondition);
-				if (index!=-1) {
-					//copy createBy and createDate
-					conditions.get(index).setCreatedBy(originalCondition.getCreatedBy());
-					conditions.get(index).setCreatedDate(originalCondition.getCreatedDate());
-				}				
+				if (index != -1) {
+					// copy createBy and createDate
+					conditions.get(index).setCreatedBy(
+							originalCondition.getCreatedBy());
+					conditions.get(index).setCreatedDate(
+							originalCondition.getCreatedDate());
+				}
 			}
 		}
 		this.conditions = conditions;
@@ -174,12 +175,14 @@ public class DataRowBean {
 			}
 		}
 	}
-	
+
 	public void removeDatumColumn(int index) {
-		if (data.size()>index)
+		if (data.size() > index)
 			data.remove(index);
 	}
+
 	public void removeConditionColumn(int index) {
-		if (conditions.size()>index) conditions.remove(index);
+		if (conditions.size() > index)
+			conditions.remove(index);
 	}
 }
