@@ -174,4 +174,12 @@ public class DataRowBean {
 			}
 		}
 	}
+	
+	public void removeDatumColumn(int index) {
+		if (data.size()>index)
+			data.remove(index);
+	}
+	public void removeConditionColumn(int index) {
+		if (conditions.size()>index) conditions.remove(index);
+	}
 }
