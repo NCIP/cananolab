@@ -191,6 +191,7 @@ public class DataSetBean {
 				// && datum.getDataSet().getId() <= 0) {
 				// datum.getDataSet().setId(null);
 				// }
+				setDatumColumnValuesToDatum(datum);				
 				if (datum.getConditionCollection() == null) {
 					datum.setConditionCollection(new HashSet<Condition>());
 				} else {
@@ -206,6 +207,8 @@ public class DataSetBean {
 						condition.setCreatedDate(DateUtil
 								.addSecondsToCurrentDate(i));
 					}
+
+					setDatumColumnValuesToCondition(condition);
 					datum.getConditionCollection().add(condition);
 				}
 				datum.setDataSet(domain);
@@ -322,5 +325,53 @@ public class DataSetBean {
 		columnBeans.addAll(conditionColumnBeans);
 		columnBeans.addAll(datumColumnBeans);
 		return columnBeans;
+	}
+	
+	/**
+	 * Compares <code>obj</code> to it self and returns true if they both are
+	 * same
+	 *
+	 * @param obj
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof DataSetBean) {
+			DataSetBean dataSetBean = (DataSetBean) obj;
+			if (getDomain().getId() != null
+					&& getDomain().getId().equals(
+							dataSetBean.getDomain().getId()))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns hash code for the primary key of the object
+	 */
+	public int hashCode() {
+		if (getDomain().getId() != null)
+			return getDomain().getId().hashCode();
+		return 0;
+	}
+	
+	private void setDatumColumnValuesToDatum(Datum datum) {
+		for (DataColumnBean dataColumnBean: datumColumnBeans) {
+			if (dataColumnBean!=null) {	
+				datum.setName(dataColumnBean.getName());
+				datum.setValueType(dataColumnBean.getValueType());
+				datum.setValueUnit(dataColumnBean.getValueUnit());
+			}
+		}
+	}
+
+	private void setDatumColumnValuesToCondition(Condition condition) {
+		for (DataColumnBean dataColumnBean: conditionColumnBeans) {
+			if (dataColumnBean!=null) {	
+				condition.setName(dataColumnBean.getName());
+				condition.setProperty(dataColumnBean.getProperty());
+				condition.setValueType(dataColumnBean.getValueType());
+				condition.setValueUnit(dataColumnBean.getValueUnit());
+			}
+		}
+		//private List<DataColumnBean> conditionColumnBeans = new ArrayList<DataColumnBean>();
 	}
 }
