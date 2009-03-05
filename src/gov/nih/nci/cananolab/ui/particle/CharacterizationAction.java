@@ -588,7 +588,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DataSetBean dataSetBean = achar.getTheDataSet();		
 		String theDataSetId = (String) theForm
 			.get("theDataSetId");
-		if (theDataSetId!=null) {
+		if (theDataSetId!=null && theDataSetId.trim().length()>0) {
 			dataSetBean.getDomain().setId(new Long(theDataSetId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
