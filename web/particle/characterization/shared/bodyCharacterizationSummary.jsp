@@ -26,7 +26,7 @@
 		</td>
 		<td class="label">
 			<html:select property="achar.characterizationType" styleId="charType"
-				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharType()">
+				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharTypeWithOther()">
 				<option value=""></option>
 				<html:options name="characterizationTypes" />
 				<option value="other">

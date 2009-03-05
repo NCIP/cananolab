@@ -147,12 +147,11 @@
 								property="characterizationType" />
 						</td>
 						<td class="label" valign="top">
-							<c:forEach var="charType" items="${characterizationTypes}">
-								<a href="#"
-									onclick="javascript:setCharacterizationOptions('${charType}', 'charName')">${charType}
-								</a>
-								<br>
-							</c:forEach>
+							<html:select property="characterizationType" styleId="charType"
+								onchange="javascript:setCharacterizationOptionsByCharType()">
+								<option value=""/>
+								<html:options name="characterizationTypes" />
+							</html:select>
 						</td>
 						<td class="label" valign="top">
 							<strong>Characterization</strong>
