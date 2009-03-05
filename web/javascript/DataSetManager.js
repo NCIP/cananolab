@@ -172,6 +172,7 @@ function populateDataSet(dataSet) {
 }
 
 function saveDataSet(actionName) {
+	document.getElementById("theDataSetId").value=currentDataSet.domain.id;
 	submitAction(document.forms[0], actionName, 'saveDataSet');
 }
 
