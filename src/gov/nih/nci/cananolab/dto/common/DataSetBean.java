@@ -175,8 +175,7 @@ public class DataSetBean {
 		}
 		if (domain.getDatumCollection() != null) {
 			domain.getDatumCollection().clear();
-		}
-		else {
+		} else {
 			domain.setDatumCollection(new HashSet<Datum>());
 		}
 		for (DataRowBean dataRowBean : dataRows) {
@@ -194,7 +193,7 @@ public class DataSetBean {
 					datum.getDataRow().setId(null);
 				}
 				setDatumColumnValuesToDatum(datum);
-				
+
 				if (datum.getConditionCollection() == null) {
 					datum.setConditionCollection(new HashSet<Condition>());
 				} else {
@@ -265,44 +264,44 @@ public class DataSetBean {
 		}
 	}
 
-	public void removeDatumColumnBean(DataColumnBean columnBean) {		
+	public void removeDatumColumnBean(DataColumnBean columnBean) {
 		Datum dummyDatum = new Datum();
 		dummyDatum.setId(columnBean.getId());
-		int index = -1;		
-		for (DataRowBean dataRowBean: dataRows) {
+		int index = -1;
+		for (DataRowBean dataRowBean : dataRows) {
 			List<Datum> tempDataList = new ArrayList(dataRowBean.getData());
 			index = tempDataList.indexOf(dummyDatum);
-			if (index!=-1) {
+			if (index != -1) {
 				break;
-			}			
+			}
 		}
-		if (index>=0) {
-			for (DataRowBean dataRowBean: dataRows) {
+		if (index >= 0) {
+			for (DataRowBean dataRowBean : dataRows) {
 				dataRowBean.removeDatumColumn(index);
-			}		
+			}
 		}
 		datumColumnBeans.remove(columnBean);
 	}
 
-
 	public void removeConditionColumnBean(DataColumnBean columnBean) {
 		Condition dummyCondition = new Condition();
 		dummyCondition.setId(columnBean.getId());
-		int index = -1;		
-		for (DataRowBean dataRowBean: dataRows) {
-			List<Condition> tempConditionList = new ArrayList(dataRowBean.getConditions());
+		int index = -1;
+		for (DataRowBean dataRowBean : dataRows) {
+			List<Condition> tempConditionList = new ArrayList(dataRowBean
+					.getConditions());
 			index = tempConditionList.indexOf(dummyCondition);
-			if (index!=-1) {
+			if (index != -1) {
 				break;
-			}			
+			}
 		}
-		if (index>=0) {
-			for (DataRowBean dataRowBean: dataRows) {
-				dataRowBean.removeConditionColumn(index);			
-			}	
+		if (index >= 0) {
+			for (DataRowBean dataRowBean : dataRows) {
+				dataRowBean.removeConditionColumn(index);
+			}
 		}
 		conditionColumnBeans.remove(columnBean);
-	}	
+	}
 
 	public void addConditionColumnBean(DataColumnBean columnBean) {
 		if (conditionColumnBeans.contains(columnBean)) {
@@ -389,8 +388,9 @@ public class DataSetBean {
 	}
 
 	private void setDatumColumnValuesToDatum(Datum datum) {
-		for (DataColumnBean dataColumnBean: datumColumnBeans) {
-			if (dataColumnBean!=null) {
+		for (DataColumnBean dataColumnBean : datumColumnBeans) {
+			if (dataColumnBean != null
+					&& dataColumnBean.getId().equals(datum.getId())) {
 				datum.setName(dataColumnBean.getName());
 				datum.setValueType(dataColumnBean.getValueType());
 				datum.setValueUnit(dataColumnBean.getValueUnit());
@@ -399,14 +399,16 @@ public class DataSetBean {
 	}
 
 	private void setDatumColumnValuesToCondition(Condition condition) {
-		for (DataColumnBean dataColumnBean: conditionColumnBeans) {
-			if (dataColumnBean!=null) {
+		for (DataColumnBean dataColumnBean : conditionColumnBeans) {
+			if (dataColumnBean != null
+					&& dataColumnBean.getId().equals(condition.getId())) {
 				condition.setName(dataColumnBean.getName());
 				condition.setProperty(dataColumnBean.getProperty());
 				condition.setValueType(dataColumnBean.getValueType());
 				condition.setValueUnit(dataColumnBean.getValueUnit());
 			}
 		}
-		//private List<DataColumnBean> conditionColumnBeans = new ArrayList<DataColumnBean>();
+		// private List<DataColumnBean> conditionColumnBeans = new
+		// ArrayList<DataColumnBean>();
 	}
 }
