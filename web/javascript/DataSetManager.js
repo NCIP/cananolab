@@ -106,15 +106,15 @@ function resetTheDataSet(isShow) {
 						}
 					});
 
-	for ( var i = 1; i < columnCount + 1; i++) {
-		var cell = document.createElement("TD");
-		var span = document.createElement('SPAN');
-		span.setAttribute("id", "matrixHeaderColumn" + i);
-		span.setAttribute("class", "greyFont2");
-		span.appendChild(document.createTextNode('Header'));
-		cell.appendChild(span);
-		matrixHeader.appendChild(cell);
-	}
+//	for ( var i = 1; i < columnCount + 1; i++) {
+//		var cell = document.createElement("TD");
+//		var span = document.createElement('SPAN');
+//		span.setAttribute("id", "matrixHeaderColumn" + i);
+//		span.setAttribute("class", "greyFont2");
+//		span.appendChild(document.createTextNode('Header'));
+//		cell.appendChild(span);
+//		matrixHeader.appendChild(cell);
+//	}
 	$("matrixHeader").style.display = "";
 	$("datumMatrixPatternRow").style.display = "none";
 	$("matrixHeader").style.display = "none";
@@ -141,6 +141,14 @@ function populateDataSet(dataSet) {
 	if (dataSet != null && dataSet.dataRows != null
 			&& dataSet.dataRows.length > 0) {
 		currentDataSet = dataSet;
+		
+		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
+			var conditions = currentDataSet.dataRows[index].conditions;
+			var id;
+			for ( var i = 0; i < conditions.length; i++) {
+				addDatumColumn(conditions[i]);
+			}
+		}
 		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
 			var data = currentDataSet.dataRows[index].data;
 			var id;
@@ -152,13 +160,6 @@ function populateDataSet(dataSet) {
 			conditionHeaderColumnCount = 0;
 			for ( var i = 0; i < data.length; i++) {
 				addDatumColumn(data[i]);
-			}
-		}
-		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
-			var conditions = currentDataSet.dataRows[index].conditions;
-			var id;
-			for ( var i = 0; i < conditions.length; i++) {
-				addDatumColumn(conditions[i]);
 			}
 		}
 		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
@@ -273,7 +274,9 @@ function createMatrixPattern() {
 	var matrixHeader = document.getElementById("matrixHeader");
 	matrixHeader = removeAllColumns(matrixHeader);
 	var headerName, headerValueType, headerValueUnit;
-	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
+	
+	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
+			+ fixConditionColIndex + 1; i++) {
 		var cell = document.createElement("TD");
 		var span = document.createElement('SPAN');
 		span.setAttribute("id", "matrixHeaderColumn" + i);
@@ -285,8 +288,7 @@ function createMatrixPattern() {
 		cell.appendChild(span);
 		matrixHeader.appendChild(cell);
 	}
-	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
-			+ fixConditionColIndex + 1; i++) {
+	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
 		var cell = document.createElement("TD");
 		var span = document.createElement('SPAN');
 		span.setAttribute("id", "matrixHeaderColumn" + i);
@@ -303,16 +305,7 @@ function createMatrixPattern() {
 			.getElementById("datumMatrixPatternRow");
 	datumMatrixPatternRow = removeAllColumns(datumMatrixPatternRow);
 
-	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
-		var cell = document.createElement("TD");
-		var span = document.createElement('SPAN');
-		span.setAttribute("id", "datumMatrixValue" + i);
-		span.setAttribute("class", "greyFont2");
-		span.appendChild(document.createTextNode(''));
-		cell.appendChild(span);
-		datumMatrixPatternRow.appendChild(cell);
-	}
-
+	
 	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
 			+ fixConditionColIndex + 1; i++) {
 		var cell = document.createElement("TD");
@@ -323,6 +316,16 @@ function createMatrixPattern() {
 		cell.appendChild(span);
 		datumMatrixPatternRow.appendChild(cell);
 	}
+	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
+		var cell = document.createElement("TD");
+		var span = document.createElement('SPAN');
+		span.setAttribute("id", "datumMatrixValue" + i);
+		span.setAttribute("class", "greyFont2");
+		span.appendChild(document.createTextNode(''));
+		cell.appendChild(span);
+		datumMatrixPatternRow.appendChild(cell);
+	}
+
 
 	var buttonCell = document.createElement("TD");
 	buttonCell.setAttribute("id", "selectButtonCell");
@@ -346,7 +349,9 @@ function addRow() {
 	var datumid = null;
 	var datumOrCondition = null;
 	var datumIndex = 0, conditionIndex = 0;
-	for ( var i = 0; i < datumHeaderColumnCount; i++) {
+
+	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
+			+ fixConditionColIndex; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -383,9 +388,8 @@ function addRow() {
 			datumIndex++;
 		}
 	}
-
-	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
-			+ fixConditionColIndex; i++) {
+	
+	for ( var i = 0; i < datumHeaderColumnCount; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -439,8 +443,9 @@ function addRow() {
 function deleteRow() {
 	var datumArray = new Array();
 	var conditionArray = new Array();
-	var datumIndex = 0, conditionIndex = 0;
-	for ( var i = 0; i < datumHeaderColumnCount; i++) {
+	var datumIndex = 0, conditionIndex = 0;	
+	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
+			+ fixConditionColIndex; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -456,8 +461,7 @@ function deleteRow() {
 		conditionIndex++;
 		datumIndex++;
 	}
-	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
-			+ fixConditionColIndex; i++) {
+	for ( var i = 0; i < datumHeaderColumnCount; i++) {
 		var datum = {
 			name :null,
 			valueType :null,
@@ -481,15 +485,16 @@ function deleteRow() {
 }
 
 function clearTheDataRow() {
+	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
+		+ fixConditionColIndex; i++) {
+		document.getElementById("datumColumnId" + (-i - 1)).value = '';
+		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
+	}
 	for ( var i = 0; i < datumHeaderColumnCount; i++) {
 		document.getElementById("datumColumnId" + (-i - 1)).value = '';
 		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
 	}
-	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
-			+ fixConditionColIndex; i++) {
-		document.getElementById("datumColumnId" + (-i - 1)).value = '';
-		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
-	}
+	
 }
 
 function clearTheDataColumn() {
@@ -559,12 +564,13 @@ function fillColumnTable() {
 							return (tr.id != "datumColumnPattern" && tr.id != "datumColumnsDivRow2");
 						}
 					});
-	fillColumns(editDataSet, start, currentDataSet.datumColumnBeans);
+	
 	if (currentDataSet.conditionColumnBeans != null
 			&& currentDataSet.conditionColumnBeans.length > 0) {
 		fillColumns(editDataSet, fixConditionColIndex,
 				currentDataSet.conditionColumnBeans)
 	}
+	fillColumns(editDataSet, start, currentDataSet.datumColumnBeans);
 
 }
 
@@ -713,7 +719,9 @@ function cloneEditRow() {
 	var datumMatrixPatternRow = document.getElementById("datumMatrixPatternRow"
 			+ rowId);
 	datumMatrixPatternRow = removeAllColumns(datumMatrixPatternRow);
-	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
+
+	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
+			+ fixConditionColIndex + 1; i++) {
 		var cell = document.createElement("TD");
 		var textValue = document.createElement('input');
 		textValue.setAttribute("id", "datumMatrixValue" + i + rowId);
@@ -723,8 +731,7 @@ function cloneEditRow() {
 		cell.appendChild(textValue);
 		datumMatrixPatternRow.appendChild(cell);
 	}
-	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
-			+ fixConditionColIndex + 1; i++) {
+	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
 		var cell = document.createElement("TD");
 		var textValue = document.createElement('input');
 		textValue.setAttribute("id", "datumMatrixValue" + i + rowId);
