@@ -11,7 +11,8 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table id="compositionSection1" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0" width="100%">
+<table id="summarySection1" style="display: block;" class="smalltable3"
+	cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<th colspan="4" align="left">
 			Nanoparticle Entity &nbsp;&nbsp;&nbsp;
@@ -19,7 +20,8 @@
 					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
 			<c:if test="${!empty compositionForm.map.comp.nanoparticleEntities}">
 				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-					src="images/btn_delete.gif" border="0" /></a>
+						src="images/btn_delete.gif" border="0" />
+				</a>
 			</c:if>
 		</th>
 	</tr>
@@ -53,31 +55,29 @@
 												${entity.emulsion.description}
 											</div>
 										</td>
-									</tr>	
-									
+									</tr>
+
 									<tr>
 										<td valign="top" colspan="2">
 											PROPERTIES
 											<div class="indented5">
 												<jsp:include
-												page="/particle/composition/nanoparticleEntity/body${entity.className}Info.jsp">
-												<jsp:param name="entityIndex" value="${ind}" />
-											</jsp:include>
+													page="/particle/composition/nanoparticleEntity/body${entity.className}Info.jsp">
+													<jsp:param name="entityIndex" value="${ind}" />
+												</jsp:include>
 											</div>
 										</td>
-									</tr>	
-														
-								
+									</tr>
+
+
 									<tr>
 										<td valign="top" colspan="2" align="left">
 											COMPOSING ELEMENTS:
 											<br>
-											<jsp:include
-										page="bodyComposingElementView.jsp">
-										<jsp:param name="entityIndex"
-											value="${ind}" />
-									</jsp:include>
-								
+											<jsp:include page="bodyComposingElementView.jsp">
+												<jsp:param name="entityIndex" value="${ind}" />
+											</jsp:include>
+
 										</td>
 									</tr>
 								</table>
@@ -92,8 +92,7 @@
 			<tr>
 				<td>
 					<div class="indented4">
-						<table class="summarytable" 
-							border="0" width="90%">
+						<table class="summarytable" border="0" width="90%">
 							<tr>
 								<td>
 									&nbsp;No data available&nbsp;&nbsp;
@@ -106,9 +105,11 @@
 				</td>
 			</tr>
 		</c:otherwise>
-	</c:choose>	
+	</c:choose>
 </table>
-<div id="compositionSeparator1"><br></div>
+<div id="summarySeparator1">
+	<br>
+</div>
 
 
 
