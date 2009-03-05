@@ -375,11 +375,15 @@ public class CharacterizationBean {
 	}
 
 	public void addDataSet(DataSetBean dataSetBean) {
-		// if an old one exists, remove it first
-		if (dataSets.contains(dataSetBean)) {
-			removeDataSet(dataSetBean);
+		// if an old one exists, remove it first		
+		int index = dataSets.indexOf(dataSetBean);
+		if (index != -1) {
+			dataSets.remove(dataSetBean);
+			//retain the original order
+			dataSets.add(index, dataSetBean);
+		} else {
+			dataSets.add(dataSetBean);
 		}
-		dataSets.add(dataSetBean);
 	}
 
 	public void removeDataSet(DataSetBean dataSetBean) {
