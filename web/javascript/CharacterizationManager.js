@@ -8,7 +8,7 @@ function getUnit(fileInd, datumInd) {
 		dwr.util.addOptions("unit" + fileInd + "-" + datumInd, ["[Other]"]);
 	});
 }
-function setCharacterizationOptionsByCharType() {
+function setCharacterizationOptionsByCharTypeWithOther() {
 	var charType = document.getElementById("charType").value;
 	CharacterizationManager.getCharacterizationOptions(charType, function (data) {
 		dwr.util.removeAllOptions("charName");
@@ -17,14 +17,13 @@ function setCharacterizationOptionsByCharType() {
 		dwr.util.addOptions("charName", ["[Other]"]);
 	});
 }
-
-function setCharacterizationOptions(charType, elementName) {
+function setCharacterizationOptionsByCharType() {
+	var charType = document.getElementById("charType").value;
 	CharacterizationManager.getCharacterizationOptions(charType, function (data) {
-		dwr.util.removeAllOptions(elementName);
-		dwr.util.addOptions(elementName, data);
+		dwr.util.removeAllOptions("charName");
+		dwr.util.addOptions("charName", data);
 	});
 }
-
 function setAssayEndpointOptionsByCharName() {
 	var charName = document.getElementById("charName").value;
 	CharacterizationManager.getAssayEndpointOptions(charName, function (data) {
@@ -34,3 +33,4 @@ function setAssayEndpointOptionsByCharName() {
 		dwr.util.addOptions("assayType", ["[Other]"]);
 	});
 }
+
