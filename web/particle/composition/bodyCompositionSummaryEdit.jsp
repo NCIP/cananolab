@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
-	String[] compositionSections = { "Nanoparticle Entity",
+	String[] compositionSections = { "Nanomaterial Entity",
 			"Functionalizing Entity", "Chemical Association",
 			"Composition File" };
 	pageContext
@@ -52,8 +52,6 @@
 		</ul>
 	</div>
 </c:forEach>
-<br>
-<br>
 <jsp:include page="nanoparticleEntity/bodyNanoparticleEntityView.jsp">
 	<jsp:param name="particleId" value="${param.particleId}" />
 </jsp:include>

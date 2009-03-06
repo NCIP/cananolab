@@ -55,8 +55,6 @@
 		</ul>
 	</div>
 </c:forEach>
-<br>
-<br>
 <c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
 	<table id="summarySection${ind.count}" class="smalltable3"
 		cellpadding="0" cellspacing="0" border="0" width="100%">
