@@ -48,10 +48,10 @@
 			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
-			height="20">
-			<a href="javascript:gotoPage('${sampleUrl}')" class="subMenuSecondary">SAMPLE</a>
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onclick="gotoPage('${sampleUrl}')" height="20">
+			<a class="subMenuSecondary">SAMPLE</a>
 		</td>
 	</tr>
 	<tr>
@@ -62,10 +62,10 @@
 			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
-			height="20">
-			<a href="javascript:gotoPage('${compUrl}')" class="subMenuSecondary">COMPOSITION</a>
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onclick="gotoPage('${compUrl}')" height="20">
+			<a class="subMenuSecondary">COMPOSITION</a>
 		</td>
 	</tr>
 	<tr>
@@ -76,11 +76,10 @@
 			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
-			height="20">
-			<a href="javascript:gotoPage('${charUrl}');changeMenuStyle(this,'subMenuSecondaryTitleOver')" 
-				class="subMenuSecondary">CHARACTERIZATION</a>
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onclick="gotoPage('${charUrl}')" height="20">
+			<a class="subMenuSecondary">CHARACTERIZATION</a>
 		</td>
 	</tr>
 	<tr>
@@ -91,11 +90,10 @@
 			<c:param name="page" value="0" />
 		</c:url>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
-			height="20">
-			<a href="javascript:gotoPage('${pubUrl}')" 
-				class="subMenuSecondary">PUBLICATION</a>
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+			onclick="gotoPage('${pubUrl}')" height="20">
+			<a class="subMenuSecondary">PUBLICATION</a>
 		</td>
 	</tr>
 	<tr>
@@ -108,38 +106,38 @@
 			QUICK LINKS
 		</td>
 	</tr>
-	<tr>		
+	<tr>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver');"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onclick="openWindow('https://wiki.nci.nih.gov/display/ICR/caNanoLab', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle');"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">caNanoLab Wiki</a>
 		</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onclick="openWindow('http://www.cancer.gov', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">NCI HOME</a>
 		</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onclick="openWindow('http://ncicb.nci.nih.gov/', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">NCICB HOME</a>
 		</td>
 	</tr>
 	<tr>
 		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 			onclick="openWindow('http://ncl.cancer.gov/', '', '800', '800')"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle')"
+			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
 			height="20">
 			<a class="subMenuSecondary">NCL HOME</a>
 		</td>
