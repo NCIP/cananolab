@@ -3,7 +3,7 @@ function changeMenuStyle(obj, new_style) {
 	obj.className = new_style;
 }
 function showCursor() {
-	document.body.style.cursor = "hand";
+	document.body.style.cursor = "pointer";
 }
 function hideCursor() {
 	document.body.style.cursor = "default";
