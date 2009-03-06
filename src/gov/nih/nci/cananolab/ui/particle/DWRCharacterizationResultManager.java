@@ -193,4 +193,17 @@ public class DWRCharacterizationResultManager {
 						characterizationName);
 		return names.toArray(new String[names.size()]);
 	}
+	
+	public String[] getColumnValueUnitOptions(String name, String property)
+		throws Exception {
+		WebContext wctx = WebContextFactory.get();
+		//TODO::: CHANGE TO QUERY UNIT HERE (Qina)
+//		SortedSet<String> units = LookupService
+//				.getDefaultAndOtherLookupTypes(name, "property",
+//						"otherProperty");
+		SortedSet<String> units = InitCharacterizationSetup.getInstance()
+			.getConditions(wctx.getHttpServletRequest());
+		return units.toArray(new String[units.size()]);
+	}
+
 }

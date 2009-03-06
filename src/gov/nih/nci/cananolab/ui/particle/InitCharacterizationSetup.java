@@ -54,6 +54,7 @@ public class InitCharacterizationSetup {
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String particleId) throws Exception {
 		getCharacterizationTypes(request);
+		getDataSetColumnValueTypes(request);
 		// set point of contacts
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		List<PointOfContactBean> pocs = pocService
@@ -238,4 +239,17 @@ public class InitCharacterizationSetup {
 		request.getSession().setAttribute("datumConditions", conditions);
 		return conditions;
 	}
+	
+	public List<String> getDataSetColumnValueTypes(HttpServletRequest request)
+	throws Exception {
+		ServletContext appContext = request.getSession().getServletContext();
+		List<String> types = new ArrayList<String>();
+		//TODO::: get types from DB (Qina)
+		types.add("std");
+		types.add("mean");
+		types.add("avg");		
+		request.getSession().setAttribute("dataSetColumnValueTypes", types);
+		return types;
+	}
+
 }

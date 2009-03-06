@@ -47,6 +47,22 @@ function setConditionPropertyOptionsByCharName(conditionName) {
 	}
 }
 
+function setColumnValueUnit() {
+	var name = null, property = null;
+	if (document.getElementById('datumOrCondition').value == 'Condition') {
+		property = document.getElementById("property").value;
+	}
+	name = document.getElementById("name").value;
+	DataSetManager.getColumnValueUnitOptions(name, property,
+				function(data) {
+					dwr.util.removeAllOptions("valueUnit");
+					dwr.util.addOptions("valueUnit", [ "" ]);
+					dwr.util.addOptions("valueUnit", data);
+					dwr.util.addOptions("valueUnit", [ "[Other]" ]);
+				});
+
+}
+
 function showDatumConditionInfo(datumName) {
 	if (document.getElementById('datumOrCondition').value == 'Condition') {
 		$("conditionProperty").style.display = "";
@@ -65,6 +81,7 @@ function showDatumConditionInfo(datumName) {
 			dwr.util.addOptions("name", [ "" ]);
 		}
 	}
+	setColumnValueUnit();
 }
 
 function cancelDataSet() {

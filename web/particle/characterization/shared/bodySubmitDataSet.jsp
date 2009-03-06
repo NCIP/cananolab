@@ -37,9 +37,10 @@
 			<strong>Column Name*</strong>
 		</td>
 		<td class="rightLabelWithTopNoBottom">
-			<select id="name" onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName(null);">
-			<option value=""></option>
-			<option value="[Other]">[Other]</option>
+			<select id="name" 
+				onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName(null);setColumnValueUnit();">
+				<option value=""></option>
+				<option value="[Other]">[Other]</option>
 			</select>			
 		</td>
 	</tr>
@@ -48,7 +49,7 @@
 			<strong>Property</strong>
 		</td>
 		<td class="rightLabelNoBottom">
-			<select id="property" onchange="javascript:callPrompt('Condition Property', 'property');">
+			<select id="property" onchange="javascript:callPrompt('Condition Property', 'property');setColumnValueUnit();">
 			</select>
 		</td>
 	</tr>
@@ -59,15 +60,24 @@
 			<strong>Column Value Type</strong>
 		</td>
 		<td class="rightLabelNoBottom" align="left">
-			<input type="text" id="valueType">
+			<select id="valueType" onchange="javascript:callPrompt('Column Value Type', 'valueType');">	
+				<option value=""></option>
+				<logic:iterate id="dataSetColumnValueType" name="dataSetColumnValueTypes">
+					<option value="${dataSetColumnValueType}">${dataSetColumnValueType}</option>						  
+				</logic:iterate>
+				<option value="other">
+					[Other]
+				</option>			
+			</select>
 		</td>
 	</tr>
 	<tr>
 		<td class="leftLabelNoBottom">
 			<strong>Column Value Unit</strong>
 		</td>
-		<td class="rightLabelNoBottom">
-			<input type="text" id="valueUnit">
+		<td class="rightLabelNoBottom">		
+			<select id="valueUnit" onchange="javascript:callPrompt('Column Value Unit', 'valueUnit');">				
+			</select>
 		</td>
 	</tr>
 	<tr>
