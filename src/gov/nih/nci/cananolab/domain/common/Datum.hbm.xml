@@ -17,7 +17,7 @@
 		<property name="valueType" type="string" column="value_type"/>
 		<property name="valueUnit" type="string" column="value_unit"/>
 		<!-- Associations mapping for the Datum class -->
-		<set name="conditionCollection" table="datum_condition" lazy="true" cascade="all-delete-orphan">
+		<set name="conditionCollection" table="datum_condition" lazy="true" cascade="save-update">
 			<cache usage="read-write" />
 			<key column="datum_pk_id" />
 			<many-to-many class="gov.nih.nci.cananolab.domain.common.Condition" column="condition_pk_id" />
