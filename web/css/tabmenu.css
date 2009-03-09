@@ -61,8 +61,9 @@ padding-bottom: 8px; /* 3) Bottom padding of selected tab. Should equal (1) PLUS
 top: 0;
 }
 
-.animatedtabs a:hover{
+.animatedtabs a:hover, a:visited{
 background-position: 0% -125px;
+text-decoration: none;
 top: 0;
 }
 
