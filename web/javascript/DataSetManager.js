@@ -101,7 +101,7 @@ function resetTheDataSet(isShow) {
 	if (isShow) {
 		show('newDataSet');
 		hide('populateDataTable');
-		hide('existingDataSet');
+		/*hide('existingDataSet');*/
 	} else {
 		hide('newDataSet');
 		show('existingDataSet');
@@ -158,7 +158,7 @@ function populateDataSet(dataSet) {
 	if (dataSet != null && dataSet.dataRows != null
 			&& dataSet.dataRows.length > 0) {
 		currentDataSet = dataSet;
-		
+
 		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
 			var conditions = currentDataSet.dataRows[index].conditions;
 			var id;
@@ -291,7 +291,7 @@ function createMatrixPattern() {
 	var matrixHeader = document.getElementById("matrixHeader");
 	matrixHeader = removeAllColumns(matrixHeader);
 	var headerName, headerValueType, headerValueUnit;
-	
+
 	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
 			+ fixConditionColIndex + 1; i++) {
 		var cell = document.createElement("TD");
@@ -322,7 +322,7 @@ function createMatrixPattern() {
 			.getElementById("datumMatrixPatternRow");
 	datumMatrixPatternRow = removeAllColumns(datumMatrixPatternRow);
 
-	
+
 	for ( var i = fixConditionColIndex + 1; i < conditionHeaderColumnCount
 			+ fixConditionColIndex + 1; i++) {
 		var cell = document.createElement("TD");
@@ -405,7 +405,7 @@ function addRow() {
 			datumIndex++;
 		}
 	}
-	
+
 	for ( var i = 0; i < datumHeaderColumnCount; i++) {
 		var datum = {
 			name :null,
@@ -460,7 +460,7 @@ function addRow() {
 function deleteRow() {
 	var datumArray = new Array();
 	var conditionArray = new Array();
-	var datumIndex = 0, conditionIndex = 0;	
+	var datumIndex = 0, conditionIndex = 0;
 	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
 			+ fixConditionColIndex; i++) {
 		var datum = {
@@ -511,7 +511,7 @@ function clearTheDataRow() {
 		document.getElementById("datumColumnId" + (-i - 1)).value = '';
 		document.getElementById("datumColumnValue" + (-i - 1)).value = "";
 	}
-	
+
 }
 
 function clearTheDataColumn() {
@@ -581,7 +581,7 @@ function fillColumnTable() {
 							return (tr.id != "datumColumnPattern" && tr.id != "datumColumnsDivRow2");
 						}
 					});
-	
+
 	if (currentDataSet.conditionColumnBeans != null
 			&& currentDataSet.conditionColumnBeans.length > 0) {
 		fillColumns(editDataSet, fixConditionColIndex,
