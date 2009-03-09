@@ -14,14 +14,7 @@
 	width="100%">
 	<tr>
 		<th colspan="4" align="left">
-			Chemical Association &nbsp;&nbsp;&nbsp;
-			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
-			<c:if test="${!empty compositionForm.map.comp.nanoparticleEntities}">
-				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-						src="images/btn_delete.gif" border="0" />
-				</a>
-			</c:if>
+			Chemical Association
 		</th>
 	</tr>
 	<tr>

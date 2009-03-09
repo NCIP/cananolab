@@ -10,11 +10,18 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table id="summarySection2" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0"
+<table id="summarySection3" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0"
 	width="100%">
 	<tr>
 		<th colspan="4" align="left">
-			Functionalizing Entity
+			Chemical Association &nbsp;&nbsp;&nbsp;
+			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
+			<c:if test="${!empty compositionForm.map.comp.nanoparticleEntities}">
+				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+						src="images/btn_delete.gif" border="0" />
+				</a>
+			</c:if>
 		</th>
 	</tr>
 	<tr>
@@ -22,8 +29,6 @@
 			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 		</td>
 	</tr>
-
-
 	<tr>
 		<td>
 			<div class="indented4">
@@ -39,9 +44,8 @@
 			&nbsp;
 		</td>
 	</tr>
-	<tr><td><br></td></tr>
 </table>
-<div id="summarySeparator2"><br></div>
+<div id="summarySeparator3"><br></div>
 
 
 

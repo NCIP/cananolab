@@ -7,13 +7,13 @@
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
+			<a href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})" title="All"><span>All</span>
 			</a>
 		</li>
 		<li>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
-				<a href="javascript:showSummary('${ind.count}')" title="${type}"><span>${type}</span>
+				<a href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})" title="${type}"><span>${type}</span>
 				</a>
 			</c:forEach>
 		</li>
@@ -24,7 +24,7 @@
 		style="display: none;">
 		<ul>
 			<li>
-				<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
+				<a href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})" title="All"><span>All</span>
 				</a>
 			</li>
 			<c:forEach var="type" items="${publicationCategories}"
@@ -38,7 +38,7 @@
 					</c:otherwise>
 				</c:choose>
 				<li class="${selectedClass}">
-					<a href="javascript:showSummary('${ind2.count}')" title="${type}"><span>${type}</span>
+					<a href="javascript:showSummary('${ind2.count}', ${fn:length(publicationCategories)})" title="${type}"><span>${type}</span>
 					</a>
 				</li>
 			</c:forEach>

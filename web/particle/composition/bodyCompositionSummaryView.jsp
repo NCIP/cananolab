@@ -17,12 +17,12 @@
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
+			<a href="javascript:showSummary('ALL', ${fn:length(compositionSections)})" title="All"><span>All</span>
 			</a>
 		</li>
 		<c:forEach var="type" items="${compositionSections}" varStatus="ind">
 			<li>
-				<a href="javascript:showSummary('${ind.count}')" title="${type}">
+				<a href="javascript:showSummary('${ind.count}', ${fn:length(compositionSections)})" title="${type}">
 					<span>${type}</span> </a>
 			</li>
 		</c:forEach>
@@ -32,7 +32,7 @@
 	<div class="animatedtabs" id="summaryTab${item}" style="display: none;">
 		<ul>
 			<li>
-				<a href="javascript:showSummary('ALL')" title="All"><span>All</span>
+				<a href="javascript:showSummary('ALL', ${fn:length(compositionSections)})" title="All"><span>All</span>
 				</a>
 			</li>
 			<c:forEach var="type" items="${compositionSections}" varStatus="ind">
@@ -45,7 +45,7 @@
 					</c:otherwise>
 				</c:choose>
 				<li class="${selectedClass}">
-					<a href="javascript:showSummary('${ind.count}')" title="${type}">
+					<a href="javascript:showSummary('${ind.count}', ${fn:length(compositionSections)})" title="${type}">
 						<span>${type}</span> </a>
 				</li>
 			</c:forEach>

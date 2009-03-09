@@ -15,7 +15,14 @@
 	cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<th colspan="4" align="left">
-			Nanoparticle Entity
+			Nanoparticle Entity &nbsp;&nbsp;&nbsp;
+			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
+			<c:if test="${!empty compositionForm.map.comp.nanoparticleEntities}">
+				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+						src="images/btn_delete.gif" border="0" />
+				</a>
+			</c:if>
 		</th>
 	</tr>
 	<tr>

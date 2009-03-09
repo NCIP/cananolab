@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<a name="Composition File"></a>
 <c:url var="entityAddUrl" value="nanoparticleEntity.do">
 	<c:param name="page" value="0" />
 	<c:param name="dispatch" value="setup" />
@@ -10,11 +11,18 @@
 	<c:param name="particleId" value="${particleId}" />
 	<c:param name="submitType" value="Nanoparticle Entity" />
 </c:url>
-<table id="summarySection2" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0"
+<table id="summarySection4" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0"
 	width="100%">
 	<tr>
 		<th colspan="4" align="left">
-			Functionalizing Entity
+			Composition File &nbsp;&nbsp;&nbsp;
+			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
+			<c:if test="${!empty compositionForm.map.comp.nanoparticleEntities}">
+				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
+						src="images/btn_delete.gif" border="0" />
+				</a>
+			</c:if>
 		</th>
 	</tr>
 	<tr>
@@ -39,9 +47,8 @@
 			&nbsp;
 		</td>
 	</tr>
-	<tr><td><br></td></tr>
 </table>
-<div id="summarySeparator2"><br></div>
+<div id="summarySeparator4"><br></div>
 
 
 
