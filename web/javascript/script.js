@@ -416,10 +416,10 @@ function hide(layer_ref) {
 		layerBlock.style.display = 'none';
 }
 
-function showSummary(layer_ref) {
+function showSummary(layer_ref, totalLayers) {
 	if (layer_ref=='ALL'){
 		document.getElementById("summaryTabALL").style.display = 'block';
-		for (var i=1; i<15; i++){
+		for (var i=1; i<=totalLayers; i++){
 			document.getElementById("summarySection"+i).style.display = 'block';
 			document.getElementById("summarySeparator"+i).style.display = 'block';
 			document.getElementById("summaryTab"+i).style.display = 'none';
@@ -427,7 +427,7 @@ function showSummary(layer_ref) {
 		return;
 	}
 	document.getElementById("summaryTabALL").style.display = 'none';
-	for (var i=1; i<15; i++){
+	for (var i=1; i<=totalLayers; i++){
 		if (layer_ref==i){
 			document.getElementById("summaryTab"+i).style.display = 'block';
 			document.getElementById("summarySection"+i).style.display = 'block';
