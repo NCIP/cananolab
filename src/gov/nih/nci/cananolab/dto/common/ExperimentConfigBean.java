@@ -20,8 +20,6 @@ import java.util.List;
  */
 public class ExperimentConfigBean {
 	private ExperimentConfig domain;
-	private String displayName;
-	private String displayDetailString;
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
 
 	public ExperimentConfigBean() {
@@ -46,15 +44,17 @@ public class ExperimentConfigBean {
 		this.domain = domain;
 	}
 
-	public String getDisplayName() {
+	public String getTechniqueDisplayName() {
+		String techniqueDisplayName = "";
 		if (domain.getTechnique().getAbbreviation() != null
 				&& domain.getTechnique().getAbbreviation().trim().length() > 0) {
-			displayName = domain.getTechnique().getType() + "("
+			techniqueDisplayName = domain.getTechnique().getType() + "("
 					+ domain.getTechnique().getAbbreviation() + ")";
 		} else {
-			displayName = domain.getTechnique().getType();
+			techniqueDisplayName = domain.getTechnique().getType();
 		}
-		return displayName;
+		return techniqueDisplayName;
+
 	}
 
 	public void addInstrument(Instrument instrument) {
@@ -84,7 +84,7 @@ public class ExperimentConfigBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		if (domain.getId()!=null&& domain.getId() == 0) {
+		if (domain.getId() != null && domain.getId() == 0) {
 			domain.setId(null);
 		}
 		if (domain.getId() == null) {
@@ -128,43 +128,23 @@ public class ExperimentConfigBean {
 		return domain.hashCode();
 	}
 
-	/**
-	 * @return the configDetailString
-	 */
-	public String getDisplayDetailString() {
+	public String getInstrumentDisplayName(Instrument instrument) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(getDisplayName());
-		sb.append("<br>");
-
-		if (this.getInstruments()!=null && this.getInstruments().size()>0) {
-			for (Instrument instrument: this.getInstruments()) {
-				sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-				sb.append(getInstrumentDisplayName(instrument));
-				sb.append("<br>");
-			}
-		}
-		displayDetailString = sb.toString();
-		return displayDetailString;
-	}
-
-	private String getInstrumentDisplayName(Instrument instrument) {
-		StringBuffer sb = new StringBuffer();
-		if (instrument.getManufacturer()!=null &&
-				instrument.getManufacturer().trim().length()>0) {
+		if (instrument.getManufacturer() != null
+				&& instrument.getManufacturer().trim().length() > 0) {
 			sb.append(instrument.getManufacturer());
 			sb.append(" ");
-		}else if (instrument.getType()!=null &&
-				instrument.getType().trim().length()>0) {
+		} else if (instrument.getType() != null
+				&& instrument.getType().trim().length() > 0) {
 			sb.append(instrument.getType());
 			sb.append(" ");
 		}
-		if (instrument.getModelName()!=null &&
-				instrument.getModelName().trim().length()>0) {
+		if (instrument.getModelName() != null
+				&& instrument.getModelName().trim().length() > 0) {
 			sb.append(instrument.getModelName());
 			sb.append(" ");
 		}
 		return sb.toString();
 	}
-
 
 }
