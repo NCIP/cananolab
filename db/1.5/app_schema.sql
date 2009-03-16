@@ -57,12 +57,12 @@ CREATE TABLE polymer
 ;
 
 
-CREATE TABLE other_nanoparticle_entity
+CREATE TABLE other_nanomaterial_entity
 (
-	other_nanoparticle_entity_pk_id BIGINT NOT NULL,
+	other_nanomaterial_entity_pk_id BIGINT NOT NULL,
 	type VARCHAR(200) NOT NULL,
-	PRIMARY KEY (other_nanoparticle_entity_pk_id),
-	KEY (other_nanoparticle_entity_pk_id)
+	PRIMARY KEY (other_nanomaterial_entity_pk_id),
+	KEY (other_nanomaterial_entity_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -126,10 +126,10 @@ CREATE TABLE composing_element
 (
 	composing_element_pk_id BIGINT NOT NULL,
 	element_type VARCHAR(100) NOT NULL,
-	nanoparticle_entity_pk_id BIGINT,
+	nanomaterial_entity_pk_id BIGINT,
 	PRIMARY KEY (composing_element_pk_id),
 	KEY (composing_element_pk_id),
-	KEY (nanoparticle_entity_pk_id)
+	KEY (nanomaterial_entity_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -223,15 +223,15 @@ CREATE TABLE physical_state
 ;
 
 
-CREATE TABLE nanoparticle_entity
+CREATE TABLE nanomaterial_entity
 (
-	nanoparticle_entity_pk_id BIGINT NOT NULL,
+	nanomaterial_entity_pk_id BIGINT NOT NULL,
 	composition_pk_id BIGINT NOT NULL,
 	discriminator VARCHAR(200),
 	description TEXT,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
-	PRIMARY KEY (nanoparticle_entity_pk_id),
+	PRIMARY KEY (nanomaterial_entity_pk_id),
 	KEY (composition_pk_id)
 ) TYPE=InnoDB
 ;
@@ -280,12 +280,12 @@ CREATE TABLE composition_file
 ;
 
 
-CREATE TABLE nanoparticle_sample_other_poc
+CREATE TABLE sample_other_poc
 (
-	particle_sample_pk_id BIGINT NOT NULL,
+	sample_pk_id BIGINT NOT NULL,
 	poc_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, poc_pk_id),
-	KEY (particle_sample_pk_id),
+	PRIMARY KEY (sample_pk_id, poc_pk_id),
+	KEY (sample_pk_id),
 	KEY (poc_pk_id)
 ) TYPE=InnoDB
 ;
@@ -294,10 +294,10 @@ CREATE TABLE nanoparticle_sample_other_poc
 CREATE TABLE composition
 (
 	composition_pk_id BIGINT NOT NULL,
-	particle_sample_pk_id BIGINT,
+	sample_pk_id BIGINT,
 	PRIMARY KEY (composition_pk_id),
 	UNIQUE (composition_pk_id),
-	KEY (particle_sample_pk_id)
+	KEY (sample_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -307,11 +307,10 @@ CREATE TABLE characterization
 	characterization_pk_id BIGINT NOT NULL,
 	poc_pk_id BIGINT,
 	design_method_description TEXT,
-	identifier_name VARCHAR(500),
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	protocol_file_pk_id BIGINT,
-	particle_sample_pk_id BIGINT,
+	sample_pk_id BIGINT,
 	discriminator VARCHAR(50) NOT NULL,
 	cytotoxicity_cell_line VARCHAR(200),
 	enzyme_induction_enzyme VARCHAR(200),
@@ -323,33 +322,33 @@ CREATE TABLE characterization
 	assay_type VARCHAR(200),
 	PRIMARY KEY (characterization_pk_id),
 	KEY (poc_pk_id),
-	KEY (particle_sample_pk_id),
+	KEY (sample_pk_id),
 	KEY (protocol_file_pk_id)
 ) TYPE=InnoDB
 ;
 
 
-CREATE TABLE nanoparticle_sample_publication
+CREATE TABLE sample_publication
 (
-	particle_sample_pk_id BIGINT NOT NULL,
+	sample_pk_id BIGINT NOT NULL,
 	publication_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (particle_sample_pk_id, publication_pk_id),
+	PRIMARY KEY (sample_pk_id, publication_pk_id),
 	KEY (publication_pk_id),
-	KEY (particle_sample_pk_id)
+	KEY (sample_pk_id)
 ) TYPE=InnoDB
 ;
 
 
-CREATE TABLE nanoparticle_sample
+CREATE TABLE sample
 (
-	particle_sample_pk_id BIGINT NOT NULL,
-	particle_sample_name VARCHAR(200) NOT NULL,
+	sample_pk_id BIGINT NOT NULL,
+	sample_name VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	primary_contact_pk_id BIGINT,
-	PRIMARY KEY (particle_sample_pk_id),
-	UNIQUE (particle_sample_name),
-	UNIQUE (particle_sample_pk_id),
+	PRIMARY KEY (sample_pk_id),
+	UNIQUE (sample_name),
+	UNIQUE (sample_pk_id),
 	KEY (primary_contact_pk_id)
 ) TYPE=InnoDB
 ;
@@ -427,24 +426,24 @@ CREATE TABLE point_of_contact
 ;
 
 
-CREATE TABLE nanoparticle_entity_file
+CREATE TABLE nanomaterial_entity_file
 (
-	nanoparticle_entity_pk_id BIGINT NOT NULL,
+	nanomaterial_entity_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (nanoparticle_entity_pk_id, file_pk_id),
+	PRIMARY KEY (nanomaterial_entity_pk_id, file_pk_id),
 	KEY (file_pk_id),
-	KEY (nanoparticle_entity_pk_id)
+	KEY (nanomaterial_entity_pk_id)
 ) TYPE=InnoDB
 ;
 
 
-CREATE TABLE keyword_nanoparticle_sample
+CREATE TABLE keyword_sample
 (
 	keyword_pk_id BIGINT NOT NULL,
-	particle_sample_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (keyword_pk_id, particle_sample_pk_id),
+	sample_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (keyword_pk_id, sample_pk_id),
 	KEY (keyword_pk_id),
-	KEY (particle_sample_pk_id)
+	KEY (sample_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -489,7 +488,7 @@ CREATE TABLE experiment_config
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	characterization_pk_id BIGINT,
-	technique_pk_id BIGINT NOT NULL,
+	technique_pk_id BIGINT,
 	PRIMARY KEY (experiment_config_id),
 	KEY (characterization_pk_id),
 	KEY (technique_pk_id)
@@ -730,48 +729,48 @@ ALTER TABLE small_molecule ADD CONSTRAINT FK_small_molecule_functionalizing_enti
 	FOREIGN KEY (small_molecule_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanoparticle_entity
-	FOREIGN KEY (polymer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanomaterial_entity
+	FOREIGN KEY (polymer_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE other_nanoparticle_entity ADD CONSTRAINT FK_other_nanoparticle_entity_nanoparticle_entity
-	FOREIGN KEY (other_nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE other_nanomaterial_entity ADD CONSTRAINT FK_other_nanomaterial_entity_nanomaterial_entity
+	FOREIGN KEY (other_nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
 ALTER TABLE other_functionalizing_entity ADD CONSTRAINT FK_other_functionalizing_entity_functionalizing_entity
 	FOREIGN KEY (other_func_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanoparticle_entity
-	FOREIGN KEY (liposome_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanomaterial_entity
+	FOREIGN KEY (liposome_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE fullerene ADD CONSTRAINT FK_fullerene_nanoparticle_entity
-	FOREIGN KEY (fullerene_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE fullerene ADD CONSTRAINT FK_fullerene_nanomaterial_entity
+	FOREIGN KEY (fullerene_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanoparticle_entity
-	FOREIGN KEY (emulsion_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanomaterial_entity
+	FOREIGN KEY (emulsion_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanoparticle_entity
-	FOREIGN KEY (dendrimer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanomaterial_entity
+	FOREIGN KEY (dendrimer_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
 ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_associated_element
 	FOREIGN KEY (composing_element_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanoparticle_entity
-	FOREIGN KEY (nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanomaterial_entity
+	FOREIGN KEY (nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE carbon_nanotube ADD CONSTRAINT FK_carbon_nanotube_nanoparticle_entity
-	FOREIGN KEY (carbon_nanotube_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE carbon_nanotube ADD CONSTRAINT FK_carbon_nanotube_nanomaterial_entity
+	FOREIGN KEY (carbon_nanotube_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE biopolymer_p ADD CONSTRAINT FK_biopolymer_p_nanoparticle_entity
-	FOREIGN KEY (biopolymer_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE biopolymer_p ADD CONSTRAINT FK_biopolymer_p_nanomaterial_entity
+	FOREIGN KEY (biopolymer_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
 ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity
@@ -814,35 +813,35 @@ ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_nanoparticle_sample
-	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_other_poc ADD CONSTRAINT FK_nanoparticle_sample_other_poc_point_of_contact
+ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_point_of_contact
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE composition ADD CONSTRAINT FK_Composition_nanoparticle_sample
-	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+ALTER TABLE composition ADD CONSTRAINT FK_Composition_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_point_of_contact
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_nanoparticle_sample
-	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication
+ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-ALTER TABLE nanoparticle_sample ADD CONSTRAINT FK_nanoparticle_sample_point_of_contact
+ALTER TABLE sample ADD CONSTRAINT FK_sample_point_of_contact
 	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
@@ -878,20 +877,20 @@ ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_file
+ALTER TABLE nanomaterial_entity_file ADD CONSTRAINT FK_nanomaterial_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE nanoparticle_entity_file ADD CONSTRAINT FK_nanoparticle_entity_file_nanoparticle_entity
-	FOREIGN KEY (nanoparticle_entity_pk_id) REFERENCES nanoparticle_entity (nanoparticle_entity_pk_id)
+ALTER TABLE nanomaterial_entity_file ADD CONSTRAINT FK_nanomaterial_entity_file_nanomaterial_entity
+	FOREIGN KEY (nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_sample_keyword
+ALTER TABLE keyword_sample ADD CONSTRAINT FK_keyword_sample_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
-ALTER TABLE keyword_nanoparticle_sample ADD CONSTRAINT FK_keyword_nanoparticle_sample_nanoparticle_sample
-	FOREIGN KEY (particle_sample_pk_id) REFERENCES nanoparticle_sample (particle_sample_pk_id)
+ALTER TABLE keyword_sample ADD CONSTRAINT FK_keyword_sample_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
 ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file
