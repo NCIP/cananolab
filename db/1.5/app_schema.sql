@@ -809,6 +809,10 @@ ALTER TABLE datum ADD CONSTRAINT FK_datum_data_row
 	FOREIGN KEY (data_row_pk_id) REFERENCES data_row (data_row_pk_id)
 ;
 
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_composition
+	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
+;
+
 ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
@@ -835,6 +839,10 @@ ALTER TABLE characterization ADD CONSTRAINT FK_characterization_sample
 
 ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file
 	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
+;
+
+ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
 ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_publication
