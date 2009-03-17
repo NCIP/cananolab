@@ -70,6 +70,14 @@ CREATE TABLE characterization_file
 ) TYPE=InnoDB
 ;
 
+ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
 --in vitro data migration
 update characterization
 set discriminator='Cytotoxicity',
