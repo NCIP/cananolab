@@ -128,14 +128,6 @@ CREATE TABLE author
 ) TYPE=InnoDB
 ;
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author
-	FOREIGN KEY (author_pk_id) REFERENCES author (author_pk_id)
-;
-
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
-	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
-;
-
 INSERT INTO author (author_pk_id, first_name, last_name, initial, created_by, created_date)
 SELECT  author_pk_id, first_name, last_name, initial, created_by, created_date FROM author0;
 
@@ -145,14 +137,41 @@ SELECT author_pk_id, publication_pk_id FROM author_publication0;
 DROP TABLE author0;
 DROP TABLE author_publication0;
 
---missing constraint between characterization and file
-ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author
+	FOREIGN KEY (author_pk_id) REFERENCES author (author_pk_id)
 ;
 
-ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
+	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
+;
+
+--missing constraint between composition and file
+ALTER TABLE composition_file RENAME composition_file0;
+
+CREATE TABLE composition_file
+(
+	composition_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (composition_pk_id, file_pk_id),
+	KEY (composition_pk_id),
+	KEY (file_pk_id)
+) TYPE=InnoDB
+;
+
+INSERT INTO composition_file (composition_pk_id, file_pk_id)
+SELECT * FROM composition_file0;
+
+DROP TABLE composition_file0;
+
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_composition
+	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
+;
+
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
+
+
 --nanoparticle_sample to sample
 source sample.sql
 
@@ -171,7 +190,7 @@ source datum_migration.sql
 --characterization
 source characterization_migration.sql
 
-DROP TABLE composition_temp IF EXISTS;
+DROP TABLE IF EXISTS composition_temp;
 
 -- Re-enable foreign key checks
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
