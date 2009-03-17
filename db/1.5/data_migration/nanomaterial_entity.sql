@@ -65,8 +65,8 @@ ALTER TABLE nanomaterial_entity_file
  ADD CONSTRAINT FK_nanomaterial_entity_file_nanomaterial_entity FOREIGN KEY (nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id),
  ADD CONSTRAINT FK_nanomaterial_entity_file_file FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id) ;
 
-INSERT INTO  nanomaterial_entity
-SELECT * FROM nanoparticle_entity;
+INSERT INTO  nanomaterial_entity (nanomaterial_entity_pk_id, composition_pk_id, discriminator,	description,	created_by,	created_date)
+SELECT nanoparticle_entity_pk_id, composition_pk_id, discriminator,	description,	created_by,	created_date FROM nanoparticle_entity;
 
 DROP TABLE nanoparticle_entity;
 
