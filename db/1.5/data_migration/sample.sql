@@ -39,4 +39,5 @@ ALTER TABLE keyword_sample
  ADD CONSTRAINT FK_keyword_sample_keyword FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id),
  ADD CONSTRAINT FK_keyword_sample_sample FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id);
 
- INSERT INTO sample SELECT * FROM nanoparticle_sample;
+ INSERT INTO sample (sample_pk_id, sample_name, created_date, created_by, primary_contact_pk_id)
+ SELECT particle_sample_pk_id, particle_sample_name, created_date, created_by, source_pk_id FROM nanoparticle_sample;
