@@ -5,10 +5,10 @@ import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.DateUtil;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +52,7 @@ public class FunctionBean {
 					targets.add(new TargetBean(target));
 				}
 				Collections.sort(targets,
-						new CaNanoLabComparators.TargetBeanDateComparator());
+						new Comparators.TargetBeanDateComparator());
 			}
 		}
 		className = ClassUtils.getShortClassName(function.getClass()
@@ -141,12 +141,12 @@ public class FunctionBean {
 		if (domainFunction.getId() == null
 				|| domainFunction.getCreatedBy() != null
 				&& domainFunction.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFunction.setCreatedBy(createdBy);
 			// domainFunction.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
-			domainFunction.setCreatedDate(DateUtil
+			domainFunction.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
 		}
 	}

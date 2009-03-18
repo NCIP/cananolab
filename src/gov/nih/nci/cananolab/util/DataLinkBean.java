@@ -105,10 +105,10 @@ public class DataLinkBean {
 	}
 
 	public String getViewColor() {
-		if (createdBy.equals(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)
+		if (createdBy.equals(Constants.AUTO_COPY_ANNOTATION_PREFIX)
 				|| this.viewTitle != null
 				&& this.viewTitle.matches("^copy_\\d{15}?")) {
-			this.viewColor = CaNanoLabConstants.AUTO_COPY_ANNNOTATION_VIEW_COLOR;
+			this.viewColor = Constants.AUTO_COPY_ANNNOTATION_VIEW_COLOR;
 		}
 		return this.viewColor;
 	}

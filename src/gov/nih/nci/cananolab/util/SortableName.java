@@ -29,7 +29,7 @@ public class SortableName implements Comparable {
 	public int compareTo(Object obj) {
 		if (obj instanceof SortableName) {
 			SortableName sortableName2 = (SortableName) obj;
-			return (new CaNanoLabComparators.SortableNameComparator()).compare(
+			return (new Comparators.SortableNameComparator()).compare(
 					this.name, sortableName2.getName());
 		}
 		return 0;

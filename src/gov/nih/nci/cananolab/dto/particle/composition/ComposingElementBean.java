@@ -2,9 +2,9 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.DateUtil;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +31,7 @@ public class ComposingElementBean {
 				inherentFunctions.add(new FunctionBean(function));
 			}
 			Collections.sort(inherentFunctions,
-					new CaNanoLabComparators.FunctionBeanDateComparator());
+					new Comparators.FunctionBeanDateComparator());
 		}
 	}
 
@@ -69,12 +69,12 @@ public class ComposingElementBean {
 		if (domainComposingElement.getId() == null
 				|| domainComposingElement.getCreatedBy() != null
 				&& domainComposingElement.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainComposingElement.setCreatedBy(createdBy);
 			// domainComposingElement.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
-			domainComposingElement.setCreatedDate(DateUtil
+			domainComposingElement.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
 		}
 		if (domainComposingElement.getInherentFunctionCollection() != null) {

@@ -4,8 +4,8 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.DateUtil;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +37,7 @@ public class DataSetBean {
 	public DataSetBean(DataSet dataSet) {
 		domain = dataSet;
 		data = new ArrayList<Datum>(dataSet.getDatumCollection());
-		Collections.sort(data, new CaNanoLabComparators.DatumDateComparator());
+		Collections.sort(data, new Comparators.DatumDateComparator());
 		if (dataSet.getFile() != null) {
 			file = new FileBean(dataSet.getFile());
 		}
@@ -186,7 +186,7 @@ public class DataSetBean {
 				// if new
 				if (datum.getId() == null) {
 					datum.setCreatedBy(createdBy);
-					datum.setCreatedDate(DateUtil.addSecondsToCurrentDate(i));
+					datum.setCreatedDate(DateUtils.addSecondsToCurrentDate(i));
 				}
 				if (datum.getDataRow().getId() != null
 						&& datum.getDataRow().getId() <= 0) {
@@ -206,7 +206,7 @@ public class DataSetBean {
 					// if new
 					if (condition.getId() == null) {
 						condition.setCreatedBy(createdBy);
-						condition.setCreatedDate(DateUtil
+						condition.setCreatedDate(DateUtils
 								.addSecondsToCurrentDate(i));
 					}
 

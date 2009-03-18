@@ -20,8 +20,8 @@ import gov.nih.nci.cananolab.exception.ParticleException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -156,7 +156,7 @@ public class NanoparticleCharacterizationServiceRemoteImpl extends
 				charList.add(chara);
 			}
 			Collections.sort(charList,
-					new CaNanoLabComparators.CharacterizationDateComparator());
+					new Comparators.CharacterizationDateComparator());
 			return charList;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName

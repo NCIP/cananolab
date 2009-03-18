@@ -14,9 +14,9 @@ import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -87,14 +87,14 @@ public class NanoparticleEntityBean {
 			composingElements.add(new ComposingElementBean(composingElement));
 		}
 		Collections.sort(composingElements,
-				new CaNanoLabComparators.ComposingElementBeanDateComparator());
+				new Comparators.ComposingElementBeanDateComparator());
 		if (nanoparticleEntity.getFileCollection()!=null){
 			for (File file : nanoparticleEntity.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
 		}
 		Collections.sort(files,
-				new CaNanoLabComparators.FileBeanDateComparator());
+				new Comparators.FileBeanDateComparator());
 	}
 
 	public NanoparticleEntity getDomainCopy() {
@@ -102,7 +102,7 @@ public class NanoparticleEntityBean {
 				.getDomainEntity());
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
-		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
 		if (copy.getComposingElementCollection().isEmpty()) {
 			copy.setComposingElementCollection(null);
@@ -114,7 +114,7 @@ public class NanoparticleEntityBean {
 			copy.getComposingElementCollection().addAll(ces);
 			for (ComposingElement ce : copy.getComposingElementCollection()) {
 				ce.setId(null);
-				ce.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				ce.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				ce.setCreatedDate(new Date());
 				if (ce.getInherentFunctionCollection().isEmpty()) {
 					ce.setInherentFunctionCollection(null);
@@ -126,7 +126,7 @@ public class NanoparticleEntityBean {
 					for (Function function : ce.getInherentFunctionCollection()) {
 						function.setId(null);
 						function
-								.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 						function.setCreatedDate(new Date());
 						if (function instanceof TargetingFunction) {
 							((TargetingFunction) function)
@@ -145,7 +145,7 @@ public class NanoparticleEntityBean {
 			for (File file : copy.getFileCollection()) {
 				file.setId(null);
 				file
-						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				file.setCreatedDate(new Date());
 			}
 		}
@@ -240,7 +240,7 @@ public class NanoparticleEntityBean {
 		if (domainEntity.getId() == null
 				|| domainEntity.getCreatedBy() != null
 				&& domainEntity.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(new Date());
 		}

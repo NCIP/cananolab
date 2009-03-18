@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.security;
 
 import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,12 +31,12 @@ public class UpdatePasswordAction extends Action {
 		String newPassword = (String) theForm.get("newPassword");
 
 		LoginService loginservice = new LoginService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		Boolean isAuthenticated = loginservice.login(loginId, password);
 
 		if (isAuthenticated) {
 			LoginService loginService = new LoginService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			loginService.updatePassword(loginId, newPassword);
 			ActionMessages messages = new ActionMessages();
 			ActionMessage message = new ActionMessage("message.password");

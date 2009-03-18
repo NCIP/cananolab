@@ -2,8 +2,8 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Keyword;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
-import gov.nih.nci.cananolab.util.DateUtil;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Date;
@@ -139,12 +139,12 @@ public class FileBean {
 		if (domainFile.getId() == null
 				|| domainFile.getCreatedBy() != null
 				&& domainFile.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainFile.setCreatedBy(createdBy);
 			// domainFile.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
-			domainFile.setCreatedDate(DateUtil.addSecondsToCurrentDate(index));
+			domainFile.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
 		}
 		if (uploadedFile != null && uploadedFile.getFileName().length() > 0) {
 			domainFile.setName(uploadedFile.getFileName());
@@ -158,7 +158,7 @@ public class FileBean {
 			domainFile.setUri(externalUrl);
 			domainFile.setName(externalUrl);
 		} else {
-			String timestamp = StringUtils.convertDateToString(new Date(),
+			String timestamp = DateUtils.convertDateToString(new Date(),
 					"yyyyMMdd_HH-mm-ss-SSS");
 			// if uploaded new file
 			if (newFileData != null) {
@@ -208,8 +208,8 @@ public class FileBean {
 	}
 
 	public String getCreatedDateStr() {
-		createdDateStr = StringUtils.convertDateToString(domainFile
-				.getCreatedDate(), CaNanoLabConstants.DATE_FORMAT);
+		createdDateStr = DateUtils.convertDateToString(domainFile
+				.getCreatedDate(), Constants.DATE_FORMAT);
 		return createdDateStr;
 	}
 

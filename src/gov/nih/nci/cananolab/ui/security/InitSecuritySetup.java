@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.ui.security;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.SortedSet;
 
@@ -21,7 +21,7 @@ public class InitSecuritySetup {
 
 	private InitSecuritySetup() throws CaNanoLabSecurityException {
 		authorizationService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 	}
 
 	public static InitSecuritySetup getInstance()
@@ -84,20 +84,20 @@ public class InitSecuritySetup {
 	 */
 	public void createDefaultCSMGroups() throws CaNanoLabSecurityException {
 		// create default groups
-		for (String groupName : CaNanoLabConstants.VISIBLE_GROUPS) {
+		for (String groupName : Constants.VISIBLE_GROUPS) {
 			authorizationService.createAGroup(groupName);
 		}
 
 		// assign PI group to role CURD on sample, protocol, nanopoarticle and
 		// publication
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PROTOCOL,
-				CaNanoLabConstants.CSM_CURD_ROLE);
+				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PROTOCOL,
+				Constants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PUBLICATION,
-				CaNanoLabConstants.CSM_CURD_ROLE);
+				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PUBLICATION,
+				Constants.CSM_CURD_ROLE);
 		authorizationService.assignGroupToProtectionGroupWithRole(
-				CaNanoLabConstants.CSM_DATA_CURATOR, CaNanoLabConstants.CSM_PG_PARTICLE,
-				CaNanoLabConstants.CSM_CURD_ROLE);
+				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PARTICLE,
+				Constants.CSM_CURD_ROLE);
 	}
 }

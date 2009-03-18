@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		FileBean fileBean = (FileBean) theForm.get("compFile");
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
 				+ particleBean.getDomainParticleSample().getName()
 				+ "/"
@@ -53,7 +53,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 				fileBean.getDomainFile(), fileBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		authService.assignVisibility(fileBean.getDomainFile().getId()
 				.toString(), fileBean.getVisibilityGroups(), null);
 
@@ -172,6 +172,6 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
+				Constants.CSM_PG_PARTICLE);
 	}
 }

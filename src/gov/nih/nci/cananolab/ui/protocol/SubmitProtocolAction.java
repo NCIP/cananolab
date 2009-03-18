@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -42,14 +42,14 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ProtocolFileBean pfileBean = (ProtocolFileBean) theForm.get("file");
-		pfileBean.setupDomainFile(CaNanoLabConstants.FOLDER_PROTOCOL, user
+		pfileBean.setupDomainFile(Constants.FOLDER_PROTOCOL, user
 				.getLoginName());
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		ProtocolFile protocolFile = (ProtocolFile) pfileBean.getDomainFile();
 		service.saveProtocolFile(protocolFile, pfileBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		authService.assignVisibility(pfileBean.getDomainFile().getId()
 				.toString(), pfileBean.getVisibilityGroups(), null);
 
@@ -60,9 +60,9 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		// assign protocol visibility
 		if (pfileBean.getVisibilityStr() != null
 				&& pfileBean.getVisibilityStr().contains(
-						CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+						Constants.CSM_PUBLIC_GROUP)) {
 			authService.assignVisibility(dbProtocol.getId().toString(),
-					new String[] { CaNanoLabConstants.CSM_PUBLIC_GROUP }, null);
+					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 		}
 
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
@@ -137,6 +137,6 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PROTOCOL);
+				Constants.CSM_PG_PROTOCOL);
 	}
 }

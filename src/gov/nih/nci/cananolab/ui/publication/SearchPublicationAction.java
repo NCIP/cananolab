@@ -13,7 +13,8 @@ import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteIm
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
@@ -309,7 +310,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			String remoteServerHostUrl = url.getProtocol() + "://"
 					+ url.getHost() + ":" + url.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + "/"
-					+ CaNanoLabConstants.CSM_APP_NAME
+					+ Constants.CSM_APP_NAME
 					+ "/searchPublication.do?dispatch=download" + "&fileId="
 					+ fileId + "&location=local";
 
@@ -350,7 +351,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		nameParts.add(titleName);
 		nameParts.add("Publication");
 		nameParts.add(viewType);
-		nameParts.add(StringUtils.convertDateToString(new Date(),
+		nameParts.add(DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS"));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;

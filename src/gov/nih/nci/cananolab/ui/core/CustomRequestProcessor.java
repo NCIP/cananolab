@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,7 +26,7 @@ public class CustomRequestProcessor extends TilesRequestProcessor {
 		String dispatch = request.getParameter("dispatch");
 		// private dispatch
 		boolean privateDispatch = false;
-		for (String theDispatch : CaNanoLabConstants.PRIVATE_DISPATCHES) {
+		for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
 			if (dispatch != null && dispatch.startsWith(theDispatch)) {
 				privateDispatch = true;
 				break;

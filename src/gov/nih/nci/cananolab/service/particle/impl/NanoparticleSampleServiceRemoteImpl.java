@@ -24,8 +24,8 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.rmi.RemoteException;
@@ -96,12 +96,12 @@ public class NanoparticleSampleServiceRemoteImpl implements
 	// particles.add(particleBean);
 	// }
 	// Collections.sort(particles,
-	// new CaNanoLabComparators.ParticleBeanComparator());
+	// new Comparators.ParticleBeanComparator());
 	// }
 	// return particles;
 	// } catch (RemoteException e) {
-	// logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-	// throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+	// logger.error(Constants.NODE_UNAVAILABLE, e);
+	// throw new ParticleException(Constants.NODE_UNAVAILABLE, e);
 	// } catch (Exception e) {
 	// String err = "Problem finding particles with the given search
 	// parameters.";
@@ -130,7 +130,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 				String[] columns = null;
 				for (String particleSampleStr : particleSampleStrs) {
 					columns = particleSampleStr
-							.split(CaNanoLabConstants.VIEW_COL_DELIMITER);
+							.split(Constants.VIEW_COL_DELIMITER);
 					NanoparticleSample particleSample = new NanoparticleSample();
 					// id
 					particleSample.setId(new Long(columns[0]));
@@ -148,7 +148,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					if (columns.length > 5 && columns[5] != null
 							&& columns[5].length() > 0) {
 						String[] compositionsClazzNames = columns[5]
-								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
+								.split(Constants.VIEW_CLASSNAME_DELIMITER);
 						if (compositionsClazzNames != null) {
 							particleBean
 									.setNanoparticleEntityClassNames(compositionsClazzNames);
@@ -158,7 +158,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					if (columns.length > 6 && columns[6] != null
 							&& columns[6].length() > 0) {
 						String[] functionClazzNames = columns[6]
-								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
+								.split(Constants.VIEW_CLASSNAME_DELIMITER);
 						if (functionClazzNames != null) {
 							particleBean
 									.setFunctionClassNames(functionClazzNames);
@@ -169,7 +169,7 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					if (columns.length > 7 && columns[7] != null
 							&& columns[7].length() > 0) {
 						String[] characterizationClazzNames = columns[7]
-								.split(CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER);
+								.split(Constants.VIEW_CLASSNAME_DELIMITER);
 						if (characterizationClazzNames != null) {
 							particleBean
 									.setCharacterizationClassNames(characterizationClazzNames);
@@ -178,12 +178,12 @@ public class NanoparticleSampleServiceRemoteImpl implements
 					particles.add(particleBean);
 				}
 				Collections.sort(particles,
-						new CaNanoLabComparators.ParticleBeanComparator());
+						new Comparators.ParticleBeanComparator());
 			}
 			return particles;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(Constants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
 			logger.error(err, e);
@@ -271,8 +271,8 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			ParticleBean particleBean = new ParticleBean(particleSample);
 			return particleBean;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(Constants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding the remote particle by id: "
 					+ particleId;
@@ -311,8 +311,8 @@ public class NanoparticleSampleServiceRemoteImpl implements
 			}
 			return particleSample;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new ParticleException(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			throw new ParticleException(Constants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
 			String err = "Problem finding the particle by name: "
 					+ particleName;

@@ -19,8 +19,8 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -177,7 +177,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 							functionClassNames, otherFunctionTypes,
 							characterizationClassNames, wordList);
 			Collections.sort(particleSamples,
-					new CaNanoLabComparators.NanoparticleSampleComparator());
+					new Comparators.NanoparticleSampleComparator());
 			for (NanoparticleSample particleSample : particleSamples) {
 				ParticleBean particleBean = new ParticleBean(particleSample);
 				particles.add(particleBean);
@@ -297,14 +297,14 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throws ParticleException {
 		try {
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			if (auth.isUserAllowed(particleBean.getDomainParticleSample()
 					.getName(), user)) {
 				particleBean.setHidden(false);
 				// get assigned visible groups
 				List<String> accessibleGroups = auth.getAccessibleGroups(
 						particleBean.getDomainParticleSample().getName(),
-						CaNanoLabConstants.CSM_READ_PRIVILEGE);
+						Constants.CSM_READ_PRIVILEGE);
 				String[] visibilityGroups = accessibleGroups
 						.toArray(new String[0]);
 				particleBean.setVisibilityGroups(visibilityGroups);
@@ -323,7 +323,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throws ParticleException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			if (className == null) {
 			} else if (className
 					.startsWith("gov.nih.nci.cananolab.domain.characterization")) {
@@ -366,10 +366,10 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throws ParticleException {
 		try {
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 
 			SortedSet<String> names = new TreeSet<String>(
-					new CaNanoLabComparators.SortableNameComparator());
+					new Comparators.SortableNameComparator());
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
@@ -404,7 +404,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 	public void assignVisibility(ParticleBean particleSampleBean)
 			throws Exception {
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		// assign visibility for particle
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		String orgName = pocService.findPointOfContactById(
@@ -427,7 +427,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		// if containing public group, assign associated public visibility
 		// otherwise remove associated public visibility
 		if (Arrays.asList(visibleGroups).contains(
-				CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+				Constants.CSM_PUBLIC_GROUP)) {
 			// keywords
 			Collection<Keyword> keywordCollection = nanoparticleSample
 					.getKeywordCollection();
@@ -634,7 +634,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 			throws ParticleException {
 		try {
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			List<ParticleBean> filtered = new ArrayList<ParticleBean>();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -697,7 +697,7 @@ public class NanoparticleSampleServiceLocalImpl implements
 		SortedSet<SortableName> otherParticles = new TreeSet<SortableName>();
 		try {
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(

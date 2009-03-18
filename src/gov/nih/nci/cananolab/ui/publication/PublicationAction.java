@@ -28,8 +28,9 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -62,7 +63,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		String[] researchAreas = publicationBean.getResearchAreas();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_PUBLICATION,
+		publicationBean.setupDomainFile(Constants.FOLDER_PUBLICATION,
 				user.getLoginName(), 0);
 		String researchAreasStr = null;
 		if (researchAreas != null && researchAreas.length > 0) {
@@ -87,14 +88,14 @@ public class PublicationAction extends BaseAnnotationAction {
 						.getNewFileData(), publicationBean.getAuthors());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		authService.assignVisibility(publicationBean.getDomainFile().getId()
 				.toString(), publicationBean.getVisibilityGroups(), null);
 
 		// set author visibility
 		if (publicationBean.getVisibilityGroups() != null
 				&& Arrays.asList(publicationBean.getVisibilityGroups())
-						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+						.contains(Constants.CSM_PUBLIC_GROUP)) {
 			if (publication.getAuthorCollection() != null) {
 				for (Author author : publication.getAuthorCollection()) {
 					if (author != null) {
@@ -628,7 +629,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PUBLICATION);
+				Constants.CSM_PG_PUBLICATION);
 	}
 
 	protected boolean validateResearchAreas(HttpServletRequest request,
@@ -686,7 +687,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		nameParts.add(titleName);
 		nameParts.add("Publication");
 		nameParts.add(viewType);
-		nameParts.add(StringUtils.convertDateToString(new Date(),
+		nameParts.add(DateUtils.convertDateToString(new Date(),
 				"yyyyMMdd_HH-mm-ss-SSS"));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;

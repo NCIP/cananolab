@@ -9,7 +9,7 @@ import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SAXElementHandler;
 import gov.nih.nci.cananolab.util.SAXEventSwitcher;
 
@@ -97,7 +97,7 @@ public class EndNoteXMLHandler {
         try { 
         	PublicationService service = new PublicationServiceLocalImpl();    		
     		AuthorizationService authService = new AuthorizationService(
-    				CaNanoLabConstants.CSM_APP_NAME);    		
+    				Constants.CSM_APP_NAME);    		
         	int count = 1; 
 			for (PublicationBean pubBean : publicationCollection) {		
 				Publication publication = (Publication) pubBean.getDomainFile();
@@ -147,7 +147,7 @@ public class EndNoteXMLHandler {
 		public void startElement(String uri, String localName, String qname, Attributes atts) {			
 			publicationBean = new PublicationBean();
 			try {
-				publicationBean.setupDomainFile(CaNanoLabConstants.FOLDER_PUBLICATION, 
+				publicationBean.setupDomainFile(Constants.FOLDER_PUBLICATION, 
 					"DATA_PARSING", 0);
 			}catch (Exception ex) {
 				System.out.println("exception publicationBean.setupDomainFile");

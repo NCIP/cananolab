@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +41,7 @@ public class LoginAction extends Action {
 
 		// Call CSM to authenticate the user.
 		LoginService loginservice = new LoginService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);		
 		if (blnAuthenticated == true) {
 			// check if the password is the initial password
@@ -71,26 +71,26 @@ public class LoginAction extends Action {
 	private void setUserSessionInfo(HttpSession session, String loginName)
 			throws Exception {
 		AuthorizationService authorizationService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		UserBean user = authorizationService.getUserBean(loginName);
 		session.setAttribute("user", user);
 		session.setAttribute("userService", authorizationService);
 
 		Boolean createProtocol = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_PROTOCOL);
+				Constants.CSM_PG_PROTOCOL);
 		session.setAttribute("canCreateProtocol", createProtocol);
 		Boolean createPublication = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_PUBLICATION);
+				Constants.CSM_PG_PUBLICATION);
 		session.setAttribute("canCreatePublication", createPublication);
 		Boolean createParticle = authorizationService.checkCreatePermission(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
+				Constants.CSM_PG_PARTICLE);
 		session.setAttribute("canCreateNanoparticle", createParticle);
 
 		boolean isAdmin = authorizationService.isAdmin(user.getLoginName());
 		session.setAttribute("isAdmin", isAdmin);
 
 		boolean canDelete = authorizationService.checkDeletePermission(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
+				Constants.CSM_PG_PARTICLE);
 		if (canDelete && isAdmin) {
 			session.setAttribute("canUserDelete", "true");
 		} else {

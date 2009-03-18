@@ -5,9 +5,10 @@ import gov.nih.nci.cananolab.exception.CaNanoLabException;
 import gov.nih.nci.cananolab.exception.GridDownException;
 import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
@@ -280,12 +281,12 @@ public class InitSetup {
 			String prefix = folderType;
 
 			if (particleName != null && submitType != null
-					&& folderType.equals(CaNanoLabConstants.FOLDER_PARTICLE)) {
+					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
 				prefix += "/" + particleName + "/";
 				prefix += StringUtils
 						.getOneWordLowerCaseFirstLetter(submitType);
 			}
-			String timestamp = StringUtils.convertDateToString(new Date(),
+			String timestamp = DateUtils.convertDateToString(new Date(),
 					"yyyyMMdd_HH-mm-ss-SSS");
 
 			return prefix + "/" + timestamp + "_" + file.getFileName();
@@ -351,7 +352,7 @@ public class InitSetup {
 		int port = (localURL.getPort() == -1) ? 80 : localURL.getPort();
 		String localGridURL = localURL.getProtocol() + "://"
 				+ localURL.getHost() + ":" + port + "/"
-				+ CaNanoLabConstants.GRID_SERVICE_PATH;
+				+ Constants.GRID_SERVICE_PATH;
 		GridDiscoveryServiceJob gridDiscoveryJob = new GridDiscoveryServiceJob();
 		List<GridNodeBean> gridNodes = gridDiscoveryJob.getAllGridNodes();
 		GridNodeBean localGrid = GridService.getGridNodeByURL(gridNodes,
@@ -363,7 +364,7 @@ public class InitSetup {
 			remoteNodes.remove(localGrid);
 		}
 		Collections.sort(remoteNodes,
-				new CaNanoLabComparators.GridNodeHostNameComparator());
+				new Comparators.GridNodeHostNameComparator());
 
 		request.getSession().getServletContext().setAttribute("allGridNodes",
 				remoteNodes);

@@ -42,7 +42,7 @@ public class ClassUtils {
 				.getParentFile();
 
 		String fullJarFilePath = webinfDirect + File.separator + "lib"
-				+ File.separatorChar + CaNanoLabConstants.SDK_BEAN_JAR;
+				+ File.separatorChar + Constants.SDK_BEAN_JAR;
 		file = new JarFile(fullJarFilePath);
 
 		if (file == null)

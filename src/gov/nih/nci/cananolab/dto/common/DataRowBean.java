@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.dto.common;
 import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.Comparators;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +30,7 @@ public class DataRowBean {
 		conditions = new ArrayList<Condition>(data.get(0)
 				.getConditionCollection());
 		Collections.sort(conditions,
-				new CaNanoLabComparators.ConditionDateComparator());
+				new Comparators.ConditionDateComparator());
 	}
 
 	public void addDatum(Datum datum) {

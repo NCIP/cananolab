@@ -25,8 +25,8 @@
 		<property name="assayType" type="string" column="assay_type" />
 		<!-- Associations mapping for the Characterization class -->
 		<many-to-one name="nanoparticleSample"
-			class="gov.nih.nci.cananolab.domain.particle.NanoparticleSample"
-			column="particle_sample_pk_id" lazy="proxy" />
+			class="gov.nih.nci.cananolab.domain.particle.Sample"
+			column="sample_pk_id" lazy="proxy" />
 		<set name="fileCollection" table="characterization_file"
 			lazy="true" cascade="delete">
 			<cache usage="read-write" />

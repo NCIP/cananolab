@@ -5,8 +5,8 @@ import gov.nih.nci.cananolab.domain.linkage.Attachment;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ public class ChemicalAssociationBean {
 				files.add(new FileBean(file));
 			}
 			Collections.sort(files,
-					new CaNanoLabComparators.FileBeanDateComparator());
+					new Comparators.FileBeanDateComparator());
 		}
 		associatedElementA = new AssociatedElementBean(chemicalAssociation
 				.getAssociatedElementA());

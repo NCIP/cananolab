@@ -16,10 +16,10 @@ import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.StringUtils;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,8 +91,8 @@ public class CharacterizationBean {
 				pocBean = new PointOfContactBean(poc);
 		}
 
-		this.dateString = StringUtils.convertDateToString(chara.getDate(),
-				CaNanoLabConstants.DATE_FORMAT);
+		this.dateString = DateUtils.convertDateToString(chara.getDate(),
+				Constants.DATE_FORMAT);
 
 		if (chara.getDatumCollection() != null) {
 			convertToDataSets(new ArrayList<Datum>(chara.getDatumCollection()));
@@ -119,7 +119,7 @@ public class CharacterizationBean {
 	}
 
 	private void convertToDataSets(List<Datum> data) {
-		Collections.sort(data, new CaNanoLabComparators.DatumDateComparator());
+		Collections.sort(data, new Comparators.DatumDateComparator());
 		// get all DataSets in order of creation date
 		List<DataSet> dataSetList = new ArrayList<DataSet>();
 		for (Datum datum : data) {
@@ -152,7 +152,7 @@ public class CharacterizationBean {
 				.deepCopy(domainChar);
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
-		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
 		if (copy.getExperimentConfigCollection().isEmpty()) {
 			copy.setExperimentConfigCollection(null);
@@ -164,7 +164,7 @@ public class CharacterizationBean {
 			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
 				config.setId(null);
 				config
-						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				config.setCreatedDate(new Date());
 			}
 		}
@@ -178,14 +178,14 @@ public class CharacterizationBean {
 			for (Datum datum : copy.getDatumCollection()) {
 				datum.setId(null);
 				datum
-						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				datum.setCreatedDate(new Date());
 				// TODO::
 				// if (bioassay.getFile() != null) {
 				//
 				// bioassay.getFile().setId(null);
 				// bioassay.getFile().setCreatedBy(
-				// CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				// Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				// bioassay.getFile().setCreatedDate(new Date());
 				// }
 				// if (bioassay.getDerivedDatumCollection().isEmpty()
@@ -201,7 +201,7 @@ public class CharacterizationBean {
 				// .getDerivedDatumCollection()) {
 				// datum.setId(null);
 				// datum
-				// .setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+				// .setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				// datum.setCreatedDate(new Date());
 				// }
 				// }
@@ -232,7 +232,7 @@ public class CharacterizationBean {
 		if (domainChar.getId() == null
 				|| domainChar.getCreatedBy() != null
 				&& domainChar.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainChar.setCreatedBy(createdBy);
 			domainChar.setCreatedDate(new Date());
 		}
@@ -245,8 +245,8 @@ public class CharacterizationBean {
 		} else {
 			domainChar.setPointOfContact(null);
 		}
-		domainChar.setDate(StringUtils.convertToDate(dateString,
-				CaNanoLabConstants.DATE_FORMAT));
+		domainChar.setDate(DateUtils.convertToDate(dateString,
+				Constants.DATE_FORMAT));
 
 		if (domainChar.getExperimentConfigCollection() != null) {
 			domainChar.getExperimentConfigCollection().clear();
@@ -375,7 +375,7 @@ public class CharacterizationBean {
 	}
 
 	public void addDataSet(DataSetBean dataSetBean) {
-		// if an old one exists, remove it first		
+		// if an old one exists, remove it first
 		int index = dataSets.indexOf(dataSetBean);
 		if (index != -1) {
 			dataSets.remove(dataSetBean);

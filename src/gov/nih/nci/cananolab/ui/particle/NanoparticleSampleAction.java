@@ -20,7 +20,7 @@ import gov.nih.nci.cananolab.service.particle.helper.NanoparticleSampleServiceHe
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -181,7 +181,7 @@ public class NanoparticleSampleAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
+				Constants.CSM_PG_PARTICLE);
 	}
 
 	public ActionForward fromPOC(ActionMapping mapping, ActionForm form,

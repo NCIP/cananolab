@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.system.applicationservice.impl;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.system.dao.CustomizedORMDAO;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.applicationservice.impl.ApplicationServiceImpl;
 import gov.nih.nci.system.util.ClassCache;
@@ -169,9 +169,9 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
 					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
 					+ "d.group_name='"
-					+ CaNanoLabConstants.CSM_PUBLIC_GROUP
+					+ Constants.CSM_PUBLIC_GROUP
 					+ "' and b.role_name='"
-					+ CaNanoLabConstants.CSM_READ_ROLE
+					+ Constants.CSM_READ_ROLE
 					+ "'";
 
 			String[] columns = new String[] { "protection_group_name" };

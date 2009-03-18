@@ -17,8 +17,8 @@ import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -88,12 +88,12 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			Collections
 					.sort(
 							publicationBeans,
-							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
+							new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
+			logger.error(Constants.NODE_UNAVAILABLE, e);
 			// should show warning to user
-			// throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE,
+			// throw new DocumentException(Constants.NODE_UNAVAILABLE,
 			// e);
 			return publicationBeans;
 		} catch (Exception e) {
@@ -137,8 +137,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			}
 			return publications;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			// throw new DocumentException(CaNanoLabConstants.NODE_UNAVAILABLE,
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			// throw new DocumentException(Constants.NODE_UNAVAILABLE,
 			// e);
 			return null;
 		} catch (Exception e) {
@@ -299,8 +299,8 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			loadAuthorsForPublication(publication);
 			return publication;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new PublicationException(CaNanoLabConstants.NODE_UNAVAILABLE,
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			throw new PublicationException(Constants.NODE_UNAVAILABLE,
 					e);
 		} catch (Exception e) {
 			String err = "Problem finding the publication by id: "

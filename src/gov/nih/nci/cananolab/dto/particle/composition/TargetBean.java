@@ -3,9 +3,9 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 import gov.nih.nci.cananolab.domain.function.Antigen;
 import gov.nih.nci.cananolab.domain.function.OtherTarget;
 import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.DateUtil;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.Map;
 
@@ -105,12 +105,12 @@ public class TargetBean {
 		if (domainTarget.getId() == null
 				|| (domainTarget.getCreatedBy() != null && domainTarget
 						.getCreatedBy().equals(
-								CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX))) {
+								Constants.AUTO_COPY_ANNOTATION_PREFIX))) {
 			domainTarget.setCreatedBy(createdBy);
 			//domainTarget.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
-			domainTarget.setCreatedDate(DateUtil
+			domainTarget.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
 		}
 	}

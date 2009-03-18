@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.service.common.GridService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,9 +74,9 @@ public class GridDiscoveryServiceJob implements Job {
 		logger.info("Discovering new grid nodes via scheduler...");
 
 		List<GridNodeBean> nodes = GridService.discoverNewServices(
-				CaNanoLabConstants.GRID_INDEX_SERVICE_URL,
-				CaNanoLabConstants.DOMAIN_MODEL_NAME,
-				CaNanoLabConstants.DOMAIN_MODEL_VERSION, extantURLs);
+				Constants.GRID_INDEX_SERVICE_URL,
+				Constants.DOMAIN_MODEL_NAME,
+				Constants.DOMAIN_MODEL_VERSION, extantURLs);
 		logger.info("Found " + nodes.size() + " new services.");
 		return nodes;
 	}

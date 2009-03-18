@@ -20,7 +20,7 @@ import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLoca
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +77,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				otherPointOfContactCollection);
 		// assign primary pointOfContact visibility
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		authService.assignVisibility(primaryPointOfContact.getDomain().getId()
 				.toString(), primaryVisibilityGroups,
 				primaryPointOfContact.getOrganization().getName());
@@ -306,7 +306,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			throws Exception {
 		try {
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
 					.toString(), user)) {
 				pointOfContactBean.setHidden(false);
@@ -314,7 +314,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(
 							pointOfContactBean.getDomain().getId().toString(),
-							CaNanoLabConstants.CSM_READ_PRIVILEGE);
+							Constants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
 					pointOfContactBean.setVisibilityGroups(visibilityGroups);

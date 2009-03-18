@@ -24,7 +24,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.net.URL;
@@ -242,7 +242,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
-		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
 				+ particleBean.getDomainParticleSample().getName()
 				+ "/"
@@ -345,13 +345,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// set public visibility
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
 				particleBean.getDomainParticleSample().getName(),
-				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+				Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
 				&& accessibleGroups
-						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+						.contains(Constants.CSM_PUBLIC_GROUP)) {
 			charService.assignPublicVisibility(authService, charBean
 					.getDomainChar());
 		}
@@ -383,7 +383,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			String createdBy) throws Exception {
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
-		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
 				+ particleBean.getDomainParticleSample().getName()
 				+ "/"
@@ -437,7 +437,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			// FileBean fileBean = bioassayBean.getFileBean();
 			// if (!fileBean.getDomainFile().getUriExternal()) {
 			// String fileRoot = PropertyReader.getProperty(
-			// CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+			// Constants.FILEUPLOAD_PROPERTY,
 			// "fileRepositoryDir");
 			// fileBean.setFullPath(fileRoot + File.separator
 			// + fileBean.getDomainFile().getUri());

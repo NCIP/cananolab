@@ -15,8 +15,8 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.IOException;
@@ -141,7 +141,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			Collections
 					.sort(
 							publicationBeans,
-							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
+							new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 
 		} catch (Exception e) {
@@ -177,7 +177,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			Collections
 					.sort(
 							publications,
-							new CaNanoLabComparators.PublicationBeanCategoryTitleComparator());
+							new Comparators.PublicationBeanCategoryTitleComparator());
 			return publications;
 		} catch (Exception e) {
 			String err = "Problem finding publication collections with the given particle ID.";
@@ -269,7 +269,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		try {
 			PublicationService publicationService = new PublicationServiceLocalImpl();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			Object publicationObject = appService.getObject(Publication.class,

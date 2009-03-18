@@ -13,7 +13,7 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -101,8 +101,8 @@ public class ProtocolServiceRemoteImpl implements ProtocolService {
 			}
 			return protocolFileBeans;
 		} catch (RemoteException e) {
-			logger.error(CaNanoLabConstants.NODE_UNAVAILABLE, e);
-			throw new ProtocolException(CaNanoLabConstants.NODE_UNAVAILABLE, e);		
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			throw new ProtocolException(Constants.NODE_UNAVAILABLE, e);		
 		} catch (Exception e) {
 			String err = "Problem finding protocol files.";
 			logger.error(err, e);

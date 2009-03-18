@@ -2,14 +2,11 @@ package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
-import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -114,7 +111,7 @@ public class NanoparticleCharacterizationResultServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			authService.removePublicGroup(dataSet.getId().toString());
 			appService.delete(dataSet);
 

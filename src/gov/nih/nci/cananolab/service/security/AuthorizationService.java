@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.service.security;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
@@ -146,7 +146,7 @@ public class AuthorizationService {
 	public boolean checkCreatePermission(UserBean user,
 			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		return checkPermission(user, protectionElementObjectId,
-				CaNanoLabConstants.CSM_CREATE_PRIVILEGE);
+				Constants.CSM_CREATE_PRIVILEGE);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class AuthorizationService {
 	public boolean checkExecutePermission(UserBean user,
 			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		return checkPermission(user, protectionElementObjectId,
-				CaNanoLabConstants.CSM_EXECUTE_PRIVILEGE);
+				Constants.CSM_EXECUTE_PRIVILEGE);
 	}
 
 	/**
@@ -176,13 +176,13 @@ public class AuthorizationService {
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws Exception {
 		return checkPermission(user, protectionElementObjectId,
-				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+				Constants.CSM_READ_PRIVILEGE);
 	}
 
 	public List<String> getPublicDataSlow() throws CaNanoLabSecurityException {
 		List<String> publicData = new ArrayList<String>();
 		try {
-			Group publicGroup = getGroup(CaNanoLabConstants.CSM_PUBLIC_GROUP);
+			Group publicGroup = getGroup(Constants.CSM_PUBLIC_GROUP);
 			try {
 				Set ctxs = userManager
 						.getProtectionGroupRoleContextForGroup(publicGroup
@@ -191,7 +191,7 @@ public class AuthorizationService {
 					ProtectionGroupRoleContext ctx = (ProtectionGroupRoleContext) obj;
 					for (Object r : ctx.getRoles()) {
 						if (((Role) r).getName().equals(
-								CaNanoLabConstants.CSM_READ_ROLE)) {
+								Constants.CSM_READ_ROLE)) {
 							publicData.add(ctx.getProtectionGroup()
 									.getProtectionGroupName());
 							break;
@@ -221,7 +221,7 @@ public class AuthorizationService {
 	public boolean checkDeletePermission(UserBean user,
 			String protectionElementObjectId) throws CaNanoLabSecurityException {
 		return checkPermission(user, protectionElementObjectId,
-				CaNanoLabConstants.CSM_DELETE_PRIVILEGE);
+				Constants.CSM_DELETE_PRIVILEGE);
 	}
 
 	/**
@@ -279,10 +279,10 @@ public class AuthorizationService {
 		// filter out the ones starting with APP_OWNER
 		SortedSet<String> filteredGroups = new TreeSet<String>();
 		List<String> notShownGroups = Arrays
-				.asList(CaNanoLabConstants.VISIBLE_GROUPS);
+				.asList(Constants.VISIBLE_GROUPS);
 		for (String groupName : groups) {
 			if (!notShownGroups.contains(groupName)
-					&& !groupName.equals(CaNanoLabConstants.CSM_ADMIN)) {
+					&& !groupName.equals(Constants.CSM_ADMIN)) {
 				filteredGroups.add(groupName);
 			}
 		}
@@ -591,7 +591,7 @@ public class AuthorizationService {
 		List<String> groupNames = new ArrayList<String>();
 		try {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
-					CaNanoLabConstants.CSM_READ_PRIVILEGE);
+					Constants.CSM_READ_PRIVILEGE);
 			for (Object group : groups) {
 				groupNames.add(((Group) group).getGroupName());
 			}
@@ -621,8 +621,8 @@ public class AuthorizationService {
 	public void removePublicGroup(String objectName)
 			throws CaNanoLabSecurityException {
 		try {
-			Group group = getGroup(CaNanoLabConstants.CSM_PUBLIC_GROUP);
-			Role role = getRole(CaNanoLabConstants.CSM_READ_ROLE);
+			Group group = getGroup(Constants.CSM_PUBLIC_GROUP);
+			Role role = getRole(Constants.CSM_READ_ROLE);
 			ProtectionGroup pg = getProtectionGroup(objectName);
 			userManager.removeGroupRoleFromProtectionGroup(pg
 					.getProtectionGroupId().toString(), group.getGroupId()
@@ -636,28 +636,28 @@ public class AuthorizationService {
 			throws CaNanoLabSecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,
-					CaNanoLabConstants.CSM_READ_ROLE);
+					Constants.CSM_READ_ROLE);
 
 			if (Arrays.asList(visibleGroups).contains(
-					CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+					Constants.CSM_PUBLIC_GROUP)) {
 				// only need to assign public visibilities
 				secureObject(dataToProtect,
-						CaNanoLabConstants.CSM_PUBLIC_GROUP,
-						CaNanoLabConstants.CSM_READ_ROLE);
+						Constants.CSM_PUBLIC_GROUP,
+						Constants.CSM_READ_ROLE);
 			} else {
 				// set new visibilities
 				for (String group : visibleGroups) {
 					secureObject(dataToProtect, group,
-							CaNanoLabConstants.CSM_READ_ROLE);
+							Constants.CSM_READ_ROLE);
 				}
 				// set default visibilities
-				for (String group : CaNanoLabConstants.VISIBLE_GROUPS) {
+				for (String group : Constants.VISIBLE_GROUPS) {
 					secureObject(dataToProtect, group,
-							CaNanoLabConstants.CSM_READ_ROLE);
+							Constants.CSM_READ_ROLE);
 				}
 				if (owningGroup!=null) {
 					secureObject(dataToProtect, owningGroup,
-							CaNanoLabConstants.CSM_READ_ROLE);
+							Constants.CSM_READ_ROLE);
 				}
 			}
 		} catch (Exception e) {
@@ -670,10 +670,10 @@ public class AuthorizationService {
 			throws CaNanoLabSecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,
-					CaNanoLabConstants.CSM_READ_ROLE);
+					Constants.CSM_READ_ROLE);
 			// set public visibilities
-			secureObject(dataToProtect, CaNanoLabConstants.CSM_PUBLIC_GROUP,
-					CaNanoLabConstants.CSM_READ_ROLE);
+			secureObject(dataToProtect, Constants.CSM_PUBLIC_GROUP,
+					Constants.CSM_READ_ROLE);
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
 			throw new CaNanoLabSecurityException();
@@ -754,7 +754,7 @@ public class AuthorizationService {
 			String dbDriver, String dbURL, String dbUserName, String dbPassword) {
 		try {
 			Application caNanoLabApp = authorizationManager
-					.getApplication(CaNanoLabConstants.CSM_APP_NAME);
+					.getApplication(Constants.CSM_APP_NAME);
 			caNanoLabApp.setDatabaseURL(dbURL);
 			caNanoLabApp.setDatabaseDialect(dbDialect);
 			caNanoLabApp.setDatabaseDriver(dbDriver);
@@ -778,7 +778,7 @@ public class AuthorizationService {
 	public static void main(String[] args) {
 		try {
 			AuthorizationService service = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			service.updateDatabaseConnectionForCSMApplications(args[0],
 					args[1], args[2], args[3], args[4]);
 			System.exit(0);

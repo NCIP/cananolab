@@ -11,8 +11,8 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -678,16 +678,16 @@ public class NanoparticleSampleServiceHelper {
 			entities
 					.addAll(getStoredFunctionalizingEntityClassNames(particleSample));
 			columns.add(StringUtils.join(entities,
-					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+					Constants.VIEW_CLASSNAME_DELIMITER));
 			columns.add(StringUtils.join(
 					getStoredFunctionClassNames(particleSample),
-					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+					Constants.VIEW_CLASSNAME_DELIMITER));
 			columns.add(StringUtils.join(
 					getStoredCharacterizationClassNames(particleSample),
-					CaNanoLabConstants.VIEW_CLASSNAME_DELIMITER));
+					Constants.VIEW_CLASSNAME_DELIMITER));
 
 			particleStrings.add(StringUtils.joinEmptyItemIncluded(columns,
-					CaNanoLabConstants.VIEW_COL_DELIMITER));
+					Constants.VIEW_COL_DELIMITER));
 		}
 		String[] particleStrArray = new String[particleStrings.size()];
 		return particleStrings.toArray(particleStrArray);

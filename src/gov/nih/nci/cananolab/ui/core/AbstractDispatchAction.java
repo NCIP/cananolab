@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +28,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 		
 		// private dispatch
 		boolean privateDispatch = false;
-		for (String theDispatch : CaNanoLabConstants.PRIVATE_DISPATCHES) {
+		for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
 			if (dispatch.startsWith(theDispatch)) {
 				privateDispatch = true;
 				break;

@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -92,7 +92,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			// .sort(
 			// foundProtocolFiles,
 			// new
-			// CaNanoLabComparators.ProtocolFileBeanNameVersionComparator());
+			// Comparators.ProtocolFileBeanNameVersionComparator());
 			request.getSession().setAttribute("protocolFiles",
 					foundProtocolFiles);
 			forward = mapping.findForward("success");
@@ -157,7 +157,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			String remoteServerHostUrl = url.getProtocol() + "://"
 					+ url.getHost() + ":" + url.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + "/"
-					+ CaNanoLabConstants.CSM_APP_NAME
+					+ Constants.CSM_APP_NAME
 					+ "/searchProtocol.do?dispatch=download" + "&fileId="
 					+ fileId + "&location=local";
 			response.sendRedirect(remoteDownloadUrl);

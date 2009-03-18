@@ -11,7 +11,7 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyReader;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -74,7 +74,7 @@ public class FileServiceLocalImpl implements FileService {
 		try {
 			fileBean = findFileById(fileId);
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			if (auth.isUserAllowed(fileBean.getDomainFile().getId().toString(),
 					user)) {
 				return fileBean;
@@ -104,7 +104,7 @@ public class FileServiceLocalImpl implements FileService {
 				writeFile(copy, content);
 
 				AuthorizationService auth = new AuthorizationService(
-						CaNanoLabConstants.CSM_APP_NAME);
+						Constants.CSM_APP_NAME);
 				FileBean fileBean = new FileBean(file);
 				this.retrieveVisibility(fileBean, user);
 				auth.assignVisibility(copy.getId().toString(), fileBean
@@ -130,7 +130,7 @@ public class FileServiceLocalImpl implements FileService {
 							Property
 									.forName("createdBy")
 									.ne(
-											CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX));
+											Constants.AUTO_COPY_ANNOTATION_PREFIX));
 			List results = appService.query(crit);
 			if (!results.isEmpty()) {
 				file = (File) results.get(0);
@@ -161,7 +161,7 @@ public class FileServiceLocalImpl implements FileService {
 				return null;
 			}
 			String fileRoot = PropertyReader
-					.getProperty(CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+					.getProperty(Constants.FILEUPLOAD_PROPERTY,
 							"fileRepositoryDir");
 
 			java.io.File fileObj = new java.io.File(fileRoot + java.io.File.separator
@@ -229,7 +229,7 @@ public class FileServiceLocalImpl implements FileService {
 			if (fileData != null) {
 				FileServiceLocalImpl fileService = new FileServiceLocalImpl();
 				String rootPath = PropertyReader.getProperty(
-						CaNanoLabConstants.FILEUPLOAD_PROPERTY,
+						Constants.FILEUPLOAD_PROPERTY,
 						"fileRepositoryDir");
 				String fullFileName = rootPath + "/" + file.getUri();
 				fileService.writeFile(fileData, fullFileName);
@@ -291,7 +291,7 @@ public class FileServiceLocalImpl implements FileService {
 		try {
 			if (fileBean!=null) {
 				AuthorizationService auth = new AuthorizationService(
-						CaNanoLabConstants.CSM_APP_NAME);
+						Constants.CSM_APP_NAME);
 				if (fileBean.getDomainFile().getId() != null
 						&& auth.isUserAllowed(fileBean.getDomainFile().getId()
 								.toString(), user)) {
@@ -299,7 +299,7 @@ public class FileServiceLocalImpl implements FileService {
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(
 							fileBean.getDomainFile().getId().toString(),
-							CaNanoLabConstants.CSM_READ_PRIVILEGE);
+							Constants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
 					fileBean.setVisibilityGroups(visibilityGroups);
@@ -321,7 +321,7 @@ public class FileServiceLocalImpl implements FileService {
 		try {
 			if (fileBean!=null) {
 				AuthorizationService auth = new AuthorizationService(
-						CaNanoLabConstants.CSM_APP_NAME);
+						Constants.CSM_APP_NAME);
 				if (fileBean.getDomainFile().getId() != null
 						&& auth.isUserAllowed(fileBean.getDomainFile().getId()
 								.toString(), user)) {

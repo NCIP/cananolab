@@ -6,8 +6,8 @@ import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.DateUtil;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ public class ExperimentConfigServiceLocalImpl implements
 								.setCreatedDate(dbInstrument.getCreatedDate());
 					} else {
 						instrument.setCreatedBy(config.getCreatedBy());
-						instrument.setCreatedDate(DateUtil
+						instrument.setCreatedDate(DateUtils
 								.addSecondsToCurrentDate(i));
 						// need to save the transient object before deleting the
 						// experiment config
@@ -158,7 +158,7 @@ public class ExperimentConfigServiceLocalImpl implements
 				techniques.add(technique);
 			}
 			Collections.sort(techniques,
-					new CaNanoLabComparators.TechniqueComparator());
+					new Comparators.TechniqueComparator());
 		} catch (Exception e) {
 			String err = "Problem to retrieve all techniques.";
 			logger.error(err, e);

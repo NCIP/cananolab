@@ -25,7 +25,7 @@ import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServic
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.List;
@@ -63,7 +63,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
 				.get("entity");
 		// setup domainFile uri for fileBeans
-		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
 				+ particleBean.getDomainParticleSample().getName()
 				+ "/"
@@ -106,13 +106,13 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		// set visibility
 
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
 				particleBean.getDomainParticleSample().getName(),
-				CaNanoLabConstants.CSM_READ_PRIVILEGE);
+				Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
 				&& accessibleGroups
-						.contains(CaNanoLabConstants.CSM_PUBLIC_GROUP)) {
+						.contains(Constants.CSM_PUBLIC_GROUP)) {
 			// set composition public
 			authService.assignPublicVisibility(particleBean
 					.getDomainParticleSample().getSampleComposition().getId()
@@ -409,7 +409,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ParticleBean particleBean = setupParticle(theForm, request, "local");
 		// setup domainFile uri for fileBeans
-		String internalUriPath = CaNanoLabConstants.FOLDER_PARTICLE
+		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
 				+ particleBean.getDomainParticleSample().getName()
 				+ "/"

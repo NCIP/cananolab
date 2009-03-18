@@ -12,8 +12,8 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationServic
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -156,7 +156,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					"Problem to retrieve all Characterization Sources ");
 		}
 		sources.addAll(Arrays
-				.asList(CaNanoLabConstants.DEFAULT_CHARACTERIZATION_SOURCES));
+				.asList(Constants.DEFAULT_CHARACTERIZATION_SOURCES));
 
 		return sources;
 	}
@@ -170,7 +170,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					.findParticleCharacterizationsByClass(particleName,
 							className);
 			Collections.sort(charList,
-					new CaNanoLabComparators.CharacterizationDateComparator());
+					new Comparators.CharacterizationDateComparator());
 			return charList;
 		} catch (Exception e) {
 			String err = "Error getting " + particleName
@@ -205,7 +205,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			removePublicVisibility(authService, chara);
 			appService.delete(chara);
 

@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.service.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
 import gov.nih.nci.security.SecurityServiceProvider;
@@ -146,7 +146,7 @@ public class LoginService {
 	}
 
 	public static void main(String[] args) {
-		LoginService service = new LoginService(CaNanoLabConstants.CSM_APP_NAME);
+		LoginService service = new LoginService(Constants.CSM_APP_NAME);
 		service.initializeAllUserPasswords();
 		System.exit(0);
 	}

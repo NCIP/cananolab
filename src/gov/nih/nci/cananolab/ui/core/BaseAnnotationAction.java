@@ -19,8 +19,8 @@ import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemo
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.PropertyReader;
 
@@ -73,7 +73,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		if (location.equals("local")) {
 			// check access privilege
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			boolean access = auth.isUserAllowed(particleBean
 					.getDomainParticleSample().getName(), user);
 			if (!access) {
@@ -101,7 +101,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	protected void saveFilesToFileSystem(List<FileBean> files) throws Exception {
 		// save file data to file system and set visibility
 		AuthorizationService authService = new AuthorizationService(
-				CaNanoLabConstants.CSM_APP_NAME);
+				Constants.CSM_APP_NAME);
 
 		FileService fileService = new FileServiceLocalImpl();
 		for (FileBean fileBean : files) {
@@ -119,7 +119,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	public boolean canUserExecute(UserBean user)
 			throws CaNanoLabSecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				CaNanoLabConstants.CSM_PG_PARTICLE);
+				Constants.CSM_PG_PARTICLE);
 	}
 
 	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
@@ -230,7 +230,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 
 		String fileRoot = PropertyReader.getProperty(
-				CaNanoLabConstants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+				Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
 		if (dFile.exists()) {

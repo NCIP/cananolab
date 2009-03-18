@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
+import gov.nih.nci.cananolab.util.Comparators;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +34,7 @@ public class CompositionBean {
 		Collections
 				.sort(
 						nanoparticleEntities,
-						new CaNanoLabComparators.NanoparticleEntityBeanTypeDateComparator());
+						new Comparators.NanoparticleEntityBeanTypeDateComparator());
 		if (comp.getFunctionalizingEntityCollection() != null) {
 			for (FunctionalizingEntity entity : comp
 					.getFunctionalizingEntityCollection()) {
@@ -45,7 +45,7 @@ public class CompositionBean {
 		Collections
 				.sort(
 						functionalizingEntities,
-						new CaNanoLabComparators.FunctionalizingEntityBeanTypeDateComparator());
+						new Comparators.FunctionalizingEntityBeanTypeDateComparator());
 		if (comp.getChemicalAssociationCollection() != null) {
 			for (ChemicalAssociation assoc : comp
 					.getChemicalAssociationCollection()) {
@@ -55,7 +55,7 @@ public class CompositionBean {
 		Collections
 				.sort(
 						chemicalAssociations,
-						new CaNanoLabComparators.ChemicalAssociationBeanTypeDateComparator());
+						new Comparators.ChemicalAssociationBeanTypeDateComparator());
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
 				files.add(new FileBean(file));
@@ -64,7 +64,7 @@ public class CompositionBean {
 		Collections
 				.sort(
 						files,
-						new CaNanoLabComparators.FileBeanTypeDateComparator());
+						new Comparators.FileBeanTypeDateComparator());
 	}
 
 	public List<NanoparticleEntityBean> getNanoparticleEntities() {

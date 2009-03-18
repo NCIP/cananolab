@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -80,7 +80,7 @@ public class SchedulerPlugin implements PlugIn {
 					.getInitParameter("schedulerIntervalInMinutes"));
 		} catch (NumberFormatException e) {
 			// use default
-			interval = CaNanoLabConstants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
+			interval = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS;
 		}
 		return interval;
 	}
@@ -89,7 +89,7 @@ public class SchedulerPlugin implements PlugIn {
 		try {
 			Trigger trigger = null;
 			if (intervalInMinutes == 0) {
-				intervalInMinutes = CaNanoLabConstants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS; // default
+				intervalInMinutes = Constants.DEFAULT_GRID_DISCOVERY_INTERVAL_IN_MINS; // default
 				// is
 				// 20
 				// minutes

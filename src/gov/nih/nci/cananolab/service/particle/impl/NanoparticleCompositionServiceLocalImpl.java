@@ -24,7 +24,7 @@ import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
 import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCompositionServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Collection;
@@ -337,7 +337,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			throws ParticleCompositionException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			removeNanoparticleEntityPublicVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -353,7 +353,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			throws ParticleCompositionException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			removeFunctionalizingEntityPublicVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -370,7 +370,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			throws ParticleCompositionException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			removeChemicalAssociationPublicVisibility(authService, assoc);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();

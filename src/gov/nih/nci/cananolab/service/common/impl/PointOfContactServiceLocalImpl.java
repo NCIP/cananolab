@@ -11,8 +11,8 @@ import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.helper.PointOfContactServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -60,7 +60,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			PointOfContact dbPointOfContact = findPointOfContact(primaryPointOfContact);
 			if (dbPointOfContact != null
 					&& !dbPointOfContact.getId().equals(
@@ -246,9 +246,9 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throws PointOfContactException {
 		try {
 			AuthorizationService auth = new AuthorizationService(
-					CaNanoLabConstants.CSM_APP_NAME);
+					Constants.CSM_APP_NAME);
 			SortedSet<String> names = new TreeSet<String>(
-					new CaNanoLabComparators.SortableNameComparator());
+					new Comparators.SortableNameComparator());
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
@@ -273,7 +273,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		try {
 			if (pocBean != null) {
 				AuthorizationService auth = new AuthorizationService(
-						CaNanoLabConstants.CSM_APP_NAME);
+						Constants.CSM_APP_NAME);
 				if (pocBean.getDomain().getId() != null
 						&& auth.isUserAllowed(pocBean.getDomain().getId()
 								.toString(), user)) {
@@ -281,7 +281,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(
 							pocBean.getDomain().getId().toString(),
-							CaNanoLabConstants.CSM_READ_PRIVILEGE);
+							Constants.CSM_READ_PRIVILEGE);
 					String[] visibilityGroups = accessibleGroups
 							.toArray(new String[0]);
 					pocBean.setVisibilityGroups(visibilityGroups);
@@ -324,7 +324,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	public SortedSet<PointOfContact> findAllPointOfContacts()
 			throws PointOfContactException {
 		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
-				new CaNanoLabComparators.ParticlePointOfContactComparator());
+				new Comparators.ParticlePointOfContactComparator());
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();

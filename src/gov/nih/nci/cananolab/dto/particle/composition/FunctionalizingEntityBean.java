@@ -11,9 +11,9 @@ import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,7 +91,7 @@ public class FunctionalizingEntityBean {
 			}
 		}
 		Collections.sort(functions,
-				new CaNanoLabComparators.FunctionBeanDateComparator());
+				new Comparators.FunctionBeanDateComparator());
 
 		if (functionalizingEntity.getActivationMethod() != null) {
 			activationMethod = functionalizingEntity.getActivationMethod();
@@ -102,7 +102,7 @@ public class FunctionalizingEntityBean {
 			}
 		}
 		Collections.sort(files,
-				new CaNanoLabComparators.FileBeanDateComparator());
+				new Comparators.FileBeanDateComparator());
 
 	}
 
@@ -111,7 +111,7 @@ public class FunctionalizingEntityBean {
 				.deepCopy(domainEntity);
 		// clear Id
 		copy.setId(null);
-		copy.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
 		copy.getActivationMethod().setId(null);
 		if (copy.getFunctionCollection().isEmpty()) {
@@ -123,7 +123,7 @@ public class FunctionalizingEntityBean {
 			for (Function function : copy.getFunctionCollection()) {
 				function.setId(null);
 				function
-						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				function.setCreatedDate(new Date());
 				if (function instanceof TargetingFunction) {
 					if (((TargetingFunction) function).getTargetCollection()
@@ -141,7 +141,7 @@ public class FunctionalizingEntityBean {
 								.getTargetCollection()) {
 							target.setId(null);
 							target
-									.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+									.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 							target.setCreatedDate(new Date());
 						}
 					}
@@ -157,7 +157,7 @@ public class FunctionalizingEntityBean {
 			for (File file : copy.getFileCollection()) {
 				file.setId(null);
 				file
-						.setCreatedBy(CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX);
+						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				file.setCreatedDate(new Date());
 			}
 		}
@@ -289,7 +289,7 @@ public class FunctionalizingEntityBean {
 		if (domainEntity.getId() == null
 				|| domainEntity.getCreatedBy() != null
 				&& domainEntity.getCreatedBy().equals(
-						CaNanoLabConstants.AUTO_COPY_ANNOTATION_PREFIX)) {
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
 			domainEntity.setCreatedBy(createdBy);
 			domainEntity.setCreatedDate(new Date());
 		}

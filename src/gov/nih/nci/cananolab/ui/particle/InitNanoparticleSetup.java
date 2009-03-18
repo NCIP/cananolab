@@ -24,9 +24,9 @@ import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
 import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.CaNanoLabComparators;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.SortableName;
 
@@ -110,7 +110,7 @@ public class InitNanoparticleSetup {
 		SortedSet<PointOfContactBean> pointOfContactBeans = null;
 		if (pointOfContacts != null && pointOfContacts.size() > 0) {
 			pointOfContactBeans = new TreeSet<PointOfContactBean>(
-					new CaNanoLabComparators.ParticlePointOfContactBeanComparator());
+					new Comparators.ParticlePointOfContactBeanComparator());
 			for (PointOfContact poc : pointOfContacts) {
 				pointOfContactBeans.add(new PointOfContactBean(poc));
 			}
@@ -150,7 +150,7 @@ public class InitNanoparticleSetup {
 			// composition
 			if (particleSample.getSampleComposition() != null) {
 				SortedSet<DataLinkBean> ndataBeans = new TreeSet<DataLinkBean>(
-						new CaNanoLabComparators.DataLinkTypeDateComparator());
+						new Comparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getNanoparticleEntityCollection() != null) {
 					for (NanoparticleEntity entity : particleSample
@@ -182,7 +182,7 @@ public class InitNanoparticleSetup {
 				dataTree.put("Nanoparticle Entity", ndataBeans);
 
 				SortedSet<DataLinkBean> fdataBeans = new TreeSet<DataLinkBean>(
-						new CaNanoLabComparators.DataLinkTypeDateComparator());
+						new Comparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getFunctionalizingEntityCollection() != null) {
 					for (FunctionalizingEntity entity : particleSample
@@ -214,7 +214,7 @@ public class InitNanoparticleSetup {
 				dataTree.put("Functionalizing Entity", fdataBeans);
 
 				SortedSet<DataLinkBean> adataBeans = new TreeSet<DataLinkBean>(
-						new CaNanoLabComparators.DataLinkTypeDateComparator());
+						new Comparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
 						.getChemicalAssociationCollection() != null) {
 					for (ChemicalAssociation association : particleSample
@@ -247,7 +247,7 @@ public class InitNanoparticleSetup {
 				dataTree.put("Chemical Association", adataBeans);
 
 				SortedSet<DataLinkBean> ldataBeans = new TreeSet<DataLinkBean>(
-						new CaNanoLabComparators.DataLinkTypeDateComparator());
+						new Comparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition().getFileCollection() != null) {
 					for (File file : particleSample.getSampleComposition()
 							.getFileCollection()) {
@@ -313,7 +313,7 @@ public class InitNanoparticleSetup {
 								.get(charName);
 					} else {
 						cdataBeans = new TreeSet<DataLinkBean>(
-								new CaNanoLabComparators.DataLinkTypeDateComparator());
+								new Comparators.DataLinkTypeDateComparator());
 						dataTree.put(charName, cdataBeans);
 					}
 					cdataBeans.add(dataBean);
@@ -322,7 +322,7 @@ public class InitNanoparticleSetup {
 
 				// publication
 				SortedSet<DataLinkBean> pdataBeans = new TreeSet<DataLinkBean>(
-						new CaNanoLabComparators.DataLinkTypeDateComparator());
+						new Comparators.DataLinkTypeDateComparator());
 				Collection<Publication> publicationCollection = particleSample
 						.getPublicationCollection();
 				if (publicationCollection != null
@@ -372,14 +372,14 @@ public class InitNanoparticleSetup {
 							}
 							// dataBean.setViewTitle(report.getUri());
 							if (dataTree
-									.get(CaNanoLabConstants.FOLDER_PUBLICATION) != null) {
+									.get(Constants.FOLDER_PUBLICATION) != null) {
 								pdataBeans = (TreeSet<DataLinkBean>) dataTree
-										.get(CaNanoLabConstants.FOLDER_PUBLICATION);
+										.get(Constants.FOLDER_PUBLICATION);
 							} else {
 								pdataBeans = new TreeSet<DataLinkBean>(
-										new CaNanoLabComparators.DataLinkTypeDateComparator());
+										new Comparators.DataLinkTypeDateComparator());
 								dataTree.put(
-										CaNanoLabConstants.FOLDER_PUBLICATION,
+										Constants.FOLDER_PUBLICATION,
 										pdataBeans);
 							}
 							pdataBeans.add(dataBean);
@@ -428,10 +428,10 @@ public class InitNanoparticleSetup {
 		// set static boolean yes or no and characterization source choices
 		ServletContext appContext = request.getSession().getServletContext();
 		LabelValueBean trueBean = new LabelValueBean();
-		trueBean.setLabel(CaNanoLabConstants.BOOLEAN_YES);
+		trueBean.setLabel(Constants.BOOLEAN_YES);
 		trueBean.setValue("true");
 		LabelValueBean falseBean = new LabelValueBean();
-		falseBean.setLabel(CaNanoLabConstants.BOOLEAN_NO);
+		falseBean.setLabel(Constants.BOOLEAN_NO);
 		falseBean.setValue("false");
 		LabelValueBean[] booleanBeans = new LabelValueBean[2];
 		booleanBeans[0] = trueBean;

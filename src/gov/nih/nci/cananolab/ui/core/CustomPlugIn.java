@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class CustomPlugIn implements PlugIn {
 					"gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
 
 			actionServlet.getServletContext().setAttribute("applicationOwner",
-					CaNanoLabConstants.APP_OWNER);
+					Constants.APP_OWNER);
 
 			InitSetup.getInstance().getServletContextDefaultLookupTypes(
 					appContext, "antigenSpecies", "Antigen", "species");

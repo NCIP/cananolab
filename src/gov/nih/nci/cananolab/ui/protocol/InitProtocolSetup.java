@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 
@@ -42,10 +42,10 @@ public class InitProtocolSetup {
 			throws Exception {
 		String protocolType = null;
 		if (characterizationType.equals("Physico-Chemical Characterization")) {
-			protocolType = CaNanoLabConstants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
+			protocolType = Constants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
 		}
 		else if (characterizationType.equals("In Vitro Characterization")) {
-			protocolType = CaNanoLabConstants.INVITRO_ASSAY_PROTOCOL;
+			protocolType = Constants.INVITRO_ASSAY_PROTOCOL;
 		}
 		else {
 			protocolType = null; // update if in vivo is implemented
