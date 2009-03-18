@@ -33,9 +33,9 @@ import java.util.Comparator;
  *
  */
 
-/* CVS $Id: CaNanoLabComparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
+/* CVS $Id: Comparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
 
-public class CaNanoLabComparators {
+public class Comparators {
 
 	public static class TechniqueComparator implements Comparator<Technique> {
 		public int compare(Technique technique1, Technique technique2) {

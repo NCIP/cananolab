@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.util;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CaNanoLabConstants {
+public class Constants {
 	public static final String DOMAIN_MODEL_NAME = "caNanoLab";
 
 	public static final String SDK_BEAN_JAR = "caNanoLabSDK-beans.jar";
