@@ -1,11 +1,8 @@
 package gov.nih.nci.cananolab.util;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
@@ -18,9 +15,9 @@ import org.apache.log4j.Logger;
 /**
  * This class contains a set of utilities for converting Strings to other
  * formats or converting other formats to String.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 /* CVS $Id: StringUtils.java,v 1.9 2008-08-26 22:27:30 tanq Exp $ */
 
@@ -32,42 +29,15 @@ public class StringUtils {
 			return false;
 
 		boolean isImgFileExt = false;
-		for (int i = 0; i < CaNanoLabConstants.IMAGE_FILE_EXTENSIONS.length; i++) {
+		for (int i = 0; i < Constants.IMAGE_FILE_EXTENSIONS.length; i++) {
 			if (fileName.toUpperCase().endsWith(
-					"." + CaNanoLabConstants.IMAGE_FILE_EXTENSIONS[i])) {
+					"." + Constants.IMAGE_FILE_EXTENSIONS[i])) {
 				isImgFileExt = true;
 				break;
 			}
 		}
 
 		return isImgFileExt;
-	}
-
-	public static Date convertToDate(String dateString, String dateFormat) {
-		if (dateString == null || dateString == "") {
-			return null;
-		}
-		Date theDate = null;
-		try {
-			ParsePosition pos = new ParsePosition(0);
-			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
-			theDate = format.parse(dateString, pos);
-			// method parse doesn't throw an exception when parsing is partial.
-			// e.g. date 5/11/200w will
-			// be parsed as 5/11/200 !!!
-			if (pos.getIndex() != dateString.length()) {
-				throw new RuntimeException(
-						"The date String is not completely parsed");
-			}
-			return theDate;
-		} catch (Exception e) {
-			logger
-					.error(
-							"Error parsing the given date String using the given dateFormat",
-							e);
-			throw new RuntimeException("The date String " + dateString
-					+ " can't be parsed against the date format:" + dateFormat);
-		}
 	}
 
 	public static String join(String[] stringArray, String delimiter) {
@@ -174,24 +144,6 @@ public class StringUtils {
 			}
 		}
 		return buffer.toString();
-	}
-
-	public static String convertDateToString(Date date, String format) {
-		if (date == null) {
-			return "";
-		}
-		String dateStr = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-		try {
-			dateStr = dateFormat.format(date);
-		} catch (Exception e) {
-			logger
-					.error(
-							"Error converting the given date using the given dateFormat",
-							e);
-			throw new RuntimeException("Can't format the given date: " + date);
-		}
-		return dateStr;
 	}
 
 	public static Float convertToFloat(String floatStr) {
@@ -301,7 +253,7 @@ public class StringUtils {
 	/**
 	 * Convert a string with multiple words separated by space to one word, with
 	 * first letter as lower case.
-	 * 
+	 *
 	 * @param words
 	 * @return
 	 */
@@ -320,7 +272,7 @@ public class StringUtils {
 	/**
 	 * Convert a string with multiple words separated by space to one word, with
 	 * first letter as upper case.
-	 * 
+	 *
 	 * @param words
 	 * @return
 	 */
@@ -335,7 +287,7 @@ public class StringUtils {
 	/**
 	 * Parse the text into an array of words using white space as delimiter.
 	 * Keeping words in quotes together.
-	 * 
+	 *
 	 * @param texts
 	 * @return
 	 */
@@ -379,9 +331,6 @@ public class StringUtils {
 
 	public static void main(String[] args) {
 		try {
-			String dateString = StringUtils.convertDateToString(new Date(),
-					"yyyyMMdd_HH-mm-ss-SSS");
-			System.out.println(dateString);
 			String texts = "this is 'a test' of \"parsing words\"";
 			System.out.println(texts);
 			List<String> words = StringUtils.parseToWords(texts);
