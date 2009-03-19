@@ -1,10 +1,10 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 
@@ -31,7 +31,7 @@ public class DWRCompositionManager {
 	}
 
 	public String getEntityIncludePage(String entityType, String pagePath)
-			throws ServletException, IOException, CaNanoLabException {
+			throws ServletException, IOException, BaseException {
 		try {
 			WebContext wctx = WebContextFactory.get();
 			ServletContext appContext = wctx.getServletContext();
@@ -45,13 +45,13 @@ public class DWRCompositionManager {
 		}
 	}
 
-	public String[] getComposingElementTypeOptions(String nanoparticleEntityType) {
+	public String[] getComposingElementTypeOptions(String nanomaterialEntityType) {
 
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 
-		if (nanoparticleEntityType.equals("emulsion")) {
+		if (nanomaterialEntityType.equals("emulsion")) {
 			try {
 				SortedSet<String> emulsionCompList = InitCompositionSetup
 						.getInstance()
@@ -79,8 +79,8 @@ public class DWRCompositionManager {
 		return null;
 	}
 
-	public String[] getBiopolymerTypeOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("biopolymer")) {
+	public String[] getBiopolymerTypeOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("biopolymer")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
 			HttpServletRequest request = webContext.getHttpServletRequest();
@@ -100,8 +100,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getWallTypeOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("carbon nanotube")) {
+	public String[] getWallTypeOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("carbon nanotube")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -122,8 +122,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getCarbonNanotubeDiameterUnitOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("carbon nanotube")) {
+	public String[] getCarbonNanotubeDiameterUnitOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("carbon nanotube")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -144,8 +144,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getCarbonNanotubeAverageLengthUnitOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("carbon nanotube")) {
+	public String[] getCarbonNanotubeAverageLengthUnitOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("carbon nanotube")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -166,8 +166,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getFullereneAverageDiameterUnitOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("fullerene")) {
+	public String[] getFullereneAverageDiameterUnitOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("fullerene")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
@@ -188,8 +188,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getAntibodyTypeOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("antibody")) {
+	public String[] getAntibodyTypeOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
 			HttpServletRequest request = webContext.getHttpServletRequest();
@@ -209,8 +209,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getAntibodyIsotypeOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("antibody")) {
+	public String[] getAntibodyIsotypeOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
 			HttpServletRequest request = webContext.getHttpServletRequest();
@@ -230,8 +230,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getAntibodySpeciesOptions(String nanoparticleEntityType) {
-		if (nanoparticleEntityType.equals("antibody")) {
+	public String[] getAntibodySpeciesOptions(String nanomaterialEntityType) {
+		if (nanomaterialEntityType.equals("antibody")) {
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
 			HttpServletRequest request = webContext.getHttpServletRequest();
@@ -278,9 +278,9 @@ public class DWRCompositionManager {
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		SortedSet<DataLinkBean> particleEntitites = null;
 
-		if (entityType.equals("Nanoparticle Entity")) {
+		if (entityType.equals("Nanomaterial Entity")) {
 			particleEntitites = (SortedSet<DataLinkBean>) request
-					.getSession().getAttribute("particleEntities");
+					.getSession().getAttribute("sampleEntities");
 
 		} else if (entityType.equals("Functionalizing Entity")) {
 			particleEntitites = (SortedSet<DataLinkBean>) request
@@ -296,11 +296,11 @@ public class DWRCompositionManager {
 	}
 
 	public ComposingElementBean[] getAssociatedComposingElements(
-			String nanoparticleEntityId) {
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+			String nanomaterialEntityId) {
+		CompositionService compService = new CompositionServiceLocalImpl();
 		try {
-			NanoparticleEntityBean entityBean = compService
-					.findNanoparticleEntityById(nanoparticleEntityId);
+			NanomaterialEntityBean entityBean = compService
+					.findNanomaterialEntityById(nanomaterialEntityId);
 			if (entityBean != null) {
 				List<ComposingElementBean> compBeanList = entityBean
 						.getComposingElements();

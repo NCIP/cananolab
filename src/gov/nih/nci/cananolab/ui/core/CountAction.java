@@ -1,9 +1,8 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
@@ -24,9 +23,9 @@ import org.apache.struts.action.ActionMessages;
 
 /**
  * Count the number of public protocols, particles and publications
- * 
+ *
  * @author cais, pansu
- * 
+ *
  */
 public class CountAction extends AbstractDispatchAction {
 
@@ -69,7 +68,7 @@ public class CountAction extends AbstractDispatchAction {
 		return null;
 	}
 
-	public ActionForward countParticles(ActionMapping mapping, ActionForm form,
+	public ActionForward countSamples(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -80,30 +79,31 @@ public class CountAction extends AbstractDispatchAction {
 			searchLocations = gridNodeHostStr.split("~");
 		}
 
-		int particleCount = 0;
-		NanoparticleSampleService service = null;
+		int sampleCount = 0;
+		SampleService service = null;
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
-				service = new NanoparticleSampleServiceLocalImpl();
+				service = new SampleServiceLocalImpl();
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
-				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+				//TODO update grid service
+//				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
 			try {
-				particleCount += service.getNumberOfPublicNanoparticleSamples();
+				sampleCount += service.getNumberOfPublicSamples();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				ActionMessages msgs = new ActionMessages();
 				ActionMessage msg = new ActionMessage(
-						"error.nanoparticleCount", location);
+						"error.sampleCount", location);
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				this.saveErrors(request, msgs);
 			}
 		}
 
 		PrintWriter out = response.getWriter();
-		out.print(particleCount);
+		out.print(sampleCount);
 		return null;
 	}
 

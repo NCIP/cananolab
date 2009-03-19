@@ -44,13 +44,13 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 	}
 
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
-			String particleId) {
-		// TODO: grid findOrganizationsByParticleSampleId
+			String sampleId) {
+		// TODO: grid findOrganizationsBySampleId
 		return null;
 	}
 
 	public PointOfContactBean findPointOfContactById(String pocId) {
-		// TODO: grid findOrganizationsByParticleSampleId
+		// TODO: grid findOrganizationsBySampleId
 		return null;
 	}
 
@@ -59,8 +59,8 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
-			String nanoparticleSampleCollection) throws PointOfContactException {
+	public PointOfContact loadPOCSample(PointOfContact poc,
+			String sampleCollection) throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 
@@ -74,7 +74,7 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 
-	public List<PointOfContactBean> findPointOfContactsByParticleId(String particleId)
+	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId)
 			throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}

@@ -4,9 +4,9 @@ import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -51,10 +51,10 @@ import org.hibernate.criterion.Restrictions;
 public class PublicationServiceHelper {
 
 	public List<Publication> findPublicationsBy(String title, String category,
-			String nanoparticleName, String[] researchArea, String keywordsStr,
+			String sampleName, String[] researchArea, String keywordsStr,
 			String pubMedId, String digitalObjectId, String authorsStr,
-			String[] nanoparticleEntityClassNames,
-			String[] otherNanoparticleEntityTypes,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
@@ -147,24 +147,24 @@ public class PublicationServiceHelper {
 			}
 		}
 
-		// join nanoparticleSample
-		if (nanoparticleName != null && nanoparticleName.length() > 0
-				|| nanoparticleEntityClassNames != null
-				&& nanoparticleEntityClassNames.length > 0
-				|| otherNanoparticleEntityTypes != null
-				&& otherNanoparticleEntityTypes.length > 0
+		// join sample
+		if (sampleName != null && sampleName.length() > 0
+				|| nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0
 				|| functionalizingEntityClassNames != null
 				&& functionalizingEntityClassNames.length > 0
 				|| otherFunctionalizingEntityTypes != null
 				&& otherFunctionalizingEntityTypes.length > 0) {
-			crit.createAlias("nanoparticleSampleCollection", "sample");
+			crit.createAlias("sampleCollection", "sample");
 		}
-		// nanoparticleSample
-		if (nanoparticleName != null && nanoparticleName.length() > 0) {
+		// sample
+		if (sampleName != null && sampleName.length() > 0) {
 			TextMatchMode particleMatchMode = new TextMatchMode(
-					nanoparticleName);
+					sampleName);
 			Disjunction disjunction = Restrictions.disjunction();
 
 			Criterion keywordCrit1 = Restrictions.like("sample.name",
@@ -174,36 +174,36 @@ public class PublicationServiceHelper {
 			crit.add(disjunction);
 		}
 
-		// join composition and nanoparticle entity
-		if (nanoparticleEntityClassNames != null
-				&& nanoparticleEntityClassNames.length > 0
-				|| otherNanoparticleEntityTypes != null
-				&& otherNanoparticleEntityTypes.length > 0
+		// join composition and nanomaterial entity
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			crit.createAlias("sample.sampleComposition", "comp");
-			crit.createAlias("comp.nanoparticleEntityCollection", "nanoEntity");
+			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity");
 		}
 
-		// nanoparticle entity
-		if (nanoparticleEntityClassNames != null
-				&& nanoparticleEntityClassNames.length > 0
-				|| otherNanoparticleEntityTypes != null
-				&& otherNanoparticleEntityTypes.length > 0) {
+		// nanomaterial entity
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0) {
 
 			Disjunction disjunction = Restrictions.disjunction();
-			if (nanoparticleEntityClassNames != null
-					&& nanoparticleEntityClassNames.length > 0) {
+			if (nanomaterialEntityClassNames != null
+					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanoparticleEntityClassNames);
+						nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
-			if (otherNanoparticleEntityTypes != null
-					&& otherNanoparticleEntityTypes.length > 0) {
+			if (otherNanomaterialEntityTypes != null
+					&& otherNanomaterialEntityTypes.length > 0) {
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
-						"OtherNanoparticleEntity");
+						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanoparticleEntityTypes);
+						otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -289,7 +289,7 @@ public class PublicationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(FunctionalizingEntity.class);
 		crit.createAlias("sampleComposition", "comp");
-		crit.createAlias("comp.nanoparticleSample", "sample");
+		crit.createAlias("comp.sample", "sample");
 		crit.createAlias("sample.publicationCollection", "pub");
 		crit.add(Restrictions.eq("pub.id", publication.getId()));
 		List result = appService.query(crit);
@@ -524,12 +524,12 @@ public class PublicationServiceHelper {
 		return rowCount;
 	}
 
-	public void exportSummary(ParticleBean particleBean, OutputStream out)
+	public void exportSummary(SampleBean sampleBean, OutputStream out)
 			throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("summarySheet");
 		short startRow = 0;
-		setSummarySheet(particleBean, wb, sheet, startRow);
+		setSummarySheet(sampleBean, wb, sheet, startRow);
 		wb.write(out);
 		if (out != null) {
 			out.flush();
@@ -537,7 +537,7 @@ public class PublicationServiceHelper {
 		}
 	}
 
-	private short setSummarySheet(ParticleBean particleBean, HSSFWorkbook wb,
+	private short setSummarySheet(SampleBean sampleBean, HSSFWorkbook wb,
 			HSSFSheet sheet, short rowCount) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
@@ -573,7 +573,7 @@ public class PublicationServiceHelper {
 
 		// data
 		StringBuffer sb = new StringBuffer();
-		NanoparticleSample particle = particleBean.getDomainParticleSample();
+		Sample particle = sampleBean.getDomain();
 		if (particle.getPublicationCollection() != null) {
 			Long pubmedid = null;
 			String doi = null;

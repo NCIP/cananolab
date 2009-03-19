@@ -4,7 +4,7 @@ package gov.nih.nci.cananolab.exception;
  * @author pansu
  * 
  */
-public class GridAutoDiscoveryException extends CaNanoLabException {
+public class GridAutoDiscoveryException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 

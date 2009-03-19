@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.service.common.impl;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -54,7 +54,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			Collection<PointOfContact> otherPointOfContactCollection)
 			throws PointOfContactException, DuplicateEntriesException {
 
-		// TODO: to verify if organization.primaryNanoparticleSampleCollection
+		// TODO: to verify if organization.primarySampleCollection
 		// is empty
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -88,8 +88,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	}
 
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
-			String particleId) throws PointOfContactException {
-		return helper.findOtherPointOfContactCollection(particleId);
+			String sampleId) throws PointOfContactException {
+		return helper.findOtherPointOfContactCollection(sampleId);
 	}
 
 	public PointOfContact findPointOfContact(
@@ -216,8 +216,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		}
 	}
 
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
-			String nanoparticleSampleCollection) throws PointOfContactException {
+	public PointOfContact loadPOCSample(PointOfContact poc,
+			String sampleCollection) throws PointOfContactException {
 		PointOfContact dbPoc = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -225,7 +225,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(PointOfContact.class);
 			crit.add(Restrictions.eq("id", poc.getId()));
-			crit.createAlias(nanoparticleSampleCollection, "otherSamples",
+			crit.createAlias(sampleCollection, "otherSamples",
 					CriteriaSpecification.LEFT_JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -319,12 +319,12 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	 *
 	 * @return all PointOfContacts
 	 */
-	// TODO: verify if fetching nanoparticleSampleCollection is necessary on all
+	// TODO: verify if fetching sampleCollection is necessary on all
 	// calls
 	public SortedSet<PointOfContact> findAllPointOfContacts()
 			throws PointOfContactException {
 		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
-				new Comparators.ParticlePointOfContactComparator());
+				new Comparators.SamplePointOfContactComparator());
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -343,14 +343,14 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		}
 	}
 
-	public List<PointOfContactBean> findPointOfContactsByParticleId(
-			String particleId) throws PointOfContactException {
+	public List<PointOfContactBean> findPointOfContactsBySampleId(
+			String sampleId) throws PointOfContactException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(
-					NanoparticleSample.class).add(
-					Property.forName("id").eq(new Long(particleId)));
+					Sample.class).add(
+					Property.forName("id").eq(new Long(sampleId)));
 			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 			crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -360,7 +360,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			List results = appService.query(crit);
 			List<PointOfContactBean> pointOfContactCollection = new ArrayList<PointOfContactBean>();
 			for (Object obj : results) {
-				NanoparticleSample particle = (NanoparticleSample) obj;
+				Sample particle = (Sample) obj;
 				PointOfContact primaryPOC = particle.getPrimaryPointOfContact();
 				Collection<PointOfContact> otherPOCs = particle
 						.getOtherPointOfContactCollection();
@@ -372,7 +372,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			return pointOfContactCollection;
 		} catch (Exception e) {
-			String err = "Problem finding all PointOfContact collections with the given particle ID.";
+			String err = "Problem finding all PointOfContact collections with the given sample ID.";
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}

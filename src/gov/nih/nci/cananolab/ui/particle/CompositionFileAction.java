@@ -2,13 +2,13 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -38,18 +38,18 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FileBean fileBean = (FileBean) theForm.get("compFile");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Composition File");
 
 		fileBean.setupDomainFile(internalUriPath, user.getLoginName(), 0);
-		NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
-		service.saveCompositionFile(particleBean.getDomainParticleSample(),
+		CompositionService service = new CompositionServiceLocalImpl();
+		service.saveCompositionFile(sampleBean.getDomain(),
 				fileBean.getDomainFile(), fileBean.getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
@@ -63,12 +63,12 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-		setupDataTree(particleBean, request);
+		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
-		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
@@ -78,7 +78,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("compositionFileForm");
 		setLookups(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupParticle(theForm, request, "local");
+		setupSample(theForm, request, "local");
 		return mapping.getInputForward();
 	}
 
@@ -93,7 +93,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		fileService.retrieveVisibility(fileBean, user);
 		theForm.set("compFile", fileBean);
 		setLookups(request);
-		setupParticle(theForm, request, "local");
+		setupSample(theForm, request, "local");
 		ActionForward forward = mapping.getInputForward();
 		return forward;
 	}
@@ -118,7 +118,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			fileService.retrieveVisibility(fileBean, user);
 		}
 		theForm.set("compFile", fileBean);
-		setupParticle(theForm, request, location);
+		setupSample(theForm, request, location);
 		ActionForward forward = mapping.getInputForward();
 		return forward;
 	}
@@ -128,16 +128,16 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FileBean fileBean = (FileBean) theForm.get("compFile");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
-		compService.deleteCompositionFile(particleBean
-				.getDomainParticleSample(), fileBean.getDomainFile());
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		CompositionService compService = new CompositionServiceLocalImpl();
+		compService.deleteCompositionFile(sampleBean
+				.getDomain(), fileBean.getDomainFile());
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(particleBean, request);
+		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -146,14 +146,14 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String submitType = request.getParameter("submitType");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		CompositionService compService = new CompositionServiceLocalImpl();
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
 		FileService fileService = new FileServiceLocalImpl();
 		for (String id : dataIds) {
 			FileBean fileBean = fileService.findFileById(id);
-			compService.deleteCompositionFile(particleBean
-					.getDomainParticleSample(), fileBean.getDomainFile());
+			compService.deleteCompositionFile(sampleBean
+					.getDomain(), fileBean.getDomainFile());
 		}
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
@@ -161,7 +161,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(particleBean, request);
+		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -170,7 +170,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 	}
 
 	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PARTICLE);
 	}

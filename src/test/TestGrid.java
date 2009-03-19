@@ -8,10 +8,7 @@ import gov.nih.nci.cagrid.cqlquery.Predicate;
 import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cagrid.discovery.client.DiscoveryClient;
-import gov.nih.nci.cananolab.domain.function.Target;
-import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
-import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,14 +93,14 @@ public class TestGrid {
 		// gov.nih.nci.cagrid.cqlquery.Object target = new
 		// gov.nih.nci.cagrid.cqlquery.Object();
 		// target
-		// .setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+		// .setName("gov.nih.nci.cananolab.domain.particle.Sample");
 		// query.setTarget(target);
 		// QueryModifier modifier = new QueryModifier();
 		// modifier.setCountOnly(true);
 		// query.setQueryModifier(modifier);
 		// CQLQueryResults results = gridClient.query(query);
 		// results
-		// .setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+		// .setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
 		// CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 		// int count = 0;
 		// while (iter.hasNext()) {
@@ -162,8 +159,8 @@ public class TestGrid {
 		// .setName("gov.nih.nci.cananolab.domain.particle.characterization.Characterization");
 		// Association association = new Association();
 		// association
-		// .setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-		// association.setRoleName("nanoparticleSample");
+		// .setName("gov.nih.nci.cananolab.domain.particle.Sample");
+		// association.setRoleName("sample");
 		//
 		// Attribute attribute = new Attribute();
 		// attribute.setName("id");
@@ -218,8 +215,8 @@ public class TestGrid {
 		// .setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
 		// Association association = new Association();
 		// association
-		// .setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-		// association.setRoleName("nanoparticleSample");
+		// .setName("gov.nih.nci.cananolab.domain.particle.Sample");
+		// association.setRoleName("sample");
 		//
 		// Attribute attribute = new Attribute();
 		// attribute.setName("id");
@@ -244,7 +241,7 @@ public class TestGrid {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
-				.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+				.setName("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 		Association association = new Association();
 		association
 				.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
@@ -260,13 +257,13 @@ public class TestGrid {
 		query.setTarget(target);
 		CQLQueryResults results = gridClient.query(query);
 		results
-				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-		NanoparticleEntity nanoEntity = null;
+		NanomaterialEntity nanoEntity = null;
 
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
-			nanoEntity = (NanoparticleEntity) obj;
+			nanoEntity = (NanomaterialEntity) obj;
 			System.out.println(nanoEntity.getId());
 		}
 	}
@@ -276,18 +273,18 @@ public class TestGrid {
 				serviceUrl);
 		System.out.println("Running operation .............");
 		// String particleSource = "DNT";
-		// String[] nanoparticleEntityClassNames = new String[] { "Dendrimer",
+		// String[] nanomaterialEntityClassNames = new String[] { "Dendrimer",
 		// "CarbonNanotube" };
 		// String[] functionClassNames = new String[] { "TargetingFunction",
 		// "TherapeuticFunction" };
 		// String[] characterizationClassNames = new String[] {
 		// "EnzymeInduction" };
-		// NanoparticleSample[] particleSamples = gridClient
-		// .getNanoparticleSamplesBy(particleSource,
-		// nanoparticleEntityClassNames, null, functionClassNames,
+		// Sample[] samples = gridClient
+		// .getSamplesBy(particleSource,
+		// nanomaterialEntityClassNames, null, functionClassNames,
 		// characterizationClassNames, null);
-		// for (NanoparticleSample particleSample : particleSamples) {
-		// System.out.println(particleSample.getName());
+		// for (Sample sample : samples) {
+		// System.out.println(sample.getName());
 		// }
 		//
 		// String protocolType = null;

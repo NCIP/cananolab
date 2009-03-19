@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -12,18 +12,18 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * This class represents shared properties of nanoparticle samples to be shown
+ * This class represents shared properties of samples to be shown
  * in the view pages.
- * 
+ *
  * @author pansu
- * 
+ *
  */
-public class ParticleBean {
+public class SampleBean {
 	private String keywordsStr;
 
 	private String[] visibilityGroups = new String[0];
 
-	private NanoparticleSample domainParticleSample = new NanoparticleSample();
+	private Sample domain = new Sample();
 
 	private String createdBy;
 
@@ -33,7 +33,7 @@ public class ParticleBean {
 
 	private String location; // e.g. local, caNanoLab-WashU, etc
 
-	private String[] nanoparticleEntityClassNames = new String[0];
+	private String[] nanomaterialEntityClassNames = new String[0];
 
 	private String[] functionalizingEntityClassNames = new String[0];
 
@@ -43,21 +43,21 @@ public class ParticleBean {
 
 	private PointOfContactBean pocBean;
 
-	public ParticleBean() {
+	public SampleBean() {
 		pocBean = new PointOfContactBean();
 	}
 
-	public ParticleBean(NanoparticleSample particleSample) {
-		this.domainParticleSample = particleSample;
+	public SampleBean(Sample sample) {
+		this.domain = sample;
 
-		if (particleSample.getKeywordCollection() != null) {
-			for (Keyword keyword : particleSample.getKeywordCollection()) {
+		if (sample.getKeywordCollection() != null) {
+			for (Keyword keyword : sample.getKeywordCollection()) {
 				keywordSet.add(keyword.getName());
 			}
 		}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
-		if (domainParticleSample != null) {
-			PointOfContact primaryPOC = domainParticleSample
+		if (domain != null) {
+			PointOfContact primaryPOC = domain
 					.getPrimaryPointOfContact();
 			pocBean = new PointOfContactBean(primaryPOC);
 		}
@@ -75,8 +75,8 @@ public class ParticleBean {
 		return this.keywordsStr;
 	}
 
-	public NanoparticleSample getDomainParticleSample() {
-		return domainParticleSample;
+	public Sample getDomain() {
+		return domain;
 	}
 
 	public String getCreatedBy() {
@@ -87,14 +87,14 @@ public class ParticleBean {
 		this.createdBy = createdBy;
 	}
 
-	public void setupDomainParticleSample() {
+	public void setupDomain() {
 		// always update createdBy and createdDate
-		domainParticleSample.setCreatedBy(createdBy);
-		domainParticleSample.setCreatedDate(new Date());
-		if (domainParticleSample.getKeywordCollection() != null) {
-			domainParticleSample.getKeywordCollection().clear();
+		domain.setCreatedBy(createdBy);
+		domain.setCreatedDate(new Date());
+		if (domain.getKeywordCollection() != null) {
+			domain.getKeywordCollection().clear();
 		} else {
-			domainParticleSample.setKeywordCollection(new HashSet<Keyword>());
+			domain.setKeywordCollection(new HashSet<Keyword>());
 		}
 		if (keywordsStr.length() > 0) {
 			String[] strs = keywordsStr.split("\r\n");
@@ -102,11 +102,11 @@ public class ParticleBean {
 				// change to upper case
 				Keyword keyword = new Keyword();
 				keyword.setName(str.toUpperCase());
-				domainParticleSample.getKeywordCollection().add(keyword);
+				domain.getKeywordCollection().add(keyword);
 			}
 		}
 		if (pocBean != null) {
-			domainParticleSample.setPrimaryPointOfContact(pocBean.getDomain());
+			domain.setPrimaryPointOfContact(pocBean.getDomain());
 		}
 	}
 
@@ -134,17 +134,17 @@ public class ParticleBean {
 		this.location = location;
 	}
 
-	public void setDomainParticleSample(NanoparticleSample domainParticleSample) {
-		this.domainParticleSample = domainParticleSample;
+	public void setDomain(Sample domainSample) {
+		this.domain = domainSample;
 	}
 
-	public String[] getNanoparticleEntityClassNames() {
-		return nanoparticleEntityClassNames;
+	public String[] getNanomaterialEntityClassNames() {
+		return nanomaterialEntityClassNames;
 	}
 
-	public void setNanoparticleEntityClassNames(
-			String[] nanoparticleEntityClassNames) {
-		this.nanoparticleEntityClassNames = nanoparticleEntityClassNames;
+	public void setNanomaterialEntityClassNames(
+			String[] nanomaterialEntityClassNames) {
+		this.nanomaterialEntityClassNames = nanomaterialEntityClassNames;
 	}
 
 	public String[] getFunctionalizingEntityClassNames() {
@@ -179,6 +179,6 @@ public class ParticleBean {
 
 	public void setPocBean(PointOfContactBean pocBean) {
 		this.pocBean = pocBean;
-		this.domainParticleSample.setPrimaryPointOfContact(pocBean.getDomain());
+		this.domain.setPrimaryPointOfContact(pocBean.getDomain());
 	}
 }

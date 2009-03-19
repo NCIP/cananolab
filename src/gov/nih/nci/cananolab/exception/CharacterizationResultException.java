@@ -6,7 +6,7 @@ package gov.nih.nci.cananolab.exception;
  *
  */
 
-public class CharacterizationResultException extends CaNanoLabException {
+public class CharacterizationResultException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 

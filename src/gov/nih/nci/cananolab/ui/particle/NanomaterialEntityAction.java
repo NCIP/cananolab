@@ -1,27 +1,26 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class allows users to submit nanoparticle entity data under sample composition.
+ * This class allows users to submit nanomaterial entity data under sample composition.
  *
  * @author pansu
  */
 
-/* CVS $Id: NanoparticleEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
+/* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -41,7 +40,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class NanoparticleEntityAction extends BaseAnnotationAction {
+public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
@@ -57,18 +56,18 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		CompositionService compositionService = new CompositionServiceLocalImpl();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("entity");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
+						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
 		try {
 			entityBean.setupDomainEntity(InitSetup.getInstance()
 					.getDisplayNameToClassNameLookup(
@@ -80,10 +79,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			if (ex.getMessage() != null && ex.getMessage().length() > 0
 					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
 				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "Nanoparticle Entity");
+						.getType(), "Nanomaterial Entity");
 			} else {
 				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "Nanoparticle Entity");
+						.getType(), "Nanomaterial Entity");
 				entityBean.setType(null);
 			}
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -100,22 +99,22 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			return mapping.getInputForward();
 		}
 
-		compositionService.saveNanoparticleEntity(particleBean
-				.getDomainParticleSample(), entityBean.getDomainEntity());
+		compositionService.saveNanomaterialEntity(sampleBean
+				.getDomain(), entityBean.getDomainEntity());
 
 		// set visibility
 
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
-				particleBean.getDomainParticleSample().getName(),
+				sampleBean.getDomain().getName(),
 				Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
 				&& accessibleGroups
 						.contains(Constants.CSM_PUBLIC_GROUP)) {
 			// set composition public
-			authService.assignPublicVisibility(particleBean
-					.getDomainParticleSample().getSampleComposition().getId()
+			authService.assignPublicVisibility(sampleBean
+					.getDomain().getSampleComposition().getId()
 					.toString());
 			compositionService.assignNanoparicleEntityPublicVisibility(
 					authService, entityBean.getDomainEntity());
@@ -125,35 +124,35 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 
 		// save to other particles
 		FileService service = new FileServiceLocalImpl();
-		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
-			NanoparticleEntity copy = entityBean.getDomainCopy();
-			for (NanoparticleSample sample : otherSamples) {
-				compositionService.saveNanoparticleEntity(sample, copy);
+			NanomaterialEntity copy = entityBean.getDomainCopy();
+			for (Sample sample : otherSamples) {
+				compositionService.saveNanomaterialEntity(sample, copy);
 				// update copied filename and save content and set visibility
 				if (copy.getFileCollection() != null) {
 					for (File file : copy.getFileCollection()) {
 						service.saveCopiedFileAndSetVisibility(file, user,
-								particleBean.getDomainParticleSample()
+								sampleBean.getDomain()
 										.getName(), sample.getName());
 					}
 				}
 			}
 		}
 
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
 		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addNanoparticleEntity");
+		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(particleBean, request);
+		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
 	private boolean validateInherentFunctionType(HttpServletRequest request,
-			NanoparticleEntityBean entityBean) throws Exception {
+			NanomaterialEntityBean entityBean) throws Exception {
 
 		for (ComposingElementBean composingElementBean : entityBean
 				.getComposingElements()) {
@@ -176,7 +175,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 	}
 
 	private boolean validateEntityFile(HttpServletRequest request,
-			NanoparticleEntityBean entityBean) throws Exception {
+			NanomaterialEntityBean entityBean) throws Exception {
 		ActionMessages msgs = new ActionMessages();
 		for (FileBean filebean : entityBean.getFiles()) {
 			if (!validateFileBean(request, msgs, filebean)) {
@@ -187,13 +186,13 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
-		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
-		InitCompositionSetup.getInstance().setNanoparticleEntityDropdowns(
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
+		InitCompositionSetup.getInstance().setNanomaterialEntityDropdowns(
 				request);
 	}
 
 	/**
-	 * Set up the input form for adding new nanoparticle entity
+	 * Set up the input form for adding new nanomaterial entity
 	 *
 	 * @param mapping
 	 * @param form
@@ -205,11 +204,11 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 	public ActionForward setup(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("nanoparticleEntityForm");
-		String particleId=request.getParameter("particleId");
+		request.getSession().removeAttribute("nanomaterialEntityForm");
+		String sampleId=request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-				particleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request,
+				sampleId);
 
 		setLookups(request);
 		return mapping.getInputForward();
@@ -222,20 +221,20 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		String particleId=request.getParameter("particleId");
+		String sampleId=request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-				particleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request,
+				sampleId);
 
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
-		NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityById(entityId);
+		CompositionService compService = new CompositionServiceLocalImpl();
+		NanomaterialEntityBean entityBean = compService
+				.findNanomaterialEntityById(entityId);
 		compService.retrieveVisibility(entityBean, user);
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("entity", entityBean);
 		setLookups(request);
-		theForm.set("otherParticles", new String[0]);
+		theForm.set("otherSamples", new String[0]);
 		return mapping.getInputForward();
 	}
 
@@ -244,22 +243,23 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
-		setupParticle(theForm, request, location);
+		setupSample(theForm, request, location);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		NanoparticleCompositionService compService = null;
+		CompositionService compService = null;
 		if (location.equals("local")) {
-			compService = new NanoparticleCompositionServiceLocalImpl();
+			compService = new CompositionServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			compService = new NanoparticleCompositionServiceRemoteImpl(
-					serviceUrl);
+			//TODO update grid service
+//			compService = new CompositionServiceRemoteImpl(
+//					serviceUrl);
 		}
 		String entityClassName = request.getParameter("dataClassName");
-		NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityById(entityId, entityClassName);
+		NanomaterialEntityBean entityBean = compService
+				.findNanomaterialEntityById(entityId, entityClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(entityBean, user);
 		}
@@ -273,10 +273,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("entity");
 		entity.addComposingElement();
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
 		return mapping.getInputForward();
@@ -288,14 +288,14 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("entity");
 
 		ComposingElementBean ceBean = entity.getComposingElements().get(ind);
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compService = new CompositionServiceLocalImpl();
 		boolean canRemove = compService
 				.checkChemicalAssociationBeforeDelete(ceBean);
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
 		if (!canRemove) {
@@ -316,7 +316,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("entity");
 
 		String compEleIndexStr = (String) request.getParameter("compInd");
@@ -325,7 +325,7 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.getComposingElements().get(compEleIndex);
 
 		compElement.addFunction();
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
 		return mapping.getInputForward();
@@ -340,12 +340,12 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		String functionIndexStr = (String) request.getParameter("childCompInd");
 		int functionIndex = Integer.parseInt(functionIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("entity");
 		ComposingElementBean compElement = (ComposingElementBean) entity
 				.getComposingElements().get(compEleIndex);
 		compElement.removeFunction(functionIndex);
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
 		return mapping.getInputForward();
@@ -355,10 +355,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("entity");
 		entity.addFile();
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
 		return mapping.getInputForward();
@@ -370,10 +370,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 		String indexStr = request.getParameter("compInd");
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("entity");
 		entity.removeFile(ind);
-		InitCompositionSetup.getInstance().persistNanoparticleEntityDropdowns(
+		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
 		return mapping.getInputForward();
@@ -384,10 +384,10 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
-		 * NanoparticleEntityBean entity = (NanoparticleEntityBean) theForm
+		 * NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 		 * .get("entity"); // update editable dropdowns HttpSession session =
 		 * request.getSession();
-		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
+		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
 		 *
 		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
@@ -403,18 +403,18 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
-		NanoparticleEntityBean entityBean = (NanoparticleEntityBean) theForm
+		CompositionService compositionService = new CompositionServiceLocalImpl();
+		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("entity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
+						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
 		entityBean.setupDomainEntity(InitSetup.getInstance()
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
@@ -423,18 +423,18 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 				.checkChemicalAssociationBeforeDelete(entityBean);
 		ActionMessages msgs = new ActionMessages();
 		if (canDelete) {
-			compositionService.deleteNanoparticleEntity(entityBean
+			compositionService.deleteNanomaterialEntity(entityBean
 					.getDomainEntity());
-			particleBean = setupParticle(theForm, request, "local");
+			sampleBean = setupSample(theForm, request, "local");
 			ActionMessage msg = new ActionMessage(
-					"message.deleteNanoparticleEntity");
+					"message.deleteNanomaterialEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			setupDataTree(particleBean, request);
+			setupDataTree(sampleBean, request);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
-					"error.deleteNanoparticleEntityWithChemicalAssociation",
+					"error.deleteNanomaterialEntityWithChemicalAssociation",
 					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
@@ -444,12 +444,12 @@ public class NanoparticleEntityAction extends BaseAnnotationAction {
 
 	protected boolean checkDelete(HttpServletRequest request,
 			ActionMessages msgs, String id) throws Exception {
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
-		NanoparticleEntityBean entityBean = compService
-				.findNanoparticleEntityById(id);
+		CompositionService compService = new CompositionServiceLocalImpl();
+		NanomaterialEntityBean entityBean = compService
+				.findNanomaterialEntityById(id);
 		if (!compService.checkChemicalAssociationBeforeDelete(entityBean)) {
 			ActionMessage msg = new ActionMessage(
-					"error.deleteNanoparticleEntityWithChemicalAssociation",
+					"error.deleteNanomaterialEntityWithChemicalAssociation",
 					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);

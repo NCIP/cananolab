@@ -20,7 +20,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * The LoginAction authenticates a user into the caLAB system.
- * 
+ *
  * @author doswellj, pansu
  */
 
@@ -28,21 +28,20 @@ public class LoginAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//if comes in from back and refresh			
-		if (!isTokenValid(request)) {			
+		// if comes in from back and refresh
+		if (!isTokenValid(request)) {
 			throw new InvalidSessionException(
-			"Session doesn't exist.  Please start again");
+					"Session doesn't exist.  Please start again");
 		}
 		ActionForward forward = null;
-		ActionMessages msgs = new ActionMessages();		
+		ActionMessages msgs = new ActionMessages();
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String strLoginId = (String) theForm.get("loginId");
 		String strPassword = (String) theForm.get("password");
 
 		// Call CSM to authenticate the user.
-		LoginService loginservice = new LoginService(
-				Constants.CSM_APP_NAME);
-		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);		
+		LoginService loginservice = new LoginService(Constants.CSM_APP_NAME);
+		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);
 		if (blnAuthenticated == true) {
 			// check if the password is the initial password
 			// redirect to change password page
@@ -52,7 +51,7 @@ public class LoginAction extends Action {
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
-			}			
+			}
 			// Invalide the current session and create a new one
 			HttpSession session = request.getSession(false);
 			if (session != null) {
@@ -75,26 +74,23 @@ public class LoginAction extends Action {
 		UserBean user = authorizationService.getUserBean(loginName);
 		session.setAttribute("user", user);
 		session.setAttribute("userService", authorizationService);
-
-		Boolean createProtocol = authorizationService.checkCreatePermission(user,
-				Constants.CSM_PG_PROTOCOL);
-		session.setAttribute("canCreateProtocol", createProtocol);
-		Boolean createPublication = authorizationService.checkCreatePermission(user,
-				Constants.CSM_PG_PUBLICATION);
-		session.setAttribute("canCreatePublication", createPublication);
-		Boolean createParticle = authorizationService.checkCreatePermission(user,
-				Constants.CSM_PG_PARTICLE);
-		session.setAttribute("canCreateNanoparticle", createParticle);
-
+		boolean isCurator = authorizationService.isUserInGroup(user,
+				Constants.CSM_DATA_CURATOR);
+		if (isCurator) {
+			session.setAttribute("canCreateSample", true);
+			session.setAttribute("canCreateProtocol", true);
+			session.setAttribute("canCreatePublication", true);
+		} else {
+			session.setAttribute("canCreateSample", false);
+			session.setAttribute("canCreateProtocol", false);
+			session.setAttribute("canCreatePublication", false);
+		}
 		boolean isAdmin = authorizationService.isAdmin(user.getLoginName());
 		session.setAttribute("isAdmin", isAdmin);
-
-		boolean canDelete = authorizationService.checkDeletePermission(user,
-				Constants.CSM_PG_PARTICLE);
-		if (canDelete && isAdmin) {
-			session.setAttribute("canUserDelete", "true");
+		if (isCurator && isAdmin) {
+			session.setAttribute("canDelete", "true");
 		} else {
-			session.setAttribute("canUserDelete", "false");
+			session.setAttribute("canDelete", "false");
 		}
 	}
 }

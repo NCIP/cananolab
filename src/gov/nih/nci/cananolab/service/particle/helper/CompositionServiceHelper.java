@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -21,18 +21,18 @@ import org.hibernate.criterion.Property;
  * @author pansu, tanq
  *
  */
-public class NanoparticleCompositionServiceHelper {
-	public NanoparticleCompositionServiceHelper() {
+public class CompositionServiceHelper {
+	public CompositionServiceHelper() {
 	}
 
-	public NanoparticleEntity findNanoparticleEntityById(String entityId)
+	public NanomaterialEntity findNanomaterialEntityById(String entityId)
 			throws Exception {
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleEntity.class).add(
+				NanomaterialEntity.class).add(
 				Property.forName("id").eq(new Long(entityId)));
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
@@ -52,9 +52,9 @@ public class NanoparticleCompositionServiceHelper {
 				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
-		NanoparticleEntity entity = null;
+		NanomaterialEntity entity = null;
 		if (!result.isEmpty()) {
-			entity = (NanoparticleEntity) result.get(0);
+			entity = (NanomaterialEntity) result.get(0);
 		}
 		return entity;
 	}
@@ -109,21 +109,21 @@ public class NanoparticleCompositionServiceHelper {
 		ChemicalAssociation assoc = null;
 		if (!result.isEmpty()) {
 			assoc = (ChemicalAssociation) result.get(0);
-			// load nanoparticle entity associated with composing element in
+			// load nanomaterial entity associated with composing element in
 			// an association
 			if (assoc.getAssociatedElementA() instanceof ComposingElement) {
-				NanoparticleEntity entity = findNanoparticleEntityById(((ComposingElement) assoc
-						.getAssociatedElementA()).getNanoparticleEntity()
+				NanomaterialEntity entity = findNanomaterialEntityById(((ComposingElement) assoc
+						.getAssociatedElementA()).getNanomaterialEntity()
 						.getId().toString());
 				((ComposingElement) assoc.getAssociatedElementA())
-						.setNanoparticleEntity(entity);
+						.setNanomaterialEntity(entity);
 			}
 			if (assoc.getAssociatedElementB() instanceof ComposingElement) {
-				NanoparticleEntity entity = findNanoparticleEntityById(((ComposingElement) assoc
-						.getAssociatedElementB()).getNanoparticleEntity()
+				NanomaterialEntity entity = findNanomaterialEntityById(((ComposingElement) assoc
+						.getAssociatedElementB()).getNanomaterialEntity()
 						.getId().toString());
 				((ComposingElement) assoc.getAssociatedElementB())
-						.setNanoparticleEntity(entity);
+						.setNanomaterialEntity(entity);
 			}
 		}
 		return assoc;

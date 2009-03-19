@@ -1,19 +1,18 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 /**
- * This class searches nanoparticle metadata based on user supplied criteria
+ * This class searches canano metadata based on user supplied criteria
  *
  * @author pansu
  */
 
-/* CVS $Id: SearchNanoparticleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
+/* CVS $Id: SearchSampleAction.java,v 1.28 2008-10-01 18:41:26 tanq Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -32,7 +31,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class SearchNanoparticleAction extends AbstractDispatchAction {
+public class SearchSampleAction extends AbstractDispatchAction {
 
 	public ActionForward search(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -43,10 +42,10 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) session.getAttribute("user");
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String particlePointOfContact = (String) theForm
-				.get("particlePointOfContact");
+		String samplePointOfContact = (String) theForm
+				.get("samplePointOfContact");
 
-		String[] nanoparticleEntityTypes = new String[0];
+		String[] nanomaterialEntityTypes = new String[0];
 		String[] functionalizingEntityTypes = new String[0];
 		String[] functionTypes = new String[0];
 		String[] characterizations = new String[0];
@@ -54,8 +53,8 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 		String[] searchLocations = new String[0];
 
 		if (theForm != null) {
-			nanoparticleEntityTypes = (String[]) theForm
-					.get("nanoparticleEntityTypes");
+			nanomaterialEntityTypes = (String[]) theForm
+					.get("nanomaterialEntityTypes");
 			functionalizingEntityTypes = (String[]) theForm
 					.get("functionalizingEntityTypes");
 			functionTypes = (String[]) theForm.get("functionTypes");
@@ -71,18 +70,18 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			searchLocations = gridNodeHostStr.split("~");
 		}
 
-		// convert nanoparticle entity display names into short class names and
+		// convert nanomaterial entity display names into short class names and
 		// other types
-		List<String> nanoparticleEntityClassNames = new ArrayList<String>();
-		List<String> otherNanoparticleEntityTypes = new ArrayList<String>();
-		for (int i = 0; i < nanoparticleEntityTypes.length; i++) {
+		List<String> nanomaterialEntityClassNames = new ArrayList<String>();
+		List<String> otherNanomaterialEntityTypes = new ArrayList<String>();
+		for (int i = 0; i < nanomaterialEntityTypes.length; i++) {
 			String className = InitSetup.getInstance().getClassName(
-					nanoparticleEntityTypes[i], session.getServletContext());
+					nanomaterialEntityTypes[i], session.getServletContext());
 			if (className.length() == 0) {
-				className = "OtherNanoparticleEntity";
-				otherNanoparticleEntityTypes.add(nanoparticleEntityTypes[i]);
+				className = "OtherNanomaterialEntity";
+				otherNanomaterialEntityTypes.add(nanomaterialEntityTypes[i]);
 			} else {
-				nanoparticleEntityClassNames.add(className);
+				nanomaterialEntityClassNames.add(className);
 			}
 		}
 
@@ -129,40 +128,46 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 			wordList.toArray(words);
 		}
 
-		List<ParticleBean> foundParticles = new ArrayList<ParticleBean>();
+		List<SampleBean> foundSamples = new ArrayList<SampleBean>();
 		for (String location : searchLocations) {
-			List<ParticleBean> particles = null;
-			NanoparticleSampleService service = null;
+			List<SampleBean> particles = null;
+			SampleService service = null;
 			if (location.equals("local")) {
-				service = new NanoparticleSampleServiceLocalImpl();
+				service = new SampleServiceLocalImpl();
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
-				service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+				//TODO update grid service
+//				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
-			particles = service.findNanoparticleSamplesBy(
-					particlePointOfContact, nanoparticleEntityClassNames
+			particles = service.findSamplesBy(
+					samplePointOfContact, nanomaterialEntityClassNames
 							.toArray(new String[0]),
-					otherNanoparticleEntityTypes.toArray(new String[0]),
+					otherNanomaterialEntityTypes.toArray(new String[0]),
 					functionalizingEntityClassNames.toArray(new String[0]),
 					otherFunctionalizingTypes.toArray(new String[0]),
 					functionClassNames.toArray(new String[0]),
 					otherFunctionTypes.toArray(new String[0]), charaClassNames,
 					words);
-			for (ParticleBean particle : particles) {
+			for (SampleBean particle : particles) {
 				particle.setLocation(location);
 			}
-			if (location.equals("local")) {
+			Boolean canCreateSample=(Boolean)session.getAttribute("canCreateSample");
+			//don't need to filter if is curator and doing local search
+			if (canCreateSample && location.equals("local")) {
+				foundSamples.addAll(particles);
+			}
+			else if (location.equals("local")) {
 				// get user accessible particles
-				List<ParticleBean> filteredParticles = service
-						.getUserAccessibleParticles(particles, user);
-				foundParticles.addAll(filteredParticles);
+				List<SampleBean> filteredSamples = service
+						.getUserAccessibleSamples(particles, user);
+				foundSamples.addAll(filteredSamples);
 			} else {
-				foundParticles.addAll(particles);
+				foundSamples.addAll(particles);
 			}
 		}
-		if (foundParticles != null && !foundParticles.isEmpty()) {
-			request.setAttribute("particles", foundParticles);
+		if (foundSamples != null && !foundSamples.isEmpty()) {
+			request.setAttribute("samples", foundSamples);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -193,10 +198,10 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 
 		if ("local".equals(selectedLocations[0])
 				&& selectedLocations.length == 1) {
-			InitNanoparticleSetup.getInstance()
+			InitSampleSetup.getInstance()
 					.setLocalSearchDropdowns(request);
 		} else {
-			InitNanoparticleSetup.getInstance().setRemoteSearchDropdowns(
+			InitSampleSetup.getInstance().setRemoteSearchDropdowns(
 					request);
 		}
 
@@ -208,7 +213,7 @@ public class SearchNanoparticleAction extends AbstractDispatchAction {
 	}
 
 	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return true;
 	}
 }

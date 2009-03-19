@@ -3,13 +3,12 @@ package gov.nih.nci.cananolab.ui.particle;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -36,7 +35,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 /**
  * This class allows users to submit chemical association data under sample
  * composition.
- * 
+ *
  * @author pansu
  */
 public class ChemicalAssociationAction extends BaseAnnotationAction {
@@ -48,11 +47,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Chemical Association");
@@ -116,22 +115,22 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			noErrors = false;
 		}
 		if (noErrors) {
-			NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
-			compService.saveChemicalAssociation(particleBean
-					.getDomainParticleSample(), assocBean
+			CompositionService compService = new CompositionServiceLocalImpl();
+			compService.saveChemicalAssociation(sampleBean
+					.getDomain(), assocBean
 					.getDomainAssociation());
 			// set visibility
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
 			List<String> accessibleGroups = authService.getAccessibleGroups(
-					particleBean.getDomainParticleSample().getName(),
+					sampleBean.getDomain().getName(),
 					Constants.CSM_READ_PRIVILEGE);
 			if (accessibleGroups != null
 					&& accessibleGroups
 							.contains(Constants.CSM_PUBLIC_GROUP)) {
 				// set composition public
-				authService.assignPublicVisibility(particleBean
-						.getDomainParticleSample().getSampleComposition()
+				authService.assignPublicVisibility(sampleBean
+						.getDomain().getSampleComposition()
 						.getId().toString());
 				compService.assignChemicalAssociationPublicVisibility(
 						authService, assocBean.getDomainAssociation());
@@ -147,7 +146,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			ActionForward forward = mapping.findForward("success");
-			setupDataTree(particleBean, request);
+			setupDataTree(sampleBean, request);
 			return forward;
 		} else {
 			return mapping.getInputForward();
@@ -166,8 +165,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Set up the input form for adding new nanoparticle entity
-	 * 
+	 * Set up the input form for adding new nanomaterial entity
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -180,9 +179,9 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		request.getSession().removeAttribute("chemicalAssociationForm");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		if (!setLookups(particleBean, request)) {
-			return mapping.findForward("particleMessage");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		if (!setLookups(sampleBean, request)) {
+			return mapping.findForward("sampleMessage");
 		}
 		return mapping.findForward("setup");
 	}
@@ -191,17 +190,17 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		prepareEntityLists(theForm, particleBean, request);
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		prepareEntityLists(theForm, sampleBean, request);
 		return mapping.findForward("setup");
 	}
 
-	private boolean setLookups(ParticleBean particleBean,
+	private boolean setLookups(SampleBean sampleBean,
 			HttpServletRequest request) throws Exception {
 		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				particleBean, request);
+				sampleBean, request);
 		SortedSet<DataLinkBean> particleEntities = dataTree
-				.get("Nanoparticle Entity");
+				.get("Nanomaterial Entity");
 		SortedSet<DataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
 		ActionMessages msgs = new ActionMessages();
@@ -215,12 +214,12 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 
 		// check where particle entities has composing elements
 		int numberOfCE = 0;
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compService = new CompositionServiceLocalImpl();
 		SortedSet<DataLinkBean> particleEntitiesWithComposingElements = new TreeSet<DataLinkBean>(
 				particleEntities);
 		for (DataLinkBean dataLink : particleEntities) {
-			NanoparticleEntityBean entityBean = compService
-					.findNanoparticleEntityById(dataLink.getDataId());
+			NanomaterialEntityBean entityBean = compService
+					.findNanomaterialEntityById(dataLink.getDataId());
 			if (entityBean.getComposingElements().size() == 0) {
 				particleEntitiesWithComposingElements.remove(dataLink);
 			} else {
@@ -250,25 +249,25 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 		}
-		request.getSession().setAttribute("particleEntities",
+		request.getSession().setAttribute("sampleEntities",
 				particleEntitiesWithComposingElements);
 		request.getSession().setAttribute("functionalizingEntities",
 				functionalizingEntities);
 		request.getSession().setAttribute("hasFunctionalizingEntity",
 				hasFunctionalizingEntity);
-		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
 				request, hasFunctionalizingEntity);
 		return true;
 	}
 
 	public void prepareEntityLists(DynaValidatorForm theForm,
-			ParticleBean particleBean, HttpServletRequest request)
+			SampleBean sampleBean, HttpServletRequest request)
 			throws Exception {
 		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				particleBean, request);
+				sampleBean, request);
 		SortedSet<DataLinkBean> particleEntitites = dataTree
-				.get("Nanoparticle Entity");
+				.get("Nanomaterial Entity");
 		SortedSet<DataLinkBean> functionalizingEntities = dataTree
 				.get("Functionalizing Entity");
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
@@ -276,16 +275,16 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// associated element A
 		SortedSet<DataLinkBean> entityListA = null;
 		HttpSession session = request.getSession();
-		NanoparticleCompositionService service = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService service = new CompositionServiceLocalImpl();
 		if (assocBean.getAssociatedElementA().getCompositionType().equals(
-				"Nanoparticle Entity")) {
+				"Nanomaterial Entity")) {
 			entityListA = particleEntitites;
 			for (DataLinkBean dataLink : particleEntitites) {
 				List<ComposingElementBean> ceListA = null;
 				if (assocBean.getAssociatedElementA().getEntityId().toString()
 						.equals(dataLink.getDataId())) {
-					NanoparticleEntityBean entityBean = service
-							.findNanoparticleEntityById(assocBean
+					NanomaterialEntityBean entityBean = service
+							.findNanomaterialEntityById(assocBean
 									.getAssociatedElementA().getEntityId());
 					ceListA = entityBean.getComposingElements();
 				}
@@ -297,14 +296,14 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// associated element B
 		SortedSet<DataLinkBean> entityListB = null;
 		if (assocBean.getAssociatedElementB().getCompositionType().equals(
-				"Nanoparticle Entity")) {
+				"Nanomaterial Entity")) {
 			entityListB = particleEntitites;
 			for (DataLinkBean dataLink : particleEntitites) {
 				List<ComposingElementBean> ceListB = null;
 				if (assocBean.getAssociatedElementB().getEntityId().toString()
 						.equals(dataLink.getDataId())) {
-					NanoparticleEntityBean entityBean = service
-							.findNanoparticleEntityById(assocBean
+					NanomaterialEntityBean entityBean = service
+							.findNanomaterialEntityById(assocBean
 									.getAssociatedElementB().getEntityId());
 					ceListB = entityBean.getComposingElements();
 				}
@@ -321,12 +320,12 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		setLookups(particleBean, request);
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		setLookups(sampleBean, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compService = new CompositionServiceLocalImpl();
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssociationById(assocId);
 		compService.retrieveVisibility(assocBean, user);
@@ -344,19 +343,20 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
-		String particleId = request.getParameter("particleId");
-		NanoparticleCompositionService compService = null;
+		String sampleId = request.getParameter("sampleId");
+		CompositionService compService = null;
 		if (location.equals("local")) {
-			compService = new NanoparticleCompositionServiceLocalImpl();
+			compService = new CompositionServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			compService = new NanoparticleCompositionServiceRemoteImpl(
-					serviceUrl);
+			//TODO update grid service
+//			compService = new CompositionServiceRemoteImpl(
+//					serviceUrl);
 		}
 		String assocClassName = request.getParameter("dataClassName");
 		ChemicalAssociationBean assocBean = compService
-				.findChemicalAssociationById(particleId, assocId,
+				.findChemicalAssociationById(sampleId, assocId,
 						assocClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(assocBean, user);
@@ -400,11 +400,11 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Chemical Association");
@@ -412,16 +412,16 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteChemicalAssociation(assocBean.getDomainAssociation());
-		particleBean = setupParticle(theForm, request, "local");
+		sampleBean = setupSample(theForm, request, "local");
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.deleteChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(particleBean, request);
+		setupDataTree(sampleBean, request);
 		return forward;
 	}
 }

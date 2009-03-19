@@ -39,8 +39,8 @@ public class CustomPlugIn implements PlugIn {
 							"defaultFunctionalizingEntityTypes",
 							"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-					appContext, "defaultNanoparticleEntityTypes",
-					"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+					appContext, "defaultNanomaterialEntityTypes",
+					"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 			InitSetup.getInstance().getServletContextDefaultTypesByReflection(
 					appContext, "defaultFunctionTypes",
 					"gov.nih.nci.cananolab.domain.particle.Function");

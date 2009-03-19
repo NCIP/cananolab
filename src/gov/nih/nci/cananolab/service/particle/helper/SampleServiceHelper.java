@@ -3,13 +3,13 @@ package gov.nih.nci.cananolab.service.particle.helper;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -36,34 +36,29 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * Helper class providing implementations of search methods needed for both
- * local implementation of NanoparticleSampleService and grid service *
+ * local implementation of SampleService and grid service *
  *
  * @author pansu, tanq
  *
  */
-public class NanoparticleSampleServiceHelper {
-	public List<NanoparticleSample> findNanoparticleSamplesBy(
-			String particlePointOfContact,
-			String[] nanoparticleEntityClassNames,
-			String[] otherNanoparticleEntityTypes,
+public class SampleServiceHelper {
+	public List<Sample> findSamplesBy(String samplePointOfContact,
+			String[] nanomaterialEntityClassNames,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames, String[] wordList)
 			throws Exception {
-		List<NanoparticleSample> particles = new ArrayList<NanoparticleSample>();
+		List<Sample> particles = new ArrayList<Sample>();
 
-		// can't query for the entire NanoparticleSample object due to
-		// limitations in
-		// pagination in SDK
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleSample.class).setProjection(
-				Projections.distinct(Property.forName("id")));
+		// can't query for the entire Sample object due to
+		// limitations in pagination in SDK
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+				.setProjection(Projections.distinct(Property.forName("id")));
 
-		if (particlePointOfContact != null
-				&& particlePointOfContact.length() > 0) {
-			TextMatchMode pocMatchMode = new TextMatchMode(
-					particlePointOfContact);
+		if (samplePointOfContact != null && samplePointOfContact.length() > 0) {
+			TextMatchMode pocMatchMode = new TextMatchMode(samplePointOfContact);
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("primaryPointOfContact", "pointOfContact");
 			crit.createAlias("pointOfContact.organization", "organization");
@@ -83,37 +78,37 @@ public class NanoparticleSampleServiceHelper {
 			crit.add(disjunction);
 		}
 
-		// join composition and nanoparticle entity
-		if (nanoparticleEntityClassNames != null
-				&& nanoparticleEntityClassNames.length > 0
-				|| otherNanoparticleEntityTypes != null
-				&& otherNanoparticleEntityTypes.length > 0
+		// join composition and nanomaterial entity
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			crit.createAlias("sampleComposition", "comp");
-			crit.createAlias("comp.nanoparticleEntityCollection", "nanoEntity");
+			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity");
 		}
 
-		// nanoparticle entity
-		if (nanoparticleEntityClassNames != null
-				&& nanoparticleEntityClassNames.length > 0
-				|| otherNanoparticleEntityTypes != null
-				&& otherNanoparticleEntityTypes.length > 0
+		// nanomaterial entity
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			if (nanoparticleEntityClassNames != null
-					&& nanoparticleEntityClassNames.length > 0) {
+			if (nanomaterialEntityClassNames != null
+					&& nanomaterialEntityClassNames.length > 0) {
 				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanoparticleEntityClassNames);
+						nanomaterialEntityClassNames);
 				disjunction.add(nanoEntityCrit);
 			}
-			if (otherNanoparticleEntityTypes != null
-					&& otherNanoparticleEntityTypes.length > 0) {
+			if (otherNanomaterialEntityTypes != null
+					&& otherNanomaterialEntityTypes.length > 0) {
 				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
-						"OtherNanoparticleEntity");
+						"OtherNanomaterialEntity");
 				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanoparticleEntityTypes);
+						otherNanomaterialEntityTypes);
 				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
 						otherNanoCrit2);
 				disjunction.add(otherNanoCrit);
@@ -232,7 +227,7 @@ public class NanoparticleSampleServiceHelper {
 					.asList(otherFunctionalizingEntityTypes));
 		}
 		for (Object obj : results) {
-			NanoparticleSample particle = loadNanoparticleSample(obj.toString());
+			Sample particle = loadSample(obj.toString());
 			// don't need this if Hibernate would've allowed for functionalizing
 			// entities in the where clause
 			boolean matching = hasMatchingFunctionalizingEntities(particle,
@@ -248,9 +243,8 @@ public class NanoparticleSampleServiceHelper {
 	// functionalizing entities due to bug in hibernate in handling having
 	// .class in
 	// where clause in multi-level inheritance
-	private boolean hasMatchingFunctionalizingEntities(
-			NanoparticleSample particle, List<String> functionalizingEntityTypes)
-			throws Exception {
+	private boolean hasMatchingFunctionalizingEntities(Sample particle,
+			List<String> functionalizingEntityTypes) throws Exception {
 		if (functionalizingEntityTypes == null) {
 			return true;
 		}
@@ -260,7 +254,7 @@ public class NanoparticleSampleServiceHelper {
 		DetachedCriteria crit = DetachedCriteria
 				.forClass(FunctionalizingEntity.class);
 		crit.createAlias("sampleComposition", "comp");
-		crit.createAlias("comp.nanoparticleSample", "sample");
+		crit.createAlias("comp.sample", "sample");
 		crit.add(Restrictions.eq("sample.id", particle.getId()));
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
@@ -288,7 +282,7 @@ public class NanoparticleSampleServiceHelper {
 	 * @return
 	 */
 	public SortedSet<String> getStoredFunctionalizingEntityClassNames(
-			NanoparticleSample particleSample) {
+			Sample particleSample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
 		if (particleSample.getSampleComposition() != null
@@ -316,16 +310,15 @@ public class NanoparticleSampleServiceHelper {
 	 * @param particleSample
 	 * @return
 	 */
-	public SortedSet<String> getStoredFunctionClassNames(
-			NanoparticleSample particleSample) {
+	public SortedSet<String> getStoredFunctionClassNames(Sample particleSample) {
 		SortedSet<String> storedFunctions = new TreeSet<String>();
 
 		if (particleSample.getSampleComposition() != null) {
 			if (particleSample.getSampleComposition()
-					.getNanoparticleEntityCollection() != null) {
-				for (NanoparticleEntity entity : particleSample
+					.getNanomaterialEntityCollection() != null) {
+				for (NanomaterialEntity entity : particleSample
 						.getSampleComposition()
-						.getNanoparticleEntityCollection()) {
+						.getNanomaterialEntityCollection()) {
 					if (entity.getComposingElementCollection() != null) {
 						for (ComposingElement element : entity
 								.getComposingElementCollection()) {
@@ -372,23 +365,23 @@ public class NanoparticleSampleServiceHelper {
 	}
 
 	/**
-	 * Return all stored nanoparticle entity class names. In case of
-	 * OtherNanoparticleEntity, store the otherNanoparticleEntity type
+	 * Return all stored nanomaterial entity class names. In case of
+	 * OtherNanomaterialEntity, store the otherNanomaterialEntity type
 	 *
 	 * @param particleSample
 	 * @return
 	 */
-	public SortedSet<String> getStoredNanoparticleEntityClassNames(
-			NanoparticleSample particleSample) {
+	public SortedSet<String> getStoredNanomaterialEntityClassNames(
+			Sample particleSample) {
 		SortedSet<String> storedEntities = new TreeSet<String>();
 
 		if (particleSample.getSampleComposition() != null
 				&& particleSample.getSampleComposition()
-						.getNanoparticleEntityCollection() != null) {
-			for (NanoparticleEntity entity : particleSample
-					.getSampleComposition().getNanoparticleEntityCollection()) {
-				if (entity instanceof OtherNanoparticleEntity) {
-					storedEntities.add(((OtherNanoparticleEntity) entity)
+						.getNanomaterialEntityCollection() != null) {
+			for (NanomaterialEntity entity : particleSample
+					.getSampleComposition().getNanomaterialEntityCollection()) {
+				if (entity instanceof OtherNanomaterialEntity) {
+					storedEntities.add(((OtherNanomaterialEntity) entity)
 							.getType());
 				} else {
 					storedEntities.add(ClassUtils.getShortClassName(entity
@@ -399,8 +392,7 @@ public class NanoparticleSampleServiceHelper {
 		return storedEntities;
 	}
 
-	public SortedSet<String> getStoredCharacterizationClassNames(
-			NanoparticleSample particle) {
+	public SortedSet<String> getStoredCharacterizationClassNames(Sample particle) {
 		SortedSet<String> storedChars = new TreeSet<String>();
 		if (particle.getCharacterizationCollection() != null) {
 			for (Characterization achar : particle
@@ -412,14 +404,12 @@ public class NanoparticleSampleServiceHelper {
 		return storedChars;
 	}
 
-	public NanoparticleSample findNanoparticleSampleById(String particleId)
-			throws Exception {
+	public Sample findSampleById(String sampleId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleSample.class).add(
-				Property.forName("id").eq(new Long(particleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
 
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
@@ -430,20 +420,18 @@ public class NanoparticleSampleServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
-		NanoparticleSample particleSample = null;
+		Sample particleSample = null;
 		if (!result.isEmpty()) {
-			particleSample = (NanoparticleSample) result.get(0);
+			particleSample = (Sample) result.get(0);
 		}
 		return particleSample;
 	}
 
-	private NanoparticleSample loadNanoparticleSample(String particleId)
-			throws Exception {
+	private Sample loadSample(String sampleId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleSample.class).add(
-				Property.forName("id").eq(new Long(particleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -451,15 +439,15 @@ public class NanoparticleSampleServiceHelper {
 				FetchMode.JOIN);
 		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
 		crit
 				.setFetchMode(
-						"sampleComposition.nanoparticleEntityCollection.composingElementCollection",
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
 						FetchMode.JOIN);
 		crit
 				.setFetchMode(
-						"sampleComposition.nanoparticleEntityCollection.composingElementCollection.inherentFunctionCollection",
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
 						FetchMode.JOIN);
 
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
@@ -471,29 +459,27 @@ public class NanoparticleSampleServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
-		NanoparticleSample particleSample = null;
+		Sample particleSample = null;
 		if (!result.isEmpty()) {
-			particleSample = (NanoparticleSample) result.get(0);
+			particleSample = (Sample) result.get(0);
 		}
 		return particleSample;
 	}
 
-	public NanoparticleSample findNanoparticleSampleByName(String particleName)
-			throws Exception {
-		NanoparticleSample particleSample = null;
+	public Sample findSampleByName(String sampleName) throws Exception {
+		Sample particleSample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleSample.class).add(
-				Property.forName("name").eq(particleName));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("name").eq(sampleName));
 
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); // eager
 		// load not
 		// set in
 		// caDSR
 		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
@@ -515,20 +501,20 @@ public class NanoparticleSampleServiceHelper {
 
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
-			particleSample = (NanoparticleSample) result.get(0);
+			particleSample = (Sample) result.get(0);
 		}
 		return particleSample;
 	}
 
-	public List<Keyword> findKeywordsForNanoparticleSampleId(
-			String particleSampleId) throws Exception {
+	public List<Keyword> findKeywordsForSampleId(String sampleId)
+			throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select aParticle.keywordCollection from gov.nih.nci.cananolab.domain.particle.NanoparticleSample aParticle where aParticle.id = "
-						+ particleSampleId);
+				"select aSample.keywordCollection from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
+						+ sampleId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
 			Keyword keyword = (Keyword) obj;
@@ -537,12 +523,12 @@ public class NanoparticleSampleServiceHelper {
 		return keywords;
 	}
 
-	public int getNumberOfPublicNanoparticleSamples() throws Exception {
+	public int getNumberOfPublicSamples() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select name from gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+				"select name from gov.nih.nci.cananolab.domain.particle.Sample");
 		List results = appService.query(crit);
 		List<String> publicNames = new ArrayList<String>();
 		for (Object obj : results) {
@@ -554,19 +540,18 @@ public class NanoparticleSampleServiceHelper {
 		return publicNames.size();
 	}
 
-	public String[] getCharacterizationClassNames(String particleId)
+	public String[] getCharacterizationClassNames(String sampleId)
 			throws Exception {
 		String hql = "select distinct achar.class from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar"
-				+ " where achar.nanoparticleSample.id = " + particleId;
+				+ " where achar.sample.id = " + sampleId;
 		return this.getClassNames(hql);
 	}
 
-	public String[] getFunctionalizingEntityClassNames(String particleId)
+	public String[] getFunctionalizingEntityClassNames(String sampleId)
 			throws Exception {
 		SortedSet<String> names = new TreeSet<String>();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleSample.class).add(
-				Property.forName("id").eq(new Long(particleId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -574,27 +559,26 @@ public class NanoparticleSampleServiceHelper {
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			NanoparticleSample particleSample = (NanoparticleSample) obj;
+			Sample particleSample = (Sample) obj;
 			names = this
 					.getStoredFunctionalizingEntityClassNames(particleSample);
 		}
 		return names.toArray(new String[0]);
 	}
 
-	public String[] getFunctionClassNames(String particleId) throws Exception {
+	public String[] getFunctionClassNames(String sampleId) throws Exception {
 		SortedSet<String> names = new TreeSet<String>();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanoparticleSample.class).add(
-				Property.forName("id").eq(new Long(particleId)));
-		crit.setFetchMode("sampleComposition.nanoparticleEntityCollection",
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
 				FetchMode.JOIN);
 		crit
 				.setFetchMode(
-						"sampleComposition.nanoparticleEntityCollection.composingElementCollection",
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
 						FetchMode.JOIN);
 		crit
 				.setFetchMode(
-						"sampleComposition.nanoparticleEntityCollection.composingElementCollection.inherentFunctionCollection",
+						"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
 						FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
 				FetchMode.JOIN);
@@ -607,18 +591,18 @@ public class NanoparticleSampleServiceHelper {
 				.getApplicationService();
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			NanoparticleSample particleSample = (NanoparticleSample) obj;
+			Sample particleSample = (Sample) obj;
 			names = this.getStoredFunctionClassNames(particleSample);
 		}
 		return names.toArray(new String[0]);
 	}
 
-	public String[] getNanoparticleEntityClassNames(String particleId)
+	public String[] getNanomaterialEntityClassNames(String sampleId)
 			throws Exception {
 		String hql = "select distinct entity.class from "
-				+ " gov.nih.nci.cananolab.domain.particle.NanoparticleEntity entity"
-				+ " where entity.class!='OtherNanoparticleEntity' and entity.sampleComposition.nanoparticleSample.id = "
-				+ particleId;
+				+ " gov.nih.nci.cananolab.domain.particle.NanomaterialEntity entity"
+				+ " where entity.class!='OtherNanomaterialEntity' and entity.sampleComposition.sample.id = "
+				+ sampleId;
 
 		String[] classNames = this.getClassNames(hql);
 		SortedSet<String> names = new TreeSet<String>();
@@ -626,9 +610,8 @@ public class NanoparticleSampleServiceHelper {
 			names.addAll(Arrays.asList(classNames));
 		}
 		String hql2 = "select distinct entity.type from "
-				+ " gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity entity"
-				+ " where entity.sampleComposition.nanoparticleSample.id = "
-				+ particleId;
+				+ " gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity entity"
+				+ " where entity.sampleComposition.sample.id = " + sampleId;
 		String[] otherTypes = this.getClassNames(hql2);
 		if (otherTypes.length > 0) {
 			names.addAll(Arrays.asList(otherTypes));
@@ -655,13 +638,12 @@ public class NanoparticleSampleServiceHelper {
 		return classNames;
 	}
 
-	public String[] getNanoparticleSampleViewStrs(
-			List<NanoparticleSample> particleSamples) {
+	public String[] getSampleViewStrs(List<Sample> particleSamples) {
 		List<String> particleStrings = new ArrayList<String>(particleSamples
 				.size());
 		// 6 columns
 		List<String> columns = new ArrayList<String>(7);
-		for (NanoparticleSample particleSample : particleSamples) {
+		for (Sample particleSample : particleSamples) {
 			columns.clear();
 			columns.add(particleSample.getId().toString());
 			columns.add(particleSample.getName());
@@ -674,7 +656,7 @@ public class NanoparticleSampleServiceHelper {
 			// column.
 			SortedSet<String> entities = new TreeSet<String>();
 			entities
-					.addAll(getStoredNanoparticleEntityClassNames(particleSample));
+					.addAll(getStoredNanomaterialEntityClassNames(particleSample));
 			entities
 					.addAll(getStoredFunctionalizingEntityClassNames(particleSample));
 			columns.add(StringUtils.join(entities,
@@ -693,10 +675,9 @@ public class NanoparticleSampleServiceHelper {
 		return particleStrings.toArray(particleStrArray);
 	}
 
-	public SortedSet<String> findParticleNamesByPublicationId(String publicationId)
-			throws Exception {
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(NanoparticleSample.class);
+	public SortedSet<String> findSampleNamesByPublicationId(
+			String publicationId) throws Exception {
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		crit.createAlias("publicationCollection", "pub").add(
 				Property.forName("pub.id").eq(new Long(publicationId)));
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -704,7 +685,7 @@ public class NanoparticleSampleServiceHelper {
 		List results = appService.query(crit);
 		SortedSet<String> names = new TreeSet<String>();
 		for (Object obj : results) {
-			NanoparticleSample particleSample = (NanoparticleSample) obj;
+			Sample particleSample = (Sample) obj;
 			names.add(particleSample.getName());
 		}
 		return names;

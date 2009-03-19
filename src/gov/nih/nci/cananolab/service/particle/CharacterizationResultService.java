@@ -6,7 +6,7 @@ import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 
 import java.util.List;
 
-public interface NanoparticleCharacterizationResultService {
+public interface CharacterizationResultService {
 
 	public void saveData(List<Datum> data)
 			throws CharacterizationResultException;

@@ -28,11 +28,11 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 
-public class NanoparticleCharacterizationServiceHelper {
+public class CharacterizationServiceHelper {
 	private static Logger logger = Logger
-			.getLogger(NanoparticleCharacterizationServiceHelper.class);
+			.getLogger(CharacterizationServiceHelper.class);
 
-	public NanoparticleCharacterizationServiceHelper() {
+	public CharacterizationServiceHelper() {
 	}
 
 	public Characterization findCharacterizationById(String charId)
@@ -40,7 +40,6 @@ public class NanoparticleCharacterizationServiceHelper {
 		Characterization achar = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
@@ -52,18 +51,16 @@ public class NanoparticleCharacterizationServiceHelper {
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
-		crit.setFetchMode(
-				"experimentConfigCollection.instrumentCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("fileCollection.keywordCollection",
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
 				FetchMode.JOIN);
 		crit.setFetchMode("datumCollection", FetchMode.JOIN);
-		crit.setFetchMode("datumCollection.conditionCollection",
-				FetchMode.JOIN);
+		crit
+				.setFetchMode("datumCollection.conditionCollection",
+						FetchMode.JOIN);
 		crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
 		crit.setFetchMode("datumCollection.dataSet.file", FetchMode.JOIN);
-		crit.setFetchMode("datumCollection.dataSet.file.keywordCollection", FetchMode.JOIN);
+		crit.setFetchMode("datumCollection.dataSet.file.keywordCollection",
+				FetchMode.JOIN);
 		crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -90,19 +87,21 @@ public class NanoparticleCharacterizationServiceHelper {
 		}
 	}
 
-	public List<Characterization> findParticleCharacterizationsByClass(
-			String particleName, String className) throws Exception {
+	public List<Characterization> findSampleCharacterizationsByClass(
+			String sampleName, String className) throws Exception {
 		List<Characterization> charas = new ArrayList<Characterization>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Class
 				.forName(className));
-		crit.add(Restrictions.eq("sample.name", particleName));
+		crit.add(Restrictions.eq("sample.name", sampleName));
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("protocolFile", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
 		crit.setFetchMode("datumCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);

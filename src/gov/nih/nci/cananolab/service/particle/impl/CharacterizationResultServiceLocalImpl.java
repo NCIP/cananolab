@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.service.particle.impl;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
+import gov.nih.nci.cananolab.service.particle.CharacterizationResultService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -19,11 +19,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
-public class NanoparticleCharacterizationResultServiceLocalImpl implements
-		NanoparticleCharacterizationResultService {
+public class CharacterizationResultServiceLocalImpl implements
+		CharacterizationResultService {
 
 	private static Logger logger = Logger
-			.getLogger(NanoparticleCharacterizationResultServiceLocalImpl.class);
+			.getLogger(CharacterizationResultServiceLocalImpl.class);
 
 	public DataSet findDataSetById(String dataSetId)
 			throws CharacterizationResultException {

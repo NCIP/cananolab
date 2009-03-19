@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.util.Constants;
@@ -59,8 +59,8 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 	 * 
 	 * @param user
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public abstract boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException;
+			throws SecurityException;
 }

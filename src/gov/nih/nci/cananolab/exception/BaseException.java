@@ -5,28 +5,28 @@ package gov.nih.nci.cananolab.exception;
  * 
  */
 
-public class CaNanoLabException extends Exception {
+public class BaseException extends Exception {
 
 	private static final long serialVersionUID = 1234567890L;
 
 	/**
 	 * 
 	 */
-	public CaNanoLabException() {
+	public BaseException() {
 		super("An exception occurred in caNanoLab");
 	}
 
-	public CaNanoLabException(String message) {
+	public BaseException(String message) {
 		super(message);
 
 	}
 
-	public CaNanoLabException(String message, Throwable cause) {
+	public BaseException(String message, Throwable cause) {
 		super(message, cause);
 
 	}
 
-	public CaNanoLabException(Throwable cause) {
+	public BaseException(Throwable cause) {
 		super(cause);
 	}
 }

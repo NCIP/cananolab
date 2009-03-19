@@ -10,18 +10,17 @@ package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -46,15 +45,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		CompositionService compositionService = new CompositionServiceLocalImpl();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
@@ -89,21 +88,21 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			return mapping.getInputForward();
 		}
 
-		compositionService.saveFunctionalizingEntity(particleBean
-				.getDomainParticleSample(), entityBean.getDomainEntity());
+		compositionService.saveFunctionalizingEntity(sampleBean
+				.getDomain(), entityBean.getDomainEntity());
 
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
-				particleBean.getDomainParticleSample().getName(),
+				sampleBean.getDomain().getName(),
 				Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
 				&& accessibleGroups
 						.contains(Constants.CSM_PUBLIC_GROUP)) {
 			//set composition public
-			authService.assignPublicVisibility(particleBean
-					.getDomainParticleSample().getSampleComposition().getId()
+			authService.assignPublicVisibility(sampleBean
+					.getDomain().getSampleComposition().getId()
 					.toString());
 			compositionService.assignFunctionalizingEntityPublicVisibility(
 					authService, entityBean.getDomainEntity());
@@ -115,15 +114,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 		// save to other particles
 		FileService service = new FileServiceLocalImpl();
-		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			FunctionalizingEntity copy = entityBean.getDomainCopy();
-			for (NanoparticleSample sample : otherSamples) {
+			for (Sample sample : otherSamples) {
 				compositionService.saveFunctionalizingEntity(sample, copy);
 				if (copy.getFileCollection() != null) {
 					for (File file : copy.getFileCollection()) {
 						service.saveCopiedFileAndSetVisibility(file, user,
-								particleBean.getDomainParticleSample()
+								sampleBean.getDomain()
 										.getName(), sample.getName());
 					}
 				}
@@ -136,7 +135,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(particleBean, request);
+		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -185,7 +184,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Set up the input form for adding new nanoparticle entity
+	 * Set up the input form for adding new nanomaterial entity
 	 *
 	 * @param mapping
 	 * @param form
@@ -198,16 +197,16 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("functionalizingEntityForm");
-		String particleId=request.getParameter("particleId");
+		String sampleId=request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-				particleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request,
+				sampleId);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
-		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		InitCompositionSetup.getInstance().setFunctionalizingEntityDropdowns(
 				request);
 	}
@@ -217,13 +216,13 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
-		String particleId=request.getParameter("particleId");
+		String sampleId=request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-				particleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request,
+				sampleId);
 
 		String entityId = request.getParameter("dataId");
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -232,8 +231,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("entity", entityBean);
 		setLookups(request);
-		// clear copy to otherParticles
-		theForm.set("otherParticles", new String[0]);
+		// clear copy to otherSamples
+		theForm.set("otherSamples", new String[0]);
 		return mapping.getInputForward();
 	}
 
@@ -242,19 +241,20 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
-		setupParticle(theForm, request, location);
+		setupSample(theForm, request, location);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
 		String entityClassName = request.getParameter("dataClassName");
-		NanoparticleCompositionService compService = null;
+		CompositionService compService = null;
 		if (location.equals("local")) {
-			compService = new NanoparticleCompositionServiceLocalImpl();
+			compService = new CompositionServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			compService = new NanoparticleCompositionServiceRemoteImpl(
-					serviceUrl);
+			//TODO update grid service
+//			compService = new CompositionServiceRemoteImpl(
+//					serviceUrl);
 		}
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId, entityClassName);
@@ -370,7 +370,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean)
 		 * theForm .get("entity"); // update editable dropdowns HttpSession
 		 * session = request.getSession();
-		 * InitNanoparticleSetup.getInstance().updateEditableDropdown(session,
+		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
 		 *
 		 * PolymerBean polymer = (PolymerBean) theForm.get("polymer");
@@ -386,15 +386,15 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanoparticleCompositionService compositionService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compositionService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("entity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
@@ -408,12 +408,12 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		if (canDelete) {
 			compositionService.deleteFunctionalizingEntity(entityBean
 					.getDomainEntity());
-			particleBean = setupParticle(theForm, request, "local");
+			sampleBean = setupSample(theForm, request, "local");
 			ActionMessage msg = new ActionMessage(
 					"message.deleteFunctionalizingEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			setupDataTree(particleBean, request);
+			setupDataTree(sampleBean, request);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
@@ -421,14 +421,14 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			setupDataTree(particleBean, request);
+			setupDataTree(sampleBean, request);
 			return mapping.getInputForward();
 		}
 	}
 
 	protected boolean checkDelete(HttpServletRequest request,
 			ActionMessages msgs, String id) throws Exception {
-		NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+		CompositionService compService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(id);
 		if (!compService.checkChemicalAssociationBeforeDelete(entityBean)) {

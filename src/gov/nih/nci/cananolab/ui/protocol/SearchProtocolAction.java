@@ -2,7 +2,7 @@ package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
@@ -128,7 +128,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	}
 
 	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return true;
 	}
 

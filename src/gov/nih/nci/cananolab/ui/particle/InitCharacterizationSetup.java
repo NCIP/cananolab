@@ -6,9 +6,9 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.CharacterizationService;
+import gov.nih.nci.cananolab.service.particle.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.particle.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class InitCharacterizationSetup {
-	private NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+	private CharacterizationService charService = new CharacterizationServiceLocalImpl();
 
 	public static InitCharacterizationSetup getInstance() {
 		return new InitCharacterizationSetup();
@@ -52,14 +52,14 @@ public class InitCharacterizationSetup {
 	}
 
 	public void setCharactierizationDropDowns(HttpServletRequest request,
-			String particleId) throws Exception {
+			String sampleId) throws Exception {
 		getCharacterizationTypes(request);
 		getDataSetColumnValueTypes(request);
 		// set point of contacts
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		List<PointOfContactBean> pocs = pocService
-				.findPointOfContactsByParticleId(particleId);
-		request.getSession().setAttribute("particlePointOfContacts", pocs);
+				.findPointOfContactsBySampleId(sampleId);
+		request.getSession().setAttribute("samplePointOfContacts", pocs);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
@@ -190,7 +190,7 @@ public class InitCharacterizationSetup {
 
 	public SortedSet<String> getCharNamesByCharType(HttpServletRequest request,
 			String charType) throws Exception {
-		NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
+		CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 		ServletContext appContext = request.getSession().getServletContext();
 		String fullCharTypeClass = InitSetup.getInstance().getFullClassName(
 				charType, appContext);

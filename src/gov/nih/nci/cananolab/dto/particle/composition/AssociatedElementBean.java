@@ -1,16 +1,16 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.util.ClassUtils;
 
 import java.util.Map;
 
 public class AssociatedElementBean {
-	// eg. Nanoparticle Entity, Functionalizing Entity
+	// eg. Nanomaterial Entity, Functionalizing Entity
 	private String compositionType;
 
 	private String entityId; // dendrimer id, small molecule id
@@ -31,8 +31,8 @@ public class AssociatedElementBean {
 		className = ClassUtils.getShortClassName(element.getClass().getName());
 		if (element instanceof ComposingElement) {
 			composingElement = (ComposingElement) element;
-			if (composingElement.getNanoparticleEntity() != null) {
-				entityId = composingElement.getNanoparticleEntity().getId()
+			if (composingElement.getNanomaterialEntity() != null) {
+				entityId = composingElement.getNanomaterialEntity().getId()
 						.toString();
 			}
 		} else {
@@ -103,16 +103,16 @@ public class AssociatedElementBean {
 
 	public void updateType(Map<String, String> classToType) {
 		if (composingElement.getId() != null) {
-			compositionType = classToType.get("NanoparticleEntity");
-			NanoparticleEntity entity = composingElement
-					.getNanoparticleEntity();
-			if (entity instanceof OtherNanoparticleEntity) {
-				entityDisplayName = ((OtherNanoparticleEntity) entity)
+			compositionType = classToType.get("NanomaterialEntity");
+			NanomaterialEntity entity = composingElement
+					.getNanomaterialEntity();
+			if (entity instanceof OtherNanomaterialEntity) {
+				entityDisplayName = ((OtherNanomaterialEntity) entity)
 						.getType();
 			} else {
 				String entityClassName = className = ClassUtils
 						.getShortClassName(composingElement
-								.getNanoparticleEntity().getClass().getName());
+								.getNanomaterialEntity().getClass().getName());
 				entityDisplayName = classToType.get(entityClassName);
 			}
 		} else {

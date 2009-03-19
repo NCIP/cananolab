@@ -96,13 +96,13 @@ public class PublicationDecorator extends TableDecorator {
 		return sortableLink;
 	}
 
-	public String getParticleNames() {
-		String[] particleNames = ((PublicationBean) getCurrentRowObject())
-				.getParticleNames();
-		if (particleNames == null) {
+	public String getSampleNames() {
+		String[] sampleNames = ((PublicationBean) getCurrentRowObject())
+				.getSampleNames();
+		if (sampleNames == null) {
 			return "";
 		}
-		return StringUtils.sortJoin(Arrays.asList(particleNames), "<br>");
+		return StringUtils.sortJoin(Arrays.asList(sampleNames), "<br>");
 	}
 
 	public SortableName getViewName() {

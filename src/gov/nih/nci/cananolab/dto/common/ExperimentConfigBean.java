@@ -54,7 +54,6 @@ public class ExperimentConfigBean {
 			techniqueDisplayName = domain.getTechnique().getType();
 		}
 		return techniqueDisplayName;
-
 	}
 
 	public void addInstrument(Instrument instrument) {
@@ -128,7 +127,7 @@ public class ExperimentConfigBean {
 		return domain.hashCode();
 	}
 
-	public String getInstrumentDisplayName(Instrument instrument) {
+	private String getInstrumentDisplayName(Instrument instrument) {
 		StringBuffer sb = new StringBuffer();
 		if (instrument.getManufacturer() != null
 				&& instrument.getManufacturer().trim().length() > 0) {
@@ -145,6 +144,17 @@ public class ExperimentConfigBean {
 			sb.append(" ");
 		}
 		return sb.toString();
+	}
+
+	public String[] getInstrumentDisplayNames() {
+		List<String> displayNames=new ArrayList<String>();
+		for(Instrument instrument: instruments) {
+			displayNames.add(getInstrumentDisplayName(instrument));
+		}
+		if (displayNames.isEmpty()) {
+			return null;
+		}
+		return displayNames.toArray(new String[displayNames.size()]);
 	}
 
 }

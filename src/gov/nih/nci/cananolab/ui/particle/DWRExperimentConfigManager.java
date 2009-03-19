@@ -5,7 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -46,7 +46,7 @@ public class DWRExperimentConfigManager {
 	}
 
 	public String[] findInstrumentTypesByTechniqueType(String techniqueType)
-			throws ExperimentConfigException, CaNanoLabException {
+			throws ExperimentConfigException, BaseException {
 		SortedSet<String> types = null;
 		types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
 				"instrument", "otherInstrument");
@@ -60,7 +60,7 @@ public class DWRExperimentConfigManager {
 	}
 
 	public String[] findInstrumentTypesByConfigId(String configId)
-			throws ExperimentConfigException, CaNanoLabException {
+			throws ExperimentConfigException, BaseException {
 		String techniqueType = null;
 		SortedSet<String> types = null;
 		ExperimentConfigBean config = findExperimentConfigById(configId);

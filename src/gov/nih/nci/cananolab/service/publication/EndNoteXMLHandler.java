@@ -113,7 +113,7 @@ public class EndNoteXMLHandler {
 				pubBean.setVisibilityGroups(visibilityGroups);	
 				//TODO: verify if the publication in DB
 				service.savePublication(publication, pubBean
-	    				.getParticleNames(), pubBean.getNewFileData(), 
+	    				.getSampleNames(), pubBean.getNewFileData(), 
 	    				authors);
 	    		// set visibility
 				authService.assignVisibility(pubBean.getDomainFile().getId()

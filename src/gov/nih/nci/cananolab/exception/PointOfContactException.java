@@ -4,7 +4,7 @@ package gov.nih.nci.cananolab.exception;
  * @author tanq
  * 
  */
-public class PointOfContactException extends CaNanoLabException {
+public class PointOfContactException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 

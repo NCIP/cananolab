@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.GridDownException;
 import gov.nih.nci.cananolab.service.common.GridService;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -42,7 +42,7 @@ public class InitSetup {
 	}
 
 	public Map<String, Map<String, SortedSet<String>>> getDefaultLookupTable(
-			ServletContext appContext) throws CaNanoLabException {
+			ServletContext appContext) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = null;
 		if (appContext.getAttribute("defaultLookupTable") == null) {
 			defaultLookupTable = LookupService.findAllLookups();
@@ -60,10 +60,10 @@ public class InitSetup {
 	 *
 	 * @param appContext
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public Map<String, String> getClassNameToDisplayNameLookup(
-			ServletContext appContext) throws CaNanoLabException {
+			ServletContext appContext) throws BaseException {
 		Map<String, String> lookup = null;
 		if (appContext.getAttribute("displayNameLookup") == null) {
 			lookup = LookupService.findSingleAttributeLookupMap("displayName");
@@ -81,7 +81,7 @@ public class InitSetup {
 	 *
 	 * @param appContext
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public Map<String, String> getDisplayNameToClassNameLookup(
 			ServletContext appContext) throws Exception {
@@ -109,7 +109,7 @@ public class InitSetup {
 	 *
 	 * @param appContext
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public Map<String, String> getDisplayNameToFullClassNameLookup(
 			ServletContext appContext) throws Exception {
@@ -135,7 +135,7 @@ public class InitSetup {
 	}
 
 	public String getDisplayName(String className, ServletContext appContext)
-			throws CaNanoLabException {
+			throws BaseException {
 		Map<String, String> lookup = getClassNameToDisplayNameLookup(appContext);
 		if (lookup.get(className) != null) {
 			return lookup.get(className);
@@ -173,12 +173,12 @@ public class InitSetup {
 	 * @param lookupName
 	 * @param lookupAttribute
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public SortedSet<String> getServletContextDefaultLookupTypes(
 			ServletContext appContext, String contextAttribute,
 			String lookupName, String lookupAttribute)
-			throws CaNanoLabException {
+			throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(appContext);
 		SortedSet<String> types = defaultLookupTable.get(lookupName).get(
 				lookupAttribute);
@@ -197,13 +197,13 @@ public class InitSetup {
 	 * @param otherTypeAttribute
 	 * @aparam updateSession
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public SortedSet<String> getDefaultAndOtherLookupTypes(
 			HttpServletRequest request, String sessionAttribute,
 			String lookupName, String lookupAttribute,
 			String otherTypeAttribute, boolean updateSession)
-			throws CaNanoLabException {
+			throws BaseException {
 		SortedSet<String> types = null;
 		if (updateSession) {
 			types = LookupService.getDefaultAndOtherLookupTypes(lookupName,
@@ -276,13 +276,13 @@ public class InitSetup {
 	}
 
 	public String getFileUriFromFormFile(FormFile file, String folderType,
-			String particleName, String submitType) {
+			String sampleName, String submitType) {
 		if (file != null && file.getFileName().length() > 0) {
 			String prefix = folderType;
 
-			if (particleName != null && submitType != null
+			if (sampleName != null && submitType != null
 					&& folderType.equals(Constants.FOLDER_PARTICLE)) {
-				prefix += "/" + particleName + "/";
+				prefix += "/" + sampleName + "/";
 				prefix += StringUtils
 						.getOneWordLowerCaseFirstLetter(submitType);
 			}
@@ -298,7 +298,7 @@ public class InitSetup {
 	// check whether the value is already stored in context
 	private Boolean isLookupInContext(HttpServletRequest request,
 			String lookupName, String attribute, String otherAttribute,
-			String value) throws CaNanoLabException {
+			String value) throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> defaultLookupTable = getDefaultLookupTable(request
 				.getSession().getServletContext());
 		SortedSet<String> defaultValues = null;
@@ -322,7 +322,7 @@ public class InitSetup {
 
 	public void persistLookup(HttpServletRequest request, String lookupName,
 			String attribute, String otherAttribute, String value)
-			throws CaNanoLabException {
+			throws BaseException {
 		if (value == null || value.length() == 0) {
 			return;
 		}

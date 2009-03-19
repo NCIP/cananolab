@@ -6,11 +6,11 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
@@ -29,13 +29,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class InitCompositionSetup {
 
-	private NanoparticleCompositionService compService = new NanoparticleCompositionServiceLocalImpl();
+	private CompositionService compService = new CompositionServiceLocalImpl();
 
 	public static InitCompositionSetup getInstance() {
 		return new InitCompositionSetup();
 	}
 
-	public void setNanoparticleEntityDropdowns(HttpServletRequest request)
+	public void setNanomaterialEntityDropdowns(HttpServletRequest request)
 			throws Exception {
 		getEmulsionComposingElementTypes(request);
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
@@ -47,10 +47,10 @@ public class InitCompositionSetup {
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
-						"defaultNanoparticleEntityTypes",
-						"nanoparticleEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
-						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
+						"defaultNanomaterialEntityTypes",
+						"nanomaterialEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
 						true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"biopolymerTypes", "Biopolymer", "type", "otherType", true);
@@ -81,8 +81,8 @@ public class InitCompositionSetup {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
-	public void persistNanoparticleEntityDropdowns(HttpServletRequest request,
-			NanoparticleEntityBean entityBean) throws Exception {
+	public void persistNanomaterialEntityDropdowns(HttpServletRequest request,
+			NanomaterialEntityBean entityBean) throws Exception {
 		InitSetup.getInstance().persistLookup(request, "Biopolymer", "type",
 				"otherType", entityBean.getBiopolymer().getType());
 		InitSetup.getInstance().persistLookup(request, "Fullerene",
@@ -126,7 +126,7 @@ public class InitCompositionSetup {
 					"otherType", fileBean.getDomainFile().getType());
 		}
 
-		setNanoparticleEntityDropdowns(request);
+		setNanomaterialEntityDropdowns(request);
 	}
 
 	public void setFunctionalizingEntityDropdowns(HttpServletRequest request)
@@ -214,7 +214,7 @@ public class InitCompositionSetup {
 			boolean hasFunctionalizingEntity) throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
 		List<String> compositionTypes = new ArrayList<String>();
-		compositionTypes.add("Nanoparticle Entity");
+		compositionTypes.add("Nanomaterial Entity");
 		if (hasFunctionalizingEntity) {
 			compositionTypes.add("Functionalizing Entity");
 		}
@@ -259,7 +259,7 @@ public class InitCompositionSetup {
 	}
 
 	public SortedSet<String> getEmulsionComposingElementTypes(
-			HttpServletRequest request) throws CaNanoLabException {
+			HttpServletRequest request) throws BaseException {
 		SortedSet<String> emulsionCETypes = LookupService
 				.getDefaultAndOtherLookupTypes("Emulsion",
 						"composingElementType", "otherComposingElementType");

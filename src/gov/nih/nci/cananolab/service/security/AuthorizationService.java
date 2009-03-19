@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.service.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -55,7 +55,7 @@ public class AuthorizationService {
 	private CustomizedApplicationService appService = null;
 
 	public AuthorizationService(String applicationName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			this.applicationName = applicationName;
 			this.authenticationManager = SecurityServiceProvider
@@ -68,7 +68,7 @@ public class AuthorizationService {
 					.getApplicationService();
 		} catch (Exception e) {
 			logger.error(e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -96,10 +96,10 @@ public class AuthorizationService {
 	 * @param user
 	 * @param groupName
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public boolean isUserInGroup(UserBean user, String groupName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			Set groups = this.userManager.getGroups(user.getUserId());
 			for (Object obj : groups) {
@@ -112,7 +112,7 @@ public class AuthorizationService {
 			return false;
 		} catch (Exception e) {
 			logger.error("Error in checking if user is in the group.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -124,11 +124,11 @@ public class AuthorizationService {
 	 * @param protectionElementObjectId
 	 * @param privilege
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public boolean checkPermission(UserBean user,
 			String protectionElementObjectId, String privilege)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			boolean status = false;
 			if (user == null) {
@@ -139,12 +139,12 @@ public class AuthorizationService {
 			return status;
 		} catch (Exception e) {
 			logger.error("Error in checking user permission.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	public boolean checkCreatePermission(UserBean user,
-			String protectionElementObjectId) throws CaNanoLabSecurityException {
+			String protectionElementObjectId) throws SecurityException {
 		return checkPermission(user, protectionElementObjectId,
 				Constants.CSM_CREATE_PRIVILEGE);
 	}
@@ -156,10 +156,10 @@ public class AuthorizationService {
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public boolean checkExecutePermission(UserBean user,
-			String protectionElementObjectId) throws CaNanoLabSecurityException {
+			String protectionElementObjectId) throws SecurityException {
 		return checkPermission(user, protectionElementObjectId,
 				Constants.CSM_EXECUTE_PRIVILEGE);
 	}
@@ -171,7 +171,7 @@ public class AuthorizationService {
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws Exception {
@@ -179,7 +179,7 @@ public class AuthorizationService {
 				Constants.CSM_READ_PRIVILEGE);
 	}
 
-	public List<String> getPublicDataSlow() throws CaNanoLabSecurityException {
+	public List<String> getPublicDataSlow() throws SecurityException {
 		List<String> publicData = new ArrayList<String>();
 		try {
 			Group publicGroup = getGroup(Constants.CSM_PUBLIC_GROUP);
@@ -205,7 +205,7 @@ public class AuthorizationService {
 			}
 
 		} catch (Exception e) {
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -216,10 +216,10 @@ public class AuthorizationService {
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public boolean checkDeletePermission(UserBean user,
-			String protectionElementObjectId) throws CaNanoLabSecurityException {
+			String protectionElementObjectId) throws SecurityException {
 		return checkPermission(user, protectionElementObjectId,
 				Constants.CSM_DELETE_PRIVILEGE);
 	}
@@ -228,9 +228,9 @@ public class AuthorizationService {
 	 * Get all user groups in the application
 	 * 
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
-	public List<String> getAllGroups() throws CaNanoLabSecurityException {
+	public List<String> getAllGroups() throws SecurityException {
 		try {
 			List<String> groups = new ArrayList<String>();
 			Group dummy = new Group();
@@ -244,11 +244,11 @@ public class AuthorizationService {
 			return groups;
 		} catch (Exception e) {
 			logger.error("Error in getting all groups.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
-	public List<Group> getGroups() throws CaNanoLabSecurityException {
+	public List<Group> getGroups() throws SecurityException {
 		try {
 			List<Group> groups = new ArrayList<Group>();
 			Group dummy = new Group();
@@ -262,7 +262,7 @@ public class AuthorizationService {
 			return groups;
 		} catch (Exception e) {
 			logger.error("Error in getting all groups.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -271,10 +271,10 @@ public class AuthorizationService {
 	 * groups starting with APP_OWNER).
 	 * 
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public SortedSet<String> getAllVisibilityGroups()
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		List<String> groups = getAllGroups();
 		// filter out the ones starting with APP_OWNER
 		SortedSet<String> filteredGroups = new TreeSet<String>();
@@ -328,10 +328,10 @@ public class AuthorizationService {
 	 * Create a user group in the CSM database if it's not already created
 	 * 
 	 * @param groupName
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public void createAGroup(String groupName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			Group doGroup = getGroup(groupName);
 			if (doGroup == null) {
@@ -341,7 +341,7 @@ public class AuthorizationService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in creating a group.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -369,10 +369,10 @@ public class AuthorizationService {
 	 * 
 	 * @param objectId
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public ProtectionElement getProtectionElement(String objectId)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			ProtectionElement pe = new ProtectionElement();
 			pe.setObjectId(objectId);
@@ -391,7 +391,7 @@ public class AuthorizationService {
 			return doPE;
 		} catch (Exception e) {
 			logger.error("Error in creating protection element", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 
 	}
@@ -401,10 +401,10 @@ public class AuthorizationService {
 	 * 
 	 * @param protectionGroupName
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public ProtectionGroup getProtectionGroup(String protectionGroupName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 
 		ProtectionGroup pg = new ProtectionGroup();
 		pg.setProtectionGroupName(protectionGroupName);
@@ -423,7 +423,7 @@ public class AuthorizationService {
 			return doPG;
 		} catch (Exception e) {
 			logger.error("Error in getting protection group.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -432,10 +432,10 @@ public class AuthorizationService {
 	 * 
 	 * @param pe
 	 * @param pg
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public void assignProtectionElementToProtectionGroup(ProtectionElement pe,
-			ProtectionGroup pg) throws CaNanoLabSecurityException {
+			ProtectionGroup pg) throws SecurityException {
 		try {
 			Set<ProtectionGroup> assignedPGs = new HashSet<ProtectionGroup>(
 					this.authorizationManager.getProtectionGroups(pe
@@ -460,7 +460,7 @@ public class AuthorizationService {
 					.error(
 							"Error in assigning protection element to protection group",
 							e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -471,10 +471,10 @@ public class AuthorizationService {
 	 * @param objectName
 	 * @param groupName
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public List<String> getExistingRoleIds(ProtectionGroup pg, Group group)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		List<String> roleIds = new ArrayList<String>();
 
 		String query = "select distinct role_id from csm_user_group_role_pg "
@@ -494,7 +494,7 @@ public class AuthorizationService {
 			logger
 					.error("Error in getting existing roles from CSM database",
 							e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 
 		return roleIds;
@@ -506,10 +506,10 @@ public class AuthorizationService {
 	 * @param objectName
 	 * @param groupName
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public List<String> getExistingRoleIdsSlow(ProtectionGroup pg, Group group)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		List<String> roleIds = new ArrayList<String>();
 		Set existingRoles = null;
 		try {
@@ -532,7 +532,7 @@ public class AuthorizationService {
 			return roleIds;
 		} catch (Exception e) {
 			logger.error("Error in getting role IDs", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
@@ -543,10 +543,10 @@ public class AuthorizationService {
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public void secureObject(String objectName, String groupName,
-			String roleName) throws CaNanoLabSecurityException {
+			String roleName) throws SecurityException {
 		try {
 			// create protection element
 			ProtectionElement pe = getProtectionElement(objectName);
@@ -582,12 +582,12 @@ public class AuthorizationService {
 					.toString(), new String[] { role.getId().toString() });
 		} catch (Exception e) {
 			logger.error("Error in securing objects", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	public List<String> getAccessibleGroups(String objectName,
-			String privilegeName) throws CaNanoLabSecurityException {
+			String privilegeName) throws SecurityException {
 		List<String> groupNames = new ArrayList<String>();
 		try {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
@@ -597,13 +597,13 @@ public class AuthorizationService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 		return groupNames;
 	}
 
 	public void removeExistingVisibleGroups(String objectName, String roleName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			List<Group> groups = getGroups();
 			ProtectionGroup pg = getProtectionGroup(objectName);
@@ -614,12 +614,12 @@ public class AuthorizationService {
 						.toString(), new String[] { role.getId().toString() });
 			}
 		} catch (Exception e) {
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	public void removePublicGroup(String objectName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			Group group = getGroup(Constants.CSM_PUBLIC_GROUP);
 			Role role = getRole(Constants.CSM_READ_ROLE);
@@ -628,12 +628,12 @@ public class AuthorizationService {
 					.getProtectionGroupId().toString(), group.getGroupId()
 					.toString(), new String[] { role.getId().toString() });
 		} catch (Exception e) {
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	public void assignVisibility(String dataToProtect, String[] visibleGroups, String owningGroup)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,
 					Constants.CSM_READ_ROLE);
@@ -662,12 +662,12 @@ public class AuthorizationService {
 			}
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	public void assignPublicVisibility(String dataToProtect)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			removeExistingVisibleGroups(dataToProtect,
 					Constants.CSM_READ_ROLE);
@@ -676,13 +676,13 @@ public class AuthorizationService {
 					Constants.CSM_READ_ROLE);
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	public void assignGroupToProtectionGroupWithRole(String groupName,
 			String protectionGroupName, String roleName)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			Role role = getRole(roleName);
 			ProtectionGroup pg = getProtectionGroup(protectionGroupName);
@@ -695,7 +695,7 @@ public class AuthorizationService {
 					.error(
 							"Error in assigning group to protection group with role",
 							e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 

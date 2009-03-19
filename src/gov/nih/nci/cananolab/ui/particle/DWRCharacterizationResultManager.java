@@ -9,8 +9,8 @@ import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.CharacterizationResultService;
+import gov.nih.nci.cananolab.service.particle.impl.CharacterizationResultServiceLocalImpl;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -27,7 +27,7 @@ import org.directwebremoting.WebContextFactory;
  */
 public class DWRCharacterizationResultManager {
 	long tempDataRowId = -1;
-	private NanoparticleCharacterizationResultService service = new NanoparticleCharacterizationResultServiceLocalImpl();
+	private CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 
 	public DataSetBean resetDataSet() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory

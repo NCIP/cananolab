@@ -1,25 +1,24 @@
 package gov.nih.nci.cananolab.ui.particle;
 
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationResultService;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationResultServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleCharacterizationServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.CharacterizationResultService;
+import gov.nih.nci.cananolab.service.particle.CharacterizationService;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.CharacterizationResultServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.CharacterizationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -134,11 +133,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 */
 	private void setupInputForm(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		String charType = request.getParameter("charType");
-		InitNanoparticleSetup.getInstance().setSharedDropdowns(request);
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
-				request, particleId);
+				request, sampleId);
 		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
 				request);
 		if (charType != null)
@@ -152,9 +151,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// request.getSession().setAttribute("characterizationDetailPage",
 		// detailPage);
 
-		// set up other particles with the same primary point of contact
-		InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-				particleId);
+		// set up other samples with the same primary point of contact
+		InitSampleSetup.getInstance().getOtherSampleNames(request,
+				sampleId);
 	}
 
 	/**
@@ -173,7 +172,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String charId = request.getParameter("charId");
 		String charClass = request.getParameter("charClassName");
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		Characterization chara = charService.findCharacterizationById(charId,
 				charClass);
 		CharacterizationBean charBean = new CharacterizationBean(chara);
@@ -192,6 +191,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.getInstance().getAssayTypesByCharName(request,
 						charBean.getCharacterizationName());
 		request.getSession().setAttribute("charNameAssays", assayEndpoints);
+		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
 		setupInputForm(request, theForm);
 
@@ -213,12 +213,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return includePage;
 	}
 
-	private void saveToOtherParticles(HttpServletRequest request,
-			Characterization copy, UserBean user, String particleSampleName,
-			NanoparticleSample[] otherSamples) throws Exception {
+	private void saveToOtherSamples(HttpServletRequest request,
+			Characterization copy, UserBean user, String sampleName,
+			Sample[] otherSamples) throws Exception {
 		FileService fileService = new FileServiceLocalImpl();
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
-		for (NanoparticleSample sample : otherSamples) {
+		CharacterizationService charService = new CharacterizationServiceLocalImpl();
+		for (Sample sample : otherSamples) {
 			charService.saveCharacterization(sample, copy);
 			// update copied filename and save content and set visibility
 			// TODO
@@ -227,7 +227,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			// .getDerivedBioAssayDataCollection()) {
 			// if (bioassay.getFile() != null) {
 			// fileService.saveCopiedFileAndSetVisibility(bioassay
-			// .getFile(), user, particleSampleName, sample
+			// .getFile(), user, sampleName, sample
 			// .getName());
 			// }
 			// }
@@ -239,12 +239,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		// setup domainFile for fileBeans
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
 						.getInstance().getDisplayName(charBean.getClassName(),
@@ -334,20 +334,20 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		// setup domainFile for fileBeans
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		setupDomainChar(request, theForm, charBean);
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.saveCharacterization(
-				particleBean.getDomainParticleSample(), charBean
+				sampleBean.getDomain(), charBean
 						.getDomainChar());
 
 		// set public visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
-				particleBean.getDomainParticleSample().getName(),
+				sampleBean.getDomain().getName(),
 				Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
 				&& accessibleGroups
@@ -367,31 +367,31 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// }
 		saveFilesToFileSystem(files);
 
-		// save to other particles
-		NanoparticleSample[] otherSamples = prepareCopy(request, theForm);
+		// save to other samples
+		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			Boolean copyData = (Boolean) theForm.get("copyData");
 			Characterization copy = charBean.getDomainCopy(copyData);
-			saveToOtherParticles(request, copy, user, particleBean
-					.getDomainParticleSample().getName(), otherSamples);
+			saveToOtherSamples(request, copy, user, sampleBean
+					.getDomain().getName(), otherSamples);
 		}
-		particleBean = setupParticle(theForm, request, "local");
+		sampleBean = setupSample(theForm, request, "local");
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean,
 			String createdBy) throws Exception {
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
-				+ particleBean.getDomainParticleSample().getName()
+				+ sampleBean.getDomain().getName()
 				+ "/"
 				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
 						.getInstance().getDisplayName(charBean.getClassName(),
 								request.getSession().getServletContext()));
 		charBean.setupDomainChar(createdBy, internalUriPath);
-		NanoparticleCharacterizationService charService = new NanoparticleCharacterizationServiceLocalImpl();
+		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.deleteCharacterization(charBean.getDomainChar());
 	}
 
@@ -409,11 +409,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
 		request.setAttribute("updateDataTree", "true");
-		String particleId = theForm.getString("particleId");
-		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-		ParticleBean particleBean = sampleService
-				.findNanoparticleSampleById(particleId);
-		InitNanoparticleSetup.getInstance().getDataTree(particleBean, request);
+		String sampleId = theForm.getString("sampleId");
+		SampleService sampleService = new SampleServiceLocalImpl();
+		SampleBean sampleBean = sampleService
+				.findSampleById(sampleId);
+		InitSampleSetup.getInstance().getDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -473,19 +473,20 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		String location = request.getParameter("location");
-		NanoparticleCharacterizationService service = null;
+		CharacterizationService service = null;
 		if (location.equals("local")) {
-			service = new NanoparticleCharacterizationServiceLocalImpl();
+			service = new CharacterizationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleCharacterizationServiceRemoteImpl(
-					serviceUrl);
+			//TODO model change
+//			service = new CharacterizationServiceRemoteImpl(
+//					serviceUrl);
 		}
 		List<CharacterizationBean> charBeans = service
-				.findCharsByParticleSampleId(particleId);
+				.findCharsBySampleId(sampleId);
 		// set characterization types
 		for (CharacterizationBean charBean : charBeans) {
 			InitCharacterizationSetup.getInstance().setCharacterizationType(
@@ -502,10 +503,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String particleId = request.getParameter("particleId");
-		NanoparticleCharacterizationService service = new NanoparticleCharacterizationServiceLocalImpl();
+		String sampleId = request.getParameter("sampleId");
+		CharacterizationService service = new CharacterizationServiceLocalImpl();
 		List<CharacterizationBean> charBeans = service
-				.findCharsByParticleSampleId(particleId);
+				.findCharsBySampleId(sampleId);
 		// set characterization types
 		for (CharacterizationBean charBean : charBeans) {
 			InitCharacterizationSetup.getInstance().setCharacterizationType(
@@ -554,7 +555,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		dataSetBean.setupDomain(user.getLoginName());
-		NanoparticleCharacterizationResultService service = new NanoparticleCharacterizationResultServiceLocalImpl();
+		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 		service.saveDataSet(dataSetBean.getDomain());
 		achar.addDataSet(dataSetBean);
 		InitCharacterizationSetup.getInstance()
@@ -571,7 +572,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		DataSetBean dataSetBean = achar.getTheDataSet();
-		NanoparticleCharacterizationResultService service = new NanoparticleCharacterizationResultServiceLocalImpl();
+		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 		service.deleteDataSet(dataSetBean.getDomain());
 		achar.removeDataSet(dataSetBean);
 		InitCharacterizationSetup.getInstance()

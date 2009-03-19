@@ -7,7 +7,7 @@ package gov.nih.nci.cananolab.exception;
  * @author pansu
  * 
  */
-public class NoAccessException extends CaNanoLabException {
+public class NoAccessException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 

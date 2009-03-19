@@ -11,12 +11,12 @@ import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -95,13 +95,13 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				primaryPointOfContact.getDomain(), otherPointOfContactCollection);
 
 		/**
-		 * Prepare for nanoparticle sample form
+		 * Prepare for sample form
 		 * 
 		 */
-		ParticleBean particleSampleBean = (ParticleBean) request.getSession()
-				.getAttribute("pocParticle");
-		particleSampleBean.setPocBean(primaryPointOfContact);
-		particleSampleBean.getDomainParticleSample().setOtherPointOfContactCollection(otherPointOfContactCollection);
+		SampleBean sampleBean = (SampleBean) request.getSession()
+				.getAttribute("pocSample");
+		sampleBean.setPocBean(primaryPointOfContact);
+		sampleBean.getDomain().setOtherPointOfContactCollection(otherPointOfContactCollection);
 		
 		//remove blue warning message
 //		ActionMessages msgs = new ActionMessages();
@@ -110,16 +110,16 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 //		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 //		saveMessages(request, msgs);
 		
-		String particleId = getParticleId(request);
-		if (particleId != null) {
-			NanoparticleSampleServiceLocalImpl particleService = 
-				new NanoparticleSampleServiceLocalImpl();
-			particleService.saveOtherPOCs(particleSampleBean.getDomainParticleSample());
-			request.setAttribute("particleId", particleId);
-			return mapping.findForward("updateParticle");
+		String sampleId = getSampleId(request);
+		if (sampleId != null) {
+			SampleServiceLocalImpl particleService = 
+				new SampleServiceLocalImpl();
+			particleService.saveOtherPOCs(sampleBean.getDomain());
+			request.setAttribute("sampleId", sampleId);
+			return mapping.findForward("updateSample");
 		} else {
 			request.getSession().setAttribute("submitPOCProcessing", "true");
-			return mapping.findForward("submitParticle");
+			return mapping.findForward("submitSample");
 		}
 	}
 
@@ -130,12 +130,12 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String particleId = getParticleId(request);
+		String sampleId = getSampleId(request);
 		session.removeAttribute("submitPointOfContactForm");
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 		ActionForward forward = mapping.getInputForward();
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
+		if (sampleId != null && !sampleId.equals("null")
+				&& sampleId.trim().length() > 0) {
 			forward = mapping.findForward("submitPointOfContact");
 		}
 		return forward;
@@ -151,14 +151,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PointOfContactService pointOfContactService = 
 			new PointOfContactServiceLocalImpl();		
-		String particleId = getParticleId(request);
+		String sampleId = getSampleId(request);
 		String pocId = getPOCId(request);
 		PointOfContactBean primaryPointOfContact = pointOfContactService
 				.findPointOfContactById(pocId);
 		List<PointOfContactBean> otherPointOfContactCollection = null;
-		if (particleId != null && particleId.trim().length() > 0) {
+		if (sampleId != null && sampleId.trim().length() > 0) {
 			otherPointOfContactCollection = pointOfContactService
-					.findOtherPointOfContactCollection(particleId);
+					.findOtherPointOfContactCollection(sampleId);
 		}
 		setVisibility(user, primaryPointOfContact, true);
 		if (otherPointOfContactCollection != null) {
@@ -174,46 +174,46 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		theForm.set("otherPoc", otherPointOfContactsBean);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
 		
-		ParticleBean sessionParticleSampleBean = (ParticleBean) request
-		.getSession().getAttribute("pocParticle");
-		String sessionParticleId = null;
-		if (sessionParticleSampleBean.getDomainParticleSample().getId() != null) {
-			sessionParticleId = sessionParticleSampleBean
-					.getDomainParticleSample().getId().toString();
+		SampleBean sessionSampleSampleBean = (SampleBean) request
+		.getSession().getAttribute("pocSample");
+		String sessionSampleId = null;
+		if (sessionSampleSampleBean.getDomain().getId() != null) {
+			sessionSampleId = sessionSampleSampleBean
+					.getDomain().getId().toString();
 		}
-		if (particleId != null
-				&& !particleId.equals(sessionParticleId)) {
-			request.getSession().removeAttribute("pocParticle");
+		if (sampleId != null
+				&& !sampleId.equals(sessionSampleId)) {
+			request.getSession().removeAttribute("pocSample");
 		}
 		ActionForward forward = null;
-		if(particleId == null || particleId.trim().length() == 0) {
+		if(sampleId == null || sampleId.trim().length() == 0) {
 			forward = mapping.findForward("submitPointOfContact");
 		} else {
-			forward = mapping.findForward("particleSubmitPointOfContact");
+			forward = mapping.findForward("sampleSubmitPointOfContact");
 		}
 		return forward;		
 	}
 
-	private String getParticleId(HttpServletRequest request) {
-		String particleId = null;
-		if (request.getSession().getAttribute("pocParticle") != null) {
-			ParticleBean particleSampleBean = (ParticleBean) request
-					.getSession().getAttribute("pocParticle");
-			particleId = (particleSampleBean.getDomainParticleSample().getId() == null) ? null
-					: particleSampleBean.getDomainParticleSample().getId()
+	private String getSampleId(HttpServletRequest request) {
+		String sampleId = null;
+		if (request.getSession().getAttribute("pocSample") != null) {
+			SampleBean sampleBean = (SampleBean) request
+					.getSession().getAttribute("pocSample");
+			sampleId = (sampleBean.getDomain().getId() == null) ? null
+					: sampleBean.getDomain().getId()
 							.toString();
 		} else {
-			particleId = request.getParameter("particleId");
+			sampleId = request.getParameter("sampleId");
 		}
-		return particleId;
+		return sampleId;
 	}
 
 	private String getPOCId(HttpServletRequest request) {
 		String pocId = null;
-		if (request.getSession().getAttribute("pocParticle") != null) {
-			ParticleBean particleSampleBean = (ParticleBean) request
-					.getSession().getAttribute("pocParticle");
-			pocId = particleSampleBean.getPocBean().getDomain().getId()
+		if (request.getSession().getAttribute("pocSample") != null) {
+			SampleBean sampleBean = (SampleBean) request
+					.getSession().getAttribute("pocSample");
+			pocId = sampleBean.getPocBean().getDomain().getId()
 					.toString();
 		} else {
 			pocId = request.getParameter("pocId");
@@ -235,14 +235,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			pointOfContactService = new PointOfContactServiceRemoteImpl(
 					serviceUrl);
 		}
-		String particleId = getParticleId(request);
+		String sampleId = getSampleId(request);
 		String pocId = getPOCId(request);
 		PointOfContactBean primaryPointOfContact = pointOfContactService
 				.findPointOfContactById(pocId);
 		List<PointOfContactBean> otherPointOfContactCollection = null;
-		if (particleId != null && particleId.trim().length() > 0) {
+		if (sampleId != null && sampleId.trim().length() > 0) {
 			otherPointOfContactCollection = pointOfContactService
-					.findOtherPointOfContactCollection(particleId);
+					.findOtherPointOfContactCollection(sampleId);
 		}
 		setVisibility(user, primaryPointOfContact, false);
 		if (otherPointOfContactCollection != null) {
@@ -259,15 +259,15 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		String submitType = request.getParameter("submitType");
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+				+ "?page=0&dispatch=printDetailView&sampleId=" + sampleId
 				+ "&submitType=" + submitType + "&location=" + location;
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);		
 		ActionForward forward = null;
-		if(particleId == null || particleId.length() == 0) {
+		if(sampleId == null || sampleId.length() == 0) {
 			forward = mapping.findForward("detailView");
 		} else {
-			forward = mapping.findForward("particlePOCDetailView");
+			forward = mapping.findForward("samplePOCDetailView");
 		}
 		return forward;
 	}
@@ -344,9 +344,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		otherPocsBean.setPointOfContact(pocIndex, pocBean);
 		theForm.set("otherPoc", otherPocsBean);		
 		ActionForward forward = mapping.getInputForward();
-		String particleId = getParticleId(request);
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
+		String sampleId = getSampleId(request);
+		if (sampleId != null && !sampleId.equals("null")
+				&& sampleId.trim().length() > 0) {
 			forward = mapping.findForward("submitPointOfContact");
 		}
 		persisOtherTypes(theForm, request);
@@ -375,9 +375,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		entity.removePointOfContact(ind);
 				
 		ActionForward forward = mapping.getInputForward();
-		String particleId = getParticleId(request);
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
+		String sampleId = getSampleId(request);
+		if (sampleId != null && !sampleId.equals("null")
+				&& sampleId.trim().length() > 0) {
 			forward = mapping.findForward("submitPointOfContact");
 		}	
 		persisOtherTypes(theForm, request);
@@ -408,9 +408,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			theForm.set("otherPoc", otherPocsBean);
 		}
 		ActionForward forward = mapping.getInputForward();
-		String particleId = getParticleId(request);
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
+		String sampleId = getSampleId(request);
+		if (sampleId != null && !sampleId.equals("null")
+				&& sampleId.trim().length() > 0) {
 			forward = mapping.findForward("submitPointOfContact");
 		}
 		persisOtherTypes(theForm, request);
@@ -421,13 +421,13 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	public ActionForward cancel(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String particleId = getParticleId(request);
-		request.getSession().removeAttribute("pocParticle");
-		if (particleId != null) {
-			request.setAttribute("particleId", particleId);
-			return mapping.findForward("updateParticle");
+		String sampleId = getSampleId(request);
+		request.getSession().removeAttribute("pocSample");
+		if (sampleId != null) {
+			request.setAttribute("sampleId", sampleId);
+			return mapping.findForward("updateSample");
 		} else {
-			return mapping.findForward("submitParticle");
+			return mapping.findForward("submitSample");
 		}
 	}
 	

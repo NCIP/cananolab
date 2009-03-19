@@ -24,7 +24,7 @@
 			column="design_method_description" />
 		<property name="assayType" type="string" column="assay_type" />
 		<!-- Associations mapping for the Characterization class -->
-		<many-to-one name="nanoparticleSample"
+		<many-to-one name="sample"
 			class="gov.nih.nci.cananolab.domain.particle.Sample"
 			column="sample_pk_id" lazy="proxy" />
 		<set name="fileCollection" table="characterization_file"

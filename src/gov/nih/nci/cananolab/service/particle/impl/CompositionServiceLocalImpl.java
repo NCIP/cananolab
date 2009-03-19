@@ -6,8 +6,8 @@ import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -15,13 +15,13 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
-import gov.nih.nci.cananolab.exception.ParticleCompositionException;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCompositionService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCompositionServiceHelper;
+import gov.nih.nci.cananolab.service.particle.CompositionService;
+import gov.nih.nci.cananolab.service.particle.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -38,50 +38,50 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
 /**
- * Local implementation of NanoparticleCompositionService.
+ * Local implementation of CompositionService.
  *
  * @author pansu
  *
  */
-public class NanoparticleCompositionServiceLocalImpl implements
-		NanoparticleCompositionService {
+public class CompositionServiceLocalImpl implements
+		CompositionService {
 	private static Logger logger = Logger
-			.getLogger(NanoparticleCompositionServiceLocalImpl.class);
-	private NanoparticleCompositionServiceHelper helper = new NanoparticleCompositionServiceHelper();
+			.getLogger(CompositionServiceLocalImpl.class);
+	private CompositionServiceHelper helper = new CompositionServiceHelper();
 
-	public NanoparticleCompositionServiceLocalImpl() {
+	public CompositionServiceLocalImpl() {
 	}
 
-	public void saveNanoparticleEntity(NanoparticleSample particleSample,
-			NanoparticleEntity entity) throws ParticleCompositionException {
+	public void saveNanomaterialEntity(Sample particleSample,
+			NanomaterialEntity entity) throws CompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			if (entity.getId() != null) {
 				try {
-					NanoparticleEntity dbEntity = (NanoparticleEntity) appService
-							.load(NanoparticleEntity.class, entity.getId());
+					NanomaterialEntity dbEntity = (NanomaterialEntity) appService
+							.load(NanomaterialEntity.class, entity.getId());
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ParticleCompositionException(err, e);
+					throw new CompositionException(err, e);
 				}
 			}
 			boolean newSampleComposition = false;
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
-				particleSample.getSampleComposition().setNanoparticleSample(
+				particleSample.getSampleComposition().setSample(
 						particleSample);
 				particleSample.getSampleComposition()
-						.setNanoparticleEntityCollection(
-								new HashSet<NanoparticleEntity>());
+						.setNanomaterialEntityCollection(
+								new HashSet<NanomaterialEntity>());
 				newSampleComposition = true;
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
 			particleSample.getSampleComposition()
-					.getNanoparticleEntityCollection().add(entity);
+					.getNanomaterialEntityCollection().add(entity);
 
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = entity.getFileCollection();
@@ -92,36 +92,36 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			}
 			appService.saveOrUpdate(entity);
 		} catch (Exception e) {
-			String err = "Error in saving a nanoparticle entity.";
+			String err = "Error in saving a nanomaterial entity.";
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public NanoparticleEntityBean findNanoparticleEntityById(String entityId)
-			throws ParticleCompositionException {
-		NanoparticleEntityBean entityBean = null;
+	public NanomaterialEntityBean findNanomaterialEntityById(String entityId)
+			throws CompositionException {
+		NanomaterialEntityBean entityBean = null;
 		try {
-			NanoparticleEntity entity = helper
-					.findNanoparticleEntityById(entityId);
+			NanomaterialEntity entity = helper
+					.findNanomaterialEntityById(entityId);
 			if (entity != null)
-				entityBean = new NanoparticleEntityBean(entity);
+				entityBean = new NanomaterialEntityBean(entity);
 			return entityBean;
 		} catch (Exception e) {
-			String err = "Problem finding the nanoparticle entity by id: "
+			String err = "Problem finding the nanomaterial entity by id: "
 					+ entityId;
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public NanoparticleEntityBean findNanoparticleEntityById(String entityId,
-			String entityClassName) throws ParticleCompositionException {
-		return findNanoparticleEntityById(entityId);
+	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
+			String entityClassName) throws CompositionException {
+		return findNanomaterialEntityById(entityId);
 	}
 
-	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
-			FunctionalizingEntity entity) throws ParticleCompositionException {
+	public void saveFunctionalizingEntity(Sample particleSample,
+			FunctionalizingEntity entity) throws CompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -132,13 +132,13 @@ public class NanoparticleCompositionServiceLocalImpl implements
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ParticleCompositionException(err, e);
+					throw new CompositionException(err, e);
 				}
 			}
 			boolean newSampleComposition = false;
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
-				particleSample.getSampleComposition().setNanoparticleSample(
+				particleSample.getSampleComposition().setSample(
 						particleSample);
 				particleSample.getSampleComposition()
 						.setFunctionalizingEntityCollection(
@@ -160,12 +160,12 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		} catch (Exception e) {
 			String err = "Problem saving the functionalizing entity.";
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public void saveChemicalAssociation(NanoparticleSample particleSample,
-			ChemicalAssociation assoc) throws ParticleCompositionException {
+	public void saveChemicalAssociation(Sample particleSample,
+			ChemicalAssociation assoc) throws CompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -176,7 +176,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 				} catch (Exception e) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ParticleCompositionException(err, e);
+					throw new CompositionException(err, e);
 				}
 			}
 			SampleComposition composition = particleSample
@@ -202,12 +202,12 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public void saveCompositionFile(NanoparticleSample particleSample,
-			File file, byte[] fileData) throws ParticleCompositionException {
+	public void saveCompositionFile(Sample particleSample,
+			File file, byte[] fileData) throws CompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(file);
@@ -217,7 +217,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
-				particleSample.getSampleComposition().setNanoparticleSample(
+				particleSample.getSampleComposition().setSample(
 						particleSample);
 				particleSample.getSampleComposition().setFileCollection(
 						new HashSet<File>());
@@ -236,12 +236,12 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
-			String entityId) throws ParticleCompositionException {
+			String entityId) throws CompositionException {
 		FunctionalizingEntityBean entityBean = null;
 		try {
 
@@ -255,18 +255,18 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			String err = "Problem finding the functionalizing entity by id: "
 					+ entityId;
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
 			String entityId, String entityClassName)
-			throws ParticleCompositionException {
+			throws CompositionException {
 		return findFunctionalizingEntityById(entityId);
 	}
 
 	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
-			throws ParticleCompositionException {
+			throws CompositionException {
 		ChemicalAssociationBean assocBean = null;
 		try {
 			ChemicalAssociation assoc = helper
@@ -278,33 +278,33 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			String err = "Problem finding the chemical association by id: "
 					+ assocId;
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public ChemicalAssociationBean findChemicalAssociationById(
-			String particleId, String assocId, String assocClassName)
-			throws ParticleCompositionException {
+			String sampleId, String assocId, String assocClassName)
+			throws CompositionException {
 		return findChemicalAssociationById(assocId);
 	}
 
-	public void retrieveVisibility(NanoparticleEntityBean entity, UserBean user)
-			throws ParticleCompositionException {
+	public void retrieveVisibility(NanomaterialEntityBean entity, UserBean user)
+			throws CompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean file : entity.getFiles()) {
 				fileService.retrieveVisibility(file, user);
 			}
 		} catch (Exception e) {
-			String err = "Error setting visiblity for nanoparticle entity "
+			String err = "Error setting visiblity for nanomaterial entity "
 					+ entity.getType();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public void retrieveVisibility(FunctionalizingEntityBean entity,
-			UserBean user) throws ParticleCompositionException {
+			UserBean user) throws CompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean file : entity.getFiles()) {
@@ -314,12 +314,12 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			String err = "Error setting visiblity for functionalizing entity "
 					+ entity.getType();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public void retrieveVisibility(ChemicalAssociationBean assoc, UserBean user)
-			throws ParticleCompositionException {
+			throws CompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			for (FileBean file : assoc.getFiles()) {
@@ -329,28 +329,28 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			String err = "Error setting visiblity for chemical association "
 					+ assoc.getType();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public void deleteNanoparticleEntity(NanoparticleEntity entity)
-			throws ParticleCompositionException {
+	public void deleteNanomaterialEntity(NanomaterialEntity entity)
+			throws CompositionException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			removeNanoparticleEntityPublicVisibility(authService, entity);
+			removeNanomaterialEntityPublicVisibility(authService, entity);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(entity);
 		} catch (Exception e) {
-			String err = "Error deleting nanoparticle entity " + entity.getId();
+			String err = "Error deleting nanomaterial entity " + entity.getId();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity)
-			throws ParticleCompositionException {
+			throws CompositionException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
@@ -362,12 +362,12 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			String err = "Error deleting functionalizing entity "
 					+ entity.getId();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public void deleteChemicalAssociation(ChemicalAssociation assoc)
-			throws ParticleCompositionException {
+			throws CompositionException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
@@ -378,12 +378,12 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		} catch (Exception e) {
 			String err = "Error deleting chemical association " + assoc.getId();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public void deleteCompositionFile(NanoparticleSample particleSample,
-			File file) throws ParticleCompositionException {
+	public void deleteCompositionFile(Sample particleSample,
+			File file) throws CompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -393,14 +393,14 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		} catch (Exception e) {
 			String err = "Error deleting composition file " + file.getUri();
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	// check if any composing elements of the nanoparticle entity is invovled in
+	// check if any composing elements of the nanomaterial entity is invovled in
 	// the chemical association
 	public boolean checkChemicalAssociationBeforeDelete(
-			NanoparticleEntityBean entityBean) {
+			NanomaterialEntityBean entityBean) {
 		// need to delete chemical associations first if associated elements
 		// are composing elements
 		Collection<ChemicalAssociation> assocSet = entityBean.getDomainEntity()
@@ -426,7 +426,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			ComposingElementBean ceBean) {
 		if (ceBean.getDomainComposingElement().getId() != null) {
 			Collection<ChemicalAssociation> assocSet = ceBean
-					.getDomainComposingElement().getNanoparticleEntity()
+					.getDomainComposingElement().getNanomaterialEntity()
 					.getSampleComposition().getChemicalAssociationCollection();
 			if (assocSet != null) {
 				for (ChemicalAssociation assoc : assocSet) {
@@ -463,29 +463,29 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		return true;
 	}
 
-	public CompositionBean findCompositionByParticleSampleId(String particleId)
-			throws ParticleCompositionException {
+	public CompositionBean findCompositionBySampleId(String sampleId)
+			throws CompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(SampleComposition.class);
-			crit.createAlias("nanoparticleSample", "sample");
-			crit.add(Property.forName("sample.id").eq(new Long(particleId)));
+			crit.createAlias("sample", "sample");
+			crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 			// fully load composition
-			crit.setFetchMode("nanoparticleEntityCollection", FetchMode.JOIN);
-			crit.setFetchMode("nanoparticleEntityCollection.fileCollection",
+			crit.setFetchMode("nanomaterialEntityCollection", FetchMode.JOIN);
+			crit.setFetchMode("nanomaterialEntityCollection.fileCollection",
 					FetchMode.JOIN);
 			crit
 					.setFetchMode(
-							"nanoparticleEntityCollection.fileCollection.keywordCollection",
+							"nanomaterialEntityCollection.fileCollection.keywordCollection",
 							FetchMode.JOIN);
 			crit.setFetchMode(
-					"nanoparticleEntityCollection.composingElementCollection",
+					"nanomaterialEntityCollection.composingElementCollection",
 					FetchMode.JOIN);
 			crit
 					.setFetchMode(
-							"nanoparticleEntityCollection.composingElementCollection.inherentFunctionCollection",
+							"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
 							FetchMode.JOIN);
 			crit
 					.setFetchMode("functionalizingEntityCollection",
@@ -524,17 +524,17 @@ public class NanoparticleCompositionServiceLocalImpl implements
 			}
 			return comp;
 		} catch (Exception e) {
-			throw new ParticleCompositionException(
-					"Error finding composition by particle ID: " + particleId);
+			throw new CompositionException(
+					"Error finding composition by sample ID: " + sampleId);
 		}
 	}
 
 	private void loadTargetsForTargetingFunction(SampleComposition composition)
 			throws Exception {
 		// load targetCollection
-		if (composition.getNanoparticleEntityCollection() != null) {
-			for (NanoparticleEntity entity : composition
-					.getNanoparticleEntityCollection()) {
+		if (composition.getNanomaterialEntityCollection() != null) {
+			for (NanomaterialEntity entity : composition
+					.getNanomaterialEntityCollection()) {
 				if (entity.getComposingElementCollection() != null) {
 					for (ComposingElement element : entity
 							.getComposingElementCollection()) {
@@ -570,7 +570,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void assignChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		if (chemicalAssociation != null) {
 			removeChemicalAssociationPublicVisibility(authService,
 					chemicalAssociation);
@@ -591,13 +591,13 @@ public class NanoparticleCompositionServiceLocalImpl implements
 
 	public void assignNanoparicleEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity)
-			throws CaNanoLabSecurityException {
-		if (nanoparticleEntity != null) {
-			authService.assignPublicVisibility(nanoparticleEntity.getId()
+			NanomaterialEntity nanomaterialEntity)
+			throws SecurityException {
+		if (nanomaterialEntity != null) {
+			authService.assignPublicVisibility(nanomaterialEntity.getId()
 					.toString());
-			// nanoparticleEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = nanoparticleEntity
+			// nanomaterialEntityCollection.composingElementCollection,
+			Collection<ComposingElement> composingElementCollection = nanomaterialEntity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
@@ -624,7 +624,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void assignFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
 			FunctionalizingEntity functionalizingEntity)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		if (functionalizingEntity != null) {
 			authService.assignPublicVisibility(functionalizingEntity.getId()
 					.toString());
@@ -643,16 +643,16 @@ public class NanoparticleCompositionServiceLocalImpl implements
 		}
 	}
 
-	public void removeNanoparticleEntityPublicVisibility(
+	public void removeNanomaterialEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity)
-			throws CaNanoLabSecurityException {
-		if (nanoparticleEntity != null) {
+			NanomaterialEntity nanomaterialEntity)
+			throws SecurityException {
+		if (nanomaterialEntity != null) {
 			authService
-					.removePublicGroup(nanoparticleEntity.getId().toString());
+					.removePublicGroup(nanomaterialEntity.getId().toString());
 
-			// nanoparticleEntityCollection.composingElementCollection,
-			Collection<ComposingElement> composingElementCollection = nanoparticleEntity
+			// nanomaterialEntityCollection.composingElementCollection,
+			Collection<ComposingElement> composingElementCollection = nanomaterialEntity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
@@ -679,7 +679,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void removeFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
 			FunctionalizingEntity functionalizingEntity)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		if (functionalizingEntity != null) {
 			authService.removePublicGroup(functionalizingEntity.getId()
 					.toString());
@@ -700,7 +700,7 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	public void removeChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		if (chemicalAssociation != null) {
 			authService.removePublicGroup(chemicalAssociation.getId()
 					.toString());
@@ -718,14 +718,14 @@ public class NanoparticleCompositionServiceLocalImpl implements
 	}
 
 	public void assignPublicVisibility(AuthorizationService authService,
-			SampleComposition composition) throws CaNanoLabSecurityException {
-		// sampleComposition.nanoparticleEntityCollection,
-		Collection<NanoparticleEntity> nanoparticleEntityCollection = composition
-				.getNanoparticleEntityCollection();
-		if (nanoparticleEntityCollection != null) {
-			for (NanoparticleEntity nanoparticleEntity : nanoparticleEntityCollection) {
+			SampleComposition composition) throws SecurityException {
+		// sampleComposition.nanomaterialEntityCollection,
+		Collection<NanomaterialEntity> nanomaterialEntityCollection = composition
+				.getNanomaterialEntityCollection();
+		if (nanomaterialEntityCollection != null) {
+			for (NanomaterialEntity nanomaterialEntity : nanomaterialEntityCollection) {
 				assignNanoparicleEntityPublicVisibility(authService,
-						nanoparticleEntity);
+						nanomaterialEntity);
 			}
 		}
 		// sampleComposition.functionalizingEntityCollection,

@@ -68,7 +68,7 @@ public class DWRSampleManager {
 		return new String[] { "" };
 	}
 
-	public String[] getNanoparticleEntityTypes(String searchLocations) {
+	public String[] getNanomaterialEntityTypes(String searchLocations) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
@@ -84,23 +84,23 @@ public class DWRSampleManager {
 						.getInstance()
 						.getReflectionDefaultAndOtherLookupTypes(
 								request,
-								"defaultNanoparticleEntityTypes",
-								"nanoparticleEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
-								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
+								"defaultNanomaterialEntityTypes",
+								"nanomaterialEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+								"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
 								true);
 			} else {
 				types = InitSetup
 						.getInstance()
 						.getServletContextDefaultTypesByReflection(appContext,
-								"defaultNanoparticleEntityTypes",
-								"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+								"defaultNanomaterialEntityTypes",
+								"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 			}
 
 			String[] eleArray = new String[types.size()];
 			return types.toArray(eleArray);
 		} catch (Exception e) {
-			logger.error("Problem setting nanoparticle entity types: \n", e);
+			logger.error("Problem setting nanomaterial entity types: \n", e);
 			e.printStackTrace();
 		}
 		return new String[] { "" };

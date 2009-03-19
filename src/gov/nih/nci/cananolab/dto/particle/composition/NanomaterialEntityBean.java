@@ -8,11 +8,11 @@ import gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer;
 import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
 import gov.nih.nci.cananolab.domain.nanomaterial.Fullerene;
 import gov.nih.nci.cananolab.domain.nanomaterial.Liposome;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.nanomaterial.Polymer;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the view bean for the NanoparticleEntity domain object
+ * Represents the view bean for the NanomaterialEntity domain object
  *
  * @author pansu
  *
  */
-public class NanoparticleEntityBean {
+public class NanomaterialEntityBean {
 	private String type;
 
 	private String description;
@@ -57,14 +57,14 @@ public class NanoparticleEntityBean {
 
 	private List<FileBean> files = new ArrayList<FileBean>();
 
-	private NanoparticleEntity domainEntity;
+	private NanomaterialEntity domainEntity;
 
-	public NanoparticleEntityBean() {
+	public NanomaterialEntityBean() {
 	}
 
-	public NanoparticleEntityBean(NanoparticleEntity nanoparticleEntity) {
-		description = nanoparticleEntity.getDescription();
-		domainEntity = nanoparticleEntity;
+	public NanomaterialEntityBean(NanomaterialEntity nanomaterialEntity) {
+		description = nanomaterialEntity.getDescription();
+		domainEntity = nanomaterialEntity;
 		if (domainEntity instanceof Biopolymer) {
 			biopolymer = (Biopolymer) domainEntity;
 		} else if (domainEntity instanceof Dendrimer) {
@@ -80,16 +80,16 @@ public class NanoparticleEntityBean {
 		} else if (domainEntity instanceof Fullerene) {
 			fullerene = (Fullerene) domainEntity;
 		}
-		className = ClassUtils.getShortClassName(nanoparticleEntity.getClass()
+		className = ClassUtils.getShortClassName(nanomaterialEntity.getClass()
 				.getName());
-		for (ComposingElement composingElement : nanoparticleEntity
+		for (ComposingElement composingElement : nanomaterialEntity
 				.getComposingElementCollection()) {
 			composingElements.add(new ComposingElementBean(composingElement));
 		}
 		Collections.sort(composingElements,
 				new Comparators.ComposingElementBeanDateComparator());
-		if (nanoparticleEntity.getFileCollection()!=null){
-			for (File file : nanoparticleEntity.getFileCollection()) {
+		if (nanomaterialEntity.getFileCollection()!=null){
+			for (File file : nanomaterialEntity.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
 		}
@@ -97,8 +97,8 @@ public class NanoparticleEntityBean {
 				new Comparators.FileBeanDateComparator());
 	}
 
-	public NanoparticleEntity getDomainCopy() {
-		NanoparticleEntity copy = (NanoparticleEntity) ClassUtils.deepCopy(this
+	public NanomaterialEntity getDomainCopy() {
+		NanomaterialEntity copy = (NanomaterialEntity) ClassUtils.deepCopy(this
 				.getDomainEntity());
 		// clear Ids, reset createdBy and createdDate, add prefix to
 		copy.setId(null);
@@ -204,7 +204,7 @@ public class NanoparticleEntityBean {
 		this.description = description;
 	}
 
-	public NanoparticleEntity getDomainEntity() {
+	public NanomaterialEntity getDomainEntity() {
 		return domainEntity;
 	}
 
@@ -213,15 +213,15 @@ public class NanoparticleEntityBean {
 		className = typeToClass.get(type.toLowerCase());
 		Class clazz = null;
 		if (className == null) {
-			clazz = OtherNanoparticleEntity.class;
+			clazz = OtherNanomaterialEntity.class;
 		} else {
 			clazz = ClassUtils.getFullClass(className);
 		}
 		if (domainEntity == null) {
-			domainEntity = (NanoparticleEntity) clazz.newInstance();
+			domainEntity = (NanomaterialEntity) clazz.newInstance();
 		}
-		if (domainEntity instanceof OtherNanoparticleEntity) {
-			((OtherNanoparticleEntity) domainEntity).setType(type);
+		if (domainEntity instanceof OtherNanomaterialEntity) {
+			((OtherNanomaterialEntity) domainEntity).setType(type);
 		} else if (domainEntity instanceof Biopolymer) {
 			domainEntity = biopolymer;
 		} else if (domainEntity instanceof Dendrimer) {
@@ -261,7 +261,7 @@ public class NanoparticleEntityBean {
 				domainComposingElement.setCreatedBy(createdBy);
 				domainComposingElement.setCreatedDate(new Date());
 			}
-			domainComposingElement.setNanoparticleEntity(domainEntity);
+			domainComposingElement.setNanomaterialEntity(domainEntity);
 			domainEntity.getComposingElementCollection().add(
 					domainComposingElement);
 			i++;
@@ -285,7 +285,7 @@ public class NanoparticleEntityBean {
 
 	public void removeComposingElement(int ind) {
 		ComposingElementBean elementToRemove = composingElements.get(ind);
-		elementToRemove.getDomainComposingElement().setNanoparticleEntity(null);
+		elementToRemove.getDomainComposingElement().setNanomaterialEntity(null);
 		// remove the one at the index
 		composingElements.remove(elementToRemove);
 	}
@@ -298,15 +298,15 @@ public class NanoparticleEntityBean {
 		files.remove(ind);
 	}
 
-	public NanoparticleEntityBean copy() throws Exception {
-		NanoparticleEntityBean copiedEntity = (NanoparticleEntityBean) ClassUtils
+	public NanomaterialEntityBean copy() throws Exception {
+		NanomaterialEntityBean copiedEntity = (NanomaterialEntityBean) ClassUtils
 				.deepCopy(this);
 		return copiedEntity;
 	}
 
 	public void updateType(Map<String, String> classToType) {
-		if (domainEntity instanceof OtherNanoparticleEntity) {
-			type = ((OtherNanoparticleEntity) domainEntity).getType();
+		if (domainEntity instanceof OtherNanomaterialEntity) {
+			type = ((OtherNanomaterialEntity) domainEntity).getType();
 		} else {
 			type = classToType.get(className);
 		}

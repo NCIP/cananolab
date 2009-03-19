@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.ui.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -19,13 +19,12 @@ import javax.servlet.http.HttpSession;
 public class InitSecuritySetup {
 	private static AuthorizationService authorizationService;
 
-	private InitSecuritySetup() throws CaNanoLabSecurityException {
-		authorizationService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
+	private InitSecuritySetup() throws SecurityException {
+		authorizationService = new AuthorizationService(Constants.CSM_APP_NAME);
 	}
 
 	public static InitSecuritySetup getInstance()
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return new InitSecuritySetup();
 	}
 
@@ -34,7 +33,7 @@ public class InitSecuritySetup {
 	}
 
 	public boolean canUserExecuteClass(HttpSession session, Class classObj)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		UserBean user = (UserBean) session.getAttribute("user");
 		// assume the part of the package name containing the function domain
 		// is the same as the protection element defined in CSM
@@ -44,7 +43,7 @@ public class InitSecuritySetup {
 	}
 
 	public boolean userHasCreatePrivilege(UserBean user,
-			String protectionElementObjectId) throws CaNanoLabSecurityException {
+			String protectionElementObjectId) throws SecurityException {
 		boolean status = false;
 		status = authorizationService.checkCreatePermission(user,
 				protectionElementObjectId);
@@ -52,7 +51,7 @@ public class InitSecuritySetup {
 	}
 
 	public boolean userHasDeletePrivilege(UserBean user,
-			String protectionElementObjectId) throws CaNanoLabSecurityException {
+			String protectionElementObjectId) throws SecurityException {
 		boolean status = false;
 		status = authorizationService.checkDeletePermission(user,
 				protectionElementObjectId);
@@ -60,7 +59,7 @@ public class InitSecuritySetup {
 	}
 
 	public SortedSet<String> getAllVisibilityGroups(HttpServletRequest request)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		SortedSet<String> groupNames = authorizationService
 				.getAllVisibilityGroups();
 		request.getSession().setAttribute("allVisibilityGroups", groupNames);
@@ -69,7 +68,7 @@ public class InitSecuritySetup {
 
 	public SortedSet<String> getAllVisibilityGroupsWithoutOrg(
 			HttpServletRequest request, String sampleOrg)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		SortedSet<String> groupNames = getAllVisibilityGroups(request);
 		if (sampleOrg != null)
 			groupNames.remove(sampleOrg);
@@ -79,16 +78,16 @@ public class InitSecuritySetup {
 	}
 
 	/**
-	 * Create default CSM groups for default visible groups and admin , and
+	 * Create default CSM groups for default visible groups, and
 	 * assign them with default protection groups and roles
 	 */
-	public void createDefaultCSMGroups() throws CaNanoLabSecurityException {
+	public void createDefaultCSMGroups() throws SecurityException {
 		// create default groups
 		for (String groupName : Constants.VISIBLE_GROUPS) {
 			authorizationService.createAGroup(groupName);
 		}
 
-		// assign PI group to role CURD on sample, protocol, nanopoarticle and
+		// assign PI group to role CURD on protocol, nanopoarticle and
 		// publication
 		authorizationService.assignGroupToProtectionGroupWithRole(
 				Constants.CSM_DATA_CURATOR, Constants.CSM_PG_PROTOCOL,

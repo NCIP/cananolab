@@ -3,16 +3,16 @@ package gov.nih.nci.cananolab.service.particle;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
-import gov.nih.nci.cananolab.exception.ParticleCompositionException;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
 /**
@@ -21,80 +21,80 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
  * @author pansu
  *
  */
-public interface NanoparticleCompositionService {
-	public void saveNanoparticleEntity(NanoparticleSample particleSample,
-			NanoparticleEntity entity) throws ParticleCompositionException;
+public interface CompositionService {
+	public void saveNanomaterialEntity(Sample particleSample,
+			NanomaterialEntity entity) throws CompositionException;
 
-	public NanoparticleEntityBean findNanoparticleEntityById(String entityId)
-			throws ParticleCompositionException;
+	public NanomaterialEntityBean findNanomaterialEntityById(String entityId)
+			throws CompositionException;
 
-	public NanoparticleEntityBean findNanoparticleEntityById(String entityId,
-			String entityClassName) throws ParticleCompositionException;
+	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
+			String entityClassName) throws CompositionException;
 
-	public void saveFunctionalizingEntity(NanoparticleSample particleSample,
-			FunctionalizingEntity entity) throws ParticleCompositionException;
+	public void saveFunctionalizingEntity(Sample particleSample,
+			FunctionalizingEntity entity) throws CompositionException;
 
-	public void saveChemicalAssociation(NanoparticleSample particleSample,
-			ChemicalAssociation assoc) throws ParticleCompositionException;
+	public void saveChemicalAssociation(Sample particleSample,
+			ChemicalAssociation assoc) throws CompositionException;
 
-	public void saveCompositionFile(NanoparticleSample particleSample,
-			File file, byte[] fileData) throws ParticleCompositionException;
+	public void saveCompositionFile(Sample particleSample,
+			File file, byte[] fileData) throws CompositionException;
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
-			String entityId) throws ParticleCompositionException;
+			String entityId) throws CompositionException;
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
 			String entityId, String entityClassName)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
 	public ChemicalAssociationBean findChemicalAssociationById(String assocId)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
 	public ChemicalAssociationBean findChemicalAssociationById(
-			String particleId, String assocId, String assocClassName)
-			throws ParticleCompositionException;
+			String sampleId, String assocId, String assocClassName)
+			throws CompositionException;
 
-	public void retrieveVisibility(NanoparticleEntityBean entity, UserBean user)
-			throws ParticleCompositionException;
+	public void retrieveVisibility(NanomaterialEntityBean entity, UserBean user)
+			throws CompositionException;
 
 	public void retrieveVisibility(FunctionalizingEntityBean entity,
-			UserBean user) throws ParticleCompositionException;
+			UserBean user) throws CompositionException;
 
 	public void retrieveVisibility(ChemicalAssociationBean assoc, UserBean user)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
-	public void deleteNanoparticleEntity(NanoparticleEntity entity)
-			throws ParticleCompositionException;
+	public void deleteNanomaterialEntity(NanomaterialEntity entity)
+			throws CompositionException;
 
 	public void deleteFunctionalizingEntity(FunctionalizingEntity entity)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
 	public void deleteChemicalAssociation(ChemicalAssociation assoc)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
-	public void deleteCompositionFile(NanoparticleSample particleSample,
-			File file) throws ParticleCompositionException;
+	public void deleteCompositionFile(Sample particleSample,
+			File file) throws CompositionException;
 
-	// check if any composing elements of the nanoparticle entity is invovled in
+	// check if any composing elements of the nanomaterial entity is invovled in
 	// the chemical association
 	public boolean checkChemicalAssociationBeforeDelete(
-			NanoparticleEntityBean entityBean)
-			throws ParticleCompositionException;
+			NanomaterialEntityBean entityBean)
+			throws CompositionException;
 
 	// check if the composing element is invovled in the chemical
 	// association
 	public boolean checkChemicalAssociationBeforeDelete(
 			ComposingElementBean composingElementBean)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
 	// check if the composing element is invovled in the chemical
 	// association
 	public boolean checkChemicalAssociationBeforeDelete(
 			FunctionalizingEntityBean entityBean)
-			throws ParticleCompositionException;
+			throws CompositionException;
 
-	public CompositionBean findCompositionByParticleSampleId(String particleId)
-			throws ParticleCompositionException;
+	public CompositionBean findCompositionBySampleId(String sampleId)
+			throws CompositionException;
 
 	public void assignChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
@@ -102,15 +102,15 @@ public interface NanoparticleCompositionService {
 
 	public void assignNanoparicleEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity) throws Exception;
+			NanomaterialEntity nanomaterialEntity) throws Exception;
 
 	public void assignFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,
 			FunctionalizingEntity functionalizingEntity) throws Exception;
 
-	public void removeNanoparticleEntityPublicVisibility(
+	public void removeNanomaterialEntityPublicVisibility(
 			AuthorizationService authService,
-			NanoparticleEntity nanoparticleEntity) throws Exception;
+			NanomaterialEntity nanomaterialEntity) throws Exception;
 
 	public void removeFunctionalizingEntityPublicVisibility(
 			AuthorizationService authService,

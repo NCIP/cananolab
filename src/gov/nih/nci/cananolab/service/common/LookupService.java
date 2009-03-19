@@ -6,9 +6,9 @@ import gov.nih.nci.cananolab.domain.common.CommonLookup;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.OtherTarget;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
-import gov.nih.nci.cananolab.exception.CaNanoLabException;
-import gov.nih.nci.cananolab.exception.ParticleCompositionException;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
+import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -41,10 +41,10 @@ public class LookupService {
 	 * ordered list of strings.
 	 *
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public static Map<String, Map<String, SortedSet<String>>> findAllLookups()
-			throws CaNanoLabException {
+			throws BaseException {
 		Map<String, Map<String, SortedSet<String>>> lookupMap = new HashMap<String, Map<String, SortedSet<String>>>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -77,12 +77,12 @@ public class LookupService {
 		} catch (Exception e) {
 			String err = "Error in retrieving all common lookup values .";
 			logger.error(err, e);
-			throw new CaNanoLabException(err, e);
+			throw new BaseException(err, e);
 		}
 	}
 
 	public static SortedSet<String> findLookupValues(String name,
-			String attribute) throws CaNanoLabException {
+			String attribute) throws BaseException {
 		SortedSet<String> lookupValues = new TreeSet<String>(
 				new Comparator<String>() {
 					public int compare(String s1, String s2) {
@@ -103,13 +103,13 @@ public class LookupService {
 		} catch (Exception e) {
 			logger.error("Error in retrieving common lookup values for name "
 					+ name + " and attribute " + attribute, e);
-			throw new CaNanoLabException();
+			throw new BaseException();
 		}
 		return lookupValues;
 	}
 
 	public static Map<String, String> findSingleAttributeLookupMap(
-			String attribute) throws CaNanoLabException {
+			String attribute) throws BaseException {
 		Map<String, String> lookup = new HashMap<String, String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -125,7 +125,7 @@ public class LookupService {
 		} catch (Exception e) {
 			logger.error("Error in retrieving " + attribute
 					+ " from CommonLookup", e);
-			throw new CaNanoLabException();
+			throw new BaseException();
 		}
 		return lookup;
 	}
@@ -137,11 +137,11 @@ public class LookupService {
 	 * @param lookupAttribute
 	 * @param otherTypeAttribute
 	 * @return
-	 * @throws CaNanoLabException
+	 * @throws BaseException
 	 */
 	public static SortedSet<String> getDefaultAndOtherLookupTypes(
 			String lookupName, String lookupAttribute, String otherTypeAttribute)
-			throws CaNanoLabException {
+			throws BaseException {
 		SortedSet<String> types = LookupService.findLookupValues(lookupName,
 				lookupAttribute);
 		SortedSet<String> otherTypes = LookupService.findLookupValues(
@@ -151,7 +151,7 @@ public class LookupService {
 	}
 
 	public static SortedSet<String> getAllOtherObjectTypes(String fullClassName)
-			throws ParticleCompositionException {
+			throws CompositionException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -161,10 +161,10 @@ public class LookupService {
 			for (Object obj : results) {
 				if (obj instanceof OtherFunction) {
 					types.add(((OtherFunction) obj).getType());
-				} else if (obj instanceof OtherNanoparticleEntity) {
-					types.add(((OtherNanoparticleEntity) obj).getType());
-				} else if (obj instanceof OtherNanoparticleEntity) {
-					types.add(((OtherNanoparticleEntity) obj).getType());
+				} else if (obj instanceof OtherNanomaterialEntity) {
+					types.add(((OtherNanomaterialEntity) obj).getType());
+				} else if (obj instanceof OtherNanomaterialEntity) {
+					types.add(((OtherNanomaterialEntity) obj).getType());
 				} else if (obj instanceof OtherFunctionalizingEntity) {
 					types.add(((OtherFunctionalizingEntity) obj).getType());
 				} else if (obj instanceof OtherChemicalAssociation) {
@@ -182,12 +182,12 @@ public class LookupService {
 			String err = "Error in retrieving other object types for: "
 					+ fullClassName;
 			logger.error(err, e);
-			throw new ParticleCompositionException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
 	public static void saveOtherType(String lookupName, String otherAttribute,
-			String otherAttributeValue) throws CaNanoLabException {
+			String otherAttributeValue) throws BaseException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -210,7 +210,7 @@ public class LookupService {
 			String err = "Error in saving other attribute types for "
 					+ lookupName;
 			logger.error(err, e);
-			throw new CaNanoLabException(err, e);
+			throw new BaseException(err, e);
 		}
 	}
 }

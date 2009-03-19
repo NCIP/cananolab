@@ -1,23 +1,21 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceRemoteImpl;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
+import gov.nih.nci.cananolab.ui.particle.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -49,33 +47,34 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
-	public ParticleBean setupParticle(DynaValidatorForm theForm,
+	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
-		String particleId = request.getParameter("particleId");
-		if (particleId == null) {
-			particleId = (String) request.getAttribute("particleId");
-			if (particleId == null) {
-				particleId = theForm.getString("particleId");
+		String sampleId = request.getParameter("sampleId");
+		if (sampleId == null) {
+			sampleId = (String) request.getAttribute("sampleId");
+			if (sampleId == null) {
+				sampleId = theForm.getString("sampleId");
 			}
 		}
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
-		NanoparticleSampleService service = null;
+		SampleService service = null;
 		if (location.equals("local")) {
-			service = new NanoparticleSampleServiceLocalImpl();
+			service = new SampleServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			service = new NanoparticleSampleServiceRemoteImpl(serviceUrl);
+			//TODO model change
+			//service = new SampleServiceRemoteImpl(serviceUrl);
 		}
-		ParticleBean particleBean = service
-				.findNanoparticleSampleById(particleId);
+		SampleBean sampleBean = service
+				.findSampleById(sampleId);
 		if (location.equals("local")) {
 			// check access privilege
 			AuthorizationService auth = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			boolean access = auth.isUserAllowed(particleBean
-					.getDomainParticleSample().getName(), user);
+			boolean access = auth.isUserAllowed(sampleBean
+					.getDomain().getName(), user);
 			if (!access) {
 				if (user != null) {
 					request.getSession().removeAttribute("user");
@@ -83,7 +82,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				throw new NoAccessException(
 						"You don't have the required privileges to access this particle");
 			} else {
-				PointOfContactBean pointOfContactBean = particleBean
+				PointOfContactBean pointOfContactBean = sampleBean
 						.getPocBean();
 				if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
 						.toString(), user)) {
@@ -93,9 +92,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				}
 			}
 		}
-		particleBean.setLocation(location);
-		request.setAttribute("theParticle", particleBean);
-		return particleBean;
+		sampleBean.setLocation(location);
+		request.setAttribute("theSample", sampleBean);
+		return sampleBean;
 	}
 
 	protected void saveFilesToFileSystem(List<FileBean> files) throws Exception {
@@ -117,16 +116,16 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PARTICLE);
 	}
 
 	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
-			ParticleBean particleBean, HttpServletRequest request)
+			SampleBean sampleBean, HttpServletRequest request)
 			throws Exception {
 		request.setAttribute("updateDataTree", "true");
-		return InitNanoparticleSetup.getInstance().getDataTree(particleBean,
+		return InitSampleSetup.getInstance().getDataTree(sampleBean,
 				request);
 	}
 
@@ -135,9 +134,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			throws Exception {
 		String submitType = request.getParameter("submitType");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				particleBean, request);
+				sampleBean, request);
 		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
 		request.getSession().setAttribute("actionName",
 				dataToDelete.first().getDataLink());
@@ -162,7 +161,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				.getCanonicalName();
 
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+		SampleService sampleService = new SampleServiceLocalImpl();
 		ActionMessages msgs = new ActionMessages();
 		for (String id : dataIds) {
 			if (!checkDelete(request, msgs, id)) {
@@ -170,8 +169,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			}
 			sampleService.deleteAnnotationById(fullClassName, new Long(id));
 		}
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		setupDataTree(particleBean, request);
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		setupDataTree(sampleBean, request);
 		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -203,7 +202,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		else {
 			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
 					location);
-			fileService = new FileServiceRemoteImpl(serviceUrl);
+			//TODO model change
+			//fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
 		fileBean = fileService.findFileById(fileId, user);
 		if (fileBean != null) {
@@ -260,22 +260,22 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return null;
 	}
 
-	protected NanoparticleSample[] prepareCopy(HttpServletRequest request,
+	protected Sample[] prepareCopy(HttpServletRequest request,
 			DynaValidatorForm theForm) throws Exception {
-		String[] otherParticles = (String[]) theForm.get("otherParticles");
-		if (otherParticles.length == 0) {
+		String[] otherSamples = (String[]) theForm.get("otherSamples");
+		if (otherSamples.length == 0) {
 			return null;
 		}
-		NanoparticleSample[] particleSamples = new NanoparticleSample[otherParticles.length];
-		NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+		Sample[] samples = new Sample[otherSamples.length];
+		SampleService sampleService = new SampleServiceLocalImpl();
 		int i = 0;
-		for (String other : otherParticles) {
-			NanoparticleSample particleSample = sampleService
-					.findNanoparticleSampleByName(other);
-			particleSamples[i] = particleSample;
+		for (String other : otherSamples) {
+			Sample sample = sampleService
+					.findSampleByName(other);
+			samples[i] = sample;
 			i++;
 		}
-		return particleSamples;
+		return samples;
 	}
 
 	protected boolean validateFileBean(HttpServletRequest request,

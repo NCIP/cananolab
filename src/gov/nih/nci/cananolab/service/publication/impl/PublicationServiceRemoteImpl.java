@@ -10,10 +10,10 @@ import gov.nih.nci.cagrid.cqlresultset.CQLQueryResults;
 import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
@@ -50,38 +50,38 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	 * Persist a new publication or update an existing publication
 	 *
 	 * @param publication
-	 * @param particleNames
+	 * @param sampleNames
 	 * @param fileData
 	 * @param authors
 	 *
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication,
-			String[] particleNames, byte[] fileData, Collection<Author> authors)
+			String[] sampleNames, byte[] fileData, Collection<Author> authors)
 			throws PublicationException {
 		throw new PublicationException("not implemented for grid service.");
 	}
 
 	public List<PublicationBean> findPublicationsBy(String title,
-			String category, String nanoparticleName, String[] researchArea,
+			String category, String sampleName, String[] researchArea,
 			String keywordsStr, String pubMedId, String digitalObjectId,
-			String authorsStr, String[] nanoparticleEntityClassNames,
+			String authorsStr, String[] nanomaterialEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
-			throws PublicationException, CaNanoLabSecurityException {
+			throws PublicationException, SecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
 			Publication[] publications = gridClient.getPublicationsBy(title,
-					category, nanoparticleName, researchArea, keywordsStr,
+					category, sampleName, researchArea, keywordsStr,
 					pubMedId, digitalObjectId, authorsStr,
-					nanoparticleEntityClassNames,
+					nanomaterialEntityClassNames,
 					functionalizingEntityClassNames, functionClassNames);
 
 			if (publications != null) {
 				for (Publication publication : publications) {
-					loadParticleSamplesForPublication(publication);
+					loadSampleSamplesForPublication(publication);
 					publicationBeans.add(new PublicationBean(publication));
 				}
 			}
@@ -105,21 +105,21 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId) throws PublicationException {
+	public List<PublicationBean> findPublicationsBySampleId(
+			String sampleId) throws PublicationException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target.setName("gov.nih.nci.cananolab.domain.common.Publication");
 			Association association = new Association();
 			association
-					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
-			association.setRoleName("nanoparticleSampleCollection");
+					.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+			association.setRoleName("sampleCollection");
 
 			Attribute attribute = new Attribute();
 			attribute.setName("id");
 			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(particleId);
+			attribute.setValue(sampleId);
 			association.setAttribute(attribute);
 
 			target.setAssociation(association);
@@ -150,14 +150,14 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	private void loadParticleSamplesForPublication(Publication publication)
+	private void loadSampleSamplesForPublication(Publication publication)
 			throws PublicationException {
 		try {
 			CQLQuery query = new CQLQuery();
 
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 			target
-					.setName("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+					.setName("gov.nih.nci.cananolab.domain.particle.Sample");
 			Association association = new Association();
 			association
 					.setName("gov.nih.nci.cananolab.domain.common.Publication");
@@ -173,21 +173,21 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 			query.setTarget(target);
 			CQLQueryResults results = gridClient.query(query);
 			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanoparticleSample");
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			NanoparticleSample particleSample = null;
+			Sample particleSample = null;
 			// TODO fix dependency on sample
 			// publication
-			// .setNanoparticleSampleCollection(new
-			// HashSet<NanoparticleSample>());
+			// .setSampleCollection(new
+			// HashSet<Sample>());
 			// while (iter.hasNext()) {
 			// java.lang.Object obj = iter.next();
-			// particleSample = (NanoparticleSample) obj;
-			// publication.getNanoparticleSampleCollection().add(
+			// particleSample = (Sample) obj;
+			// publication.getSampleCollection().add(
 			// particleSample);
 			// }
 		} catch (Exception e) {
-			String err = "Problem loading nanoparticle samples for the publication : "
+			String err = "Problem loading samples for the publication : "
 					+ publication.getId();
 			logger.error(err, e);
 			throw new PublicationException(err, e);
@@ -295,7 +295,7 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 				java.lang.Object obj = iter.next();
 				publication = (Publication) obj;
 			}
-			loadParticleSamplesForPublication(publication);
+			loadSampleSamplesForPublication(publication);
 			loadAuthorsForPublication(publication);
 			return publication;
 		} catch (RemoteException e) {
@@ -350,13 +350,13 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	public void exportSummary(ParticleBean particleBean, OutputStream out)
+	public void exportSummary(SampleBean sampleBean, OutputStream out)
 			throws IOException {
 		PublicationServiceHelper helper = new PublicationServiceHelper();
-		helper.exportSummary(particleBean, out);
+		helper.exportSummary(sampleBean, out);
 	}
 
-	public void removePublicationFromParticle(NanoparticleSample particle,
+	public void removePublicationFromSample(Sample particle,
 			Long dataId) throws PublicationException {
 		throw new PublicationException("not implemented for grid service.");
 	}

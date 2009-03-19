@@ -2,15 +2,15 @@ package gov.nih.nci.cananolab.service.publication.impl;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -52,28 +52,28 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * Persist a new publication or update an existing publication
 	 *
 	 * @param publication,
-	 *            particleNames, fileData, authors
+	 *            sampleNames, fileData, authors
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication,
-			String[] particleNames, byte[] fileData, Collection<Author> authors)
+			String[] sampleNames, byte[] fileData, Collection<Author> authors)
 			throws PublicationException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(publication);
-			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-			Set<NanoparticleSample> particleSamples = new HashSet<NanoparticleSample>();
-			if (particleNames != null && particleNames.length > 0) {
-				for (String name : particleNames) {
-					NanoparticleSample sample = sampleService
-							.findNanoparticleSampleByName(name);
+			SampleService sampleService = new SampleServiceLocalImpl();
+			Set<Sample> particleSamples = new HashSet<Sample>();
+			if (sampleNames != null && sampleNames.length > 0) {
+				for (String name : sampleNames) {
+					Sample sample = sampleService
+							.findSampleByName(name);
 					particleSamples.add(sample);
 				}
 			}
 
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			for (NanoparticleSample sample : particleSamples) {
+			for (Sample sample : particleSamples) {
 				sample.getPublicationCollection().add(publication);
 				appService.saveOrUpdate(sample);
 			}
@@ -108,32 +108,32 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	}
 
 	public List<PublicationBean> findPublicationsBy(String title,
-			String category, String nanoparticleName, String[] researchArea,
+			String category, String sampleName, String[] researchArea,
 			String keywordsStr, String pubMedId, String digitalObjectId,
-			String authorsStr, String[] nanoparticleEntityClassNames,
+			String authorsStr, String[] nanomaterialEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
-			throws PublicationException, CaNanoLabSecurityException {
+			throws PublicationException, SecurityException {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
 			List<Publication> publications = helper.findPublicationsBy(title,
-					category, nanoparticleName, researchArea, keywordsStr,
+					category, sampleName, researchArea, keywordsStr,
 					pubMedId, digitalObjectId, authorsStr,
-					nanoparticleEntityClassNames, otherNanoparticleTypes,
+					nanomaterialEntityClassNames, otherNanoparticleTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes);
 			if (publications != null) {
-				NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
+				SampleService sampleService = new SampleServiceLocalImpl();
 				for (Publication publication : publications) {
-					// retrieve particleNames
-					SortedSet<String> particleNames = sampleService
-							.findParticleNamesByPublicationId(publication
+					// retrieve sampleNames
+					SortedSet<String> sampleNames = sampleService
+							.findSampleNamesByPublicationId(publication
 									.getId().toString());
 					PublicationBean pubBean = new PublicationBean(publication,
-							particleNames.toArray(new String[particleNames
+							sampleNames.toArray(new String[sampleNames
 									.size()]));
 					publicationBeans.add(pubBean);
 				}
@@ -151,14 +151,14 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId) throws PublicationException {
+	public List<PublicationBean> findPublicationsBySampleId(
+			String sampleId) throws PublicationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(
-					NanoparticleSample.class).add(
-					Property.forName("id").eq(new Long(particleId)));
+					Sample.class).add(
+					Property.forName("id").eq(new Long(sampleId)));
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection.authorCollection",
 					FetchMode.JOIN);
@@ -169,7 +169,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			List results = appService.query(crit);
 			List<PublicationBean> publications = new ArrayList<PublicationBean>();
 			for (Object obj : results) {
-				NanoparticleSample sample = (NanoparticleSample) obj;
+				Sample sample = (Sample) obj;
 				for (Publication pub : sample.getPublicationCollection()) {
 					publications.add(new PublicationBean(pub));
 				}
@@ -180,7 +180,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 							new Comparators.PublicationBeanCategoryTitleComparator());
 			return publications;
 		} catch (Exception e) {
-			String err = "Problem finding publication collections with the given particle ID.";
+			String err = "Problem finding publication collections with the given sample ID.";
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
@@ -237,15 +237,15 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	// }
 	// }
 
-	// public Publication[] findDocumentsByParticleSampleId(String particleId)
+	// public Publication[] findDocumentsBySampleId(String sampleId)
 	// throws DocumentException {
 	// throw new DocumentException("Not implemented for local search");
 	// }
 
-	public void exportSummary(ParticleBean particleBean, OutputStream out)
+	public void exportSummary(SampleBean sampleBean, OutputStream out)
 			throws IOException {
 		PublicationServiceHelper helper = new PublicationServiceHelper();
-		helper.exportSummary(particleBean, out);
+		helper.exportSummary(sampleBean, out);
 	}
 
 	public int getNumberOfPublicPublications() throws PublicationException {
@@ -264,7 +264,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * nanoparticle_sample_publication otherwise, remove publicVisibility and
 	 * delete publication
 	 */
-	public void removePublicationFromParticle(NanoparticleSample particle,
+	public void removePublicationFromSample(Sample particle,
 			Long dataId) throws PublicationException {
 		try {
 			PublicationService publicationService = new PublicationServiceLocalImpl();
@@ -278,19 +278,19 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			/*
 			 * if (publicationObject != null) { Publication publication =
 			 * publicationService .findDomainPublicationById(dataId.toString());
-			 * Collection<NanoparticleSample> nanoparticleSampleCollection =
-			 * publication .getNanoparticleSampleCollection(); if
-			 * (nanoparticleSampleCollection == null ||
-			 * nanoparticleSampleCollection.size() == 0) { // something wrong
+			 * Collection<Sample> sampleCollection =
+			 * publication .getSampleCollection(); if
+			 * (sampleCollection == null ||
+			 * sampleCollection.size() == 0) { // something wrong
 			 * throw new PublicationException(); } else if
-			 * (nanoparticleSampleCollection.size() == 1) { // delete
+			 * (sampleCollection.size() == 1) { // delete
 			 * authService.removePublicGroup(dataId.toString()); if
 			 * (publication.getAuthorCollection() != null) { for (Author author :
 			 * publication.getAuthorCollection()) {
 			 * authService.removePublicGroup(author.getId() .toString()); } }
 			 * appService.delete(publication); } else {// size>1 // remove
-			 * nanoparticleSample association
-			 * nanoparticleSampleCollection.remove(particle);
+			 * sample association
+			 * sampleCollection.remove(particle);
 			 * appService.saveOrUpdate(publication); } }
 			 */
 		} catch (Exception e) {

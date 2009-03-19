@@ -4,7 +4,7 @@ package gov.nih.nci.cananolab.exception;
  * @author pansu
  * 
  */
-public class FileException extends CaNanoLabException {
+public class FileException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 

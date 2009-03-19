@@ -19,7 +19,7 @@ package gov.nih.nci.cananolab.ui.core;
 /* CVS $Id: WelcomeAction.java,v 1.1 2008-09-30 18:44:48 pansu Exp $ */
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +44,7 @@ public class WelcomeAction extends ForwardAction {
 	}
 
 	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return true;
 	}
 }

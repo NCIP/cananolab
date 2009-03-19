@@ -7,22 +7,22 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity;
+import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.PointOfContactService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.common.impl.PointOfContactServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -42,19 +42,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.util.LabelValueBean;
 
 /**
- * This class sets up information required for nanoparticle forms.
+ * This class sets up information required for canano forms.
  *
  * @author pansu, cais
  *
  */
-public class InitNanoparticleSetup {
-	private InitNanoparticleSetup() {
+public class InitSampleSetup {
+	private InitSampleSetup() {
 	}
 
-	private NanoparticleSampleService particleService = new NanoparticleSampleServiceLocalImpl();
+	private SampleService sampleService = new SampleServiceLocalImpl();
 
-	public static InitNanoparticleSetup getInstance() {
-		return new InitNanoparticleSetup();
+	public static InitSampleSetup getInstance() {
+		return new InitSampleSetup();
 	}
 
 	public void setLocalSearchDropdowns(HttpServletRequest request)
@@ -67,10 +67,10 @@ public class InitNanoparticleSetup {
 				.getInstance()
 				.getReflectionDefaultAndOtherLookupTypes(
 						request,
-						"defaultNanoparticleEntityTypes",
-						"nanoparticleEntityTypes",
-						"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity",
-						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity",
+						"defaultNanomaterialEntityTypes",
+						"nanomaterialEntityTypes",
+						"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity",
+						"gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity",
 						true);
 		InitSetup
 				.getInstance()
@@ -92,8 +92,8 @@ public class InitNanoparticleSetup {
 				appContext, "defaultFunctionalizingEntityTypes",
 				"gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
 		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
-				appContext, "defaultNanoparticleEntityTypes",
-				"gov.nih.nci.cananolab.domain.particle.NanoparticleEntity");
+				appContext, "defaultNanomaterialEntityTypes",
+				"gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
 		InitSetup.getInstance().getServletContextDefaultTypesByReflection(
 				appContext, "defaultFunctionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function");
@@ -110,7 +110,7 @@ public class InitNanoparticleSetup {
 		SortedSet<PointOfContactBean> pointOfContactBeans = null;
 		if (pointOfContacts != null && pointOfContacts.size() > 0) {
 			pointOfContactBeans = new TreeSet<PointOfContactBean>(
-					new Comparators.ParticlePointOfContactBeanComparator());
+					new Comparators.SamplePointOfContactBeanComparator());
 			for (PointOfContact poc : pointOfContacts) {
 				pointOfContactBeans.add(new PointOfContactBean(poc));
 			}
@@ -120,23 +120,23 @@ public class InitNanoparticleSetup {
 		return pointOfContactBeans;
 	}
 
-	public SortedSet<String> getAllNanoparticleSampleNames(
+	public SortedSet<String> getAllSampleNames(
 			HttpServletRequest request, UserBean user) throws Exception {
-		SortedSet<String> sampleNames = particleService
-				.findAllNanoparticleSampleNames(user);
-		request.getSession().setAttribute("allUserParticleNames", sampleNames);
+		SortedSet<String> sampleNames = sampleService
+				.findAllSampleNames(user);
+		request.getSession().setAttribute("allUserSampleNames", sampleNames);
 		return sampleNames;
 	}
 
-	public SortedSet<String> getAllParticleNames(HttpServletRequest request)
+	public SortedSet<String> getAllSampleNames(HttpServletRequest request)
 			throws Exception {
-		SortedSet<String> sampleNames = particleService.findAllParticleNames();
-		request.getSession().setAttribute("allParticleNames", sampleNames);
+		SortedSet<String> sampleNames = sampleService.findAllSampleNames();
+		request.getSession().setAttribute("allSampleNames", sampleNames);
 		return sampleNames;
 	}
 
 	public Map<String, SortedSet<DataLinkBean>> getDataTree(
-			ParticleBean particleBean, HttpServletRequest request)
+			SampleBean sampleBean, HttpServletRequest request)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		Map<String, SortedSet<DataLinkBean>> dataTree = new HashMap<String, SortedSet<DataLinkBean>>();
@@ -144,28 +144,28 @@ public class InitNanoparticleSetup {
 				&& request.getAttribute("updateDataTree").equals("true")) {
 			ServletContext appContext = request.getSession()
 					.getServletContext();
-			NanoparticleSample particleSample = particleBean
-					.getDomainParticleSample();
-			request.getSession().setAttribute("theParticle", particleBean);
+			Sample particleSample = sampleBean
+					.getDomain();
+			request.getSession().setAttribute("theSample", sampleBean);
 			// composition
 			if (particleSample.getSampleComposition() != null) {
 				SortedSet<DataLinkBean> ndataBeans = new TreeSet<DataLinkBean>(
 						new Comparators.DataLinkTypeDateComparator());
 				if (particleSample.getSampleComposition()
-						.getNanoparticleEntityCollection() != null) {
-					for (NanoparticleEntity entity : particleSample
+						.getNanomaterialEntityCollection() != null) {
+					for (NanomaterialEntity entity : particleSample
 							.getSampleComposition()
-							.getNanoparticleEntityCollection()) {
+							.getNanomaterialEntityCollection()) {
 						DataLinkBean dataBean = new DataLinkBean(entity.getId()
 								.toString(), "Composition",
-								"nanoparticleEntity", entity.getCreatedBy(),
+								"nanomaterialEntity", entity.getCreatedBy(),
 								entity.getCreatedDate());
-						if (entity instanceof OtherNanoparticleEntity) {
+						if (entity instanceof OtherNanomaterialEntity) {
 							dataBean
-									.setDataDisplayType(((OtherNanoparticleEntity) entity)
+									.setDataDisplayType(((OtherNanomaterialEntity) entity)
 											.getType());
 							dataBean
-									.setDataClassName("OtherNanoparticleEntity");
+									.setDataClassName("OtherNanomaterialEntity");
 						} else {
 							dataBean.setDataClassName(ClassUtils
 									.getShortClassName(entity.getClass()
@@ -179,7 +179,7 @@ public class InitNanoparticleSetup {
 						ndataBeans.add(dataBean);
 					}
 				}
-				dataTree.put("Nanoparticle Entity", ndataBeans);
+				dataTree.put("Nanomaterial Entity", ndataBeans);
 
 				SortedSet<DataLinkBean> fdataBeans = new TreeSet<DataLinkBean>(
 						new Comparators.DataLinkTypeDateComparator());
@@ -396,7 +396,7 @@ public class InitNanoparticleSetup {
 							"false");
 				}
 			}
-			request.getSession().setAttribute("particleDataTree", dataTree);
+			request.getSession().setAttribute("sampleDataTree", dataTree);
 
 			if (hasPhysicalData)
 				request.getSession().setAttribute("hasPhysicalData", "true");
@@ -411,16 +411,16 @@ public class InitNanoparticleSetup {
 		} else {
 			dataTree = new HashMap<String, SortedSet<DataLinkBean>>(
 					(Map<? extends String, SortedSet<DataLinkBean>>) (request
-							.getSession().getAttribute("particleDataTree")));
+							.getSession().getAttribute("sampleDataTree")));
 		}
 		return dataTree;
 	}
 
-	public SortedSet<SortableName> getOtherParticleNames(
-			HttpServletRequest request, String particleId) throws Exception {
-		SortedSet<SortableName> names = particleService
-				.findOtherParticlesFromSamePointOfContact(particleId);
-		request.getSession().setAttribute("otherParticleNames", names);
+	public SortedSet<SortableName> getOtherSampleNames(
+			HttpServletRequest request, String sampleId) throws Exception {
+		SortedSet<SortableName> names = sampleService
+				.findOtherSamplesFromSamePointOfContact(sampleId);
+		request.getSession().setAttribute("otherSampleNames", names);
 		return names;
 	}
 

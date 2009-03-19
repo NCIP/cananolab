@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.service.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.security.AuthenticationManager;
 import gov.nih.nci.security.AuthorizationManager;
@@ -17,9 +17,9 @@ import org.apache.log4j.Logger;
 
 /**
  * The LoginService authenticates users into the caNanoLab system.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 
 public class LoginService {
@@ -33,7 +33,7 @@ public class LoginService {
 
 	/**
 	 * LoginService Constructor
-	 * 
+	 *
 	 * @param strname
 	 *            name of the application
 	 */
@@ -55,7 +55,7 @@ public class LoginService {
 	/**
 	 * The login method uses CSM to authenticated the user with LoginId and
 	 * Password credentials
-	 * 
+	 *
 	 * @param strusername
 	 *            LoginId of the user
 	 * @param strpassword
@@ -63,22 +63,22 @@ public class LoginService {
 	 * @return boolean indicating whether the user successfully authenticated
 	 */
 	public boolean login(String strUsername, String strPassword)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
 			return authenticationManager.login(strUsername, strPassword);
 		} catch (Exception e) {
 			logger.error(e);
-			throw new CaNanoLabSecurityException("Invalid Credentials");
+			throw new SecurityException("Invalid Credentials");
 		}
 	}
 
 	/**
 	 * Get all users in the application
-	 * 
+	 *
 	 * @return
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
-	public List<UserBean> getAllUsers() throws CaNanoLabSecurityException {
+	public List<UserBean> getAllUsers() throws SecurityException {
 		try {
 			List<UserBean> users = new ArrayList<UserBean>();
 			User dummy = new User();
@@ -92,52 +92,51 @@ public class LoginService {
 			return users;
 		} catch (Exception e) {
 			logger.error("Error in getting all users.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	/**
 	 * Set a new password for the given user login name
-	 * 
+	 *
 	 * @param loginName
 	 * @param newPassword
-	 * @throws CaNanoLabSecurityException
+	 * @throws SecurityException
 	 */
 	public void updatePassword(String loginName, String newPassword)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		try {
-			User user = this.authorizationManager.getUser(loginName);			
+			User user = this.authorizationManager.getUser(loginName);
 			user.setPassword(newPassword);
 			authorizationManager.modifyUser(user);
 		} catch (Exception e) {
 			logger.error("Error in updating password.", e);
-			throw new CaNanoLabSecurityException();
+			throw new SecurityException();
 		}
 	}
 
 	/**
 	 * Initialize user's password to be the same as the user name
-	 * 
+	 *
 	 * @param userName
 	 * @return
 	 */
-	public void initializePassword(String userName)
-			throws CaNanoLabSecurityException {
+	public void initializePassword(String userName) throws SecurityException {
 		try {
 			User user = authorizationManager.getUser(userName);
-			//encryption is included in setPassword already
+			// encryption is included in setPassword already
 			user.setPassword(userName);
-			authorizationManager.modifyUser(user);			
+			authorizationManager.modifyUser(user);
 		} catch (Exception e) {
 			logger.error(e);
-			throw new CaNanoLabSecurityException("Can't initialize password");
+			throw new SecurityException("Can't initialize password");
 		}
 	}
 
 	public void initializeAllUserPasswords() {
 		try {
 			List<UserBean> users = getAllUsers();
-			for (UserBean user : users) {				
+			for (UserBean user : users) {
 				initializePassword(user.getLoginName());
 			}
 		} catch (Exception e) {
@@ -146,8 +145,12 @@ public class LoginService {
 	}
 
 	public static void main(String[] args) {
-		LoginService service = new LoginService(Constants.CSM_APP_NAME);
-		service.initializeAllUserPasswords();
-		System.exit(0);
+		try {
+			LoginService service = new LoginService(Constants.CSM_APP_NAME);
+			service.initializeAllUserPasswords();
+			System.exit(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

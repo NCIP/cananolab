@@ -4,23 +4,23 @@ package gov.nih.nci.cananolab.exception;
  * @author pansu
  * 
  */
-public class ParticleException extends CaNanoLabException {
+public class SampleException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 
-	public ParticleException() {
+	public SampleException() {
 		super("Exception working with particles");
 	}
 
-	public ParticleException(String message) {
+	public SampleException(String message) {
 		super(message);
 	}
 
-	public ParticleException(String message, Throwable cause) {
+	public SampleException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ParticleException(Throwable cause) {
+	public SampleException(Throwable cause) {
 		super(cause);
 	}
 }

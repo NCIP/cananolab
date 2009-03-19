@@ -4,39 +4,39 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
-import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.particle.helper.CharacterizationServiceHelper;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 /**
- * Base implementation of NanoparticleCharacterizationService, shared by local
+ * Base implementation of CharacterizationService, shared by local
  * impl and remote impl.
  *
  * @author pansu
  *
  */
-public abstract class NanoparticleCharacterizationServiceBaseImpl {
+public abstract class CharacterizationServiceBaseImpl {
 	private static Logger logger = Logger
-			.getLogger(NanoparticleCharacterizationServiceBaseImpl.class);
+			.getLogger(CharacterizationServiceBaseImpl.class);
 
-	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
+	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 	protected FileService fileService;
 
-	protected abstract List<Characterization> findParticleCharacterizationsByClass(
-			String particleName, String className) throws Exception;
+	protected abstract List<Characterization> findSampleCharacterizationsByClass(
+			String sampleName, String className) throws Exception;
 
-	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
-			String particleName, String className, UserBean user)
-			throws ParticleCharacterizationException {
+	public CharacterizationSummaryBean getSampleCharacterizationSummaryByClass(
+			String sampleName, String className, UserBean user)
+			throws CharacterizationException {
 		CharacterizationSummaryBean charSummary = new CharacterizationSummaryBean(
 				className);
 		try {
-			List<Characterization> charas = findParticleCharacterizationsByClass(
-					particleName, className);
+			List<Characterization> charas = findSampleCharacterizationsByClass(
+					sampleName, className);
 			if (charas.isEmpty()) {
 				return null;
 			}
@@ -84,10 +84,10 @@ public abstract class NanoparticleCharacterizationServiceBaseImpl {
 			}
 			return charSummary;
 		} catch (Exception e) {
-			String err = "Error getting " + particleName
+			String err = "Error getting " + sampleName
 					+ " characterization summary of type " + className;
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 }

@@ -5,7 +5,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.LoginService;
-import gov.nih.nci.cananolab.util.CaNanoLabConstants;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -78,7 +78,7 @@ public class TestConnectionPool {
 	public void testCSM() {
 		try {
 			LoginService service = new LoginService(
-					CaNanoLabConstants.CSM_APP_NAME);			
+					Constants.CSM_APP_NAME);			
 			List<UserBean> users = service.getAllUsers();
 			for (UserBean user:users) {
 				System.out.println("USer: "+user.getFullName());

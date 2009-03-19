@@ -1,15 +1,15 @@
 package gov.nih.nci.cananolab.service.particle.impl;
 
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleCharacterizationService;
-import gov.nih.nci.cananolab.service.particle.helper.NanoparticleCharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.particle.CharacterizationService;
+import gov.nih.nci.cananolab.service.particle.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -36,18 +36,18 @@ import org.hibernate.criterion.Property;
  * @author tanq, pansu
  *
  */
-public class NanoparticleCharacterizationServiceLocalImpl extends
-		NanoparticleCharacterizationServiceBaseImpl implements
-		NanoparticleCharacterizationService {
+public class CharacterizationServiceLocalImpl extends
+		CharacterizationServiceBaseImpl implements
+		CharacterizationService {
 	private static Logger logger = Logger
-			.getLogger(NanoparticleCharacterizationServiceLocalImpl.class);
-	private NanoparticleCharacterizationServiceHelper helper = new NanoparticleCharacterizationServiceHelper();
+			.getLogger(CharacterizationServiceLocalImpl.class);
+	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 
-	public NanoparticleCharacterizationServiceLocalImpl() {
+	public CharacterizationServiceLocalImpl() {
 		fileService = new FileServiceLocalImpl();
 	}
 
-	public void saveCharacterization(NanoparticleSample particleSample,
+	public void saveCharacterization(Sample sample,
 			Characterization achar) throws Exception {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -58,47 +58,47 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 				if (dbChar == null) {
 					String err = "Object doesn't exist in the database anymore.  Please log in again.";
 					logger.error(err);
-					throw new ParticleCharacterizationException(err);
+					throw new CharacterizationException(err);
 				}
 			}
-			// if (particleSample.getCharacterizationCollection() != null) {
-			// particleSample.getCharacterizationCollection().clear();
+			// if (sample.getCharacterizationCollection() != null) {
+			// sample.getCharacterizationCollection().clear();
 			// } else {
-			// particleSample
+			// sample
 			// .setCharacterizationCollection(new HashSet<Characterization>());
 			// }
-			achar.setNanoparticleSample(particleSample);
-			// particleSample.getCharacterizationCollection().add(achar);
+			achar.setSample(sample);
+			// sample.getCharacterizationCollection().add(achar);
 			appService.saveOrUpdate(achar);
 		} catch (DuplicateEntriesException e) {
 			throw e;
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 
 	public Characterization findCharacterizationById(String charId)
-			throws ParticleCharacterizationException {
+			throws CharacterizationException {
 		try {
 			Characterization achar = helper.findCharacterizationById(charId);
 			return achar;
 		} catch (Exception e) {
 			logger.error("Problem finding the characterization by id: "
 					+ charId, e);
-			throw new ParticleCharacterizationException();
+			throw new CharacterizationException();
 		}
 	}
 
 	public Characterization findCharacterizationById(String charId,
-			String className) throws ParticleCharacterizationException {
+			String className) throws CharacterizationException {
 		return findCharacterizationById(charId);
 	}
 
-	// private Boolean checkRedundantViewTitle(NanoparticleSample
-	// particleSample,
-	// Characterization chara) throws ParticleCharacterizationException {
+	// private Boolean checkRedundantViewTitle(Sample
+	// sample,
+	// Characterization chara) throws CharacterizationException {
 	// Boolean exist = false;
 	// try {
 	// CustomizedApplicationService appService = (CustomizedApplicationService)
@@ -108,8 +108,8 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	// Characterization.class).add(
 	// Property.forName("identificationName").eq(
 	// chara.getIdentificationName()));
-	// crit.createAlias("nanoparticleSample", "sample").add(
-	// Restrictions.eq("sample.name", particleSample.getName()));
+	// crit.createAlias("nanosample", "sample").add(
+	// Restrictions.eq("sample.name", sample.getName()));
 	// crit
 	// .setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 	// List results = appService.query(crit);
@@ -129,12 +129,12 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	// } catch (Exception e) {
 	// logger
 	// .error("Problem checking whether the view title already exists.");
-	// throw new ParticleCharacterizationException();
+	// throw new CharacterizationException();
 	// }
 	// }
 
 	public SortedSet<String> findAllCharacterizationSources()
-			throws ParticleCharacterizationException {
+			throws CharacterizationException {
 		SortedSet<String> sources = new TreeSet<String>();
 
 		try {
@@ -152,7 +152,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 					.error(
 							"Problem to retrieve all Characterization PrimaryOrganizations.",
 							e);
-			throw new ParticleCharacterizationException(
+			throw new CharacterizationException(
 					"Problem to retrieve all Characterization Sources ");
 		}
 		sources.addAll(Arrays
@@ -161,13 +161,13 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		return sources;
 	}
 
-	protected List<Characterization> findParticleCharacterizationsByClass(
+	protected List<Characterization> findSampleCharacterizationsByClass(
 			String particleName, String className)
-			throws ParticleCharacterizationException {
+			throws CharacterizationException {
 
 		try {
 			List<Characterization> charList = helper
-					.findParticleCharacterizationsByClass(particleName,
+					.findSampleCharacterizationsByClass(particleName,
 							className);
 			Collections.sort(charList,
 					new Comparators.CharacterizationDateComparator());
@@ -176,13 +176,13 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			String err = "Error getting " + particleName
 					+ " characterizations of type " + className;
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 
 	// set lab file visibility of a characterization
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
-			throws ParticleCharacterizationException {
+			throws CharacterizationException {
 		try {
 			// for (DerivedBioAssayDataBean bioAssayData : charBean
 			// .getDerivedBioAssayDataList()) {
@@ -195,12 +195,12 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			String err = "Error setting visiblity for characterization "
 					+ charBean.getDomainChar().getId();
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 
 	public void deleteCharacterization(Characterization chara)
-			throws ParticleCharacterizationException {
+			throws CharacterizationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -212,19 +212,19 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 
-	public List<CharacterizationBean> findCharsByParticleSampleId(
-			String particleId) throws ParticleCharacterizationException {
+	public List<CharacterizationBean> findCharsBySampleId(
+			String sampleId) throws CharacterizationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Characterization.class);
-			crit.createAlias("nanoparticleSample", "sample");
-			crit.add(Property.forName("sample.id").eq(new Long(particleId)));
+			crit.createAlias("sample", "sample");
+			crit.add(Property.forName("sample.id").eq(new Long(sampleId)));
 			// fully load characterization
 			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
@@ -257,14 +257,14 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 			}
 			return chars;
 		} catch (Exception e) {
-			String err = "Error finding characterization by particle ID " + particleId;
+			String err = "Error finding characterization by sample ID " + sampleId;
 			logger.error(err, e);
-			throw new ParticleCharacterizationException(err);
+			throw new CharacterizationException(err);
 		}
 	}
 
 	public void assignPublicVisibility(AuthorizationService authService,
-			Characterization aChar) throws CaNanoLabSecurityException {
+			Characterization aChar) throws SecurityException {
 		// characterization
 		if (aChar != null) {
 			authService.assignPublicVisibility(aChar.getId().toString());
@@ -310,7 +310,7 @@ public class NanoparticleCharacterizationServiceLocalImpl extends
 	}
 
 	public void removePublicVisibility(AuthorizationService authService,
-			Characterization aChar) throws CaNanoLabSecurityException {
+			Characterization aChar) throws SecurityException {
 		if (aChar != null) {
 			authService.removePublicGroup(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection

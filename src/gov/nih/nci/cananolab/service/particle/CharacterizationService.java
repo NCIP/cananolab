@@ -1,11 +1,11 @@
 package gov.nih.nci.cananolab.service.particle;
 
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
-import gov.nih.nci.cananolab.exception.ParticleCharacterizationException;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
 import java.util.List;
@@ -17,33 +17,33 @@ import java.util.SortedSet;
  * @author pansu, tanq
  *
  */
-public interface NanoparticleCharacterizationService {
+public interface CharacterizationService {
 
-	public void saveCharacterization(NanoparticleSample particleSample,
+	public void saveCharacterization(Sample particleSample,
 			Characterization achar) throws Exception;
 
 	public Characterization findCharacterizationById(String charId)
-			throws ParticleCharacterizationException;
+			throws CharacterizationException;
 
 	public Characterization findCharacterizationById(String charId,
-			String className) throws ParticleCharacterizationException;
+			String className) throws CharacterizationException;
 
 	public SortedSet<String> findAllCharacterizationSources()
-			throws ParticleCharacterizationException;
+			throws CharacterizationException;
 
-	public CharacterizationSummaryBean getParticleCharacterizationSummaryByClass(
-			String particleName, String className, UserBean user)
-			throws ParticleCharacterizationException;
+	public CharacterizationSummaryBean getSampleCharacterizationSummaryByClass(
+			String sampleName, String className, UserBean user)
+			throws CharacterizationException;
 
 	// set lab file visibility of a characterization
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
-			throws ParticleCharacterizationException;
+			throws CharacterizationException;
 
 	public void deleteCharacterization(Characterization chara)
-			throws ParticleCharacterizationException;
+			throws CharacterizationException;
 
-	public List<CharacterizationBean> findCharsByParticleSampleId(String particleId)
-			throws ParticleCharacterizationException;
+	public List<CharacterizationBean> findCharsBySampleId(String sampleId)
+			throws CharacterizationException;
 
 	public void removePublicVisibility(
 			AuthorizationService authService, Characterization aChar)

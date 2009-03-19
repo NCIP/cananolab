@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.system.applicationservice.impl;
 
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.system.dao.CustomizedORMDAO;
 import gov.nih.nci.cananolab.util.Constants;
@@ -121,7 +121,7 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws ApplicationException {
 		CustomizedORMDAO dao = (CustomizedORMDAO) classCache
-				.getDAOForClass(NanoparticleSample.class.getCanonicalName());
+				.getDAOForClass(Sample.class.getCanonicalName());
 		try {
 			return dao.directSQL(directSQL, columns, columnTypes);
 		} catch (Exception e) {

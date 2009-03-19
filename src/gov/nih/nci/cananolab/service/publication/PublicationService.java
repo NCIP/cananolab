@@ -2,10 +2,10 @@ package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 
 import java.io.IOException;
@@ -25,26 +25,26 @@ public interface PublicationService {
 	 * Persist a new publication or update an existing publication
 	 *
 	 * @param publication
-	 * @param particleNames
+	 * @param sampleNames
 	 * @param fileData
 	 * @param authors
 	 *
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication,
-			String[] particleNames, byte[] fileData, Collection<Author> authors)
+			String[] sampleNames, byte[] fileData, Collection<Author> authors)
 			throws PublicationException;
 
 	public List<PublicationBean> findPublicationsBy(String publicationTitle,
-			String publicationCategory, String nanoparticleName,
+			String publicationCategory, String sampleName,
 			String[] researchArea, String keywordsStr, String pubMedId,
 			String digitalObjectId, String authorsStr,
-			String[] nanoparticleEntityClassNames,
+			String[] nanomaterialEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes)
-			throws PublicationException, CaNanoLabSecurityException;
+			throws PublicationException, SecurityException;
 
 	public PublicationBean findPublicationById(String publicationId)
 			throws PublicationException;
@@ -55,14 +55,14 @@ public interface PublicationService {
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 			throws PublicationException;
 
-	public List<PublicationBean> findPublicationsByParticleSampleId(
-			String particleId) throws PublicationException;
+	public List<PublicationBean> findPublicationsBySampleId(
+			String sampleId) throws PublicationException;
 
 	public int getNumberOfPublicPublications() throws PublicationException;
 
-	public void removePublicationFromParticle(NanoparticleSample particle,
+	public void removePublicationFromSample(Sample particle,
 			Long dataId) throws PublicationException;
 
-	public void exportSummary(ParticleBean particleBean, OutputStream out)
+	public void exportSummary(SampleBean sampleBean, OutputStream out)
 			throws IOException;
 }

@@ -8,16 +8,16 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
-import gov.nih.nci.cananolab.exception.CaNanoLabSecurityException;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.particle.NanoparticleSampleService;
-import gov.nih.nci.cananolab.service.particle.impl.NanoparticleSampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.particle.SampleService;
+import gov.nih.nci.cananolab.service.particle.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
@@ -26,7 +26,7 @@ import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.particle.InitNanoparticleSetup;
+import gov.nih.nci.cananolab.ui.particle.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
@@ -84,7 +84,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		PublicationService service = new PublicationServiceLocalImpl();
 		service.savePublication(publication,
-				publicationBean.getParticleNames(), publicationBean
+				publicationBean.getSampleNames(), publicationBean
 						.getNewFileData(), publicationBean.getAuthors());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
@@ -119,34 +119,34 @@ public class PublicationAction extends BaseAnnotationAction {
 		forward = mapping.findForward("success");
 
 		HttpSession session = request.getSession();
-		String particleId = (String) session.getAttribute("docParticleId");
-		// String particleId = request.getParameter("particleId");
-		// if (particleId != null) {
-		// session.setAttribute("docParticleId", particleId);
+		String sampleId = (String) session.getAttribute("docSampleId");
+		// String sampleId = request.getParameter("sampleId");
+		// if (sampleId != null) {
+		// session.setAttribute("docSampleId", sampleId);
 		// }else {
 		// //if it is not calling from particle, remove previous set attribute
 		// if applicable
-		// session.removeAttribute("docParticleId");
+		// session.removeAttribute("docSampleId");
 		// }
 
-		// if (particleId==null ||particleId.length()==0) {
-		// Object particleIdObj = session.getAttribute("particleId");
-		// if (particleIdObj!=null) {
-		// particleId = particleIdObj.toString();
-		// request.setAttribute("particleId", particleId);
+		// if (sampleId==null ||sampleId.length()==0) {
+		// Object sampleIdObj = session.getAttribute("sampleId");
+		// if (sampleIdObj!=null) {
+		// sampleId = sampleIdObj.toString();
+		// request.setAttribute("sampleId", sampleId);
 		// }else {
-		// request.removeAttribute("particleId");
+		// request.removeAttribute("sampleId");
 		// }
 		// }
-		if (particleId != null && particleId.length() > 0) {
-			NanoparticleSampleService sampleService = new NanoparticleSampleServiceLocalImpl();
-			ParticleBean particleBean = sampleService
-					.findNanoparticleSampleById(particleId);
-			particleBean.setLocation("local");
-			setupDataTree(particleBean, request);
-			forward = mapping.findForward("particleSuccess");
+		if (sampleId != null && sampleId.length() > 0) {
+			SampleService sampleService = new SampleServiceLocalImpl();
+			SampleBean sampleBean = sampleService
+					.findSampleById(sampleId);
+			sampleBean.setLocation("local");
+			setupDataTree(sampleBean, request);
+			forward = mapping.findForward("sampleSuccess");
 		}
-		// session.removeAttribute("particleId");
+		// session.removeAttribute("sampleId");
 		return forward;
 	}
 
@@ -155,23 +155,23 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		session.removeAttribute("publicationForm");
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		InitNanoparticleSetup.getInstance().getAllParticleNames(request);
-		if (particleId != null && particleId.trim().length() > 0
-				&& session.getAttribute("otherParticleNames") == null) {
-			InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-					particleId);
+		InitSampleSetup.getInstance().getAllSampleNames(request);
+		if (sampleId != null && sampleId.trim().length() > 0
+				&& session.getAttribute("otherSampleNames") == null) {
+			InitSampleSetup.getInstance().getOtherSampleNames(request,
+					sampleId);
 		}
 		ActionForward forward = mapping.getInputForward();
 
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
-			forward = mapping.findForward("particleSubmitPublication");
-			session.setAttribute("docParticleId", particleId);
+		if (sampleId != null && !sampleId.equals("null")
+				&& sampleId.trim().length() > 0) {
+			forward = mapping.findForward("sampleSubmitPublication");
+			session.setAttribute("docSampleId", sampleId);
 		} else {
-			session.removeAttribute("docParticleId");
+			session.removeAttribute("docSampleId");
 		}
 		return forward;
 	}
@@ -181,16 +181,16 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		ActionForward forward = null;
 
-		if (particleId != null && !particleId.equals("null")
-				&& particleId.trim().length() > 0) {
-			// forward = mapping.findForward("particleSubmitReport");
-			forward = mapping.findForward("particleSubmitPublication");
-			session.setAttribute("docParticleId", particleId);
+		if (sampleId != null && !sampleId.equals("null")
+				&& sampleId.trim().length() > 0) {
+			// forward = mapping.findForward("sampleSubmitReport");
+			forward = mapping.findForward("sampleSubmitPublication");
+			session.setAttribute("docSampleId", sampleId);
 		} else {
-			session.removeAttribute("docParticleId");
+			session.removeAttribute("docSampleId");
 			forward = mapping.findForward("publicationSubmitPublication");
 			// forward = mapping.findForward("publicationSubmitReport");
 		}
@@ -216,15 +216,15 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		PubMedXMLHandler phandler = PubMedXMLHandler.getInstance();
 		String pubmedID = request.getParameter("pubmedId");
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		HttpSession session = request.getSession();
 		ActionForward forward = null;
-		if (particleId != null && particleId.trim().length() > 0) {
-			forward = mapping.findForward("particleSubmitPublication");
-			session.setAttribute("docParticleId", particleId);
+		if (sampleId != null && sampleId.trim().length() > 0) {
+			forward = mapping.findForward("sampleSubmitPublication");
+			session.setAttribute("docSampleId", sampleId);
 		} else {
 			forward = mapping.findForward("publicationSubmitPublication");
-			session.removeAttribute("docParticleId");
+			session.removeAttribute("docSampleId");
 		}
 
 		// clear publication data fields
@@ -265,9 +265,9 @@ public class PublicationAction extends BaseAnnotationAction {
 				change0ToNull(publication);
 			}
 			theForm.set("file", pbean);
-			if (particleId != null && particleId.length() > 0) {
+			if (sampleId != null && sampleId.length() > 0) {
 				forward = mapping
-						.findForward("particleSubmitPubmedPublication");
+						.findForward("sampleSubmitPubmedPublication");
 			} else {
 				forward = mapping
 						.findForward("publicationSubmitPubmedPublication");
@@ -283,16 +283,16 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		HttpSession session = request.getSession();
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		PublicationForm theForm = (PublicationForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (particleId != null && particleId.trim().length() > 0) {
-			session.setAttribute("docParticleId", particleId);
+		if (sampleId != null && sampleId.trim().length() > 0) {
+			session.setAttribute("docSampleId", sampleId);
 			// set up other particles with the same primary point of contact
-			InitNanoparticleSetup.getInstance().getOtherParticleNames(request,
-					particleId);
+			InitSampleSetup.getInstance().getOtherSampleNames(request,
+					sampleId);
 		} else {
-			session.removeAttribute("docParticleId");
+			session.removeAttribute("docSampleId");
 		}
 		String publicationId = request.getParameter("fileId");
 
@@ -303,25 +303,25 @@ public class PublicationAction extends BaseAnnotationAction {
 		fileService.retrieveVisibility(publicationBean, user);
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		// if particleId is available direct to particle specific page
+		// if sampleId is available direct to particle specific page
 		Publication pub = (Publication) publicationBean.getDomainFile();
 		Long pubMedId = pub.getPubMedId();
-		ActionForward forward = getReturnForward(mapping, particleId, pubMedId);
+		ActionForward forward = getReturnForward(mapping, sampleId, pubMedId);
 
 		return forward;
 	}
 
 	private ActionForward getReturnForward(ActionMapping mapping,
-			String particleId, Long pubMedId) {
+			String sampleId, Long pubMedId) {
 		ActionForward forward = null;
-		if (particleId != null && particleId.trim().length() > 0) {
+		if (sampleId != null && sampleId.trim().length() > 0) {
 			if (pubMedId != null && pubMedId > 0) {
 				forward = mapping
-						.findForward("particleSubmitPubmedPublication");
+						.findForward("sampleSubmitPubmedPublication");
 			} else {
-				forward = mapping.findForward("particleSubmitPublication");
+				forward = mapping.findForward("sampleSubmitPublication");
 			}
-			// request.setAttribute("particleId", particleId);
+			// request.setAttribute("sampleId", sampleId);
 		} else {
 			if (pubMedId != null && pubMedId > 0) {
 				forward = mapping
@@ -329,7 +329,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			} else {
 				forward = mapping.findForward("publicationSubmitPublication");
 			}
-			// request.removeAttribute("particleId");
+			// request.removeAttribute("sampleId");
 		}
 		return forward;
 	}
@@ -355,11 +355,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		this.checkVisibility(request, location, user, publicationBean);
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
-		// if particleId is available direct to particle specific page
-		String particleId = request.getParameter("particleId");
+		// if sampleId is available direct to particle specific page
+		String sampleId = request.getParameter("sampleId");
 		ActionForward forward = mapping.findForward("view");
-		if (particleId != null) {
-			forward = mapping.findForward("particleViewPublication");
+		if (sampleId != null) {
+			forward = mapping.findForward("sampleViewPublication");
 		}
 		return forward;
 	}
@@ -368,31 +368,31 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		String submitType = request.getParameter("submitType");
 		String[] dataIds = (String[]) theForm.get("idsToDelete");
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		NanoparticleSample particle = (NanoparticleSample) appService
-				.getObject(NanoparticleSample.class, "id", new Long(particleId));
+		Sample particle = (Sample) appService
+				.getObject(Sample.class, "id", new Long(sampleId));
 
 		ActionMessages msgs = new ActionMessages();
 		for (String id : dataIds) {
 			if (!checkDelete(request, msgs, id)) {
 				return mapping.findForward("annotationDeleteView");
 			}
-			publicationService.removePublicationFromParticle(particle,
+			publicationService.removePublicationFromSample(particle,
 					new Long(id));
 		}
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
-		setupDataTree(particleBean, request);
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		setupDataTree(sampleBean, request);
 		ActionMessage msg = new ActionMessage("message.deletePublications",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		if (particleId != null) {
-			return mapping.findForward("particleSuccess");
+		if (sampleId != null) {
+			return mapping.findForward("sampleSuccess");
 		} else {
 			return mapping.findForward("success");
 		}
@@ -405,9 +405,9 @@ public class PublicationAction extends BaseAnnotationAction {
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
 		PublicationService publicationService = new PublicationServiceLocalImpl();
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		List<PublicationBean> publications = publicationService
-				.findPublicationsByParticleSampleId(particleId);
+				.findPublicationsBySampleId(sampleId);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
@@ -430,18 +430,18 @@ public class PublicationAction extends BaseAnnotationAction {
 		// PublicationForm theForm = (PublicationForm) form;
 		// theForm.set("file", pubBean);
 		//
-		// String particleId = request.getParameter("particleId");
+		// String sampleId = request.getParameter("sampleId");
 		// ActionForward forward = null;
-		// if(particleId == null || particleId.length() == 0) {
+		// if(sampleId == null || sampleId.length() == 0) {
 		// forward = mapping.findForward("publicationDetailView");
 		// } else {
-		// forward = mapping.findForward("particleDetailView");
+		// forward = mapping.findForward("sampleDetailView");
 		// }
 		//
 		// String submitType = request.getParameter("submitType");
 		// String requestUrl = request.getRequestURL().toString();
 		// String printLinkURL = requestUrl
-		// + "?page=0&dispatch=printDetailView&particleId=" + particleId
+		// + "?page=0&dispatch=printDetailView&sampleId=" + sampleId
 		// + "&publicationId=" + publicationId +
 		// "&submitType=" + submitType + "&location="
 		// + location;
@@ -458,9 +458,9 @@ public class PublicationAction extends BaseAnnotationAction {
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
 		PublicationService publicationService = new PublicationServiceLocalImpl();
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		List<PublicationBean> publications = publicationService
-				.findPublicationsByParticleSampleId(particleId);
+				.findPublicationsBySampleId(sampleId);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
@@ -482,18 +482,18 @@ public class PublicationAction extends BaseAnnotationAction {
 		// PublicationForm theForm = (PublicationForm) form;
 		// theForm.set("file", pubBean);
 		//
-		// String particleId = request.getParameter("particleId");
+		// String sampleId = request.getParameter("sampleId");
 		// ActionForward forward = null;
-		// if(particleId == null || particleId.length() == 0) {
+		// if(sampleId == null || sampleId.length() == 0) {
 		// forward = mapping.findForward("publicationDetailView");
 		// } else {
-		// forward = mapping.findForward("particleDetailView");
+		// forward = mapping.findForward("sampleDetailView");
 		// }
 		//
 		// String submitType = request.getParameter("submitType");
 		// String requestUrl = request.getRequestURL().toString();
 		// String printLinkURL = requestUrl
-		// + "?page=0&dispatch=printDetailView&particleId=" + particleId
+		// + "?page=0&dispatch=printDetailView&sampleId=" + sampleId
 		// + "&publicationId=" + publicationId +
 		// "&submitType=" + submitType + "&location="
 		// + location;
@@ -530,7 +530,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 
 		HttpSession session = request.getSession();
-		String particleId = (String) session.getAttribute("docParticleId");
+		String sampleId = (String) session.getAttribute("docSampleId");
 
 		// save new entered other types
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
@@ -569,7 +569,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		// only.
 
 		Long pubMedId = pub.getPubMedId();
-		ActionForward forward = getReturnForward(mapping, particleId, pubMedId);
+		ActionForward forward = getReturnForward(mapping, sampleId, pubMedId);
 
 		return forward;
 	}
@@ -594,17 +594,17 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("file", pubBean);
 
-		String particleId = request.getParameter("particleId");
+		String sampleId = request.getParameter("sampleId");
 		ActionForward forward = null;
-		if (particleId == null || particleId.length() == 0) {
+		if (sampleId == null || sampleId.length() == 0) {
 			forward = mapping.findForward("publicationDetailView");
 		} else {
-			forward = mapping.findForward("particleDetailView");
+			forward = mapping.findForward("sampleDetailView");
 		}
 
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl
-				+ "?page=0&dispatch=printDetailView&particleId=" + particleId
+				+ "?page=0&dispatch=printDetailView&sampleId=" + sampleId
 				+ "&publicationId=" + publicationId + "&location=" + location;
 		request.getSession().setAttribute("printDetailViewLinkURL",
 				printLinkURL);
@@ -627,7 +627,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	}
 
 	public boolean canUserExecute(UserBean user)
-			throws CaNanoLabSecurityException {
+			throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PUBLICATION);
 	}
@@ -705,9 +705,9 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		String submitType = request.getParameter("submitType");
 		PublicationForm theForm = (PublicationForm) form;
-		ParticleBean particleBean = setupParticle(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				particleBean, request);
+				sampleBean, request);
 		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
 		request.getSession().setAttribute("actionName",
 				dataToDelete.first().getDataLink());

@@ -10,18 +10,18 @@ import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleSample;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.ParticleBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanoparticleEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 
 import java.util.Comparator;
@@ -51,7 +51,7 @@ public class Comparators {
 		}
 	}
 
-	public static class ParticlePointOfContactComparator implements
+	public static class SamplePointOfContactComparator implements
 			Comparator<PointOfContact> {
 		public int compare(PointOfContact poc1, PointOfContact poc2) {
 			int diff = new SortableNameComparator().compare(
@@ -76,7 +76,7 @@ public class Comparators {
 		}
 	}
 
-	public static class ParticlePointOfContactBeanComparator implements
+	public static class SamplePointOfContactBeanComparator implements
 			Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
 			int diff = new SortableNameComparator().compare(poc1
@@ -165,19 +165,19 @@ public class Comparators {
 		}
 	}
 
-	public static class ParticleBeanComparator implements
-			Comparator<ParticleBean> {
-		public int compare(ParticleBean particle1, ParticleBean particle2) {
+	public static class SampleBeanComparator implements
+			Comparator<SampleBean> {
+		public int compare(SampleBean particle1, SampleBean particle2) {
 			return new SortableNameComparator().compare(particle1
-					.getDomainParticleSample().getName(), particle2
-					.getDomainParticleSample().getName());
+					.getDomain().getName(), particle2
+					.getDomain().getName());
 		}
 	}
 
-	public static class NanoparticleSampleComparator implements
-			Comparator<NanoparticleSample> {
-		public int compare(NanoparticleSample particle1,
-				NanoparticleSample particle2) {
+	public static class SampleComparator implements
+			Comparator<Sample> {
+		public int compare(Sample particle1,
+				Sample particle2) {
 			return new SortableNameComparator().compare(particle1.getName(),
 					particle2.getName());
 		}
@@ -195,10 +195,10 @@ public class Comparators {
 		}
 	}
 
-	public static class NanoparticleEntityBeanTypeDateComparator implements
-			Comparator<NanoparticleEntityBean> {
-		public int compare(NanoparticleEntityBean entity1,
-				NanoparticleEntityBean entity2) {
+	public static class NanomaterialEntityBeanTypeDateComparator implements
+			Comparator<NanomaterialEntityBean> {
+		public int compare(NanomaterialEntityBean entity1,
+				NanomaterialEntityBean entity2) {
 			if (entity1.getDomainEntity().getClass().getCanonicalName().equals(
 					entity2.getDomainEntity().getClass().getCanonicalName())) {
 				return entity1.getDomainEntity().getCreatedDate().compareTo(

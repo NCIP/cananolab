@@ -22,7 +22,7 @@ public interface PointOfContactService {
 	/**
 	 * Persist a new organization or update an existing organizations
 	 *
-	 * @param particleId
+	 * @param sampleId
 	 * @param primaryPointOfContact
 	 * @param otherPointOfContactCollection
 	 *
@@ -33,7 +33,7 @@ public interface PointOfContactService {
 			throws PointOfContactException, DuplicateEntriesException;
 
 	public List<PointOfContactBean> findOtherPointOfContactCollection(
-			String particleId) throws PointOfContactException;
+			String sampleId) throws PointOfContactException;
 
 	public PointOfContactBean findPointOfContactById(String pocId)
 			throws PointOfContactException;
@@ -41,8 +41,8 @@ public interface PointOfContactService {
 	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException;
 
-	public PointOfContact loadPOCNanoparticleSample(PointOfContact poc,
-			String nanoparticleSampleCollection) throws PointOfContactException;
+	public PointOfContact loadPOCSample(PointOfContact poc,
+			String sampleCollection) throws PointOfContactException;
 
 	public Organization findOrganizationByName(String orgName)
 			throws PointOfContactException;
@@ -50,6 +50,6 @@ public interface PointOfContactService {
 	public SortedSet<PointOfContact> findAllPointOfContacts()
 			throws PointOfContactException;
 
-	public List<PointOfContactBean> findPointOfContactsByParticleId(String particleId)
+	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId)
 			throws PointOfContactException;
 }

@@ -26,7 +26,7 @@ public class PublicationForm extends DynaValidatorForm{
 				PublicationBean pubBean = (PublicationBean)form.get("file");
 				pubBean.setResearchAreas(new String[0]);
 				pubBean.setVisibilityGroups(new String[0]);
-				pubBean.setParticleNames(new String[0]);
+				pubBean.setSampleNames(new String[0]);
 				this.set("file", pubBean);
 			}
 		}

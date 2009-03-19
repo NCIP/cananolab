@@ -4,7 +4,7 @@ package gov.nih.nci.cananolab.exception;
  * @author zengje
  * 
  */
-public class DuplicateEntriesException extends CaNanoLabException {
+public class DuplicateEntriesException extends BaseException {
 
 	private static final long serialVersionUID = 1234567890L;
 

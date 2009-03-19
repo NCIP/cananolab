@@ -22,9 +22,9 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  * This class includes methods involved in creating and searching protocols
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger

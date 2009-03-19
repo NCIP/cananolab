@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.dto.particle.composition;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanoparticleEntity;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CompositionBean {
-	private List<NanoparticleEntityBean> nanoparticleEntities = new ArrayList<NanoparticleEntityBean>();
+	private List<NanomaterialEntityBean> nanomaterialEntities = new ArrayList<NanomaterialEntityBean>();
 	private List<FunctionalizingEntityBean> functionalizingEntities = new ArrayList<FunctionalizingEntityBean>();
 	private List<ChemicalAssociationBean> chemicalAssociations = new ArrayList<ChemicalAssociationBean>();
 	private List<FileBean> files = new ArrayList<FileBean>();
@@ -25,16 +25,16 @@ public class CompositionBean {
 
 	public CompositionBean(SampleComposition comp) {
 		domain=comp;
-		if (comp.getNanoparticleEntityCollection() != null) {
-			for (NanoparticleEntity entity : comp
-					.getNanoparticleEntityCollection()) {
-				nanoparticleEntities.add(new NanoparticleEntityBean(entity));
+		if (comp.getNanomaterialEntityCollection() != null) {
+			for (NanomaterialEntity entity : comp
+					.getNanomaterialEntityCollection()) {
+				nanomaterialEntities.add(new NanomaterialEntityBean(entity));
 			}
 		}
 		Collections
 				.sort(
-						nanoparticleEntities,
-						new Comparators.NanoparticleEntityBeanTypeDateComparator());
+						nanomaterialEntities,
+						new Comparators.NanomaterialEntityBeanTypeDateComparator());
 		if (comp.getFunctionalizingEntityCollection() != null) {
 			for (FunctionalizingEntity entity : comp
 					.getFunctionalizingEntityCollection()) {
@@ -67,13 +67,13 @@ public class CompositionBean {
 						new Comparators.FileBeanTypeDateComparator());
 	}
 
-	public List<NanoparticleEntityBean> getNanoparticleEntities() {
-		return nanoparticleEntities;
+	public List<NanomaterialEntityBean> getNanomaterialEntities() {
+		return nanomaterialEntities;
 	}
 
-	public void setNanoparticleEntities(
-			List<NanoparticleEntityBean> nanoparticleEntities) {
-		this.nanoparticleEntities = nanoparticleEntities;
+	public void setNanomaterialEntities(
+			List<NanomaterialEntityBean> nanomaterialEntities) {
+		this.nanomaterialEntities = nanomaterialEntities;
 	}
 
 	public List<FunctionalizingEntityBean> getFunctionalizingEntities() {

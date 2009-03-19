@@ -21,7 +21,7 @@ import java.util.List;
 public class PublicationBean extends FileBean {
 	private static final String delimiter = ";";
 
-	private String[] particleNames;
+	private String[] sampleNames;
 	private String[] researchAreas;
 	private List<Author> authors = new ArrayList<Author>(20);
 
@@ -59,9 +59,9 @@ public class PublicationBean extends FileBean {
 		}
 	}
 
-	public PublicationBean(Publication publication, String[] particleNames) {
+	public PublicationBean(Publication publication, String[] sampleNames) {
 		this(publication);
-		this.particleNames = particleNames;
+		this.sampleNames = sampleNames;
 	}
 
 	public boolean equals(Object obj) {
@@ -76,12 +76,12 @@ public class PublicationBean extends FileBean {
 		return eq;
 	}
 
-	public String[] getParticleNames() {
-		return particleNames;
+	public String[] getSampleNames() {
+		return sampleNames;
 	}
 
-	public void setParticleNames(String[] particleNames) {
-		this.particleNames = particleNames;
+	public void setSampleNames(String[] sampleNames) {
+		this.sampleNames = sampleNames;
 	}
 
 	/**
