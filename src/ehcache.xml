@@ -10,69 +10,6 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.function.TargetingFunction"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.function.TargetingFunction.targetCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization.fileCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization.experimentConfigCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization.datumCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.OtherNanoparticleEntity"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Size"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
 	<cache name="gov.nih.nci.cananolab.domain.common.Condition"
 		maxElementsInMemory="500"
 		eternal="false"
@@ -87,7 +24,161 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer"
+	<cache name="gov.nih.nci.cananolab.domain.linkage.Encapsulation"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity.fileCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity.functionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Polymer"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.characterization.OtherCharacterization"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.function.OtherTarget"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.QuantumDot"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.function.Target"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.particle.AssociatedElement"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.particle.AssociatedElement.chemicalAssociationACollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.AssociatedElement.chemicalAssociationBCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.particle.Function"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.common.Publication"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.common.Publication.authorCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.particle.ComposingElement"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.particle.ComposingElement.inherentFunctionCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.Sterility"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.common.Organization"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.common.Organization.pointOfContactCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.Targeting"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -101,63 +192,147 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.function.TherapeuticFunction"
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.MetalParticle"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invivo.Toxicology"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Emulsion"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 	
-	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.nanoparticleEntityCollection"
+	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization.experimentConfigCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 			
-	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.functionalizingEntityCollection"
+	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization.datumCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 			
-	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.chemicalAssociationCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.fileCollection"
+	<cache name="gov.nih.nci.cananolab.domain.particle.Characterization.fileCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Shape"
+	<cache name="gov.nih.nci.cananolab.domain.function.ImagingFunction"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Relaxivity"
+	<cache name="gov.nih.nci.cananolab.domain.function.OtherFunction"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.OtherCharacterization"
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Liposome"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.linkage.Attachment"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.common.Instrument"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.common.Instrument.experimentConfigCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.MetabolicStability"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Fullerene"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.common.DataSet"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.common.DataSet.datumCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.function.Receptor"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -178,7 +353,35 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.function.Antigen"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Surface"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.linkage.Entrapment"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.common.CommonLookup"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -206,104 +409,6 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.particle.AssociatedElement"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.particle.AssociatedElement.chemicalAssociationACollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.AssociatedElement.chemicalAssociationBCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.QuantumDot"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.SurfaceChemistry"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.function.OtherFunction"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.Instrument"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.Instrument.experimentConfigCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.common.DataSet"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.DataSet.datumCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Liposome"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.linkage.Attachment"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.MetabolicStability"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
 	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.Antibody"
 		maxElementsInMemory="500"
 		eternal="false"
@@ -311,133 +416,28 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.CommonLookup"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleEntity"
+	<cache name="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 	
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleEntity.fileCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleEntity.composingElementCollection"
+	<cache name="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation.fileCollection"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.function.Target"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Emulsion"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Biopolymer"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.linkage.Encapsulation"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Solubility"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.Author"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.Author.publicationCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.common.PointOfContact"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.Sterility"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.Publication"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.Publication.authorCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.particle.ActivationMethod"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Size"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -472,55 +472,209 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState"
+	<cache name="gov.nih.nci.cananolab.domain.common.Keyword"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.common.Keyword.fileCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.particle.Sample"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.particle.Sample.keywordCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.Sample.publicationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.Sample.characterizationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.Sample.otherPointOfContactCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.function.Antigen"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.particle.Function"
+	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.chemicalAssociationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.fileCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.nanomaterialEntityCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.SampleComposition.functionalizingEntityCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Shape"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Fullerene"
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Polymer"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Relaxivity"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.function.ImagingFunction"
+	<cache name="gov.nih.nci.cananolab.domain.common.PointOfContact"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube"
+	<cache name="gov.nih.nci.cananolab.domain.common.Author"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.common.Author.publicationCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.ImmuneCellFunction"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.MolecularWeight"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity.fileCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+			
+	<cache name="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity.composingElementCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Purity"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.function.TargetingFunction"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+	
+	<cache name="gov.nih.nci.cananolab.domain.function.TargetingFunction.targetCollection"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+				
 	<cache name="gov.nih.nci.cananolab.domain.common.ExperimentConfig"
 		maxElementsInMemory="500"
 		eternal="false"
@@ -535,70 +689,14 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 				
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.linkage.Entrapment"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.Organization"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.Organization.pointOfContactCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.function.OtherTarget"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity.fileCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity.functionCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.MolecularWeight"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.function.Receptor"
+	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Solubility"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -612,14 +710,42 @@
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.ImmuneCellFunction"
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.CarbonNanotube"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
 		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.MetalParticle"
+	<cache name="gov.nih.nci.cananolab.domain.function.TherapeuticFunction"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.particle.ActivationMethod"
+		maxElementsInMemory="500"
+		eternal="false"
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="100000"
+		overflowToDisk="true"/>
+		
+	<cache name="gov.nih.nci.cananolab.domain.function.Gene"
 		maxElementsInMemory="500"
 		eternal="false"
 		timeToIdleSeconds="1800"
@@ -639,145 +765,5 @@
 		timeToIdleSeconds="1800"
 		timeToLiveSeconds="100000"
 		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample.characterizationCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
 			
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample.publicationCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample.otherPointOfContactCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-			
-	<cache name="gov.nih.nci.cananolab.domain.particle.NanoparticleSample.keywordCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invitro.Targeting"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invivo.Toxicology"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.common.Keyword"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.common.Keyword.fileCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.particle.ChemicalAssociation.fileCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Surface"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Surface.surfaceChemistryCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.particle.ComposingElement"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
-	<cache name="gov.nih.nci.cananolab.domain.particle.ComposingElement.inherentFunctionCollection"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-				
-	<cache name="gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.function.Gene"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.physical.Purity"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-		
-	<cache name="gov.nih.nci.cananolab.domain.nanomaterial.Dendrimer"
-		maxElementsInMemory="500"
-		eternal="false"
-		timeToIdleSeconds="1800"
-		timeToLiveSeconds="100000"
-		overflowToDisk="true"/>
-	
 </ehcache>
