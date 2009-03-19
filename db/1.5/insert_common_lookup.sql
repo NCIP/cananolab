@@ -220,7 +220,7 @@ insert into common_lookup(name,attribute,value) values ('SampleContainer','volum
 insert into common_lookup(name,attribute,value) values ('CarbonNanotube','wallType','DWNT');
 insert into common_lookup(name,attribute,value) values ('CarbonNanotube','wallType','MWNT');
 insert into common_lookup(name,attribute,value) values ('CarbonNanotube','wallType','SWNT');
-insert into common_lookup(name,attribute,value) values ('NanoparticleEntity','displayName','Nanoparticle Entity');
+insert into common_lookup(name,attribute,value) values ('NanomaterialEntity','displayName','Nanoparticle Entity');
 insert into common_lookup(name,attribute,value) values ('FunctionalizingEntity','displayName','Functionalizing Entity');
 insert into common_lookup(name,attribute,value) values ('ChemicalAssociation','displayName','Chemical Association');
 insert into common_lookup(name,attribute,value) values ('LabFile','displayName','Lab File');
