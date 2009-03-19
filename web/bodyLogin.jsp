@@ -75,11 +75,11 @@
 									<tr class="alt">
 										<td>
 											<img src="images/icon_nanoparticle_48x.jpg" width="15%" />
-											&nbsp;Nanoparticles&nbsp;(
-											<a href="#" onclick="gotoParticles('setup');">search</a> )
+											&nbsp;Samples&nbsp;(
+											<a href="#" onclick="gotoSamples('setup');">search</a> )
 										</td>
 										<td class="counts">
-											<a href="#" onclick="gotoParticles('search');" id="particleCount"
+											<a href="#" onclick="gotoSamples('search');" id="sampleCount"
 												class="countsLink"></a>
 										</td>
 									</tr>

@@ -27,11 +27,11 @@
 			caNanoLab is a data sharing portal designed to facilitate information
 			sharing in the biomedical nanotechnology research community to
 			expedite and validate the use of nanotechnology in biomedicine.
-			caNanoLab allows researchers to share information on nanoparticles
-			including the composition of the particle, the functions (e.g.
-			therapeutic, targeting, diagnostic imaging) of the particle, the
-			characterizations of the particle from physical (e.g. size, molecular
-			weight) and in vitro (e.g. cytotoxicity, immunotoxicity) nanoparticle
+			caNanoLab allows researchers to share information on nanosamples
+			including the composition of the sample, the functions (e.g.
+			therapeutic, targeting, diagnostic imaging) of the sample, the
+			characterizations of the sample from physical (e.g. size, molecular
+			weight) and in vitro (e.g. cytotoxicity, immunotoxicity) sample
 			assays, and the protocols of these characterization. The diagram
 			below illustrates the caNanoLab functionality and workflow. Active
 			links are provided on the diagram to allow a user to directly
@@ -49,7 +49,7 @@
 					alt="rectangle" />
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
 					coords="70,230,165,265" alt="rectangle" />
-				<area href="searchNanoparticle.do?dispatch=setup" shape="rect"
+				<area href="searchSample.do?dispatch=setup" shape="rect"
 					coords="70,275,165,315" alt="rectangle" />
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
 					coords="70,325,165,365" alt="rectangle" />
@@ -58,23 +58,23 @@
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
 						coords="265,60,360,95" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreateNanoparticle eq 'true'}">
+				<c:if test="${canCreateSample eq 'true'}">
 					<area
-						href="nanoparticleSample.do?dispatch=setupNew&page=0&location=${location}"
+						href="sample.do?dispatch=setupNew&page=0&location=${location}"
 						shape="rect" coords="265,100,360,160" alt="rectangle" />
 				</c:if>
 				<c:if test="${canCreatePublication eq 'true'}">
 					<area href="managePublication.do" shape="rect"
 						coords="360,445,445,480" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreateNanoparticle eq 'true'}">
-					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
+				<c:if test="${canCreateSample eq 'true'}">
+					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="355,175,450,220" alt="rectangle" />
-					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
+					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="355,280,450,315" alt="rectangle" />
-					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
+					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="360,370,455,420" alt="rectangle" />
-					<area href="nanoparticleSample.do?dispatch=setupNew&page=0"
+					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="475,155,620,420" alt="rectangle" />
 				</c:if>
 			</map>
