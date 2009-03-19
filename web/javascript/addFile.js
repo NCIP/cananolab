@@ -1,5 +1,5 @@
 /* 
- * for Add File link on Composition Particle Entity page
+ * for Add File link on Composition Nanomaterial Entity page
  */
 function addFileClone() {
 	var pattern = document.getElementById("filePatternDiv");

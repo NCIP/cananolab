@@ -6,7 +6,7 @@ function getLocalCounts(selectEleId, countType, dispatch) {
 
 function getAllGridCounts(location) {
 	getGridCounts(location, "protocolCount", "countProtocols");
-	getGridCounts(location, "particleCount", "countParticles");
+	getGridCounts(location, "sampleCount", "countSamples");
     getGridCounts(location, "publicationCount", "countPublications");
 }
 
@@ -15,17 +15,17 @@ function getGridCounts(location, countType, dispatch) {
 	// display progress.gif while waiting for the response.
 	var loaderimg = "<img src=\"images/ajax-loader.gif\" border=\"0\" class=\"counts\">";
 	document.getElementById(countType).innerHTML = loaderimg;
-	
+
 	//var gridNode = selectEle.options[location.options.selectedIndex].value;
 	var gridNodesStr = getSelectedOptions(location);
-	
+
 	var url = "/caNanoLab/publicCount.do?dispatch=" + dispatch + "&searchLocations=";
 	url += gridNodesStr;
 	//alert(countType);
     // Perform the AJAX request using a non-IE browser.
 	if (window.XMLHttpRequest) {
 		request = new XMLHttpRequest();
-  
+
       // Register callback function that will be called when
       // the response is generated from the server.
 		request.onreadystatechange = function(){ updateCount(request, countType); };
@@ -60,10 +60,10 @@ function  updateCount(request, countType) {
 	}
 }
 
-function gotoParticles(dispatch) {
+function gotoSamples(dispatch) {
 	var selectEle = document.getElementById("location");
 	var gridNodesStr = getSelectedOptions(selectEle);
-	var url = "/caNanoLab/searchNanoparticle.do?dispatch="+dispatch+"&searchLocations=";
+	var url = "/caNanoLab/searchSample.do?dispatch="+dispatch+"&searchLocations=";
 	url += gridNodesStr;
 	gotoPage(url);
 	return false;

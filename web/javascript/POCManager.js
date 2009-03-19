@@ -4,7 +4,7 @@ function setupPOC(form, selectEleId) {
 	var selectEle = document.getElementById(selectEleId);
 	var otext = selectEle.options[selectEle.options.selectedIndex].text;
 	if(otext == "[Other]") {
-		form.action = "nanoparticleSample.do?dispatch=newPointOfContact&page=0";
+		form.action = "sample.do?dispatch=newPointOfContact&page=0";
 		form.submit();
 	}
 	return false;
@@ -41,8 +41,8 @@ function setSecondaryPOC(selectEleId, pocIndex) {
 	var selectEle = document.getElementById(selectEleId);
 	var pocId = selectEle.options[selectEle.options.selectedIndex].value;
 	CommonManager.getPointOfContact(pocIndex + "_" + pocId, function (data) {
-			dwr.util.removeAllOptions("nanoparticleEntityTypes");
-			dwr.util.addOptions("nanoparticleEntityTypes", data);
+			dwr.util.removeAllOptions("nanomaterialEntityTypes");
+			dwr.util.addOptions("nanomaterialEntityTypes", data);
 		});
 }
 

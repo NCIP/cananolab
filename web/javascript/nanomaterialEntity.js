@@ -1,4 +1,4 @@
-// for Composition Particle Entity:
+// for Composition Nanomaterial Entity:
 /**********************************/
 var peTableIdArray = new Array("biopolymerTable", "carbonNanotubeTable", "dendrimerTable", "emulsionTable",
 		"fullereneTable", "liposomeTable", "metalParticleTable", "polymerTable", "quantumDotTable", "Table");
@@ -34,7 +34,7 @@ function getSelectElement(eventObj) {
 	return selectEle;
 }
 /* 
- * for Add File link on Composition Particle Entity page
+ * for Add File link on Composition Nanomaterial Entity page
  */
 function addFileClone() {
 	var pattern = document.getElementById("filePatternDiv");
@@ -80,7 +80,7 @@ function removeFileTable(e) {
 	document.getElementById("fileCount").firstChild.nodeValue = fileCount;
 }
 /* 
- * for Add Composing Element link on Composition Particle Entity page
+ * for Add Composing Element link on Composition Nanomaterial Entity page
  */
 function addComposingElement() {
 	var compEleCount = document.getElementById("compEleCount").firstChild.nodeValue;
@@ -226,7 +226,7 @@ function removeComposingElement(e) {
 }
 
 /* 
- * for Add Inherent Function link on Composition Particle Entity page
+ * for Add Inherent Function link on Composition Nanomaterial Entity page
  */
 function addInherentFunction(e) {
 	var el = window.event ? window.event.srcElement : e ? e.currentTarget : null;
@@ -299,9 +299,9 @@ function removeInherentFunction(e) {
 	return false;
 }
 
-function getComposingElementOptions(particleEntityTypeId,
+function getComposingElementOptions(nanomaterialEntityTypeId,
 									compEleTypeId) {
-	var compFuncTypeValue = dwr.util.getValue(particleEntityTypeId);
+	var compFuncTypeValue = dwr.util.getValue(nanomaterialEntityTypeId);
 	
 	CompositionEntityManager.getComposingElementTypeOptions(compFuncTypeValue, function(data) {
 			

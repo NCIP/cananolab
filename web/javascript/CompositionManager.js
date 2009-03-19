@@ -219,14 +219,14 @@ function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId)
 	} else {
 		dwr.util.removeAllOptions(entityTypeId);
 	}
-	if (compositionType != "Nanoparticle Entity") {
+	if (compositionType != "Nanomaterial Entity") {
 		compEle.style.display = "none";
 	}
 }
 function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEleTypeId, compEleId) {
 	var compositionType = dwr.util.getValue(compositionTypeId);
 	var compEle = document.getElementById(compEleId);
-	if (compositionType == "Nanoparticle Entity") {
+	if (compositionType == "Nanomaterial Entity") {
 		var entityId = dwr.util.getValue(entityTypeId);
 		if (entityId != "") {
 			CompositionManager.getAssociatedComposingElements(entityId, function (data) {
@@ -272,7 +272,7 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 }
 /*
  * the following functions using AJAX to display modality dropdown menu in the 
- * bodyNanoparticleEntityUpdate.jsp and bodyFunctionUpdate.jsp
+ * bodyNanomaterialEntityUpdate.jsp and bodyFunctionUpdate.jsp
  *
  */
 /*

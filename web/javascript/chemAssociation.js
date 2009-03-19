@@ -4,20 +4,20 @@
  
 //element A
 function selectEntityTypeOptionsA() {
-	getAssociatedElementOptions("particleFuncEntityTypeA",
+	getAssociatedElementOptions("sampleFuncEntityTypeA",
 		"entityTypeA", "compEleTypeA");
 }
 
 //element B
 function selectEntityTypeOptionsB() {
-	getAssociatedElementOptions("particleFuncEntityTypeB",
+	getAssociatedElementOptions("sampleFuncEntityTypeB",
 		"entityTypeB", "compEleTypeB");
 
 }
 
-function getAssociatedElementOptions(particleFuncEntityTypeId,
+function getAssociatedElementOptions(sampleFuncEntityTypeId,
 									entityTypeId, compEleTypeId) {
-	var compFuncTypeValue = dwr.util.getValue(particleFuncEntityTypeId);
+	var compFuncTypeValue = dwr.util.getValue(sampleFuncEntityTypeId);
 	var entityTypeEle = document.getElementById(entityTypeId);
 	var compEleTypeEle = document.getElementById(compEleTypeId);
 	if(compFuncTypeValue == null || compFuncTypeValue.length == 0) {
@@ -31,7 +31,7 @@ function getAssociatedElementOptions(particleFuncEntityTypeId,
   		
   		entityTypeEle.style.display = "inline";
   			
-  		if(compFuncTypeValue == "nanoparticleEntity") {
+  		if(compFuncTypeValue == "nanomaterialEntity") {
   			compEleTypeEle.style.display = "inline";
   		} else {
   			compEleTypeEle.style.display = "none";

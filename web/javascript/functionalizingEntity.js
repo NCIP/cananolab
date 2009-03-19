@@ -19,7 +19,7 @@ function displayFunctionalizingEntity(selectEle) {
 }
 
 /* 
- * for Add Composing Element link on Composition Particle Entity page
+ * for Add Composing Element link on Composition Nanomaterial Entity page
  */
 function addFunction() {
 	var functionCount = document.getElementById("functionCount").firstChild.nodeValue;

@@ -4,16 +4,16 @@ function setPublicationDropdowns() {
 			dwr.util.removeAllOptions("publicationCategories");
 			dwr.util.addOptions("publicationCategories", data);
 		});
-	NanoparticleSampleManager.getNanoparticleEntityTypes(searchLocations, function (data) {
-			dwr.util.removeAllOptions("nanoparticleEntityTypes");
-			dwr.util.addOptions("nanoparticleEntityTypes", data);
+	SampleManager.getNanomaterialEntityTypes(searchLocations, function (data) {
+			dwr.util.removeAllOptions("nanomaterialEntityTypes");
+			dwr.util.addOptions("nanomaterialEntityTypes", data);
 		});
-	NanoparticleSampleManager.getFunctionalizingEntityTypes(searchLocations, function (data) {
+	SampleManager.getFunctionalizingEntityTypes(searchLocations, function (data) {
 			dwr.util.removeAllOptions("functionalizingEntityTypes");
 			dwr.util.addOptions("functionalizingEntityTypes", data);
 		});
 
-	NanoparticleSampleManager.getFunctionTypes(searchLocations, function (data) {
+	SampleManager.getFunctionTypes(searchLocations, function (data) {
 			dwr.util.removeAllOptions("functionTypes");
 			dwr.util.addOptions("functionTypes", data);
 		});
@@ -92,15 +92,15 @@ function setSearchReportFields() {
 	}
 }
 
-function addPubmed(form, particleId) {
+function addPubmed(form, sampleId) {
 	var pubmedId = document.getElementById('pubmedId').value;
-	form.action = "publication.do?dispatch=setupPubmed&page=0&location=local&particleId=" + particleId + "&pubmedId=" + pubmedId;
+	form.action = "publication.do?dispatch=setupPubmed&page=0&location=local&sampleId=" + sampleId + "&pubmedId=" + pubmedId;
 	form.submit();
 }
-function setupReport(form, particleId) {
+function setupReport(form, sampleId) {
 	var selectEle = document.getElementById('file.domainFile.category');
 	if(selectEle.options[selectEle.options.selectedIndex].value == 'report') {
-		form.action = "publication.do?dispatch=setupReport&page=0&location=local&particleId=" + particleId;
+		form.action = "publication.do?dispatch=setupReport&page=0&location=local&sampleId=" + sampleId;
 		form.submit();
 	}
 	return false;
