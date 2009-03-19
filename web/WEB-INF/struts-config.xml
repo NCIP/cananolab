@@ -36,7 +36,7 @@
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.caNanoLabException" path="home.error"
-			type="java.lang.CaNanoLabException" />
+			type="java.lang.BaseException" />
 		<exception
 			handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 			key="error.generalException" path="home.error"
@@ -51,7 +51,7 @@
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="/home.jsp"
-				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
+				type="gov.nih.nci.cananolab.exception.SecurityException" />
 			<forward name="success" path="canano.welcome" />
 			<forward name="input" path="/welcome.do" />
 			<forward name="changePassword" path="canano.password" />
@@ -63,7 +63,7 @@
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.securityException" path="canano.password"
-				type="gov.nih.nci.cananolab.exception.CaNanoLabSecurityException" />
+				type="gov.nih.nci.cananolab.exception.SecurityException" />
 			<forward name="success" path="/welcome.do" />
 			<forward name="input" path="canano.password" />
 		</action>
@@ -102,13 +102,13 @@
 				key="error.grid.particle.query" path="canano.login"
 				type="gov.nih.nci.cananolab.exception.ParticleException" />
 		</action>
-	</action-mappings>	 
+	</action-mappings>
 	<controller>
 		<set-property value="true" property="inputForward" />
 		<set-property property="processorClass"
 			value="gov.nih.nci.cananolab.ui.core.CustomRequestProcessor" />
 		<set-property property="nocache" value="true" />
-	</controller>	
+	</controller>
 	<message-resources
 		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
 	<message-resources key="sample"
@@ -126,11 +126,10 @@
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
-			value="/WEB-INF/tiles-defs.xml,  												   
+			value="/WEB-INF/tiles-defs.xml,
                    /WEB-INF/tiles-defs-protocol.xml,
-                   /WEB-INF/tiles-defs-particle.xml,
-                   /WEB-INF/tiles-defs-publication.xml,
-                   /WEB-INF/tiles-defs-common.xml" />
+                   /WEB-INF/tiles-defs-sample.xml,
+                   /WEB-INF/tiles-defs-publication.xml"/>
 		<set-property property="definitions-debug" value="2" />
 		<set-property property="definitions-parser-details" value="2" />
 		<set-property property="definitions-parser-validate"
@@ -140,10 +139,9 @@
 		<set-property property="stopOnFirstError" value="false" />
 		<set-property property="pathnames"
 			value="/WEB-INF/validation.xml,
-			      /WEB-INF/validation-common.xml,
-			      /WEB-INF/validation-particle.xml,
-			      /WEB-INF/validation-publication.xml,	      
-			      /WEB-INF/validation-protocol.xml, 
+			      /WEB-INF/validation-sample.xml,
+			      /WEB-INF/validation-publication.xml,
+			      /WEB-INF/validation-protocol.xml,
                   /WEB-INF/validator-rules.xml" />
 	</plug-in>
 	<plug-in className="gov.nih.nci.cananolab.ui.core.CustomPlugIn" />

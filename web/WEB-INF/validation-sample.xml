@@ -4,18 +4,16 @@
 
 <form-validation>
 	<formset>
-		<form name="nanoparticleSampleForm">
-			<field
-				property="particleSampleBean.domainParticleSample.name" page="1"
+		<form name="sampleForm">
+			<field property="sampleBean.domain.name" page="1"
 				depends="required">
-				<arg position="0"
-					key="nanoparticleSampleForm.sampleName" bundle="particle" />
+				<arg position="0" key="sampleForm.sampleName"
+					bundle="particle" />
 			</field>
-			<field
-				property="particleSampleBean.pocBean.domain.id"
-				page="1" depends="validwhen">
-				<arg position="0"
-					key="nanoparticleSampleForm.pointOfContact" bundle="particle" />
+			<field property="sampleBean.pocBean.domain.id" page="1"
+				depends="validwhen">
+				<arg position="0" key="sampleForm.pointOfContact"
+					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -58,7 +56,7 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((assoc.associatedElementA.compositionType!='Nanoparticle
+						((assoc.associatedElementA.compositionType!='Nanomaterial
 						Entity') or (*this*!=0))
 					</var-value>
 				</var>
@@ -71,39 +69,39 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((assoc.associatedElementA.compositionType!='Nanoparticle
+						((assoc.associatedElementA.compositionType!='Nanomaterial
 						Entity') or (*this*!=0))
 					</var-value>
 				</var>
 			</field>
 		</form>
-		<form name="nanoparticleEntityForm">
+		<form name="nanomaterialEntityForm">
 			<field property="entity.type" page="2" depends="required">
-				<arg position="0" key="nanoparticleEntityType"
+				<arg position="0" key="nanomaterialEntityType"
 					bundle="particle" />
 			</field>
 			<field property="entity.carbonNanotube.diameter" page="2"
 				depends="float">
 				<arg position="0"
-					key="nanoparticleEntityForm.carbonNanotube.diameter"
+					key="nanomaterialEntityForm.carbonNanotube.diameter"
 					bundle="particle" />
 			</field>
 			<field property="entity.carbonNanotube.averageLength"
 				page="2" depends="float">
 				<arg position="0"
-					key="nanoparticleEntityForm.carbonNanotube.averageLength"
+					key="nanomaterialEntityForm.carbonNanotube.averageLength"
 					bundle="particle" />
 			</field>
 			<field property="entity.fullerene.numberOfCarbon" page="2"
 				depends="integer">
 				<arg position="0"
-					key="nanoparticleEntityForm.fullerene.numberOfCarbon"
+					key="nanomaterialEntityForm.fullerene.numberOfCarbon"
 					bundle="particle" />
 			</field>
 			<field property="entity.biopolymer.name" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleEntityForm.biopolymer.name" bundle="particle" />
+					key="nanomaterialEntityForm.biopolymer.name" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -114,7 +112,7 @@
 			<field property="entity.biopolymer.type" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleEntityForm.biopolymer.type" bundle="particle" />
+					key="nanomaterialEntityForm.biopolymer.type" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
@@ -125,7 +123,7 @@
 			<field property="entity.liposome.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleEntityForm.liposome.polymerName"
+					key="nanomaterialEntityForm.liposome.polymerName"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -139,7 +137,7 @@
 			<field property="entity.emulsion.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleEntityForm.emulsion.polymerName"
+					key="nanomaterialEntityForm.emulsion.polymerName"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -153,7 +151,7 @@
 			<field property="entity.polymer.crossLinkDegree" page="2"
 				depends="validwhen">
 				<arg position="0"
-					key="nanoparticleEntityForm.polymer.crossLinkDegree"
+					key="nanomaterialEntityForm.polymer.crossLinkDegree"
 					bundle="particle" />
 				<var>
 					<var-name>test</var-name>
@@ -168,7 +166,7 @@
 				depends="validwhen"
 				indexedListProperty="entity.composingElements">
 				<arg position="0"
-					key="nanoparticleEntityForm.elementType" bundle="particle" />
+					key="nanomaterialEntityForm.elementType" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
@@ -178,7 +176,7 @@
 				depends="validwhen"
 				indexedListProperty="entity.composingElements">
 				<arg position="0"
-					key="nanoparticleEntityForm.elementName" bundle="particle" />
+					key="nanomaterialEntityForm.elementName" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>(*this*!=null)</var-value>
@@ -216,8 +214,8 @@
 					<var-name>test</var-name>
 					<var-value>
 						(((*this*!=null) and
-						  (compFile.domainFile.uriExternal=="true")) or
-						 (compFile.domainFile.uriExternal=="false"))
+						(compFile.domainFile.uriExternal=="true")) or
+						(compFile.domainFile.uriExternal=="false"))
 					</var-value>
 				</var>
 			</field>
@@ -251,99 +249,101 @@
 		<form name="characterizationForm">
 			<field property="achar.characterizationType" page="2"
 				depends="required">
-				<arg position="0" key="characterizationType" bundle="particle" />
+				<arg position="0" key="characterizationType"
+					bundle="particle" />
 			</field>
 			<field property="achar.characterizationName" page="2"
 				depends="required">
-				<arg position="0" key="characterizationName" bundle="particle" />
+				<arg position="0" key="characterizationName"
+					bundle="particle" />
 			</field>
 			<!--
-			<field property="achar.theExperimentConfig.domain.technique.type"
+				<field property="achar.theExperimentConfig.domain.technique.type"
 				page="2" depends="validwhen">
 				<arg position="0" key="achar.technique.type"
-					bundle="particle" />
+				bundle="particle" />
 				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((achar.theExperimentConfig.domain.id==null) or
-						(*this*!=null))
-					</var-value>
+				<var-name>test</var-name>
+				<var-value>
+				((achar.theExperimentConfig.domain.id==null) or
+				(*this*!=null))
+				</var-value>
 				</var>
-			</field>
+				</field>
 			-->
 			<!-- TODO add type
-			<field property="achar.shape.maxDimension" page="2"
+				<field property="achar.shape.maxDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.maxDimension"
-					bundle="particle" />
-			</field>
-			<field property="achar.shape.minDimension" page="2"
+				bundle="particle" />
+				</field>
+				<field property="achar.shape.minDimension" page="2"
 				depends="float">
 				<arg position="0" key="shape.minDimension"
-					bundle="particle" />
-			</field>
-			<field property="achar.solubility.criticalConcentration"
+				bundle="particle" />
+				</field>
+				<field property="achar.solubility.criticalConcentration"
 				page="2" depends="float">
 				<arg position="0"
-					key="solubility.criticalConcentrationValue" bundle="particle" />
-			</field>
-			<field property="achar.solubility.criticalConcentrationUnit"
+				key="solubility.criticalConcentrationValue" bundle="particle" />
+				</field>
+				<field property="achar.solubility.criticalConcentrationUnit"
 				page="2" depends="validwhen">
 				<arg position="0"
-					key="solubility.criticalConcentrationUnit" bundle="particle" />
+				key="solubility.criticalConcentrationUnit" bundle="particle" />
 				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((achar.solubility.criticalConcentration==null)
-						or (*this*!=null))
-					</var-value>
+				<var-name>test</var-name>
+				<var-value>
+				((achar.solubility.criticalConcentration==null)
+				or (*this*!=null))
+				</var-value>
 				</var>
-			</field>
+				</field>
 			-->
-<!--			<field property="labFileBean.domainFile.title" page="2"-->
-<!--				depends="required,mask"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="file.title" bundle="particle" />-->
-<!--				<msg name="mask" key="file.title.invalid" />-->
-<!--				<var>-->
-<!--					<var-name>mask</var-name>-->
-<!--					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>-->
-<!--				</var>-->
-<!--			</field>-->
-<!--			<field property="labFileBean.domainFile.type" page="2"-->
-<!--				depends="required"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="file.type" bundle="particle" />-->
-<!--			</field>-->
-<!--			<field property="labFileBean.externalUrl" page="2"-->
-<!--				depends="validwhen"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="externalUrl"-->
-<!--					bundle="particle" />-->
-<!--				<var>-->
-<!--					<var-name>test</var-name>-->
-<!--					<var-value>-->
-<!--						(((*this*!=null) and-->
-<!--						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true")) or-->
-<!--						 (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))-->
-<!--					</var-value>-->
-<!--				</var>-->
-<!--			</field>-->
-<!--			<field property="labFileBean.uploadedFile" page="2"-->
-<!--				depends="validwhen"-->
-<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
-<!--				<arg position="0" key="uploadedFile"-->
-<!--					bundle="particle" />-->
-<!--				<var>-->
-<!--					<var-name>test</var-name>-->
-<!--					<var-value>-->
-<!--						(((achar.derivedBioAssayDataList[].labFileBean.domainFile.uri!=null) or-->
-<!--						 ((*this*!=null) and-->
-<!--						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))) or-->
-<!--						(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))-->
-<!--					</var-value>-->
-<!--				</var>-->
-<!--			</field>-->
+			<!--			<field property="labFileBean.domainFile.title" page="2"-->
+			<!--				depends="required,mask"-->
+			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
+			<!--				<arg position="0" key="file.title" bundle="particle" />-->
+			<!--				<msg name="mask" key="file.title.invalid" />-->
+			<!--				<var>-->
+			<!--					<var-name>mask</var-name>-->
+			<!--					<var-value>^[a-zA-Z0-9\-\_\s]*$</var-value>-->
+			<!--				</var>-->
+			<!--			</field>-->
+			<!--			<field property="labFileBean.domainFile.type" page="2"-->
+			<!--				depends="required"-->
+			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
+			<!--				<arg position="0" key="file.type" bundle="particle" />-->
+			<!--			</field>-->
+			<!--			<field property="labFileBean.externalUrl" page="2"-->
+			<!--				depends="validwhen"-->
+			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
+			<!--				<arg position="0" key="externalUrl"-->
+			<!--					bundle="particle" />-->
+			<!--				<var>-->
+			<!--					<var-name>test</var-name>-->
+			<!--					<var-value>-->
+			<!--						(((*this*!=null) and-->
+			<!--						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true")) or-->
+			<!--						 (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))-->
+			<!--					</var-value>-->
+			<!--				</var>-->
+			<!--			</field>-->
+			<!--			<field property="labFileBean.uploadedFile" page="2"-->
+			<!--				depends="validwhen"-->
+			<!--				indexedListProperty="achar.derivedBioAssayDataList">-->
+			<!--				<arg position="0" key="uploadedFile"-->
+			<!--					bundle="particle" />-->
+			<!--				<var>-->
+			<!--					<var-name>test</var-name>-->
+			<!--					<var-value>-->
+			<!--						(((achar.derivedBioAssayDataList[].labFileBean.domainFile.uri!=null) or-->
+			<!--						 ((*this*!=null) and-->
+			<!--						  (achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="false"))) or-->
+			<!--						(achar.derivedBioAssayDataList[].labFileBean.domainFile.uriExternal=="true"))-->
+			<!--					</var-value>-->
+			<!--				</var>-->
+			<!--			</field>-->
 		</form>
 		<form name="characterizationMultiDeletionForm">
 			<field property="charIds" depends="required" page="2">
@@ -351,7 +351,7 @@
 					bundle="particle" />
 			</field>
 		</form>
-		<form name="searchNanoparticleSampleForm">
+		<form name="searchSampleForm">
 			<field property="text" page="1" depends="mask">
 				<arg position="0" key="text" bundle="particle" />
 				<msg name="mask" key="text.invalid" />
@@ -359,6 +359,21 @@
 					<var-name>mask</var-name>
 					<var-value>^[a-zA-Z0-9\-\_\s\"']*$</var-value>
 				</var>
+			</field>
+		</form>
+		<form name="submitPointOfContactForm">
+			<field property="poc.organization.name" page="2"
+				depends="required">
+				<arg position="0"
+					key="submitPointOfContactForm.organizationName"
+					bundle="pointOfContact" />
+			</field>
+			<field property="organization.name" page="2"
+				depends="required"
+				indexedListProperty="otherPoc.otherPointOfContacts">
+				<arg position="0"
+					key="submitPointOfContactForm.organizationName"
+					bundle="pointOfContact" />
 			</field>
 		</form>
 	</formset>

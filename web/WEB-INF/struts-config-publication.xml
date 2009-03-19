@@ -14,13 +14,13 @@
 
 		<form-bean name="searchPublicationForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="particleSampleBean"
-				type="gov.nih.nci.cananolab.dto.particle.ParticleBean" />
+			<form-property name="sampleBean"
+				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
 			<form-property name="publicationOrReport"
 				type="java.lang.String[]" />
 			<form-property name="researchArea"
 				type="java.lang.String[]" />
-			<form-property name="nanoparticleEntityTypes"
+			<form-property name="nanomaterialEntityTypes"
 				type="java.lang.String[]" />
 			<form-property name="functionalizingEntityTypes"
 				type="java.lang.String[]" />
@@ -35,7 +35,7 @@
 			<form-property name="pubMedId" type="java.lang.String" />
 			<form-property name="digitalObjectId" type="java.lang.String" />
 			<form-property name="keywordsStr" type="java.lang.String" />
-			<form-property name="nanoparticleName" type="java.lang.String" />
+			<form-property name="sampleName" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
@@ -61,30 +61,30 @@
 			type="gov.nih.nci.cananolab.ui.publication.PublicationAction"
 			input="input">
 			<forward name="success" path="publication.message" />
-			<forward name="particleSuccess" path="particle.annotationMessage" />
+			<forward name="sampleSuccess" path="sample.annotationMessage" />
 			<forward name="input"
 				path="/publication.do?dispatch=input&amp;page=0" />
 			<forward name="view" path="publication.viewPublication" />
-			<forward name="particleDetailView" path="particle.detailViewPublication" />
+			<forward name="sampleDetailView" path="sample.detailViewPublication" />
 			<forward name="publicationDetailView" path="publication.detailViewPublication" />
-			<forward name="summaryView" path="particle.publication.summaryView" />
-			<forward name="summaryEdit" path="particle.publication.summaryEdit" />
+			<forward name="summaryView" path="sample.publication.summaryView" />
+			<forward name="summaryEdit" path="sample.publication.summaryEdit" />
 			<forward name="publicationSubmitPublication"
 				path="publication.submitPublication" />
-			<forward name="particleSubmitPublication"
-				path="particle.submitPublication" />
+			<forward name="sampleSubmitPublication"
+				path="sample.submitPublication" />
 			<forward name="publicationSubmitPubmedPublication"
 				path="publication.submitPublicationPubmed" />
-			<forward name="particleSubmitPubmedPublication"
-				path="particle.submitPublicationPubmed" />
-			<forward name="particleViewPublication"
-				path="particle.viewPublication" />
-			<forward name="particleSuccess"
-				path="particle.annotationMessage" />
+			<forward name="sampleSubmitPubmedPublication"
+				path="sample.submitPublicationPubmed" />
+			<forward name="sampleViewPublication"
+				path="sample.viewPublication" />
+			<forward name="sampleSuccess"
+				path="sample.annotationMessage" />
 			<forward name="publicationSubmitReport"
 				path="publication.submitReport" />
-			<forward name="particleSubmitReport"
-				path="particle.submitReport" />
+			<forward name="sampleSubmitReport"
+				path="sample.submitReport" />
 		</action>
 		<action path="/publicationResults"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
@@ -95,7 +95,7 @@
 			scope="request">
 			<forward name="input" path="publication.searchPublication" />
 			<forward name="success" path="publication.searchPublicationResult" />
-			<forward name="publicationView" path="particle.publicationInfo" />
+			<forward name="publicationView" path="sample.publicationInfo" />
 		</action>
 		<action path="/managePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
@@ -105,7 +105,7 @@
 			parameter="publication.choosePublication" scope="request" />
 		<action path="/chooseParticlePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
-			parameter="particle.choosePublication" scope="request" />
+			parameter="sample.choosePublication" scope="request" />
 	</action-mappings>
 </struts-config>
 
