@@ -1,10 +1,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	String cr = System.getProperty("line.separator");
+	application.setAttribute("cr", cr);
+%>
 <html>
 	<head>
-		<title><tiles:getAsString name="title" ignore="true" />
-		</title>
+		<title><tiles:getAsString name="title" ignore="true" /></title>
 		<meta name="keywords"
 			content="nano informatics, nanotechnology model, caNanoLab, nanotechnology, nanoparticle, cancer, information model, portal, data portal, data repository, caBIG, caGRID, NCL, nano characterization, nanoparticle composition, Cancer Nanotechnology Excellence">
 		<meta name="description"
@@ -25,10 +28,10 @@
 	<tiles:importAttribute name="onloadJavascript" />
 	<c:choose>
 		<c:when test="${! empty onloadJavascript}">
-			<body style="cursor:default" onload="${onloadJavascript}">
+			<body style="cursor: default" onload="${onloadJavascript}">
 		</c:when>
 		<c:otherwise>
-			<body style="cursor:default">
+			<body style="cursor: default">
 		</c:otherwise>
 	</c:choose>
 	<body>

@@ -1,5 +1,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%
+	String cr = System.getProperty("line.separator");
+	application.setAttribute("cr", cr);
+%>
 <html>
 	<head>
 		<title><tiles:getAsString name="title" ignore="true" />
