@@ -17,7 +17,7 @@
 				<jsp:param name="topic" value="publication_page_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
-			<c:if test="${empty docParticleId}">
+			<c:if test="${empty docSampleId}">
 			<c:url var="url" value="searchPublication.do">
 				<c:param name="page" value="1" />
 				<c:param name="dispatch" value="search" />
@@ -42,8 +42,8 @@
 							<tr>
 								<td class="formTitle" width="100%">
 									<c:choose>
-										<c:when test="${!empty docParticleId }">
-											${fn:toUpperCase(param.location)} ${particleName}
+										<c:when test="${!empty docSampleId }">
+											${fn:toUpperCase(param.location)} ${sampleName}
 										</c:when>
 										<c:otherwise>
 											${fn:toUpperCase(param.location)}
@@ -55,14 +55,14 @@
 									<c:url var="url" value="publication.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
-										<c:param name="particleId" value="${param.particleId}" />
+										<c:param name="sampleId" value="${param.sampleId}" />
 										<c:param name="fileId" value="${param.publicationId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${param.location}" />
 									</c:url>
 
 									<c:if
-										test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
+										test="${canCreateSample eq 'true' && param.location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit publication"
@@ -79,7 +79,7 @@
 									<c:url var="exportUrl" value="publication.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="exportDetail" />
-										<c:param name="particleId" value="${particleId}" />
+										<c:param name="sampleId" value="${sampleId}" />
 										<c:param name="publicationId"
 											value="${publicationForm.map.file.domainFile.id}" />
 										<c:param name="submitType" value="${submitType}" />

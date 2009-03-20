@@ -40,10 +40,10 @@
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
-							nanoparticle samples in the database. Please make sure to <html:link
-								page="/nanoparticleSample.do?dispatch=setupNew&page=0&location=local"
+							samples in the database. Please make sure to <html:link
+								page="/sample.do?dispatch=setupNew&page=0&location=local"
 								scope="page">create
-							a new nanoparticle sample</html:link> first. </font>
+							a new sample</html:link> first. </font>
 					</td>
 				</tr>
 			</c:when>
@@ -120,7 +120,7 @@
 										<br>
 										<html:text property="file.domainFile.pubMedId" size="30"
 											styleId="pubmedId"
-											onchange="javascript:addPubmed(publicationForm, '${docParticleId}'); return false;" />
+											onchange="javascript:addPubmed(publicationForm, '${docSampleId}'); return false;" />
 										<br>
 										<i>After entering a valid PubMed ID and clicking outside
 											of the text field, <br>the related fields (DOI, title,
@@ -335,7 +335,7 @@
 									</table>
 									<br>
 									<c:choose>
-										<c:when test="${empty docParticleId}">
+										<c:when test="${empty docSampleId}">
 											<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 												width="100%" align="center" summary="" border="0">
 												<tbody>
@@ -348,10 +348,10 @@
 													</tr>
 													<tr>
 														<td class="leftLabel" valign="top" width="20%">
-															<strong>Nanoparticle Sample Name</strong>
+															<strong>Sample Name</strong>
 														</td>
 														<td class="rightLabel">
-															<html:select property="file.particleNames"
+															<html:select property="file.sampleNames"
 																multiple="true" size="5">
 																<html:options name="allParticleNames" />
 															</html:select>
@@ -374,14 +374,14 @@
 												<c:choose>
 													<c:when test="${!empty otherParticleNames}">
 														<tr>
-															<input type="hidden" name="file.particleNames"
-																value="${particleName}">
+															<input type="hidden" name="file.sampleNames"
+																value="${sampleName}">
 															<td class="leftLabel" valign="top" width="20%">
-																<strong>Copy to other ${particlePointOfContact}
+																<strong>Copy to other ${samplePointOfContact}
 																	nanoparticle</strong>
 															</td>
 															<td class="rightLabel">
-																<html:select property="file.particleNames" multiple="true"
+																<html:select property="file.sampleNames" multiple="true"
 																	size="5">
 																	<html:options collection="otherParticleNames"
 																		property="name" labelProperty="name" />
@@ -392,7 +392,7 @@
 													<c:otherwise>
 														<tr>
 															<td class="completeLabel" colspan="2">
-																There are no other particles from source ${particlePointOfContact}
+																There are no other particles from source ${samplePointOfContact}
 																to copy annotation to.
 															</td>
 														</tr>
@@ -448,10 +448,10 @@
 																	<c:set var="dataId"
 																		value="${publicationForm.map.file.domainFile.id}" />
 																	<c:set var="origUrl"
-																		value="publication.do?page=0&particleId=${docParticleId }&dispatch=setupNew&location=local" />
+																		value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupNew&location=local" />
 																	<c:if test="${!empty dataId}">
 																		<c:set var="origUrl"
-																			value="publication.do?page=0&particleId=${docParticleId }&dispatch=setupUpdate&location=local&fileId=${dataId }" />
+																			value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupUpdate&location=local&fileId=${dataId }" />
 																	</c:if>
 																	<input type="reset" value="Reset"
 																		onclick="javascript:window.location.href='${origUrl}'">
@@ -460,8 +460,8 @@
 																		value="publications">
 																	<input type="hidden" name="page" value="2">
 																	<input type="hidden" name="location" value="local">
-																	<input type="hidden" name="particleId"
-																		value="${docParticleId}">
+																	<input type="hidden" name="sampleId"
+																		value="${docSampleId}">
 																	<html:submit />
 																</div>
 															</div>

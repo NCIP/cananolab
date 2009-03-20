@@ -32,10 +32,10 @@
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
-							nanoparticle samples in the database. Please make sure to <html:link
-								page="/nanoparticleSample.do?dispatch=setupNew&page=0&location=${location}"
+							samples in the database. Please make sure to <html:link
+								page="/sample.do?dispatch=setupNew&page=0&location=${location}"
 								scope="page">create
-							a new nanoparticle sample</html:link> first. </font>
+							a new sample</html:link> first. </font>
 					</td>
 				</tr>
 			</c:when>
@@ -63,7 +63,7 @@
 									<td class="label" colspan="3">
 										<html:select property="file.domainFile.category"
 											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');
-													setupReport(publicationForm, '${param.particleId}');"
+													setupReport(publicationForm, '${param.sampleId}');"
 											styleId="file.domainFile.category">
 											<option value=""></option>
 											<html:options name="publicationCategories" />
@@ -112,7 +112,7 @@
 										<br>
 										<html:text property="file.domainFile.pubMedId" size="30"
 											styleId="pubmedId"
-											onchange="javascript:addPubmed(publicationForm, '${param.particleId}'); return false;" />
+											onchange="javascript:addPubmed(publicationForm, '${param.sampleId}'); return false;" />
 										<br>
 										<i>After entering a valid PubMed ID and clicking outside
 											of the text field, <br>the related fields (DOI, title,
@@ -242,7 +242,7 @@
 
 
 						<c:choose>
-							<c:when test="${empty param.particleId}">
+							<c:when test="${empty param.sampleId}">
 								<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 									width="100%" align="center" summary="" border="0">
 									<tbody>
@@ -255,10 +255,10 @@
 										</tr>
 										<tr>
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Nanoparticle Sample Name</strong>
+												<strong>Sample Name</strong>
 											</td>
 											<td class="rightLabel">
-												<html:select property="file.particleNames" multiple="true"
+												<html:select property="file.sampleNames" multiple="true"
 													size="5">
 													<html:options name="allParticleNames" />
 												</html:select>
@@ -281,14 +281,14 @@
 										<c:choose>
 											<c:when test="${!empty otherParticleNames}">
 												<tr>
-													<input type="hidden" name="file.particleNames"
-														value="${particleName}">
+													<input type="hidden" name="file.sampleNames"
+														value="${sampleName}">
 													<td class="leftLabel" valign="top" width="20%">
-														<strong>Copy to other ${particlePointOfContact}
+														<strong>Copy to other ${samplePointOfContact}
 															nanoparticle</strong>
 													</td>
 													<td class="rightLabel">
-														<html:select property="file.particleNames" multiple="true"
+														<html:select property="file.sampleNames" multiple="true"
 															size="5">
 															<html:options collection="otherParticleNames"
 																property="name" labelProperty="name" />
@@ -300,7 +300,7 @@
 												<tr>
 													<td class="completeLabel" colspan="2">
 														There are no other particles from source
-														${particlePointOfContact} to copy annotation to.
+														${samplePointOfContact} to copy annotation to.
 													</td>
 												</tr>
 											</c:otherwise>
@@ -354,10 +354,10 @@
 														<c:set var="dataId"
 															value="${publicationForm.map.file.domainFile.id}" />
 														<c:set var="origUrl"
-															value="publication.do?page=0&dispatch=setupNew&particleId=${docParticleId }&location=${location}" />
+															value="publication.do?page=0&dispatch=setupNew&sampleId=${docSampleId }&location=${location}" />
 														<c:if test="${!empty dataId}">
 															<c:set var="origUrl"
-																value="publication.do?page=0&dispatch=setupUpdate&particleId=${docParticleId }&location=${location}&fileId=${dataId }" />
+																value="publication.do?page=0&dispatch=setupUpdate&sampleId=${docSampleId }&location=${location}&fileId=${dataId }" />
 														</c:if>
 														<input type="reset" value="Reset"
 															onclick="javascript:window.location.href='${origUrl}'">
@@ -366,9 +366,9 @@
 														<input type="hidden" name="location" value="local">
 														<input type="hidden" name="submitType"
 															value="publications">
-														<%--														<c:if test="${!empty param.particleId}">--%>
-														<%--															<input type="hidden" name="particleId"--%>
-														<%--																value="${param.particleId}">--%>
+														<%--														<c:if test="${!empty param.sampleId}">--%>
+														<%--															<input type="hidden" name="sampleId"--%>
+														<%--																value="${param.sampleId}">--%>
 														<%--														</c:if>--%>
 														<html:submit />
 													</div>

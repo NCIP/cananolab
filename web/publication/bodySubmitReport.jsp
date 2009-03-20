@@ -31,10 +31,10 @@
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
-							nanoparticle samples in the database. Please make sure to <html:link
-								page="/nanoparticleSample.do?dispatch=setupNew&page=0&location=${location}"
+							samples in the database. Please make sure to <html:link
+								page="/sample.do?dispatch=setupNew&page=0&location=${location}"
 								scope="page">create
-							a new nanoparticle sample</html:link> first. </font>
+							a new sample</html:link> first. </font>
 					</td>
 				</tr>
 			</c:when>
@@ -206,10 +206,10 @@
 									</td>
 								</tr>
 								<c:choose>
-									<c:when test="${empty param.particleId}">
+									<c:when test="${empty param.sampleId}">
 										<tr>
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Nanoparticle Sample Name*</strong>
+												<strong>Sample Name*</strong>
 											</td>
 											<td class="rightLabel" colspan="3">
 												<html:select property="file.particleNames" multiple="true"
@@ -221,14 +221,14 @@
 									</c:when>
 									<c:otherwise>
 										<tr>
-											<input type="hidden" name="file.particleNames"
-												value="${particleName}">
+											<input type="hidden" name="file.sampleNames"
+												value="${sampleName}">
 											<td class="leftLabel" valign="top" width="20%">
-												<strong>Copy to other ${particlePointOfContact}
-													nanoparticle</strong>
+												<strong>Copy to other ${samplePointOfContact}
+													canano</strong>
 											</td>
 											<td class="rightLabel" colspan="3">
-												<html:select property="file.particleNames" multiple="true"
+												<html:select property="file.sampleNames" multiple="true"
 													size="5">
 													<html:options collection="otherParticleNames"
 														property="name" labelProperty="name" />
@@ -292,9 +292,9 @@
 														<input type="hidden" name="submitType"
 															value="publications">
 														<input type="hidden" name="page" value="2">
-														<%--														<c:if test="${!empty param.particleId}">--%>
-														<%--															<input type="hidden" name="particleId"--%>
-														<%--																value="${param.particleId}">--%>
+														<%--														<c:if test="${!empty param.sampleId}">--%>
+														<%--															<input type="hidden" name="sampleId"--%>
+														<%--																value="${param.sampleId}">--%>
 														<%--														</c:if>--%>
 														<html:hidden property="file.domainFile.category" />
 														<html:submit />

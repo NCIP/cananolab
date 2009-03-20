@@ -6,7 +6,7 @@
 <script type="text/javascript"
 	src="/caNanoLab/dwr/interface/PublicationManager.js"></script>
 <script type="text/javascript"
-	src="/caNanoLab/dwr/interface/NanoparticleSampleManager.js"></script>
+	src="/caNanoLab/dwr/interface/SampleManager.js"></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 <html:form action="searchPublication">
@@ -155,18 +155,18 @@
 							<strong>Nanoparticle Name</strong>
 						</td>
 						<td class="rightLabel" colspan="5" valign="top">
-							<html:text property="nanoparticleName" size="20" />
+							<html:text property="sampleName" size="20" />
 							<em>* for searching wildcards</em>
 						</td>
 					</tr>
 					<tr>
 						<td class="leftLabel" valign="top">
-							<strong>Composition<br> Nanoparticle Entity</strong>
+							<strong>Composition<br> Nanomaterial Entity</strong>
 						</td>
 						<td class="label" valign="top">
-							<strong><html:select property="nanoparticleEntityTypes"
-									styleId="nanoparticleEntityTypes" multiple="true" size="4">
-									<html:options name="nanoparticleEntityTypes" />
+							<strong><html:select property="nanomaterialEntityTypes"
+									styleId="nanomaterialEntityTypes" multiple="true" size="4">
+									<html:options name="nanomaterialEntityTypes" />
 								</html:select> </strong>
 						</td>
 						<td class="label" valign="top">

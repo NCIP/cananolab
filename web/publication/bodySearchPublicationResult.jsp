@@ -32,7 +32,7 @@
 				<display:column title="Research<br>Category"
 					property="researchArea" sortable="true" />
 				<display:column title="Associated Particle<br>Sample Names"
-					property="particleNames" sortable="true" />
+					property="sampleNames" sortable="true" />
 				<display:column title="Created<br>Date"
 					property="domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />

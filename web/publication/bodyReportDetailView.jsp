@@ -17,7 +17,7 @@
 				<jsp:param name="topic" value="report_page_help" />
 				<jsp:param name="glossaryTopic" value="glossary_help" />
 			</jsp:include>
-			<c:if test="${empty docParticleId}">
+			<c:if test="${empty docSampleId}">
 			<c:url var="url" value="searchPublication.do">
 				<c:param name="page" value="1" />
 				<c:param name="dispatch" value="search" />
@@ -42,8 +42,8 @@
 							<tr>
 								<td class="formTitle" width="100%">
 									<c:choose>
-										<c:when test="${!empty docParticleId }">
-											${fn:toUpperCase(param.location)} ${particleName}
+										<c:when test="${!empty docSampleId }">
+											${fn:toUpperCase(param.location)} ${sampleName}
 										</c:when>
 										<c:otherwise>
 											${fn:toUpperCase(param.location)}
@@ -54,13 +54,13 @@
 									<c:url var="url" value="submitReport.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
-										<c:param name="particleId" value="${param.particleId}" />
+										<c:param name="sampleId" value="${param.sampleId}" />
 										<c:param name="reportId" value="${param.reportId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${param.location}" />
 									</c:url>
 									<c:if
-										test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
+										test="${canCreateSample eq 'true' && param.location eq 'local'}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit report"
@@ -70,28 +70,28 @@
 								<td>
 									<a href="javascript:printPage('${printDetailViewLinkURL}')"><img
 											src="images/icon_print_23x.gif"
-											alt="print report detail" 
+											alt="print report detail"
 											title="print report detail"  border="0"> </a>
 								</td>
 								<td>
 									<c:url var="exportUrl" value="submitReport.do">
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="exportDetail" />
-										<c:param name="particleId" value="${particleId}" />
+										<c:param name="sampleId" value="${sampleId}" />
 										<c:param name="reportId"
 											value="${param.reportId}" />
 										<c:param name="submitType" value="${submitType}" />
 										<c:param name="location" value="${param.location}" />
 									</c:url>
 									<a href="${exportUrl}"><img src="images/icon_excel_23x.gif"
-											alt="export report detail" 
+											alt="export report detail"
 											title="export report detail" border="0"> </a>
 								</td>
 							</tr>
 						</table>
 					</td>
 				</tr>
-			
+
 				<tr>
 					<th class="leftLabel" valign="top">
 						Title

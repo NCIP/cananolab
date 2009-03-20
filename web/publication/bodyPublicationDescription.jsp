@@ -14,7 +14,7 @@
 <tr>
 	<td colspan="2" class="welcomeContent">
 		This is the manage publications section which allows users to submit publications and
-		reports associated with a nanoparticle sample.  Publications can include book chapters, 
+		reports associated with a sample.  Publications can include book chapters, 
 		editorials, peer review articles, reports, reviews and other forms of documents.  
 		In this section, depending on your authorization level, you may submit a new publication 
 		or search for an existing publication.

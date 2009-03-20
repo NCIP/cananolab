@@ -29,7 +29,7 @@
 					<td class="formTitle"
 						colspan="4" align="center">
 
-							${fn:toUpperCase(location)} ${particleName} - Publications
+							${fn:toUpperCase(location)} ${sampleName} - Publications
 
 					</td>
 				</tr>
@@ -47,7 +47,7 @@
 						Year
 					</th>
 				</tr>
-				<c:forEach var="pubObj" items="${particleSampleBean.domainParticleSample.publicationCollection}">
+				<c:forEach var="pubObj" items="${sampleBean.domain.publicationCollection}">
 				<tr>
 					<td class="leftLabel">
 

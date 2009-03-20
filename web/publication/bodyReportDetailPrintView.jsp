@@ -24,7 +24,7 @@
 						cellspacing="0" class="topBorderOnly" summary="">
 						<tr>
 							<td class="formTitle" align="center" colspan="2">
-								${fn:toUpperCase(param.location)} ${particleName}
+								${fn:toUpperCase(param.location)} ${sampleName}
 							</td>
 						</tr>
 					<tr>
