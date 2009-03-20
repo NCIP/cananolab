@@ -73,7 +73,7 @@
 					<c:when
 						test="${! empty publicationSummaryView.category2Publications[type]}">
 						<div class="indented4">
-							<table class="summarytable" width="100%" border="0"
+							<table class="summarytable" width="90%" border="0"
 								cellpadding="0" cellspacing="0" summary="">
 								<tr>
 									<th width="20%">
@@ -148,7 +148,7 @@
 											</c:choose>
 										</td>
 										<td valign="top">
-											${pubObj.researchArea}&nbsp;
+											<c:out value="${fn:replace(pubObj.researchArea, ';', '<br>')}" escapeXml="false"/>&nbsp;
 										</td>
 										<td valign="top">
 											${pubBean.createdDateStr}&nbsp;
