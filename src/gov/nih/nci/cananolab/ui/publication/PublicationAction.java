@@ -294,7 +294,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		} else {
 			session.removeAttribute("docSampleId");
 		}
-		String publicationId = request.getParameter("fileId");
+		String publicationId = request.getParameter("publicationId");
 
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = publicationService
