@@ -103,7 +103,7 @@
 		<action path="/choosePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="publication.choosePublication" scope="request" />
-		<action path="/chooseParticlePublication"
+		<action path="/chooseSamplePublication"
 			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
 			parameter="sample.choosePublication" scope="request" />
 	</action-mappings>

@@ -64,14 +64,14 @@
 	<definition name="sample.publication.summaryView"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/publication/bodyParticlePublicationSummaryView.jsp" />
+			value="/publication/bodySamplePublicationSummaryView.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
 	<definition name="sample.publication.summaryEdit"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/publication/bodyParticlePublicationSummaryEdit.jsp" />
+			value="/publication/bodySamplePublicationSummaryEdit.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
