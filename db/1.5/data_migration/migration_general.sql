@@ -49,7 +49,7 @@ ALTER TABLE keyword_lab_file RENAME keyword_file;
 ALTER TABLE keyword_file
  DROP FOREIGN KEY FK_keyword_lab_file_keyword,
  DROP FOREIGN KEY FK_keyword_lab_file_lab_file,
- CHANGE lab_file_pk_id file_pk_id BIGINT(20) NOT NULL;
+ CHANGE lab_file_pk_id file_pk_id BIGINT NOT NULL;
 ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id);
 ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword

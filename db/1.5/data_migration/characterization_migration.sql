@@ -15,7 +15,7 @@ ALTER TABLE characterization ADD COLUMN assay_type VARCHAR(200);
 delete from common_lookup where attribute='cellDeathMethod';
 
 ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
 insert into common_lookup(name,attribute,value) values ('PhysicoChemicalCharacterization','displayName','Physico-Chemical Characterization');
 insert into common_lookup(name,attribute,value) values ('InvivoCharacterization','displayName','In Vivo Characterization');
@@ -58,7 +58,7 @@ where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability', 'T
 and attribute='displayName';
 
 ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
 CREATE TABLE characterization_file
 (

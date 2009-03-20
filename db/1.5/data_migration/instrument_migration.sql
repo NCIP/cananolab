@@ -61,7 +61,7 @@ ALTER TABLE canano.instrument
  DROP abbreviation;
 
 ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
 insert into common_lookup(attribute,name,value) values ('instrument','Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering Instrument');
 insert into common_lookup(attribute,name,value) values ('instrument','Atomic Force Microscopy','Atomic Force Microscope');
@@ -103,7 +103,7 @@ insert into common_lookup(attribute,name,value) values ('instrument','Matrix Ass
 insert into common_lookup(attribute,name,value) values ('instrument','Confocal Laser Scanning Microscopy','Confocal Microscope');
 
 ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
 CREATE TABLE experiment_config_instrument
 (

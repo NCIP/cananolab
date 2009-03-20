@@ -16,14 +16,14 @@ CREATE TABLE nanomaterial_entity
 ALTER TABLE other_nanoparticle_entity RENAME other_nanomaterial_entity;
 ALTER TABLE other_nanomaterial_entity
  DROP FOREIGN KEY FK_other_nanoparticle_entity_nanoparticle_entity,
- CHANGE other_nanoparticle_entity_pk_id other_nanomaterial_entity_pk_id BIGINT(20) NOT NULL;
+ CHANGE other_nanoparticle_entity_pk_id other_nanomaterial_entity_pk_id BIGINT NOT NULL;
 ALTER TABLE other_nanomaterial_entity  ADD CONSTRAINT
     FK_other_nanomaterial_entity_nanomaterial_entity FOREIGN KEY (other_nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id);
 
 ALTER TABLE composing_element
  DROP FOREIGN KEY FK_composing_element_associated_element,
  DROP FOREIGN KEY FK_composing_element_nanoparticle_entity,
- CHANGE nanoparticle_entity_pk_id nanomaterial_entity_pk_id BIGINT(20);
+ CHANGE nanoparticle_entity_pk_id nanomaterial_entity_pk_id BIGINT;
 ALTER TABLE composing_element
  ADD CONSTRAINT FK_composing_element_associated_element FOREIGN KEY (composing_element_pk_id) REFERENCES associated_element (associated_element_pk_id),
  ADD CONSTRAINT FK_composing_element_nanoparticle_entity FOREIGN KEY (nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id);

@@ -103,7 +103,7 @@ INSERT INTO datum(datum_pk_id, name, value, value_type, value_unit,
 ;
 
 ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
 insert into common_lookup(name,attribute, value) values ('Condition', 'name','Solvent Media');
 insert into common_lookup(name,attribute, value) values ('Condition', 'name','Culture Media');
@@ -221,7 +221,7 @@ where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability')
 and attribute='datumName';
 
 ALTER TABLE canano.common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
 --TODO migrate data from derived_datum to datum
 --DROP TABLE derived_datum;

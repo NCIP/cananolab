@@ -93,12 +93,12 @@ AND o.name = c.source
 ALTER TABLE characterization DROP COLUMN source;
 
 ALTER TABLE common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
 insert into common_lookup(name,attribute,value) values ('PointOfContact','role','Manufacturer');
 insert into common_lookup(name,attribute,value) values ('PointOfContact','role','Investigator');
 
 ALTER TABLE common_lookup
- CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20)  NOT NULL;
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
  DROP TABLE  nanoparticle_sample;
