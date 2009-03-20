@@ -17,6 +17,10 @@
 				</a>
 			</c:forEach>
 		</li>
+		<li>
+			<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>New</span>
+			</a>
+		</li>
 	</ul>
 </div>
 <c:forEach var="type" items="${publicationCategories}" varStatus="ind">
@@ -42,15 +46,25 @@
 					</a>
 				</li>
 			</c:forEach>
+			<li>
+				<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>New</span>
+				</a>
+			</li>
 		</ul>
 	</div>
 </c:forEach>
-<c:forEach var="type" items="${publicationCategories}" varStatus="ind">
+<c:forEach var="type" items="${publicationCategories}"
+	varStatus="ind">
 	<table id="summarySection${ind.count}" class="smalltable3"
 		cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>
 			<th align="left">
 				<a name="${type}" id="${type}">${type}</a>
+				&nbsp;&nbsp;&nbsp;
+				<a href="#" class="addlink"><img align="middle"
+						src="images/btn_add.gif" border="0" /></a>&nbsp;&nbsp;
+				<a><img align="middle" src="images/btn_delete.gif" border="0" />
+				</a>
 			</th>
 		</tr>
 		<tr>
@@ -141,7 +155,7 @@
 										</td>
 										<td valign="top">
 											<c:url var="pubUrl" value="publication.do">
-												<c:param name="particleId" value="${particleId}" />
+												<c:param name="sampleId" value="${sampleId}" />
 												<c:param name="dispatch" value="setupUpdate" />
 												<c:param name="publicationId" value="${pubObj.id}" />
 												<c:param name="location" value="${location}" />
