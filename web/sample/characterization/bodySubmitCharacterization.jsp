@@ -28,7 +28,7 @@
 		<tr>
 			<td>
 				<h4>
-					${fn:toUpperCase(param.location)} ${sampleName} ${pageTitle}
+					${fn:toUpperCase(param.location)} ${sampleName} Characterization
 				</h4>
 			</td>
 			<c_rt:set var='dispatch'
