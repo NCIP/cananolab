@@ -5,16 +5,15 @@
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
-<table id="designDataTable" border="0" cellpadding="3"
-	cellspacing="0" class="smallTable3" width="90%">
+<table id="designDataTable" class="summaryViewLayer4"  width="100%" align="center">
 	<tr>
-		<td valign="top" colspan="2" class="subformTitle">
-			Design Data Table
-		</td>
+		<th colspan="2" style="text-align:center">
+			Design Data Columns
+		</th>
 	</tr>
 	<tr>
-		<td class="leftLabelWithTopNoBottom">
-			<strong>Column Type*</strong>
+		<td class="cellLabel">
+			Column Type*
 			<input type="hidden" id="columnId">
 			&nbsp;&nbsp;
 			<select id="datumOrCondition" onChange="showDatumConditionInfo(null)">
@@ -28,8 +27,8 @@
 					</ption>
 			</select>
 		</td>
-		<td class="rightLabelWithTopNoBottom">
-			<strong>Column Name*</strong> &nbsp;&nbsp;
+		<td class="cellLabel">
+			Column Name* &nbsp;&nbsp;
 			<select id="name"
 				onchange="javascript:callPrompt('Name', 'name');setConditionPropertyOptionsByCharName(null);setColumnValueUnit();">
 				<option value=""></option>
@@ -40,16 +39,16 @@
 		</td>
 	</tr>
 	<tr id="conditionProperty" style="display: none;">
-		<td class="completeLabelNoBottom" colspan="2">
-			<strong>Condition Property</strong> &nbsp;&nbsp;
+		<td class="cellLabel" colspan="2">
+			Condition Property &nbsp;&nbsp;
 			<select id="property"
 				onchange="javascript:callPrompt('Condition Property', 'property');setColumnValueUnit();">
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabelNoBottom">
-			<strong>Column Value Type</strong> &nbsp;&nbsp;
+		<td class="cellLabel">
+			Column Value Type &nbsp;&nbsp;
 			<select id="valueType"
 				onchange="javascript:callPrompt('Column Value Type', 'valueType');">
 				<option value=""></option>
@@ -64,8 +63,8 @@
 				</option>
 			</select>
 		</td>
-		<td class="labelNoBottom">
-			<strong>Column Value Unit</strong> &nbsp;&nbsp;
+		<td class="cellLabel">
+			Column Value Unit &nbsp;&nbsp;
 			<select id="valueUnit"
 				onchange="javascript:callPrompt('Column Value Unit', 'valueUnit');">
 			</select>

@@ -4,14 +4,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript">
+<!--//
+function confirmDeletion()
+{
+	answer = confirm("Are you sure you want to delete the instrument and technique?")
+	if (answer !=0)
+	{
+		this.document.forms[0].dispatch.value="delete";
+		this.document.forms[0].page.value="1";
+		this.document.forms[0].submit();
+		return true;
+	}
+}
+//-->
+</script>
 
-<table border="0" align="center" cellpadding="3" cellspacing="0"
-	class="topBorderOnly" summary="">
+<table class="summaryViewLayer4" width="85%" align="center">
 	<tr>
-		<td class="leftLabelWithTop">
-			<strong>Technique*</strong>
+		<td class="cellLabel">
+			Technique*
 		</td>
-		<td class="rightLabelWithTop">
+		<td>
 			<html:select
 				property="achar.theExperimentConfig.domain.technique.type"
 				styleId="techniqueType"
@@ -26,153 +40,196 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel">
-			<strong>Abbreviation</strong>
+		<td class="cellLabel">
+			Abbreviation
 		</td>
-		<td class="rightLabel">
+		<td>
 			<html:text styleId="techniqueAbbr"
 				property="achar.theExperimentConfig.domain.technique.abbreviation"
 				size="30" />
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top">
-			<strong>Instrument</strong>
+		<td class="cellLabel">
+			Instrument
 		</td>
-		<td class="rightLabel" valign="top">
-			<br>
-			<table>
-				<tr>
-					<td valign="top" width="80">
-						<div id="patternAddRow" style="display: block;">
-							<table border="0" width="100%" class="smalltableNoBorder">
-							  <tbody>
-								<tr class="smallTableHeader">
-									<td class="greyFont">
-										<strong>Manufacturer</strong>
-									</td>
-									<td>
-										<html:hidden property="achar.theInstrument.id" styleId="id" />
-										<html:select property="achar.theInstrument.manufacturer"
-											styleId="manufacturer"
-											onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
-											<option value=""></option>
-											<html:options name="allManufacturers" />
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
-									</td>
-								</tr>
-								<tr class="smallTableHeader">
-									<td class="greyFont">
-										<strong>Model Name</strong>
-									</td>
-									<td>
-										<html:text property="achar.theInstrument.modelName" size="17"
-											styleId="modelName" />
-									</td>
-								</tr>
-								<tr class="smallTableHeader">
-									<td class="greyFont">
-										<strong>Type</strong>
-									</td>
-									<td>
-										<html:select property="achar.theInstrument.type"
-											styleId="type"
-											onchange="javascript:callPrompt('Instrment Type', 'type');">
-											<option value=""></option>
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2" style="text-align:right">
-									    <input class="noBorderButton" type="button" value="New"
-											onclick="clearInstrument()" />
-										&nbsp;
-										<input class="noBorderButton" type="button" value="Save"
-											onclick="addInstrument()" />
-										&nbsp;
-										<input class="noBorderButton" id="delete" type="button"
-												value="Delete" onclick="deleteClicked()" />
-									</td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td valign="top">
-						<div id="instrumentTableDiv" style="display: block;">
-							<table id="instrumentTable" class="smalltable" border="0"
-								width="80%">
-								<tbody id="instrumentRows">
-									<tr id="patternHeader" class="smallTableHeader">
-										<th class="greyFont">
-											Manufacturer
-										</th>
-										<th class="greyFont">
-											Model Name
-										</th>
-										<th class="greyFont">
-											Type
-										</th>
-										<th class="greyFont" colspan="1">
-											&nbsp;
-										</th>
-									</tr>
-									<tr id="pattern" style="display: none;">
-										<td valign="top">
-											<span id="instrumentManufacturer" class="greyFont2">Manufacturer</span>
-										</td>
-										<td valign="top">
-											<span id="instrumentModelName" class="greyFont2">ModelName</span>
-										</td>
-										<td valign="top">
-											<span id="instrumentType" class="greyFont2">Type</span>
-										</td>
-										<td valign="top">
-											<input class="noBorderButton" id="edit" type="button"
-												value="Select" onclick="editClicked(this.id)" />
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						&nbsp;
-					</td>
-				</tr>
+		<td>
+			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
+				style="display: block;">
+				<tbody id="instrumentRows">
+					<tr id="patternHeader">
+						<th width="25%">
+							Manufacturer
+						</th>
+						<th width="25%">
+							Model Name
+						</th>
+						<th>
+							Type
+						</th>
+						<th>
+						</th>
+					</tr>
+					<tr id="pattern" style="display: none;">
+						<td>
+							<span id="instrumentManufacturer">Manufacturer</span>
+						</td>
+						<td>
+							<span id="instrumentModelName">ModelName</span>
+						</td>
+						<td>
+							<span id="instrumentType">Type</span>
+						</td>
+						<td>
+							<input class="noBorderButton" id="edit" type="button"
+								value="Edit" onclick="editClicked(this.id)" />
+						</td>
+					</tr>
+				</tbody>
 			</table>
+							<div id="addInstrument" style="display: non)" /><input class="noBorderButton" type="button" value="Add"
+					="#" onclick="'patternAddRow');" /dd</a>	<br>
+			</div>
+			<table id="patternAddRow" style="display: none;"
+				class="summaryViewLayer4" width="85%">
+				<tbody>
+					<tr>
+						<td class="cellLabel">
+							Manufacturer
+						</td>
+						<td>
+							<html:hidden property="achar.theInstrument.id" styleId="id" />
+							<html:select property="achar.theInstrument.manufacturer"
+								styleId="manufacturer"
+								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
+								<option value=""></option>
+								<html:options name="allManufacturers" />
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Model Name
+						</td>
+						<td>
+							<html:text property="achar.theInstrument.modelName" size="17"
+								styleId="modelName" />
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Type
+						</td>
+						<td>
+							<html:select property="achar.theInstrument.type" styleId="type"
+								onchange="javascript:callPrompt('Instrment Type', 'type');">
+								<option value=""></option>
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input style="display: none;" class="noBorderButton" id="delete"
+								type="button" value="Delete" onclick="deleteClicked()" />
+						</td>
+						<td style="text-align: right">
+							<input class="noBorderButton" type="button" value="Cancel"
+								onclick="clearInstrument();hide('patternAddRow')" />
+							&nbsp;
+							<input class="noBorderButton" type="button" value="Save"
+								onclick="addInstrument()" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<%--
+			<table id="patternAddRow" class="summaryViewLayer4"
+				style="border: 0px; display: none" width="85%">
+				<tbody>
+
+					<tr>
+						<th>
+							Manufacturer
+						</th>
+						<th>
+							Model Name
+						</th>
+						<th>
+							Type
+						</th>
+						<th></th>
+					</tr>
+					<tr>
+						<td>
+							<html:hidden property="achar.theInstrument.id" styleId="id" />
+							<html:select property="achar.theInstrument.manufacturer"
+								styleId="manufacturer"
+								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
+								<option value=""></option>
+								<html:options name="allManufacturers" />
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+						<td>
+							<html:text property="achar.theInstrument.modelName" size="17"
+								styleId="modelName" />
+						</td>
+						<td>
+							<html:select property="achar.theInstrument.type" styleId="type"
+								onchange="javascript:callPrompt('Instrment Type', 'type');">
+								<option value=""></option>
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+						<td style="text-align: right">
+							<input class="noBorderButton" type="button" value="New"
+								onclick="clearInstrument()" />
+							&nbsp;
+							<input class="noBorderButton" type="button" value="Save"
+								onclick="addInstrument()" />
+							&nbsp;
+							<input class="noBorderButton" id="delete" type="button"
+								value="Delete" onclick="deleteClicked()" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			--%>
 		</td>
 	</tr>
-
 	<tr>
-		<td class="leftLabelNoBottom" valign="top">
-			<strong>Description</strong>
+		<td class="cellLabel">
+			Description
 		</td>
-		<td class="rightLabelNoBottom">
+		<td>
 			<html:textarea styleId="configDescription"
 				property="achar.theExperimentConfig.domain.description" rows="3"
 				cols="70" />
-			<br>
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top">
-			<input type="button" value="Delete"
-				onclick="javascript:submitAction(document.forms[0],
+		<td>
+			<c:if test="${canDelete eq 'true' }">
+				<input style="display: none;" id="deleteExperimentConfig"
+					type="button" value="Delete"
+					onclick="javascript:submitAction(document.forms[0],
 										'characterization', 'deleteExperimentConfig');">
+			</c:if>
 		</td>
-		<td class="rightLabel" align="right">
+		<td align="right">
 			<div align="right">
 				<input type="reset" value="Cancel"
 					onclick="javascript:resetTheExperimentConfig(false);">
-				<input type="reset" value="Reset"
-					onclick="javascript:window.location.href='${origUrl}'">
 				<input type="button" value="Save"
 					onclick="javascript:validateSaveConfig('characterization');">
 			</div>
@@ -180,5 +237,4 @@
 	</tr>
 	<html:hidden styleId="configId"
 		property="achar.theExperimentConfig.domain.id" />
-
 </table>

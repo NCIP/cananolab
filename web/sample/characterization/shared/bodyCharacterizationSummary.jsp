@@ -10,21 +10,17 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
-<table width="100%" border="0" align="center" cellpadding="3"
-	cellspacing="0" class="topBorderOnly" summary="">
+<table width="100%" align="center" class="submissionView">
 	<tr>
-	<tr class="topBorder">
-		<td class="formTitle" colspan="4">
-			<div align="justify">
-				Summary
-			</div>
+		<th colspan="4">
+			Summary
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel">
+		<td class="cellLabel">
 			<strong>Characterization Type * </strong>
 		</td>
-		<td class="label">
+		<td>
 			<html:select property="achar.characterizationType" styleId="charType"
 				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharTypeWithOther()">
 				<option value=""></option>
@@ -34,10 +30,10 @@
 				</option>
 			</html:select>
 		</td>
-		<td class="label">
+		<td class="cellLabel">
 			<strong>Characterization*</strong>
 		</td>
-		<td class="rightLabel">
+		<td>
 			<html:select property="achar.characterizationName" styleId="charName"
 				onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();">
 				<option value=""></option>
@@ -51,10 +47,10 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel" valign="top">
+		<td class="cellLabel">
 			<strong>Assay Type</strong>
 		</td>
-		<td class="label">
+		<td>
 			<html:select property="achar.assayType" styleId="assayType"
 				onchange="javascript:callPrompt('Assay Type', 'assayType');">
 				<option value=""></option>
@@ -66,12 +62,12 @@
 				</option>
 			</html:select>
 		</td>
-		<td class="label">
+		<td class="cellLabel">
 			<strong>Protocol Name - Version</strong>
 		</td>
 		<html:hidden styleId="updatedUri"
 			property="achar.protocolFileBean.domainFile.uri" />
-		<td class="rightLabel" colspan="3">
+		<td colspan="3">
 			<c:choose>
 				<c:when test="${!empty characterizationProtocolFiles}">
 					<html:select styleId="protocolFileId"
@@ -91,10 +87,10 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="leftLabel">
+		<td class="cellLabel">
 			<strong>Characterization Source </strong>
 		</td>
-		<td class="label">
+		<td>
 			<html:select property="achar.pocBean.domain.id" styleId="charSource"
 				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
 				<option value=""></option>
@@ -102,18 +98,17 @@
 					labelProperty="displayName" property="domain.id" />
 			</html:select>
 		</td>
-		<td class="label">
+		<td class="cellLabel">
 			<strong>Characterization Date</strong>
 		</td>
-		<td class="rightLabel">
+		<td>
 			<html:text property="achar.dateString" size="10" styleId="charDate" />
 			<a href="javascript:cal1.popup();"><img
 					src="images/calendar-icon.gif" width="22" height="18" border="0"
 					alt="Click Here to Pick up the date"
-					title="Click Here to Pick up the date" align="middle"> </a>
+					title="Click Here to Pick up the date" align="top"> </a>
 		</td>
 	</tr>
-
 </table>
 <br>
 <script language="JavaScript">

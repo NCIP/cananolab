@@ -2,17 +2,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="smalltable3" cellspacing="0" cellpadding="3" width="90%"
-	border="0">
+<table class="summaryViewLayer4" width="100%" align="center">
 	<tbody>
-		<tr class="topBorder">
+		<tr>
 			<td class="subformTitle" colspan="3">
 				<div align="justify">
 					File Information
 				</div>
 			</td>
 		</tr>
-
 		<c:choose>
 			<c:when
 				test="${characterizationForm.map.achar.theDataSet.file.hidden eq 'false' }">
@@ -28,20 +26,20 @@
 					</c:otherwise>
 				</c:choose>
 				<tr>
-					<td class="leftLabel">
+					<td class="cellLabel">
 						<html:radio styleId="external0"
 							property="achar.theDataSet.file.domainFile.uriExternal"
 							value="false" onclick="radLinkOrUpload()" />
-						<strong>Upload File</strong>
+						Upload File
 						<br>
 						&nbsp;&nbsp;or
 						<br>
 						<html:radio styleId="external1"
 							property="achar.theDataSet.file.domainFile.uriExternal"
 							value="true" onclick="radLinkOrUpload()" />
-						<strong>Enter File URL</strong>
+						Enter File URL
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td colspan="2">
 						<span id="load"> <html:file
 								property="achar.theDataSet.file.uploadedFile" size="60" />
 							&nbsp;&nbsp; </span>
@@ -54,7 +52,7 @@
 				<c:if
 					test="${!empty characterizationForm.map.achar.theDataSet.file.domainFile.uri }">
 					<tr>
-						<td class="completeLabel" colspan="3">
+						<td colspan="3">
 							<c:choose>
 								<c:when
 									test="${characterizationForm.map.achar.theDataSet.file.image eq 'true'}">
@@ -80,10 +78,10 @@
 					</tr>
 				</c:if>
 				<tr>
-					<td class="leftLabel">
-						<strong>File Type*</strong>
+					<td class="cellLabel">
+						File Type*
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td colspan="2">
 						<html:select styleId="fileType"
 							property="achar.theDataSet.file.domainFile.type"
 							onchange="javascript:callPrompt('File Type', 'fileType');">
@@ -96,29 +94,30 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="leftLabel">
-						<strong>File Title*</strong>
+					<td class="cellLabel">
+						File Title*
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td colspan="2">
 						<html:text property="achar.theDataSet.file.domainFile.title"
 							size="60" />
 					</td>
 				</tr>
 				<tr>
-					<td class="leftLabel" valign="top">
-						<strong>Keywords <em>(one word per line)</em> </strong>
+					<td class="cellLabel" valign="top">
+						Keywords
+						<em>(one word per line)</em>
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td colspan="2">
 						<html:textarea property="achar.theDataSet.file.keywordsStr"
 							rows="3" cols="60" />
 						&nbsp;
 					</td>
 				</tr>
 				<tr>
-					<td class="leftLabel" valign="top">
+					<td class="cellLabel" valign="top">
 						<strong>Visibility</strong>
 					</td>
-					<td class="rightLabel" colspan="2">
+					<td colspan="2">
 						<html:select property="achar.theDataSet.file.visibilityGroups"
 							multiple="true" size="6">
 							<html:options name="allVisibilityGroups" />
@@ -132,11 +131,8 @@
 			</c:when>
 			<c:otherwise>
 				<tr>
-					<td class="leftLabel">
+					<td colspan="2">
 						The file is private.
-					</td>
-					<td class="rightLabel" colspan="2">
-						&nbsp;
 					</td>
 				</tr>
 			</c:otherwise>

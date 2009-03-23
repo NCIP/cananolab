@@ -18,49 +18,41 @@ function confirmDeletion()
 }
 //-->
 </script>
-<table border="0" align="center" cellpadding="3" cellspacing="0"
-	width="100%" class="topBorderOnly" summary="">
+<table width="100%" align="center" class="submissionView">
 	<tr>
-	<tr class="topBorder">
-		<td class="formTitle" colspan="4">
-			<div align="justify">
-				Results
-			</div>
-		</td>
+		<th>
+			Results
+		</th>
 	</tr>
 	<tr>
-		<td class="completeLabelNoBottom" valign="top" colspan="4">
-			<strong>DataSet</strong>&nbsp;&nbsp;
+		<td class="cellLabel">
+			DataSet&nbsp;&nbsp;
 			<a id="addDataSet" href="javascript:resetTheDataSet(true);"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
 	<tr>
-		<td class="completeLabelNoTop" valign="top" colspan="4">
-			<div id="existingDataSet" style="display: block;">
+		<td>
+			<c:if test="${! empty characterizationForm.map.achar.dataSets }">
 				<c:set var="charBean" value="${characterizationForm.map.achar}" />
 				<c:set var="edit" value="true" />
-				<%@ include
-					file="/sample/characterization/shared/bodyDataSetView.jsp"%>&nbsp;
-			</div>
+				<%@ include file="bodyDataSetView.jsp"%>
+			</c:if>
+		</td>
+	<tr>
+		<td>
 			<div id="newDataSet" style="display: none;">
-				<table class="smalltable2" border="0" width="90%" align="center">
-					<tr>
-						<td class="subformTitle" colspan="2">
-							<b>New DataSet</b>
-						</td>
-					</tr>
+				<table class="summaryViewLayer4" width="85%" align="center">
 					<tr>
 						<td colspan="2">
 							<b>Data</b>&nbsp;&nbsp;
-							<a href="javascript:showhide('submitDatum');">add</a>
+							<a href="javascript:showhide('submitDatum');">show/hide</a>
 						</td>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
-							<div style="display: none" id="submitDatum" class="indented4">
-								<jsp:include
-									page="/sample/characterization/shared/bodyDataSetEdit.jsp" />
+							<div style="display: block" id="submitDatum">
+								<jsp:include page="bodySubmitData.jsp" />
 								&nbsp;
 							</div>
 						</td>
@@ -68,14 +60,13 @@ function confirmDeletion()
 					<tr>
 						<td colspan="2">
 							<b>File</b>&nbsp;&nbsp;
-							<a href="javascript:showhide('loadDatumFile');">add</a>
+							<a href="javascript:showhide('loadDatumFile');">show/hide</a>
 						</td>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
-							<div style="display: none" id="loadDatumFile" class="indented4">
-								<jsp:include
-									page="/sample/characterization/shared/bodyCharacterizationFile.jsp" />
+							<div style="display: none" id="loadDatumFile">
+								<jsp:include page="bodySubmitCharacterizationFile.jsp" />
 								&nbsp;
 							</div>
 						</td>
@@ -95,9 +86,9 @@ function confirmDeletion()
 						</td>
 					</tr>
 				</table>
-			</div>
-			<br>
-		</td>
+	</div>
+	<br>
+	</td>
 	</tr>
 </table>
 <br>
