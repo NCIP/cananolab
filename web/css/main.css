@@ -1521,6 +1521,177 @@ input.noBorderText {
 	color: #5C5C5C;
 }
 
+
+.summaryViewLayer1 {
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	color: red;
+}
+
+.summaryViewLayer1 th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 5px 10px 10px 5px;
+	border-color: #cccccc;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer1 td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 5px 10px 10px 5px;
+	border-color: #cccccc;
+	vertical-align: top;
+	text-align: left;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer2 {
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer2 th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 5px 10px 5px 10px;
+	border-style: none;
+	border-width: 1px;
+	border-color: #cccccc;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer2 td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 5px 5px 5px 5px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: none;
+	vertical-align: middle;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer3 {
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer3 caption {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	font-weight: bold;
+	background-color: #CCCCCC;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer3 th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	border-width: 1px;
+	border-color: #cccccc;
+	padding: 3px 3px 3px 3px;
+	color: #5C5C5C;
+	background-color: #CCCCCC;
+}
+
+.summaryViewLayer3 td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	padding: 3px 3px 3px 3px;
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;
+	color: #5C5C5C;
+}
+
+.submissionView {
+	border-width: 1px;
+	border-color: #cccccc;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+}
+
+.submissionView caption {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.75em;
+	font-weight: bold;
+	background-color: #CCCCCC;
+	color: #5C5C5C;
+}
+
+.submissionView th {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.75em;
+	padding: 3px 3px 3px 3px;
+	color: #FFFFFF;
+	background-color: #5c5c5c;
+	text-align: left;
+}
+
+.submissionView td {
+	font-family: arial, helvetica, verdana, sans-serif;
+	font-size: 0.7em;
+	padding: 3px 3px 3px 3px;
+	vertical-align: top;
+	text-align: left;
+	color: #5c5c5c;
+}
+
+.summaryViewLayer4 {
+	border-width: 1px;
+	border-color: #cccccc;
+	padding: 3px 3px 3px 3px;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer4 caption {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	font-weight: bold;
+	color: #5C5C5C;
+}
+
+.summaryViewLayer4 th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.60em;
+	padding: 3px 3px 3px 3px;
+	color: #5C5C5C;
+	font-weight: bold;
+	background-color: #FFFFFF;
+	text-align: left;
+}
+
+.summaryViewLayer4 td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.60em;
+	padding: 3px 3px 3px 3px;
+	border-width: 0px;
+	border-color: #cccccc;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;
+	color: #706C60;
+}
+
+.cellLabel {
+	font-weight: bold;
+	/*text-transform: uppercase;*/
+}
+
 body {
 	margin:0;
 	padding:0;
