@@ -4,43 +4,46 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<c:forEach var="experimentConfig"
-	items="${charBean.experimentConfigs}"
-	varStatus="configIndex">
-	<table class="smalltable2" border="0" width="90%" align="center"">
-		<tr>
-			<td class="subformTitle" colspan="2" align="right">
-				<c:if test="${edit eq 'true'}">
-					<a href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">edit</a>&nbsp;
-				</c:if>
-			</td>
-		</tr>
+<table class="summaryViewLayer4" align="center" width="95%">
+	<tr>
+		<th width="33%">
+			Technique
+		</th>
+		<th width="33%">
+			Instruments
+		</th>
+		<th>
+			Description
+		</th>
+		<th>
+		</th>
+	</tr>
+	<c:forEach var="experimentConfig" items="${charBean.experimentConfigs}"
+		varStatus="configIndex">
 		<tr>
 			<td>
-				<strong>Technique: </strong>${experimentConfig.techniqueDisplayName}
+				${experimentConfig.techniqueDisplayName}
 			</td>
-		</tr>
-		<c:if test="${! empty experimentConfig.instrumentDisplayNames}">
-			<tr>
-				<td valign="top">
-					<strong>Instrument(s): </strong>
-					<div class="indented4">
-						<c:forEach var="instrumentDisplayName"
-							items="${experimentConfig.instrumentDisplayNames}">
+			<td>
+				<c:if test="${! empty experimentConfig.instrumentDisplayNames}">
+
+					<c:forEach var="instrumentDisplayName"
+						items="${experimentConfig.instrumentDisplayNames}">
 							${instrumentDisplayName}
 						</c:forEach>
-					</div>
-					&nbsp;
+				</c:if>
+			</td>
+			<td>
+				<c:if test="${! empty experimentConfig.domain.description}">
+				${experimentConfig.domain.description}
+			</c:if>
+			</td>
+			<c:if test="${edit eq 'true'}">
+				<td align="right">
+					<a
+						href="javascript:setTheExperimentConfig(${experimentConfig.domain.id});">Edit</a>&nbsp;
 				</td>
-			</tr>
-		</c:if>
-		<c:if test="${! empty experimentConfig.domain.description}">
-			<tr>
-				<td valign="top">
-					<strong>Description: </strong>${experimentConfig.domain.description}
-				</td>
-			</tr>
-		</c:if>
-	</table>
-	<br>
-</c:forEach>
+			</c:if>
+		</tr>
+	</c:forEach>
+</table>

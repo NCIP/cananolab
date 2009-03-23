@@ -20,7 +20,7 @@
 			</c:forEach>
 		</li>
 		<li>
-			<a href="characterization.do?dispatch=setupNew&sampleId=${sampleId }"><span>New</span>
+			<a href="characterization.do?dispatch=setupNew&sampleId=${sampleId }"><span>Other</span>
 			</a>
 		</li>
 	</ul>
@@ -58,145 +58,188 @@
 		</ul>
 	</div>
 </c:forEach>
-<c:forEach var="type" items="${characterizationTypes}" varStatus="ind">
-	<table id="summarySection${ind.count}" class="smalltable3"
-		cellpadding="0" cellspacing="0" border="0" width="100%">
-		<tr>
-			<th colspan="4" align="left">
-				${type} &nbsp;&nbsp;&nbsp;
-				<a
-					href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
-					class="addlink"><img align="middle" src="images/btn_add.gif"
-						border="0" /></a>&nbsp;&nbsp;
-				<a><img align="middle" src="images/btn_delete.gif" border="0" />
-				</a>
-			</th>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<c:choose>
-					<c:when
-						test="${!empty characterizationSummaryView.type2Characterizations[type] }">
-						<c:forEach var="charBean"
-							items="${characterizationSummaryView.type2Characterizations[type]}">
-							<c:set var="charObj" value="${charBean.domainChar}" />
-							<div class="indented4">
-								<table class="summarytable" cellpadding="0" cellspacing="0"
-									border="0" width="90%">
-									<tr>
-										<th align="left">
-											${charBean.characterizationName}
-											(${charBean.pocBean.displayName} ${charBean.dateString })
-										</th>
-										<th align="right">
-											<a
-												href="characterization.do?dispatch=setupUpdate&sampleId=${sampleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
-										</th>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<table border="0">
+<table class="summaryViewLayer1" width="100%">
+	<tr>
+		<td>
+			<a href="print">Print</a>&nbsp;&nbsp;
+			<a href="export">Export</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<c:forEach var="type" items="${characterizationTypes}"
+				varStatus="ind">
+				<table id="summarySection${ind.count}"
+					width="95%" align="center" style="display:block" class="summaryViewLayer2">
+					<tr>
+						<th align="left">
+							${type} &nbsp;&nbsp;&nbsp;
+							<a
+								href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
+								class="addlink"><img align="middle" src="images/btn_add.gif"
+									border="0" /> </a>&nbsp;&nbsp;
+							<a><img align="middle" src="images/btn_delete.gif" border="0" />
+							</a>
+						</th>
+					</tr>
+					<tr>
+						<td>
+							<c:choose>
+								<c:when
+									test="${!empty characterizationSummaryView.type2Characterizations[type] }">
+									<c:forEach var="charBean"
+										items="${characterizationSummaryView.type2Characterizations[type]}">
+										<c:set var="charObj" value="${charBean.domainChar}" />
+										<div class="indented4">
+											<table class="summaryViewLayer3" width="95%" align="center">
 												<tr>
-													<td>
-														ASSAY TYPE
-														<div class="indented5">
-															<c:choose>
-																<c:when test="${!empty charObj.assayType}">
+													<th align="left" width="20%">
+														${charBean.characterizationName}
+													</th>
+													<th align="right" colspan="2">
+														<a
+															href="characterization.do?dispatch=setupUpdate&sampleId=${sampleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
+													</th>
+												</tr>
+												<tr>
+													<td class="cellLabel">
+														assay type
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when test="${!empty charObj.assayType}">
 																${charObj.assayType}
 															</c:when>
-																<c:otherwise>
+															<c:otherwise>
+															Size Distribution
+															</c:otherwise>
+														</c:choose>
+												</tr>
+												<tr>
+													<td class="cellLabel">
+														point of contact
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when test="${!empty charBean.pocBean.displayName}">
+																${charBean.pocBean.displayName}
+															</c:when>
+															<c:otherwise>
 															N/A
 															</c:otherwise>
-															</c:choose>
-														</div>
-													</td>
+														</c:choose>
 												</tr>
 												<tr>
-													<td>
-														PROTOCOL
-														<div class="indented5">
-															<c:choose>
-																<c:when
-																	test="${!empty charBean.protocolFileBean.displayName}">
+													<td class="cellLabel">
+														characterization date
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when test="${!empty charBean.dateString}">
+																${charBean.dateString}
+															</c:when>
+															<c:otherwise>
+															N/A
+															</c:otherwise>
+														</c:choose>
+												</tr>
+												<tr>
+													<td class="cellLabel">
+														protocol
+													</td>
+													<td colspan="2">
+
+														<c:choose>
+															<c:when
+																test="${!empty charBean.protocolFileBean.displayName}">
 																${charBean.protocolFileBean.displayName}
 																</c:when>
-																<c:otherwise>
+															<c:otherwise>
 																N/A
 																</c:otherwise>
-															</c:choose>
-														</div>
+														</c:choose>
+
 													</td>
 												</tr>
 												<tr>
-													<td>
-														DESIGN DESCRIPTION
-														<div class="indented5">
-															<c:choose>
-																<c:when
-																	test="${!empty fn:trim(charObj.designMethodsDescription)}">
-																	${charObj.designMethodsDescription}
+													<td class="cellLabel">
+														design description
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when
+																test="${!empty fn:trim(charObj.designMethodsDescription)}">
+																<c:out
+																	value="${fn:replace(charObj.designMethodsDescription, cr, '<br>')}"
+																	escapeXml="false" />
 															</c:when>
-																<c:otherwise>N/A
+															<c:otherwise>N/A
 															</c:otherwise>
-															</c:choose>
-														</div>
+														</c:choose>
 													</td>
 												</tr>
 
 												<tr>
-													<td>
-														TECHNIQUES AND INSTRUMENTS
-														<div class="indented5">
-															<c:choose>
-																<c:when test="${!empty charBean.experimentConfigs}">
-																	<%@ include file="shared/bodyExperimentConfigView.jsp"%>
-																</c:when>
-																<c:otherwise>N/A
+													<td class="cellLabel">
+														techniques and instruments
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when test="${!empty charBean.experimentConfigs}">
+																<%@ include file="shared/bodyExperimentConfigView.jsp"%>
+															</c:when>
+															<c:otherwise>N/A
 																</c:otherwise>
-															</c:choose>
-														</div>
+														</c:choose>
 													</td>
 												</tr>
-
 												<tr>
-													<td valign="top">
-														DATA AND FILES
-														<div class="indented5">
-															<c:choose>
-																<c:when test="${!empty charBean.dataSets}">
-																	<%@ include file="shared/bodyDataSetView.jsp"%>
-																</c:when>
-																<c:otherwise>
-																N/A</c:otherwise>
-															</c:choose>
-														</div>
+													<td class="cellLabel">
+														characterizaiton results
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when test="${!empty charBean.dataSets}">
+																<%@ include file="shared/bodyDataSetView.jsp"%>
+															</c:when>
+															<c:otherwise>
+															N/A</c:otherwise>
+														</c:choose>
+													</td>
+												</tr>
+												<tr>
+													<td class="cellLabel">
+														analysis and conclusion
+													</td>
+													<td colspan="2">
+														<c:choose>
+															<c:when test="${!empty charBean.conclusion}">
+													${charBean.conclusion}
+												</c:when>
+															<c:otherwise>
+															N/A</c:otherwise>
+														</c:choose>
 													</td>
 												</tr>
 											</table>
-										</td>
-									</tr>
-								</table>
-							</div>
-							<br>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<div class="indented4">
-							<table class="summarytable" width="90%">
-								<tr>
-									<td valign="top" class="borderlessLabel">
+										</div>
+										<br>
+									</c:forEach>
+								</c:when>
+								<c:otherwise>
+									<div class="indented4">
 										N/A
-									</td>
-								</tr>
-							</table>
-						</div>
-					</c:otherwise>
-				</c:choose>
-				<br>
-			</td>
-		</tr>
-	</table>
-	<div id="summarySeparator${ind.count}">
-		<br>
-	</div>
-</c:forEach>
+									</div>
+								</c:otherwise>
+							</c:choose>
+							<br>
+						</td>
+					</tr>
+				</table>
+				<div id="summarySeparator${ind.count}">
+					<br>
+				</div>
+			</c:forEach>
+		</td>
+	</tr>
+</table>
