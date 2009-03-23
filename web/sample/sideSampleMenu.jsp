@@ -34,10 +34,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="subMenuPrimaryTitle" height="20">
-			${fn:toUpperCase(location)} PARTICLE
-			<br>
-			<span class="pname"><c:out value="${sampleName}" /> </span>
+		<td class="subMenuFill" height="5">
+			&nbsp;
 		</td>
 	</tr>
 	<tr>
@@ -47,11 +45,11 @@
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuSecondaryTitle"
-			onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
-			onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
+		<td class="subMenuPrimaryTitle" height="60"
+		    onmouseover="showCursor()"
+			onmouseout="hideCursor()"
 			onclick="gotoPage('${sampleUrl}')" height="20">
-			<a class="subMenuSecondary">SAMPLE</a>
+			<a class="pname">${applicationOwner} Sample<br><br>${sampleName}</a>
 		</td>
 	</tr>
 	<tr>
@@ -97,7 +95,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td class="subMenuFill">
+		<td class="subMenuFill" height="50">
 			&nbsp;
 		</td>
 	</tr>

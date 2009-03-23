@@ -17,7 +17,6 @@
 		<tr>
 			<td>
 				<h3>
-					<br>
 					Search Samples
 				</h3>
 			</td>
