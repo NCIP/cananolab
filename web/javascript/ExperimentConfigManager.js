@@ -44,6 +44,7 @@ function setManufacturerOptions(manufacturerTypes) {
 var thisConfigId = 0;
 function setTheExperimentConfig(configId) {
 	show('newExperimentConfig');
+	show('patternAddRow');
 	ExperimentConfigManager.findInstrumentTypesByConfigId(configId,
 			updateInstrumentDropDown);
 	thisConfigId = configId;
@@ -120,7 +121,7 @@ function addInstrument() {
 		type :null
 	};
 	dwr.util.getValues(instrument);
-	if (instrument.manufacturer!='' || 
+	if (instrument.manufacturer!='' ||
 			instrument.modelName!='' ||
 			instrument.type!=''){
 		ExperimentConfigManager.addInstrument(currentExperimentConfig, instrument,
@@ -203,6 +204,6 @@ function deleteClicked() {
 }
 
 function addClicked() {
-	document.getElementById("manufacturer").focus();	
+	document.getElementById("manufacturer").focus();
 }
 

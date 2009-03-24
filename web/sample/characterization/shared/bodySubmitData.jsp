@@ -9,7 +9,7 @@
 	align="center">
 	<tr>
 		<td class="cellLabel">
-			Add a Column for *
+			Add a Column of Type *
 			<input type="hidden" id="columnId">
 			&nbsp;&nbsp;
 			<select id="datumOrCondition"

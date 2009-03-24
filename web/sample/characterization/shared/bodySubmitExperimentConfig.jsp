@@ -54,6 +54,10 @@ function confirmDeletion()
 			Instrument
 		</td>
 		<td>
+		    <a style="" id="addInstrument"
+				href="javascript:show('patternAddRow');"><img
+					align="top" src="images/btn_add.gif" border="0" /> </a>
+		    <br>
 			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
 				style="display: block;">
 				<tbody id="instrumentRows">
@@ -88,7 +92,7 @@ function confirmDeletion()
 				</tbody>
 			</table>
 			<br>
-			<table id="patternAddRow" style="display: block;"
+			<table id="patternAddRow" style="display: none;"
 				class="summaryViewLayer4" width="85%">
 				<tbody>
 					<tr>
@@ -138,10 +142,10 @@ function confirmDeletion()
 						</td>
 						<td style="text-align: right">
 							<input class="noBorderButton" type="button" value="Cancel"
-								onclick="clearInstrument();" />
+								onclick="clearInstrument();hide('patternAddRow');" />
 							&nbsp;
 							<input class="noBorderButton" type="button" value="Save"
-								onclick="addInstrument()" />
+								onclick="addInstrument();hide('patternAddRow');" />
 						</td>
 					</tr>
 				</tbody>
