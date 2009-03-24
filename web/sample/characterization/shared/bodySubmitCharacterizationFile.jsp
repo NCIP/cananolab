@@ -4,13 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table class="summaryViewLayer4" width="100%" align="center">
 	<tbody>
-		<tr>
-			<td class="subformTitle" colspan="3">
-				<div align="justify">
-					File Information
-				</div>
-			</td>
-		</tr>
 		<c:choose>
 			<c:when
 				test="${characterizationForm.map.achar.theDataSet.file.hidden eq 'false' }">

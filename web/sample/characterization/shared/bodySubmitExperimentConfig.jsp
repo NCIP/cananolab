@@ -87,10 +87,8 @@ function confirmDeletion()
 					</tr>
 				</tbody>
 			</table>
-							<div id="addInstrument" style="display: non)" /><input class="noBorderButton" type="button" value="Add"
-					="#" onclick="'patternAddRow');" /dd</a>	<br>
-			</div>
-			<table id="patternAddRow" style="display: none;"
+			<br>
+			<table id="patternAddRow" style="display: block;"
 				class="summaryViewLayer4" width="85%">
 				<tbody>
 					<tr>
@@ -140,7 +138,7 @@ function confirmDeletion()
 						</td>
 						<td style="text-align: right">
 							<input class="noBorderButton" type="button" value="Cancel"
-								onclick="clearInstrument();hide('patternAddRow')" />
+								onclick="clearInstrument();" />
 							&nbsp;
 							<input class="noBorderButton" type="button" value="Save"
 								onclick="addInstrument()" />
@@ -148,63 +146,6 @@ function confirmDeletion()
 					</tr>
 				</tbody>
 			</table>
-			<%--
-			<table id="patternAddRow" class="summaryViewLayer4"
-				style="border: 0px; display: none" width="85%">
-				<tbody>
-
-					<tr>
-						<th>
-							Manufacturer
-						</th>
-						<th>
-							Model Name
-						</th>
-						<th>
-							Type
-						</th>
-						<th></th>
-					</tr>
-					<tr>
-						<td>
-							<html:hidden property="achar.theInstrument.id" styleId="id" />
-							<html:select property="achar.theInstrument.manufacturer"
-								styleId="manufacturer"
-								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
-								<option value=""></option>
-								<html:options name="allManufacturers" />
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-						</td>
-						<td>
-							<html:text property="achar.theInstrument.modelName" size="17"
-								styleId="modelName" />
-						</td>
-						<td>
-							<html:select property="achar.theInstrument.type" styleId="type"
-								onchange="javascript:callPrompt('Instrment Type', 'type');">
-								<option value=""></option>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-						</td>
-						<td style="text-align: right">
-							<input class="noBorderButton" type="button" value="New"
-								onclick="clearInstrument()" />
-							&nbsp;
-							<input class="noBorderButton" type="button" value="Save"
-								onclick="addInstrument()" />
-							&nbsp;
-							<input class="noBorderButton" id="delete" type="button"
-								value="Delete" onclick="deleteClicked()" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			--%>
 		</td>
 	</tr>
 	<tr>
