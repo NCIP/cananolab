@@ -43,7 +43,7 @@
 			<form-property name="entity"
 				type="gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="otherParticles"
+			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
@@ -54,7 +54,7 @@
 			<form-property name="entity"
 				type="gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="otherParticles"
+			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="page" type="java.lang.Integer"
@@ -74,7 +74,7 @@
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="otherParticles"
+			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="theDataSetId" type="java.lang.String" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
