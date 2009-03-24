@@ -64,6 +64,10 @@ function setColumnValueUnit() {
 }
 
 function showDatumConditionInfo(datumName) {
+    if (document.getElementById('datumOrCondition').value=='') {
+        hide ('columnDesign');
+        return;
+    }
 	if (document.getElementById('datumOrCondition').value == 'Condition') {
 		$("conditionProperty").style.display = "";
 		var charName = document.getElementById("charName").value;
@@ -82,6 +86,7 @@ function showDatumConditionInfo(datumName) {
 		}
 	}
 	setColumnValueUnit();
+	show('columnDesign');
 }
 
 function cancelDataSet() {
