@@ -44,7 +44,9 @@ function setManufacturerOptions(manufacturerTypes) {
 var thisConfigId = 0;
 function setTheExperimentConfig(configId) {
 	show('newExperimentConfig');
-	show('patternAddRow');
+	show('instrumentTable');
+	hide('patternAddRow');
+	show('delete');
 	ExperimentConfigManager.findInstrumentTypesByConfigId(configId,
 			updateInstrumentDropDown);
 	thisConfigId = configId;
@@ -76,6 +78,7 @@ var instrumentManufacturerIndex = 0;
 function resetTheExperimentConfig(isShow) {
 	if (isShow) {
 		show('newExperimentConfig');
+		hide('instrumentTable');
 	} else {
 		hide('newExperimentConfig');
 	}
