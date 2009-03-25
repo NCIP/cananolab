@@ -59,7 +59,7 @@ function confirmDeletion()
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		    <br>
 			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
-				style="display: block;">
+				style="display: none;">
 				<tbody id="instrumentRows">
 					<tr id="patternHeader">
 						<th width="25%">
@@ -86,7 +86,7 @@ function confirmDeletion()
 						</td>
 						<td>
 							<input class="noBorderButton" id="edit" type="button"
-								value="Edit" onclick="editClicked(this.id)" />
+								value="Edit" onclick="editClicked(this.id); show('patternAddRow');" />
 						</td>
 					</tr>
 				</tbody>
@@ -145,7 +145,7 @@ function confirmDeletion()
 								onclick="clearInstrument();hide('patternAddRow');" />
 							&nbsp;
 							<input class="noBorderButton" type="button" value="Save"
-								onclick="addInstrument();hide('patternAddRow');" />
+								onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
 						</td>
 					</tr>
 				</tbody>
