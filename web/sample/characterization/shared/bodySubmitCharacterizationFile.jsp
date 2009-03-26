@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="summaryViewLayer4" width="100%" align="center">
+<table class="summaryViewLayer4" width="95%" align="center">
 	<tbody>
 		<c:choose>
 			<c:when
