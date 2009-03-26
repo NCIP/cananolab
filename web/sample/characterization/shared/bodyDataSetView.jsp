@@ -5,10 +5,10 @@
 <table class="summaryViewLayer4" align="center" width="95%">
 	<tr>
 		<th>
-			data
+			Data
 		</th>
 		<th>
-			file
+			File
 		</th>
 		<th>
 		</th>
