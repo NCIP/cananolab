@@ -35,7 +35,7 @@
 			</td>
 			<td>
 				<c:if test="${! empty experimentConfig.domain.description}">
-				${experimentConfig.domain.description}
+				${fn:replace(experimentConfig.domain.description, cr, "<br>")}
 			</c:if>
 			</td>
 			<c:if test="${edit eq 'true'}">
