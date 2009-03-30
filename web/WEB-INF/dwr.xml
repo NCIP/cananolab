@@ -52,7 +52,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationManager" />
 			<include method="getCharacterizationOptions" />
-			<include method="getAssayEndpointOptions"/>
+			<include method="getAssayTypeOptions"/>
 		</create>
 		<create creator="new" javascript="SampleManager"
 			scope="session">
