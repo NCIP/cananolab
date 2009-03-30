@@ -46,7 +46,8 @@ public class ExperimentConfigBean {
 
 	public String getTechniqueDisplayName() {
 		String techniqueDisplayName = "";
-		if (domain.getTechnique().getAbbreviation() != null
+		if (domain.getTechnique() != null
+				&& domain.getTechnique().getAbbreviation() != null
 				&& domain.getTechnique().getAbbreviation().trim().length() > 0) {
 			techniqueDisplayName = domain.getTechnique().getType() + "("
 					+ domain.getTechnique().getAbbreviation() + ")";
@@ -129,26 +130,29 @@ public class ExperimentConfigBean {
 
 	private String getInstrumentDisplayName(Instrument instrument) {
 		StringBuffer sb = new StringBuffer();
-		if (instrument.getManufacturer() != null
-				&& instrument.getManufacturer().trim().length() > 0) {
-			sb.append(instrument.getManufacturer());
-			sb.append(" ");
-		} else if (instrument.getType() != null
+		if (instrument.getType() != null
 				&& instrument.getType().trim().length() > 0) {
 			sb.append(instrument.getType());
 			sb.append(" ");
 		}
-		if (instrument.getModelName() != null
-				&& instrument.getModelName().trim().length() > 0) {
-			sb.append(instrument.getModelName());
-			sb.append(" ");
+		if (instrument.getManufacturer() != null
+				&& instrument.getManufacturer().trim().length() > 0) {
+			sb.append("(");
+			sb.append(instrument.getManufacturer());
+			if (instrument.getModelName() != null
+					&& instrument.getModelName().trim().length() > 0) {
+				sb.append(",");
+				sb.append(instrument.getModelName());
+
+			}
+			sb.append(")");
 		}
 		return sb.toString();
 	}
 
 	public String[] getInstrumentDisplayNames() {
-		List<String> displayNames=new ArrayList<String>();
-		for(Instrument instrument: instruments) {
+		List<String> displayNames = new ArrayList<String>();
+		for (Instrument instrument : instruments) {
 			displayNames.add(getInstrumentDisplayName(instrument));
 		}
 		if (displayNames.isEmpty()) {
