@@ -24,13 +24,14 @@ function setCharacterizationOptionsByCharType() {
 		dwr.util.addOptions("charName", data);
 	});
 }
-function setAssayEndpointOptionsByCharName() {
+function setAssayTypeOptionsByCharName() {
 	var charName = document.getElementById("charName").value;
-	CharacterizationManager.getAssayEndpointOptions(charName, function (data) {
+	CharacterizationManager.getAssayTypeOptions(charName, function (data) {
 		dwr.util.removeAllOptions("assayType");
 		dwr.util.addOptions("assayType", [""]);
 		dwr.util.addOptions("assayType", data);
 		dwr.util.addOptions("assayType", ["[Other]"]);
 	});
+
 }
 
