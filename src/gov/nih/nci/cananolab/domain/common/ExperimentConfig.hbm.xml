@@ -3,7 +3,7 @@
 <hibernate-mapping package="gov.nih.nci.cananolab.domain.common" auto-import="false">
 	<class name="ExperimentConfig" table="experiment_config" lazy="true" polymorphism="explicit">
 		<cache usage="read-write" />
-		<id name="id" type="long" column="experiment_config_id">
+		<id name="id" type="long" column="experiment_config_pk_id">
 			<generator class="hilo">
                           <param name="table">hibernate_unique_key</param>
                           <param name="column">next_hi</param>
