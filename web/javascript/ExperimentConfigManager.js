@@ -186,7 +186,7 @@ function editClicked(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var instrument = instrumentCache[eleid.substring(4)];
 	dwr.util.setValues(instrument);
-	document.getElementById("manufacturer").focus();
+	//document.getElementById("manufacturer").focus(); this doesn't work in IE
 }
 
 function deleteClicked() {
