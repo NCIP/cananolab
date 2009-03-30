@@ -3,8 +3,8 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
-import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.sample.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.List;

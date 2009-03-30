@@ -7,9 +7,9 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.service.common.ExperimentConfigService;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.common.impl.ExperimentConfigServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.sample.impl.ExperimentConfigServiceLocalImpl;
 
 import java.util.SortedSet;
 
