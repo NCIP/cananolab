@@ -190,6 +190,13 @@ source datum_migration.sql
 --characterization
 source characterization_migration.sql
 
+
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
+INSERT INTO common_lookup(name,attribute,value) values ('Entrapment','displayName','entrapment');
+ALTER TABLE canano.common_lookup
+ CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
+
 DROP TABLE IF EXISTS composition_temp;
 
 -- Re-enable foreign key checks
