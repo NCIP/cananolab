@@ -14,7 +14,7 @@
 			Cell Line
 		</td>
 		<td>
-			<html:text property="achar.cytotoxicity.cellLine" size="80" />
+			<input type="text" name="achar.cytotoxicity.cellLine" size="80" />
 		</td>
 	</tr>
 </table>

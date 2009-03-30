@@ -14,7 +14,8 @@
 			Enzyme
 		</td>
 		<td>
-			<html:text property="achar.enzymeInduction.enzyme" size="80" />
+			<%--<html:text property="achar.enzymeInduction.enzyme" size="80" />--%>
+			<input type="text" name="achar.enzymeInduction.enzyme" size="80" />
 		</td>
 	</tr>
 </table>
