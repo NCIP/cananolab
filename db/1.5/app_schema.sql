@@ -483,13 +483,13 @@ CREATE TABLE experiment_config_instrument
 
 CREATE TABLE experiment_config
 (
-	experiment_config_id BIGINT NOT NULL,
+	experiment_config_pk_id BIGINT NOT NULL,
 	description TEXT,
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	characterization_pk_id BIGINT,
 	technique_pk_id BIGINT,
-	PRIMARY KEY (experiment_config_id),
+	PRIMARY KEY (experiment_config_pk_id),
 	KEY (characterization_pk_id),
 	KEY (technique_pk_id)
 ) TYPE=InnoDB
@@ -918,7 +918,7 @@ ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity
 ;
 
 ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
-	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_id)
+	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_pk_id)
 ;
 
 ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_instrument
