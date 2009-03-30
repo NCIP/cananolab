@@ -5,7 +5,7 @@
 		<create creator="new" javascript="CompositionManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.particle.DWRCompositionManager" />
+				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
 			<include method="getEntityIncludePage" />
 			<include method="getComposingElementTypeOptions" />
 			<include method="getBiopolymerTypeOptions" />
@@ -22,7 +22,7 @@
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.particle.DWRExperimentConfigManager" />
+				value="gov.nih.nci.cananolab.ui.sample.DWRExperimentConfigManager" />
 			<include method="findExperimentConfigById" />
 			<include method="findTechniqueByType" />
 			<include method="findInstrumentTypesByTechniqueType" />
@@ -35,7 +35,7 @@
 		<create creator="new" javascript="DataSetManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationResultManager"/>
+				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager"/>
 			<include method="addColumnHeader" />
 			<include method="removeColumnHeader" />
 			<include method="resetDataSet" />
@@ -50,14 +50,14 @@
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.particle.DWRCharacterizationManager" />
+				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationManager" />
 			<include method="getCharacterizationOptions" />
 			<include method="getAssayEndpointOptions"/>
 		</create>
 		<create creator="new" javascript="SampleManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.particle.DWRSampleManager" />
+				value="gov.nih.nci.cananolab.ui.sample.DWRSampleManager" />
 			<include method="removeOrgVisibility" />
 			<include method="removeOrgNameVisibility" />
 			<include method="getNanomaterialEntityTypes" />
