@@ -117,6 +117,66 @@ where manufacturer='Diagnostica';
 update instrument
 set created_date=sysdate();
 
+--update model name
+update instrument
+set model_name='Synergy HT'
+where type='Microplate Reader'
+and manufacturer='BioTek'
+and model_name like '%Synergy HT%';
+
+update instrument
+set model_name='AcuCount1000'
+where type='Automated Colony Counter'
+and manufacturer='BioLogics'
+and model_name like '%AcuCount1000%';
+
+update instrument
+set model_name='ZetaPALS'
+where type='Dynamic Light Scattering Instrument'
+and manufacturer='Brookhaven Instruments'
+and model_name like '%ZetaPALS%';
+
+update instrument
+set model_name='JEM-1200 EX'
+where type='Transmission Electron Microscope'
+and manufacturer='JEOL'
+and model_name like '%JEM-1200 EX%';
+
+update instrument
+set model_name='ZetaPALS'
+where type='Dynamic'
+and manufacturer='Brookhaven'
+and model_name like '%ZetaPALS%';
+
+update instrument
+set model_name='Elzone'
+where type='Coulter Counter'
+and manufacturer='Micromeritics'
+and model_name like '%Elzone%';
+
+update instrument
+set model_name='Micromass TofSpec-2E'
+where type='MALDI-TOF Mass Spectrometer'
+and manufacturer='Waters'
+and model_name like '%Micromass TofSpec-2E%';
+
+update instrument
+set model_name='CM100'
+where type='Transmission Electron Microscope'
+and manufacturer='Philips'
+and model_name like '%CM 100%';
+
+update instrument
+set model_name=null
+where type='SEC-MALS Instrument'
+and manufacturer='Wyatt Technologies'
+and model_name like '%DAWN EOS%';
+
+update instrument
+set model_name=null
+where type='SEC-MALS Instrument'
+and manufacturer='Waters'
+and model_name like '%Alliance 2690%';
 
 ALTER TABLE instrument
  CHANGE instrument_pk_id instrument_pk_id BIGINT AUTO_INCREMENT NOT NULL;
@@ -124,7 +184,6 @@ ALTER TABLE instrument
 INSERT into instrument (type,manufacturer,model_name, created_date,created_by) values ('AFFF-MALS Instrument',null,null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,model_name,created_date,created_by) values ('Capillary Electrophoresis Instrument',null,null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,model_name,created_date,created_by) values ('Hemocytometer',null,null,sysdate(),'DATA_MIGRATION');
-INSERT into instrument (type,manufacturer,model_name,created_date,created_by) values ('Dynamic Light Scattering Instrument','Brookhaven Instruments','ZetaPALS',sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,model_name,created_date,created_by) values ('Electron Microprobe',null,null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,model_name,created_date,created_by) values ('Environmental Transmission Electron Microscope','JEOL',null,sysdate(),'DATA_MIGRATION');
 INSERT into instrument (type,manufacturer,model_name,created_date,created_by) values ('Environmental Transmission Electron Microscope','Philips',null,sysdate(),'DATA_MIGRATION');
