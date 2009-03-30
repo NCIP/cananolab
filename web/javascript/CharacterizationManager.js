@@ -32,6 +32,19 @@ function setAssayTypeOptionsByCharName() {
 		dwr.util.addOptions("assayType", data);
 		dwr.util.addOptions("assayType", ["[Other]"]);
 	});
-
+}
+function setCharacterizationDetail() {
+	var charName = document.getElementById("charName").value;
+	var inclueBlock = document.getElementById("characterizationDetail");
+	CharacterizationManager.getCharacterizationDetailPage(charName, populatePage);
+}
+function populatePage(pageData) {
+	var inclueBlock = document.getElementById("characterizationDetail");
+	if (pageData == "") {
+		inclueBlock.style.display = "none";
+	} else {
+		dwr.util.setValue("characterizationDetail", pageData, {escapeHtml:false});
+		inclueBlock.style.display = "inline";
+	}
 }
 
