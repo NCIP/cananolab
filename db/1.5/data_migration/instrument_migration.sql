@@ -13,7 +13,7 @@ CREATE TABLE technique
 ALTER TABLE technique
  CHANGE technique_pk_id technique_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','AFFF-MALLS',sysdate(),'SEED_DATA');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','AFFF-MALS',sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Atomic Force Microscopy','AFM',sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Capillary Electrophoresis',null,sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Cell Counting',null,sysdate(),'SEED_DATA');
@@ -45,7 +45,7 @@ INSERT into technique (type,abbreviation,created_date,created_by) values ('Scann
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Scanning Electron Microscopy','SEM',sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Scanning Probe Microscopy ','SPM',sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Scanning Tunneling  Microscopy','STM',sysdate(),'SEED_DATA');
-INSERT into technique (type,abbreviation,created_date,created_by) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','SEC-MALLS',sysdate(),'SEED_DATA');
+INSERT into technique (type,abbreviation,created_date,created_by) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','SEC-MALS',sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Spectrophotometry',null,sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('Transmission Electron Microscopy','TEM',sysdate(),'SEED_DATA');
 INSERT into technique (type,abbreviation,created_date,created_by) values ('X-Ray Photoelectron Spectroscopy','XPS',sysdate(),'SEED_DATA');
