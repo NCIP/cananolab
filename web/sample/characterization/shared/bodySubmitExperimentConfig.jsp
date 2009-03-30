@@ -55,7 +55,7 @@ function confirmDeletion()
 		</td>
 		<td>
 		    <a style="" id="addInstrument"
-				href="javascript:show('patternAddRow');"><img
+				href="javascript:clearInstrument();show('patternAddRow');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		    <br>
 			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
@@ -158,7 +158,7 @@ function confirmDeletion()
 		</td>
 		<td>
 			<html:textarea styleId="configDescription"
-				property="achar.theExperimentConfig.domain.description" rows="3"
+				property="achar.theExperimentConfig.domain.description" rows="5"
 				cols="70" />
 		</td>
 	</tr>
