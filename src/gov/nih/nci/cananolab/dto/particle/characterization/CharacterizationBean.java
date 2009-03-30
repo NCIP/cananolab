@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
+import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
@@ -76,6 +77,8 @@ public class CharacterizationBean {
 
 	private Solubility solubility = new Solubility();
 
+	private EnzymeInduction enzymeInduction = new EnzymeInduction();
+
 	public CharacterizationBean() {
 	}
 
@@ -115,6 +118,8 @@ public class CharacterizationBean {
 			solubility = (Solubility) chara;
 		} else if (chara instanceof Cytotoxicity) {
 			cytotoxicity = (Cytotoxicity) chara;
+		} else if (chara instanceof EnzymeInduction) {
+			enzymeInduction = (EnzymeInduction) chara;
 		}
 	}
 
@@ -163,8 +168,7 @@ public class CharacterizationBean {
 			copy.getExperimentConfigCollection().addAll(configs);
 			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
 				config.setId(null);
-				config
-						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				config.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				config.setCreatedDate(new Date());
 			}
 		}
@@ -177,8 +181,7 @@ public class CharacterizationBean {
 			copy.getDatumCollection().addAll(data);
 			for (Datum datum : copy.getDatumCollection()) {
 				datum.setId(null);
-				datum
-						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				datum.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				datum.setCreatedDate(new Date());
 				// TODO::
 				// if (bioassay.getFile() != null) {
@@ -227,6 +230,8 @@ public class CharacterizationBean {
 			domainChar = physicalState;
 		} else if (domainChar instanceof Cytotoxicity) {
 			domainChar = cytotoxicity;
+		} else if (domainChar instanceof EnzymeInduction) {
+			domainChar = enzymeInduction;
 		}
 
 		if (domainChar.getId() == null
@@ -379,7 +384,7 @@ public class CharacterizationBean {
 		int index = dataSets.indexOf(dataSetBean);
 		if (index != -1) {
 			dataSets.remove(dataSetBean);
-			//retain the original order
+			// retain the original order
 			dataSets.add(index, dataSetBean);
 		} else {
 			dataSets.add(dataSetBean);
@@ -467,5 +472,13 @@ public class CharacterizationBean {
 
 	public void setAssayType(String assayType) {
 		this.assayType = assayType;
+	}
+
+	public EnzymeInduction getEnzymeInduction() {
+		return enzymeInduction;
+	}
+
+	public void setEnzymeInduction(EnzymeInduction enzymeInduction) {
+		this.enzymeInduction = enzymeInduction;
 	}
 }
