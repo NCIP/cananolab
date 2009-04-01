@@ -45,10 +45,12 @@ public class DWRCharacterizationManager {
 					|| charClassName.equals("Shape")
 					|| charClassName.equals("Solubility")
 					|| charClassName.equals("Surface")) {
-				includePage = "/sample/characterization/physical/body" + charClassName + "Info.jsp";
+				includePage = "/sample/characterization/physical/body"
+						+ charClassName + "Info.jsp";
 			} else if (charClassName.equals("Cytotoxicity")
 					|| charClassName.equals("EnzymeInduction")) {
-				includePage = "/sample/characterization/invitro/body" + charClassName + "Info.jsp";
+				includePage = "/sample/characterization/invitro/body"
+						+ charClassName + "Info.jsp";
 			}
 			if (includePage != null) {
 				return wctx.forwardToString(includePage);
