@@ -63,14 +63,17 @@ public class InitCharacterizationSetup {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
-	public void setPhysicalCharacterizationDropdowns(HttpServletRequest request)
+	public void setCharacterizationDropdowns(HttpServletRequest request)
 			throws Exception {
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"dimensionUnits", "dimension", "unit", "otherUnit", true);
+
 		// solubility
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"solventTypes", "Solubility", "solvent", "otherSolvent", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"concentrationUnits", "SampleContainer", "concentrationUnit",
-				"otherConcentrationUnit", true);
+				"concentrationUnits", "Sample Concentration", "unit",
+				"otherUnit", true);
 		// shape
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"shapeTypes", "Shape", "type", "otherType", true);
@@ -80,56 +83,33 @@ public class InitCharacterizationSetup {
 				"physicalStateTypes", "PhysicalState", "type", "otherType",
 				true);
 
-		// surface chemistry
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"scMolecularFormulaTypes", "SurfaceChemistry",
-				"molecularFormulaType", "otherMolecularFormulaType", true);
-	}
-
-	public void setInvitroCharacterizationDropdowns(HttpServletRequest request)
-			throws Exception {
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"cellLines", "Cytotoxicity", "cellLine", "otherCellLine", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"cellDeathMethods", "Cytotoxicity", "cellDeathMethod",
-				"otherCellDeathMethod", true);
-	}
-
-	public void persistPhysicalCharacterizationDropdowns(
-			HttpServletRequest request, CharacterizationBean charBean)
-			throws Exception {
-		InitSetup.getInstance().persistLookup(request, "Shape", "type",
-				"otherType", charBean.getShape().getType());
-		InitSetup.getInstance().persistLookup(request, "PhysicalState", "type",
-				"otherType", charBean.getShape().getType());
-		InitSetup.getInstance().persistLookup(request, "Solubility", "solvent",
-				"otherSolvent", charBean.getShape().getType());
-		setPhysicalCharacterizationDropdowns(request);
-	}
-
-	public void persistInvitroCharacterizationDropdowns(
-			HttpServletRequest request, CharacterizationBean charBean)
-			throws Exception {
-		// TODO fix in vitro chara
-		//
-		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-		// "cellDeathMethod", "otherCellDeathMethod",
-		// charBean.getCellDeathMethod());
-		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-		// "cellDeathMethod", "otherCellDeathMethod",
-		// charBean.getCaspase3Activation().getCellDeathMethod());
-		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-		// "cellLine", "otherCellLine",
-		// charBean.getCellViability().getCellLine());
-		// InitSetup.getInstance().persistLookup(request, "Cytotoxicity",
-		// "cellLine", "otherCellLine",
-		// charBean.getCaspase3Activation().getCellLine());
-		setInvitroCharacterizationDropdowns(request);
+		// enzyme induction
+		InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request, "enzymeNames",
+						"EnzymeInduction", "enzyme", "otherEnzyme", true);
 	}
 
 	// TODO::
 	public void persistCharacterizationDropdowns(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Shape", "type",
+				"otherType", charBean.getShape().getType());
+		InitSetup.getInstance().persistLookup(request, "PhysicalState", "type",
+				"otherType", charBean.getPhysicalState().getType());
+		InitSetup.getInstance().persistLookup(request, "Solubility", "solvent",
+				"otherSolvent", charBean.getSolubility().getSolvent());
+		InitSetup.getInstance().persistLookup(request, "Sample Concentration",
+				"unit", "otherUnit",
+				charBean.getSolubility().getCriticalConcentrationUnit());
+		InitSetup.getInstance().persistLookup(request, "dimension", "unit",
+				"otherUnit", charBean.getShape().getMaxDimensionUnit());
+		InitSetup.getInstance().persistLookup(request, "dimension", "unit",
+				"otherUnit", charBean.getShape().getMinDimensionUnit());
+		InitSetup.getInstance().persistLookup(request, "EnzymeInduction",
+				"enzyme", "otherEnzyme",
+				charBean.getEnzymeInduction().getEnzyme());
+		setCharacterizationDropdowns(request);
+
 		// for (DerivedBioAssayDataBean bioassay : charBean
 		// .getDerivedBioAssayDataList()) {
 		// if (bioassay.getFileBean() != null) {
@@ -239,15 +219,15 @@ public class InitCharacterizationSetup {
 		request.getSession().setAttribute("datumConditions", conditions);
 		return conditions;
 	}
-	
+
 	public List<String> getDataSetColumnValueTypes(HttpServletRequest request)
-	throws Exception {
+			throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
 		List<String> types = new ArrayList<String>();
-		//TODO::: get types from DB (Qina)
+		// TODO::: get types from DB (Qina)
 		types.add("std");
 		types.add("mean");
-		types.add("avg");		
+		types.add("avg");
 		request.getSession().setAttribute("dataSetColumnValueTypes", types);
 		return types;
 	}
