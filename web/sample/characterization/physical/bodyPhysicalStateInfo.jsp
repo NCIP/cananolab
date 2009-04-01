@@ -4,39 +4,38 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="6">
-				<div align="justify">
-					Physical State Property
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Type </strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-						<html:select property="achar.physicalState.type"
-							styleId="physicalStateType"
-							onchange="javascript:callPrompt('Type', 'physicalStateType');">
-							<option name=""></option>
-							<html:options name="physicalStateTypes" />
-							<option value="other">
-								[Other]
-							</option>
-						</html:select>
-					</c:when>
-					<c:otherwise>
-						${characterizationForm.map.physicalState.type}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-	</tbody>
+<table width="100%" align="center" class="submissionView">
+	<tr>
+		<th colspan="4">
+			Physical State Properties
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel" width="20%">
+			Type
+		</td>
+		<td>
+			<select name="achar.physicalState.type" id="physicalStateType"
+				onchange="javascript:callPrompt('Type', 'physicalStateType');">
+				<option value=""></option>
+				<c:forEach var="type" items="${physicalStateTypes}">
+					<c:choose>
+						<c:when
+							test="${type eq characterizationForm.map.achar.physicalState.type}">
+							<option value="${type}" selected>
+						</c:when>
+						<c:otherwise>
+							<option value="${type}">
+						</c:otherwise>
+					</c:choose>
+						${type}
+					</option>
+				</c:forEach>
+				<option value="other">
+					[Other]
+				</option>
+			</select>
+		</td>
+	</tr>
 </table>
 <br>
