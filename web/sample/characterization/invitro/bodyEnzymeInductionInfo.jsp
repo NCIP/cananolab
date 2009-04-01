@@ -6,16 +6,34 @@
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<th colspan="2">
-			Property Detail
+			Enzyme Induction Properties
 		</td>
 	</tr>
 	<tr>
-		<td class="cellLabel">
-			Enzyme
+		<td class="cellLabel" width="20%">
+			Enzyme Name
 		</td>
 		<td>
-			<%--<html:text property="achar.enzymeInduction.enzyme" size="80" />--%>
-			<input type="text" name="achar.enzymeInduction.enzyme" size="80" />
+			<select name="achar.enzymeInduction.enzyme" id="enzyme"
+				onchange="javascript:callPrompt('Enzyme', 'enzyme');" />
+				<option value=""></option>
+				<c:forEach var="name" items="${enzymeNames}">
+					<c:choose>
+						<c:when
+							test="${name eq characterizationForm.map.achar.enzymeInduction.enzyme}">
+							<option value="${name}" selected>
+						</c:when>
+						<c:otherwise>
+							<option value="${name}">
+						</c:otherwise>
+					</c:choose>
+						${name}
+					</option>
+				</c:forEach>
+				<option value="other">
+					[Other]
+				</option>
+			</select>
 		</td>
 	</tr>
 </table>
