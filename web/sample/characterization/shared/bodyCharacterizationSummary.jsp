@@ -3,52 +3,50 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type="text/javascript" src="javascript/calendar2.js"></script>
-<script type="text/javascript"
-	src="javascript/CharacterizationManager.js"></script>
-<script type="text/javascript"
-	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
-<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
-<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
-
 <table width="100%" align="center" class="submissionView">
 	<tr>
 		<th colspan="4">
 			Summary
 		</td>
 	</tr>
+	<%-- can't change characterization type and name in edit mode --%>
+	<c:if test="${param.dispatch eq 'setupNew'}">
+		<tr>
+			<td class="cellLabel">
+				Characterization Type *
+			</td>
+			<td>
+				<html:select property="achar.characterizationType"
+					styleId="charType"
+					onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharTypeWithOther()">
+					<option value=""></option>
+					<html:options name="characterizationTypes" />
+					<option value="other">
+						[Other]
+					</option>
+				</html:select>
+			</td>
+			<td class="cellLabel">
+				Characterization*
+			</td>
+			<td>
+				<html:select property="achar.characterizationName"
+					styleId="charName"
+					onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();setCharacterizationDetail();">
+					<option value=""></option>
+					<c:if test="${!empty charTypeChars }">
+						<html:options name="charTypeChars" />
+					</c:if>
+					<option value="other">
+						[Other]
+					</option>
+				</html:select>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td class="cellLabel">
-			<strong>Characterization Type * </strong>
-		</td>
-		<td>
-			<html:select property="achar.characterizationType" styleId="charType"
-				onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharTypeWithOther()">
-				<option value=""></option>
-				<html:options name="characterizationTypes" />
-				<option value="other">
-					[Other]
-				</option>
-			</html:select>
-		</td>
-		<td class="cellLabel">
-			<strong>Characterization*</strong>
-		</td>
-		<td>
-			<html:select property="achar.characterizationName" styleId="charName"
-				onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();">
-				<option value=""></option>
-				<c:if test="${!empty charTypeChars }">
-					<html:options name="charTypeChars" />
-				</c:if>
-				<option value="other">
-					[Other]
-				</option>
-			</html:select>
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel">
-			<strong>Assay Type</strong>
+			Assay Type
 		</td>
 		<td>
 			<html:select property="achar.assayType" styleId="assayType"
@@ -63,7 +61,7 @@
 			</html:select>
 		</td>
 		<td class="cellLabel">
-			<strong>Protocol Name - Version</strong>
+			Protocol Name - Version
 		</td>
 		<html:hidden styleId="updatedUri"
 			property="achar.protocolFileBean.domainFile.uri" />
@@ -88,7 +86,7 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			<strong>Characterization Source </strong>
+			Characterization Source
 		</td>
 		<td>
 			<html:select property="achar.pocBean.domain.id" styleId="charSource"
@@ -99,7 +97,7 @@
 			</html:select>
 		</td>
 		<td class="cellLabel">
-			<strong>Characterization Date</strong>
+			Characterization Date
 		</td>
 		<td>
 			<html:text property="achar.dateString" size="10" styleId="charDate" />
