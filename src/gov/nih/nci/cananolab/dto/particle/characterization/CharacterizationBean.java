@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
+import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
@@ -77,7 +78,11 @@ public class CharacterizationBean {
 
 	private Solubility solubility = new Solubility();
 
+	private Surface surface = new Surface();
+
 	private EnzymeInduction enzymeInduction = new EnzymeInduction();
+
+	private boolean withProperties = false;
 
 	public CharacterizationBean() {
 	}
@@ -112,14 +117,24 @@ public class CharacterizationBean {
 		}
 		if (chara instanceof Shape) {
 			shape = (Shape) chara;
+			withProperties = true;
 		} else if (chara instanceof PhysicalState) {
 			physicalState = (PhysicalState) chara;
+			withProperties = true;
 		} else if (chara instanceof Solubility) {
 			solubility = (Solubility) chara;
+			withProperties = true;
+		} else if (chara instanceof Surface) {
+			surface = (Surface) chara;
+			withProperties = true;
 		} else if (chara instanceof Cytotoxicity) {
 			cytotoxicity = (Cytotoxicity) chara;
+			withProperties = true;
 		} else if (chara instanceof EnzymeInduction) {
 			enzymeInduction = (EnzymeInduction) chara;
+			withProperties = true;
+		} else {
+			withProperties = false;
 		}
 	}
 
@@ -228,6 +243,8 @@ public class CharacterizationBean {
 			domainChar = solubility;
 		} else if (domainChar instanceof PhysicalState) {
 			domainChar = physicalState;
+		} else if (domainChar instanceof Surface) {
+			domainChar = surface;
 		} else if (domainChar instanceof Cytotoxicity) {
 			domainChar = cytotoxicity;
 		} else if (domainChar instanceof EnzymeInduction) {
@@ -480,5 +497,17 @@ public class CharacterizationBean {
 
 	public void setEnzymeInduction(EnzymeInduction enzymeInduction) {
 		this.enzymeInduction = enzymeInduction;
+	}
+
+	public Surface getSurface() {
+		return surface;
+	}
+
+	public void setSurface(Surface surface) {
+		this.surface = surface;
+	}
+
+	public boolean isWithProperties() {
+		return withProperties;
 	}
 }
