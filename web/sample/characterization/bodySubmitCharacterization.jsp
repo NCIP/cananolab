@@ -11,13 +11,13 @@
 	src="javascript/CharacterizationManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
-<script type="text/javascript"
-	src="javascript/ExperimentConfigManager.js"></script>
 <script type="text/javascript" src="javascript/DataSetManager.js"></script>
 <script type='text/javascript'
-	src='/caNanoLab/dwr/interface/ExperimentConfigManager.js'></script>
-<script type='text/javascript'
 	src='/caNanoLab/dwr/interface/DataSetManager.js'></script>
+<script type="text/javascript"
+	src="javascript/ExperimentConfigManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/ExperimentConfigManager.js'></script>
 <script type="text/javascript" src="javascript/ProtocolManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
@@ -28,7 +28,16 @@
 		<tr>
 			<td>
 				<h4>
-					${fn:toUpperCase(param.location)} ${sampleName} Characterization
+					${fn:toUpperCase(param.location)} ${sampleName}
+					<c:choose>
+						<c:when test="${param.dispatch eq 'setupUpdate'}">
+						${characterizationForm.map.achar.characterizationType} -
+						${characterizationForm.map.achar.characterizationName}
+				</c:when>
+						<c:otherwise>
+				Characterization
+				</c:otherwise>
+					</c:choose>
 				</h4>
 			</td>
 			<c_rt:set var='dispatch'
@@ -74,16 +83,13 @@
 				<c:if test="${!empty characterizationDetailPage}">
 					<jsp:include page="${characterizationDetailPage}" />
 				</c:if>
-				<jsp:include
-					page="shared/bodyCharacterizationDesignMethods.jsp" />
-				<jsp:include
-					page="shared/bodyCharacterizationResults.jsp" />
-				<jsp:include
-					page="shared/bodyCharacterizationConclusion.jsp" />
+				<div id="characterizationDetail"></div>
+				<jsp:include page="shared/bodyCharacterizationDesignMethods.jsp" />
+				<jsp:include page="shared/bodyCharacterizationResults.jsp" />
+				<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 				<jsp:include
 					page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
-				<jsp:include
-					page="shared/bodyCharacterizationSubmit.jsp" />
+				<jsp:include page="shared/bodyCharacterizationSubmit.jsp" />
 			</td>
 		</tr>
 	</table>
