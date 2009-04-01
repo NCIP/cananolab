@@ -194,6 +194,10 @@ source characterization_migration.sql
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 INSERT INTO common_lookup(name,attribute,value) values ('Entrapment','displayName','entrapment');
+INSERT INTO common_lookup(name,attribute,value) values('dimension', 'unit', ' nm');
+DELETE FROM common_lookup
+where name='SampleContainer';
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
