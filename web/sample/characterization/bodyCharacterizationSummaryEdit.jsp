@@ -69,8 +69,8 @@
 		<td>
 			<c:forEach var="type" items="${characterizationTypes}"
 				varStatus="ind">
-				<table id="summarySection${ind.count}"
-					width="95%" align="center" style="display:block" class="summaryViewLayer2">
+				<table id="summarySection${ind.count}" width="95%" align="center"
+					style="display: block" class="summaryViewLayer2">
 					<tr>
 						<th align="left">
 							${type} &nbsp;&nbsp;&nbsp;
@@ -103,7 +103,7 @@
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														assay type
+														Assay Type
 													</td>
 													<td colspan="2">
 														<c:choose>
@@ -111,13 +111,13 @@
 																${charObj.assayType}
 															</c:when>
 															<c:otherwise>
-															Size Distribution
+															N/A
 															</c:otherwise>
 														</c:choose>
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														point of contact
+														Point of Contact
 													</td>
 													<td colspan="2">
 														<c:choose>
@@ -131,7 +131,7 @@
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														characterization date
+														Characterization Date
 													</td>
 													<td colspan="2">
 														<c:choose>
@@ -145,7 +145,7 @@
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														protocol
+														Protocol
 													</td>
 													<td colspan="2">
 
@@ -161,9 +161,19 @@
 
 													</td>
 												</tr>
+												<c:if test="${charBean.withProperties }">
+													<tr>
+														<td class="cellLabel">
+															Properties
+														</td>
+														<td colspan="2">
+															<%@include file="bodyCharacterizationPropertiesView.jsp"%>
+														</td>
+													</tr>
+												</c:if>
 												<tr>
 													<td class="cellLabel">
-														design description
+														Design Description
 													</td>
 													<td colspan="2">
 														<c:choose>
@@ -181,7 +191,7 @@
 
 												<tr>
 													<td class="cellLabel">
-														techniques and instruments
+														Techniques and Instruments
 													</td>
 													<td colspan="2">
 														<c:choose>
@@ -195,7 +205,7 @@
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														characterizaiton results
+														Characterizaiton Results
 													</td>
 													<td colspan="2">
 														<c:choose>
@@ -209,7 +219,7 @@
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														analysis and conclusion
+														Analysis and Conclusion
 													</td>
 													<td colspan="2">
 														<c:choose>
