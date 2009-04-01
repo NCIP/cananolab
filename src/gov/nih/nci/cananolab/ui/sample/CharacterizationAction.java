@@ -64,20 +64,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean charBean = (CharacterizationBean) theForm
 				.get("achar");
-		if (charBean.getAssayCategory().equals(
-				"Phsico-Chemical Characterization")) {
-			InitCharacterizationSetup.getInstance()
-					.persistCharacterizationDropdowns(request, charBean);
-			InitCharacterizationSetup
-					.getInstance()
-					.persistPhysicalCharacterizationDropdowns(request, charBean);
-		} else if (charBean.getAssayCategory().equals(
-				"Invitro Characterization")) {
-			InitCharacterizationSetup.getInstance()
-					.persistCharacterizationDropdowns(request, charBean);
-			InitCharacterizationSetup.getInstance()
-					.persistInvitroCharacterizationDropdowns(request, charBean);
-		}
+		InitCharacterizationSetup.getInstance()
+				.persistCharacterizationDropdowns(request, charBean);
 		// TODO::
 		// if (!validateDerivedDatum(request, charBean)) {
 		// return mapping.getInputForward();
@@ -143,17 +131,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (charType != null)
 			InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
 					charType);
-		InitCharacterizationSetup.getInstance()
-				.setPhysicalCharacterizationDropdowns(request);
-		InitCharacterizationSetup.getInstance()
-				.setInvitroCharacterizationDropdowns(request);
+		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
+				request);
 		// String detailPage = setupDetailPage(charBean);
 		// request.getSession().setAttribute("characterizationDetailPage",
 		// detailPage);
 
 		// set up other samples with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request,
-				sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 	}
 
 	/**
@@ -194,7 +179,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
 		setupInputForm(request, theForm);
-
+		String detailPage = null;
+		if (charBean.isWithProperties()) {
+			detailPage = setupDetailPage(charBean);
+		}
+		request.setAttribute("characterizationDetailPage", detailPage);
 		return mapping.getInputForward();
 	}
 
@@ -204,11 +193,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				|| charBean.getClassName().equals("Shape")
 				|| charBean.getClassName().equals("Solubility")
 				|| charBean.getClassName().equals("Surface")) {
-			includePage = "/particle/characterization/physical/body"
-					+ charBean.getClassName() + "Info.jsp";
+			includePage = "physical/body" + charBean.getClassName()
+					+ "Info.jsp";
 		} else if (charBean.getClassName().equals("Cytotoxicity")) {
-			includePage = "/particle/characterization/invitro/body"
-					+ charBean.getClassName() + "Info.jsp";
+			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
+		} else if (charBean.getClassName().equals("EnzymeInduction")) {
+			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
 		}
 		return includePage;
 	}
@@ -339,19 +329,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// setup domainFile uri for fileBeans
 		setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
-		charService.saveCharacterization(
-				sampleBean.getDomain(), charBean
-						.getDomainChar());
+		charService.saveCharacterization(sampleBean.getDomain(), charBean
+				.getDomainChar());
 
 		// set public visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(),
-				Constants.CSM_READ_PRIVILEGE);
+				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
-				&& accessibleGroups
-						.contains(Constants.CSM_PUBLIC_GROUP)) {
+				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
 			charService.assignPublicVisibility(authService, charBean
 					.getDomainChar());
 		}
@@ -372,8 +359,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (otherSamples != null) {
 			Boolean copyData = (Boolean) theForm.get("copyData");
 			Characterization copy = charBean.getDomainCopy(copyData);
-			saveToOtherSamples(request, copy, user, sampleBean
-					.getDomain().getName(), otherSamples);
+			saveToOtherSamples(request, copy, user, sampleBean.getDomain()
+					.getName(), otherSamples);
 		}
 		sampleBean = setupSample(theForm, request, "local");
 	}
@@ -411,8 +398,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("updateDataTree", "true");
 		String sampleId = theForm.getString("sampleId");
 		SampleService sampleService = new SampleServiceLocalImpl();
-		SampleBean sampleBean = sampleService
-				.findSampleById(sampleId);
+		SampleBean sampleBean = sampleService.findSampleById(sampleId);
 		InitSampleSetup.getInstance().getDataTree(sampleBean, request);
 		return forward;
 	}
@@ -481,9 +467,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			//TODO model change
-//			service = new CharacterizationServiceRemoteImpl(
-//					serviceUrl);
+			// TODO model change
+			// service = new CharacterizationServiceRemoteImpl(
+			// serviceUrl);
 		}
 		List<CharacterizationBean> charBeans = service
 				.findCharsBySampleId(sampleId);
