@@ -204,7 +204,6 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			InitSampleSetup.getInstance().setRemoteSearchDropdowns(
 					request);
 		}
-
 		return mapping.getInputForward();
 	}
 

@@ -424,15 +424,15 @@ public class CompositionServiceLocalImpl implements
 	// association
 	public boolean checkChemicalAssociationBeforeDelete(
 			ComposingElementBean ceBean) {
-		if (ceBean.getDomainComposingElement().getId() != null) {
+		if (ceBean.getDomain().getId() != null) {
 			Collection<ChemicalAssociation> assocSet = ceBean
-					.getDomainComposingElement().getNanomaterialEntity()
+					.getDomain().getNanomaterialEntity()
 					.getSampleComposition().getChemicalAssociationCollection();
 			if (assocSet != null) {
 				for (ChemicalAssociation assoc : assocSet) {
-					if (ceBean.getDomainComposingElement().equals(
+					if (ceBean.getDomain().equals(
 							assoc.getAssociatedElementA())
-							|| ceBean.getDomainComposingElement().equals(
+							|| ceBean.getDomain().equals(
 									assoc.getAssociatedElementB())) {
 						return false;
 					}

@@ -89,7 +89,7 @@ public class TargetBean {
 						domainTarget.getClass().getCanonicalName())) {
 			try {
 				domainTarget = (Target) clazz.newInstance();
-			}catch (ClassCastException ex) {
+			} catch (ClassCastException ex) {
 				String tmpType = type;
 				this.setType(null);
 				throw new ClassCastException(tmpType);
@@ -107,7 +107,7 @@ public class TargetBean {
 						.getCreatedBy().equals(
 								Constants.AUTO_COPY_ANNOTATION_PREFIX))) {
 			domainTarget.setCreatedBy(createdBy);
-			//domainTarget.setCreatedDate(new Date());
+			// domainTarget.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
 			domainTarget.setCreatedDate(DateUtils
@@ -125,5 +125,23 @@ public class TargetBean {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		if (description != null) {
+			buffer.append(description);
+		}
+		if (type != null) {
+			buffer.append(" (");
+			buffer.append(type);
+			if (antigen.getSpecies() != null) {
+				buffer.append(" (");
+				buffer.append(antigen.getSpecies());
+				buffer.append(")");
+			}
+			buffer.append(")");
+		}
+		return buffer.toString();
 	}
 }

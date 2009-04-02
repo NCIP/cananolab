@@ -110,7 +110,7 @@ public class FunctionBean {
 						domainFunction.getClass().getCanonicalName())) {
 			try {
 				domainFunction = (Function) clazz.newInstance();
-			}catch (ClassCastException ex) {
+			} catch (ClassCastException ex) {
 				String tmpType = type;
 				this.setType(null);
 				throw new ClassCastException(tmpType);
@@ -168,4 +168,24 @@ public class FunctionBean {
 		this.type = type;
 	}
 
+	public String getDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		if (description!=null) {
+			buffer.append(description);
+		}
+		if (type!=null) {
+			buffer.append(" ("+type);
+			if (imagingFunction.getModality()!=null) {
+				buffer.append(" (");
+				buffer.append(imagingFunction.getModality());
+				buffer.append(")");
+			}
+			for(TargetBean target: targets) {
+				buffer.append(" (");
+				buffer.append(target.getDisplayName());
+			}
+			buffer.append(")");
+		}
+		return buffer.toString();
+	}
 }

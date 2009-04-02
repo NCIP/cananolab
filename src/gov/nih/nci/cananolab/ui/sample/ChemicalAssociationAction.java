@@ -174,7 +174,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("chemicalAssociationForm");

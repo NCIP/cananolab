@@ -253,17 +253,17 @@ public class NanomaterialEntityBean {
 		}
 		int i=0;
 		for (ComposingElementBean composingElementBean : composingElements) {
-			composingElementBean.setupDomainComposingElement(typeToClass,
+			composingElementBean.setupDomain(typeToClass,
 					createdBy, i);
-			ComposingElement domainComposingElement = composingElementBean
-					.getDomainComposingElement();
-			if (domainComposingElement.getId() == null) {
-				domainComposingElement.setCreatedBy(createdBy);
-				domainComposingElement.setCreatedDate(new Date());
+			ComposingElement domain = composingElementBean
+					.getDomain();
+			if (domain.getId() == null) {
+				domain.setCreatedBy(createdBy);
+				domain.setCreatedDate(new Date());
 			}
-			domainComposingElement.setNanomaterialEntity(domainEntity);
+			domain.setNanomaterialEntity(domainEntity);
 			domainEntity.getComposingElementCollection().add(
-					domainComposingElement);
+					domain);
 			i++;
 		}
 		if (domainEntity.getFileCollection() != null) {
@@ -285,7 +285,7 @@ public class NanomaterialEntityBean {
 
 	public void removeComposingElement(int ind) {
 		ComposingElementBean elementToRemove = composingElements.get(ind);
-		elementToRemove.getDomainComposingElement().setNanomaterialEntity(null);
+		elementToRemove.getDomain().setNanomaterialEntity(null);
 		// remove the one at the index
 		composingElements.remove(elementToRemove);
 	}

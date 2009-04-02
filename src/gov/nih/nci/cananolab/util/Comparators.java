@@ -317,9 +317,9 @@ public class Comparators {
 			Comparator<ComposingElementBean> {
 		public int compare(ComposingElementBean element1,
 				ComposingElementBean element2) {
-			return element1.getDomainComposingElement().getCreatedDate()
+			return element1.getDomain().getCreatedDate()
 					.compareTo(
-							element2.getDomainComposingElement()
+							element2.getDomain()
 									.getCreatedDate());
 		}
 	}

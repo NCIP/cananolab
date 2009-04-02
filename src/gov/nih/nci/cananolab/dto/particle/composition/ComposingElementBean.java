@@ -19,12 +19,12 @@ import java.util.Map;
  *
  */
 public class ComposingElementBean {
-	private ComposingElement domainComposingElement = new ComposingElement();
+	private ComposingElement domain = new ComposingElement();
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
 	public ComposingElementBean(ComposingElement composingElement) {
-		this.domainComposingElement = composingElement;
+		this.domain = composingElement;
 		if (composingElement.getInherentFunctionCollection() != null) {
 			for (Function function : composingElement
 					.getInherentFunctionCollection()) {
@@ -38,8 +38,8 @@ public class ComposingElementBean {
 	public ComposingElementBean() {
 	}
 
-	public ComposingElement getDomainComposingElement() {
-		return domainComposingElement;
+	public ComposingElement getDomain() {
+		return domain;
 	}
 
 	public List<FunctionBean> getInherentFunctions() {
@@ -55,38 +55,79 @@ public class ComposingElementBean {
 	}
 
 	public String getDisplayName() {
-		return getDomainComposingElement().getType() + ":"
-				+ getDomainComposingElement().getName();
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getDomain().getType());
+		if (getDomain().getName() != null) {
+			buffer.append(" (");
+			buffer.append(getDomain().getName());
+			if (getDomain().getValue() != null) {
+				buffer.append(", ");
+				buffer.append(getDomain().getValue());
+				if (getDomain().getValueUnit() != null) {
+					buffer.append(" ");
+					buffer.append(getDomain().getValueUnit());
+				}
+			}
+			buffer.append(")");
+		}
+		return buffer.toString();
+	}
+
+	public String getMolecularFormulaDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		if (getDomain().getMolecularFormula() != null) {
+			buffer.append(getDomain().getMolecularFormula());
+			if (getDomain().getMolecularFormulaType() != null
+					&& getDomain().getMolecularFormulaType()
+							.length() > 0) {
+				buffer.append(" (");
+				buffer.append(getDomain()
+						.getMolecularFormulaType());
+				buffer.append(")");
+			}
+		}
+		return buffer.toString();
+	}
+
+	public String[] getFunctionDisplayNames() {
+		List<String> displayNames = new ArrayList<String>();
+		for (FunctionBean function : inherentFunctions) {
+			displayNames.add(function.getDisplayName());
+		}
+		if (displayNames.isEmpty()) {
+			return null;
+		}
+		return displayNames.toArray(new String[displayNames.size()]);
 	}
 
 	// for dwr ajax in bodyChemicalAssociation.jsp
-	public String getDomainComposingElementId() {
-		return getDomainComposingElement().getId().toString();
+	public String getDomainId() {
+		return getDomain().getId().toString();
 	}
 
-	public void setupDomainComposingElement(Map<String, String> typeToClass,
+	public void setupDomain(Map<String, String> typeToClass,
 			String createdBy, int index) throws Exception {
-		if (domainComposingElement.getId() == null
-				|| domainComposingElement.getCreatedBy() != null
-				&& domainComposingElement.getCreatedBy().equals(
+		if (domain.getId() == null
+				|| domain.getCreatedBy() != null
+				&& domain.getCreatedBy().equals(
 						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
-			domainComposingElement.setCreatedBy(createdBy);
-			// domainComposingElement.setCreatedDate(new Date());
+			domain.setCreatedBy(createdBy);
+			// domain.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
-			domainComposingElement.setCreatedDate(DateUtils
+			domain.setCreatedDate(DateUtils
 					.addSecondsToCurrentDate(index));
 		}
-		if (domainComposingElement.getInherentFunctionCollection() != null) {
-			domainComposingElement.getInherentFunctionCollection().clear();
+		if (domain.getInherentFunctionCollection() != null) {
+			domain.getInherentFunctionCollection().clear();
 		} else {
-			domainComposingElement
+			domain
 					.setInherentFunctionCollection(new HashSet<Function>());
 		}
-		int i=0;
+		int i = 0;
 		for (FunctionBean functionBean : inherentFunctions) {
 			functionBean.setupDomainFunction(typeToClass, createdBy, i);
-			domainComposingElement.getInherentFunctionCollection().add(
+			domain.getInherentFunctionCollection().add(
 					functionBean.getDomainFunction());
 			i++;
 		}

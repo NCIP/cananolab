@@ -28,7 +28,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allows users to submit composition files under sample composition.
- * 
+ *
  * @author pansu
  */
 public class CompositionFileAction extends BaseAnnotationAction {
@@ -72,7 +72,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
-	public ActionForward setup(ActionMapping mapping, ActionForm form,
+	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("compositionFileForm");

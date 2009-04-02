@@ -50,6 +50,9 @@ public class CompositionServiceHelper {
 		crit.setFetchMode(
 				"composingElementCollection.inherentFunctionCollection",
 				FetchMode.JOIN);
+		crit.setFetchMode(
+				"composingElementCollection.inherentFunctionCollection.targetCollection",
+				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		NanomaterialEntity entity = null;

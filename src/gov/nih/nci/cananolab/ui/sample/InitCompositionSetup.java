@@ -99,21 +99,21 @@ public class InitCompositionSetup {
 			if (entityBean.getDomainEntity() instanceof Emulsion) {
 				InitSetup.getInstance().persistLookup(request, "Emulsion",
 						"composingElementType", "otherComposingElementType",
-						elementBean.getDomainComposingElement().getType());
+						elementBean.getDomain().getType());
 			} else {
 				InitSetup.getInstance().persistLookup(request,
 						"ComposingElement", "type", "otherType",
-						elementBean.getDomainComposingElement().getType());
+						elementBean.getDomain().getType());
 			}
 			InitSetup.getInstance().persistLookup(request, "ComposingElement",
 					"valueUnit", "otherValueUnit",
-					elementBean.getDomainComposingElement().getValueUnit());
+					elementBean.getDomain().getValueUnit());
 			InitSetup.getInstance().persistLookup(
 					request,
 					"ComposingElement",
 					"molecularFormulaType",
 					"otherMolecularFormulaType",
-					elementBean.getDomainComposingElement()
+					elementBean.getDomain()
 							.getMolecularFormulaType());
 			for (FunctionBean functionBean : elementBean.getInherentFunctions()) {
 				InitSetup.getInstance().persistLookup(request,

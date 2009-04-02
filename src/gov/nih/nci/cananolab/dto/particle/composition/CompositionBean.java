@@ -18,23 +18,22 @@ public class CompositionBean {
 	private List<ChemicalAssociationBean> chemicalAssociations = new ArrayList<ChemicalAssociationBean>();
 	private List<FileBean> files = new ArrayList<FileBean>();
 	private SampleComposition domain;
+	private List<String> compositionSections = new ArrayList<String>();
 
 	public CompositionBean() {
 
 	}
 
 	public CompositionBean(SampleComposition comp) {
-		domain=comp;
+		domain = comp;
 		if (comp.getNanomaterialEntityCollection() != null) {
 			for (NanomaterialEntity entity : comp
 					.getNanomaterialEntityCollection()) {
 				nanomaterialEntities.add(new NanomaterialEntityBean(entity));
 			}
 		}
-		Collections
-				.sort(
-						nanomaterialEntities,
-						new Comparators.NanomaterialEntityBeanTypeDateComparator());
+		Collections.sort(nanomaterialEntities,
+				new Comparators.NanomaterialEntityBeanTypeDateComparator());
 		if (comp.getFunctionalizingEntityCollection() != null) {
 			for (FunctionalizingEntity entity : comp
 					.getFunctionalizingEntityCollection()) {
@@ -42,29 +41,22 @@ public class CompositionBean {
 						entity));
 			}
 		}
-		Collections
-				.sort(
-						functionalizingEntities,
-						new Comparators.FunctionalizingEntityBeanTypeDateComparator());
+		Collections.sort(functionalizingEntities,
+				new Comparators.FunctionalizingEntityBeanTypeDateComparator());
 		if (comp.getChemicalAssociationCollection() != null) {
 			for (ChemicalAssociation assoc : comp
 					.getChemicalAssociationCollection()) {
 				chemicalAssociations.add(new ChemicalAssociationBean(assoc));
 			}
 		}
-		Collections
-				.sort(
-						chemicalAssociations,
-						new Comparators.ChemicalAssociationBeanTypeDateComparator());
+		Collections.sort(chemicalAssociations,
+				new Comparators.ChemicalAssociationBeanTypeDateComparator());
 		if (comp.getFileCollection() != null) {
 			for (File file : comp.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
 		}
-		Collections
-				.sort(
-						files,
-						new Comparators.FileBeanTypeDateComparator());
+		Collections.sort(files, new Comparators.FileBeanTypeDateComparator());
 	}
 
 	public List<NanomaterialEntityBean> getNanomaterialEntities() {
@@ -104,5 +96,21 @@ public class CompositionBean {
 
 	public SampleComposition getDomain() {
 		return domain;
+	}
+
+	public List<String> getCompositionSections() {
+		if (!nanomaterialEntities.isEmpty()) {
+			compositionSections.add("Nanomaterial Entity");
+		}
+		if (!functionalizingEntities.isEmpty()) {
+			compositionSections.add("Functionalizing Entity");
+		}
+		if (!chemicalAssociations.isEmpty()) {
+			compositionSections.add("Chemical Association");
+		}
+		if (!files.isEmpty()) {
+			compositionSections.add("Composition File");
+		}
+		return compositionSections;
 	}
 }
