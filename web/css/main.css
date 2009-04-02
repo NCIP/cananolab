@@ -1649,6 +1649,46 @@ input.noBorderText {
 	color: #5c5c5c;
 }
 
+.subSubmissionView {
+	border-width: 1px;
+	border-color: #cccccc;
+	padding: 3px 3px 3px 3px;
+	border-style: solid;
+	border-collapse: collapse;
+	color: #5C5C5C;
+	background-color: #FFFFCC;
+}
+
+.subSubmissionView caption {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.65em;
+	font-weight: bold;
+	color: #5C5C5C;
+}
+
+.subSubmissionView th {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.60em;
+	padding: 3px 3px 3px 3px;
+	color: #5C5C5C;
+	font-weight: bold;
+	background-color: #AAAAAB;
+	text-align: left;
+}
+
+.subSubmissionView td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.60em;
+	padding: 3px 3px 3px 3px;
+	border-width: 0px;
+	border-color: #cccccc;
+	border-style: solid;
+	vertical-align: top;
+	text-align: left;
+	color: #706C60;
+}
+
+
 .summaryViewLayer4 {
 	border-width: 1px;
 	border-color: #cccccc;
