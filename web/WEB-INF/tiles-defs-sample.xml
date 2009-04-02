@@ -104,10 +104,10 @@
 	</definition>
 
 	<!-- definition for the sample composition particle entity page -->
-	<definition name="sample.composition.particleEntity"
+	<definition name="sample.composition.nanomaterialEntity"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/sample/composition/nanomaterialEntity/bodyParticleEntity.jsp" />
+			value="/sample/composition/nanomaterialEntity/bodySubmitNanomaterialEntity.jsp" />
 		<put name="actionName" value="nanomaterialEntity" />
 	</definition>
 

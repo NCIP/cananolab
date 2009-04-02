@@ -90,7 +90,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
 			<param name="include"
-				value="displayName, domainComposingElementId" />
+				value="displayName, domainId" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">

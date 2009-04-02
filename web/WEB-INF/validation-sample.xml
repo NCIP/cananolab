@@ -162,7 +162,7 @@
 					</var-value>
 				</var>
 			</field>
-			<field property="domainComposingElement.type" page="2"
+			<field property="domain.type" page="2"
 				depends="validwhen"
 				indexedListProperty="entity.composingElements">
 				<arg position="0"
@@ -172,7 +172,7 @@
 					<var-value>(*this*!=null)</var-value>
 				</var>
 			</field>
-			<field property="domainComposingElement.name" page="2"
+			<field property="domain.name" page="2"
 				depends="validwhen"
 				indexedListProperty="entity.composingElements">
 				<arg position="0"

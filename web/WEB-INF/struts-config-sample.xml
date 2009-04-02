@@ -189,7 +189,7 @@
 			type="gov.nih.nci.cananolab.ui.sample.NanomaterialEntityAction"
 			input="input">
 			<forward name="input"
-				path="sample.composition.particleEntity" />
+				path="sample.composition.nanomaterialEntity" />
 			<forward name="success" path="sample.annotationMessage" />
 		</action>
 		<action name="functionalizingEntityForm" parameter="dispatch"
