@@ -6,7 +6,7 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 
 <table id="designDataTable" class="summaryViewLayer4" width="95%"
-	align="center">
+	align="right">
 	<tr>
 		<td class="cellLabel" width="5%">
 			Columns
@@ -19,95 +19,68 @@
 	<tr id="datumColumnsDivRowDisplay">
 		<td></td>
 		<td>
-			<table>
-				<tr>
-					<td>
-						<div id="datumColumnsDivDisplay" style="display: block;">
-							<table id="datumColumnsTableDisplay" class="summaryViewLayer4"
-								border="1" width="85%">
-								<tbody id="datumColumnsDisplay">
-									<tr id="datumColumnPatternRowDisplay">
-										<td id="datumColumnPatternDisplay" style="display: none;">
-											<input class="noBorderButton" id="datumColumnNameDisplay"
-												type="button" size="2" value="datumColumnNameDisplay"
-												onclick="editColumn(this.id)" />
-											<span id="columnDisplayName" class="greyFont2"
-												style="display: none;">columnDisplayName</span>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+			<table id="datumColumnsTableDisplay" class="summaryViewLayer4"
+				border="1" style="display: block;" width="85%" align="left">
+				<tr id="datumColumnPatternRowDisplay">
+					<td id="datumColumnPatternDisplay" style="display: none;">
+						<input class="noBorderButton" id="datumColumnNameDisplay"
+							type="button" size="2" value="datumColumnNameDisplay"
+							onclick="editColumn(this.id)" />
+						<span id="columnDisplayName" style="display: none;">columnDisplayName</span>
 					</td>
+				</tr>
+				<tr id="datumColumnsDivRow" style="display: none;">
+					<td id="datumColumnPattern" style="display: none;">
+						<input id="datumColumnId" type="hidden" value="datumColumnId" />
+						<input id="datumOrConditionColumn" type="hidden"
+							value="datumOrConditionColumn" />
+						<input id="conditionColumnProperty" type="hidden"
+							value="conditionColumnProperty" />
+						<input id="datumColumnDataRowId" type="hidden"
+							value="datumColumnDataRowId" />
+						<input id="datumColumnDataSetId" type="hidden"
+							value="datumColumnDataSetId" />
+						<span id="datumColumnName" class="cellLabel">datumColumnName</span>
+						(
+						<span id="datumColumnValueType" class="cellLabel">ValueType</span>,
+						<span id="datumColumnValueUnit" class="cellLabel"><strong>ValueUnit</strong>
+						</span>)
+					</td>
+					<td>
+						<input id="datumColumnValue" type="text" size="6"
+							value="datumColumnValue" />
+					</td>
+				</tr>
+				<%--
+				<tr id="datumColumnsDivRow2">
+					<td align="right" colspan="1">
+						<div id="addRowButtons" style="display: none;">
+							<input class="noBorderButton" type="button" value="New"
+								onclick="clearTheDataRow();" />
+							<input class="noBorderButton" type="button" value="Save"
+								onclick="addRow()" />
+							<input class="noBorderButton" type="button" value="Delete"
+								onclick="deleteClicked()" />
+						</div>
+						&nbsp;
+					</td>
+				</tr>
+				--%>
+				<tr id="matrixHeader" style="display: none;">
+				</tr>
+				<tr id="datumMatrixPatternRow" style="display: none;">
 				</tr>
 			</table>
 		</td>
 	</tr>
-	<tr>
-		<td></td>
-		<td>
-			<table id="datumColumnsDivRow" class="summaryViewLayer4"
-				style="display: none;">
-				<tbody id="datumColumns">
-					<tr id="datumColumnPattern" style="display: none;">
-						<td>
-							<input id="datumColumnId" type="hidden" value="datumColumnId" />
-							<input id="datumOrConditionColumn" type="hidden"
-								value="datumOrConditionColumn" />
-							<input id="conditionColumnProperty" type="hidden"
-								value="conditionColumnProperty" />
-							<input id="datumColumnDataRowId" type="hidden"
-								value="datumColumnDataRowId" />
-							<input id="datumColumnDataSetId" type="hidden"
-								value="datumColumnDataSetId" />
-							<span id="datumColumnName" class="cellLabel">datumColumnName</span>
-							(
-							<span id="datumColumnValueType" class="cellLabel">ValueType</span>,
-							<span id="datumColumnValueUnit" class="cellLabel"><strong>ValueUnit</strong>
-							</span>)
-						</td>
-						<td>
-							<input id="datumColumnValue" type="text" size="6"
-								value="datumColumnValue" />
-						</td>
+	<%--
+					<div id="datumMatrixDivRow">
+					<tr id="matrixHeader" style="display: none;">
 					</tr>
-					<tr id="datumColumnsDivRow2">
-						<td>
-							&nbsp;
-						</td>
-						<td align="right" colspan="1">
-							<div id="addRowButtons" style="display: none;">
-								<input class="noBorderButton" type="button" value="New"
-									onclick="clearTheDataRow();" />
-								<input class="noBorderButton" type="button" value="Save"
-									onclick="addRow()" />
-								<input class="noBorderButton" type="button" value="Delete"
-									onclick="deleteClicked()" />
-							</div>
-							&nbsp;
-						</td>
+					<tr id="datumMatrixPatternRow" style="display: none;">
 					</tr>
-				</tbody>
-			</table>
-	</td>
-	</tr>
-	<tr id="datumMatrixDivRow">
-		<td></td>
-		<td>
-			<div id="datumMatrixDiv" style="display: block;">
-				<table id="datumMatrixTable" class="summaryViewLayer4" border="1"
-					width="85%" align="left">
-					<tbody id="datumMatrix">
-						<tr id="matrixHeader" style="display: none;">
-						</tr>
-						<tr id="datumMatrixPatternRow" style="display: none;">
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			&nbsp;
-		</td>
-	</tr>
+					</div>
+--%>
 	<tr>
 		<td></td>
 		<td>

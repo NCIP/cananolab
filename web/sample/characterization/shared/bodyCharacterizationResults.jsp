@@ -44,10 +44,9 @@ function confirmDeletion()
 			<div id="newDataSet" style="display: none;">
 				<table class="summaryViewLayer4" width="85%" align="center">
 					<tr>
-						<td colspan="2">
-							<b>Data</b>&nbsp;&nbsp;
-							<a href="javascript:showhide('submitDatum');">show/hide</a>
-						</td>
+						<th colspan="2">
+							Data
+						</th>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
@@ -58,14 +57,13 @@ function confirmDeletion()
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							<b>File</b>&nbsp;&nbsp;
-							<a href="javascript:showhide('loadDatumFile');">show/hide</a>
-						</td>
+						<th colspan="2">
+							File
+						</th>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
-							<div style="display: none" id="loadDatumFile">
+							<div style="display: block;" id="loadDatumFile">
 								<jsp:include page="bodySubmitCharacterizationFile.jsp" />
 								&nbsp;
 							</div>
@@ -86,9 +84,9 @@ function confirmDeletion()
 						</td>
 					</tr>
 				</table>
-	</div>
-	<br>
-	</td>
+			</div>
+			<br>
+		</td>
 	</tr>
 </table>
 <br>

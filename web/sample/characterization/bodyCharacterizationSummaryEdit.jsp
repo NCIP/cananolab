@@ -52,7 +52,7 @@
 			</c:forEach>
 			<li>
 				<a
-					href="characterization.do?dispatch=setupNew&sampleId=${sampleId }"><span>New</span>
+					href="characterization.do?dispatch=setupNew&sampleId=${sampleId }"><span>Other</span>
 				</a>
 			</li>
 		</ul>
@@ -96,7 +96,7 @@
 													<th align="left" width="20%">
 														${charBean.characterizationName}
 													</th>
-													<th align="right" colspan="2">
+													<th align="right">
 														<a
 															href="characterization.do?dispatch=setupUpdate&sampleId=${sampleId}&charId=${charBean.domainChar.id}&charClassName=${charBean.className}&charType=${charBean.characterizationType}">Edit</a>
 													</th>
@@ -105,7 +105,7 @@
 													<td class="cellLabel">
 														Assay Type
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when test="${!empty charObj.assayType}">
 																${charObj.assayType}
@@ -119,7 +119,7 @@
 													<td class="cellLabel">
 														Point of Contact
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when test="${!empty charBean.pocBean.displayName}">
 																${charBean.pocBean.displayName}
@@ -133,7 +133,7 @@
 													<td class="cellLabel">
 														Characterization Date
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when test="${!empty charBean.dateString}">
 																${charBean.dateString}
@@ -147,7 +147,7 @@
 													<td class="cellLabel">
 														Protocol
 													</td>
-													<td colspan="2">
+													<td>
 
 														<c:choose>
 															<c:when
@@ -166,7 +166,7 @@
 														<td class="cellLabel">
 															Properties
 														</td>
-														<td colspan="2">
+														<td>
 															<%@include file="bodyCharacterizationPropertiesView.jsp"%>
 														</td>
 													</tr>
@@ -175,7 +175,7 @@
 													<td class="cellLabel">
 														Design Description
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when
 																test="${!empty fn:trim(charObj.designMethodsDescription)}">
@@ -193,7 +193,7 @@
 													<td class="cellLabel">
 														Techniques and Instruments
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when test="${!empty charBean.experimentConfigs}">
 																<%@ include file="shared/bodyExperimentConfigView.jsp"%>
@@ -207,7 +207,7 @@
 													<td class="cellLabel">
 														Characterizaiton Results
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when test="${!empty charBean.dataSets}">
 																<%@ include file="shared/bodyDataSetView.jsp"%>
@@ -221,7 +221,7 @@
 													<td class="cellLabel">
 														Analysis and Conclusion
 													</td>
-													<td colspan="2">
+													<td>
 														<c:choose>
 															<c:when test="${!empty charBean.conclusion}">
 													${charBean.conclusion}

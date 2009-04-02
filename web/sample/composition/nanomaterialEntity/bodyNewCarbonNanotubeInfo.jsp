@@ -13,8 +13,8 @@
 				<strong>Average Length</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.averageLength" 
-					value="${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}"
+				<input type="text" name="entity.carbonNanotube.averageLength"
+					value="${nanomaterialEntityForm.map.entity.carbonNanotube.averageLength}"
 					onkeydown="return filterFloatNumber(event)" />
 			</td>
 			<td class="label">
@@ -33,7 +33,7 @@
 				<strong>Chirality</strong>
 			</td>
 			<td class="rightLabel">
-				<input type="text" name="entity.carbonNanotube.chirality" value="${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}"/>
+				<input type="text" name="entity.carbonNanotube.chirality" value="${nanomaterialEntityForm.map.entity.carbonNanotube.chirality}"/>
 			</td>
 		</tr>
 		<tr>
@@ -41,8 +41,8 @@
 				<strong>Diameter</strong>
 			</td>
 			<td class="label">
-				<input type="text" name="entity.carbonNanotube.diameter" 
-					value="${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}"
+				<input type="text" name="entity.carbonNanotube.diameter"
+					value="${nanomaterialEntityForm.map.entity.carbonNanotube.diameter}"
 					onkeydown="return filterFloatNumber(event)" />
 			</td>
 			<td class="label">

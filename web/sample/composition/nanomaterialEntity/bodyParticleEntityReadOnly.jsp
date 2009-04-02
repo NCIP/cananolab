@@ -123,26 +123,26 @@
 														indexId="ind">
 														<tr>
 															<td class="leftLabel" valign="top">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.type}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.type}&nbsp;
 															</td>
 															<td class="label" valign="top">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.name}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.name}&nbsp;
 															</td>
 															<td class="label" valign="top" width="15%">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.description}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.description}&nbsp;
 															</td>
 															<td class="label" valign="top">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormulaType}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.molecularFormulaType}&nbsp;
 															</td>
 															<td class="label" valign="top" width="15%">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.molecularFormula}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.molecularFormula}&nbsp;
 															</td>
 															<td class="label" valign="top">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.value}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.value}&nbsp;
 															</td>
 
 															<td class="label" valign="top">
-																${nanomaterialEntityForm.map.entity.composingElements[ind].domainComposingElement.valueUnit}&nbsp;
+																${nanomaterialEntityForm.map.entity.composingElements[ind].domain.valueUnit}&nbsp;
 															</td>
 															<td colspan="4" class="rightLabel">
 																<c:if

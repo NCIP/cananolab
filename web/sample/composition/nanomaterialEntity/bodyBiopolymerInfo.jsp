@@ -22,7 +22,7 @@
 						<html:text property="entity.biopolymer.name" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.biopolymer.name}&nbsp;
+						${nanomaterialEntityForm.map.entity.biopolymer.name}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -43,7 +43,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.biopolymer.type}&nbsp;
+						${nanomaterialEntityForm.map.entity.biopolymer.type}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -59,7 +59,7 @@
 							rows="3" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.biopolymer.sequence}&nbsp;
+						${nanomaterialEntityForm.map.entity.biopolymer.sequence}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

@@ -15,20 +15,20 @@
 				<strong>Description</strong>
 			</td>
 		</tr>
-		<logic:iterate id="ifdata" name="nanoparticleEntityForm"
+		<logic:iterate id="ifdata" name="nanomaterialEntityForm"
 			property="entity.composingElements[${param.compEleInd}].inherentFunctions"
 			indexId="ifInd">
 			<tr>
 				<td class="leftLabel" valign="top" width="85">
-					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].type}&nbsp;
+					${nanomaterialEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].type}&nbsp;
 					<c:if
-						test="${nanoparticleEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
-						<br>(Modality Type:&nbsp;${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality})
+						test="${nanomaterialEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
+						<br>(Modality Type:&nbsp;${nanomaterialEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].imagingFunction.modality})
 					</c:if>
 					&nbsp;
 				</td>
 				<td class="rightLabel" valign="top">
-					${nanoparticleEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].description}&nbsp;
+					${nanomaterialEntityForm.map.entity.composingElements[compEleIndex].inherentFunctions[ifInd].description}&nbsp;
 					&nbsp;
 				</td>
 			</tr>

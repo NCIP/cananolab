@@ -4,12 +4,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-<logic:iterate id="ifdata" name="nanoparticleEntityForm"
+<logic:iterate id="ifdata" name="nanomaterialEntityForm"
 	property="entity.composingElements[${param.compEleInd}].inherentFunctions"
 	indexId="ifInd">
 	<c:choose>
 		<c:when
-			test="${nanoparticleEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
+			test="${nanomaterialEntityForm.map.entity.composingElements[param.compEleInd].inherentFunctions[ifInd].type == 'imaging'}">
 			<c:set var="modalityDisplay" value="display: block;" />
 		</c:when>
 		<c:otherwise>
@@ -25,8 +25,8 @@
 				</td>
 				<td class="formSubTitleNoLeft" align="right">
 					<a href="#"
-						onclick="javascript:removeChildComponent(nanoparticleEntityForm, 
-					'nanoparticleEntity', ${param.compEleInd}, ${ifInd}, 'removeInherentFunction');">
+						onclick="javascript:removeChildComponent(nanomaterialEntityForm,
+					'nanomaterialEntity', ${param.compEleInd}, ${ifInd}, 'removeInherentFunction');">
 						<img src="images/delete.gif" border="0" alt="remove this function">
 					</a>
 				</td>

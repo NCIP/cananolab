@@ -20,7 +20,12 @@ function confirmDeletion()
 //-->
 </script>
 
-<table class="summaryViewLayer4" width="85%" align="center">
+<table class="subSubmissionView" width="85%" align="center">
+	<tr>
+		<th colspan="2">
+			New/Edit Technique Instrument
+		</th>
+	</tr>
 	<tr>
 		<td class="cellLabel">
 			Technique*
@@ -54,11 +59,11 @@ function confirmDeletion()
 			Instrument
 		</td>
 		<td>
-		    <a style="" id="addInstrument"
+			<a style="" id="addInstrument"
 				href="javascript:clearInstrument();show('patternAddRow');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
-		    <br>
-			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
+			<br>
+			<table id="instrumentTable" class="subSubmissionView" width="85%"
 				style="display: none;">
 				<tbody id="instrumentRows">
 					<tr id="patternHeader">
@@ -86,7 +91,8 @@ function confirmDeletion()
 						</td>
 						<td>
 							<input class="noBorderButton" id="edit" type="button"
-								value="Edit" onclick="editClicked(this.id); show('patternAddRow');" />
+								value="Edit"
+								onclick="editClicked(this.id); show('patternAddRow');" />
 						</td>
 					</tr>
 				</tbody>

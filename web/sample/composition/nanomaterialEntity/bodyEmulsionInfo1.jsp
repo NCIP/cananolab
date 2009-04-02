@@ -26,7 +26,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.emulsion.polymerized}&nbsp;
+						${nanomaterialEntityForm.map.entity.emulsion.polymerized}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -39,7 +39,7 @@
 						<html:text property="entity.emulsion.polymerName" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.emulsion.polymerName}&nbsp;
+						${nanomaterialEntityForm.map.entity.emulsion.polymerName}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

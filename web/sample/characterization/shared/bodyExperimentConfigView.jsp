@@ -26,7 +26,6 @@
 			</td>
 			<td>
 				<c:if test="${! empty experimentConfig.instrumentDisplayNames}">
-
 					<c:forEach var="instrumentDisplayName"
 						items="${experimentConfig.instrumentDisplayNames}">
 							${instrumentDisplayName}

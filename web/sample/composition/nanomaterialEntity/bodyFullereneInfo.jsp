@@ -23,7 +23,7 @@
 							styleId="averageDiameter" onkeydown="return filterFloatNumber(event)"/>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.fullerene.averageDiameter}&nbsp;
+						${nanomaterialEntityForm.map.entity.fullerene.averageDiameter}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -44,7 +44,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.fullerene.averageDiameterUnit}&nbsp;
+						${nanomaterialEntityForm.map.entity.fullerene.averageDiameterUnit}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -58,7 +58,7 @@
 							styleId="numberOfCarbon" onkeydown="return filterInteger(event)"/>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.fullerene.numberOfCarbon}&nbsp;
+						${nanomaterialEntityForm.map.entity.fullerene.numberOfCarbon}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

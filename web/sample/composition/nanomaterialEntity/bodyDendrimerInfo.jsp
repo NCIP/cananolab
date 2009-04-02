@@ -17,7 +17,7 @@
 						<html:text property="entity.dendrimer.branch" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.dendrimer.branch}&nbsp;
+						${nanomaterialEntityForm.map.entity.dendrimer.branch}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -31,7 +31,7 @@
 						<html:text property="entity.dendrimer.generation" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.dendrimer.generation}&nbsp;
+						${nanomaterialEntityForm.map.entity.dendrimer.generation}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

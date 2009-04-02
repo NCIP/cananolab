@@ -23,7 +23,7 @@
 						<html:text property="entity.carbonNanotube.averageLength" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLength}&nbsp;
+						${nanomaterialEntityForm.map.entity.carbonNanotube.averageLength}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -44,7 +44,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.averageLengthUnit}&nbsp;
+						${nanomaterialEntityForm.map.entity.carbonNanotube.averageLengthUnit}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -57,7 +57,7 @@
 						<html:text property="entity.carbonNanotube.chirality" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.chirality}&nbsp;
+						${nanomaterialEntityForm.map.entity.carbonNanotube.chirality}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -72,7 +72,7 @@
 						<html:text property="entity.carbonNanotube.diameter" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.diameter}&nbsp;
+						${nanomaterialEntityForm.map.entity.carbonNanotube.diameter}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -93,7 +93,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.diameterUnit}&nbsp;
+						${nanomaterialEntityForm.map.entity.carbonNanotube.diameterUnit}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -110,7 +110,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.carbonNanotube.wallType}&nbsp;
+						${nanomaterialEntityForm.map.entity.carbonNanotube.wallType}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

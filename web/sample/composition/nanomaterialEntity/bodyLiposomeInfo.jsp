@@ -22,7 +22,7 @@
 						<html:text property="entity.liposome.polymerName" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.liposome.polymerName}&nbsp;
+						${nanomaterialEntityForm.map.entity.liposome.polymerName}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -39,7 +39,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.liposome.polymerized}&nbsp;
+						${nanomaterialEntityForm.map.entity.liposome.polymerized}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

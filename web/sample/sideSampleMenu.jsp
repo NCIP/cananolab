@@ -8,17 +8,15 @@
 
 <c:choose>
 	<c:when test="${!empty theSample}">
-		<c:set var="sampleName"
-			value="${theSample.domain.name}" scope="session" />
-		<c:set var="sampleId" value="${theSample.domain.id}"
+		<c:set var="sampleName" value="${theSample.domain.name}"
 			scope="session" />
+		<c:set var="sampleId" value="${theSample.domain.id}" scope="session" />
 		<c:set var="location" value="${theSample.location}" scope="session" />
 	</c:when>
 </c:choose>
 
 <c:choose>
-	<c:when
-		test="${canCreateSample eq 'true' && location eq 'local'}">
+	<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
 		<c:set var="dispatch" value="summaryEdit" />
 	</c:when>
 	<c:otherwise>
@@ -45,11 +43,11 @@
 			<c:param name="location" value="${location}" />
 			<c:param name="page" value="0" />
 		</c:url>
-		<td class="subMenuPrimaryTitle" height="60"
-		    onmouseover="showCursor()"
-			onmouseout="hideCursor()"
-			onclick="gotoPage('${sampleUrl}')" height="20">
-			<a class="pname">${applicationOwner} Sample<br><br>${sampleName}</a>
+		<td class="subMenuPrimaryTitle" height="60" onmouseover="showCursor()"
+			onmouseout="hideCursor()" onclick="gotoPage('${sampleUrl}')"
+			height="20">
+			<a class="pname">${applicationOwner} Sample<br>
+				<br>${sampleName}</a>
 		</td>
 	</tr>
 	<tr>

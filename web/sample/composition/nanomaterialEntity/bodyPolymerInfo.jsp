@@ -22,7 +22,7 @@
 						<html:text property="entity.polymer.initiator" />
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.polymer.initiator}&nbsp;
+						${nanomaterialEntityForm.map.entity.polymer.initiator}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -35,7 +35,7 @@
 						<html:text property="entity.polymer.crossLinkDegree" onkeydown="return filterFloatNumber(event)"/>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.polymer.crossLinkDegree}&nbsp;
+						${nanomaterialEntityForm.map.entity.polymer.crossLinkDegree}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>
@@ -52,7 +52,7 @@
 						</html:select>
 					</c:when>
 					<c:otherwise>
-						${nanoparticleEntityForm.map.entity.polymer.crossLinked}&nbsp;
+						${nanomaterialEntityForm.map.entity.polymer.crossLinked}&nbsp;
 					</c:otherwise>
 				</c:choose>
 			</td>

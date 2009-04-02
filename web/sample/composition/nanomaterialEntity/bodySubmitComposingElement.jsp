@@ -2,26 +2,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="entity" value="${nanomaterialEntityForm.map.entity}" />
+<c:set var="entity"
+	value="${compositionForm.map.comp.nanomaterialEntities[param.entityIndex]}" />
 
 <logic:iterate name="entity" property="composingElements"
 	id="composingElement" indexId="ind">
-	<table class="summaryViewLayer4" width="95%" align="center">
+	<table class="summaryViewLayer4" width="95%">
 		<tr>
 			<th>
 				${composingElement.displayName}
 			</th>
-			<c:choose>
-				<c:when test="${edit eq 'true'}">
-					<td align="right" width="3%">
-						<a
-							href="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
-					</td>
-				</c:when>
-				<c:otherwise>
-					<td></td>
-				</c:otherwise>
-			</c:choose>
 		</tr>
 		<c:choose>
 			<c:when test="${!empty composingElement.molecularFormulaDisplayName}">
@@ -29,7 +19,6 @@
 					<td>
 						Molecular Formula: ${composingElement.molecularFormulaDisplayName}
 					</td>
-					<td></td>
 				</tr>
 			</c:when>
 			<c:otherwise>
@@ -38,7 +27,6 @@
 						<td>
 							Molecular Formula: N/A
 						</td>
-						<td></td>
 					</tr>
 				</c:if>
 			</c:otherwise>
@@ -54,7 +42,6 @@
 				<br>
 						</c:forEach>
 					</td>
-					<td></td>
 				</tr>
 			</c:when>
 			<c:otherwise>
@@ -63,7 +50,6 @@
 						<td>
 							Function: N/A
 						</td>
-						<td></td>
 					</tr>
 				</c:if>
 			</c:otherwise>
@@ -76,7 +62,6 @@
 						Description:
 						${composingElement.domain.description}
 					</td>
-					<td></td>
 				</tr>
 			</c:when>
 			<c:otherwise>
@@ -85,7 +70,6 @@
 						<td>
 							Description: N/A
 						</td>
-						<td></td>
 					</tr>
 				</c:if>
 			</c:otherwise>
