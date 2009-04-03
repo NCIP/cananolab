@@ -259,12 +259,9 @@ CREATE TABLE datum
 	value_unit VARCHAR(200),
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
-	characterization_pk_id BIGINT,
-	data_set_pk_id BIGINT,
-	data_row_pk_id BIGINT,
+	finding_pk_id BIGINT,
 	PRIMARY KEY (datum_pk_id),
-	KEY (characterization_pk_id),
-	KEY (data_row_pk_id)
+	KEY (finding_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -309,7 +306,7 @@ CREATE TABLE characterization
 	design_method_description TEXT,
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
-	protocol_file_pk_id BIGINT,
+	protocol_pk_id BIGINT,
 	sample_pk_id BIGINT,
 	discriminator VARCHAR(50) NOT NULL,
 	cytotoxicity_cell_line VARCHAR(200),
@@ -323,7 +320,7 @@ CREATE TABLE characterization
 	PRIMARY KEY (characterization_pk_id),
 	KEY (poc_pk_id),
 	KEY (sample_pk_id),
-	KEY (protocol_file_pk_id)
+	KEY (protocol_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -395,19 +392,6 @@ CREATE TABLE publication
 ) TYPE=InnoDB
 ;
 
-
-CREATE TABLE protocol_file
-(
-	protocol_file_pk_id BIGINT NOT NULL,
-	protocol_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (protocol_file_pk_id),
-	UNIQUE (protocol_file_pk_id),
-	KEY (protocol_file_pk_id),
-	KEY (protocol_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE point_of_contact
 (
 	poc_pk_id BIGINT NOT NULL,
@@ -470,6 +454,16 @@ CREATE TABLE functionalizing_entity_file
 ;
 
 
+CREATE TABLE finding_file
+(
+	finding_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	KEY (file_pk_id),
+	KEY (finding_pk_id)
+) TYPE=InnoDB
+;
+
+
 CREATE TABLE experiment_config_instrument
 (
 	experiment_config_pk_id BIGINT NOT NULL,
@@ -507,17 +501,6 @@ CREATE TABLE datum_condition
 ;
 
 
-CREATE TABLE data_set
-(
-	data_set_pk_id BIGINT NOT NULL,
-	file_pk_id BIGINT,
-	PRIMARY KEY (data_set_pk_id),
-	UNIQUE (data_set_pk_id),
-	KEY (file_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE chemical_association
 (
 	chemical_association_pk_id BIGINT NOT NULL,
@@ -534,17 +517,6 @@ CREATE TABLE chemical_association
 	KEY (associated_element_a_pk_id),
 	KEY (associated_element_b_pk_id),
 	KEY (composition_pk_id)
-) TYPE=InnoDB
-;
-
-
-CREATE TABLE characterization_file
-(
-	characterization_pk_id BIGINT NOT NULL,
-	file_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (characterization_pk_id, file_pk_id),
-	KEY (characterization_pk_id),
-	KEY (file_pk_id)
 ) TYPE=InnoDB
 ;
 
@@ -567,13 +539,15 @@ CREATE TABLE protocol
 	protocol_name VARCHAR(2000),
 	protocol_type VARCHAR(2000),
 	protocol_abbreviation VARCHAR(200),
+	protocol_version VARCHAR(200),
+	file_pk_id BIGINT,
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
 	PRIMARY KEY (protocol_pk_id),
-	UNIQUE (protocol_pk_id)
+	UNIQUE (protocol_pk_id),
+	KEY (file_pk_id)
 ) TYPE=InnoDB
 ;
-
 
 CREATE TABLE organization
 (
@@ -621,7 +595,6 @@ CREATE TABLE file
 	file_pk_id BIGINT NOT NULL,
 	file_name VARCHAR(500),
 	file_uri VARCHAR(500),
-	version VARCHAR(200),
 	created_by VARCHAR(200) NOT NULL,
 	created_date DATETIME NOT NULL,
 	title VARCHAR(500),
@@ -707,10 +680,21 @@ CREATE TABLE activation_method
 ;
 
 
+CREATE TABLE finding
+(
+	finding_pk_id BIGINT NOT NULL,
+	characterization_pk_id BIGINT,
+	UNIQUE (finding_pk_id),
+	KEY (characterization_pk_id)
+) TYPE=InnoDB
+;
+
+
 CREATE TABLE hibernate_unique_key (
   next_hi BIGINT NOT NULL
 ) TYPE=InnoDB
 ;
+
 
 
 ALTER TABLE target ADD CONSTRAINT FK_target_function
@@ -781,32 +765,12 @@ ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity
 	FOREIGN KEY (antibody_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization
-	FOREIGN KEY (solubility_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE shape ADD CONSTRAINT FK_shape_characterization
-	FOREIGN KEY (shape_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization
-	FOREIGN KEY (physical_state_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
 ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method
 	FOREIGN KEY (activation_method_pk_id) REFERENCES activation_method (activation_method_pk_id)
 ;
 
 ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
-;
-
-ALTER TABLE datum ADD CONSTRAINT FK_datum_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE datum ADD CONSTRAINT FK_datum_data_row
-	FOREIGN KEY (data_row_pk_id) REFERENCES data_row (data_row_pk_id)
 ;
 
 ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_composition
@@ -817,28 +781,32 @@ ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_sample
-	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
+ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization
+	FOREIGN KEY (solubility_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE shape ADD CONSTRAINT FK_shape_characterization
+	FOREIGN KEY (shape_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
 ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_point_of_contact
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
+ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
+;
+
+ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization
+	FOREIGN KEY (physical_state_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
+ALTER TABLE finding ADD CONSTRAINT FK_finding_characterization
+	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
+;
+
 ALTER TABLE composition ADD CONSTRAINT FK_Composition_sample
 	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
-;
-
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_point_of_contact
-	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
-;
-
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_sample
-	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
-;
-
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol_file
-	FOREIGN KEY (protocol_file_pk_id) REFERENCES protocol_file (protocol_file_pk_id)
 ;
 
 ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_sample
@@ -861,6 +829,18 @@ ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_fil
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol
+	FOREIGN KEY (protocol_pk_id) REFERENCES protocol (protocol_pk_id)
+;
+
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_point_of_contact
+	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
+;
+
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_sample
+	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
+;
+
 ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author
 	FOREIGN KEY (author_pk_id) REFERENCES author (author_pk_id)
 ;
@@ -873,12 +853,8 @@ ALTER TABLE publication ADD CONSTRAINT FK_publication_file
 	FOREIGN KEY (publication_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_file
-	FOREIGN KEY (protocol_file_pk_id) REFERENCES file (file_pk_id)
-;
-
-ALTER TABLE protocol_file ADD CONSTRAINT FK_protocol_file_protocol
-	FOREIGN KEY (protocol_pk_id) REFERENCES protocol (protocol_pk_id)
+ALTER TABLE protocol ADD CONSTRAINT FK_protocol_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
 ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
@@ -917,6 +893,14 @@ ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
+ALTER TABLE finding_file ADD CONSTRAINT FK_finding_file_file
+	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
+;
+
+ALTER TABLE finding_file ADD CONSTRAINT FK_finding_file_finding
+	FOREIGN KEY (finding_pk_id) REFERENCES finding (finding_pk_id)
+;
+
 ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
 	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_pk_id)
 ;
@@ -941,22 +925,10 @@ ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_data_row
 	FOREIGN KEY (datum_pk_id) REFERENCES datum (datum_pk_id)
 ;
 
-ALTER TABLE data_set ADD CONSTRAINT FK_data_set_file
-	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
-;
-
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a
 	FOREIGN KEY (associated_element_a_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
-;
-
-ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
-	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
