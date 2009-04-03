@@ -454,16 +454,6 @@ CREATE TABLE functionalizing_entity_file
 ;
 
 
-CREATE TABLE finding_file
-(
-	finding_pk_id BIGINT NOT NULL,
-	file_pk_id BIGINT NOT NULL,
-	KEY (file_pk_id),
-	KEY (finding_pk_id)
-) TYPE=InnoDB
-;
-
-
 CREATE TABLE experiment_config_instrument
 (
 	experiment_config_pk_id BIGINT NOT NULL,
@@ -690,6 +680,16 @@ CREATE TABLE finding
 ;
 
 
+CREATE TABLE finding_file
+(
+	finding_pk_id BIGINT NOT NULL,
+	file_pk_id BIGINT NOT NULL,
+	KEY (file_pk_id),
+	KEY (finding_pk_id)
+) TYPE=InnoDB
+;
+
+
 CREATE TABLE hibernate_unique_key (
   next_hi BIGINT NOT NULL
 ) TYPE=InnoDB
@@ -771,6 +771,10 @@ ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_acti
 
 ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
+;
+
+ALTER TABLE datum ADD CONSTRAINT FK_datum_finding
+	FOREIGN KEY (finding_pk_id) REFERENCES finding (finding_pk_id)
 ;
 
 ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_composition
@@ -919,10 +923,6 @@ ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
 
 ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_condition
 	FOREIGN KEY (condition_pk_id) REFERENCES experiment_condition (condition_pk_id)
-;
-
-ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_data_row
-	FOREIGN KEY (datum_pk_id) REFERENCES datum (datum_pk_id)
 ;
 
 ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a
