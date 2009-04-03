@@ -131,6 +131,7 @@ CREATE TABLE datum_condition
 (
 	datum_pk_id BIGINT NOT NULL,
 	condition_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (datum_pk_id, condition_pk_id),
 	KEY (datum_pk_id),
 	KEY (condition_pk_id)
 ) TYPE=InnoDB
@@ -507,6 +508,7 @@ CREATE TABLE finding_file
 (
 	finding_pk_id BIGINT NOT NULL,
 	file_pk_id BIGINT NOT NULL,
+	PRIMARY KEY (finding_pk_id, file_pk_id),
 	KEY (file_pk_id),
 	KEY (finding_pk_id)
 ) TYPE=InnoDB
