@@ -14,11 +14,37 @@ DROP TABLE IF EXISTS storage;
 DROP TABLE IF EXISTS associated_file;
 
 ALTER TABLE publication ADD COLUMN abstract TEXT;
-ALTER TABLE protocol ADD COLUMN protocol_abbreviation VARCHAR(200);
+
+--merge protocol_file and protocol
+ALTER TABLE protocol
+    ADD COLUMN protocol_abbreviation VARCHAR(200),
+    ADD COLUMN protocol_version VARCHAR(200),
+	ADD COLUMN file_pk_id BIGINT
+;
 
 --update protocol_abbreviation to be the same as protocol name
 update protocol
 set protocol_abbreviation=protocol_name;
+
+--update protocol_version and file_pk_id
+update protocol a, protocol_file b, lab_file c
+set a.protocol_version=c.version,
+a.file_pk_id=c.file_pk_id
+where a.protocol_pk_id=b.protocol_pk_id
+and b.protocol_file_pk_id=c.file_pk_id;
+
+--update foreign key in characterization from protocol_file_pk_id  to protocol_pk_id
+ALTER TABLE canano.characterization
+ DROP FOREIGN KEY FK_characterization_protocol_file,
+ CHANGE protocol_file_pk_id protocol_pk_id BIGINT;
+
+ALTER TABLE canano.characterization
+ ADD CONSTRAINT FK_characterization_protocol FOREIGN KEY (protocol_pk_id) REFERENCES canano.protocol (protocol_pk_id);
+
+update characterization a, protocol b
+set a.protocol_pk_id=b.protocol_pk_id
+where a.protocol_pk_id=b.file_pk_id
+;
 
 update common_lookup
 set value='physico-chemical assay'
