@@ -10,16 +10,13 @@
                         </generator>
 		</id>
 		<!-- Attributes mapping for the Protocol class -->
+		<property name="abbreviation" type="string" column="protocol_abbreviation"/>
 		<property name="createdBy" type="string" column="created_by"/>
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="name" type="string" column="protocol_name"/>
 		<property name="type" type="string" column="protocol_type"/>
-		<property name="abbreviation" type="string" column="protocol_abbreviation"/>
+		<property name="version" type="string" column="protocol_version"/>
 		<!-- Associations mapping for the Protocol class -->
-		<set name="protocolFileCollection" lazy="false">
-			<cache usage="read-write" />
-			<key column="protocol_pk_id" />
-			<one-to-many class="gov.nih.nci.cananolab.domain.common.ProtocolFile"/>
-		</set>
+		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" />
 	</class>
 </hibernate-mapping>
