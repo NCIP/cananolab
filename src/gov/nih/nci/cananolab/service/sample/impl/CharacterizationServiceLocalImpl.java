@@ -187,7 +187,8 @@ public class CharacterizationServiceLocalImpl extends
 			// fileService
 			// .retrieveVisibility(bioAssayData.getFileBean(), user);
 			// }
-			fileService.retrieveVisibility(charBean.getProtocolBean().getFileBean(), user);
+			fileService.retrieveVisibility(charBean.getProtocolBean()
+					.getFileBean(), user);
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "
 					+ charBean.getDomainChar().getId();
@@ -233,17 +234,14 @@ public class CharacterizationServiceLocalImpl extends
 			crit.setFetchMode(
 					"experimentConfigCollection.instrumentCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection",
+			crit.setFetchMode("findingCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.datumCollection.conditionCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode("datumCollection", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.conditionCollection",
+			crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.dataSet.file", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.dataSet.file.keywordCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);

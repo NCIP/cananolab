@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.ColumnBean;
-import gov.nih.nci.cananolab.dto.common.DataRowBean;
+import gov.nih.nci.cananolab.dto.common.RowBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
@@ -26,7 +26,7 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCharacterizationResultManager {
-	int tempDataRowId = -1;
+	int tempRowId = -1;
 	private CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 
 	public FindingBean resetFinding() {
@@ -77,7 +77,7 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		FindingBean theFinding = charBean.getTheFinding();
-		DataRowBean dataRowBean = null;
+		RowBean rowBean = null;
 		if (data != null) {
 			boolean hasData = false;
 			int i = 0;
@@ -86,27 +86,27 @@ public class DWRCharacterizationResultManager {
 					datum.setFinding(theFinding.getDomain());
 				}
 				if (i == 0) {
-					dataRowBean = theFinding.getDataRowBean(datum);
-					if (dataRowBean == null) {
-						dataRowBean = new DataRowBean();
+					rowBean = theFinding.getRowBean(datum);
+					if (rowBean == null) {
+						rowBean = new RowBean();
 					}
 				}
 				// if (conditions != null) {
 				// datum.setConditionCollection(conditions);
 				// }
-				dataRowBean.setConditions(conditions);
-				dataRowBean.addDatum(datum);
+				rowBean.setConditions(conditions);
+				rowBean.addDatum(datum);
 				hasData = true;
 				i++;
 			}
 			if (hasData) {
 
-				// if dataRowBean.rowNumber is null, set a negative id temporary
+				// if rowBean.rowNumber is null, set a negative id temporary
 				// need to handle set nagative id to null when save to db
-				if (dataRowBean.getRowNumber() == -1) {
-					dataRowBean.setRowNumber(tempDataRowId--);
+				if (rowBean.getRowNumber() == -1) {
+					rowBean.setRowNumber(tempRowId--);
 				}
-				theFinding.addDataRow(dataRowBean);
+				theFinding.addRow(rowBean);
 			}
 		}
 		return theFinding;
@@ -121,31 +121,30 @@ public class DWRCharacterizationResultManager {
 				.get("achar"));
 		FindingBean theFinding = charBean.getTheFinding();
 		if (data != null) {
-			DataRowBean dataRowBean = null;
+			RowBean rowBean = null;
 			int i = 0;
 			for (Datum datum : data) {
 				if (theFinding.getDomain().getId() != null) {
 					datum.setFinding(theFinding.getDomain());
 				}
 				if (i == 0) {
-					dataRowBean = theFinding.getDataRowBean(datum);
-					if (dataRowBean == null) {
+					rowBean = theFinding.getRowBean(datum);
+					if (rowBean == null) {
 						return theFinding;
 					}
 				}
 				if (conditions != null && conditions.size() > 0) {
 					for (Condition condition : conditions) {
-						dataRowBean.removeCondition(condition);
+						rowBean.removeCondition(condition);
 					}
 				}
-				dataRowBean.removeDatum(datum);
+				rowBean.removeDatum(datum);
 				i++;
 			}
 
-			if (dataRowBean != null
-					&& (dataRowBean.getData() == null || dataRowBean.getData()
-							.size() == 0)) {
-				theFinding.removeDataRow(dataRowBean);
+			if (rowBean != null
+					&& (rowBean.getData() == null || rowBean.getData().size() == 0)) {
+				theFinding.removeRow(rowBean);
 			}
 		}
 		return theFinding;
@@ -157,7 +156,7 @@ public class DWRCharacterizationResultManager {
 		// FindingBean findingBean = new FindingBean(data);
 		Finding finding = service.findFindingById(findingId);
 		FindingBean findingBean = new FindingBean(finding);
-		findingBean.setTheDataRow(findingBean.getDataRows().get(0));
+		findingBean.setTheRow(findingBean.getRows().get(0));
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
@@ -195,12 +194,12 @@ public class DWRCharacterizationResultManager {
 	public String[] getColumnValueUnitOptions(String name, String property)
 			throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		// TODO::: CHANGE TO QUERY UNIT HERE (Qina)
-		// SortedSet<String> units = LookupService
-		// .getDefaultAndOtherLookupTypes(name, "property",
-		// "otherProperty");
+		String valueName = name;
+		if (property != null) {
+			valueName = property;
+		}
 		SortedSet<String> units = InitCharacterizationSetup.getInstance()
-				.getConditions(wctx.getHttpServletRequest());
+				.getValueUnits(wctx.getHttpServletRequest(), valueName);
 		return units.toArray(new String[units.size()]);
 	}
 

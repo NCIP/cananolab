@@ -53,15 +53,13 @@ public class ProtocolServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
 		if (protocolType != null && protocolType.length() > 0
 				|| protocolName != null && protocolName.length() > 0) {
-			crit.createAlias("protocol", "protocol",
-					CriteriaSpecification.LEFT_JOIN);
 			if (protocolType != null && protocolType.length() > 0) {
-				crit.add(Restrictions.eq("protocol.type", protocolType));
+				crit.add(Restrictions.eq("type", protocolType));
 			}
 			if (protocolName != null && protocolName.length() > 0) {
 				TextMatchMode protocolNameMatchMode = new TextMatchMode(
 						protocolName);
-				crit.add(Restrictions.ilike("protocol.name",
+				crit.add(Restrictions.ilike("name",
 						protocolNameMatchMode.getUpdatedText(),
 						protocolNameMatchMode.getMatchMode()));
 			}

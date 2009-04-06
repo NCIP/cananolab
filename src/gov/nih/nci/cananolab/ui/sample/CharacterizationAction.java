@@ -168,14 +168,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitCharacterizationSetup.getInstance().setCharacterizationType(
 				request, charBean);
 		// setup dropdown for existing characterization
-		SortedSet<String> charNames = InitCharacterizationSetup.getInstance()
-				.getCharNamesByCharType(request,
-						charBean.getCharacterizationType());
-		request.getSession().setAttribute("charTypeChars", charNames);
-		SortedSet<String> assayEndpoints = InitCharacterizationSetup
-				.getInstance().getAssayTypesByCharName(request,
-						charBean.getCharacterizationName());
-		request.getSession().setAttribute("charNameAssays", assayEndpoints);
+		InitCharacterizationSetup.getInstance().getCharNamesByCharType(request,
+				charBean.getCharacterizationType());
+		InitCharacterizationSetup.getInstance().getAssayTypesByCharName(
+				request, charBean.getCharacterizationName());
+		InitCharacterizationSetup.getInstance().getDatumNamesByCharName(
+				request, charBean.getCharacterizationName());
+
 		request.setAttribute("achar", charBean);
 		theForm.set("achar", charBean);
 		setupInputForm(request, theForm);

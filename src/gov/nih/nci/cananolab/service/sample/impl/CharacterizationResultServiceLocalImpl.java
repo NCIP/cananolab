@@ -33,10 +33,12 @@ public class CharacterizationResultServiceLocalImpl implements
 			DetachedCriteria crit = DetachedCriteria.forClass(Finding.class)
 					.add(Property.forName("id").eq(new Long(findingId)));
 			crit.setFetchMode("datumCollection", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
-			crit.setFetchMode("datumCollection.conditionCollection",
+			crit.setFetchMode(
+					"datumCollection.conditionCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode("file", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection",
+					FetchMode.JOIN);
 			List result = appService.query(crit);
 			Finding finding = null;
 			if (!result.isEmpty()) {
@@ -57,10 +59,8 @@ public class CharacterizationResultServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Datum.class).add(
-					Restrictions.eq("finding.id", new Long(findingId)))
+					Restrictions.eq("findingCollection.id", new Long(findingId)))
 					.addOrder(Order.asc("createdDate"));
-			crit.setFetchMode("dataRow", FetchMode.JOIN);
-			crit.setFetchMode("finding", FetchMode.JOIN);
 			crit.setFetchMode("conditionCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 

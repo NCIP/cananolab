@@ -53,15 +53,14 @@ public class CharacterizationServiceHelper {
 				FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("datumCollection", FetchMode.JOIN);
-		crit
-				.setFetchMode("datumCollection.conditionCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("datumCollection.dataSet", FetchMode.JOIN);
-		crit.setFetchMode("datumCollection.dataSet.file", FetchMode.JOIN);
-		crit.setFetchMode("datumCollection.dataSet.file.keywordCollection",
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -102,8 +101,14 @@ public class CharacterizationServiceHelper {
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
-		crit.setFetchMode("datumCollection", FetchMode.JOIN);
-		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);

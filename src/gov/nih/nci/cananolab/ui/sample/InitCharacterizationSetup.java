@@ -54,7 +54,7 @@ public class InitCharacterizationSetup {
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String sampleId) throws Exception {
 		getCharacterizationTypes(request);
-		getDataSetColumnValueTypes(request);
+		getFindingColumnValueTypes(request);
 		// set point of contacts
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		List<PointOfContactBean> pocs = pocService
@@ -190,6 +190,7 @@ public class InitCharacterizationSetup {
 		if (!otherCharNames.isEmpty()) {
 			charNames.addAll(otherCharNames);
 		}
+		request.getSession().setAttribute("charTypeChars", charNames);
 		return charNames;
 	}
 
@@ -200,6 +201,7 @@ public class InitCharacterizationSetup {
 		SortedSet<String> assayTypes = LookupService
 				.getDefaultAndOtherLookupTypes(charClassName, "assayType",
 						"otherAssayType");
+		request.getSession().setAttribute("charNameAssays", assayTypes);
 		return assayTypes;
 	}
 
@@ -209,6 +211,7 @@ public class InitCharacterizationSetup {
 				request.getSession().getServletContext());
 		SortedSet<String> names = LookupService.getDefaultAndOtherLookupTypes(
 				charClassName, "datumName", "otherDatumName");
+		request.getSession().setAttribute("charNameDatumNames", names);
 		return names;
 	}
 
@@ -220,7 +223,15 @@ public class InitCharacterizationSetup {
 		return conditions;
 	}
 
-	public List<String> getDataSetColumnValueTypes(HttpServletRequest request)
+	public SortedSet<String> getValueUnits(HttpServletRequest request,
+			String valueName) throws Exception {
+		SortedSet<String> units = LookupService.getDefaultAndOtherLookupTypes(
+				valueName, "unit", "otherUnit");
+		request.getSession().setAttribute("valueUnits", units);
+		return units;
+	}
+
+	public List<String> getFindingColumnValueTypes(HttpServletRequest request)
 			throws Exception {
 		ServletContext appContext = request.getSession().getServletContext();
 		List<String> types = new ArrayList<String>();
@@ -228,7 +239,7 @@ public class InitCharacterizationSetup {
 		types.add("std");
 		types.add("mean");
 		types.add("avg");
-		request.getSession().setAttribute("dataSetColumnValueTypes", types);
+		request.getSession().setAttribute("findingColumnValueTypes", types);
 		return types;
 	}
 
