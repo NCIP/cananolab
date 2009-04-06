@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
  *
  */
 public class ProtocolBean {
-	private FileBean fileBean;
+	private FileBean fileBean=new FileBean();
 
 	private Protocol domain = new Protocol();
 	String domainFileId; // used for ajax
@@ -26,7 +26,8 @@ public class ProtocolBean {
 	String updatedFileVersion; // used for ajax
 
 	public ProtocolBean() {
-		fileBean.getDomainFile().setUriExternal(false);
+		if (fileBean.getDomainFile() != null)
+			fileBean.getDomainFile().setUriExternal(false);
 	}
 
 	public ProtocolBean(Protocol protocol) {

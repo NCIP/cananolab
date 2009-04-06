@@ -23,13 +23,13 @@ import java.util.Map;
  */
 public class FindingBean {
 	private Finding domain = new Finding();
-	private List<DataRowBean> dataRows = new ArrayList<DataRowBean>();
+	private List<RowBean> rows = new ArrayList<RowBean>();
 	private List<Datum> data = new ArrayList<Datum>();
 	private List<FileBean> files = new ArrayList<FileBean>();
 	private List<ColumnBean> datumColumnBeans = new ArrayList<ColumnBean>();
 	private List<ColumnBean> conditionColumnBeans = new ArrayList<ColumnBean>();
 	private List<ColumnBean> columnBeans = new ArrayList<ColumnBean>();
-	private DataRowBean theDataRow = new DataRowBean();
+	private RowBean theRow = new RowBean();
 
 	public FindingBean() {
 	}
@@ -93,7 +93,7 @@ public class FindingBean {
 		int numberOfRows = datumMap.get(firstDatumLabel).size();
 
 		for (int i = 0; i < numberOfRows; i++) {
-			DataRowBean row = new DataRowBean();
+			RowBean row = new RowBean();
 			for (String label : datumColumnLabels) {
 				row.getData().add(datumMap.get(label).get(i));
 			}
@@ -101,71 +101,71 @@ public class FindingBean {
 				row.getConditions().add(conditionMap.get(label).get(i));
 			}
 			row.setRowNumber(i);
-			dataRows.add(row);
+			rows.add(row);
 		}
 
-		for (Condition condition : dataRows.get(0).getConditions()) {
+		for (Condition condition : rows.get(0).getConditions()) {
 			// TODO add other info to column
 			ColumnBean conditionColumnBean = new ColumnBean(condition);
 			columnBeans.add(conditionColumnBean);
 			conditionColumnBeans.add(conditionColumnBean);
 		}
 		// get column information from first data row
-		for (Datum datum : dataRows.get(0).getData()) {
+		for (Datum datum : rows.get(0).getData()) {
 			// TODO add other info to column
-			ColumnBean dataColumnBean = new ColumnBean(datum);
-			columnBeans.add(dataColumnBean);
-			datumColumnBeans.add(dataColumnBean);
+			ColumnBean columnBean = new ColumnBean(datum);
+			columnBeans.add(columnBean);
+			datumColumnBeans.add(columnBean);
 		}
 	}
 
 	/**
-	 * @return the theDataRow
+	 * @return the theRow
 	 */
-	public DataRowBean getTheDataRow() {
-		return theDataRow;
+	public RowBean getTheRow() {
+		return theRow;
 	}
 
 	/**
-	 * @param theDataRow
-	 *            the theDataRow to set
+	 * @param theRow
+	 *            the theRow to set
 	 */
-	public void setTheDataRow(DataRowBean theDataRow) {
-		this.theDataRow = theDataRow;
+	public void setTheRow(RowBean theRow) {
+		this.theRow = theRow;
 	}
 
 	/**
-	 * @return the dataRows
+	 * @return the rows
 	 */
-	public List<DataRowBean> getDataRows() {
-		return dataRows;
+	public List<RowBean> getRows() {
+		return rows;
 	}
 
 	/**
-	 * @param dataRows
-	 *            the dataRows to set
+	 * @param rows
+	 *            the rows to set
 	 */
 
-	public void addDataRow() {
-		dataRows.add(this.theDataRow);
+	public void addRow() {
+		rows.add(this.theRow);
 	}
 
-	public void addDataRow(DataRowBean dataRow) {
-		int index = dataRows.indexOf(dataRow);
+	public void addRow(RowBean row) {
+		int index = rows.indexOf(row);
 		if (index != -1) {
-			dataRows.remove(dataRow);
-			dataRows.add(index, dataRow);
+			rows.remove(row);
+			rows.add(index, row);
 		} else {
-			dataRows.add(dataRow);
+			rows.add(row);
 		}
 	}
 
-	public void removeDataRow(DataRowBean dataRow) {
-		dataRows.remove(dataRow);
+	public void removeRow(RowBean row) {
+		rows.remove(row);
 	}
 
 	public List<Datum> getData() {
-		for (DataRowBean row : dataRows) {
+		for (RowBean row : rows) {
 			data.addAll(row.getData());
 		}
 		return data;
@@ -181,8 +181,8 @@ public class FindingBean {
 		} else {
 			domain.setDatumCollection(new HashSet<Datum>());
 		}
-		for (DataRowBean dataRowBean : dataRows) {
-			for (Datum datum : dataRowBean.getData()) {
+		for (RowBean rowBean : rows) {
+			for (Datum datum : rowBean.getData()) {
 				if (datum.getId() != null && datum.getId() <= 0) {
 					datum.setId(null);
 				}
@@ -198,7 +198,7 @@ public class FindingBean {
 				} else {
 					datum.getConditionCollection().clear();
 				}
-				for (Condition condition : dataRowBean.getConditions()) {
+				for (Condition condition : rowBean.getConditions()) {
 					if (condition.getId() != null && condition.getId() <= 0) {
 						condition.setId(null);
 					}
@@ -219,16 +219,16 @@ public class FindingBean {
 		}
 	}
 
-	public DataRowBean getDataRowBean(Datum myDatum) {
-		DataRowBean dataRowBean = null;
-		for (DataRowBean drb : this.dataRows) {
+	public RowBean getRowBean(Datum myDatum) {
+		RowBean rowBean = null;
+		for (RowBean drb : this.rows) {
 			Collection<Datum> datumColletion = drb.getData();
 			if (datumColletion.contains(myDatum)) {
-				dataRowBean = drb;
+				rowBean = drb;
 				break;
 			}
 		}
-		return dataRowBean;
+		return rowBean;
 	}
 
 	public void addDatumColumnBean(ColumnBean columnBean) {
@@ -252,16 +252,16 @@ public class FindingBean {
 		Datum dummyDatum = new Datum();
 		dummyDatum.setId(columnBean.getId());
 		int index = -1;
-		for (DataRowBean dataRowBean : dataRows) {
-			List<Datum> tempDataList = new ArrayList(dataRowBean.getData());
+		for (RowBean rowBean : rows) {
+			List<Datum> tempDataList = new ArrayList(rowBean.getData());
 			index = tempDataList.indexOf(dummyDatum);
 			if (index != -1) {
 				break;
 			}
 		}
 		if (index >= 0) {
-			for (DataRowBean dataRowBean : dataRows) {
-				dataRowBean.removeDatumColumn(index);
+			for (RowBean rowBean : rows) {
+				rowBean.removeDatumColumn(index);
 			}
 		}
 		datumColumnBeans.remove(columnBean);
@@ -271,8 +271,8 @@ public class FindingBean {
 		Condition dummyCondition = new Condition();
 		dummyCondition.setId(columnBean.getId());
 		int index = -1;
-		for (DataRowBean dataRowBean : dataRows) {
-			List<Condition> tempConditionList = new ArrayList(dataRowBean
+		for (RowBean rowBean : rows) {
+			List<Condition> tempConditionList = new ArrayList(rowBean
 					.getConditions());
 			index = tempConditionList.indexOf(dummyCondition);
 			if (index != -1) {
@@ -280,8 +280,8 @@ public class FindingBean {
 			}
 		}
 		if (index >= 0) {
-			for (DataRowBean dataRowBean : dataRows) {
-				dataRowBean.removeConditionColumn(index);
+			for (RowBean rowBean : rows) {
+				rowBean.removeConditionColumn(index);
 			}
 		}
 		conditionColumnBeans.remove(columnBean);
@@ -371,28 +371,48 @@ public class FindingBean {
 	}
 
 	private void setDatumColumnValuesToDatum(Datum datum) {
-		for (ColumnBean dataColumnBean : datumColumnBeans) {
-			if (dataColumnBean != null
-					&& dataColumnBean.getId().equals(datum.getId())) {
-				datum.setName(dataColumnBean.getName());
-				datum.setValueType(dataColumnBean.getValueType());
-				datum.setValueUnit(dataColumnBean.getValueUnit());
+		for (ColumnBean columnBean : datumColumnBeans) {
+			if (columnBean != null
+					&& columnBean.getId().equals(datum.getId())) {
+				datum.setName(columnBean.getName());
+				datum.setValueType(columnBean.getValueType());
+				datum.setValueUnit(columnBean.getValueUnit());
 			}
 		}
 	}
 
 	private void setDatumColumnValuesToCondition(Condition condition) {
-		for (ColumnBean dataColumnBean : conditionColumnBeans) {
-			if (dataColumnBean != null
-					&& dataColumnBean.getId().equals(condition.getId())) {
-				condition.setName(dataColumnBean.getName());
-				condition.setProperty(dataColumnBean.getProperty());
-				condition.setValueType(dataColumnBean.getValueType());
-				condition.setValueUnit(dataColumnBean.getValueUnit());
+		for (ColumnBean columnBean : conditionColumnBeans) {
+			if (columnBean != null
+					&& columnBean.getId().equals(condition.getId())) {
+				condition.setName(columnBean.getName());
+				condition.setProperty(columnBean.getProperty());
+				condition.setValueType(columnBean.getValueType());
+				condition.setValueUnit(columnBean.getValueUnit());
 			}
 		}
 		// private List<ColumnBean> conditionColumnBeans = new
 		// ArrayList<ColumnBean>();
+	}
+
+	public List<FileBean> getFiles() {
+		return files;
+	}
+
+	public void setRows(List<RowBean> rows) {
+		this.rows = rows;
+	}
+
+	public void setData(List<Datum> data) {
+		this.data = data;
+	}
+
+	public void setFiles(List<FileBean> files) {
+		this.files = files;
+	}
+
+	public void setColumnBeans(List<ColumnBean> columnBeans) {
+		this.columnBeans = columnBeans;
 	}
 
 	public Finding getDomain() {

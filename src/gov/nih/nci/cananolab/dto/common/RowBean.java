@@ -14,15 +14,15 @@ import java.util.List;
  * @author pansu, tanq
  *
  */
-public class DataRowBean {
+public class RowBean {
 	private List<Datum> data = new ArrayList<Datum>();
 	private List<Condition> conditions = new ArrayList<Condition>();
 	private int rowNumber;
 
-	public DataRowBean() {
+	public RowBean() {
 	}
 
-	public DataRowBean(List<Datum> data) {
+	public RowBean(List<Datum> data) {
 		this.data = data;
 		// use condition for the first data is sufficent
 		conditions = new ArrayList<Condition>(data.get(0)
@@ -83,9 +83,9 @@ public class DataRowBean {
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
-		if (obj instanceof DataRowBean) {
-			DataRowBean dataRowBean = (DataRowBean) obj;
-			if (dataRowBean.getRowNumber() == rowNumber) {
+		if (obj instanceof RowBean) {
+			RowBean rowBean = (RowBean) obj;
+			if (rowBean.getRowNumber() == rowNumber) {
 				return true;
 			}
 		}
@@ -101,7 +101,7 @@ public class DataRowBean {
 	}
 
 	public void addConditionColumn(Condition condition) {
-		// condition.setDataRow(domain);
+		// condition.setRow(domain);
 		if (conditions.contains(condition)) {
 			for (Condition thisCondition : conditions) {
 				if (thisCondition.getId().equals(condition.getId())) {
