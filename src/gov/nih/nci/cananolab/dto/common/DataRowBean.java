@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.DataRow;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.util.Comparators;
 
@@ -16,21 +15,19 @@ import java.util.List;
  *
  */
 public class DataRowBean {
-	private DataRow domain = new DataRow();
 	private List<Datum> data = new ArrayList<Datum>();
 	private List<Condition> conditions = new ArrayList<Condition>();
+	private int rowNumber;
 
 	public DataRowBean() {
 	}
 
 	public DataRowBean(List<Datum> data) {
-		domain = data.get(0).getDataRow();
 		this.data = data;
-		//use condition for the first data is sufficent
+		// use condition for the first data is sufficent
 		conditions = new ArrayList<Condition>(data.get(0)
 				.getConditionCollection());
-		Collections.sort(conditions,
-				new Comparators.ConditionDateComparator());
+		Collections.sort(conditions, new Comparators.ConditionDateComparator());
 	}
 
 	public void addDatum(Datum datum) {
@@ -38,7 +35,6 @@ public class DataRowBean {
 			setCreatedByNDate(datum);
 			data.remove(datum);
 		}
-		datum.setDataRow(domain);
 		data.add(datum);
 		if (datum.getConditionCollection() != null) {
 			// add only once, otherwise, conditions will be duplicated with same
@@ -52,7 +48,6 @@ public class DataRowBean {
 	}
 
 	public void addDatumColumn(Datum datum) {
-		datum.setDataRow(domain);
 		if (data.contains(datum)) {
 			for (Datum thisDatum : data) {
 				if (thisDatum.getId().equals(datum.getId())) {
@@ -82,21 +77,6 @@ public class DataRowBean {
 	}
 
 	/**
-	 * @return the domain
-	 */
-	public DataRow getDomain() {
-		return domain;
-	}
-
-	/**
-	 * @param domain
-	 *            the domain to set
-	 */
-	public void setDomain(DataRow domain) {
-		this.domain = domain;
-	}
-
-	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
 	 *
@@ -105,21 +85,15 @@ public class DataRowBean {
 	public boolean equals(Object obj) {
 		if (obj instanceof DataRowBean) {
 			DataRowBean dataRowBean = (DataRowBean) obj;
-			if (getDomain().getId() != null
-					&& getDomain().getId().equals(
-							dataRowBean.getDomain().getId()))
+			if (dataRowBean.getRowNumber() == rowNumber) {
 				return true;
+			}
 		}
 		return false;
 	}
 
-	/**
-	 * Returns hash code for the primary key of the object
-	 */
 	public int hashCode() {
-		if (getDomain().getId() != null)
-			return getDomain().getId().hashCode();
-		return 0;
+		return rowNumber;
 	}
 
 	public List<Condition> getConditions() {
@@ -184,5 +158,13 @@ public class DataRowBean {
 	public void removeConditionColumn(int index) {
 		if (conditions.size() > index)
 			conditions.remove(index);
+	}
+
+	public int getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(int rowNumber) {
+		this.rowNumber = rowNumber;
 	}
 }

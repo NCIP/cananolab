@@ -3,7 +3,7 @@ package gov.nih.nci.cananolab.service.sample.helper;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -128,20 +128,20 @@ public class CharacterizationServiceHelper {
 		return charNames;
 	}
 
-	public ProtocolFile findProtocolFileByCharacterizationId(
+	public Protocol findProtocolByCharacterizationId(
 			java.lang.String characterizationId) throws Exception {
-		ProtocolFile protocolFile = null;
+		Protocol protocol = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		String hql = "select aChar.protocolFile from gov.nih.nci.cananolab.domain.particle.characterization.Characterization aChar where aChar.id="
+		String hql = "select aChar.protocol from gov.nih.nci.cananolab.domain.particle.characterization.Characterization aChar where aChar.id="
 				+ characterizationId;
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			protocolFile = (ProtocolFile) obj;
+			protocol = (Protocol) obj;
 		}
-		return protocolFile;
+		return protocol;
 	}
 
 	public List<Datum> findDataByCharacterizationId(String charId)

@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -19,22 +18,22 @@ import org.apache.log4j.Logger;
 
 /**
  * Local implementation of ProtocolService
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class ProtocolServiceLocalImpl implements ProtocolService {
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceLocalImpl.class);
 	private ProtocolServiceHelper helper = new ProtocolServiceHelper();
 
-	public ProtocolFileBean findProtocolFileById(String fileId)
+	public ProtocolBean findProtocolById(String fileId)
 			throws ProtocolException {
-		ProtocolFileBean protocolFileBean = null;
+		ProtocolBean protocolBean = null;
 		try {
-			ProtocolFile pf = helper.findProtocolFileById(fileId);
-			protocolFileBean = new ProtocolFileBean(pf);
-			return protocolFileBean;
+			Protocol pf = helper.findProtocolById(fileId);
+			protocolBean = new ProtocolBean(pf);
+			return protocolBean;
 		} catch (Exception e) {
 			String err = "Problem finding the protocol file by id: " + fileId;
 			logger.error(err, e);
@@ -44,28 +43,28 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 	/**
 	 * Persist a new protocol file or update an existing protocol file
-	 * 
-	 * @param protocolFile
+	 *
+	 * @param protocol
 	 * @throws Exception
 	 */
-	public void saveProtocolFile(ProtocolFile protocolFile, byte[] fileData)
+	public void saveProtocol(Protocol protocol, byte[] fileData)
 			throws ProtocolException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
-			fileService.prepareSaveFile(protocolFile);
+			fileService.prepareSaveFile(protocol.getFile());
 
-			Protocol dbProtocol = findProtocolBy(protocolFile.getProtocol()
-					.getType(), protocolFile.getProtocol().getName());
+			Protocol dbProtocol = findProtocolBy(protocol.getType(), protocol
+					.getName());
 			if (dbProtocol != null) {
-				protocolFile.setProtocol(dbProtocol);
+				protocol = dbProtocol;
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
-			appService.saveOrUpdate(protocolFile);
+			appService.saveOrUpdate(protocol);
 
 			// save to the file system fileData is not empty
-			fileService.writeFile(protocolFile, fileData);
+			fileService.writeFile(protocol.getFile(), fileData);
 
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
@@ -97,18 +96,18 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	public List<ProtocolFileBean> findProtocolFilesBy(String protocolType,
+	public List<ProtocolBean> findProtocolsBy(String protocolType,
 			String protocolName, String fileTitle) throws ProtocolException {
-		List<ProtocolFileBean> protocolFileBeans = new ArrayList<ProtocolFileBean>();
+		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
-			List<ProtocolFile> protocolFiles = helper.findProtocolFilesBy(
-					protocolType, protocolName, fileTitle);
+			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
+					protocolName, fileTitle);
 
-			for (ProtocolFile pf : protocolFiles) {
-				ProtocolFileBean pfb = new ProtocolFileBean(pf);
-				protocolFileBeans.add(pfb);
+			for (Protocol pf : protocols) {
+				ProtocolBean pfb = new ProtocolBean(pf);
+				protocolBeans.add(pfb);
 			}
-			return protocolFileBeans;
+			return protocolBeans;
 		} catch (Exception e) {
 			String err = "Problem finding protocol files.";
 			logger.error(err, e);
@@ -116,9 +115,9 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	public int getNumberOfPublicProtocolFiles() throws ProtocolException {
+	public int getNumberOfPublicProtocols() throws ProtocolException {
 		try {
-			int count = helper.getNumberOfPublicProtocolFiles();
+			int count = helper.getNumberOfPublicProtocols();
 			return count;
 		} catch (Exception e) {
 			String err = "Error finding counts of public protocol files.";

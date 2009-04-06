@@ -1,7 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
-import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.sample.CharacterizationResultService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -25,42 +25,42 @@ public class CharacterizationResultServiceLocalImpl implements
 	private static Logger logger = Logger
 			.getLogger(CharacterizationResultServiceLocalImpl.class);
 
-	public DataSet findDataSetById(String dataSetId)
+	public Finding findFindingById(String findingId)
 			throws CharacterizationResultException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(DataSet.class)
-					.add(Property.forName("id").eq(new Long(dataSetId)));
+			DetachedCriteria crit = DetachedCriteria.forClass(Finding.class)
+					.add(Property.forName("id").eq(new Long(findingId)));
 			crit.setFetchMode("datumCollection", FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.dataRow", FetchMode.JOIN);
 			crit.setFetchMode("datumCollection.conditionCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("file", FetchMode.JOIN);
 			List result = appService.query(crit);
-			DataSet dataSet = null;
+			Finding finding = null;
 			if (!result.isEmpty()) {
-				dataSet = (DataSet) result.get(0);
+				finding = (Finding) result.get(0);
 			}
-			return dataSet;
+			return finding;
 		} catch (Exception e) {
-			String err = "Error getting data set of ID " + dataSetId;
+			String err = "Error getting finding of ID " + findingId;
 			logger.error(err, e);
 			throw new CharacterizationResultException(err, e);
 		}
 	}
 
-	public List<Datum> getDataForDataSet(String dataSetId)
+	public List<Datum> getDataForFinding(String findingId)
 			throws CharacterizationResultException {
 		List<Datum> data = new ArrayList<Datum>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria.forClass(Datum.class).add(
-					Restrictions.eq("dataSet.id", new Long(dataSetId)))
+					Restrictions.eq("finding.id", new Long(findingId)))
 					.addOrder(Order.asc("createdDate"));
 			crit.setFetchMode("dataRow", FetchMode.JOIN);
-			crit.setFetchMode("dataSet", FetchMode.JOIN);
+			crit.setFetchMode("finding", FetchMode.JOIN);
 			crit.setFetchMode("conditionCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
 
@@ -70,7 +70,7 @@ public class CharacterizationResultServiceLocalImpl implements
 			}
 			return data;
 		} catch (Exception e) {
-			String err = "Error getting data from data set " + dataSetId;
+			String err = "Error getting data from finding " + findingId;
 			logger.error(err, e);
 			throw new CharacterizationResultException(err, e);
 		}
@@ -91,32 +91,32 @@ public class CharacterizationResultServiceLocalImpl implements
 		}
 	}
 
-	public void saveDataSet(DataSet dataSet)
+	public void saveFinding(Finding finding)
 			throws CharacterizationResultException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			appService.saveOrUpdate(dataSet);
-			//TODO special handling for file
+			appService.saveOrUpdate(finding);
+			// TODO special handling for file
 		} catch (Exception e) {
-			String err = "Error saving characterization result data set. ";
+			String err = "Error saving characterization result finding. ";
 			logger.error(err, e);
 			throw new CharacterizationResultException(err, e);
 		}
 	}
 
-	public void deleteDataSet(DataSet dataSet)
+	public void deleteFinding(Finding finding)
 			throws CharacterizationResultException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			authService.removePublicGroup(dataSet.getId().toString());
-			appService.delete(dataSet);
+			authService.removePublicGroup(finding.getId().toString());
+			appService.delete(finding);
 
 		} catch (Exception e) {
-			String err = "Error deleting data set " + dataSet.getId();
+			String err = "Error deleting finding " + finding.getId();
 			logger.error(err, e);
 			throw new CharacterizationResultException(err, e);
 		}

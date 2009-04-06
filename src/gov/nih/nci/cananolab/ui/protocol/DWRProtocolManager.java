@@ -1,6 +1,6 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -15,9 +15,9 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class loads protocol data for ajax
- * 
+ *
  * @author tanq, pansu
- * 
+ *
  */
 public class DWRProtocolManager {
 
@@ -56,18 +56,18 @@ public class DWRProtocolManager {
 	}
 
 	// for ajax on linux
-	public String getProtocolFileUriById(String fileId) {
-		return helper.getProtocolFileUriById(fileId);
-	}
+//	public String getProtocolFileUriById(String fileId) {
+//		return helper.getProtocolFileUriById(fileId);
+//	}
 
 	// for ajax on linux
-	public String getProtocolFileNameById(String fileId) {
-		return helper.getProtocolFileNameById(fileId);
-	}
+//	public String getProtocolFileNameById(String fileId) {
+//		return helper.getProtocolFileNameById(fileId);
+//	}
 
 	// for ajax on linux
-	public String getProtocolFileVersionById(String fileId) {
-		return helper.getProtocolFileVersionById(fileId);
+	public String getProtocolVersionById(String fileId) {
+		return helper.getProtocolVersionById(fileId);
 	}
 
 	// used for Ajax
@@ -76,12 +76,12 @@ public class DWRProtocolManager {
 	}
 
 	// for dwr ajax
-	public List<ProtocolFileBean> getProtocolFiles(String protocolType,
+	public List<ProtocolBean> getProtocols(String protocolType,
 			String protocolName) {
 		if (protocolType == null || protocolType.length() == 0
 				|| protocolName == null || protocolName.length() == 0) {
 			return null;
 		}
-		return helper.getProtocolFiles(protocolType, protocolName);
+		return helper.getProtocols(protocolType, protocolName);
 	}
 }

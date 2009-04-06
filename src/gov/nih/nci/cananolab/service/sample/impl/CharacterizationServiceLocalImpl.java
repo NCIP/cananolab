@@ -4,9 +4,9 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
@@ -37,8 +37,7 @@ import org.hibernate.criterion.Property;
  *
  */
 public class CharacterizationServiceLocalImpl extends
-		CharacterizationServiceBaseImpl implements
-		CharacterizationService {
+		CharacterizationServiceBaseImpl implements CharacterizationService {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceLocalImpl.class);
 	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
@@ -47,8 +46,8 @@ public class CharacterizationServiceLocalImpl extends
 		fileService = new FileServiceLocalImpl();
 	}
 
-	public void saveCharacterization(Sample sample,
-			Characterization achar) throws Exception {
+	public void saveCharacterization(Sample sample, Characterization achar)
+			throws Exception {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -167,8 +166,7 @@ public class CharacterizationServiceLocalImpl extends
 
 		try {
 			List<Characterization> charList = helper
-					.findSampleCharacterizationsByClass(particleName,
-							className);
+					.findSampleCharacterizationsByClass(particleName, className);
 			Collections.sort(charList,
 					new Comparators.CharacterizationDateComparator());
 			return charList;
@@ -189,8 +187,7 @@ public class CharacterizationServiceLocalImpl extends
 			// fileService
 			// .retrieveVisibility(bioAssayData.getFileBean(), user);
 			// }
-			fileService
-					.retrieveVisibility(charBean.getProtocolFileBean(), user);
+			fileService.retrieveVisibility(charBean.getProtocolBean().getFileBean(), user);
 		} catch (Exception e) {
 			String err = "Error setting visiblity for characterization "
 					+ charBean.getDomainChar().getId();
@@ -216,8 +213,8 @@ public class CharacterizationServiceLocalImpl extends
 		}
 	}
 
-	public List<CharacterizationBean> findCharsBySampleId(
-			String sampleId) throws CharacterizationException {
+	public List<CharacterizationBean> findCharsBySampleId(String sampleId)
+			throws CharacterizationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -257,7 +254,8 @@ public class CharacterizationServiceLocalImpl extends
 			}
 			return chars;
 		} catch (Exception e) {
-			String err = "Error finding characterization by sample ID " + sampleId;
+			String err = "Error finding characterization by sample ID "
+					+ sampleId;
 			logger.error(err, e);
 			throw new CharacterizationException(err);
 		}

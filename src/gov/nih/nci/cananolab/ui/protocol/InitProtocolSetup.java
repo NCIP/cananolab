@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -23,6 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class InitProtocolSetup {
 	Logger logger = Logger.getLogger(InitProtocolSetup.class);
+
 	private InitProtocolSetup() {
 	}
 
@@ -37,37 +37,29 @@ public class InitProtocolSetup {
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);
 	}
 
-	public List<ProtocolFileBean> getProtocolFilesByChar(
-			HttpServletRequest request, String characterizationType)
-			throws Exception {
+	public List<ProtocolBean> getProtocolsByChar(HttpServletRequest request,
+			String characterizationType) throws Exception {
 		String protocolType = null;
 		if (characterizationType.equals("Physico-Chemical Characterization")) {
 			protocolType = Constants.PHYSICOCHEMICAL_ASSAY_PROTOCOL;
-		}
-		else if (characterizationType.equals("In Vitro Characterization")) {
+		} else if (characterizationType.equals("In Vitro Characterization")) {
 			protocolType = Constants.INVITRO_ASSAY_PROTOCOL;
-		}
-		else {
+		} else {
 			protocolType = null; // update if in vivo is implemented
 		}
 
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
-				protocolType, null, null);
-		request.getSession().setAttribute("characterizationProtocolFiles",
-				protocolFiles);
-		return protocolFiles;
+		List<ProtocolBean> protocols = service.findProtocolsBy(protocolType,
+				null, null);
+		request.getSession().setAttribute("characterizationProtocols",
+				protocols);
+		return protocols;
 	}
 
 	public void persistProtocolDropdowns(HttpServletRequest request,
-			ProtocolFileBean protocolFile) throws Exception {
-		InitSetup.getInstance().persistLookup(
-				request,
-				"Protocol",
-				"type",
-				"otherType",
-				((ProtocolFile) protocolFile.getDomainFile()).getProtocol()
-						.getType());
+			ProtocolBean protocol) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Protocol", "type",
+				"otherType", protocol.getDomain().getType());
 		setProtocolDropdowns(request);
 	}
 }

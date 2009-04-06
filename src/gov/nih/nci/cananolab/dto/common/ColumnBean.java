@@ -5,11 +5,11 @@ import gov.nih.nci.cananolab.domain.common.Datum;
 
 /**
  * View bean for Data Column
- * 
+ *
  * @author tanq
- * 
+ *
  */
-public class DataColumnBean {
+public class ColumnBean {
 	private Long id;
 	private String name;
 	private String property;
@@ -17,30 +17,30 @@ public class DataColumnBean {
 	private String valueType;
 	private String valueUnit;
 	private String datumOrCondition;
-	private String displayName;
+	private String columnLabel;
 
 
-	public DataColumnBean() {
-		
+	public ColumnBean() {
+
 	}
-	
-	public DataColumnBean(Datum datum) {
+
+	public ColumnBean(Datum datum) {
 		this.id = datum.getId();
 		this.name = datum.getName();
 		this.value = datum.getValue();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
-		this.datumOrCondition = "Datum";	
+		this.datumOrCondition = "Datum";
 	}
-	
-	public DataColumnBean(Condition condition) {
+
+	public ColumnBean(Condition condition) {
 		this.id = condition.getId();
 		this.name = condition.getName();
 		this.property = condition.getProperty();
 		this.value = condition.getValue();
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
-		this.datumOrCondition = "Condition";			
+		this.datumOrCondition = "Condition";
 	}
 	/**
 	 * @return the id
@@ -133,47 +133,47 @@ public class DataColumnBean {
 	}
 
 	/**
-	 * @return the displayName
+	 * @return the columnLabel
 	 */
-	public String getDisplayName() {
-		displayName = name;
+	public String getColumnLabel() {
+		columnLabel = name;
 		if (property != null && property.trim().length() > 0) {
-			displayName += " "+property;
+			columnLabel += " "+property;
 		}
 		if ((valueType != null && valueType.trim().length() > 0)
 				|| (valueUnit != null && valueUnit.trim().length() > 0)) {
-			displayName += "(";
+			columnLabel += "(";
 			if (valueType != null && valueType.trim().length() > 0) {
-				displayName += valueType;
+				columnLabel += valueType;
 				if (valueUnit != null && valueUnit.trim().length() > 0) {
-					displayName += ",";
+					columnLabel += ",";
 				}
 			}
 			if (valueUnit != null && valueUnit.trim().length() > 0) {
-				displayName += valueUnit;
+				columnLabel += valueUnit;
 			}
-			displayName += ")";
+			columnLabel += ")";
 		}
-		return displayName;
+		return columnLabel;
 	}
 
 	/**
-	 * @param displayName
-	 *            the displayName to set
+	 * @param columnLabel
+	 *            the columnLabel to set
 	 */
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setColumnLabel(String columnLabel) {
+		this.columnLabel = columnLabel;
 	}
 
 	/**
 	 * Compares <code>obj</code> to it self and returns true if they both are
 	 * same
-	 * 
+	 *
 	 * @param obj
 	 **/
 	public boolean equals(Object obj) {
-		if (obj instanceof DataColumnBean) {
-			DataColumnBean c = (DataColumnBean) obj;
+		if (obj instanceof ColumnBean) {
+			ColumnBean c = (ColumnBean) obj;
 			if (getId() != null && getId().equals(c.getId()))
 				return true;
 		}

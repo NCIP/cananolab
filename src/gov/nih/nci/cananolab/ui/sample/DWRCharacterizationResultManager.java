@@ -1,11 +1,11 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
-import gov.nih.nci.cananolab.dto.common.DataColumnBean;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.dto.common.ColumnBean;
 import gov.nih.nci.cananolab.dto.common.DataRowBean;
-import gov.nih.nci.cananolab.dto.common.DataSetBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -26,75 +26,74 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCharacterizationResultManager {
-	long tempDataRowId = -1;
+	int tempDataRowId = -1;
 	private CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 
-	public DataSetBean resetDataSet() {
+	public FindingBean resetFinding() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		DataSetBean newDataSetBean = new DataSetBean();
-		charBean.setTheDataSet(newDataSetBean);
-		return newDataSetBean;
+		FindingBean newFindingBean = new FindingBean();
+		charBean.setTheFinding(newFindingBean);
+		return newFindingBean;
 	}
 
-	public DataSetBean addColumnHeader(DataColumnBean columnBean)
-		throws CharacterizationResultException {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		DataSetBean theDataSet = charBean.getTheDataSet();
-		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
-			theDataSet.addConditionColumnBean(columnBean);
-		}else {
-			theDataSet.addDatumColumnBean(columnBean);
-		}
-		return theDataSet;
-	}
-
-	public DataSetBean removeColumnHeader(DataColumnBean columnBean)
-		throws CharacterizationResultException {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		DataSetBean theDataSet = charBean.getTheDataSet();
-		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
-			theDataSet.removeConditionColumnBean(columnBean);
-		}else {
-			theDataSet.removeDatumColumnBean(columnBean);
-		}
-		return theDataSet;
-	}
-
-
-	// addRow includes the function add and edit
-	public DataSetBean addRow(List<Datum> data, List<Condition> conditions)
+	public FindingBean addColumnHeader(ColumnBean columnBean)
 			throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		DataSetBean theDataSet = charBean.getTheDataSet();
+		FindingBean theFinding = charBean.getTheFinding();
+		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
+			theFinding.addConditionColumnBean(columnBean);
+		} else {
+			theFinding.addDatumColumnBean(columnBean);
+		}
+		return theFinding;
+	}
+
+	public FindingBean removeColumnHeader(ColumnBean columnBean)
+			throws CharacterizationResultException {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		FindingBean theFinding = charBean.getTheFinding();
+		if (columnBean.getDatumOrCondition().equalsIgnoreCase("Condition")) {
+			theFinding.removeConditionColumnBean(columnBean);
+		} else {
+			theFinding.removeDatumColumnBean(columnBean);
+		}
+		return theFinding;
+	}
+
+	// addRow includes the function add and edit
+	public FindingBean addRow(List<Datum> data, List<Condition> conditions)
+			throws CharacterizationResultException {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		FindingBean theFinding = charBean.getTheFinding();
 		DataRowBean dataRowBean = null;
 		if (data != null) {
 			boolean hasData = false;
 			int i = 0;
 			for (Datum datum : data) {
-				if (theDataSet.getDomain().getId() != null) {
-					datum.setDataSet(theDataSet.getDomain());
+				if (theFinding.getDomain().getId() != null) {
+					datum.setFinding(theFinding.getDomain());
 				}
 				if (i == 0) {
-					dataRowBean = theDataSet.getDataRowBean(datum);
+					dataRowBean = theFinding.getDataRowBean(datum);
 					if (dataRowBean == null) {
 						dataRowBean = new DataRowBean();
 					}
 				}
-//				if (conditions != null) {
-//					datum.setConditionCollection(conditions);
-//				}
+				// if (conditions != null) {
+				// datum.setConditionCollection(conditions);
+				// }
 				dataRowBean.setConditions(conditions);
 				dataRowBean.addDatum(datum);
 				hasData = true;
@@ -102,39 +101,39 @@ public class DWRCharacterizationResultManager {
 			}
 			if (hasData) {
 
-				// if dataRowBean.id is null, set a negative id temporary
+				// if dataRowBean.rowNumber is null, set a negative id temporary
 				// need to handle set nagative id to null when save to db
-				if (dataRowBean.getDomain().getId() == null) {
-					dataRowBean.getDomain().setId(tempDataRowId--);
+				if (dataRowBean.getRowNumber() == -1) {
+					dataRowBean.setRowNumber(tempDataRowId--);
 				}
-				theDataSet.addDataRow(dataRowBean);
+				theFinding.addDataRow(dataRowBean);
 			}
 		}
-		return theDataSet;
+		return theFinding;
 	}
 
 	// addRow includes the function add and edit
-	public DataSetBean deleteRow(List<Datum> data, List<Condition> conditions)
+	public FindingBean deleteRow(List<Datum> data, List<Condition> conditions)
 			throws CharacterizationResultException {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		DataSetBean theDataSet = charBean.getTheDataSet();
+		FindingBean theFinding = charBean.getTheFinding();
 		if (data != null) {
 			DataRowBean dataRowBean = null;
 			int i = 0;
 			for (Datum datum : data) {
-				if (theDataSet.getDomain().getId() != null) {
-					datum.setDataSet(theDataSet.getDomain());
+				if (theFinding.getDomain().getId() != null) {
+					datum.setFinding(theFinding.getDomain());
 				}
 				if (i == 0) {
-					dataRowBean = theDataSet.getDataRowBean(datum);
+					dataRowBean = theFinding.getDataRowBean(datum);
 					if (dataRowBean == null) {
-						return theDataSet;
+						return theFinding;
 					}
 				}
-				if (conditions!=null && conditions.size()>0) {
+				if (conditions != null && conditions.size() > 0) {
 					for (Condition condition : conditions) {
 						dataRowBean.removeCondition(condition);
 					}
@@ -146,27 +145,26 @@ public class DWRCharacterizationResultManager {
 			if (dataRowBean != null
 					&& (dataRowBean.getData() == null || dataRowBean.getData()
 							.size() == 0)) {
-				theDataSet.removeDataRow(dataRowBean);
+				theFinding.removeDataRow(dataRowBean);
 			}
 		}
-		return theDataSet;
+		return theFinding;
 	}
 
-	public DataSetBean findDataSetById(String dataSetId)
+	public FindingBean findFindingById(String findingId)
 			throws CharacterizationResultException {
-//		List<Datum> data = service.getDataForDataSet(dataSetId);
-//		DataSetBean dataSetBean = new DataSetBean(data);
-		DataSet dataSet=service.findDataSetById(dataSetId);
-		DataSetBean dataSetBean=new DataSetBean(dataSet);
-		dataSetBean.setTheDataRow(dataSetBean.getDataRows().get(0));
+		// List<Datum> data = service.getDataForFinding(findingId);
+		// FindingBean findingBean = new FindingBean(data);
+		Finding finding = service.findFindingById(findingId);
+		FindingBean findingBean = new FindingBean(finding);
+		findingBean.setTheDataRow(findingBean.getDataRows().get(0));
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheDataSet(dataSetBean);
-		return dataSetBean;
+		charBean.setTheFinding(findingBean);
+		return findingBean;
 	}
-
 
 	public String[] getConditionOptions() throws Exception {
 		WebContext wctx = WebContextFactory.get();
@@ -193,16 +191,16 @@ public class DWRCharacterizationResultManager {
 						characterizationName);
 		return names.toArray(new String[names.size()]);
 	}
-	
+
 	public String[] getColumnValueUnitOptions(String name, String property)
-		throws Exception {
+			throws Exception {
 		WebContext wctx = WebContextFactory.get();
-		//TODO::: CHANGE TO QUERY UNIT HERE (Qina)
-//		SortedSet<String> units = LookupService
-//				.getDefaultAndOtherLookupTypes(name, "property",
-//						"otherProperty");
+		// TODO::: CHANGE TO QUERY UNIT HERE (Qina)
+		// SortedSet<String> units = LookupService
+		// .getDefaultAndOtherLookupTypes(name, "property",
+		// "otherProperty");
 		SortedSet<String> units = InitCharacterizationSetup.getInstance()
-			.getConditions(wctx.getHttpServletRequest());
+				.getConditions(wctx.getHttpServletRequest());
 		return units.toArray(new String[units.size()]);
 	}
 

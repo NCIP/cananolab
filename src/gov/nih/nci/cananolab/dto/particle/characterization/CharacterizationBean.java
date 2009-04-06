@@ -6,31 +6,25 @@ import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
-import gov.nih.nci.cananolab.domain.common.DataSet;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.dto.common.DataRowBean;
-import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -50,15 +44,15 @@ public class CharacterizationBean {
 
 	private ExperimentConfigBean theExperimentConfig = new ExperimentConfigBean();
 
-	private DataSetBean theDataSet = new DataSetBean();
+	private FindingBean theFinding = new FindingBean();
 
 	private Instrument theInstrument = new Instrument();
 
 	private List<ExperimentConfigBean> experimentConfigs = new ArrayList<ExperimentConfigBean>();
 
-	private List<DataSetBean> dataSets = new ArrayList<DataSetBean>();
+	private List<FindingBean> findings = new ArrayList<FindingBean>();
 
-	private ProtocolFileBean protocolFileBean = new ProtocolFileBean();
+	private ProtocolBean protocolBean = new ProtocolBean();
 
 	private Characterization domainChar;
 
@@ -102,11 +96,13 @@ public class CharacterizationBean {
 		this.dateString = DateUtils.convertDateToString(chara.getDate(),
 				Constants.DATE_FORMAT);
 
-		if (chara.getDatumCollection() != null) {
-			convertToDataSets(new ArrayList<Datum>(chara.getDatumCollection()));
+		if (chara.getFindingCollection() != null) {
+			for (Finding finding : chara.getFindingCollection()) {
+				findings.add(new FindingBean(finding));
+			}
 		}
-		if (chara.getProtocolFile() != null) {
-			protocolFileBean = new ProtocolFileBean(chara.getProtocolFile());
+		if (chara.getProtocol() != null) {
+			protocolBean = new ProtocolBean(chara.getProtocol());
 		}
 
 		if (chara.getExperimentConfigCollection() != null) {
@@ -138,35 +134,6 @@ public class CharacterizationBean {
 		}
 	}
 
-	private void convertToDataSets(List<Datum> data) {
-		Collections.sort(data, new Comparators.DatumDateComparator());
-		// get all DataSets in order of creation date
-		List<DataSet> dataSetList = new ArrayList<DataSet>();
-		for (Datum datum : data) {
-			if (!dataSetList.contains(datum.getDataSet())) {
-				dataSetList.add(datum.getDataSet());
-			}
-		}
-		Map<DataSet, List<Datum>> dataMap = new HashMap<DataSet, List<Datum>>();
-		List<Datum> dataPerSet = null;
-		for (Datum datum : data) {
-			if (dataMap.containsKey(datum.getDataSet())) {
-				dataPerSet = dataMap.get(datum.getDataSet());
-			} else {
-				dataPerSet = new ArrayList<Datum>();
-				dataMap.put(datum.getDataSet(), dataPerSet);
-			}
-			dataPerSet.add(datum);
-		}
-
-		for (DataSet set : dataSetList) {
-			if (set != null) {
-				DataSetBean dataSetBean = new DataSetBean(dataMap.get(set));
-				dataSets.add(dataSetBean);
-			}
-		}
-	}
-
 	public Characterization getDomainCopy(boolean copyDerivedDatum) {
 		Characterization copy = (Characterization) ClassUtils
 				.deepCopy(domainChar);
@@ -188,47 +155,49 @@ public class CharacterizationBean {
 			}
 		}
 
-		if (copy.getDatumCollection().isEmpty()) {
-			copy.setDatumCollection(null);
+		if (copy.getFindingCollection().isEmpty()) {
+			copy.setFindingCollection(null);
 		} else {
-			Collection<Datum> data = copy.getDatumCollection();
-			copy.setDatumCollection(new HashSet<Datum>());
-			copy.getDatumCollection().addAll(data);
-			for (Datum datum : copy.getDatumCollection()) {
-				datum.setId(null);
-				datum.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				datum.setCreatedDate(new Date());
-				// TODO::
-				// if (bioassay.getFile() != null) {
-				//
-				// bioassay.getFile().setId(null);
-				// bioassay.getFile().setCreatedBy(
-				// Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				// bioassay.getFile().setCreatedDate(new Date());
-				// }
-				// if (bioassay.getDerivedDatumCollection().isEmpty()
-				// || !copyDerivedDatum) {
-				// bioassay.setDerivedDatumCollection(null);
-				// } else {
-				// Collection<DerivedDatum> data = bioassay
-				// .getDerivedDatumCollection();
-				// bioassay
-				// .setDerivedDatumCollection(new HashSet<DerivedDatum>());
-				// bioassay.getDerivedDatumCollection().addAll(data);
-				// for (DerivedDatum datum : bioassay
-				// .getDerivedDatumCollection()) {
-				// datum.setId(null);
-				// datum
-				// .setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-				// datum.setCreatedDate(new Date());
-				// }
-				// }
+			Collection<Finding> findings = copy.getFindingCollection();
+			copy.setFindingCollection(new HashSet<Finding>());
+			copy.getFindingCollection().addAll(findings);
+			for (Finding finding : copy.getFindingCollection()) {
+				for (Datum datum : finding.getDatumCollection()) {
+					datum.setId(null);
+					datum.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+					datum.setCreatedDate(new Date());
+					// TODO::
+					// if (bioassay.getFile() != null) {
+					//
+					// bioassay.getFile().setId(null);
+					// bioassay.getFile().setCreatedBy(
+					// Constants.AUTO_COPY_ANNOTATION_PREFIX);
+					// bioassay.getFile().setCreatedDate(new Date());
+					// }
+					// if (bioassay.getDerivedDatumCollection().isEmpty()
+					// || !copyDerivedDatum) {
+					// bioassay.setDerivedDatumCollection(null);
+					// } else {
+					// Collection<DerivedDatum> data = bioassay
+					// .getDerivedDatumCollection();
+					// bioassay
+					// .setDerivedDatumCollection(new HashSet<DerivedDatum>());
+					// bioassay.getDerivedDatumCollection().addAll(data);
+					// for (DerivedDatum datum : bioassay
+					// .getDerivedDatumCollection()) {
+					// datum.setId(null);
+					// datum
+					// .setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+					// datum.setCreatedDate(new Date());
+					// }
+					// }
+				}
 			}
 		}
 		return copy;
 	}
 
-	public void setupDomainChar(String createdBy, String internalUriPath)
+	public void setupDomain(String createdBy, String internalUriPath)
 			throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
@@ -280,32 +249,18 @@ public class CharacterizationBean {
 			domainChar.getExperimentConfigCollection().add(config.getDomain());
 		}
 
-		if (protocolFileBean != null
-				&& protocolFileBean.getDomainFile() != null
-				&& protocolFileBean.getDomainFile().getId() != null
-				&& protocolFileBean.getDomainFile().getId() != 0) {
-			domainChar.setProtocolFile(((ProtocolFile) protocolFileBean
-					.getDomainFile()));
+		if (protocolBean != null) {
+			domainChar.setProtocol(protocolBean.getDomain());
 		} else {
-			domainChar.setProtocolFile(null);
+			domainChar.setProtocol(null);
 		}
-		if (domainChar.getDatumCollection() != null) {
-			domainChar.getDatumCollection().clear();
+		if (domainChar.getFindingCollection() != null) {
+			domainChar.getFindingCollection().clear();
 		} else {
-			domainChar.setDatumCollection(new HashSet<Datum>());
+			domainChar.setFindingCollection(new HashSet<Finding>());
 		}
-
-		if (domainChar.getDatumCollection() != null) {
-			domainChar.getDatumCollection().clear();
-		} else {
-			domainChar.setDatumCollection(new HashSet<Datum>());
-		}
-		for (DataSetBean dataSetBean : dataSets) {
-			for (DataRowBean dataRowBean : dataSetBean.getDataRows()) {
-				for (Datum datum : dataRowBean.getData()) {
-					domainChar.getDatumCollection().add(datum);
-				}
-			}
+		for (FindingBean findingBean : findings) {
+			domainChar.getFindingCollection().add(findingBean.getDomain());
 		}
 	}
 
@@ -317,8 +272,8 @@ public class CharacterizationBean {
 		this.description = description;
 	}
 
-	public ProtocolFileBean getProtocolFileBean() {
-		return protocolFileBean;
+	public ProtocolBean getProtocolBean() {
+		return protocolBean;
 	}
 
 	public Characterization getDomainChar() {
@@ -382,41 +337,41 @@ public class CharacterizationBean {
 	}
 
 	/**
-	 * @return the theDataSet
+	 * @return the theFinding
 	 */
-	public DataSetBean getTheDataSet() {
-		return theDataSet;
+	public FindingBean getTheFinding() {
+		return theFinding;
 	}
 
 	/**
-	 * @param theDataSet
-	 *            the theDataSet to set
+	 * @param theFinding
+	 *            the theFinding to set
 	 */
-	public void setTheDataSet(DataSetBean theDataSet) {
-		this.theDataSet = theDataSet;
+	public void setTheFinding(FindingBean theFinding) {
+		this.theFinding = theFinding;
 	}
 
-	public void addDataSet(DataSetBean dataSetBean) {
+	public void addFinding(FindingBean dataSetBean) {
 		// if an old one exists, remove it first
-		int index = dataSets.indexOf(dataSetBean);
+		int index = findings.indexOf(dataSetBean);
 		if (index != -1) {
-			dataSets.remove(dataSetBean);
+			findings.remove(dataSetBean);
 			// retain the original order
-			dataSets.add(index, dataSetBean);
+			findings.add(index, dataSetBean);
 		} else {
-			dataSets.add(dataSetBean);
+			findings.add(dataSetBean);
 		}
 	}
 
-	public void removeDataSet(DataSetBean dataSetBean) {
-		dataSets.remove(dataSetBean);
+	public void removeFinding(FindingBean dataSetBean) {
+		findings.remove(dataSetBean);
 	}
 
 	/**
-	 * @return the dataSets
+	 * @return the findings
 	 */
-	public List<DataSetBean> getDataSets() {
-		return dataSets;
+	public List<FindingBean> getFindings() {
+		return findings;
 	}
 
 	public String getAssayCategory() {

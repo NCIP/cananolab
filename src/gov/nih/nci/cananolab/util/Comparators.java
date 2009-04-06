@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -14,7 +13,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
@@ -346,18 +345,16 @@ public class Comparators {
 		}
 	}
 
-	public static class ProtocolFileBeanNameVersionComparator implements
-			Comparator<ProtocolFileBean> {
-		public int compare(ProtocolFileBean protocolFile1,
-				ProtocolFileBean protocolFile2) {
-			String name1 = ((ProtocolFile) protocolFile1.getDomainFile())
-					.getProtocol().getName();
-			String name2 = ((ProtocolFile) protocolFile2.getDomainFile())
-					.getProtocol().getName();
+	public static class ProtocolBeanNameVersionComparator implements
+			Comparator<ProtocolBean> {
+		public int compare(ProtocolBean protocol1,
+				ProtocolBean protocol2) {
+			String name1 = protocol1.getDomain().getName();
+			String name2 = protocol2.getDomain().getName();
 			int nameComp = new SortableNameComparator().compare(name1, name2);
 			if (nameComp == 0) {
-				String version1 = protocolFile1.getDomainFile().getVersion();
-				String version2 = protocolFile2.getDomainFile().getVersion();
+				String version1 = protocol1.getDomain().getVersion();
+				String version2 = protocol2.getDomain().getVersion();
 				if (version1 == null || version2 == null) {
 					return 0;
 				}

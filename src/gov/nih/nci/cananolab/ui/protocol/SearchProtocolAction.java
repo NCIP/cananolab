@@ -1,18 +1,15 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.Constants;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +26,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Search protocol file and protocol
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SearchProtocolAction extends BaseAnnotationAction {
 	public ActionForward search(ActionMapping mapping, ActionForm form,
@@ -56,45 +53,46 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 				&& gridNodeHostStr.trim().length() > 0) {
 			searchLocations = gridNodeHostStr.split("~");
 		}
-		List<ProtocolFileBean> foundProtocolFiles = new ArrayList<ProtocolFileBean>();
+		List<ProtocolBean> foundProtocols = new ArrayList<ProtocolBean>();
 		ProtocolService service = null;
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
 				service = new ProtocolServiceLocalImpl();
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				service = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
+// else {
+// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+// request, location);
+// service = new ProtocolServiceRemoteImpl(serviceUrl);
+// }
 
-			List<ProtocolFileBean> protocolFiles = service.findProtocolFilesBy(
+			List<ProtocolBean> protocols = service.findProtocolsBy(
 					protocolType, protocolName, fileTitle);
-			for (ProtocolFileBean protocolFile : protocolFiles) {
-				protocolFile.setLocation(location);
+			for (ProtocolBean protocol : protocols) {
+				protocol.getFileBean().setLocation(location);
 			}
 			if (location.equals("local")) {
-				List<ProtocolFileBean> filteredProtocolFiles = new ArrayList<ProtocolFileBean>();
+				List<ProtocolBean> filteredProtocols = new ArrayList<ProtocolBean>();
 				// retrieve accessibility
 				FileService fileService = new FileServiceLocalImpl();
-				for (ProtocolFileBean protocolFile : protocolFiles) {
-					fileService.retrieveAccessibility(protocolFile, user);
-					if (!protocolFile.isHidden()) {
-						filteredProtocolFiles.add(protocolFile);
+				for (ProtocolBean protocol : protocols) {
+					fileService.retrieveAccessibility(protocol.getFileBean(), user);
+					if (!protocol.getFileBean().isHidden()) {
+						filteredProtocols.add(protocol);
 					}
 				}
-				foundProtocolFiles.addAll(filteredProtocolFiles);
+				foundProtocols.addAll(filteredProtocols);
 			} else {
-				foundProtocolFiles.addAll(protocolFiles);
+				foundProtocols.addAll(protocols);
 			}
 		}
-		if (foundProtocolFiles != null && !foundProtocolFiles.isEmpty()) {
+		if (foundProtocols != null && !foundProtocols.isEmpty()) {
 			// Collections
 			// .sort(
-			// foundProtocolFiles,
+			// foundProtocols,
 			// new
-			// Comparators.ProtocolFileBeanNameVersionComparator());
-			request.getSession().setAttribute("protocolFiles",
-					foundProtocolFiles);
+			// Comparators.ProtocolBeanNameVersionComparator());
+			request.getSession().setAttribute("protocols",
+					foundProtocols);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -139,29 +137,31 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String fileId = request.getParameter("fileId");
 		if (location.equals("local")) {
 			return super.download(mapping, form, request, response);
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			ProtocolService protocolService = new ProtocolServiceRemoteImpl(
-					serviceUrl);
-			ProtocolFileBean fileBean = protocolService
-					.findProtocolFileById(fileId);
-			if (fileBean.getDomainFile().getUriExternal()) {
-				response.sendRedirect(fileBean.getDomainFile().getUri());
-				return null;
-			}
-
-			// assume grid service is located on the same server and port as
-			// webapp
-			URL url = new URL(serviceUrl);
-			String remoteServerHostUrl = url.getProtocol() + "://"
-					+ url.getHost() + ":" + url.getPort();
-			String remoteDownloadUrl = remoteServerHostUrl + "/"
-					+ Constants.CSM_APP_NAME
-					+ "/searchProtocol.do?dispatch=download" + "&fileId="
-					+ fileId + "&location=local";
-			response.sendRedirect(remoteDownloadUrl);
-			return null;
 		}
+		// TODO grid service
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// ProtocolService protocolService = new ProtocolServiceRemoteImpl(
+		// serviceUrl);
+		// ProtocolBean fileBean = protocolService.findProtocolById(fileId);
+		// if (fileBean.getDomainFile().getUriExternal()) {
+		// response.sendRedirect(fileBean.getDomainFile().getUri());
+		// return null;
+		// }
+		//
+		// // assume grid service is located on the same server and port as
+		// // webapp
+		// URL url = new URL(serviceUrl);
+		// String remoteServerHostUrl = url.getProtocol() + "://"
+		// + url.getHost() + ":" + url.getPort();
+		// String remoteDownloadUrl = remoteServerHostUrl + "/"
+		// + Constants.CSM_APP_NAME
+		// + "/searchProtocol.do?dispatch=download" + "&fileId="
+		// + fileId + "&location=local";
+		// response.sendRedirect(remoteDownloadUrl);
+		//			return null;
+		//		}
+		return null;
 	}
 }

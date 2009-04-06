@@ -2,9 +2,9 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
-import gov.nih.nci.cananolab.dto.common.DataSetBean;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -129,7 +129,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		InitExperimentConfigSetup.getInstance().setExperimentConfigDropDowns(
 				request);
 		if (charType != null)
-			InitProtocolSetup.getInstance().getProtocolFilesByChar(request,
+			InitProtocolSetup.getInstance().getProtocolsByChar(request,
 					charType);
 		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
 				request);
@@ -245,7 +245,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request.getSession().getServletContext());
 			charBean.setClassName(className);
 		}
-		charBean.setupDomainChar(user.getLoginName(), internalUriPath);
+		charBean.setupDomain(user.getLoginName(), internalUriPath);
 	}
 
 	// TODO for datum and condition
@@ -377,7 +377,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
 						.getInstance().getDisplayName(charBean.getClassName(),
 								request.getSession().getServletContext()));
-		charBean.setupDomainChar(createdBy, internalUriPath);
+		charBean.setupDomain(createdBy, internalUriPath);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.deleteCharacterization(charBean.getDomainChar());
 	}
@@ -527,23 +527,23 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward saveDataSet(ActionMapping mapping, ActionForm form,
+	public ActionForward saveFinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		DataSetBean dataSetBean = achar.getTheDataSet();
-		String theDataSetId = (String) theForm.get("theDataSetId");
-		if (theDataSetId != null && !theDataSetId.equals("null")
-				&& theDataSetId.trim().length() > 0) {
-			dataSetBean.getDomain().setId(new Long(theDataSetId));
+		FindingBean dataSetBean = achar.getTheFinding();
+		String theFindingId = (String) theForm.get("theFindingId");
+		if (theFindingId != null && !theFindingId.equals("null")
+				&& theFindingId.trim().length() > 0) {
+			dataSetBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		dataSetBean.setupDomain(user.getLoginName());
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
-		service.saveDataSet(dataSetBean.getDomain());
-		achar.addDataSet(dataSetBean);
+		service.saveFinding(dataSetBean.getDomain());
+		achar.addFinding(dataSetBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		// also save characterization
@@ -551,16 +551,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward deleteDataSet(ActionMapping mapping, ActionForm form,
+	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		DataSetBean dataSetBean = achar.getTheDataSet();
+		FindingBean dataSetBean = achar.getTheFinding();
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
-		service.deleteDataSet(dataSetBean.getDomain());
-		achar.removeDataSet(dataSetBean);
+		service.deleteFinding(dataSetBean.getDomain());
+		achar.removeFinding(dataSetBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		return mapping.getInputForward();

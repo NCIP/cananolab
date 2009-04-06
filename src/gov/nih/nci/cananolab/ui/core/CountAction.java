@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
-import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
@@ -45,14 +44,16 @@ public class CountAction extends AbstractDispatchAction {
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
 				protocolService = new ProtocolServiceLocalImpl();
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				protocolService = new ProtocolServiceRemoteImpl(serviceUrl);
 			}
+			//TODO grid service
+//			else {
+//				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//						request, location);
+//				protocolService = new ProtocolServiceRemoteImpl(serviceUrl);
+//			}
 			try {
 				protocolCount += protocolService
-						.getNumberOfPublicProtocolFiles();
+						.getNumberOfPublicProtocols();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				ActionMessages msgs = new ActionMessages();

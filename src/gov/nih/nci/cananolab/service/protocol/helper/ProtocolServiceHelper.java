@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -15,6 +14,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -30,26 +30,27 @@ public class ProtocolServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceHelper.class);
 
-	public ProtocolFile findProtocolFileById(String fileId) throws Exception {
+	public Protocol findProtocolById(String protocolId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(ProtocolFile.class)
-				.add(Property.forName("id").eq(new Long(fileId)));
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+				.add(Property.forName("id").eq(new Long(protocolId)));
+		crit.setFetchMode("file", FetchMode.JOIN);
 		List result = appService.query(crit);
-		ProtocolFile pf = null;
+		Protocol protocol = null;
 		if (!result.isEmpty()) {
-			pf = (ProtocolFile) result.get(0);
+			protocol = (Protocol) result.get(0);
 		}
-		return pf;
+		return protocol;
 	}
 
-	public List<ProtocolFile> findProtocolFilesBy(String protocolType,
+	public List<Protocol> findProtocolsBy(String protocolType,
 			String protocolName, String fileTitle) throws Exception {
-		List<ProtocolFile> protocolFiles = new ArrayList<ProtocolFile>();
+		List<Protocol> protocolFiles = new ArrayList<Protocol>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(ProtocolFile.class);
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
 		if (protocolType != null && protocolType.length() > 0
 				|| protocolName != null && protocolName.length() > 0) {
 			crit.createAlias("protocol", "protocol",
@@ -73,7 +74,7 @@ public class ProtocolServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			ProtocolFile pf = (ProtocolFile) obj;
+			Protocol pf = (Protocol) obj;
 			protocolFiles.add(pf);
 		}
 		return protocolFiles;
@@ -96,19 +97,19 @@ public class ProtocolServiceHelper {
 		return protocol;
 	}
 
-	public String getProtocolFileUriById(String fileId) {
+	public String getProtocolUriById(String protocolId) {
 		String uri = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(
-					ProtocolFile.class).add(
-					Property.forName("id").eq(new Long(fileId)));
+					Protocol.class).add(
+					Property.forName("id").eq(new Long(protocolId)));
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
-				ProtocolFile pf = (ProtocolFile) result.get(0);
-				uri = pf.getUri();
+				Protocol protocol = (Protocol) result.get(0);
+				uri = protocol.getFile().getUri();
 			}
 			return uri;
 		} catch (Exception e) {
@@ -116,18 +117,18 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	public String getProtocolFileNameById(String fileId) {
+	public String getProtocolNameById(String protocolId) {
 		String name = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(
-					ProtocolFile.class).add(
-					Property.forName("id").eq(new Long(fileId)));
+					Protocol.class).add(
+					Property.forName("id").eq(new Long(protocolId)));
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
-				ProtocolFile pf = (ProtocolFile) result.get(0);
+				Protocol pf = (Protocol) result.get(0);
 				name = pf.getName();
 			}
 			return name;
@@ -136,18 +137,18 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	public String getProtocolFileVersionById(String fileId) {
+	public String getProtocolVersionById(String protocolId) {
 		String version = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
 			DetachedCriteria crit = DetachedCriteria.forClass(
-					ProtocolFile.class).add(
-					Property.forName("id").eq(new Long(fileId)));
+					Protocol.class).add(
+					Property.forName("id").eq(new Long(protocolId)));
 			List result = appService.query(crit);
 			if (!result.isEmpty()) {
-				ProtocolFile pf = (ProtocolFile) result.get(0);
+				Protocol pf = (Protocol) result.get(0);
 				version = pf.getVersion();
 			}
 			return version;
@@ -179,14 +180,14 @@ public class ProtocolServiceHelper {
 		}
 	}
 
-	public List<ProtocolFileBean> getProtocolFiles(String protocolType,
+	public List<ProtocolBean> getProtocols(String protocolType,
 			String protocolName) {
-		List<ProtocolFileBean> protocolFiles = new ArrayList<ProtocolFileBean>();
+		List<ProtocolBean> protocols = new ArrayList<ProtocolBean>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
-					.forClass(ProtocolFile.class);
+					.forClass(Protocol.class);
 			if (protocolType != null && protocolType.length() > 0
 					|| protocolName != null && protocolName.length() > 0) {
 				crit.createAlias("protocol", "protocol",
@@ -203,24 +204,24 @@ public class ProtocolServiceHelper {
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
 			for (Object obj : results) {
-				ProtocolFile pf = (ProtocolFile) obj;
-				ProtocolFileBean pfb = new ProtocolFileBean(pf);
-				protocolFiles.add(pfb);
+				Protocol protocol = (Protocol) obj;
+				ProtocolBean pb = new ProtocolBean(protocol);
+				protocols.add(pb);
 			}
-			return protocolFiles;
+			return protocols;
 		} catch (Exception e) {
-			String err = "Problem finding protocol files.";
+			String err = "Problem finding protocol.";
 			logger.error(err, e);
 			return null;
 		}
 	}
 
-	public int getNumberOfPublicProtocolFiles() throws Exception {
+	public int getNumberOfPublicProtocols() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List<String> publicData = appService.getPublicData();
 		HQLCriteria crit = new HQLCriteria(
-				"select id from gov.nih.nci.cananolab.domain.common.ProtocolFile");
+				"select id from gov.nih.nci.cananolab.domain.common.Protocol");
 		List results = appService.query(crit);
 		List<String> publicIds = new ArrayList<String>();
 		for (Object obj : results) {

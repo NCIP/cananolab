@@ -1,8 +1,7 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.domain.common.ProtocolFile;
-import gov.nih.nci.cananolab.dto.common.ProtocolFileBean;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -29,9 +28,9 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * Create or update protocol file and protocol
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class SubmitProtocolAction extends AbstractDispatchAction {
 
@@ -41,35 +40,36 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ProtocolFileBean pfileBean = (ProtocolFileBean) theForm.get("file");
-		pfileBean.setupDomainFile(Constants.FOLDER_PROTOCOL, user
-				.getLoginName());
+		ProtocolBean protocolBean = (ProtocolBean) theForm.get("file");
+		protocolBean
+				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		ProtocolFile protocolFile = (ProtocolFile) pfileBean.getDomainFile();
-		service.saveProtocolFile(protocolFile, pfileBean.getNewFileData());
+		service.saveProtocol(protocolBean.getDomain(), protocolBean
+				.getFileBean().getNewFileData());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
-		authService.assignVisibility(pfileBean.getDomainFile().getId()
-				.toString(), pfileBean.getVisibilityGroups(), null);
+		authService.assignVisibility(protocolBean.getFileBean().getDomainFile()
+				.getId().toString(), protocolBean.getFileBean()
+				.getVisibilityGroups(), null);
 
 		// remove protocol visibility
 		ProtocolServiceLocalImpl localService = new ProtocolServiceLocalImpl();
-		Protocol dbProtocol = localService.findProtocolBy(protocolFile
-				.getProtocol().getType(), protocolFile.getProtocol().getName());
+		Protocol dbProtocol = localService.findProtocolBy(protocolBean
+				.getDomain().getType(), protocolBean.getDomain().getName());
 		// assign protocol visibility
-		if (pfileBean.getVisibilityStr() != null
-				&& pfileBean.getVisibilityStr().contains(
+		if (protocolBean.getFileBean().getVisibilityStr() != null
+				&& protocolBean.getFileBean().getVisibilityStr().contains(
 						Constants.CSM_PUBLIC_GROUP)) {
 			authService.assignVisibility(dbProtocol.getId().toString(),
 					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 		}
 
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
-				pfileBean);
+				protocolBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.submitProtocol.file",
-				pfileBean.getDomainFile().getTitle());
+				protocolBean.getFileBean().getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
@@ -82,18 +82,16 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ProtocolFileBean pfileBean = ((ProtocolFileBean) theForm.get("file"));
-		String selectedProtocolType = ((ProtocolFile) pfileBean.getDomainFile())
-				.getProtocol().getType();
+		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("file"));
+		String selectedProtocolType = protocolBean.getDomain().getType();
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		SortedSet<String> protocolNames = service
 				.getProtocolNames(selectedProtocolType);
 		request.getSession().setAttribute("protocolNamesByType", protocolNames);
-		String selectedProtocolName = ((ProtocolFile) pfileBean.getDomainFile())
-				.getProtocol().getName();
-		List<ProtocolFileBean> pFiles = service.findProtocolFilesBy(
+		String selectedProtocolName = protocolBean.getDomain().getName();
+		List<ProtocolBean> pFiles = service.findProtocolsBy(
 				selectedProtocolType, selectedProtocolName, null);
-		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
+		request.getSession().setAttribute("protocolsByTypeName", pFiles);
 
 		return mapping.findForward("inputPage");
 	}
@@ -113,20 +111,18 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String fileId = request.getParameter("fileId");
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		ProtocolFileBean pfileBean = service.findProtocolFileById(fileId);
-		theForm.set("file", pfileBean);
-		String selectedProtocolType = ((ProtocolFile) pfileBean.getDomainFile())
-				.getProtocol().getType();
-		String selectedProtocolName = ((ProtocolFile) pfileBean.getDomainFile())
-				.getProtocol().getName();
+		ProtocolBean protocolBean = service.findProtocolById(fileId);
+		theForm.set("file", protocolBean);
+		String selectedProtocolType = protocolBean.getDomain().getType();
+		String selectedProtocolName = protocolBean.getDomain().getName();
 		SortedSet<String> protocolNames = service
 				.getProtocolNames(selectedProtocolType);
 		request.getSession().setAttribute("protocolNamesByType", protocolNames);
-		List<ProtocolFileBean> pFiles = service.findProtocolFilesBy(
+		List<ProtocolBean> pFiles = service.findProtocolsBy(
 				selectedProtocolType, selectedProtocolName, null);
-		request.getSession().setAttribute("protocolFilesByTypeName", pFiles);
+		request.getSession().setAttribute("protocolsByTypeName", pFiles);
 		FileService fileService = new FileServiceLocalImpl();
-		fileService.retrieveVisibility(pfileBean, user);
+		fileService.retrieveVisibility(protocolBean.getFileBean(), user);
 		return mapping.findForward("inputPage");
 	}
 
@@ -134,8 +130,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user)
-			throws SecurityException {
+	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PROTOCOL);
 	}
