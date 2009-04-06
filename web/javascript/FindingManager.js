@@ -1,35 +1,46 @@
-var currentDataSet = null;
+var currentFinding = null;
 var rowCount = 0;
-var dataRowCache = {};
+var rowCache = {};
 var dataColumnCache = {};
 var headerColumnCount = 0;
 var datumHeaderColumnCount = 0;
 var conditionHeaderColumnCount = 0;
 
 var addNewColumn = true;
-var editDataSet = false;
+var editFinding = false;
 var fixId = "-10000";
 var fixConditionColIndex = 10000; // starting index of condition
 var tempDatum = null;
 
-function setDatumNameOptionsByCharName() {
-	var charName = document.getElementById("charName").value;
-	DataSetManager.getDatumNameOptions(charName, function(data) {
+function setNameOptionsByCharName(charName) {
+    if (charName=="") {
+	  charName = document.getElementById("charName").value;
+	}
+	var datumOrCondition=document.getElementById("datumOrCondition").value;
+	if (datumOrCondition=="Datum") {
+	   $("conditionProperty").style.display = 'none';
+	   FindingManager.getDatumNameOptions(charName, function(data) {
+		 dwr.util.removeAllOptions("name");
+		 dwr.util.addOptions("name", [ "" ]);
+		 dwr.util.addOptions("name", data);
+		 dwr.util.addOptions("name", [ "[Other]" ]);
+	   });
+	}
+	else if (datumOrCondition=="Condition") {
+	  $("conditionProperty").style.display = "";
+	  FindingManager.getConditionOptions( function(data) {
 		dwr.util.removeAllOptions("name");
 		dwr.util.addOptions("name", [ "" ]);
 		dwr.util.addOptions("name", data);
 		dwr.util.addOptions("name", [ "[Other]" ]);
-	});
-}
-
-function setConditionOptionsByCharName() {
-	var charName = document.getElementById("charName").value;
-	DataSetManager.getConditionOptions( function(data) {
-		dwr.util.removeAllOptions("name");
+	  });
+	}
+	else {
+	    $("conditionProperty").style.display = 'none';
+	    dwr.util.removeAllOptions("name");
 		dwr.util.addOptions("name", [ "" ]);
-		dwr.util.addOptions("name", data);
 		dwr.util.addOptions("name", [ "[Other]" ]);
-	});
+	}
 }
 
 function setConditionPropertyOptionsByCharName(conditionName) {
@@ -37,7 +48,7 @@ function setConditionPropertyOptionsByCharName(conditionName) {
 		if (conditionName == null) {
 			conditionName = document.getElementById("name").value;
 		}
-		DataSetManager.getConditionPropertyOptions(conditionName,
+		FindingManager.getConditionPropertyOptions(conditionName,
 				function(data) {
 					dwr.util.removeAllOptions("property");
 					dwr.util.addOptions("property", [ "" ]);
@@ -53,7 +64,7 @@ function setColumnValueUnit() {
 		property = document.getElementById("property").value;
 	}
 	name = document.getElementById("name").value;
-	DataSetManager.getColumnValueUnitOptions(name, property,
+	FindingManager.getColumnValueUnitOptions(name, property,
 				function(data) {
 					dwr.util.removeAllOptions("valueUnit");
 					dwr.util.addOptions("valueUnit", [ "" ]);
@@ -63,57 +74,31 @@ function setColumnValueUnit() {
 
 }
 
-function showDatumConditionInfo(datumName) {
-    if (document.getElementById('datumOrCondition').value=='') {
-        hide ('columnDesign');
-        return;
-    }
-	if (document.getElementById('datumOrCondition').value == 'Condition') {
-		$("conditionProperty").style.display = "";
-		var charName = document.getElementById("charName").value;
-		setConditionOptionsByCharName();
-		if (datumName != null) {
-			document.getElementById("name").value = datumName;
-		}
-		setConditionPropertyOptionsByCharName(datumName);
-	} else {
-		$("conditionProperty").style.display = 'none';
-		if (document.getElementById('datumOrCondition').value == 'Datum') {
-			setDatumNameOptionsByCharName();
-		}else{
-			dwr.util.removeAllOptions("name");
-			dwr.util.addOptions("name", [ "" ]);
-		}
-	}
-	setColumnValueUnit();
-	show('columnDesign');
-}
-
-function cancelDataSet() {
+function cancelFinding() {
 	if (confirm("Are you sure you want to discard all the changes you made??")) {
-		resetTheDataSet(false);
+		resetTheFinding(false);
 	}
 	return;
 }
 
-function resetTheDataSet(isShow) {
-	editDataSet = false;
+function resetTheFinding(isShow) {
+	editFinding = false;
 	headerColumnCount = 0;
 	datumHeaderColumnCount = 0;
 	conditionHeaderColumnCount = 0;
 	columnCount = 0;
 	rowCount = 0;
 	if (isShow) {
-		show('newDataSet');
+		show('newFinding');
 		/*hide('populateDataTable');*/
-		/*hide('existingDataSet');*/
+		/*hide('existingFinding');*/
 	} else {
-		hide('newDataSet');
-		show('existingDataSet');
+		hide('newFinding');
+		show('existingFinding');
 		return;
 	}
-	DataSetManager.resetDataSet( function(theDataSet) {
-		currentDataSet = theDataSet;
+	FindingManager.resetFinding( function(theFinding) {
+		currentFinding = theFinding;
 	});
 	dwr.util.setValue("name", "");
 	dwr.util.setValue("valueType", "");
@@ -148,34 +133,34 @@ function resetTheDataSet(isShow) {
 	// $("datumColumnsDivRow").style.display = "none";
 	$("datumMatrixDivRow").style.display = "none";
 	$("datumColumnsDivRowDisplay").style.display = "none";
-	clearTheDataRow();
+	clearTheRow();
 }
 
-function setTheDataSet(dataSetId) {
-	resetTheDataSet(true);
-	editDataSet = true;
+function setTheFinding(findingId) {
+	resetTheFinding(true);
+	editFinding = true;
 	show('submitDatum');
 	show('populateDataTable');
-	DataSetManager.findDataSetById(dataSetId, populateDataSet);
+	FindingManager.findFindingById(findingId, populateFinding);
 }
 
-function populateDataSet(dataSet) {
-	if (dataSet != null && dataSet.dataRows != null
-			&& dataSet.dataRows.length > 0) {
-		currentDataSet = dataSet;
+function populateFinding(finding) {
+	if (finding != null && finding.rows != null
+			&& finding.rows.length > 0) {
+		currentFinding = finding;
 
-		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
-			var conditions = currentDataSet.dataRows[index].conditions;
+		for ( var index = 0; index < currentFinding.rows.length; index++) {
+			var conditions = currentFinding.rows[index].conditions;
 			var id;
 			for ( var i = 0; i < conditions.length; i++) {
 				addDatumColumn(conditions[i]);
 			}
 		}
-		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
-			var data = currentDataSet.dataRows[index].data;
+		for ( var index = 0; index < currentFinding.rows.length; index++) {
+			var data = currentFinding.rows[index].data;
 			var id;
 			if (index == 0) {
-				setTheDataRow(currentDataSet.dataRows[index]);
+				setTheRow(currentFinding.rows[index]);
 			}
 			headerColumnCount = 0;
 			datumHeaderColumnCount = 0;
@@ -184,7 +169,7 @@ function populateDataSet(dataSet) {
 				addDatumColumn(data[i]);
 			}
 		}
-		for ( var index = 0; index < currentDataSet.dataRows.length; index++) {
+		for ( var index = 0; index < currentFinding.rows.length; index++) {
 			if (rowCount == 0) {
 				addNewColumn = false;
 				$("datumMatrixDivRow").style.display = "";
@@ -194,9 +179,9 @@ function populateDataSet(dataSet) {
 	}
 }
 
-function saveDataSet(actionName) {
-	document.getElementById("theDataSetId").value=currentDataSet.domain.id;
-	submitAction(document.forms[0], actionName, 'saveDataSet');
+function saveFinding(actionName) {
+	document.getElementById("theFindingId").value=currentFinding.domain.id;
+	submitAction(document.forms[0], actionName, 'saveFinding');
 }
 
 //add new column (datum or condition)
@@ -266,8 +251,8 @@ function addDatumColumn(myDatum) {
 					columnBean.id = -datumHeaderColumnCount - 1;
 				}
 			}
-			DataSetManager.addColumnHeader(columnBean, function(theDataSet) {
-				currentDataSet = theDataSet;
+			FindingManager.addColumnHeader(columnBean, function(theFinding) {
+				currentFinding = theFinding;
 			});
 		}
 		$("addRowButtons").style.display = "";
@@ -286,9 +271,9 @@ function addDatumColumn(myDatum) {
 }
 
 function updateColumnCount() {
-	headerColumnCount = currentDataSet.columnBeans.length;
-	datumHeaderColumnCount = currentDataSet.datumColumnBeans.length;
-	conditionHeaderColumnCount = currentDataSet.conditionColumnBeans.length;
+	headerColumnCount = currentFinding.columnBeans.length;
+	datumHeaderColumnCount = currentFinding.datumColumnBeans.length;
+	conditionHeaderColumnCount = currentFinding.conditionColumnBeans.length;
 }
 
 //data table pattern (data row)
@@ -449,8 +434,8 @@ function addRow() {
 		}
 	}
 	if (datumIndex > 0) {
-		DataSetManager.addRow(datumArray, conditionArray, function(theDataSet) {
-			currentDataSet = theDataSet;
+		FindingManager.addRow(datumArray, conditionArray, function(theFinding) {
+			currentFinding = theFinding;
 		});
 	} else {
 		alert('Please fill in at least one Datum');
@@ -499,14 +484,14 @@ function deleteRow() {
 		conditionIndex++;
 		datumIndex++;
 	}
-	DataSetManager.deleteRow(datumArray, conditionArray, function(theDataSet) {
-		currentDataSet = theDataSet;
+	FindingManager.deleteRow(datumArray, conditionArray, function(theFinding) {
+		currentFinding = theFinding;
 	});
 	rowCount--;
 	window.setTimeout("fillMatrix()", 200);
 }
 
-function clearTheDataRow() {
+function clearTheRow() {
 	for ( var i = fixConditionColIndex; i < conditionHeaderColumnCount
 		+ fixConditionColIndex; i++) {
 		document.getElementById("datumColumnId" + (-i - 1)).value = '';
@@ -529,9 +514,9 @@ function clearTheDataColumn() {
 	window.setTimeout("setDatumValues()", 100);
 }
 
-function setTheDataRow(dataRow) {
-	currentDataSet.theDataRow = dataRow;
-	// var datum = currentDataSet.theDataRow.data[headerColumnCount-1];
+function setTheRow(row) {
+	currentFinding.theRow = row;
+	// var datum = currentFinding.theRow.data[headerColumnCount-1];
 	// document.getElementById("name").value = datum.name;
 	// document.getElementById("value").value = datum.value;
 	// document.getElementById("name").value = datum.name;
@@ -587,16 +572,16 @@ function fillColumnTable() {
 						}
 					});
 
-	if (currentDataSet.conditionColumnBeans != null
-			&& currentDataSet.conditionColumnBeans.length > 0) {
-		fillColumns(editDataSet, fixConditionColIndex,
-				currentDataSet.conditionColumnBeans)
+	if (currentFinding.conditionColumnBeans != null
+			&& currentFinding.conditionColumnBeans.length > 0) {
+		fillColumns(editFinding, fixConditionColIndex,
+				currentFinding.conditionColumnBeans)
 	}
-	fillColumns(editDataSet, start, currentDataSet.datumColumnBeans);
+	fillColumns(editFinding, start, currentFinding.datumColumnBeans);
 
 }
 
-function fillColumns(editDataSet, start, columnBeans) {
+function fillColumns(editFinding, start, columnBeans) {
 	var columnBean, id;
 	var columnBeanid = null;
 	var valueTypeUnit = null;
@@ -628,7 +613,7 @@ function fillColumns(editDataSet, start, columnBeans) {
 		dwr.util
 				.setValue("datumColumnNameDisplay" + id, columnBean.displayName);
 		dwr.util.setValue("columnDisplayName" + id, columnBean.displayName);
-		if (!editDataSet) {
+		if (!editFinding) {
 			dwr.util.setValue("datumColumnValue" + id, document
 					.getElementById("value").value);
 			dwr.util.setValue("datumColumnId" + id, document
@@ -676,10 +661,10 @@ function fillMatrix() {
 			.getElementById("datumMatrixPatternRow");
 	var aCells = datumMatrixPatternRow.getElementsByTagName('td')
 	var aCellLength = aCells.length;
-	for ( var row = 0; row < currentDataSet.dataRows.length; row++) {
+	for ( var row = 0; row < currentFinding.rows.length; row++) {
 		// DATUM
-		var data = currentDataSet.dataRows[row].data;
-		rowId = currentDataSet.dataRows[row].domain.id;
+		var data = currentFinding.rows[row].data;
+		rowId = currentFinding.rows[row].domain.id;
 		if (rowId == null || rowId == '') {
 			rowId = -row - 1;
 		}
@@ -700,7 +685,7 @@ function fillMatrix() {
 		}
 		colIndex = fixConditionColIndex;
 		// CONDITION
-		var conditions = currentDataSet.dataRows[row].conditions;
+		var conditions = currentFinding.rows[row].conditions;
 		for ( var i = 0; i < conditions.length; i++) {
 			condition = conditions[i];
 			if (condition.id == null || condition.id == '') {
@@ -721,10 +706,10 @@ function fillMatrix() {
 		editRow.setAttribute("style", "border:0px solid;");
 		// editRow.style = "border:0px solid;text-decoration: underline;";
 		$("datumMatrixPatternRow" + rowId).style.display = "";
-		dataRowCache[rowId] = currentDataSet.dataRows[row];
-		dataRowCache[rowId].domain.id = rowId;
+		rowCache[rowId] = currentFinding.rows[row];
+		rowCache[rowId].domain.id = rowId;
 	}
-	clearTheDataRow();
+	clearTheRow();
 	cloneEditRow();
 }
 
@@ -797,9 +782,9 @@ function cloneEditRow() {
 		dwr.util.getValues(datum);
 		datum.id = -i - 1;
 		id = rowId;
-		if (currentDataSet.datumColumnBeans[i].id < 0) {
+		if (currentFinding.datumColumnBeans[i].id < 0) {
 			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
-					currentDataSet.datumColumnBeans[i].value);
+					currentFinding.datumColumnBeans[i].value);
 		}
 
 		var tempValue = document.getElementById("datumMatrixValue" + (i + 1)
@@ -816,9 +801,9 @@ function cloneEditRow() {
 		datum.id = -i - 1 - fixConditionColIndex;
 		id = rowId;
 		// fixConditionColIndex
-		if (currentDataSet.conditionColumnBeans[i - fixConditionColIndex].id < 0) {
+		if (currentFinding.conditionColumnBeans[i - fixConditionColIndex].id < 0) {
 			dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + id,
-					currentDataSet.conditionColumnBeans[i
+					currentFinding.conditionColumnBeans[i
 							- fixConditionColIndex].value);
 		}
 		var tempValue = document.getElementById("datumMatrixValue" + (i + 1)
@@ -829,9 +814,9 @@ function cloneEditRow() {
 
 var editRowId = -1;
 function editDatumClicked(eleid) {
-	currentDataSet.theDataRow = dataRowCache[eleid.substring(12)];
+	currentFinding.theRow = rowCache[eleid.substring(12)];
 	var rowid = eleid.substring(12);
-	var data = dataRowCache[rowid].data;
+	var data = rowCache[rowid].data;
 	var datum, condition;
 	for ( var i = 0; i < data.length; i++) {
 		datum = data[i];
@@ -839,7 +824,7 @@ function editDatumClicked(eleid) {
 		document.getElementById("datumColumnId" + (-i - 1)).value = datum.id;
 		document.getElementById("datumMatrixValue" + (i + 1) + fixId).value = datum.value;
 	}
-	var conditions = dataRowCache[rowid].conditions;
+	var conditions = rowCache[rowid].conditions;
 	// var condIndex = data.length;
 	var condIndex = fixConditionColIndex;
 	for ( var i = 0; i < conditions.length; i++) {
@@ -883,7 +868,7 @@ function deleteRowClicked(eleid) {
 
 //add a new row, clear input fields
 function newRowClicked(eleid) {
-	clearTheDataRow();
+	clearTheRow();
 	var row = fixId;
 	for ( var i = 0; i < datumHeaderColumnCount; i++) {
 		dwr.util.setValue("datumMatrixValue" + (i + 1) + "" + fixId, '');
@@ -936,8 +921,8 @@ function deleteDatumColumn() {
 		};
 		dwr.util.getValues(columnBean);
 		columnBean.id = document.getElementById("columnId").value;
-		DataSetManager.removeColumnHeader(columnBean, function(theDataSet) {
-			currentDataSet = theDataSet;
+		FindingManager.removeColumnHeader(columnBean, function(theFinding) {
+			currentFinding = theFinding;
 		});
 
 		$("addRowButtons").style.display = "";
