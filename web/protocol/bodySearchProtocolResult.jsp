@@ -33,7 +33,7 @@
 			</c:choose>
 			<display:table name="sessionScope.protocolFiles" id="protocolFile"
 				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
-				decorator="gov.nih.nci.cananolab.dto.common.ProtocolFileDecorator">
+				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 				<display:column title="Protocol Name" property="${link}"
 					sortable="true" />
 				<display:column title="Protocol Type"

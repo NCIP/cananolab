@@ -105,7 +105,7 @@ function resetTheDataSet(isShow) {
 	rowCount = 0;
 	if (isShow) {
 		show('newDataSet');
-		hide('populateDataTable');
+		/*hide('populateDataTable');*/
 		/*hide('existingDataSet');*/
 	} else {
 		hide('newDataSet');

@@ -51,7 +51,7 @@
 							</td>
 							<td class="rightLabel">
 								<html:select styleId="protocolType"
-									property="file.domainFile.protocol.type"
+									property="protocol.domain.type"
 									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); retrieveProtocols();">
 									<option value="" />
 										<html:options name="protocolTypes" />
@@ -67,29 +67,29 @@
 							</td>
 							<td class="rightLabel">
 								<html:select styleId="protocolName"
-									property="file.domainFile.protocol.name"
+									property="protocol.domain.name"
 									onchange="javascript:callPrompt('Protocol Name', 'protocolName'); retrieveProtocolFileVersions();">
-									<c:if test="${!empty protocolNamesByType}">
+									<%--<c:if test="${!empty protocolNamesByType}">
 										<option value="" />
 											<html:options name="protocolNamesByType" />
 										<option value="other">
 											[Other]
 										</option>
-									</c:if>
+									</c:if>--%>
 								</html:select>
 								&nbsp; &nbsp;
 								<strong>Protocol Version* </strong>&nbsp;
-								<html:select styleId="protocolFileId"
-									property="file.domainFileId"
-									onchange="javascript:callPrompt('Protocol Version', 'protocolFileId');retrieveProtocolFile();">
-									<c:if test="${!empty protocolFilesByTypeName}">
+								<html:select styleId="protocolVersion"
+									property="protocol.domain.version"
+									onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocolFile();">
+									<%--<c:if test="${!empty protocolFilesByTypeName}">
 										<option value="" />
 											<html:optionsCollection name="protocolFilesByTypeName"
 												label="domainFile.version" value="domainFile.id" />
 										<option value="other">
 											[Other]
 										</option>
-									</c:if>
+									</c:if>--%>
 								</html:select>
 								&nbsp; &nbsp;
 							</td>
@@ -99,32 +99,32 @@
 								<strong>Protocol File</strong>
 							</td>
 							<td class="rightLabel">
-								<html:file property="file.uploadedFile" />
+								<html:file property="protocol.file.uploadedFile" />
 								&nbsp;&nbsp;
 								<span id="protocolFileLink"> <c:if
-										test="${!empty submitProtocolForm.map.file.domainFile.uri }">&nbsp;&nbsp;
+										test="${!empty submitProtocolForm.map.protocol.file.domainFile.uri }">&nbsp;&nbsp;
 									<a
-											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.file.domainFile.id}&amp;location=local">
-											${submitProtocolForm.map.file.domainFile.uri }</a>
-										<html:hidden property="file.domainFile.uri" />
-										<html:hidden property="file.domainFile.name" />
+											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.protocol.file.domainFile.id}&amp;location=local">
+											${submitProtocolForm.map.protocol.file.domainFile.uri }</a>
+										<html:hidden property="protocol.file.domainFile.uri" />
+										<html:hidden property="protocol.file.domainFile.name" />
 									</c:if> </span>&nbsp;
 							</td>
 						</tr>
 						<c:if
-							test="${!empty submitProtocolForm.map.file.domainFile.version}">
+							test="${!empty submitProtocolForm.map.protocol.version}">
 							<html:hidden property="file.domainFile.version" />
 						</c:if>
-						<html:hidden styleId="updatedUri" property="file.updatedFileUri" />
-						<html:hidden styleId="updatedName" property="file.updatedFileName" />
+						<html:hidden styleId="updatedUri" property="protocol.file.updatedFileUri" />
+						<html:hidden styleId="updatedName" property="protocol.file.updatedFileName" />
 						<html:hidden styleId="updatedVersion"
-							property="file.updatedFileVersion" />
+							property="protocol.file.updatedFileVersion" />
 						<tr>
 							<td class="leftLabel">
 								<strong>File Title</strong>
 							</td>
 							<td class="rightLabel">
-								<html:text styleId="fileTitle" property="file.domainFile.title"
+								<html:text styleId="fileTitle" property="protocol.file.domainFile.title"
 									size="80" />
 							</td>
 						</tr>
@@ -134,7 +134,7 @@
 							</td>
 							<td class="rightLabel">
 								<html:textarea styleId="fileDescription"
-									property="file.domainFile.description" rows="3" />
+									property="protocol.file.domainFile.description" rows="3" />
 							</td>
 						</tr>
 						<tr>
@@ -142,7 +142,7 @@
 								<strong>Visibility</strong>
 							</td>
 							<td class="rightLabel">
-								<html:select property="file.visibilityGroups" multiple="true"
+								<html:select property="protocol.file.visibilityGroups" multiple="true"
 									size="6">
 									<html:options name="allVisibilityGroups" />
 								</html:select>

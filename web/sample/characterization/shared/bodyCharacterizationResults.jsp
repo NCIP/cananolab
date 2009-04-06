@@ -10,7 +10,7 @@ function confirmDeletion()
 	answer = confirm("Are you sure you want to delete the data set?")
 	if (answer !=0)
 	{
-		this.document.forms[0].dispatch.value="deleteDataSet";
+		this.document.forms[0].dispatch.value="deleteFinding";
 		this.document.forms[0].page.value="1";
 		this.document.forms[0].submit();
 		return true;
@@ -26,8 +26,8 @@ function confirmDeletion()
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			DataSet&nbsp;&nbsp;
-			<a id="addDataSet" href="javascript:resetTheDataSet(true);"><img
+			Finding&nbsp;&nbsp;
+			<a id="addFinding" href="javascript:resetTheFinding(true);"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
@@ -36,12 +36,12 @@ function confirmDeletion()
 			<c:if test="${! empty characterizationForm.map.achar.dataSets }">
 				<c:set var="charBean" value="${characterizationForm.map.achar}" />
 				<c:set var="edit" value="true" />
-				<%@ include file="bodyDataSetView.jsp"%>
+				<%@ include file="bodyFindingView.jsp"%>
 			</c:if>
 		</td>
 	<tr>
 		<td>
-			<div id="newDataSet" style="display: none;">
+			<div id="newFinding" style="display: none;">
 				<table class="summaryViewLayer4" width="85%" align="center">
 					<tr>
 						<th colspan="2">
@@ -77,9 +77,9 @@ function confirmDeletion()
 						<td class="rightLabel" align="right" colspan="1">
 							<div align="right">
 								<input type="button" value="Cancel"
-									onclick="javascript:hide('newDataSet'); show('existingDataSet');">
+									onclick="javascript:hide('newFinding'); show('existingFinding');">
 								<input type="button" value="Save"
-									onclick="javascript:saveDataSet('characterization');">
+									onclick="javascript:saveFinding('characterization');">
 							</div>
 						</td>
 					</tr>

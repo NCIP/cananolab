@@ -32,16 +32,16 @@
 			<include method="addInstrument" />
 			<include method="deleteInstrument" />
 		</create>
-		<create creator="new" javascript="DataSetManager"
+		<create creator="new" javascript="FindingManager"
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager"/>
 			<include method="addColumnHeader" />
 			<include method="removeColumnHeader" />
-			<include method="resetDataSet" />
+			<include method="resetFinding" />
 			<include method="addRow" />
 			<include method="deleteRow" />
-			<include method="findDataSetById" />
+			<include method="findFindingById" />
 			<include method="getConditionOptions" />
 			<include method="getConditionPropertyOptions" />
 			<include method="getDatumNameOptions" />
@@ -93,7 +93,7 @@
 				value="displayName, domainId" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.ProtocolFileBean">
+			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
 			<param name="include"
 				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
 		</convert>
@@ -116,7 +116,7 @@
 				value="id, type, manufacturer, modelName" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.DataColumnBean">
+			match="gov.nih.nci.cananolab.dto.common.ColumnBean">
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Datum">
@@ -129,7 +129,7 @@
 				value="id, name, value, valueType, valueUnit, property, createdDate, createdBy" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.DataSetBean">
+			match="gov.nih.nci.cananolab.dto.common.FindingBean">
 			<param name="include" value="theDataRow, dataRows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
 		</convert>
 		<convert converter="bean"
@@ -141,7 +141,7 @@
 			<param name="include" value="id" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.DataSet">
+			match="gov.nih.nci.cananolab.domain.common.Finding">
 			<param name="include" value="id" />
 		</convert>
 	</allow>
