@@ -6,7 +6,7 @@
 	<tbody>
 		<c:choose>
 			<c:when
-				test="${characterizationForm.map.achar.theDataSet.file.domainFile.uriExternal eq 'true' }">
+				test="${characterizationForm.map.achar.theFinding.file.domainFile.uriExternal eq 'true' }">
 				<c:set var="linkDisplay" value="display: inline" />
 				<c:set var="loadDisplay" value="display: none" />
 			</c:when>
@@ -18,48 +18,48 @@
 		<tr>
 			<td class="cellLabel">
 				<html:radio styleId="external0"
-					property="achar.theDataSet.file.domainFile.uriExternal"
+					property="achar.theFinding.file.domainFile.uriExternal"
 					value="false" onclick="radLinkOrUpload()" />
 				Upload File
 				<br>
 				&nbsp;&nbsp;or
 				<br>
 				<html:radio styleId="external1"
-					property="achar.theDataSet.file.domainFile.uriExternal"
+					property="achar.theFinding.file.domainFile.uriExternal"
 					value="true" onclick="radLinkOrUpload()" />
 				Enter File URL
 			</td>
 			<td colspan="2">
 				<span id="load"> <html:file
-						property="achar.theDataSet.file.uploadedFile" size="60" />
+						property="achar.theFinding.file.uploadedFile" size="60" />
 					&nbsp;&nbsp; </span>
 				<br>
 				<br>
 				<span id="link" style=""><html:text
-						property="achar.theDataSet.file.externalUrl" size="60" /> </span>&nbsp;
+						property="achar.theFinding.file.externalUrl" size="60" /> </span>&nbsp;
 			</td>
 		</tr>
 		<c:if
-			test="${!empty characterizationForm.map.achar.theDataSet.file.domainFile.uri }">
+			test="${!empty characterizationForm.map.achar.theFinding.file.domainFile.uri }">
 			<tr>
 				<td colspan="3">
 					<c:choose>
 						<c:when
-							test="${characterizationForm.map.achar.theDataSet.file.image eq 'true'}">
-						 				${characterizationForm.map.achar.theDataSet.file.domainFile.title}<br>
+							test="${characterizationForm.map.achar.theFinding.file.image eq 'true'}">
+						 				${characterizationForm.map.achar.theFinding.file.domainFile.title}<br>
 							<br>
 							<a href="#"
-								onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theDataSet.file.domainFile.id}&amp;location=${location}',
-														${characterizationForm.map.achar.theDataSet.file.domainFile.id}, 100, 100)"><img
-									src="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theDataSet.file.domainFile.id}&amp;location=${location}"
+								onclick="popImage(event, '${actionName}.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theFinding.file.domainFile.id}&amp;location=${location}',
+														${characterizationForm.map.achar.theFinding.file.domainFile.id}, 100, 100)"><img
+									src="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theFinding.file.domainFile.id}&amp;location=${location}"
 									border="0" width="150"> </a>
 						</c:when>
 						<c:otherwise>
 							<strong>Uploaded File</strong> &nbsp;&nbsp;
 										<a
-								href="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theDataSet.file.domainFile.id}&amp;location=${location}"
-								target="${characterizationForm.map.achar.theDataSet.file.urlTarget}">
-								${characterizationForm.map.achar.theDataSet.file.domainFile.uri}</a>
+								href="xxxxxxxx.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.theFinding.file.domainFile.id}&amp;location=${location}"
+								target="${characterizationForm.map.achar.theFinding.file.urlTarget}">
+								${characterizationForm.map.achar.theFinding.file.domainFile.uri}</a>
 							<br>
 						</c:otherwise>
 					</c:choose>
@@ -73,7 +73,7 @@
 			</td>
 			<td colspan="2">
 				<html:select styleId="fileType"
-					property="achar.theDataSet.file.domainFile.type"
+					property="achar.theFinding.file.domainFile.type"
 					onchange="javascript:callPrompt('File Type', 'fileType');">
 					<option value="" />
 						<html:options name="fileTypes" />
@@ -88,7 +88,7 @@
 				File Title*
 			</td>
 			<td colspan="2">
-				<html:text property="achar.theDataSet.file.domainFile.title"
+				<html:text property="achar.theFinding.file.domainFile.title"
 					size="60" />
 			</td>
 		</tr>
@@ -98,7 +98,7 @@
 				<em>(one word per line)</em>
 			</td>
 			<td colspan="2">
-				<html:textarea property="achar.theDataSet.file.keywordsStr" rows="3"
+				<html:textarea property="achar.theFinding.file.keywordsStr" rows="3"
 					cols="60" />
 				&nbsp;
 			</td>
@@ -108,7 +108,7 @@
 				<strong>Visibility</strong>
 			</td>
 			<td colspan="2">
-				<html:select property="achar.theDataSet.file.visibilityGroups"
+				<html:select property="achar.theFinding.file.visibilityGroups"
 					multiple="true" size="6">
 					<html:options name="allVisibilityGroups" />
 				</html:select>
@@ -120,9 +120,9 @@
 		</tr>
 
 		<c:if
-			test="${!empty characterizationForm.map.achar.theDataSet.file.domainFile.id }">
-			<html:hidden property="achar.theDataSet.file.domainFile.id" />
-			<html:hidden property="achar.theDataSet.file.domainFile.uri" />
+			test="${!empty characterizationForm.map.achar.theFinding.file.domainFile.id }">
+			<html:hidden property="achar.theFinding.file.domainFile.id" />
+			<html:hidden property="achar.theFinding.file.domainFile.uri" />
 		</c:if>
 		<tr>
 			<td class="leftLabelNoBottom">

@@ -151,8 +151,8 @@
 
 														<c:choose>
 															<c:when
-																test="${!empty charBean.protocolFileBean.displayName}">
-																${charBean.protocolFileBean.displayName}
+																test="${!empty charBean.protocolBean.displayName}">
+																${charBean.protocolBean.displayName}
 																</c:when>
 															<c:otherwise>
 																N/A
@@ -209,8 +209,8 @@
 													</td>
 													<td>
 														<c:choose>
-															<c:when test="${!empty charBean.dataSets}">
-																<%@ include file="shared/bodyDataSetView.jsp"%>
+															<c:when test="${!empty charBean.findings}">
+																<%@ include file="shared/bodyFindingView.jsp"%>
 															</c:when>
 															<c:otherwise>
 															N/A</c:otherwise>

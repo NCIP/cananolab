@@ -63,7 +63,7 @@ function confirmDeletion()
 				href="javascript:clearInstrument();show('patternAddRow');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 			<br>
-			<table id="instrumentTable" class="subSubmissionView" width="85%"
+			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
 				style="display: none;">
 				<tbody id="instrumentRows">
 					<tr id="patternHeader">

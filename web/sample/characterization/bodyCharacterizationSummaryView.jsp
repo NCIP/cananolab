@@ -110,13 +110,13 @@
 													${charBean.dateString}
 											</tr>
 										</c:if>
-										<c:if test="${!empty charBean.protocolFileBean.displayName}">>
+										<c:if test="${!empty charBean.protocolBean.displayName}">>
 													<tr>
 												<td class="cellLabel">
 													Protocol
 												</td>
 												<td colspan="2">
-													${charBean.protocolFileBean.displayName}
+													${charBean.protocolBean.displayName}
 												</td>
 											</tr>
 										</c:if>
@@ -160,13 +160,13 @@
 												</td>
 											</tr>
 										</c:if>
-										<c:if test="${!empty charBean.dataSets}">
+										<c:if test="${!empty charBean.findings}">
 											<tr>
 												<td class="cellLabel">
 													Characterizaiton Results
 												</td>
 												<td colspan="2">
-													<%@ include file="shared/bodyDataSetView.jsp"%>
+													<%@ include file="shared/bodyFindingView.jsp"%>
 												</td>
 											</tr>
 										</c:if>

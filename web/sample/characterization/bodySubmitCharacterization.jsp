@@ -11,9 +11,9 @@
 	src="javascript/CharacterizationManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CharacterizationManager.js'></script>
-<script type="text/javascript" src="javascript/DataSetManager.js"></script>
+<script type="text/javascript" src="javascript/FindingManager.js"></script>
 <script type='text/javascript'
-	src='/caNanoLab/dwr/interface/DataSetManager.js'></script>
+	src='/caNanoLab/dwr/interface/FindingManager.js'></script>
 <script type="text/javascript"
 	src="javascript/ExperimentConfigManager.js"></script>
 <script type='text/javascript'

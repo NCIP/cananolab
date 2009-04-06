@@ -121,7 +121,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Datum">
 			<param name="include"
-				value="id, name, value, valueType, valueUnit, dataRow, dataSet, createdDate, createdBy" />
+				value="id, name, value, valueType, valueUnit, row, dataSet, createdDate, createdBy" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Condition">
@@ -130,14 +130,14 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FindingBean">
-			<param name="include" value="theDataRow, dataRows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
+			<param name="include" value="theRow, rows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.DataRowBean">
+			match="gov.nih.nci.cananolab.dto.common.RowBean">
 			<param name="include" value="data, conditions, domain" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.DataRow">
+			match="gov.nih.nci.cananolab.domain.common.Row">
 			<param name="include" value="id" />
 		</convert>
 		<convert converter="bean"

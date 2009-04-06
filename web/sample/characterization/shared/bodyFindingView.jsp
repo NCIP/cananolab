@@ -13,26 +13,26 @@
 		<th>
 		</th>
 	</tr>
-	<c:forEach var="dataSet" varStatus="dataSetIndex"
-		items="${charBean.dataSets}">
+	<c:forEach var="finding" varStatus="findingIndex"
+		items="${charBean.findings}">
 		<tr>
 			<td>
 				<table class="summaryViewLayer4" border="1">
 					<tr>
-						<c:forEach var="col" items="${dataSet.columnBeans}">
+						<c:forEach var="col" items="${finding.columnBeans}">
 							<td>
-								<strong>${col.displayName}</strong>
+								<strong>${col.columnLabel}</strong>
 							</td>
 						</c:forEach>
 					</tr>
-					<c:forEach var="dataRow" items="${dataSet.dataRows}">
+					<c:forEach var="row" items="${finding.rows}">
 						<tr>
-							<c:forEach var="condition" items="${dataRow.conditions}">
+							<c:forEach var="condition" items="${row.conditions}">
 								<td>
 									${condition.value}
 								</td>
 							</c:forEach>
-							<c:forEach var="datum" items="${dataRow.data}">
+							<c:forEach var="datum" items="${row.data}">
 								<td>
 									${datum.value}
 								</td>
@@ -43,8 +43,10 @@
 			</td>
 			<td>
 				<c:choose>
-					<c:when test="${! empty dataSet.file.domainFile.uri}">
-						<a href="">${dataSet.file.domainFile.uri }</a>
+					<c:when test="${! empty finding.files}">
+						<c:forEach var="file" items="${finding.files}">
+							<a href="">${file.domainFile.uri }</a><br>
+						</c:forEach>
 					</c:when>
 					<c:otherwise>N/A
 						</c:otherwise>
@@ -53,7 +55,7 @@
 			</td>
 			<td align="right">
 				<c:if test="${edit eq 'true'}">
-					<a href="javascript:setTheDataSet(${dataSet.domain.id});">Edit</a>&nbsp;
+					<a href="javascript:setTheFinding(${finding.domain.id});">Edit</a>&nbsp;
 				</c:if>
 			</td>
 		</tr>

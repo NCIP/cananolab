@@ -33,7 +33,7 @@ function confirmDeletion()
 	</tr>
 	<tr>
 		<td>
-			<c:if test="${! empty characterizationForm.map.achar.dataSets }">
+			<c:if test="${! empty characterizationForm.map.achar.findings }">
 				<c:set var="charBean" value="${characterizationForm.map.achar}" />
 				<c:set var="edit" value="true" />
 				<%@ include file="bodyFindingView.jsp"%>
@@ -42,11 +42,16 @@ function confirmDeletion()
 	<tr>
 		<td>
 			<div id="newFinding" style="display: none;">
-				<table class="summaryViewLayer4" width="85%" align="center">
+				<table class="subSubmissionView" width="85%" align="center">
 					<tr>
 						<th colspan="2">
-							Data
+							New/Edit Finding
 						</th>
+					</tr>
+					<tr>
+						<td colspan="2">
+							Data
+						</td>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
@@ -57,14 +62,16 @@ function confirmDeletion()
 						</td>
 					</tr>
 					<tr>
-						<th colspan="2">
+						<td colspan="2">
 							File
-						</th>
+							<a id="addFile" href="javascript:resetTheFile(true);"><img
+									align="top" src="images/btn_add.gif" border="0" /> </a>
+						</td>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
 							<div style="display: block;" id="loadDatumFile">
-								<jsp:include page="bodySubmitCharacterizationFile.jsp" />
+								<%--<jsp:include page="bodySubmitCharacterizationFile.jsp" />--%>
 								&nbsp;
 							</div>
 						</td>

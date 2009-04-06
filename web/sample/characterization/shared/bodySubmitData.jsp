@@ -56,10 +56,10 @@
 								value="datumOrConditionColumn" />
 							<input id="conditionColumnProperty" type="hidden"
 								value="conditionColumnProperty" />
-							<input id="datumColumnDataRowId" type="hidden"
-								value="datumColumnDataRowId" />
-							<input id="datumColumnDataSetId" type="hidden"
-								value="datumColumnDataSetId" />
+							<input id="datumColumnRowId" type="hidden"
+								value="datumColumnRowId" />
+							<input id="datumColumnFindingId" type="hidden"
+								value="datumColumnFindingId" />
 							<span id="datumColumnName" class="cellLabel">datumColumnName</span>
 							(
 							<span id="datumColumnValueType" class="cellLabel">ValueType</span>,
@@ -78,7 +78,7 @@
 						<td align="right" colspan="1">
 							<div id="addRowButtons" style="display: none;">
 								<input class="noBorderButton" type="button" value="New"
-									onclick="clearTheDataRow();" />
+									onclick="clearTheRow();" />
 								<input class="noBorderButton" type="button" value="Save"
 									onclick="addRow()" />
 								<input class="noBorderButton" type="button" value="Delete"
@@ -89,7 +89,7 @@
 					</tr>
 				</tbody>
 			</table>
-	</td>
+		</td>
 	</tr>
 	<tr id="datumMatrixDivRow">
 		<td></td>
@@ -114,13 +114,18 @@
 			<table id="columnDesign" style="display: none"
 				class="summaryViewLayer4" width="85%" align="left">
 				<tr>
+					<th colspan="2">
+						Column Information
+					</th>
+				</tr>
+				<tr>
 					<td class="cellLabel">
 						Column Type*
 					</td>
 					<td>
 						<input type="hidden" id="columnId">
 						<select id="datumOrCondition"
-							onChange="showDatumConditionInfo(null);">
+							onchange="setNameOptionsByCharName('${characterizationForm.map.achar.characterizationName}');">
 							<option value="">
 							</option>
 							<option value="Datum">
@@ -164,10 +169,10 @@
 						<select id="valueType"
 							onchange="javascript:callPrompt('Column Value Type', 'valueType');">
 							<option value=""></option>
-							<logic:iterate id="dataSetColumnValueType"
-								name="dataSetColumnValueTypes">
-								<option value="${dataSetColumnValueType}">
-									${dataSetColumnValueType}
+							<logic:iterate id="findingColumnValueType"
+								name="findingColumnValueTypes">
+								<option value="${findingColumnValueType}">
+									${findingColumnValueType}
 								</option>
 							</logic:iterate>
 							<option value="other">
@@ -210,6 +215,6 @@
 		</td>
 	</tr>
 </table>
-<input name="theDataSetId" id="theDataSetId" type="hidden"
-	value="${characterizationForm.map.achar.theDataSet.domain.id}">
-<html:hidden styleId="dataSetId" property="achar.theDataSet.domain.id" />
+<input name="theFindingId" id="theFindingId" type="hidden"
+	value="${characterizationForm.map.achar.theFinding.domain.id}">
+<html:hidden styleId="findingId" property="achar.theFinding.domain.id" />

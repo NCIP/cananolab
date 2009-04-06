@@ -30,10 +30,11 @@
 			<one-to-many class="gov.nih.nci.cananolab.domain.common.Datum"/>
 		</set>
 		<one-to-one name="protocol" class="gov.nih.nci.cananolab.domain.common.Protocol" property-ref="file" />
-		<join table="finding_file" inverse="false" optional="true">
+		<set name="findingCollection" table="finding_file" lazy="true" inverse="false">
+			<cache usage="read-write" />
 			<key column="file_pk_id" />
-			<many-to-one name="finding" column="finding_pk_id" not-null="true"/>
-		</join>
+			<many-to-many class="gov.nih.nci.cananolab.domain.common.Finding" column="finding_pk_id" />
+		</set>
 		<joined-subclass name="gov.nih.nci.cananolab.domain.common.Publication" table="publication" lazy="true">
 			<key column="publication_pk_id" />
 			<!-- Attributes mapping for the Publication class -->
