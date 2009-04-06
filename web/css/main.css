@@ -1656,7 +1656,7 @@ input.noBorderText {
 	border-style: solid;
 	border-collapse: collapse;
 	color: #5C5C5C;
-	background-color: #FFFFCC;
+	background-color: #EBFBF6;
 }
 
 .subSubmissionView caption {
@@ -1672,7 +1672,7 @@ input.noBorderText {
 	padding: 3px 3px 3px 3px;
 	color: #5C5C5C;
 	font-weight: bold;
-	background-color: #AAAAAB;
+	background-color: #D3E4DE;
 	text-align: left;
 }
 
