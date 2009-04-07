@@ -6,89 +6,34 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table id="designDataTable" class="summaryViewLayer4" width="95%"
 	align="center">
-	<tr>
+	<tr id="initialColumnLabelsDiv" style="display: none">
 		<td class="cellLabel" width="5%">
 			Columns
 		</td>
-		<td align="left">
+		<td align="left" colspan="2">
 			<a style="" id="addColumn" href="javascript:show('columnDesign');"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
 	<tr id="columnLabelsDiv">
-		<td></td>
+		<td class="cellLabel" width="5%">
+			Columns
+		</td>
 		<td>
-			<table class="summaryViewLayer4" border="1">
+			<table class="summaryViewLayer4" border="1" width="85%">
 				<tr id="datumColumnPatternRowDisplay">
 					<td id="columnPattern" style="display: none;">
 						<input class="noBorderButton" id="datumColumnNameDisplay"
 							type="button" size="2" value="datumColumnNameDisplay"
 							onclick="editColumn(this.id)" />
-						<span id="columnLabel" class="greyFont2"
-							style="display: none;">columnLabel</span>
+						<span id="columnLabel" class="greyFont2" style="display: none;">columnLabel</span>
 					</td>
 				</tr>
 			</table>
 		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>
-			<table class="summaryViewLayer4" style="display: none;">
-				<tbody id="datumColumns">
-					<tr id="datumColumnPattern" style="display: none;">
-						<td>
-							<input id="datumColumnId" type="hidden" value="datumColumnId" />
-							<input id="datumOrConditionColumn" type="hidden"
-								value="datumOrConditionColumn" />
-							<input id="conditionColumnProperty" type="hidden"
-								value="conditionColumnProperty" />
-							<input id="datumColumnRowId" type="hidden"
-								value="datumColumnRowId" />
-							<input id="datumColumnFindingId" type="hidden"
-								value="datumColumnFindingId" />
-							<span id="datumColumnName" class="cellLabel">datumColumnName</span>
-							(
-							<span id="datumColumnValueType" class="cellLabel">ValueType</span>,
-							<span id="datumColumnValueUnit" class="cellLabel"><strong>ValueUnit</strong>
-							</span>)
-						</td>
-						<td>
-							<input id="datumColumnValue" type="text" size="6"
-								value="datumColumnValue" />
-						</td>
-					</tr>
-					<tr id="datumColumnsDivRow2">
-						<td>
-							&nbsp;
-						</td>
-						<td align="right" colspan="1">
-							<div id="addRowButtons" style="display: none;">
-								<input class="noBorderButton" type="button" value="New"
-									onclick="clearTheRow();" />
-								<input class="noBorderButton" type="button" value="Save"
-									onclick="addRow()" />
-								<input class="noBorderButton" type="button" value="Delete"
-									onclick="deleteClicked()" />
-							</div>
-							&nbsp;
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</td>
-	</tr>
-	<tr id="dataMatrixDiv">
-		<td></td>
-		<td>
-			<table class="summaryViewLayer4" border="1" align="left">
-				<tbody id="datMatrix">
-					<tr id="matrixHeader" style="display: none;">
-					</tr>
-					<tr id="datumMatrixPatternRow" style="display: none;">
-					</tr>
-				</tbody>
-			</table>
+		<td align="left">
+			<a style="" id="addColumn" href="javascript:clearTheColumn();show('columnDesign');"><img
+					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
 	<tr>
@@ -187,15 +132,80 @@
 					<td></td>
 					<td style="align: right;">
 						<input class="noBorderButton" type="button" value="Delete"
-							onclick="deleteDatumColumn()" />
+							onclick="deleteColumn(); hide('columnDesign')" />
 						<input class="noBorderButton" type="button" value="Cancel"
-							onclick="hide('columnDesign');clearTheDatumColumn;" />
+							onclick="hide('columnDesign');clearTheColumn();" />
 						<input class="noBorderButton" type="button" value="Save"
-							onclick="addDatumColumn(); hide('columnDesign')" />
+							onclick="addColumn(); hide('columnDesign')" />
 					</td>
 				</tr>
 			</table>
 		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="cellLabel" width="5%">
+			Data
+		</td>
+		<td>
+			<table class="summaryViewLayer4" style="display: none;" width="85%">
+				<tbody id="datumColumns">
+					<tr id="datumColumnPattern" style="display: none;">
+						<td>
+							<input id="datumColumnId" type="hidden" value="datumColumnId" />
+							<input id="datumOrConditionColumn" type="hidden"
+								value="datumOrConditionColumn" />
+							<input id="conditionColumnProperty" type="hidden"
+								value="conditionColumnProperty" />
+							<input id="datumColumnRowId" type="hidden"
+								value="datumColumnRowId" />
+							<input id="datumColumnFindingId" type="hidden"
+								value="datumColumnFindingId" />
+							<span id="datumColumnName" class="cellLabel">datumColumnName</span>
+							(
+							<span id="datumColumnValueType" class="cellLabel">ValueType</span>,
+							<span id="datumColumnValueUnit" class="cellLabel"><strong>ValueUnit</strong>
+							</span>)
+						</td>
+						<td>
+							<input id="datumColumnValue" type="text" size="6"
+								value="datumColumnValue" />
+						</td>
+					</tr>
+					<tr id="datumColumnsDivRow2">
+						<td>
+							&nbsp;
+						</td>
+						<td align="right" colspan="1">
+							<div id="addRowButtons" style="display: none;">
+								<input class="noBorderButton" type="button" value="New"
+									onclick="clearTheRow();" />
+								<input class="noBorderButton" type="button" value="Save"
+									onclick="addRow()" />
+								<input class="noBorderButton" type="button" value="Delete"
+									onclick="deleteClicked()" />
+							</div>
+							&nbsp;
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</td>
+		<td></td>
+	</tr>
+	<tr id="dataMatrixDiv">
+		<td></td>
+		<td>
+			<table class="summaryViewLayer4" border="1" align="left" width="85%">
+				<tbody id="datMatrix">
+					<tr id="matrixHeader" style="display: none;">
+					</tr>
+					<tr id="datumMatrixPatternRow" style="display: none;">
+					</tr>
+				</tbody>
+			</table>
+		</td>
+		<td></td>
 	</tr>
 </table>
 <input name="theFindingId" id="theFindingId" type="hidden"
