@@ -249,7 +249,7 @@ public class CharacterizationBean {
 			domainChar.getExperimentConfigCollection().add(config.getDomain());
 		}
 
-		if (protocolBean != null) {
+		if (protocolBean != null&& protocolBean.getDomain().getName()!=null) {
 			domainChar.setProtocol(protocolBean.getDomain());
 		} else {
 			domainChar.setProtocol(null);
