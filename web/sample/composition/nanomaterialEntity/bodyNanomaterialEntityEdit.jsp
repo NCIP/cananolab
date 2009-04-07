@@ -77,9 +77,7 @@
 											Composing Elements
 										</td>
 										<td>
-											<jsp:include page="bodyComposingElementView.jsp">
-												<jsp:param name="entityIndex" value="${ind}" />
-											</jsp:include>
+											<%@include file="bodyComposingElementView.jsp" %>
 										</td>
 									</tr>
 								</table>

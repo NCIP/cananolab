@@ -96,6 +96,7 @@ function confirmDeletion()
 								<c:if
 									test="${! empty nanomaterialEntityForm.map.entity.composingElements}">
 									<c:set var="edit" value="true" />
+									<c:set var="entity" value="${nanomaterialEntityForm.map.entity}"/>
 									<%@ include file="bodyComposingElementView.jsp"%>
 								</c:if>
 							</td>
