@@ -92,6 +92,7 @@ function resetTheFinding(isShow) {
 		show('newFinding');
 		/*hide('populateDataTable');*/
 		/*hide('existingFinding');*/
+		show('initialColumnLabelsDiv');
 	} else {
 		hide('newFinding');
 		show('existingFinding');
@@ -142,6 +143,7 @@ function setTheFinding(findingId) {
 	show('submitDatum');
 	show('populateDataTable');
 	FindingManager.findFindingById(findingId, populateFinding);
+	hide('initialColumnLabelsDiv');
 }
 
 function populateFinding(finding) {
@@ -263,7 +265,7 @@ function addColumn(myColumn) {
 		window.setTimeout("updateColumnCount()", 80);
 		window.setTimeout("fillColumnTable()", 100);
 		window.setTimeout("createMatrixPattern()", 150);
-		clearTheDataColumn();
+		clearTheColumn();
 		window.setTimeout("fillMatrix()", 200);
 	} else {
 		alert('Please fill in values');
@@ -322,7 +324,9 @@ function createMatrixPattern() {
 		span.appendChild(document.createTextNode(''));
 		cell.appendChild(span);
 		datumMatrixPatternRow.appendChild(cell);
+		alert(span);
 	}
+
 	for ( var i = 1; i < datumHeaderColumnCount + 1; i++) {
 		var cell = document.createElement("TD");
 		var span = document.createElement('SPAN');
@@ -504,7 +508,7 @@ function clearTheRow() {
 
 }
 
-function clearTheDataColumn() {
+function clearTheColumn() {
 	// IE works only set value = '' instead of null
 	document.getElementById("columnId").value = '';
 	document.getElementById("datumOrCondition").value = "";
@@ -915,7 +919,7 @@ function setDatumValues() {
 	}
 }
 
-function deleteDatumColumn() {
+function deleteColumn() {
 	if (confirm("Are you sure you want to delete this column?")) {
 		var columnBean = {
 			datumOrCondition :null
@@ -932,7 +936,7 @@ function deleteDatumColumn() {
 		window.setTimeout("updateColumnCount()", 80);
 		window.setTimeout("fillColumnTable()", 100);
 		window.setTimeout("createMatrixPattern()", 150);
-		clearTheDataColumn();
+		clearTheColumn();
 		window.setTimeout("fillMatrix()", 200);
 	}
 }
