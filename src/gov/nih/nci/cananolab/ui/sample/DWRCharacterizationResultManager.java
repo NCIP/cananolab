@@ -152,8 +152,6 @@ public class DWRCharacterizationResultManager {
 
 	public FindingBean findFindingById(String findingId)
 			throws CharacterizationResultException {
-		// List<Datum> data = service.getDataForFinding(findingId);
-		// FindingBean findingBean = new FindingBean(data);
 		Finding finding = service.findFindingById(findingId);
 		FindingBean findingBean = new FindingBean(finding);
 		findingBean.setTheRow(findingBean.getRows().get(0));

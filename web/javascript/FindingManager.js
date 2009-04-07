@@ -126,13 +126,13 @@ function resetTheFinding(isShow) {
 	$("datumMatrixPatternRow").style.display = "none";
 	$("matrixHeader").style.display = "none";
 	$("datumColumnPattern").style.display = "none";
-	$("datumColumnPatternDisplay").style.display = "none";
+	$("columnPattern").style.display = "none";
 	$("datumColumns").style.display = "none";
 	$("datumColumnPatternRowDisplay").style.display = "none";
 	$("addRowButtons").style.display = "none";
 	// $("datumColumnsDivRow").style.display = "none";
-	$("datumMatrixDivRow").style.display = "none";
-	$("datumColumnsDivRowDisplay").style.display = "none";
+	$(dataMatrixDiv).style.display = "none";
+	$("columnLabelsDiv").style.display = "none";
 	clearTheRow();
 }
 
@@ -153,7 +153,7 @@ function populateFinding(finding) {
 			var conditions = currentFinding.rows[index].conditions;
 			var id;
 			for ( var i = 0; i < conditions.length; i++) {
-				addDatumColumn(conditions[i]);
+				addColumn(conditions[i]);
 			}
 		}
 		for ( var index = 0; index < currentFinding.rows.length; index++) {
@@ -166,13 +166,13 @@ function populateFinding(finding) {
 			datumHeaderColumnCount = 0;
 			conditionHeaderColumnCount = 0;
 			for ( var i = 0; i < data.length; i++) {
-				addDatumColumn(data[i]);
+				addColumn(data[i]);
 			}
 		}
 		for ( var index = 0; index < currentFinding.rows.length; index++) {
 			if (rowCount == 0) {
 				addNewColumn = false;
-				$("datumMatrixDivRow").style.display = "";
+				$(dataMatrixDiv).style.display = "";
 			}
 			rowCount++;
 		}
@@ -185,12 +185,12 @@ function saveFinding(actionName) {
 }
 
 //add new column (datum or condition)
-function addDatumColumn() {
-	addDatumColumn(null);
+function addColumn() {
+	addColumn(null);
 }
 
 //edit existing column (datum or condition)
-function addDatumColumn(myDatum) {
+function addColumn(myColumn) {
 	var columnBean = {
 		name :null,
 		valueType :null,
@@ -199,8 +199,8 @@ function addDatumColumn(myDatum) {
 		property :null,
 		datumOrCondition :null
 	};
-	if (myDatum != null) {
-		columnBean = myDatum;
+	if (myColumn != null) {
+		columnBean = myColumn;
 	} else {
 		dwr.util.getValues(columnBean);
 		columnBean.id = document.getElementById("columnId").value;
@@ -228,7 +228,7 @@ function addDatumColumn(myDatum) {
 			i = 0;
 
 			for ( var j = 0; j < aCellLengthDisplay; j++) {
-				if (aCellsDisplay[j].id != 'datumColumnPatternDisplay') {
+				if (aCellsDisplay[j].id != 'columnPattern') {
 					toDeleteDisplay[i] = aCellsDisplay[j].id;
 					i++;
 				}
@@ -237,11 +237,11 @@ function addDatumColumn(myDatum) {
 				datumColumnPatternRowDisplay.removeChild(document
 						.getElementById(toDeleteDisplay[j]));
 			}
-			$("datumColumnsDivRowDisplay").style.display = "";
+			$("columnLabelsDiv").style.display = "";
 		}
 
 		addNewColumn = true;
-		if (myDatum == null) {
+		if (myColumn == null) {
 			if (columnBean.id == null || columnBean.id == ''
 					|| columnBean.id == 'null') {
 				if (columnBean.datumOrCondition == 'Condition') {
@@ -288,7 +288,7 @@ function createMatrixPattern() {
 		var span = document.createElement('SPAN');
 		span.setAttribute("id", "matrixHeaderColumn" + i);
 		span.setAttribute("class", "greyFont2");
-		headerName = dwr.util.getValue("columnDisplayName" + (-i));
+		headerName = dwr.util.getValue("columnLabel" + (-i));
 		headerValueType = dwr.util.getValue("datumColumnValueType" + (-i));
 		headerValueUnit = dwr.util.getValue("datumColumnValueUnit" + (-i));
 		span.appendChild(document.createTextNode(headerName));
@@ -300,7 +300,7 @@ function createMatrixPattern() {
 		var span = document.createElement('SPAN');
 		span.setAttribute("id", "matrixHeaderColumn" + i);
 		span.setAttribute("class", "greyFont2");
-		headerName = dwr.util.getValue("columnDisplayName" + (-i));
+		headerName = dwr.util.getValue("columnLabel" + (-i));
 		headerValueType = dwr.util.getValue("datumColumnValueType" + (-i));
 		headerValueUnit = dwr.util.getValue("datumColumnValueUnit" + (-i));
 		span.appendChild(document.createTextNode(headerName));
@@ -441,7 +441,7 @@ function addRow() {
 		alert('Please fill in at least one Datum');
 	}
 	if (rowCount == 0) {
-		$("datumMatrixDivRow").style.display = "";
+		$(dataMatrixDiv).style.display = "";
 	}
 	rowCount++;
 	window.setTimeout("fillMatrix()", 200);
@@ -509,7 +509,6 @@ function clearTheDataColumn() {
 	document.getElementById("columnId").value = '';
 	document.getElementById("datumOrCondition").value = "";
 	document.getElementById("property").value = "";
-	showDatumConditionInfo(null);
 	tempDatum = null;
 	window.setTimeout("setDatumValues()", 100);
 }
@@ -525,7 +524,7 @@ function setTheRow(row) {
 
 function removeColumns(columnName, exceptColumn) {
 	// remove datumColumnPatternRowDisplay all column except
-	// datumColumnPatternDisplay
+	// columnPattern
 	var columnVariable = document.getElementById(columnName);
 	var aCellsDisplay = columnVariable.getElementsByTagName('td')// cells
 																	// collection
@@ -544,7 +543,7 @@ function removeColumns(columnName, exceptColumn) {
 		datumColumnPatternRowDisplay.removeChild(document
 				.getElementById(toDeleteDisplay[j]));
 	}
-	// $("datumColumnsDivRowDisplay").style.display = "";
+	// $("columnLabelsDiv").style.display = "";
 
 }
 
@@ -552,7 +551,7 @@ function fillColumnTable() {
 	$("datumColumns").style.display = "";
 	$("datumColumnPatternRowDisplay").style.display = "";
 	$("datumColumnPattern").style.display = "none";
-	$("datumColumnPatternDisplay").style.display = "none";
+	$("columnPattern").style.display = "none";
 	var start = 0;
 	var columnBean, id;
 	var columnBeanid = null;
@@ -560,8 +559,8 @@ function fillColumnTable() {
 
 	// REMOVE
 	// remove datumColumnPatternRowDisplay all column except
-	// datumColumnPatternDisplay
-	removeColumns('datumColumnPatternRowDisplay', 'datumColumnPatternDisplay')
+	// columnPattern
+	removeColumns('datumColumnPatternRowDisplay', 'columnPattern')
 	// remove "datumColumns" all rows except datumColumnPattern
 	dwr.util
 			.removeAllRows(
@@ -587,6 +586,7 @@ function fillColumns(editFinding, start, columnBeans) {
 	var valueTypeUnit = null;
 	// TODO:: verify when editing, i< columnBeans.length or
 	// i<columnBeans.length+start
+
 	for ( var i = start; i < columnBeans.length + start; i++) {
 		columnBean = columnBeans[i - start];
 		columnBeanid = columnBean.id;
@@ -597,7 +597,7 @@ function fillColumns(editFinding, start, columnBeans) {
 		dwr.util.cloneNode("datumColumnPattern", {
 			idSuffix :id
 		});
-		dwr.util.cloneNode("datumColumnPatternDisplay", {
+		dwr.util.cloneNode("columnPattern", {
 			idSuffix :id
 		});
 		dwr.util.setValue("datumColumnId" + id, columnBeanid);
@@ -611,8 +611,8 @@ function fillColumns(editFinding, start, columnBeans) {
 				columnBean.datumOrCondition);
 		dwr.util.setValue("conditionColumnProperty" + id, columnBean.property);
 		dwr.util
-				.setValue("datumColumnNameDisplay" + id, columnBean.displayName);
-		dwr.util.setValue("columnDisplayName" + id, columnBean.displayName);
+				.setValue("datumColumnNameDisplay" + id, columnBean.columnLabel);
+		dwr.util.setValue("columnLabel" + id, columnBean.columnLabel);
 		if (!editFinding) {
 			dwr.util.setValue("datumColumnValue" + id, document
 					.getElementById("value").value);
@@ -639,10 +639,10 @@ function fillColumns(editFinding, start, columnBeans) {
 		colDatum.datumOrCondition = dwr.util.getValue("datumOrConditionColumn"
 				+ id);
 		colDatum.property = dwr.util.getValue("conditionColumnProperty" + id);
-		colDatum.displayName = dwr.util.getValue("columnDisplayName" + id);
+		colDatum.columnLabel = dwr.util.getValue("columnLabel" + id);
 		dataColumnCache[id] = colDatum;
 		$("datumColumnPattern" + id).style.display = "";
-		$("datumColumnPatternDisplay" + id).style.display = "";
+		$("columnPattern" + id).style.display = "";
 	}
 }
 
@@ -664,7 +664,7 @@ function fillMatrix() {
 	for ( var row = 0; row < currentFinding.rows.length; row++) {
 		// DATUM
 		var data = currentFinding.rows[row].data;
-		rowId = currentFinding.rows[row].domain.id;
+		rowId = currentFinding.rows[row].rowNumber;
 		if (rowId == null || rowId == '') {
 			rowId = -row - 1;
 		}
@@ -707,7 +707,7 @@ function fillMatrix() {
 		// editRow.style = "border:0px solid;text-decoration: underline;";
 		$("datumMatrixPatternRow" + rowId).style.display = "";
 		rowCache[rowId] = currentFinding.rows[row];
-		rowCache[rowId].domain.id = rowId;
+		rowCache[rowId].rowNumber = rowId;
 	}
 	clearTheRow();
 	cloneEditRow();
@@ -715,7 +715,7 @@ function fillMatrix() {
 
 //draw input box one column after another at the last row
 function cloneEditRow() {
-	$("datumMatrixDivRow").style.display = "";
+	$(dataMatrixDiv).style.display = "";
 	var rowIndex = rowCount;
 	var rowId = fixId;
 	dwr.util.cloneNode("datumMatrixPatternRow", {
@@ -891,7 +891,8 @@ function editColumn(eleid) {
 	document.getElementById("columnId").value = datum.id;
 	document.getElementById("datumOrCondition").value = datum.datumOrCondition;
 	document.getElementById("name").value = datum.name;
-	showDatumConditionInfo(datum.name);
+	//showDatumConditionInfo(datum.name);
+	show('columnDesign');
 	window.setTimeout("setDatumValues()", 100);
 
 }

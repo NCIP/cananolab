@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-
 <table id="designDataTable" class="summaryViewLayer4" width="95%"
 	align="center">
 	<tr>
@@ -16,28 +15,17 @@
 					align="top" src="images/btn_add.gif" border="0" /> </a>
 		</td>
 	</tr>
-	<tr id="datumColumnsDivRowDisplay">
+	<tr id="columnLabelsDiv">
 		<td></td>
 		<td>
-			<table>
-				<tr>
-					<td>
-						<div id="datumColumnsDivDisplay" style="display: block;">
-							<table id="datumColumnsTableDisplay" class="summaryViewLayer4"
-								border="1" width="85%">
-								<tbody id="datumColumnsDisplay">
-									<tr id="datumColumnPatternRowDisplay">
-										<td id="datumColumnPatternDisplay" style="display: none;">
-											<input class="noBorderButton" id="datumColumnNameDisplay"
-												type="button" size="2" value="datumColumnNameDisplay"
-												onclick="editColumn(this.id)" />
-											<span id="columnDisplayName" class="greyFont2"
-												style="display: none;">columnDisplayName</span>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+			<table class="summaryViewLayer4" border="1">
+				<tr id="datumColumnPatternRowDisplay">
+					<td id="columnPattern" style="display: none;">
+						<input class="noBorderButton" id="datumColumnNameDisplay"
+							type="button" size="2" value="datumColumnNameDisplay"
+							onclick="editColumn(this.id)" />
+						<span id="columnLabel" class="greyFont2"
+							style="display: none;">columnLabel</span>
 					</td>
 				</tr>
 			</table>
@@ -46,8 +34,7 @@
 	<tr>
 		<td></td>
 		<td>
-			<table id="datumColumnsDivRow" class="summaryViewLayer4"
-				style="display: none;">
+			<table class="summaryViewLayer4" style="display: none;">
 				<tbody id="datumColumns">
 					<tr id="datumColumnPattern" style="display: none;">
 						<td>
@@ -91,28 +78,24 @@
 			</table>
 		</td>
 	</tr>
-	<tr id="datumMatrixDivRow">
+	<tr id="dataMatrixDiv">
 		<td></td>
 		<td>
-			<div id="datumMatrixDiv" style="display: block;">
-				<table id="datumMatrixTable" class="summaryViewLayer4" border="1"
-					width="85%" align="left">
-					<tbody id="datumMatrix">
-						<tr id="matrixHeader" style="display: none;">
-						</tr>
-						<tr id="datumMatrixPatternRow" style="display: none;">
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			&nbsp;
+			<table class="summaryViewLayer4" border="1" align="left">
+				<tbody id="datMatrix">
+					<tr id="matrixHeader" style="display: none;">
+					</tr>
+					<tr id="datumMatrixPatternRow" style="display: none;">
+					</tr>
+				</tbody>
+			</table>
 		</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>
 			<table id="columnDesign" style="display: none"
-				class="summaryViewLayer4" width="85%" align="left">
+				class="summaryViewLayer4" align="left">
 				<tr>
 					<th colspan="2">
 						Column Information

@@ -142,7 +142,7 @@ public class ColumnBean {
 		}
 		if ((valueType != null && valueType.trim().length() > 0)
 				|| (valueUnit != null && valueUnit.trim().length() > 0)) {
-			columnLabel += "(";
+			columnLabel += " (";
 			if (valueType != null && valueType.trim().length() > 0) {
 				columnLabel += valueType;
 				if (valueUnit != null && valueUnit.trim().length() > 0) {
