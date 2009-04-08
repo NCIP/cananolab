@@ -20,7 +20,6 @@
 		<tr>
 			<td>
 				<h3>
-					<br>
 					${action } Protocol
 				</h3>
 			</td>
@@ -33,14 +32,14 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
+			<td colspan="4">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 				<table width="100%" align="center" class="submissionView">
 					<tr>
 						<td class="cellLabel">
 							Protocol Type*
 						</td>
-						<td>
+						<td colspan="3">
 							<html:select styleId="protocolType"
 								property="protocol.domain.type"
 								onchange="javascript:callPrompt('Protocol Type', 'protocolType'); retrieveProtocols();">
@@ -60,32 +59,31 @@
 							<html:select styleId="protocolName"
 								property="protocol.domain.name"
 								onchange="javascript:callPrompt('Protocol Name', 'protocolName'); retrieveProtocolFileVersions();">
-								<%--<c:if test="${!empty protocolNamesByType}">
-										<option value="" />
-											<html:options name="protocolNamesByType" />
-										<option value="other">
-											[Other]
-										</option>
-									</c:if>--%>
+								<option value="" />
+									<c:if test="${!empty protocolsByType}">
+										<html:options collection="protocolsByType"
+											property="domain.name" labelProperty="domain.name" />
+									</c:if>
+								<option value="other">
+									[Other]
+								</option>
 							</html:select>
 						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
+						<td class="cellLabel" width="20%">
 							Protocol Version*
 						</td>
 						<td>
 							<html:select styleId="protocolVersion"
 								property="protocol.domain.version"
 								onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocolFile();">
-								<%--<c:if test="${!empty protocolFilesByTypeName}">
-										<option value="" />
-											<html:optionsCollection name="protocolFilesByTypeName"
-												label="domainFile.version" value="domainFile.id" />
-										<option value="other">
-											[Other]
-										</option>
-									</c:if>--%>
+								<option value="" />
+									<c:if test="${!empty protocolsByType}">
+										<html:options collection="protocolsByType"
+											property="domain.version" labelProperty="domain.version" />
+									</c:if>
+								<option value="other">
+									[Other]
+								</option>
 							</html:select>
 							&nbsp; &nbsp;
 						</td>
@@ -94,7 +92,7 @@
 						<td class="cellLabel">
 							Protocol File
 						</td>
-						<td>
+						<td colspan="3">
 							<html:file property="protocol.fileBean.uploadedFile" />
 							&nbsp;&nbsp;
 							<span id="protocolFileLink"> <c:if
@@ -121,25 +119,26 @@
 						<td class="cellLabel">
 							File Title
 						</td>
-						<td>
+						<td colspan="3">
 							<html:text styleId="fileTitle"
-								property="protocol.fileBean.domainFile.title" size="80" />
+								property="protocol.fileBean.domainFile.title" size="100" />
 						</td>
 					</tr>
 					<tr>
 						<td class="cellLabel">
 							Description
 						</td>
-						<td>
+						<td colspan="3">
 							<html:textarea styleId="fileDescription"
-								property="protocol.fileBean.domainFile.description" rows="3" />
+								property="protocol.fileBean.domainFile.description" rows="3"
+								cols="80" />
 						</td>
 					</tr>
 					<tr>
 						<td class="cellLabel">
 							Visibility
 						</td>
-						<td>
+						<td colspan="3">
 							<html:select property="protocol.fileBean.visibilityGroups"
 								multiple="true" size="6">
 								<html:options name="allVisibilityGroups" />
@@ -149,15 +148,12 @@
 								${applicationOwner}_DataCurator are always selected by default.)</i>
 						</td>
 					</tr>
-					</tbody>
 				</table>
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
 					cellspacing="0" class="topBorderOnly" summary="">
 					<tr>
 						<td width="30%">
-							<span class="formMessage"> </span>
-							<br>
 							<table width="498" height="15" border="0" align="right"
 								cellpadding="4" cellspacing="0">
 								<tr>

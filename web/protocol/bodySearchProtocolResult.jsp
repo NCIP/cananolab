@@ -31,23 +31,23 @@
 					<c:set var="link" value="viewName" />
 				</c:otherwise>
 			</c:choose>
-			<display:table name="sessionScope.protocolFiles" id="protocolFile"
+			<display:table name="sessionScope.protocols" id="protocol"
 				requestURI="searchProtocol.do" pagesize="25" class="displaytable"
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 				<display:column title="Protocol Name" property="${link}"
 					sortable="true" />
 				<display:column title="Protocol Type"
-					property="domainFile.protocol.type" sortable="true" />
-				<display:column title="Version" property="domainFile.version"
-					sortable="false" />
-				<display:column title="File Title" property="domainFile.title"
+					property="domain.type" sortable="true" />
+				<display:column title="Version" property="domain.version"
+					sortable="true" />
+				<display:column title="File Title" property="fileBean.domainFile.title"
 					sortable="true" />
 				<display:column title="File Link" property="downloadURL"
 					sortable="true" />
 				<display:column title="Description"
-					property="domainFile.description" sortable="false" />
+					property="fileBean.domainFile.description" sortable="false" />
 				<display:column title="Protocol Created Date"
-					property="domainFile.createdDate" sortable="true"
+					property="fileBean.domainFile.createdDate" sortable="true"
 					format="{0,date,MM-dd-yyyy}" />
 				<display:column title="Location" property="location" sortable="true" />
 			</display:table>
