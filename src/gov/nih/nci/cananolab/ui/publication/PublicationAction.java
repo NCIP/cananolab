@@ -270,7 +270,7 @@ public class PublicationAction extends BaseAnnotationAction {
 						.findForward("sampleSubmitPubmedPublication");
 			} else {
 				forward = mapping
-						.findForward("publicationSubmitPubmedPublication");
+						.findForward("publicationSubmitPublication");
 			}
 		} else {
 			publication.setPubMedId(null);
