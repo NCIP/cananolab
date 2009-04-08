@@ -2,15 +2,16 @@
 function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
 	var inclueBlock = document.getElementById("entityInclude");
-	if (entityType == "metal particle" || entityType == "quantum dot") {
-		inclueBlock.style.display = "none";
-	} else {
-		inclueBlock.style.display = "inline";
-		CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
-	}
+	CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
 }
 function populatePage(pageData) {
-	dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
+	var inclueBlock = document.getElementById("entityInclude");
+	if (pageData == "") {
+		inclueBlock.style.display = "none";
+	} else {
+		dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
+		inclueBlock.style.display = "inline";
+	}
 }
 function getComposingElementOptions(selectEleId) {
 	var compFuncTypeValue = dwr.util.getValue(selectEleId);
@@ -85,7 +86,6 @@ function getNETypeOptions() {
 }
 function getNETypes() {
 	var selectEleId = "peType";
-	
 	getBiopolymerOptions(selectEleId);
 	getWallTypeOptions(selectEleId);
 	getComposingElementOptions(selectEleId);
@@ -202,8 +202,8 @@ function radLinkOrUpload(fileIndex) {
 		linkEle.style.display = "inline";
 	}
 }
-/* 
- * for chemical association 
+/*
+ * for chemical association
  */
 function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId) {
 	var compositionType = dwr.util.getValue(compositionTypeId);
@@ -271,7 +271,7 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 	// alert(document.getElementById(displayNameEleId).value);
 }
 /*
- * the following functions using AJAX to display modality dropdown menu in the 
+ * the following functions using AJAX to display modality dropdown menu in the
  * bodyNanomaterialEntityUpdate.jsp and bodyFunctionUpdate.jsp
  *
  */
@@ -279,7 +279,7 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 function setModalityTypeOptions(compEleIndex, functionIndex) {
 	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
 	CompositionManager.getModalityTypeOptions(functionType, function(data) {
-			
+
 			dwr.util.removeAllOptions("modalityType_" + compEleIndex + "_" + functionIndex);
 			dwr.util.addOptions("modalityType_" + compEleIndex + "_" + functionIndex, ['']);
     		dwr.util.addOptions("modalityType_" + compEleIndex + "_" + functionIndex, data);
@@ -289,14 +289,14 @@ function setModalityTypeOptions(compEleIndex, functionIndex) {
 
 function setModalityInclude(compEleIndex, functionIndex) {
 	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
-	
+
 	CompositionManager.getModalityIncludePage(compEleIndex, functionIndex, functionType, function(pageData) {
-	
+
 		document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex).innerHTML = "";
 		dwr.util.setValue("modalityTypeTd_" + compEleIndex + "_" + functionIndex, pageData, {escapeHtml:false});
-		
+
 	});
-	
+
   	if(functionType != "imaging") {
   		document.getElementById("modalityType_" + compEleIndex + "_" + functionIndex).innerHTML =
   			"&nbsp;";
