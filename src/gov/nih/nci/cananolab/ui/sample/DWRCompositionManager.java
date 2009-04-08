@@ -37,7 +37,7 @@ public class DWRCompositionManager {
 			ServletContext appContext = wctx.getServletContext();
 			String entityClassName = InitSetup.getInstance().getClassName(
 					entityType, appContext);
-			String page = pagePath + "/bodyNew" + entityClassName + "Info.jsp";
+			String page = pagePath + "/body" + entityClassName + "Info.jsp";
 			String content = wctx.forwardToString(page);
 			return content;
 		} catch (Exception e) {

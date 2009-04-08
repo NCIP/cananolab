@@ -67,14 +67,7 @@ public class InitCompositionSetup {
 				"ceMolecularFormulaTypes", "ComposingElement",
 				"molecularFormulaType", "otherMolecularFormulaType", true);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"carbonNanotubeDiameterUnit", "CarbonNanotube", "diameterUnit",
-				"otherDiameterUnit", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"carbonNanotubeAverageLengthUnit", "CarbonNanotube",
-				"averageLengthUnit", "otherAverageLengthUnit", true);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"fullereneAverageDiameterUnit", "Fullerene",
-				"averageDiameterUnit", "otherAverageDiameterUnit", true);
+				"dimensionUnits", "dimension", "unit", "otherUnit", true);
 		ServletContext appContext = request.getSession().getServletContext();
 		InitSetup.getInstance().getServletContextDefaultLookupTypes(appContext,
 				"wallTypes", "CarbonNanotube", "wallType");
@@ -108,13 +101,9 @@ public class InitCompositionSetup {
 			InitSetup.getInstance().persistLookup(request, "ComposingElement",
 					"valueUnit", "otherValueUnit",
 					elementBean.getDomain().getValueUnit());
-			InitSetup.getInstance().persistLookup(
-					request,
-					"ComposingElement",
-					"molecularFormulaType",
-					"otherMolecularFormulaType",
-					elementBean.getDomain()
-							.getMolecularFormulaType());
+			InitSetup.getInstance().persistLookup(request, "ComposingElement",
+					"molecularFormulaType", "otherMolecularFormulaType",
+					elementBean.getDomain().getMolecularFormulaType());
 			for (FunctionBean functionBean : elementBean.getInherentFunctions()) {
 				InitSetup.getInstance().persistLookup(request,
 						"ImagingFunction", "modality", "otherModality",

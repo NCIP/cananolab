@@ -99,23 +99,20 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			return mapping.getInputForward();
 		}
 
-		compositionService.saveNanomaterialEntity(sampleBean
-				.getDomain(), entityBean.getDomainEntity());
+		compositionService.saveNanomaterialEntity(sampleBean.getDomain(),
+				entityBean.getDomainEntity());
 
 		// set visibility
 
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(),
-				Constants.CSM_READ_PRIVILEGE);
+				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
-				&& accessibleGroups
-						.contains(Constants.CSM_PUBLIC_GROUP)) {
+				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
 			// set composition public
-			authService.assignPublicVisibility(sampleBean
-					.getDomain().getSampleComposition().getId()
-					.toString());
+			authService.assignPublicVisibility(sampleBean.getDomain()
+					.getSampleComposition().getId().toString());
 			compositionService.assignNanoparicleEntityPublicVisibility(
 					authService, entityBean.getDomainEntity());
 		}
@@ -133,8 +130,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				if (copy.getFileCollection() != null) {
 					for (File file : copy.getFileCollection()) {
 						service.saveCopiedFileAndSetVisibility(file, user,
-								sampleBean.getDomain()
-										.getName(), sample.getName());
+								sampleBean.getDomain().getName(), sample
+										.getName());
 					}
 				}
 			}
@@ -205,10 +202,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("nanomaterialEntityForm");
-		String sampleId=request.getParameter("sampleId");
+		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request,
-				sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 
 		setLookups(request);
 		return mapping.getInputForward();
@@ -221,10 +217,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		String sampleId=request.getParameter("sampleId");
+		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request,
-				sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 
 		CompositionService compService = new CompositionServiceLocalImpl();
 		NanomaterialEntityBean entityBean = compService
@@ -235,6 +230,13 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		theForm.set("entity", entityBean);
 		setLookups(request);
 		theForm.set("otherSamples", new String[0]);
+		String detailPage = null;
+		if (!entityBean.getClassName().equals("MetalParticle")
+				&& !entityBean.getClassName().equals("QuantumDot")) {
+			detailPage = "/sample/composition/nanomaterialEntity/body" + entityBean.getClassName()
+					+ "Info.jsp";
+		}
+		request.setAttribute("entityDetailPage", detailPage);
 		return mapping.getInputForward();
 	}
 
@@ -253,9 +255,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			//TODO update grid service
-//			compService = new CompositionServiceRemoteImpl(
-//					serviceUrl);
+			// TODO update grid service
+			// compService = new CompositionServiceRemoteImpl(
+			// serviceUrl);
 		}
 		String entityClassName = request.getParameter("dataClassName");
 		NanomaterialEntityBean entityBean = compService
