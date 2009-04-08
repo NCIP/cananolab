@@ -2,67 +2,59 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="6">
-				<div align="justify">
-					Fullerene Properties
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Average Diameter</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.fullerene.averageDiameter"
-							styleId="averageDiameter" onkeydown="return filterFloatNumber(event)"/>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.fullerene.averageDiameter}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Average Diameter Unit</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:select property="entity.fullerene.averageDiameterUnit"
-							styleId="averageDiameterUnit"
-							onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
-							<option value=""></option>
-							<html:options name="fullereneAverageDiameterUnit" />
-							<option value="other">
-								[Other]
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<table width="100%" align="center" class="submissionView">
+	<tr>
+		<th colspan="6">
+			Fullerene Properties
+		</th>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Average Diameter
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.fullerene.averageDiameter"
+				id="averageDiameter" onkeydown="return filterFloatNumber(event)"
+				value="${nanomaterialEntityForm.map.entity.fullerene.averageDiameter}" />
+		</td>
+		<td class="cellLabel">
+			Average Diameter Unit
+		</td>
+		<td class="cellLabel">
+			<select name="entity.fullerene.averageDiameterUnit"
+				id="averageDiameterUnit"
+				onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
+				<option value=""></option>
+				<c:forEach var="unit" items="${dimensionUnits}">
+					<c:choose>
+						<c:when
+							test="${unit eq nanomaterialEntityForm.map.entity.fullerene.averageDiameterUnit}">
+							<option value="${unit}" selected>
+								${unit}
 							</option>
-						</html:select>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.fullerene.averageDiameterUnit}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Number of Carbons</strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.fullerene.numberOfCarbon"
-							styleId="numberOfCarbon" onkeydown="return filterInteger(event)"/>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.fullerene.numberOfCarbon}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-	</tbody>
+						</c:when>
+						<c:otherwise>
+							<option value="${unit}">
+								${unit}
+							</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				<option value="other">
+					[Other]
+				</option>
+			</select>
+		</td>
+		<td class="cellLabel">
+			Number of Carbons
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.fullerene.numberOfCarbon"
+				id="numberOfCarbon" onkeydown="return filterInteger(event)"
+				value="${nanomaterialEntityForm.map.entity.fullerene.numberOfCarbon}" />
+		</td>
+	</tr>
 </table>
 <br>

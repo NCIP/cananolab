@@ -2,40 +2,29 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<table class="smalltable2" cellspacing="0" width="80%"
-	align="center">
-	<tbody>
-		<tr>
-			<td class="leftLabel">
-				<strong>Branch</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when
-						test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.dendrimer.branch" />
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.dendrimer.branch}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Generation</strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when
-						test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.dendrimer.generation" />
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.dendrimer.generation}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-	</tbody>
+<table width="100%" align="center" class="submissionView">
+	<tr>
+		<th colspan="4">
+			Dendrimer Properties
+		</th>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Branch
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.dendrimer.branch"
+				value="${nanomaterialEntityForm.map.entity.dendrimer.branch}" />
+		</td>
+		<td class="cellLabel">
+			Generation
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.dendrimer.generation"
+				value="${nanomaterialEntityForm.map.entity.dendrimer.generation}" />
+		</td>
+	</tr>
 </table>
 <br>

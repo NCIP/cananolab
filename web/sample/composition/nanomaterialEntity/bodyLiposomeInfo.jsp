@@ -2,48 +2,57 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="4">
-				<div align="justify">
-					Liposome Properties
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Polymer Name*</strong>
-			</td>
-			<td class="label">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<table width="100%" align="center" class="submissionView">
+	<tr>
+		<th colspan="4">
+			Liposome Properties
+		</th>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Polymer Name*
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.liposome.polymerName"
+				value="${nanomaterialEntityForm.map.entity.liposome.polymerName}" />
+		</td>
+		<td class="cellLabel">
+			Is Polymerized
+		</td>
+		<td class="cellLabel">
+			<select name="entity.liposome.polymerized">
+				<option value="">
+				</option>
 				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.liposome.polymerName" />
+					<c:when
+						test="${nanomaterialEntityForm.map.entity.liposome.polymerized eq 'true'}">
+						<option value="1" selected>
+							Yes
+						</option>
 					</c:when>
 					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.liposome.polymerName}&nbsp;
+						<option value="1">
+							Yes
+						</option>
 					</c:otherwise>
 				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Is Polymerized</strong>
-			</td>
-			<td class="rightLabel">
 				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:select property="entity.liposome.polymerized">
-							<option value=""></option>
-							<html:options collection="booleanChoices" property="value"
-								labelProperty="label" />
-						</html:select>
+					<c:when
+						test="${nanomaterialEntityForm.map.entity.liposome.polymerized eq 'false'}">
+						<option value="0" selected>
+							No
+						</option>
 					</c:when>
 					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.liposome.polymerized}&nbsp;
+						<option value="">
+							No
+						</option>
 					</c:otherwise>
 				</c:choose>
-			</td>
-		</tr>
-	</tbody>
+			</select>
+		</td>
+	</tr>
 </table>
 <br>

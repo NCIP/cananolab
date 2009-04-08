@@ -2,119 +2,118 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="6">
-				<div align="justify">
-					Carbon Nanotube Properties
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-				<strong>Average Length</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.carbonNanotube.averageLength" />
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.carbonNanotube.averageLength}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Average Length Unit</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:select property="entity.carbonNanotube.averageLengthUnit"
-							styleId="averageLengthUnit"
-							onchange="javascript:callPrompt('Average Length Unit', 'averageLengthUnit');">
-							<option value=""></option>
-							<html:options name="carbonNanotubeAverageLengthUnit" />
-							<option value="other">
-								[Other]
+<table width="100%" align="center" class="submissionView">
+	<tr>
+		<th colspan="6">
+			Carbon Nanotube Properties
+		</th>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Average Length
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.carbonNanotube.averageLength"
+				value="${nanomaterialEntityForm.map.entity.carbonNanotube.averageLength}"
+				onkeydown="return filterFloatNumber(event)" />
+		</td>
+		<td class="cellLabel">
+			Average Length Unit
+		</td>
+		<td class="cellLabel">
+			<select name="entity.carbonNanotube.averageLengthUnit"
+				id="averageLengthUnit"
+				onchange="javascript:callPrompt('Average Length Unit', 'averageLengthUnit');">
+				<option value=""></option>
+				<c:forEach var="unit" items="${dimensionUnits}">
+					<c:choose>
+						<c:when
+							test="${unit eq nanomaterialEntityForm.map.entity.carbonNanotube.averageLengthUnit}">
+							<option value="${unit}" selected>
+								${unit}
 							</option>
-						</html:select>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.carbonNanotube.averageLengthUnit}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Chirality</strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.carbonNanotube.chirality" />
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.carbonNanotube.chirality}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Diameter</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.carbonNanotube.diameter" />
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.carbonNanotube.diameter}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Diameter Unit</strong>
-			</td>
-			<td class="label">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:select property="entity.carbonNanotube.diameterUnit"
-							styleId="diameterUnit"
-							onchange="javascript:callPrompt('Diameter Unit', 'diameterUnit');">
-							<option value=""></option>
-							<html:options name="carbonNanotubeDiameterUnit" />
-							<option value="other">
-								[Other]
+						</c:when>
+						<c:otherwise>
+							<option value="${unit}">
+								${unit}
 							</option>
-						</html:select>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.carbonNanotube.diameterUnit}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Wall Type</strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:select property="entity.carbonNanotube.wallType"
-							styleId="wallType" >
-							<option value=""></option>
-							<html:options name="wallTypes" />
-						</html:select>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.carbonNanotube.wallType}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-	</tbody>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				<option value="other">
+					[Other]
+				</option>
+			</select>
+		</td>
+		<td class="cellLabel">
+			Chirality
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.carbonNanotube.chirality"
+				value="${nanomaterialEntityForm.map.entity.carbonNanotube.chirality}" />
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Diameter
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.carbonNanotube.diameter"
+				value="${nanomaterialEntityForm.map.entity.carbonNanotube.diameter}"
+				onkeydown="return filterFloatNumber(event)" />
+		</td>
+		<td class="cellLabel">
+			Diameter Unit
+		</td>
+		<td class="cellLabel">
+			<select name="entity.carbonNanotube.diameterUnit" id="diameterUnit"
+				onchange="javascript:callPrompt('Diameter Unit', 'diameterUnit');">
+				<option value=""></option>
+				<c:forEach var="unit" items="${dimensionUnits}">
+					<c:choose>
+						<c:when
+							test="${unit eq nanomaterialEntityForm.map.entity.carbonNanotube.diameterUnit}">
+							<option value="${unit}" selected>
+								${unit}
+							</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${unit}">
+								${unit}
+							</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				<option value="other">
+					[Other]
+				</option>
+			</select>
+		</td>
+		<td class="cellLabel">
+			Wall Type
+		</td>
+		<td class="cellLabel">
+			<select name="entity.carbonNanotube.wallType" id="wallType">
+				<option value=""></option>
+				<c:forEach var="type" items="${wallTypes}">
+					<c:choose>
+						<c:when
+							test="${type eq nanomaterialEntityForm.map.entity.carbonNanotube.wallType}">
+							<option value="${type}" selected>
+								${type}
+							</option>
+						</c:when>
+						<c:otherwise>
+							<option value="${type}">
+								${type}
+							</option>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</select>
+		</td>
+	</tr>
 </table>
 <br>

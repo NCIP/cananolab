@@ -2,61 +2,65 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="6">
-				<div align="justify">
-					Polymer Properties
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Initiator</strong>
-			</td>
-			<td class="label">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<table width="100%" align="center" class="submissionView">
+	<tr>
+		<th colspan="6">
+			Polymer Properties
+		</th>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Initiator
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.polymer.initiator"
+				value="${nanomaterialEntityForm.map.entity.polymer.initiator}" />
+		</td>
+		<td class="cellLabel">
+			Cross Link Degree
+		</td>
+		<td class="cellLabel">
+			<input type="text" name="entity.polymer.crossLinkDegree"
+				onkeydown="return filterFloatNumber(event)"
+				value="${nanomaterialEntityForm.map.entity.polymer.crossLinkDegree}" />
+		</td>
+		<td class="cellLabel">
+			Is Cross Linked
+		</td>
+		<td class="cellLabel">
+			<select name="entity.polymer.crossLinked">
+				<option value="">
+				</option>
 				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.polymer.initiator" />
+					<c:when
+						test="${nanomaterialEntityForm.map.entity.polymer.crossLinked eq 'true'}">
+						<option value="1" selected>
+							Yes
+						</option>
 					</c:when>
 					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.polymer.initiator}&nbsp;
+						<option value="1">
+							Yes
+						</option>
 					</c:otherwise>
 				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Cross Link Degree</strong>
-			</td>
-			<td class="label">
 				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:text property="entity.polymer.crossLinkDegree" onkeydown="return filterFloatNumber(event)"/>
+					<c:when
+						test="${nanomaterialEntityForm.map.entity.polymer.crossLinked eq 'false'}">
+						<option value="0" selected>
+							No
+						</option>
 					</c:when>
 					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.polymer.crossLinkDegree}&nbsp;
+						<option value="">
+							No
+						</option>
 					</c:otherwise>
 				</c:choose>
-			</td>
-			<td class="label">
-				<strong>Is Cross Linked</strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
-						<html:select property="entity.polymer.crossLinked">
-							<option value=""></option>
-							<html:options collection="booleanChoices" property="value"
-								labelProperty="label" />
-						</html:select>
-					</c:when>
-					<c:otherwise>
-						${nanomaterialEntityForm.map.entity.polymer.crossLinked}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-	</tbody>
+			</select>
+		</td>
+	</tr>
 </table>
 <br>

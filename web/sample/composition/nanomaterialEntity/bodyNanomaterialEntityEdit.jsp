@@ -9,11 +9,15 @@
 	<tr>
 		<th align="left">
 			Nanomaterial Entity &nbsp;&nbsp;&nbsp;
-			<a href="nanomaterialEntity.do?dispatch=setupNew&sampleId=${sampleId}" class="addlink"><img align="middle"
-					src="images/btn_add.gif" border="0" /> </a> &nbsp;&nbsp;&nbsp;
+			<a
+				href="nanomaterialEntity.do?dispatch=setupNew&sampleId=${sampleId}"
+				class="addlink"><img align="middle" src="images/btn_add.gif"
+					border="0" /> </a> &nbsp;&nbsp;&nbsp;
 			<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities}">
-				<a href="/nanopmaterialEntity.do?dispatch=delete&sampleId=${sampleId}" class="addlink"><img align="middle"
-						src="images/btn_delete.gif" border="0" /> </a>
+				<a
+					href="/nanopmaterialEntity.do?dispatch=delete&sampleId=${sampleId}"
+					class="addlink"><img align="middle" src="images/btn_delete.gif"
+						border="0" /> </a>
 			</c:if>
 		</th>
 	</tr>
@@ -57,27 +61,20 @@
 											</c:choose>
 										</td>
 									</tr>
-									<%--
 									<tr>
-										<td valign="top" colspan="2">
-											PROPERTIES
-											<div class="indented4">
-
-												<jsp:include
-													page="/sample/composition/nanomaterialEntity/body${entity.className}Info.jsp">
-													<jsp:param name="entityIndex" value="${ind}" />
-												</jsp:include>
-
-											</div>
+										<td class="cellLabel">
+											Properties
+										</td>
+										<td>
+											<%--<%@include file="bodyNanomaterialPropertiesView.jsp"%>--%>
 										</td>
 									</tr>
---%>
 									<tr>
 										<td class="cellLabel">
 											Composing Elements
 										</td>
 										<td>
-											<%@include file="bodyComposingElementView.jsp" %>
+											<%@include file="bodyComposingElementView.jsp"%>
 										</td>
 									</tr>
 								</table>

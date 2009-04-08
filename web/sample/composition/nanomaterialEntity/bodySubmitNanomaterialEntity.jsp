@@ -2,6 +2,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript" src="javascript/CompositionManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+
 <script type="text/javascript">
 <!--//
 function confirmDeletion()
@@ -51,8 +60,8 @@ function confirmDeletion()
 							</td>
 							<td>
 								<html:select styleId="peType" property="entity.type"
-									onchange="javascript:callPrompt('Particle Entity Type', 'peType');
-										setEntityInclude('peType', '/sample/composition/nanomaterialEntity'); getNETypeOptions();">
+									onchange="javascript:callPrompt('Nanomaterial Entity Type', 'peType');
+										setEntityInclude('peType', '/sample/composition/nanomaterialEntity');">
 									<option value=""></option>
 									<html:options name="nanomaterialEntityTypes" />
 									<option value="other">
@@ -96,7 +105,8 @@ function confirmDeletion()
 								<c:if
 									test="${! empty nanomaterialEntityForm.map.entity.composingElements}">
 									<c:set var="edit" value="true" />
-									<c:set var="entity" value="${nanomaterialEntityForm.map.entity}"/>
+									<c:set var="entity"
+										value="${nanomaterialEntityForm.map.entity}" />
 									<%@ include file="bodyComposingElementView.jsp"%>
 								</c:if>
 							</td>
@@ -111,53 +121,27 @@ function confirmDeletion()
 						</tr>
 				</table>
 				<br>
-				<%--Particle Entity File Information --%>
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-					width="100%" align="center" summary="" border="0">
+				<%--Nanomaterial Entity File Information --%>
+				<table width="100%" align="center" class="submissionView">
 					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
-								<div align="justify" id="peFileTitle">
-									Particle Entity File Information
-								</div>
+						<tr>
+							<th colspan="2">
+								Nanomaterial Entity File
+							</th>
+						</tr>
+						<tr>
+							<td class="cellLabel" colspan="2">
+								File&nbsp;&nbsp;&nbsp;&nbsp;
+								<a style="" id="addFile" href="javascript:resetTheFile(true);"><img
+										align="top" src="images/btn_add.gif" border="0" /> </a>
 							</td>
 						</tr>
 						<tr>
-							<td class="completeLabel" colspan="4">
-								<table border="0" width="100%">
-									<tr>
-										<td valign="bottom" width="10%">
-											<a href="#"
-												onclick="javascript:addComponent(nanomaterialEntityForm, 'nanomaterialEntity', 'addFile'); return false;">
-												<span class="addLink">Add File</span> </a>
-										</td>
-										<td id="fileTd">
-											<logic:iterate name="nanomaterialEntityForm"
-												property="entity.files" id="entityFile" indexId="fileInd">
-												<jsp:include page="/sample/bodyLoadFileUpdate.jsp">
-													<jsp:param name="fileInd" value="${fileInd}" />
-													<jsp:param name="form" value="nanomaterialEntityForm" />
-													<jsp:param name="action" value="nanomaterialEntity" />
-													<jsp:param name="removeCmd" value="\'removeFile\'" />
-													<jsp:param name="fileBean" value="entity.files[${fileInd}]" />
-													<jsp:param name="fileId"
-														value="${nanomaterialEntityForm.map.entity.files[fileInd].domainFile.id}" />
-													<jsp:param name="fileUri"
-														value="${nanomaterialEntityForm.map.entity.files[fileInd].domainFile.uri}" />
-													<jsp:param name="fileTitle"
-														value="${nanomaterialEntityForm.map.entity.files[fileInd].domainFile.title}" />
-													<jsp:param name="fileHidden"
-														value="${nanomaterialEntityForm.map.entity.files[fileInd].hidden}" />
-													<jsp:param name="fileImage"
-														value="${nanomaterialEntityForm.map.entity.files[fileInd].image}" />
-													<jsp:param name="fileUriExternal"
-														value="${nanomaterialEntityForm.map.entity.files[fileInd].domainFile.uriExternal}" />
-												</jsp:include>
-												<br>
-											</logic:iterate>
-										</td>
-									</tr>
-								</table>
+							<td colspan="2">
+								<div id="newFile" style="display: none;">
+									<%--<jsp:include page="bodySubmitFile.jsp" />--%>
+								</div>
+								&nbsp;
 							</td>
 						</tr>
 				</table>
