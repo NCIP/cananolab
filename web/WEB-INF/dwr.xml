@@ -35,7 +35,7 @@
 		<create creator="new" javascript="FindingManager"
 			scope="session">
 			<param name="class"
-				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager"/>
+				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager" />
 			<include method="addColumnHeader" />
 			<include method="removeColumnHeader" />
 			<include method="resetFinding" />
@@ -52,8 +52,8 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationManager" />
 			<include method="getCharacterizationOptions" />
-			<include method="getAssayTypeOptions"/>
-			<include method="getCharacterizationDetailPage"/>
+			<include method="getAssayTypeOptions" />
+			<include method="getCharacterizationDetailPage" />
 		</create>
 		<create creator="new" javascript="SampleManager"
 			scope="session">
@@ -70,7 +70,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
 			<include method="getProtocolFiles" />
-			<include method="getProtocolNames" />
+			<include method="getProtocols" />
 			<include method="getProtocolFileUriById" />
 			<include method="getProtocolFileNameById" />
 			<include method="getProtocolFileVersionById" />
@@ -89,13 +89,23 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
-			<param name="include"
-				value="displayName, domainId" />
+			<param name="include" value="displayName, domainId" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
-			<param name="include"
-				value="domainFileId, domainFileUri, domainFileName, domainFileVersion" />
+			<param name="include" value="domain, fileBean" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Protocol">
+			<param name="include" value="id, name, version" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.FileBean">
+			<param name="include" value="domainFile" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.File">
+			<param name="include" value="id, uri, keywordCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
@@ -130,7 +140,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FindingBean">
-			<param name="include" value="theRow, rows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
+			<param name="include"
+				value="theRow, rows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.RowBean">
