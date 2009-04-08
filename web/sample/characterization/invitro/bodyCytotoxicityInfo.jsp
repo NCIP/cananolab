@@ -6,7 +6,7 @@
 	<tr>
 		<th colspan="2">
 			Cytotoxicity Properties
-		</td>
+		</th>
 	</tr>
 	<tr>
 		<td class="cellLabel">

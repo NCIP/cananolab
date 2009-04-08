@@ -7,7 +7,7 @@
 	<tr>
 		<th colspan="2">
 			Enzyme Induction Properties
-		</td>
+		</th>
 	</tr>
 	<tr>
 		<td class="cellLabel" width="20%">
