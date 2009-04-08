@@ -8,7 +8,7 @@
 	<tr>
 		<th colspan="4">
 			Physical State Properties
-		</td>
+		</th>
 	</tr>
 	<tr>
 		<td class="cellLabel" width="20%">
