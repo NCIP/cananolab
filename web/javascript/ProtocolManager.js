@@ -2,35 +2,33 @@
 var emptyOption = [{label:"", value:""}];
 function retrieveProtocols() {
 	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.getProtocolNames(protocolType, populateProtocolNames);
+	ProtocolManager.getProtocols(protocolType, null, populateProtocols);
 }
 function resetProtocols() {
 	dwr.util.removeAllOptions("protocolName");
+	dwr.util.removeAllOptions("protocolVersion");
 	dwr.util.addOptions("protocolName", emptyOption, "value", "label");
+	dwr.util.addOptions("protocolVersion", emptyOption, "value", "label");
 	resetProtocolFiles();
 }
-function populateProtocolNames(protocolNames) {
+function populateProtocols(protocols) {
 	resetProtocols();
-	dwr.util.addOptions("protocolName", protocolNames);
+	dwr.util.addOptions("protocolName", protocols, "domain.name");
 	dwr.util.addOptions("protocolName", ["[Other]"]);
+	dwr.util.addOptions("protocolVersion", protocols, "domain.version");
+	dwr.util.addOptions("protocolVersion", ["[Other]"]);
 }
-function retrieveProtocolFileVersions() {
-	var protocolName = document.getElementById("protocolName").value;
-	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.getProtocolFiles(protocolType, protocolName, populateProtocolFileVersions);
-}
+
 function resetProtocolFiles() {
-	dwr.util.removeAllOptions("protocolFileId");
-	dwr.util.addOptions("protocolFileId", emptyOption, "value", "label");
 	writeLink(null);
 }
 function populateProtocolFileVersions(protocolFiles) {
 	resetProtocolFiles();
-	dwr.util.addOptions("protocolFileId", protocolFiles, "domainFileId", "domainFileVersion");
-	dwr.util.addOptions("protocolFileId", ["[Other]"]);
+	dwr.util.addOptions("protocolVersion", protocolFiles, "domainFileId", "domainFileVersion");
+	dwr.util.addOptions("protocolVersion", ["[Other]"]);
 }
 function retrieveProtocolFile() {
-	var fileId = document.getElementById("protocolFileId").value;
+	var fileId = document.getElementById("protocolVersion").value;
 	//ProtocolManager.findProtocolFileById(fileId, writeLink); //not working on linux
 	ProtocolManager.getProtocolFileUriById(fileId, writeLink);
 	if (document.getElementById("updatedUri") != null) {
@@ -50,7 +48,7 @@ function retrieveProtocolFile() {
 	}
 }
 function writeLink(uri) {
-	var fileId = document.getElementById("protocolFileId").value;
+	var fileId = document.getElementById("protocolVersion").value;
 	if (uri != null) {
 		var fileUri = uri;
 		if (fileUri != null) {
@@ -62,7 +60,7 @@ function writeLink(uri) {
 		document.getElementById("protocolFileLink").innerHTML = "";
 	}
 }
-	
+
 //not working on linux
 function writeLink0(protocolFile) {
 	var fileId = document.getElementById("protocolFileId").value;
@@ -84,7 +82,7 @@ function setProtocolNameDropdown() {
 			dwr.util.removeAllOptions("protocolType");
 			dwr.util.addOptions("protocolType", data);
 		});
-	
+
 	return false;
 }
 
