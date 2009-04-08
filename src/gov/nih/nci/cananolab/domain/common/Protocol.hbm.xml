@@ -17,6 +17,6 @@
 		<property name="type" type="string" column="protocol_type"/>
 		<property name="version" type="string" column="protocol_version"/>
 		<!-- Associations mapping for the Protocol class -->
-		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" />
+		<many-to-one name="file" class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" unique="true" lazy="proxy" cascade="save-update, delete"/>
 	</class>
 </hibernate-mapping>
