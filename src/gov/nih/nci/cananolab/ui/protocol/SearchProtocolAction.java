@@ -68,6 +68,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			List<ProtocolBean> protocols = service.findProtocolsBy(
 					protocolType, protocolName, fileTitle);
 			for (ProtocolBean protocol : protocols) {
+				protocol.setLocation(location);
 				protocol.getFileBean().setLocation(location);
 			}
 			if (location.equals("local")) {

@@ -70,16 +70,11 @@ public class DWRProtocolManager {
 		return helper.getProtocolVersionById(fileId);
 	}
 
-	// used for Ajax
-	public SortedSet<String> getProtocolNames(String protocolType) {
-		return helper.getProtocolNames(protocolType);
-	}
-
 	// for dwr ajax
 	public List<ProtocolBean> getProtocols(String protocolType,
 			String protocolName) {
-		if (protocolType == null || protocolType.length() == 0
-				|| protocolName == null || protocolName.length() == 0) {
+		if ((protocolType == null || protocolType.length() == 0)
+				&& (protocolName == null || protocolName.length() == 0)) {
 			return null;
 		}
 		return helper.getProtocols(protocolType, protocolName);

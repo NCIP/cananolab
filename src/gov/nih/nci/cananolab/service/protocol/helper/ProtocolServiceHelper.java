@@ -37,6 +37,7 @@ public class ProtocolServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
 				.add(Property.forName("id").eq(new Long(protocolId)));
 		crit.setFetchMode("file", FetchMode.JOIN);
+		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		List result = appService.query(crit);
 		Protocol protocol = null;
 		if (!result.isEmpty()) {
@@ -51,6 +52,8 @@ public class ProtocolServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class);
+		crit.setFetchMode("file", FetchMode.JOIN);
+		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		if (protocolType != null && protocolType.length() > 0
 				|| protocolName != null && protocolName.length() > 0) {
 			if (protocolType != null && protocolType.length() > 0) {
@@ -87,6 +90,8 @@ public class ProtocolServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
 				Property.forName("type").eq(protocolType)).add(
 				Property.forName("name").eq(protocolName));
+		crit.setFetchMode("file", FetchMode.JOIN);
+		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		for (Object obj : results) {
@@ -186,16 +191,16 @@ public class ProtocolServiceHelper {
 					.getApplicationService();
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Protocol.class);
+			crit.setFetchMode("file", FetchMode.JOIN);
+			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 			if (protocolType != null && protocolType.length() > 0
 					|| protocolName != null && protocolName.length() > 0) {
-				crit.createAlias("protocol", "protocol",
-						CriteriaSpecification.LEFT_JOIN);
 				if (protocolType != null && protocolType.length() > 0) {
-					crit.add(Restrictions.eq("protocol.type", protocolType));
+					crit.add(Restrictions.eq("type", protocolType));
 				}
 				if (protocolName != null && protocolName.length() > 0) {
 
-					crit.add(Restrictions.eq("protocol.name", protocolName));
+					crit.add(Restrictions.eq("name", protocolName));
 				}
 			}
 			crit

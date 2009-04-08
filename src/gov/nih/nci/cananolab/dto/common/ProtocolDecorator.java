@@ -31,8 +31,8 @@ public class ProtocolDecorator extends TableDecorator {
 		// + ((ProtocolFile) (file.getDomainFile())).getProtocol()
 		// .getName() + "</a>";
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("submitProtocol.do?dispatch=setupUpdate&fileId=");
-		sb.append(fileId);
+		sb.append("submitProtocol.do?dispatch=setupUpdate&protocolId=");
+		sb.append(protocol.getDomain().getId());
 		sb.append("&location=local>");
 		sb.append(protocol.getDomain().getName());
 		sb.append("</a>");

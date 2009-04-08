@@ -40,7 +40,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ActionForward forward = null;
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		ProtocolBean protocolBean = (ProtocolBean) theForm.get("file");
+		ProtocolBean protocolBean = (ProtocolBean) theForm.get("protocol");
 		protocolBean
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 		ProtocolService service = new ProtocolServiceLocalImpl();
@@ -82,16 +82,12 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("file"));
+		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		SortedSet<String> protocolNames = service
-				.getProtocolNames(selectedProtocolType);
-		request.getSession().setAttribute("protocolNamesByType", protocolNames);
-		String selectedProtocolName = protocolBean.getDomain().getName();
-		List<ProtocolBean> pFiles = service.findProtocolsBy(
-				selectedProtocolType, selectedProtocolName, null);
-		request.getSession().setAttribute("protocolsByTypeName", pFiles);
+		List<ProtocolBean> protocols = service.findProtocolsBy(
+				selectedProtocolType, null, null);
+		request.getSession().setAttribute("protocolsByType", protocols);
 
 		return mapping.findForward("inputPage");
 	}
@@ -109,18 +105,14 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String fileId = request.getParameter("fileId");
+		String protocolId = request.getParameter("protocolId");
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		ProtocolBean protocolBean = service.findProtocolById(fileId);
-		theForm.set("file", protocolBean);
+		ProtocolBean protocolBean = service.findProtocolById(protocolId);
+		theForm.set("protocol", protocolBean);
 		String selectedProtocolType = protocolBean.getDomain().getType();
-		String selectedProtocolName = protocolBean.getDomain().getName();
-		SortedSet<String> protocolNames = service
-				.getProtocolNames(selectedProtocolType);
-		request.getSession().setAttribute("protocolNamesByType", protocolNames);
-		List<ProtocolBean> pFiles = service.findProtocolsBy(
-				selectedProtocolType, selectedProtocolName, null);
-		request.getSession().setAttribute("protocolsByTypeName", pFiles);
+		List<ProtocolBean> protocols = service.findProtocolsBy(
+				selectedProtocolType, null, null);
+		request.getSession().setAttribute("protocolsByType", protocols);
 		FileService fileService = new FileServiceLocalImpl();
 		fileService.retrieveVisibility(protocolBean.getFileBean(), user);
 		return mapping.findForward("inputPage");

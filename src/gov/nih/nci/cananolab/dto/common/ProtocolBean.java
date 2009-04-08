@@ -5,6 +5,8 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 
+import java.util.Date;
+
 /**
  * Protocol view bean
  *
@@ -12,7 +14,7 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
  *
  */
 public class ProtocolBean {
-	private FileBean fileBean=new FileBean();
+	private FileBean fileBean = new FileBean();
 
 	private Protocol domain = new Protocol();
 	String domainFileId; // used for ajax
@@ -23,7 +25,7 @@ public class ProtocolBean {
 
 	String updatedFileName; // used for ajax
 
-	String updatedFileVersion; // used for ajax
+	String location;
 
 	public ProtocolBean() {
 		if (fileBean.getDomainFile() != null)
@@ -60,28 +62,12 @@ public class ProtocolBean {
 		this.updatedFileUri = domainFileUri;
 	}
 
-	public String getDomainFileVersion() {
-		return domain.getVersion();
-	}
-
-	public void setDomainFileVersion(String domainFileVersion) {
-		this.domainFileVersion = domainFileVersion;
-	}
-
 	public String getUpdatedFileName() {
 		return updatedFileName;
 	}
 
 	public void setUpdatedFileName(String domainFileName) {
 		this.updatedFileName = domainFileName;
-	}
-
-	public String getUpdatedFileVersion() {
-		return updatedFileVersion;
-	}
-
-	public void setUpdatedFileVersion(String updatedFileVersion) {
-		this.updatedFileVersion = updatedFileVersion;
 	}
 
 	public boolean equals(Object obj) {
@@ -101,27 +87,24 @@ public class ProtocolBean {
 
 	public void setupDomain(String internalUriPath, String createdBy)
 			throws Exception {
-		// if (updatedFileUri != null && updatedFileUri.trim().length() > 0) {
-		// domainFile.setUri(updatedFileUri);
-		// }
-		// if (updatedFileName != null && updatedFileName.trim().length() > 0) {
-		// domainFile.setName(updatedFileName);
-		// }
-		// if (updatedFileVersion.length() > 0) {
-		// domainFile.setVersion(updatedFileVersion);
-		// }
-		// try {
-		// Long id = new Long(domainFileId);
-		// domainFile.setId(id);
-		// } catch (Exception e) {
-		// domainFile.setVersion(domainFileId);
-		// }
-		// super.setupDomainFile(internalUriPath, createdBy, 0);
-		// Protocol protocol = ((ProtocolFile) domainFile).getProtocol();
-		// if (protocol.getId() == null) {
-		// protocol.setCreatedBy(createdBy);
-		// protocol.setCreatedDate(new Date());
-		// }
+		domain.setFile(fileBean.getDomainFile());
+		if (updatedFileUri != null && updatedFileUri.trim().length() > 0) {
+			domain.getFile().setUri(updatedFileUri);
+		}
+		if (updatedFileName != null && updatedFileName.trim().length() > 0) {
+			domain.getFile().setName(updatedFileName);
+		}
+		try {
+			Long id = new Long(domainFileId);
+			domain.getFile().setId(id);
+		} catch (Exception e) {
+
+		}
+		fileBean.setupDomainFile(internalUriPath, createdBy, 0);
+		if (domain.getId() == null) {
+			domain.setCreatedBy(createdBy);
+			domain.setCreatedDate(new Date());
+		}
 	}
 
 	public FileBean getFileBean() {
@@ -130,5 +113,13 @@ public class ProtocolBean {
 
 	public Protocol getDomain() {
 		return domain;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }

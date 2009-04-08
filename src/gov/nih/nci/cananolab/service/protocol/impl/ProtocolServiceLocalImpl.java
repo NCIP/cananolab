@@ -27,15 +27,15 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			.getLogger(ProtocolServiceLocalImpl.class);
 	private ProtocolServiceHelper helper = new ProtocolServiceHelper();
 
-	public ProtocolBean findProtocolById(String fileId)
+	public ProtocolBean findProtocolById(String protocolId)
 			throws ProtocolException {
 		ProtocolBean protocolBean = null;
 		try {
-			Protocol pf = helper.findProtocolById(fileId);
+			Protocol pf = helper.findProtocolById(protocolId);
 			protocolBean = new ProtocolBean(pf);
 			return protocolBean;
 		} catch (Exception e) {
-			String err = "Problem finding the protocol file by id: " + fileId;
+			String err = "Problem finding the protocol by id: " + protocolId;
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
