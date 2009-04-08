@@ -27,44 +27,33 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr class="topBorder">
-						<td class="formTitle">
-							<div align="justify">
-								Search Criteria
-							</div>
-						</td>
-						<td class="formTitle">
-							<div align="justify">
-								* for searching wildcards
-							</div>
-						</td>
-					</tr>
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Search Location</strong>
+						<td class="cellLabel" width="20%">
+							Search Location
 						</td>
-						<td class="rightLabel">
-							<strong><html:select styleId="searchLocations"
-									property="searchLocations"
-									onchange="javascript:setProtocolNameDropdown()" multiple="true"
-									size="4">
-									<html:option value="local">
+						<td>
+							<html:select styleId="searchLocations" property="searchLocations"
+								onchange="javascript:setProtocolNameDropdown()" multiple="true"
+								size="4">
+								<html:option value="local">
 										Local
 									</html:option>
-									<c:if test="${! empty allGridNodes}">
-										<html:options collection="allGridNodes"
-											property="hostName" labelProperty="hostName" />
-									</c:if>
-								</html:select> </strong>
+								<c:if test="${! empty allGridNodes}">
+									<html:options collection="allGridNodes" property="hostName"
+										labelProperty="hostName" />
+								</c:if>
+							</html:select>
 						</td>
 					</tr>
+				</table>
+				<br>
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabel">
-							<strong>Protocol Type</strong>
+						<td class="cellLabel">
+							Protocol Type
 						</td>
-						<td class="rightLabel"">
+						<td>
 							<html:select styleId="protocolType" property="protocolType">
 								<option />
 									<html:options name="protocolTypes" />
@@ -72,19 +61,23 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong> Protocol Name </strong>
+						<td class="cellLabel">
+							Protocol Name
 						</td>
-						<td class="rightLabel">
-							<html:text property="protocolName" size="50" />
+						<td>
+							<html:text property="protocolName" size="100" />
+							<br>
+							<em>* for wildcard search</em>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
-							<strong>Protocol File Title</strong>
+						<td class="cellLabel">
+							Protocol File Title
 						</td>
-						<td class="rightLabel">
-							<html:text property="fileTitle" size="50" />
+						<td>
+							<html:text property="fileTitle" size="100" />
+							<br>
+							<em>* for wildcard search</em>
 						</td>
 					</tr>
 				</table>

@@ -15,11 +15,9 @@
 
 <html:form action="/sample">
 	<c:choose>
-		<c:when
-			test="${!empty sampleForm.map.sampleBean.pocBean.domain.id}">
+		<c:when test="${!empty sampleForm.map.sampleBean.pocBean.domain.id}">
 			<c:set var="pocDetailDisplay" value="display: inline;" />
-			<c:if
-				test="${submitPOCProcessing eq 'true'}">
+			<c:if test="${submitPOCProcessing eq 'true'}">
 				<c:set var="pocDetailDisplay" value="display: none;" />
 			</c:if>
 		</c:when>
@@ -44,91 +42,74 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-					width="100%" align="center" summary="" border="0">
-					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="2">
-								<div align="justify">
-									 Sample Information
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong> Sample Name *</strong>
-							</td>
-							<td class="rightLabel">
-								<html:text
-									property="sampleBean.domain.name"
-									size="50" />
-								<c:if
-									test="${!empty sampleForm.map.sampleBean.domain.id}">
-									<html:hidden styleId="sampleId"
-										property="sampleBean.domain.id"
-										value="${sampleForm.map.sampleBean.domain.id}" />
-								</c:if>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Primary Point of Contact *</strong>
-							</td>
-							<td class="rightLabel">
-								<html:select property="sampleBean.pocBean.domain.id"
-									styleId="primaryPOCList"
-									onchange="javascript:setupPOC(sampleForm, 'primaryPOCList');
+				<table width="100%" align="center" class="submissionView">
+					<tr>
+						<td class="cellLabel" width="20%">
+							Sample Name *
+						</td>
+						<td>
+							<html:text property="sampleBean.domain.name" size="80" />
+							<c:if test="${!empty sampleForm.map.sampleBean.domain.id}">
+								<html:hidden styleId="sampleId" property="sampleBean.domain.id"
+									value="${sampleForm.map.sampleBean.domain.id}" />
+							</c:if>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Primary Point of Contact *
+						</td>
+						<td>
+							<html:select property="sampleBean.pocBean.domain.id"
+								styleId="primaryPOCList"
+								onchange="javascript:setupPOC(sampleForm, 'primaryPOCList');
 												setPOCDetailLink('primaryPOCList', 'pocDetail');
 												removeOrgVisibility('primaryPOCList');">
-									<option />
-										<c:if test="${!empty allPointOfContacts}">
-											<html:options collection="allPointOfContacts"
-												labelProperty="displayName" property="domain.id" />
-										</c:if>
-									<option value="other">
-										[Other]
-									</option>
-								</html:select>
-								&nbsp;
-								<a style="${pocDetailDisplay}" id="pocDetail" href="#"
-									onclick="javascript:submitAction(sampleForm, 'sample', 'pointOfContactDetailView');">
-									<span class="addLink2">View Detail</span> </a>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel" valign="top">
-								<strong>Keywords</strong>
-								<i>(one keyword per line)</i>
-							</td>
-							<td class="rightLabel">
-								<html:textarea property="sampleBean.keywordsStr"
-									rows="6" />
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel" valign="top">
-								<strong>Visibility</strong>
-							</td>
-							<td class="rightLabel">
-								<html:select property="sampleBean.visibilityGroups"
-									styleId="visibilityGroup" multiple="true" size="6">
-									<html:options name="allVisibilityGroupsNoOrg" />
-								</html:select>
-								<br>
-								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_DataCurator are always selected by
-									default.)</i>
-							</td>
-						</tr>
-					</tbody>
+								<option />
+									<c:if test="${!empty allPointOfContacts}">
+										<html:options collection="allPointOfContacts"
+											labelProperty="displayName" property="domain.id" />
+									</c:if>
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+							&nbsp;
+							<a style="" id="pocDetail" href="#"
+								onclick="javascript:submitAction(sampleForm, 'sample', 'pointOfContactDetailView');">
+								<span class="addLink2">View Detail</span> </a>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Keywords
+							<i>(one keyword per line)</i>
+						</td>
+						<td>
+							<html:textarea property="sampleBean.keywordsStr" rows="6"
+								cols="80" />
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Visibility
+						</td>
+						<td>
+							<html:select property="sampleBean.visibilityGroups"
+								styleId="visibilityGroup" multiple="true" size="6">
+								<html:options name="allVisibilityGroupsNoOrg" />
+							</html:select>
+							<br>
+							<i>(${applicationOwner}_Researcher and
+								${applicationOwner}_DataCurator are always selected by default.)</i>
+						</td>
+					</tr>
 				</table>
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
+					cellspacing="0">
 					<tr>
 						<td width="30%">
-							<span class="formMessage"> </span>
-							<br>
 							<table width="498" height="32" border="0" align="right"
 								cellpadding="4" cellspacing="0">
 								<tr>
@@ -143,7 +124,7 @@
 												<input type="hidden" name="page" value="1">
 												<html:hidden property="sampleBean.createdBy"
 													value="${user.loginName }" />
-												<html:submit/>
+												<html:submit />
 											</div>
 										</div>
 									</td>

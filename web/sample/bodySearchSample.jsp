@@ -33,146 +33,127 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=sample" />
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabelWithTop" valign="top" width="20%">
-							<strong>Search Location</strong>
+						<td class="cellLabel" width="20%">
+							Search Location
 						</td>
-						<td class="rightLabelWithTop" align="left">
-							<strong><html:select property="searchLocations"
-									styleId="searchLocations" multiple="true" size="4"
-									onchange="javascript:setSampleDropdowns();">
-									<html:option value="local">
+						<td>
+							<html:select property="searchLocations" styleId="searchLocations"
+								multiple="true" size="4"
+								onchange="javascript:setSampleDropdowns();">
+								<html:option value="local">
 										Local
 									</html:option>
-									<c:if test="${! empty allGridNodes}">
-										<html:options collection="allGridNodes" property="hostName"
-											labelProperty="hostName" />
-									</c:if>
-								</html:select> </strong>
+								<c:if test="${! empty allGridNodes}">
+									<html:options collection="allGridNodes" property="hostName"
+										labelProperty="hostName" />
+								</c:if>
+							</html:select>
 						</td>
 					</tr>
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr class="topBorder">
-						<td class="formTitle" colspan="6">
-							<div align="justify">
-								Keyword Search
-							</div>
-						</td>
-					</tr>
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabel" valign="top" width="30%">
-							<strong>Search by characterization keywords, publication
-								keywords and text in characterization descriptions</strong>
-							<br>
+						<td class="cellLabel" width="20%">
+							Keywords
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td>
 							<html:textarea property="text" rows="3" cols="60" />
 							<br>
-							<em>case insensitive</em>
+							<em>case insensitive, words in quotes are searched together</em>
 							<br>
-							<em>words in quotes are searched together</em>
+							<em>searching characterization keywords, publication
+								keywords and text in characterization descriptions</em>
 							<br>
 						</td>
 					</tr>
-
 				</table>
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr class="topBorder">
-						<td class="formTitle" colspan="6">
-							<div align="justify">
-								Basic Search
-							</div>
-						</td>
-					</tr>
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabel" width="20%" valign="top">
-							<strong>Sample<br>Point of Contact </strong>
+						<td class="cellLabel" width="20%">
+							Sample
+							<br>
+							Point of Contact
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td colspan="5">
 							<br>
 							<html:text property="samplePointOfContact" size="60" />
-							<em>* for searching wildcards</em>
 							<br>
-							<br>
-							<em>case insensitive</em>
+							<em>case insensitive, * for wildcard search</em>
 							<br>
 							<em>searching organization name or first name or last name
-								of a person</em>
-
+								of a person </em>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Composition<br> Nanomaterial Entity</strong>
+						<td class="cellLabel">
+							Composition
+							<br>
+							Nanomaterial Entity
 						</td>
-						<td class="label">
-							<strong><html:select styleId="nanomaterialEntityTypes"
-									property="nanomaterialEntityTypes" multiple="true" size="4">
-									<html:options name="nanomaterialEntityTypes" />
-								</html:select> </strong>
+						<td>
+							<html:select styleId="nanomaterialEntityTypes"
+								property="nanomaterialEntityTypes" multiple="true" size="4">
+								<html:options name="nanomaterialEntityTypes" />
+							</html:select>
 						</td>
-						<td class="label" valign="top">
-							<strong>Composition <br>Functionalizing Entity</strong>
+						<td class="cellLabel">
+							Composition
+							<br>
+							Functionalizing Entity
 						</td>
-						<td class="label" valign="top">
-							<strong><html:select
-									styleId="functionalizingEntityTypes"
-									property="functionalizingEntityTypes" multiple="true" size="3">
-									<html:options name="functionalizingEntityTypes" />
-								</html:select> </strong>
+						<td>
+							<html:select styleId="functionalizingEntityTypes"
+								property="functionalizingEntityTypes" multiple="true" size="3">
+								<html:options name="functionalizingEntityTypes" />
+							</html:select>
 						</td>
-						<td class="label" valign="top">
-							<strong>Function</strong>
+						<td class="cellLabel">
+							Function
 						</td>
-						<td class="rightLabel" valign="top">
-							<strong><html:select styleId="functionTypes"
-									property="functionTypes" multiple="true" size="3">
-									<html:options name="functionTypes" />
-								</html:select> </strong>
+						<td>
+							<html:select styleId="functionTypes" property="functionTypes"
+								multiple="true" size="3">
+								<html:options name="functionTypes" />
+							</html:select>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Characterization Type</strong>
+						<td class="cellLabel">
+							Characterization Type
 							<html:hidden styleId="characterizationType"
 								property="characterizationType" />
 						</td>
-						<td class="label" valign="top">
+						<td>
 							<html:select property="characterizationType" styleId="charType"
 								onchange="javascript:setCharacterizationOptionsByCharType()">
 								<option value="" />
 									<html:options name="characterizationTypes" />
 							</html:select>
 						</td>
-						<td class="label" valign="top">
-							<strong>Characterization</strong>
+						<td class="cellLabel">
+							Characterization
 						</td>
-						<td class="rightLabel" valign="top" colspan="3">
-							<strong> <html:select property="characterizations"
-									styleId="charName" multiple="true" size="4">
-									<%--<c:forEach var="achar"
+						<td colspan="3">
+							<html:select property="characterizations" styleId="charName"
+								multiple="true" size="4">
+								<%--<c:forEach var="achar"
 										items="${searchSampleForm.map.characterizations}">
 										<html:option value="${achar}">${achar}</html:option>
 									</c:forEach>--%>
-								</html:select> </strong>
+							</html:select>
 						</td>
 					</tr>
 				</table>
 				<br>
 
 				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
+					cellspacing="0">
 					<tr>
 						<td>
-							<span class="formMessage"> </span>
-							<br>
 							<table border="0" align="right" cellpadding="4" cellspacing="0">
 								<tr>
 									<td>

@@ -28,174 +28,161 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=publication" />
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr class="topBorder">
-						<td class="formTitle" colspan="6">
-							<div align="justify">
-								Search Criteria
-							</div>
-						</td>
-					</tr>
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Search Location</strong>
+						<td class="cellLabel" width="20%">
+							Search Location
 						</td>
-						<td class="rightLabel" colspan="5">
-							<strong><html:select property="searchLocations"
-									styleId="searchLocations"
-									onchange="javascript:setPublicationDropdowns()" multiple="true"
-									size="4">
-									<html:option value="local">
+						<td colspan="5">
+							<html:select property="searchLocations" styleId="searchLocations"
+								onchange="javascript:setPublicationDropdowns()" multiple="true"
+								size="4">
+								<html:option value="local">
 										Local
 									</html:option>
-									<c:if test="${! empty allGridNodes}">
-										<html:options collection="allGridNodes"
-											property="hostName" labelProperty="hostName" />
-									</c:if>
-								</html:select> </strong>
+								<c:if test="${! empty allGridNodes}">
+									<html:options collection="allGridNodes" property="hostName"
+										labelProperty="hostName" />
+								</c:if>
+							</html:select>
 						</td>
 					</tr>
+				</table>
+				<br>
+				<table width="100%" align="center" class="submissionView">
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Publication Type</strong>
+						<td class="cellLabel" width="15%">
+							Publication Type
 						</td>
-						<td class="label" valign="top">
-							<html:select property="category"
-								styleId="publicationCategories" onchange="javascript:setSearchReportFields();">
+						<td colspan="3">
+							<html:select property="category" styleId="publicationCategories"
+								onchange="javascript:setSearchReportFields();">
 								<option value="" />
 									<html:options name="publicationCategories" />
 							</html:select>
-						</td>					
-						<td class="label" valign="top">
-							<strong>Research<br>Category</strong>
 						</td>
-						<td class="label" valign="top">
-							<strong><html:select property="researchArea"
-									styleId="researchArea" multiple="true" size="3">
-									<html:options name="publicationResearchAreas" />
-								</html:select> </strong>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Research Category
 						</td>
-						<td class="rightLabel" colspan="2" valign="top" align="left">												
+						<td colspan="3">
+							<c:forEach var="data" items="${publicationResearchAreas}">
+								<html:multibox styleId="researchArea" property="researchArea">
+												${data}
+											</html:multibox>${data}
+										</c:forEach>
+						</td>
+					</tr>
+					<tr id="pubMedRow">
+						<td class="cellLabel">
+							PubMed ID&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td>
+							<html:text property="pubMedId" size="30"
+								onkeydown="return filterInteger(event)" />
+							<br>
+							<em>(exact numeric PubMed ID)</em>
+							<br>
+						</td>
+						<td class="cellLabel">
+							Digital Object ID
+						</td>
+						<td>
+							<html:text property="digitalObjectId" size="30" />
+						</td>
+						<td colspan="2">
 							&nbsp;
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
-							<strong>Publication Title</strong>
+						<td class="cellLabel">
+							Publication Title
 						</td>
-						<td class="rightLabel" colspan="5">
+						<td colspan="5">
 							<html:text property="title" size="100" />
-							<br><em>* for searching wildcards</em>
-						</td>
-					</tr>
-					<tr valign="top" id="pubMedRow">									
-						<td class="leftLabel" valign="top" colspan="2">
-							<strong>PubMed ID</strong>&nbsp;&nbsp;&nbsp;&nbsp;
-							<html:text property="pubMedId" size="20" onkeydown="return filterInteger(event)"/>
-							<br><i>(Please enter the exact numeric PubMed ID)</i><br><br>
-						</td>
-						<td class="label" valign="top">
-							<strong>Digital Object ID</strong>
-						</td>
-						<td class="label" valign="top">
-							<html:text property="digitalObjectId" size="20" />
-						</td>
-						<td class="rightLabel" colspan="2" valign="top" align="left">												
-							&nbsp;
+							<br>
+							<em>* for wildcard search</em>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Authors</strong>
+						<td class="cellLabel">
+							Authors
 						</td>
-						<td class="rightLabel" colspan="5" valign="top">
-							<strong><html:textarea property="authorsStr"
-									cols="30" styleId="authorsStr" rows="3">
-							</html:textarea> </strong>
+						<td colspan="5">
+							<html:textarea property="authorsStr" cols="80"
+								styleId="authorsStr" rows="3">
+							</html:textarea>
 							<br>
-							<em>case insensitive</em>
-							<br>
-							<em>words in quotes are searched together</em>
+							<em>case insensitive, words in quotes are searched together</em>
 							<br>
 						</td>
 					</tr>
-					
 					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Keywords</strong>
+						<td class="cellLabel">
+							Keywords
 						</td>
-						<td class="rightLabel" colspan="5" valign="top">
-							<strong><html:textarea property="keywordsStr"
-									cols="30" styleId="keywordsStr" rows="3">
-							</html:textarea> </strong>
+						<td colspan="5">
+							<html:textarea property="keywordsStr" cols="80"
+								styleId="keywordsStr" rows="3">
+							</html:textarea>
 							<br>
-							<em>case insensitive</em>
-							<br>
-							<em>words in quotes are searched together</em>
+							<em>case insensitive, words in quotes are searched together</em>
 							<br>
 						</td>
 					</tr>
 				</table>
 				<br>
-				
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" summary="">
-					<tr class="topBorder">
-						<td class="formTitle" colspan="2">
-							<div align="justify">
-								Advance Search
-							</div>
+				<table width="100%" align="center" class="submissionView">
+					<tr>
+						<td class="cellLabel">
+							Nanoparticle Name
 						</td>
-						<td class="formTitle" colspan="4">&nbsp;
+						<td colspan="5" valign="top">
+							<html:text property="sampleName" size="80" />
+							<br>
+							<em>* for wildcard search</em>
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel"  valign="top">
-							<strong>Nanoparticle Name</strong>
+						<td class="cellLabel">
+							Composition
+							<br>
+							Nanomaterial Entity
 						</td>
-						<td class="rightLabel" colspan="5" valign="top">
-							<html:text property="sampleName" size="20" />
-							<em>* for searching wildcards</em>
+						<td>
+							<html:select property="nanomaterialEntityTypes"
+								styleId="nanomaterialEntityTypes" multiple="true" size="4">
+								<html:options name="nanomaterialEntityTypes" />
+							</html:select>
 						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
-							<strong>Composition<br> Nanomaterial Entity</strong>
+						<td class="cellLabel">
+							Composition
+							<br>
+							Functionalizing Entity
 						</td>
-						<td class="label" valign="top">
-							<strong><html:select property="nanomaterialEntityTypes"
-									styleId="nanomaterialEntityTypes" multiple="true" size="4">
-									<html:options name="nanomaterialEntityTypes" />
-								</html:select> </strong>
+						<td>
+							<html:select styleId="functionalizingEntityTypes"
+								property="functionalizingEntityTypes" multiple="true" size="3">
+								<html:options name="functionalizingEntityTypes" />
+							</html:select>
 						</td>
-						<td class="label" valign="top">
-							<strong>Composition <br>Functionalizing Entity</strong>
+						<td class="cellLabel">
+							Function
 						</td>
-						<td class="label" valign="top">
-							<strong><html:select
-									styleId="functionalizingEntityTypes"
-									property="functionalizingEntityTypes" multiple="true" size="3">
-									<html:options name="functionalizingEntityTypes" />
-								</html:select> </strong>
-						</td>
-						<td class="label" valign="top">
-							<strong>Function</strong>
-						</td>
-						<td class="rightLabel" valign="top">
-							<strong><html:select property="functionTypes"
-									styleId="functionTypes" multiple="true" size="3">
-									<html:options name="functionTypes" />
-								</html:select> </strong>
+						<td>
+							<html:select property="functionTypes" styleId="functionTypes"
+								multiple="true" size="3">
+								<html:options name="functionTypes" />
+							</html:select>
 						</td>
 					</tr>
 				</table>
 				<br>
 				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
+					cellspacing="0">
 					<tr>
 						<td>
-							<span class="formMessage"> </span>
 							<br>
 							<table border="0" align="right" cellpadding="4" cellspacing="0">
 								<tr>

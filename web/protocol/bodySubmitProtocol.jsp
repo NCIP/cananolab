@@ -35,54 +35,50 @@
 		<tr>
 			<td colspan="2">
 				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-					width="100%" align="center" summary="" border="0">
-					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="2">
-								<div align="justify">
-									Description
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Protocol Type*</strong>
-							</td>
-							<td class="rightLabel">
-								<html:select styleId="protocolType"
-									property="protocol.domain.type"
-									onchange="javascript:callPrompt('Protocol Type', 'protocolType'); retrieveProtocols();">
-									<option value="" />
-										<html:options name="protocolTypes" />
-									<option value="other">
-										[Other]
-									</option>
-								</html:select>
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Protocol Name* </strong>
-							</td>
-							<td class="rightLabel">
-								<html:select styleId="protocolName"
-									property="protocol.domain.name"
-									onchange="javascript:callPrompt('Protocol Name', 'protocolName'); retrieveProtocolFileVersions();">
-									<%--<c:if test="${!empty protocolNamesByType}">
+				<table width="100%" align="center" class="submissionView">
+					<tr>
+						<td class="cellLabel">
+							Protocol Type*
+						</td>
+						<td>
+							<html:select styleId="protocolType"
+								property="protocol.domain.type"
+								onchange="javascript:callPrompt('Protocol Type', 'protocolType'); retrieveProtocols();">
+								<option value="" />
+									<html:options name="protocolTypes" />
+								<option value="other">
+									[Other]
+								</option>
+							</html:select>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Protocol Name*
+						</td>
+						<td>
+							<html:select styleId="protocolName"
+								property="protocol.domain.name"
+								onchange="javascript:callPrompt('Protocol Name', 'protocolName'); retrieveProtocolFileVersions();">
+								<%--<c:if test="${!empty protocolNamesByType}">
 										<option value="" />
 											<html:options name="protocolNamesByType" />
 										<option value="other">
 											[Other]
 										</option>
 									</c:if>--%>
-								</html:select>
-								&nbsp; &nbsp;
-								<strong>Protocol Version* </strong>&nbsp;
-								<html:select styleId="protocolVersion"
-									property="protocol.domain.version"
-									onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocolFile();">
-									<%--<c:if test="${!empty protocolFilesByTypeName}">
+							</html:select>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Protocol Version*
+						</td>
+						<td>
+							<html:select styleId="protocolVersion"
+								property="protocol.domain.version"
+								onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocolFile();">
+								<%--<c:if test="${!empty protocolFilesByTypeName}">
 										<option value="" />
 											<html:optionsCollection name="protocolFilesByTypeName"
 												label="domainFile.version" value="domainFile.id" />
@@ -90,68 +86,69 @@
 											[Other]
 										</option>
 									</c:if>--%>
-								</html:select>
-								&nbsp; &nbsp;
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Protocol File</strong>
-							</td>
-							<td class="rightLabel">
-								<html:file property="protocol.file.uploadedFile" />
-								&nbsp;&nbsp;
-								<span id="protocolFileLink"> <c:if
-										test="${!empty submitProtocolForm.map.protocol.file.domainFile.uri }">&nbsp;&nbsp;
+							</html:select>
+							&nbsp; &nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Protocol File
+						</td>
+						<td>
+							<html:file property="protocol.fileBean.uploadedFile" />
+							&nbsp;&nbsp;
+							<span id="protocolFileLink"> <c:if
+									test="${!empty submitProtocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
 									<a
-											href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.protocol.file.domainFile.id}&amp;location=local">
-											${submitProtocolForm.map.protocol.file.domainFile.uri }</a>
-										<html:hidden property="protocol.file.domainFile.uri" />
-										<html:hidden property="protocol.file.domainFile.name" />
-									</c:if> </span>&nbsp;
-							</td>
-						</tr>
-						<c:if
-							test="${!empty submitProtocolForm.map.protocol.version}">
-							<html:hidden property="file.domainFile.version" />
-						</c:if>
-						<html:hidden styleId="updatedUri" property="protocol.file.updatedFileUri" />
-						<html:hidden styleId="updatedName" property="protocol.file.updatedFileName" />
+										href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.protocol.fileBean.domainFile.id}&amp;location=local">
+										${submitProtocolForm.map.protocol.fileBean.domainFile.uri }</a>
+									<html:hidden property="protocol.fileBean.domainFile.uri" />
+									<html:hidden property="protocol.fileBean.domainFile.name" />
+								</c:if> </span>&nbsp;
+						</td>
+					</tr>
+					<c:if
+						test="${!empty submitProtocolForm.map.protocol.domain.version}">
+						<html:hidden property="protocol.domain.version" />
+					</c:if>
+					<%--
+						<html:hidden styleId="updatedUri" property="protocol.fileBean.updatedFileUri" />
+						<html:hidden styleId="updatedName" property="protocol.fileBean.updatedFileName" />
 						<html:hidden styleId="updatedVersion"
-							property="protocol.file.updatedFileVersion" />
-						<tr>
-							<td class="leftLabel">
-								<strong>File Title</strong>
-							</td>
-							<td class="rightLabel">
-								<html:text styleId="fileTitle" property="protocol.file.domainFile.title"
-									size="80" />
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Description</strong>
-							</td>
-							<td class="rightLabel">
-								<html:textarea styleId="fileDescription"
-									property="protocol.file.domainFile.description" rows="3" />
-							</td>
-						</tr>
-						<tr>
-							<td class="leftLabel">
-								<strong>Visibility</strong>
-							</td>
-							<td class="rightLabel">
-								<html:select property="protocol.file.visibilityGroups" multiple="true"
-									size="6">
-									<html:options name="allVisibilityGroups" />
-								</html:select>
-								<br>
-								<i>(${applicationOwner}_Researcher and
-									${applicationOwner}_DataCurator are always selected by
-									default.)</i>
-							</td>
-						</tr>
+							property="protocol.fileBean.updatedFileVersion" />
+							--%>
+					<tr>
+						<td class="cellLabel">
+							File Title
+						</td>
+						<td>
+							<html:text styleId="fileTitle"
+								property="protocol.fileBean.domainFile.title" size="80" />
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Description
+						</td>
+						<td>
+							<html:textarea styleId="fileDescription"
+								property="protocol.fileBean.domainFile.description" rows="3" />
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Visibility
+						</td>
+						<td>
+							<html:select property="protocol.fileBean.visibilityGroups"
+								multiple="true" size="6">
+								<html:options name="allVisibilityGroups" />
+							</html:select>
+							<br>
+							<i>(${applicationOwner}_Researcher and
+								${applicationOwner}_DataCurator are always selected by default.)</i>
+						</td>
+					</tr>
 					</tbody>
 				</table>
 				<br>
