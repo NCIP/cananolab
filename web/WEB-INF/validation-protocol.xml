@@ -22,7 +22,7 @@
 				<arg position="0" key="protocol.version"
 					bundle="protocol" />
 			</field>
-			<field property="file.domainFile.title" page="1" depends="mask">
+			<field property="protocol.fileBean.domainFile.title" page="1" depends="mask">
 				<arg position="0" key="protocol.title"
 					bundle="protocol" />
 				<msg name="mask" key="protocol.title.invalid" />

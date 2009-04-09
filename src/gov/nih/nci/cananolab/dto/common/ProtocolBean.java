@@ -15,17 +15,10 @@ import java.util.Date;
  */
 public class ProtocolBean {
 	private FileBean fileBean = new FileBean();
-
 	private Protocol domain = new Protocol();
-	String domainFileId; // used for ajax
-
-	String domainFileVersion; // used for ajax
-
-	String updatedFileUri; // used for ajax
-
-	String updatedFileName; // used for ajax
-
-	String location;
+	private String[] visibilityGroups = new String[0];
+	private String location;
+	private boolean hidden = false;
 
 	public ProtocolBean() {
 		if (fileBean.getDomainFile() != null)
@@ -35,39 +28,18 @@ public class ProtocolBean {
 	public ProtocolBean(Protocol protocol) {
 		domain = protocol;
 		fileBean = new FileBean(protocol.getFile());
-		domainFileId = fileBean.getDomainFile().getId().toString();
 	}
 
 	public String getDisplayName() {
+		String displayName = "";
 		if (domain.getName() != null) {
-			return (domain.getName() + "-" + domain.getVersion());
-		} else {
-			return "";
+			displayName += domain.getName();
+			if (domain.getAbbreviation() != null) {
+				displayName += " (" + domain.getAbbreviation() + ")";
+			}
+			displayName += "-" + domain.getVersion();
 		}
-	}
-
-	public String getDomainFileId() {
-		return domainFileId;
-	}
-
-	public void setDomainFileId(String domainFileId) {
-		this.domainFileId = domainFileId;
-	}
-
-	public String getUpdatedFileUri() {
-		return updatedFileUri;
-	}
-
-	public void setUpdatedFileUri(String domainFileUri) {
-		this.updatedFileUri = domainFileUri;
-	}
-
-	public String getUpdatedFileName() {
-		return updatedFileName;
-	}
-
-	public void setUpdatedFileName(String domainFileName) {
-		this.updatedFileName = domainFileName;
+		return displayName;
 	}
 
 	public boolean equals(Object obj) {
@@ -88,18 +60,6 @@ public class ProtocolBean {
 	public void setupDomain(String internalUriPath, String createdBy)
 			throws Exception {
 		domain.setFile(fileBean.getDomainFile());
-		if (updatedFileUri != null && updatedFileUri.trim().length() > 0) {
-			domain.getFile().setUri(updatedFileUri);
-		}
-		if (updatedFileName != null && updatedFileName.trim().length() > 0) {
-			domain.getFile().setName(updatedFileName);
-		}
-		try {
-			Long id = new Long(domainFileId);
-			domain.getFile().setId(id);
-		} catch (Exception e) {
-
-		}
 		fileBean.setupDomainFile(internalUriPath, createdBy, 0);
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
@@ -121,5 +81,21 @@ public class ProtocolBean {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String[] getVisibilityGroups() {
+		return visibilityGroups;
+	}
+
+	public void setVisibilityGroups(String[] visibilityGroups) {
+		this.visibilityGroups = visibilityGroups;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 }

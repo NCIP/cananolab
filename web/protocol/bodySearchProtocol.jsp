@@ -72,6 +72,16 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
+							Protocol Abbreviation
+						</td>
+						<td>
+							<html:text property="protocolAbbreviation" size="100" />
+							<br>
+							<em>* for wildcard search</em>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
 							Protocol File Title
 						</td>
 						<td>

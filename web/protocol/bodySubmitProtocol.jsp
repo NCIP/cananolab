@@ -55,10 +55,10 @@
 						<td class="cellLabel">
 							Protocol Name*
 						</td>
-						<td>
+						<td colspan="3">
 							<html:select styleId="protocolName"
 								property="protocol.domain.name"
-								onchange="javascript:callPrompt('Protocol Name', 'protocolName'); retrieveProtocolFileVersions();">
+								onchange="javascript:callPrompt('Protocol Name', 'protocolName');">
 								<option value="" />
 									<c:if test="${!empty protocolsByType}">
 										<html:options collection="protocolsByType"
@@ -69,13 +69,15 @@
 								</option>
 							</html:select>
 						</td>
-						<td class="cellLabel" width="20%">
+					</tr>
+					<tr>
+						<td class="cellLabel">
 							Protocol Version*
 						</td>
 						<td>
 							<html:select styleId="protocolVersion"
 								property="protocol.domain.version"
-								onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocolFile();">
+								onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocol();">
 								<option value="" />
 									<c:if test="${!empty protocolsByType}">
 										<html:options collection="protocolsByType"
@@ -85,7 +87,13 @@
 									[Other]
 								</option>
 							</html:select>
-							&nbsp; &nbsp;
+						</td>
+						<td class="cellLabel" width="20%">
+							Protocol Abbreviation
+						</td>
+						<td>
+							<html:text styleId="protocolAbbreviation"
+								property="protocol.domain.abbreviation" size="30" />
 						</td>
 					</tr>
 					<tr>
@@ -93,28 +101,18 @@
 							Protocol File
 						</td>
 						<td colspan="3">
-							<html:file property="protocol.fileBean.uploadedFile" />
+							<html:file property="protocol.fileBean.uploadedFile"
+								onchange="javascript:writeLink(null);" />
 							&nbsp;&nbsp;
 							<span id="protocolFileLink"> <c:if
 									test="${!empty submitProtocolForm.map.protocol.fileBean.domainFile.uri }">&nbsp;&nbsp;
 									<a
 										href="searchProtocol.do?dispatch=download&amp;fileId=${submitProtocolForm.map.protocol.fileBean.domainFile.id}&amp;location=local">
 										${submitProtocolForm.map.protocol.fileBean.domainFile.uri }</a>
-									<html:hidden property="protocol.fileBean.domainFile.uri" />
-									<html:hidden property="protocol.fileBean.domainFile.name" />
 								</c:if> </span>&nbsp;
 						</td>
+						<html:hidden property="protocol.domain.id" styleId="protocolId" />
 					</tr>
-					<c:if
-						test="${!empty submitProtocolForm.map.protocol.domain.version}">
-						<html:hidden property="protocol.domain.version" />
-					</c:if>
-					<%--
-						<html:hidden styleId="updatedUri" property="protocol.fileBean.updatedFileUri" />
-						<html:hidden styleId="updatedName" property="protocol.fileBean.updatedFileName" />
-						<html:hidden styleId="updatedVersion"
-							property="protocol.fileBean.updatedFileVersion" />
-							--%>
 					<tr>
 						<td class="cellLabel">
 							File Title
@@ -139,8 +137,8 @@
 							Visibility
 						</td>
 						<td colspan="3">
-							<html:select property="protocol.fileBean.visibilityGroups"
-								multiple="true" size="6">
+							<html:select property="protocol.visibilityGroups" multiple="true"
+								size="6" styleId="visibility">
 								<html:options name="allVisibilityGroups" />
 							</html:select>
 							<br>

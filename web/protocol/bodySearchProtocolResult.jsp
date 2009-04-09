@@ -36,12 +36,14 @@
 				decorator="gov.nih.nci.cananolab.dto.common.ProtocolDecorator">
 				<display:column title="Protocol Name" property="${link}"
 					sortable="true" />
-				<display:column title="Protocol Type"
-					property="domain.type" sortable="true" />
+				<display:column title="Protocol Abbreviation"
+					property="domain.abbreviation" sortable="true" />
+				<display:column title="Protocol Type" property="domain.type"
+					sortable="true" />
 				<display:column title="Version" property="domain.version"
 					sortable="true" />
-				<display:column title="File Title" property="fileBean.domainFile.title"
-					sortable="true" />
+				<display:column title="File Title"
+					property="fileBean.domainFile.title" sortable="true" />
 				<display:column title="File Link" property="downloadURL"
 					sortable="true" />
 				<display:column title="Description"

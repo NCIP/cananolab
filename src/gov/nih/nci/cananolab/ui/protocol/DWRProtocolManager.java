@@ -1,8 +1,11 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
+import gov.nih.nci.cananolab.service.protocol.ProtocolService;
+import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.util.List;
@@ -22,12 +25,11 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 public class DWRProtocolManager {
 
 	Logger logger = Logger.getLogger(DWRProtocolManager.class);
-	ProtocolServiceHelper helper = new ProtocolServiceHelper();
+	ProtocolService service = new ProtocolServiceLocalImpl();
 
 	public DWRProtocolManager() {
 	}
 
-	// for ajax
 	public String[] getProtocolTypes(String searchLocations) {
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
@@ -55,28 +57,39 @@ public class DWRProtocolManager {
 		return new String[] { "" };
 	}
 
-	// for ajax on linux
-//	public String getProtocolFileUriById(String fileId) {
-//		return helper.getProtocolFileUriById(fileId);
-//	}
-
-	// for ajax on linux
-//	public String getProtocolFileNameById(String fileId) {
-//		return helper.getProtocolFileNameById(fileId);
-//	}
-
-	// for ajax on linux
-	public String getProtocolVersionById(String fileId) {
-		return helper.getProtocolVersionById(fileId);
-	}
-
-	// for dwr ajax
-	public List<ProtocolBean> getProtocols(String protocolType,
-			String protocolName) {
-		if ((protocolType == null || protocolType.length() == 0)
-				&& (protocolName == null || protocolName.length() == 0)) {
+	public ProtocolBean getProtocol(String protocolType, String protocolName,
+			String protocolVersion) {
+		// all three have to be present
+		if (protocolType == null || protocolType.length() == 0
+				|| protocolName == null || protocolName.length() == 0
+				|| protocolVersion == null || protocolVersion.length() == 0) {
 			return null;
 		}
-		return helper.getProtocols(protocolType, protocolName);
+		try {
+			Protocol protocol = service.findProtocolBy(protocolType,
+					protocolName, protocolVersion);
+			ProtocolBean protocolBean = new ProtocolBean(protocol);
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			UserBean user = (UserBean) webContext.getHttpServletRequest()
+					.getSession().getAttribute("user");
+			service.retrieveVisibility(protocolBean, user);
+			return protocolBean;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public List<ProtocolBean> getProtocols(String protocolType) {
+		try {
+			if (protocolType == null || protocolType.length() == 0) {
+				return null;
+			}
+			List<ProtocolBean> protocols = service.findProtocolsBy(
+					protocolType, null, null, null);
+			return protocols;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }

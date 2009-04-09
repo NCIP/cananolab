@@ -4,8 +4,6 @@ import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -13,8 +11,8 @@ import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,18 +47,20 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
-		authService.assignVisibility(protocolBean.getFileBean().getDomainFile()
-				.getId().toString(), protocolBean.getFileBean()
-				.getVisibilityGroups(), null);
+		authService.assignVisibility(protocolBean.getDomain().getId()
+				.toString(), protocolBean.getVisibilityGroups(), null);
 
 		// remove protocol visibility
 		ProtocolServiceLocalImpl localService = new ProtocolServiceLocalImpl();
 		Protocol dbProtocol = localService.findProtocolBy(protocolBean
-				.getDomain().getType(), protocolBean.getDomain().getName());
+				.getDomain().getType(), protocolBean.getDomain().getName(),
+				protocolBean.getDomain().getVersion());
 		// assign protocol visibility
-		if (protocolBean.getFileBean().getVisibilityStr() != null
-				&& protocolBean.getFileBean().getVisibilityStr().contains(
-						Constants.CSM_PUBLIC_GROUP)) {
+		if (protocolBean.getVisibilityGroups() != null) {
+			authService.assignVisibility(dbProtocol.getId().toString(),
+					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
+			Arrays.asList(protocolBean.getVisibilityGroups()).contains(
+					Constants.CSM_PUBLIC_GROUP);
 			authService.assignVisibility(dbProtocol.getId().toString(),
 					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
 		}
@@ -86,7 +86,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		List<ProtocolBean> protocols = service.findProtocolsBy(
-				selectedProtocolType, null, null);
+				selectedProtocolType, null, null, null);
 		request.getSession().setAttribute("protocolsByType", protocols);
 
 		return mapping.findForward("inputPage");
@@ -111,10 +111,11 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		theForm.set("protocol", protocolBean);
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		List<ProtocolBean> protocols = service.findProtocolsBy(
-				selectedProtocolType, null, null);
+				selectedProtocolType, null, null, null);
 		request.getSession().setAttribute("protocolsByType", protocols);
-		FileService fileService = new FileServiceLocalImpl();
-		fileService.retrieveVisibility(protocolBean.getFileBean(), user);
+
+		ProtocolService protocolService = new ProtocolServiceLocalImpl();
+		protocolService.retrieveVisibility(protocolBean, user);
 		return mapping.findForward("inputPage");
 	}
 

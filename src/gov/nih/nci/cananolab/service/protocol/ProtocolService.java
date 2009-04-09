@@ -2,10 +2,10 @@ package gov.nih.nci.cananolab.service.protocol;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * This interface defines methods involved in creating and searching protocols
@@ -28,10 +28,14 @@ public interface ProtocolService {
 			throws ProtocolException;
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String fileTitle) throws ProtocolException;
-
-	public SortedSet<String> getProtocolNames(String protocolType)
+			String protocolName, String protocolAbbreviation, String fileTitle)
 			throws ProtocolException;
 
+	public Protocol findProtocolBy(String protocolType, String protocolName,
+			String protocolVersion) throws ProtocolException;
+
 	public int getNumberOfPublicProtocols() throws ProtocolException;
+
+	public void retrieveVisibility(ProtocolBean protocolBean, UserBean user)
+			throws ProtocolException;
 }

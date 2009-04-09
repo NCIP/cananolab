@@ -17,6 +17,7 @@
 				type="java.lang.String[]" />
 			<form-property name="protocolType" type="java.lang.String" />
 			<form-property name="protocolName" type="java.lang.String" />
+			<form-property name="protocolAbbreviation" type="java.lang.String" />
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>

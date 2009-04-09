@@ -2,87 +2,84 @@
 var emptyOption = [{label:"", value:""}];
 function retrieveProtocols() {
 	var protocolType = document.getElementById("protocolType").value;
-	ProtocolManager.getProtocols(protocolType, null, populateProtocols);
+	ProtocolManager.getProtocols(protocolType, populateProtocols);
 }
 function resetProtocols() {
 	dwr.util.removeAllOptions("protocolName");
 	dwr.util.removeAllOptions("protocolVersion");
 	dwr.util.addOptions("protocolName", emptyOption, "value", "label");
 	dwr.util.addOptions("protocolVersion", emptyOption, "value", "label");
-	resetProtocolFiles();
+	populateProtocol(null);
 }
 function populateProtocols(protocols) {
 	resetProtocols();
-	dwr.util.addOptions("protocolName", protocols, "domain.name");
-	dwr.util.addOptions("protocolName", ["[Other]"]);
-	dwr.util.addOptions("protocolVersion", protocols, "domain.version");
-	dwr.util.addOptions("protocolVersion", ["[Other]"]);
+	if (protocols != null) {
+		var protocolNames = new Array();
+		var protocolVersions = new Array();
+		for (i = 0; i < protocols.length; i++) {
+			protocolNames[i] = protocols[i].domain.name;
+			protocolVersions[i] = protocols[i].domain.version;
+		}
+		dwr.util.addOptions("protocolName", protocolNames);
+		dwr.util.addOptions("protocolName", ["[Other]"]);
+		dwr.util.addOptions("protocolVersion", protocolVersions);
+		dwr.util.addOptions("protocolVersion", ["[Other]"]);
+	} else {
+		dwr.util.addOptions("protocolName", ["[Other]"]);
+		dwr.util.addOptions("protocolVersion", ["[Other]"]);
+	}
 }
 
-function resetProtocolFiles() {
-	writeLink(null);
+function retrieveProtocol() {
+	var protocolType = document.getElementById("protocolType").value;
+	var protocolName = document.getElementById("protocolName").value;
+	var protocolVersion = document.getElementById("protocolVersion").value;
+	ProtocolManager.getProtocol(protocolType, protocolName, protocolVersion, populateProtocol);
 }
-function populateProtocolFileVersions(protocolFiles) {
-	resetProtocolFiles();
-	dwr.util.addOptions("protocolVersion", protocolFiles, "domainFileId", "domainFileVersion");
-	dwr.util.addOptions("protocolVersion", ["[Other]"]);
-}
-function retrieveProtocolFile() {
-	var fileId = document.getElementById("protocolVersion").value;
-	//ProtocolManager.findProtocolFileById(fileId, writeLink); //not working on linux
-	ProtocolManager.getProtocolFileUriById(fileId, writeLink);
-	if (document.getElementById("updatedUri") != null) {
-		ProtocolManager.getProtocolFileUriById(fileId, function (data) {
-			document.getElementById("updatedUri").value = data;
-		});
+
+function populateProtocol(protocol) {
+	if (protocol==null) {
+	  writeLink(null);
+	  dwr.util.setValue("fileTitle", "");
+	  dwr.util.setValue("fileDescription", "");
+	  dwr.util.setValue("visibility", [""]);
+	  dwr.util.setValue("protocolAbbreviation", "");
+	  return;
 	}
-	if (document.getElementById("updatedName") != null) {
-		ProtocolManager.getProtocolFileNameById(fileId, function (data) {
-			document.getElementById("updatedName").value = data;
-		});
-	}
-	if (document.getElementById("updatedVersion") != null) {
-		ProtocolManager.getProtocolFileVersionById(fileId, function (data) {
-			document.getElementById("updatedVersion").value = data;
-		});
+	writeLink(protocol);
+	dwr.util.setValue("protocolId", protocol.domain.id);
+	dwr.util.setValue("protocolAbbreviation", protocol.domain.abbreviation);
+	dwr.util.setValue("visibility", protocol.visibilityGroups);
+
+	if (protocol.fileBean!=null) {
+		dwr.util.setValue("fileTitle", protocol.fileBean.domainFile.title);
+		dwr.util.setValue("fileDescription", protocol.fileBean.domainFile.description);
 	}
 }
-function writeLink(uri) {
-	var fileId = document.getElementById("protocolVersion").value;
-	if (uri != null) {
-		var fileUri = uri;
-		if (fileUri != null) {
-			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=local&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
-		} else {
-			document.getElementById("protocolFileLink").innerHTML = "";
-		}
+
+function writeLink(protocol) {
+	if (protocol == null) {
+		document.getElementById("protocolFileLink").innerHTML = "";
+		return;
+	}
+	var uri = null;
+	var fileId = null;
+	if (protocol.fileBean != null) {
+		uri = protocol.fileBean.domainFile.uri;
+		fileId = protocol.fileBean.domainFile.id;
+	}
+	if (uri != null && fileId != null) {
+		document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=local&amp;fileId=" + fileId + "'>" + uri + "</a>";
 	} else {
 		document.getElementById("protocolFileLink").innerHTML = "";
 	}
 }
-
-//not working on linux
-function writeLink0(protocolFile) {
-	var fileId = document.getElementById("protocolFileId").value;
-	if (protocolFile != null) {
-		var fileUri = protocolFile.domainUri;
-		if (fileUri != null) {
-			document.getElementById("protocolFileLink").innerHTML = "<a href='searchProtocol.do?dispatch=download&amp;location=local&amp;fileId=" + fileId + "'>" + fileUri + "</a>";
-		} else {
-			document.getElementById("protocolFileLink").innerHTML = "";
-		}
-	} else {
-		document.getElementById("protocolFileLink").innerHTML = "";
-	}
-}
-
 function setProtocolNameDropdown() {
 	var searchLocations = getSelectedOptions(document.getElementById("searchLocations"));
 	ProtocolManager.getProtocolTypes(searchLocations, function (data) {
-			dwr.util.removeAllOptions("protocolType");
-			dwr.util.addOptions("protocolType", data);
-		});
-
+		dwr.util.removeAllOptions("protocolType");
+		dwr.util.addOptions("protocolType", data);
+	});
 	return false;
 }
 

@@ -50,7 +50,7 @@ public class InitProtocolSetup {
 
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		List<ProtocolBean> protocols = service.findProtocolsBy(protocolType,
-				null, null);
+				null, null, null);
 		request.getSession().setAttribute("characterizationProtocols",
 				protocols);
 		return protocols;

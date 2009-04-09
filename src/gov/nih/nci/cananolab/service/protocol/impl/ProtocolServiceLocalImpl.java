@@ -2,19 +2,27 @@ package gov.nih.nci.cananolab.service.protocol.impl;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.helper.ProtocolServiceHelper;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of ProtocolService
@@ -54,9 +62,10 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			fileService.prepareSaveFile(protocol.getFile());
 
 			Protocol dbProtocol = findProtocolBy(protocol.getType(), protocol
-					.getName());
+					.getName(), protocol.getVersion());
 			if (dbProtocol != null) {
-				protocol = dbProtocol;
+				protocol.setCreatedBy(dbProtocol.getCreatedBy());
+				protocol.setCreatedDate(dbProtocol.getCreatedDate());
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -73,22 +82,25 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	// also used for Ajax
-	public SortedSet<String> getProtocolNames(String protocolType)
-			throws ProtocolException {
+	public Protocol findProtocolBy(String protocolType, String protocolName,
+			String protocolVersion) throws ProtocolException {
 		try {
-			return helper.getProtocolNames(protocolType);
-		} catch (Exception e) {
-			String err = "Problem finding protocols base on protocol type.";
-			logger.error(err, e);
-			throw new ProtocolException(err, e);
-		}
-	}
-
-	public Protocol findProtocolBy(String protocolType, String protocolName)
-			throws ProtocolException {
-		try {
-			return helper.findProtocolBy(protocolType, protocolName);
+			Protocol protocol = null;
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+					.add(Property.forName("type").eq(protocolType)).add(
+							Property.forName("name").eq(protocolName)).add(
+							Property.forName("version").eq(protocolVersion));
+			crit.setFetchMode("file", FetchMode.JOIN);
+			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				protocol = (Protocol) obj;
+			}
+			return protocol;
 		} catch (Exception e) {
 			String err = "Problem finding protocol by name and type.";
 			logger.error(err, e);
@@ -97,19 +109,20 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	}
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String fileTitle) throws ProtocolException {
+			String protocolName, String protocolAbbreviation, String fileTitle)
+			throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
-					protocolName, fileTitle);
+					protocolName, protocolAbbreviation, fileTitle);
 
-			for (Protocol pf : protocols) {
-				ProtocolBean pfb = new ProtocolBean(pf);
-				protocolBeans.add(pfb);
+			for (Protocol protocol : protocols) {
+				ProtocolBean protocolBean = new ProtocolBean(protocol);
+				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;
 		} catch (Exception e) {
-			String err = "Problem finding protocol files.";
+			String err = "Problem finding protocols.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
@@ -117,13 +130,54 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 	public int getNumberOfPublicProtocols() throws ProtocolException {
 		try {
-			int count = helper.getNumberOfPublicProtocols();
-			return count;
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			List<String> publicData = appService.getPublicData();
+			HQLCriteria crit = new HQLCriteria(
+					"select id from gov.nih.nci.cananolab.domain.common.Protocol");
+			List results = appService.query(crit);
+			List<String> publicIds = new ArrayList<String>();
+			for (Object obj : results) {
+				String id = (String) obj.toString();
+				if (StringUtils.containsIgnoreCase(publicData, id)) {
+					publicIds.add(id);
+				}
+			}
+			return publicIds.size();
 		} catch (Exception e) {
-			String err = "Error finding counts of public protocol files.";
+			String err = "Error finding counts of public protocols.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
-
 		}
 	}
+
+	public void retrieveVisibility(ProtocolBean protocolBean, UserBean user)
+			throws ProtocolException {
+		try {
+			if (protocolBean != null) {
+				AuthorizationService auth = new AuthorizationService(
+						Constants.CSM_APP_NAME);
+				if (protocolBean.getDomain().getId() != null
+						&& auth.isUserAllowed(protocolBean.getDomain().getId()
+								.toString(), user)) {
+					protocolBean.setHidden(false);
+					// get assigned visible groups
+					List<String> accessibleGroups = auth.getAccessibleGroups(
+							protocolBean.getDomain().getId().toString(),
+							Constants.CSM_READ_PRIVILEGE);
+					String[] visibilityGroups = accessibleGroups
+							.toArray(new String[0]);
+					protocolBean.setVisibilityGroups(visibilityGroups);
+				} else {
+					protocolBean.setHidden(true);
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting file visibility for "
+					+ protocolBean.getDisplayName();
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+	}
+
 }

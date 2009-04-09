@@ -42,7 +42,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		String fileTitle = (String) theForm.get("fileTitle");
 		String protocolType = (String) theForm.get("protocolType");
 		String protocolName = (String) theForm.get("protocolName");
-
+		String protocolAbbreviation = (String) theForm
+				.get("protocolAbbreviation");
 		String[] searchLocations = new String[0];
 		if (theForm.get("searchLocations") != null) {
 			searchLocations = (String[]) theForm.getStrings("searchLocations");
@@ -59,14 +60,15 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			if (location.equals("local")) {
 				service = new ProtocolServiceLocalImpl();
 			}
-// else {
-// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-// request, location);
-// service = new ProtocolServiceRemoteImpl(serviceUrl);
-// }
+			// else {
+			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+			// request, location);
+			// service = new ProtocolServiceRemoteImpl(serviceUrl);
+			// }
 
-			List<ProtocolBean> protocols = service.findProtocolsBy(
-					protocolType, protocolName, fileTitle);
+			List<ProtocolBean> protocols = service
+					.findProtocolsBy(protocolType, protocolName,
+							protocolAbbreviation, fileTitle);
 			for (ProtocolBean protocol : protocols) {
 				protocol.setLocation(location);
 				protocol.getFileBean().setLocation(location);
@@ -74,10 +76,9 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			if (location.equals("local")) {
 				List<ProtocolBean> filteredProtocols = new ArrayList<ProtocolBean>();
 				// retrieve accessibility
-				FileService fileService = new FileServiceLocalImpl();
 				for (ProtocolBean protocol : protocols) {
-					fileService.retrieveAccessibility(protocol.getFileBean(), user);
-					if (!protocol.getFileBean().isHidden()) {
+					service.retrieveVisibility(protocol, user);
+					if (!protocol.isHidden()) {
 						filteredProtocols.add(protocol);
 					}
 				}
@@ -92,8 +93,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			// foundProtocols,
 			// new
 			// Comparators.ProtocolBeanNameVersionComparator());
-			request.getSession().setAttribute("protocols",
-					foundProtocols);
+			request.getSession().setAttribute("protocols", foundProtocols);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -126,8 +126,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		return false;
 	}
 
-	public boolean canUserExecute(UserBean user)
-			throws SecurityException {
+	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return true;
 	}
 
@@ -161,8 +160,8 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		// + "/searchProtocol.do?dispatch=download" + "&fileId="
 		// + fileId + "&location=local";
 		// response.sendRedirect(remoteDownloadUrl);
-		//			return null;
-		//		}
+		// return null;
+		// }
 		return null;
 	}
 }
