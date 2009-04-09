@@ -69,11 +69,8 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.protocol.DWRProtocolManager" />
-			<include method="getProtocolFiles" />
 			<include method="getProtocols" />
-			<include method="getProtocolFileUriById" />
-			<include method="getProtocolFileNameById" />
-			<include method="getProtocolFileVersionById" />
+			<include method="getProtocol" />
 			<include method="getProtocolTypes" />
 		</create>
 		<create creator="new" javascript="PublicationManager"
@@ -93,19 +90,16 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
-			<param name="include" value="domain, fileBean" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Protocol">
-			<param name="include" value="id, name, version" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FileBean">
-			<param name="include" value="domainFile" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
-			<param name="include" value="id, uri, keywordCollection" />
+			<param name="exclude" value="datumCollection, findingCollection"/>
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
@@ -146,10 +140,6 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.RowBean">
 			<param name="include" value="data, conditions, domain" />
-		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.Row">
-			<param name="include" value="id" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Finding">
