@@ -10,14 +10,14 @@ import java.util.List;
 
 /**
  * Interface defining methods for file retrieving and writing.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public interface FileService {
 	/**
 	 * Load the file for the given fileId from the database
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -26,7 +26,7 @@ public interface FileService {
 	/**
 	 * Load the file for the given fileId from the database. Also check whether
 	 * user can do it.
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -43,7 +43,7 @@ public interface FileService {
 
 	/**
 	 * Preparing keywords and other information prior to saving a file
-	 * 
+	 *
 	 * @param file
 	 * @throws FileException
 	 */
@@ -52,7 +52,4 @@ public interface FileService {
 	// retrieve file visibility
 	public void retrieveVisibility(FileBean fileBean, UserBean user)
 			throws FileException;
-	
-	public void retrieveAccessibility(FileBean fileBean, UserBean user)
-	throws FileException;
 }

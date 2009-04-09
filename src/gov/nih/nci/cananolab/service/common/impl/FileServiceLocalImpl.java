@@ -29,9 +29,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of FileService
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FileServiceLocalImpl implements FileService {
 	Logger logger = Logger.getLogger(FileServiceLocalImpl.class);
@@ -43,7 +43,7 @@ public class FileServiceLocalImpl implements FileService {
 
 	/**
 	 * Load the file for the given fileId from the database
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -64,7 +64,7 @@ public class FileServiceLocalImpl implements FileService {
 	/**
 	 * Load the file for the given fileId from the database. Also check whether
 	 * user can do it.
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -145,7 +145,7 @@ public class FileServiceLocalImpl implements FileService {
 
 	/**
 	 * Get the content of the file into a byte array.
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 * @throws FileException
@@ -243,7 +243,7 @@ public class FileServiceLocalImpl implements FileService {
 
 	/**
 	 * Preparing keywords and other information prior to saving a file
-	 * 
+	 *
 	 * @param file
 	 * @throws FileException
 	 */
@@ -309,29 +309,6 @@ public class FileServiceLocalImpl implements FileService {
 			}
 		} catch (Exception e) {
 			String err = "Error in setting file visibility for "
-					+ fileBean.getDisplayName();
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-	
-	// retrieve file accessibility
-	public void retrieveAccessibility(FileBean fileBean, UserBean user)
-			throws FileException {
-		try {
-			if (fileBean!=null) {
-				AuthorizationService auth = new AuthorizationService(
-						Constants.CSM_APP_NAME);
-				if (fileBean.getDomainFile().getId() != null
-						&& auth.isUserAllowed(fileBean.getDomainFile().getId()
-								.toString(), user)) {
-					fileBean.setHidden(false);
-				} else {
-					fileBean.setHidden(true);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Error in setting file accessibility for "
 					+ fileBean.getDisplayName();
 			logger.error(err, e);
 			throw new FileException(err, e);

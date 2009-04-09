@@ -218,9 +218,9 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 				// retrieve visibility
 				FileService fileService = new FileServiceLocalImpl();
 				for (PublicationBean publication : publications) {
-					fileService.retrieveAccessibility(publication, user);
+					fileService.retrieveVisibility(publication, user);
 					if (!publication.isHidden()) {
-						filteredPublications.add((FileBean) publication);
+						filteredPublications.add((PublicationBean) publication);
 					}
 				}
 				foundPublications.addAll(filteredPublications);
