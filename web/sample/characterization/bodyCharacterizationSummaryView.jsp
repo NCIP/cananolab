@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="/bodyMessage.jsp?bundle=particle" />
-<c:set var="characterizationTypes"
-	value="${characterizationSummaryView.characterizationTypes}" />
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
