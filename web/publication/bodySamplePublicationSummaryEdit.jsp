@@ -18,7 +18,7 @@
 			</c:forEach>
 		</li>
 		<li>
-			<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>New</span>
+			<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>Other</span>
 			</a>
 		</li>
 	</ul>
@@ -47,7 +47,7 @@
 				</li>
 			</c:forEach>
 			<li>
-				<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>New</span>
+				<a href="publication.do?dispatch=setupNew&sampleId=${sampleId}"><span>Other</span>
 				</a>
 			</li>
 		</ul>
