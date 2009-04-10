@@ -45,11 +45,35 @@ function confirmDeletion()
 				<table class="subSubmissionView" width="85%" align="center">
 					<tr>
 						<th colspan="2">
-							New/Edit Finding
+							New Finding
 						</th>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan="2" height="5">
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="cellLabel">
+							File
+							<a id="addFile" href="javascript:resetTheFile(true);"><img
+									align="top" src="images/btn_add.gif" border="0" /> </a>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top" colspan="2">
+							<div style="display: block" id="loadDatumFile">
+								<jsp:include page="bodySubmitCharacterizationFile.jsp" />
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" height="5">
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="cellLabel">
 							Data
 						</td>
 					</tr>
@@ -62,26 +86,11 @@ function confirmDeletion()
 						</td>
 					</tr>
 					<tr>
-						<td colspan="2">
-							File
-							<a id="addFile" href="javascript:resetTheFile(true);"><img
-									align="top" src="images/btn_add.gif" border="0" /> </a>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top" colspan="2">
-							<div style="display: block;" id="loadDatumFile">
-								<%--<jsp:include page="bodySubmitCharacterizationFile.jsp" />--%>
-								&nbsp;
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top">
+						<td>
 							<input type="button" value="Delete"
 								onclick="javascript:confirmDeletion()">
 						</td>
-						<td class="rightLabel" align="right" colspan="1">
+						<td>
 							<div align="right">
 								<input type="button" value="Cancel"
 									onclick="javascript:hide('newFinding'); show('existingFinding');">
