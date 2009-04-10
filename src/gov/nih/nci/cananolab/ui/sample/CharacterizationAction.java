@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -482,6 +483,19 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
+		//keep submitted characterization types in the correct display order
+		List<String> allCharacterizationTypes = new ArrayList<String>(
+				(List<? extends String>) request.getSession().getAttribute(
+						"characterizationTypes"));
+		List<String> characterizationTypes = new ArrayList<String>();
+		for (String type : allCharacterizationTypes) {
+			if (summaryView.getCharacterizationTypes().contains(type)
+					&& !characterizationTypes.contains(type)) {
+				characterizationTypes.add(type);
+			}
+		}
+		request.setAttribute("characterizationTypes",
+				characterizationTypes);
 		return mapping.findForward("summaryView");
 	}
 
