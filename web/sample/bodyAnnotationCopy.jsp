@@ -4,21 +4,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <table width="100%" align="center" class="submissionView">
 	<tbody>
-		<tr>
-			<th colspan="3">
-				&nbsp;
-			</td>
-		</tr>
 		<c:choose>
-			<c:when test="${!empty otherParticleNames}">
+			<c:when test="${!empty otherSampleNames}">
 				<tr>
-					<td width="30%">
+					<td width="20%">
 						<strong>Copy to other samples with the same primary point
 							of contact</strong>
 					</td>
 					<td>
-						<html:select property="otherParticles" size="10" multiple="true">
-							<html:options collection="otherParticleNames" property="name"
+						<html:select property="otherSamples" size="10" multiple="true">
+							<html:options collection="otherSampleNames" property="name"
 								labelProperty="name" />
 						</html:select>
 					</td>
