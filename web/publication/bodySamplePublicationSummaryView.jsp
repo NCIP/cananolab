@@ -4,17 +4,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="/bodyMessage.jsp?bundle=particle" />
+<c:set var="publicationCategories"
+	value="${publicationSummaryView.publicationCategories}" />
+
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})" title="All"><span>All</span>
-			</a>
+			<a
+				href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
+				title="All"><span>All</span> </a>
 		</li>
 		<li>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind">
-				<a href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})" title="${type}"><span>${type}</span>
-				</a>
+				<a
+					href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
+					title="${type}"><span>${type}</span> </a>
 			</c:forEach>
 		</li>
 	</ul>
@@ -24,8 +29,9 @@
 		style="display: none;">
 		<ul>
 			<li>
-				<a href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})" title="All"><span>All</span>
-				</a>
+				<a
+					href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
+					title="All"><span>All</span> </a>
 			</li>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind2">
@@ -38,8 +44,9 @@
 					</c:otherwise>
 				</c:choose>
 				<li class="${selectedClass}">
-					<a href="javascript:showSummary('${ind2.count}', ${fn:length(publicationCategories)})" title="${type}"><span>${type}</span>
-					</a>
+					<a
+						href="javascript:showSummary('${ind2.count}', ${fn:length(publicationCategories)})"
+						title="${type}"><span>${type}</span> </a>
 				</li>
 			</c:forEach>
 		</ul>
