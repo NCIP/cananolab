@@ -97,10 +97,10 @@
 						<select id="valueType"
 							onchange="javascript:callPrompt('Column Value Type', 'valueType');">
 							<option value=""></option>
-							<logic:iterate id="findingColumnValueType"
-								name="findingColumnValueTypes">
-								<option value="${findingColumnValueType}">
-									${findingColumnValueType}
+							<logic:iterate id="type"
+								name="datumConditionValueTypes">
+								<option value="${type}">
+									${type}
 								</option>
 							</logic:iterate>
 							<option value="other">
@@ -145,7 +145,6 @@
 	</tr>
 	<tr>
 		<td class="cellLabel" width="5%">
-			Data
 		</td>
 		<td>
 			<table class="summaryViewLayer4" style="display: none;" width="85%">

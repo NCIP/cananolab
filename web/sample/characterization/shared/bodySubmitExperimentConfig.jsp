@@ -23,7 +23,7 @@ function confirmDeletion()
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="2">
-			New/Edit Technique Instrument
+			New Technique and Instruments
 		</th>
 	</tr>
 	<tr>
