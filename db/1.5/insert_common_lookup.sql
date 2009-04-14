@@ -234,7 +234,7 @@ insert into common_lookup(name,attribute,value) values ('PointOfContact','role',
 insert into common_lookup(attribute,name,value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Photometer');
 insert into common_lookup(attribute,name,value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Refractometer');
 insert into common_lookup(attribute,name,value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Separation Column');
-insert into common_lookup(attribute,name,value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Absorbance Detector');
+insert into common_lookup(attribute,name,value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Spectrophotometer');
 insert into common_lookup(attribute,name,value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Control Module');
 insert into common_lookup(attribute,name,value) values ('Atomic Force Microscopy','instrument','Atomic Force Microscope');
 insert into common_lookup(attribute,name,value) values ('Capillary Electrophoresis','instrument','Capillary Electrophoresis Instrument');
@@ -250,7 +250,7 @@ insert into common_lookup(attribute,name,value) values ('Gas Sorption','instrume
 insert into common_lookup(attribute,name,value) values ('Flow Cytometry','instrument','Flow Cytometer');
 insert into common_lookup(attribute,name,value) values ('Focused Ion Beam - Scanning Electron Microscopy','instrument','Scanning Electron Microscope');
 insert into common_lookup(attribute,name,value) values ('High Performance Liquid Chromatography','instrument','Separation Column');
-insert into common_lookup(attribute,name,value) values ('High Performance Liquid Chromatography','instrument','Absorbance Detector');
+insert into common_lookup(attribute,name,value) values ('High Performance Liquid Chromatography','instrument','Spectrophotometer');
 insert into common_lookup(attribute,name,value) values ('High Performance Liquid Chromatography','instrument','Control Module');
 insert into common_lookup(attribute,name,value) values ('High Performance Liquid Chromatography','instrument','Fraction Collector');
 insert into common_lookup(attribute,name,value) values ('High Resolution Scanning Electron Microscopy','instrument','Scanning Electron Microscope');
@@ -269,7 +269,7 @@ insert into common_lookup(attribute,name,value) values ('Scanning Tunneling  Mic
 insert into common_lookup(attribute,name,value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Photometer');
 insert into common_lookup(attribute,name,value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Refractometer');
 insert into common_lookup(attribute,name,value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Separation Column');
-insert into common_lookup(attribute,name,value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Absorbance Detector');
+insert into common_lookup(attribute,name,value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Spectrophotometer');
 insert into common_lookup(attribute,name,value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Control Module');
 insert into common_lookup(attribute,name,value) values ('Spectrophotometry','instrument','Spectrophotometer');
 insert into common_lookup(attribute,name,value) values ('Transmission Electron Microscopy','instrument','Transmission Electron Microscope');
@@ -279,7 +279,7 @@ insert into common_lookup(attribute,name,value) values ('Matrix Assisted Laser D
 insert into common_lookup(attribute,name,value) values ('Confocal Laser Scanning Microscopy','instrument','Confocal Microscope');
 insert into common_lookup(attribute,name,value) values ('Zeta Potential Analysis','instrument','Zeta Potential Analyzer');
 insert into common_lookup(attribute,name,value) values ('Fast Protein Liquid Chromatography','instrument','Separation Column');
-insert into common_lookup(attribute,name,value) values ('Fast Protein Liquid Chromatography','instrument','Absorbance Detector');
+insert into common_lookup(attribute,name,value) values ('Fast Protein Liquid Chromatography','instrument','Spectrophotometer');
 insert into common_lookup(attribute,name,value) values ('Fast Protein Liquid Chromatography','instrument','Control Module');
 insert into common_lookup(attribute,name,value) values ('Fast Protein Liquid Chromatography','instrument','Fraction Collector');
 insert into common_lookup(attribute,name,value) values ('Mass Quantitation','instrument','Analytical Balance');

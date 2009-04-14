@@ -86,7 +86,6 @@ INSERT into instrument (type,created_date,created_by) values ('X-Ray Photoelectr
 INSERT into instrument (type,created_date,created_by) values ('Microplate Reader',sysdate(),'SEED_DATA');
 INSERT into instrument (type,created_date,created_by) values ('Confocal Microscope',sysdate(),'SEED_DATA');
 INSERT into instrument (type,created_date,created_by) values ('Separation Column',sysdate(),'SEED_DATA');
-INSERT into instrument (type,created_date,created_by) values ('Absorbance Detector',sysdate(),'SEED_DATA');
 INSERT into instrument (type,created_date,created_by) values ('Control Module',sysdate(),'SEED_DATA');
 INSERT into instrument (type,created_date,created_by) values ('Fraction Collector',sysdate(),'SEED_DATA');
 INSERT into instrument (type,created_date,created_by) values ('Zeta Potential Analyzer',sysdate(),'SEED_DATA');
