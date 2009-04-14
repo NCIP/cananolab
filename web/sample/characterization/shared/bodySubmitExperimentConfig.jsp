@@ -36,7 +36,7 @@ function confirmDeletion()
 				styleId="techniqueType"
 				onchange="javascript:callPrompt('Technique Type', 'techniqueType');retrieveTechniqueAbbreviation();">
 				<option value=""></option>
-				<html:options collection="allTechniques" labelProperty="type"
+				<html:options collection="techiqueTypes" labelProperty="type"
 					property="type" />
 				<option value="other">
 					[Other]
@@ -111,7 +111,7 @@ function confirmDeletion()
 								styleId="manufacturer"
 								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
 								<option value=""></option>
-								<html:options name="allManufacturers" />
+								<html:options name="manufacturers" />
 								<option value="other">
 									[Other]
 								</option>

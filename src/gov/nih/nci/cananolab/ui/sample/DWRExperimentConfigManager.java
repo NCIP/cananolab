@@ -40,12 +40,14 @@ public class DWRExperimentConfigManager {
 		return new ExperimentConfigBean(service.findExperimentConfigById(id));
 	}
 
-	public Technique findTechniqueByType(String type)
-			throws ExperimentConfigException {
-		return service.findTechniqueByType(type);
+	public String getTechniqueAbbreviation(String techniqueType)
+			throws Exception {
+		SortedSet<String> abbrevs = LookupService.findLookupValues(
+				techniqueType, "abbreviation");
+		return abbrevs.first();
 	}
 
-	public String[] findInstrumentTypesByTechniqueType(String techniqueType)
+	public String[] getInstrumentTypesByTechniqueType(String techniqueType)
 			throws ExperimentConfigException, BaseException {
 		SortedSet<String> types = null;
 		types = LookupService.getDefaultAndOtherLookupTypes(techniqueType,
@@ -80,7 +82,7 @@ public class DWRExperimentConfigManager {
 		}
 	}
 
-	//addInstrument includes the function add and edit
+	// addInstrument includes the function add and edit
 	public ExperimentConfigBean addInstrument(
 			ExperimentConfigBean theExperimentConfig, Instrument instrument)
 			throws ExperimentConfigException {

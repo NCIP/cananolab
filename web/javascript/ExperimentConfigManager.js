@@ -6,9 +6,9 @@ var viewed = -1;
 function retrieveTechniqueAbbreviation() {
 	var techniqueType = document.getElementById("techniqueType").value;
 	if (techniqueType != null && techniqueType != "other") {
-		ExperimentConfigManager.findInstrumentTypesByTechniqueType(
+		ExperimentConfigManager.getInstrumentTypesByTechniqueType(
 				techniqueType, updateInstrumentDropDown);
-		ExperimentConfigManager.findTechniqueByType(techniqueType,
+		ExperimentConfigManager.getTechniqueAbbreviation(techniqueType,
 				updateTechniqueAbbreviation);
 	}
 }

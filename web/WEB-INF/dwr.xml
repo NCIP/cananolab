@@ -24,8 +24,8 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRExperimentConfigManager" />
 			<include method="findExperimentConfigById" />
-			<include method="findTechniqueByType" />
-			<include method="findInstrumentTypesByTechniqueType" />
+			<include method="getTechniqueAbbreviation" />
+			<include method="getInstrumentTypesByTechniqueType" />
 			<include method="findInstrumentTypesByConfigId" />
 			<include method="getAllManufacturers" />
 			<include method="resetExperimentConfig" />

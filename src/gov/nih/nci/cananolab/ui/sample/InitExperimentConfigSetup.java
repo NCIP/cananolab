@@ -1,13 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
-import gov.nih.nci.cananolab.service.sample.ExperimentConfigService;
-import gov.nih.nci.cananolab.service.sample.impl.ExperimentConfigServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 public class InitExperimentConfigSetup {
-	private ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 
 	private InitExperimentConfigSetup() {
 	}
@@ -36,19 +30,26 @@ public class InitExperimentConfigSetup {
 
 	public void setExperimentConfigDropDowns(HttpServletRequest request)
 			throws Exception {
-		List<Technique> techniques = service.findAllTechniques();
-		request.getSession().setAttribute("allTechniques", techniques);
+		// instrument manufacturers and techniques
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"manufacturers", "Instrument", "manufacturer",
+				"otherManufacturer", true);
 
-		List<String> manufacturers = service.getAllManufacturers();
-		request.getSession().setAttribute("allManufacturers", manufacturers);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"techniqueTypes", "Technique", "type", "otherType", true);
 	}
 
 	public void persistExperimentConfigDropdowns(HttpServletRequest request,
 			ExperimentConfigBean configBean) throws Exception {
+		InitSetup.getInstance().persistLookup(request, "Technique", "type",
+				"otherType", configBean.getDomain().getTechnique().getType());
 		for (Instrument instrument : configBean.getInstruments()) {
 			InitSetup.getInstance().persistLookup(request,
 					configBean.getDomain().getTechnique().getType(),
 					"instrument", "otherInstrument", instrument.getType());
+			InitSetup.getInstance().persistLookup(request, "Instrument",
+					"manufacturer", "otherManufacturer",
+					instrument.getManufacturer());
 		}
 		setExperimentConfigDropDowns(request);
 	}
