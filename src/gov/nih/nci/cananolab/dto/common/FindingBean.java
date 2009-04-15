@@ -30,6 +30,7 @@ public class FindingBean {
 	private List<ColumnBean> conditionColumnBeans = new ArrayList<ColumnBean>();
 	private List<ColumnBean> columnBeans = new ArrayList<ColumnBean>();
 	private RowBean theRow = new RowBean();
+	private FileBean theFile=new FileBean();
 
 	public FindingBean() {
 	}
@@ -393,6 +394,14 @@ public class FindingBean {
 		}
 		// private List<ColumnBean> conditionColumnBeans = new
 		// ArrayList<ColumnBean>();
+	}
+
+	public FileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(FileBean theFile) {
+		this.theFile = theFile;
 	}
 
 	public List<FileBean> getFiles() {
