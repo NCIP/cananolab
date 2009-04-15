@@ -186,13 +186,13 @@ insert into common_lookup(name,attribute,value) values ('Shape','type','3D-spher
 insert into common_lookup(name,attribute,value) values ('Shape','type','3D-tetrahedron');
 insert into common_lookup(name,attribute,value) values ('Shape','type','3D-tetrapod');
 
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','boolean');
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','mean');
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','median');
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','mode');
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','observed');
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','standard deviation');
-insert into common_lookup(name,attribute,value) values ('Datum','valueType','Z-score');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','boolean');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','mean');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','median');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','mode');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','observed');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','standard deviation');
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','Z-score');
 
 insert into common_lookup(name,attribute,value) values ('ComposingElement','valueUnit','%');
 insert into common_lookup(name,attribute,value) values ('ComposingElement','valueUnit','%mole');
