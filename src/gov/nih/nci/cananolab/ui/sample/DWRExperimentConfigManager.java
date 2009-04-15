@@ -44,7 +44,11 @@ public class DWRExperimentConfigManager {
 			throws Exception {
 		SortedSet<String> abbrevs = LookupService.findLookupValues(
 				techniqueType, "abbreviation");
-		return abbrevs.first();
+		String abbreviation = "";
+		if (!abbrevs.isEmpty()) {
+			abbreviation = abbrevs.first();
+		}
+		return abbreviation;
 	}
 
 	public String[] getInstrumentTypesByTechniqueType(String techniqueType)
