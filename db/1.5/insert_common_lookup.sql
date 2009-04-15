@@ -231,7 +231,7 @@ insert into common_lookup(name,attribute,value) values ('Publication','researchA
 insert into common_lookup(name,attribute,value) values ('PointOfContact','role','Manufacturer');
 insert into common_lookup(name,attribute,value) values ('PointOfContact','role','Investigator');
 
-insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering');
+insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Atomic Force Microscopy');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Capillary Electrophoresis');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Cell Counting');
@@ -263,13 +263,13 @@ insert into common_lookup (name, attribute, value) values ('Technique', 'type', 
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Scanning Electron Microscopy');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Scanning Probe Microscopy');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Scanning Tunneling  Microscopy');
-insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Size-Exclusion Chromatography with Multi-Angle Light Scattering');
+insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Size Exclusion Chromatography with Multi-Angle Laser Light Scattering');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Spectrophotometry');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Transmission Electron Microscopy');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'X-Ray Photoelectron Spectroscopy');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Zeta Potential Analysis');
 
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','abbreviation', 'AFFF-MALS');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','abbreviation', 'AFFF-MALLS');
 insert into common_lookup (name, attribute, value) values ('Atomic Force Microscopy','abbreviation','AFM');
 insert into common_lookup (name, attribute, value) values ('Confocal Laser Scanning Microscopy','abbreviation','CLSM');
 insert into common_lookup (name, attribute, value) values ('Dynamic Light Scattering','abbreviation','DLS');
@@ -286,13 +286,13 @@ insert into common_lookup (name, attribute, value) values ('Scanning Auger Spect
 insert into common_lookup (name, attribute, value) values ('Scanning Electron Microscopy','abbreviation','SEM');
 insert into common_lookup (name, attribute, value) values ('Scanning Probe Microscopy ','abbreviation','SPM');
 insert into common_lookup (name, attribute, value) values ('Scanning Tunneling  Microscopy','abbreviation','STM');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','abbreviation','SEC-MALS');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','abbreviation','SEC-MALLS');
 insert into common_lookup (name, attribute, value) values ('Transmission Electron Microscopy','abbreviation','TEM');
 insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','abbreviation','XPS');
 insert into common_lookup (name, attribute, value) values ('Gel Filtration Chromatography','abbreviation','GFC');
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','abbreviation','FPLC');
 
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','abbreviation', 'AFFF-MALS');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','abbreviation', 'AFFF-MALLS');
 insert into common_lookup (name, attribute, value) values ('Atomic Force Microscopy','abbreviation','AFM');
 insert into common_lookup (name, attribute, value) values ('Confocal Laser Scanning Microscopy','abbreviation','CLSM');
 insert into common_lookup (name, attribute, value) values ('Dynamic Light Scattering','abbreviation','DLS');
@@ -309,17 +309,17 @@ insert into common_lookup (name, attribute, value) values ('Scanning Auger Spect
 insert into common_lookup (name, attribute, value) values ('Scanning Electron Microscopy','abbreviation','SEM');
 insert into common_lookup (name, attribute, value) values ('Scanning Probe Microscopy ','abbreviation','SPM');
 insert into common_lookup (name, attribute, value) values ('Scanning Tunneling  Microscopy','abbreviation','STM');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','abbreviation','SEC-MALS');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','abbreviation','SEC-MALLS');
 insert into common_lookup (name, attribute, value) values ('Transmission Electron Microscopy','abbreviation','TEM');
 insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','abbreviation','XPS');
 insert into common_lookup (name, attribute, value) values ('Gel Filtration Chromatography','abbreviation','GFC');
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','abbreviation','FPLC');
 
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Photometer');
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Refractometer');
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Separation Column');
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Spectrophotometer');
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Light Scattering','instrument','Control Module');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Photometer');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Refractometer');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Separation Column');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Spectrophotometer');
+insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Control Module');
 insert into common_lookup (name, attribute, value) values ('Atomic Force Microscopy','instrument','Atomic Force Microscope');
 insert into common_lookup (name, attribute, value) values ('Capillary Electrophoresis','instrument','Capillary Electrophoresis Instrument');
 insert into common_lookup (name, attribute, value) values ('Cell Counting','instrument','Hemocytometer');
@@ -350,11 +350,11 @@ insert into common_lookup (name, attribute, value) values ('Scanning Auger Spect
 insert into common_lookup (name, attribute, value) values ('Scanning Electron Microscopy','instrument','Scanning Electron Microscope');
 insert into common_lookup (name, attribute, value) values ('Scanning Probe Microscopy','instrument','Scanning Probe Microscope');
 insert into common_lookup (name, attribute, value) values ('Scanning Tunneling  Microscopy','instrument','Scanning Tunneling Microscope');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Photometer');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Refractometer');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Separation Column');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Spectrophotometer');
-insert into common_lookup (name, attribute, value) values ('Size-Exclusion Chromatography with Multi-Angle Light Scattering','instrument','Control Module');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','instrument','Photometer');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','instrument','Refractometer');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','instrument','Separation Column');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','instrument','Spectrophotometer');
+insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','instrument','Control Module');
 insert into common_lookup (name, attribute, value) values ('Spectrophotometry','instrument','Spectrophotometer');
 insert into common_lookup (name, attribute, value) values ('Transmission Electron Microscopy','instrument','Transmission Electron Microscope');
 insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','instrument','X-Ray Photoelectron Spectrometer');
