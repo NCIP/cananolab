@@ -54,7 +54,7 @@ public class InitCharacterizationSetup {
 	public void setCharactierizationDropDowns(HttpServletRequest request,
 			String sampleId) throws Exception {
 		getCharacterizationTypes(request);
-		getFindingColumnValueTypes(request);
+		getDatumConditionValueTypes(request);
 		// set point of contacts
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		List<PointOfContactBean> pocs = pocService
@@ -231,16 +231,12 @@ public class InitCharacterizationSetup {
 		return units;
 	}
 
-	public List<String> getFindingColumnValueTypes(HttpServletRequest request)
+	public SortedSet<String> getDatumConditionValueTypes(HttpServletRequest request)
 			throws Exception {
-		ServletContext appContext = request.getSession().getServletContext();
-		List<String> types = new ArrayList<String>();
-		// TODO::: get types from DB (Qina)
-		types.add("std");
-		types.add("mean");
-		types.add("avg");
-		request.getSession().setAttribute("findingColumnValueTypes", types);
-		return types;
+		SortedSet<String> valueTypes = LookupService
+				.getDefaultAndOtherLookupTypes("DatumCondition", "valueType",
+						"otherValueType");
+		request.getSession().setAttribute("datumConditionValueTypes", valueTypes);
+		return valueTypes;
 	}
-
 }
