@@ -237,6 +237,7 @@ insert into common_lookup (name, attribute, value) values ('Technique', 'type', 
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Cell Counting');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Coagulation Detection');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Confocal Laser Scanning Microscopy');
+insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Colony Counting');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Dynamic Light Scattering');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Electron Microprobe Analysis');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Electrophoretic Light Scattering');
@@ -292,29 +293,6 @@ insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron 
 insert into common_lookup (name, attribute, value) values ('Gel Filtration Chromatography','abbreviation','GFC');
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','abbreviation','FPLC');
 
-insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','abbreviation', 'AFFF-MALLS');
-insert into common_lookup (name, attribute, value) values ('Atomic Force Microscopy','abbreviation','AFM');
-insert into common_lookup (name, attribute, value) values ('Confocal Laser Scanning Microscopy','abbreviation','CLSM');
-insert into common_lookup (name, attribute, value) values ('Dynamic Light Scattering','abbreviation','DLS');
-insert into common_lookup (name, attribute, value) values ('Electron Microprobe Analysis','abbreviation','EMPA');
-insert into common_lookup (name, attribute, value) values ('Energy Dispersive Spectroscopy','abbreviation','EDS');
-insert into common_lookup (name, attribute, value) values ('Environmental Transmission Electron Microscopy','abbreviation','ETEM');
-insert into common_lookup (name, attribute, value) values ('Focused Ion Beam - Scanning Electron Microscopy','abbreviation','FIB-SEM');
-insert into common_lookup (name, attribute, value) values ('High Performance Liquid Chromatography','abbreviation','HPLC');
-insert into common_lookup (name, attribute, value) values ('High Resolution Scanning Electron Microscopy','abbreviation','HR-SEM');
-insert into common_lookup (name, attribute, value) values ('High Resolution Transmission Electron Microscopy','abbreviation','HRTEM');
-insert into common_lookup (name, attribute, value) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight','abbreviation','MALDI-TOF');
-insert into common_lookup (name, attribute, value) values ('Polymerase Chain Reaction','abbreviation','PCR');
-insert into common_lookup (name, attribute, value) values ('Scanning Auger Spectrometry','abbreviation','SAM');
-insert into common_lookup (name, attribute, value) values ('Scanning Electron Microscopy','abbreviation','SEM');
-insert into common_lookup (name, attribute, value) values ('Scanning Probe Microscopy ','abbreviation','SPM');
-insert into common_lookup (name, attribute, value) values ('Scanning Tunneling  Microscopy','abbreviation','STM');
-insert into common_lookup (name, attribute, value) values ('Size Exclusion Chromatography with Multi-Angle Laser Light Scattering','abbreviation','SEC-MALLS');
-insert into common_lookup (name, attribute, value) values ('Transmission Electron Microscopy','abbreviation','TEM');
-insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','abbreviation','XPS');
-insert into common_lookup (name, attribute, value) values ('Gel Filtration Chromatography','abbreviation','GFC');
-insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','abbreviation','FPLC');
-
 insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Photometer');
 insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Refractometer');
 insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Separation Column');
@@ -324,6 +302,7 @@ insert into common_lookup (name, attribute, value) values ('Atomic Force Microsc
 insert into common_lookup (name, attribute, value) values ('Capillary Electrophoresis','instrument','Capillary Electrophoresis Instrument');
 insert into common_lookup (name, attribute, value) values ('Cell Counting','instrument','Hemocytometer');
 insert into common_lookup (name, attribute, value) values ('Cell Counting','instrument','Coulter Counter');
+insert into common_lookup (name, attribute, value) values ('Colony Counting','instrument','Automated Colony Counter');
 insert into common_lookup (name, attribute, value) values ('Dynamic Light Scattering','instrument','Dynamic Light Scattering Instrument');
 insert into common_lookup (name, attribute, value) values ('Electron Microprobe Analysis','instrument','Electron Microprobe');
 insert into common_lookup (name, attribute, value) values ('Electrophoretic Light Scattering','instrument','Electrophoretic Light Scattering Instrument');
