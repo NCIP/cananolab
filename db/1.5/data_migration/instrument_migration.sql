@@ -354,8 +354,11 @@ ALTER TABLE characterization
 ALTER TABLE characterization
  DROP instrument_config_pk_id;
 
-
 DROP TABLE instrument_config;
+
+update instrument
+set created_date=sysdate(),
+created_by='DATA_MIGRATION';
 
 ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
 	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_pk_id)
