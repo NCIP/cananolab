@@ -26,12 +26,18 @@ function setCharacterizationOptionsByCharType() {
 }
 function setAssayTypeOptionsByCharName() {
 	var charName = document.getElementById("charName").value;
-	CharacterizationManager.getAssayTypeOptions(charName, function (data) {
-		dwr.util.removeAllOptions("assayType");
-		dwr.util.addOptions("assayType", [""]);
-		dwr.util.addOptions("assayType", data);
+	var charType = document.getElementById("charType").value;
+	dwr.util.removeAllOptions("assayType");
+	if (charType == "Physico-Chemical Characterization") {
+		dwr.util.addOptions("assayType", [charName]);
 		dwr.util.addOptions("assayType", ["[Other]"]);
-	});
+	} else {
+		CharacterizationManager.getAssayTypeOptions(charName, function (data) {
+			dwr.util.addOptions("assayType", [""]);
+			dwr.util.addOptions("assayType", data);
+			dwr.util.addOptions("assayType", ["[Other]"]);
+		});
+	}
 }
 function setCharacterizationDetail() {
 	var charName = document.getElementById("charName").value;
