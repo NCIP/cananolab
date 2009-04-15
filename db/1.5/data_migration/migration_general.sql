@@ -97,6 +97,15 @@ where particle_sample_pk_id not in
 (select particle_sample_pk_id from nanoparticle_sample);
 --end of lab_file to file
 
+--update publication category
+update publication
+set category='proceeding'
+where category='in proceedings';
+
+update common_lookup
+set value='proceeding'
+where value='in proceedings';
+
 -- fix, some records exist in csm_protection_group not in csm_protection_element
 INSERT INTO csm_protection_element (
 	protection_element_name,
