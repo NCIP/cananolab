@@ -211,6 +211,8 @@ insert into common_lookup(name,attribute, value) values ('wavelength', 'unit','n
 insert into common_lookup(name,attribute,value) values ('dimension', 'unit', ' nm');
 insert into common_lookup(name,attribute,value) values ('luminescence signal', 'unit', 'volt');
 
+insert into common_lookup(name,attribute,value) values ('DatumCondition','valueType','Z-score');
+
 update common_lookup
 set name='Datum'
 where name='DerivedDatum';
@@ -222,6 +224,11 @@ where attribute='derivedDatumName';
 update common_lookup
 set attribute='otherDatumName'
 where attribute='otherDerivedDatumName';
+
+update common_lookup
+set name='DatumCondition'
+where name='Datum'
+and attribute in ('valueType', 'otherValueType');
 
 delete from common_lookup
 where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability')
