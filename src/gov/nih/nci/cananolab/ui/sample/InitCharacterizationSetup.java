@@ -55,6 +55,8 @@ public class InitCharacterizationSetup {
 			String sampleId) throws Exception {
 		getCharacterizationTypes(request);
 		getDatumConditionValueTypes(request);
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"fileTypes", "File", "type", "otherType", true);
 		// set point of contacts
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		List<PointOfContactBean> pocs = pocService
