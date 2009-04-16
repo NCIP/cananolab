@@ -309,7 +309,7 @@ insert into common_lookup (name, attribute, value) values ('Electrophoretic Ligh
 insert into common_lookup (name, attribute, value) values ('Energy Dispersive Spectroscopy','instrument','Energy Dispersive Spectrometer');
 insert into common_lookup (name, attribute, value) values ('Environmental Transmission Electron Microscopy','instrument','Environmental Transmission Electron Microscope');
 insert into common_lookup (name, attribute, value) values ('Coagulation Detection','instrument','Coagulation Monitor');
-insert into common_lookup (name, attribute, value) values ('Gas Sorption','instrument','Surface Area and Pore Size Analyzer');
+insert into common_lookup (name, attribute, value) values ('Gas Sorption','instrument','Gas Sorption Detector');
 insert into common_lookup (name, attribute, value) values ('Flow Cytometry','instrument','Flow Cytometer');
 insert into common_lookup (name, attribute, value) values ('Focused Ion Beam - Scanning Electron Microscopy','instrument','Scanning Electron Microscope');
 insert into common_lookup (name, attribute, value) values ('High Performance Liquid Chromatography','instrument','Separation Column');
@@ -339,7 +339,7 @@ insert into common_lookup (name, attribute, value) values ('Transmission Electro
 insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','instrument','X-Ray Photoelectron Spectrometer');
 insert into common_lookup (name, attribute, value) values ('Microplate Analysis','instrument','Microplate Reader');
 insert into common_lookup (name, attribute, value) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight','instrument','MALDI-TOF Mass Spectrometer');
-insert into common_lookup (name, attribute, value) values ('Confocal Laser Scanning Microscopy','instrument','Confocal Microscope');
+insert into common_lookup (name, attribute, value) values ('Confocal Laser Scanning Microscopy','instrument','Confocal Microscope System');
 insert into common_lookup (name, attribute, value) values ('Zeta Potential Analysis','instrument','Zeta Potential Analyzer');
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','instrument','Separation Column');
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','instrument','Spectrophotometer');
