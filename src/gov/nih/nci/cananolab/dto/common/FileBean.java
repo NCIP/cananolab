@@ -213,4 +213,30 @@ public class FileBean {
 		return createdDateStr;
 	}
 
+	/**
+	 * Compares <code>obj</code> to it self and returns true if they both are
+	 * same
+	 *
+	 * @param obj
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof FileBean) {
+			FileBean f = (FileBean) obj;
+			if (getDomainFile().getId() != null
+					&& f.getDomainFile().getId() != null
+					&& getDomainFile().getId()
+							.equals(f.getDomainFile().getId())) {
+				return true;
+			} else {
+				if (getDomainFile().getUri().compareTo(
+						f.getDomainFile().getUri()) == 1) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+	}
 }
