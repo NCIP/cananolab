@@ -41,7 +41,7 @@ function confirmDeletion()
 		</td>
 	<tr>
 		<td>
-			<div id="newFinding" style="display: none;">
+			<div id="newFinding" style="display: block;">
 				<table class="subSubmissionView" width="85%" align="center">
 					<tr>
 						<th colspan="2">
@@ -56,13 +56,35 @@ function confirmDeletion()
 					<tr>
 						<td colspan="2" class="cellLabel">
 							File
-							<a id="addFile" href="javascript:resetTheFile(true);"><img
+							<a id="addFile" href="javascript:clearFile(); show('newFile');"><img
 									align="top" src="images/btn_add.gif" border="0" /> </a>
+							<br>
 						</td>
 					</tr>
 					<tr>
 						<td valign="top" colspan="2">
-							<div style="display: block" id="loadDatumFile">
+							<c:if
+								test="${! empty characterizationForm.map.achar.theFinding.files}">
+								<table class="summaryViewLayer4" width="95%" align="center">
+									<tbody>
+										<c:forEach var="file"
+											items="${characterizationForm.map.achar.theFinding.files}">
+											<tr>
+												<td>
+													${file.domainFile.uri}
+												</td>
+												<td>
+													<div align="right">
+														<a href="">Edit</a>
+													</div>
+												</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+								<br>
+							</c:if>
+							<div style="display: none" id="newFile">
 								<jsp:include page="bodySubmitCharacterizationFile.jsp" />
 							</div>
 						</td>
