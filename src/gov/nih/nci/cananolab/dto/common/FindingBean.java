@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.DateUtils;
 
@@ -30,7 +31,7 @@ public class FindingBean {
 	private List<ColumnBean> conditionColumnBeans = new ArrayList<ColumnBean>();
 	private List<ColumnBean> columnBeans = new ArrayList<ColumnBean>();
 	private RowBean theRow = new RowBean();
-	private FileBean theFile=new FileBean();
+	private FileBean theFile = new FileBean();
 
 	public FindingBean() {
 	}
@@ -331,8 +332,7 @@ public class FindingBean {
 	 * @param conditionColumnBeans
 	 *            the conditionColumnBeans to set
 	 */
-	public void setConditionColumnBeans(
-			List<ColumnBean> conditionColumnBeans) {
+	public void setConditionColumnBeans(List<ColumnBean> conditionColumnBeans) {
 		this.conditionColumnBeans = conditionColumnBeans;
 	}
 
@@ -373,8 +373,7 @@ public class FindingBean {
 
 	private void setDatumColumnValuesToDatum(Datum datum) {
 		for (ColumnBean columnBean : datumColumnBeans) {
-			if (columnBean != null
-					&& columnBean.getId().equals(datum.getId())) {
+			if (columnBean != null && columnBean.getId().equals(datum.getId())) {
 				datum.setName(columnBean.getName());
 				datum.setValueType(columnBean.getValueType());
 				datum.setValueUnit(columnBean.getValueUnit());
@@ -426,5 +425,16 @@ public class FindingBean {
 
 	public Finding getDomain() {
 		return domain;
+	}
+
+	public void addFile(FileBean file) {
+		if (files.contains(file)) {
+			files.remove(file);
+		}
+		files.add(file);
+	}
+
+	public void removeFile(FileBean file) {
+		files.remove(file);
 	}
 }
