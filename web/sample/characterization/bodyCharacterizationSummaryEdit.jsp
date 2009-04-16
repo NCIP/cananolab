@@ -111,7 +111,13 @@
 																${charObj.assayType}
 															</c:when>
 															<c:otherwise>
-															N/A
+																<c:choose>
+																	<c:when
+																		test="${charBean.characterizationType eq 'Physico-Chemical Characterization'}">
+																	${charBean.characterizationName}
+																</c:when>
+																	<c:otherwise>N/A</c:otherwise>
+																</c:choose>
 															</c:otherwise>
 														</c:choose>
 												</tr>

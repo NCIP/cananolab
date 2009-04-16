@@ -81,15 +81,29 @@
 											<th align="right" colspan="2">
 											</th>
 										</tr>
-										<c:if test="${!empty charObj.assayType}">
-											<tr>
-												<td class="cellLabel">
-													Assay Type
-												</td>
-												<td colspan="2">
-													${charObj.assayType}
-											</tr>
-										</c:if>
+										<c:choose>
+											<c:when test="${!empty charObj.assayType}">
+												<tr>
+													<td class="cellLabel">
+														Assay Type
+													</td>
+													<td colspan="2">
+														${charObj.assayType}
+												</tr>
+											</c:when>
+											<c:otherwise>
+												<c:if
+													test="${charBean.characterizationType eq 'Physico-Chemical Characterization'}">
+													<tr>
+														<td class="cellLabel">
+															Assay Type
+														</td>
+														<td colspan="2">
+															${charBean.characterizationName}
+													</tr>
+												</c:if>
+											</c:otherwise>
+										</c:choose>
 										<c:if test="${!empty charBean.pocBean.displayName}">
 											<tr>
 												<td class="cellLabel">
