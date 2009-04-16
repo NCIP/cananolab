@@ -31,12 +31,12 @@
 			</td>
 			<td colspan="2">
 				<span id="load"> <html:file
-						property="achar.theFinding.theFile.uploadedFile" size="60" />
+						property="achar.theFinding.theFile.uploadedFile" size="60" styleId="uploadedFile"/>
 					&nbsp;&nbsp; </span>
 				<br>
 				<br>
 				<span id="link" style=""><html:text
-						property="achar.theFinding.theFile.externalUrl" size="60" /> </span>&nbsp;
+						property="achar.theFinding.theFile.externalUrl" size="60" styleId="externalUrl"/> </span>&nbsp;
 			</td>
 		</tr>
 		<c:if
@@ -89,7 +89,7 @@
 			</td>
 			<td colspan="2">
 				<html:text property="achar.theFinding.theFile.domainFile.title"
-					size="60" />
+					styleId="fileTitle" size="60" />
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +99,7 @@
 			</td>
 			<td colspan="2">
 				<html:textarea property="achar.theFinding.theFile.keywordsStr"
-					rows="3" cols="60" />
+					rows="3" cols="60" styleId="fileKeywords"/>
 				&nbsp;
 			</td>
 		</tr>
@@ -109,7 +109,7 @@
 			</td>
 			<td colspan="2">
 				<html:select property="achar.theFinding.theFile.visibilityGroups"
-					multiple="true" size="6">
+					multiple="true" size="6" styleId="fileVisibility">
 					<html:options name="allVisibilityGroups" />
 				</html:select>
 				<br>
@@ -132,9 +132,9 @@
 			<td>
 				<div align="right">
 					<input class="noBorderButton" type="button" value="Cancel"
-						onclick="clearFile()" />
+						onclick="hide('newFile');clearFile()" />
 					<input class="noBorderButton" type="button" value="Save"
-						onclick="addFile();" />
+						onclick="addFile('characterization');" />
 				</div>
 			</td>
 		</tr>
