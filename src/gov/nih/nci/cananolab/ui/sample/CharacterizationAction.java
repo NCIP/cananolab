@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -30,7 +31,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +41,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
+import org.directwebremoting.WebContextFactory;
 
 /**
  * Base action for characterization actions
@@ -184,6 +185,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			detailPage = setupDetailPage(charBean);
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
+
 		return mapping.getInputForward();
 	}
 
@@ -483,7 +485,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
-		//keep submitted characterization types in the correct display order
+		// keep submitted characterization types in the correct display order
 		List<String> allCharacterizationTypes = new ArrayList<String>(
 				(List<? extends String>) request.getSession().getAttribute(
 						"characterizationTypes"));
@@ -494,8 +496,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				characterizationTypes.add(type);
 			}
 		}
-		request.setAttribute("characterizationTypes",
-				characterizationTypes);
+		request.setAttribute("characterizationTypes", characterizationTypes);
 		return mapping.findForward("summaryView");
 	}
 
@@ -546,21 +547,43 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		FindingBean dataSetBean = achar.getTheFinding();
+		FindingBean findingBean = achar.getTheFinding();
 		String theFindingId = (String) theForm.get("theFindingId");
 		if (theFindingId != null && !theFindingId.equals("null")
 				&& theFindingId.trim().length() > 0) {
-			dataSetBean.getDomain().setId(new Long(theFindingId));
+			findingBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		dataSetBean.setupDomain(user.getLoginName());
+		findingBean.setupDomain(user.getLoginName());
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
-		service.saveFinding(dataSetBean.getDomain());
-		achar.addFinding(dataSetBean);
+		service.saveFinding(findingBean.getDomain());
+		achar.addFinding(findingBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
 		// also save characterization
 		saveCharacterization(request, theForm, achar);
+		return mapping.getInputForward();
+	}
+
+	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		FindingBean findingBean = achar.getTheFinding();
+		FileBean theFile = findingBean.getTheFile();
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ "/"
+				+ sampleBean.getDomain().getName()
+				+ "/"
+				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
+						.getInstance().getDisplayName(achar.getClassName(),
+								request.getSession().getServletContext()));
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
+		findingBean.addFile(theFile);
 		return mapping.getInputForward();
 	}
 
