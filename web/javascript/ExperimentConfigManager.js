@@ -11,7 +11,6 @@ function retrieveTechniqueAbbreviation() {
 		});
 	}
 }
-
 function updateInstrumentDropDown(instrumentTypes) {
 	var id = "type";
 	var selectedValue = dwr.util.getValue(id);
@@ -30,7 +29,6 @@ function setManufacturerOptions(manufacturerTypes) {
 var thisConfigId = 0;
 function setTheExperimentConfig(configId) {
 	show("newExperimentConfig");
-	show("instrumentTable");
 	hide("patternAddRow");
 	show("delete");
 	ExperimentConfigManager.findInstrumentTypesByConfigId(configId, updateInstrumentDropDown);
@@ -116,6 +114,9 @@ function fillTable() {
 	//}else{
 	//	hide('instrumentTableDiv');
 	//}
+	if (instruments.length > 0) {
+		show("instrumentTable");
+	}
 	for (var i = 0; i < instruments.length; i++) {
 		instrument = instruments[i];
 		if (instrument.id == null) {
