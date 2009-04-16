@@ -39,6 +39,7 @@
 			<include method="addColumnHeader" />
 			<include method="removeColumnHeader" />
 			<include method="resetFinding" />
+			<include method="resetFile" />
 			<include method="addRow" />
 			<include method="deleteRow" />
 			<include method="findFindingById" />
@@ -99,7 +100,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
-			<param name="exclude" value="datumCollection, findingCollection"/>
+			<param name="exclude"
+				value="datumCollection, findingCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
@@ -134,8 +136,6 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FindingBean">
-			<param name="include"
-				value="theRow, rows,domain, columnBeans, datumColumnBeans, conditionColumnBeans" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.RowBean">
@@ -143,7 +143,6 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Finding">
-			<param name="include" value="id" />
 		</convert>
 	</allow>
 </dwr>
