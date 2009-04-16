@@ -52,6 +52,13 @@
 			<html:select property="achar.assayType" styleId="assayType"
 				onchange="javascript:callPrompt('Assay Type', 'assayType');">
 				<option value=""></option>
+				<c:if
+					test="${characterizationForm.map.achar.characterizationType eq 'Physico-Chemical Characterization'}">
+					<option
+						value="${characterizationForm.map.achar.characterizationName}" selected>
+						${characterizationForm.map.achar.characterizationName}
+					</option>
+				</c:if>
 				<c:if test="${!empty charNameAssays }">
 					<html:options name="charNameAssays" />
 				</c:if>
