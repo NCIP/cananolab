@@ -4,8 +4,9 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.ColumnBean;
-import gov.nih.nci.cananolab.dto.common.RowBean;
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
+import gov.nih.nci.cananolab.dto.common.RowBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -201,4 +202,13 @@ public class DWRCharacterizationResultManager {
 		return units.toArray(new String[units.size()]);
 	}
 
+	public FileBean resetFile() {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		FileBean newFile = new FileBean();
+		charBean.getTheFinding().setTheFile(newFile);
+		return newFile;
+	}
 }
