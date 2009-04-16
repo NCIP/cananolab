@@ -11,6 +11,7 @@ var editFinding = false;
 var fixId = "-10000";
 var fixConditionColIndex = 10000; // starting index of condition
 var tempDatum = null;
+var currentFile=null;
 
 function setNameOptionsByCharName(charName) {
     if (charName=="") {
@@ -224,7 +225,7 @@ function addColumn(myColumn) {
 			var datumColumnPatternRowDisplay = document
 					.getElementById("datumColumnPatternRowDisplay");
 			var aCellsDisplay = datumColumnPatternRowDisplay
-					.getElementsByTagName('td')// cells collection in this row
+					.getElementsByTagName('td');// cells collection in this row
 			var aCellLengthDisplay = aCellsDisplay.length;
 			var toDeleteDisplay = new Array();
 			i = 0;
@@ -530,7 +531,7 @@ function removeColumns(columnName, exceptColumn) {
 	// remove datumColumnPatternRowDisplay all column except
 	// columnPattern
 	var columnVariable = document.getElementById(columnName);
-	var aCellsDisplay = columnVariable.getElementsByTagName('td')// cells
+	var aCellsDisplay = columnVariable.getElementsByTagName('td');// cells
 																	// collection
 																	// in this
 																	// row
@@ -942,7 +943,7 @@ function deleteColumn() {
 }
 
 function removeAllColumns(theRow) {
-	var aCells = theRow.getElementsByTagName('TD')// cells collection in this
+	var aCells = theRow.getElementsByTagName('TD');// cells collection in this
 	// row
 	var aCellLength = aCells.length;
 	var toDelete = new Array();
@@ -960,7 +961,7 @@ function removeAllColumns(theRow) {
 // for dbug
 function checkNumOfColumns(rowId) {
 	var theRow = document.getElementById(rowId);
-	var aCells = theRow.getElementsByTagName('TD')// cells collection in this
+	var aCells = theRow.getElementsByTagName('TD');// cells collection in this
 	// row
 	var aCellLength = aCells.length;
 	alert(rowId + " has " + aCellLength + " columns");
@@ -1028,4 +1029,22 @@ function addDeleteButton(rowId) {
 		};
 		selectButtonCell.appendChild(deleteButton);
 	}
+}
+
+function clearFile() {
+	dwr.util.setValue("fileType", "");
+	dwr.util.setValue("fileTitle", "");
+	dwr.util.setValue("fileKeywords", "");
+	dwr.util.setValue("fileVisibility", "");
+	dwr.util.setValue("external0", 1);
+	dwr.util.setValue("uploadedFile", null);
+	show('load');
+	dwr.util.setValue("externalUrl", "");
+	FindingManager.resetFile(function (file) {
+		currentFile=file;
+	});
+}
+
+function addFile(actionName) {
+	submitAction(document.forms[0], actionName, 'addFile');
 }
