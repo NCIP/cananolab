@@ -48,20 +48,22 @@
 	</c:when>
 </c:choose>
 <div id="allPOC_${param.pocTitle}" style="display: none;">
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+	<table cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>
 			<tr>
 				<c:choose>
 					<c:when test="${param.pocTitle ne 'Primary Point of Contact' }">
-						<td class="leftLabel" valign="top">
+						<td valign="top">
 							<strong>&nbsp;&nbsp;&nbsp;&nbsp;</strong>
 						</td>
-						<td class="rightLabel" valign="top" colspan="5">
-							<logic:iterate id="existingPocBean" name="allPointOfContacts">
-								<a href="javascript:setSecondaryPOC(submitPointOfContactForm, '${existingPocBean.domain.id}', '${param.pocIndex}');">
-									<bean:write name="existingPocBean" property="displayName"/></a><br>							  
-							</logic:iterate>
+						<td valign="top" colspan="5">
+							<c:if test="${!empty allPointOfContacts}">
+								<logic:iterate id="existingPocBean" name="allPointOfContacts">
+									<a href="javascript:setSecondaryPOC(submitPointOfContactForm, '${existingPocBean.domain.id}', '${param.pocIndex}');">
+										<bean:write name="existingPocBean" property="displayName"/></a><br>							  
+								</logic:iterate>
+							</c:if>
 						</td>
 					</c:when>
 				</c:choose>
@@ -70,50 +72,48 @@
 	</table>
 </div>
 <div id="${param.pocTitle}" style="display: block;">
-	<table class="topBorderOnly" cellspacing="0" cellpadding="3"
+	<table class="submissionView" cellspacing="0" cellpadding="3"
 		width="100%" align="center" summary="" border="0">
 		<tbody>			
 			<tr>
-				<td class="leftLabel" valign="top">
+				<td class="cellLabel" valign="top">
 					<strong>First Name</strong>
 				</td>
-				<td class="label" valign="top">
+				<td valign="top">
 					<html:text property="${param.pocBean}.domain.firstName" size="15" />
 				</td>
-				<td class="label" valign="top">
+				<td class="cellLabel" valign="top">
 					<strong>Middle Initial</strong>
 				</td>
-				<td class="label" valign="top">
-					<html:text property="${param.pocBean}.domain.middleInitial"
-						size="5" />
+				<td valign="top">
+					<html:text property="${param.pocBean}.domain.middleInitial"	size="5" />
 				</td>
-				<td class="label" valign="top">
+				<td class="cellLabel" valign="top">
 					<strong>Last Name</strong>
 				</td>
-				<td class="rightLabel" valign="top">
+				<td valign="top">
 					<html:text property="${param.pocBean}.domain.lastName" size="15" />
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel" valign="top">
+				<td class="cellLabel" valign="top">
 					<strong>Phone Number</strong>
 				</td>
-				<td class="label" valign="top">
+				<td valign="top">
 					<html:text property="${param.pocBean}.domain.phone" size="30" />
 				</td>
-				<td class="label" valign="top">
+				<td class="cellLabel" valign="top">
 					<strong>Email</strong>
 				</td>
-				<td class="rightLabel" valign="top" colspan="4">
-					<html:text property="${param.pocBean}.domain.email" size="30"
-						styleId="emailText" />
+				<td valign="top" colspan="4">
+					<html:text property="${param.pocBean}.domain.email" size="30" styleId="emailText" />
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel">
+				<td class="cellLabel">
 					<strong>Organization Name*</strong>
 				</td>
-				<td class="label">
+				<td>
 					<html:select property="${param.pocBean}.organization.name"
 						styleId="orgName_${param.pocIndex}"
 						onchange="javascript:removeOrgVisibilityByName('orgName_${param.pocIndex}', '${param.pocBean}.visibilityGroup');setOrganization(submitPointOfContactForm, 'orgName_${param.pocIndex }', '${param.pocIndex }' );callPrompt('Organization Name', 'orgName_${param.pocIndex }');">
@@ -124,11 +124,11 @@
 						</option>
 					</html:select>
 				</td>
-				<td class="label" valign="top">
+				<td class="cellLabel" valign="top">
 					<strong>Role</strong>
 				</td>
-				<td class="rightLabel" valign="top" colspan="4">
-					<html:select styleId="${param.pocBean}_Role_${param.pocIndex }"
+				<td valign="top" colspan="4">
+					<html:select styleId="${param.pocBean}_Role_${param.pocIndex}"
 						property="${param.pocBean}.domain.role"
 						onchange="javascript:callPrompt('Contact Role', '${param.pocBean}_Role_${param.pocIndex}');">
 						<option />
@@ -140,64 +140,60 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel">
+				<td class="cellLabel">
 					<strong>Address Line1</strong>
 				</td>
-				<td class="rightLabel" colspan="5">
-					<html:text property="${param.pocBean}.organization.streetAddress1"
-						size="50" />
+				<td colspan="5">
+					<html:text property="${param.pocBean}.organization.streetAddress1" size="50" />
 					&nbsp;
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel">
+				<td class="cellLabel">
 					<strong>Address Line2</strong>
 				</td>
-				<td class="rightLabel" colspan="5">
-					<html:text property="${param.pocBean}.organization.streetAddress2"
-						size="50" />
+				<td colspan="5">
+					<html:text property="${param.pocBean}.organization.streetAddress2" size="50" />
 					&nbsp;
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel">
+				<td class="cellLabel">
 					<strong>City</strong>
 				</td>
-				<td class="label">
+				<td>
 					<html:text property="${param.pocBean}.organization.city" size="20" />
 					&nbsp;
 				</td>
-				<td class="label">
+				<td class="cellLabel">
 					<strong>State/Province</strong>
 				</td>
-				<td class="label">
+				<td>
 					<html:text property="${param.pocBean}.organization.state" size="15" />
 					&nbsp;
 				</td>
-				<td class="label">
+				<td class="cellLabel">
 					<strong>Zip/Postal Code</strong>
 				</td>
-				<td class="rightLabel">
-					<html:text property="${param.pocBean}.organization.postalCode"
-						size="10" />
+				<td>
+					<html:text property="${param.pocBean}.organization.postalCode" size="10" />
 					&nbsp;
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel">
+				<td class="cellLabel">
 					<strong>Country</strong>
 				</td>
-				<td class="rightLabel" colspan="5">
-					<html:text property="${param.pocBean}.organization.country"
-						size="30" />
+				<td colspan="5">
+					<html:text property="${param.pocBean}.organization.country"	size="30" />
 					&nbsp;
 				</td>
 			</tr>
 			<tr>
-				<td class="leftLabel">
+				<td class="cellLabel">
 					<strong>Visibility</strong>
 				</td>
-				<td class="rightLabel" colspan="5">
+				<td colspan="5">
 					<html:select styleId="${param.pocBean}.visibilityGroup" property="${param.pocBean}.visibilityGroups"
 						multiple="true" size="6">
 						<html:options name="allVisibilityGroups" />
