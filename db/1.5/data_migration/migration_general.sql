@@ -3,7 +3,7 @@ USE canano;
 -- Disable foreign key checks
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 
---migration to csm 4.1
+-- migration to csm 4.1
 source csm/migration_to_csm_4.1.sql
 
 -- drop obsolete tables

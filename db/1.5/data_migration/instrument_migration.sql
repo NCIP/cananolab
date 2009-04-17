@@ -1,4 +1,4 @@
---instrument and technique
+-- instrument and technique
 ALTER TABLE common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT AUTO_INCREMENT NOT NULL;
 
