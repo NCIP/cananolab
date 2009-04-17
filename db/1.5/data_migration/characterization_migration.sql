@@ -1,4 +1,4 @@
---update description with identifier_name if no description
+-- update description with identifier_name if no description
 update characterization
 set description=identifier_name
 where description is null and identifier_name is not null;
@@ -78,7 +78,7 @@ ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
---in vitro data migration
+-- in vitro data migration
 update characterization
 set discriminator='Cytotoxicity',
 assay_type='Cell Viability'

@@ -1,4 +1,4 @@
---change nanoparticle_entity to nanomaterial_entity
+-- change nanoparticle_entity to nanomaterial_entity
 
 CREATE TABLE nanomaterial_entity
 (

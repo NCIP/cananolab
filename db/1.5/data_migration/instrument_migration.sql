@@ -183,7 +183,7 @@ CREATE TABLE experiment_config
 ) TYPE=InnoDB
 ;
 
---delete instruments that are not used
+-- delete instruments that are not used
 DELETE FROM instrument
 WHERE NOT EXISTS
   ( SELECT b.instrument_pk_id
@@ -192,7 +192,7 @@ WHERE NOT EXISTS
      and b.instrument_config_pk_id=c.instrument_config_pk_id)
 ;
 
---update to make sure no spelling differences
+-- update to make sure no spelling differences
 update instrument
 set type='Size Exclusion Chromatography with Multi-Angle Laser Light Scattering'
 where type='Size-Exclusion Chromatography and Multiangle Laser Light Scattering';
@@ -209,7 +209,7 @@ update instrument
 set type='Gas Sorption Detector'
 where type='Surface Area and Pore Size Analyzer';
 
---create a temp table to hold instruments that can't be migrated
+-- create a temp table to hold instruments that can't be migrated
 CREATE TABLE instrument_to_review
 (
 	instrument_pk_id BIGINT NOT NULL,
@@ -220,7 +220,7 @@ CREATE TABLE instrument_to_review
 ) TYPE=InnoDB
 ;
 
---create a temp table to hold techniques that can't be migrated
+-- create a temp table to hold techniques that can't be migrated
 CREATE TABLE technique_to_review
 (
 	instrument_pk_id BIGINT NOT NULL,
@@ -232,8 +232,8 @@ CREATE TABLE technique_to_review
 ;
 
 
---move instruments that map to mulitple techniques to the review table
---these need manual curation to insert into the 1.5 technique table
+-- move instruments that map to mulitple techniques to the review table
+-- these need manual curation to insert into the 1.5 technique table
 insert into instrument_to_review
 (instrument_pk_id, instrument_config_pk_id, characterization_pk_id, instrument_type, description)
 select i.instrument_pk_id,  ic.instrument_config_pk_id, c.characterization_pk_id,i.type, ic.description
@@ -245,8 +245,8 @@ and cl.attribute='instrument'
 group by i.instrument_pk_id, i.type, ic.instrument_config_pk_id, ic.description, c.characterization_pk_id
 having count(distinct cl.name)>1;
 
---move instruments that are techniques having more than one instruments to the review table
---these need manual curation to insert to the 1.5 instrument table
+-- move instruments that are techniques having more than one instruments to the review table
+-- these need manual curation to insert to the 1.5 instrument table
 insert into technique_to_review
 (instrument_pk_id, instrument_config_pk_id, characterization_pk_id, instrument_type, description)
 select i.instrument_pk_id,  ic.instrument_config_pk_id, c.characterization_pk_id,i.type, ic.description
@@ -277,7 +277,7 @@ where a.attribute='instrument'
  and a.name=b.type) c
  ;
 
---update technique abbreviation
+-- update technique abbreviation
 update technique t, common_lookup cl
 set t.abbreviation=cl.value
 where cl.attribute='abbreviation'
@@ -292,17 +292,17 @@ ALTER TABLE instrument
  ADD created_by VARCHAR(200) NOT NULL,
  DROP abbreviation;
 
---update model_name with description in instrument_config
+-- update model_name with description in instrument_config
 UPDATE instrument a, instrument_config b
 set a.model_name=substr(b.description, 1, 200)
 where a.instrument_pk_id=b.instrument_pk_id;
 
---update manufacturer spelling
+-- update manufacturer spelling
 update instrument
 set manufacturer='Diagnostica Stago'
 where manufacturer='Diagnostica';
 
---insert into experiment_config using matching from technique to instrument
+-- insert into experiment_config using matching from technique to instrument
 INSERT INTO experiment_config(experiment_config_pk_id,description,created_date, created_by,
 	characterization_pk_id,technique_pk_id)
 SELECT distinct ic.instrument_config_pk_id, ic.description, ic.created_date, ic.created_by,
@@ -316,7 +316,7 @@ and cl.name=t.type
 and i.instrument_pk_id !=ir.instrument_pk_id
 ;
 
---insert into experiment_config using matching of instrument type to technique type
+-- insert into experiment_config using matching of instrument type to technique type
 INSERT INTO experiment_config(experiment_config_pk_id,description,created_date, created_by,
 	characterization_pk_id,technique_pk_id)
 SELECT ic.instrument_config_pk_id, ic.description, ic.created_date, ic.created_by,
@@ -327,14 +327,14 @@ and ic.instrument_pk_id=i.instrument_pk_id
 and i.type=t.type
 ;
 
---update instrument type with mapping from technique where there is a one to one mapping between technique and instrument
+-- update instrument type with mapping from technique where there is a one to one mapping between technique and instrument
 update instrument i, common_lookup cl, technique_to_review tr
 set i.type=cl.value
 where cl.attribute='instrument'
 and i.type=cl.name
 and i.type!=tr.instrument_type;
 
---delete the technique that needs to be reviewed
+-- delete the technique that needs to be reviewed
 delete from instrument
 where instrument_pk_id in
 (select instrument_pk_id

@@ -6,7 +6,7 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 --migration to csm 4.1
 source csm/migration_to_csm_4.1.sql
 
---drop obsolete tables
+-- drop obsolete tables
 DROP TABLE IF EXISTS sample_management;
 DROP TABLE IF EXISTS sample_container;
 DROP TABLE IF EXISTS sample_container_storage;
@@ -15,25 +15,25 @@ DROP TABLE IF EXISTS associated_file;
 
 ALTER TABLE publication ADD COLUMN abstract TEXT;
 
---merge protocol_file and protocol
+-- merge protocol_file and protocol
 ALTER TABLE protocol
     ADD COLUMN protocol_abbreviation VARCHAR(200),
     ADD COLUMN protocol_version VARCHAR(200),
 	ADD COLUMN file_pk_id BIGINT
 ;
 
---update protocol_abbreviation to be the same as protocol name
+-- update protocol_abbreviation to be the same as protocol name
 update protocol
 set protocol_abbreviation=protocol_name;
 
---update protocol_version and file_pk_id
+-- update protocol_version and file_pk_id
 update protocol a, protocol_file b, lab_file c
 set a.protocol_version=c.version,
 a.file_pk_id=c.file_pk_id
 where a.protocol_pk_id=b.protocol_pk_id
 and b.protocol_file_pk_id=c.file_pk_id;
 
---update foreign key in characterization from protocol_file_pk_id  to protocol_pk_id
+-- update foreign key in characterization from protocol_file_pk_id  to protocol_pk_id
 ALTER TABLE canano.characterization
  DROP FOREIGN KEY FK_characterization_protocol_file,
  CHANGE protocol_file_pk_id protocol_pk_id BIGINT;
@@ -51,7 +51,7 @@ set value='physico-chemical assay'
 where name='Protocol' and attribute='type'
 and value='physical assay';
 
---change lab_file to file
+-- change lab_file to file
 ALTER TABLE lab_file RENAME file;
 ALTER TABLE composition_lab_file RENAME composition_file;
 ALTER TABLE composition_file
@@ -95,9 +95,9 @@ ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity
 DELETE FROM nanoparticle_sample_publication
 where particle_sample_pk_id not in
 (select particle_sample_pk_id from nanoparticle_sample);
---end of lab_file to file
+-- end of lab_file to file
 
---update publication category
+-- update publication category
 update publication
 set category='proceeding'
 where category='in proceedings';
@@ -134,9 +134,9 @@ FROM csm_protection_group g, csm_protection_element e
 where  e.update_date = CURRENT_DATE()
 and g.protection_group_name = e.protection_element_name
 ;
---end of csm fix
+-- end of csm fix
 
---missing constraint between author and publication
+-- missing constraint between author and publication
 ALTER TABLE author RENAME author0;
 ALTER TABLE author_publication RENAME author_publication0;
 
@@ -180,7 +180,7 @@ ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
---missing constraint between composition and file
+-- missing constraint between composition and file
 ALTER TABLE composition_file RENAME composition_file0;
 
 CREATE TABLE composition_file
@@ -207,22 +207,22 @@ ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 ;
 
 
---nanoparticle_sample to sample
+-- nanoparticle_sample to sample
 source sample.sql
 
---nanoparticle_entity to nanomaterial_entity
+-- nanoparticle_entity to nanomaterial_entity
 source nanomaterial_entity.sql
 
---source enhancement
+-- source enhancement
 source poc_migration.sql
 
---instrument and technique
+-- instrument and technique
 source instrument_migration.sql
 
 -- datum and condition
 source datum_migration.sql
 
---characterization
+-- characterization
 source characterization_migration.sql
 
 

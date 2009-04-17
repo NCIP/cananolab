@@ -1,4 +1,4 @@
---change nanoparticle_sample to sample
+-- change nanoparticle_sample to sample
 CREATE TABLE sample
 (
 	sample_pk_id BIGINT NOT NULL,

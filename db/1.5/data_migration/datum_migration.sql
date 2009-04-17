@@ -1,4 +1,4 @@
---change derived_datum to datum, derived_bioassay to finding, add condition
+-- change derived_datum to datum, derived_bioassay to finding, add condition
 CREATE TABLE datum
 (
 	datum_pk_id BIGINT NOT NULL,
@@ -239,4 +239,4 @@ ALTER TABLE canano.common_lookup
 
 DROP TABLE derived_datum;
 DROP TABLE derived_bioassay_data;
---set datum drop down for assay endpoints
+-- set datum drop down for assay endpoints
