@@ -1,8 +1,11 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.Datum;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
+import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationResultService;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -10,6 +13,7 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -96,8 +100,14 @@ public class CharacterizationResultServiceLocalImpl implements
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
+			FileService service = new FileServiceLocalImpl();
+			Collection<File> Files = finding.getFileCollection();
+			if (Files != null) {
+				for (File file : Files) {
+					service.prepareSaveFile(file);
+				}
+			}
 			appService.saveOrUpdate(finding);
-			// TODO special handling for file
 		} catch (Exception e) {
 			String err = "Error saving characterization result finding. ";
 			logger.error(err, e);
@@ -112,7 +122,7 @@ public class CharacterizationResultServiceLocalImpl implements
 					.getApplicationService();
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			authService.removePublicGroup(finding.getId().toString());
+			authService.removePublicVisibility(finding.getId().toString());
 			appService.delete(finding);
 
 		} catch (Exception e) {
