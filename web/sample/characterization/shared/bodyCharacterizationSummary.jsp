@@ -10,7 +10,7 @@
 		</th>
 	</tr>
 	<%-- can't change characterization type and name in edit mode --%>
-	<c:if test="${param.dispatch eq 'setupNew'}">
+	<c:if test="${empty characterizationForm.map.achar.domainChar.id}">
 		<tr>
 			<td class="cellLabel">
 				Characterization Type *
