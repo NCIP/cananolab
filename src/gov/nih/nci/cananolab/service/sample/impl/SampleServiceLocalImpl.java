@@ -465,7 +465,7 @@ public class SampleServiceLocalImpl implements
 				}
 			}
 			if (sample.getSampleComposition() != null) {
-				compService.assignPublicVisibility(authService,
+				compService.removePublicVisibility(authService,
 						sample.getSampleComposition());
 			}
 		}
@@ -489,7 +489,7 @@ public class SampleServiceLocalImpl implements
 		}
 		// sampleComposition
 		if (sample.getSampleComposition() != null) {
-			authService.removePublicGroup(sample
+			authService.removePublicVisibility(sample
 					.getSampleComposition().getId().toString());
 			// sampleComposition.nanomaterialEntityCollection,
 			Collection<NanomaterialEntity> nanomaterialEntityCollection = sample
