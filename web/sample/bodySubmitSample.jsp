@@ -75,7 +75,7 @@
 								</option>
 							</html:select>
 							&nbsp;
-							<a style="" id="pocDetail" href="#"
+							<a style="${pocDetailDisplay}" id="pocDetail" href="#"
 								onclick="javascript:submitAction(sampleForm, 'sample', 'pointOfContactDetailView');">
 								<span class="addLink2">View Detail</span> </a>
 						</td>
