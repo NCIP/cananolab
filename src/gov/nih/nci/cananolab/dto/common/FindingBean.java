@@ -4,13 +4,14 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.util.Comparators;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -91,33 +92,35 @@ public class FindingBean {
 		}
 
 		// generate dataMatrix
-		String firstDatumLabel = datumColumnLabels.get(0);
-		int numberOfRows = datumMap.get(firstDatumLabel).size();
+		if (data != null && !data.isEmpty()) {
+			String firstDatumLabel = datumColumnLabels.get(0);
+			int numberOfRows = datumMap.get(firstDatumLabel).size();
 
-		for (int i = 0; i < numberOfRows; i++) {
-			RowBean row = new RowBean();
-			for (String label : datumColumnLabels) {
-				row.getData().add(datumMap.get(label).get(i));
+			for (int i = 0; i < numberOfRows; i++) {
+				RowBean row = new RowBean();
+				for (String label : datumColumnLabels) {
+					row.getData().add(datumMap.get(label).get(i));
+				}
+				for (String label : conditionColumnLabels) {
+					row.getConditions().add(conditionMap.get(label).get(i));
+				}
+				row.setRowNumber(i);
+				rows.add(row);
 			}
-			for (String label : conditionColumnLabels) {
-				row.getConditions().add(conditionMap.get(label).get(i));
-			}
-			row.setRowNumber(i);
-			rows.add(row);
-		}
 
-		for (Condition condition : rows.get(0).getConditions()) {
-			// TODO add other info to column
-			ColumnBean conditionColumnBean = new ColumnBean(condition);
-			columnBeans.add(conditionColumnBean);
-			conditionColumnBeans.add(conditionColumnBean);
-		}
-		// get column information from first data row
-		for (Datum datum : rows.get(0).getData()) {
-			// TODO add other info to column
-			ColumnBean columnBean = new ColumnBean(datum);
-			columnBeans.add(columnBean);
-			datumColumnBeans.add(columnBean);
+			for (Condition condition : rows.get(0).getConditions()) {
+				// TODO add other info to column
+				ColumnBean conditionColumnBean = new ColumnBean(condition);
+				columnBeans.add(conditionColumnBean);
+				conditionColumnBeans.add(conditionColumnBean);
+			}
+			// get column information from first data row
+			for (Datum datum : rows.get(0).getData()) {
+				// TODO add other info to column
+				ColumnBean columnBean = new ColumnBean(datum);
+				columnBeans.add(columnBean);
+				datumColumnBeans.add(columnBean);
+			}
 		}
 	}
 
@@ -173,16 +176,36 @@ public class FindingBean {
 		return data;
 	}
 
-	public void setupDomain(String createdBy) {
+	public void setupDomain(String createdBy, String internalUriPath)
+			throws Exception {
 		int i = 0;
 		if (domain.getId() != null && domain.getId() <= 0) {
 			domain.setId(null);
+		}
+		if (domain.getId() == null
+				|| domain.getCreatedBy() != null
+				&& domain.getCreatedBy().equals(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX)) {
+			domain.setCreatedBy(createdBy);
+			domain.setCreatedDate(new Date());
 		}
 		if (domain.getDatumCollection() != null) {
 			domain.getDatumCollection().clear();
 		} else {
 			domain.setDatumCollection(new HashSet<Datum>());
 		}
+		if (domain.getFileCollection() != null) {
+			domain.getFileCollection().clear();
+		} else {
+			domain.setFileCollection(new HashSet<File>());
+		}
+		int j = 0;
+		for (FileBean file : files) {
+			file.setupDomainFile(internalUriPath, createdBy, j);
+			domain.getFileCollection().add(file.getDomainFile());
+			j++;
+		}
+
 		for (RowBean rowBean : rows) {
 			for (Datum datum : rowBean.getData()) {
 				if (datum.getId() != null && datum.getId() <= 0) {
