@@ -308,7 +308,7 @@ public class CharacterizationServiceLocalImpl extends
 	public void removePublicVisibility(AuthorizationService authService,
 			Characterization aChar) throws SecurityException {
 		if (aChar != null) {
-			authService.removePublicGroup(aChar.getId().toString());
+			authService.removePublicVisibility(aChar.getId().toString());
 			// char.derivedBioAssayDataCollection
 			// Collection<DerivedBioAssayData> derivedBioAssayDataCollection =
 			// aChar
