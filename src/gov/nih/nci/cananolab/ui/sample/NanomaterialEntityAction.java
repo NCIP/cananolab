@@ -113,7 +113,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			// set composition public
 			authService.assignPublicVisibility(sampleBean.getDomain()
 					.getSampleComposition().getId().toString());
-			compositionService.assignNanoparicleEntityPublicVisibility(
+			compositionService.assignNanomaterialEntityPublicVisibility(
 					authService, entityBean.getDomainEntity());
 		}
 		// save file data to file system and set visibility
