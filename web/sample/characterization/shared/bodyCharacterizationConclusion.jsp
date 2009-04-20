@@ -11,7 +11,7 @@
 	</tr>
 	<tr>
 		<td>
-			<html:textarea property="achar.conclusion" cols="120" rows="8" />
+			<html:textarea property="achar.conclusion" cols="120" rows="5" />
 			&nbsp;
 		</td>
 	</tr>
