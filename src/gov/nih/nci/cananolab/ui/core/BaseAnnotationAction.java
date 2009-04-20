@@ -106,8 +106,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		for (FileBean fileBean : files) {
 			fileService.writeFile(fileBean.getDomainFile(), fileBean
 					.getNewFileData());
-			authService.assignVisibility(fileBean.getDomainFile().getId()
-					.toString(), fileBean.getVisibilityGroups(), null);
+			fileService.assignVisibility(fileBean);
 		}
 	}
 
