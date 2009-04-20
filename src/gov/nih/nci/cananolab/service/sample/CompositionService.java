@@ -100,7 +100,7 @@ public interface CompositionService {
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation) throws Exception;
 
-	public void assignNanoparicleEntityPublicVisibility(
+	public void assignNanomaterialEntityPublicVisibility(
 			AuthorizationService authService,
 			NanomaterialEntity nanomaterialEntity) throws Exception;
 
@@ -119,6 +119,9 @@ public interface CompositionService {
 	public void removeChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
 			ChemicalAssociation chemicalAssociation) throws Exception;
+
+	public void removePublicVisibility(AuthorizationService authService,
+			SampleComposition composition) throws Exception;
 
 	public void assignPublicVisibility(AuthorizationService authService,
 			SampleComposition composition) throws Exception;
