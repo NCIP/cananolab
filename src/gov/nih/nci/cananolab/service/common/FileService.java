@@ -52,4 +52,6 @@ public interface FileService {
 	// retrieve file visibility
 	public void retrieveVisibility(FileBean fileBean, UserBean user)
 			throws FileException;
+
+	public void assignVisibility(FileBean fileBean) throws FileException;
 }
