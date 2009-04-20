@@ -618,7 +618,7 @@ public class AuthorizationService {
 		}
 	}
 
-	public void removePublicGroup(String objectName)
+	public void removePublicVisibility(String objectName)
 			throws SecurityException {
 		try {
 			Group group = getGroup(Constants.CSM_PUBLIC_GROUP);
