@@ -43,8 +43,7 @@ import org.hibernate.criterion.Property;
  * @author pansu
  *
  */
-public class CompositionServiceLocalImpl implements
-		CompositionService {
+public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceLocalImpl.class);
 	private CompositionServiceHelper helper = new CompositionServiceHelper();
@@ -71,8 +70,7 @@ public class CompositionServiceLocalImpl implements
 			boolean newSampleComposition = false;
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
-				particleSample.getSampleComposition().setSample(
-						particleSample);
+				particleSample.getSampleComposition().setSample(particleSample);
 				particleSample.getSampleComposition()
 						.setNanomaterialEntityCollection(
 								new HashSet<NanomaterialEntity>());
@@ -138,8 +136,7 @@ public class CompositionServiceLocalImpl implements
 			boolean newSampleComposition = false;
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
-				particleSample.getSampleComposition().setSample(
-						particleSample);
+				particleSample.getSampleComposition().setSample(particleSample);
 				particleSample.getSampleComposition()
 						.setFunctionalizingEntityCollection(
 								new HashSet<FunctionalizingEntity>());
@@ -206,8 +203,8 @@ public class CompositionServiceLocalImpl implements
 		}
 	}
 
-	public void saveCompositionFile(Sample particleSample,
-			File file, byte[] fileData) throws CompositionException {
+	public void saveCompositionFile(Sample particleSample, File file,
+			byte[] fileData) throws CompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(file);
@@ -217,8 +214,7 @@ public class CompositionServiceLocalImpl implements
 
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
-				particleSample.getSampleComposition().setSample(
-						particleSample);
+				particleSample.getSampleComposition().setSample(particleSample);
 				particleSample.getSampleComposition().setFileCollection(
 						new HashSet<File>());
 			}
@@ -282,9 +278,8 @@ public class CompositionServiceLocalImpl implements
 		}
 	}
 
-	public ChemicalAssociationBean findChemicalAssociationById(
-			String sampleId, String assocId, String assocClassName)
-			throws CompositionException {
+	public ChemicalAssociationBean findChemicalAssociationById(String sampleId,
+			String assocId, String assocClassName) throws CompositionException {
 		return findChemicalAssociationById(assocId);
 	}
 
@@ -382,8 +377,8 @@ public class CompositionServiceLocalImpl implements
 		}
 	}
 
-	public void deleteCompositionFile(Sample particleSample,
-			File file) throws CompositionException {
+	public void deleteCompositionFile(Sample particleSample, File file)
+			throws CompositionException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -425,13 +420,13 @@ public class CompositionServiceLocalImpl implements
 	public boolean checkChemicalAssociationBeforeDelete(
 			ComposingElementBean ceBean) {
 		if (ceBean.getDomain().getId() != null) {
-			Collection<ChemicalAssociation> assocSet = ceBean
-					.getDomain().getNanomaterialEntity()
-					.getSampleComposition().getChemicalAssociationCollection();
+			Collection<ChemicalAssociation> assocSet = ceBean.getDomain()
+					.getNanomaterialEntity().getSampleComposition()
+					.getChemicalAssociationCollection();
 			if (assocSet != null) {
 				for (ChemicalAssociation assoc : assocSet) {
-					if (ceBean.getDomain().equals(
-							assoc.getAssociatedElementA())
+					if (ceBean.getDomain()
+							.equals(assoc.getAssociatedElementA())
 							|| ceBean.getDomain().equals(
 									assoc.getAssociatedElementB())) {
 						return false;
@@ -569,8 +564,7 @@ public class CompositionServiceLocalImpl implements
 
 	public void assignChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation)
-			throws SecurityException {
+			ChemicalAssociation chemicalAssociation) throws SecurityException {
 		if (chemicalAssociation != null) {
 			removeChemicalAssociationPublicVisibility(authService,
 					chemicalAssociation);
@@ -589,10 +583,9 @@ public class CompositionServiceLocalImpl implements
 		}
 	}
 
-	public void assignNanoparicleEntityPublicVisibility(
+	public void assignNanomaterialEntityPublicVisibility(
 			AuthorizationService authService,
-			NanomaterialEntity nanomaterialEntity)
-			throws SecurityException {
+			NanomaterialEntity nanomaterialEntity) throws SecurityException {
 		if (nanomaterialEntity != null) {
 			authService.assignPublicVisibility(nanomaterialEntity.getId()
 					.toString());
@@ -645,11 +638,10 @@ public class CompositionServiceLocalImpl implements
 
 	public void removeNanomaterialEntityPublicVisibility(
 			AuthorizationService authService,
-			NanomaterialEntity nanomaterialEntity)
-			throws SecurityException {
+			NanomaterialEntity nanomaterialEntity) throws SecurityException {
 		if (nanomaterialEntity != null) {
-			authService
-					.removePublicGroup(nanomaterialEntity.getId().toString());
+			authService.removePublicVisibility(nanomaterialEntity.getId()
+					.toString());
 
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = nanomaterialEntity
@@ -657,8 +649,8 @@ public class CompositionServiceLocalImpl implements
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService.removePublicGroup(composingElement.getId()
-								.toString());
+						authService.removePublicVisibility(composingElement
+								.getId().toString());
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -666,8 +658,8 @@ public class CompositionServiceLocalImpl implements
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService.removePublicGroup(function.getId()
-										.toString());
+								authService.removePublicVisibility(function
+										.getId().toString());
 							}
 						}
 					}
@@ -681,7 +673,7 @@ public class CompositionServiceLocalImpl implements
 			FunctionalizingEntity functionalizingEntity)
 			throws SecurityException {
 		if (functionalizingEntity != null) {
-			authService.removePublicGroup(functionalizingEntity.getId()
+			authService.removePublicVisibility(functionalizingEntity.getId()
 					.toString());
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
@@ -689,7 +681,7 @@ public class CompositionServiceLocalImpl implements
 			if (functionCollection != null) {
 				for (Function function : functionCollection) {
 					if (function != null) {
-						authService.removePublicGroup(function.getId()
+						authService.removePublicVisibility(function.getId()
 								.toString());
 					}
 				}
@@ -699,19 +691,18 @@ public class CompositionServiceLocalImpl implements
 
 	public void removeChemicalAssociationPublicVisibility(
 			AuthorizationService authService,
-			ChemicalAssociation chemicalAssociation)
-			throws SecurityException {
+			ChemicalAssociation chemicalAssociation) throws SecurityException {
 		if (chemicalAssociation != null) {
-			authService.removePublicGroup(chemicalAssociation.getId()
+			authService.removePublicVisibility(chemicalAssociation.getId()
 					.toString());
 			// chemicalAssociation.associatedElementA
 			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.removePublicGroup(chemicalAssociation
+				authService.removePublicVisibility(chemicalAssociation
 						.getAssociatedElementA().getId().toString());
 			}
 			// chemicalAssociation.associatedElementB
 			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.removePublicGroup(chemicalAssociation
+				authService.removePublicVisibility(chemicalAssociation
 						.getAssociatedElementB().getId().toString());
 			}
 		}
@@ -724,7 +715,7 @@ public class CompositionServiceLocalImpl implements
 				.getNanomaterialEntityCollection();
 		if (nanomaterialEntityCollection != null) {
 			for (NanomaterialEntity nanomaterialEntity : nanomaterialEntityCollection) {
-				assignNanoparicleEntityPublicVisibility(authService,
+				assignNanomaterialEntityPublicVisibility(authService,
 						nanomaterialEntity);
 			}
 		}
@@ -744,6 +735,38 @@ public class CompositionServiceLocalImpl implements
 		if (functionalizingEntityCollection != null) {
 			for (ChemicalAssociation chemicalAssociation : chemicalAssociationCollection) {
 				assignChemicalAssociationPublicVisibility(authService,
+						chemicalAssociation);
+			}
+		}
+	}
+
+	public void removePublicVisibility(AuthorizationService authService,
+			SampleComposition composition) throws SecurityException {
+		// sampleComposition.nanomaterialEntityCollection,
+		Collection<NanomaterialEntity> nanomaterialEntityCollection = composition
+				.getNanomaterialEntityCollection();
+		if (nanomaterialEntityCollection != null) {
+			for (NanomaterialEntity nanomaterialEntity : nanomaterialEntityCollection) {
+				removeNanomaterialEntityPublicVisibility(authService,
+						nanomaterialEntity);
+			}
+		}
+		// sampleComposition.functionalizingEntityCollection,
+		Collection<FunctionalizingEntity> functionalizingEntityCollection = composition
+				.getFunctionalizingEntityCollection();
+		if (functionalizingEntityCollection != null) {
+			for (FunctionalizingEntity functionalizingEntity : functionalizingEntityCollection) {
+				removeFunctionalizingEntityPublicVisibility(authService,
+						functionalizingEntity);
+
+			}
+		}
+		// sampleComposition.chemicalAssociationCollection
+		Collection<ChemicalAssociation> chemicalAssociationCollection = composition
+				.getChemicalAssociationCollection();
+		if (functionalizingEntityCollection != null) {
+			for (ChemicalAssociation chemicalAssociation : chemicalAssociationCollection) {
+				removeChemicalAssociationPublicVisibility(authService,
 						chemicalAssociation);
 			}
 		}
