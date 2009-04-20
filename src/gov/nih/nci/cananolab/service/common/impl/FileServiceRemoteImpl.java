@@ -23,9 +23,9 @@ import org.apache.log4j.Logger;
 
 /**
  * Remote implementation of FileService
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class FileServiceRemoteImpl implements FileService {
 	Logger logger = Logger.getLogger(FileServiceRemoteImpl.class);
@@ -37,7 +37,7 @@ public class FileServiceRemoteImpl implements FileService {
 
 	/**
 	 * Load the file for the given fileId from the database
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -61,7 +61,7 @@ public class FileServiceRemoteImpl implements FileService {
 			while (iter.hasNext()) {
 				java.lang.Object obj = iter.next();
 				file = (File) obj;
-				loadKeywordsForFile(file); 
+				loadKeywordsForFile(file);
 			}
 			if (file != null) {
 				fileBean = new FileBean(file);
@@ -76,7 +76,7 @@ public class FileServiceRemoteImpl implements FileService {
 	/**
 	 * Load the file for the given fileId from the database. Also check whether
 	 * user can do it.
-	 * 
+	 *
 	 * @param fileId
 	 * @return
 	 */
@@ -93,20 +93,16 @@ public class FileServiceRemoteImpl implements FileService {
 		}
 	}
 
-	public List<File> findFilesByCompositionInfoId(String id,
-			String className) throws FileException {
+	public List<File> findFilesByCompositionInfoId(String id, String className)
+			throws FileException {
 		try {
 			List<File> fileSet = new ArrayList<File>();
-			/**TODO temporarily commented 
-			File files = gridClient.getFilesByCompositionInfoId(id,
-					className);
-			if (files != null) {
-				for (File file : files) {
-					loadKeywordsForFile(file);
-					fileSet.add(file);
-				}
-			}
-			*/			
+			/**
+			 * TODO temporarily commented File files =
+			 * gridClient.getFilesByCompositionInfoId(id, className); if (files !=
+			 * null) { for (File file : files) { loadKeywordsForFile(file);
+			 * fileSet.add(file); } }
+			 */
 			return fileSet;
 		} catch (Exception e) {
 			String err = "Error finding files by " + className + "and id " + id;
@@ -136,7 +132,7 @@ public class FileServiceRemoteImpl implements FileService {
 
 	/**
 	 * Preparing keywords and other information prior to saving a file
-	 * 
+	 *
 	 * @param file
 	 * @throws FileException
 	 */
@@ -149,10 +145,14 @@ public class FileServiceRemoteImpl implements FileService {
 			throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
-	
+
 	// retrieve file retrieve accessibility
 	public void retrieveAccessibility(FileBean fileBean, UserBean user)
 			throws FileException {
+		throw new FileException("Not implemented for grid service");
+	}
+
+	public void assignVisibility(FileBean fileBean) throws FileException {
 		throw new FileException("Not implemented for grid service");
 	}
 }

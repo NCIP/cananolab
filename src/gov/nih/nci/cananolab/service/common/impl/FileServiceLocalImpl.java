@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -123,14 +124,10 @@ public class FileServiceLocalImpl implements FileService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(File.class)
-					.add(Property.forName("uri").eq(uri))
-					.add(
-							Property
-									.forName("createdBy")
-									.ne(
-											Constants.AUTO_COPY_ANNOTATION_PREFIX));
+			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
+					Property.forName("uri").eq(uri)).add(
+					Property.forName("createdBy").ne(
+							Constants.AUTO_COPY_ANNOTATION_PREFIX));
 			List results = appService.query(crit);
 			if (!results.isEmpty()) {
 				file = (File) results.get(0);
@@ -160,11 +157,11 @@ public class FileServiceLocalImpl implements FileService {
 			if (fileBean.getDomainFile().getUri().startsWith("http")) {
 				return null;
 			}
-			String fileRoot = PropertyReader
-					.getProperty(Constants.FILEUPLOAD_PROPERTY,
-							"fileRepositoryDir");
+			String fileRoot = PropertyReader.getProperty(
+					Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 
-			java.io.File fileObj = new java.io.File(fileRoot + java.io.File.separator
+			java.io.File fileObj = new java.io.File(fileRoot
+					+ java.io.File.separator
 					+ fileBean.getDomainFile().getUri());
 			long fileLength = fileObj.length();
 
@@ -219,7 +216,8 @@ public class FileServiceLocalImpl implements FileService {
 		if (file.exists()) {
 			return; // don't save again
 		}
-		FileOutputStream oStream = new FileOutputStream(new java.io.File(fullFileName));
+		FileOutputStream oStream = new FileOutputStream(new java.io.File(
+				fullFileName));
 		oStream.write(fileContent);
 	}
 
@@ -229,8 +227,7 @@ public class FileServiceLocalImpl implements FileService {
 			if (fileData != null) {
 				FileServiceLocalImpl fileService = new FileServiceLocalImpl();
 				String rootPath = PropertyReader.getProperty(
-						Constants.FILEUPLOAD_PROPERTY,
-						"fileRepositoryDir");
+						Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/" + file.getUri();
 				fileService.writeFile(fileData, fullFileName);
 			}
@@ -252,8 +249,7 @@ public class FileServiceLocalImpl implements FileService {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (file.getId() != null) {
-				File dbFile = (File) appService.get(File.class, file
-						.getId());
+				File dbFile = (File) appService.get(File.class, file.getId());
 				if (dbFile != null) {
 					// don't change createdBy and createdDate if it is already
 					// persisted
@@ -289,7 +285,7 @@ public class FileServiceLocalImpl implements FileService {
 	public void retrieveVisibility(FileBean fileBean, UserBean user)
 			throws FileException {
 		try {
-			if (fileBean!=null) {
+			if (fileBean != null) {
 				AuthorizationService auth = new AuthorizationService(
 						Constants.CSM_APP_NAME);
 				if (fileBean.getDomainFile().getId() != null
@@ -315,8 +311,47 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	public List<File> findFilesByCompositionInfoId(String id,
-			String className) throws FileException {
+	public List<File> findFilesByCompositionInfoId(String id, String className)
+			throws FileException {
 		throw new FileException("Not implemented for local service");
+	}
+
+	public void assignVisibility(FileBean fileBean) throws FileException {
+		try {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			authService.assignVisibility(fileBean.getDomainFile().getId()
+					.toString(), fileBean.getVisibilityGroups(), null);
+
+			// keywords
+			Collection<Keyword> keywordCollection = fileBean.getDomainFile()
+					.getKeywordCollection();
+			// if containing public group, assign associated public visibility
+			// otherwise remove associated public visibility
+			if (Arrays.asList(fileBean.getVisibilityGroups()).contains(
+					Constants.CSM_PUBLIC_GROUP)) {
+				if (keywordCollection != null) {
+					for (Keyword keyword : keywordCollection) {
+						if (keyword != null) {
+							authService.assignPublicVisibility(keyword.getId()
+									.toString());
+						}
+					}
+				}
+			} else {
+				// remove associated public visibility
+				if (keywordCollection != null) {
+					for (Keyword keyword : keywordCollection) {
+						authService.removePublicVisibility(keyword.getId()
+								.toString());
+					}
+				}
+			}
+		} catch (Exception e) {
+			String err = "Error in setting file visibility for "
+					+ fileBean.getDisplayName();
+			logger.error(err, e);
+			throw new FileException(err, e);
+		}
 	}
 }
