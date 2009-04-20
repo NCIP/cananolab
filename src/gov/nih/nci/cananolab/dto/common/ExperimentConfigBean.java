@@ -141,7 +141,7 @@ public class ExperimentConfigBean {
 			sb.append(instrument.getManufacturer());
 			if (instrument.getModelName() != null
 					&& instrument.getModelName().trim().length() > 0) {
-				sb.append(",");
+				sb.append(", ");
 				sb.append(instrument.getModelName());
 
 			}
