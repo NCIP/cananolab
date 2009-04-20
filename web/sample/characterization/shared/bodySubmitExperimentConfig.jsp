@@ -23,7 +23,7 @@ function confirmDeletion()
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="2">
-			New Technique and Instruments
+			Technique and Instrument Info
 		</th>
 	</tr>
 	<tr>
@@ -59,24 +59,24 @@ function confirmDeletion()
 		</td>
 		<td>
 			<a style="" id="addInstrument"
-				href="javascript:clearInstrument();show('patternAddRow');"><img
-					align="top" src="images/btn_add.gif" border="0" /> </a>
+				href="javascript:clearInstrument();show('patternAddRow');">Add</a>
+			<br>
 			<br>
 			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
 				style="display: none;">
 				<tbody id="instrumentRows">
 					<tr id="patternHeader">
-						<th width="25%">
+						<td width="25%" class="cellLabel">
 							Manufacturer
-						</th>
-						<th width="25%">
+						</td>
+						<td width="25%" class="cellLabel">
 							Model Name
-						</th>
-						<th>
+						</td>
+						<td class="cellLabel">
 							Type
-						</th>
-						<th>
-						</th>
+						</td>
+						<td>
+						</td>
 					</tr>
 					<tr id="pattern" style="display: none;">
 						<td>
