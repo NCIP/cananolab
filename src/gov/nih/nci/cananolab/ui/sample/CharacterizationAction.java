@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -41,7 +40,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
-import org.directwebremoting.WebContextFactory;
 
 /**
  * Base action for characterization actions
@@ -230,24 +228,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void setupDomainChar(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
-		// setup domainFile for fileBeans
-		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
-						.getInstance().getDisplayName(charBean.getClassName(),
-								request.getSession().getServletContext()));
 		if (charBean.getClassName() == null) {
 			String className = InitSetup.getInstance().getClassName(
 					charBean.getCharacterizationName(),
 					request.getSession().getServletContext());
 			charBean.setClassName(className);
 		}
-		charBean.setupDomain(user.getLoginName(), internalUriPath);
+		charBean.setupDomain(user.getLoginName());
 	}
 
 	// TODO for datum and condition
@@ -370,16 +358,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void deleteCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean,
 			String createdBy) throws Exception {
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
-						.getInstance().getDisplayName(charBean.getClassName(),
-								request.getSession().getServletContext()));
-		charBean.setupDomain(createdBy, internalUriPath);
+		charBean.setupDomain(createdBy);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.deleteCharacterization(charBean.getDomainChar());
 	}
@@ -554,9 +533,19 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			findingBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		findingBean.setupDomain(user.getLoginName());
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ "/"
+				+ sampleBean.getDomain().getName()
+				+ "/"
+				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
+						.getInstance().getDisplayName(achar.getClassName(),
+								request.getSession().getServletContext()));
+		findingBean.setupDomain(user.getLoginName(), internalUriPath);
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 		service.saveFinding(findingBean.getDomain());
+		saveFilesToFileSystem(findingBean.getFiles());
 		achar.addFinding(findingBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
