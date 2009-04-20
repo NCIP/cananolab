@@ -15,7 +15,7 @@
 			Description
 		</td>
 		<td>
-			<html:textarea property="achar.description" cols="120" rows="8" />
+			<html:textarea property="achar.description" cols="120" rows="5" />
 		</td>
 	</tr>
 	<tr>
