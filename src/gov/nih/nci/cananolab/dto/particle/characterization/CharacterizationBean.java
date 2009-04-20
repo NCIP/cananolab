@@ -197,7 +197,7 @@ public class CharacterizationBean {
 		return copy;
 	}
 
-	public void setupDomain(String createdBy, String internalUriPath)
+	public void setupDomain(String createdBy)
 			throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
