@@ -16,31 +16,35 @@
 				Characterization Type *
 			</td>
 			<td>
-				<html:select property="achar.characterizationType"
-					styleId="charType"
-					onchange="javascript:callPrompt('Characterization Type', 'charType');setCharacterizationOptionsByCharTypeWithOther()">
-					<option value=""></option>
-					<html:options name="characterizationTypes" />
-					<option value="other">
-						[Other]
-					</option>
-				</html:select>
+				<div id="charTypePrompt">
+					<html:select property="achar.characterizationType"
+						styleId="charType"
+						onchange="javascript:callPrompt('Characterization Type', 'charType', 'charTypePrompt');setCharacterizationOptionsByCharTypeWithOther()">
+						<option value=""></option>
+						<html:options name="characterizationTypes" />
+						<option value="other">
+							[Other]
+						</option>
+					</html:select>
+				</div>
 			</td>
 			<td class="cellLabel">
 				Characterization*
 			</td>
 			<td>
-				<html:select property="achar.characterizationName"
-					styleId="charName"
-					onchange="javascript:callPrompt('Characterization', 'charName');setAssayTypeOptionsByCharName();setCharacterizationDetail();">
-					<option value=""></option>
-					<c:if test="${!empty charTypeChars }">
-						<html:options name="charTypeChars" />
-					</c:if>
-					<option value="other">
-						[Other]
-					</option>
-				</html:select>
+				<div id="charNamePrompt">
+					<html:select property="achar.characterizationName"
+						styleId="charName"
+						onchange="javascript:callPrompt('Characterization', 'charName', 'charNamePrompt');setAssayTypeOptionsByCharName();setCharacterizationDetail();">
+						<option value=""></option>
+						<c:if test="${!empty charTypeChars }">
+							<html:options name="charTypeChars" />
+						</c:if>
+						<option value="other">
+							[Other]
+						</option>
+					</html:select>
+				</div>
 			</td>
 		</tr>
 	</c:if>
@@ -49,23 +53,26 @@
 			Assay Type
 		</td>
 		<td>
-			<html:select property="achar.assayType" styleId="assayType"
-				onchange="javascript:callPrompt('Assay Type', 'assayType');">
-				<option value=""></option>
-				<c:if
-					test="${characterizationForm.map.achar.characterizationType eq 'Physico-Chemical Characterization'}">
-					<option
-						value="${characterizationForm.map.achar.characterizationName}" selected>
-						${characterizationForm.map.achar.characterizationName}
+			<div id="assayTypePrompt">
+				<html:select property="achar.assayType" styleId="assayType"
+					onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');">
+					<option value=""></option>
+					<c:if
+						test="${characterizationForm.map.achar.characterizationType eq 'Physico-Chemical Characterization'}">
+						<option
+							value="${characterizationForm.map.achar.characterizationName}"
+							selected>
+							${characterizationForm.map.achar.characterizationName}
+						</option>
+					</c:if>
+					<c:if test="${!empty charNameAssays }">
+						<html:options name="charNameAssays" />
+					</c:if>
+					<option value="other">
+						[Other]
 					</option>
-				</c:if>
-				<c:if test="${!empty charNameAssays }">
-					<html:options name="charNameAssays" />
-				</c:if>
-				<option value="other">
-					[Other]
-				</option>
-			</html:select>
+				</html:select>
+			</div>
 		</td>
 		<td class="cellLabel">
 			Protocol Name - Version
@@ -96,8 +103,7 @@
 			Characterization Source
 		</td>
 		<td>
-			<html:select property="achar.pocBean.domain.id" styleId="charSource"
-				onchange="javascript:callPrompt('Characterization Point of Contact', 'charSource');">
+			<html:select property="achar.pocBean.domain.id" styleId="charSource">
 				<option value=""></option>
 				<html:options collection="samplePointOfContacts"
 					labelProperty="displayName" property="domain.id" />
