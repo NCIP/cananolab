@@ -169,6 +169,7 @@ CREATE TABLE experiment_config_instrument
 ) TYPE=InnoDB
 ;
 
+
 CREATE TABLE experiment_config
 (
 	experiment_config_pk_id BIGINT NOT NULL,
@@ -176,7 +177,7 @@ CREATE TABLE experiment_config
 	created_date DATETIME NOT NULL,
 	created_by VARCHAR(200) NOT NULL,
 	characterization_pk_id BIGINT,
-	technique_pk_id BIGINT NOT NULL,
+	technique_pk_id BIGINT,
 	PRIMARY KEY (experiment_config_pk_id),
 	KEY (characterization_pk_id),
 	KEY (technique_pk_id)
