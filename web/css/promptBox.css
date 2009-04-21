@@ -1,14 +1,15 @@
 
 #prompt {
-	/*
+
 	position: relative;
-	left: 350px;
+	left: 450px;
 	top: -800px;
-	*/
-	
+
+/*
 	position: absolute;
 	top: 130px;
 	left: 240px;
+*/
 	width: 350px;
 	border: 1px outset #bbbbbb;
 	background-color: #FFFFFF;
