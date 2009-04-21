@@ -176,7 +176,7 @@ public class FindingBean {
 		return data;
 	}
 
-	public void setupDomain(String createdBy, String internalUriPath)
+	public void setupDomain(String createdBy)
 			throws Exception {
 		int i = 0;
 		if (domain.getId() != null && domain.getId() <= 0) {
@@ -201,7 +201,6 @@ public class FindingBean {
 		}
 		int j = 0;
 		for (FileBean file : files) {
-			file.setupDomainFile(internalUriPath, createdBy, j);
 			domain.getFileCollection().add(file.getDomainFile());
 			j++;
 		}
