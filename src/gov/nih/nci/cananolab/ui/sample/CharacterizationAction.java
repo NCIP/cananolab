@@ -313,10 +313,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	private void saveCharacterization(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
-		// setup domainFile for fileBeans
+
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		// setup domainFile uri for fileBeans
 		setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
 		charService.saveCharacterization(sampleBean.getDomain(), charBean
@@ -332,17 +331,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			charService.assignPublicVisibility(authService, charBean
 					.getDomainChar());
 		}
-
-		// save file data to file system and set visibility
-		List<FileBean> files = new ArrayList<FileBean>();
-		// TODO::
-		// for (DerivedBioAssayDataBean bioassay : charBean
-		// .getDerivedBioAssayDataList()) {
-		// if (bioassay.getFileBean() != null) {
-		// files.add(bioassay.getFileBean());
-		// }
-		// }
-		saveFilesToFileSystem(files);
 
 		// save to other samples
 		Sample[] otherSamples = prepareCopy(request, theForm);
@@ -533,16 +521,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			findingBean.getDomain().setId(new Long(theFindingId));
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
-						.getInstance().getDisplayName(achar.getClassName(),
-								request.getSession().getServletContext()));
-		findingBean.setupDomain(user.getLoginName(), internalUriPath);
+		findingBean.setupDomain(user.getLoginName());
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 		service.saveFinding(findingBean.getDomain());
 		saveFilesToFileSystem(findingBean.getFiles());
@@ -558,19 +537,20 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
 		FileBean theFile = findingBean.getTheFile();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
 				+ sampleBean.getDomain().getName()
 				+ "/"
-				+ StringUtils.getOneWordLowerCaseFirstLetter(InitSetup
-						.getInstance().getDisplayName(achar.getClassName(),
-								request.getSession().getServletContext()));
+				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
+						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
 		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		findingBean.addFile(theFile);
 		return mapping.getInputForward();
