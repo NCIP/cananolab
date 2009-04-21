@@ -41,89 +41,14 @@ function confirmDeletion()
 		</td>
 	<tr>
 		<td>
-			<div id="newFinding" style="display: block;">
-				<table class="subSubmissionView" width="85%" align="center">
-					<tr>
-						<th colspan="2">
-							New Finding
-						</th>
-					</tr>
-					<tr>
-						<td colspan="2" height="5">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" class="cellLabel">
-							File
-							<a id="addFile" href="javascript:clearFile(); show('newFile');"><img
-									align="top" src="images/btn_add.gif" border="0" /> </a>
-							<br>
-						</td>
-					</tr>
-					<tr>
-						<td valign="top" colspan="2">
-							<c:if
-								test="${! empty characterizationForm.map.achar.theFinding.files}">
-								<table class="summaryViewLayer4" width="95%" align="center">
-									<tbody>
-										<c:forEach var="file"
-											items="${characterizationForm.map.achar.theFinding.files}">
-											<tr>
-												<td>
-													${file.domainFile.uri}
-												</td>
-												<td>
-													<div align="right">
-														<a href="">Edit</a>
-													</div>
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-								<br>
-							</c:if>
-							<div style="display: none" id="newFile">
-								<jsp:include page="bodySubmitCharacterizationFile.jsp" />
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" height="5">
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" class="cellLabel">
-							Data
-						</td>
-					</tr>
-					<tr>
-						<td valign="top" colspan="2">
-							<div style="display: block" id="submitDatum">
-								<jsp:include page="bodySubmitData.jsp" />
-								&nbsp;
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input type="button" value="Delete"
-								onclick="javascript:confirmDeletion()">
-						</td>
-						<td>
-							<div align="right">
-								<input type="button" value="Cancel"
-									onclick="javascript:hide('newFinding'); show('existingFinding');">
-								<input type="button" value="Save"
-									onclick="javascript:saveFinding('characterization');">
-							</div>
-						</td>
-					</tr>
-				</table>
+			<c:set var="findingInfoStyle" value="display:none" />
+			<c:if
+				test="${param.dispatch eq 'addFile' || param.dispatch eq 'addData'}">
+				<c:set var="findingInfoStyle" value="display:block" />
+			</c:if>
+			<div id="newFinding" style="${findingInfoStyle}">
+				<%@ include file="bodySubmitFinding.jsp"%>
 			</div>
-			<br>
 		</td>
 	</tr>
 </table>

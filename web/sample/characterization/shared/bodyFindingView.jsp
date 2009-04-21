@@ -5,10 +5,10 @@
 <table class="summaryViewLayer4" align="center" width="95%">
 	<tr>
 		<th>
-			Files
+			File(s)
 		</th>
 		<th>
-			Data
+			Data and Conditions
 		</th>
 		<th>
 		</th>
@@ -20,39 +20,59 @@
 				<c:choose>
 					<c:when test="${! empty finding.files}">
 						<c:forEach var="file" items="${finding.files}">
-							<a href="">${file.domainFile.uri }</a>
+							<c:choose>
+								<c:when test="${file.image eq 'true'}">
+						 				${file.domainFile.title}
+										<br>
+									<a href="#"
+										onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+											src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+											border="0" width="150"> </a>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+										${file.domainFile.title}</a>
+								</c:otherwise>
+							</c:choose>
 							<br>
 						</c:forEach>
 					</c:when>
-					<c:otherwise>N/A
-						</c:otherwise>
+					<c:otherwise>
+					N/A
+					</c:otherwise>
 				</c:choose>
-				<a href=""></a>
 			</td>
 			<td>
-				<table class="summaryViewLayer4" border="1">
-					<tr>
-						<c:forEach var="col" items="${finding.columnBeans}">
-							<td>
-								<strong>${col.columnLabel}</strong>
-							</td>
-						</c:forEach>
-					</tr>
-					<c:forEach var="row" items="${finding.rows}">
-						<tr>
-							<c:forEach var="condition" items="${row.conditions}">
-								<td>
-									${condition.value}
-								</td>
+				<c:choose>
+					<c:when test="${! empty finding.rows}">
+						<table class="summaryViewLayer4" border="1">
+							<tr>
+								<c:forEach var="col" items="${finding.columnBeans}">
+									<td>
+										<strong>${col.columnLabel}</strong>
+									</td>
+								</c:forEach>
+							</tr>
+							<c:forEach var="row" items="${finding.rows}">
+								<tr>
+									<c:forEach var="condition" items="${row.conditions}">
+										<td>
+											${condition.value}
+										</td>
+									</c:forEach>
+									<c:forEach var="datum" items="${row.data}">
+										<td>
+											${datum.value}
+										</td>
+									</c:forEach>
+								</tr>
 							</c:forEach>
-							<c:forEach var="datum" items="${row.data}">
-								<td>
-									${datum.value}
-								</td>
-							</c:forEach>
-						</tr>
-					</c:forEach>
-				</table>
+						</table>
+					</c:when>
+					<c:otherwise>N/A
+				</c:otherwise>
+				</c:choose>
 			</td>
 
 			<td align="right">

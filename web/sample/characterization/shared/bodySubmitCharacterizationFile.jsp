@@ -31,12 +31,13 @@
 			</td>
 			<td colspan="2">
 				<span id="load"> <html:file
-						property="achar.theFinding.theFile.uploadedFile" size="60" styleId="uploadedFile"/>
-					&nbsp;&nbsp; </span>
+						property="achar.theFinding.theFile.uploadedFile" size="60"
+						styleId="uploadedFile" /> &nbsp;&nbsp; </span>
 				<br>
 				<br>
 				<span id="link" style=""><html:text
-						property="achar.theFinding.theFile.externalUrl" size="60" styleId="externalUrl"/> </span>&nbsp;
+						property="achar.theFinding.theFile.externalUrl" size="60"
+						styleId="externalUrl" /> </span>&nbsp;
 			</td>
 		</tr>
 		<c:if
@@ -72,15 +73,17 @@
 				File Type*
 			</td>
 			<td colspan="2">
-				<html:select styleId="fileType"
-					property="achar.theFinding.theFile.domainFile.type"
-					onchange="javascript:callPrompt('File Type', 'fileType');">
-					<option value="" />
-						<html:options name="fileTypes" />
-					<option value="other">
-						[Other]
-					</option>
-				</html:select>
+				<div id="fileTypePrompt">
+					<html:select styleId="fileType"
+						property="achar.theFinding.theFile.domainFile.type"
+						onchange="javascript:callPrompt('File Type', 'fileType', 'fileTypePrompt');">
+						<option value="" />
+							<html:options name="fileTypes" />
+						<option value="other">
+							[Other]
+						</option>
+					</html:select>
+				</div>
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +102,7 @@
 			</td>
 			<td colspan="2">
 				<html:textarea property="achar.theFinding.theFile.keywordsStr"
-					rows="3" cols="60" styleId="fileKeywords"/>
+					rows="3" cols="60" styleId="fileKeywords" />
 				&nbsp;
 			</td>
 		</tr>
@@ -126,14 +129,14 @@
 		<tr>
 			<td>
 				<input class="noBorderButton" type="button" value="Delete"
-					onclick="deleteFile()" />
+					onclick="deleteFile()" id="deleteFile" style="display: none;" />
 			</td>
 			<td></td>
 			<td>
 				<div align="right">
 					<input class="noBorderButton" type="button" value="Cancel"
-						onclick="hide('newFile');clearFile()" />
-					<input class="noBorderButton" type="button" value="Save"
+						onclick="hide('newFile');" />
+					<input class="noBorderButton" type="button" value="Add"
 						onclick="addFile('characterization');" />
 				</div>
 			</td>
