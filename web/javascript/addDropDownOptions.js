@@ -1,8 +1,8 @@
 function validateOptions(newOption, optionsArray) {
 	for (var i = 0; i < optionsArray.length; i++) {
-		if(optionsArray[i].text == "enterNew") 
+		if(optionsArray[i].text == "enterNew")
 			optionsArray[i] = null;
-			
+
 		if (optionsArray[i].text.toUpperCase() == newOption.toUpperCase()) {
 			return false;
 		}
@@ -13,11 +13,11 @@ function validateOptions(newOption, optionsArray) {
 function getValidatedProtocolVersion(newOption) {
 	if (parseInt(newOption) == newOption && newOption.indexOf(".0")<0) {
 		newOption = newOption + ".0";
-	}	
+	}
 	return newOption;
 }
 
-function addOption(selectId) {
+function addOption(selectId, promptParentId) {
 	var opt = document.getElementById("promptbox").value;
 	if (opt != null && opt != "") {
 		var selectEle = document.getElementById(selectId);
@@ -40,11 +40,12 @@ function addOption(selectId) {
 		selectEle.options[0].value = opt;
 		selectEle.options.selectedIndex = 0;
 	}
-	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	//document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	document.getElementById(promptParentId).removeChild(document.getElementById("prompt"));
 	return false;
 }
 
-function changeOption(selectId) {
+function changeOption(selectId, promptParentId) {
 	var opt = document.getElementById("promptbox").value;
 	if (opt != null && opt != "") {
 		var selectEle = document.getElementById(selectId);
@@ -57,57 +58,59 @@ function changeOption(selectId) {
 			alert(opt + " is already on the list!");
 			return false;
 		}
-		
+
 		selectEle.options[selectEle.options.selectedIndex].text = "[" + opt + "]";
 		selectEle.options[selectEle.options.selectedIndex].value = opt;
 	}
-	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	//document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	document.getElementById(promptParentId).removeChild(document.getElementById("prompt"));
 	return false;
 }
 
-function removeOption(selectId) {
+function removeOption(selectId, promptParentId) {
 	var selectEle = document.getElementById(selectId);
 	selectEle.options[selectEle.options.selectedIndex] = null;
 
-	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	//document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	document.getElementById(promptParentId).removeChild(document.getElementById("prompt"));
 	return false;
 }
 
-function addNewOption(message, parentId) {
+function addNewOption(message, parentId, promptParentId) {
 	promptbox = document.createElement("div");
 	promptbox.setAttribute("id", "prompt");
-	document.getElementsByTagName("body")[0].appendChild(promptbox);
-	
-	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" + 
-		"<tr><td>" + message + "</td></tr>" + 
-		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" + 
+	//document.getElementsByTagName("body")[0].appendChild(promptbox);
+	document.getElementById(promptParentId).appendChild(promptbox);
+
+	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
+		"<tr><td>" + message + "</td></tr>" +
+		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" +
 		"<tr><td align='right'><br>" +
-		"<input type='button' class='prompt' value='Add' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='addOption(\"" + parentId + "\");' >" +
-		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption()';>" +
+		"<input type='button' class='prompt' value='Add' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='addOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
+		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\""+promptParentId+"\");'>" +
 		"</td></tr></table>";
-		
 	document.getElementById("promptbox").focus();
 }
 
-function modifyOption(message, parentId, selectedText) {
+function modifyOption(message, parentId, selectedText, promptParentId) {
 	promptbox = document.createElement("div");
 	promptbox.setAttribute("id", "prompt");
-	document.getElementsByTagName("body")[0].appendChild(promptbox);
-	
-	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" + 
-		"<tr><td>" + message + "</td></tr>" + 
-		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox' value='" + selectedText + "'></td></tr>" + 
+	//document.getElementsByTagName("body")[0].appendChild(promptbox);
+    document.getElementById(promptParentId).appendChild(promptbox);
+	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
+		"<tr><td>" + message + "</td></tr>" +
+		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox' value='" + selectedText + "'></td></tr>" +
 		"<tr><td align='right'><br>" +
-		"<input type='button' class='prompt' value='Save' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='changeOption(\"" + parentId + "\");' >" +
-		"<input type='button' class='prompt' value='Remove' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='removeOption(\"" + parentId + "\");' >" +
-		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption()';>" +
+		"<input type='button' class='prompt' value='Save' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='changeOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
+		"<input type='button' class='prompt' value='Remove' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='removeOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
+		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\""+promptParentId+"\");'>" +
 		"</td></tr></table>";
-		
 	document.getElementById("promptbox").focus();
 }
 
-function cancelAddOption() {
-	document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+function cancelAddOption(promptParentId) {
+	//document.getElementsByTagName("body")[0].removeChild(document.getElementById("prompt"));
+	document.getElementById(promptParentId).removeChild(document.getElementById("prompt"));
 	return false;
 }
 
@@ -119,7 +122,7 @@ function resetAddOption(selectId) {
 			if (selectEle.options[0]!= null && selectEle.options[0] != "" && selectEle.options.selectedIndex==0) {
 				if (selectEle.options[selectEle.options.selectedIndex].text.charAt(0)=='['){
 					selectEle.options[selectEle.options.selectedIndex] = null;
-				}			   
+				}
 			}
 		}
 	}
@@ -171,15 +174,15 @@ function callPrompt(optionName, selectId) {
 }
 */
 
-function callPrompt(optionName, selectId) {
+function callPrompt(optionName, selectId, promptParentId) {
 	var selectEle = document.getElementById(selectId);
 	var otext = selectEle.options[selectEle.options.selectedIndex].text;
 	if(otext == "[Other]")
-		addNewOption("New " + optionName + ":", selectId);
+		addNewOption("New " + optionName + ":", selectId, promptParentId);
 	else if(otext.charAt(0) == "[" &&
 			otext.charAt(otext.length - 1) == "]") {
 		var text = removeBracket(otext);
-		modifyOption("Edit " + optionName + " Option:", selectId, text);
+		modifyOption("Edit " + optionName + " Option:", selectId, text, promptParentId);
 	}
 	return false;
 }
