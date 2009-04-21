@@ -40,15 +40,17 @@
 							Protocol Type*
 						</td>
 						<td colspan="3">
-							<html:select styleId="protocolType"
-								property="protocol.domain.type"
-								onchange="javascript:callPrompt('Protocol Type', 'protocolType'); retrieveProtocols();">
-								<option value="" />
-									<html:options name="protocolTypes" />
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
+							<div id="protocolTypePrompt">
+								<html:select styleId="protocolType"
+									property="protocol.domain.type"
+									onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt'); retrieveProtocols();">
+									<option value="" />
+										<html:options name="protocolTypes" />
+									<option value="other">
+										[Other]
+									</option>
+								</html:select>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -56,18 +58,20 @@
 							Protocol Name*
 						</td>
 						<td colspan="3">
-							<html:select styleId="protocolName"
-								property="protocol.domain.name"
-								onchange="javascript:callPrompt('Protocol Name', 'protocolName');">
-								<option value="" />
-									<c:if test="${!empty protocolsByType}">
-										<html:options collection="protocolsByType"
-											property="domain.name" labelProperty="domain.name" />
-									</c:if>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
+							<div id="protocolNamePrompt">
+								<html:select styleId="protocolName"
+									property="protocol.domain.name"
+									onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt');">
+									<option value="" />
+										<c:if test="${!empty protocolsByType}">
+											<html:options collection="protocolsByType"
+												property="domain.name" labelProperty="domain.name" />
+										</c:if>
+									<option value="other">
+										[Other]
+									</option>
+								</html:select>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -75,18 +79,20 @@
 							Protocol Version*
 						</td>
 						<td>
-							<html:select styleId="protocolVersion"
-								property="protocol.domain.version"
-								onchange="javascript:callPrompt('Protocol Version', 'protocolVersion');retrieveProtocol();">
-								<option value="" />
-									<c:if test="${!empty protocolsByType}">
-										<html:options collection="protocolsByType"
-											property="domain.version" labelProperty="domain.version" />
-									</c:if>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
+							<div id="protocolVersionPrompt">
+								<html:select styleId="protocolVersion"
+									property="protocol.domain.version"
+									onchange="javascript:callPrompt('Protocol Version', 'protocolVersion', 'protocolVersionPrompt');retrieveProtocol();">
+									<option value="" />
+										<c:if test="${!empty protocolsByType}">
+											<html:options collection="protocolsByType"
+												property="domain.version" labelProperty="domain.version" />
+										</c:if>
+									<option value="other">
+										[Other]
+									</option>
+								</html:select>
+							</div>
 						</td>
 						<td class="cellLabel" width="20%">
 							Protocol Abbreviation

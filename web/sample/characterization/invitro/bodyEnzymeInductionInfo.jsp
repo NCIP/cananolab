@@ -14,26 +14,28 @@
 			Enzyme Name
 		</td>
 		<td>
-			<select name="achar.enzymeInduction.enzyme" id="enzyme"
-				onchange="javascript:callPrompt('Enzyme', 'enzyme');" />
-				<option value=""></option>
-				<c:forEach var="name" items="${enzymeNames}">
-					<c:choose>
-						<c:when
-							test="${name eq characterizationForm.map.achar.enzymeInduction.enzyme}">
-							<option value="${name}" selected>
-						</c:when>
-						<c:otherwise>
-							<option value="${name}">
-						</c:otherwise>
-					</c:choose>
+			<div id="enzymePrompt">
+				<select name="achar.enzymeInduction.enzyme" id="enzyme"
+					onchange="javascript:callPrompt('Enzyme', 'enzyme', 'enzymePrompt');" />
+					<option value=""></option>
+					<c:forEach var="name" items="${enzymeNames}">
+						<c:choose>
+							<c:when
+								test="${name eq characterizationForm.map.achar.enzymeInduction.enzyme}">
+								<option value="${name}" selected>
+							</c:when>
+							<c:otherwise>
+								<option value="${name}">
+							</c:otherwise>
+						</c:choose>
 						${name}
 					</option>
-				</c:forEach>
-				<option value="other">
-					[Other]
-				</option>
-			</select>
+					</c:forEach>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
+			</div>
 		</td>
 	</tr>
 </table>

@@ -16,26 +16,28 @@
 			Solvent
 		</td>
 		<td>
-			<select name="achar.solubility.solvent" id="solvent"
-				onchange="javascript:callPrompt('Solvent', 'solvent');">
-				<option value=""></option>
-				<c:forEach var="type" items="${solventTypes}">
-					<c:choose>
-						<c:when
-							test="${type eq characterizationForm.map.achar.solubility.solvent}">
-							<option value="${type}" selected>
-						</c:when>
-						<c:otherwise>
-							<option value="${type}">
-						</c:otherwise>
-					</c:choose>
+			<div id="solventPrompt">
+				<select name="achar.solubility.solvent" id="solvent"
+					onchange="javascript:callPrompt('Solvent', 'solvent', 'solventPrompt');">
+					<option value=""></option>
+					<c:forEach var="type" items="${solventTypes}">
+						<c:choose>
+							<c:when
+								test="${type eq characterizationForm.map.achar.solubility.solvent}">
+								<option value="${type}" selected>
+							</c:when>
+							<c:otherwise>
+								<option value="${type}">
+							</c:otherwise>
+						</c:choose>
 						${type}
 					</option>
-				</c:forEach>
-				<option value="other">
-					[Other]
-				</option>
-			</select>
+					</c:forEach>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
+			</div>
 		</td>
 		<td class="cellLabel">
 			Is Soluble

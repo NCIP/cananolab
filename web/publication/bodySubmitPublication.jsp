@@ -59,30 +59,34 @@
 									Publication Type*
 								</td>
 								<td>
-									<html:select property="file.domainFile.category"
-										onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');
+									<div id="categoryPrompt">
+										<html:select property="file.domainFile.category"
+											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category', 'categoryPrompt');
 														setReportFields('file.domainFile.category', 'file.domainFile.status');"
-										styleId="file.domainFile.category">
-										<option value=""></option>
-										<html:options name="publicationCategories" />
-										<option value="other">
-											[Other]
-										</option>
-									</html:select>
+											styleId="file.domainFile.category">
+											<option value=""></option>
+											<html:options name="publicationCategories" />
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</div>
 								</td>
 								<td class="cellLabel">
 									Publication Status*
 								</td>
 								<td>
-									<html:select property="file.domainFile.status"
-										onchange="javascript:callPrompt('Publication status', 'file.domainFile.status');"
-										styleId="file.domainFile.status">
-										<option value=""></option>
-										<html:options name="publicationStatuses" />
-										<option value="other">
-											[Other]
-										</option>
-									</html:select>
+									<div id="statusPrompt">
+										<html:select property="file.domainFile.status"
+											onchange="javascript:callPrompt('Publication status', 'file.domainFile.status', 'statusPrompt');"
+											styleId="file.domainFile.status">
+											<option value=""></option>
+											<html:options name="publicationStatuses" />
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</div>
 								</td>
 							</tr>
 							<tr>

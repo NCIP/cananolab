@@ -15,28 +15,30 @@
 			Type *
 		</td>
 		<td>
-			<select name="achar.shape.type" id="shapeType"
-				onchange="javascript:callPrompt('Type', 'shapeType');">
-				<option value=""></option>
-				<c:forEach var="type" items="${shapeTypes}">
-					<c:choose>
-						<c:when
-							test="${type eq characterizationForm.map.achar.shape.type}">
-							<option value="${type}" selected>
-								${type}
-							</option>
-						</c:when>
-						<c:otherwise>
-							<option value="${type}">
-								${type}
-							</option>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-				<option value="other">
-					[Other]
-				</option>
-			</select>
+			<div id="shapeTypePrompt">
+				<select name="achar.shape.type" id="shapeType"
+					onchange="javascript:callPrompt('Type', 'shapeType', 'shapeTypePrompt');">
+					<option value=""></option>
+					<c:forEach var="type" items="${shapeTypes}">
+						<c:choose>
+							<c:when
+								test="${type eq characterizationForm.map.achar.shape.type}">
+								<option value="${type}" selected>
+									${type}
+								</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${type}">
+									${type}
+								</option>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
+			</div>
 		</td>
 		<td class="cellLabel">
 			Aspect Ratio

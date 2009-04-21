@@ -26,8 +26,7 @@
 			</td>
 		</tr>
 		<c:choose>
-			<c:when
-				test="${empty allParticleNames && param.dispatch eq 'setup'}">
+			<c:when test="${empty allParticleNames && param.dispatch eq 'setup'}">
 				<tr>
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
@@ -57,30 +56,34 @@
 										<strong>Publication Type*</strong>
 									</td>
 									<td class="label">
-										<html:select property="file.domainFile.category"
-											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category');"
-											styleId="file.domainFile.category">
-											<option value=""></option>
-											<html:options name="publicationCategories" />
-											<%--											<option value="report" selected>report</option>--%>
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
+										<div id="categoryPrompt">
+											<html:select property="file.domainFile.category"
+												onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category', 'categoryPrompt');"
+												styleId="file.domainFile.category">
+												<option value=""></option>
+												<html:options name="publicationCategories" />
+												<%--											<option value="report" selected>report</option>--%>
+												<option value="other">
+													[Other]
+												</option>
+											</html:select>
+										</div>
 									</td>
 									<td class="label">
 										<strong>Publication Status*</strong>
 									</td>
 									<td class="rightLabel">
-										<html:select property="file.domainFile.status"
-											onchange="javascript:callPrompt('Publication status', 'file.domainFile.status');"
-											styleId="file.domainFile.status">
-											<option value=""></option>
-											<html:options name="publicationStatuses" />
-											<option value="other">
-												[Other]
-											</option>
-										</html:select>
+										<div id="statusPrompt">
+											<html:select property="file.domainFile.status"
+												onchange="javascript:callPrompt('Publication status', 'file.domainFile.status', 'statusPrompt');"
+												styleId="file.domainFile.status">
+												<option value=""></option>
+												<html:options name="publicationStatuses" />
+												<option value="other">
+													[Other]
+												</option>
+											</html:select>
+										</div>
 									</td>
 								</tr>
 								<tr>

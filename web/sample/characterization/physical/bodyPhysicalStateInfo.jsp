@@ -15,26 +15,28 @@
 			Type
 		</td>
 		<td>
-			<select name="achar.physicalState.type" id="physicalStateType"
-				onchange="javascript:callPrompt('Type', 'physicalStateType');">
-				<option value=""></option>
-				<c:forEach var="type" items="${physicalStateTypes}">
-					<c:choose>
-						<c:when
-							test="${type eq characterizationForm.map.achar.physicalState.type}">
-							<option value="${type}" selected>
-						</c:when>
-						<c:otherwise>
-							<option value="${type}">
-						</c:otherwise>
-					</c:choose>
+			<div id="physicalStateTypePrompt">
+				<select name="achar.physicalState.type" id="physicalStateType"
+					onchange="javascript:callPrompt('Type', 'physicalStateType', 'physicalStateTypePrompt');">
+					<option value=""></option>
+					<c:forEach var="type" items="${physicalStateTypes}">
+						<c:choose>
+							<c:when
+								test="${type eq characterizationForm.map.achar.physicalState.type}">
+								<option value="${type}" selected>
+							</c:when>
+							<c:otherwise>
+								<option value="${type}">
+							</c:otherwise>
+						</c:choose>
 						${type}
 					</option>
-				</c:forEach>
-				<option value="other">
-					[Other]
-				</option>
-			</select>
+					</c:forEach>
+					<option value="other">
+						[Other]
+					</option>
+				</select>
+			</div>
 		</td>
 	</tr>
 </table>
