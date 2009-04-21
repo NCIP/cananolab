@@ -1,17 +1,13 @@
-
 #prompt {
-
 	position: relative;
-	left: 450px;
-	top: -800px;
-
-/*
+	left: 10px;
+	top: 5px;
+	/*
 	position: absolute;
 	top: 130px;
 	left: 240px;
 */
 	width: 350px;
-	border: 1px outset #bbbbbb;
 	background-color: #FFFFFF;
 }
 
@@ -42,7 +38,6 @@ table.promptbox {
 	padding-right: 2px;
 	padding-bottom: 3px;
 	font-family: arial;
-	font-size: 12px;
 }
 
 input.promptbox {
