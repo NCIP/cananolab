@@ -40,6 +40,7 @@
 			<include method="removeColumnHeader" />
 			<include method="resetFinding" />
 			<include method="resetFile" />
+			<include method="getFileFromList" />
 			<include method="addRow" />
 			<include method="deleteRow" />
 			<include method="findFindingById" />
