@@ -31,16 +31,18 @@ function confirmDeletion()
 			Technique*
 		</td>
 		<td>
-			<html:select
-				property="achar.theExperimentConfig.domain.technique.type"
-				styleId="techniqueType"
-				onchange="javascript:callPrompt('Technique Type', 'techniqueType');retrieveTechniqueAbbreviation();">
-				<option value=""></option>
-				<html:options name="techniqueTypes" />
-				<option value="other">
-					[Other]
-				</option>
-			</html:select>
+			<div id="techniqueTypePrompt">
+				<html:select
+					property="achar.theExperimentConfig.domain.technique.type"
+					styleId="techniqueType"
+					onchange="javascript:callPrompt('Technique Type', 'techniqueType', 'techniqueTypePrompt');retrieveTechniqueAbbreviation();">
+					<option value=""></option>
+					<html:options name="techniqueTypes" />
+					<option value="other">
+						[Other]
+					</option>
+				</html:select>
+			</div>
 		</td>
 	</tr>
 	<tr>
@@ -97,64 +99,70 @@ function confirmDeletion()
 				</tbody>
 			</table>
 			<br>
-			<table id="patternAddRow" style="display: none;"
-				class="summaryViewLayer4" width="85%">
-				<tbody>
-					<tr>
-						<td class="cellLabel">
-							Manufacturer
-						</td>
-						<td>
-							<html:hidden property="achar.theInstrument.id" styleId="id" />
-							<html:select property="achar.theInstrument.manufacturer"
-								styleId="manufacturer"
-								onchange="javascript:callPrompt('Manufacturer', 'manufacturer');">
-								<option value=""></option>
-								<html:options name="manufacturers" />
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Model Name
-						</td>
-						<td>
-							<html:text property="achar.theInstrument.modelName" size="17"
-								styleId="modelName" />
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Type
-						</td>
-						<td>
-							<html:select property="achar.theInstrument.type" styleId="type"
-								onchange="javascript:callPrompt('Instrment Type', 'type');">
-								<option value=""></option>
-								<option value="other">
-									[Other]
-								</option>
-							</html:select>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input style="display: none;" class="noBorderButton" id="delete"
-								type="button" value="Delete" onclick="deleteClicked()" />
-						</td>
-						<td style="text-align: right">
-							<input class="noBorderButton" type="button" value="Cancel"
-								onclick="clearInstrument();hide('patternAddRow');" />
-							&nbsp;
-							<input class="noBorderButton" type="button" value="Save"
-								onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div id="submissionPrompt">
+				<table id="patternAddRow" style="display: none;"
+					class="summaryViewLayer4" width="85%">
+					<tbody>
+						<tr>
+							<td class="cellLabel">
+								Manufacturer
+							</td>
+							<td>
+								<div id="manufacturerPrompt">
+									<html:hidden property="achar.theInstrument.id" styleId="id" />
+									<html:select property="achar.theInstrument.manufacturer"
+										styleId="manufacturer"
+										onchange="javascript:callPrompt('Manufacturer', 'manufacturer', 'manufacturerPrompt');">
+										<option value=""></option>
+										<html:options name="manufacturers" />
+										<option value="other">
+											[Other]
+										</option>
+									</html:select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td class="cellLabel">
+								Model Name
+							</td>
+							<td>
+								<html:text property="achar.theInstrument.modelName" size="17"
+									styleId="modelName" />
+							</td>
+						</tr>
+						<tr>
+							<td class="cellLabel">
+								Type
+							</td>
+							<td>
+								<div id="instrumentTypePrompt">
+									<html:select property="achar.theInstrument.type" styleId="type"
+										onchange="javascript:callPrompt('Instrment Type', 'type', 'instrumentTypePrompt');">
+										<option value=""></option>
+										<option value="other">
+											[Other]
+										</option>
+									</html:select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input style="display: none;" class="noBorderButton" id="delete"
+									type="button" value="Delete" onclick="deleteClicked()" />
+							</td>
+							<td style="text-align: right">
+								<input class="noBorderButton" type="button" value="Cancel"
+									onclick="clearInstrument();hide('patternAddRow');" />
+								&nbsp;
+								<input class="noBorderButton" type="button" value="Save"
+									onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</td>
 	</tr>
 	<tr>
