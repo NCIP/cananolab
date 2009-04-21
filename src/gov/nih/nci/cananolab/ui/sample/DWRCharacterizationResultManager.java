@@ -211,4 +211,15 @@ public class DWRCharacterizationResultManager {
 		charBean.getTheFinding().setTheFile(newFile);
 		return newFile;
 	}
+
+	public FileBean getFileFromList(int index) {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		List<FileBean> files = charBean.getTheFinding().getFiles();
+		FileBean theFile=files.get(index);
+		charBean.getTheFinding().setTheFile(theFile);
+		return theFile;
+	}
 }
