@@ -85,7 +85,7 @@ function addNewOption(message, parentId, promptParentId) {
 	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
 		"<tr><td>" + message + "</td></tr>" +
 		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox'></td></tr>" +
-		"<tr><td align='right'><br>" +
+		"<tr><td style='text-align: right'>" +
 		"<input type='button' class='prompt' value='Add' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='addOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
 		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\""+promptParentId+"\");'>" +
 		"</td></tr></table>";
@@ -100,7 +100,7 @@ function modifyOption(message, parentId, selectedText, promptParentId) {
 	document.getElementById("prompt").innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
 		"<tr><td>" + message + "</td></tr>" +
 		"<tr><td><input type='text' id='promptbox' onblur='this.focus()' class='promptbox' value='" + selectedText + "'></td></tr>" +
-		"<tr><td align='right'><br>" +
+		"<tr><td style='text-align: right'>" +
 		"<input type='button' class='prompt' value='Save' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='changeOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
 		"<input type='button' class='prompt' value='Remove' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='removeOption(\"" + parentId + "\",\""+promptParentId+"\");' >" +
 		"<input type='button' class='prompt' value='Cancel' onMouseOver='mouseOverStyle();' onMouseOut='mouseOutStyle();' onClick='cancelAddOption(\""+promptParentId+"\");'>" +
