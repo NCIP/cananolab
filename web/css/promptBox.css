@@ -22,14 +22,6 @@ input.promptButton {
 	margin-right: 1px;
 }
 
-td.titlebar {
-	background-color: #FF9F40;
-	color: #0000D2;
-	font-weight: bold;
-	font-family: arial;
-	font-size: 12px;
-}
-
 table.promptbox {
 	border: 1px solid #ccccff;
 	background-color: #F4F4F5;
@@ -45,7 +37,7 @@ input.promptbox {
 	background-color: white;
 	width: 100%;
 	font-family: arial;
-	font-size: 12px;
+	font-size: 10px;
 	color: black;
 }
 
