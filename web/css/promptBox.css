@@ -11,15 +11,15 @@
 	background-color: #FFFFFF;
 }
 
-input.prompt {
+input.promptButton {
 	border: 1px solid #7F9DB9;
 	background-color: #FFFFFF;
 	width: 60px;
 	font-family: arial;
-	font-size: 12px;
+	font-size: 10px;
 	color: black;
-	margin-left: 2px;
-	margin-right: 2px;
+	margin-left: 1px;
+	margin-right: 1px;
 }
 
 td.titlebar {
@@ -47,4 +47,12 @@ input.promptbox {
 	font-family: arial;
 	font-size: 12px;
 	color: black;
+}
+
+#submissionPrompt {
+	position: relative;
+	left: 30px;
+	top: -20px;
+	width:550px;
+	background-color: #FFFFFF;
 }
