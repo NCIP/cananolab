@@ -84,8 +84,10 @@
 					<jsp:include page="${characterizationDetailPage}" />
 				</c:if>
 				<div id="characterizationDetail"></div>
-				<jsp:include page="shared/bodyCharacterizationDesignMethods.jsp" />
-				<jsp:include page="shared/bodyCharacterizationResults.jsp" />
+				<a name="designAndMethod"> <jsp:include
+						page="shared/bodyCharacterizationDesignMethods.jsp" /></a>
+				<a name="result"> <jsp:include
+						page="shared/bodyCharacterizationResults.jsp" /></a>
 				<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 				<jsp:include
 					page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
