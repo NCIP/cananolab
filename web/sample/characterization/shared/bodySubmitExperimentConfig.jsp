@@ -63,7 +63,6 @@ function confirmDeletion()
 			<a style="" id="addInstrument"
 				href="javascript:clearInstrument();show('patternAddRow');">Add</a>
 			<br>
-			<br>
 			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
 				style="display: none;">
 				<tbody id="instrumentRows">
@@ -98,10 +97,9 @@ function confirmDeletion()
 					</tr>
 				</tbody>
 			</table>
-			<br>
 			<div id="submissionPrompt">
-				<table id="patternAddRow" style="display: none;"
-					class="summaryViewLayer4" width="85%">
+				<table id="patternAddRow" style="display: none;" width="100%"
+					class="promptbox">
 					<tbody>
 						<tr>
 							<td class="cellLabel">
@@ -149,15 +147,14 @@ function confirmDeletion()
 						</tr>
 						<tr>
 							<td>
-								<input style="display: none;" class="noBorderButton" id="delete"
-									type="button" value="Delete" onclick="deleteClicked()" />
+								<input style="display: none;" class="promptButton" id="delete"
+									type="button" value="Remove" onclick="deleteClicked()" />
 							</td>
-							<td style="text-align: right">
-								<input class="noBorderButton" type="button" value="Cancel"
-									onclick="clearInstrument();hide('patternAddRow');" />
-								&nbsp;
-								<input class="noBorderButton" type="button" value="Save"
+							<td>
+								<input class="promptButton" type="button" value="Add"
 									onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
+								<input class="promptButton" type="button" value="Cancel"
+									onclick="clearInstrument();hide('patternAddRow');" />
 							</td>
 						</tr>
 					</tbody>
