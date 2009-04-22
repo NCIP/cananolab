@@ -101,8 +101,7 @@ public class FunctionalizingEntityBean {
 				files.add(new FileBean(file));
 			}
 		}
-		Collections.sort(files,
-				new Comparators.FileBeanDateComparator());
+		Collections.sort(files, new Comparators.FileBeanDateComparator());
 
 	}
 
@@ -122,8 +121,7 @@ public class FunctionalizingEntityBean {
 			copy.getFunctionCollection().addAll(functions);
 			for (Function function : copy.getFunctionCollection()) {
 				function.setId(null);
-				function
-						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				function.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				function.setCreatedDate(new Date());
 				if (function instanceof TargetingFunction) {
 					if (((TargetingFunction) function).getTargetCollection()
@@ -156,8 +154,7 @@ public class FunctionalizingEntityBean {
 			copy.getFileCollection().addAll(files);
 			for (File file : copy.getFileCollection()) {
 				file.setId(null);
-				file
-						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				file.setCreatedDate(new Date());
 			}
 		}
@@ -310,7 +307,7 @@ public class FunctionalizingEntityBean {
 		} else {
 			domainEntity.setFileCollection(new HashSet<File>());
 		}
-		int j=0;
+		int j = 0;
 		for (FileBean file : files) {
 			file.setupDomainFile(internalUriPath, createdBy, j);
 			domainEntity.getFileCollection().add(file.getDomainFile());
@@ -348,6 +345,31 @@ public class FunctionalizingEntityBean {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getMolecularFormulaDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		if (molecularFormula != null && molecularFormula.length() > 0) {
+			buffer.append(molecularFormula);
+			if (molecularFormulaType != null
+					&& molecularFormulaType.length() > 0) {
+				buffer.append(" (");
+				buffer.append(molecularFormulaType);
+				buffer.append(")");
+			}
+		}
+		return buffer.toString();
+	}
+
+	public String[] getFunctionDisplayNames() {
+		List<String> displayNames = new ArrayList<String>();
+		for (FunctionBean function : functions) {
+			displayNames.add(function.getDisplayName());
+		}
+		if (displayNames.isEmpty()) {
+			return null;
+		}
+		return displayNames.toArray(new String[displayNames.size()]);
 	}
 
 }
