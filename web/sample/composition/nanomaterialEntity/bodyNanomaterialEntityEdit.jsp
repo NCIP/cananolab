@@ -45,15 +45,15 @@
 										</th>
 									</tr>
 									<tr>
-										<td class="cellLabel">
+										<td class="cellLabel" width="20%">
 											Description
 										</td>
 										<td>
 											<c:choose>
 												<c:when
-													test="${!empty fn:trim(entity.emulsion.description)}">
+													test="${!empty fn:trim(entity.description)}">
 													<c:out
-														value="${fn:replace(entity.emulsion.description, cr, '<br>')}"
+														value="${fn:replace(entity.description, cr, '<br>')}"
 														escapeXml="false" />
 												</c:when>
 												<c:otherwise>N/A
