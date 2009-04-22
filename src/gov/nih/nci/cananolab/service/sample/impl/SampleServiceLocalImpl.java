@@ -720,7 +720,7 @@ public class SampleServiceLocalImpl implements
 			}
 			return otherSamples;
 		} catch (Exception e) {
-			String err = "Error in retrieving other particles from the same point of contact "
+			String err = "Error in retrieving other samples from the same point of contact "
 					+ sampleId;
 			logger.error(err, e);
 			throw new SampleException(err, e);
