@@ -530,6 +530,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.persistCharacterizationDropdowns(request, achar);
 		// also save characterization
 		saveCharacterization(request, theForm, achar);
+		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
 
@@ -553,6 +554,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		findingBean.addFile(theFile);
+		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
 
