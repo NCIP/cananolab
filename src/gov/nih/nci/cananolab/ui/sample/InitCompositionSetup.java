@@ -137,8 +137,8 @@ public class InitCompositionSetup {
 						true);
 		InitSetup.getInstance().getReflectionDefaultAndOtherLookupTypes(
 				request, "defaultTargetTypes", "targetTypes",
-				"gov.nih.nci.cananolab.domain.Function.Target",
-				"gov.nih.nci.cananolab.domain.Function.OtherTarget", true);
+				"gov.nih.nci.cananolab.domain.function.Target",
+				"gov.nih.nci.cananolab.domain.function.OtherTarget", true);
 
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"antibodyTypes", "Antibody", "type", "otherType", true);
