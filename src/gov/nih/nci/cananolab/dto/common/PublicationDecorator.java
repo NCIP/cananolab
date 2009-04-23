@@ -78,7 +78,7 @@ public class PublicationDecorator extends TableDecorator {
 		if (file.getDomainFile().getName() != null) {
 			StringBuilder sb = new StringBuilder("<a href=");
 			sb.append(actionName);
-			sb.append("?dispatch=download&fileId=");
+			sb.append("?dispatch=download&publicationId=");
 			sb.append(file.getDomainFile().getId());
 			sb.append("&location=");
 			sb.append(file.getLocation());
