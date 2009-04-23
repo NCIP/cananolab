@@ -114,7 +114,7 @@
 					</th>
 					<td class="rightLabel">
 						<a
-							href="searchReport.do?dispatch=download&amp;fileId=${submitReportForm.map.file.domainFile.id}&amp;location=${param.location}"
+							href="searchReport.do?dispatch=download&amp;publicationId=${submitReportForm.map.file.domainFile.id}&amp;location=${param.location}"
 							target="${submitReportForm.map.file.urlTarget}">
 							${submitReportForm.map.file.domainFile.uri}</a>
 					</td>

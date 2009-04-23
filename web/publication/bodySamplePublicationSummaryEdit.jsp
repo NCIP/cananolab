@@ -137,7 +137,7 @@
 										</c:when>
 																<c:otherwise>
 																	<a
-																		href="searchPublication.do?dispatch=download&amp;fileId=${pubObj.id}&amp;location=${param.location}"
+																		href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
 																		target="${pubBean.urlTarget}"> ${pubOjb.uri}</a>&nbsp;
 										</c:otherwise>
 															</c:choose>

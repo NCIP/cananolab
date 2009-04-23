@@ -56,7 +56,7 @@
 										<c:param name="page" value="0" />
 										<c:param name="dispatch" value="setupUpdate" />
 										<c:param name="sampleId" value="${param.sampleId}" />
-										<c:param name="fileId" value="${param.publicationId}" />
+										<c:param name="publicationId" value="${param.publicationId}" />
 										<c:param name="submitType" value="${param.submitType}" />
 										<c:param name="location" value="${param.location}" />
 									</c:url>
@@ -266,7 +266,7 @@
 							</th>
 							<td class="rightLabel">
 								<a
-									href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${param.location}"
+									href="publication.do?dispatch=download&amp;publicationId=${publicationForm.map.file.domainFile.id}&amp;location=${param.location}"
 									target="${publicationForm.map.file.urlTarget}">
 									${publicationForm.map.file.domainFile.uri}</a>&nbsp;
 							</td>
