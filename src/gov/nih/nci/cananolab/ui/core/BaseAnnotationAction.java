@@ -47,6 +47,18 @@ import org.apache.struts.validator.DynaValidatorForm;
  */
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
+	/**
+	 * setupSample() will retrieve a SampleBean based on the sampleId which is in request/form.
+	 * And then check user's access privilege, throws Exception if user doesn't have privilege.
+	 * Otherwise, set visibility of Primary POC of sample based on user's privilege.
+	 * Lastly, set the SampleBean in request object.
+	 * 
+	 * @param theForm
+	 * @param request
+	 * @param location
+	 * @return SampleBean 
+	 * @throws Exception if user in session is not allowed to access this sample particle.
+	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
 		String sampleId = request.getParameter("sampleId");
@@ -67,12 +79,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			//TODO model change
 			//service = new SampleServiceRemoteImpl(serviceUrl);
 		}
-		SampleBean sampleBean = service
-				.findSampleById(sampleId);
+		SampleBean sampleBean = service.findSampleById(sampleId);
 		if (location.equals("local")) {
 			// check access privilege
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
+			AuthorizationService auth = new AuthorizationService(Constants.CSM_APP_NAME);
 			boolean access = auth.isUserAllowed(sampleBean
 					.getDomain().getName(), user);
 			if (!access) {
@@ -82,10 +92,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				throw new NoAccessException(
 						"You don't have the required privileges to access this particle");
 			} else {
-				PointOfContactBean pointOfContactBean = sampleBean
-						.getPocBean();
-				if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
-						.toString(), user)) {
+				PointOfContactBean pointOfContactBean = sampleBean.getPocBean();
+				if (auth.isUserAllowed(pointOfContactBean.getDomain().getId().toString(), user)) {
 					pointOfContactBean.setHidden(false);
 				} else {
 					pointOfContactBean.setHidden(true);
