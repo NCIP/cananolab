@@ -318,6 +318,7 @@ public class PublicationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
 				.add(Property.forName("id").eq(new Long(publicationId)));
 		crit.setFetchMode("authorCollection", FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		Publication publication = null;
