@@ -9,15 +9,18 @@ package gov.nih.nci.cananolab.ui.sample;
 /* CVS $Id: SubmitNanoparticleAction.java,v 1.37 2008-09-18 21:35:25 cais Exp $ */
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -29,12 +32,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class SampleAction extends BaseAnnotationAction {
+	// logger
+	private static Logger logger = Logger.getLogger(SampleAction.class);
+	
+	// Constant string, if display name of POC is "private" then do not display POC.
+	private static final String PRIVATE = "private"; 
+
 	SampleServiceHelper helper = new SampleServiceHelper();
 
 	public ActionForward create(ActionMapping mapping, ActionForm form,
@@ -107,16 +117,55 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request,
-				"local");
+		
+		// "setupSample()" will get the SampleBean and set visibility of its Primary POC.
+		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		// set visibility
+		
+		// "retrieveVisibility()" will set visibility of the SampleBean.
 		SampleService service = new SampleServiceLocalImpl();
 		service.retrieveVisibility(sampleBean, user);
 		theForm.set("sampleBean", sampleBean);
-		setupLookups(request, sampleBean.getDomain()
-				.getPrimaryPointOfContact().getOrganization().getName());
-		// setupDataTree(sampleBean, request);
+		
+		/**
+		 *  For showing detailed Primary and Secondary POC information on page. 
+		 */
+		// If Primary POC is not hidden set it in request object. 
+		PointOfContactBean primaryPoc = sampleBean.getPocBean();
+		if (!primaryPoc.isHidden() && !PRIVATE.equalsIgnoreCase(primaryPoc.getDisplayName())) {
+			request.setAttribute("primaryPoc", primaryPoc);
+		}
+
+		// Set visibility of Other POC, set them in request only when as least one is visible.
+		String sampleId = sampleBean.getDomain().getId().toString();
+		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
+		List<PointOfContactBean> otherPointOfContactCollection = 
+			pointOfContactService.findOtherPointOfContactCollection(sampleId);
+		if (otherPointOfContactCollection != null && 
+			!otherPointOfContactCollection.isEmpty()) {
+			try {
+				AuthorizationService auth = new AuthorizationService(Constants.CSM_APP_NAME);
+				for (PointOfContactBean pocBean : otherPointOfContactCollection) {
+					if (auth.isUserAllowed(pocBean.getDomain().getId().toString(), user) &&
+						!PRIVATE.equalsIgnoreCase(pocBean.getDisplayName())) {
+						pocBean.setHidden(false);
+					} else {
+						otherPointOfContactCollection.remove(pocBean);
+						pocBean.setHidden(true);
+					}
+				}
+			} catch (Exception e) {
+				String err = "Error in setting visibility for OtherPointOfContact.";
+				logger.error(err, e);
+				throw new PointOfContactException(err, e);
+			}
+			if (!otherPointOfContactCollection.isEmpty()) {
+				OtherPointOfContactsBean otherPointOfContactsBean = new OtherPointOfContactsBean();
+				otherPointOfContactsBean.setOtherPointOfContacts(otherPointOfContactCollection);
+				request.setAttribute("otherPoc", otherPointOfContactsBean);
+			}
+		}
+		
 		return mapping.findForward("summaryView");
 	}
 
