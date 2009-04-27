@@ -34,7 +34,7 @@
 	border="1" style="">
 	<tr>
 		<logic:iterate id="col" name="characterizationForm"
-			property="achar.theFinding.columns" indexId="cInd">
+			property="achar.theFinding.columnHeaders" indexId="cInd">
 			<td class="cellLabel" id="column${cInd}">
 				<div style="position: relative">
 					<a href="javascript:show('columnDesign${cInd}');">Column
@@ -153,7 +153,7 @@
 	</tr>
 	<tr>
 		<td
-			colspan="${fn:length(characterizationForm.map.achar.theFinding.columns)}">
+			colspan="${fn:length(characterizationForm.map.achar.theFinding.columnHeaders)}">
 
 		</td>
 	</tr>
@@ -174,7 +174,7 @@
 		test="${fn:length(characterizationForm.map.achar.theFinding.rows)>0}">
 		<tr>
 			<td
-				colspan="${fn:length(characterizationForm.map.achar.theFinding.columns)-2}"></td>
+				colspan="${fn:length(characterizationForm.map.achar.theFinding.columnHeaders)-2}"></td>
 			<td colspan="2">
 				<div align="right">
 					<input class="promptButton" type="Button" value="Add"
