@@ -26,7 +26,7 @@ public class FindingBean {
 	private Finding domain = new Finding();
 	private List<Row> rows = new ArrayList<Row>();
 	private List<FileBean> files = new ArrayList<FileBean>();
-	private List<Column> columns = new ArrayList<Column>();
+	private List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
 	private int numberOfColumns;
 	private int numberOfRows;
 	private FileBean theFile = new FileBean();
@@ -48,8 +48,8 @@ public class FindingBean {
 
 		// get data matrix column headers in order and generate a map based on
 		// headers
-		Map<Column, List<Datum>> datumMap = new HashMap<Column, List<Datum>>();
-		Map<Column, List<Condition>> conditionMap = new HashMap<Column, List<Condition>>();
+		Map<ColumnHeader, List<Datum>> datumMap = new HashMap<ColumnHeader, List<Datum>>();
+		Map<ColumnHeader, List<Condition>> conditionMap = new HashMap<ColumnHeader, List<Condition>>();
 
 		List<Datum> datumList = new ArrayList<Datum>();
 		List<Condition> conditionList = new ArrayList<Condition>();
@@ -59,9 +59,9 @@ public class FindingBean {
 			Collections.sort(conditions,
 					new Comparators.ConditionDateComparator());
 			for (Condition condition : conditions) {
-				Column conditionColumn = new Column(condition);
-				if (!columns.contains(conditionColumn)) {
-					columns.add(conditionColumn);
+				ColumnHeader conditionColumn = new ColumnHeader(condition);
+				if (!columnHeaders.contains(conditionColumn)) {
+					columnHeaders.add(conditionColumn);
 				}
 				if (conditionMap.get(conditionColumn) != null) {
 					conditionList = conditionMap.get(conditionColumn);
@@ -71,9 +71,9 @@ public class FindingBean {
 				}
 				conditionList.add(condition);
 			}
-			Column datumColumn = new Column(datum);
-			if (!columns.contains(datumColumn)) {
-				columns.add(datumColumn);
+			ColumnHeader datumColumn = new ColumnHeader(datum);
+			if (!columnHeaders.contains(datumColumn)) {
+				columnHeaders.add(datumColumn);
 			}
 			if (datumMap.get(datumColumn) != null) {
 				datumList = datumMap.get(datumColumn);
@@ -83,18 +83,18 @@ public class FindingBean {
 			}
 			datumList.add(datum);
 		}
-		numberOfRows = datumMap.get(columns.get(0)).size();
-		numberOfColumns = columns.size();
+		numberOfRows = datumMap.get(columnHeaders.get(0)).size();
+		numberOfColumns = columnHeaders.size();
 
 		// generate matrix
 		if (data != null && !data.isEmpty()) {
 			for (int i = 0; i < numberOfRows; i++) {
 				Row row = new Row();
 				for (int j = 0; j < numberOfColumns; j++) {
-					Condition condition = conditionMap.get(columns.get(j)).get(
+					Condition condition = conditionMap.get(columnHeaders.get(j)).get(
 							0);
 					row.getCells().add(new TableCell(condition));
-					Datum datum = datumMap.get(columns.get(j)).get(0);
+					Datum datum = datumMap.get(columnHeaders.get(j)).get(0);
 					row.getCells().add(new TableCell(datum));
 				}
 				rows.add(row);
@@ -110,12 +110,12 @@ public class FindingBean {
 		this.rows = rows;
 	}
 
-	public List<Column> getColumns() {
-		return columns;
+	public List<ColumnHeader> getColumnHeaders() {
+		return columnHeaders;
 	}
 
-	public void setColumns(List<Column> columns) {
-		this.columns = columns;
+	public void setColumnHeaders(List<ColumnHeader> columnHeaders) {
+		this.columnHeaders = columnHeaders;
 	}
 
 	public int getNumberOfColumns() {
@@ -134,23 +134,59 @@ public class FindingBean {
 		this.numberOfRows = numberOfRows;
 	}
 
-	public void initializeMatrix(int numberOfColumns, int numberOfRows) {
+	public void updateMatrix(int numberOfColumns, int numberOfRows) {
 		this.numberOfColumns = numberOfColumns;
 		this.numberOfRows = numberOfRows;
-		columns = new ArrayList<Column>();
-		for (int i = 0; i < numberOfColumns; i++) {
-			columns.add(new Column());
-		}
-		rows = new ArrayList<Row>();
-		for (int i = 0; i < numberOfRows; i++) {
-			Row row = new Row();
-			List<TableCell> cells = new ArrayList<TableCell>();
-			for (int j = 0; j < numberOfColumns; j++) {
-				cells.add(new TableCell());
+		List<ColumnHeader>newColumns=new ArrayList<ColumnHeader>();
+		if (columnHeaders.size()<=numberOfColumns) {
+			newColumns.addAll(columnHeaders);
+			for (int i=columnHeaders.size(); i<numberOfColumns; i++) {
+				newColumns.add(new ColumnHeader());
 			}
-			row.setCells(cells);
-			rows.add(row);
 		}
+		//remove the columnHeaders from the end
+		else {
+			for (int i=0; i<numberOfColumns; i++) {
+				newColumns.add(columnHeaders.get(i));
+			}
+		}
+
+		List<Row>newRows=new ArrayList<Row>();
+		if (rows.size()<=numberOfRows) {
+			newRows.addAll(rows);
+			for (int i=rows.size(); i<numberOfRows; i++) {
+				newRows.add(new Row());
+			}
+		}
+		//remove the rows from the end
+		else {
+			for (int i=0; i<numberOfRows; i++) {
+				newRows.add(rows.get(i));
+			}
+		}
+
+		for (int i = 0; i < numberOfRows; i++) {
+			Row row = newRows.get(i);
+			List<TableCell> cells = row.getCells();
+			List<TableCell> newCells=new ArrayList<TableCell>();
+			if (cells.size()<=numberOfColumns) {
+				newCells.addAll(cells);
+				for (int j=cells.size(); j<numberOfColumns; j++) {
+					newCells.add(new TableCell());
+				}
+			}
+			//remove the columnHeaders from the end
+			else {
+				for (int j=0; j<numberOfColumns; j++) {
+					newCells.add(cells.get(i));
+				}
+			}
+			row.setCells(newCells);
+		}
+		columnHeaders=new ArrayList<ColumnHeader>();
+		columnHeaders.addAll(newColumns);
+		rows=new ArrayList<Row>();
+		rows.addAll(newRows);
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
@@ -186,21 +222,21 @@ public class FindingBean {
 			List<Condition> rowConditions = new ArrayList<Condition>();
 			List<Datum> rowData = new ArrayList<Datum>();
 			for (TableCell cell : row.getCells()) {
-				Column column = columns.get(cInd);
+				ColumnHeader columnHeader = columnHeaders.get(cInd);
 				if (cell.getDatumOrCondition().equals("Datum")) {
 					Datum datum = cell.getDatum();
 					datum.setValue(cell.getValue());
-					datum.setValueType(column.getValueType());
-					datum.setValueUnit(column.getValueUnit());
-					datum.setName(column.getName());
+					datum.setValueType(columnHeader.getValueType());
+					datum.setValueUnit(columnHeader.getValueUnit());
+					datum.setName(columnHeader.getName());
 					rowData.add(datum);
 				} else if (cell.getDatumOrCondition().equals("Condition")) {
 					Condition condition = cell.getCondition();
 					condition.setValue(cell.getValue());
-					condition.setValueType(column.getValueType());
-					condition.setValueUnit(column.getValueUnit());
-					condition.setName(column.getName());
-					condition.setProperty(column.getProperty());
+					condition.setValueType(columnHeader.getValueType());
+					condition.setValueUnit(columnHeader.getValueUnit());
+					condition.setName(columnHeader.getName());
+					condition.setProperty(columnHeader.getProperty());
 					rowConditions.add(condition);
 				}
 				cInd++;
