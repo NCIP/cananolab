@@ -15,7 +15,7 @@
 			Type *
 		</td>
 		<td>
-			<div id="shapeTypePrompt">
+			<div id="shapeTypePrompt" style="position:relative">
 				<select name="achar.shape.type" id="shapeType"
 					onchange="javascript:callPrompt('Type', 'shapeType', 'shapeTypePrompt');">
 					<option value=""></option>

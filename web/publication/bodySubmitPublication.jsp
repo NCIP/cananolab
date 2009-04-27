@@ -59,7 +59,7 @@
 									Publication Type*
 								</td>
 								<td>
-									<div id="categoryPrompt">
+									<div id="categoryPrompt" style="position:relative">
 										<html:select property="file.domainFile.category"
 											onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category', 'categoryPrompt');
 														setReportFields('file.domainFile.category', 'file.domainFile.status');"
@@ -76,7 +76,7 @@
 									Publication Status*
 								</td>
 								<td>
-									<div id="statusPrompt">
+									<div id="statusPrompt" style="position:relative">
 										<html:select property="file.domainFile.status"
 											onchange="javascript:callPrompt('Publication status', 'file.domainFile.status', 'statusPrompt');"
 											styleId="file.domainFile.status">

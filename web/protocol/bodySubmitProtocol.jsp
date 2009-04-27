@@ -40,7 +40,7 @@
 							Protocol Type*
 						</td>
 						<td colspan="3">
-							<div id="protocolTypePrompt">
+							<div id="protocolTypePrompt" style="position:relative">
 								<html:select styleId="protocolType"
 									property="protocol.domain.type"
 									onchange="javascript:callPrompt('Protocol Type', 'protocolType', 'protocolTypePrompt'); retrieveProtocols();">
@@ -58,7 +58,7 @@
 							Protocol Name*
 						</td>
 						<td colspan="3">
-							<div id="protocolNamePrompt">
+							<div id="protocolNamePrompt" style="position:relative">
 								<html:select styleId="protocolName"
 									property="protocol.domain.name"
 									onchange="javascript:callPrompt('Protocol Name', 'protocolName', 'protocolNamePrompt');">
@@ -79,7 +79,7 @@
 							Protocol Version*
 						</td>
 						<td>
-							<div id="protocolVersionPrompt">
+							<div id="protocolVersionPrompt" style="position:relative">
 								<html:select styleId="protocolVersion"
 									property="protocol.domain.version"
 									onchange="javascript:callPrompt('Protocol Version', 'protocolVersion', 'protocolVersionPrompt');retrieveProtocol();">

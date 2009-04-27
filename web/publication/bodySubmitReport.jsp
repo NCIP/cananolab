@@ -56,7 +56,7 @@
 										<strong>Publication Type*</strong>
 									</td>
 									<td class="label">
-										<div id="categoryPrompt">
+										<div id="categoryPrompt" style="position:relative">
 											<html:select property="file.domainFile.category"
 												onchange="javascript:callPrompt('Publication Category', 'file.domainFile.category', 'categoryPrompt');"
 												styleId="file.domainFile.category">
@@ -73,7 +73,7 @@
 										<strong>Publication Status*</strong>
 									</td>
 									<td class="rightLabel">
-										<div id="statusPrompt">
+										<div id="statusPrompt" style="position:relative">
 											<html:select property="file.domainFile.status"
 												onchange="javascript:callPrompt('Publication status', 'file.domainFile.status', 'statusPrompt');"
 												styleId="file.domainFile.status">

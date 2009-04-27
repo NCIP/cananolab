@@ -15,7 +15,7 @@
 			Type
 		</td>
 		<td>
-			<div id="physicalStateTypePrompt">
+			<div id="physicalStateTypePrompt" style="position:relative">
 				<select name="achar.physicalState.type" id="physicalStateType"
 					onchange="javascript:callPrompt('Type', 'physicalStateType', 'physicalStateTypePrompt');">
 					<option value=""></option>
