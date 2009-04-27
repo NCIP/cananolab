@@ -49,14 +49,14 @@
 						<table class="summaryViewLayer4" border="1">
 							<tr>
 								<c:forEach var="col"
-									items="${characterizationForm.map.achar.theFinding.columns}">
+									items="${finding.columnHeaders}">
 									<td>
 										<strong>${col.displayName}</strong>
 									</td>
 								</c:forEach>
 							</tr>
 							<c:forEach var="row"
-								items="${characterizationForm.map.achar.theFinding.rows}">
+								items="${finding.rows}">
 								<tr>
 									<c:forEach var="cell" items="${row.cells}">
 										<td>
