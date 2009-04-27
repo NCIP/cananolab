@@ -4,165 +4,102 @@ import gov.nih.nci.cananolab.domain.common.Condition;
 import gov.nih.nci.cananolab.domain.common.Datum;
 
 /**
- * View bean for Data Column
+ * View bean representing a column header in a matrix
+ * column
  *
- * @author tanq
+ * @author pansu
  *
  */
-public class ColumnBean {
-	private Long id;
+public class Column {
 	private String name;
 	private String property;
-	private String value;
 	private String valueType;
 	private String valueUnit;
 	private String datumOrCondition;
-	private String columnLabel;
+	private String displayName;
 
-
-	public ColumnBean() {
-
-	}
-
-	public ColumnBean(Datum datum) {
-		this.id = datum.getId();
+	public Column(Datum datum) {
 		this.name = datum.getName();
-		this.value = datum.getValue();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
 		this.datumOrCondition = "Datum";
 	}
 
-	public ColumnBean(Condition condition) {
-		this.id = condition.getId();
+	public Column(Condition condition) {
 		this.name = condition.getName();
 		this.property = condition.getProperty();
-		this.value = condition.getValue();
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
 		this.datumOrCondition = "Condition";
 	}
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
+
+	public Column() {
+
 	}
 
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the property
-	 */
 	public String getProperty() {
 		return property;
 	}
 
-	/**
-	 * @param property
-	 *            the property to set
-	 */
 	public void setProperty(String property) {
 		this.property = property;
 	}
 
-	/**
-	 * @return the value
-	 */
-	public String getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value
-	 *            the value to set
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	/**
-	 * @return the valueType
-	 */
 	public String getValueType() {
 		return valueType;
 	}
 
-	/**
-	 * @param valueType
-	 *            the valueType to set
-	 */
 	public void setValueType(String valueType) {
 		this.valueType = valueType;
 	}
 
-	/**
-	 * @return the valueUnit
-	 */
 	public String getValueUnit() {
 		return valueUnit;
 	}
 
-	/**
-	 * @param valueUnit
-	 *            the valueUnit to set
-	 */
 	public void setValueUnit(String valueUnit) {
 		this.valueUnit = valueUnit;
 	}
 
 	/**
-	 * @return the columnLabel
+	 * @return the displayName
 	 */
-	public String getColumnLabel() {
-		columnLabel = name;
+	public String getDisplayName() {
+		displayName = name;
 		if (property != null && property.trim().length() > 0) {
-			columnLabel += " "+property;
+			displayName += " " + property;
 		}
 		if ((valueType != null && valueType.trim().length() > 0)
 				|| (valueUnit != null && valueUnit.trim().length() > 0)) {
-			columnLabel += " (";
+			displayName += " (";
 			if (valueType != null && valueType.trim().length() > 0) {
-				columnLabel += valueType;
+				displayName += valueType;
 				if (valueUnit != null && valueUnit.trim().length() > 0) {
-					columnLabel += ",";
+					displayName += ",";
 				}
 			}
 			if (valueUnit != null && valueUnit.trim().length() > 0) {
-				columnLabel += valueUnit;
+				displayName += valueUnit;
 			}
-			columnLabel += ")";
+			displayName += ")";
 		}
-		return columnLabel;
+		return displayName;
 	}
 
 	/**
-	 * @param columnLabel
-	 *            the columnLabel to set
+	 * @param displayName
+	 *            the displayName to set
 	 */
-	public void setColumnLabel(String columnLabel) {
-		this.columnLabel = columnLabel;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	/**
@@ -170,11 +107,11 @@ public class ColumnBean {
 	 * same
 	 *
 	 * @param obj
-	 **/
+	 */
 	public boolean equals(Object obj) {
-		if (obj instanceof ColumnBean) {
-			ColumnBean c = (ColumnBean) obj;
-			if (getId() != null && getId().equals(c.getId()))
+		if (obj instanceof Column) {
+			Column c = (Column) obj;
+			if (getDisplayName().equals(c.getDisplayName()))
 				return true;
 		}
 		return false;
@@ -182,10 +119,10 @@ public class ColumnBean {
 
 	/**
 	 * Returns hash code for the primary key of the object
-	 **/
+	 */
 	public int hashCode() {
-		if (getId() != null)
-			return getId().hashCode();
+		if (getDisplayName() != null)
+			return getDisplayName().hashCode();
 		return 0;
 	}
 
@@ -203,5 +140,4 @@ public class ColumnBean {
 	public void setDatumOrCondition(String datumOrCondition) {
 		this.datumOrCondition = datumOrCondition;
 	}
-
 }
