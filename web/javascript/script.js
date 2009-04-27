@@ -440,5 +440,3 @@ function showSummary(layer_ref, totalLayers) {
 	}
 }
 
-
-
