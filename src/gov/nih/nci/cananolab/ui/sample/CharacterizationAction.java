@@ -558,6 +558,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
+	public ActionForward drawMatrix(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		FindingBean findingBean = achar.getTheFinding();
+		findingBean.initializeMatrix(findingBean.getNumberOfColumns(), findingBean.getNumberOfRows());
+		request.setAttribute("anchor", "result");
+		return mapping.getInputForward();
+	}
+
 	public ActionForward deleteFinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
