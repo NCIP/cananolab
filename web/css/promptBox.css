@@ -1,14 +1,16 @@
 #prompt {
+	position: absolute;
+	top: 20px;
+	left: -10px;
+	width: 350px;
+	z-index: 11000;
+}
+
+#promptIEHack {
 	position: relative;
 	left: 10px;
 	top: 5px;
-	/*
-	position: absolute;
-	top: 130px;
-	left: 240px;
-*/
 	width: 350px;
-	background-color: #FFFFFF;
 }
 
 input.promptButton {
@@ -18,8 +20,8 @@ input.promptButton {
 	font-family: arial;
 	font-size: 10px;
 	color: black;
-	margin-left: 1px;
-	margin-right: 1px;
+	margin-left: 2px;
+	margin-right: 2px;
 }
 
 table.promptbox {
@@ -41,10 +43,18 @@ input.promptbox {
 	color: black;
 }
 
-#submissionPrompt {
-	position: relative;
+#newInstrument {
+	position: absolute;
+	left: -10px;
+	top: 15px;
+	width: 350px;
+	z-index: 10002;
+}
+
+#newColumn {
+	position: absolute;
 	left: 30px;
-	top: -20px;
-	width:550px;
-	background-color: #FFFFFF;
+	top: 20px;
+	width: 350px;
+	z-index: 10003;
 }
