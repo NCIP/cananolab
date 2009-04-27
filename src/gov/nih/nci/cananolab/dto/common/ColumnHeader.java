@@ -10,7 +10,7 @@ import gov.nih.nci.cananolab.domain.common.Datum;
  * @author pansu
  *
  */
-public class Column {
+public class ColumnHeader {
 	private String name;
 	private String property;
 	private String valueType;
@@ -18,14 +18,14 @@ public class Column {
 	private String datumOrCondition;
 	private String displayName;
 
-	public Column(Datum datum) {
+	public ColumnHeader(Datum datum) {
 		this.name = datum.getName();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
 		this.datumOrCondition = "Datum";
 	}
 
-	public Column(Condition condition) {
+	public ColumnHeader(Condition condition) {
 		this.name = condition.getName();
 		this.property = condition.getProperty();
 		this.valueType = condition.getValueType();
@@ -33,7 +33,7 @@ public class Column {
 		this.datumOrCondition = "Condition";
 	}
 
-	public Column() {
+	public ColumnHeader() {
 
 	}
 
@@ -109,8 +109,8 @@ public class Column {
 	 * @param obj
 	 */
 	public boolean equals(Object obj) {
-		if (obj instanceof Column) {
-			Column c = (Column) obj;
+		if (obj instanceof ColumnHeader) {
+			ColumnHeader c = (ColumnHeader) obj;
 			if (getDisplayName().equals(c.getDisplayName()))
 				return true;
 		}
