@@ -565,7 +565,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		findingBean.initializeMatrix(findingBean.getNumberOfColumns(), findingBean.getNumberOfRows());
+		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean.getNumberOfRows());
 		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
