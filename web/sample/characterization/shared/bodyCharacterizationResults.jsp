@@ -33,22 +33,23 @@ function confirmDeletion()
 	</tr>
 	<tr>
 		<td>
-			<c:if test="${! empty characterizationForm.map.achar.findings }">
-				<c:set var="charBean" value="${characterizationForm.map.achar}" />
-				<c:set var="edit" value="true" />
-				<%@ include file="bodyFindingView.jsp"%>
-			</c:if>
-		</td>
-	<tr>
-		<td>
 			<c:set var="findingInfoStyle" value="display:none" />
 			<c:if
-				test="${param.dispatch eq 'addFile' || param.dispatch eq 'addData'}">
+				test="${param.dispatch eq 'addFile' || param.dispatch eq 'drawMatrix'}">
 				<c:set var="findingInfoStyle" value="display:block" />
 			</c:if>
 			<div id="newFinding" style="${findingInfoStyle}">
 				<%@ include file="bodySubmitFinding.jsp"%>
 			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<c:if test="${! empty characterizationForm.map.achar.findings }">
+				<c:set var="charBean" value="${characterizationForm.map.achar}" />
+				<c:set var="edit" value="true" />
+				<%@ include file="bodyFindingView.jsp"%>
+			</c:if>
 		</td>
 	</tr>
 </table>

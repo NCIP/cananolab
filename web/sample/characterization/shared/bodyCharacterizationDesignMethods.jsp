@@ -28,19 +28,20 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:if test="${! empty characterizationForm.map.achar.experimentConfigs }">
-				<c:set var="charBean" value="${characterizationForm.map.achar}" />
-				<c:set var="edit" value="true" />
-				<%@ include file="bodyExperimentConfigView.jsp"%>
-			</c:if>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2">
 			<div id="newExperimentConfig" style="display: none;">
 				<jsp:include page="bodySubmitExperimentConfig.jsp" />
 			</div>
 			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<c:if
+				test="${! empty characterizationForm.map.achar.experimentConfigs }">
+				<c:set var="charBean" value="${characterizationForm.map.achar}" />
+				<c:set var="edit" value="true" />
+				<%@ include file="bodyExperimentConfigView.jsp"%>
+			</c:if>
 		</td>
 	</tr>
 </table>

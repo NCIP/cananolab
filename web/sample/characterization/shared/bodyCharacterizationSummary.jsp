@@ -16,7 +16,7 @@
 				Characterization Type *
 			</td>
 			<td>
-				<div id="charTypePrompt">
+				<div id="charTypePrompt" style="position: relative;">
 					<html:select property="achar.characterizationType"
 						styleId="charType"
 						onchange="javascript:callPrompt('Characterization Type', 'charType', 'charTypePrompt');setCharacterizationOptionsByCharTypeWithOther()">
@@ -32,7 +32,7 @@
 				Characterization*
 			</td>
 			<td>
-				<div id="charNamePrompt">
+				<div id="charNamePrompt" style="position: relative">
 					<html:select property="achar.characterizationName"
 						styleId="charName"
 						onchange="javascript:callPrompt('Characterization', 'charName', 'charNamePrompt');setAssayTypeOptionsByCharName();setCharacterizationDetail();">
@@ -53,7 +53,7 @@
 			Assay Type
 		</td>
 		<td>
-			<div id="assayTypePrompt">
+			<div id="assayTypePrompt" style="position:relative">
 				<html:select property="achar.assayType" styleId="assayType"
 					onchange="javascript:callPrompt('Assay Type', 'assayType', 'assayTypePrompt');">
 					<option value=""></option>

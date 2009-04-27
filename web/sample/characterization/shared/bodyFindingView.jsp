@@ -48,22 +48,19 @@
 					<c:when test="${! empty finding.rows}">
 						<table class="summaryViewLayer4" border="1">
 							<tr>
-								<c:forEach var="col" items="${finding.columnBeans}">
+								<c:forEach var="col"
+									items="${characterizationForm.map.achar.theFinding.columns}">
 									<td>
-										<strong>${col.columnLabel}</strong>
+										<strong>${col.displayName}</strong>
 									</td>
 								</c:forEach>
 							</tr>
-							<c:forEach var="row" items="${finding.rows}">
+							<c:forEach var="row"
+								items="${characterizationForm.map.achar.theFinding.rows}">
 								<tr>
-									<c:forEach var="condition" items="${row.conditions}">
+									<c:forEach var="cell" items="${row.cells}">
 										<td>
-											${condition.value}
-										</td>
-									</c:forEach>
-									<c:forEach var="datum" items="${row.data}">
-										<td>
-											${datum.value}
+											${cell.value}
 										</td>
 									</c:forEach>
 								</tr>

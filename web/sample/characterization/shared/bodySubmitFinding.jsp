@@ -28,12 +28,32 @@ function confirmDeletion()
 		<td>
 			<span class="cellLabel">File</span> &nbsp;&nbsp;
 			<a id="addFileButton"
-				href="javascript:clearFile(); show('submitFile');hide('submitData');">Add</a>
+				href="javascript:clearFile(); show('newFile');hide('newMatrix');">Add</a>
 		</td>
 		<td>
-			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
+			<span class="cellLabel">Data and Condition Matrix</span> &nbsp;&nbsp;
 			<a id="addData"
-				href="javascript:clearFile(); show('submitData');hide('submitFile');">Add</a>
+				href="javascript:clearFile(); show('newMatrix');hide('newFile');">Add</a>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" colspan="2">
+			<div style="display: none" id="newFile">
+				<jsp:include page="bodySubmitCharacterizationFile.jsp" />
+				&nbsp;
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" colspan="2">
+			<c:set var="submitMatrixStyle" value="display:none" />
+			<c:if test="${param.dispatch eq 'drawMatrix'}">
+				<c:set var="submitMatrixStyle" value="display:block" />
+			</c:if>
+			<div style="${submitMatrixStyle}" id="newMatrix">
+				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
+				&nbsp;
+			</div>
 		</td>
 	</tr>
 	<tr>
@@ -65,47 +85,6 @@ function confirmDeletion()
 			</table>
 		</td>
 		<td>
-			<table class="summaryViewLayer4" border="1">
-				<tr>
-					<c:forEach var="col"
-						items="${characterizationForm.map.achar.theFinding.columnBeans}">
-						<td>
-							<strong>${col.columnLabel}</strong>
-						</td>
-					</c:forEach>
-				</tr>
-				<c:forEach var="row"
-					items="${characterizationForm.map.achar.theFinding.rows}">
-					<tr>
-						<c:forEach var="condition" items="${row.conditions}">
-							<td>
-								${condition.value}
-							</td>
-						</c:forEach>
-						<c:forEach var="datum" items="${row.data}">
-							<td>
-								${datum.value}
-							</td>
-						</c:forEach>
-					</tr>
-				</c:forEach>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" colspan="2">
-			<div style="display: none" id="submitFile">
-				<jsp:include page="bodySubmitCharacterizationFile.jsp" />
-				&nbsp;
-			</div>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top" colspan="2">
-			<div style="display: none" id="submitData">
-				<jsp:include page="bodySubmitData.jsp" />
-				&nbsp;
-			</div>
 		</td>
 	</tr>
 	<tr>
@@ -117,8 +96,11 @@ function confirmDeletion()
 			<div align="right">
 				<input type="button" value="Cancel"
 					onclick="javascript:hide('newFinding'); show('existingFinding');">
-				<input type="button" value="Save"
-					onclick="javascript:saveFinding('characterization');">
+				<c:if
+					test="${fn:length(characterizationForm.map.achar.theFinding.files)>0 || fn:length(characterizationForm.map.achar.theFinding.rows)>0}">
+					<input type="button" value="Save"
+						onclick="javascript:saveFinding('characterization');">
+				</c:if>
 			</div>
 		</td>
 	</tr>

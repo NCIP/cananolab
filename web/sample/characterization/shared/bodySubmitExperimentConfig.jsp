@@ -31,7 +31,7 @@ function confirmDeletion()
 			Technique*
 		</td>
 		<td>
-			<div id="techniqueTypePrompt">
+			<div id="techniqueTypePrompt" style="position: relative">
 				<html:select
 					property="achar.theExperimentConfig.domain.technique.type"
 					styleId="techniqueType"
@@ -60,106 +60,110 @@ function confirmDeletion()
 			Instrument
 		</td>
 		<td>
-			<a style="" id="addInstrument"
-				href="javascript:clearInstrument();show('patternAddRow');">Add</a>
-			<br>
-			<table id="instrumentTable" class="summaryViewLayer4" width="85%"
-				style="display: none;">
-				<tbody id="instrumentRows">
-					<tr id="patternHeader">
-						<td width="25%" class="cellLabel">
-							Manufacturer
-						</td>
-						<td width="25%" class="cellLabel">
-							Model Name
-						</td>
-						<td class="cellLabel">
-							Type
-						</td>
-						<td>
-						</td>
-					</tr>
-					<tr id="pattern" style="display: none;">
-						<td>
-							<span id="instrumentManufacturer">Manufacturer</span>
-						</td>
-						<td>
-							<span id="instrumentModelName">ModelName</span>
-						</td>
-						<td>
-							<span id="instrumentType">Type</span>
-						</td>
-						<td>
-							<input class="noBorderButton" id="edit" type="button"
-								value="Edit"
-								onclick="editClicked(this.id); show('patternAddRow');" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div id="submissionPrompt">
-				<table id="patternAddRow" style="display: none;" width="100%"
-					class="promptbox">
-					<tbody>
-						<tr>
-							<td class="cellLabel">
+			<div id="instrumentSection" style="position: relative">
+				<a style="" id="addInstrument"
+					href="javascript:clearInstrument();show('patternAddRow');">Add</a>
+				<br>
+				<table id="instrumentTable" class="summaryViewLayer4" width="85%"
+					style="display: none;">
+					<tbody id="instrumentRows">
+						<tr id="patternHeader">
+							<td width="25%" class="cellLabel">
 								Manufacturer
 							</td>
-							<td>
-								<div id="manufacturerPrompt">
-									<html:hidden property="achar.theInstrument.id" styleId="id" />
-									<html:select property="achar.theInstrument.manufacturer"
-										styleId="manufacturer"
-										onchange="javascript:callPrompt('Manufacturer', 'manufacturer', 'manufacturerPrompt');">
-										<option value=""></option>
-										<html:options name="manufacturers" />
-										<option value="other">
-											[Other]
-										</option>
-									</html:select>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td class="cellLabel">
+							<td width="25%" class="cellLabel">
 								Model Name
 							</td>
-							<td>
-								<html:text property="achar.theInstrument.modelName" size="17"
-									styleId="modelName" />
-							</td>
-						</tr>
-						<tr>
 							<td class="cellLabel">
 								Type
 							</td>
 							<td>
-								<div id="instrumentTypePrompt">
-									<html:select property="achar.theInstrument.type" styleId="type"
-										onchange="javascript:callPrompt('Instrment Type', 'type', 'instrumentTypePrompt');">
-										<option value=""></option>
-										<option value="other">
-											[Other]
-										</option>
-									</html:select>
-								</div>
 							</td>
 						</tr>
-						<tr>
+						<tr id="pattern" style="display: none;">
 							<td>
-								<input style="display: none;" class="promptButton" id="delete"
-									type="button" value="Remove" onclick="deleteClicked()" />
+								<span id="instrumentManufacturer">Manufacturer</span>
 							</td>
 							<td>
-								<input class="promptButton" type="button" value="Add"
-									onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
-								<input class="promptButton" type="button" value="Cancel"
-									onclick="clearInstrument();hide('patternAddRow');" />
+								<span id="instrumentModelName">ModelName</span>
+							</td>
+							<td>
+								<span id="instrumentType">Type</span>
+							</td>
+							<td>
+								<input class="noBorderButton" id="edit" type="button"
+									value="Edit"
+									onclick="editClicked(this.id); show('patternAddRow');" />
 							</td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
+				<div id="newInstrument">
+					<table id="patternAddRow" style="display: none;" width="100%"
+						class="promptbox">
+						<tbody>
+							<tr>
+								<td class="cellLabel">
+									Manufacturer
+								</td>
+								<td>
+									<div id="manufacturerPrompt" style="position: relative">
+										<html:hidden property="achar.theInstrument.id" styleId="id" />
+										<html:select property="achar.theInstrument.manufacturer"
+											styleId="manufacturer"
+											onchange="javascript:callPrompt('Manufacturer', 'manufacturer', 'manufacturerPrompt');">
+											<option value=""></option>
+											<html:options name="manufacturers" />
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="cellLabel">
+									Model Name
+								</td>
+								<td>
+									<html:text property="achar.theInstrument.modelName" size="17"
+										styleId="modelName" />
+								</td>
+							</tr>
+							<tr>
+								<td class="cellLabel">
+									Type
+								</td>
+								<td>
+									<div id="instrumentTypePrompt" style="position: relative">
+										<html:select property="achar.theInstrument.type"
+											styleId="type"
+											onchange="javascript:callPrompt('Instrment Type', 'type', 'instrumentTypePrompt');">
+											<option value=""></option>
+											<option value="other">
+												[Other]
+											</option>
+										</html:select>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input style="display: none;" class="promptButton" id="delete"
+										type="button" value="Remove" onclick="deleteClicked()" />
+								</td>
+								<td>
+									<div align="right">
+										<input class="promptButton" type="button" value="Add"
+											onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
+										<input class="promptButton" type="button" value="Cancel"
+											onclick="clearInstrument();hide('patternAddRow');" />
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 		</td>
 	</tr>
 	<tr>
