@@ -91,11 +91,15 @@ public class FindingBean {
 			for (int i = 0; i < numberOfRows; i++) {
 				Row row = new Row();
 				for (int j = 0; j < numberOfColumns; j++) {
-					Condition condition = conditionMap.get(columnHeaders.get(j)).get(
-							0);
-					row.getCells().add(new TableCell(condition));
-					Datum datum = datumMap.get(columnHeaders.get(j)).get(0);
-					row.getCells().add(new TableCell(datum));
+					if (!conditionMap.isEmpty()) {
+						Condition condition = conditionMap.get(
+								columnHeaders.get(j)).get(0);
+						row.getCells().add(new TableCell(condition));
+					}
+					if (!datumMap.isEmpty()) {
+						Datum datum = datumMap.get(columnHeaders.get(j)).get(0);
+						row.getCells().add(new TableCell(datum));
+					}
 				}
 				rows.add(row);
 			}
@@ -137,30 +141,30 @@ public class FindingBean {
 	public void updateMatrix(int numberOfColumns, int numberOfRows) {
 		this.numberOfColumns = numberOfColumns;
 		this.numberOfRows = numberOfRows;
-		List<ColumnHeader>newColumns=new ArrayList<ColumnHeader>();
-		if (columnHeaders.size()<=numberOfColumns) {
+		List<ColumnHeader> newColumns = new ArrayList<ColumnHeader>();
+		if (columnHeaders.size() <= numberOfColumns) {
 			newColumns.addAll(columnHeaders);
-			for (int i=columnHeaders.size(); i<numberOfColumns; i++) {
+			for (int i = columnHeaders.size(); i < numberOfColumns; i++) {
 				newColumns.add(new ColumnHeader());
 			}
 		}
-		//remove the columnHeaders from the end
+		// remove the columnHeaders from the end
 		else {
-			for (int i=0; i<numberOfColumns; i++) {
+			for (int i = 0; i < numberOfColumns; i++) {
 				newColumns.add(columnHeaders.get(i));
 			}
 		}
 
-		List<Row>newRows=new ArrayList<Row>();
-		if (rows.size()<=numberOfRows) {
+		List<Row> newRows = new ArrayList<Row>();
+		if (rows.size() <= numberOfRows) {
 			newRows.addAll(rows);
-			for (int i=rows.size(); i<numberOfRows; i++) {
+			for (int i = rows.size(); i < numberOfRows; i++) {
 				newRows.add(new Row());
 			}
 		}
-		//remove the rows from the end
+		// remove the rows from the end
 		else {
-			for (int i=0; i<numberOfRows; i++) {
+			for (int i = 0; i < numberOfRows; i++) {
 				newRows.add(rows.get(i));
 			}
 		}
@@ -168,24 +172,24 @@ public class FindingBean {
 		for (int i = 0; i < numberOfRows; i++) {
 			Row row = newRows.get(i);
 			List<TableCell> cells = row.getCells();
-			List<TableCell> newCells=new ArrayList<TableCell>();
-			if (cells.size()<=numberOfColumns) {
+			List<TableCell> newCells = new ArrayList<TableCell>();
+			if (cells.size() <= numberOfColumns) {
 				newCells.addAll(cells);
-				for (int j=cells.size(); j<numberOfColumns; j++) {
+				for (int j = cells.size(); j < numberOfColumns; j++) {
 					newCells.add(new TableCell());
 				}
 			}
-			//remove the columnHeaders from the end
+			// remove the columnHeaders from the end
 			else {
-				for (int j=0; j<numberOfColumns; j++) {
+				for (int j = 0; j < numberOfColumns; j++) {
 					newCells.add(cells.get(i));
 				}
 			}
 			row.setCells(newCells);
 		}
-		columnHeaders=new ArrayList<ColumnHeader>();
+		columnHeaders = new ArrayList<ColumnHeader>();
 		columnHeaders.addAll(newColumns);
-		rows=new ArrayList<Row>();
+		rows = new ArrayList<Row>();
 		rows.addAll(newRows);
 	}
 
