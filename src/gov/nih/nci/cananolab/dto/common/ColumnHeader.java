@@ -12,11 +12,12 @@ import gov.nih.nci.cananolab.domain.common.Datum;
  */
 public class ColumnHeader {
 	private String name;
-	private String property;
+	private String conditionProperty;
 	private String valueType;
 	private String valueUnit;
 	private String datumOrCondition;
 	private String displayName;
+	private String constantValue;
 
 	public ColumnHeader(Datum datum) {
 		this.name = datum.getName();
@@ -27,7 +28,7 @@ public class ColumnHeader {
 
 	public ColumnHeader(Condition condition) {
 		this.name = condition.getName();
-		this.property = condition.getProperty();
+		this.conditionProperty = condition.getProperty();
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
 		this.datumOrCondition = "Condition";
@@ -45,12 +46,12 @@ public class ColumnHeader {
 		this.name = name;
 	}
 
-	public String getProperty() {
-		return property;
+	public String getConditionProperty() {
+		return conditionProperty;
 	}
 
-	public void setProperty(String property) {
-		this.property = property;
+	public void setConditionProperty(String property) {
+		this.conditionProperty = property;
 	}
 
 	public String getValueType() {
@@ -74,8 +75,8 @@ public class ColumnHeader {
 	 */
 	public String getDisplayName() {
 		displayName = name;
-		if (property != null && property.trim().length() > 0) {
-			displayName += " " + property;
+		if (conditionProperty != null && conditionProperty.trim().length() > 0) {
+			displayName += " " + conditionProperty;
 		}
 		if ((valueType != null && valueType.trim().length() > 0)
 				|| (valueUnit != null && valueUnit.trim().length() > 0)) {
@@ -140,4 +141,13 @@ public class ColumnHeader {
 	public void setDatumOrCondition(String datumOrCondition) {
 		this.datumOrCondition = datumOrCondition;
 	}
+
+	public String getConstantValue() {
+		return constantValue;
+	}
+
+	public void setConstantValue(String constantValue) {
+		this.constantValue = constantValue;
+	}
+
 }

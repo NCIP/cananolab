@@ -240,7 +240,7 @@ public class FindingBean {
 					condition.setValueType(columnHeader.getValueType());
 					condition.setValueUnit(columnHeader.getValueUnit());
 					condition.setName(columnHeader.getName());
-					condition.setProperty(columnHeader.getProperty());
+					condition.setProperty(columnHeader.getConditionProperty());
 					rowConditions.add(condition);
 				}
 				cInd++;
