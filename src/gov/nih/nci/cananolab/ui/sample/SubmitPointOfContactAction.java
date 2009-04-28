@@ -116,7 +116,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				new SampleServiceLocalImpl();
 			particleService.saveOtherPOCs(sampleBean.getDomain());
 			request.setAttribute("sampleId", sampleId);
-			return mapping.findForward("updateSample");
+			return mapping.findForward("update");
 		} else {
 			request.getSession().setAttribute("submitPOCProcessing", "true");
 			return mapping.findForward("submitSample");
