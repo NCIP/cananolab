@@ -42,9 +42,7 @@ public class SampleAction extends BaseAnnotationAction {
 	// logger
 	private static Logger logger = Logger.getLogger(SampleAction.class);
 	
-	// Constant string, if display name of POC is "private" then do not display POC.
-	private static final String PRIVATE = "private"; 
-
+	// SampleServiceHelper
 	SampleServiceHelper helper = new SampleServiceHelper();
 
 	public ActionForward create(ActionMapping mapping, ActionForm form,
@@ -132,7 +130,7 @@ public class SampleAction extends BaseAnnotationAction {
 		 */
 		// If Primary POC is not hidden set it in request object. 
 		PointOfContactBean primaryPoc = sampleBean.getPocBean();
-		if (!primaryPoc.isHidden() && !PRIVATE.equalsIgnoreCase(primaryPoc.getDisplayName())) {
+		if (!primaryPoc.isHidden()) {
 			request.setAttribute("primaryPoc", primaryPoc);
 		}
 
@@ -146,8 +144,7 @@ public class SampleAction extends BaseAnnotationAction {
 			try {
 				AuthorizationService auth = new AuthorizationService(Constants.CSM_APP_NAME);
 				for (PointOfContactBean pocBean : otherPointOfContactCollection) {
-					if (auth.isUserAllowed(pocBean.getDomain().getId().toString(), user) &&
-						!PRIVATE.equalsIgnoreCase(pocBean.getDisplayName())) {
+					if (auth.isUserAllowed(pocBean.getDomain().getId().toString(), user)) {
 						pocBean.setHidden(false);
 					} else {
 						otherPointOfContactCollection.remove(pocBean);
