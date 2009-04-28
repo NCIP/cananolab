@@ -239,7 +239,7 @@
 			<forward name="input" path="sample.submitPointOfContact" />
 			<forward name="update"
 				path="/sample.do?dispatch=setupUpdate&amp;page=0" />
-			<forward name="submitParticle"
+			<forward name="submitSample"
 				path="/sample.do?dispatch=fromPOC&amp;page=0" />
 			<forward name="pointOfContactDetailView"
 				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
