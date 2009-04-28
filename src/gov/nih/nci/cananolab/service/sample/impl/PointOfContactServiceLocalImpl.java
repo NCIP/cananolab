@@ -154,7 +154,10 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 				organization.setCreatedDate(new Date());
 			}
 			pointOfContact.setOrganization(organization);
-			appService.saveOrUpdate(organization);
+			/**
+			 * Removed as cascade="save-update" was added in POC Hibernate mapping file. 
+			 */
+			//appService.saveOrUpdate(organization);
 		}
 		appService.saveOrUpdate(pointOfContact);
 	}
