@@ -198,13 +198,13 @@ insert into common_lookup(name,attribute, value) values ('ionic strength', 'unit
 insert into common_lookup(name,attribute, value) values ('osmolality', 'unit','osmol/kg');
 insert into common_lookup(name,attribute, value) values ('time', 'unit','second');
 insert into common_lookup(name,attribute, value) values ('time', 'unit','hour');
-insert into common_lookup(name,attribute, value) values ('time', 'unit','Minute');
-insert into common_lookup(name,attribute, value) values ('time', 'unit','Day');
-insert into common_lookup(name,attribute, value) values ('power', 'unit','Watt');
-insert into common_lookup(name,attribute, value) values ('power', 'unit','Kilowatt');
+insert into common_lookup(name,attribute, value) values ('time', 'unit','minute');
+insert into common_lookup(name,attribute, value) values ('time', 'unit','fay');
+insert into common_lookup(name,attribute, value) values ('power', 'unit','watt');
+insert into common_lookup(name,attribute, value) values ('power', 'unit','kilowatt');
 insert into common_lookup(name,attribute, value) values ('temperature', 'unit','Celcius');
 insert into common_lookup(name,attribute, value) values ('temperature', 'unit','Fahrenheit');
-insert into common_lookup(name,attribute, value) values ('Freeze Thaw', 'unit','Number of Cycles');
+insert into common_lookup(name,attribute, value) values ('Freeze Thaw', 'unit','number of cycles');
 insert into common_lookup(name,attribute, value) values ('bandwidth', 'unit','Hz');
 insert into common_lookup(name,attribute, value) values ('frequency', 'unit','Hz');
 insert into common_lookup(name,attribute, value) values ('wavelength', 'unit','nm');
