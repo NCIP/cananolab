@@ -1,18 +1,23 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.common.Condition;
-import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationResultService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationResultServiceLocalImpl;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.SortedSet;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContext;
@@ -104,8 +109,36 @@ public class DWRCharacterizationResultManager {
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		List<FileBean> files = charBean.getTheFinding().getFiles();
-		FileBean theFile=files.get(index);
+		FileBean theFile = files.get(index);
 		charBean.getTheFinding().setTheFile(theFile);
 		return theFile;
+	}
+
+	public ColumnHeader addColumnHeader(int columnNumber) {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		List<ColumnHeader> columnHeaders = charBean.getTheFinding()
+				.getColumnHeaders();
+		ColumnHeader columnHeader = columnHeaders.get(columnNumber);
+		return columnHeader;
+	}
+
+	public String addColumnHeader(ColumnHeader header) {
+		return header.getDisplayName();
+	}
+
+	public String getSubmitColumnPage(int columnNumber)
+			throws ServletException, IOException, BaseException {
+		try {
+			WebContext wctx = WebContextFactory.get();
+			String page = "/sample/characterization/shared/bodySubmitDataConditionMatrixColumn.jsp?cInd="
+					+ columnNumber;
+			String content = wctx.forwardToString(page);
+			return content;
+		} catch (Exception e) {
+			return "";
+		}
 	}
 }
