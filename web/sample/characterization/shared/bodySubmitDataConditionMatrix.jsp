@@ -28,6 +28,9 @@
 				onkeyup="updateMatrix(characterizationForm)" />
 		</td>
 	</tr>
+	<tr>
+	<td colspan="4"><jsp:include page="/bodyMessage.jsp?bundle=particle"/></td>
+	</tr>
 </table>
 
 <table class="promptbox" width="85%" align="center" id="matrix"
@@ -72,6 +75,7 @@
 						size="15" />
 				</td>
 			</logic:iterate>
+			<td><a href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})"><img border="0" src="images/btn_delete.gif" alt="delete row"></a></td>
 		</tr>
 	</logic:iterate>
 	<c:if
