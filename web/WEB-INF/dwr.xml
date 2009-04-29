@@ -36,6 +36,7 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager" />
+			<include method="getSubmitColumnPage"/>
 			<include method="addColumnHeader" />
 			<include method="removeColumnHeader" />
 			<include method="resetFinding" />
@@ -123,24 +124,10 @@
 				value="id, type, manufacturer, modelName" />
 		</convert>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.ColumnBean">
-		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.Datum">
-			<param name="include"
-				value="id, name, value, valueType, valueUnit, row, dataSet, createdDate, createdBy" />
-		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.Condition">
-			<param name="include"
-				value="id, name, value, valueType, valueUnit, property, createdDate, createdBy" />
+			match="gov.nih.nci.cananolab.dto.common.ColumnHeader">
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FindingBean">
-		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.dto.common.RowBean">
-			<param name="include" value="data, conditions, domain" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Finding">
