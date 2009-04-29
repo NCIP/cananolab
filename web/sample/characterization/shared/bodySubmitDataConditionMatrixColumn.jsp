@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<table id="columnDesign${param.param.cInd}" class="promptbox">
+<table id="columnDesign" class="promptbox">
 	<tr>
 		<td class="cellLabel">
 			Column Type*
@@ -109,7 +109,7 @@
 	<tr>
 		<td>
 			<input class="promptButton" type="button" value="Remove"
-				onclick="removeColumn();" />
+				onclick="reduceMatrix(characterizationForm, 'Column', ${param.cInd});" />
 		</td>
 		<td>
 			<div align="right">
