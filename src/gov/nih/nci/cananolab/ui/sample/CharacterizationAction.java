@@ -564,9 +564,40 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
-		FindingBean findingBean = achar.getTheFinding();
-		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean.getNumberOfRows());
 		request.setAttribute("anchor", "result");
+		FindingBean findingBean = achar.getTheFinding();
+		if (request.getParameter("removeColumn") != null) {
+			int columnToRemove = Integer.parseInt(request
+					.getParameter("removeColumn"));
+			findingBean.removeColumn(columnToRemove);
+			return mapping.getInputForward();
+		} else if (request.getParameter("removeRow") != null) {
+			int rowToRemove = Integer.parseInt(request
+					.getParameter("removeRow"));
+			findingBean.removeRow(rowToRemove);
+			return mapping.getInputForward();
+		}
+		int existingNumberOfColumns = findingBean.getColumnHeaders().size();
+		int existingNumberOfRows = findingBean.getRows().size();
+		if (existingNumberOfColumns > findingBean.getNumberOfColumns()) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.addCharacterization.removeMatrixColumn");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
+		if (existingNumberOfRows > findingBean.getNumberOfRows()) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = new ActionMessage(
+					"message.addCharacterization.removeMatrixRow");
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, msgs);
+			return mapping.getInputForward();
+		}
+		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
+				.getNumberOfRows());
+
 		return mapping.getInputForward();
 	}
 
