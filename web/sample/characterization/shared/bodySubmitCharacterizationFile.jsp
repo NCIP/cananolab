@@ -81,7 +81,7 @@
 				File Type*
 			</td>
 			<td>
-				<div id="fileTypePrompt" style="position: relative">
+				<div id="fileTypePrompt">
 					<html:select styleId="fileType"
 						property="achar.theFinding.theFile.domainFile.type"
 						onchange="javascript:callPrompt('File Type', 'fileType', 'fileTypePrompt');">

@@ -35,127 +35,31 @@
 	<tr>
 		<logic:iterate id="col" name="characterizationForm"
 			property="achar.theFinding.columnHeaders" indexId="cInd">
-			<td class="cellLabel" id="column${cInd}">
-				<div style="position: relative">
-					<a href="javascript:show('columnDesign${cInd}');">Column
-						${cInd+1}</a>
-					<div id="newColumn">
-						<table id="columnDesign${cInd}" style="display: none"
-							class="promptbox">
-							<tr>
-								<td class="cellLabel">
-									Column Type*
-								</td>
-								<td>
-									<input type="hidden" id="columnId">
-									<select id="datumOrCondition"
-										onchange="setNameOptionsByCharName('${characterizationForm.map.achar.characterizationName}');">
-										<option value="">
-										</option>
-										<option value="Datum">
-											Datum
-										</option>
-										<option value="Condition">
-											Condition
-										</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td class="cellLabel">
-									Column Name*
-								</td>
-								<td>
-									<div id="columnNamePrompt" style="position: relative">
-										<select id="name"
-											onchange="javascript:callPrompt('Name', 'name', 'columnNamePrompt');setConditionPropertyOptionsByCharName(null);setColumnValueUnit();">
-											<option value=""></option>
-											<option value="[Other]">
-												[Other]
-											</option>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr id="conditionProperty" style="display: none;">
-								<td class="cellLabel">
-									Condition Property
-								</td>
-								<td>
-									<div id="conditionPropertyPrompt" style="position: relative">
-										<select id="property"
-											onchange="javascript:callPrompt('Condition Property', 'property', 'conditionPropertyPrompt');setColumnValueUnit();">
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="cellLabel">
-									Column Value Type
-								</td>
-								<td>
-									<div id="columnValueType" style="position: relative">
-										<select id="valueType"
-											onchange="javascript:callPrompt('Column Value Type', 'valueType', 'columnValueType');">
-											<option value=""></option>
-											<logic:iterate id="type" name="datumConditionValueTypes">
-												<option value="${type}">
-													${type}
-												</option>
-											</logic:iterate>
-											<option value="other">
-												[Other]
-											</option>
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="cellLabel">
-									Column Value Unit
-								</td>
-								<td>
-									<div id="columnValueUnitPrompt" style="position: relative">
-										<select id="valueUnit"
-											onchange="javascript:callPrompt('Column Value Unit', 'valueUnit', 'columnValueUnitPrompt');">
-										</select>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="cellLabel">
-									Constant Value?
-								</td>
-								<td>
-									<input type="checkbox">
-									<input type="text" id="value">
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<input class="promptButton" type="button" value="Remove"
-										onclick="removeColumn(); hide('columnDesign')" />
-								</td>
-								<td>
-									<div align="right">
-										<input class="promptButton" type="button" value="Add"
-											onclick="addColumn(); hide('columnDesign${cInd}')" />
-										<input class="promptButton" type="button" value="Cancel"
-											onclick="hide('columnDesign${cInd}');clearTheColumn();" />
-									</div>
-								</td>
-							</tr>
-						</table>
-					</div>
+			<td class="cellLabel">
+				<div id="column${cInd}" style="position: relative">
+					<a href="javascript:openColumnForm(${cInd});"><span
+						id="columnHeaderDisplayName${cInd}">Column ${cInd+1}</span> </a>
+					<html:hidden
+						property="achar.theFinding.columnHeaders[${cInd}].columnType"
+						styleId="datumOrCondition" />
+					<html:hidden
+						property="achar.theFinding.columnHeaders[${cInd}].columnName"
+						styleId="columnName" />
+					<html:hidden
+						property="achar.theFinding.columnHeaders[${cInd}].valueType"
+						styleId="columnValueType" />
+					<html:hidden
+						property="achar.theFinding.columnHeaders[${cInd}].valueUnit"
+						styleId="columnValueUnit" />
+					<html:hidden
+						property="achar.theFinding.columnHeaders[${cInd}].conditionProperty"
+						styleId="columnProperty" />
+					<html:hidden
+						property="achar.theFinding.columnHeaders[${cInd}].constantValue"
+						styleId="constantValue" />
 				</div>
 			</td>
 		</logic:iterate>
-	</tr>
-	<tr>
-		<td
-			colspan="${fn:length(characterizationForm.map.achar.theFinding.columnHeaders)}">
-
-		</td>
 	</tr>
 	<logic:iterate id="row" name="characterizationForm"
 		property="achar.theFinding.rows" indexId="rInd">
