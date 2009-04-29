@@ -31,7 +31,7 @@ function confirmDeletion()
 			Technique*
 		</td>
 		<td>
-			<div id="techniqueTypePrompt" style="position: relative">
+			<div id="techniqueTypePrompt">
 				<html:select
 					property="achar.theExperimentConfig.domain.technique.type"
 					styleId="techniqueType"
@@ -60,7 +60,7 @@ function confirmDeletion()
 			Instrument
 		</td>
 		<td>
-			<div id="instrumentSection" style="position: relative">
+			<div id="instrumentSection" style="position: relative;">
 				<a style="" id="addInstrument"
 					href="javascript:clearInstrument();show('patternAddRow');">Add</a>
 				<br>
@@ -107,7 +107,7 @@ function confirmDeletion()
 									Manufacturer
 								</td>
 								<td>
-									<div id="manufacturerPrompt" style="position: relative">
+									<div id="manufacturerPrompt">
 										<html:hidden property="achar.theInstrument.id" styleId="id" />
 										<html:select property="achar.theInstrument.manufacturer"
 											styleId="manufacturer"
@@ -135,7 +135,7 @@ function confirmDeletion()
 									Type
 								</td>
 								<td>
-									<div id="instrumentTypePrompt" style="position: relative">
+									<div id="instrumentTypePrompt">
 										<html:select property="achar.theInstrument.type"
 											styleId="type"
 											onchange="javascript:callPrompt('Instrment Type', 'type', 'instrumentTypePrompt');">
