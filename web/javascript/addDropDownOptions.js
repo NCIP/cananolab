@@ -118,6 +118,8 @@ function addNewOption(message, parentId, promptParentId) {
 	promptbox = document.createElement("div");
 	promptbox.setAttribute("id", cssId);
 	//document.getElementsByTagName("body")[0].appendChild(promptbox);
+	document.getElementById(promptParentId).style.position="relative";
+	document.getElementById(promptParentId).style.zIndex="10"; //needed for IE only.
 	document.getElementById(promptParentId).appendChild(promptbox);
 
 	document.getElementById(cssId).innerHTML = "<table cellspacing='5' cellpadding='0' border='0' width='100%' class='promptbox'>" +
@@ -149,6 +151,8 @@ function modifyOption(message, parentId, selectedText, promptParentId) {
 function cancelAddOption(promptParentId) {
 	//document.getElementsByTagName("body")[0].removeChild(document.getElementById(cssId));
 	document.getElementById(promptParentId).removeChild(document.getElementById(cssId));
+	document.getElementById(promptParentId).style.position="";
+	document.getElementById(promptParentId).style.zIndex="";
 	return false;
 }
 
@@ -166,7 +170,6 @@ function resetAddOption(selectId) {
 	}
 	return false;
 }
-
 
 function mouseOverStyle(event) {
 	var targetObj = getTargetElement(event);
