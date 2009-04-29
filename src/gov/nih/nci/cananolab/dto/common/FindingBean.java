@@ -193,6 +193,18 @@ public class FindingBean {
 		rows.addAll(newRows);
 	}
 
+	public void removeColumn(int colIndex) {
+		columnHeaders.remove(colIndex);
+		for(int i=0; i<rows.size(); i++) {
+			List<TableCell>cells=rows.get(i).getCells();
+			cells.remove(colIndex);
+		}
+	}
+
+	public void removeRow(int rowIndex) {
+		rows.remove(rowIndex);
+	}
+
 	public void setupDomain(String createdBy) throws Exception {
 		int i = 0;
 		if (domain.getId() != null && domain.getId() <= 0) {
