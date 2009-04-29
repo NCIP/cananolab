@@ -69,9 +69,9 @@
 					id="valueType"
 					onchange="javascript:callPrompt('Column Value Type', 'valueType', 'columnValueTypePrompt');">
 					<option value=""></option>
-					<logic:iterate id="type" name="datumConditionValueTypes">
-						<option value="${type}">
-							${type}
+					<logic:iterate id="vtype" name="datumConditionValueTypes">
+						<option value="${vtype}">
+							${vtype}
 						</option>
 					</logic:iterate>
 					<option value="other">
