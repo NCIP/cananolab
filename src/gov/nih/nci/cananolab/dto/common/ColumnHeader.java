@@ -11,39 +11,39 @@ import gov.nih.nci.cananolab.domain.common.Datum;
  *
  */
 public class ColumnHeader {
-	private String name;
+	private String columnName;
 	private String conditionProperty;
 	private String valueType;
 	private String valueUnit;
-	private String datumOrCondition;
+	private String columnType;
 	private String displayName;
 	private String constantValue;
 
 	public ColumnHeader(Datum datum) {
-		this.name = datum.getName();
+		this.columnName = datum.getName();
 		this.valueType = datum.getValueType();
 		this.valueUnit = datum.getValueUnit();
-		this.datumOrCondition = "Datum";
+		this.columnType = "Datum";
 	}
 
 	public ColumnHeader(Condition condition) {
-		this.name = condition.getName();
+		this.columnName = condition.getName();
 		this.conditionProperty = condition.getProperty();
 		this.valueType = condition.getValueType();
 		this.valueUnit = condition.getValueUnit();
-		this.datumOrCondition = "Condition";
+		this.columnType = "Condition";
 	}
 
 	public ColumnHeader() {
 
 	}
 
-	public String getName() {
-		return name;
+	public String getColumnName() {
+		return columnName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setColumnName(String name) {
+		this.columnName = name;
 	}
 
 	public String getConditionProperty() {
@@ -74,7 +74,7 @@ public class ColumnHeader {
 	 * @return the displayName
 	 */
 	public String getDisplayName() {
-		displayName = name;
+		displayName = columnName;
 		if (conditionProperty != null && conditionProperty.trim().length() > 0) {
 			displayName += " " + conditionProperty;
 		}
@@ -128,18 +128,18 @@ public class ColumnHeader {
 	}
 
 	/**
-	 * @return the datumOrCondition
+	 * @return the columnType
 	 */
-	public String getDatumOrCondition() {
-		return datumOrCondition;
+	public String getColumnType() {
+		return columnType;
 	}
 
 	/**
 	 * @param datumOrCondition
 	 *            the datumOrCondition to set
 	 */
-	public void setDatumOrCondition(String datumOrCondition) {
-		this.datumOrCondition = datumOrCondition;
+	public void setColumnType(String datumOrCondition) {
+		this.columnType = datumOrCondition;
 	}
 
 	public String getConstantValue() {
