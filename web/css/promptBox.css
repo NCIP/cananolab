@@ -3,7 +3,7 @@
 	top: 20px;
 	left: -10px;
 	width: 350px;
-	z-index: 11000;
+	z-index: 13000;
 }
 
 #promptIEHack {
@@ -48,7 +48,7 @@ input.promptbox {
 	left: -10px;
 	top: 15px;
 	width: 350px;
-	z-index: 10002;
+	z-index:5;
 }
 
 #newColumn {
@@ -56,5 +56,5 @@ input.promptbox {
 	left: 30px;
 	top: 20px;
 	width: 350px;
-	z-index: 10003;
+	z-index:5;
 }
