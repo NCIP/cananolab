@@ -41,22 +41,22 @@
 						id="columnHeaderDisplayName${cInd}">Column ${cInd+1}</span> </a>
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].columnType"
-						styleId="datumOrCondition" />
+						styleId="theColumnType" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].columnName"
-						styleId="columnName" />
+						styleId="theColumnName" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].valueType"
-						styleId="columnValueType" />
+						styleId="theValueType" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].valueUnit"
-						styleId="columnValueUnit" />
+						styleId="theValueUnit" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].conditionProperty"
-						styleId="columnProperty" />
+						styleId="theConditionProperty" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].constantValue"
-						styleId="constantValue" />
+						styleId="theConstantValue" />
 				</div>
 			</td>
 		</logic:iterate>
