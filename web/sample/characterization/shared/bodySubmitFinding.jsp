@@ -31,7 +31,7 @@ function confirmDeletion()
 				href="javascript:clearFile(); show('newFile');hide('newMatrix');">Add</a>
 		</td>
 		<td>
-			<span class="cellLabel">Data and Condition Matrix</span> &nbsp;&nbsp;
+			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
 			<a id="addData"
 				href="javascript:clearFile(); show('newMatrix');hide('newFile');">Add</a>
 		</td>
