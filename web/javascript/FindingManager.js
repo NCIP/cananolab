@@ -112,11 +112,17 @@ function populateFile(file) {
 function updateMatrix(form) {
 	var colNum = dwr.util.getValue("colNum");
 	var rowNum = dwr.util.getValue("rowNum");
-	if (colNum > 0 && rowNum > 0 || colNum == 0 && rowNum == 0) {
+	if (colNum > 0 && rowNum > 0) {
 		form.action = "characterization.do?dispatch=drawMatrix&page=0";
 		form.submit();
 	}
 }
+
+function reduceMatrix(form, type, index) {
+	form.action = "characterization.do?dispatch=drawMatrix&page=0&remove"+type+"="+index;
+	form.submit();
+}
+
 function openColumnForm(columnNumber) {
 	var promptbox = document.createElement("div");
 	promptbox.setAttribute("id", "newColumn");
