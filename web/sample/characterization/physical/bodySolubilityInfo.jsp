@@ -16,7 +16,7 @@
 			Solvent
 		</td>
 		<td>
-			<div id="solventPrompt" style="position:relative">
+			<div id="solventPrompt">
 				<select name="achar.solubility.solvent" id="solvent"
 					onchange="javascript:callPrompt('Solvent', 'solvent', 'solventPrompt');">
 					<option value=""></option>

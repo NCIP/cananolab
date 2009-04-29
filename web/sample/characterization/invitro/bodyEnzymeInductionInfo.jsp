@@ -14,7 +14,7 @@
 			Enzyme Name
 		</td>
 		<td>
-			<div id="enzymePrompt" style="position:relative">
+			<div id="enzymePrompt">
 				<select name="achar.enzymeInduction.enzyme" id="enzyme"
 					onchange="javascript:callPrompt('Enzyme', 'enzyme', 'enzymePrompt');" />
 					<option value=""></option>
