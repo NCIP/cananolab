@@ -232,14 +232,14 @@ public class FindingBean {
 					datum.setValue(cell.getValue());
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());
-					datum.setName(columnHeader.getName());
+					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
 				} else if (cell.getDatumOrCondition().equals("Condition")) {
 					Condition condition = cell.getCondition();
 					condition.setValue(cell.getValue());
 					condition.setValueType(columnHeader.getValueType());
 					condition.setValueUnit(columnHeader.getValueUnit());
-					condition.setName(columnHeader.getName());
+					condition.setName(columnHeader.getColumnName());
 					condition.setProperty(columnHeader.getConditionProperty());
 					rowConditions.add(condition);
 				}
