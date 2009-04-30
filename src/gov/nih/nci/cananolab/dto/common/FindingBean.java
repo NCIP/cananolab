@@ -199,10 +199,12 @@ public class FindingBean {
 			List<TableCell>cells=rows.get(i).getCells();
 			cells.remove(colIndex);
 		}
+		numberOfColumns--;
 	}
 
 	public void removeRow(int rowIndex) {
 		rows.remove(rowIndex);
+		numberOfRows--;
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
