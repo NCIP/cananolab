@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
+import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
@@ -163,9 +165,8 @@ public class InitCharacterizationSetup {
 	 */
 	public void setCharacterizationName(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
-		Characterization domainChar = charBean.getDomainChar();
 		String charName = InitSetup.getInstance().getDisplayName(
-				ClassUtils.getShortClassName(domainChar.getClass().getName()),
+				charBean.getClassName(),
 				request.getSession().getServletContext());
 		charBean.setCharacterizationName(charName);
 	}
@@ -233,12 +234,35 @@ public class InitCharacterizationSetup {
 		return units;
 	}
 
-	public SortedSet<String> getDatumConditionValueTypes(HttpServletRequest request)
-			throws Exception {
+	public SortedSet<String> getDatumConditionValueTypes(
+			HttpServletRequest request) throws Exception {
 		SortedSet<String> valueTypes = LookupService
 				.getDefaultAndOtherLookupTypes("DatumCondition", "valueType",
 						"otherValueType");
-		request.getSession().setAttribute("datumConditionValueTypes", valueTypes);
+		request.getSession().setAttribute("datumConditionValueTypes",
+				valueTypes);
 		return valueTypes;
+	}
+
+	public String getDetailPage(Characterization domain) {
+		String includePage = null;
+		String shortClassName = ClassUtils.getShortClassName(domain.getClass()
+				.getName());
+		if (domain instanceof PhysicoChemicalCharacterization) {
+			includePage = "/sample/characterization/physical/body" + shortClassName + "Info.jsp";
+		} else if (domain instanceof InvitroCharacterization) {
+			includePage = "/sample/characterization/invitro/body" + shortClassName + "Info.jsp";
+		}
+		return includePage;
+	}
+
+	public String getDetailPage(ServletContext appContext, String charName)
+			throws Exception {
+		String charClassName = InitSetup.getInstance().getClassName(charName,
+				appContext);
+		Class clazz = ClassUtils.getFullClass(charClassName);
+		Characterization domain = (Characterization) clazz.newInstance();
+		String includePage = getDetailPage(domain);
+		return includePage;
 	}
 }
