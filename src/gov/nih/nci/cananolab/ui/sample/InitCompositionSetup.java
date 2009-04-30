@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
+import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -259,5 +260,20 @@ public class InitCompositionSetup {
 		request.getSession().setAttribute("emulsionComposingElementTypes",
 				emulsionCETypes);
 		return emulsionCETypes;
+	}
+
+	public String getDetailPage(String entityClassName, String parentPath)
+			throws Exception {
+		String page = "/sample/composition/" + parentPath + "/body"
+				+ entityClassName + "Info.jsp";
+		return page;
+	}
+
+	public String getDetailPage(ServletContext appContext, String entityType,
+			String parentPath) throws Exception {
+		String entityClassName = InitSetup.getInstance().getClassName(
+				entityType, appContext);
+		String page = getDetailPage(entityClassName, parentPath);
+		return page;
 	}
 }
