@@ -25,14 +25,15 @@
 	</tr>
 	<logic:iterate name="compositionForm"
 		property="comp.nanomaterialEntities" id="entity" indexId="ind">
-		<c:if test="${!empty entity.className}">
+		<c:set var="entityType" value="${entity.type}" />
+		<c:if test="${!empty entityType}">
 			<tr>
 				<td>
 					<div class="indented4">
 						<table class="summaryViewLayer3" width="95%" align="center">
 							<tr>
 								<th valign="top" align="left">
-									${entity.className}
+									${entityType}
 								</th>
 								<th valign="top" align="right">
 								</th>
@@ -49,21 +50,30 @@
 									</td>
 								</tr>
 							</c:if>
-							<%--
-									<tr>
-										<td valign="top" colspan="2">
-											PROPERTIES
-											<div class="indented4">
-
-												<jsp:include
-													page="/sample/composition/nanomaterialEntity/body${entity.className}Info.jsp">
-													<jsp:param name="entityIndex" value="${ind}" />
-												</jsp:include>
-
-											</div>
-										</td>
-									</tr>
---%>
+							<c:if test="${entity.withProperties }">
+								<tr>
+									<td class="cellLabel">
+										Properties
+									</td>
+									<td>
+										<%
+											String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
+																		.getInstance()
+																		.getDetailPage(
+																				application,
+																				(String) pageContext
+																						.getAttribute("entityType"),
+																				"nanomaterialEntity");
+																pageContext.setAttribute("detailPage",
+																		detailPage);
+										%>
+										<c:set var="entity" value="${entity}" scope="session" />
+										<jsp:include page="${detailPage}">
+											<jsp:param name="summary" value="true" />
+										</jsp:include>
+									</td>
+								</tr>
+							</c:if>
 							<c:if test="${! empty entity.composingElements }">
 								<tr>
 									<td class="cellLabel">

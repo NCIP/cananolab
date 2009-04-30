@@ -61,7 +61,7 @@ function confirmDeletion()
 							<td>
 								<html:select styleId="peType" property="entity.type"
 									onchange="javascript:callPrompt('Nanomaterial Entity Type', 'peType');
-										setEntityInclude('peType', '/sample/composition/nanomaterialEntity');">
+										setEntityInclude('peType', 'nanomaterialEntity');">
 									<option value=""></option>
 									<html:options name="nanomaterialEntityTypes" />
 									<option value="other">

@@ -30,14 +30,15 @@
 		<c:when test="${!empty compositionForm.map.comp.nanomaterialEntities}">
 			<logic:iterate name="compositionForm"
 				property="comp.nanomaterialEntities" id="entity" indexId="ind">
-				<c:if test="${!empty entity.className}">
+				<c:set var="entityType" value="${entity.type}" />
+				<c:if test="${!empty entityType}">
 					<tr>
 						<td>
 							<div class="indented4">
 								<table class="summaryViewLayer3" width="95%" align="center">
 									<tr>
 										<th valign="top" align="left">
-											${entity.className}
+											${entityType}
 										</th>
 										<th valign="top" align="right">
 											<a
@@ -50,8 +51,7 @@
 										</td>
 										<td>
 											<c:choose>
-												<c:when
-													test="${!empty fn:trim(entity.description)}">
+												<c:when test="${!empty fn:trim(entity.description)}">
 													<c:out
 														value="${fn:replace(entity.description, cr, '<br>')}"
 														escapeXml="false" />
@@ -61,14 +61,30 @@
 											</c:choose>
 										</td>
 									</tr>
-									<tr>
-										<td class="cellLabel">
-											Properties
-										</td>
-										<td>
-											<%--<%@include file="bodyNanomaterialPropertiesView.jsp"%>--%>
-										</td>
-									</tr>
+									<c:if test="${entity.withProperties }">
+										<tr>
+											<td class="cellLabel">
+												Properties
+											</td>
+											<td>
+												<%
+													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
+																						.getInstance()
+																						.getDetailPage(
+																								application,
+																								(String) pageContext
+																										.getAttribute("entityType"),
+																								"nanomaterialEntity");
+																				pageContext.setAttribute("detailPage",
+																						detailPage);
+												%>
+												<c:set var="entity" value="${entity}" scope="session" />
+												<jsp:include page="${detailPage}">
+													<jsp:param name="summary" value="true" />
+												</jsp:include>
+											</td>
+										</tr>
+									</c:if>
 									<tr>
 										<td class="cellLabel">
 											Composing Elements
