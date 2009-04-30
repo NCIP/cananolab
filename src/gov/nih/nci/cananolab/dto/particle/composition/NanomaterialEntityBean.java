@@ -59,6 +59,8 @@ public class NanomaterialEntityBean {
 
 	private NanomaterialEntity domainEntity;
 
+	private boolean withProperties = false;
+
 	public NanomaterialEntityBean() {
 	}
 
@@ -67,18 +69,25 @@ public class NanomaterialEntityBean {
 		domainEntity = nanomaterialEntity;
 		if (domainEntity instanceof Biopolymer) {
 			biopolymer = (Biopolymer) domainEntity;
+			withProperties = true;
 		} else if (domainEntity instanceof Dendrimer) {
 			dendrimer = (Dendrimer) domainEntity;
+			withProperties = true;
 		} else if (domainEntity instanceof CarbonNanotube) {
 			carbonNanotube = (CarbonNanotube) domainEntity;
+			withProperties = true;
 		} else if (domainEntity instanceof Liposome) {
 			liposome = (Liposome) domainEntity;
+			withProperties = true;
 		} else if (domainEntity instanceof Emulsion) {
 			emulsion = (Emulsion) domainEntity;
+			withProperties = true;
 		} else if (domainEntity instanceof Polymer) {
 			polymer = (Polymer) domainEntity;
+			withProperties = true;
 		} else if (domainEntity instanceof Fullerene) {
 			fullerene = (Fullerene) domainEntity;
+			withProperties = true;
 		}
 		className = ClassUtils.getShortClassName(nanomaterialEntity.getClass()
 				.getName());
@@ -88,13 +97,12 @@ public class NanomaterialEntityBean {
 		}
 		Collections.sort(composingElements,
 				new Comparators.ComposingElementBeanDateComparator());
-		if (nanomaterialEntity.getFileCollection()!=null){
+		if (nanomaterialEntity.getFileCollection() != null) {
 			for (File file : nanomaterialEntity.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
 		}
-		Collections.sort(files,
-				new Comparators.FileBeanDateComparator());
+		Collections.sort(files, new Comparators.FileBeanDateComparator());
 	}
 
 	public NanomaterialEntity getDomainCopy() {
@@ -144,8 +152,7 @@ public class NanomaterialEntityBean {
 			copy.getFileCollection().addAll(files);
 			for (File file : copy.getFileCollection()) {
 				file.setId(null);
-				file
-						.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+				file.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				file.setCreatedDate(new Date());
 			}
 		}
@@ -251,19 +258,16 @@ public class NanomaterialEntityBean {
 			domainEntity
 					.setComposingElementCollection(new HashSet<ComposingElement>());
 		}
-		int i=0;
+		int i = 0;
 		for (ComposingElementBean composingElementBean : composingElements) {
-			composingElementBean.setupDomain(typeToClass,
-					createdBy, i);
-			ComposingElement domain = composingElementBean
-					.getDomain();
+			composingElementBean.setupDomain(typeToClass, createdBy, i);
+			ComposingElement domain = composingElementBean.getDomain();
 			if (domain.getId() == null) {
 				domain.setCreatedBy(createdBy);
 				domain.setCreatedDate(new Date());
 			}
 			domain.setNanomaterialEntity(domainEntity);
-			domainEntity.getComposingElementCollection().add(
-					domain);
+			domainEntity.getComposingElementCollection().add(domain);
 			i++;
 		}
 		if (domainEntity.getFileCollection() != null) {
@@ -271,7 +275,7 @@ public class NanomaterialEntityBean {
 		} else {
 			domainEntity.setFileCollection(new HashSet<File>());
 		}
-		int j=0;
+		int j = 0;
 		for (FileBean file : files) {
 			file.setupDomainFile(internalUriPath, createdBy, j);
 			domainEntity.getFileCollection().add(file.getDomainFile());
@@ -323,4 +327,7 @@ public class NanomaterialEntityBean {
 		this.type = type;
 	}
 
+	public boolean isWithProperties() {
+		return withProperties;
+	}
 }
