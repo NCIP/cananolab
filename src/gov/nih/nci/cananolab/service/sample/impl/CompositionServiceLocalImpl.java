@@ -78,9 +78,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
-			particleSample.getSampleComposition()
-					.getNanomaterialEntityCollection().add(entity);
-
+//			particleSample.getSampleComposition()
+//					.getNanomaterialEntityCollection().add(entity);
+			entity.setSampleComposition(particleSample.getSampleComposition());
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = entity.getFileCollection();
 			if (Files != null) {
