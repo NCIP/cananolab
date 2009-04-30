@@ -90,11 +90,12 @@
 									<c:forEach var="charBean"
 										items="${characterizationSummaryView.type2Characterizations[type]}">
 										<c:set var="charObj" value="${charBean.domainChar}" />
+										<c:set var="charName" value="${charBean.characterizationName}" />
 										<div class="indented4">
 											<table class="summaryViewLayer3" width="95%" align="center">
 												<tr>
 													<th align="left" width="20%">
-														${charBean.characterizationName}
+														${charName}
 													</th>
 													<th align="right">
 														<a
@@ -114,7 +115,7 @@
 																<c:choose>
 																	<c:when
 																		test="${charBean.characterizationType eq 'Physico-Chemical Characterization'}">
-																	${charBean.characterizationName}
+																	${charName}
 																</c:when>
 																	<c:otherwise>N/A</c:otherwise>
 																</c:choose>
@@ -173,7 +174,14 @@
 															Properties
 														</td>
 														<td>
-															<%@include file="bodyCharacterizationPropertiesView.jsp"%>
+															<%
+																String detailPage=gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().getDetailPage(application, (String)pageContext.getAttribute("charName"));
+																pageContext.setAttribute("detailPage", detailPage);
+															%>
+															<c:set var="charBean" value="${charBean}" scope="session" />
+															<jsp:include page="${detailPage}">
+																<jsp:param name="summary" value="true" />
+															</jsp:include>
 														</td>
 													</tr>
 												</c:if>
