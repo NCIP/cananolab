@@ -30,15 +30,14 @@ public class DWRCompositionManager {
 	public DWRCompositionManager() {
 	}
 
-	public String getEntityIncludePage(String entityType, String pagePath)
+	public String getEntityIncludePage(String entityType, String parent)
 			throws ServletException, IOException, BaseException {
 		try {
 			WebContext wctx = WebContextFactory.get();
 			ServletContext appContext = wctx.getServletContext();
-			String entityClassName = InitSetup.getInstance().getClassName(
-					entityType, appContext);
-			String page = pagePath + "/body" + entityClassName + "Info.jsp";
-			String content = wctx.forwardToString(page);
+			String includePage = InitCompositionSetup.getInstance()
+					.getDetailPage(appContext, entityType, parent);
+			String content = wctx.forwardToString(includePage);
 			return content;
 		} catch (Exception e) {
 			return "";
@@ -122,7 +121,8 @@ public class DWRCompositionManager {
 		return new String[] { "" };
 	}
 
-	public String[] getCarbonNanotubeDiameterUnitOptions(String nanomaterialEntityType) {
+	public String[] getCarbonNanotubeDiameterUnitOptions(
+			String nanomaterialEntityType) {
 		if (nanomaterialEntityType.equals("carbon nanotube")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
@@ -137,14 +137,16 @@ public class DWRCompositionManager {
 				return typeList.toArray(eleArray);
 
 			} catch (Exception e) {
-				System.out.println("getCarbonNanotubeDiameterUnitOptions exception.");
+				System.out
+						.println("getCarbonNanotubeDiameterUnitOptions exception.");
 				e.printStackTrace();
 			}
 		}
 		return new String[] { "" };
 	}
 
-	public String[] getCarbonNanotubeAverageLengthUnitOptions(String nanomaterialEntityType) {
+	public String[] getCarbonNanotubeAverageLengthUnitOptions(
+			String nanomaterialEntityType) {
 		if (nanomaterialEntityType.equals("carbon nanotube")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
@@ -153,20 +155,23 @@ public class DWRCompositionManager {
 			try {
 				SortedSet<String> typeList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
-								"carbonNanotubeAverageLengthUnit", "CarbonNanotube",
-								"averageLengthUnit", "otherAverageLengthUnit", true);
+								"carbonNanotubeAverageLengthUnit",
+								"CarbonNanotube", "averageLengthUnit",
+								"otherAverageLengthUnit", true);
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 
 			} catch (Exception e) {
-				System.out.println("getCarbonNanotubeDiameterUnitOptions exception.");
+				System.out
+						.println("getCarbonNanotubeDiameterUnitOptions exception.");
 				e.printStackTrace();
 			}
 		}
 		return new String[] { "" };
 	}
 
-	public String[] getFullereneAverageDiameterUnitOptions(String nanomaterialEntityType) {
+	public String[] getFullereneAverageDiameterUnitOptions(
+			String nanomaterialEntityType) {
 		if (nanomaterialEntityType.equals("fullerene")) {
 
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
@@ -176,12 +181,14 @@ public class DWRCompositionManager {
 				SortedSet<String> typeList = InitSetup.getInstance()
 						.getDefaultAndOtherLookupTypes(request,
 								"fullereneAverageDiameterUnit", "Fullerene",
-								"averageDiameterUnit", "otherAverageDiameterUnit", true);
+								"averageDiameterUnit",
+								"otherAverageDiameterUnit", true);
 				String[] eleArray = new String[typeList.size()];
 				return typeList.toArray(eleArray);
 
 			} catch (Exception e) {
-				System.out.println("getCarbonNanotubeDiameterUnitOptions exception.");
+				System.out
+						.println("getCarbonNanotubeDiameterUnitOptions exception.");
 				e.printStackTrace();
 			}
 		}
@@ -279,17 +286,17 @@ public class DWRCompositionManager {
 		SortedSet<DataLinkBean> particleEntitites = null;
 
 		if (entityType.equals("Nanomaterial Entity")) {
-			particleEntitites = (SortedSet<DataLinkBean>) request
-					.getSession().getAttribute("sampleEntities");
+			particleEntitites = (SortedSet<DataLinkBean>) request.getSession()
+					.getAttribute("sampleEntities");
 
 		} else if (entityType.equals("Functionalizing Entity")) {
-			particleEntitites = (SortedSet<DataLinkBean>) request
-					.getSession().getAttribute("functionalizingEntities");
+			particleEntitites = (SortedSet<DataLinkBean>) request.getSession()
+					.getAttribute("functionalizingEntities");
 		}
 
 		if (particleEntitites != null && particleEntitites.size() > 0)
-			return particleEntitites
-					.toArray(new DataLinkBean[particleEntitites.size()]);
+			return particleEntitites.toArray(new DataLinkBean[particleEntitites
+					.size()]);
 
 		else
 			return null;
