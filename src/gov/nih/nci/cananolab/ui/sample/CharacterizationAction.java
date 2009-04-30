@@ -133,10 +133,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					charType);
 		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
 				request);
-		// String detailPage = setupDetailPage(charBean);
-		// request.getSession().setAttribute("characterizationDetailPage",
-		// detailPage);
-
 		// set up other samples with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 	}
@@ -180,27 +176,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		setupInputForm(request, theForm);
 		String detailPage = null;
 		if (charBean.isWithProperties()) {
-			detailPage = setupDetailPage(charBean);
+			detailPage = InitCharacterizationSetup.getInstance().getDetailPage(
+					charBean.getDomainChar());
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
 
 		return mapping.getInputForward();
-	}
-
-	private String setupDetailPage(CharacterizationBean charBean) {
-		String includePage = null;
-		if (charBean.getClassName().equals("PhysicalState")
-				|| charBean.getClassName().equals("Shape")
-				|| charBean.getClassName().equals("Solubility")
-				|| charBean.getClassName().equals("Surface")) {
-			includePage = "physical/body" + charBean.getClassName()
-					+ "Info.jsp";
-		} else if (charBean.getClassName().equals("Cytotoxicity")) {
-			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
-		} else if (charBean.getClassName().equals("EnzymeInduction")) {
-			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
-		}
-		return includePage;
 	}
 
 	private void saveToOtherSamples(HttpServletRequest request,
