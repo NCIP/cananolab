@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -40,7 +39,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class NanomaterialEntityAction extends BaseAnnotationAction {
+public class NanomaterialEntityAction extends CompositionAction {
 
 	/**
 	 * Add or update the data to database
@@ -60,7 +59,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -143,9 +142,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		setupDataTree(sampleBean, request);
-		return forward;
+		return summaryEdit(mapping, form, request, response);
 	}
 
 	private boolean validateInherentFunctionType(HttpServletRequest request,
@@ -227,14 +224,13 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		compService.retrieveVisibility(entityBean, user);
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
-		theForm.set("entity", entityBean);
+		theForm.set("nanomaterialEntity", entityBean);
 		setLookups(request);
 		theForm.set("otherSamples", new String[0]);
 		String detailPage = null;
-		if (!entityBean.getClassName().equals("MetalParticle")
-				&& !entityBean.getClassName().equals("QuantumDot")) {
-			detailPage = "/sample/composition/nanomaterialEntity/body" + entityBean.getClassName()
-					+ "Info.jsp";
+		if (entityBean.isWithProperties()) {
+			detailPage = InitCompositionSetup.getInstance().getDetailPage(
+					entityBean.getClassName(), "nanomaterialEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
 		return mapping.getInputForward();
@@ -267,7 +263,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
-		theForm.set("entity", entityBean);
+		theForm.set("nanomaterialEntity", entityBean);
 		return mapping.getInputForward();
 	}
 
@@ -276,7 +272,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 		entity.addComposingElement();
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
@@ -291,7 +287,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 
 		ComposingElementBean ceBean = entity.getComposingElements().get(ind);
 		CompositionService compService = new CompositionServiceLocalImpl();
@@ -319,7 +315,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 
 		String compEleIndexStr = (String) request.getParameter("compInd");
 		int compEleIndex = Integer.parseInt(compEleIndexStr);
@@ -343,7 +339,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		int functionIndex = Integer.parseInt(functionIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 		ComposingElementBean compElement = (ComposingElementBean) entity
 				.getComposingElements().get(compEleIndex);
 		compElement.removeFunction(functionIndex);
@@ -358,7 +354,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 		entity.addFile();
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
@@ -373,7 +369,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 		entity.removeFile(ind);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
@@ -387,7 +383,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
 		 * NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-		 * .get("entity"); // update editable dropdowns HttpSession session =
+		 * .get("nanomaterialEntity"); // update editable dropdowns HttpSession session =
 		 * request.getSession();
 		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
@@ -407,7 +403,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionService compositionService = new CompositionServiceLocalImpl();
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
-				.get("entity");
+				.get("nanomaterialEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
