@@ -22,18 +22,18 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.carbonNanotube.averageLength}
-					${entity.carbonNanotube.averageLengthUnit}
+					${nanomaterialEntity.carbonNanotube.averageLength}
+					${nanomaterialEntity.carbonNanotube.averageLengthUnit}
 				</td>
 				<td>
-					${entity.carbonNanotube.chirality}
+					${nanomaterialEntity.carbonNanotube.chirality}
 				</td>
 				<td>
-					${entity.carbonNanotube.diameter}
-					${entity.carbonNanotube.diameterUnit}
+					${nanomaterialEntity.carbonNanotube.diameter}
+					${nanomaterialEntity.carbonNanotube.diameterUnit}
 				</td>
 				<td>
-					${entity.carbonNanotube.wallType}
+					${nanomaterialEntity.carbonNanotube.wallType}
 				</td>
 			</tr>
 		</table>
@@ -50,22 +50,22 @@
 					Average Length
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.carbonNanotube.averageLength"
-						value="${nanomaterialEntityForm.map.entity.carbonNanotube.averageLength}"
+					<input type="text" name="nanomaterialEntity.carbonNanotube.averageLength"
+						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.averageLength}"
 						onkeydown="return filterFloatNumber(event)" />
 				</td>
 				<td class="cellLabel">
 					Average Length Unit
 				</td>
 				<td class="cellLabel">
-					<select name="entity.carbonNanotube.averageLengthUnit"
+					<select name="nanomaterialEntity.carbonNanotube.averageLengthUnit"
 						id="averageLengthUnit"
 						onchange="javascript:callPrompt('Average Length Unit', 'averageLengthUnit');">
 						<option value=""></option>
 						<c:forEach var="unit" items="${dimensionUnits}">
 							<c:choose>
 								<c:when
-									test="${unit eq nanomaterialEntityForm.map.entity.carbonNanotube.averageLengthUnit}">
+									test="${unit eq compositionForm.map.nanomaterialEntity.carbonNanotube.averageLengthUnit}">
 									<option value="${unit}" selected>
 										${unit}
 									</option>
@@ -86,8 +86,8 @@
 					Chirality
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.carbonNanotube.chirality"
-						value="${nanomaterialEntityForm.map.entity.carbonNanotube.chirality}" />
+					<input type="text" name="nanomaterialEntity.carbonNanotube.chirality"
+						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.chirality}" />
 				</td>
 			</tr>
 			<tr>
@@ -95,21 +95,21 @@
 					Diameter
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.carbonNanotube.diameter"
-						value="${nanomaterialEntityForm.map.entity.carbonNanotube.diameter}"
+					<input type="text" name="nanomaterialEntity.carbonNanotube.diameter"
+						value="${compositionForm.map.nanomaterialEntity.carbonNanotube.diameter}"
 						onkeydown="return filterFloatNumber(event)" />
 				</td>
 				<td class="cellLabel">
 					Diameter Unit
 				</td>
 				<td class="cellLabel">
-					<select name="entity.carbonNanotube.diameterUnit" id="diameterUnit"
+					<select name="nanomaterialEntity.carbonNanotube.diameterUnit" id="diameterUnit"
 						onchange="javascript:callPrompt('Diameter Unit', 'diameterUnit');">
 						<option value=""></option>
 						<c:forEach var="unit" items="${dimensionUnits}">
 							<c:choose>
 								<c:when
-									test="${unit eq nanomaterialEntityForm.map.entity.carbonNanotube.diameterUnit}">
+									test="${unit eq compositionForm.map.nanomaterialEntity.carbonNanotube.diameterUnit}">
 									<option value="${unit}" selected>
 										${unit}
 									</option>
@@ -130,12 +130,12 @@
 					Wall Type
 				</td>
 				<td class="cellLabel">
-					<select name="entity.carbonNanotube.wallType" id="wallType">
+					<select name="nanomaterialEntity.carbonNanotube.wallType" id="wallType">
 						<option value=""></option>
 						<c:forEach var="type" items="${wallTypes}">
 							<c:choose>
 								<c:when
-									test="${type eq nanomaterialEntityForm.map.entity.carbonNanotube.wallType}">
+									test="${type eq compositionForm.map.nanomaterialEntity.carbonNanotube.wallType}">
 									<option value="${type}" selected>
 										${type}
 									</option>

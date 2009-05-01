@@ -16,10 +16,10 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.dendrimer.branch}
+					${nanomaterialEntity.dendrimer.branch}
 				</td>
 				<td>
-					${entity.dendrimer.generation}
+					${nanomaterialEntity.dendrimer.generation}
 				</td>
 			</tr>
 		</table>
@@ -36,15 +36,15 @@
 					Branch
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.dendrimer.branch"
-						value="${nanomaterialEntityForm.map.entity.dendrimer.branch}" />
+					<input type="text" name="nanomaterialEntity.dendrimer.branch"
+						value="${compositionForm.map.nanomaterialEntity.dendrimer.branch}" />
 				</td>
 				<td class="cellLabel">
 					Generation
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.dendrimer.generation"
-						value="${nanomaterialEntityForm.map.entity.dendrimer.generation}" />
+					<input type="text" name="nanomaterialEntity.dendrimer.generation"
+						value="${compositionForm.map.nanomaterialEntity.dendrimer.generation}" />
 				</td>
 			</tr>
 		</table>

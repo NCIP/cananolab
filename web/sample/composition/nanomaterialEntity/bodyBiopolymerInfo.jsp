@@ -20,13 +20,13 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.biopolymer.name}
+					${nanomaterialEntity.biopolymer.name}
 				</td>
 				<td>
-					${entity.biopolymer.type}
+					${nanomaterialEntity.biopolymer.type}
 				</td>
 				<td>
-					${entity.biopolymer.sequence}
+					${nanomaterialEntity.biopolymer.sequence}
 				</td>
 			</tr>
 		</table>
@@ -43,20 +43,20 @@
 					Name*
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.biopolymer.name"
-						value="${nanomaterialEntityForm.map.entity.biopolymer.name}">
+					<input type="text" name="nanomaterialEntity.biopolymer.name"
+						value="${compositionForm.map.nanomaterialEntity.biopolymer.name}">
 				</td>
 				<td class="cellLabel">
 					Biopolymer Type*
 				</td>
 				<td class="cellLabel">
-					<select name="entity.biopolymer.type" id="biopolymerType"
+					<select name="nanomaterialEntity.biopolymer.type" id="biopolymerType"
 						onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
 						<option value=""></option>
 						<c:forEach var="type" items="${biopolymerTypes}">
 							<c:choose>
 								<c:when
-									test="${type eq nanomaterialEntityForm.map.entity.biopolymer.type}">
+									test="${type eq compositionForm.map.nanomaterialEntity.biopolymer.type}">
 									<option value="${type}" selected>
 										${type}
 									</option>
@@ -79,7 +79,7 @@
 					Sequence
 				</td>
 				<td class="cellLabel" colspan="3">
-					<textarea name="entity.biopolymer.sequence" cols="80" rows="3">${nanomaterialEntityForm.map.entity.biopolymer.sequence}</textarea>
+					<textarea name="nanomaterialEntity.biopolymer.sequence" cols="80" rows="3">${compositionForm.map.nanomaterialEntity.biopolymer.sequence}</textarea>
 				</td>
 			</tr>
 		</table>

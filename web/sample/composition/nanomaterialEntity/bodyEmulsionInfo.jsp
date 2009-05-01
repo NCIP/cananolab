@@ -16,10 +16,10 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.emulsion.polymerized}
+					${nanomaterialEntity.emulsion.polymerized}
 				</td>
 				<td>
-					${entity.emulsion.polymerName}
+					${nanomaterialEntity.emulsion.polymerName}
 				</td>
 			</tr>
 		</table>
@@ -36,11 +36,11 @@
 					Is Polymerized
 				</td>
 				<td class="cellLabel">
-					<select name="entity.emulsion.polymerized">
+					<select name="nanomaterialEntity.emulsion.polymerized">
 						<option value=""></option>
 						<c:choose>
 							<c:when
-								test="${nanomaterialEntityForm.map.entity.emulsion.polymerized eq 'true'}">
+								test="${compositionForm.map.nanomaterialEntity.emulsion.polymerized eq 'true'}">
 								<option value="1" selected>
 									Yes
 								</option>
@@ -53,7 +53,7 @@
 						</c:choose>
 						<c:choose>
 							<c:when
-								test="${nanomaterialEntityForm.map.entity.emulsion.polymerized eq 'false'}">
+								test="${compositionForm.map.nanomaterialEntity.emulsion.polymerized eq 'false'}">
 								<option value="0" selected>
 									No
 								</option>
@@ -70,8 +70,8 @@
 					Polymer Name
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.emulsion.polymerName"
-						value="${nanomaterialEntityForm.map.entity.emulsion.polymerName}" />
+					<input type="text" name="nanomaterialEntity.emulsion.polymerName"
+						value="${compositionForm.map.nanomaterialEntity.emulsion.polymerName}" />
 				</td>
 			</tr>
 		</table>

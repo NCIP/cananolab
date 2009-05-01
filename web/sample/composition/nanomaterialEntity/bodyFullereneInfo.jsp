@@ -16,11 +16,11 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.fullerene.averageDiameter}
-					${entity.fullerene.averageDiameterUnit}
+					${nanomaterialEntity.fullerene.averageDiameter}
+					${nanomaterialEntity.fullerene.averageDiameterUnit}
 				</td>
 				<td>
-					${entity.fullerene.numberOfCarbon}
+					${nanomaterialEntity.fullerene.numberOfCarbon}
 				</td>
 			</tr>
 		</table>
@@ -37,22 +37,22 @@
 					Average Diameter
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.fullerene.averageDiameter"
+					<input type="text" name="nanomaterialEntity.fullerene.averageDiameter"
 						id="averageDiameter" onkeydown="return filterFloatNumber(event)"
-						value="${nanomaterialEntityForm.map.entity.fullerene.averageDiameter}" />
+						value="${compositionForm.map.nanomaterialEntity.fullerene.averageDiameter}" />
 				</td>
 				<td class="cellLabel">
 					Average Diameter Unit
 				</td>
 				<td class="cellLabel">
-					<select name="entity.fullerene.averageDiameterUnit"
+					<select name="nanomaterialEntity.fullerene.averageDiameterUnit"
 						id="averageDiameterUnit"
 						onchange="javascript:callPrompt('Average Diameter Unit', 'averageDiameterUnit');">
 						<option value=""></option>
 						<c:forEach var="unit" items="${dimensionUnits}">
 							<c:choose>
 								<c:when
-									test="${unit eq nanomaterialEntityForm.map.entity.fullerene.averageDiameterUnit}">
+									test="${unit eq compositionForm.map.nanomaterialEntity.fullerene.averageDiameterUnit}">
 									<option value="${unit}" selected>
 										${unit}
 									</option>
@@ -73,9 +73,9 @@
 					Number of Carbons
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.fullerene.numberOfCarbon"
+					<input type="text" name="nanomaterialEntity.fullerene.numberOfCarbon"
 						id="numberOfCarbon" onkeydown="return filterInteger(event)"
-						value="${nanomaterialEntityForm.map.entity.fullerene.numberOfCarbon}" />
+						value="${compositionForm.map.nanomaterialEntity.fullerene.numberOfCarbon}" />
 				</td>
 			</tr>
 		</table>

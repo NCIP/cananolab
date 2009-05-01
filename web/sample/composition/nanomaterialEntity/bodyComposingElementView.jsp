@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<logic:iterate name="entity" property="composingElements"
+<logic:iterate name="nanomaterialEntity" property="composingElements"
 	id="composingElement" indexId="ind">
 	<table class="summaryViewLayer4" width="95%" align="center">
 		<tr>
