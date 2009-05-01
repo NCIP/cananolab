@@ -21,16 +21,11 @@
 			</c:if>
 		</th>
 	</tr>
-	<tr>
-		<td align="left">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-		</td>
-	</tr>
 	<c:choose>
 		<c:when test="${!empty compositionForm.map.comp.nanomaterialEntities}">
 			<logic:iterate name="compositionForm"
-				property="comp.nanomaterialEntities" id="entity" indexId="ind">
-				<c:set var="entityType" value="${entity.type}" />
+				property="comp.nanomaterialEntities" id="nanomaterialEntity" indexId="ind">
+				<c:set var="entityType" value="${nanomaterialEntity.type}" />
 				<c:if test="${!empty entityType}">
 					<tr>
 						<td>
@@ -42,7 +37,7 @@
 										</th>
 										<th valign="top" align="right">
 											<a
-												href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${entity.domainEntity.id}">Edit</a>
+												href="nanomaterialEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${nanomaterialEntity.domainEntity.id}">Edit</a>
 										</th>
 									</tr>
 									<tr>
@@ -51,9 +46,9 @@
 										</td>
 										<td>
 											<c:choose>
-												<c:when test="${!empty fn:trim(entity.description)}">
+												<c:when test="${!empty fn:trim(nanomaterialEntity.description)}">
 													<c:out
-														value="${fn:replace(entity.description, cr, '<br>')}"
+														value="${fn:replace(nanomaterialEntity.description, cr, '<br>')}"
 														escapeXml="false" />
 												</c:when>
 												<c:otherwise>N/A
@@ -61,7 +56,7 @@
 											</c:choose>
 										</td>
 									</tr>
-									<c:if test="${entity.withProperties }">
+									<c:if test="${nanomaterialEntity.withProperties }">
 										<tr>
 											<td class="cellLabel">
 												Properties
@@ -78,7 +73,7 @@
 																				pageContext.setAttribute("detailPage",
 																						detailPage);
 												%>
-												<c:set var="entity" value="${entity}" scope="session" />
+												<c:set var="nanomaterialEntity" value="${nanomaterialEntity}" scope="session" />
 												<jsp:include page="${detailPage}">
 													<jsp:param name="summary" value="true" />
 												</jsp:include>

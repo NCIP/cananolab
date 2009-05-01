@@ -16,10 +16,10 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.liposome.polymerName}
+					${nanomaterialEntity.liposome.polymerName}
 				</td>
 				<td>
-					${entity.liposome.polymerized}
+					${nanomaterialEntity.liposome.polymerized}
 				</td>
 			</tr>
 		</table>
@@ -36,19 +36,19 @@
 					Polymer Name*
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.liposome.polymerName"
-						value="${nanomaterialEntityForm.map.entity.liposome.polymerName}" />
+					<input type="text" name="nanomaterialEntity.liposome.polymerName"
+						value="${compositionForm.map.nanomaterialEntity.liposome.polymerName}" />
 				</td>
 				<td class="cellLabel">
 					Is Polymerized
 				</td>
 				<td class="cellLabel">
-					<select name="entity.liposome.polymerized">
+					<select name="nanomaterialEntity.liposome.polymerized">
 						<option value="">
 						</option>
 						<c:choose>
 							<c:when
-								test="${nanomaterialEntityForm.map.entity.liposome.polymerized eq 'true'}">
+								test="${compositionForm.map.nanomaterialEntity.liposome.polymerized eq 'true'}">
 								<option value="1" selected>
 									Yes
 								</option>
@@ -61,7 +61,7 @@
 						</c:choose>
 						<c:choose>
 							<c:when
-								test="${nanomaterialEntityForm.map.entity.liposome.polymerized eq 'false'}">
+								test="${compositionForm.map.nanomaterialEntity.liposome.polymerized eq 'false'}">
 								<option value="0" selected>
 									No
 								</option>

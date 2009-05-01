@@ -19,13 +19,13 @@
 			</tr>
 			<tr>
 				<td>
-					${entity.polymer.initiator}
+					${nanomaterialEntity.polymer.initiator}
 				</td>
 				<td>
-					${entity.polymer.crossLinkDegree}
+					${nanomaterialEntity.polymer.crossLinkDegree}
 				</td>
 				<td>
-					${entity.polymer.crossLinked}
+					${nanomaterialEntity.polymer.crossLinked}
 				</td>
 			</tr>
 		</table>
@@ -42,27 +42,27 @@
 					Initiator
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.polymer.initiator"
-						value="${nanomaterialEntityForm.map.entity.polymer.initiator}" />
+					<input type="text" name="nanomaterialEntity.polymer.initiator"
+						value="${compositionForm.map.nanomaterialEntity.polymer.initiator}" />
 				</td>
 				<td class="cellLabel">
 					Cross Link Degree
 				</td>
 				<td class="cellLabel">
-					<input type="text" name="entity.polymer.crossLinkDegree"
+					<input type="text" name="nanomaterialEntity.polymer.crossLinkDegree"
 						onkeydown="return filterFloatNumber(event)"
-						value="${nanomaterialEntityForm.map.entity.polymer.crossLinkDegree}" />
+						value="${compositionForm.map.nanomaterialEntity.polymer.crossLinkDegree}" />
 				</td>
 				<td class="cellLabel">
 					Is Cross Linked
 				</td>
 				<td class="cellLabel">
-					<select name="entity.polymer.crossLinked">
+					<select name="nanomaterialEntity.polymer.crossLinked">
 						<option value="">
 						</option>
 						<c:choose>
 							<c:when
-								test="${nanomaterialEntityForm.map.entity.polymer.crossLinked eq 'true'}">
+								test="${compositionForm.map.nanomaterialEntity.polymer.crossLinked eq 'true'}">
 								<option value="1" selected>
 									Yes
 								</option>
@@ -75,7 +75,7 @@
 						</c:choose>
 						<c:choose>
 							<c:when
-								test="${nanomaterialEntityForm.map.entity.polymer.crossLinked eq 'false'}">
+								test="${compositionForm.map.nanomaterialEntity.polymer.crossLinked eq 'false'}">
 								<option value="0" selected>
 									No
 								</option>

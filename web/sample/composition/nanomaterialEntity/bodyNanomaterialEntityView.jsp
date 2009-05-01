@@ -18,14 +18,9 @@
 			Nanomaterial Entity
 		</th>
 	</tr>
-	<tr>
-		<td align="left">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-		</td>
-	</tr>
 	<logic:iterate name="compositionForm"
-		property="comp.nanomaterialEntities" id="entity" indexId="ind">
-		<c:set var="entityType" value="${entity.type}" />
+		property="comp.nanomaterialEntities" id="nanomaterialEntity" indexId="ind">
+		<c:set var="entityType" value="${nanomaterialEntity.type}" />
 		<c:if test="${!empty entityType}">
 			<tr>
 				<td>
@@ -38,19 +33,19 @@
 								<th valign="top" align="right">
 								</th>
 							</tr>
-							<c:if test="${!empty fn:trim(entity.emulsion.description)}">
+							<c:if test="${!empty fn:trim(nanomaterialEntity.emulsion.description)}">
 								<tr>
 									<td class="cellLabel">
 										Description
 									</td>
 									<td>
 										<c:out
-											value="${fn:replace(entity.emulsion.description, cr, '<br>')}"
+											value="${fn:replace(nanomaterialEntity.emulsion.description, cr, '<br>')}"
 											escapeXml="false" />
 									</td>
 								</tr>
 							</c:if>
-							<c:if test="${entity.withProperties }">
+							<c:if test="${nanomaterialEntity.withProperties }">
 								<tr>
 									<td class="cellLabel">
 										Properties
@@ -67,22 +62,19 @@
 																pageContext.setAttribute("detailPage",
 																		detailPage);
 										%>
-										<c:set var="entity" value="${entity}" scope="session" />
-										<jsp:include page="${detailPage}">
+										<c:set var="nanomaterialEntity" value="${nanomaterialEntity}" scope="session" />										<jsp:include page="${detailPage}">
 											<jsp:param name="summary" value="true" />
 										</jsp:include>
 									</td>
 								</tr>
 							</c:if>
-							<c:if test="${! empty entity.composingElements }">
+							<c:if test="${! empty nanomaterialEntity.composingElements }">
 								<tr>
 									<td class="cellLabel">
 										Composing Elements
 									</td>
 									<td>
-										<jsp:include page="bodyComposingElementView.jsp">
-											<jsp:param name="entityIndex" value="${ind}" />
-										</jsp:include>
+										<%@include file="bodyComposingElementView.jsp"%>
 									</td>
 								</tr>
 							</c:if>

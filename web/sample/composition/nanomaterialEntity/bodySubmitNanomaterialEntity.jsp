@@ -33,7 +33,7 @@ function confirmDeletion()
 				<h4>
 					${sampleName} Sample Composition - Nanomaterial Entity
 					<c:if test="${param.dispatch eq 'setupUpdate'}">
-						- ${nanomaterialEntityForm.map.entity.type}
+						- ${compositionForm.map.nanomaterialEntity.type}
 				</c:if>
 				</h4>
 			</td>
@@ -59,7 +59,7 @@ function confirmDeletion()
 								Nanomaterial Entity Type*
 							</td>
 							<td>
-								<html:select styleId="peType" property="entity.type"
+								<html:select styleId="peType" property="nanomaterialEntity.type"
 									onchange="javascript:callPrompt('Nanomaterial Entity Type', 'peType');
 										setEntityInclude('peType', 'nanomaterialEntity');">
 									<option value=""></option>
@@ -76,7 +76,7 @@ function confirmDeletion()
 							Description
 						</td>
 						<td>
-							<html:textarea property="entity.description" rows="3" cols="100" />
+							<html:textarea property="nanomaterialEntity.description" rows="3" cols="100" />
 						</td>
 					</tr>
 				</table>
@@ -103,10 +103,10 @@ function confirmDeletion()
 						<tr>
 							<td colspan="2">
 								<c:if
-									test="${! empty nanomaterialEntityForm.map.entity.composingElements}">
+									test="${! empty compositionForm.map.nanomaterialEntity.composingElements}">
 									<c:set var="edit" value="true" />
 									<c:set var="entity"
-										value="${nanomaterialEntityForm.map.entity}" />
+										value="${compositionForm.map.entity}" />
 									<%@ include file="bodyComposingElementView.jsp"%>
 								</c:if>
 							</td>
