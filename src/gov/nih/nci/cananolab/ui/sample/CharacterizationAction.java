@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -133,6 +134,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					charType);
 		InitCharacterizationSetup.getInstance().setCharacterizationDropdowns(
 				request);
+		// String detailPage = setupDetailPage(charBean);
+		// request.getSession().setAttribute("characterizationDetailPage",
+		// detailPage);
+
 		// set up other samples with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 	}
@@ -176,12 +181,27 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		setupInputForm(request, theForm);
 		String detailPage = null;
 		if (charBean.isWithProperties()) {
-			detailPage = InitCharacterizationSetup.getInstance().getDetailPage(
-					charBean.getDomainChar());
+			detailPage = setupDetailPage(charBean);
 		}
 		request.setAttribute("characterizationDetailPage", detailPage);
 
 		return mapping.getInputForward();
+	}
+
+	private String setupDetailPage(CharacterizationBean charBean) {
+		String includePage = null;
+		if (charBean.getClassName().equals("PhysicalState")
+				|| charBean.getClassName().equals("Shape")
+				|| charBean.getClassName().equals("Solubility")
+				|| charBean.getClassName().equals("Surface")) {
+			includePage = "physical/body" + charBean.getClassName()
+					+ "Info.jsp";
+		} else if (charBean.getClassName().equals("Cytotoxicity")) {
+			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
+		} else if (charBean.getClassName().equals("EnzymeInduction")) {
+			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
+		}
+		return includePage;
 	}
 
 	private void saveToOtherSamples(HttpServletRequest request,
@@ -489,6 +509,21 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
+	public ActionForward getFinding(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String theFindingId = request.getParameter("findingId");
+		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
+		Finding finding = service.findFindingById(theFindingId);
+		FindingBean findingBean = new FindingBean(finding);
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		achar.setTheFinding(findingBean);
+		request.setAttribute("anchor", "result");
+		return mapping.getInputForward();
+	}
+
 	public ActionForward saveFinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -566,6 +601,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					"message.addCharacterization.removeMatrixColumn");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
+			findingBean.setNumberOfColumns(existingNumberOfColumns);
 			return mapping.getInputForward();
 		}
 		if (existingNumberOfRows > findingBean.getNumberOfRows()) {
@@ -574,6 +610,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					"message.addCharacterization.removeMatrixRow");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
+			findingBean.setNumberOfRows(existingNumberOfRows);
 			return mapping.getInputForward();
 		}
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
