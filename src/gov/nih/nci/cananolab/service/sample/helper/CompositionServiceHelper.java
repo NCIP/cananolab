@@ -72,6 +72,7 @@ public class CompositionServiceHelper {
 				Property.forName("id").eq(new Long(entityId)));
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
+		crit.setFetchMode("functionCollection.targetCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
