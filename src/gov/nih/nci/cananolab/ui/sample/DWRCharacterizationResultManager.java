@@ -1,22 +1,18 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
-import gov.nih.nci.cananolab.exception.CharacterizationResultException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationResultService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationResultServiceLocalImpl;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.SortedSet;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.apache.struts.validator.DynaValidatorForm;
@@ -43,17 +39,7 @@ public class DWRCharacterizationResultManager {
 		return newFindingBean;
 	}
 
-	public FindingBean findFindingById(String findingId)
-			throws CharacterizationResultException {
-		Finding finding = service.findFindingById(findingId);
-		FindingBean findingBean = new FindingBean(finding);
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		charBean.setTheFinding(findingBean);
-		return findingBean;
-	}
+
 
 	public String[] getConditionOptions() throws Exception {
 		WebContext wctx = WebContextFactory.get();
