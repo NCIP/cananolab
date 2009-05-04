@@ -18,16 +18,22 @@
 				</th>
 			</tr>
 			<tr>
-				<td>${functionalizingEntity.antibody.type}</td>
-				<td>${functionalizingEntity.antibody.isotype}</td>
-				<td>${functionalizingEntity.antibody.species}</td>
+				<td>
+					${functionalizingEntity.antibody.type}
+				</td>
+				<td>
+					${functionalizingEntity.antibody.isotype}
+				</td>
+				<td>
+					${functionalizingEntity.antibody.species}
+				</td>
 			</tr>
 		</table>
 	</c:when>
 	<c:otherwise>
 		<table width="100%" align="center" class="submissionView">
 			<tr>
-				<th colspan="4">
+				<th colspan="6">
 					Antibody Properties
 				</th>
 			</tr>
@@ -36,37 +42,88 @@
 					Type
 				</td>
 				<td>
-					<select name="functionalizingEntity.antibody.type"
-						id="antibodyType"
-						onchange="javascript:callPrompt('Type', 'antibodyType');">
-						<option value="" />
-						<option value="other">
-							[Other]
-						</option>
-					</select>
+					<div id="antibodyTypePrompt">
+						<select name="functionalizingEntity.antibody.type"
+							id="antibodyType"
+							onchange="javascript:callPrompt('Type', 'antibodyType', 'antibodyTypePrompt');">
+							<option value="" />
+								<c:forEach var="type" items="${antibodyTypes}">
+									<c:choose>
+										<c:when
+											test="${type eq compositionForm.map.functionalizingEntity.antibody.type}">
+											<option value="${type}" selected>
+												${type}
+											</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${type}">
+												${type}
+											</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							<option value="other">
+								[Other]
+							</option>
+						</select>
+					</div>
 				</td>
 				<td>
 					Isotype
 				</td>
 				<td>
-					<select name="functionalizingEntity.antibody.isotype"
-						id="antibodyIsotype"
-						onchange="javascript:callPrompt('Isotype', 'antibodyIsotype');">
-						<option value="" />
-						<option value="other">
-							[Other]
-						</option>
-					</select>
+					<div id="isotypePrompt">
+						<select name="functionalizingEntity.antibody.isotype"
+							id="antibodyIsotype"
+							onchange="javascript:callPrompt('Isotype', 'antibodyIsotype', 'isotypePrompt');">
+							<option value="" />
+								<c:forEach var="type" items="${antibodyIsotypes}">
+									<c:choose>
+										<c:when
+											test="${type eq compositionForm.map.functionalizingEntity.antibody.isotype}">
+											<option value="${type}" selected>
+												${type}
+											</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${type}">
+												${type}
+											</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							<option value="other">
+								[Other]
+							</option>
+						</select>
+					</div>
 				</td>
 				<td>
 					Species
 				</td>
 				<td>
-					<select name="functionalizingEntity.antibody.species"
-						id="antibodySpecies"
-						onchange="javascript:callPrompt('Species', 'species');">
-						<option value="" />
-					</select>
+					<div id="speciesPrompt">
+						<select name="functionalizingEntity.antibody.species"
+							id="antibodySpecies"
+							onchange="javascript:callPrompt('Species', 'species', 'speciesPrompt');">
+							<option value="" />
+								<c:forEach var="species" items="${antibodySpecies}">
+									<c:choose>
+										<c:when
+											test="${species eq compositionForm.map.functionalizingEntity.antibody.species}">
+											<option value="${species}" selected>
+												${species}
+											</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${species}">
+												${species}
+											</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+						</select>
+					</div>
 				</td>
 			</tr>
 		</table>

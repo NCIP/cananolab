@@ -36,14 +36,31 @@
 					Type*
 				</td>
 				<td colspan="2">
-					<select name="functionalizingEntity.biopolymer.type"
-						id="biopolymerType"
-						onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
-						<option value=""></option>
-						<option value="other">
-							[Other]
-						</option>
-					</select>
+					<div id="biopolymerTypePrompt">
+						<select name="functionalizingEntity.biopolymer.type"
+							id="biopolymerType"
+							onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType', 'biopolymerTypePrompt');">
+							<option value=""></option>
+							<c:forEach var="type" items="${biopolymerTypes}">
+								<c:choose>
+									<c:when
+										test="${type eq compositionForm.map.functionalizingEntity.biopolymer.type}">
+										<option value="${type}" selected>
+											${type}
+										</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${type}">
+											${type}
+										</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<option value="other">
+								[Other]
+							</option>
+						</select>
+					</div>
 				</td>
 			</tr>
 			<tr>
