@@ -22,7 +22,7 @@
 				</var>
 			</field>
 		</form>
-		<form name="chemicalAssociationForm">
+		<form name="/chemicalAssociation">
 			<field property="assoc.type" page="2" depends="required">
 				<arg position="0" key="chemicalAssociationType"
 					bundle="particle" />
@@ -75,52 +75,52 @@
 				</var>
 			</field>
 		</form>
-		<form name="nanomaterialEntityForm">
-			<field property="entity.type" page="2" depends="required">
+		<form name="/nanomaterialEntity">
+			<field property="nanomaterialEntity.type" page="2" depends="required">
 				<arg position="0" key="nanomaterialEntityType"
 					bundle="particle" />
 			</field>
-			<field property="entity.carbonNanotube.diameter" page="2"
+			<field property="nanomaterialEntity.carbonNanotube.diameter" page="2"
 				depends="float">
 				<arg position="0"
 					key="nanomaterialEntityForm.carbonNanotube.diameter"
 					bundle="particle" />
 			</field>
-			<field property="entity.carbonNanotube.averageLength"
+			<field property="nanomaterialEntity.carbonNanotube.averageLength"
 				page="2" depends="float">
 				<arg position="0"
 					key="nanomaterialEntityForm.carbonNanotube.averageLength"
 					bundle="particle" />
 			</field>
-			<field property="entity.fullerene.numberOfCarbon" page="2"
+			<field property="nanomaterialEntity.fullerene.numberOfCarbon" page="2"
 				depends="integer">
 				<arg position="0"
 					key="nanomaterialEntityForm.fullerene.numberOfCarbon"
 					bundle="particle" />
 			</field>
-			<field property="entity.biopolymer.name" page="2"
+			<field property="nanomaterialEntity.biopolymer.name" page="2"
 				depends="validwhen">
 				<arg position="0"
 					key="nanomaterialEntityForm.biopolymer.name" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((entity.type!='biopolymer') or (*this*!=null))
+						((nanomaterialEntity.type!='biopolymer') or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="entity.biopolymer.type" page="2"
+			<field property="nanomaterialEntity.biopolymer.type" page="2"
 				depends="validwhen">
 				<arg position="0"
 					key="nanomaterialEntityForm.biopolymer.type" bundle="particle" />
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((entity.type!='biopolymer') or (*this*!=null))
+						((nanomaterialEntity.type!='biopolymer') or (*this*!=null))
 					</var-value>
 				</var>
 			</field>
-			<field property="entity.liposome.polymerName" page="2"
+			<field property="nanomaterialEntity.liposome.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
 					key="nanomaterialEntityForm.liposome.polymerName"
@@ -128,13 +128,13 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((entity.type!='liposome') or
-						((entity.liposome.polymerized=='false') or
+						((nanomaterialEntity.type!='liposome') or
+						((nanomaterialEntityliposome.polymerized=='false') or
 						(*this*!=null)))
 					</var-value>
 				</var>
 			</field>
-			<field property="entity.emulsion.polymerName" page="2"
+			<field property="nanomaterialEntity.emulsion.polymerName" page="2"
 				depends="validwhen">
 				<arg position="0"
 					key="nanomaterialEntityForm.emulsion.polymerName"
@@ -142,13 +142,13 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((entity.type!='emulsion') or
-						((entity.emulsion.polymerized=='false') or
+						((nanomaterialEntity.type!='emulsion') or
+						((nanomaterialEntity.emulsion.polymerized=='false') or
 						(*this*!=null)))
 					</var-value>
 				</var>
 			</field>
-			<field property="entity.polymer.crossLinkDegree" page="2"
+			<field property="nanomaterialEntity.polymer.crossLinkDegree" page="2"
 				depends="validwhen">
 				<arg position="0"
 					key="nanomaterialEntityForm.polymer.crossLinkDegree"
@@ -156,15 +156,15 @@
 				<var>
 					<var-name>test</var-name>
 					<var-value>
-						((entity.type!='polymer') or
-						((entity.polymer.crossLinkDegree=="No") or
+						((nanomaterialEntity.type!='polymer') or
+						((nanomaterialEntity.polymer.crossLinkDegree=="No") or
 						(*this*!=null)))
 					</var-value>
 				</var>
 			</field>
 			<field property="domain.type" page="2"
 				depends="validwhen"
-				indexedListProperty="entity.composingElements">
+				indexedListProperty="nanomaterialEntity.composingElements">
 				<arg position="0"
 					key="nanomaterialEntityForm.elementType" bundle="particle" />
 				<var>
@@ -174,7 +174,7 @@
 			</field>
 			<field property="domain.name" page="2"
 				depends="validwhen"
-				indexedListProperty="entity.composingElements">
+				indexedListProperty="nanomaterialEntity.composingElements">
 				<arg position="0"
 					key="nanomaterialEntityForm.elementName" bundle="particle" />
 				<var>
@@ -183,21 +183,21 @@
 				</var>
 			</field>
 		</form>
-		<form name="functionalizingEntityForm">
-			<field property="entity.type" page="2" depends="required">
+		<form name="/functionalizingEntity">
+			<field property="functionalizingEntity.type" page="2" depends="required">
 				<arg position="0" key="functionalizingEntityType"
 					bundle="particle" />
 			</field>
-			<field property="entity.name" page="2" depends="required">
+			<field property="functionalizingEntity.name" page="2" depends="required">
 				<arg position="0" key="functionalizingEntityName"
 					bundle="particle" />
 			</field>
-			<field property="entity.value" page="2" depends="float">
+			<field property="functionalizingEntity.value" page="2" depends="float">
 				<arg position="0" key="functionalizingEntityForm.value"
 					bundle="particle" />
 			</field>
 			<field property="type" page="2" depends="validwhen"
-				indexedListProperty="entity.functions">
+				indexedListProperty="functionalizingEntity.functions">
 				<arg position="0"
 					key="functionalizingEntity.functionType" bundle="particle" />
 				<var>
@@ -206,7 +206,7 @@
 				</var>
 			</field>
 		</form>
-		<form name="compositionFileForm">
+		<form name="/compositionFile">
 			<field property="compFile.externalUrl" page="2"
 				depends="validwhen">
 				<arg position="0" key="externalUrl" bundle="particle" />
