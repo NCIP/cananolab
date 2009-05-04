@@ -50,11 +50,3 @@ input.promptbox {
 	width: 350px;
 	z-index:5;
 }
-
-#newColumn {
-	position: absolute;
-	left: 30px;
-	top: 20px;
-	width: 350px;
-	z-index:5;
-}
