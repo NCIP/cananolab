@@ -32,7 +32,8 @@ function confirmDeletion()
 			<td>
 				<h4>
 					${sampleName} Sample Composition - Nanomaterial Entity
-					<c:if test="${param.dispatch eq 'setupUpdate'}">
+					<c:if
+						test="${!empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
 						- ${compositionForm.map.nanomaterialEntity.type}
 				</c:if>
 				</h4>
@@ -53,21 +54,25 @@ function confirmDeletion()
 							Summary
 						</th>
 					</tr>
-					<c:if test="${param.dispatch eq 'setupNew'}">
+					<c:if
+						test="${empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
 						<tr>
 							<td class="cellLabel">
 								Nanomaterial Entity Type*
 							</td>
 							<td>
-								<html:select styleId="peType" property="nanomaterialEntity.type"
-									onchange="javascript:callPrompt('Nanomaterial Entity Type', 'peType');
+								<div id="peTypePrompt">
+									<html:select styleId="peType"
+										property="nanomaterialEntity.type"
+										onchange="javascript:callPrompt('Nanomaterial Entity Type', 'peType', 'peTypePrompt');
 										setEntityInclude('peType', 'nanomaterialEntity');">
-									<option value=""></option>
-									<html:options name="nanomaterialEntityTypes" />
-									<option value="other">
-										[Other]
-									</option>
-								</html:select>
+										<option value=""></option>
+										<html:options name="nanomaterialEntityTypes" />
+										<option value="other">
+											[Other]
+										</option>
+									</html:select>
+								</div>
 							</td>
 						</tr>
 					</c:if>
@@ -76,7 +81,8 @@ function confirmDeletion()
 							Description
 						</td>
 						<td>
-							<html:textarea property="nanomaterialEntity.description" rows="3" cols="100" />
+							<html:textarea property="nanomaterialEntity.description" rows="3"
+								cols="100" />
 						</td>
 					</tr>
 				</table>
@@ -105,8 +111,7 @@ function confirmDeletion()
 								<c:if
 									test="${! empty compositionForm.map.nanomaterialEntity.composingElements}">
 									<c:set var="edit" value="true" />
-									<c:set var="entity"
-										value="${compositionForm.map.entity}" />
+									<c:set var="entity" value="${compositionForm.map.entity}" />
 									<%@ include file="bodyComposingElementView.jsp"%>
 								</c:if>
 							</td>
