@@ -25,15 +25,20 @@ function confirmDeletion()
 		</th>
 	</tr>
 	<tr>
-		<td>
+		<td colspan="2">
 			<span class="cellLabel">File</span> &nbsp;&nbsp;
 			<a id="addFileButton"
 				href="javascript:clearFile(); show('newFile');hide('newMatrix');">Add</a>
 		</td>
-		<td>
-			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
-			<a id="addData"
-				href="javascript:clearFile(); show('newMatrix');hide('newFile');">Add</a>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<c:forEach var="file"
+				items="${characterizationForm.map.achar.theFinding.files}">
+						${file.domainFile.uri}
+								<a href="">Edit</a>
+				<br>
+			</c:forEach>
 		</td>
 	</tr>
 	<tr>
@@ -45,46 +50,16 @@ function confirmDeletion()
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" colspan="2">
-			<c:set var="submitMatrixStyle" value="display:none" />
-			<c:if test="${param.dispatch eq 'drawMatrix'}">
-				<c:set var="submitMatrixStyle" value="display:block" />
-			</c:if>
-			<div style="${submitMatrixStyle}" id="newMatrix">
-				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
-				&nbsp;
-			</div>
+		<td colspan="2">
+			<span class="cellLabel">Data and Conditions</span> &nbsp;&nbsp;
 		</td>
 	</tr>
 	<tr>
-		<td id="existingFiles">
-			<table class="summaryViewLayer4" border="1" id="fileTable">
-				<tbody id="fileRows">
-					<tr id="pattern" style="display: none;">
-						<td>
-							<span id="fileUri">File</span>
-						</td>
-						<td>
-							<input class="noBorderButton" id="edit" type="button"
-								value="Edit"
-								onclick="editClicked(this.id); show('patternAddRow');" />
-						</td>
-					</tr>
-					<c:forEach var="file"
-						items="${characterizationForm.map.achar.theFinding.files}">
-						<tr>
-							<td>
-								${file.domainFile.uri}
-							</td>
-							<td>
-								<a href="">Edit</a>
-							</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-		</td>
-		<td>
+		<td valign="top" colspan="2">
+			<div id="newMatrix">
+				<jsp:include page="bodySubmitDataConditionMatrix.jsp" />
+				&nbsp;
+			</div>
 		</td>
 	</tr>
 	<tr>
@@ -95,7 +70,7 @@ function confirmDeletion()
 		<td>
 			<div align="right">
 				<input type="button" value="Cancel"
-					onclick="javascript:hide('newFinding'); show('existingFinding');">
+					onclick="javascript:hide('newFinding');">
 				<c:if
 					test="${fn:length(characterizationForm.map.achar.theFinding.files)>0 || fn:length(characterizationForm.map.achar.theFinding.rows)>0}">
 					<input type="button" value="Save"
