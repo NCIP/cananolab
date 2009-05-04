@@ -30,7 +30,8 @@
 				<h4>
 					${fn:toUpperCase(param.location)} ${sampleName}
 					<c:choose>
-						<c:when test="${param.dispatch eq 'setupUpdate'}">
+						<c:when
+							test="${!empty characterizationForm.map.achar.domainChar.id}">
 						${characterizationForm.map.achar.characterizationType} -
 						${characterizationForm.map.achar.characterizationName}
 				</c:when>
