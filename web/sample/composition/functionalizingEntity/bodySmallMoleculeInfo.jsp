@@ -2,31 +2,39 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<table class="topBorderOnlyTable" cellspacing="0" cellpadding="3"
-	width="100%" align="center" summary="" border="0">
-	<tbody>
-		<tr class="topBorder">
-			<td class="formTitle" colspan="2">
-				<div align="justify">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<c:choose>
+	<c:when test="${param.summary eq 'true'}">
+		<table class="summaryViewLayer4" align="center" width="95%">
+			<tr>
+				<th>
+					Alternate Name
+				</th>
+			</tr>
+			<tr>
+				<td>
+					${functionalizingEntity.smallMolecule.alternateName}
+				</td>
+			</tr>
+		</table>
+	</c:when>
+	<c:otherwise>
+		<table width="100%" align="center" class="submissionView">
+			<tr>
+				<th colspan="4">
 					Small Molecule Properties
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td class="leftLabel">
-				<strong>Alternate Name</strong>
-			</td>
-			<td class="rightLabel">
-				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && location eq 'local'}">
-						<html:text property="entity.smallMolecule.alternateName" size="90"/>
-					</c:when>
-					<c:otherwise>
-						${functionalizingEntityForm.map.entity.smallMolecule.alternateName}&nbsp;
-					</c:otherwise>
-				</c:choose>
-			</td>
-		</tr>
-	</tbody>
-</table>
-<br>
+				</th>
+			</tr>
+			<tr>
+				<td class="cellLabel">
+					<strong>Alternate Name</strong>
+				</td>
+				<td>
+					<input type="text"
+						name="functionalizingEntity.smallMolecule.alternateName" size="90" />
+				</td>
+			</tr>
+		</table>
+		<br>
+	</c:otherwise>
+</c:choose>
