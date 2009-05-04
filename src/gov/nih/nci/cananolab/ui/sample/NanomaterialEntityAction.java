@@ -198,7 +198,7 @@ public class NanomaterialEntityAction extends CompositionAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("nanomaterialEntityForm");
+		request.getSession().removeAttribute("compositionForm");
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
