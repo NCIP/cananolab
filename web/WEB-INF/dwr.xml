@@ -132,5 +132,14 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.Finding">
 		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.Row">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.TableCell">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Datum">
+		</convert>
 	</allow>
 </dwr>
