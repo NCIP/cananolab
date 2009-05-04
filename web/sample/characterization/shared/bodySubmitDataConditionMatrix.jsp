@@ -5,10 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<c:set var="matrixStyle" value="display:none" />
-<c:if test="${param.dispatch eq 'drawMatrix'}">
-	<c:set var="matrixStyle" value="display:block;" />
-</c:if>
 <table class="promptbox" width="85%" align="center">
 	<tr>
 		<td class="cellLabel">
@@ -29,37 +25,44 @@
 		</td>
 	</tr>
 	<tr>
-	<td colspan="4"><jsp:include page="/bodyMessage.jsp?bundle=particle"/></td>
+		<td colspan="4"><jsp:include
+				page="/bodyMessage.jsp?bundle=particle" /></td>
 	</tr>
 </table>
-
 <table class="promptbox" width="85%" align="center" id="matrix"
-	border="1" style="">
+	border="1">
 	<tr>
 		<logic:iterate id="col" name="characterizationForm"
 			property="achar.theFinding.columnHeaders" indexId="cInd">
 			<td class="cellLabel">
 				<div id="column${cInd}" style="position: relative">
-					<a href="javascript:openColumnForm(${cInd});"><span
-						id="columnHeaderDisplayName${cInd}">Column ${cInd+1}</span> </a>
+					<a href="javascript:openColumnForm('${characterizationForm.map.achar.characterizationName}', ${cInd});"><span
+						id="columnHeaderDisplayName${cInd}"> <c:choose>
+								<c:when test="${!empty col.displayName}">
+								${col.displayName}
+								</c:when>
+								<c:otherwise>
+						Column ${cInd+1}
+						</c:otherwise>
+							</c:choose> </span> </a>
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].columnType"
-						styleId="theColumnType" />
+						styleId="theColumnType${cInd}" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].columnName"
-						styleId="theColumnName" />
+						styleId="theColumnName${cInd}" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].valueType"
-						styleId="theValueType" />
+						styleId="theValueType${cInd}" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].valueUnit"
-						styleId="theValueUnit" />
+						styleId="theValueUnit${cInd}" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].conditionProperty"
-						styleId="theConditionProperty" />
+						styleId="theConditionProperty${cInd}" />
 					<html:hidden
 						property="achar.theFinding.columnHeaders[${cInd}].constantValue"
-						styleId="theConstantValue" />
+						styleId="theConstantValue${cInd}" />
 				</div>
 			</td>
 		</logic:iterate>
@@ -72,24 +75,14 @@
 				<td>
 					<html:text
 						property="achar.theFinding.rows[${rInd}].cells[${cInd}].value"
-						size="15" styleId="cellValue${rInd}:${cInd}"/>
+						size="15" styleId="cellValue${rInd}:${cInd}" />
 				</td>
 			</logic:iterate>
-			<td><a href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})"><img border="0" src="images/btn_delete.gif" alt="delete row"></a></td>
-		</tr>
-	</logic:iterate>
-	<c:if
-		test="${fn:length(characterizationForm.map.achar.theFinding.rows)>0}">
-		<tr>
-			<td
-				colspan="${fn:length(characterizationForm.map.achar.theFinding.columnHeaders)-2}"></td>
-			<td colspan="2">
-				<div align="right">
-					<input class="promptButton" type="Button" value="Add"
-						onclick="javascript:submitAction(characterizationForm, 'characterization', 'addMatrix');">
-					<input class="promptButton" type="Button" value="Cancel" onclick="">
-				</div>
+			<td>
+				<a
+					href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})"><img
+						border="0" src="images/btn_delete.gif" alt="delete row"> </a>
 			</td>
 		</tr>
-	</c:if>
+	</logic:iterate>
 </table>
