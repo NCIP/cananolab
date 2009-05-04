@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -40,7 +39,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class FunctionalizingEntityAction extends BaseAnnotationAction {
+public class FunctionalizingEntityAction extends CompositionAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -49,7 +48,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -196,7 +195,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("functionalizingEntityForm");
+		request.getSession().removeAttribute("compositionForm");
 		String sampleId=request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request,
@@ -229,7 +228,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		compService.retrieveVisibility(entityBean, user);
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
-		theForm.set("entity", entityBean);
+		theForm.set("functionalizingEntity", entityBean);
 		setLookups(request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
@@ -263,7 +262,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
-		theForm.set("entity", entityBean);
+		theForm.set("functionalizingEntity", entityBean);
 		return mapping.getInputForward();
 	}
 
@@ -272,7 +271,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		entity.addFunction();
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
@@ -287,7 +286,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		entity.removeFunction(ind);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
@@ -300,7 +299,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		entity.addFile();
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
@@ -315,7 +314,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		entity.removeFile(ind);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
@@ -328,7 +327,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 
 		String funcIndexStr = (String) request.getParameter("compInd");
 		int funcIndex = Integer.parseInt(funcIndexStr);
@@ -352,7 +351,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		int targetIndex = Integer.parseInt(targetIndexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		FunctionBean function = (FunctionBean) entity.getFunctions().get(
 				funcIndex);
 		function.removeTarget(targetIndex);
@@ -368,7 +367,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
 		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean)
-		 * theForm .get("entity"); // update editable dropdowns HttpSession
+		 * theForm .get("functionalizingEntity"); // update editable dropdowns HttpSession
 		 * session = request.getSession();
 		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
@@ -388,7 +387,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionService compositionService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
-				.get("entity");
+				.get("functionalizingEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
