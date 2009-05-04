@@ -31,54 +31,31 @@
 		<c:when
 			test="${!empty compositionForm.map.comp.functionalizingEntities}">
 			<logic:iterate name="compositionForm"
-				property="comp.functionalizingEntities" id="entity" indexId="ind">
-				<c:if test="${!empty entity.className}">
+				property="comp.functionalizingEntities" id="functionalizingEntity"
+				indexId="ind">
+				<c:set var="entityType" value="${functionalizingEntity.type}" />
+				<c:if test="${!empty entityType}">
 					<tr>
 						<td>
 							<div class="indented4">
 								<table class="summaryViewLayer3" width="95%" align="center">
 									<tr>
 										<th valign="top" align="left">
-											${entity.className}
+											${entityType}
 										</th>
 										<th valign="top" align="right">
 											<a
-												href="functionalizingEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${entity.domainEntity.id}">Edit</a>
+												href="functionalizingEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${functionalizingEntity.domainEntity.id}">Edit</a>
 										</th>
 									</tr>
 									<tr>
-										<td class="cellLabel" width="20%">
-											Description
+										<td class="cellLabel">
+											Name and Amount
 										</td>
 										<td>
 											<c:choose>
-												<c:when test="${!empty fn:trim(entity.description)}">
-													<c:out
-														value="${fn:replace(entity.description, cr, '<br>')}"
-														escapeXml="false" />
-												</c:when>
-												<c:otherwise>N/A
-												</c:otherwise>
-											</c:choose>
-										</td>
-									</tr>
-									<tr>
-										<td class="cellLabel">
-											Properties
-										</td>
-										<td>
-											<%--<%@include file="bodyFunctionalizingEntityPropertiesView.jsp"%>--%>
-										</td>
-									</tr>
-
-									<tr>
-										<td class="cellLabel">
-											Molecular Formula
-										</td>
-										<td>
-											<c:choose>
-												<c:when test="${!empty entity.molecularFormulaDisplayName}">
-													${entity.molecularFormulaDisplayName}
+												<c:when test="${!empty functionalizingEntity.displayName}">
+													${functionalizingEntity.displayName}
 													</c:when>
 												<c:otherwise>
 														N/A
@@ -88,19 +65,94 @@
 									</tr>
 									<tr>
 										<td class="cellLabel">
+											Molecular Formula
+										</td>
+										<td>
+											<c:choose>
+												<c:when
+													test="${!empty functionalizingEntity.molecularFormulaDisplayName}">
+													${functionalizingEntity.molecularFormulaDisplayName}
+													</c:when>
+												<c:otherwise>
+														N/A
+												</c:otherwise>
+											</c:choose>
+										</td>
+									</tr>
+									<c:if test="${functionalizingEntity.withProperties }">
+										<tr>
+											<td class="cellLabel">
+												Properties
+											</td>
+											<td>
+												<%
+													String detailPage = gov.nih.nci.cananolab.ui.sample.InitCompositionSetup
+																						.getInstance()
+																						.getDetailPage(
+																								application,
+																								(String) pageContext
+																										.getAttribute("entityType"),
+																								"functionalizingEntity");
+																				pageContext.setAttribute("detailPage",
+																						detailPage);
+												%>
+												<c:set var="functionalizingEntity"
+													value="${functionalizingEntity}" scope="session" />
+												<jsp:include page="${detailPage}">
+													<jsp:param name="summary" value="true" />
+												</jsp:include>
+											</td>
+										</tr>
+									</c:if>
+									<tr>
+										<td class="cellLabel">
 											Function(s)
 										</td>
 										<td>
 											<c:choose>
-												<c:when test="${!empty entity.functionDisplayNames}">
+												<c:when
+													test="${!empty functionalizingEntity.functionDisplayNames}">
 													<c:forEach var="function"
-														items="${entity.functionDisplayNames}">
+														items="${functionalizingEntity.functionDisplayNames}">
 													${function}<br>
 													</c:forEach>
 												</c:when>
 												<c:otherwise>
 													N/A
 											</c:otherwise>
+											</c:choose>
+										</td>
+									</tr>
+									<tr>
+										<td class="cellLabel">
+											Activation Method
+										</td>
+										<td>
+											<c:choose>
+												<c:when
+													test="${!empty functionalizingEntity.activationMethodDisplayName}">
+													${functionalizingEntity.activationMethodDisplayName}
+													</c:when>
+												<c:otherwise>
+														N/A
+												</c:otherwise>
+											</c:choose>
+										</td>
+									</tr>
+									<tr>
+										<td class="cellLabel" width="20%">
+											Description
+										</td>
+										<td>
+											<c:choose>
+												<c:when
+													test="${!empty fn:trim(functionalizingEntity.description)}">
+													<c:out
+														value="${fn:replace(functionalizingEntity.description, cr, '<br>')}"
+														escapeXml="false" />
+												</c:when>
+												<c:otherwise>N/A
+												</c:otherwise>
 											</c:choose>
 										</td>
 									</tr>
