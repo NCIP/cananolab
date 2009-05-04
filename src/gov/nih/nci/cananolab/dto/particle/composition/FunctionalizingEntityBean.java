@@ -60,6 +60,8 @@ public class FunctionalizingEntityBean {
 
 	private ActivationMethod activationMethod = new ActivationMethod();
 
+	private boolean withProperties = false;
+
 	public FunctionalizingEntityBean() {
 		if (functions.size() == 0) {
 			FunctionBean funcBean = new FunctionBean();
@@ -77,10 +79,13 @@ public class FunctionalizingEntityBean {
 		domainEntity = functionalizingEntity;
 		if (functionalizingEntity instanceof Antibody) {
 			antibody = (Antibody) functionalizingEntity;
+			withProperties = true;
 		} else if (functionalizingEntity instanceof SmallMolecule) {
 			smallMolecule = (SmallMolecule) functionalizingEntity;
+			withProperties = true;
 		} else if (functionalizingEntity instanceof Biopolymer) {
 			biopolymer = (Biopolymer) functionalizingEntity;
+			withProperties = true;
 		}
 		className = ClassUtils.getShortClassName(functionalizingEntity
 				.getClass().getName());
@@ -372,4 +377,40 @@ public class FunctionalizingEntityBean {
 		return displayNames.toArray(new String[displayNames.size()]);
 	}
 
+	public boolean isWithProperties() {
+		return withProperties;
+	}
+
+	public String getDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		if (getDomainEntity().getName() != null) {
+			buffer.append(getDomainEntity().getName());
+			if (getDomainEntity().getValue() != null) {
+				buffer.append(", ");
+				buffer.append(getDomainEntity().getValue());
+				if (getDomainEntity().getValueUnit() != null) {
+					buffer.append(" ");
+					buffer.append(getDomainEntity().getValueUnit());
+				}
+			}
+		}
+		return buffer.toString();
+	}
+
+	public String getActivationMethodDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		if (getDomainEntity().getActivationMethod() != null) {
+			if (getDomainEntity().getActivationMethod().getType() != null) {
+				buffer
+						.append(getDomainEntity().getActivationMethod()
+								.getType());
+			}
+			if (getDomainEntity().getActivationMethod().getActivationEffect() != null) {
+				buffer.append(", ");
+				buffer.append(getDomainEntity().getActivationMethod()
+						.getActivationEffect());
+			}
+		}
+		return buffer.toString();
+	}
 }
