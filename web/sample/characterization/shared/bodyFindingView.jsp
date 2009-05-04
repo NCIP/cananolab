@@ -74,7 +74,7 @@
 
 			<td align="right">
 				<c:if test="${edit eq 'true'}">
-					<a href="javascript:setTheFinding(${finding.domain.id});">Edit</a>&nbsp;
+					<a href="javascript:setTheFinding(characterizationForm, 'characterization', ${finding.domain.id});">Edit</a>&nbsp;
 				</c:if>
 			</td>
 		</tr>
