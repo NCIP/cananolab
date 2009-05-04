@@ -1,61 +1,61 @@
 
-function setNameOptionsByCharName(charName) {
+function setNameOptionsByCharName(charName, columnNumber) {
 	if (charName == "") {
 		charName = document.getElementById("charName").value;
 	}
-	var columnType = document.getElementById("columnType").value;
+	var columnType = document.getElementById("columnType"+columnNumber).value;
 	if (columnType == "Datum") {
-		hide("conditionPropertyPrompt");
-		hide("conditionPropertyLabel");
+		hide("conditionPropertyPrompt"+columnNumber);
+		hide("conditionPropertyLabel"+columnNumber);
 		FindingManager.getDatumNameOptions(charName, function (data) {
-			dwr.util.removeAllOptions("columnName");
-			dwr.util.addOptions("columnName", [""]);
-			dwr.util.addOptions("columnName", data);
-			dwr.util.addOptions("columnName", ["[Other]"]);
+			dwr.util.removeAllOptions("columnName"+columnNumber);
+			dwr.util.addOptions("columnName"+columnNumber, [""]);
+			dwr.util.addOptions("columnName"+columnNumber, data);
+			dwr.util.addOptions("columnName"+columnNumber, ["[Other]"]);
 		});
 	} else {
 		if (columnType == "Condition") {
-			show("conditionPropertyPrompt");
-			show("conditionPropertyLabel");
+			show("conditionPropertyPrompt"+columnNumber);
+			show("conditionPropertyLabel"+columnNumber);
 			FindingManager.getConditionOptions(function (data) {
-				dwr.util.removeAllOptions("columnName");
-				dwr.util.addOptions("columnName", [""]);
-				dwr.util.addOptions("columnName", data);
-				dwr.util.addOptions("columnName", ["[Other]"]);
+				dwr.util.removeAllOptions("columnName"+columnNumber);
+				dwr.util.addOptions("columnName"+columnNumber, [""]);
+				dwr.util.addOptions("columnName"+columnNumber, data);
+				dwr.util.addOptions("columnName"+columnNumber, ["[Other]"]);
 			});
 		} else {
-			hide("conditionPropertyPrompt");
-			hide("conditionPropertyLabel");
-			dwr.util.removeAllOptions("columnName");
-			dwr.util.addOptions("columnName", [""]);
-			dwr.util.addOptions("columnName", ["[Other]"]);
+			hide("conditionPropertyPrompt"+columnNumber);
+			hide("conditionPropertyLabel"+columnNumber);
+			dwr.util.removeAllOptions("columnName"+columnNumber);
+			dwr.util.addOptions("columnName"+columnNumber, [""]);
+			dwr.util.addOptions("columnName"+columnNumber, ["[Other]"]);
 		}
 	}
 }
-function setConditionPropertyOptionsByCharName(conditionName) {
-	if (document.getElementById("columnType").value == "Condition") {
+function setConditionPropertyOptionsByCharName(conditionName, columnNumber) {
+	if (document.getElementById("columnType"+columnNumber).value == "Condition") {
 		if (conditionName == null) {
-			conditionName = document.getElementById("columnName").value;
+			conditionName = document.getElementById("columnName"+columnNumber).value;
 		}
 		FindingManager.getConditionPropertyOptions(conditionName, function (data) {
-			dwr.util.removeAllOptions("conditionProperty");
-			dwr.util.addOptions("conditionProperty", [""]);
-			dwr.util.addOptions("conditionProperty", data);
-			dwr.util.addOptions("conditionProperty", ["[Other]"]);
+			dwr.util.removeAllOptions("conditionProperty"+columnNumber);
+			dwr.util.addOptions("conditionProperty"+columnNumber, [""]);
+			dwr.util.addOptions("conditionProperty"+columnNumber, data);
+			dwr.util.addOptions("conditionProperty"+columnNumber, ["[Other]"]);
 		});
 	}
 }
-function setColumnValueUnit() {
+function setColumnValueUnit(columnNumber) {
 	var name = null, property = null;
-	if (document.getElementById("columnType").value == "Condition") {
-		property = document.getElementById("conditionProperty").value;
+	if (document.getElementById("columnType"+columnNumber).value == "Condition") {
+		property = document.getElementById("conditionProperty"+columnNumber).value;
 	}
-	name = document.getElementById("columnName").value;
+	name = document.getElementById("columnName"+columnNumber).value;
 	FindingManager.getColumnValueUnitOptions(name, property, function (data) {
-		dwr.util.removeAllOptions("valueUnit");
-		dwr.util.addOptions("valueUnit", [""]);
-		dwr.util.addOptions("valueUnit", data);
-		dwr.util.addOptions("valueUnit", ["[Other]"]);
+		dwr.util.removeAllOptions("valueUnit"+columnNumber);
+		dwr.util.addOptions("valueUnit"+columnNumber, [""]);
+		dwr.util.addOptions("valueUnit"+columnNumber, data);
+		dwr.util.addOptions("valueUnit"+columnNumber, ["[Other]"]);
 	});
 }
 function resetTheFinding(isShow) {
@@ -117,30 +117,67 @@ function updateMatrix(form) {
 		form.submit();
 	}
 }
-
 function reduceMatrix(form, type, index) {
-	form.action = "characterization.do?dispatch=drawMatrix&page=0&remove"+type+"="+index;
+	form.action = "characterization.do?dispatch=drawMatrix&page=0&remove" + type + "=" + index;
 	form.submit();
 }
-
 function openColumnForm(columnNumber) {
-	var promptbox = document.createElement("div");
-	promptbox.setAttribute("id", "newColumn");
-	document.getElementById("column" + columnNumber).appendChild(promptbox);
-	FindingManager.getSubmitColumnPage(columnNumber, function (pageData) {
-		document.getElementById("newColumn").innerHTML = pageData;
-	});
+	if (document.getElementById("newColumn"+columnNumber) != null) {
+        //retrieve values from hidden properties
+		show("newColumn"+columnNumber);
+		var columnHeader = {"columnName":dwr.util.getValue("theColumnName" + columnNumber), "columnType":dwr.util.getValue("theColumnType" + columnNumber), "conditionProperty":dwr.util.getValue("theConditionProperty" + columnNumber), "valueType":dwr.util.getValue("theValueTYpe" + columnNumber), "valueUnit":dwr.util.getValue("theValueUnit" + columnNumber), "constantValue":dwr.util.getValue("theConstantValue" + columnNumber)};
+		dwr.util.setValue(columnHeader);
+	} else {
+		var promptbox = document.createElement("div");
+		promptbox.setAttribute("id", "newColumn"+columnNumber);
+		document.getElementById("column" + columnNumber).appendChild(promptbox);
+		FindingManager.getSubmitColumnPage(columnNumber, function (pageData) {
+			document.getElementById("newColumn"+columnNumber).innerHTML = pageData;
+		});
+		//set style of the column entry table
+		document.getElementById("newColumn"+columnNumber).style.display = "block";
+		document.getElementById("newColumn"+columnNumber).style.position = "absolute";
+		document.getElementById("newColumn"+columnNumber).style.top = "20px";
+		document.getElementById("newColumn"+columnNumber).style.width = "350px";
+		document.getElementById("newColumn"+columnNumber).style.zIndex = "5";
+	}
 }
 function cancelColumn(columnNumber) {
-	document.getElementById("column" + columnNumber).removeChild(document.getElementById("newColumn"));
+	//existing column, just hide
+	if (document.getElementById("newColumn"+columnNumber) != null) {
+		hide("newColumn"+columnNumber);
+	}
+	//new column
+	else {
+		document.getElementById("column" + columnNumber).removeChild(document.getElementById("newColumn"+columnNumber));
+	}
 	return false;
 }
 function addColumnHeader(columnNumber) {
-	var columnHeader = {"columnName":null, "valueType":null, "valueUnit":null, "conditionProperty":null, "columnType":null, "constantValue":null};
-	dwr.util.getValues(columnHeader);
-	alert(columnHeader.name0);
+	var columnHeader = {
+	"columnName":dwr.util.getValue("columnName" + columnNumber),
+	"columnType":dwr.util.getValue("columnType" + columnNumber),
+	"conditionProperty":dwr.util.getValue("conditionProperty" + columnNumber),
+	"valueType":dwr.util.getValue("valueType" + columnNumber),
+	"valueUnit":dwr.util.getValue("valueUnit" + columnNumber),
+	"constantValue":dwr.util.getValue("constantValue" + columnNumber)};
+
+	var numberOfRows = dwr.util.getValue("rowNum");
+	if (columnHeader.constantValue != null) {
+		for (i = 0; i < numberOfRows; i++) {
+			dwr.util.setValue("cellValue" + i + ":" + columnNumber, columnHeader.constantValue);
+		}
+	}
 	FindingManager.addColumnHeader(columnHeader, function (displayName) {
-		dwr.util.setValue("columnHeaderDisplayName", displayName);
+		dwr.util.setValue("columnHeaderDisplayName" + columnNumber, displayName);
+		//set the hidden properties
+		dwr.util.setValue("theColumnType" + columnNumber, columnHeader.columnType);
+		dwr.util.setValue("theColumnName" + columnNumber, columnHeader.columnName);
+		dwr.util.setValue("theConditionProperty" + columnNumber, columnHeader.conditionProperty);
+		dwr.util.setValue("theValueType" + columnNumber, columnHeader.valueType);
+		dwr.util.setValue("theValueUnit" + columnNumber, columnHeader.valueUnit);
+		dwr.util.setValue("theConstantValue" + columnNumber, columnHeader.constantValue);
 	});
+	hide("newColumn"+columnNumber);
 }
 
