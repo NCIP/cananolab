@@ -72,7 +72,7 @@
 				<td>
 					<html:text
 						property="achar.theFinding.rows[${rInd}].cells[${cInd}].value"
-						size="15" />
+						size="15" styleId="cellValue${rInd}:${cInd}"/>
 				</td>
 			</logic:iterate>
 			<td><a href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})"><img border="0" src="images/btn_delete.gif" alt="delete row"></a></td>

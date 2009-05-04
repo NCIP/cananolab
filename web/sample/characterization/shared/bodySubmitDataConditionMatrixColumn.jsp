@@ -11,8 +11,8 @@
 		<td>
 			<select
 				name="achar.theFinding.columnHeaders[${param.cInd}].columnType"
-				id="columnType"
-				onchange="javascript:setNameOptionsByCharName('${characterizationForm.map.achar.characterizationName}');">
+				id="columnType${param.cInd}"
+				onchange="javascript:setNameOptionsByCharName('${characterizationForm.map.achar.characterizationName}', ${param.cInd});">
 				<option value="">
 				</option>
 				<option value="Datum">
@@ -29,10 +29,10 @@
 			Column Name*
 		</td>
 		<td>
-			<div id="columnNamePrompt">
+			<div id="columnNamePrompt${param.cInd}">
 				<select name="achar.theFinding.columnHeaders[${param.cInd}].columnName"
-					id="columnName"
-					onchange="javascript:callPrompt('Column Name', 'columnName', 'columnNamePrompt');setConditionPropertyOptionsByCharName(null);setColumnValueUnit();">
+					id="columnName${param.cInd}"
+					onchange="javascript:callPrompt('Column Name', 'columnName${param.cInd}', 'columnNamePrompt${param.cInd}');setConditionPropertyOptionsByCharName(null, ${param.cInd});setColumnValueUnit(${param.cInd});">
 					<option value=""></option>
 					<option value="[Other]">
 						[Other]
@@ -43,17 +43,17 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			<div id="conditionPropertyLabel" style="display: none">
+			<div id="conditionPropertyLabel${param.cInd}" style="display: none">
 				Condition Property
 			</div>
 		</td>
 		<td>
-			<div id="conditionPropertyPrompt"
+			<div id="conditionPropertyPrompt${param.cInd}"
 				style="display: none;">
 				<select
 					name="achar.theFinding.columnHeaders[${param.cInd}].conditionProperty"
-					id="conditionProperty"
-					onchange="javascript:callPrompt('Condition Property', 'conditionProperty', 'conditionPropertyPrompt');setColumnValueUnit();">
+					id="conditionProperty${param.cInd}"
+					onchange="javascript:callPrompt('Condition Property', 'conditionProperty${param.cInd}', 'conditionPropertyPrompt${param.cInd}');setColumnValueUnit(${param.cInd});">
 				</select>
 			</div>
 		</td>
@@ -63,11 +63,11 @@
 			Column Value Type
 		</td>
 		<td>
-			<div id="columnValueTypePrompt">
+			<div id="columnValueTypePrompt${param.cInd}">
 				<select
 					name="achar.theFinding.columnHeaders[${param.cInd}].valueType"
-					id="valueType"
-					onchange="javascript:callPrompt('Column Value Type', 'valueType', 'columnValueTypePrompt');">
+					id="valueType${param.cInd}"
+					onchange="javascript:callPrompt('Column Value Type', 'valueType${param.cInd}', 'columnValueTypePrompt${param.cInd}');">
 					<option value=""></option>
 					<logic:iterate id="vtype" name="datumConditionValueTypes">
 						<option value="${vtype}">
@@ -86,11 +86,11 @@
 			Column Value Unit
 		</td>
 		<td>
-			<div id="columnValueUnitPrompt">
+			<div id="columnValueUnitPrompt${param.cInd}">
 				<select
 					name="achar.theFinding.columnHeaders[${param.cInd}].valueUnit"
-					id="valueUnit"
-					onchange="javascript:callPrompt('Column Value Unit', 'valueUnit', 'columnValueUnitPrompt');">
+					id="valueUnit${param.cInd}"
+					onchange="javascript:callPrompt('Column Value Unit', 'valueUnit${param.cInd}', 'columnValueUnitPrompt${param.cInd}');">
 				</select>
 			</div>
 		</td>
@@ -100,10 +100,9 @@
 			Constant Value?
 		</td>
 		<td>
-			<input type="checkbox">
 			<input type="text"
 				name="achar.theFinding.columnHeaders[${param.cInd}].constantValue"
-				id="constantValue" />
+				id="constantValue${param.cInd}" />
 		</td>
 	</tr>
 	<tr>
