@@ -50,28 +50,31 @@
 					Biopolymer Type*
 				</td>
 				<td class="cellLabel">
-					<select name="nanomaterialEntity.biopolymer.type" id="biopolymerType"
-						onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType');">
-						<option value=""></option>
-						<c:forEach var="type" items="${biopolymerTypes}">
-							<c:choose>
-								<c:when
-									test="${type eq compositionForm.map.nanomaterialEntity.biopolymer.type}">
-									<option value="${type}" selected>
-										${type}
-									</option>
-								</c:when>
-								<c:otherwise>
-									<option value="${type}">
-										${type}
-									</option>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<option value="other">
-							[Other]
-						</option>
-					</select>
+					<div id="biopolymerTypePrompt">
+						<select name="nanomaterialEntity.biopolymer.type"
+							id="biopolymerType"
+							onchange="javascript:callPrompt('Biopolymer Type', 'biopolymerType', 'biopolymerTypePrompt');">
+							<option value=""></option>
+							<c:forEach var="type" items="${biopolymerTypes}">
+								<c:choose>
+									<c:when
+										test="${type eq compositionForm.map.nanomaterialEntity.biopolymer.type}">
+										<option value="${type}" selected>
+											${type}
+										</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${type}">
+											${type}
+										</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							<option value="other">
+								[Other]
+							</option>
+						</select>
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -79,7 +82,8 @@
 					Sequence
 				</td>
 				<td class="cellLabel" colspan="3">
-					<textarea name="nanomaterialEntity.biopolymer.sequence" cols="80" rows="3">${compositionForm.map.nanomaterialEntity.biopolymer.sequence}</textarea>
+					<textarea name="nanomaterialEntity.biopolymer.sequence" cols="80"
+						rows="3">${compositionForm.map.nanomaterialEntity.biopolymer.sequence}</textarea>
 				</td>
 			</tr>
 		</table>
