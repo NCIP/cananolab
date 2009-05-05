@@ -27,23 +27,31 @@ function confirmDeletion()
 	<tr>
 		<td colspan="2">
 			<span class="cellLabel">File</span> &nbsp;&nbsp;
-			<a id="addFileButton"
-				href="javascript:clearFile(); show('newFile');hide('newMatrix');">Add</a>
+			<a href="javascript:clearFile(); show('newFile');">Add</a>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:forEach var="file"
-				items="${characterizationForm.map.achar.theFinding.files}">
-						${file.domainFile.uri}
-								<a href="">Edit</a>
-				<br>
-			</c:forEach>
+			<table class="submissionView" width="85%" align="center">
+				<c:forEach var="file"
+					items="${characterizationForm.map.achar.theFinding.files}"
+					varStatus="ind">
+					<tr>
+						<td>
+							${file.domainFile.uri}
+						</td>
+						<td>
+							<a href="javascript:setTheFile(${ind.count-1})">Edit</a>
+						</td>
+					</tr>
+				</c:forEach>
+			</table>
+			</div>
 		</td>
 	</tr>
 	<tr>
-		<td valign="top" colspan="2">
-			<div style="display: none" id="newFile">
+		<td colspan="2">
+			<div style="display: block" id="newFile">
 				<jsp:include page="bodySubmitCharacterizationFile.jsp" />
 				&nbsp;
 			</div>
@@ -64,18 +72,18 @@ function confirmDeletion()
 	</tr>
 	<tr>
 		<td>
-			<input type="button" value="Delete" id="deleteFinding"
-				style="display: none;" onclick="javascript:confirmDeletion()">
+			<c:if
+				test="${!empty characterizationForm.map.achar.theFinding.domain.id}">
+				<input type="button" value="Delete" id="deleteFinding"
+					onclick="javascript:confirmDeletion()">
+			</c:if>
 		</td>
 		<td>
 			<div align="right">
 				<input type="button" value="Cancel"
 					onclick="javascript:hide('newFinding');">
-				<c:if
-					test="${fn:length(characterizationForm.map.achar.theFinding.files)>0 || fn:length(characterizationForm.map.achar.theFinding.rows)>0}">
-					<input type="button" value="Save"
-						onclick="javascript:saveFinding('characterization');">
-				</c:if>
+				<input type="button" value="Save"
+					onclick="javascript:saveFinding('characterization');">
 			</div>
 		</td>
 	</tr>

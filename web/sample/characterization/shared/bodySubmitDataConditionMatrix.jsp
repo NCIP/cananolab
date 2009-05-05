@@ -80,8 +80,7 @@
 			</logic:iterate>
 			<td>
 				<a
-					href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})"><img
-						border="0" src="images/btn_delete.gif" alt="delete row"> </a>
+					href="javascript:reduceMatrix(characterizationForm, 'Row', ${rInd})">Delete</a>
 			</td>
 		</tr>
 	</logic:iterate>

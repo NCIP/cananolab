@@ -27,20 +27,9 @@ function confirmDeletion()
 	<tr>
 		<td class="cellLabel">
 			Finding&nbsp;&nbsp;
-			<a id="addFinding" href="javascript:resetTheFinding(true);"><img
+			<a id="addFinding"
+				href="javascript:resetTheFinding(characterizationForm, true);"><img
 					align="top" src="images/btn_add.gif" border="0" /> </a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<c:set var="findingInfoStyle" value="display:none" />
-			<c:if
-				test="${param.dispatch eq 'addFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding'}">
-				<c:set var="findingInfoStyle" value="display:block" />
-			</c:if>
-			<div id="newFinding" style="${findingInfoStyle}">
-				<%@ include file="bodySubmitFinding.jsp"%>
-			</div>
 		</td>
 	</tr>
 	<tr>
@@ -50,6 +39,18 @@ function confirmDeletion()
 				<c:set var="edit" value="true" />
 				<%@ include file="bodyFindingView.jsp"%>
 			</c:if>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<c:set var="findingInfoStyle" value="display:none" />
+			<c:if
+				test="${param.dispatch eq 'addFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
+				<c:set var="findingInfoStyle" value="display:block" />
+			</c:if>
+			<div id="newFinding" style="${findingInfoStyle}">
+				<%@ include file="bodySubmitFinding.jsp"%>
+			</div>
 		</td>
 	</tr>
 </table>
