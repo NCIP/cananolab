@@ -39,8 +39,6 @@ public class DWRCharacterizationResultManager {
 		return newFindingBean;
 	}
 
-
-
 	public String[] getConditionOptions() throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
@@ -96,7 +94,6 @@ public class DWRCharacterizationResultManager {
 				.get("achar"));
 		List<FileBean> files = charBean.getTheFinding().getFiles();
 		FileBean theFile = files.get(index);
-		charBean.getTheFinding().setTheFile(theFile);
 		return theFile;
 	}
 
