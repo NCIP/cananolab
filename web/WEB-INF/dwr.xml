@@ -36,7 +36,7 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager" />
-			<include method="getSubmitColumnPage"/>
+			<include method="getSubmitColumnPage" />
 			<include method="addColumnHeader" />
 			<include method="removeColumnHeader" />
 			<include method="resetFinding" />
@@ -99,12 +99,15 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FileBean">
+			<param name="exclude" value="uploadedFile"/>
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
 			<param name="exclude"
 				value="datumCollection, findingCollection" />
 		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Keyword" />
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
 			<param name="include" value="domain, instruments" />
