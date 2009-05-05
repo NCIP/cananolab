@@ -51,7 +51,11 @@ function confirmDeletion()
 	</tr>
 	<tr>
 		<td colspan="2">
-			<div style="display: block" id="newFile">
+			<c:set var="newFileStyle" value="display:block" />
+			<c:if test="${param.dispatch eq 'addFile'}">
+				<c:set var="newFileStyle" value="display:none" />
+			</c:if>
+			<div style="${newFileStyle }" id="newFile">
 				<jsp:include page="bodySubmitCharacterizationFile.jsp" />
 				&nbsp;
 			</div>
