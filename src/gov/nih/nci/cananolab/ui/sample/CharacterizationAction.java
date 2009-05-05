@@ -524,6 +524,18 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
+	public ActionForward resetFinding(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		FindingBean findingBean = new FindingBean();
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		achar.setTheFinding(findingBean);
+		request.setAttribute("anchor", "result");
+		return mapping.getInputForward();
+	}
+
 	public ActionForward saveFinding(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
