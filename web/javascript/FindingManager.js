@@ -58,19 +58,9 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.addOptions("valueUnit" + columnNumber, ["[Other]"]);
 	});
 }
-function resetTheFinding(isShow) {
-	editFinding = false;
-	headerColumnCount = 0;
-	datumHeaderColumnCount = 0;
-	conditionHeaderColumnCount = 0;
-	columnCount = 0;
-	rowCount = 0;
-	if (isShow) {
-		show("newFinding");
-	} else {
-		hide("newFinding");
-		return;
-	}
+function resetTheFinding(form, isShow) {
+	form.action = "characterization.do?dispatch=resetFinding&page=0";
+	form.submit();
 }
 function setTheFinding(form, actionName, findingId) {
 	form.action = actionName + ".do?dispatch=getFinding&findingId=" + findingId + "&page=0";
@@ -81,9 +71,11 @@ function populateFinding(finding) {
 		dwr.util.setValue("colNum", finding.numberOfColumns);
 		dwr.util.setValue("rowNum", finding.numberOfRows);
 		for (i = 0; i < finding.columnHeaders.length; i++) {
-			alert(finding.columnHeaders[i].displayName);
 			dwr.util.setValue("columnHeaderDisplayName" + i + 1, finding.columnHeaders[i].displayName);
 		}
+	} else {
+		dwr.util.setValue("colNum", 0);
+		dwr.util.setValue("rowNum", 0);
 	}
 }
 function clearFile() {
@@ -91,29 +83,29 @@ function clearFile() {
 	dwr.util.setValue("fileTitle", "");
 	dwr.util.setValue("fileKeywords", "");
 	dwr.util.setValue("fileVisibility", "");
-	dwr.util.setValue("external0", 1);
-	dwr.util.setValue("uploadedFile", null);
 	show("load");
-	dwr.util.setValue("externalUrl", "");
+	hide("link");
+	dwr.util.setValue("external0", true);
+	dwr.util.setValue("external1", false);
 	FindingManager.resetFile(function (file) {
 		currentFile = file;
 	});
 }
-function addFile(form, actionName) {
-	submitAction(form, actionName, "addFile");
+function addFile(form) {
+	form.action = "characterization.do?dispatch=addFile&page=0";
+	form.submit();
 }
 function setTheFile(index) {
+	//window.setTimeout("updateFile(" + index + ")", 300);
+	FindingManager.getFileFromList(index, populateFile);
 	show("newFile");
 	show("deleteFile");
-	currentFileIndex = index;
-	window.setTimeout("updateFile()", 300);
 }
-function updateFile() {
-	FindingManager.getFileFromList(currentFileIndex, populateFile);
+function updateFile(index) {
+	FindingManager.getFileFromList(index, populateFile);
 }
 function populateFile(file) {
 	if (file != null) {
-		currentFile = file;
 		dwr.util.setValue("fileType", file.domainFile.type);
 		dwr.util.setValue("fileTitle", file.domainFile.Title);
 		dwr.util.setValue("fileKeywords", file.keywordStr);
