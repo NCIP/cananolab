@@ -32,13 +32,13 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<span id="load" style="${loadStyle}"> <html:file
+				<span id="load" style="${loadStyle }"> <html:file
 						property="achar.theFinding.theFile.uploadedFile" size="60"
-						styleId="uploadedFile" /> &nbsp;&nbsp; </span>
-				<span id="link" style="${linkStyle}"><html:text
+						styleId="uploadedFile" /> &nbsp;&nbsp;</span>
+				<span id="uploadedUri"></span>
+				<span id="link" style="${linkStyle }"><html:text
 						property="achar.theFinding.theFile.externalUrl" size="60"
 						styleId="externalUrl" /> </span>&nbsp;
-				<span id="uploadedUri"></span>
 			</td>
 		</tr>
 		<tr>
@@ -75,7 +75,8 @@
 			<td>
 				<html:textarea property="achar.theFinding.theFile.keywordsStr"
 					rows="3" cols="60" styleId="fileKeywords" />
-				<br><em>(one word per line)</em>
+				<br>
+				<em>(one word per line)</em>
 			</td>
 		</tr>
 		<tr>
@@ -93,11 +94,10 @@
 					selected.)</i>
 			</td>
 		</tr>
-		<c:if
-			test="${!empty characterizationForm.map.achar.theFinding.theFile.domainFile.id }">
-			<html:hidden property="achar.theFinding.theFile.domainFile.id" />
-			<html:hidden property="achar.theFinding.theFile.domainFile.uri" />
-		</c:if>
+		<html:hidden property="achar.theFinding.theFile.domainFile.id"
+			styleId="hiddenFileId" />
+		<html:hidden property="achar.theFinding.theFile.domainFile.uri"
+			styleId="hiddenFileUri" />
 		<tr>
 			<td>
 				<input class="promptButton" type="button" value="Remove"
