@@ -429,8 +429,32 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		/**
+		 * Modified by houyh for implementing Print/Export feature for Char Summary. 
+		 */
+		this.prepareSummary(mapping, form, request, response);
+		
+		return mapping.findForward("summaryView");
+	}
+
+	/**
+	 * Shared function for summaryView() and summaryPrint().
+	 * Retrieve CharacterizationBean based on SampleId and prepare list of CharType.
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward 
+	 * @throws Exception if error happened.
+	 */
+	protected void prepareSummary(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		String sampleId = request.getParameter("sampleId");
 		String location = request.getParameter("location");
+		String type = request.getParameter("type");
+		
 		CharacterizationService service = null;
 		if (location.equals("local")) {
 			service = new CharacterizationServiceLocalImpl();
@@ -450,24 +474,54 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			InitCharacterizationSetup.getInstance().setCharacterizationName(
 					request, charBean);
 		}
-		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
-				charBeans);
+		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
 		// keep submitted characterization types in the correct display order
 		List<String> allCharacterizationTypes = new ArrayList<String>(
 				(List<? extends String>) request.getSession().getAttribute(
 						"characterizationTypes"));
 		List<String> characterizationTypes = new ArrayList<String>();
-		for (String type : allCharacterizationTypes) {
-			if (summaryView.getCharacterizationTypes().contains(type)
-					&& !characterizationTypes.contains(type)) {
-				characterizationTypes.add(type);
+		for (String charType : allCharacterizationTypes) {
+			if (summaryView.getCharacterizationTypes().contains(charType) &&
+				!characterizationTypes.contains(charType)) {
+				if (StringUtils.isEmpty(type)) {
+					characterizationTypes.add(charType);
+				} else if (type.equals(charType)) {
+					characterizationTypes.add(charType);
+				}
 			}
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
-		return mapping.findForward("summaryView");
+		
+		/**
+		 * added by Henry for implementing Print/Export feature for Char Summary page. 
+		 */
+		request.setAttribute("sampleId", sampleId);
+		request.setAttribute("location", location);
+		request.setAttribute("actionName", request.getRequestURL().toString());
 	}
-
+	
+	/**
+	 * summaryPrint()
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward 
+	 * @throws Exception if error happened.
+	 */
+	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		/**
+		 * Modified by houyh for implementing Print/Export feature for Char Summary. 
+		 */
+		this.prepareSummary(mapping, form, request, response);
+		
+		return mapping.findForward("summaryPrintView");
+	}
+	
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

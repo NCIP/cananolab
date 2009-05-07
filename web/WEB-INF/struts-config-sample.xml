@@ -111,19 +111,19 @@
 	<global-forwards>
 		<forward name="sampleMessage" path="sample.annotationMessage" />
 		<forward name="detailPrintView"
-			path="/particle/characterization/bodyCharacterizationDetailPrintView.jsp" />
+			path="/sample/characterization/bodyCharacterizationDetailPrintView.jsp" />
 		<forward name="summaryPrintView"
-			path="/particle/characterization/bodyCharacterizationSummaryPrintView.jsp" />
+			path="/sample/characterization/bodyCharacterizationSummaryPrintView.jsp" />
 		<forward name="summaryPrintAllView"
-			path="/particle/characterization/bodyCharacterizationSummaryPrintAllView.jsp" />
+			path="/sample/characterization/bodyCharacterizationSummaryPrintAllView.jsp" />
 		<forward name="annotationDeleteView"
 			path="sample.annotationDeleteView" />
 		<forward name="pointOfContactMessage"
 			path="pointOfContact.message" />
 		<forward name="pointOfContactDetailPrintView"
-			path="/particle/bodyPointOfContactDetailPrintView.jsp" />
+			path="/sample/bodyPointOfContactDetailPrintView.jsp" />
 		<forward name="pointOfContactSummaryPrintView"
-			path="/particle/bodyPointOfContactSummaryPrintView.jsp" />
+			path="/sample/bodyPointOfContactSummaryPrintView.jsp" />
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageSample"
