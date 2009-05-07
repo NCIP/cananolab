@@ -7,25 +7,27 @@
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
 <table class="promptbox" width="85%" align="center">
 	<tr>
-		<td class="cellLabel">
+		<td class="cellLabel" width="20%">
 			Number of Columns
 		</td>
 		<td>
 			<html:text property="achar.theFinding.numberOfColumns" size="2"
-				styleId="colNum" onkeydown="return filterInteger(event)"
-				onkeyup="updateMatrix(characterizationForm)" />
+				styleId="colNum" onkeydown="return filterInteger(event)" />
 		</td>
-		<td class="cellLabel">
+		<td class="cellLabel" width="20%">
 			Number of Rows
 		</td>
 		<td>
 			<html:text property="achar.theFinding.numberOfRows" size="2"
-				styleId="rowNum" onkeydown="return filterInteger(event)"
-				onkeyup="updateMatrix(characterizationForm)" />
+				styleId="rowNum" onkeydown="return filterInteger(event)" />
+		</td>
+		<td>
+			<input class="promptButton" type="button" value="Update"
+				onclick="updateMatrix(characterizationForm)" />
 		</td>
 	</tr>
 	<tr>
-		<td colspan="4"><jsp:include
+		<td colspan="5"><jsp:include
 				page="/bodyMessage.jsp?bundle=particle" /></td>
 	</tr>
 </table>
@@ -36,7 +38,8 @@
 			property="achar.theFinding.columnHeaders" indexId="cInd">
 			<td class="cellLabel">
 				<div id="column${cInd}" style="position: relative">
-					<a href="javascript:openColumnForm('${characterizationForm.map.achar.characterizationName}', ${cInd});"><span
+					<a
+						href="javascript:openColumnForm('${characterizationForm.map.achar.characterizationName}', ${cInd});"><span
 						id="columnHeaderDisplayName${cInd}"> <c:choose>
 								<c:when test="${!empty col.displayName}">
 								${col.displayName}
