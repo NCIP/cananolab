@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -26,19 +27,6 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCharacterizationResultManager {
-	int tempRowId = -1;
-	private CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
-
-	public FindingBean resetFinding() {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		FindingBean newFindingBean = new FindingBean();
-		charBean.setTheFinding(newFindingBean);
-		return newFindingBean;
-	}
-
 	public String[] getConditionOptions() throws Exception {
 		WebContext wctx = WebContextFactory.get();
 		SortedSet<String> conditions = InitCharacterizationSetup.getInstance()
@@ -48,8 +36,6 @@ public class DWRCharacterizationResultManager {
 
 	public String[] getConditionPropertyOptions(String conditionName)
 			throws Exception {
-		WebContext wctx = WebContextFactory.get();
-
 		SortedSet<String> properties = LookupService
 				.getDefaultAndOtherLookupTypes(conditionName, "property",
 						"otherProperty");
@@ -77,16 +63,6 @@ public class DWRCharacterizationResultManager {
 		return units.toArray(new String[units.size()]);
 	}
 
-	public FileBean resetFile() {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		FileBean newFile = new FileBean();
-		charBean.getTheFinding().setTheFile(newFile);
-		return newFile;
-	}
-
 	public FileBean getFileFromList(int index) {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
@@ -95,17 +71,6 @@ public class DWRCharacterizationResultManager {
 		List<FileBean> files = charBean.getTheFinding().getFiles();
 		FileBean theFile = files.get(index);
 		return theFile;
-	}
-
-	public ColumnHeader addColumnHeader(int columnNumber) {
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		List<ColumnHeader> columnHeaders = charBean.getTheFinding()
-				.getColumnHeaders();
-		ColumnHeader columnHeader = columnHeaders.get(columnNumber);
-		return columnHeader;
 	}
 
 	public String addColumnHeader(ColumnHeader header) {
@@ -123,5 +88,17 @@ public class DWRCharacterizationResultManager {
 		} catch (Exception e) {
 			return "";
 		}
+	}
+
+	public FindingBean getFinding(String findingId) throws Exception{
+		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
+		Finding finding = service.findFindingById(findingId);
+		FindingBean findingBean = new FindingBean(finding);
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		charBean.setTheFinding(findingBean);
+		return findingBean;
 	}
 }
