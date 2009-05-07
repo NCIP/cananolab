@@ -103,7 +103,7 @@
 		<put name="actionName" value="composition" />
 	</definition>
 
-	<!-- definition for the sample composition particle entity page -->
+	<!-- definition for the sample composition nanomaterial entity page -->
 	<definition name="sample.composition.nanomaterialEntity"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
@@ -115,7 +115,7 @@
 	<definition name="sample.composition.functionalizingEntity"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/sample/composition/functionalizingEntity/bodyFunctionalizingEntity.jsp" />
+			value="/sample/composition/functionalizingEntity/bodySubmitFunctionalizingEntity.jsp" />
 		<put name="actionName" value="functionalizingEntity" />
 	</definition>
 
@@ -123,7 +123,7 @@
 	<definition name="sample.composition.chemicalAssociation"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/sample/composition/bodyChemicalAssociation.jsp" />
+			value="/sample/composition/bodySubmitChemicalAssociation.jsp" />
 		<put name="actionName" value="chemicalAssociation" />
 	</definition>
 
@@ -131,7 +131,7 @@
 	<definition name="sample.composition.compositionFile"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/sample/composition/bodyCompositionFile.jsp" />
+			value="/sample/composition/bodySubmitCompositionFile.jsp" />
 		<put name="actionName" value="compositionFile" />
 	</definition>
 
