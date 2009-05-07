@@ -58,10 +58,10 @@ public class ComposingElementBean {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(getDomain().getType());
 		if (getDomain().getName() != null) {
-			buffer.append(" (");
+			buffer.append(" (name: ");
 			buffer.append(getDomain().getName());
 			if (getDomain().getValue() != null) {
-				buffer.append(", ");
+				buffer.append(", amount: ");
 				buffer.append(getDomain().getValue());
 				if (getDomain().getValueUnit() != null) {
 					buffer.append(" ");
