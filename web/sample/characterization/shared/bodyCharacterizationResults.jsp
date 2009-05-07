@@ -45,7 +45,7 @@ function confirmDeletion()
 		<td>
 			<c:set var="findingInfoStyle" value="display:none" />
 			<c:if
-				test="${param.dispatch eq 'addFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
+				test="${param.dispatch eq 'addFile' || param.dispatch eq 'removeFile' || param.dispatch eq 'drawMatrix' || param.dispatch eq 'getFinding' ||param.dispatch eq 'resetFinding'}">
 				<c:set var="findingInfoStyle" value="display:block" />
 			</c:if>
 			<div id="newFinding" style="${findingInfoStyle}">
