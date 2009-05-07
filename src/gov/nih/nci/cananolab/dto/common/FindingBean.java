@@ -30,6 +30,7 @@ public class FindingBean {
 	private int numberOfColumns;
 	private int numberOfRows;
 	private FileBean theFile = new FileBean();
+	private int theFileIndex;
 
 	public FindingBean() {
 	}
@@ -97,7 +98,7 @@ public class FindingBean {
 						row.getCells().add(new TableCell(condition));
 					}
 					if (!datumMap.isEmpty()) {
-						Datum datum = datumMap.get(columnHeaders.get(j)).get(0);
+						Datum datum = datumMap.get(columnHeaders.get(j)).get(i);
 						row.getCells().add(new TableCell(datum));
 					}
 				}
@@ -195,8 +196,8 @@ public class FindingBean {
 
 	public void removeColumn(int colIndex) {
 		columnHeaders.remove(colIndex);
-		for(int i=0; i<rows.size(); i++) {
-			List<TableCell>cells=rows.get(i).getCells();
+		for (int i = 0; i < rows.size(); i++) {
+			List<TableCell> cells = rows.get(i).getCells();
 			cells.remove(colIndex);
 		}
 		numberOfColumns--;
@@ -241,14 +242,14 @@ public class FindingBean {
 			List<Datum> rowData = new ArrayList<Datum>();
 			for (TableCell cell : row.getCells()) {
 				ColumnHeader columnHeader = columnHeaders.get(cInd);
-				if (cell.getDatumOrCondition().equals("Datum")) {
+				if (columnHeader.getColumnType().equals("Datum")) {
 					Datum datum = cell.getDatum();
 					datum.setValue(cell.getValue());
 					datum.setValueType(columnHeader.getValueType());
 					datum.setValueUnit(columnHeader.getValueUnit());
 					datum.setName(columnHeader.getColumnName());
 					rowData.add(datum);
-				} else if (cell.getDatumOrCondition().equals("Condition")) {
+				} else if (columnHeader.getColumnType().equals("Condition")) {
 					Condition condition = cell.getCondition();
 					condition.setValue(cell.getValue());
 					condition.setValueType(columnHeader.getValueType());
@@ -340,14 +341,26 @@ public class FindingBean {
 		return domain;
 	}
 
-	public void addFile(FileBean file) {
-		if (files.contains(file)) {
-			files.remove(file);
+	public void addFile(FileBean file, int index) {
+		if (index==-1) {
+			files.add(file);
+			return;
 		}
-		files.add(file);
+		if (!files.isEmpty()) {
+			files.remove(index);
+		}
+		files.add(index, file);
 	}
 
-	public void removeFile(FileBean file) {
-		files.remove(file);
+	public void removeFile(int index) {
+		files.remove(index);
+	}
+
+	public int getTheFileIndex() {
+		return theFileIndex;
+	}
+
+	public void setTheFileIndex(int theFileIndex) {
+		this.theFileIndex = theFileIndex;
 	}
 }
