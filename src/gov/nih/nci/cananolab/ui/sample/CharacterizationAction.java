@@ -624,6 +624,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
 		FileBean theFile = findingBean.getTheFile();
+		int theFileIndex=findingBean.getTheFileIndex();
+		//create a new copy before adding to finding
+		FileBean newFile=theFile.copy();
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -633,9 +636,21 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				+ StringUtils.getOneWordLowerCaseFirstLetter(achar
 						.getCharacterizationName());
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
+		findingBean.addFile(newFile, theFileIndex);
+		request.setAttribute("anchor", "result");
+		return mapping.getInputForward();
+	}
 
-		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
-		findingBean.addFile(theFile);
+	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CharacterizationBean achar = (CharacterizationBean) theForm
+				.get("achar");
+		FindingBean findingBean = achar.getTheFinding();
+		int theFileIndex=findingBean.getTheFileIndex();
+		findingBean.removeFile(theFileIndex);
 		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
