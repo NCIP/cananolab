@@ -91,17 +91,20 @@
 				<br>
 				<i>(${applicationOwner}_Researcher and
 					${applicationOwner}_DataCurator are defaults if none of above is
-					selected.)</i>
+					selected)</i>
 			</td>
 		</tr>
 		<html:hidden property="achar.theFinding.theFile.domainFile.id"
 			styleId="hiddenFileId" />
 		<html:hidden property="achar.theFinding.theFile.domainFile.uri"
 			styleId="hiddenFileUri" />
+		<html:hidden property="achar.theFinding.theFileIndex"
+			styleId="hiddenFileIndex" value="-1"/>
 		<tr>
 			<td>
 				<input class="promptButton" type="button" value="Remove"
-					onclick="deleteFile()" id="deleteFile" style="display: none;" />
+					onclick="removeFile(characterizationForm)" id="deleteFile"
+					style="display: none;" />
 			</td>
 			<td>
 				<div align="right">
