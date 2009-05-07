@@ -37,14 +37,9 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager" />
 			<include method="getSubmitColumnPage" />
+			<include method="getFinding" />
 			<include method="addColumnHeader" />
-			<include method="removeColumnHeader" />
-			<include method="resetFinding" />
-			<include method="resetFile" />
 			<include method="getFileFromList" />
-			<include method="addRow" />
-			<include method="deleteRow" />
-			<include method="findFindingById" />
 			<include method="getConditionOptions" />
 			<include method="getConditionPropertyOptions" />
 			<include method="getDatumNameOptions" />
@@ -99,15 +94,13 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FileBean">
-			<param name="exclude" value="uploadedFile"/>
+			<param name="include" value="keywordsStr, visibilityGroups, domainFile"/>
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
-			<param name="exclude"
-				value="datumCollection, findingCollection" />
+			<param name="include"
+				value="title, type, uriExternal, uri" />
 		</convert>
-		<convert converter="bean"
-			match="gov.nih.nci.cananolab.domain.common.Keyword" />
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
 			<param name="include" value="domain, instruments" />
