@@ -27,7 +27,7 @@ function confirmDeletion()
 	<tr>
 		<td colspan="2">
 			<span class="cellLabel">File</span> &nbsp;&nbsp;
-			<a href="javascript:clearFile(); show('newFile');">Add</a>
+			<a href="javascript:clearFile();show('newFile');">Add</a>
 		</td>
 	</tr>
 	<tr>
@@ -52,7 +52,7 @@ function confirmDeletion()
 	<tr>
 		<td colspan="2">
 			<c:set var="newFileStyle" value="display:block" />
-			<c:if test="${param.dispatch eq 'addFile'}">
+			<c:if test="${param.dispatch eq 'addFile' || fn:length(characterizationForm.map.achar.theFinding.files)>0}">
 				<c:set var="newFileStyle" value="display:none" />
 			</c:if>
 			<div style="${newFileStyle }" id="newFile">
@@ -87,7 +87,7 @@ function confirmDeletion()
 				<input type="button" value="Cancel"
 					onclick="javascript:hide('newFinding');">
 				<input type="button" value="Save"
-					onclick="javascript:saveFinding('characterization');">
+					onclick="javascript:saveFinding(characterizationForm);">
 			</div>
 		</td>
 	</tr>
