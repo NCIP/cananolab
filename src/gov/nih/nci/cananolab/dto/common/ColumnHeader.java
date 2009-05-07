@@ -80,7 +80,7 @@ public class ColumnHeader {
 		}
 		if ((valueType != null && valueType.trim().length() > 0)
 				|| (valueUnit != null && valueUnit.trim().length() > 0)) {
-			displayName += " (";
+			displayName += "<br>(";
 			if (valueType != null && valueType.trim().length() > 0) {
 				displayName += valueType;
 				if (valueUnit != null && valueUnit.trim().length() > 0) {
