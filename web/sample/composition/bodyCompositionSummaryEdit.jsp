@@ -13,7 +13,7 @@
 %>
 
 <c:set var="sectionTitles" value="" />
-
+<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
