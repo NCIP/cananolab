@@ -130,12 +130,15 @@ public class FileBean {
 		return uploadedFile;
 	}
 
-	public void setUploadedFile(FormFile uploadedFile) throws Exception {
+	public void setUploadedFile(FormFile uploadedFile) {
 		this.uploadedFile = uploadedFile;
 	}
 
 	public void setupDomainFile(String internalUriPath, String createdBy,
 			int index) throws Exception {
+		if (domainFile.getId() == 0) {
+			domainFile.setId(null);
+		}
 		if (domainFile.getId() == null
 				|| domainFile.getCreatedBy() != null
 				&& domainFile.getCreatedBy().equals(
@@ -213,30 +216,17 @@ public class FileBean {
 		return createdDateStr;
 	}
 
-	/**
-	 * Compares <code>obj</code> to it self and returns true if they both are
-	 * same
-	 *
-	 * @param obj
-	 */
-	public boolean equals(Object obj) {
-		if (obj instanceof FileBean) {
-			FileBean f = (FileBean) obj;
-			if (getDomainFile().getId() != null
-					&& f.getDomainFile().getId() != null
-					&& getDomainFile().getId()
-							.equals(f.getDomainFile().getId())) {
-				return true;
-			} else {
-				if (getDomainFile().getUri().compareTo(
-						f.getDomainFile().getUri()) == 1) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
+	public FileBean copy() {
+		FileBean copy=new FileBean();
+		copy.getDomainFile().setType(domainFile.getType());
+		copy.getDomainFile().setTitle(domainFile.getTitle());
+		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
+		copy.setKeywordsStr(keywordsStr);
+		copy.setVisibilityGroups(visibilityGroups);
+		copy.setUploadedFile(uploadedFile);
+		copy.setExternalUrl(externalUrl);
+		copy.getDomainFile().setId(domainFile.getId());
+		copy.getDomainFile().setUri(domainFile.getUri());
+		return copy;
 	}
 }
