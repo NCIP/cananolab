@@ -381,22 +381,6 @@ public class FunctionalizingEntityBean {
 		return withProperties;
 	}
 
-	public String getDisplayName() {
-		StringBuffer buffer = new StringBuffer();
-		if (getDomainEntity().getName() != null) {
-			buffer.append(getDomainEntity().getName());
-			if (getDomainEntity().getValue() != null) {
-				buffer.append(", ");
-				buffer.append(getDomainEntity().getValue());
-				if (getDomainEntity().getValueUnit() != null) {
-					buffer.append(" ");
-					buffer.append(getDomainEntity().getValueUnit());
-				}
-			}
-		}
-		return buffer.toString();
-	}
-
 	public String getActivationMethodDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		if (getDomainEntity().getActivationMethod() != null) {
