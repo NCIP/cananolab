@@ -50,12 +50,27 @@
 									</tr>
 									<tr>
 										<td class="cellLabel">
-											Name and Amount
+											Name
 										</td>
 										<td>
 											<c:choose>
-												<c:when test="${!empty functionalizingEntity.displayName}">
-													${functionalizingEntity.displayName}
+												<c:when test="${!empty functionalizingEntity.name}">
+													${functionalizingEntity.name}
+													</c:when>
+												<c:otherwise>
+														N/A
+												</c:otherwise>
+											</c:choose>
+										</td>
+									</tr>
+									<tr>
+										<td class="cellLabel">
+											Amount
+										</td>
+										<td>
+											<c:choose>
+												<c:when test="${!empty functionalizingEntity.value}">
+													${functionalizingEntity.value} ${functionalizingEntity.valueUnit}
 													</c:when>
 												<c:otherwise>
 														N/A

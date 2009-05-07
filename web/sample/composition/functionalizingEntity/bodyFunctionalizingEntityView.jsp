@@ -34,13 +34,24 @@
 										href="functionalizingEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${functionalizingEntity.domainEntity.id}">Edit</a>
 								</th>
 							</tr>
-							<c:if test="${!empty functionalizingEntity.displayName}">
+							<c:if test="${!empty functionalizingEntity.name}">
 								<tr>
 									<td class="cellLabel">
-										Name and Amount
+										Name
 									</td>
 									<td>
-										${functionalizingEntity.displayName}
+										${functionalizingEntity.name}
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${!empty functionalizingEntity.value}">
+								<tr>
+									<td class="cellLabel">
+										Amount
+									</td>
+									<td>
+										${functionalizingEntity.value}
+										${functionalizingEntity.valueUnit}
 									</td>
 								</tr>
 							</c:if>
