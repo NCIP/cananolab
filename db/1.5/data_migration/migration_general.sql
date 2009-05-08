@@ -238,7 +238,7 @@ set name='File'
 where name='LabFile';
 
 update common_lookup
-set name='NanmaterialEntity', value='Nanomaterial Entity'
+set name='NanomaterialEntity', value='Nanomaterial Entity'
 where name='NanoparticleEntity'
 and attribute='displayName';
 
