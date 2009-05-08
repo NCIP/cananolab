@@ -434,6 +434,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		 */
 		this.prepareSummary(mapping, form, request, response);
 		
+		/**
+		 * Added by houyh for implementing Print/Export feature for Char Summary page. 
+		 */
+		request.setAttribute("actionName", request.getRequestURL().toString());
+		
 		return mapping.findForward("summaryView");
 	}
 
@@ -492,13 +497,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
-		
-		/**
-		 * added by Henry for implementing Print/Export feature for Char Summary page. 
-		 */
-		request.setAttribute("sampleId", sampleId);
-		request.setAttribute("location", location);
-		request.setAttribute("actionName", request.getRequestURL().toString());
 	}
 	
 	/**
