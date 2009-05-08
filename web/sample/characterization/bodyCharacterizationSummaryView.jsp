@@ -63,13 +63,13 @@
 		<td>
 			<a href="javascript:printPage('${printUrl}')" id="printLink">
 				<img src="images/icon_print_23x.gif" border="0"
-											title="Print Summary" 
-											alt="Print Summary" 
+											title="Print Report" 
+											alt="Print Report" 
 											align="middle"></a>&nbsp;&nbsp;
 			<a href="${exportUrl}" id="exportLink">
 				<img src="images/icon_excel_23x.gif" border="0"
-											title="Export Summary" 
-											alt="Export Summary" 
+											title="Export Report" 
+											alt="Export Report" 
 											align="middle"></a>
 		</td>
 	</tr>
