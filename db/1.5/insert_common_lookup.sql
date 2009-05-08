@@ -408,7 +408,7 @@ insert into common_lookup(name,attribute, value) values ('Electromagnetic Radiat
 insert into common_lookup(name,attribute, value) values ('Sonication', 'property','number of pulses');
 insert into common_lookup(name,attribute, value) values ('Sonication', 'property','pulse duration');
 
-insert into common_lookup(name,attribute,value) values ('NanomaterialEntity','displayName','Nanoparticle Entity');
+insert into common_lookup(name,attribute,value) values ('NanomaterialEntity','displayName','Nanomaterial Entity');
 insert into common_lookup(name,attribute,value) values ('FunctionalizingEntity','displayName','Functionalizing Entity');
 insert into common_lookup(name,attribute,value) values ('ChemicalAssociation','displayName','Chemical Association');
 insert into common_lookup(name,attribute,value) values ('Relaxivity','displayName','Relaxivity');

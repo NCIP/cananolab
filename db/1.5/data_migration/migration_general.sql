@@ -237,6 +237,11 @@ update common_lookup
 set name='File'
 where name='LabFile';
 
+update common_lookup
+set name='NanmaterialEntity', value='Nanomaterial Entity'
+where name='NanoparticleEntity'
+and attribute='displayName';
+
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
