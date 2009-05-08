@@ -12,7 +12,8 @@
 		</th>
 	</tr>
 	<logic:iterate name="compositionForm"
-		property="comp.nanomaterialEntities" id="nanomaterialEntity" indexId="ind">
+		property="comp.nanomaterialEntities" id="nanomaterialEntity"
+		indexId="ind">
 		<c:set var="entityType" value="${nanomaterialEntity.type}" />
 		<c:if test="${!empty entityType}">
 			<tr>
@@ -26,7 +27,8 @@
 								<th valign="top" align="right">
 								</th>
 							</tr>
-							<c:if test="${!empty fn:trim(nanomaterialEntity.emulsion.description)}">
+							<c:if
+								test="${!empty fn:trim(nanomaterialEntity.emulsion.description)}">
 								<tr>
 									<td class="cellLabel">
 										Description
@@ -55,7 +57,9 @@
 																pageContext.setAttribute("detailPage",
 																		detailPage);
 										%>
-										<c:set var="nanomaterialEntity" value="${nanomaterialEntity}" scope="session" />										<jsp:include page="${detailPage}">
+										<c:set var="nanomaterialEntity" value="${nanomaterialEntity}"
+											scope="session" />
+										<jsp:include page="${detailPage}">
 											<jsp:param name="summary" value="true" />
 										</jsp:include>
 									</td>
@@ -68,6 +72,33 @@
 									</td>
 									<td>
 										<%@include file="bodyComposingElementView.jsp"%>
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${! empty nanomaterialEntity.files}">
+								<tr>
+									<td class="cellLabel">
+										Files
+									</td>
+									<td>
+										<c:forEach var="file" items="${nanomaterialEntity.files}">
+											<c:choose>
+												<c:when test="${file.image eq 'true'}">
+						 				${file.domainFile.title}
+										<br>
+													<a href="#"
+														onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+															src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+															border="0" width="150"> </a>
+												</c:when>
+												<c:otherwise>
+													<a
+														href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+														${file.domainFile.title}</a>
+												</c:otherwise>
+											</c:choose>
+											<br>
+										</c:forEach>
 									</td>
 								</tr>
 							</c:if>
