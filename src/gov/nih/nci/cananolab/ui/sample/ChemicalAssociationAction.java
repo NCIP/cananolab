@@ -164,7 +164,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 	}
 
 	/**
-	 * Set up the input form for adding new nanomaterial entity
+	 * Set up the input form for adding new chemical association
 	 *
 	 * @param mapping
 	 * @param form
