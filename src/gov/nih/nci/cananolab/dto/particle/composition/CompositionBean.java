@@ -13,6 +13,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class CompositionBean {
+	
+	public static final String NANOMATERIAL_SELECTION = "Nanomaterial Entity";
+	public static final String FUNCTIONALIZING_SELECTION = "Functionalizing Entity";
+	public static final String CHEMICAL_SELECTION = "Chemical Association";
+	public static final String FILE_SELECTION = "Composition File";
+	
 	private List<NanomaterialEntityBean> nanomaterialEntities = new ArrayList<NanomaterialEntityBean>();
 	private List<FunctionalizingEntityBean> functionalizingEntities = new ArrayList<FunctionalizingEntityBean>();
 	private List<ChemicalAssociationBean> chemicalAssociations = new ArrayList<ChemicalAssociationBean>();
@@ -100,16 +106,16 @@ public class CompositionBean {
 
 	public List<String> getCompositionSections() {
 		if (!nanomaterialEntities.isEmpty()) {
-			compositionSections.add("Nanomaterial Entity");
+			compositionSections.add(NANOMATERIAL_SELECTION);
 		}
 		if (!functionalizingEntities.isEmpty()) {
-			compositionSections.add("Functionalizing Entity");
+			compositionSections.add(FUNCTIONALIZING_SELECTION);
 		}
 		if (!chemicalAssociations.isEmpty()) {
-			compositionSections.add("Chemical Association");
+			compositionSections.add(CHEMICAL_SELECTION);
 		}
 		if (!files.isEmpty()) {
-			compositionSections.add("Composition File");
+			compositionSections.add(FILE_SELECTION);
 		}
 		return compositionSections;
 	}

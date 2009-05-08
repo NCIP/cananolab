@@ -161,6 +161,8 @@
 				path="sample.composition.summaryView" />
 			<forward name="summaryEdit"
 				path="sample.composition.summaryEdit" />
+			<forward name="summaryPrint"
+				path="/sample/composition/bodyCompositionSummaryPrintView.jsp" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/nanomaterialEntity"
