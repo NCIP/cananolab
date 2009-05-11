@@ -106,40 +106,39 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 														</c:choose>
 													</td>
 												</tr>
-												<tr>
-													<td class="cellLabel">
-														Files
-													</td>
-													<td>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td class="cellLabel">
+											Files
+										</td>
+										<td>
+											<c:choose>
+												<c:when test="${! empty assoc.files}">
+													<c:forEach var="file" items="${assoc.files}">
 														<c:choose>
-															<c:when test="${! empty assoc.files}">
-																<c:forEach var="file"
-																	items="${assoc.files}">
-																	<c:choose>
-																		<c:when test="${file.image eq 'true'}">
+															<c:when test="${file.image eq 'true'}">
 						 				${file.domainFile.title}
 										<br>
-																			<a href="#"
-																				onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
-																					src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
-																					border="0" width="150"> </a>
-																		</c:when>
-																		<c:otherwise>
-																			<a
-																				href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-																				${file.domainFile.title}</a>
-																		</c:otherwise>
-																	</c:choose>
-																	<br>
-																</c:forEach>
+																<a href="#"
+																	onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+																		src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+																		border="0" width="150"> </a>
 															</c:when>
 															<c:otherwise>
+																<a
+																	href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+																	${file.domainFile.title}</a>
+															</c:otherwise>
+														</c:choose>
+														<br>
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
 					N/A
 					</c:otherwise>
-														</c:choose>
-													</td>
-												</tr>
-											</table>
+											</c:choose>
 										</td>
 									</tr>
 								</table>
