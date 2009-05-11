@@ -83,18 +83,25 @@
 									<td>
 										<c:forEach var="file" items="${nanomaterialEntity.files}">
 											<c:choose>
-												<c:when test="${file.image eq 'true'}">
-						 				${file.domainFile.title}
-										<br>
-													<a href="#"
-														onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
-															src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
-															border="0" width="150"> </a>
+												<c:when test="${file.hidden eq 'true'}">
+												Private File
 												</c:when>
 												<c:otherwise>
-													<a
-														href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-														${file.domainFile.title}</a>
+													<c:choose>
+														<c:when test="${file.image eq 'true'}">
+						 				${file.domainFile.title}
+										<br>
+															<a href="#"
+																onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+																	src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+																	border="0" width="150"> </a>
+														</c:when>
+														<c:otherwise>
+															<a
+																href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+																${file.domainFile.title}</a>
+														</c:otherwise>
+													</c:choose>
 												</c:otherwise>
 											</c:choose>
 											<br>
