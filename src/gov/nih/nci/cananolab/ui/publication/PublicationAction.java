@@ -417,17 +417,14 @@ public class PublicationAction extends BaseAnnotationAction {
 		// Marker that indicates page is for printing (hide tabs, links, etc).
 		request.setAttribute("printView", Boolean.TRUE);
 
-		// Filter out category that not selected.
+		// Filter out categories that not selected.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			PublicationSummaryViewBean summaryBean = 
 				(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
 			Set<String> categories = summaryBean.getPublicationCategories();
-			for (String category : categories) {
-				if (!type.equals(category)) {
-					categories.remove(category);
-				}
-			}
+			categories.clear();
+			categories.add(type);
 			summaryBean.setPublicationCategories(categories);
 		}
 		
