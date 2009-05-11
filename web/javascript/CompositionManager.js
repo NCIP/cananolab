@@ -13,7 +13,6 @@ function populatePage(pageData) {
 		inclueBlock.style.display = "inline";
 	}
 }
-
 function displayTarget(functionIndex) {
 	var functionType = document.getElementById("funcType_" + functionIndex).value;
 	var targetSpan = document.getElementById("targetSpan_" + functionIndex);
@@ -83,6 +82,18 @@ function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId)
 		compEle.style.display = "none";
 	}
 }
+
+function getEntityDisplayNameOptions(elementNumber) {
+	var compositionType = dwr.util.getValue("compositionType"+elementNumber);
+	if (compositionType=="Nanomaterial Entity") {
+		show("materialEntitySelect"+elementNumber);
+		hide("functionalizingEntitySelect"+elementNumber);
+	}
+	else if (compositionType=="Functionalizing Entity") {
+		show("functionalizingEntitySelect"+elementNumber);
+		hide("materialEntitySelect"+elementNumber);
+	}
+}
 function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEleTypeId, compEleId) {
 	var compositionType = dwr.util.getValue(compositionTypeId);
 	var compEle = document.getElementById(compEleId);
@@ -108,14 +119,12 @@ function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEle
 }
 function displayBondType() {
 	var type = document.getElementById("assoType").value;
-	var btTitleEle = document.getElementById("bondTypeTitle");
-	var btLineEle = document.getElementById("bondTypeLine");
 	if (type == "attachment") {
-		btTitleEle.style.display = "inline";
-		btLineEle.style.display = "inline";
+		show("bondTypeLabel");
+		show("bondTypePrompt");
 	} else {
-		btTitleEle.style.display = "none";
-		btLineEle.style.display = "none";
+		hide("bondType");
+		hide("bondTypePrompt");
 	}
 }
 function setCompositionType(entityTypeId, displayNameEleId) {
