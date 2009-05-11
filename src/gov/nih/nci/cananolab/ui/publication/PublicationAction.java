@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -398,7 +399,52 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 	}
 
-	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+	/**
+	 * Handle summary report print request.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		this.prepareSummary(mapping, form, request, response);
+		
+		// Marker that indicates page is for printing (hide tabs, links, etc).
+		request.setAttribute("printView", Boolean.TRUE);
+
+		// Filter out category that not selected.
+		String type = request.getParameter("type");
+		if (!StringUtils.isEmpty(type)) {
+			PublicationSummaryViewBean summaryBean = 
+				(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
+			Set<String> categories = summaryBean.getPublicationCategories();
+			for (String category : categories) {
+				if (!type.equals(category)) {
+					categories.remove(category);
+				}
+			}
+			summaryBean.setPublicationCategories(categories);
+		}
+		
+		return mapping.findForward("summaryPrint");
+	}
+	
+	/**
+	 * Shared function for summaryView() and summaryPrint().
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	protected void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
@@ -411,7 +457,28 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
-
+	}
+	
+	/**
+	 * Handle summary report view request.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		this.prepareSummary(mapping, form, request, response);
+		
+		/**
+		 * Added by houyh for implementing Print/Export feature for Char Summary page. 
+		 */
+		request.setAttribute("actionName", request.getRequestURL().toString());
+		
 		// TODO fill in detail
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");

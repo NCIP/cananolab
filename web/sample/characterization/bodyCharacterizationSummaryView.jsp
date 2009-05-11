@@ -61,16 +61,8 @@
 <table class="summaryViewLayer1" width="100%">
 	<tr>
 		<td>
-			<a href="javascript:printPage('${printUrl}')" id="printLink">
-				<img src="images/icon_print_23x.gif" border="0"
-											title="Print Report" 
-											alt="Print Report" 
-											align="middle"></a>&nbsp;&nbsp;
-			<a href="${exportUrl}" id="exportLink">
-				<img src="images/icon_excel_23x.gif" border="0"
-											title="Export Report" 
-											alt="Export Report" 
-											align="middle"></a>
+			<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
+			<a href="${exportUrl}" id="exportLink">Export</a>
 		</td>
 	</tr>
 	<tr>

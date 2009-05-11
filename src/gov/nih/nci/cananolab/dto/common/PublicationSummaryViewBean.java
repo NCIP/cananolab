@@ -25,11 +25,15 @@ public class PublicationSummaryViewBean {
 			}
 			categoryPubs.add(pubBean);
 		}
-		publicationCategories=category2Publications.keySet();
+		publicationCategories = category2Publications.keySet();
 	}
 
 	public Set<String> getPublicationCategories() {
 		return publicationCategories;
+	}
+
+	public void setPublicationCategories(Set<String> publicationCategories) {
+		this.publicationCategories = publicationCategories;
 	}
 
 	public SortedMap<String, List<PublicationBean>> getCategory2Publications() {

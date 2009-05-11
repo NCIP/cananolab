@@ -4,9 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<c:set var="compositionSections"
+	value="${compositionForm.map.comp.compositionSections}" />
 <c:if test="${empty printView}">
-	<c:set var="compositionSections"
-		value="${compositionForm.map.comp.compositionSections}" />
 	<div class="animatedtabs" id="summaryTabALL">
 		<ul>
 			<li class="selected">
@@ -64,16 +64,8 @@
 	<c:if test="${empty printView}">
 		<tr>
 			<td>
-				<a href="javascript:printPage('${printUrl}')" id="printLink">
-					<img src="images/icon_print_23x.gif" border="0"
-												title="Print Report" 
-												alt="Print Report" 
-												align="middle"></a>&nbsp;&nbsp;
-				<a href="${exportUrl}" id="exportLink">
-					<img src="images/icon_excel_23x.gif" border="0"
-												title="Export Report" 
-												alt="Export Report" 
-												align="middle"></a>
+				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
+				<a href="${exportUrl}" id="exportLink">Export</a>
 			</td>
 		</tr>
 	</c:if>

@@ -68,6 +68,8 @@
 			<forward name="sampleDetailView" path="sample.detailViewPublication" />
 			<forward name="publicationDetailView" path="publication.detailViewPublication" />
 			<forward name="summaryView" path="sample.publication.summaryView" />
+			<forward name="summaryPrint" 
+				path="/publication/bodySamplePublicationSummaryPrintView.jsp" />
 			<forward name="summaryEdit" path="sample.publication.summaryEdit" />
 			<forward name="publicationSubmitPublication"
 				path="publication.submitPublication" />
