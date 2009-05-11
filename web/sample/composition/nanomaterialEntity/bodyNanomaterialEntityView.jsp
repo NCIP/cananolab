@@ -21,10 +21,8 @@
 					<div class="indented4">
 						<table class="summaryViewLayer3" width="95%" align="center">
 							<tr>
-								<th valign="top" align="left">
+								<th valign="top" align="left" colspan="2">
 									${entityType}
-								</th>
-								<th valign="top" align="right">
 								</th>
 							</tr>
 							<c:if
