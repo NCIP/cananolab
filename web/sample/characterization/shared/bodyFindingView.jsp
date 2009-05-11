@@ -21,18 +21,25 @@
 					<c:when test="${! empty finding.files}">
 						<c:forEach var="file" items="${finding.files}">
 							<c:choose>
-								<c:when test="${file.image eq 'true'}">
+								<c:when test="${file.hidden eq 'true'}">
+												Private File
+												</c:when>
+								<c:otherwise>
+									<c:choose>
+										<c:when test="${file.image eq 'true'}">
 						 				${file.domainFile.title}
 										<br>
-									<a href="#"
-										onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
-											src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
-											border="0" width="150"> </a>
-								</c:when>
-								<c:otherwise>
-									<a
-										href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-										${file.domainFile.title}</a>
+											<a href="#"
+												onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+													src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+													border="0" width="150"> </a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+												${file.domainFile.title}</a>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 							<br>
@@ -48,15 +55,13 @@
 					<c:when test="${! empty finding.rows}">
 						<table class="summaryViewLayer4" border="1">
 							<tr>
-								<c:forEach var="col"
-									items="${finding.columnHeaders}">
+								<c:forEach var="col" items="${finding.columnHeaders}">
 									<td>
 										<strong>${col.displayName}</strong>
 									</td>
 								</c:forEach>
 							</tr>
-							<c:forEach var="row"
-								items="${finding.rows}">
+							<c:forEach var="row" items="${finding.rows}">
 								<tr>
 									<c:forEach var="cell" items="${row.cells}">
 										<td>
@@ -74,7 +79,8 @@
 
 			<td align="right">
 				<c:if test="${edit eq 'true'}">
-					<a href="javascript:setTheFinding(characterizationForm, 'characterization', ${finding.domain.id});">Edit</a>&nbsp;
+					<a
+						href="javascript:setTheFinding(characterizationForm, 'characterization', ${finding.domain.id});">Edit</a>&nbsp;
 				</c:if>
 			</td>
 		</tr>
