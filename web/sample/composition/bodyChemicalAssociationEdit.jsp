@@ -46,7 +46,13 @@
 												Bond Type
 											</td>
 											<td>
+												<c:choose>
+													<c:when test="${!empty assoc.attachment.bondType}">
 												${assoc.attachment.bondType}
+											</c:when>
+													<c:otherwise>N/A
+											</c:otherwise>
+												</c:choose>
 											</td>
 										</tr>
 									</c:if>
