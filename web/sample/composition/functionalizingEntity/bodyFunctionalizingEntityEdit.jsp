@@ -178,24 +178,8 @@
 										<td>
 											<c:choose>
 												<c:when test="${! empty functionalizingEntity.files}">
-													<c:forEach var="file" items="${functionalizingEntity.files}">
-														<c:choose>
-															<c:when test="${file.image eq 'true'}">
-						 				${file.domainFile.title}
-										<br>
-																<a href="#"
-																	onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
-																		src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
-																		border="0" width="150"> </a>
-															</c:when>
-															<c:otherwise>
-																<a
-																	href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-																	${file.domainFile.title}</a>
-															</c:otherwise>
-														</c:choose>
-														<br>
-													</c:forEach>
+													<c:set var="files" value="${functionalizingEntity.files }" />
+													<%@include file="../bodyFileView.jsp"%>
 												</c:when>
 												<c:otherwise>
 					N/A
