@@ -26,12 +26,8 @@
 					<div class="indented4">
 						<table class="summaryViewLayer3" width="95%" align="center">
 							<tr>
-								<th valign="top" align="left">
+								<th valign="top" align="left" colspan="2">
 									${entityType}
-								</th>
-								<th valign="top" align="right">
-									<a
-										href="functionalizingEntity.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${functionalizingEntity.domainEntity.id}">Edit</a>
 								</th>
 							</tr>
 							<c:if test="${!empty functionalizingEntity.name}">
