@@ -6,6 +6,8 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
@@ -15,10 +17,10 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -115,9 +117,8 @@ public class ChemicalAssociationAction extends CompositionAction {
 		}
 		if (noErrors) {
 			CompositionService compService = new CompositionServiceLocalImpl();
-			compService.saveChemicalAssociation(sampleBean
-					.getDomain(), assocBean
-					.getDomainAssociation());
+			compService.saveChemicalAssociation(sampleBean.getDomain(),
+					assocBean.getDomainAssociation());
 			// set visibility
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
@@ -125,12 +126,10 @@ public class ChemicalAssociationAction extends CompositionAction {
 					sampleBean.getDomain().getName(),
 					Constants.CSM_READ_PRIVILEGE);
 			if (accessibleGroups != null
-					&& accessibleGroups
-							.contains(Constants.CSM_PUBLIC_GROUP)) {
+					&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
 				// set composition public
-				authService.assignPublicVisibility(sampleBean
-						.getDomain().getSampleComposition()
-						.getId().toString());
+				authService.assignPublicVisibility(sampleBean.getDomain()
+						.getSampleComposition().getId().toString());
 				compService.assignChemicalAssociationPublicVisibility(
 						authService, assocBean.getDomainAssociation());
 			}
@@ -177,11 +176,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("chemicalAssociationForm");
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		if (!setLookups(sampleBean, request)) {
-			return mapping.findForward("sampleMessage");
-		}
+		setLookups(form, request);
 		return mapping.findForward("setup");
 	}
 
@@ -194,64 +189,82 @@ public class ChemicalAssociationAction extends CompositionAction {
 		return mapping.findForward("setup");
 	}
 
-	private boolean setLookups(SampleBean sampleBean,
-			HttpServletRequest request) throws Exception {
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				sampleBean, request);
-		SortedSet<DataLinkBean> particleEntities = dataTree
-				.get("Nanomaterial Entity");
-		SortedSet<DataLinkBean> functionalizingEntities = dataTree
-				.get("Functionalizing Entity");
+	private boolean setLookups(ActionForm form, HttpServletRequest request)
+			throws Exception {
+		InitSampleSetup.getInstance().setSharedDropdowns(request);
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String sampleId = theForm.getString("sampleId");
+		CompositionService service = new CompositionServiceLocalImpl();
+		CompositionBean compositionBean = service
+				.findCompositionBySampleId(sampleId);
+		// set entity type and association type
+		HttpSession session=request.getSession();
+		for (NanomaterialEntityBean entityBean : compositionBean
+				.getNanomaterialEntities()) {
+			entityBean.setType(InitSetup.getInstance().getDisplayName(
+					entityBean.getClassName(), session.getServletContext()));
+		}
+		for (FunctionalizingEntityBean entityBean : compositionBean
+				.getFunctionalizingEntities()) {
+			entityBean.setType(InitSetup.getInstance().getDisplayName(
+					entityBean.getClassName(), session.getServletContext()));
+		}
+		for (ChemicalAssociationBean assocBean : compositionBean
+				.getChemicalAssociations()) {
+			assocBean.setType(InitSetup.getInstance().getDisplayName(
+					assocBean.getClassName(), session.getServletContext()));
+		}
+		// check if sample has functionalizing entities
+		Boolean hasFunctionalizingEntity = false;
+		if (!compositionBean.getFunctionalizingEntities().isEmpty()) {
+			hasFunctionalizingEntity = true;
+		}
+		InitCompositionSetup.getInstance().setChemicalAssociationDropdowns(
+				request, hasFunctionalizingEntity);
+		// check if sample has nanomaterial entities
 		ActionMessages msgs = new ActionMessages();
-		if (particleEntities == null || particleEntities.isEmpty()) {
+		if (compositionBean.getNanomaterialEntities().isEmpty()) {
 			ActionMessage msg = new ActionMessage(
-					"empty.particleEntitiesInAssociation");
+					"empty.materialsEntitiesInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			return false;
 		}
-
-		// check where particle entities has composing elements
+		// check whether nanomaterial entities has composing elements
+		// store those that have composing elements
 		int numberOfCE = 0;
-		CompositionService compService = new CompositionServiceLocalImpl();
-		SortedSet<DataLinkBean> particleEntitiesWithComposingElements = new TreeSet<DataLinkBean>(
-				particleEntities);
-		for (DataLinkBean dataLink : particleEntities) {
-			NanomaterialEntityBean entityBean = compService
-					.findNanomaterialEntityById(dataLink.getDataId());
-			if (entityBean.getComposingElements().size() == 0) {
-				particleEntitiesWithComposingElements.remove(dataLink);
-			} else {
+		List<NanomaterialEntityBean> materialEntities = new ArrayList<NanomaterialEntityBean>();
+		for (NanomaterialEntityBean entityBean : compositionBean
+				.getNanomaterialEntities()) {
+			if (!entityBean.getComposingElements().isEmpty()) {
 				numberOfCE += entityBean.getComposingElements().size();
+				materialEntities.add(entityBean);
 			}
 		}
-		if (particleEntitiesWithComposingElements.isEmpty()) {
+		if (numberOfCE == 0) {
 			ActionMessage msg = new ActionMessage(
 					"empty.composingElementsInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			return false;
 		}
-		if (functionalizingEntities == null
-				|| functionalizingEntities.isEmpty() && numberOfCE == 1) {
+		if (!hasFunctionalizingEntity && numberOfCE == 1) {
 			ActionMessage msg = new ActionMessage(
 					"one.composingElementsInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
 			return false;
 		}
-		boolean hasFunctionalizingEntity = true;
-		if (functionalizingEntities.isEmpty()) {
-			hasFunctionalizingEntity = false;
+		if (!hasFunctionalizingEntity) {
 			ActionMessage msg = new ActionMessage(
 					"empty.functionalizingEntityInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 		}
-		request.getSession().setAttribute("sampleEntities",
-				particleEntitiesWithComposingElements);
-		request.getSession().setAttribute("functionalizingEntities",
-				functionalizingEntities);
+		request.getSession().setAttribute("sampleMaterialEntities",
+				materialEntities);
+		request.getSession().setAttribute("sampleFunctionalizingEntities",
+				compositionBean.getFunctionalizingEntities());
 		request.getSession().setAttribute("hasFunctionalizingEntity",
 				hasFunctionalizingEntity);
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
@@ -261,8 +274,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 	}
 
 	public void prepareEntityLists(DynaValidatorForm theForm,
-			SampleBean sampleBean, HttpServletRequest request)
-			throws Exception {
+			SampleBean sampleBean, HttpServletRequest request) throws Exception {
 		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
 				sampleBean, request);
 		SortedSet<DataLinkBean> particleEntitites = dataTree
@@ -319,8 +331,8 @@ public class ChemicalAssociationAction extends CompositionAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		setLookups(sampleBean, request);
+		// SampleBean sampleBean = setupSample(theForm, request, "local");
+		// setLookups(sampleBean, request);
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
@@ -349,14 +361,13 @@ public class ChemicalAssociationAction extends CompositionAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			//TODO update grid service
-//			compService = new CompositionServiceRemoteImpl(
-//					serviceUrl);
+			// TODO update grid service
+			// compService = new CompositionServiceRemoteImpl(
+			// serviceUrl);
 		}
 		String assocClassName = request.getParameter("dataClassName");
 		ChemicalAssociationBean assocBean = compService
-				.findChemicalAssociationById(sampleId, assocId,
-						assocClassName);
+				.findChemicalAssociationById(sampleId, assocId, assocClassName);
 		if (location.equals("local")) {
 			compService.retrieveVisibility(assocBean, user);
 		}
