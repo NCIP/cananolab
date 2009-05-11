@@ -397,4 +397,24 @@ public class FunctionalizingEntityBean {
 		}
 		return buffer.toString();
 	}
+
+	//for use in chemical association submission form
+	public String getDisplayName() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(getType());
+		if (getDomainEntity().getName() != null) {
+			buffer.append(" (name: ");
+			buffer.append(getDomainEntity().getName());
+			if (getDomainEntity().getValue() != null) {
+				buffer.append(", amount: ");
+				buffer.append(getDomainEntity().getValue());
+				if (getDomainEntity().getValueUnit() != null) {
+					buffer.append(" ");
+					buffer.append(getDomainEntity().getValueUnit());
+				}
+			}
+			buffer.append(")");
+		}
+		return buffer.toString();
+	}
 }
