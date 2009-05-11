@@ -61,15 +61,6 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="compositionFileForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="compFile"
-				type="gov.nih.nci.cananolab.dto.common.LabFileBean" />
-			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="idsToDelete" type="java.lang.String[]" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-		</form-bean>
 		<form-bean name="submitPointOfContactForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
 			<form-property name="dispatch" type="java.lang.String" />
