@@ -220,6 +220,7 @@ public class FileBean {
 		FileBean copy=new FileBean();
 		copy.getDomainFile().setType(domainFile.getType());
 		copy.getDomainFile().setTitle(domainFile.getTitle());
+		copy.getDomainFile().setDescription(domainFile.getDescription());
 		copy.getDomainFile().setUriExternal(domainFile.getUriExternal());
 		copy.setKeywordsStr(keywordsStr);
 		copy.setVisibilityGroups(visibilityGroups);
