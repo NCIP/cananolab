@@ -80,21 +80,6 @@ public class CharacterizationResultServiceLocalImpl implements
 		}
 	}
 
-	public void saveData(List<Datum> data)
-			throws CharacterizationResultException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			for (Datum datum : data) {
-				appService.saveOrUpdate(datum);
-			}
-		} catch (Exception e) {
-			String err = "Error saving characterization result data. ";
-			logger.error(err, e);
-			throw new CharacterizationResultException(err, e);
-		}
-	}
-
 	public void saveFinding(Finding finding)
 			throws CharacterizationResultException {
 		try {
