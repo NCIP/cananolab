@@ -6,8 +6,7 @@
 <table class="promptbox" width="85%" align="center">
 	<tbody>
 		<c:choose>
-			<c:when
-				test="${theFile.domainFile.uriExternal eq 'true' }">
+			<c:when test="${theFile.domainFile.uriExternal eq 'true' }">
 				<c:set var="linkStyle" value="display: block" />
 				<c:set var="loadStyle" value="display: none" />
 			</c:when>
@@ -73,10 +72,19 @@
 				Keywords
 			</td>
 			<td>
-				<html:textarea property="${fileParent}.theFile.keywordsStr"
-					rows="3" cols="60" styleId="fileKeywords" />
+				<html:textarea property="${fileParent}.theFile.keywordsStr" rows="3"
+					cols="60" styleId="fileKeywords" />
 				<br>
 				<em>(one word per line)</em>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel" valign="top">
+				Description
+			</td>
+			<td>
+				<html:textarea property="${fileParent}.theFile.domainFile.description" rows="3"
+					cols="60" styleId="fileDescription" />
 			</td>
 		</tr>
 		<tr>
@@ -99,7 +107,7 @@
 		<html:hidden property="${fileParent}.theFile.domainFile.uri"
 			styleId="hiddenFileUri" />
 		<html:hidden property="${fileParent}.theFileIndex"
-			styleId="hiddenFileIndex" value="-1"/>
+			styleId="hiddenFileIndex" value="-1" />
 		<tr>
 			<td>
 				<input class="promptButton" type="button" value="Remove"
