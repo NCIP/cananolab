@@ -430,27 +430,27 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/**
-		 * Modified by houyh for implementing Print/Export feature for Char Summary. 
+		 * Modified by houyh for implementing Print/Export feature for Char Summary.
 		 */
 		this.prepareSummary(mapping, form, request, response);
-		
+
 		/**
-		 * Added by houyh for implementing Print/Export feature for Char Summary page. 
+		 * Added by houyh for implementing Print/Export feature for Char Summary page.
 		 */
 		request.setAttribute("actionName", request.getRequestURL().toString());
-		
+
 		return mapping.findForward("summaryView");
 	}
 
 	/**
 	 * Shared function for summaryView() and summaryPrint().
 	 * Retrieve CharacterizationBean based on SampleId and prepare list of CharType.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
-	 * @return ActionForward 
+	 * @return ActionForward
 	 * @throws Exception if error happened.
 	 */
 	protected void prepareSummary(ActionMapping mapping, ActionForm form,
@@ -459,7 +459,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		String location = request.getParameter("location");
 		String type = request.getParameter("type");
-		
+
 		CharacterizationService service = null;
 		if (location.equals("local")) {
 			service = new CharacterizationServiceLocalImpl();
@@ -472,12 +472,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		List<CharacterizationBean> charBeans = service
 				.findCharsBySampleId(sampleId);
-		// set characterization types
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// set characterization types and retrieve visibility
 		for (CharacterizationBean charBean : charBeans) {
 			InitCharacterizationSetup.getInstance().setCharacterizationType(
 					request, charBean);
 			InitCharacterizationSetup.getInstance().setCharacterizationName(
 					request, charBean);
+			service.retrieveVisiblity(charBean, user);
 		}
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
@@ -498,28 +500,28 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
 	}
-	
+
 	/**
 	 * summaryPrint()
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
-	 * @return ActionForward 
+	 * @return ActionForward
 	 * @throws Exception if error happened.
 	 */
 	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/**
-		 * Modified by houyh for implementing Print/Export feature for Char Summary. 
+		 * Modified by houyh for implementing Print/Export feature for Char Summary.
 		 */
 		this.prepareSummary(mapping, form, request, response);
-		
+
 		return mapping.findForward("summaryPrintView");
 	}
-	
+
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
