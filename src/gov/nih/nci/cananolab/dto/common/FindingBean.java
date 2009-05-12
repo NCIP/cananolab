@@ -84,7 +84,7 @@ public class FindingBean {
 			}
 			datumList.add(datum);
 		}
-		numberOfRows = datumMap.get(columnHeaders.get(0)).size();
+		numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
 		numberOfColumns = columnHeaders.size();
 
 		// generate matrix
@@ -93,13 +93,18 @@ public class FindingBean {
 				Row row = new Row();
 				for (int j = 0; j < numberOfColumns; j++) {
 					if (!conditionMap.isEmpty()) {
-						Condition condition = conditionMap.get(
-								columnHeaders.get(j)).get(0);
-						row.getCells().add(new TableCell(condition));
+						if (conditionMap.get(columnHeaders.get(j)) != null) {
+							Condition condition = conditionMap.get(
+									columnHeaders.get(j)).get(0);
+							row.getCells().add(new TableCell(condition));
+						}
 					}
 					if (!datumMap.isEmpty()) {
-						Datum datum = datumMap.get(columnHeaders.get(j)).get(i);
-						row.getCells().add(new TableCell(datum));
+						if (datumMap.get(columnHeaders.get(j)) != null) {
+							Datum datum = datumMap.get(columnHeaders.get(j))
+									.get(i);
+							row.getCells().add(new TableCell(datum));
+						}
 					}
 				}
 				rows.add(row);
@@ -342,7 +347,7 @@ public class FindingBean {
 	}
 
 	public void addFile(FileBean file, int index) {
-		if (index==-1) {
+		if (index == -1) {
 			files.add(file);
 			return;
 		}
