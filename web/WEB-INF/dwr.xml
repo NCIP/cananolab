@@ -37,7 +37,6 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCharacterizationResultManager" />
 			<include method="getSubmitColumnPage" />
-			<include method="getFinding" />
 			<include method="addColumnHeader" />
 			<include method="getFileFromList" />
 			<include method="getConditionOptions" />
