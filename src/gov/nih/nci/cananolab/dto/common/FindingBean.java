@@ -87,7 +87,11 @@ public class FindingBean {
 
 		// generate matrix
 		if (data != null && !data.isEmpty()) {
-			numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
+			if (conditionMap.get(columnHeaders.get(0)) != null) {
+				numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
+			} else {
+				numberOfRows = datumMap.get(columnHeaders.get(0)).size();
+			}
 			numberOfColumns = columnHeaders.size();
 
 			for (int i = 0; i < numberOfRows; i++) {
