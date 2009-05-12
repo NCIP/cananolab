@@ -61,7 +61,7 @@ function confirmDeletion()
 					${sampleName} Sample Composition - Chemical Association
 					<c:if
 						test="${!empty compositionForm.map.assoc.domainAssociation.id}">
-						- ${compositionForm.map.assoc.domainAssociation.type}
+						- ${compositionForm.map.assoc.type}
 				</c:if>
 				</h4>
 			</td>
@@ -235,6 +235,17 @@ function confirmDeletion()
 									File&nbsp;&nbsp;&nbsp;&nbsp;
 									<a href="javascript:clearFile(); show('newFile');"><img
 											align="top" src="images/btn_add.gif" border="0" /> </a>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<c:if
+										test="${! empty compositionForm.map.assoc.files }">
+										<c:set var="files"
+											value="${compositionForm.map.assoc.files}" />
+										<c:set var="edit" value="true" />
+										<%@ include file="bodyFileView.jsp"%>
+									</c:if>
 								</td>
 							</tr>
 							<tr>

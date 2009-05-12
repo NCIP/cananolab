@@ -174,12 +174,12 @@ function confirmDeletion()
 				<table width="100%" align="center" class="submissionView">
 					<tbody>
 						<tr>
-							<th colspan="2">
+							<th>
 								Function Information
 							</th>
 						</tr>
 						<tr>
-							<td class="cellLabel" colspan="2">
+							<td class="cellLabel">
 								Function&nbsp;&nbsp;&nbsp;&nbsp;
 								<a style="" id="addFunction"
 									href="javascript:resetTheFunction(true);"><img align="top"
@@ -187,7 +187,7 @@ function confirmDeletion()
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<c:if
 									test="${! empty compositionForm.map.functionalizingEntity.functions}">
 									<c:set var="edit" value="true" />
@@ -198,7 +198,7 @@ function confirmDeletion()
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
+							<td>
 								<div id="newFunction" style="display: none;">
 									<%--<jsp:include page="bodySubmitFunction.jsp" />--%>
 								</div>
@@ -216,25 +216,36 @@ function confirmDeletion()
 		<table width="100%" align="center" class="submissionView">
 			<tbody>
 				<tr>
-					<th colspan="2">
+					<th>
 						Functionalizing Entity File
 					</th>
 				</tr>
 				<tr>
-					<td class="cellLabel" colspan="2">
+					<td class="cellLabel">
 						File&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="javascript:clearFile(); show('newFile');"><img
 								align="top" src="images/btn_add.gif" border="0" /> </a>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
+					<td>
+						<c:if
+							test="${! empty compositionForm.map.functionalizingEntity.files }">
+							<c:set var="files"
+								value="${compositionForm.map.functionalizingEntity.files}" />
+							<c:set var="edit" value="true" />
+							<%@ include file="../bodyFileView.jsp"%>
+						</c:if>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<c:set var="newFileStyle" value="display:block" />
 						<c:if
 							test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
-						<div style="" id="newFile">
+						<div style="${newFileStyle}" id="newFile">
 							<c:set var="fileParent" value="functionalizingEntity" />
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"
