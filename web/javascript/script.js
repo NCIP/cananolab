@@ -450,3 +450,27 @@ function showSummary(layer_ref, totalLayers) {
 	exportLink.href = exportUrl.href;
 }
 
+function clearFile() {
+	dwr.util.setValue("fileType", "");
+	dwr.util.setValue("fileTitle", "");
+	dwr.util.setValue("fileKeywords", "");
+	dwr.util.setValue("fileVisibility", "");
+	dwr.util.setValue("uploadedUri", "");
+	dwr.util.setValue("hiddenFileUri", "");
+	dwr.util.setValue("hiddenFileId", "");
+	dwr.util.setValue("externalUrl", "");
+	dwr.util.setValue("uploadedFile", null);
+	show("load");
+	hide("link");
+	dwr.util.setValue("external0", true);
+	dwr.util.setValue("external1", false);
+}
+function addFile(actionName, form) {
+	form.action = actionName+".do?dispatch=addFile&page=0";
+	form.submit();
+}
+function removeFile(actionName, form, index) {
+	form.action = actionName+".do?dispatch=removeFile&page=0";
+	form.submit();
+}
+

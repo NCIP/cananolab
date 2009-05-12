@@ -70,29 +70,7 @@ function saveFinding(form) {
 	form.action = "characterization.do?dispatch=saveFinding&page=0";
 	form.submit();
 }
-function clearFile() {
-	dwr.util.setValue("fileType", "");
-	dwr.util.setValue("fileTitle", "");
-	dwr.util.setValue("fileKeywords", "");
-	dwr.util.setValue("fileVisibility", "");
-	dwr.util.setValue("uploadedUri", "");
-	dwr.util.setValue("hiddenFileUri", "");
-	dwr.util.setValue("hiddenFileId", "");
-	dwr.util.setValue("externalUrl", "");
-	dwr.util.setValue("uploadedFile", null);
-	show("load");
-	hide("link");
-	dwr.util.setValue("external0", true);
-	dwr.util.setValue("external1", false);
-}
-function addFile(form) {
-	form.action = "characterization.do?dispatch=addFile&page=0";
-	form.submit();
-}
-function removeFile(form, index) {
-	form.action = "characterization.do?dispatch=removeFile&page=0";
-	form.submit();
-}
+
 function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
