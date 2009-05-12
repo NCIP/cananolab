@@ -454,6 +454,7 @@ function clearFile() {
 	dwr.util.setValue("fileType", "");
 	dwr.util.setValue("fileTitle", "");
 	dwr.util.setValue("fileKeywords", "");
+	dwr.util.setValue("fileDescription", "");
 	dwr.util.setValue("fileVisibility", "");
 	dwr.util.setValue("uploadedUri", "");
 	dwr.util.setValue("hiddenFileUri", "");
