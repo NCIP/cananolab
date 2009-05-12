@@ -103,13 +103,13 @@
 		<tr>
 			<td>
 				<input class="promptButton" type="button" value="Remove"
-					onclick="removeFile('characterization', ${fileForm})" id="deleteFile"
+					onclick="removeFile('${actionName}', ${fileForm})" id="deleteFile"
 					style="display: none;" />
 			</td>
 			<td>
 				<div align="right">
 					<input class="promptButton" type="button" value="Add"
-						onclick="addFile('characterization', ${fileForm});" />
+						onclick="addFile('${actionName}', ${fileForm});" />
 					<input class="promptButton" type="button" value="Cancel"
 						onclick="clearFile();hide('newFile');" />
 				</div>
