@@ -423,8 +423,11 @@ public class PublicationAction extends BaseAnnotationAction {
 			PublicationSummaryViewBean summaryBean = 
 				(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
 			Set<String> categories = summaryBean.getPublicationCategories();
-			categories.clear();
-			categories.add(type);
+			for (String category : categories) {
+				if (!type.equals(category)) {
+					categories.remove(category);
+				}
+			}
 			summaryBean.setPublicationCategories(categories);
 		}
 		
