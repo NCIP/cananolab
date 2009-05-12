@@ -222,38 +222,39 @@ function confirmDeletion()
 				</table>
 				<br>
 				<%--Chemical Association File Information --%>
-				<table width="100%" align="center" class="submissionView">
-					<tbody>
-						<tr>
-							<th colspan="2">
-								Chemical Association File
-							</th>
-						</tr>
-						<tr>
-							<td class="cellLabel" colspan="2">
-								File&nbsp;&nbsp;&nbsp;&nbsp;
-								<a href="javascript:clearFile(); show('newFile');"><img
-										align="top" src="images/btn_add.gif" border="0" /> </a>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<c:set var="newFileStyle" value="display:block" />
-								<c:if
-									test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.assoc.files)>0}">
-									<c:set var="newFileStyle" value="display:none" />
-								</c:if>
-								<div style="" id="newFile">
-									<c:set var="fileParent" value="assoc" />
-									<c:set var="fileForm" value="compositionForm" />
-									<c:set var="theFile"
-										value="${compositionForm.map.assoc.theFile}" />
-									<%@include file="../bodySubmitFile.jsp"%>
-									&nbsp;
-								</div>
-							</td>
-						</tr>
-				</table>
+				<a name="file">
+					<table width="100%" align="center" class="submissionView">
+						<tbody>
+							<tr>
+								<th colspan="2">
+									Chemical Association File
+								</th>
+							</tr>
+							<tr>
+								<td class="cellLabel" colspan="2">
+									File&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="javascript:clearFile(); show('newFile');"><img
+											align="top" src="images/btn_add.gif" border="0" /> </a>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<c:set var="newFileStyle" value="display:block" />
+									<c:if
+										test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.assoc.files)>0}">
+										<c:set var="newFileStyle" value="display:none" />
+									</c:if>
+									<div style="" id="newFile">
+										<c:set var="fileParent" value="assoc" />
+										<c:set var="fileForm" value="compositionForm" />
+										<c:set var="theFile"
+											value="${compositionForm.map.assoc.theFile}" />
+										<%@include file="../bodySubmitFile.jsp"%>
+										&nbsp;
+									</div>
+								</td>
+							</tr>
+					</table> </a>
 			</td>
 		</tr>
 	</table>
