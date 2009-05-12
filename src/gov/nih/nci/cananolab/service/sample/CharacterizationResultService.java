@@ -8,9 +8,6 @@ import java.util.List;
 
 public interface CharacterizationResultService {
 
-	public void saveData(List<Datum> data)
-			throws CharacterizationResultException;
-
 	public void saveFinding(Finding finding)
 			throws CharacterizationResultException;
 
