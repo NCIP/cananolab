@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
@@ -182,11 +184,12 @@ public class CharacterizationServiceLocalImpl extends
 	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
 			throws CharacterizationException {
 		try {
-			// for (DerivedBioAssayDataBean bioAssayData : charBean
-			// .getDerivedBioAssayDataList()) {
-			// fileService
-			// .retrieveVisibility(bioAssayData.getFileBean(), user);
-			// }
+			for (FindingBean finding : charBean.getFindings()) {
+				for (FileBean file : finding.getFiles()) {
+					fileService.retrieveVisibility(file,
+							user);
+				}
+			}
 			fileService.retrieveVisibility(charBean.getProtocolBean()
 					.getFileBean(), user);
 		} catch (Exception e) {
@@ -235,12 +238,15 @@ public class CharacterizationServiceLocalImpl extends
 					"experimentConfigCollection.instrumentCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode("findingCollection", FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.datumCollection",
+					FetchMode.JOIN);
 			crit.setFetchMode(
 					"findingCollection.datumCollection.conditionCollection",
 					FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+			crit.setFetchMode("findingCollection.fileCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.fileCollection.keywordCollection",
 					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
