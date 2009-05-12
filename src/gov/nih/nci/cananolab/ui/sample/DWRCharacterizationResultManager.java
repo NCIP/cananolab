@@ -89,16 +89,4 @@ public class DWRCharacterizationResultManager {
 			return "";
 		}
 	}
-
-	public FindingBean getFinding(String findingId) throws Exception{
-		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
-		Finding finding = service.findFindingById(findingId);
-		FindingBean findingBean = new FindingBean(finding);
-		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("characterizationForm"));
-		CharacterizationBean charBean = (CharacterizationBean) (charForm
-				.get("achar"));
-		charBean.setTheFinding(findingBean);
-		return findingBean;
-	}
 }
