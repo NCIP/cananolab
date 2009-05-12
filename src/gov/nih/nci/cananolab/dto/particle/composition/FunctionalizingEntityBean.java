@@ -29,11 +29,7 @@ import java.util.Map;
  * @author pansu
  *
  */
-public class FunctionalizingEntityBean {
-	private String type;
-
-	private String description;
-
+public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 	private String molecularFormula;
 
 	private String molecularFormulaType;
@@ -52,17 +48,11 @@ public class FunctionalizingEntityBean {
 
 	private FunctionalizingEntity domainEntity;
 
-	private String className;
-
 	private List<FunctionBean> functions = new ArrayList<FunctionBean>();
-
-	private List<FileBean> files = new ArrayList<FileBean>();
 
 	private ActivationMethod activationMethod = new ActivationMethod();
 
 	private boolean withProperties = false;
-
-	private FileBean theFile=new FileBean();
 
 	public FunctionalizingEntityBean() {
 		if (functions.size() == 0) {
@@ -172,14 +162,6 @@ public class FunctionalizingEntityBean {
 		return domainEntity;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public String getClassName() {
-		return className;
-	}
-
 	public Antibody getAntibody() {
 		return antibody;
 	}
@@ -194,14 +176,6 @@ public class FunctionalizingEntityBean {
 
 	public List<FunctionBean> getFunctions() {
 		return functions;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getMolecularFormula() {
@@ -242,10 +216,6 @@ public class FunctionalizingEntityBean {
 
 	public void setValueUnit(String valueUnit) {
 		this.valueUnit = valueUnit;
-	}
-
-	public List<FileBean> getFiles() {
-		return files;
 	}
 
 	public ActivationMethod getActivationMethod() {
@@ -330,14 +300,6 @@ public class FunctionalizingEntityBean {
 		functions.remove(ind);
 	}
 
-	public void addFile() {
-		files.add(new FileBean());
-	}
-
-	public void removeFile(int ind) {
-		files.remove(ind);
-	}
-
 	public void updateType(Map<String, String> classToType) {
 		if (domainEntity instanceof OtherFunctionalizingEntity) {
 			type = ((OtherFunctionalizingEntity) domainEntity).getType();
@@ -348,10 +310,6 @@ public class FunctionalizingEntityBean {
 		for (FunctionBean functionBean : getFunctions()) {
 			functionBean.updateType(classToType);
 		}
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getMolecularFormulaDisplayName() {
@@ -400,7 +358,7 @@ public class FunctionalizingEntityBean {
 		return buffer.toString();
 	}
 
-	//for use in chemical association submission form
+	// for use in chemical association submission form
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(getType());
@@ -418,13 +376,5 @@ public class FunctionalizingEntityBean {
 			buffer.append(")");
 		}
 		return buffer.toString();
-	}
-
-	public FileBean getTheFile() {
-		return theFile;
-	}
-
-	public void setTheFile(FileBean theFile) {
-		this.theFile = theFile;
 	}
 }

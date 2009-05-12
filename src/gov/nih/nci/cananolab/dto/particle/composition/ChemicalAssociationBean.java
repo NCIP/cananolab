@@ -8,31 +8,19 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
-public class ChemicalAssociationBean {
-	private String type;
-
-	private String description;
-
-	private String className;
-
+public class ChemicalAssociationBean extends BaseCompositionEntityBean {
 	private ChemicalAssociation domainAssociation;
 
 	private Attachment attachment = new Attachment();
 
-	private List<FileBean> files = new ArrayList<FileBean>();
-
 	private AssociatedElementBean associatedElementA = new AssociatedElementBean();
 
 	private AssociatedElementBean associatedElementB = new AssociatedElementBean();
-
-	private FileBean theFile=new FileBean();
 
 	public ChemicalAssociationBean() {
 	}
@@ -49,8 +37,7 @@ public class ChemicalAssociationBean {
 			for (File file : chemicalAssociation.getFileCollection()) {
 				files.add(new FileBean(file));
 			}
-			Collections.sort(files,
-					new Comparators.FileBeanDateComparator());
+			Collections.sort(files, new Comparators.FileBeanDateComparator());
 		}
 		associatedElementA = new AssociatedElementBean(chemicalAssociation
 				.getAssociatedElementA());
@@ -74,7 +61,7 @@ public class ChemicalAssociationBean {
 		if (domainAssociation == null) {
 			try {
 				domainAssociation = (ChemicalAssociation) clazz.newInstance();
-			}catch (ClassCastException ex) {
+			} catch (ClassCastException ex) {
 				String tmpType = type;
 				this.setType(null);
 				throw new ClassCastException(tmpType);
@@ -101,7 +88,7 @@ public class ChemicalAssociationBean {
 		} else {
 			domainAssociation.setFileCollection(new HashSet<File>());
 		}
-		int i=0;
+		int i = 0;
 		for (FileBean file : files) {
 			file.setupDomainFile(internalUriPath, createdBy, i);
 			domainAssociation.getFileCollection().add(file.getDomainFile());
@@ -109,28 +96,8 @@ public class ChemicalAssociationBean {
 		}
 	}
 
-	public String getType() {
-		return type;
-	}
-
 	public Attachment getAttachment() {
 		return attachment;
-	}
-
-	public List<FileBean> getFiles() {
-		return files;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getClassName() {
-		return className;
 	}
 
 	public AssociatedElementBean getAssociatedElementA() {
@@ -141,18 +108,6 @@ public class ChemicalAssociationBean {
 		return associatedElementB;
 	}
 
-	public void addFile() {
-		files.add(new FileBean());
-	}
-
-	public void removeFile(int ind) {
-		files.remove(ind);
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public void updateType(Map<String, String> classToType) {
 		if (domainAssociation instanceof OtherChemicalAssociation) {
 			type = ((OtherChemicalAssociation) domainAssociation).getType();
@@ -161,13 +116,5 @@ public class ChemicalAssociationBean {
 		}
 		associatedElementA.updateType(classToType);
 		associatedElementB.updateType(classToType);
-	}
-
-	public FileBean getTheFile() {
-		return theFile;
-	}
-
-	public void setTheFile(FileBean theFile) {
-		this.theFile = theFile;
 	}
 }

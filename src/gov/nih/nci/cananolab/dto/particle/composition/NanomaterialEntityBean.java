@@ -32,13 +32,7 @@ import java.util.Map;
  * @author pansu
  *
  */
-public class NanomaterialEntityBean {
-	private String type;
-
-	private String description;
-
-	private String className;
-
+public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	private Polymer polymer = new Polymer();
 
 	private Biopolymer biopolymer = new Biopolymer();
@@ -55,13 +49,9 @@ public class NanomaterialEntityBean {
 
 	private List<ComposingElementBean> composingElements = new ArrayList<ComposingElementBean>();
 
-	private List<FileBean> files = new ArrayList<FileBean>();
-
 	private NanomaterialEntity domainEntity;
 
 	private boolean withProperties = false;
-
-	private FileBean theFile=new FileBean();
 
 	public NanomaterialEntityBean() {
 	}
@@ -161,14 +151,6 @@ public class NanomaterialEntityBean {
 		return copy;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public String getClassName() {
-		return className;
-	}
-
 	public Dendrimer getDendrimer() {
 		return dendrimer;
 	}
@@ -189,10 +171,6 @@ public class NanomaterialEntityBean {
 		return emulsion;
 	}
 
-	public List<FileBean> getFiles() {
-		return files;
-	}
-
 	public Fullerene getFullerene() {
 		return fullerene;
 	}
@@ -203,14 +181,6 @@ public class NanomaterialEntityBean {
 
 	public Polymer getPolymer() {
 		return polymer;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public NanomaterialEntity getDomainEntity() {
@@ -296,14 +266,6 @@ public class NanomaterialEntityBean {
 		composingElements.remove(elementToRemove);
 	}
 
-	public void addFile() {
-		files.add(new FileBean());
-	}
-
-	public void removeFile(int ind) {
-		files.remove(ind);
-	}
-
 	public NanomaterialEntityBean copy() throws Exception {
 		NanomaterialEntityBean copiedEntity = (NanomaterialEntityBean) ClassUtils
 				.deepCopy(this);
@@ -325,19 +287,7 @@ public class NanomaterialEntityBean {
 		}
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
 	public boolean isWithProperties() {
 		return withProperties;
-	}
-
-	public FileBean getTheFile() {
-		return theFile;
-	}
-
-	public void setTheFile(FileBean theFile) {
-		this.theFile = theFile;
 	}
 }
