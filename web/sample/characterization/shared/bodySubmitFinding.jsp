@@ -59,6 +59,7 @@ function confirmDeletion()
 			<div style="${newFileStyle }" id="newFile">
 				<c:set var="fileParent" value="achar.theFinding" />
 				<c:set var="fileForm" value="characterizationForm" />
+				<c:set var="actionName" value="characterization"/>
 				<c:set var="theFile"
 					value="${characterizationForm.map.achar.theFinding.theFile}" />
 				<%@include file="../../bodySubmitFile.jsp"%>
