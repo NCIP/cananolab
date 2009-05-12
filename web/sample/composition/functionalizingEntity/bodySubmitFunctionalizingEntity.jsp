@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
@@ -221,16 +222,25 @@ function confirmDeletion()
 			<tr>
 				<td class="cellLabel" colspan="2">
 					File&nbsp;&nbsp;&nbsp;&nbsp;
-					<a style="" id="addFile" href="javascript:resetTheFile(true);"><img
+					<a href="javascript:clearFile(); show('newFile');"><img
 							align="top" src="images/btn_add.gif" border="0" /> </a>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-					<div id="newFile" style="display: none;">
-						<%--<jsp:include page="bodySubmitFile.jsp" />--%>
+					<c:set var="newFileStyle" value="display:block" />
+					<c:if
+						test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
+						<c:set var="newFileStyle" value="display:none" />
+					</c:if>
+					<div style="" id="newFile">
+						<c:set var="fileParent" value="functionalizingEntity" />
+						<c:set var="fileForm" value="compositionForm" />
+						<c:set var="theFile"
+							value="${compositionForm.map.functionalizingEntity.theFile}" />
+						<%@include file="../../bodySubmitFile.jsp"%>
+						&nbsp;
 					</div>
-					&nbsp;
 				</td>
 			</tr>
 	</table>
