@@ -24,7 +24,7 @@
 	<c:forEach var="file" items="${files}" varStatus="fileIndex">
 		<tr>
 			<td>
-				${file.type}
+				${file.domainFile.type}
 			</td>
 			<td>
 				<c:choose>
@@ -62,8 +62,8 @@
 			</td>
 			<td>
 				<c:choose>
-					<c:when test="${!empty fn:trim(file.description)}">
-						<c:out value="${fn:replace(file.description, cr, '<br>')}"
+					<c:when test="${!empty fn:trim(file.domainFile.description)}">
+						<c:out value="${fn:replace(file.domainFile.description, cr, '<br>')}"
 							escapeXml="false" />
 					</c:when>
 					<c:otherwise>N/A
@@ -72,7 +72,7 @@
 			</td>
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
-					<aF
+					<a
 						href="javascript:setTheFile(${file.domainFile.id});">Edit</a>&nbsp;
 				</td>
 			</c:if>
