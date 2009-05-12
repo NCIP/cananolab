@@ -52,11 +52,16 @@ function confirmDeletion()
 	<tr>
 		<td colspan="2">
 			<c:set var="newFileStyle" value="display:block" />
-			<c:if test="${param.dispatch eq 'addFile' || fn:length(characterizationForm.map.achar.theFinding.files)>0}">
+			<c:if
+				test="${param.dispatch eq 'addFile' || fn:length(characterizationForm.map.achar.theFinding.files)>0}">
 				<c:set var="newFileStyle" value="display:none" />
 			</c:if>
 			<div style="${newFileStyle }" id="newFile">
-				<jsp:include page="bodySubmitCharacterizationFile.jsp" />
+				<c:set var="fileParent" value="achar.theFinding" />
+				<c:set var="fileForm" value="characterizationForm" />
+				<c:set var="theFile"
+					value="${characterizationForm.map.achar.theFinding.theFile}" />
+				<%@include file="../../bodySubmitFile.jsp"%>
 				&nbsp;
 			</div>
 		</td>
