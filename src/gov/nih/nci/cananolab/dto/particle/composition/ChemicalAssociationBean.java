@@ -32,6 +32,8 @@ public class ChemicalAssociationBean {
 
 	private AssociatedElementBean associatedElementB = new AssociatedElementBean();
 
+	private FileBean theFile=new FileBean();
+
 	public ChemicalAssociationBean() {
 	}
 
@@ -159,5 +161,13 @@ public class ChemicalAssociationBean {
 		}
 		associatedElementA.updateType(classToType);
 		associatedElementB.updateType(classToType);
+	}
+
+	public FileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(FileBean theFile) {
+		this.theFile = theFile;
 	}
 }

@@ -62,6 +62,8 @@ public class FunctionalizingEntityBean {
 
 	private boolean withProperties = false;
 
+	private FileBean theFile=new FileBean();
+
 	public FunctionalizingEntityBean() {
 		if (functions.size() == 0) {
 			FunctionBean funcBean = new FunctionBean();
@@ -416,5 +418,13 @@ public class FunctionalizingEntityBean {
 			buffer.append(")");
 		}
 		return buffer.toString();
+	}
+
+	public FileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(FileBean theFile) {
+		this.theFile = theFile;
 	}
 }

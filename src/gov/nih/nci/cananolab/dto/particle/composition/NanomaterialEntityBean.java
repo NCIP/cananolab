@@ -61,6 +61,8 @@ public class NanomaterialEntityBean {
 
 	private boolean withProperties = false;
 
+	private FileBean theFile=new FileBean();
+
 	public NanomaterialEntityBean() {
 	}
 
@@ -329,5 +331,13 @@ public class NanomaterialEntityBean {
 
 	public boolean isWithProperties() {
 		return withProperties;
+	}
+
+	public FileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(FileBean theFile) {
+		this.theFile = theFile;
 	}
 }
