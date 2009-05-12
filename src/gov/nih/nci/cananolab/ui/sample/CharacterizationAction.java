@@ -162,6 +162,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		Characterization chara = charService.findCharacterizationById(charId,
 				charClass);
 		CharacterizationBean charBean = new CharacterizationBean(chara);
+		//retrieve visibility
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		charService.retrieveVisiblity(charBean, user);
 		// setup correct display for characterization name and characterization
 		// type
 		InitCharacterizationSetup.getInstance().setCharacterizationName(
@@ -571,6 +574,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 		Finding finding = service.findFindingById(theFindingId);
 		FindingBean findingBean = new FindingBean(finding);
+		//retrieve file visibility
+		FileService fileService=new FileServiceLocalImpl();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		for(FileBean fileBean: findingBean.getFiles()) {
+			fileService.retrieveVisibility(fileBean, user);
+		}
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.setTheFinding(findingBean);
@@ -651,6 +660,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		FindingBean findingBean = achar.getTheFinding();
 		int theFileIndex=findingBean.getTheFileIndex();
 		findingBean.removeFile(theFileIndex);
+		findingBean.setTheFile(new FileBean());
 		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
