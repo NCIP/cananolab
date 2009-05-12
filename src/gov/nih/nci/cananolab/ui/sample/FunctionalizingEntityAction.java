@@ -16,6 +16,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
+import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -87,22 +88,19 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			return mapping.getInputForward();
 		}
 
-		compositionService.saveFunctionalizingEntity(sampleBean
-				.getDomain(), entityBean.getDomainEntity());
+		compositionService.saveFunctionalizingEntity(sampleBean.getDomain(),
+				entityBean.getDomainEntity());
 
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(),
-				Constants.CSM_READ_PRIVILEGE);
+				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
 		if (accessibleGroups != null
-				&& accessibleGroups
-						.contains(Constants.CSM_PUBLIC_GROUP)) {
-			//set composition public
-			authService.assignPublicVisibility(sampleBean
-					.getDomain().getSampleComposition().getId()
-					.toString());
+				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
+			// set composition public
+			authService.assignPublicVisibility(sampleBean.getDomain()
+					.getSampleComposition().getId().toString());
 			compositionService.assignFunctionalizingEntityPublicVisibility(
 					authService, entityBean.getDomainEntity());
 		}
@@ -121,8 +119,8 @@ public class FunctionalizingEntityAction extends CompositionAction {
 				if (copy.getFileCollection() != null) {
 					for (File file : copy.getFileCollection()) {
 						service.saveCopiedFileAndSetVisibility(file, user,
-								sampleBean.getDomain()
-										.getName(), sample.getName());
+								sampleBean.getDomain().getName(), sample
+										.getName());
 					}
 				}
 			}
@@ -196,10 +194,9 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("compositionForm");
-		String sampleId=request.getParameter("sampleId");
+		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request,
-				sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -215,10 +212,9 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
-		String sampleId=request.getParameter("sampleId");
+		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
-		InitSampleSetup.getInstance().getOtherSampleNames(request,
-				sampleId);
+		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 
 		String entityId = request.getParameter("dataId");
 		CompositionService compService = new CompositionServiceLocalImpl();
@@ -251,9 +247,9 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			//TODO update grid service
-//			compService = new CompositionServiceRemoteImpl(
-//					serviceUrl);
+			// TODO update grid service
+			// compService = new CompositionServiceRemoteImpl(
+			// serviceUrl);
 		}
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId, entityClassName);
@@ -300,7 +296,10 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		entity.addFile();
+		int theFileIndex = entity.getTheFileIndex();
+		entity.removeFile(theFileIndex);
+		entity.setTheFile(new FileBean());
+		request.setAttribute("anchor", "file");
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
 
@@ -310,12 +309,13 @@ public class FunctionalizingEntityAction extends CompositionAction {
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
+			DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		entity.removeFile(ind);
+		int theFileIndex = entity.getTheFileIndex();
+		entity.removeFile(theFileIndex);
+		entity.setTheFile(new FileBean());
+		request.setAttribute("anchor", "file");
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
 
@@ -367,8 +367,8 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
 		 * FunctionalizingEntityBean entity = (FunctionalizingEntityBean)
-		 * theForm .get("functionalizingEntity"); // update editable dropdowns HttpSession
-		 * session = request.getSession();
+		 * theForm .get("functionalizingEntity"); // update editable dropdowns
+		 * HttpSession session = request.getSession();
 		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
 		 *

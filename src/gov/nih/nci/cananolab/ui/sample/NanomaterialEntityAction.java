@@ -355,22 +355,37 @@ public class NanomaterialEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		entity.addFile();
+		int theFileIndex = entity.getTheFileIndex();
+		// create a new copy before adding to finding
+		FileBean theFile = entity.getTheFile();
+		FileBean newFile = theFile.copy();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		// setup domainFile uri for fileBeans
+		//still using nanoparticleEntity as the folder name
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ "/"
+				+ sampleBean.getDomain().getName()
+				+ "/"
+				+ StringUtils.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
+		entity.addFile(newFile, theFileIndex);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-
+		request.setAttribute("anchor", "file");
 		return mapping.getInputForward();
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		entity.removeFile(ind);
+		int theFileIndex = entity.getTheFileIndex();
+		entity.removeFile(theFileIndex);
+		entity.setTheFile(new FileBean());
+		request.setAttribute("anchor", "file");
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
@@ -383,8 +398,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		/*
 		 * DynaValidatorForm theForm = (DynaValidatorForm) form;
 		 * NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-		 * .get("nanomaterialEntity"); // update editable dropdowns HttpSession session =
-		 * request.getSession();
+		 * .get("nanomaterialEntity"); // update editable dropdowns HttpSession
+		 * session = request.getSession();
 		 * InitSampleSetup.getInstance().updateEditableDropdown(session,
 		 * composition.getCharacterizationSource(), "characterizationSources");
 		 *

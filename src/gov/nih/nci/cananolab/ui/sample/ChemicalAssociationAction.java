@@ -198,7 +198,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 		CompositionBean compositionBean = service
 				.findCompositionBySampleId(sampleId);
 		// set entity type and association type
-		HttpSession session=request.getSession();
+		HttpSession session = request.getSession();
 		for (NanomaterialEntityBean entityBean : compositionBean
 				.getNanomaterialEntities()) {
 			entityBean.setType(InitSetup.getInstance().getDisplayName(
@@ -383,7 +383,23 @@ public class ChemicalAssociationAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assoc = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		assoc.addFile();
+		int theFileIndex = assoc.getTheFileIndex();
+		// create a new copy before adding to finding
+		FileBean theFile = assoc.getTheFile();
+		FileBean newFile = theFile.copy();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		// setup domainFile uri for fileBeans
+		// still using nanoparticleEntity as the folder name
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ "/"
+				+ sampleBean.getDomain().getName()
+				+ "/"
+				+ StringUtils
+						.getOneWordLowerCaseFirstLetter("Chemical Association");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
+		assoc.addFile(newFile, theFileIndex);
+		request.setAttribute("anchor", "file");
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
 				.getAttribute("hasFunctionalizingEntity");
 		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
@@ -394,12 +410,18 @@ public class ChemicalAssociationAction extends CompositionAction {
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		ChemicalAssociationBean entity = (ChemicalAssociationBean) theForm
+		ChemicalAssociationBean assoc = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		entity.removeFile(ind);
+		int theFileIndex = assoc.getTheFileIndex();
+		assoc.removeFile(theFileIndex);
+		assoc.setTheFile(new FileBean());
+		request.setAttribute("anchor", "file");
+		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
+				.getAttribute("hasFunctionalizingEntity");
+		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
+				request, assoc, hasFunctionalizingEntity);
+
 		return mapping.getInputForward();
 	}
 
