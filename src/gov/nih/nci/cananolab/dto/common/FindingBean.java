@@ -84,11 +84,12 @@ public class FindingBean {
 			}
 			datumList.add(datum);
 		}
-		numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
-		numberOfColumns = columnHeaders.size();
 
 		// generate matrix
 		if (data != null && !data.isEmpty()) {
+			numberOfRows = conditionMap.get(columnHeaders.get(0)).size();
+			numberOfColumns = columnHeaders.size();
+
 			for (int i = 0; i < numberOfRows; i++) {
 				Row row = new Row();
 				for (int j = 0; j < numberOfColumns; j++) {
