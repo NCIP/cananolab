@@ -27,14 +27,24 @@ import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,6 +59,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  *
  */
 public class CharacterizationAction extends BaseAnnotationAction {
+	
 	/**
 	 * Add or update the data to database
 	 *
@@ -318,7 +329,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
@@ -344,7 +355,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			saveToOtherSamples(request, copy, user, sampleBean.getDomain()
 					.getName(), otherSamples);
 		}
-		sampleBean = setupSample(theForm, request, "local");
+		sampleBean = setupSample(theForm, request, Constants.LOCAL);
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
@@ -387,7 +398,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	private void setCharacterizationFileFullPath(HttpServletRequest request,
 			CharacterizationBean charBean, String location) throws Exception {
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL)) {
 			// TODO::
 			// set file full path
 			// for (DerivedBioAssayDataBean bioassayBean : charBean
@@ -429,47 +440,103 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 	}
 
-	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		/**
-		 * Modified by houyh for implementing Print/Export feature for Char Summary.
-		 */
-		this.prepareSummary(mapping, form, request, response);
-
-		/**
-		 * Added by houyh for implementing Print/Export feature for Char Summary page.
-		 */
-		request.setAttribute("actionName", request.getRequestURL().toString());
-
-		return mapping.findForward("summaryView");
-	}
-
 	/**
-	 * Shared function for summaryView() and summaryPrint().
-	 * Retrieve CharacterizationBean based on SampleId and prepare list of CharType.
+	 * summaryEdit() handles Edit request for Characterization Summary view.
 	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error happened.
+	 * @throws Exception if error occurred.
+	 */
+	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		// Prepare data.
+		this.prepareSummary(mapping, form, request, response);
+
+		// "actionName" is for constructing the Print/Export URL.
+		request.setAttribute("actionName", request.getRequestURL().toString());
+
+		return mapping.findForward("summaryEdit");
+	}
+
+	/**
+	 * summaryView() handles View request for Characterization Summary report.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception if error occurred.
+	 */
+	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		// Prepare data.
+		this.prepareSummary(mapping, form, request, response);
+		this.prepareCharacterizationTypes(mapping, form, request, response);
+
+		// "actionName" is for constructing the Print/Export URL.
+		request.setAttribute("actionName", request.getRequestURL().toString());
+
+		return mapping.findForward("summaryView");
+	}
+
+	/**
+	 * summaryPrint() handles Print request for Characterization Summary report.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception if error occurred.
+	 */
+	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		// Prepare data.
+		this.prepareSummary(mapping, form, request, response);
+		this.prepareCharacterizationTypes(mapping, form, request, response);
+
+		// Filter out un-selected types.
+		String type = request.getParameter("type");
+		if (!StringUtils.isEmpty(type)) {
+			List<String> characterizationTypes = 
+				(List<String>) request.getAttribute("characterizationTypes");
+			characterizationTypes.clear();
+			characterizationTypes.add(type);
+		}
+		return mapping.findForward("summaryPrintView");
+	}
+
+	/**
+	 * Shared function for summaryView(), summaryPrint() and summaryEdit().
+	 * Prepare CharacterizationBean based on SampleId.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception if error occurred.
 	 */
 	protected void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String sampleId = request.getParameter("sampleId");
 		String location = request.getParameter("location");
-		String type = request.getParameter("type");
 
 		CharacterizationService service = null;
-		if (location.equals("local")) {
+		if (Constants.LOCAL.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
 		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
 			// TODO model change
+			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+			//		request, location);
 			// service = new CharacterizationServiceRemoteImpl(
 			// serviceUrl);
 		}
@@ -484,9 +551,30 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, charBean);
 			service.retrieveVisiblity(charBean, user);
 		}
-		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(charBeans);
+		CharacterizationSummaryViewBean summaryView = 
+			new CharacterizationSummaryViewBean(charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
-		// keep submitted characterization types in the correct display order
+	}
+
+	/**
+	 * Shared function for summaryView() and summaryPrint().
+	 * Keep submitted characterization types in the correct display order.
+	 * Should be called after calling prepareSummary().
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception if error occurred.
+	 */
+	protected void prepareCharacterizationTypes(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean)
+			request.getAttribute("characterizationSummaryView");
+
+		// Keep submitted characterization types in the correct display order
 		List<String> allCharacterizationTypes = new ArrayList<String>(
 				(List<? extends String>) request.getSession().getAttribute(
 						"characterizationTypes"));
@@ -494,57 +582,102 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		for (String charType : allCharacterizationTypes) {
 			if (summaryView.getCharacterizationTypes().contains(charType) &&
 				!characterizationTypes.contains(charType)) {
-				if (StringUtils.isEmpty(type)) {
-					characterizationTypes.add(charType);
-				} else if (type.equals(charType)) {
-					characterizationTypes.add(charType);
-				}
+				characterizationTypes.add(charType);
 			}
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
 	}
-
+	
 	/**
-	 * summaryPrint()
+	 * summaryExport() handles Export request for Characterization Summary report.
 	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error happened.
+	 * @throws Exception if error occurred.
 	 */
-	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
+	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		/**
-		 * Modified by houyh for implementing Print/Export feature for Char Summary.
-		 */
+		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 
-		return mapping.findForward("summaryPrintView");
-	}
-
-	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String sampleId = request.getParameter("sampleId");
-		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		List<CharacterizationBean> charBeans = service
-				.findCharsBySampleId(sampleId);
-		// set characterization types
-		for (CharacterizationBean charBean : charBeans) {
-			InitCharacterizationSetup.getInstance().setCharacterizationType(
-					request, charBean);
-			InitCharacterizationSetup.getInstance().setCharacterizationName(
-					request, charBean);
+		// Filter out un-selected types.
+		String type = request.getParameter("type");
+		List<String> characterizationTypes = 
+			(List<String>) request.getAttribute("characterizationTypes");
+		if (!StringUtils.isEmpty(type)) {
+			characterizationTypes.clear();
+			characterizationTypes.add(type);
 		}
-		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
-				charBeans);
-		request.setAttribute("characterizationSummaryView", summaryView);
-		return mapping.findForward("summaryEdit");
+		
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) 
+			request.getAttribute("characterizationSummaryView");
+		/*
+		String fileName = getExportFileName(charSummaryBean
+				.getDomainParticleSample().getName(), "summaryView",
+				charSummaryBean.getCharBeans().get(0).getClassName());
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
+		
+		this.exportSummary(charSummaryBean, response.getOutputStream());
+		*/
+		return null;
 	}
 
+	private String getExportFileName(String particleName, String viewType,
+			String charClass) {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(particleName);
+		nameParts.add(charClass);
+		nameParts.add(viewType);
+		nameParts.add(StringUtils.convertDateToString(Calendar.getInstance().getTime()));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
+	}
+	
+	public void exportSummary(CharacterizationBean achar, OutputStream out) throws Exception {
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("detailSheet");
+		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+		short startRow = 0;
+		setDetailSheet(achar, wb, sheet, patriarch, startRow);
+		wb.write(out);
+		if (out != null) {
+			out.flush();
+			out.close();
+		}
+	}
+	
+	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
+			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
+		HSSFFont headerFont = wb.createFont();
+		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		HSSFCellStyle headerStyle = wb.createCellStyle();
+		headerStyle.setFont(headerFont);
+
+		HSSFRow row = null;
+		HSSFCell cell = null;
+		// description row
+		String description = achar.getDescription();
+		if (description != null) {
+			row = sheet.createRow(rowCount++);
+			short cellCount = 0;
+			cell = row.createCell(cellCount++);
+			cell.setCellStyle(headerStyle);
+			cell.setCellValue(new HSSFRichTextString("Description"));
+
+			row.createCell(cellCount++).setCellValue(
+					new HSSFRichTextString(description));
+		}
+
+		return rowCount;
+	}
+	
 	public ActionForward saveExperimentConfig(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -636,7 +769,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		int theFileIndex=findingBean.getTheFileIndex();
 		//create a new copy before adding to finding
 		FileBean newFile=theFile.copy();
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"

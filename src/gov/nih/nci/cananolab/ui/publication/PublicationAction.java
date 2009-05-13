@@ -435,31 +435,6 @@ public class PublicationAction extends BaseAnnotationAction {
 	}
 	
 	/**
-	 * Shared function for summaryView() and summaryPrint().
-	 *
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 * @throws Exception
-	 */
-	protected void prepareSummary(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"publicationCategories", "Publication", "category",
-				"otherCategory", true);
-		PublicationService publicationService = new PublicationServiceLocalImpl();
-		String sampleId = request.getParameter("sampleId");
-		List<PublicationBean> publications = publicationService
-				.findPublicationsBySampleId(sampleId);
-		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
-				publications);
-		request.setAttribute("publicationSummaryView", summaryView);
-	}
-	
-	/**
 	 * Handle summary report view request.
 	 *
 	 * @param mapping
@@ -474,9 +449,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		this.prepareSummary(mapping, form, request, response);
 		
-		/**
-		 * Added by houyh for implementing Print/Export feature for Char Summary page. 
-		 */
+		// "actionName" is for constructing the Print/Export URL.
 		request.setAttribute("actionName", request.getRequestURL().toString());
 		
 		// TODO fill in detail
@@ -518,19 +491,24 @@ public class PublicationAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryView");
 	}
 
+	/**
+	 * Handle summary report edit request.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"publicationCategories", "Publication", "category",
-				"otherCategory", true);
-		PublicationService publicationService = new PublicationServiceLocalImpl();
-		String sampleId = request.getParameter("sampleId");
-		List<PublicationBean> publications = publicationService
-				.findPublicationsBySampleId(sampleId);
-		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
-				publications);
-		request.setAttribute("publicationSummaryView", summaryView);
+		this.prepareSummary(mapping, form, request, response);
+		
+		// "actionName" is for constructing the Print/Export URL.
+		request.setAttribute("actionName", request.getRequestURL().toString());
+		
 		// TODO fill in detail
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -570,6 +548,31 @@ public class PublicationAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryEdit");
 	}
 
+	/**
+	 * Shared function for summaryView(), summaryEdit() and summaryPrint().
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	protected void prepareSummary(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"publicationCategories", "Publication", "category",
+				"otherCategory", true);
+		PublicationService publicationService = new PublicationServiceLocalImpl();
+		String sampleId = request.getParameter("sampleId");
+		List<PublicationBean> publications = publicationService
+				.findPublicationsBySampleId(sampleId);
+		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
+				publications);
+		request.setAttribute("publicationSummaryView", summaryView);
+	}
+	
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
