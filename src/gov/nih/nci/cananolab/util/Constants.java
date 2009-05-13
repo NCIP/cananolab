@@ -176,5 +176,9 @@ public class Constants {
 
 	public static final String GRID_SERVICE_PATH = "wsrf-canano/services/cagrid/CaNanoLabService";
 
+	// Default date format for exported file name.
 	public static final String EXPORT_FILE_DATE_FORMAT = "yyyyMMdd_HH-mm-ss-SSS";
+	
+	// String for local search.
+	public static final String LOCAL = "local";
 }
