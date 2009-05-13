@@ -85,8 +85,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
-		// save file data to file system and set visibility
-		saveFilesToFileSystem(entityBean.getFiles());
 		try {
 			entityBean.setupDomainEntity(InitSetup.getInstance()
 					.getDisplayNameToClassNameLookup(
@@ -112,7 +110,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		CompositionService compositionService = new CompositionServiceLocalImpl();
 		compositionService.saveNanomaterialEntity(sampleBean.getDomain(),
 				entityBean.getDomainEntity());
-
+		// save file data to file system and set visibility
+		saveFilesToFileSystem(entityBean.getFiles());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
