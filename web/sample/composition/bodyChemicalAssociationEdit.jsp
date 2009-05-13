@@ -120,9 +120,16 @@ composing element of type ${assoc.associatedElementB.composingElement.type} <br>
 											Files
 										</td>
 										<td>
-											<c:set var="files" value="${assoc.files }" />
-											<c:set var="entityType" value="chemical association" />
-											<%@include file="bodyFileView.jsp"%>
+											<c:choose>
+												<c:when test="${! empty assoc.files}">
+													<c:set var="files" value="${assoc.files }" />
+													<c:set var="entityType" value="chemical association" />
+													<%@include file="bodyFileView.jsp"%>
+												</c:when>
+												<c:otherwise>
+					N/A
+					</c:otherwise>
+											</c:choose>
 										</td>
 									</tr>
 								</table>
