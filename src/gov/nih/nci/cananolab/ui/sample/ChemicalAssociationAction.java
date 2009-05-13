@@ -47,36 +47,6 @@ public class ChemicalAssociationAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Chemical Association");
-		try {
-			assocBean.setupDomainAssociation(InitSetup.getInstance()
-					.getDisplayNameToClassNameLookup(
-							request.getSession().getServletContext()), user
-					.getLoginName(), internalUriPath);
-		} catch (ClassCastException ex) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = null;
-			if (ex.getMessage() != null && ex.getMessage().length() > 0
-					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msg = new ActionMessage("errors.invalidOtherType", ex
-						.getMessage(), "Chemical Association");
-			} else {
-				msg = new ActionMessage("errors.invalidOtherType", assocBean
-						.getType(), "Chemical Association");
-				assocBean.setType(null);
-			}
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-			return mapping.getInputForward();
-		}
 
 		if (!validateAssociationFile(request, assocBean)) {
 			return mapping.getInputForward();
@@ -116,35 +86,12 @@ public class ChemicalAssociationAction extends CompositionAction {
 			noErrors = false;
 		}
 		if (noErrors) {
-			CompositionService compService = new CompositionServiceLocalImpl();
-			compService.saveChemicalAssociation(sampleBean.getDomain(),
-					assocBean.getDomainAssociation());
-			// set visibility
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			List<String> accessibleGroups = authService.getAccessibleGroups(
-					sampleBean.getDomain().getName(),
-					Constants.CSM_READ_PRIVILEGE);
-			if (accessibleGroups != null
-					&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
-				// set composition public
-				authService.assignPublicVisibility(sampleBean.getDomain()
-						.getSampleComposition().getId().toString());
-				compService.assignChemicalAssociationPublicVisibility(
-						authService, assocBean.getDomainAssociation());
-			}
-			// save file data to file system and set visibility
-			saveFilesToFileSystem(assocBean.getFiles());
-
-			InitCompositionSetup.getInstance()
-					.persistChemicalAssociationDropdowns(request, assocBean,
-							false);
+			saveAssociation(request, theForm, assocBean);
 			ActionMessage msg = new ActionMessage(
 					"message.addChemicalAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
 			ActionForward forward = mapping.findForward("success");
-			setupDataTree(sampleBean, request);
 			return forward;
 		} else {
 			return mapping.getInputForward();
@@ -162,6 +109,62 @@ public class ChemicalAssociationAction extends CompositionAction {
 		return true;
 	}
 
+	public void saveAssociation(HttpServletRequest request,
+			DynaValidatorForm theForm, ChemicalAssociationBean assocBean)
+			throws Exception {
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ "/"
+				+ sampleBean.getDomain().getName()
+				+ "/"
+				+ StringUtils
+						.getOneWordLowerCaseFirstLetter("Chemical Association");
+		try {
+			assocBean.setupDomainAssociation(InitSetup.getInstance()
+					.getDisplayNameToClassNameLookup(
+							request.getSession().getServletContext()), user
+					.getLoginName(), internalUriPath);
+		} catch (ClassCastException ex) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = null;
+			if (ex.getMessage() != null && ex.getMessage().length() > 0
+					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType", ex
+						.getMessage(), "Chemical Association");
+			} else {
+				msg = new ActionMessage("errors.invalidOtherType", assocBean
+						.getType(), "Chemical Association");
+				assocBean.setType(null);
+			}
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+		}
+		CompositionService compService = new CompositionServiceLocalImpl();
+		compService.saveChemicalAssociation(sampleBean.getDomain(), assocBean
+				.getDomainAssociation());
+		// set visibility
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
+		if (accessibleGroups != null
+				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
+			// set composition public
+			authService.assignPublicVisibility(sampleBean.getDomain()
+					.getSampleComposition().getId().toString());
+			compService.assignChemicalAssociationPublicVisibility(authService,
+					assocBean.getDomainAssociation());
+		}
+		// save file data to file system and set visibility
+		saveFilesToFileSystem(assocBean.getFiles());
+		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
+				.getAttribute("hasFunctionalizingEntity");
+		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
+				request, assocBean, hasFunctionalizingEntity);
+	}
+
 	/**
 	 * Set up the input form for adding new chemical association
 	 *
@@ -175,7 +178,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		request.getSession().removeAttribute("chemicalAssociationForm");
+		request.getSession().removeAttribute("compositionForm");
 		setLookups(form, request);
 		return mapping.findForward("setup");
 	}
@@ -183,9 +186,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		prepareEntityLists(theForm, sampleBean, request);
+		setLookups(form, request);
 		return mapping.findForward("setup");
 	}
 
@@ -387,23 +388,10 @@ public class ChemicalAssociationAction extends CompositionAction {
 		// create a new copy before adding to finding
 		FileBean theFile = assoc.getTheFile();
 		FileBean newFile = theFile.copy();
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		// setup domainFile uri for fileBeans
-		// still using nanoparticleEntity as the folder name
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Chemical Association");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		assoc.addFile(newFile, theFileIndex);
+		// save the association
+		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
-		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
-				.getAttribute("hasFunctionalizingEntity");
-		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
-				request, assoc, hasFunctionalizingEntity);
 		return mapping.getInputForward();
 	}
 
@@ -417,11 +405,8 @@ public class ChemicalAssociationAction extends CompositionAction {
 		assoc.removeFile(theFileIndex);
 		assoc.setTheFile(new FileBean());
 		request.setAttribute("anchor", "file");
-		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
-				.getAttribute("hasFunctionalizingEntity");
-		InitCompositionSetup.getInstance().persistChemicalAssociationDropdowns(
-				request, assoc, hasFunctionalizingEntity);
-
+		// save the association
+		saveAssociation(request, theForm, assoc);
 		return mapping.getInputForward();
 	}
 
