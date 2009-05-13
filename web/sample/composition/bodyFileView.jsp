@@ -33,18 +33,27 @@
 												</c:when>
 					<c:otherwise>
 						<c:choose>
-							<c:when test="${file.image eq 'true'}">
-						 				${file.domainFile.title}
-										<br>
-								<a href="#"
-									onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
-										src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
-										border="0" width="150"> </a>
-							</c:when>
-							<c:otherwise>
+							<c:when test="${file.domainFile.uriExternal}">
 								<a
 									href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-									${file.domainFile.title}</a>
+									${file.domainFile.uri}</a>
+							</c:when>
+							<c:otherwise>
+								<c:choose>
+									<c:when test="${file.image eq 'true'}">
+						 				${file.domainFile.title}
+										<br>
+										<a href="#"
+											onclick="popImage(event, 'composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+												src="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+												border="0" width="150"> </a>
+									</c:when>
+									<c:otherwise>
+										<a
+											href="composition.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+											${file.domainFile.title}</a>
+									</c:otherwise>
+								</c:choose>
 							</c:otherwise>
 						</c:choose>
 					</c:otherwise>
@@ -63,7 +72,8 @@
 			<td>
 				<c:choose>
 					<c:when test="${!empty fn:trim(file.domainFile.description)}">
-						<c:out value="${fn:replace(file.domainFile.description, cr, '<br>')}"
+						<c:out
+							value="${fn:replace(file.domainFile.description, cr, '<br>')}"
 							escapeXml="false" />
 					</c:when>
 					<c:otherwise>N/A
