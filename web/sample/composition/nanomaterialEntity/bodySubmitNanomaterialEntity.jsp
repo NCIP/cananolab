@@ -163,7 +163,7 @@ function confirmDeletion()
 										test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.nanomaterialEntity.files)>0}">
 										<c:set var="newFileStyle" value="display:none" />
 									</c:if>
-									<div style="" id="newFile">
+									<div style="${newFileStyle}" id="newFile">
 										<c:set var="fileParent" value="nanomaterialEntity" />
 										<c:set var="fileForm" value="compositionForm" />
 										<c:set var="theFile"
