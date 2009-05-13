@@ -243,7 +243,7 @@ function confirmDeletion()
 					<td>
 						<c:set var="newFileStyle" value="display:block" />
 						<c:if
-							test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
+							test="${param.dispatch eq 'setupNew' || param.dispatch eq 'setupUpdate'||param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
 						<div style="${newFileStyle }" id="newFile">
