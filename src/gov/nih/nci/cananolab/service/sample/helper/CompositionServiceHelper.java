@@ -46,6 +46,7 @@ public class CompositionServiceHelper {
 						"sampleComposition.chemicalAssociationCollection.associatedElementB",
 						FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
 		crit.setFetchMode(
 				"composingElementCollection.inherentFunctionCollection",
