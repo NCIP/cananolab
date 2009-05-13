@@ -142,6 +142,7 @@ public class NanomaterialEntityAction extends CompositionAction {
 		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
+		request.setAttribute("location", "local");
 		return summaryEdit(mapping, form, request, response);
 	}
 
