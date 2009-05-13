@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
-import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -45,41 +44,9 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CompositionService compositionService = new CompositionServiceLocalImpl();
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		// setup domainFile uri for fileBeans
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils
-						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
-		try {
-			entityBean.setupDomainEntity(InitSetup.getInstance()
-					.getDisplayNameToClassNameLookup(
-							request.getSession().getServletContext()), user
-					.getLoginName(), internalUriPath);
-		} catch (ClassCastException ex) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = null;
-			if (ex.getMessage() != null && ex.getMessage().length() > 0
-					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
-				msg = new ActionMessage("errors.invalidOtherType", ex
-						.getMessage(), "Function");
-			} else {
-				msg = new ActionMessage("errors.invalidOtherType", entityBean
-						.getType(), "Functionalizing Entity");
-				entityBean.setType(null);
-			}
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			this.saveErrors(request, msgs);
-
-			return mapping.getInputForward();
-		}
-
+		saveEntity(request, theForm, entityBean);
 		if (!validateTargets(request, entityBean)) {
 			return mapping.getInputForward();
 		}
@@ -88,51 +55,12 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			return mapping.getInputForward();
 		}
 
-		compositionService.saveFunctionalizingEntity(sampleBean.getDomain(),
-				entityBean.getDomainEntity());
-
-		// set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
-		if (accessibleGroups != null
-				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
-			// set composition public
-			authService.assignPublicVisibility(sampleBean.getDomain()
-					.getSampleComposition().getId().toString());
-			compositionService.assignFunctionalizingEntityPublicVisibility(
-					authService, entityBean.getDomainEntity());
-		}
-		// save file data to file system and set visibility
-		saveFilesToFileSystem(entityBean.getFiles());
-
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entityBean);
-		// save to other particles
-		FileService service = new FileServiceLocalImpl();
-		Sample[] otherSamples = prepareCopy(request, theForm);
-		if (otherSamples != null) {
-			FunctionalizingEntity copy = entityBean.getDomainCopy();
-			for (Sample sample : otherSamples) {
-				compositionService.saveFunctionalizingEntity(sample, copy);
-				if (copy.getFileCollection() != null) {
-					for (File file : copy.getFileCollection()) {
-						service.saveCopiedFileAndSetVisibility(file, user,
-								sampleBean.getDomain().getName(), sample
-										.getName());
-					}
-				}
-			}
-		}
-
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage(
 				"message.addFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -178,6 +106,79 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			}
 		}
 		return true;
+	}
+
+	public void saveEntity(HttpServletRequest request,
+			DynaValidatorForm theForm, FunctionalizingEntityBean entityBean)
+			throws Exception {
+		CompositionService compositionService = new CompositionServiceLocalImpl();
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		// setup domainFile uri for fileBeans
+		String internalUriPath = Constants.FOLDER_PARTICLE
+				+ "/"
+				+ sampleBean.getDomain().getName()
+				+ "/"
+				+ StringUtils
+						.getOneWordLowerCaseFirstLetter("Functionalizing Entity");
+		try {
+			entityBean.setupDomainEntity(InitSetup.getInstance()
+					.getDisplayNameToClassNameLookup(
+							request.getSession().getServletContext()), user
+					.getLoginName(), internalUriPath);
+		} catch (ClassCastException ex) {
+			ActionMessages msgs = new ActionMessages();
+			ActionMessage msg = null;
+			if (ex.getMessage() != null && ex.getMessage().length() > 0
+					&& !ex.getMessage().equalsIgnoreCase("java.lang.Object")) {
+				msg = new ActionMessage("errors.invalidOtherType", ex
+						.getMessage(), "Function");
+			} else {
+				msg = new ActionMessage("errors.invalidOtherType", entityBean
+						.getType(), "Functionalizing Entity");
+				entityBean.setType(null);
+			}
+			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			this.saveErrors(request, msgs);
+		}
+
+		compositionService.saveFunctionalizingEntity(sampleBean.getDomain(),
+				entityBean.getDomainEntity());
+
+		// set visibility
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		List<String> accessibleGroups = authService.getAccessibleGroups(
+				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
+		if (accessibleGroups != null
+				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
+			// set composition public
+			authService.assignPublicVisibility(sampleBean.getDomain()
+					.getSampleComposition().getId().toString());
+			compositionService.assignFunctionalizingEntityPublicVisibility(
+					authService, entityBean.getDomainEntity());
+		}
+		// save file data to file system and set visibility
+		saveFilesToFileSystem(entityBean.getFiles());
+
+		InitCompositionSetup.getInstance()
+				.persistFunctionalizingEntityDropdowns(request, entityBean);
+		// save to other particles
+		FileService service = new FileServiceLocalImpl();
+		Sample[] otherSamples = prepareCopy(request, theForm);
+		if (otherSamples != null) {
+			FunctionalizingEntity copy = entityBean.getDomainCopy();
+			for (Sample sample : otherSamples) {
+				compositionService.saveFunctionalizingEntity(sample, copy);
+				if (copy.getFileCollection() != null) {
+					for (File file : copy.getFileCollection()) {
+						service.saveCopiedFileAndSetVisibility(file, user,
+								sampleBean.getDomain().getName(), sample
+										.getName());
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -297,28 +298,28 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		int theFileIndex = entity.getTheFileIndex();
-		entity.removeFile(theFileIndex);
-		entity.setTheFile(new FileBean());
+		// create a new copy before adding to functionalizing entity
+		FileBean theFile = entity.getTheFile();
+		FileBean newFile = theFile.copy();
+		entity.addFile(newFile, theFileIndex);
+		//save the functionalizing entity
+		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
-
 		return mapping.getInputForward();
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-			DynaValidatorForm theForm = (DynaValidatorForm) form;
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		int theFileIndex = entity.getTheFileIndex();
 		entity.removeFile(theFileIndex);
 		entity.setTheFile(new FileBean());
 		request.setAttribute("anchor", "file");
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
-
+		//save the functionalizing entity
+		saveEntity(request, theForm, entity);
 		return mapping.getInputForward();
 	}
 
