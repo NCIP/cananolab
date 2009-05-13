@@ -7,17 +7,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
 			<include method="getEntityIncludePage" />
-			<include method="getComposingElementTypeOptions" />
-			<include method="getBiopolymerTypeOptions" />
-			<include method="getAntibodySpeciesOptions" />
-			<include method="getAntibodyTypeOptions" />
-			<include method="getAntibodyIsotypeOptions" />
-			<include method="getWallTypeOptions" />
-			<include method="getCarbonNanotubeDiameterUnitOptions" />
-			<include method="getCarbonNanotubeAverageLengthUnitOptions" />
-			<include method="getFullereneAverageDiameterUnitOptions" />
-			<include method="getAssociatedElementOptions" />
-			<include method="getAssociatedComposingElements" />
+			<include method="getFileFromList"/>
 		</create>
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
