@@ -14,6 +14,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
@@ -55,11 +56,28 @@ public class NanomaterialEntityAction extends CompositionAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		CompositionService compositionService = new CompositionServiceLocalImpl();
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
+		if (!validateInherentFunctionType(request, entityBean)) {
+			return mapping.getInputForward();
+		}
+		if (!validateEntityFile(request, entityBean)) {
+			return mapping.getInputForward();
+		}
+		saveEntity(request, theForm, entityBean);
+		ActionMessages msgs = new ActionMessages();
+		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		request.setAttribute("location", "local");
+		return summaryEdit(mapping, form, request, response);
+	}
+
+	private void saveEntity(HttpServletRequest request,
+			DynaValidatorForm theForm, NanomaterialEntityBean entityBean)
+			throws Exception {
+		SampleBean sampleBean = setupSample(theForm, request, "local");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -67,6 +85,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 				+ "/"
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
+		// save file data to file system and set visibility
+		saveFilesToFileSystem(entityBean.getFiles());
 		try {
 			entityBean.setupDomainEntity(InitSetup.getInstance()
 					.getDisplayNameToClassNameLookup(
@@ -87,22 +107,13 @@ public class NanomaterialEntityAction extends CompositionAction {
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			this.saveErrors(request, msgs);
 			entityBean.setType(null);
-			return mapping.getInputForward();
 		}
 
-		if (!validateInherentFunctionType(request, entityBean)) {
-			return mapping.getInputForward();
-		}
-
-		if (!validateEntityFile(request, entityBean)) {
-			return mapping.getInputForward();
-		}
-
+		CompositionService compositionService = new CompositionServiceLocalImpl();
 		compositionService.saveNanomaterialEntity(sampleBean.getDomain(),
 				entityBean.getDomainEntity());
 
 		// set visibility
-
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		List<String> accessibleGroups = authService.getAccessibleGroups(
@@ -115,8 +126,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 			compositionService.assignNanomaterialEntityPublicVisibility(
 					authService, entityBean.getDomainEntity());
 		}
-		// save file data to file system and set visibility
-		saveFilesToFileSystem(entityBean.getFiles());
 
 		// save to other particles
 		FileService service = new FileServiceLocalImpl();
@@ -135,15 +144,9 @@ public class NanomaterialEntityAction extends CompositionAction {
 				}
 			}
 		}
-
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
 		request.setAttribute("location", "local");
-		return summaryEdit(mapping, form, request, response);
 	}
 
 	private boolean validateInherentFunctionType(HttpServletRequest request,
@@ -357,22 +360,12 @@ public class NanomaterialEntityAction extends CompositionAction {
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
 		int theFileIndex = entity.getTheFileIndex();
-		// create a new copy before adding to finding
+		// create a new copy before adding to nanomaterial entity
 		FileBean theFile = entity.getTheFile();
 		FileBean newFile = theFile.copy();
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		// setup domainFile uri for fileBeans
-		//still using nanoparticleEntity as the folder name
-		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
-				+ sampleBean.getDomain().getName()
-				+ "/"
-				+ StringUtils.getOneWordLowerCaseFirstLetter("Nanoparticle Entity");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		entity.addFile(newFile, theFileIndex);
-		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
-				request, entity);
+		// save nanomaterial entity
+		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
 		return mapping.getInputForward();
 	}
