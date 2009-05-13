@@ -27,8 +27,9 @@ public class StringUtils {
 	private static Logger logger = Logger.getLogger(StringUtils.class);
 
 	public static boolean isImgFileExt(String fileName) {
-		if (fileName == null || fileName.length() == 0)
+		if (isEmpty(fileName)) {
 			return false;
+		}
 
 		boolean isImgFileExt = false;
 		for (int i = 0; i < Constants.IMAGE_FILE_EXTENSIONS.length; i++) {
@@ -44,9 +45,10 @@ public class StringUtils {
 
 	public static String join(String[] stringArray, String delimiter) {
 		String joinedStr = "";
-		if (stringArray == null) {
+		if (stringArray == null || stringArray.length == 0) {
 			return joinedStr;
 		}
+		
 		StringBuilder sb = new StringBuilder();
 		String str = null;
 		for (int i = 0; i < stringArray.length; i++) {
@@ -73,10 +75,10 @@ public class StringUtils {
 
 	public static String join(Collection<String> stringList, String delimiter) {
 		String joinedStr = "";
-
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
 		}
+		
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (String str : stringList) {
@@ -149,7 +151,7 @@ public class StringUtils {
 	}
 
 	public static Float convertToFloat(String floatStr) {
-		if (floatStr == null || floatStr == "") {
+		if (isEmpty(floatStr)) {
 			return null;
 		}
 		try {
@@ -165,7 +167,7 @@ public class StringUtils {
 	}
 
 	public static Long convertToLong(String longStr) {
-		if (longStr == null || longStr == "") {
+		if (isEmpty(longStr)) {
 			return null;
 		}
 		try {
@@ -188,28 +190,8 @@ public class StringUtils {
 		}
 	}
 
-	public static String convertDateToString(Date date) {
-		return convertDateToString(date, Constants.EXPORT_FILE_DATE_FORMAT);
-	}
-	
-	public static String convertDateToString(Date date, String format) {
-		if (date == null) {
-			return "";
-		}
-		String dateStr = null;
-		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-		try {
-			dateStr = dateFormat.format(date);
-		} catch (Exception e) {
-			logger.error(
-				"Error converting the given date using the given dateFormat.", e);
-			throw new RuntimeException("Can't format the given date: " + date);
-		}
-		return dateStr;
-	}
-
 	public static boolean isInteger(String theStr) {
-		if (theStr == null || theStr.length() == 0) {
+		if (isEmpty(theStr)) {
 			return false;
 		} else {
 			for (int i = 0; i < theStr.length(); i++) {
@@ -224,7 +206,7 @@ public class StringUtils {
 	public static boolean isDouble(String theStr) {
 		int decimalCount = 0;
 
-		if (theStr == null || theStr.length() == 0) {
+		if (isEmpty(theStr)) {
 			return false;
 		} else {
 			for (int i = 0; i < theStr.length(); i++) {
@@ -282,7 +264,7 @@ public class StringUtils {
 	public static String getOneWordLowerCaseFirstLetter(String words) {
 		// remove space in words and make the first letter lower case.
 		String oneWord = words;
-		if (words != null && words.length() > 0) {
+		if (!isEmpty(words)) {
 			String firstLetter = words.substring(0, 1);
 			oneWord = words
 					.replaceFirst(firstLetter, firstLetter.toLowerCase())
@@ -314,7 +296,7 @@ public class StringUtils {
 	 * @return
 	 */
 	public static List<String> parseToWords(String text) {
-		if (text == null || text.length() == 0) {
+		if (isEmpty(text)) {
 			return null;
 		}
 		SortedSet<String> wordList = new TreeSet<String>();

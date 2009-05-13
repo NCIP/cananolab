@@ -25,6 +25,10 @@ public class DateUtils {
 		return newDate;
 	}
 
+	public static String convertDateToString(Date date) {
+		return convertDateToString(date, Constants.EXPORT_FILE_DATE_FORMAT);
+	}
+	
 	public static String convertDateToString(Date date, String format) {
 		if (date == null) {
 			return "";
@@ -34,10 +38,8 @@ public class DateUtils {
 		try {
 			dateStr = dateFormat.format(date);
 		} catch (Exception e) {
-			logger
-					.error(
-							"Error converting the given date using the given dateFormat",
-							e);
+			logger.error(
+				"Error converting the given date using the given dateFormat.", e);
 			throw new RuntimeException("Can't format the given date: " + date);
 		}
 		return dateStr;
