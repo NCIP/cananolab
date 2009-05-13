@@ -72,6 +72,7 @@ public class CompositionServiceHelper {
 				FunctionalizingEntity.class).add(
 				Property.forName("id").eq(new Long(entityId)));
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection.targetCollection", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
@@ -106,30 +107,17 @@ public class CompositionServiceHelper {
 				ChemicalAssociation.class).add(
 				Property.forName("id").eq(new Long(assocId)));
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementA", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementA.nanomaterialEntity", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementB", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementB.nanomaterialEntity", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
 		ChemicalAssociation assoc = null;
 		if (!result.isEmpty()) {
 			assoc = (ChemicalAssociation) result.get(0);
-			// load nanomaterial entity associated with composing element in
-			// an association
-			if (assoc.getAssociatedElementA() instanceof ComposingElement) {
-				NanomaterialEntity entity = findNanomaterialEntityById(((ComposingElement) assoc
-						.getAssociatedElementA()).getNanomaterialEntity()
-						.getId().toString());
-				((ComposingElement) assoc.getAssociatedElementA())
-						.setNanomaterialEntity(entity);
-			}
-			if (assoc.getAssociatedElementB() instanceof ComposingElement) {
-				NanomaterialEntity entity = findNanomaterialEntityById(((ComposingElement) assoc
-						.getAssociatedElementB()).getNanomaterialEntity()
-						.getId().toString());
-				((ComposingElement) assoc.getAssociatedElementB())
-						.setNanomaterialEntity(entity);
-			}
 		}
 		return assoc;
 	}
