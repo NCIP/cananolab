@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
@@ -378,10 +377,9 @@ public class NanomaterialEntityAction extends CompositionAction {
 		int theFileIndex = entity.getTheFileIndex();
 		entity.removeFile(theFileIndex);
 		entity.setTheFile(new FileBean());
+		// save nanomaterial entity
+		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
-				request, entity);
-
 		return mapping.getInputForward();
 	}
 
