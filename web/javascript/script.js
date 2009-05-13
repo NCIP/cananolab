@@ -461,10 +461,12 @@ function clearFile() {
 	dwr.util.setValue("hiddenFileId", "");
 	dwr.util.setValue("externalUrl", "");
 	dwr.util.setValue("uploadedFile", null);
+	dwr.util.setValue("hiddenFileIndex", -1);
 	show("load");
 	hide("link");
 	dwr.util.setValue("external0", true);
 	dwr.util.setValue("external1", false);
+	hide("deleteFile");
 }
 function addFile(actionName, form) {
 	form.action = actionName+".do?dispatch=addFile&page=0";
@@ -479,6 +481,7 @@ function populateFile(file) {
 		dwr.util.setValue("fileType", file.domainFile.type);
 		dwr.util.setValue("fileTitle", file.domainFile.title);
 		dwr.util.setValue("fileKeywords", file.keywordsStr);
+		dwr.util.setValue("fileDescription", file.domainFile.description);
 		dwr.util.setValue("fileVisibility", file.visibilityGroups);
 		if (file.domainFile.uriExternal) {
 			dwr.util.setValue("external1", 1);
