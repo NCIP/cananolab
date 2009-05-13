@@ -136,7 +136,7 @@ public class FileBean {
 
 	public void setupDomainFile(String internalUriPath, String createdBy,
 			int index) throws Exception {
-		if (domainFile.getId() == 0) {
+		if (domainFile.getId() != null && domainFile.getId() == 0) {
 			domainFile.setId(null);
 		}
 		if (domainFile.getId() == null
@@ -217,7 +217,7 @@ public class FileBean {
 	}
 
 	public FileBean copy() {
-		FileBean copy=new FileBean();
+		FileBean copy = new FileBean();
 		copy.getDomainFile().setType(domainFile.getType());
 		copy.getDomainFile().setTitle(domainFile.getTitle());
 		copy.getDomainFile().setDescription(domainFile.getDescription());
