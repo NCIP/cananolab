@@ -66,11 +66,11 @@ public class CompositionAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String location = request.getParameter("location");
+		if (location==null) {
+			location=(String)request.getAttribute("location");
+		}
 		String sampleId = request.getParameter("sampleId");
-
-		// setupSample(theForm, request, location);
 		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
 		CompositionService compService = null;
 		if (location.equals("local")) {
 			compService = new CompositionServiceLocalImpl();
@@ -150,33 +150,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// setupSample(theForm, request, location);
-		HttpSession session = request.getSession();
-		String sampleId = request.getParameter("sampleId");
-		CompositionService compService = new CompositionServiceLocalImpl();
-		CompositionBean compositionBean = compService
-				.findCompositionBySampleId(sampleId);
-		// set entity type
-		for (NanomaterialEntityBean entityBean : compositionBean
-				.getNanomaterialEntities()) {
-			entityBean.setType(InitSetup.getInstance().getDisplayName(
-					entityBean.getClassName(), session.getServletContext()));
-		}
-		for (FunctionalizingEntityBean entityBean : compositionBean
-				.getFunctionalizingEntities()) {
-			entityBean.setType(InitSetup.getInstance().getDisplayName(
-					entityBean.getClassName(), session.getServletContext()));
-		}
-		for (ChemicalAssociationBean assocBean : compositionBean
-				.getChemicalAssociations()) {
-			assocBean.setType(InitSetup.getInstance().getDisplayName(
-					assocBean.getClassName(), session.getServletContext()));
-			assocBean.updateType(InitSetup.getInstance()
-					.getClassNameToDisplayNameLookup(
-							session.getServletContext()));
-		}
-		theForm.set("comp", compositionBean);
+		prepareSummary(mapping, form, request, response);
 		return mapping.findForward("summaryEdit");
 	}
 }
