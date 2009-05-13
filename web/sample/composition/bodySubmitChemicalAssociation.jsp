@@ -239,11 +239,10 @@ function confirmDeletion()
 							</tr>
 							<tr>
 								<td>
-									<c:if
-										test="${! empty compositionForm.map.assoc.files }">
-										<c:set var="files"
-											value="${compositionForm.map.assoc.files}" />
+									<c:if test="${! empty compositionForm.map.assoc.files }">
+										<c:set var="files" value="${compositionForm.map.assoc.files}" />
 										<c:set var="edit" value="true" />
+										<c:set var="entityType" value="chemical association" />
 										<%@ include file="bodyFileView.jsp"%>
 									</c:if>
 								</td>

@@ -80,6 +80,7 @@
 									</td>
 									<td>
 										<c:set var="files" value="${nanomaterialEntity.files }" />
+										<c:set var="entityType" value="nanomaterial entity"/>
 										<%@include file="../bodyFileView.jsp"%>
 									</td>
 								</tr>

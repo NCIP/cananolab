@@ -73,7 +73,7 @@
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
 					<a
-						href="javascript:setTheFile(${file.domainFile.id});">Edit</a>&nbsp;
+						href="javascript:setTheFile('${entityType}', ${fileIndex.count-1});">Edit</a>&nbsp;
 				</td>
 			</c:if>
 		</tr>

@@ -151,6 +151,7 @@ function confirmDeletion()
 										<c:set var="files"
 											value="${compositionForm.map.nanomaterialEntity.files}" />
 										<c:set var="edit" value="true" />
+										<c:set var="entityType" value="nanomaterial entity" />
 										<%@ include file="../bodyFileView.jsp"%>
 									</c:if>
 								</td>
@@ -162,7 +163,7 @@ function confirmDeletion()
 										test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.nanomaterialEntity.files)>0}">
 										<c:set var="newFileStyle" value="display:none" />
 									</c:if>
-									<div style="${newFileStyle}" id="newFile">
+									<div style="" id="newFile">
 										<c:set var="fileParent" value="nanomaterialEntity" />
 										<c:set var="fileForm" value="compositionForm" />
 										<c:set var="theFile"

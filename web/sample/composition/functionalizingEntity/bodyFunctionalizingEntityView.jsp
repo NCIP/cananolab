@@ -130,6 +130,7 @@
 									</td>
 									<td>
 										<c:set var="files" value="${functionalizingEntity.files }" />
+										<c:set var="entityType" value="functionalizing entity"/>
 										<%@include file="../bodyFileView.jsp"%>
 									</td>
 								</tr>

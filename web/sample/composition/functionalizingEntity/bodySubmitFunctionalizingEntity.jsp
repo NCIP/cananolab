@@ -234,6 +234,7 @@ function confirmDeletion()
 							<c:set var="files"
 								value="${compositionForm.map.functionalizingEntity.files}" />
 							<c:set var="edit" value="true" />
+							<c:set var="entityType" value="functionalizing entity" />
 							<%@ include file="../bodyFileView.jsp"%>
 						</c:if>
 					</td>
@@ -245,7 +246,7 @@ function confirmDeletion()
 							test="${param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
-						<div style="${newFileStyle}" id="newFile">
+						<div style="" id="newFile">
 							<c:set var="fileParent" value="functionalizingEntity" />
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"

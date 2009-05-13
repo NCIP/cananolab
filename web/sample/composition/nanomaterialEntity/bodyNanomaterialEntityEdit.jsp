@@ -99,6 +99,7 @@
 											<c:choose>
 												<c:when test="${! empty nanomaterialEntity.files}">
 													<c:set var="files" value="${nanomaterialEntity.files }" />
+													<c:set var="entityType" value="nanomaterial entity"/>
 													<%@include file="../bodyFileView.jsp"%>
 												</c:when>
 												<c:otherwise>

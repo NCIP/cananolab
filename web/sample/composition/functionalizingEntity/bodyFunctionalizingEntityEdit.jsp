@@ -179,6 +179,7 @@
 											<c:choose>
 												<c:when test="${! empty functionalizingEntity.files}">
 													<c:set var="files" value="${functionalizingEntity.files }" />
+													<c:set var="entityType" value="functionalizing entity" />
 													<%@include file="../bodyFileView.jsp"%>
 												</c:when>
 												<c:otherwise>
