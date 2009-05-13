@@ -50,38 +50,6 @@ function displayAntigenSpecies(parentIndex, childIndex) {
 	}
 	return false;
 }
-function radLinkOrUpload(fileIndex) {
-	var linkEle = document.getElementById("link_" + fileIndex);
-	var loadEle = document.getElementById("load_" + fileIndex);
-	if (document.getElementById("external_" + fileIndex).checked) {
-		loadEle.style.display = "inline";
-		linkEle.style.display = "none";
-	} else {
-		loadEle.style.display = "none";
-		linkEle.style.display = "inline";
-	}
-}
-/*
- * for chemical association
- */
-function getAssociatedElementOptions(compositionTypeId, entityTypeId, compEleId) {
-	var compositionType = dwr.util.getValue(compositionTypeId);
-	var compEle = document.getElementById(compEleId);
-	if (compositionType != "") {
-		CompositionManager.getAssociatedElementOptions(compositionType, function (data) {
-			dwr.util.removeAllOptions(entityTypeId);
-			if (data != null) {
-				dwr.util.addOptions(entityTypeId, [""]);
-				dwr.util.addOptions(entityTypeId, data, "dataId", "dataDisplayType");
-			}
-		});
-	} else {
-		dwr.util.removeAllOptions(entityTypeId);
-	}
-	if (compositionType != "Nanomaterial Entity") {
-		compEle.style.display = "none";
-	}
-}
 
 function getEntityDisplayNameOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType"+elementNumber);
@@ -93,29 +61,6 @@ function getEntityDisplayNameOptions(elementNumber) {
 		show("functionalizingEntitySelect"+elementNumber);
 		hide("materialEntitySelect"+elementNumber);
 	}
-}
-function getAssociatedComposingElements(compositionTypeId, entityTypeId, compEleTypeId, compEleId) {
-	var compositionType = dwr.util.getValue(compositionTypeId);
-	var compEle = document.getElementById(compEleId);
-	if (compositionType == "Nanomaterial Entity") {
-		var entityId = dwr.util.getValue(entityTypeId);
-		if (entityId != "") {
-			CompositionManager.getAssociatedComposingElements(entityId, function (data) {
-				dwr.util.removeAllOptions(compEleTypeId);
-				if (data != null) {
-					dwr.util.addOptions(compEleTypeId, [""]);
-					dwr.util.addOptions(compEleTypeId, data, "domainComposingElementId", "displayName");
-				}
-			});
-		} else {
-			dwr.util.removeAllOptions(compEleTypeId);
-		}
-		compEle.style.display = "inline";
-	} else {
-		dwr.util.removeAllOptions(compEleTypeId);
-		compEle.style.display = "none";
-	}
-	return false;
 }
 function displayBondType() {
 	var type = document.getElementById("assoType").value;
@@ -139,22 +84,6 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 	document.getElementById(displayNameEleId).value = selectedName;
 	// alert(document.getElementById(displayNameEleId).value);
 }
-/*
- * the following functions using AJAX to display modality dropdown menu in the
- * bodyNanomaterialEntityUpdate.jsp and bodyFunctionUpdate.jsp
- *
- */
-/*
-function setModalityTypeOptions(compEleIndex, functionIndex) {
-	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
-	CompositionManager.getModalityTypeOptions(functionType, function(data) {
-
-			dwr.util.removeAllOptions("modalityType_" + compEleIndex + "_" + functionIndex);
-			dwr.util.addOptions("modalityType_" + compEleIndex + "_" + functionIndex, ['']);
-    		dwr.util.addOptions("modalityType_" + compEleIndex + "_" + functionIndex, data);
-    		dwr.util.addOptions("modalityType_" + compEleIndex + "_" + functionIndex, ['[Other]']);
-  	});
-}
 
 function setModalityInclude(compEleIndex, functionIndex) {
 	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
@@ -171,5 +100,8 @@ function setModalityInclude(compEleIndex, functionIndex) {
   			"&nbsp;";
   	}
 }
-*/
 
+function setTheFile(type, index) {
+	CompositionManager.getFileFromList(type, index, populateFile);
+	dwr.util.setValue("hiddenFileIndex", index);
+}

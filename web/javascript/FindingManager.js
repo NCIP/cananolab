@@ -75,43 +75,6 @@ function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
 }
-function populateFile(file) {
-	if (file != null) {
-		dwr.util.setValue("fileType", file.domainFile.type);
-		dwr.util.setValue("fileTitle", file.domainFile.title);
-		dwr.util.setValue("fileKeywords", file.keywordsStr);
-		dwr.util.setValue("fileVisibility", file.visibilityGroups);
-		if (file.domainFile.uriExternal) {
-			dwr.util.setValue("external1", 1);
-			dwr.util.setValue("external0", 0);
-		} else {
-			dwr.util.setValue("external1", 0);
-			dwr.util.setValue("external0", 1);
-		}
-		if (file.domainFile.id != null) {
-			dwr.util.setValue("hiddenFileId", file.domainFile.id);
-		}
-		if (file.domainFile.uri != null) {
-			dwr.util.setValue("hiddenFileUri", file.domainFile.uri);
-			if (file.domainFile.uriExternal == 0) {
-				dwr.util.setValue("uploadedUri", file.domainFile.uri);
-			} else {
-				dwr.util.setValue("uploadedUri", "");
-			}
-		} else {
-			dwr.util.setValue("uploadedUri", "");
-		}
-		if (file.domainFile.uriExternal) {
-			show("link");
-			hide("load");
-		} else {
-			show("load");
-			hide("link");
-		}
-	}
-	show("newFile");
-	show("deleteFile");
-}
 function updateMatrix(form) {
 	var colNum = dwr.util.getValue("colNum");
 	var rowNum = dwr.util.getValue("rowNum");
