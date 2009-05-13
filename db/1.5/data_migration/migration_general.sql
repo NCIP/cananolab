@@ -13,8 +13,6 @@ DROP TABLE IF EXISTS sample_container_storage;
 DROP TABLE IF EXISTS storage;
 DROP TABLE IF EXISTS associated_file;
 
-ALTER TABLE publication ADD COLUMN abstract TEXT;
-
 -- merge protocol_file and protocol
 ALTER TABLE protocol
     ADD COLUMN protocol_abbreviation VARCHAR(200),

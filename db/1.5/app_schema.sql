@@ -418,7 +418,6 @@ CREATE TABLE publication
 	end_page VARCHAR(200),
 	year INTEGER,
 	research_area VARCHAR(200),
-	abstract TEXT,
 	PRIMARY KEY (publication_pk_id),
 	KEY (publication_pk_id)
 ) TYPE=InnoDB
@@ -699,246 +698,246 @@ CREATE TABLE activation_method
 
 
 
-ALTER TABLE target ADD CONSTRAINT FK_target_function 
+ALTER TABLE target ADD CONSTRAINT FK_target_function
 	FOREIGN KEY (targeting_function_pk_id) REFERENCES nano_function (function_pk_id)
 ;
 
-ALTER TABLE nano_function ADD CONSTRAINT FK_function_composing_element 
+ALTER TABLE nano_function ADD CONSTRAINT FK_function_composing_element
 	FOREIGN KEY (composing_element_pk_id) REFERENCES composing_element (composing_element_pk_id)
 ;
 
-ALTER TABLE nano_function ADD CONSTRAINT FK_function_functionalizing_entity 
+ALTER TABLE nano_function ADD CONSTRAINT FK_function_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE small_molecule ADD CONSTRAINT FK_small_molecule_functionalizing_entity 
+ALTER TABLE small_molecule ADD CONSTRAINT FK_small_molecule_functionalizing_entity
 	FOREIGN KEY (small_molecule_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanomaterial_entity 
+ALTER TABLE polymer ADD CONSTRAINT FK_polymer_nanomaterial_entity
 	FOREIGN KEY (polymer_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE other_nanomaterial_entity ADD CONSTRAINT FK_other_nanomaterial_entity_nanomaterial_entity 
+ALTER TABLE other_nanomaterial_entity ADD CONSTRAINT FK_other_nanomaterial_entity_nanomaterial_entity
 	FOREIGN KEY (other_nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE other_functionalizing_entity ADD CONSTRAINT FK_other_functionalizing_entity_functionalizing_entity 
+ALTER TABLE other_functionalizing_entity ADD CONSTRAINT FK_other_functionalizing_entity_functionalizing_entity
 	FOREIGN KEY (other_func_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanomaterial_entity 
+ALTER TABLE liposome ADD CONSTRAINT FK_liposome_nanomaterial_entity
 	FOREIGN KEY (liposome_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE fullerene ADD CONSTRAINT FK_fullerene_nanomaterial_entity 
+ALTER TABLE fullerene ADD CONSTRAINT FK_fullerene_nanomaterial_entity
 	FOREIGN KEY (fullerene_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanomaterial_entity 
+ALTER TABLE emulsion ADD CONSTRAINT FK_emulsion_nanomaterial_entity
 	FOREIGN KEY (emulsion_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanomaterial_entity 
+ALTER TABLE dendrimer ADD CONSTRAINT FK_dendrimer_nanomaterial_entity
 	FOREIGN KEY (dendrimer_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_datum 
+ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_datum
 	FOREIGN KEY (datum_pk_id) REFERENCES datum (datum_pk_id)
 ;
 
-ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_experiment_condition 
+ALTER TABLE datum_condition ADD CONSTRAINT FK_datum_condition_experiment_condition
 	FOREIGN KEY (condition_pk_id) REFERENCES experiment_condition (condition_pk_id)
 ;
 
-ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_associated_element 
+ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_associated_element
 	FOREIGN KEY (composing_element_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanomaterial_entity 
+ALTER TABLE composing_element ADD CONSTRAINT FK_composing_element_nanomaterial_entity
 	FOREIGN KEY (nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE carbon_nanotube ADD CONSTRAINT FK_carbon_nanotube_nanomaterial_entity 
+ALTER TABLE carbon_nanotube ADD CONSTRAINT FK_carbon_nanotube_nanomaterial_entity
 	FOREIGN KEY (carbon_nanotube_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE biopolymer_p ADD CONSTRAINT FK_biopolymer_p_nanomaterial_entity 
+ALTER TABLE biopolymer_p ADD CONSTRAINT FK_biopolymer_p_nanomaterial_entity
 	FOREIGN KEY (biopolymer_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity 
+ALTER TABLE biopolymer_f ADD CONSTRAINT FK_biopolymer_f_functionalizing_entity
 	FOREIGN KEY (biopolymer_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity 
+ALTER TABLE antibody ADD CONSTRAINT FK_antibody_functionalizing_entity
 	FOREIGN KEY (antibody_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method 
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_activation_method
 	FOREIGN KEY (activation_method_pk_id) REFERENCES activation_method (activation_method_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element 
+ALTER TABLE functionalizing_entity ADD CONSTRAINT FK_functionalizing_entity_associated_element
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE datum ADD CONSTRAINT FK_datum_file 
+ALTER TABLE datum ADD CONSTRAINT FK_datum_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE datum ADD CONSTRAINT FK_datum_finding 
+ALTER TABLE datum ADD CONSTRAINT FK_datum_finding
 	FOREIGN KEY (finding_pk_id) REFERENCES finding (finding_pk_id)
 ;
 
-ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_composition 
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_composition
 	FOREIGN KEY (composition_pk_id) REFERENCES composition (composition_pk_id)
 ;
 
-ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file 
+ALTER TABLE composition_file ADD CONSTRAINT FK_composition_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization 
+ALTER TABLE solubility ADD CONSTRAINT FK_solubility_characterization
 	FOREIGN KEY (solubility_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE shape ADD CONSTRAINT FK_shape_characterization 
+ALTER TABLE shape ADD CONSTRAINT FK_shape_characterization
 	FOREIGN KEY (shape_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_point_of_contact 
+ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_point_of_contact
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_sample 
+ALTER TABLE sample_other_poc ADD CONSTRAINT FK_sample_other_poc_sample
 	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
-ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization 
+ALTER TABLE physical_state ADD CONSTRAINT FK_physical_state_characterization
 	FOREIGN KEY (physical_state_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE finding ADD CONSTRAINT FK_finding_characterization 
+ALTER TABLE finding ADD CONSTRAINT FK_finding_characterization
 	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE composition ADD CONSTRAINT FK_Composition_sample 
+ALTER TABLE composition ADD CONSTRAINT FK_Composition_sample
 	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
-ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_sample 
+ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_sample
 	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
-ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_publication 
+ALTER TABLE sample_publication ADD CONSTRAINT FK_sample_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-ALTER TABLE sample ADD CONSTRAINT FK_sample_point_of_contact 
+ALTER TABLE sample ADD CONSTRAINT FK_sample_point_of_contact
 	FOREIGN KEY (primary_contact_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association 
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_chemical_association
 	FOREIGN KEY (chemical_association_pk_id) REFERENCES chemical_association (chemical_association_pk_id)
 ;
 
-ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file 
+ALTER TABLE chemical_association_file ADD CONSTRAINT FK_chemical_association_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_protocol
 	FOREIGN KEY (protocol_pk_id) REFERENCES protocol (protocol_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_point_of_contact 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_point_of_contact
 	FOREIGN KEY (poc_pk_id) REFERENCES point_of_contact (poc_pk_id)
 ;
 
-ALTER TABLE characterization ADD CONSTRAINT FK_characterization_sample 
+ALTER TABLE characterization ADD CONSTRAINT FK_characterization_sample
 	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author 
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_author
 	FOREIGN KEY (author_pk_id) REFERENCES author (author_pk_id)
 ;
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication 
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
-ALTER TABLE publication ADD CONSTRAINT FK_publication_file 
+ALTER TABLE publication ADD CONSTRAINT FK_publication_file
 	FOREIGN KEY (publication_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE protocol ADD CONSTRAINT FK_protocol_file 
+ALTER TABLE protocol ADD CONSTRAINT FK_protocol_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization 
+ALTER TABLE point_of_contact ADD CONSTRAINT FK_point_of_contact_organization
 	FOREIGN KEY (organization_pk_id) REFERENCES organization (organization_pk_id)
 ;
 
-ALTER TABLE nanomaterial_entity_file ADD CONSTRAINT FK_nanomaterial_entity_file_file 
+ALTER TABLE nanomaterial_entity_file ADD CONSTRAINT FK_nanomaterial_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE nanomaterial_entity_file ADD CONSTRAINT FK_nanomaterial_entity_file_nanomaterial_entity 
+ALTER TABLE nanomaterial_entity_file ADD CONSTRAINT FK_nanomaterial_entity_file_nanomaterial_entity
 	FOREIGN KEY (nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id)
 ;
 
-ALTER TABLE keyword_sample ADD CONSTRAINT FK_keyword_sample_keyword 
+ALTER TABLE keyword_sample ADD CONSTRAINT FK_keyword_sample_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
-ALTER TABLE keyword_sample ADD CONSTRAINT FK_keyword_sample_sample 
+ALTER TABLE keyword_sample ADD CONSTRAINT FK_keyword_sample_sample
 	FOREIGN KEY (sample_pk_id) REFERENCES sample (sample_pk_id)
 ;
 
-ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword 
+ALTER TABLE keyword_file ADD CONSTRAINT FK_keyword_file_keyword
 	FOREIGN KEY (keyword_pk_id) REFERENCES keyword (keyword_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file 
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity 
+ALTER TABLE functionalizing_entity_file ADD CONSTRAINT FK_functionalizing_entity_file_functionalizing_entity
 	FOREIGN KEY (functionalizing_entity_pk_id) REFERENCES functionalizing_entity (functionalizing_entity_pk_id)
 ;
 
-ALTER TABLE finding_file ADD CONSTRAINT FK_finding_file_file 
+ALTER TABLE finding_file ADD CONSTRAINT FK_finding_file_file
 	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
 ;
 
-ALTER TABLE finding_file ADD CONSTRAINT FK_finding_file_finding 
+ALTER TABLE finding_file ADD CONSTRAINT FK_finding_file_finding
 	FOREIGN KEY (finding_pk_id) REFERENCES finding (finding_pk_id)
 ;
 
-ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config 
+ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_experiment_config
 	FOREIGN KEY (experiment_config_pk_id) REFERENCES experiment_config (experiment_config_pk_id)
 ;
 
-ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_instrument 
+ALTER TABLE experiment_config_instrument ADD CONSTRAINT FK_experiment_config_instrument_instrument
 	FOREIGN KEY (instrument_pk_id) REFERENCES instrument (instrument_pk_id)
 ;
 
-ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_characterization 
+ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_characterization
 	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
 ;
 
-ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique 
+ALTER TABLE experiment_config ADD CONSTRAINT FK_experiment_config_technique
 	FOREIGN KEY (technique_pk_id) REFERENCES technique (technique_pk_id)
 ;
 
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a 
+ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_a
 	FOREIGN KEY (associated_element_a_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
 
-ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b 
+ALTER TABLE chemical_association ADD CONSTRAINT FK_chemical_association_associated_element_b
 	FOREIGN KEY (associated_element_b_pk_id) REFERENCES associated_element (associated_element_pk_id)
 ;
