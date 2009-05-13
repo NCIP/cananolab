@@ -67,14 +67,13 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					throw new CompositionException(err, e);
 				}
 			}
-			boolean newSampleComposition = false;
+
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setSample(particleSample);
 				particleSample.getSampleComposition()
 						.setNanomaterialEntityCollection(
 								new HashSet<NanomaterialEntity>());
-				newSampleComposition = true;
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
@@ -133,18 +132,18 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					throw new CompositionException(err, e);
 				}
 			}
-			boolean newSampleComposition = false;
+
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setSample(particleSample);
 				particleSample.getSampleComposition()
 						.setFunctionalizingEntityCollection(
 								new HashSet<FunctionalizingEntity>());
-				newSampleComposition = true;
+
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
-			particleSample.getSampleComposition()
-					.getFunctionalizingEntityCollection().add(entity);
+//			particleSample.getSampleComposition()
+//					.getFunctionalizingEntityCollection().add(entity);
 
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = entity.getFileCollection();
