@@ -85,21 +85,25 @@ public class CompositionAction extends BaseAnnotationAction {
 				.findCompositionBySampleId(sampleId);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("comp", compositionBean);
-		// set entity type and association type
+		// set entity type and association type and retrieve visibility
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (NanomaterialEntityBean entityBean : compositionBean
 				.getNanomaterialEntities()) {
 			entityBean.setType(InitSetup.getInstance().getDisplayName(
 					entityBean.getClassName(), session.getServletContext()));
+			compService.retrieveVisibility(entityBean, user);
 		}
 		for (FunctionalizingEntityBean entityBean : compositionBean
 				.getFunctionalizingEntities()) {
 			entityBean.setType(InitSetup.getInstance().getDisplayName(
 					entityBean.getClassName(), session.getServletContext()));
+			compService.retrieveVisibility(entityBean, user);
 		}
 		for (ChemicalAssociationBean assocBean : compositionBean
 				.getChemicalAssociations()) {
 			assocBean.setType(InitSetup.getInstance().getDisplayName(
 					assocBean.getClassName(), session.getServletContext()));
+			compService.retrieveVisibility(assocBean, user);
 		}
 	}
 
