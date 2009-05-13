@@ -176,4 +176,5 @@ public class Constants {
 
 	public static final String GRID_SERVICE_PATH = "wsrf-canano/services/cagrid/CaNanoLabService";
 
+	public static final String EXPORT_FILE_DATE_FORMAT = "yyyyMMdd_HH-mm-ss-SSS";
 }
