@@ -21,23 +21,32 @@
 					<c:when test="${! empty finding.files}">
 						<c:forEach var="file" items="${finding.files}">
 							<c:choose>
-								<c:when test="${file.hidden eq 'true'}">
-												Private File
-												</c:when>
+								<c:when test="${file.domainFile.uriExternal}">
+									<a
+										href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}" target="external">
+										${file.domainFile.uri}</a>
+								</c:when>
 								<c:otherwise>
 									<c:choose>
-										<c:when test="${file.image eq 'true'}">
+										<c:when test="${file.hidden eq 'true'}">
+												Private File
+												</c:when>
+										<c:otherwise>
+											<c:choose>
+												<c:when test="${file.image eq 'true'}">
 						 				${file.domainFile.title}
 										<br>
-											<a href="#"
-												onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
-													src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
-													border="0" width="150"> </a>
-										</c:when>
-										<c:otherwise>
-											<a
-												href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-												${file.domainFile.title}</a>
+													<a href="#"
+														onclick="popImage(event, 'characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}', ${file.domainFile.id}, 100, 100)"><img
+															src="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+															border="0" width="150"> </a>
+												</c:when>
+												<c:otherwise>
+													<a
+														href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
+														${file.domainFile.title}</a>
+												</c:otherwise>
+											</c:choose>
 										</c:otherwise>
 									</c:choose>
 								</c:otherwise>
