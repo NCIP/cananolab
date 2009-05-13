@@ -66,7 +66,7 @@
 	</c:forEach>
 </c:if>
 <table class="summaryViewLayer1" width="100%">
-	<c:if test="${empty printView}">
+	<c:if test="${! empty publicationCategories && empty printView}">
 		<tr>
 			<td>
 				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
@@ -171,13 +171,15 @@
 														${pubBean.createdDateStr}&nbsp;
 													</td>
 													<td valign="top">
-														<c:url var="pubUrl" value="publication.do">
-															<c:param name="sampleId" value="${sampleId}" />
-															<c:param name="dispatch" value="setupUpdate" />
-															<c:param name="publicationId" value="${pubObj.id}" />
-															<c:param name="location" value="${location}" />
-														</c:url>
-														<a href="${pubUrl}">Edit</a>
+														<c:if test="${empty printView}">
+															<c:url var="pubUrl" value="publication.do">
+																<c:param name="sampleId" value="${sampleId}" />
+																<c:param name="dispatch" value="setupUpdate" />
+																<c:param name="publicationId" value="${pubObj.id}" />
+																<c:param name="location" value="${location}" />
+															</c:url>
+															<a href="${pubUrl}">Edit</a>
+														</c:if>
 													</td>
 												</tr>
 											</c:forEach>

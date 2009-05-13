@@ -23,7 +23,7 @@
 			Technique and Instrument&nbsp;&nbsp;&nbsp;&nbsp;
 			<a style="" id="addTechniqueInstrument"
 				href="javascript:resetTheExperimentConfig(true);"><img
-					align="top" src="images/btn_add.gif" border="0" /> </a>
+					align="top" src="images/btn_add.gif" border="0" /></a>
 		</td>
 	</tr>
 	<tr>

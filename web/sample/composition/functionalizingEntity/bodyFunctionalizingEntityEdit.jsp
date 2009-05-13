@@ -12,13 +12,13 @@
 			<a
 				href="functionalizingEntity.do?dispatch=setupNew&sampleId=${sampleId}"
 				class="addlink"><img align="middle" src="images/btn_add.gif"
-					border="0" /> </a> &nbsp;&nbsp;&nbsp;
+					border="0" /></a>&nbsp;&nbsp;&nbsp;
 			<c:if
 				test="${!empty compositionForm.map.comp.functionalizingEntities}">
 				<a
 					href="/functionalizingEntity.do?dispatch=delete&sampleId=${sampleId}"
 					class="addlink"><img align="middle" src="images/btn_delete.gif"
-						border="0" /> </a>
+						border="0" /></a>
 			</c:if>
 		</th>
 	</tr>

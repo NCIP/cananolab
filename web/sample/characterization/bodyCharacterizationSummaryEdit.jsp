@@ -7,16 +7,28 @@
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a
-				href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
+			<a	href="javascript:showSummary('ALL', ${fn:length(characterizationTypes)})"
 				title="All"><span>All</span> </a>
+			<c:url var="printUrl" value="${actionName}">
+				<c:param name="dispatch" value="summaryPrint" />
+				<c:param name="sampleId" value="${param.sampleId}" />
+				<c:param name="location" value="${param.location}" />
+			</c:url>
+			<c:url var="exportUrl" value="${actionName}">
+				<c:param name="dispatch" value="summaryExport" />
+				<c:param name="sampleId" value="${param.sampleId}" />
+				<c:param name="location" value="${param.location}" />
+			</c:url>
+			<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
+			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
 		<li>
 			<c:forEach var="type" items="${characterizationTypes}"
 				varStatus="ind">
-				<a
-					href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
+				<a	href="javascript:showSummary('${ind.count}', ${fn:length(characterizationTypes)})"
 					title="${type}"><span>${type}</span> </a>
+				<a href="javascript:printPage('${printUrl}&type=${type}')" id="printUrl${ind.count}" style="display: none;"></a>
+				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}" style="display: none;"></a>
 			</c:forEach>
 		</li>
 		<li>
@@ -59,12 +71,14 @@
 	</div>
 </c:forEach>
 <table class="summaryViewLayer1" width="100%">
-	<tr>
-		<td>
-			<a href="print">Print</a>&nbsp;&nbsp;
-			<a href="export">Export</a>
-		</td>
-	</tr>
+	<c:if test="${! empty characterizationTypes}">
+		<tr>
+			<td>
+				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
+				<a href="${exportUrl}" id="exportLink">Export</a>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td>
 			<c:forEach var="type" items="${characterizationTypes}"
@@ -77,7 +91,7 @@
 							<a
 								href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
-									border="0" /> </a>&nbsp;&nbsp;
+									border="0" /></a>&nbsp;&nbsp;
 							<a><img align="middle" src="images/btn_delete.gif" border="0" />
 							</a>
 						</th>

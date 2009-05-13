@@ -11,7 +11,7 @@
 		<ul>
 			<li class="selected">
 				<a	href="javascript:showSummary('ALL', ${fn:length(compositionSections)})"
-					title="All"><span>All</span> </a>
+					title="All"><span>All</span></a>
 				<c:url var="printUrl" value="${actionName}">
 					<c:param name="dispatch" value="summaryPrint" />
 					<c:param name="sampleId" value="${param.sampleId}" />
@@ -61,7 +61,7 @@
 	</c:forEach>
 </c:if>
 <table class="summaryViewLayer1" width="100%">
-	<c:if test="${empty printView}">
+	<c:if test="${! empty compositionSections && empty printView}">
 		<tr>
 			<td>
 				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;

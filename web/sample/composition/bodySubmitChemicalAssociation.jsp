@@ -234,7 +234,7 @@ function confirmDeletion()
 								<td class="cellLabel" colspan="2">
 									File&nbsp;&nbsp;&nbsp;&nbsp;
 									<a href="javascript:clearFile(); show('newFile');"><img
-											align="top" src="images/btn_add.gif" border="0" /> </a>
+											align="top" src="images/btn_add.gif" border="0" /></a>
 								</td>
 							</tr>
 							<tr>

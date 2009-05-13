@@ -233,7 +233,7 @@
 										<td>
 											<a href="#"
 												onclick="javascript:addComponent(publicationForm, 'publication', 'addAuthor'); return false;">
-												<img align="top" src="images/btn_add.gif" border="0" /> </a>
+												<img align="top" src="images/btn_add.gif" border="0" /></a>
 										</td>
 									</tr>
 								</c:when>

@@ -59,12 +59,14 @@
 	</div>
 </c:forEach>
 <table class="summaryViewLayer1" width="100%">
-	<tr>
-		<td>
-			<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
-			<a href="${exportUrl}" id="exportLink">Export</a>
-		</td>
-	</tr>
+	<c:if test="${! empty characterizationTypes}">
+		<tr>
+			<td>
+				<a href="javascript:printPage('${printUrl}')" id="printLink">Print</a>&nbsp;&nbsp;
+				<a href="${exportUrl}" id="exportLink">Export</a>
+			</td>
+		</tr>
+	</c:if>
 	<tr>
 		<td>
 			<jsp:include page="shared/bodyCharacterizationSummaryPrintViewTable.jsp" />

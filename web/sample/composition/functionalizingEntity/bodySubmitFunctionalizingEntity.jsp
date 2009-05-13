@@ -183,7 +183,7 @@ function confirmDeletion()
 								Function&nbsp;&nbsp;&nbsp;&nbsp;
 								<a style="" id="addFunction"
 									href="javascript:resetTheFunction(true);"><img align="top"
-										src="images/btn_add.gif" border="0" /> </a>
+										src="images/btn_add.gif" border="0" /></a>
 							</td>
 						</tr>
 						<tr>
@@ -224,7 +224,7 @@ function confirmDeletion()
 					<td class="cellLabel">
 						File&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="javascript:clearFile(); show('newFile');"><img
-								align="top" src="images/btn_add.gif" border="0" /> </a>
+								align="top" src="images/btn_add.gif" border="0" /></a>
 					</td>
 				</tr>
 				<tr>
