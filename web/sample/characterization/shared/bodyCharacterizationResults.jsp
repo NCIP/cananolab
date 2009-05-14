@@ -49,7 +49,7 @@ function confirmDeletion()
 				<c:set var="findingInfoStyle" value="display:block" />
 			</c:if>
 			<div id="newFinding" style="${findingInfoStyle}">
-				<%@ include file="bodySubmitFinding.jsp"%>
+				<a name="submitFinding"><%@ include file="bodySubmitFinding.jsp"%></a>
 			</div>
 		</td>
 	</tr>
