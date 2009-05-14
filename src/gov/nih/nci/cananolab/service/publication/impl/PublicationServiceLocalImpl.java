@@ -52,7 +52,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * Persist a new publication or update an existing publication
 	 *
 	 * @param publication,
-	 *            sampleNames, fileData, authors
+	 * @param sampleNames, 
+	 * @param fileData, 
+	 * @param authors
 	 * @throws Exception
 	 */
 	public void savePublication(Publication publication,
@@ -243,9 +245,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	// }
 
 	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
-			throws IOException {
-		PublicationServiceHelper helper = new PublicationServiceHelper();
-		helper.exportSummary(summaryBean, out);
+			throws PublicationException {
+		try {
+			helper.exportSummary(summaryBean, out);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public int getNumberOfPublicPublications() throws PublicationException {

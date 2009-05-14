@@ -64,5 +64,5 @@ public interface PublicationService {
 			Long dataId) throws PublicationException;
 
 	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
-			throws IOException;
+			throws PublicationException;
 }

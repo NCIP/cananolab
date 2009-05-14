@@ -41,9 +41,11 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceRemoteImpl.class);
 	private CaNanoLabServiceClient gridClient;
+	private PublicationServiceHelper helper;
 
 	public PublicationServiceRemoteImpl(String serviceUrl) throws Exception {
 		gridClient = new CaNanoLabServiceClient(serviceUrl);
+		helper = new PublicationServiceHelper();
 	}
 
 	/**
@@ -313,7 +315,6 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 			throws PublicationException {
 		try {
-			PublicationServiceHelper helper = new PublicationServiceHelper();
 			helper.exportDetail(aPub, out);
 		} catch (Exception e) {
 			String err = "error exporting detail view for "
@@ -351,9 +352,14 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 	}
 
 	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
-			throws IOException {
-		PublicationServiceHelper helper = new PublicationServiceHelper();
-		helper.exportSummary(summaryBean, out);
+			throws PublicationException {
+		try {
+			helper.exportSummary(summaryBean, out);
+		} catch (Exception e) {
+			String err = "Error exporting publication summary view.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
+		}
 	}
 
 	public void removePublicationFromSample(Sample particle,
