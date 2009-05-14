@@ -31,6 +31,7 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -596,10 +597,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = sampleService.findSampleById(sampleId);
 		String fileName = 
 			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ fileName + ".xls\"");
+		ExportUtils.prepareReponseForExport(response, fileName);
 		PublicationService service = null;
 		if (Constants.LOCAL.equals(location)) {
 			service = new PublicationServiceLocalImpl();
@@ -807,13 +805,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (title != null && title.length() > 10) {
 			title = title.substring(0, 10);
 		}
+		
 		String fileName = this.getExportFileName(title, "detailView");
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ fileName + ".xls\"");
-
+		ExportUtils.prepareReponseForExport(response, fileName);
 		publicationService.exportDetail(pubBean, response.getOutputStream());
+		
 		return null;
 	}
 
