@@ -36,7 +36,7 @@
 				<c:set var="entityType" value="${functionalizingEntity.type}" />
 				<c:if test="${!empty entityType}">
 					<tr>
-						<td>
+						<td width="1000px">
 							<div class="indented4">
 								<table class="summaryViewLayer3" width="95%" align="center">
 									<tr>
