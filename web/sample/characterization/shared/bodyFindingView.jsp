@@ -21,10 +21,10 @@
 					<c:when test="${! empty finding.files}">
 						<c:forEach var="file" items="${finding.files}">
 							<c:choose>
-								<c:when test="${file.domainFile.uriExternal}">
+								<c:when test="${file.domainFile.uriExternal eq 'true'}">
 									<a
-										href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}" target="external">
-										${file.domainFile.uri}</a>
+										href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}"
+										target="external">${file.domainFile.uri}</a>
 								</c:when>
 								<c:otherwise>
 									<c:choose>
@@ -44,13 +44,14 @@
 												<c:otherwise>
 													<a
 														href="characterization.do?dispatch=download&amp;fileId=${file.domainFile.id}&amp;location=${location}">
-														${file.domainFile.title}</a>
+														${file.domainFile.title} </a>
 												</c:otherwise>
 											</c:choose>
 										</c:otherwise>
 									</c:choose>
 								</c:otherwise>
 							</c:choose>
+							<br>
 							<br>
 						</c:forEach>
 					</c:when>
@@ -95,3 +96,4 @@
 		</tr>
 	</c:forEach>
 </table>
+<br>
