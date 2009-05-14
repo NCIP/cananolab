@@ -46,9 +46,11 @@ import org.hibernate.criterion.Restrictions;
  * local implementation of PublicationService and grid service *
  *
  * @author tanq, pansu
- *
  */
 public class PublicationServiceHelper {
+	/**
+	 * Constants for generating Excel report for summary view.
+	 */ 
 	public static final String TITLE = "Title";
 	public static final String AUTHORS = "Author(s)";
 	public static final String BIBLIOBRAPHY_INFO = "Bibliography Info";
@@ -532,6 +534,13 @@ public class PublicationServiceHelper {
 		return rowIndex;
 	}
 
+	/**
+	 * Export sample publication summary report as Excel spread sheet.
+	 *
+	 * @param summaryBean CharacterizationSummaryViewBean
+	 * @param out OutputStream
+	 * @throws IOException if error occurred.
+	 */
 	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
 			throws IOException {
 		if (out != null) {
@@ -546,6 +555,12 @@ public class PublicationServiceHelper {
 		}
 	}
 
+	/**
+	 * Generate Excel report for sample publication summary report.
+	 *
+	 * @param summaryBean CharacterizationSummaryViewBean
+	 * @param wb HSSFWorkbook
+	 */
 	private void setSummarySheet(PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
 		HSSFRow row = null;
 		HSSFRow rowAuthor = null;
