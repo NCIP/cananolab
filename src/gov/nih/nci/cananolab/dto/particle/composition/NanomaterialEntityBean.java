@@ -53,6 +53,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	private boolean withProperties = false;
 
+	private ComposingElementBean theComposingElement=new ComposingElementBean();
+
 	public NanomaterialEntityBean() {
 	}
 
@@ -289,5 +291,13 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public boolean isWithProperties() {
 		return withProperties;
+	}
+
+	public ComposingElementBean getTheComposingElement() {
+		return theComposingElement;
+	}
+
+	public void setTheComposingElement(ComposingElementBean theComposingElement) {
+		this.theComposingElement = theComposingElement;
 	}
 }
