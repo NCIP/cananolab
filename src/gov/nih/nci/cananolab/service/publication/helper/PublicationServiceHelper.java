@@ -54,6 +54,7 @@ public class PublicationServiceHelper {
 	public static final String ABSTRACT = "Abstract/Full Text";
 	public static final String RESEARCH_CATEGORY = "Research Category";
 	public static final String CREATED_DATE = "Created Date";
+	public static final String PMID = "PMID: ";
 	
 	public List<Publication> findPublicationsBy(String title, String category,
 			String sampleName, String[] researchArea, String keywordsStr,
@@ -608,13 +609,13 @@ public class PublicationServiceHelper {
 				if (StringUtils.isEmpty(pub.getAbstractText())) {
 					sb.setLength(0);
 					if (pub.getPubMedId() != null) {
-						sb.append("PMID: ").append(pub.getPubMedId());
+						sb.append(PMID).append(pub.getPubMedId());
 						this.createCell(row, cellIndex++, null, sb.toString());
 					} else {
 						if (StringUtils.isEmpty(pub.getDigitalObjectId())) {
 							this.createCell(row, cellIndex++, null, pub.getUri());
 						} else {
-							sb.append("PMID: ").append(pub.getDigitalObjectId());
+							sb.append(PMID).append(pub.getDigitalObjectId());
 							this.createCell(row, cellIndex++, null, sb.toString());
 						}
 					}
