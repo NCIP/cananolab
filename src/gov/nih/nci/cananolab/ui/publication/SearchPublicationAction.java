@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
@@ -323,7 +324,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		//UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		// setOtherSamplesFromTheSameSource("local", request, sampleBean,
@@ -334,15 +335,23 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
+		
 		PublicationService service = null;
-		if (location.equals("local")) {
+		if (Constants.LOCAL.equals(location)) {
 			service = new PublicationServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		service.exportSummary(sampleBean, response.getOutputStream());
+		
+		String sampleId = request.getParameter("sampleId");
+		List<PublicationBean> publications = 
+			service.findPublicationsBySampleId(sampleId);
+		PublicationSummaryViewBean summaryView = 
+			new PublicationSummaryViewBean(publications);
+		
+		service.exportSummary(summaryView, response.getOutputStream());
 		return null;
 	}
 
