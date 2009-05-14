@@ -8,6 +8,7 @@ import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
@@ -564,12 +565,12 @@ public class PublicationServiceHelper {
 			row = sheet.createRow(rowIndex++);
 
 			// Generate header of report
-			this.createCell(row, cellIndex++, headerStyle, TITLE);
-			this.createCell(row, cellIndex++, headerStyle, AUTHORS);
-			this.createCell(row, cellIndex++, headerStyle, BIBLIOBRAPHY_INFO);
-			this.createCell(row, cellIndex++, headerStyle, ABSTRACT);
-			this.createCell(row, cellIndex++, headerStyle, RESEARCH_CATEGORY);
-			this.createCell(row, cellIndex++, headerStyle, CREATED_DATE);
+			ExportUtils.createCell(row, cellIndex++, headerStyle, TITLE);
+			ExportUtils.createCell(row, cellIndex++, headerStyle, AUTHORS);
+			ExportUtils.createCell(row, cellIndex++, headerStyle, BIBLIOBRAPHY_INFO);
+			ExportUtils.createCell(row, cellIndex++, headerStyle, ABSTRACT);
+			ExportUtils.createCell(row, cellIndex++, headerStyle, RESEARCH_CATEGORY);
+			ExportUtils.createCell(row, cellIndex++, headerStyle, CREATED_DATE);
 			
 			// Generate data of report
 			List<PublicationBean> pubBeans = pubs.get(category);
@@ -579,7 +580,7 @@ public class PublicationServiceHelper {
 				cellIndex = 0;
 				
 				// Title: cell index = 0.
-				this.createCell(row, cellIndex++, null, pub.getTitle());
+				ExportUtils.createCell(row, cellIndex++, pub.getTitle());
 				
 				// Author(s): cell index = 1, one author per row.
 				List<Author> authors = pubBean.getAuthors();
@@ -591,11 +592,11 @@ public class PublicationServiceHelper {
 						sb.append(author.getFirstName()).append(' ');
 						sb.append(author.getInitial());
 						if (countAuthors == 0) {
-							this.createCell(row, cellIndex, null, sb.toString());
+							ExportUtils.createCell(row, cellIndex, null, sb.toString());
 						} else {
 							// Create new row for other authors, increase rowIndex.
 							rowAuthor = sheet.createRow(rowIndex++);
-							this.createCell(rowAuthor, cellIndex, null, sb.toString());
+							ExportUtils.createCell(rowAuthor, cellIndex, null, sb.toString());
 						}
 						countAuthors++;
 					}
@@ -603,41 +604,33 @@ public class PublicationServiceHelper {
 				cellIndex++; // Increase cellIndex for next column. 
 				
 				// Bibliography Info: cell index = 2, need to increase cellIndex first.
-				this.createCell(row, cellIndex++, null, pubBean.getBibliographyInfo());
+				ExportUtils.createCell(row, cellIndex++, pubBean.getBibliographyInfo());
 				
 				// Abstract/Full Text: cell index = 3.
 				if (StringUtils.isEmpty(pub.getAbstractText())) {
 					sb.setLength(0);
 					if (pub.getPubMedId() != null) {
 						sb.append(PMID).append(pub.getPubMedId());
-						this.createCell(row, cellIndex++, null, sb.toString());
+						ExportUtils.createCell(row, cellIndex++, sb.toString());
 					} else {
 						if (StringUtils.isEmpty(pub.getDigitalObjectId())) {
-							this.createCell(row, cellIndex++, null, pub.getUri());
+							ExportUtils.createCell(row, cellIndex++, pub.getUri());
 						} else {
 							sb.append(PMID).append(pub.getDigitalObjectId());
-							this.createCell(row, cellIndex++, null, sb.toString());
+							ExportUtils.createCell(row, cellIndex++, sb.toString());
 						}
 					}
 				} else {
-					this.createCell(row, cellIndex++, null, pub.getAbstractText());
+					ExportUtils.createCell(row, cellIndex++, pub.getAbstractText());
 				}
 				
 				// Research Category: cell index = 4.
-				this.createCell(row, cellIndex++, null, pub.getResearchArea());
+				ExportUtils.createCell(row, cellIndex++, pub.getResearchArea());
 				
 				
 				// Created Date: cell index = 5.
-				this.createCell(row, cellIndex++, null, pubBean.getCreatedDateStr());
+				ExportUtils.createCell(row, cellIndex++, pubBean.getCreatedDateStr());
 			}
-		}
-	}
-
-	private void createCell(HSSFRow row, short index, HSSFCellStyle cellStyle, String value) {
-		HSSFCell cell = row.createCell(index);
-		cell.setCellValue(new HSSFRichTextString(value));
-		if (cellStyle != null) {
-			cell.setCellStyle(cellStyle);
 		}
 	}
 }
