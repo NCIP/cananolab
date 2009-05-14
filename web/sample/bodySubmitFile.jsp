@@ -3,7 +3,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table class="promptbox" width="85%" align="center">
+<c:set var="submissionViewStyle" value="subSubmissionView" />
+<c:if test="${actionName eq 'characterization'}">
+	<c:set var="submissionViewStyle" value="promptbox" />
+</c:if>
+<table class="${submissionViewStyle}" }" width="85%" align="center">
 	<tbody>
 		<c:choose>
 			<c:when test="${theFile.domainFile.uriExternal eq 'true' }">
@@ -83,7 +87,8 @@
 				Description
 			</td>
 			<td>
-				<html:textarea property="${fileParent}.theFile.domainFile.description" rows="3"
+				<html:textarea
+					property="${fileParent}.theFile.domainFile.description" rows="3"
 					cols="60" styleId="fileDescription" />
 			</td>
 		</tr>
