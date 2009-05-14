@@ -60,7 +60,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  *
  */
 public class CharacterizationAction extends BaseAnnotationAction {
-	
+
 	/**
 	 * Add or update the data to database
 	 *
@@ -506,7 +506,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
-			List<String> characterizationTypes = 
+			List<String> characterizationTypes =
 				(List<String>) request.getAttribute("characterizationTypes");
 			characterizationTypes.clear();
 			characterizationTypes.add(type);
@@ -552,7 +552,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, charBean);
 			service.retrieveVisiblity(charBean, user);
 		}
-		CharacterizationSummaryViewBean summaryView = 
+		CharacterizationSummaryViewBean summaryView =
 			new CharacterizationSummaryViewBean(charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
 	}
@@ -588,7 +588,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		request.setAttribute("characterizationTypes", characterizationTypes);
 	}
-	
+
 	/**
 	 * summaryExport() handles Export request for Characterization Summary report.
 	 *
@@ -607,14 +607,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
-		List<String> characterizationTypes = 
+		List<String> characterizationTypes =
 			(List<String>) request.getAttribute("characterizationTypes");
 		if (!StringUtils.isEmpty(type)) {
 			characterizationTypes.clear();
 			characterizationTypes.add(type);
 		}
-		
-		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) 
+
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean)
 			request.getAttribute("characterizationSummaryView");
 		/*
 		String fileName = getExportFileName(charSummaryBean
@@ -624,7 +624,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		response.setHeader("cache-control", "Private");
 		response.setHeader("Content-disposition", "attachment;filename=\""
 				+ fileName + ".xls\"");
-		
+
 		this.exportSummary(charSummaryBean, response.getOutputStream());
 		*/
 		return null;
@@ -640,7 +640,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
-	
+
 	public void exportSummary(CharacterizationBean achar, OutputStream out) throws Exception {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("detailSheet");
@@ -653,7 +653,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			out.close();
 		}
 	}
-	
+
 	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
 			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
 		HSSFFont headerFont = wb.createFont();
@@ -678,7 +678,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 		return rowCount;
 	}
-	
+
 	public ActionForward saveExperimentConfig(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -717,7 +717,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.setTheFinding(findingBean);
-		request.setAttribute("anchor", "result");
+		request.setAttribute("anchor", "submitFinding");
 		return mapping.getInputForward();
 	}
 
@@ -729,7 +729,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		achar.setTheFinding(findingBean);
-		request.setAttribute("anchor", "result");
+		request.setAttribute("anchor", "submitFinding");
 		return mapping.getInputForward();
 	}
 
@@ -781,7 +781,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		newFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		findingBean.addFile(newFile, theFileIndex);
-		request.setAttribute("anchor", "result");
+		request.setAttribute("anchor", "submitFinding");
 		return mapping.getInputForward();
 	}
 
@@ -795,7 +795,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		int theFileIndex=findingBean.getTheFileIndex();
 		findingBean.removeFile(theFileIndex);
 		findingBean.setTheFile(new FileBean());
-		request.setAttribute("anchor", "result");
+		request.setAttribute("anchor", "submitFinding");
 		return mapping.getInputForward();
 	}
 
@@ -840,7 +840,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		findingBean.updateMatrix(findingBean.getNumberOfColumns(), findingBean
 				.getNumberOfRows());
-
+		request.setAttribute("anchor", "submitFinding");
 		return mapping.getInputForward();
 	}
 
@@ -856,6 +856,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		achar.removeFinding(dataSetBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
+		request.setAttribute("anchor", "result");
 		return mapping.getInputForward();
 	}
 
