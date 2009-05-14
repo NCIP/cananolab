@@ -7,7 +7,7 @@
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
 			<include method="getEntityIncludePage" />
-			<include method="getFileFromList"/>
+			<include method="getFileFromList" />
 		</create>
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
@@ -73,7 +73,23 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
-			<param name="include" value="displayName, domainId" />
+			<param name="include" value="domain" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
+			<param name="exclude" value="nanomaterialEntity" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.FunctionBean">
+			<param name="include"
+				value="id, description, type, imagingFunction" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.function.ImagingFunction">
+			<param name="include" value="modality" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.function.TargetingFunction">
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
@@ -83,7 +99,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.FileBean">
-			<param name="include" value="keywordsStr, visibilityGroups, domainFile"/>
+			<param name="include"
+				value="keywordsStr, visibilityGroups, domainFile" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
