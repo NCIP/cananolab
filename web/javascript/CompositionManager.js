@@ -50,16 +50,16 @@ function displayAntigenSpecies(parentIndex, childIndex) {
 	}
 	return false;
 }
-
 function getEntityDisplayNameOptions(elementNumber) {
-	var compositionType = dwr.util.getValue("compositionType"+elementNumber);
-	if (compositionType=="Nanomaterial Entity") {
-		show("materialEntitySelect"+elementNumber);
-		hide("functionalizingEntitySelect"+elementNumber);
-	}
-	else if (compositionType=="Functionalizing Entity") {
-		show("functionalizingEntitySelect"+elementNumber);
-		hide("materialEntitySelect"+elementNumber);
+	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
+	if (compositionType == "Nanomaterial Entity") {
+		show("materialEntitySelect" + elementNumber);
+		hide("functionalizingEntitySelect" + elementNumber);
+	} else {
+		if (compositionType == "Functionalizing Entity") {
+			show("functionalizingEntitySelect" + elementNumber);
+			hide("materialEntitySelect" + elementNumber);
+		}
 	}
 }
 function displayBondType() {
@@ -84,24 +84,79 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 	document.getElementById(displayNameEleId).value = selectedName;
 	// alert(document.getElementById(displayNameEleId).value);
 }
-
 function setModalityInclude(compEleIndex, functionIndex) {
 	var functionType = dwr.util.getValue("funcType_" + compEleIndex + "_" + functionIndex);
-
-	CompositionManager.getModalityIncludePage(compEleIndex, functionIndex, functionType, function(pageData) {
-
+	CompositionManager.getModalityIncludePage(compEleIndex, functionIndex, functionType, function (pageData) {
 		document.getElementById("modalityTypeTd_" + compEleIndex + "_" + functionIndex).innerHTML = "";
 		dwr.util.setValue("modalityTypeTd_" + compEleIndex + "_" + functionIndex, pageData, {escapeHtml:false});
-
 	});
-
-  	if(functionType != "imaging") {
-  		document.getElementById("modalityType_" + compEleIndex + "_" + functionIndex).innerHTML =
-  			"&nbsp;";
-  	}
+	if (functionType != "imaging") {
+		document.getElementById("modalityType_" + compEleIndex + "_" + functionIndex).innerHTML = "&nbsp;";
+	}
 }
-
 function setTheFile(type, index) {
 	CompositionManager.getFileFromList(type, index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
+}
+function clearComposingElement() {
+	dwr.util.setValue("elementType", "");
+	dwr.util.setValue("elementName", "");
+	dwr.util.setValue("elementValue", "");
+	dwr.util.setValue("elementValueUnit", "");
+	dwr.util.setValue("elementDescription", "");
+	dwr.util.setValue("molFormulaType", "");
+	dwr.util.setValue("molFormula", "");
+	dwr.util.setValue("hiddenFileIndex", -1);
+	hide("deleteComposingElement");
+}
+function clearFunction() {
+	dwr.util.setValue("functionType", "");
+	dwr.util.setValue("imagingModality", "");
+	dwr.util.setValue("functionDescription", "");
+	hide("deleteFunction");
+}
+function displayImageModality() {
+	var functionType = dwr.util.getValue("functionType");
+	if (functionType == "imaging") {
+		show("modalityLabel");
+		show("imagingModalityPrompt");
+	} else {
+		hide("modalityLabel");
+		hide("imagingModalityPrompt");
+	}
+}
+function addFunction() {
+	var theFunction = {id:dwr.util.getValue("functionId"), type:dwr.util.getValue("functionType"), description:dwr.util.getValue("functionDescription")};
+	if (instrument.manufacturer != "" || instrument.modelName != "" || instrument.type != "") {
+		CompositionManager.addInherentFunction(theFunction, function (composingElement) {
+			window.setTimeout("populateFunctions(" + composingElement + ")", 200);
+		});
+	} else {
+		alert("Please fill in values");
+	}
+}
+var inherentFunctionCache = {};
+function populateFunctions(composingElement) {
+	var functions = composingElement.functions;
+	dwr.util.removeAllRows("functionRows", {filter:function (tr) {
+		return (tr.id != "pattern" && tr.id != "patternHeader" && tr.id != "patternAddRow");
+	}});
+	var theFunction, id;
+	if (functions.length > 0) {
+		show("functionTable");
+	}
+	for (var i = 0; i < functions.length; i++) {
+		theFunction = functions[i];
+		if (theFunction.id == null) {
+			theFunction.id = -i - 1;
+		}
+		id = theFunction.id;
+		dwr.util.cloneNode("pattern", {idSuffix:id});
+		dwr.util.setValue("functionTypeValue" + id, theFunction.type);
+		dwr.util.setValue("functionModalityTypeValue" + id, theFunction.type);
+		dwr.util.setValue("functionDescriptionValue" + id, theFunction.description);
+		$("pattern" + id).style.display = "";
+		inherentFunctionCache[id] = theFunction;
+	}
+	clearInstrument();
 }
