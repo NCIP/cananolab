@@ -50,3 +50,11 @@ input.promptbox {
 	width: 350px;
 	z-index:5;
 }
+
+#newFunction {
+	position: absolute;
+	left: -10px;
+	top: 15px;
+	width: 450px;
+	z-index:5;
+}
