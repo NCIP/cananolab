@@ -25,6 +25,8 @@ import java.util.Map;
  *
  */
 public class FunctionBean {
+	private String id;
+
 	private String type;
 
 	private String description;
@@ -41,6 +43,7 @@ public class FunctionBean {
 	}
 
 	public FunctionBean(Function function) {
+		id=function.getId().toString();
 		description = function.getDescription();
 		domainFunction = function;
 		if (function instanceof ImagingFunction) {
@@ -187,5 +190,13 @@ public class FunctionBean {
 			buffer.append(")");
 		}
 		return buffer.toString();
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }
