@@ -2,6 +2,8 @@ package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
@@ -51,14 +53,23 @@ public class DWRCompositionManager {
 		} else if (type.equals("functionalizing entity")) {
 			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 					.get("functionalizingEntity");
-			files=entity.getFiles();
-		}
-		else {
-			ChemicalAssociationBean assoc=(ChemicalAssociationBean)compositionForm.get("assoc");
-			files=assoc.getFiles();
+			files = entity.getFiles();
+		} else {
+			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
+					.get("assoc");
+			files = assoc.getFiles();
 		}
 		FileBean theFile = files.get(index);
 		return theFile;
 	}
 
+	public ComposingElementBean addInherentFunction(FunctionBean function) {
+		DynaValidatorForm compForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("compositionForm"));
+		NanomaterialEntityBean entityean = (NanomaterialEntityBean) (compForm
+				.get("nanomaterialEntity"));
+		ComposingElementBean ceBean=entityean.getTheComposingElement();
+		ceBean.addFunction(function);
+		return ceBean;
+	}
 }
