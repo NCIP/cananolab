@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
@@ -350,10 +350,10 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 		}
 	}
 
-	public void exportSummary(SampleBean sampleBean, OutputStream out)
+	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
 			throws IOException {
 		PublicationServiceHelper helper = new PublicationServiceHelper();
-		helper.exportSummary(sampleBean, out);
+		helper.exportSummary(summaryBean, out);
 	}
 
 	public void removePublicationFromSample(Sample particle,

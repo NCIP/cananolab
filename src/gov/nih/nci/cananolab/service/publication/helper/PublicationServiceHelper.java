@@ -4,9 +4,8 @@ import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -18,10 +17,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.SortedMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -49,7 +48,13 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 public class PublicationServiceHelper {
-
+	public static final String TITLE = "Title";
+	public static final String AUTHORS = "Author(s)";
+	public static final String BIBLIOBRAPHY_INFO = "Bibliography Info";
+	public static final String ABSTRACT = "Abstract/Full Text";
+	public static final String RESEARCH_CATEGORY = "Research Category";
+	public static final String CREATED_DATE = "Created Date";
+	
 	public List<Publication> findPublicationsBy(String title, String category,
 			String sampleName, String[] researchArea, String keywordsStr,
 			String pubMedId, String digitalObjectId, String authorsStr,
@@ -361,7 +366,7 @@ public class PublicationServiceHelper {
 	}
 
 	public short setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
-			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
+			HSSFSheet sheet, HSSFPatriarch patriarch, short rowIndex) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -373,40 +378,40 @@ public class PublicationServiceHelper {
 		HSSFCell cell = null;
 		// PubMedID
 		Long pubMedId = publication.getPubMedId();
-		row = sheet.createRow(rowCount++);
-		short cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		short cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Publication Identifier"));
 		if (pubMedId != null && pubMedId.intValue() > 0) {
-			row.createCell(cellCount++).setCellValue(
+			row.createCell(cellIndex++).setCellValue(
 					new HSSFRichTextString(pubMedId.toString()));
 		} else {
 			String oid = publication.getDigitalObjectId();
 			if (oid != null && oid.length() > 0) {
-				row.createCell(cellCount++).setCellValue(
+				row.createCell(cellIndex++).setCellValue(
 						new HSSFRichTextString(oid));
 			} else {
-				// row.createCell(cellCount++).setCellValue(
+				// row.createCell(cellIndex++).setCellValue(
 				// new HSSFRichTextString(""));
 			}
 		}
 		// publication type
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Publication Type"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getCategory()));
 
 		// publication status
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Publication Status"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getStatus()));
 
 		// Authors
@@ -428,12 +433,12 @@ public class PublicationServiceHelper {
 				sb.append(' ');
 				sb.append(author.getLastName());
 
-				row = sheet.createRow(rowCount++);
-				cellCount = 0;
-				cell = row.createCell(cellCount++);
+				row = sheet.createRow(rowIndex++);
+				cellIndex = 0;
+				cell = row.createCell(cellIndex++);
 				cell.setCellStyle(headerStyle);
 				cell.setCellValue(new HSSFRichTextString(rowHeader));
-				row.createCell(cellCount++).setCellValue(
+				row.createCell(cellIndex++).setCellValue(
 						new HSSFRichTextString(sb.toString()));
 				rowHeader = "";
 				sb.setLength(0);
@@ -441,203 +446,197 @@ public class PublicationServiceHelper {
 		}
 
 		// research area
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Research Category"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getResearchArea()));
 
 		// Title
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Title"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getTitle()));
 
 		// Journal
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Journal"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getJournalName()));
 
 		// Year
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Year"));
 		int year = 0;
 		if (publication.getYear() != null)
 			year = publication.getYear();
 		if (year > 0) {
-			row.createCell(cellCount++).setCellValue(
+			row.createCell(cellIndex++).setCellValue(
 					new HSSFRichTextString(Integer.toString(year)));
 		}
 
 		// Volume
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Volume"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getVolume()));
 
 		// Pages
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Pages"));
 		String startPage = publication.getStartPage();
 		String endPage = publication.getEndPage();
 		if ((startPage != null && startPage.trim().length() > 0)
 				|| (endPage != null && endPage.trim().length() > 0)) {
-			row.createCell(cellCount++).setCellValue(
+			row.createCell(cellIndex++).setCellValue(
 					new HSSFRichTextString(publication.getJournalName()));
 		}
 
 		// Description
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Description"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getDescription()));
 
 		// Uploaded Publication URI
-		row = sheet.createRow(rowCount++);
-		cellCount = 0;
-		cell = row.createCell(cellCount++);
+		row = sheet.createRow(rowIndex++);
+		cellIndex = 0;
+		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Publication URI"));
-		row.createCell(cellCount++).setCellValue(
+		row.createCell(cellIndex++).setCellValue(
 				new HSSFRichTextString(publication.getUri()));
 
-		return rowCount;
+		return rowIndex;
 	}
 
-	public void exportSummary(SampleBean sampleBean, OutputStream out)
+	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
 			throws IOException {
-		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet sheet = wb.createSheet("summarySheet");
-		short startRow = 0;
-		setSummarySheet(sampleBean, wb, sheet, startRow);
-		wb.write(out);
 		if (out != null) {
-			out.flush();
-			out.close();
+			HSSFWorkbook wb = new HSSFWorkbook();
+			try {
+				this.setSummarySheet(summaryBean, wb);
+				wb.write(out);
+				out.flush();
+			} finally {
+				out.close();
+			}
 		}
 	}
 
-	private short setSummarySheet(SampleBean sampleBean, HSSFWorkbook wb,
-			HSSFSheet sheet, short rowCount) {
+	private void setSummarySheet(PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
+		HSSFRow row = null;
+		HSSFRow rowAuthor = null;
+		StringBuilder sb = new StringBuilder();
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
-		HSSFCellStyle newLineStyle = wb.createCellStyle();
-		// Word Wrap MUST be turned on
-		newLineStyle.setWrapText(true);
+		SortedMap<String, List<PublicationBean>> pubs = summaryBean.getCategory2Publications();
+		for (String category : pubs.keySet()) {
+			short rowIndex = 0;
+			short cellIndex = 0;
+			
+			// Create one work sheet for each category. 
+			HSSFSheet sheet = wb.createSheet(category);
+			row = sheet.createRow(rowIndex++);
 
-		short cellCount = 0;
-		HSSFRow row = null;
-		HSSFRow rowAuthor = null;
-		HSSFCell cell = null;
-
-		// summary header
-		row = sheet.createRow(rowCount);
-		rowCount++;
-
-		cell = row.createCell(cellCount++);
-		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Identifier"));
-
-		cell = row.createCell(cellCount++);
-		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Title"));
-		cell = row.createCell(cellCount++);
-		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Authors"));
-		cell = row.createCell(cellCount++);
-		cell.setCellStyle(headerStyle);
-		cell.setCellValue(new HSSFRichTextString("Year"));
-
-		// data
-		StringBuffer sb = new StringBuffer();
-		Sample particle = sampleBean.getDomain();
-		if (particle.getPublicationCollection() != null) {
-			Long pubmedid = null;
-			String doi = null;
-			String id = null;
-			int year = 0;
-			Collection<Author> authors = null;
-			for (Publication publication : particle.getPublicationCollection()) {
-				row = sheet.createRow(rowCount);
-				rowCount++;
-				cellCount = 0;
-				pubmedid = publication.getPubMedId();
-				if (pubmedid != null && pubmedid > 0) {
-					id = "PMID: " + pubmedid;
-				} else {
-					doi = publication.getDigitalObjectId();
-					if (doi != null && doi.length() > 0) {
-						id = "DOI: " + doi;
-					} else {
-						id = "Publication: " + publication.getTitle();
-
-					}
-				}
-				// identifier
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString(id));
-				// title
-				row.createCell(cellCount++).setCellValue(
-						new HSSFRichTextString(publication.getTitle()));
-				// authors
-				sb.setLength(0);
-				authors = publication.getAuthorCollection();
+			// Generate header of report
+			this.createCell(row, cellIndex++, headerStyle, TITLE);
+			this.createCell(row, cellIndex++, headerStyle, AUTHORS);
+			this.createCell(row, cellIndex++, headerStyle, BIBLIOBRAPHY_INFO);
+			this.createCell(row, cellIndex++, headerStyle, ABSTRACT);
+			this.createCell(row, cellIndex++, headerStyle, RESEARCH_CATEGORY);
+			this.createCell(row, cellIndex++, headerStyle, CREATED_DATE);
+			
+			// Generate data of report
+			List<PublicationBean> pubBeans = pubs.get(category);
+			for (PublicationBean pubBean : pubBeans) {
+				Publication pub = (Publication) pubBean.getDomainFile();
+				row = sheet.createRow(rowIndex++);
+				cellIndex = 0;
+				
+				// Title: cell index = 0.
+				this.createCell(row, cellIndex++, null, pub.getTitle());
+				
+				// Author(s): cell index = 1, one author per row.
+				List<Author> authors = pubBean.getAuthors();
 				if (authors != null) {
 					int countAuthors = 0;
 					for (Author author : authors) {
 						sb.setLength(0);
-						sb.append(author.getFirstName());
-						sb.append(' ');
-						sb.append(author.getLastName());
-						sb.append(' ');
+						sb.append(author.getLastName()).append(',').append(' ');
+						sb.append(author.getFirstName()).append(' ');
 						sb.append(author.getInitial());
 						if (countAuthors == 0) {
-							row.createCell((short) 2).setCellValue(
-									new HSSFRichTextString(sb.toString()));
+							this.createCell(row, cellIndex, null, sb.toString());
 						} else {
-							rowAuthor = sheet.createRow(rowCount);
-							rowCount++;
-							rowAuthor.createCell((short) 2).setCellValue(
-									new HSSFRichTextString(sb.toString()));
+							// Create new row for other authors, increase rowIndex.
+							rowAuthor = sheet.createRow(rowIndex++);
+							this.createCell(rowAuthor, cellIndex, null, sb.toString());
 						}
 						countAuthors++;
 					}
 				}
-				// year
-				if (publication.getYear() != null) {
-					year = publication.getYear();
-					if (year > 0) {
-						row.createCell((short) 3).setCellValue(
-								new HSSFRichTextString(Integer.toString(year)));
+				cellIndex++; // Increase cellIndex for next column. 
+				
+				// Bibliography Info: cell index = 2, need to increase cellIndex first.
+				this.createCell(row, cellIndex++, null, pubBean.getBibliographyInfo());
+				
+				// Abstract/Full Text: cell index = 3.
+				if (StringUtils.isEmpty(pub.getAbstractText())) {
+					sb.setLength(0);
+					if (pub.getPubMedId() != null) {
+						sb.append("PMID: ").append(pub.getPubMedId());
+						this.createCell(row, cellIndex++, null, sb.toString());
+					} else {
+						if (StringUtils.isEmpty(pub.getDigitalObjectId())) {
+							this.createCell(row, cellIndex++, null, pub.getUri());
+						} else {
+							sb.append("PMID: ").append(pub.getDigitalObjectId());
+							this.createCell(row, cellIndex++, null, sb.toString());
+						}
 					}
+				} else {
+					this.createCell(row, cellIndex++, null, pub.getAbstractText());
 				}
+				
+				// Research Category: cell index = 4.
+				this.createCell(row, cellIndex++, null, pub.getResearchArea());
+				
+				
+				// Created Date: cell index = 5.
+				this.createCell(row, cellIndex++, null, pubBean.getCreatedDateStr());
 			}
 		}
-		return rowCount;
 	}
 
+	private void createCell(HSSFRow row, short index, HSSFCellStyle cellStyle, String value) {
+		HSSFCell cell = row.createCell(index);
+		cell.setCellValue(new HSSFRichTextString(value));
+		if (cellStyle != null) {
+			cell.setCellStyle(cellStyle);
+		}
+	}
 }

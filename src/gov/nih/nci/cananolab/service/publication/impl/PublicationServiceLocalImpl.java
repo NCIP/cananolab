@@ -4,7 +4,7 @@ import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -242,10 +242,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	// throw new DocumentException("Not implemented for local search");
 	// }
 
-	public void exportSummary(SampleBean sampleBean, OutputStream out)
+	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
 			throws IOException {
 		PublicationServiceHelper helper = new PublicationServiceHelper();
-		helper.exportSummary(sampleBean, out);
+		helper.exportSummary(summaryBean, out);
 	}
 
 	public int getNumberOfPublicPublications() throws PublicationException {

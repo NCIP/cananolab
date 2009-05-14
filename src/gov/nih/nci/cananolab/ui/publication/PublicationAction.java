@@ -36,10 +36,10 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedMap;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -412,23 +412,26 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 		
 		// Marker that indicates page is for printing (hide tabs, links, etc).
 		request.setAttribute("printView", Boolean.TRUE);
 
+		PublicationSummaryViewBean summaryBean = 
+			(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
+		
 		// Filter out categories that not selected.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
-			PublicationSummaryViewBean summaryBean = 
-				(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
-			Set<String> categories = summaryBean.getPublicationCategories();
-			for (String category : categories) {
-				if (!type.equals(category)) {
-					categories.remove(category);
-				}
+			SortedMap<String, List<PublicationBean>> categories = 
+				summaryBean.getCategory2Publications();
+			List<PublicationBean> pubs = categories.get(type);
+			if (pubs != null) {
+				categories.clear();
+				categories.put(type, pubs);
+				summaryBean.setPublicationCategories(categories.keySet());
 			}
-			summaryBean.setPublicationCategories(categories);
 		}
 		
 		return mapping.findForward("summaryPrint");
@@ -447,6 +450,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 		
 		// "actionName" is for constructing the Print/Export URL.
@@ -549,7 +553,68 @@ public class PublicationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Shared function for summaryView(), summaryEdit() and summaryPrint().
+	 * Handle summary report export request.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		// Prepare data.
+		this.prepareSummary(mapping, form, request, response);
+		
+		PublicationSummaryViewBean summaryBean = 
+			(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
+		
+		// Filter out categories that not selected.
+		String type = request.getParameter("type");
+		if (!StringUtils.isEmpty(type)) {
+			SortedMap<String, List<PublicationBean>> categories = 
+				summaryBean.getCategory2Publications();
+			List<PublicationBean> pubs = categories.get(type);
+			if (pubs != null) {
+				categories.clear();
+				categories.put(type, pubs);
+				summaryBean.setPublicationCategories(categories.keySet());
+			}
+		}
+		
+		// Get sample name for constructing file name.
+		SampleService sampleService = null;
+		String sampleId = request.getParameter("sampleId");
+		String location = request.getParameter("location");
+		if (Constants.LOCAL.equals(location)) {
+			sampleService = new SampleServiceLocalImpl();
+		} else {
+			// TODO: Implement remote service. 
+		}
+		SampleBean sampleBean = sampleService.findSampleById(sampleId);
+		String fileName = 
+			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
+		response.setContentType("application/vnd.ms-execel");
+		response.setHeader("cache-control", "Private");
+		response.setHeader("Content-disposition", "attachment;filename=\""
+				+ fileName + ".xls\"");
+		PublicationService service = null;
+		if (Constants.LOCAL.equals(location)) {
+			service = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new PublicationServiceRemoteImpl(serviceUrl);
+		}
+		service.exportSummary(summaryBean, response.getOutputStream());
+		
+		return null;
+	}
+	
+	/**
+	 * Shared function for summaryView(), summaryEdit(), summaryExport() and summaryPrint().
 	 *
 	 * @param mapping
 	 * @param form
@@ -566,10 +631,10 @@ public class PublicationAction extends BaseAnnotationAction {
 				"otherCategory", true);
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		String sampleId = request.getParameter("sampleId");
-		List<PublicationBean> publications = publicationService
-				.findPublicationsBySampleId(sampleId);
-		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
-				publications);
+		List<PublicationBean> publications = 
+			publicationService.findPublicationsBySampleId(sampleId);
+		PublicationSummaryViewBean summaryView = 
+			new PublicationSummaryViewBean(publications);
 		request.setAttribute("publicationSummaryView", summaryView);
 	}
 	
@@ -757,8 +822,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		nameParts.add(titleName);
 		nameParts.add("Publication");
 		nameParts.add(viewType);
-		nameParts.add(DateUtils.convertDateToString(new Date(),
-				"yyyyMMdd_HH-mm-ss-SSS"));
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
