@@ -248,9 +248,10 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			throws PublicationException {
 		try {
 			helper.exportSummary(summaryBean, out);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			String err = "Error exporting publication summary view.";
+			logger.error(err, e);
+			throw new PublicationException(err, e);
 		}
 	}
 
