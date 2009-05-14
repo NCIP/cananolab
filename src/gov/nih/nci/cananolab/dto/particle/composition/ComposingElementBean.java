@@ -23,6 +23,8 @@ public class ComposingElementBean {
 
 	private List<FunctionBean> inherentFunctions = new ArrayList<FunctionBean>();
 
+	private FunctionBean theFunction = new FunctionBean();
+
 	public ComposingElementBean(ComposingElement composingElement) {
 		this.domain = composingElement;
 		if (composingElement.getInherentFunctionCollection() != null) {
@@ -46,8 +48,11 @@ public class ComposingElementBean {
 		return inherentFunctions;
 	}
 
-	public void addFunction() {
-		inherentFunctions.add(new FunctionBean());
+	public void addFunction(FunctionBean function) {
+		if (inherentFunctions.contains(function)) {
+			inherentFunctions.remove(function);
+		}
+		inherentFunctions.add(function);
 	}
 
 	public void removeFunction(int ind) {
@@ -78,11 +83,9 @@ public class ComposingElementBean {
 		if (getDomain().getMolecularFormula() != null) {
 			buffer.append(getDomain().getMolecularFormula());
 			if (getDomain().getMolecularFormulaType() != null
-					&& getDomain().getMolecularFormulaType()
-							.length() > 0) {
+					&& getDomain().getMolecularFormulaType().length() > 0) {
 				buffer.append(" (");
-				buffer.append(getDomain()
-						.getMolecularFormulaType());
+				buffer.append(getDomain().getMolecularFormulaType());
 				buffer.append(")");
 			}
 		}
@@ -105,8 +108,8 @@ public class ComposingElementBean {
 		return getDomain().getId().toString();
 	}
 
-	public void setupDomain(Map<String, String> typeToClass,
-			String createdBy, int index) throws Exception {
+	public void setupDomain(Map<String, String> typeToClass, String createdBy,
+			int index) throws Exception {
 		if (domain.getId() == null
 				|| domain.getCreatedBy() != null
 				&& domain.getCreatedBy().equals(
@@ -115,14 +118,12 @@ public class ComposingElementBean {
 			// domain.setCreatedDate(new Date());
 			// fix for MySQL database, which supports precision only up to
 			// seconds
-			domain.setCreatedDate(DateUtils
-					.addSecondsToCurrentDate(index));
+			domain.setCreatedDate(DateUtils.addSecondsToCurrentDate(index));
 		}
 		if (domain.getInherentFunctionCollection() != null) {
 			domain.getInherentFunctionCollection().clear();
 		} else {
-			domain
-					.setInherentFunctionCollection(new HashSet<Function>());
+			domain.setInherentFunctionCollection(new HashSet<Function>());
 		}
 		int i = 0;
 		for (FunctionBean functionBean : inherentFunctions) {
@@ -131,5 +132,13 @@ public class ComposingElementBean {
 					functionBean.getDomainFunction());
 			i++;
 		}
+	}
+
+	public FunctionBean getTheFunction() {
+		return theFunction;
+	}
+
+	public void setTheFunction(FunctionBean theFunction) {
+		this.theFunction = theFunction;
 	}
 }
