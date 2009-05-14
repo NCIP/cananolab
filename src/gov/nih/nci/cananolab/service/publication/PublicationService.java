@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
