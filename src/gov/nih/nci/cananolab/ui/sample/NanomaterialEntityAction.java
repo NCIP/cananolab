@@ -290,7 +290,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-
 		ComposingElementBean ceBean = entity.getComposingElements().get(ind);
 		CompositionService compService = new CompositionServiceLocalImpl();
 		boolean canRemove = compService
@@ -308,45 +307,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 		}
 
 		entity.removeComposingElement(ind);
-
-		return mapping.getInputForward();
-	}
-
-	public ActionForward addInherentFunction(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("nanomaterialEntity");
-
-		String compEleIndexStr = (String) request.getParameter("compInd");
-		int compEleIndex = Integer.parseInt(compEleIndexStr);
-		ComposingElementBean compElement = (ComposingElementBean) entity
-				.getComposingElements().get(compEleIndex);
-
-		compElement.addFunction();
-		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
-				request, entity);
-
-		return mapping.getInputForward();
-	}
-
-	public ActionForward removeInherentFunction(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String compEleIndexStr = (String) request.getParameter("compInd");
-		int compEleIndex = Integer.parseInt(compEleIndexStr);
-
-		String functionIndexStr = (String) request.getParameter("childCompInd");
-		int functionIndex = Integer.parseInt(functionIndexStr);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
-				.get("nanomaterialEntity");
-		ComposingElementBean compElement = (ComposingElementBean) entity
-				.getComposingElements().get(compEleIndex);
-		compElement.removeFunction(functionIndex);
-		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
-				request, entity);
 
 		return mapping.getInputForward();
 	}
