@@ -25,6 +25,7 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.io.OutputStream;
@@ -635,7 +636,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		nameParts.add(particleName);
 		nameParts.add(charClass);
 		nameParts.add(viewType);
-		nameParts.add(StringUtils.convertDateToString(Calendar.getInstance().getTime()));
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
