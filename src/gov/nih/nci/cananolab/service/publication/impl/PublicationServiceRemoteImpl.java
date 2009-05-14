@@ -20,7 +20,6 @@ import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
