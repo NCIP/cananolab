@@ -102,7 +102,7 @@
 			<div id="functionSection" style="position: relative;">
 				<a style="" id="addFunction"
 					href="javascript:clearFunction();show('newFunction');">Add</a>
-				<br>
+				<br><br>
 				<table id="functionTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
 					<tbody id="functionRows">
@@ -111,7 +111,7 @@
 								Function Type
 							</td>
 							<td width="25%" class="cellLabel">
-								Modality Type
+								<div id="modalityHeader" style="display:none">Modality Type</div>
 							</td>
 							<td class="cellLabel">
 								Description
@@ -124,7 +124,7 @@
 								<span id="functionTypeValue">Function Type</span>
 							</td>
 							<td>
-								<span id="functionModalityTypeValue">Modality Type</span>
+								<span id="functionModalityTypeValue" style="display:none">Modality Type</span>
 							</td>
 							<td>
 								<span id="functionDescriptionValue">Description</span>
@@ -132,7 +132,7 @@
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
 									value="Edit"
-									onclick="editClicked(this.id); show('newInstrument');" />
+									onclick="editFunction(this.id); show('newFunction');" />
 							</td>
 						</tr>
 					</tbody>
@@ -140,7 +140,9 @@
 				<table id="newFunction" style="display: none;" class="promptbox">
 					<tbody>
 						<tr>
-							<html:hidden property="nanomaterialEntity.theComposingElement.theFunction.id" styleId="functionId"/>
+							<html:hidden
+								property="nanomaterialEntity.theComposingElement.theFunction.id"
+								styleId="functionId" />
 							<td class="cellLabel">
 								Function Type
 							</td>
@@ -160,7 +162,7 @@
 							</td>
 							<td class="cellLabel">
 								<div id="modalityLabel" style="display: none">
-									Modality Type
+									Imaging Modality Type
 								</div>
 							</td>
 							<td>
@@ -192,7 +194,7 @@
 							<td>
 								<input style="display: none;" class="promptButton"
 									id="deleteFunction" type="button" value="Remove"
-									onclick="deleteClicked()" />
+									onclick="deleteFunction()" />
 							</td>
 							<td colspan="3">
 								<div align="right">
@@ -220,6 +222,8 @@
 	</tr>
 	<tr>
 		<td>
+			<html:hidden property="nanomaterialEntity.theComposingElementIndex"
+				styleId="hiddenComposingElementIndex" value="-1" />
 			<input class="promptButton" type="button" value="Remove"
 				onclick="removeComposingElement('${actionName}', ${fileForm})"
 				id="deleteComposingElement" style="display: none;" />
