@@ -70,7 +70,9 @@ public class FindingBean {
 					conditionList = new ArrayList<Condition>();
 					conditionMap.put(conditionColumn, conditionList);
 				}
-				conditionList.add(condition);
+				if (!conditionList.contains(condition)) {
+					conditionList.add(condition);
+				}
 			}
 			ColumnHeader datumColumn = new ColumnHeader(datum);
 			if (!columnHeaders.contains(datumColumn)) {
@@ -100,10 +102,12 @@ public class FindingBean {
 					if (!conditionMap.isEmpty()) {
 						if (conditionMap.get(columnHeaders.get(j)) != null) {
 							Condition condition = conditionMap.get(
-									columnHeaders.get(j)).get(0);
+									columnHeaders.get(j)).get(i);
 							row.getCells().add(new TableCell(condition));
 						}
 					}
+				}
+				for (int j = 0; j < numberOfColumns; j++) {
 					if (!datumMap.isEmpty()) {
 						if (datumMap.get(columnHeaders.get(j)) != null) {
 							Datum datum = datumMap.get(columnHeaders.get(j))
