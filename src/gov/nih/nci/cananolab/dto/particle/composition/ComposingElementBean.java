@@ -55,8 +55,8 @@ public class ComposingElementBean {
 		inherentFunctions.add(function);
 	}
 
-	public void removeFunction(int ind) {
-		inherentFunctions.remove(ind);
+	public void removeFunction(FunctionBean function) {
+		inherentFunctions.remove(function);
 	}
 
 	public String getDisplayName() {
