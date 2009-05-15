@@ -51,7 +51,7 @@ function confirmDeletion()
 	</tr>
 	<tr>
 		<td colspan="2">
-			<c:set var="newFileStyle" value="display:block" />
+			<c:set var="newFileStyle" value="display:none" />
 			<c:if
 				test="${param.dispatch eq 'addFile' || fn:length(characterizationForm.map.achar.theFinding.files)>0}">
 				<c:set var="newFileStyle" value="display:none" />
@@ -85,7 +85,7 @@ function confirmDeletion()
 			<c:if
 				test="${!empty characterizationForm.map.achar.theFinding.domain.id}">
 				<input type="button" value="Delete" id="deleteFinding"
-					onclick="javascript:confirmDeletion()">
+					onclick="javascript:deleteFinding(characterizationForm);">
 			</c:if>
 		</td>
 		<td>
