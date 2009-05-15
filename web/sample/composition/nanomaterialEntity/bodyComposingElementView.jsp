@@ -13,8 +13,7 @@
 			<c:choose>
 				<c:when test="${edit eq 'true'}">
 					<td align="right" width="3%">
-						<a
-							href="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
+						<a href="#submitComposingElement" onclick="javascript:setTheComposingElement(${ind});">Edit</a>&nbsp;
 					</td>
 				</c:when>
 				<c:otherwise>
