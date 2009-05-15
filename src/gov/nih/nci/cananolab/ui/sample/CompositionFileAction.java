@@ -62,7 +62,6 @@ public class CompositionFileAction extends CompositionAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		forward = mapping.findForward("success");
-		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -136,7 +135,6 @@ public class CompositionFileAction extends CompositionAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
@@ -160,7 +158,6 @@ public class CompositionFileAction extends CompositionAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
 		ActionForward forward = mapping.findForward("success");
-		setupDataTree(sampleBean, request);
 		return forward;
 	}
 
