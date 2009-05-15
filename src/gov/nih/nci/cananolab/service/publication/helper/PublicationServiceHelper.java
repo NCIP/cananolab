@@ -607,11 +607,11 @@ public class PublicationServiceHelper {
 						sb.append(author.getFirstName()).append(' ');
 						sb.append(author.getInitial());
 						if (countAuthors == 0) {
-							ExportUtils.createCell(row, cellIndex, null, sb.toString());
+							ExportUtils.createCell(row, cellIndex, sb.toString());
 						} else {
 							// Create new row for other authors, increase rowIndex.
 							rowAuthor = sheet.createRow(rowIndex++);
-							ExportUtils.createCell(rowAuthor, cellIndex, null, sb.toString());
+							ExportUtils.createCell(rowAuthor, cellIndex, sb.toString());
 						}
 						countAuthors++;
 					}
