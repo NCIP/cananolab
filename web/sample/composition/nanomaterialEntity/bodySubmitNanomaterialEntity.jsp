@@ -103,7 +103,7 @@ function confirmDeletion()
 							<td class="cellLabel">
 								Composing Element&nbsp;&nbsp;&nbsp;&nbsp;
 								<a style="" id="addComposingElement"
-									href="javascript:clearComposingElement(); show('newComposingElement');"><img
+									href="#submitComposingElement" onclick="javascript:clearComposingElement(); show('newComposingElement');"><img
 										align="top" src="images/btn_add.gif" border="0" /> </a>
 							</td>
 						</tr>
@@ -125,13 +125,12 @@ function confirmDeletion()
 									test="${param.dispatch eq 'setupNew' || param.dispatch eq 'setupUpdate'|| param.dispatch eq 'addComposingElement' || fn:length(compositionForm.map.nanomaterialEntity.composingElements)>0}">
 									<c:set var="newCEStyle" value="display:none" />
 								</c:if>
-								<div style="${newCEStyle }" id="newComposingElement">
+								<div style="${newCEStyle}" id="newComposingElement">
 									<c:set var="theComposingElement"
 										value="${compositionForm.map.nanomaterialEntity.theComposingElement}" />
 									<c:set var="actionName" value="nanomaterialEntity" />
-									<c:set var="entity"
-										value="${compositionForm.map.nanomaterialEntity}" />
-									<jsp:include page="bodySubmitComposingElement.jsp" />
+									<a name="submitComposingElement"><%@ include
+											file="bodySubmitComposingElement.jsp"%></a>
 								</div>
 							</td>
 						</tr>
