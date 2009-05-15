@@ -217,7 +217,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 			throws PublicationException {
 		try {
-			PublicationServiceHelper helper = new PublicationServiceHelper();
 			helper.exportDetail(aPub, out);
 		} catch (Exception e) {
 			String err = "error exporting detail view for "
