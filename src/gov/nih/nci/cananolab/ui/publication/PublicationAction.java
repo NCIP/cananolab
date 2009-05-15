@@ -587,25 +587,22 @@ public class PublicationAction extends BaseAnnotationAction {
 		
 		// Get sample name for constructing file name.
 		SampleService sampleService = null;
+		PublicationService service = null;
 		String sampleId = request.getParameter("sampleId");
 		String location = request.getParameter("location");
 		if (Constants.LOCAL.equals(location)) {
 			sampleService = new SampleServiceLocalImpl();
+			service = new PublicationServiceLocalImpl();
 		} else {
 			// TODO: Implement remote service. 
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
 		SampleBean sampleBean = sampleService.findSampleById(sampleId);
 		String fileName = 
 			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
 		ExportUtils.prepareReponseForExport(response, fileName);
-		PublicationService service = null;
-		if (Constants.LOCAL.equals(location)) {
-			service = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new PublicationServiceRemoteImpl(serviceUrl);
-		}
 		service.exportSummary(summaryBean, response.getOutputStream());
 		
 		return null;
