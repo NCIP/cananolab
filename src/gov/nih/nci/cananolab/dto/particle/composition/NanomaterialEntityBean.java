@@ -55,6 +55,8 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	private ComposingElementBean theComposingElement=new ComposingElementBean();
 
+	private int theComposingElementIndex=-1;
+
 	public NanomaterialEntityBean() {
 	}
 
@@ -299,5 +301,13 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public void setTheComposingElement(ComposingElementBean theComposingElement) {
 		this.theComposingElement = theComposingElement;
+	}
+
+	public int getTheComposingElementIndex() {
+		return theComposingElementIndex;
+	}
+
+	public void setTheComposingElementIndex(int theComposingElementIndex) {
+		this.theComposingElementIndex = theComposingElementIndex;
 	}
 }
