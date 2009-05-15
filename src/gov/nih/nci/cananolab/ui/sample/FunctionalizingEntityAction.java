@@ -413,7 +413,6 @@ public class FunctionalizingEntityAction extends CompositionAction {
 					"message.deleteFunctionalizingEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			setupDataTree(sampleBean, request);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
@@ -421,7 +420,6 @@ public class FunctionalizingEntityAction extends CompositionAction {
 					entityBean.getClassName());
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			setupDataTree(sampleBean, request);
 			return mapping.getInputForward();
 		}
 	}

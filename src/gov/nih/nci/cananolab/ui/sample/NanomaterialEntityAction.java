@@ -394,7 +394,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 					"message.deleteNanomaterialEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveMessages(request, msgs);
-			setupDataTree(sampleBean, request);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(
