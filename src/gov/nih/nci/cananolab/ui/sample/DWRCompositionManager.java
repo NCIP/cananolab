@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 
 import java.io.IOException;
 import java.util.List;
@@ -63,13 +64,26 @@ public class DWRCompositionManager {
 		return theFile;
 	}
 
-	public ComposingElementBean addInherentFunction(FunctionBean function) {
-		DynaValidatorForm compForm = (DynaValidatorForm) (WebContextFactory
+	public ComposingElementBean addInherentFunction(
+			ComposingElementBean composingElementBean, FunctionBean function) {
+		composingElementBean.addFunction(function);
+		return composingElementBean;
+	}
+
+	public ComposingElementBean deleteInherentFunction(
+			ComposingElementBean composingElementBean, FunctionBean function) {
+		composingElementBean.removeFunction(function);
+		return composingElementBean;
+	}
+
+	public ComposingElementBean getComposingElementFromList(int index)
+			throws Exception {
+		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		NanomaterialEntityBean entityean = (NanomaterialEntityBean) (compForm
-				.get("nanomaterialEntity"));
-		ComposingElementBean ceBean=entityean.getTheComposingElement();
-		ceBean.addFunction(function);
-		return ceBean;
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
+				.get("nanomaterialEntity");
+		List<ComposingElementBean> composingElements = entity
+				.getComposingElements();
+		return composingElements.get(index);
 	}
 }
