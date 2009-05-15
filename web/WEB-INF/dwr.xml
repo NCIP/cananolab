@@ -8,6 +8,9 @@
 				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
 			<include method="getEntityIncludePage" />
 			<include method="getFileFromList" />
+			<include method="getComposingElementFromList" />
+			<include method="addInherentFunction" />
+			<include method="deleteInherentFunction" />
 		</create>
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
@@ -73,11 +76,11 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
-			<param name="include" value="domain" />
+			<param name="include" value="domain, inherentFunctions" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
-			<param name="exclude" value="nanomaterialEntity" />
+			<param name="include" value="type, name, value, valueUnit, molecularFormula, molecularFormulaType, description" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.FunctionBean">
