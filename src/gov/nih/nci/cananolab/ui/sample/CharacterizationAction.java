@@ -357,6 +357,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					.getName(), otherSamples);
 		}
 		sampleBean = setupSample(theForm, request, Constants.LOCAL);
+		request.setAttribute("sampleId", sampleBean.getDomain().getId());
+		request.setAttribute("location", Constants.LOCAL);
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,
@@ -529,8 +531,14 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		String sampleId = request.getParameter("sampleId");
+		//get sampleId from request attribute when coming to summary view from saving characterization
+		if (sampleId==null) {
+			sampleId=(String)request.getAttribute("sampleId");
+		}
 		String location = request.getParameter("location");
-
+		if (location==null) {
+			location=(String)request.getAttribute("location");
+		}
 		CharacterizationService service = null;
 		if (Constants.LOCAL.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
