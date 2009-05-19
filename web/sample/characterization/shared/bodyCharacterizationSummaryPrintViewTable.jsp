@@ -130,7 +130,7 @@
 							<c:if test="${!empty charBean.findings}">
 								<tr>
 									<td class="cellLabel">
-										Characterizaiton Results
+										Characterization Results
 									</td>
 									<td colspan="2">
 										<%@ include file="bodyFindingView.jsp"%>
