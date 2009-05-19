@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -198,5 +199,25 @@ public class FunctionBean {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void setImagingFunction(ImagingFunction imagingFunction) {
+		this.imagingFunction = imagingFunction;
+	}
+
+	public void setTargets(List<TargetBean> targets) {
+		this.targets = targets;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof FunctionBean) {
+			FunctionBean f = (FunctionBean) obj;
+			String thisId = this.getId();
+			if (thisId != null && thisId.equals(f.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
 	}
 }
