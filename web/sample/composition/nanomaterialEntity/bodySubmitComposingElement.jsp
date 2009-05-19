@@ -194,7 +194,7 @@
 							<td>
 								<input style="display: none;" class="promptButton"
 									id="deleteFunction" type="button" value="Remove"
-									onclick="deleteFunction()" />
+									onclick="deleteTheFunction()" />
 							</td>
 							<td colspan="3">
 								<div align="right">
@@ -225,13 +225,13 @@
 			<html:hidden property="nanomaterialEntity.theComposingElementIndex"
 				styleId="hiddenComposingElementIndex" value="-1" />
 			<input class="promptButton" type="button" value="Remove"
-				onclick="removeComposingElement('${actionName}', ${fileForm})"
+				onclick="removeComposingElement('nanomaterialEntity')"
 				id="deleteComposingElement" style="display: none;" />
 		</td>
 		<td colspan="3">
 			<div align="right">
 				<input class="promptButton" type="button" value="Add"
-					onclick="addComposingElement('${actionName}', ${fileForm});" />
+					onclick="addComposingElement('nanomaterialEntity')" />
 				<input class="promptButton" type="button" value="Cancel"
 					onclick="clearComposingElement();hide('newComposingElement');" />
 			</div>
