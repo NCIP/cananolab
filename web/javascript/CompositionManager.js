@@ -112,6 +112,7 @@ function clearComposingElement() {
 	hide("deleteComposingElement");
 }
 function clearFunction() {
+	dwr.util.setValue("functionId", "");
 	dwr.util.setValue("functionType", "");
 	dwr.util.setValue("imagingModality", "");
 	dwr.util.setValue("functionDescription", "");
@@ -130,11 +131,11 @@ function displayImageModality() {
 	}
 }
 function addFunction() {
-	var theFunction = {id:dwr.util.getValue("functionId"), type:dwr.util.getValue("functionType"), description:dwr.util.getValue("functionDescription")};
+	var imagingFunction = {modality:dwr.util.getValue("imagingModality")};
+	var theFunction = {id:dwr.util.getValue("functionId"), type:dwr.util.getValue("functionType"), imagingFunction:imagingFunction, description:dwr.util.getValue("functionDescription")};
 	if (theFunction.type != "" || theFunction.description != "") {
 		CompositionManager.addInherentFunction(currentComposingElement, theFunction, function (composingElement) {
 			currentComposingElement = composingElement;
-			alert(currentComposingElement.inherentFunctions.length);
 			window.setTimeout("populateFunctions()", 200);
 		});
 	} else {
@@ -154,7 +155,7 @@ function populateFunctions() {
 	}
 	for (var i = 0; i < functions.length; i++) {
 		theFunction = functions[i];
-		if (theFunction.id == null) {
+		if (theFunction.id == null || theFunction.id == "") {
 			theFunction.id = -i - 1;
 		}
 		id = theFunction.id;
@@ -170,6 +171,7 @@ function populateFunctions() {
 			hide("functionModalityTypeValue" + id);
 		}
 		dwr.util.setValue("functionDescriptionValue" + id, theFunction.description);
+		dwr.util.setValue("functionId", id);
 		$("pattern" + id).style.display = "";
 		inherentFunctionCache[id] = theFunction;
 	}
@@ -213,7 +215,7 @@ function editFunction(eleid) {
 	dwr.util.setValue("functionDescription", func.description);
 	show("deleteFunction");
 }
-function deleteFunction() {
+function deleteTheFunction() {
 	var eleid = document.getElementById("functionId").value;
 	if (eleid != "") {
 		var func = inherentFunctionCache[eleid];
@@ -222,7 +224,11 @@ function deleteFunction() {
 				currentComposingElement = composingElement;
 			});
 			window.setTimeout("populateFunctions()", 200);
+			hide("newFunction");
 		}
 	}
+}
+function addComposingElement(actionName) {
+   submitAction(document.forms[0], actionName, "addComposingElement");
 }
 
