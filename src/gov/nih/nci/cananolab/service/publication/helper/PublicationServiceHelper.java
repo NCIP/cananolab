@@ -563,12 +563,16 @@ public class PublicationServiceHelper {
 	 */
 	private void setSummarySheet(PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
 		HSSFRow row = null;
-		HSSFRow rowAuthor = null;
+		//HSSFRow rowAuthor = null;
 		StringBuilder sb = new StringBuilder();
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
+		
+		// Word Wrap MUST be turned on
+		HSSFCellStyle newLineStyle = wb.createCellStyle();
+		newLineStyle.setWrapText(true);
 
 		SortedMap<String, List<PublicationBean>> pubs = summaryBean.getCategory2Publications();
 		for (String category : pubs.keySet()) {
@@ -599,26 +603,18 @@ public class PublicationServiceHelper {
 				
 				// Author(s): cell index = 1, one author per row.
 				List<Author> authors = pubBean.getAuthors();
-				if (authors != null) {
-					int countAuthors = 0;
+				sb.setLength(0);
+				if (authors != null && !authors.isEmpty()) {
 					for (Author author : authors) {
-						sb.setLength(0);
 						sb.append(author.getLastName()).append(',').append(' ');
-						sb.append(author.getFirstName()).append(' ');
-						sb.append(author.getInitial());
-						if (countAuthors == 0) {
-							ExportUtils.createCell(row, cellIndex, sb.toString());
-						} else {
-							// Create new row for other authors, increase rowIndex.
-							rowAuthor = sheet.createRow(rowIndex++);
-							ExportUtils.createCell(rowAuthor, cellIndex, sb.toString());
-						}
-						countAuthors++;
+						sb.append(author.getFirstName()).append(' ').append(author.getInitial());
+						sb.append('\n');
 					}
+					sb.deleteCharAt(sb.length() - 1);
 				}
-				cellIndex++; // Increase cellIndex for next column. 
+				ExportUtils.createCell(row, cellIndex++, newLineStyle, sb.toString());
 				
-				// Bibliography Info: cell index = 2, need to increase cellIndex first.
+				// Bibliography Info: cell index = 2.
 				ExportUtils.createCell(row, cellIndex++, pubBean.getBibliographyInfo());
 				
 				// Abstract/Full Text: cell index = 3.
