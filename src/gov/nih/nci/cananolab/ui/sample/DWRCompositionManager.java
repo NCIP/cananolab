@@ -67,6 +67,11 @@ public class DWRCompositionManager {
 	public ComposingElementBean addInherentFunction(
 			ComposingElementBean composingElementBean, FunctionBean function) {
 		composingElementBean.addFunction(function);
+		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("compositionForm"));
+		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
+				.get("nanomaterialEntity");
+		entity.setTheComposingElement(composingElementBean);
 		return composingElementBean;
 	}
 
