@@ -680,6 +680,8 @@ CREATE TABLE associated_element
 	name VARCHAR(200),
 	value DECIMAL(22,3),
 	value_unit VARCHAR(200),
+	pub_chem_datasource_name VARCHAR(200),
+	pub_chem_id BIGINT,
 	PRIMARY KEY (associated_element_pk_id)
 ) TYPE=InnoDB
 ;

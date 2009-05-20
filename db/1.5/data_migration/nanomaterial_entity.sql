@@ -20,6 +20,12 @@ ALTER TABLE other_nanomaterial_entity
 ALTER TABLE other_nanomaterial_entity  ADD CONSTRAINT
     FK_other_nanomaterial_entity_nanomaterial_entity FOREIGN KEY (other_nanomaterial_entity_pk_id) REFERENCES nanomaterial_entity (nanomaterial_entity_pk_id);
 
+ALTER TABLE associated_element
+	ADD COLUMN pub_chem_datasource_name VARCHAR(200);
+
+ALTER TABLE associated_element
+	ADD COLUMN pub_chem_id BIGINT;
+
 ALTER TABLE composing_element
  DROP FOREIGN KEY FK_composing_element_associated_element,
  DROP FOREIGN KEY FK_composing_element_nanoparticle_entity,
