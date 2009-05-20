@@ -1,64 +1,10 @@
 var inherentFunctionCache = {};
 var currentComposingElement = null;
 
-/* set the entity properties section */
-function setEntityInclude(selectEleId, pagePath) {
-	var entityType = document.getElementById(selectEleId).value;
-	var inclueBlock = document.getElementById("entityInclude");
-	CompositionManager.getEntityIncludePage(entityType, pagePath, populatePage);
-}
-function populatePage(pageData) {
-	var inclueBlock = document.getElementById("entityInclude");
-	if (pageData == "") {
-		inclueBlock.style.display = "none";
-	} else {
-		dwr.util.setValue("entityInclude", pageData, {escapeHtml:false});
-		inclueBlock.style.display = "inline";
-	}
-}
-/* end of set the entity properties section */
-
-/* set submit chemical association form */
-function getEntityDisplayNameOptions(elementNumber) {
-	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
-	if (compositionType == "Nanomaterial Entity") {
-		show("materialEntitySelect" + elementNumber);
-		hide("functionalizingEntitySelect" + elementNumber);
-	} else {
-		if (compositionType == "Functionalizing Entity") {
-			show("functionalizingEntitySelect" + elementNumber);
-			hide("materialEntitySelect" + elementNumber);
-		}
-	}
-}
-function displayBondType() {
-	var type = document.getElementById("assoType").value;
-	if (type == "attachment") {
-		show("bondTypeLabel");
-		show("bondTypePrompt");
-	} else {
-		hide("bondType");
-		hide("bondTypePrompt");
-	}
-}
-function setCompositionType(entityTypeId, displayNameEleId) {
-	var selectEle = document.getElementById(entityTypeId);
-	var selectedName = selectEle.options[selectEle.options.selectedIndex].text;
-	document.getElementById(displayNameEleId).value = selectedName;
-	// alert(document.getElementById(displayNameEleId).value);
-}
-function setEntityDisplayName(entityTypeId, displayNameEleId) {
-	var selectEle = document.getElementById(entityTypeId);
-	var selectedName = selectEle.options[selectEle.options.selectedIndex].text;
-	document.getElementById(displayNameEleId).value = selectedName;
-	// alert(document.getElementById(displayNameEleId).value);
-}
-/* end of set submit chemical association form */
-
 /* set the submit composing element form */
 function clearComposingElement() {
 	//go to server and clean form bean
-	CompositionManager.resetTheComposingElement(populateComposingElement);
+	NanomaterialEntityManager.resetTheComposingElement(populateComposingElement);
 	hide("deleteComposingElement");
 }
 function clearInherentFunction() {
@@ -84,7 +30,7 @@ function addInherentFunction() {
 	var imagingFunction = {modality:dwr.util.getValue("imagingModality")};
 	var theFunction = {id:dwr.util.getValue("functionId"), type:dwr.util.getValue("functionType"), imagingFunction:imagingFunction, description:dwr.util.getValue("functionDescription")};
 	if (theFunction.type != "" || theFunction.description != "") {
-		CompositionManager.addInherentFunction(theFunction, function (composingElement) {
+		NanomaterialEntityManager.addInherentFunction(theFunction, function (composingElement) {
 			currentComposingElement = composingElement;
 			window.setTimeout("populateInherentFunctions()", 200);
 		});
@@ -128,7 +74,7 @@ function populateInherentFunctions() {
 }
 function setTheComposingElement(index) {
 	dwr.util.setValue("hiddenComposingElementIndex", index);
-	CompositionManager.getComposingElementFromList(index, populateComposingElement);
+	NanomaterialEntityManager.getComposingElementFromList(index, populateComposingElement);
 	show("newComposingElement");
 	hide("newFunction");
 	show("deleteComposingElement");
@@ -168,7 +114,7 @@ function deleteTheInherentFunction() {
 	if (eleid != "") {
 		var func = inherentFunctionCache[eleid];
 		if (confirm("Are you sure you want to delete this function?")) {
-			CompositionManager.deleteInherentFunction(func, function (composingElement) {
+			NanomaterialEntityManager.deleteInherentFunction(func, function (composingElement) {
 				currentComposingElement = composingElement;
 			});
 			window.setTimeout("populateInherentFunctions()", 200);
@@ -183,10 +129,3 @@ function removeComposingElement(actionName) {
 	submitAction(document.forms[0], actionName, "removeComposingElement");
 }
 /* end of submit composing element form */
-
-/* set submit file form */
-function setTheFile(type, index) {
-	CompositionManager.getFileFromList(type, index, populateFile);
-	dwr.util.setValue("hiddenFileIndex", index);
-}
-/* end of set submit file form */
