@@ -79,7 +79,7 @@
 			<property name="type" type="string" column="element_type"/>
 			<!-- Associations mapping for the ComposingElement class -->
 			<many-to-one name="nanomaterialEntity" class="gov.nih.nci.cananolab.domain.particle.NanomaterialEntity" column="nanomaterial_entity_pk_id" lazy="proxy" />
-			<set name="inherentFunctionCollection" lazy="true">
+			<set name="inherentFunctionCollection" lazy="true" cascade="all-delete-orphan">
 				<cache usage="read-write" />
 				<key column="composing_element_pk_id" />
 				<one-to-many class="gov.nih.nci.cananolab.domain.particle.Function"/>
