@@ -15,7 +15,7 @@
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="description" type="string" column="description"/>
 		<!-- Associations mapping for the NanomaterialEntity class -->
-		<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.SampleComposition" column="composition_pk_id" lazy="proxy" />
+		<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.SampleComposition" column="composition_pk_id" lazy="proxy" cascade="save-update"/>
 		<set name="fileCollection" table="nanomaterial_entity_file" lazy="true" inverse="false" cascade="all-delete-orphan">
 			<cache usage="read-write" />
 			<key column="nanomaterial_entity_pk_id" />
