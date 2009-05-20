@@ -196,7 +196,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		if (className == null) {
 			clazz = OtherNanomaterialEntity.class;
 		} else {
-			clazz = ClassUtils.getFullClass(className);
+			clazz = ClassUtils.getFullClass("nanomaterial."+className);
 		}
 		if (domainEntity == null) {
 			domainEntity = (NanomaterialEntity) clazz.newInstance();

@@ -229,7 +229,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 		if (className == null) {
 			clazz = OtherFunctionalizingEntity.class;
 		} else {
-			clazz = ClassUtils.getFullClass("functionalization." + className);
+			clazz = ClassUtils.getFullClass("agentmaterial." + className);
 		}
 		if (domainEntity == null) {
 			domainEntity = (FunctionalizingEntity) clazz.newInstance();
