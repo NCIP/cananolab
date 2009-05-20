@@ -8,7 +8,13 @@
 				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
 			<include method="getEntityIncludePage" />
 			<include method="getFileFromList" />
+		</create>
+		<create creator="new" javascript="NanomaterialEntityManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRNanomaterialEntityManager" />
 			<include method="getComposingElementFromList" />
+			<include method="resetTheComposingElement" />
 			<include method="addInherentFunction" />
 			<include method="deleteInherentFunction" />
 		</create>
