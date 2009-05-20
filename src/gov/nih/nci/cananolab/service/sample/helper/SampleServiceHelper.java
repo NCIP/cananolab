@@ -174,9 +174,9 @@ public class SampleServiceHelper {
 							keyword, MatchMode.ANYWHERE);
 					disjunction.add(keywordCrit1);
 				}
-				crit.createAlias("chara.derivedBioAssayDataCollection",
-						"derived", CriteriaSpecification.LEFT_JOIN)
-						.createAlias("derived.File", "charFile",
+				crit.createAlias("chara.findingCollection",
+						"finding", CriteriaSpecification.LEFT_JOIN)
+						.createAlias("finding.fileCollection", "charFile",
 								CriteriaSpecification.LEFT_JOIN).createAlias(
 								"charFile.keywordCollection", "keyword2",
 								CriteriaSpecification.LEFT_JOIN);
@@ -188,7 +188,7 @@ public class SampleServiceHelper {
 				}
 				for (String word : wordList) {
 					Criterion summaryCrit1 = Restrictions.ilike(
-							"chara.description", word, MatchMode.ANYWHERE);
+							"chara.designMethodsDescription", word, MatchMode.ANYWHERE);
 					Criterion summaryCrit2 = Restrictions.ilike(
 							"charFile.description", word, MatchMode.ANYWHERE);
 					Criterion summaryCrit = Restrictions.or(summaryCrit1,
