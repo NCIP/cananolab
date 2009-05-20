@@ -100,8 +100,8 @@
 		</td>
 		<td colspan="3">
 			<div id="functionSection" style="position: relative;">
-				<a style="" id="addFunction"
-					href="javascript:clearFunction();show('newFunction');">Add</a>
+				<a style="" id="addInherentFunction"
+					href="javascript:clearInherentFunction();show('newFunction');">Add</a>
 				<br><br>
 				<table id="functionTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
@@ -132,7 +132,7 @@
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
 									value="Edit"
-									onclick="editFunction(this.id); show('newFunction');" />
+									onclick="editInherentFunction(this.id); show('newFunction');" />
 							</td>
 						</tr>
 					</tbody>
@@ -194,14 +194,14 @@
 							<td>
 								<input style="display: none;" class="promptButton"
 									id="deleteFunction" type="button" value="Remove"
-									onclick="deleteTheFunction()" />
+									onclick="deleteTheInherentFunction()" />
 							</td>
 							<td colspan="3">
 								<div align="right">
 									<input class="promptButton" type="button" value="Add"
-										onclick="addFunction();show('functionTable');hide('newFunction');" />
+										onclick="addInherentFunction();show('functionTable');hide('newFunction');" />
 									<input class="promptButton" type="button" value="Cancel"
-										onclick="clearFunction();hide('newFunction');" />
+										onclick="clearInherentFunction();hide('newFunction');" />
 								</div>
 							</td>
 						</tr>
@@ -222,10 +222,8 @@
 	</tr>
 	<tr>
 		<td>
-			<html:hidden property="nanomaterialEntity.theComposingElementIndex"
-				styleId="hiddenComposingElementIndex" value="-1" />
 			<input class="promptButton" type="button" value="Remove"
-				onclick="removeComposingElement('nanomaterialEntity')"
+				onclick="removeComposingElement('nanomaterialEntity');clearComposingElement()"
 				id="deleteComposingElement" style="display: none;" />
 		</td>
 		<td colspan="3">
