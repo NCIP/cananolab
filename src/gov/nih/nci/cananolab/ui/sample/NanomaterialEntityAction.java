@@ -269,13 +269,16 @@ public class NanomaterialEntityAction extends CompositionAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addComposingElement(ActionMapping mapping,
+	public ActionForward saveComposingElement(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		entity.addComposingElement();
+		ComposingElementBean composingElement=entity.getTheComposingElement();
+		entity.addComposingElement(composingElement);
+		// save nanomaterial entity
+		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
 
@@ -285,29 +288,14 @@ public class NanomaterialEntityAction extends CompositionAction {
 	public ActionForward removeComposingElement(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		ComposingElementBean ceBean = entity.getComposingElements().get(ind);
-		CompositionService compService = new CompositionServiceLocalImpl();
-		boolean canRemove = compService
-				.checkChemicalAssociationBeforeDelete(ceBean);
+		ComposingElementBean element=entity.getTheComposingElement();
+		entity.removeComposingElement(element);
+		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-
-		if (!canRemove) {
-			ActionMessages msgs = new ActionMessages();
-			ActionMessage msg = new ActionMessage(
-					"error.removeComposingElementWithChemicalAssociation");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			return mapping.getInputForward();
-		}
-
-		entity.removeComposingElement(ind);
-
 		return mapping.getInputForward();
 	}
 
