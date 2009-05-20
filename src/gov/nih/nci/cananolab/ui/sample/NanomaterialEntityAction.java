@@ -204,7 +204,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		theForm.set("sampleId", sampleId);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
@@ -216,7 +217,10 @@ public class NanomaterialEntityAction extends CompositionAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		String sampleId = request.getParameter("sampleId");
+		if (entityId==null) {
+			entityId=(String)request.getAttribute("dataId");
+		}
+		String sampleId = theForm.getString("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 
@@ -281,7 +285,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-
 		return mapping.getInputForward();
 	}
 
