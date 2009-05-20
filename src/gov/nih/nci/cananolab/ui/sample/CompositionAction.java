@@ -33,19 +33,20 @@ public class CompositionAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		this.prepareSummary(mapping, form, request, response);
-		
+
 		// "actionName" is for constructing the Print/Export URL.
 		request.setAttribute("actionName", request.getRequestURL().toString());
 
 		return mapping.findForward("summaryEdit");
 	}
-	
+
 	/**
 	 * Handle Composition Summary View request.
 	 *
@@ -54,7 +55,8 @@ public class CompositionAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -92,8 +94,8 @@ public class CompositionAction extends BaseAnnotationAction {
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			CompositionBean compositionBean = 
-				(CompositionBean) theForm.get("comp");
+			CompositionBean compositionBean = (CompositionBean) theForm
+					.get("comp");
 			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
 				compositionBean.setChemicalAssociations(Collections.EMPTY_LIST);
 			}
@@ -127,7 +129,7 @@ public class CompositionAction extends BaseAnnotationAction {
 			throws Exception {
 		String location = request.getParameter("location");
 		if (location == null) {
-			location = (String)request.getAttribute("location");
+			location = (String) request.getAttribute("location");
 		}
 		String sampleId = request.getParameter("sampleId");
 		HttpSession session = request.getSession();
@@ -137,12 +139,15 @@ public class CompositionAction extends BaseAnnotationAction {
 		} else {
 			// TODO update grid service
 			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-			//		request, location);
+			// request, location);
 			// compService = new CompositionServiceRemoteImpl(
 			// serviceUrl);
 		}
-		CompositionBean compositionBean = compService
-				.findCompositionBySampleId(sampleId);
+		CompositionBean compositionBean = new CompositionBean();
+		if (compService.findCompositionBySampleId(sampleId) != null) {
+			compositionBean = compService.findCompositionBySampleId(sampleId);
+		}
+
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("comp", compositionBean);
 		// set entity type and association type and retrieve visibility
@@ -180,7 +185,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	 */
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
-	throws Exception {
+			throws Exception {
 		return mapping.findForward("summaryEdit");
 	}
 }
