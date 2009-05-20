@@ -270,10 +270,11 @@ public class CharacterizationServiceHelper {
 			// Output data of report
 			List<CharacterizationBean> charBeans = pubs.get(type);
 			for (CharacterizationBean charBean : charBeans) {
+				int charCount = 0;
 				short rowIndex = 0;
 				
 				// Create one work sheet for each Characterization. 
-				HSSFSheet sheet = wb.createSheet(charBean.getCharacterizationName());
+				HSSFSheet sheet = wb.createSheet(++charCount + '.' + charBean.getCharacterizationName());
 				
 				//1. Output Characterization type at (0, 0).
 				rowIndex = this.outputHeader(charBean, sheet, headerStyle, rowIndex);
@@ -523,20 +524,21 @@ public class CharacterizationServiceHelper {
 			ExportUtils.createCell(row, (short) 0, headerStyle, FILES);
 			for (FileBean fileBean : files) {
 				row = sheet.createRow(rowIndex++);
-				StringBuilder sb = new StringBuilder();
 				if (fileBean.getDomainFile().getUriExternal().booleanValue()) {
 					ExportUtils.createCell(row, (short) 0, fileBean.getDomainFile().getUri());
-					
+					/**
 					sb.append(request.getRequestURL().toString());
 					sb.append("?dispatch=download&fileId=");
 					sb.append(fileBean.getDomainFile().getId());
 					sb.append("&location=").append(request.getParameter("location"));
 					rowIndex = this.outputPicture(rowIndex, sb.toString(), wb, sheet);
+					*/
 				} else if (fileBean.isHidden()) {
 					ExportUtils.createCell(row, (short) 0, PRIVATE_FILE);
 				} else {
 					ExportUtils.createCell(row, (short) 0, fileBean.getDomainFile().getTitle());
 					
+					StringBuilder sb = new StringBuilder();
 					if (fileBean.isImage()) {
 						sb.append(fileRoot).append(java.io.File.separator);
 						sb.append(fileBean.getDomainFile().getUri());
@@ -545,7 +547,7 @@ public class CharacterizationServiceHelper {
 						if (imgFile.exists()) {
 							rowIndex = this.outputPicture(rowIndex, filePath, wb, sheet);
 						} else {
-							logger.warn("File not exists: " + filePath);
+							logger.error("File not exists: " + filePath);
 						}
 					}
 				}
