@@ -53,9 +53,7 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	private boolean withProperties = false;
 
-	private ComposingElementBean theComposingElement=new ComposingElementBean();
-
-	private int theComposingElementIndex=-1;
+	private ComposingElementBean theComposingElement = new ComposingElementBean();
 
 	public NanomaterialEntityBean() {
 	}
@@ -259,15 +257,20 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 		}
 	}
 
-	public void addComposingElement() {
-		composingElements.add(new ComposingElementBean());
+	public void addComposingElement(ComposingElementBean element) {
+		// if an old one exists, remove it first
+		int index = composingElements.indexOf(element);
+		if (index != -1) {
+			composingElements.remove(element);
+			// retain the original order
+			composingElements.add(index, element);
+		} else {
+			composingElements.add(element);
+		}
 	}
 
-	public void removeComposingElement(int ind) {
-		ComposingElementBean elementToRemove = composingElements.get(ind);
-		elementToRemove.getDomain().setNanomaterialEntity(null);
-		// remove the one at the index
-		composingElements.remove(elementToRemove);
+	public void removeComposingElement(ComposingElementBean element) {
+		composingElements.remove(element);
 	}
 
 	public NanomaterialEntityBean copy() throws Exception {
@@ -301,13 +304,5 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 
 	public void setTheComposingElement(ComposingElementBean theComposingElement) {
 		this.theComposingElement = theComposingElement;
-	}
-
-	public int getTheComposingElementIndex() {
-		return theComposingElementIndex;
-	}
-
-	public void setTheComposingElementIndex(int theComposingElementIndex) {
-		this.theComposingElementIndex = theComposingElementIndex;
 	}
 }
