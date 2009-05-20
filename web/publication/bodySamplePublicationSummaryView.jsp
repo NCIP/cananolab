@@ -103,7 +103,7 @@
 													Bibliography Info
 												</th>
 												<th width="15%">
-													Abstract/Full Text
+													Abstract/Download Link
 												</th>
 												<th>
 													Research Category
