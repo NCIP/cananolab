@@ -141,34 +141,27 @@
 													</td>
 													<td valign="top">
 														<c:choose>
-															<c:when test="${! empty pubObj.abstractText}">
-										${pubObj.abstractText}
-									</c:when>
+															<c:when test="${! empty pubObj.pubMedId}">
+																<a target="_abstract"
+																	href="http://www.ncbi.nlm.nih.gov/pubmed/${pubObj.pubMedId}">PMID:
+																	${pubObj.pubMedId }</a>&nbsp;
+															</c:when>
 															<c:otherwise>
 																<c:choose>
-																	<c:when test="${! empty pubObj.pubMedId}">
+																	<c:when test="${! empty pubObj.digitalObjectId}">
 																		<a target="_abstract"
-																			href="http://www.ncbi.nlm.nih.gov/pubmed/${pubObj.pubMedId}">PMID:
-																			${pubObj.pubMedId }</a>&nbsp;
-											</c:when>
+																			href="http://dx.doi.org/${pubObj.digitalObjectId}">PMID:
+																			${pubObj.digitalObjectId }</a>&nbsp;
+																	</c:when>
 																	<c:otherwise>
-																		<c:choose>
-																			<c:when test="${! empty pubObj.digitalObjectId}">
-																				<a target="_abstract"
-																					href="http://dx.doi.org/${pubObj.digitalObjectId}">PMID:
-																					${pubObj.digitalObjectId }</a>&nbsp;
-													</c:when>
-																			<c:otherwise>
-																				<a
-																					href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
-																					target="${pubBean.urlTarget}"> ${pubOjb.uri}</a>&nbsp;
-													</c:otherwise>
-																		</c:choose>
+																		<a
+																			href="searchPublication.do?dispatch=download&amp;publicationId=${pubObj.id}&amp;location=${param.location}"
+																			target="${pubBean.urlTarget}">${pubOjb.uri}</a>&nbsp;
 																	</c:otherwise>
 																</c:choose>
-								&nbsp;
-								</c:otherwise>
+															</c:otherwise>
 														</c:choose>
+														&nbsp;
 													</td>
 													<td valign="top">
 														<c:out value="${fn:replace(pubObj.researchArea, ';', '<br>')}" escapeXml="false"/>&nbsp;
