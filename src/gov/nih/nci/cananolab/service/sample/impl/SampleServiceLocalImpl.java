@@ -272,6 +272,7 @@ public class SampleServiceLocalImpl implements
 				.setFetchMode(
 						"sampleComposition.functionalizingEntityCollection.functionCollection",
 						FetchMode.JOIN);
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.createAlias("otherPointOfContactCollection", "otherPoc",
