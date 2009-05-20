@@ -9,6 +9,9 @@
 <script type="text/javascript" src="javascript/CompositionManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
+<script type="text/javascript" src="javascript/NanomaterialEntityManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/NanomaterialEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
