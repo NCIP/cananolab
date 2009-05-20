@@ -18,10 +18,11 @@
 						<td>
 							${charBean.cytotoxicity.cellLine}
 						</td>
+					</tr>
 				</table>
 			</c:when>
 			<c:otherwise>N/A
-	</c:otherwise>
+			</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:otherwise>

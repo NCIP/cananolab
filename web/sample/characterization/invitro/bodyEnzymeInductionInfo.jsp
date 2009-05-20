@@ -17,6 +17,7 @@
 						<td>
 							${charBean.enzymeInduction.enzyme}
 						</td>
+					</tr>
 				</table>
 			</c:when>
 			<c:otherwise>N/A

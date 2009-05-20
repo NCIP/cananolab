@@ -19,10 +19,11 @@
 						<td>
 							${charBean.physicalState.type}
 						</td>
+					</tr>
 				</table>
 			</c:when>
 			<c:otherwise>N/A
-	</c:otherwise>
+			</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:otherwise>
