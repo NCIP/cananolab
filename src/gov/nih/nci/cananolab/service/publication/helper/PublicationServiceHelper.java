@@ -54,7 +54,7 @@ public class PublicationServiceHelper {
 	public static final String TITLE = "Title";
 	public static final String AUTHORS = "Author(s)";
 	public static final String BIBLIOBRAPHY_INFO = "Bibliography Info";
-	public static final String ABSTRACT = "Abstract/Full Text";
+	public static final String ABSTRACT = "Abstract/Download Link";
 	public static final String RESEARCH_CATEGORY = "Research Category";
 	public static final String CREATED_DATE = "Created Date";
 	public static final String PMID = "PMID: ";
@@ -570,10 +570,6 @@ public class PublicationServiceHelper {
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 		
-		// Word Wrap MUST be turned on
-		HSSFCellStyle newLineStyle = wb.createCellStyle();
-		newLineStyle.setWrapText(true);
-
 		SortedMap<String, List<PublicationBean>> pubs = summaryBean.getCategory2Publications();
 		for (String category : pubs.keySet()) {
 			short rowIndex = 0;
@@ -601,38 +597,34 @@ public class PublicationServiceHelper {
 				// Title: cell index = 0.
 				ExportUtils.createCell(row, cellIndex++, pub.getTitle());
 				
-				// Author(s): cell index = 1, one author per row.
+				// Author(s): cell index = 1, put all authors in one cell for sorting.
 				List<Author> authors = pubBean.getAuthors();
 				sb.setLength(0);
 				if (authors != null && !authors.isEmpty()) {
 					for (Author author : authors) {
 						sb.append(author.getLastName()).append(',').append(' ');
 						sb.append(author.getFirstName()).append(' ').append(author.getInitial());
-						sb.append('\n');
+						sb.append(';').append(' '); // use ; as delimiter.
 					}
 					sb.deleteCharAt(sb.length() - 1);
 				}
-				ExportUtils.createCell(row, cellIndex++, newLineStyle, sb.toString());
+				ExportUtils.createCell(row, cellIndex++, sb.toString());
 				
 				// Bibliography Info: cell index = 2.
 				ExportUtils.createCell(row, cellIndex++, pubBean.getBibliographyInfo());
 				
-				// Abstract/Full Text: cell index = 3.
-				if (StringUtils.isEmpty(pub.getAbstractText())) {
-					sb.setLength(0);
-					if (pub.getPubMedId() != null) {
-						sb.append(PMID).append(pub.getPubMedId());
-						ExportUtils.createCell(row, cellIndex++, sb.toString());
-					} else {
-						if (StringUtils.isEmpty(pub.getDigitalObjectId())) {
-							ExportUtils.createCell(row, cellIndex++, pub.getUri());
-						} else {
-							sb.append(PMID).append(pub.getDigitalObjectId());
-							ExportUtils.createCell(row, cellIndex++, sb.toString());
-						}
-					}
+				// Abstract/Download Link: cell index = 3.
+				sb.setLength(0);
+				if (pub.getPubMedId() != null) {
+					sb.append(PMID).append(pub.getPubMedId());
+					ExportUtils.createCell(row, cellIndex++, sb.toString());
 				} else {
-					ExportUtils.createCell(row, cellIndex++, pub.getAbstractText());
+					if (StringUtils.isEmpty(pub.getDigitalObjectId())) {
+						ExportUtils.createCell(row, cellIndex++, pub.getUri());
+					} else {
+						sb.append(PMID).append(pub.getDigitalObjectId());
+						ExportUtils.createCell(row, cellIndex++, sb.toString());
+					}
 				}
 				
 				// Research Category: cell index = 4.
