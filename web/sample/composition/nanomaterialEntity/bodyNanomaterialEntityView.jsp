@@ -21,7 +21,7 @@
 					<div class="indented4">
 						<table class="summaryViewLayer3" width="95%" align="center">
 							<tr>
-								<th valign="top" align="left" colspan="2">
+								<th valign="top" align="left" colspan="2" width="1000px">
 									${entityType}
 								</th>
 							</tr>
@@ -69,6 +69,7 @@
 										Composing Elements
 									</td>
 									<td>
+    									<c:set var="entity" value="${nanomaterialEntity}" />
 										<%@include file="bodyComposingElementView.jsp"%>
 									</td>
 								</tr>

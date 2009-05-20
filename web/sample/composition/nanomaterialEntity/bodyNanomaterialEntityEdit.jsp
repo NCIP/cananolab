@@ -33,7 +33,7 @@
 							<div class="indented4">
 								<table class="summaryViewLayer3" width="95%" align="center">
 									<tr>
-										<th valign="top" align="left">
+										<th valign="top" align="left" width="1000px">
 											${entityType}
 										</th>
 										<th valign="top" align="right">
@@ -88,6 +88,7 @@
 											Composing Elements
 										</td>
 										<td>
+											<c:set var="entity" value="${nanomaterialEntity}" />
 											<%@include file="bodyComposingElementView.jsp"%>
 										</td>
 									</tr>
@@ -99,7 +100,7 @@
 											<c:choose>
 												<c:when test="${! empty nanomaterialEntity.files}">
 													<c:set var="files" value="${nanomaterialEntity.files }" />
-													<c:set var="entityType" value="nanomaterial entity"/>
+													<c:set var="entityType" value="nanomaterial entity" />
 													<%@include file="../bodyFileView.jsp"%>
 												</c:when>
 												<c:otherwise>
