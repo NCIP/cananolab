@@ -145,4 +145,16 @@ public class ComposingElementBean {
 	public void setInherentFunctions(List<FunctionBean> inherentFunctions) {
 		this.inherentFunctions = inherentFunctions;
 	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof ComposingElementBean) {
+			ComposingElementBean c = (ComposingElementBean) obj;
+			Long thisId = this.getDomain().getId();
+			if (thisId != null && thisId.equals(c.getDomain().getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
 }
