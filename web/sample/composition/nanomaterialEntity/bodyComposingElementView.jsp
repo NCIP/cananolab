@@ -3,8 +3,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<logic:iterate name="nanomaterialEntity" property="composingElements"
-	id="composingElement" indexId="ind">
+<c:forEach var="composingElement"
+	items="${entity.composingElements}" varStatus="ind">
 	<table class="summaryViewLayer4" width="95%" align="center">
 		<tr>
 			<th>
@@ -13,7 +13,8 @@
 			<c:choose>
 				<c:when test="${edit eq 'true'}">
 					<td align="right" width="3%">
-						<a href="#submitComposingElement" onclick="javascript:setTheComposingElement(${ind});">Edit</a>&nbsp;
+						<a href="#submitComposingElement"
+							onclick="javascript:setTheComposingElement(${ind.count-1});">Edit</a>&nbsp;
 					</td>
 				</c:when>
 				<c:otherwise>
@@ -88,7 +89,7 @@
 		</c:choose>
 	</table>
 	<br>
-</logic:iterate>
+</c:forEach>
 
 <%-- use this format in export instead
 <table class="summaryViewLayer4" width="95%" align="center">
