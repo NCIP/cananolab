@@ -611,7 +611,7 @@ public class CharacterizationServiceHelper {
 				cellIndex = 0;
 				row = sheet.createRow(rowIndex++);
 				for (TableCell cell : rowBean.getCells()) {
-					ExportUtils.createCell(row, cellIndex++, headerStyle, cell.getValue());
+					ExportUtils.createCell(row, cellIndex++, cell.getValue());
 				}
 			}
 		}
