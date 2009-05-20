@@ -18,6 +18,8 @@
 		<property name="name" type="string" column="name"/>
 		<property name="value" type="float" column="value"/>
 		<property name="valueUnit" type="string" column="value_unit"/>
+		<property name="pubChemDataSourceName" type="string" column="pub_chem_datasource_name"/>
+		<property name="pubChemId" type="long" column="pub_chem_id"/>
 		<!-- Associations mapping for the AssociatedElement class -->
 		<set name="chemicalAssociationACollection" lazy="true">
 			<cache usage="read-write" />
