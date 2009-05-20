@@ -5,11 +5,15 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
+import java.io.OutputStream;
 import java.util.List;
 import java.util.SortedSet;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Interface defining service methods involving characterizations
@@ -53,4 +57,14 @@ public interface CharacterizationService {
 			AuthorizationService authService, Characterization aChar)
 			throws Exception;
 
+	/**
+	 * Export sample characterization summary report as Excel spread sheet.
+	 *
+	 * @param summaryBean CharacterizationSummaryViewBean
+	 * @param out OutputStream
+	 * @throws CharacterizationException if error occurred.
+	 */
+	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
+			HttpServletRequest request, OutputStream out)
+			throws CharacterizationException;
 }

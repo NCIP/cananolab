@@ -23,7 +23,7 @@ public abstract class CharacterizationServiceBaseImpl {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceBaseImpl.class);
 
-	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
+	protected CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 	protected FileService fileService;
 
 	protected abstract List<Characterization> findSampleCharacterizationsByClass(

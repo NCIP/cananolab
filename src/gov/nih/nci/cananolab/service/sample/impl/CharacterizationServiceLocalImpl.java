@@ -6,8 +6,10 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
@@ -19,12 +21,16 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -42,7 +48,6 @@ public class CharacterizationServiceLocalImpl extends
 		CharacterizationServiceBaseImpl implements CharacterizationService {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceLocalImpl.class);
-	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 
 	public CharacterizationServiceLocalImpl() {
 		fileService = new FileServiceLocalImpl();
@@ -353,6 +358,25 @@ public class CharacterizationServiceLocalImpl extends
 			// .getId().toString());
 			// }
 			// }
+		}
+	}
+	
+	/**
+	 * Export sample characterization summary report as Excel spread sheet.
+	 *
+	 * @param summaryBean CharacterizationSummaryViewBean
+	 * @param out OutputStream
+	 * @throws IOException if error occurred.
+	 */
+	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
+			HttpServletRequest request, OutputStream out)
+			throws CharacterizationException {
+		try {
+			helper.exportSummary(summaryBean, request, out);
+		} catch (Exception e) {
+			String err = "Error exporting Characterization Summary View report.";
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 }

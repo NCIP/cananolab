@@ -26,26 +26,19 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -613,78 +606,51 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) 
+			request.getAttribute("characterizationSummaryView");
+		SortedMap<String, List<CharacterizationBean>> charBeanMap = 
+			charSummaryBean.getType2Characterizations();
+		List<CharacterizationBean> charBeans = null;
+		
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
-		List<String> characterizationTypes =
-			(List<String>) request.getAttribute("characterizationTypes");
+		String location = request.getParameter("location");
 		if (!StringUtils.isEmpty(type)) {
-			characterizationTypes.clear();
-			characterizationTypes.add(type);
+			charBeans = charBeanMap.get(type);
+			if (charBeans != null) {
+				charBeanMap.clear();
+				charBeanMap.put(type, charBeans);
+			}
 		}
-
-		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean)
-			request.getAttribute("characterizationSummaryView");
-		/*
-		String fileName = getExportFileName(charSummaryBean
-				.getDomainParticleSample().getName(), "summaryView",
-				charSummaryBean.getCharBeans().get(0).getClassName());
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ fileName + ".xls\"");
-
-		this.exportSummary(charSummaryBean, response.getOutputStream());
-		*/
+		
+		// Get sample name for constructing file name.
+		charBeans = charBeanMap.get(charBeanMap.firstKey());
+		CharacterizationBean charBean = (CharacterizationBean) charBeans.get(0);
+		
+		String fileName = 
+			this.getExportFileName(charBean.getDomainChar().getSample().getName(), 
+					"summaryView", charBean.getClassName());
+		ExportUtils.prepareReponseForExport(response, fileName);
+		CharacterizationService service = null;
+		if (Constants.LOCAL.equals(location)) {
+			service = new CharacterizationServiceLocalImpl();
+		} else {
+			// TODO: Implement remote service. 
+		}
+		service.exportSummary(charSummaryBean, request, response.getOutputStream());
+		
 		return null;
 	}
 
-	private String getExportFileName(String particleName, String viewType,
+	private String getExportFileName(String sampleName, String viewType,
 			String charClass) {
 		List<String> nameParts = new ArrayList<String>();
-		nameParts.add(particleName);
+		nameParts.add(sampleName);
 		nameParts.add(charClass);
 		nameParts.add(viewType);
 		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
-	}
-
-	public void exportSummary(CharacterizationBean achar, OutputStream out) throws Exception {
-		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFSheet sheet = wb.createSheet("detailSheet");
-		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-		short startRow = 0;
-		setDetailSheet(achar, wb, sheet, patriarch, startRow);
-		wb.write(out);
-		if (out != null) {
-			out.flush();
-			out.close();
-		}
-	}
-
-	private short setDetailSheet(CharacterizationBean achar, HSSFWorkbook wb,
-			HSSFSheet sheet, HSSFPatriarch patriarch, short rowCount) {
-		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-		HSSFCellStyle headerStyle = wb.createCellStyle();
-		headerStyle.setFont(headerFont);
-
-		HSSFRow row = null;
-		HSSFCell cell = null;
-		// description row
-		String description = achar.getDescription();
-		if (description != null) {
-			row = sheet.createRow(rowCount++);
-			short cellCount = 0;
-			cell = row.createCell(cellCount++);
-			cell.setCellStyle(headerStyle);
-			cell.setCellValue(new HSSFRichTextString("Description"));
-
-			row.createCell(cellCount++).setCellValue(
-					new HSSFRichTextString(description));
-		}
-
-		return rowCount;
 	}
 
 	public ActionForward saveExperimentConfig(ActionMapping mapping,
