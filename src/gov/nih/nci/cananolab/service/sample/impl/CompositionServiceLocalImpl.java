@@ -71,15 +71,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setSample(particleSample);
-				particleSample.getSampleComposition()
-						.setNanomaterialEntityCollection(
-								new HashSet<NanomaterialEntity>());
+//				particleSample.getSampleComposition()
+//						.setNanomaterialEntityCollection(
+//								new HashSet<NanomaterialEntity>());
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
 //			particleSample.getSampleComposition()
 //					.getNanomaterialEntityCollection().add(entity);
-			entity.setSampleComposition(particleSample.getSampleComposition());
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = entity.getFileCollection();
 			if (Files != null) {
