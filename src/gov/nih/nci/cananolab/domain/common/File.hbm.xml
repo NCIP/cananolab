@@ -37,8 +37,8 @@
 		</set>
 		<joined-subclass name="gov.nih.nci.cananolab.domain.common.Publication" table="publication" lazy="true">
 			<key column="publication_pk_id" />
-			<!-- Attributes mapping for the Publication class -->
-			<property name="abstractText" type="string" column="abstract"/>
+			<!-- Attributes mapping for the Publication class >
+			<property name="abstractText" type="string" column="abstract"/-->
 			<property name="category" type="string" column="category"/>
 			<property name="digitalObjectId" type="string" column="digital_object_id"/>
 			<property name="endPage" type="string" column="end_page"/>
