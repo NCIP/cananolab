@@ -265,16 +265,16 @@ public class CharacterizationServiceHelper {
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
+		int charCount = 1;
 		SortedMap<String, List<CharacterizationBean>> pubs = summaryBean.getType2Characterizations();
 		for (String type : pubs.keySet()) {
 			// Output data of report
 			List<CharacterizationBean> charBeans = pubs.get(type);
 			for (CharacterizationBean charBean : charBeans) {
-				int charCount = 0;
 				short rowIndex = 0;
 				
 				// Create one work sheet for each Characterization. 
-				HSSFSheet sheet = wb.createSheet(++charCount + '.' + charBean.getCharacterizationName());
+				HSSFSheet sheet = wb.createSheet(charCount++ + "." + charBean.getCharacterizationName());
 				
 				//1. Output Characterization type at (0, 0).
 				rowIndex = this.outputHeader(charBean, sheet, headerStyle, rowIndex);
