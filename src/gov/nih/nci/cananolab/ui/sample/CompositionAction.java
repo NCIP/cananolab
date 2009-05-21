@@ -160,8 +160,9 @@ public class CompositionAction extends BaseAnnotationAction {
 		}
 		for (FunctionalizingEntityBean entityBean : compositionBean
 				.getFunctionalizingEntities()) {
-			entityBean.setType(InitSetup.getInstance().getDisplayName(
-					entityBean.getClassName(), session.getServletContext()));
+			entityBean.updateType(InitSetup.getInstance()
+					.getClassNameToDisplayNameLookup(
+							session.getServletContext()));
 			compService.retrieveVisibility(entityBean, user);
 		}
 		for (ChemicalAssociationBean assocBean : compositionBean
