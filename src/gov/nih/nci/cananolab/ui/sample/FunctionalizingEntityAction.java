@@ -60,8 +60,8 @@ public class FunctionalizingEntityAction extends CompositionAction {
 				"message.addFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		return forward;
+		request.setAttribute("location", "local");
+		return summaryEdit(mapping, form, request, response);
 	}
 
 	private boolean validateTargets(HttpServletRequest request,
