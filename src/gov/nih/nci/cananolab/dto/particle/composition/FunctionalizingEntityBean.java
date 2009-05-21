@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer;
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.agentmaterial.SmallMolecule;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ActivationMethod;
@@ -54,6 +55,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 
 	private boolean withProperties = false;
 
+	private boolean withImagingFunction=false;
+
+	private boolean withTargetingFunction=false;
+
+	private FunctionBean theFunction=new FunctionBean();
+
 	public FunctionalizingEntityBean() {
 		if (functions.size() == 0) {
 			FunctionBean funcBean = new FunctionBean();
@@ -85,6 +92,12 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 			for (Function function : functionalizingEntity
 					.getFunctionCollection()) {
 				functions.add(new FunctionBean(function));
+				if (function instanceof ImagingFunction) {
+					withImagingFunction=true;
+				}
+				if (function instanceof TargetingFunction) {
+					withTargetingFunction=true;
+				}
 			}
 		}
 		Collections.sort(functions,
@@ -292,14 +305,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 		}
 	}
 
-	public void addFunction() {
-		functions.add(new FunctionBean());
-	}
-
-	public void removeFunction(int ind) {
-		functions.remove(ind);
-	}
-
 	public void updateType(Map<String, String> classToType) {
 		if (domainEntity instanceof OtherFunctionalizingEntity) {
 			type = ((OtherFunctionalizingEntity) domainEntity).getType();
@@ -377,4 +382,35 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 		}
 		return buffer.toString();
 	}
+
+	public boolean isWithImagingFunction() {
+		return withImagingFunction;
+	}
+
+	public boolean isWithTargetingFunction() {
+		return withTargetingFunction;
+	}
+
+	public FunctionBean getTheFunction() {
+		return theFunction;
+	}
+
+	public void setTheFunction(FunctionBean theFunction) {
+		this.theFunction = theFunction;
+	}
+	public void addFunction(FunctionBean function) {
+		int index = functions.indexOf(function);
+		if (index != -1) {
+			functions.remove(function);
+			// retain the original order
+			functions.add(index, function);
+		} else {
+			functions.add(function);
+		}
+	}
+
+	public void removeFunction(FunctionBean function) {
+		functions.remove(function);
+	}
+
 }
