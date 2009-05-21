@@ -18,6 +18,15 @@
 			<include method="addInherentFunction" />
 			<include method="deleteInherentFunction" />
 		</create>
+		<create creator="new" javascript="FunctionalizingEntityManager"
+			scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRFunctionalizingEntityManager" />
+			<include method="getFunctionFromList" />
+			<include method="resetTheFunction" />
+			<include method="addTarget" />
+			<include method="deleteTarget" />
+		</create>
 		<create creator="new" javascript="ExperimentConfigManager"
 			scope="session">
 			<param name="class"
@@ -86,12 +95,13 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
-			<param name="include" value="type, name, value, valueUnit, molecularFormula, molecularFormulaType, description" />
+			<param name="include"
+				value="type, name, value, valueUnit, molecularFormula, molecularFormulaType, description" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.FunctionBean">
 			<param name="include"
-				value="id, description, type, imagingFunction" />
+				value="id, description, type, imagingFunction, targets" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.function.ImagingFunction">
@@ -99,6 +109,14 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.function.TargetingFunction">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.particle.composition.TargetBean">
+			<param name="include"
+				value="id, description, type, name, antigen" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.function.Antigen">
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
