@@ -263,13 +263,15 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addFunction(ActionMapping mapping, ActionForm form,
+	public ActionForward saveFunction(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		entity.addFunction();
+		FunctionBean function=entity.getTheFunction();
+		entity.addFunction(function);
+		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
 
@@ -279,12 +281,12 @@ public class FunctionalizingEntityAction extends CompositionAction {
 	public ActionForward removeFunction(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String indexStr = request.getParameter("compInd");
-		int ind = Integer.parseInt(indexStr);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		entity.removeFunction(ind);
+		FunctionBean function=entity.getTheFunction();
+		entity.removeFunction(function);
+		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
 
@@ -323,46 +325,7 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addTarget(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("functionalizingEntity");
-
-		String funcIndexStr = (String) request.getParameter("compInd");
-		int funcIndex = Integer.parseInt(funcIndexStr);
-		FunctionBean function = (FunctionBean) entity.getFunctions().get(
-				funcIndex);
-
-		function.addTarget();
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
-
-		return mapping.getInputForward();
-	}
-
-	public ActionForward removeTarget(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String funcIndexStr = (String) request.getParameter("compInd");
-		int funcIndex = Integer.parseInt(funcIndexStr);
-
-		String targetIndexStr = (String) request.getParameter("childCompInd");
-		int targetIndex = Integer.parseInt(targetIndexStr);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
-				.get("functionalizingEntity");
-		FunctionBean function = (FunctionBean) entity.getFunctions().get(
-				funcIndex);
-		function.removeTarget(targetIndex);
-		InitCompositionSetup.getInstance()
-				.persistFunctionalizingEntityDropdowns(request, entity);
-
-		return mapping.getInputForward();
-	}
-
-	public ActionForward input(ActionMapping mapping, ActionForm form,
+		public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/*
