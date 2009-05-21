@@ -1,11 +1,11 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.function.ImagingFunction;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.Function;
-import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -40,11 +40,13 @@ public class FunctionBean {
 
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
+	private TargetBean theTarget=new TargetBean();
+
 	public FunctionBean() {
 	}
 
 	public FunctionBean(Function function) {
-		id=function.getId().toString();
+		id = function.getId().toString();
 		description = function.getDescription();
 		domainFunction = function;
 		if (function instanceof ImagingFunction) {
@@ -89,14 +91,6 @@ public class FunctionBean {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public void addTarget() {
-		targets.add(new TargetBean());
-	}
-
-	public void removeTarget(int ind) {
-		targets.remove(ind);
 	}
 
 	public void setupDomainFunction(Map<String, String> typeToClass,
@@ -174,17 +168,17 @@ public class FunctionBean {
 
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		if (description!=null) {
+		if (description != null) {
 			buffer.append(description);
 		}
-		if (type!=null) {
-			buffer.append(" ("+type);
-			if (imagingFunction.getModality()!=null) {
+		if (type != null) {
+			buffer.append(" (" + type);
+			if (imagingFunction.getModality() != null) {
 				buffer.append(" (");
 				buffer.append(imagingFunction.getModality());
 				buffer.append(")");
 			}
-			for(TargetBean target: targets) {
+			for (TargetBean target : targets) {
 				buffer.append(" (");
 				buffer.append(target.getDisplayName());
 			}
@@ -219,5 +213,40 @@ public class FunctionBean {
 			}
 		}
 		return eq;
+	}
+
+	public String[] getTargetDisplayNames() {
+		List<String> displayNames = new ArrayList<String>();
+		for (TargetBean target : targets) {
+			displayNames.add(target.getDisplayName());
+		}
+		if (displayNames.isEmpty()) {
+			return null;
+		}
+		return displayNames.toArray(new String[displayNames.size()]);
+	}
+
+	public void addTarget(TargetBean target) {
+		// if an old one exists, remove it first
+		int index = targets.indexOf(target);
+		if (index != -1) {
+			targets.remove(target);
+			// retain the original order
+			targets.add(index, target);
+		} else {
+			targets.add(target);
+		}
+	}
+
+	public void removeTarget(TargetBean target) {
+		targets.remove(target);
+	}
+
+	public TargetBean getTheTarget() {
+		return theTarget;
+	}
+
+	public void setTheTarget(TargetBean theTarget) {
+		this.theTarget = theTarget;
 	}
 }
