@@ -1,8 +1,8 @@
 <tr>
 	<td>
-		<h3>
+		<h4>
 			Manage Samples
-		</h3>
+		</h4>
 	</td>
 	<td align="right" width="20%">
 		<jsp:include page="/helpGlossary.jsp">
