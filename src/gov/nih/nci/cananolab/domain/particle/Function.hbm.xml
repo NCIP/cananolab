@@ -24,7 +24,7 @@
 		</subclass>
 		<subclass name="gov.nih.nci.cananolab.domain.function.TargetingFunction" discriminator-value="TargetingFunction">
 			<!-- Associations mapping for the TargetingFunction class -->
-			<set name="targetCollection" lazy="true">
+			<set name="targetCollection" lazy="true" cascade="all-delete-orphan">
 				<cache usage="read-write" />
 				<key column="targeting_function_pk_id" />
 				<one-to-many class="gov.nih.nci.cananolab.domain.function.Target"/>
