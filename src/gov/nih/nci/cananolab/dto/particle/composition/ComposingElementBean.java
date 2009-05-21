@@ -49,10 +49,14 @@ public class ComposingElementBean {
 	}
 
 	public void addFunction(FunctionBean function) {
-		if (inherentFunctions.contains(function)) {
+		int index = inherentFunctions.indexOf(function);
+		if (index != -1) {
 			inherentFunctions.remove(function);
+			// retain the original order
+			inherentFunctions.add(index, function);
+		} else {
+			inherentFunctions.add(function);
 		}
-		inherentFunctions.add(function);
 	}
 
 	public void removeFunction(FunctionBean function) {
