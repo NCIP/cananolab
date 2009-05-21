@@ -30,7 +30,7 @@ import java.util.Map;
  * @author pansu
  *
  */
-public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
+public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 	private String molecularFormula;
 
 	private String molecularFormulaType;
@@ -55,17 +55,13 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 
 	private boolean withProperties = false;
 
-	private boolean withImagingFunction=false;
+	private boolean withImagingFunction = false;
 
-	private boolean withTargetingFunction=false;
+	private boolean withTargetingFunction = false;
 
-	private FunctionBean theFunction=new FunctionBean();
+	private FunctionBean theFunction = new FunctionBean();
 
 	public FunctionalizingEntityBean() {
-		if (functions.size() == 0) {
-			FunctionBean funcBean = new FunctionBean();
-			functions.add(funcBean);
-		}
 	}
 
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
@@ -93,10 +89,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 					.getFunctionCollection()) {
 				functions.add(new FunctionBean(function));
 				if (function instanceof ImagingFunction) {
-					withImagingFunction=true;
+					withImagingFunction = true;
 				}
 				if (function instanceof TargetingFunction) {
-					withTargetingFunction=true;
+					withTargetingFunction = true;
 				}
 			}
 		}
@@ -122,7 +118,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 		copy.setId(null);
 		copy.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 		copy.setCreatedDate(new Date());
-		copy.getActivationMethod().setId(null);
+		if (copy.getActivationMethod() != null) {
+			copy.getActivationMethod().setId(null);
+		}
 		if (copy.getFunctionCollection().isEmpty()) {
 			copy.setFunctionCollection(null);
 		} else {
@@ -398,6 +396,7 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean{
 	public void setTheFunction(FunctionBean theFunction) {
 		this.theFunction = theFunction;
 	}
+
 	public void addFunction(FunctionBean function) {
 		int index = functions.indexOf(function);
 		if (index != -1) {
