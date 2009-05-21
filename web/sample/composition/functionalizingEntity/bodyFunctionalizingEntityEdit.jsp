@@ -36,11 +36,11 @@
 				<c:set var="entityType" value="${functionalizingEntity.type}" />
 				<c:if test="${!empty entityType}">
 					<tr>
-						<td width="1000px">
+						<td>
 							<div class="indented4">
 								<table class="summaryViewLayer3" width="95%" align="center">
 									<tr>
-										<th valign="top" align="left">
+										<th valign="top" align="left"  width="1000px">
 											${entityType}
 										</th>
 										<th valign="top" align="right">
@@ -126,11 +126,9 @@
 										<td>
 											<c:choose>
 												<c:when
-													test="${!empty functionalizingEntity.functionDisplayNames}">
-													<c:forEach var="function"
-														items="${functionalizingEntity.functionDisplayNames}">
-													${function}<br>
-													</c:forEach>
+													test="${!empty functionalizingEntity.functions}">
+													<c:set var="entity" value="${functionalizingEntity }"/>
+													<%@ include file="bodyFunctionView.jsp" %>
 												</c:when>
 												<c:otherwise>
 													N/A

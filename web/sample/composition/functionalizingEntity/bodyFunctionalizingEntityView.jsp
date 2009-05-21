@@ -26,7 +26,7 @@
 					<div class="indented4">
 						<table class="summaryViewLayer3" width="95%" align="center">
 							<tr>
-								<th valign="top" align="left" colspan="2">
+								<th valign="top" align="left" colspan="2" width="1000px">
 									${entityType}
 								</th>
 							</tr>
@@ -87,16 +87,14 @@
 									</td>
 								</tr>
 							</c:if>
-							<c:if test="${!empty functionalizingEntity.functionDisplayNames}">
+							<c:if test="${!empty functionalizingEntity.functions}">
 								<tr>
 									<td class="cellLabel">
 										Function(s)
 									</td>
 									<td>
-										<c:forEach var="function"
-											items="${functionalizingEntity.functionDisplayNames}">
-													${function}<br>
-										</c:forEach>
+										<c:set var="entity" value="${functionalizingEntity }" />
+										<%@ include file="bodyFunctionView.jsp"%>
 									</td>
 								</tr>
 							</c:if>
@@ -130,7 +128,7 @@
 									</td>
 									<td>
 										<c:set var="files" value="${functionalizingEntity.files }" />
-										<c:set var="entityType" value="functionalizing entity"/>
+										<c:set var="entityType" value="functionalizing entity" />
 										<%@include file="../bodyFileView.jsp"%>
 									</td>
 								</tr>
