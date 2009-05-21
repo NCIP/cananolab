@@ -10,7 +10,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContextFactory;
 
 /**
- * Work with DWR to set up drop-downs required in the nanomaterial page
+ * Work with DWR to set up drop-downs required in the nanomaterial entity page
  *
  * @author pansu
  *
