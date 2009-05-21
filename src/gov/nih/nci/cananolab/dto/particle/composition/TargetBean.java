@@ -16,6 +16,8 @@ import java.util.Map;
  *
  */
 public class TargetBean {
+	private String id;
+
 	private String type;
 
 	private String name;
@@ -32,6 +34,7 @@ public class TargetBean {
 	}
 
 	public TargetBean(Target target) {
+		id=target.getId().toString();
 		domainTarget = target;
 		name = target.getName();
 		description = target.getDescription();
@@ -129,19 +132,40 @@ public class TargetBean {
 
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		if (description != null) {
-			buffer.append(description);
-		}
 		if (type != null) {
-			buffer.append(" (");
 			buffer.append(type);
-			if (antigen.getSpecies() != null) {
-				buffer.append(" (");
-				buffer.append(antigen.getSpecies());
-				buffer.append(")");
+			if (name!=null) {
+				buffer.append(" "+name);
 			}
-			buffer.append(")");
+			if (description != null) {
+				buffer.append(": ");
+				buffer.append(description);
+			}
+			if (antigen.getSpecies() != null) {
+				buffer.append(", species: ");
+				buffer.append(antigen.getSpecies());
+			}
 		}
 		return buffer.toString();
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof TargetBean) {
+			TargetBean t = (TargetBean) obj;
+			String thisId = getId();
+			if (thisId != null && thisId.equals(t.getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }
