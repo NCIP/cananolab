@@ -101,7 +101,7 @@
 		<td colspan="3">
 			<div id="functionSection" style="position: relative;">
 				<a style="" id="addInherentFunction"
-					href="javascript:clearInherentFunction();show('newFunction');">Add</a>
+					href="javascript:clearInherentFunction();show('newInherentFunction');">Add</a>
 				<br><br>
 				<table id="functionTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
@@ -132,12 +132,12 @@
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
 									value="Edit"
-									onclick="editInherentFunction(this.id); show('newFunction');" />
+									onclick="editInherentFunction(this.id); show('newInherentFunction');" />
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<table id="newFunction" style="display: none;" class="promptbox">
+				<table id="newInherentFunction" style="display: none;" class="promptbox">
 					<tbody>
 						<tr>
 							<html:hidden
@@ -199,9 +199,9 @@
 							<td colspan="3">
 								<div align="right">
 									<input class="promptButton" type="button" value="Add"
-										onclick="addInherentFunction();show('functionTable');hide('newFunction');" />
+										onclick="addInherentFunction();show('functionTable');hide('newInherentFunction');" />
 									<input class="promptButton" type="button" value="Cancel"
-										onclick="clearInherentFunction();hide('newFunction');" />
+										onclick="clearInherentFunction();hide('newInherentFunction');" />
 								</div>
 							</td>
 						</tr>
