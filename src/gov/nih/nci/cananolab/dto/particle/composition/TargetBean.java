@@ -126,6 +126,10 @@ public class TargetBean {
 		}
 	}
 
+	public void setAntigen(Antigen antigen) {
+		this.antigen = antigen;
+	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
