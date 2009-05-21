@@ -72,6 +72,22 @@ public class CharacterizationServiceHelper {
 	public static final String FILES = "File(s)";
 	public static final String PRIVATE_FILE = "Private File";
 	public static final String DATA_CONDITIONS = "Data and Conditions";
+	public static final String CYTOTOXICITY = "Cytotoxicity";
+	public static final String CELL_LINE = "Cell Line";
+	public static final String ENZYMEINDUCTION = "EnzymeInduction";
+	public static final String ENZYME_NAME = "Enzyme Name";
+	public static final String PHYSICALSTATE = "PhysicalState";
+	public static final String TYPE = "Type";
+	public static final String SHAPE = "Shape";
+	public static final String ASPECT_RATIO = "Aspect Ratio";
+	public static final String MINIMUM_DIMENSION = "Minimum Dimension";
+	public static final String MAXIMUM_DIMENSION = "Maximum Dimension";
+	public static final String SOLUBILITY = "Solubility";
+	public static final String SOLVENT = "Solvent";
+	public static final String IS_SOLUBLE = "Is Soluble?";
+	public static final String CONCENTRATION = "Critical Concentration";
+	public static final String SURFACE = "Surface";
+	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
 	
 	private String fileRoot = 
 		PropertyReader.getProperty(Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
@@ -279,28 +295,31 @@ public class CharacterizationServiceHelper {
 				//1. Output Characterization type at (0, 0).
 				rowIndex = this.outputHeader(charBean, sheet, headerStyle, rowIndex);
 				
-				//3. Output Assay Type (2, 0).
+				//2. Output Assay Type (2, 0).
 				rowIndex = this.outputAssayType(charBean, sheet, headerStyle, rowIndex);
 				
-				//4. Output POC at (3, 0).
+				//3. Output POC at (3, 0).
 				rowIndex = this.outputPOC(charBean, sheet, headerStyle, rowIndex);
 					
-				//5. Output Characterization Date at (4, 0).
+				//4. Output Characterization Date at (4, 0).
 				rowIndex = this.outputCharDate(charBean, sheet, headerStyle, rowIndex);
 				
-				//6. Output Protocol at (5, 0).
+				//5. Output Protocol at (5, 0).
 				rowIndex = this.outputProtocol(charBean, sheet, headerStyle, rowIndex);
 				
-				//7. Output Design Description at (6, 0).
+				//6. Output Properties at (6, 0).
+				rowIndex = this.outputProperties(charBean, sheet, headerStyle, rowIndex);
+				
+				//7. Output Design Description at (7, 0).
 				rowIndex = this.outputDesignDescription(charBean, sheet, headerStyle, rowIndex);
 				
-				//8. Output Technique and Instruments at (7, 0).
+				//8. Output Technique and Instruments at (8, 0).
 				rowIndex = this.outputTechInstruments(charBean, sheet, headerStyle, rowIndex);
 				
-				//9. Output Characterization Results at (8, 0).
+				//9. Output Characterization Results at (9, 0).
 				rowIndex = this.outputCharResults(charBean, request, wb, sheet, headerStyle, rowIndex);
 
-				//10.Output Analysis and Conclusion at (9, 0).
+				//10.Output Analysis and Conclusion at (10, 0).
 				rowIndex = this.outputConclusion(charBean, sheet, headerStyle, rowIndex);
 			}
 		}
@@ -401,7 +420,7 @@ public class CharacterizationServiceHelper {
 	 * @param rowIndex rowIndex
 	 */
 	private short outputProtocol(CharacterizationBean charBean, HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
-		//6. Output Protocol at (5, 0).
+		//6. Output Protocol at (6, 0).
 		if (!StringUtils.isEmpty(charBean.getProtocolBean().getDisplayName())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, (short) 0, headerStyle, PROTOCOL);
@@ -409,6 +428,188 @@ public class CharacterizationServiceHelper {
 		}
 		return rowIndex;
 	}	
+	
+	/**
+	 * Output Properties for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputProperties(CharacterizationBean charBean, HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7. Output Properties at (7, 0).
+		if (charBean.isWithProperties()) {
+			rowIndex++; // Leave one empty line as separator.
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, PROPERTIES);
+			
+			String detailPage = 
+				gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup.getInstance().
+				getDetailPage(charBean.getDomainChar());
+			if (!StringUtils.isEmpty(detailPage)) {
+				if (detailPage.indexOf(CYTOTOXICITY) != -1) {
+					rowIndex = this.outputCytotoxicity(charBean, sheet, headerStyle, rowIndex);
+				} else if (detailPage.indexOf(ENZYMEINDUCTION) != -1) {
+					rowIndex = this.outputEnzymeInduction(charBean, sheet, headerStyle, rowIndex);
+				} else if (detailPage.indexOf(PHYSICALSTATE) != -1) {
+					rowIndex = this.outputPhysicalState(charBean, sheet, headerStyle, rowIndex);
+				} else if (detailPage.indexOf(SHAPE) != -1) {
+					rowIndex = this.outputShape(charBean, sheet, headerStyle, rowIndex);
+				} else if (detailPage.indexOf(SOLUBILITY) != -1) {
+					rowIndex = this.outputSolubility(charBean, sheet, headerStyle, rowIndex);
+				} else if (detailPage.indexOf(SURFACE) != -1) {
+					rowIndex = this.outputSurface(charBean, sheet, headerStyle, rowIndex);
+				}
+			}
+			rowIndex++; // Leave one empty line as separator.
+		}
+		return rowIndex;
+	}	
+	
+	/**
+	 * Output Cytotoxicity Info for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputCytotoxicity(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7a. Output Cytotoxicity Info.
+		if (!StringUtils.isEmpty(charBean.getCytotoxicity().getCellLine())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, CYTOTOXICITY);
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, charBean.getCytotoxicity().getCellLine());
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output EnzymeInduction Info for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputEnzymeInduction(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7b. Output EnzymeInduction Info.
+		if (!StringUtils.isEmpty(charBean.getEnzymeInduction().getEnzyme())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, ENZYME_NAME);
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, charBean.getEnzymeInduction().getEnzyme());
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output PhysicalState Info for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputPhysicalState(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7c. Output PhysicalState Info.
+		if (!StringUtils.isEmpty(charBean.getPhysicalState().getType())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, TYPE);
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, charBean.getPhysicalState().getType());
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output Shape Info for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputShape(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7d. Output Shape Info.
+		if (!StringUtils.isEmpty(charBean.getShape().getType())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, TYPE);
+			ExportUtils.createCell(row, (short) 1, headerStyle, ASPECT_RATIO);
+			ExportUtils.createCell(row, (short) 2, headerStyle, MINIMUM_DIMENSION);
+			ExportUtils.createCell(row, (short) 3, headerStyle, MAXIMUM_DIMENSION);
+			
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, charBean.getShape().getType());
+			ExportUtils.createCell(row, (short) 1, String.valueOf(charBean.getShape().getAspectRatio()));
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(charBean.getShape().getMinDimension()).append(' ');
+			sb.append(charBean.getShape().getMinDimensionUnit());
+			ExportUtils.createCell(row, (short) 2, sb.toString());
+			
+			sb.setLength(0);
+			sb.append(charBean.getShape().getMaxDimension()).append(' ');
+			sb.append(charBean.getShape().getMaxDimensionUnit());
+			ExportUtils.createCell(row, (short) 3, sb.toString());
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output Solubility Info for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputSolubility(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7e. Output Solubility Info.
+		if (!StringUtils.isEmpty(charBean.getSolubility().getSolvent())) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, SOLVENT);
+			ExportUtils.createCell(row, (short) 1, headerStyle, IS_SOLUBLE);
+			ExportUtils.createCell(row, (short) 2, headerStyle, CONCENTRATION);
+			
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, charBean.getSolubility().getSolvent());
+			ExportUtils.createCell(row, (short) 1, String.valueOf(charBean.getSolubility().getIsSoluble()));
+			
+			StringBuilder sb = new StringBuilder();
+			sb.append(charBean.getSolubility().getCriticalConcentration()).append(' ');
+			sb.append(charBean.getSolubility().getCriticalConcentrationUnit());
+			ExportUtils.createCell(row, (short) 2, sb.toString());
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output Surface Info for work sheet.
+	 *
+	 * @param charBean CharacterizationBean
+	 * @param sheet HSSFSheet
+	 * @param headerStyle HSSFCellStyle
+	 * @param rowIndex rowIndex
+	 */
+	private short outputSurface(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, short rowIndex) {
+		//7f. Output Solubility Info.
+		if (charBean.getSurface().getIsHydrophobic() != null) {
+			HSSFRow row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, headerStyle, IS_HYDROPHOBIC);
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, (short) 0, String.valueOf(charBean.getSurface().getIsHydrophobic()));
+		}
+		return rowIndex;
+	}
 	
 	/**
 	 * Output Design Description for work sheet.
@@ -442,6 +643,7 @@ public class CharacterizationServiceHelper {
 		//8. Output Technique and Instruments at (7, 0).
 		List<ExperimentConfigBean> configList = charBean.getExperimentConfigs();
 		if (configList != null && !configList.isEmpty()) {
+			rowIndex++; // Leave one empty line as separator.
 			StringBuilder sb = new StringBuilder();
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, (short) 0, headerStyle, TECH_INSTRUMENTS);
@@ -605,7 +807,8 @@ public class CharacterizationServiceHelper {
 			short cellIndex = 0;
 			row = sheet.createRow(rowIndex++);
 			for (ColumnHeader column : findingBean.getColumnHeaders()) {
-				ExportUtils.createCell(row, cellIndex++, headerStyle, column.getDisplayName());
+				String displayName = column.getDisplayName().replaceAll("<br>", " ");
+				ExportUtils.createCell(row, cellIndex++, headerStyle, displayName);
 			}
 			
 			// Output value of each row.

@@ -26,6 +26,21 @@ public class ExportUtils {
 	public static final String ATTACHMENT = "attachment;filename=\"";
 	public static final String EXCELL_EXTENTION = ".xls\"";
 	
+	/**
+	 * Set content type and header in response for exporting.
+	 *
+	 * @param response HttpServletResponse
+	 * @param fileName String
+	 */
+	public static void prepareReponseForExport(HttpServletResponse response, String fileName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(ATTACHMENT).append(fileName).append(EXCELL_EXTENTION);
+		
+		response.setContentType(CONTENT_TYPE);
+		response.setHeader(CACHE_CONTROL, PRIVATE);
+		response.setHeader(CONTENT_DISPOSITION, sb.toString());
+	}
+	
 	public static int loadPicture(String path, HSSFWorkbook wb) throws IOException {
 		int pictureIndex;
 		InputStream fis = null;
@@ -78,20 +93,5 @@ public class ExportUtils {
 		HSSFCell cell = createCell(row, index, value);
 		cell.setCellStyle(cellStyle);
 		return cell;
-	}
-	
-	/**
-	 * Set content type and header in response for exporting.
-	 *
-	 * @param response HttpServletResponse
-	 * @param fileName String
-	 */
-	public static void prepareReponseForExport(HttpServletResponse response, String fileName) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(ATTACHMENT).append(fileName).append(EXCELL_EXTENTION);
-		
-		response.setContentType(CONTENT_TYPE);
-		response.setHeader(CACHE_CONTROL, PRIVATE);
-		response.setHeader(CONTENT_DISPOSITION, sb.toString());
 	}
 }
