@@ -135,9 +135,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setSample(particleSample);
-				particleSample.getSampleComposition()
-						.setFunctionalizingEntityCollection(
-								new HashSet<FunctionalizingEntity>());
+//				particleSample.getSampleComposition()
+//						.setFunctionalizingEntityCollection(
+//								new HashSet<FunctionalizingEntity>());
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
