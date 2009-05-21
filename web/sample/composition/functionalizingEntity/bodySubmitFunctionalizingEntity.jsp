@@ -9,6 +9,9 @@
 <script type="text/javascript" src="javascript/CompositionManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
+<script type="text/javascript" src="javascript/FunctionalizingEntityManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/FunctionalizingEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
@@ -182,8 +185,8 @@ function confirmDeletion()
 							<td class="cellLabel">
 								Function&nbsp;&nbsp;&nbsp;&nbsp;
 								<a style="" id="addFunction"
-									href="javascript:resetTheFunction(true);"><img align="top"
-										src="images/btn_add.gif" border="0" /></a>
+									href="javascript:clearFunction(true);show('newFunction');"><img align="top"
+										src="images/btn_add.gif" border="0" /> </a>
 							</td>
 						</tr>
 						<tr>
@@ -193,14 +196,14 @@ function confirmDeletion()
 									<c:set var="edit" value="true" />
 									<c:set var="entity"
 										value="${compositionForm.map.functionalizingEntity}" />
-									<%--<%@ include file="bodyFunctionView.jsp"%>--%>
+									<%@ include file="bodyFunctionView.jsp"%>
 								</c:if>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div id="newFunction" style="display: none;">
-									<%--<jsp:include page="bodySubmitFunction.jsp" />--%>
+									<%@ include file="bodySubmitFunction.jsp" %>
 								</div>
 								&nbsp;
 							</td>
@@ -224,7 +227,7 @@ function confirmDeletion()
 					<td class="cellLabel">
 						File&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="javascript:clearFile(); show('newFile');"><img
-								align="top" src="images/btn_add.gif" border="0" /></a>
+								align="top" src="images/btn_add.gif" border="0" /> </a>
 					</td>
 				</tr>
 				<tr>
@@ -246,7 +249,7 @@ function confirmDeletion()
 							test="${param.dispatch eq 'setupNew' || param.dispatch eq 'setupUpdate'||param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
-						<div style="${newFileStyle }" id="newFile">
+						<div style="" id="newFile">
 							<c:set var="fileParent" value="functionalizingEntity" />
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"
