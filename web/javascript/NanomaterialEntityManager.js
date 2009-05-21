@@ -73,10 +73,9 @@ function populateInherentFunctions() {
 	}
 }
 function setTheComposingElement(index) {
-	dwr.util.setValue("hiddenComposingElementIndex", index);
 	NanomaterialEntityManager.getComposingElementFromList(index, populateComposingElement);
 	show("newComposingElement");
-	hide("newFunction");
+	hide("newInherentFunction");
 	show("deleteComposingElement");
 }
 function populateComposingElement(element) {
@@ -118,7 +117,7 @@ function deleteTheInherentFunction() {
 				currentComposingElement = composingElement;
 			});
 			window.setTimeout("populateInherentFunctions()", 200);
-			hide("newFunction");
+			hide("newInherentFunction");
 		}
 	}
 }
