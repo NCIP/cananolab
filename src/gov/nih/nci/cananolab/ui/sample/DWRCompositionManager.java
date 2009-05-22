@@ -1,13 +1,17 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
+import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -40,24 +44,50 @@ public class DWRCompositionManager {
 		}
 	}
 
-	public FileBean getFileFromList(String type, int index) {
+	public FileBean getFileById(String type, String id) throws Exception {
+		FileServiceHelper helper=new FileServiceHelper();
+		File file=helper.findFileById(id);
+		FileBean fileBean=new FileBean(file);
+		FileService service=new FileServiceLocalImpl();
+		WebContext wctx = WebContextFactory.get();
+		UserBean user=(UserBean)wctx.getSession().getAttribute("user");
+		service.retrieveVisibility(fileBean, user);
+
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		List<FileBean> files = null;
 		if (type.equals("nanomaterial entity")) {
 			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 					.get("nanomaterialEntity");
-			files = entity.getFiles();
+			entity.setTheFile(fileBean);
 		} else if (type.equals("functionalizing entity")) {
 			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 					.get("functionalizingEntity");
-			files = entity.getFiles();
+			entity.setTheFile(fileBean);
 		} else {
 			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
 					.get("assoc");
-			files = assoc.getFiles();
+			assoc.setTheFile(fileBean);
 		}
-		FileBean theFile = files.get(index);
-		return theFile;
+		return fileBean;
+	}
+
+	public FileBean resetTheFile(String type) {
+		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("compositionForm"));
+		FileBean fileBean = new FileBean();
+		if (type.equals("nanomaterial entity")) {
+			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
+					.get("nanomaterialEntity");
+			entity.setTheFile(fileBean);
+		} else if (type.equals("functionalizing entity")) {
+			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
+					.get("functionalizingEntity");
+			entity.setTheFile(fileBean);
+		} else {
+			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
+					.get("assoc");
+			assoc.setTheFile(fileBean);
+		}
+		return fileBean;
 	}
 }
