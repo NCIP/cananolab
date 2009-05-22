@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.sample.helper;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -51,9 +52,10 @@ public class CompositionServiceHelper {
 		crit.setFetchMode(
 				"composingElementCollection.inherentFunctionCollection",
 				FetchMode.JOIN);
-		crit.setFetchMode(
-				"composingElementCollection.inherentFunctionCollection.targetCollection",
-				FetchMode.JOIN);
+		crit
+				.setFetchMode(
+						"composingElementCollection.inherentFunctionCollection.targetCollection",
+						FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		NanomaterialEntity entity = null;
@@ -74,7 +76,9 @@ public class CompositionServiceHelper {
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
-		crit.setFetchMode("functionCollection.targetCollection", FetchMode.JOIN);
+		crit
+				.setFetchMode("functionCollection.targetCollection",
+						FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
 		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
 				FetchMode.JOIN);
@@ -109,9 +113,11 @@ public class CompositionServiceHelper {
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("associatedElementA", FetchMode.JOIN);
-		crit.setFetchMode("associatedElementA.nanomaterialEntity", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementA.nanomaterialEntity",
+				FetchMode.JOIN);
 		crit.setFetchMode("associatedElementB", FetchMode.JOIN);
-		crit.setFetchMode("associatedElementB.nanomaterialEntity", FetchMode.JOIN);
+		crit.setFetchMode("associatedElementB.nanomaterialEntity",
+				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
@@ -135,5 +141,40 @@ public class CompositionServiceHelper {
 			TargetingFunction aFunction = (TargetingFunction) result.get(0);
 			function.setTargetCollection(aFunction.getTargetCollection());
 		}
+	}
+
+	public Function findFunctionById(String funcId) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Function.class).add(
+				Property.forName("id").eq(new Long(funcId)));
+		crit.setFetchMode("targetCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+		Function func = null;
+		if (!result.isEmpty()) {
+			func = (Function) result.get(0);
+		}
+		return func;
+	}
+
+	public ComposingElement findComposingElementById(String ceId) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				ComposingElement.class).add(
+				Property.forName("id").eq(new Long(ceId)));
+		crit.setFetchMode("inherentFunctionCollection", FetchMode.JOIN);
+		crit.setFetchMode("inherentFunctionCollection.targetCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List result = appService.query(crit);
+		ComposingElement ce = null;
+		if (!result.isEmpty()) {
+			ce = (ComposingElement) result.get(0);
+		}
+		return ce;
 	}
 }
