@@ -53,8 +53,16 @@ function setEntityDisplayName(entityTypeId, displayNameEleId) {
 /* end of set submit chemical association form */
 
 /* set submit file form */
-function setTheFile(type, index) {
-	CompositionManager.getFileFromList(type, index, populateFile);
-	dwr.util.setValue("hiddenFileIndex", index);
+function clearFile(type) {
+	//go to server and clean form bean
+	CompositionManager.resetTheFile(type, populateFile);
+	hide("deleteFile");
+    show("load");
+	hide("link");
+	dwr.util.setValue("uploadedFile", "");
+	dwr.util.setValue("externalUrl", "");
+}
+function setTheFile(type, id) {
+	CompositionManager.getFileById(type, id, populateFile);
 }
 /* end of set submit file form */
