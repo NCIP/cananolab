@@ -21,7 +21,7 @@
 		<th>
 		</th>
 	</tr>
-	<c:forEach var="file" items="${files}" varStatus="fileIndex">
+	<c:forEach var="file" items="${files}">
 		<tr>
 			<td>
 				${file.domainFile.type}
@@ -83,7 +83,7 @@
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
 					<a
-						href="javascript:setTheFile('${entityType}', ${fileIndex.count-1});">Edit</a>&nbsp;
+						href="javascript:setTheFile('${entityType}', ${file.domainFile.id});">Edit</a>&nbsp;
 				</td>
 			</c:if>
 		</tr>
