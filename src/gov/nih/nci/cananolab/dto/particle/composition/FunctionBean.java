@@ -25,7 +25,7 @@ import java.util.Map;
  *
  */
 public class FunctionBean {
-	private String id;
+	private String id; //needed for use in DWR ordering functions in the session
 
 	private String type;
 
@@ -39,7 +39,7 @@ public class FunctionBean {
 
 	private List<TargetBean> targets = new ArrayList<TargetBean>();
 
-	private TargetBean theTarget=new TargetBean();
+	private TargetBean theTarget = new TargetBean();
 
 	public FunctionBean() {
 	}
@@ -167,22 +167,28 @@ public class FunctionBean {
 
 	public String getDisplayName() {
 		StringBuffer buffer = new StringBuffer();
-		if (description != null) {
-			buffer.append(description);
+		buffer.append(type);
+		if (getDescription() != null) {
+			buffer.append(": " + description);
 		}
-		if (type != null) {
-			buffer.append(" (" + type);
-			if (imagingFunction.getModality() != null) {
-				buffer.append(" (");
-				buffer.append(imagingFunction.getModality());
-				buffer.append(")");
-			}
+		if (imagingFunction.getModality() != null) {
+			buffer.append(" (imaging modality: ");
+			buffer.append(imagingFunction.getModality());
+			buffer.append(")");
+		}
+		if (targets != null && !targets.isEmpty()) {
+			buffer.append(" (targets: ");
+			int i=0;
 			for (TargetBean target : targets) {
-				buffer.append(" (");
 				buffer.append(target.getDisplayName());
+				i++;
+				if (i<targets.size()) {
+					buffer.append(", ");
+				}
 			}
 			buffer.append(")");
 		}
+
 		return buffer.toString();
 	}
 
