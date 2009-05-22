@@ -32,7 +32,7 @@ public class FileServiceHelper {
 	 * @param fileId
 	 * @return
 	 */
-	public File findFile(String fileId) throws Exception {
+	public File findFileById(String fileId) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
