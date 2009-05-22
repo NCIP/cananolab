@@ -181,4 +181,6 @@ public class Constants {
 	
 	// String for local search.
 	public static final String LOCAL = "local";
+	
+	public static final String FILE_REPOSITORY_DIR = "fileRepositoryDir";
 }

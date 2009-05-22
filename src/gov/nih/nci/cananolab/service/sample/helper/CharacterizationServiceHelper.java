@@ -49,9 +49,7 @@ import org.hibernate.criterion.Restrictions;
  * Service methods involving characterizations
  *
  * @author tanq, pansu
- *
  */
-
 public class CharacterizationServiceHelper {
 	/**
 	 * Constants for generating Excel report for summary view.
@@ -89,11 +87,11 @@ public class CharacterizationServiceHelper {
 	public static final String SURFACE = "Surface";
 	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
 	
-	private String fileRoot = 
-		PropertyReader.getProperty(Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+	private static String fileRoot = PropertyReader.getProperty(
+			Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 	
-	private static Logger logger = Logger
-			.getLogger(CharacterizationServiceHelper.class);
+	private static Logger logger = 
+			Logger.getLogger(CharacterizationServiceHelper.class);
 
 	public CharacterizationServiceHelper() {
 	}
