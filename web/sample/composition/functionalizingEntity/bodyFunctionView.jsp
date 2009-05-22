@@ -26,7 +26,7 @@
 		<th>
 		</th>
 	</tr>
-	<c:forEach var="function" items="${entity.functions}" varStatus="ind">
+	<c:forEach var="function" items="${entity.functions}">
 		<tr>
 			<td>
 				${function.type}
@@ -55,7 +55,7 @@
 			</td>
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
-					<a href="javascript:setTheFunction(${ind.count-1});">Edit</a>&nbsp;
+					<a href="javascript:setTheFunction(${function.domainFunction.id});">Edit</a>&nbsp;
 				</td>
 			</c:if>
 		</tr>
