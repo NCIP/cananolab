@@ -59,7 +59,7 @@ function confirmDeletion()
 						</th>
 					</tr>
 					<c:if
-						test="${empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
+						test="${empty compositionForm.map.functionalizingEntity.domainEntity.id}">
 						<tr>
 							<td class="cellLabel">
 								Functionalizing Entity Type*
@@ -249,7 +249,7 @@ function confirmDeletion()
 							test="${param.dispatch eq 'setupNew' || param.dispatch eq 'setupUpdate'||param.dispatch eq 'addFile' || fn:length(compositionForm.map.functionalizingEntity.files)>0}">
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
-						<div style="" id="newFile">
+						<div style="${newFileStyle}" id="newFile">
 							<c:set var="fileParent" value="functionalizingEntity" />
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"
