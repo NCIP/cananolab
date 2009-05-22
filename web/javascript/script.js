@@ -222,7 +222,7 @@ function clearMultibox(selection) {
 	}
 }
 function submitAction(form, actionName, dispatchName) {
-	form.action = actionName+".do?dispatch="+dispatchName+"&page=0";
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=0";
 	form.submit();
 }
 function addComponent(form, actionName, dispatchName) {
@@ -292,17 +292,17 @@ function popImage(event, imgSrc, imgId) {
 	popImg.src = imgSrc;
 	width = popImg.width + 20;
 	height = popImg.height + 20;
-	if (width>height){
-		if (width>maxHeight){
-		 	ratio = maxHeight/width;
-		    width = maxHeight+2;
-		    height = ratio * height;
+	if (width > height) {
+		if (width > maxHeight) {
+			ratio = maxHeight / width;
+			width = maxHeight + 2;
+			height = ratio * height;
 		}
-	}else{
-		if (height>maxHeight){
-		 	ratio = maxHeight/height*100;
-		    height = maxHeight+2;
-		    width = ratio * width/100;
+	} else {
+		if (height > maxHeight) {
+			ratio = maxHeight / height * 100;
+			height = maxHeight + 2;
+			width = ratio * width / 100;
 		}
 	}
 //    leftPos=event.clientX-width-200;
@@ -319,7 +319,7 @@ function popImage(event, imgSrc, imgId) {
 	imgWindow.document.write(myScript);
 	//imgWindow.document.write("<body onLoad="closeMe();self.focus();" bgcolor="#FFFFFF">n");
 	imgWindow.document.write("<body onLoad=\"self.focus();\" bgcolor=\"#FFFFFF\">\n");
-	imgWindow.document.write("<img width="+(width-10)+" styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
+	imgWindow.document.write("<img width=" + (width - 10) + " styleId='" + imgId + "' src='" + imgSrc + "'/>\n");
 	imgWindow.document.write("</body></html>");
 	t = setTimeout("imgWindow.close();", 15000);
 }
@@ -363,19 +363,17 @@ function radLinkOrUpload() {
 	}
 }
 function filterFloatNumber(evt) {
-    var keyCode = evt.which ? evt.which : evt.keyCode;
-    return (keyCode >= '0'.charCodeAt() && keyCode <= '9'.charCodeAt()) ||
-     (keyCode >= 96 && keyCode <= 105) || keyCode == 190 || keyCode == 110 || keyCode == 46 || keyCode == 8 ;
+	var keyCode = evt.which ? evt.which : evt.keyCode;
+	return (keyCode >= "0".charCodeAt() && keyCode <= "9".charCodeAt()) || (keyCode >= 96 && keyCode <= 105) || keyCode == 190 || keyCode == 110 || keyCode == 46 || keyCode == 8;
 }
 function filterInteger(evt) {
-    var keyCode = evt.which ? evt.which : evt.keyCode;
-    return (keyCode >= '0'.charCodeAt() && keyCode <= '9'.charCodeAt()) ||
-     (keyCode >= 96 && keyCode <= 105) || keyCode == 46 || keyCode == 8 ;
+	var keyCode = evt.which ? evt.which : evt.keyCode;
+	return (keyCode >= "0".charCodeAt() && keyCode <= "9".charCodeAt()) || (keyCode >= 96 && keyCode <= 105) || keyCode == 46 || keyCode == 8;
 }
 function getSelectedOptions(selectEle) {
 	var options = selectEle.options;
 	var selectedValues = "";
-	for (var c=0; c<options.length; c++ ) {
+	for (var c = 0; c < options.length; c++) {
 		if (options[c].selected) { //true if selected.
 			selectedValues += options[c].value + "~";
 		}
@@ -384,96 +382,76 @@ function getSelectedOptions(selectEle) {
 	return cleanStr;
 }
 function displayLogin() {
-	showhide('loginBlock');
+	showhide("loginBlock");
 	return false;
 }
-
 function showhide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
-	if(layerBlock.style.display == 'none')
-		layerBlock.style.display = 'block';
-	else
-		layerBlock.style.display = 'none';
+	if (layerBlock.style.display == "none") {
+		layerBlock.style.display = "block";
+	} else {
+		layerBlock.style.display = "none";
+	}
 }
-
 function show(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
-	if (layerBlock==null){
-		alert(layer_ref +" is null (cannot show)");
+	if (layerBlock == null) {
+		alert(layer_ref + " is null (cannot show)");
 		return;
 	}
-	if(layerBlock.style.display == 'none')
-		layerBlock.style.display = 'block';
+	if (layerBlock.style.display == "none") {
+		layerBlock.style.display = "block";
+	}
 }
-
 function hide(layer_ref) {
 	var layerBlock = document.getElementById(layer_ref);
-	if (layerBlock==null){
-		alert(layer_ref +" is null (cannot show)");
+	if (layerBlock == null) {
+		alert(layer_ref + " is null (cannot show)");
 		return;
 	}
-	if(layerBlock.style.display == 'block')
-		layerBlock.style.display = 'none';
+	if (layerBlock.style.display == "block") {
+		layerBlock.style.display = "none";
+	}
 }
-
 function showSummary(layer_ref, totalLayers) {
 	var printLink = document.getElementById("printLink");
 	var printUrl = document.getElementById("printUrlAll");
 	var exportLink = document.getElementById("exportLink");
 	var exportUrl = document.getElementById("exportUrlAll");
-	if (layer_ref=='ALL'){
-		document.getElementById("summaryTabALL").style.display = 'block';
-		for (var i=1; i<=totalLayers; i++){
-			document.getElementById("summarySection"+i).style.display = 'block';
-			document.getElementById("summarySeparator"+i).style.display = 'block';
-			document.getElementById("summaryTab"+i).style.display = 'none';
+	if (layer_ref == "ALL") {
+		document.getElementById("summaryTabALL").style.display = "block";
+		for (var i = 1; i <= totalLayers; i++) {
+			document.getElementById("summarySection" + i).style.display = "block";
+			document.getElementById("summarySeparator" + i).style.display = "block";
+			document.getElementById("summaryTab" + i).style.display = "none";
 		}
 		printLink.href = printUrl.href;
 		exportLink.href = exportUrl.href;
 		return;
 	}
-	document.getElementById("summaryTabALL").style.display = 'none';
-	for (var i=1; i<=totalLayers; i++){
-		if (layer_ref==i){
-			document.getElementById("summaryTab"+i).style.display = 'block';
-			document.getElementById("summarySection"+i).style.display = 'block';
-			document.getElementById("summarySeparator"+i).style.display = 'block';
-			printUrl = document.getElementById("printUrl"+i);
-			exportUrl = document.getElementById("exportUrl"+i);
-		}else{
-			document.getElementById("summaryTab"+i).style.display = 'none';
-			document.getElementById("summarySection"+i).style.display = 'none';
-			document.getElementById("summarySeparator"+i).style.display = 'none';
+	document.getElementById("summaryTabALL").style.display = "none";
+	for (var i = 1; i <= totalLayers; i++) {
+		if (layer_ref == i) {
+			document.getElementById("summaryTab" + i).style.display = "block";
+			document.getElementById("summarySection" + i).style.display = "block";
+			document.getElementById("summarySeparator" + i).style.display = "block";
+			printUrl = document.getElementById("printUrl" + i);
+			exportUrl = document.getElementById("exportUrl" + i);
+		} else {
+			document.getElementById("summaryTab" + i).style.display = "none";
+			document.getElementById("summarySection" + i).style.display = "none";
+			document.getElementById("summarySeparator" + i).style.display = "none";
 		}
 	}
 	printLink.href = printUrl.href;
 	exportLink.href = exportUrl.href;
 }
-
-function clearFile() {
-	dwr.util.setValue("fileType", "");
-	dwr.util.setValue("fileTitle", "");
-	dwr.util.setValue("fileKeywords", "");
-	dwr.util.setValue("fileDescription", "");
-	dwr.util.setValue("fileVisibility", "");
-	dwr.util.setValue("uploadedUri", "");
-	dwr.util.setValue("hiddenFileUri", "");
-	dwr.util.setValue("hiddenFileId", "");
-	dwr.util.setValue("externalUrl", "");
-	dwr.util.setValue("uploadedFile", null);
-	dwr.util.setValue("hiddenFileIndex", -1);
-	show("load");
-	hide("link");
-	dwr.util.setValue("external0", true);
-	dwr.util.setValue("external1", false);
-	hide("deleteFile");
-}
 function addFile(actionName, form) {
-	form.action = actionName+".do?dispatch=addFile&page=0";
+	form.action = actionName + ".do?dispatch=saveFile&page=0";
 	form.submit();
 }
 function removeFile(actionName, form, index) {
-	form.action = actionName+".do?dispatch=removeFile&page=0";
+	form.action = actionName + ".do?dispatch=removeFile&page=0";
 	form.submit();
 }
 function populateFile(file) {
@@ -512,6 +490,17 @@ function populateFile(file) {
 		}
 	}
 	show("newFile");
-	show("deleteFile");
+}
+function displayFileRadioButton() {
+	var external0 = dwr.util.getValue("external0");
+	var external1 = dwr.util.getValue("external1");
+	show("load");
+	hide("link");
+	if (external0 == false && external1 == true) {
+		show("link");
+		hide("load");
+		hide("uploadedUri");
+		hide("uploadedUri");
+	}
 }
 
