@@ -285,7 +285,9 @@ public class NanomaterialEntityAction extends CompositionAction {
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-		return mapping.getInputForward();
+		//return to setupUpdate to retrieve the correct entity from database after saving to database.
+		request.setAttribute("dataId", entity.getDomainEntity().getId().toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward removeComposingElement(ActionMapping mapping,
