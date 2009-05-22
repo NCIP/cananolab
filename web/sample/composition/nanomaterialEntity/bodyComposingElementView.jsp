@@ -2,9 +2,9 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<c:forEach var="composingElement"
-	items="${entity.composingElements}" varStatus="ind">
+<c:forEach var="composingElement" items="${entity.composingElements}">
 	<table class="summaryViewLayer4" width="95%" align="center">
 		<tr>
 			<th>
@@ -14,7 +14,7 @@
 				<c:when test="${edit eq 'true'}">
 					<td align="right" width="3%">
 						<a href="#submitComposingElement"
-							onclick="javascript:setTheComposingElement(${ind.count-1});">Edit</a>&nbsp;
+							onclick="javascript:setTheComposingElement(${composingElement.domain.id});">Edit</a>&nbsp;
 					</td>
 				</c:when>
 				<c:otherwise>
@@ -48,9 +48,10 @@
 					<td>
 						Function:
 						<c:forEach var="function"
-							items="${composingElement.functionDisplayNames}">
+							items="${composingElement.functionDisplayNames}" varStatus="ind">
 				${function}
-				<br>
+				<c:if test="${ind.count !=fn:length(composingElement.functionDisplayNames)}">
+;&nbsp;</c:if>
 						</c:forEach>
 					</td>
 					<td></td>
