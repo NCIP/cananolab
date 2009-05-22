@@ -154,8 +154,9 @@ public class CompositionAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (NanomaterialEntityBean entityBean : compositionBean
 				.getNanomaterialEntities()) {
-			entityBean.setType(InitSetup.getInstance().getDisplayName(
-					entityBean.getClassName(), session.getServletContext()));
+			entityBean.updateType(InitSetup.getInstance()
+					.getClassNameToDisplayNameLookup(
+							session.getServletContext()));
 			compService.retrieveVisibility(entityBean, user);
 		}
 		for (FunctionalizingEntityBean entityBean : compositionBean
