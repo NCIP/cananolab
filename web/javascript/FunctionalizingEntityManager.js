@@ -1,16 +1,19 @@
 
-var targetCache = {};
+var targetCache = null;
 var currentFunction = null;
+var numberOfTargets; //number of unique targets in the cache, used to generate target id
 /* set the submit function form */
 function clearFunction() {
 	//go to server and clean form bean
 	FunctionalizingEntityManager.resetTheFunction(populateFunction);
 	hide("deleteFunction");
+	numberOfTargets = 0;
 }
 function clearTarget() {
 	dwr.util.setValue("targetId", "");
 	dwr.util.setValue("targetType", "");
 	dwr.util.setValue("targetName", "");
+	dwr.util.setValue("antigenSpecies", "");
 	dwr.util.setValue("targetDescription", "");
 	hide("deleteTarget");
 	hide("antigenSpeciesLabel");
@@ -48,8 +51,12 @@ function displaySpecies() {
 }
 function addTarget() {
 	var antigen = {species:dwr.util.getValue("antigenSpecies")};
-	var target = {id:dwr.util.getValue("targetId"), type:dwr.util.getValue("targetType"), name:dwr.util.getValue("targetName"), antigen:antigen, description:dwr.util.getValue("targetDescription")};
-	if (target.type != "" || target.description != "") {
+	var targetId = dwr.util.getValue("targetId");
+	if (targetId == null || targetId == "") {
+		targetId = -1000 - numberOfTargets;
+	}
+	var target = {id:targetId, type:dwr.util.getValue("targetType"), name:dwr.util.getValue("targetName"), antigen:antigen, description:dwr.util.getValue("targetDescription")};
+	if (target.type != "" || target.name != "" || target.description != "") {
 		FunctionalizingEntityManager.addTarget(target, function (theFunction) {
 			currentFunction = theFunction;
 			window.setTimeout("populateTargets()", 200);
@@ -58,8 +65,9 @@ function addTarget() {
 		alert("Please fill in values");
 	}
 }
-function setTheFunction(index) {
-	FunctionalizingEntityManager.getFunctionFromList(index, populateFunction);
+function setTheFunction(funcId) {
+	numberOfTargets = 0;
+	FunctionalizingEntityManager.getFunctionById(funcId, populateFunction);
 	show("newFunction");
 	hide("newTarget");
 	show("deleteFunction");
@@ -70,9 +78,14 @@ function populateFunction(func) {
 		dwr.util.setValue("functionType", func.type);
 		dwr.util.setValue("imagingModality", func.imagingFunction.modality);
 		dwr.util.setValue("functionDescription", func.description);
-		show("deleteFunction");
-		displayTargets();
+		if (func.type != null) {
+			show("deleteFunction");
+		}
+		//clear the cache for each new function
+		targetCache = {};
 		populateTargets();
+		displayTargets();
+		displayImageModality();
 	}
 }
 function populateTargets() {
@@ -88,9 +101,6 @@ function populateTargets() {
 	}
 	for (var i = 0; i < targets.length; i++) {
 		target = targets[i];
-		if (target.id == null || target.id == "") {
-			target.id = -i - 1;
-		}
 		id = target.id;
 		dwr.util.cloneNode("pattern", {idSuffix:id});
 		dwr.util.setValue("targetTypeValue" + id, target.type);
@@ -107,17 +117,21 @@ function populateTargets() {
 		dwr.util.setValue("targetDescriptionValue" + id, target.description);
 		dwr.util.setValue("targetId", id);
 		$("pattern" + id).style.display = "";
+		if (targetCache[id] == null) {
+			numberOfTargets++;
+		}
 		targetCache[id] = target;
 	}
 }
 function editTarget(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
-	var target = targetCache[eleid.substring(4)];
+	var id = eleid.substring(4);
+	var target = targetCache[id];
 	dwr.util.setValue("targetType", target.type);
 	if (target.type == "antigen") {
 		show("antigenSpeciesLabel");
 		show("antigenSpeciesPrompt");
-		dwr.util.setValue("antigenSpeciesValue", target.antigen.species);
+		dwr.util.setValue("antigenSpecies", target.antigen.species);
 	} else {
 		hide("modalityLabel");
 		hide("imagingModalityPrompt");
@@ -125,6 +139,7 @@ function editTarget(eleid) {
 	}
 	dwr.util.setValue("targetName", target.name);
 	dwr.util.setValue("targetDescription", target.description);
+	dwr.util.setValue("targetId", target.id);
 	show("deleteTarget");
 }
 function deleteTheTarget() {
@@ -135,7 +150,6 @@ function deleteTheTarget() {
 			FunctionalizingEntityManager.deleteTarget(target, function (theFunction) {
 				currentFunction = theFunction;
 			});
-			alert(currentFunction.targets.length);
 			window.setTimeout("populateTargets()", 200);
 			hide("newTarget");
 		}
