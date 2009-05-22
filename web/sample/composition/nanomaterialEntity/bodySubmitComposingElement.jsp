@@ -111,7 +111,7 @@
 								Function Type
 							</td>
 							<td width="25%" class="cellLabel">
-								<div id="modalityHeader" style="display:none">Modality Type</div>
+								<div id="modalityHeader" style="display:none">Imaging Modality</div>
 							</td>
 							<td class="cellLabel">
 								Description
@@ -124,7 +124,7 @@
 								<span id="functionTypeValue">Function Type</span>
 							</td>
 							<td>
-								<span id="functionModalityTypeValue" style="display:none">Modality Type</span>
+								<span id="functionModalityTypeValue" style="display:none">Imaging Modality</span>
 							</td>
 							<td>
 								<span id="functionDescriptionValue">Description</span>
