@@ -213,11 +213,14 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
-		String sampleId = request.getParameter("sampleId");
+		String sampleId = theForm.getString("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
 
 		String entityId = request.getParameter("dataId");
+		if (entityId == null) {
+			entityId = (String) request.getAttribute("dataId");
+		}
 		CompositionService compService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
 				.findFunctionalizingEntityById(entityId);
@@ -269,13 +272,15 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		FunctionBean function=entity.getTheFunction();
+		FunctionBean function = entity.getTheFunction();
 		entity.addFunction(function);
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entity);
-
-		return mapping.getInputForward();
+		request.setAttribute("dataId", entity.getDomainEntity().getId()
+				.toString());
+		//return to setupUpdate to get the correct entity from database
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward removeFunction(ActionMapping mapping, ActionForm form,
@@ -284,7 +289,7 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		FunctionBean function=entity.getTheFunction();
+		FunctionBean function = entity.getTheFunction();
 		entity.removeFunction(function);
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance()
@@ -304,7 +309,7 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		FileBean theFile = entity.getTheFile();
 		FileBean newFile = theFile.copy();
 		entity.addFile(newFile, theFileIndex);
-		//save the functionalizing entity
+		// save the functionalizing entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
 		return mapping.getInputForward();
@@ -320,12 +325,12 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		entity.removeFile(theFileIndex);
 		entity.setTheFile(new FileBean());
 		request.setAttribute("anchor", "file");
-		//save the functionalizing entity
+		// save the functionalizing entity
 		saveEntity(request, theForm, entity);
 		return mapping.getInputForward();
 	}
 
-		public ActionForward input(ActionMapping mapping, ActionForm form,
+	public ActionForward input(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		/*
