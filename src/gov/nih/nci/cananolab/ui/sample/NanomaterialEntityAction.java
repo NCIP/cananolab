@@ -304,7 +304,7 @@ public class NanomaterialEntityAction extends CompositionAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+	public ActionForward saveFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
@@ -318,7 +318,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		// save nanomaterial entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		return mapping.getInputForward();
+		request.setAttribute("dataId", entity.getDomainEntity().getId().toString());
+		return setupUpdate(mapping, form, request, response);
 	}
 
 	public ActionForward removeFile(ActionMapping mapping, ActionForm form,
