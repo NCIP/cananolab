@@ -45,11 +45,11 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
-							Site Description
+							Site Name
 						</td>
 						<td colspan="3">
 							<html:text styleId="fileTitle"
-								property="protocol.fileBean.domainFile.title" size="100" />
+								property="protocol.fileBean.domainFile.title" size="50" />
 						</td>
 					</tr>
 				</table>
