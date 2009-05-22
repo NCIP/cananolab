@@ -123,10 +123,10 @@ function confirmDeletion()
 						</tr>
 						<tr>
 							<td>
-								<c:set var="newCEStyle" value="display:block" />
+								<c:set var="newCEStyle" value="display:none" />
 								<c:if
-									test="${param.dispatch eq 'setupNew' || param.dispatch eq 'setupUpdate'|| param.dispatch eq 'addComposingElement' || fn:length(compositionForm.map.nanomaterialEntity.composingElements)>0}">
-									<c:set var="newCEStyle" value="display:none" />
+									test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
+									<c:set var="newCEStyle" value="display:block" />
 								</c:if>
 								<div style="${newCEStyle}" id="newComposingElement">
 									<c:set var="theComposingElement"
@@ -151,7 +151,7 @@ function confirmDeletion()
 							<tr>
 								<td class="cellLabel">
 									File&nbsp;&nbsp;&nbsp;&nbsp;
-									<a href="javascript:clearFile(); show('newFile');"><img
+									<a href="javascript:clearFile('nanomaterial entity'); show('newFile');"><img
 											align="top" src="images/btn_add.gif" border="0" /> </a>
 								</td>
 							</tr>
@@ -169,10 +169,10 @@ function confirmDeletion()
 							</tr>
 							<tr>
 								<td>
-									<c:set var="newFileStyle" value="display:block" />
+									<c:set var="newFileStyle" value="display:none" />
 									<c:if
-										test="${param.dispatch eq 'setupNew' || param.dispatch eq 'setupUpdate'|| param.dispatch eq 'addFile' || fn:length(compositionForm.map.nanomaterialEntity.files)>0}">
-										<c:set var="newFileStyle" value="display:none" />
+										test="${fn:length(compositionForm.map.nanomaterialEntity.files)==0}">
+										<c:set var="newFileStyle" value="display:block" />
 									</c:if>
 									<div style="${newFileStyle}" id="newFile">
 										<c:set var="fileParent" value="nanomaterialEntity" />
