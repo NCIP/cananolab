@@ -51,7 +51,7 @@ public class FileServiceLocalImpl implements FileService {
 	public FileBean findFileById(String fileId) throws FileException {
 		FileBean fileBean = null;
 		try {
-			File file = helper.findFile(fileId);
+			File file = helper.findFileById(fileId);
 			if (file != null) {
 				fileBean = new FileBean(file);
 			}
