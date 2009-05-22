@@ -41,7 +41,7 @@
 			<item value="SAMPLES"
 				link="gotoPage('manageSample.do')" />
 			<item value="PUBLICATIONS" link="gotoPage('managePublication.do')" />
-			<item value="ADMINISTRATION" link="openHelpWindow('/upt')" />
+			<item value="ADMINISTRATION" link="gotoPage('adminHome.do')" />
 			<item value="HELP"
 				link="openHelpWindow('webHelp/index.html')" />
 			<item value="GLOSSARY"

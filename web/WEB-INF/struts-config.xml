@@ -127,6 +127,7 @@
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
 			value="/WEB-INF/tiles-defs.xml,
+                   /WEB-INF/tiles-defs-admin.xml,
                    /WEB-INF/tiles-defs-protocol.xml,
                    /WEB-INF/tiles-defs-sample.xml,
                    /WEB-INF/tiles-defs-publication.xml"/>
