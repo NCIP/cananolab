@@ -1,13 +1,15 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-
-import java.util.List;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
+import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import org.apache.struts.validator.DynaValidatorForm;
 import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * Work with DWR to set up drop-downs required in the nanomaterial entity page
@@ -16,6 +18,8 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRNanomaterialEntityManager {
+	private CompositionServiceHelper helper = new CompositionServiceHelper();
+
 	public DWRNanomaterialEntityManager() {
 	}
 
@@ -37,17 +41,27 @@ public class DWRNanomaterialEntityManager {
 		return entity.getTheComposingElement();
 	}
 
-	public ComposingElementBean getComposingElementFromList(int index)
+	public ComposingElementBean getComposingElementById(String id)
 			throws Exception {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
-		List<ComposingElementBean> composingElements = entity
-				.getComposingElements();
-		ComposingElementBean composingElement = composingElements.get(index);
-		entity.setTheComposingElement(composingElement);
-		return composingElement;
+
+		ComposingElement composingElement = helper.findComposingElementById(id);
+		ComposingElementBean composingElementBean = new ComposingElementBean(
+				composingElement);
+		// update function type based mapping stored in session
+		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+		org.directwebremoting.WebContext webContext = dwcb.get();
+		for (FunctionBean functionBean : composingElementBean
+				.getInherentFunctions()) {
+			functionBean.updateType(InitSetup.getInstance()
+					.getClassNameToDisplayNameLookup(
+							webContext.getServletContext()));
+		}
+		entity.setTheComposingElement(composingElementBean);
+		return composingElementBean;
 	}
 
 	public ComposingElementBean resetTheComposingElement() {
