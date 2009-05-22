@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+	</form-beans>
+	<global-exceptions>
+	</global-exceptions>
+	<global-forwards>
+	</global-forwards>
+	<action-mappings>
+		<action path="/adminHome"
+			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			parameter="admin.home" scope="request">
+		</action>
+		
+		<action path="/admin" 
+			type="gov.nih.nci.cananolab.ui.admin.AdministrationAction"
+			parameter="dispatch" input="input"
+			scope="request">
+			<forward name="input" path="admin.sitePreference" />
+			<forward name="setup" path="admin.sitePreference" />
+			<forward name="success" path="admin.sitePreference" />
+		</action>
+	</action-mappings>
+</struts-config>
