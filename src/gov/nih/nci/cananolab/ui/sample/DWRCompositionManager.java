@@ -27,6 +27,8 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCompositionManager {
+	private FileServiceHelper helper=new FileServiceHelper();
+
 	public DWRCompositionManager() {
 	}
 
@@ -45,7 +47,6 @@ public class DWRCompositionManager {
 	}
 
 	public FileBean getFileById(String type, String id) throws Exception {
-		FileServiceHelper helper=new FileServiceHelper();
 		File file=helper.findFileById(id);
 		FileBean fileBean=new FileBean(file);
 		FileService service=new FileServiceLocalImpl();
