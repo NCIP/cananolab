@@ -15,21 +15,6 @@
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
 
-<script type="text/javascript">
-<!--//
-function confirmDeletion()
-{
-	answer = confirm("Are you sure you want to delete the nanomaterial entity?")
-	if (answer !=0)
-	{
-		this.document.forms[0].dispatch.value="delete";
-		this.document.forms[0].page.value="1";
-		this.document.forms[0].submit();
-		return true;
-	}
-}
-//-->
-</script>
 <html:form action="/nanomaterialEntity" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
