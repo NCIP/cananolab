@@ -450,9 +450,18 @@ function addFile(actionName, form) {
 	form.action = actionName + ".do?dispatch=saveFile&page=0";
 	form.submit();
 }
+<!--//
+function confirmDelete(type)
+{
+	answer = confirm("Are you sure you want to delete the "+type+"?")
+	return answer;
+}
 function removeFile(actionName, form, index) {
-	form.action = actionName + ".do?dispatch=removeFile&page=0";
-	form.submit();
+	var answer=confirmDelete("file");
+	if (answer!=0) {
+	  form.action = actionName + ".do?dispatch=removeFile&page=0";
+	  form.submit();
+	}
 }
 function populateFile(file) {
 	if (file != null) {
