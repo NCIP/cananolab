@@ -108,7 +108,6 @@ function populateComposingElement(element) {
 function editInherentFunction(eleid) {
 	// we were an id of the form "edit{id}", eg "edit42". We lookup the "42"
 	var func = inherentFunctionCache[eleid.substring(4)];
-	alert("function id: "+func.id);
 	dwr.util.setValue("functionType", func.type);
 	if (func.type == "imaging") {
 		show("modalityLabel");
