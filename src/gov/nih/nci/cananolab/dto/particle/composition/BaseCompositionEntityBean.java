@@ -28,6 +28,22 @@ public class BaseCompositionEntityBean {
 	public BaseCompositionEntityBean() {
 	}
 
+	public void addFile(FileBean file) {
+		// if an old one exists, remove it first
+		int index = files.indexOf(file);
+		if (index != -1) {
+			files.remove(file);
+			// retain the original order
+			files.add(index, file);
+		} else {
+			files.add(file);
+		}
+	}
+
+	public void removeFile(FileBean file) {
+		files.remove(file);
+	}
+
 	public void addFile(FileBean file, int index) {
 		if (index == -1) {
 			files.add(file);
