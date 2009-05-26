@@ -23,9 +23,6 @@ public interface ExperimentConfigService {
 
 	public List<String> getAllManufacturers() throws ExperimentConfigException;
 
-	public ExperimentConfig findExperimentConfigById(String id)
-			throws ExperimentConfigException;
-
 	public Technique findTechniqueByType(String type)
 			throws ExperimentConfigException;
 
