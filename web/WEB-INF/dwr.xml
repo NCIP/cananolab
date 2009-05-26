@@ -32,14 +32,14 @@
 			scope="session">
 			<param name="class"
 				value="gov.nih.nci.cananolab.ui.sample.DWRExperimentConfigManager" />
-			<include method="findExperimentConfigById" />
+			<include method="getExperimentConfigById" />
+			<include method="resetTheExperimentConfig" />
+			<include method="addInstrument" />
+			<include method="deleteInstrument" />
 			<include method="getTechniqueAbbreviation" />
 			<include method="getInstrumentTypesByTechniqueType" />
 			<include method="findInstrumentTypesByConfigId" />
 			<include method="getAllManufacturers" />
-			<include method="resetExperimentConfig" />
-			<include method="addInstrument" />
-			<include method="deleteInstrument" />
 		</create>
 		<create creator="new" javascript="FindingManager"
 			scope="session">
