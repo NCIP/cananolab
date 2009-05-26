@@ -24,19 +24,26 @@ import org.directwebremoting.WebContextFactory;
 public class DWRExperimentConfigManager {
 	private ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
 
-	public ExperimentConfig resetExperimentConfig() {
+	public ExperimentConfigBean resetTheExperimentConfig() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
 		ExperimentConfigBean newExperimentConfigBean = new ExperimentConfigBean();
 		charBean.setTheExperimentConfig(newExperimentConfigBean);
-		return newExperimentConfigBean.getDomain();
+		return newExperimentConfigBean;
 	}
 
-	public ExperimentConfigBean findExperimentConfigById(String id)
+	public ExperimentConfigBean getExperimentConfigById(String id)
 			throws ExperimentConfigException {
-		return new ExperimentConfigBean(service.findExperimentConfigById(id));
+		ExperimentConfig config = service.findExperimentConfigById(id);
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		ExperimentConfigBean configBean = new ExperimentConfigBean(config);
+		charBean.setTheExperimentConfig(configBean);
+		return configBean;
 	}
 
 	public String getTechniqueAbbreviation(String techniqueType)
@@ -68,7 +75,7 @@ public class DWRExperimentConfigManager {
 			throws ExperimentConfigException, BaseException {
 		String techniqueType = null;
 		SortedSet<String> types = null;
-		ExperimentConfigBean config = findExperimentConfigById(configId);
+		ExperimentConfigBean config = getExperimentConfigById(configId);
 
 		if (config != null && config.getDomain().getTechnique() != null
 				&& config.getDomain().getTechnique().getType() != null) {
@@ -85,31 +92,27 @@ public class DWRExperimentConfigManager {
 		}
 	}
 
-	// addInstrument includes the function add and edit
-	public ExperimentConfigBean addInstrument(
-			ExperimentConfigBean theExperimentConfig, Instrument instrument)
+	public ExperimentConfigBean addInstrument(Instrument instrument)
 			throws ExperimentConfigException {
-		if (theExperimentConfig == null) {
-			return null;
-		}
-		theExperimentConfig.addInstrument(instrument);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheExperimentConfig(theExperimentConfig);
+		ExperimentConfigBean theExperimentConfig = charBean
+				.getTheExperimentConfig();
+		theExperimentConfig.addInstrument(instrument);
 		return theExperimentConfig;
 	}
 
-	public ExperimentConfigBean deleteInstrument(
-			ExperimentConfigBean theExperimentConfig, Instrument instrument)
+	public ExperimentConfigBean deleteInstrument(Instrument instrument)
 			throws ExperimentConfigException {
-		theExperimentConfig.removeInstrument(instrument);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
 				.get("achar"));
-		charBean.setTheExperimentConfig(theExperimentConfig);
+		ExperimentConfigBean theExperimentConfig = charBean
+				.getTheExperimentConfig();
+		theExperimentConfig.removeInstrument(instrument);
 		return theExperimentConfig;
 	}
 }
