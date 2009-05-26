@@ -70,12 +70,13 @@ function saveFinding(form) {
 	form.action = "characterization.do?dispatch=saveFinding&page=0";
 	form.submit();
 }
-
 function deleteFinding(form) {
-	form.action = "characterization.do?dispatch=deleteFinding&page=0";
-	form.submit();
+	var answer = confirmDelete("finding");
+	if (answer != 0) {
+		form.action = "characterization.do?dispatch=deleteFinding&page=0";
+		form.submit();
+	}
 }
-
 function setTheFile(index) {
 	FindingManager.getFileFromList(index, populateFile);
 	dwr.util.setValue("hiddenFileIndex", index);
