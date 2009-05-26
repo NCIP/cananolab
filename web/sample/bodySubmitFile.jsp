@@ -38,7 +38,7 @@
 				<span id="load" style="${loadStyle }"> <html:file
 						property="${fileParent}.theFile.uploadedFile" size="60"
 						styleId="uploadedFile" /> &nbsp;&nbsp;</span>
-				<span id="uploadedUri"></span>
+				<span id="uploadedUri" style="display:none"></span>
 				<span id="link" style="${linkStyle }"><html:text
 						property="${fileParent}.theFile.externalUrl" size="60"
 						styleId="externalUrl" /> </span>&nbsp;
