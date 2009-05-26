@@ -7,8 +7,7 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.sample.ExperimentConfigService;
-import gov.nih.nci.cananolab.service.sample.impl.ExperimentConfigServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 
 import java.util.SortedSet;
 
@@ -22,7 +21,7 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRExperimentConfigManager {
-	private ExperimentConfigService service = new ExperimentConfigServiceLocalImpl();
+	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 
 	public ExperimentConfigBean resetTheExperimentConfig() {
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
@@ -36,7 +35,7 @@ public class DWRExperimentConfigManager {
 
 	public ExperimentConfigBean getExperimentConfigById(String id)
 			throws ExperimentConfigException {
-		ExperimentConfig config = service.findExperimentConfigById(id);
+		ExperimentConfig config = helper.findExperimentConfigById(id);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm
