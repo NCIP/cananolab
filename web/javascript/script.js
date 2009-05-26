@@ -475,6 +475,7 @@ function populateFile(file) {
 			dwr.util.setValue("hiddenFileUri", file.domainFile.uri);
 			if (file.domainFile.uriExternal == 0) {
 				dwr.util.setValue("uploadedUri", file.domainFile.uri);
+				show("uploadedUri");
 			} else {
 				dwr.util.setValue("uploadedUri", "");
 			}
@@ -496,10 +497,10 @@ function displayFileRadioButton() {
 	var external1 = dwr.util.getValue("external1");
 	show("load");
 	hide("link");
+	show("uploadedUri");
 	if (external0 == false && external1 == true) {
 		show("link");
 		hide("load");
-		hide("uploadedUri");
 		hide("uploadedUri");
 	}
 }
