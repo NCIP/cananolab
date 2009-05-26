@@ -40,7 +40,9 @@ function populateExperimentConfig(experimentConfig) {
 			dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
 			dwr.util.setValue("techniqueAbbr", experimentConfig.domain.technique.abbreviation);
 		}
-		ExperimentConfigManager.getInstrumentTypesByConfigId(experimentConfig.domain.id, updateInstrumentDropDown);
+		if (experimentConfig.domain.id != null) {
+			ExperimentConfigManager.getInstrumentTypesByConfigId(experimentConfig.domain.id, updateInstrumentDropDown);
+		}
 		dwr.util.setValue("configDescription", experimentConfig.domain.description);
 		dwr.util.setValue("configId", experimentConfig.domain.id);
 		//clear the cache for each new experimentConfig
