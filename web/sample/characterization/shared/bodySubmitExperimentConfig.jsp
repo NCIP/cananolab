@@ -4,22 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
 <script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type="text/javascript">
-<!--//
-function confirmDeletion()
-{
-	answer = confirm("Are you sure you want to delete the instrument and technique?")
-	if (answer !=0)
-	{
-		this.document.forms[0].dispatch.value="delete";
-		this.document.forms[0].page.value="1";
-		this.document.forms[0].submit();
-		return true;
-	}
-}
-//-->
-</script>
-
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="2">
@@ -62,7 +46,7 @@ function confirmDeletion()
 		<td>
 			<div id="instrumentSection" style="position: relative;">
 				<a style="" id="addInstrument"
-					href="javascript:clearInstrument();show('patternAddRow');">Add</a>
+					href="javascript:clearInstrument();show('newInstrument');">Add</a>
 				<br>
 				<table id="instrumentTable" class="summaryViewLayer4" width="85%"
 					style="display: none;">
@@ -93,14 +77,12 @@ function confirmDeletion()
 							<td>
 								<input class="noBorderButton" id="edit" type="button"
 									value="Edit"
-									onclick="editClicked(this.id); show('patternAddRow');" />
+									onclick="editInstrument(this.id);show('newInstrument');" />
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<div id="newInstrument">
-					<table id="patternAddRow" style="display: none;" width="100%"
-						class="promptbox">
+				<table id="newInstrument" style="display: none;" class="promptbox">
 						<tbody>
 							<tr>
 								<td class="cellLabel">
@@ -126,7 +108,7 @@ function confirmDeletion()
 									Model Name
 								</td>
 								<td>
-									<html:text property="achar.theInstrument.modelName" size="17"
+									<html:text property="achar.theInstrument.modelName" size="30"
 										styleId="modelName" />
 								</td>
 							</tr>
@@ -149,15 +131,15 @@ function confirmDeletion()
 							</tr>
 							<tr>
 								<td>
-									<input style="display: none;" class="promptButton" id="delete"
-										type="button" value="Remove" onclick="deleteClicked()" />
+									<input style="display: none;" class="promptButton" id="deleteInstrument"
+										type="button" value="Remove" onclick="deleteTheInstrument()" />
 								</td>
 								<td>
 									<div align="right">
 										<input class="promptButton" type="button" value="Add"
-											onclick="addInstrument();show('instrumentTable');hide('patternAddRow');" />
+											onclick="addInstrument();show('instrumentTable');hide('newInstrument');" />
 										<input class="promptButton" type="button" value="Cancel"
-											onclick="clearInstrument();hide('patternAddRow');" />
+											onclick="clearInstrument();hide('newInstrument');" />
 									</div>
 								</td>
 							</tr>
@@ -181,8 +163,7 @@ function confirmDeletion()
 			<c:if test="${canDelete eq 'true' }">
 				<input style="display: none;" id="deleteExperimentConfig"
 					type="button" value="Delete"
-					onclick="javascript:submitAction(document.forms[0],
-										'characterization', 'deleteExperimentConfig');">
+					onclick="javascript:deleteTheExperimentConfig()">
 			</c:if>
 		</td>
 		<td align="right">
