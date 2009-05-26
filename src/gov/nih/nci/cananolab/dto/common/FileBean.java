@@ -230,4 +230,16 @@ public class FileBean {
 		copy.getDomainFile().setUri(domainFile.getUri());
 		return copy;
 	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof FileBean) {
+			FileBean f = (FileBean) obj;
+			Long thisId = getDomainFile().getId();
+			if (thisId != null && thisId.equals(f.getDomainFile().getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
 }
