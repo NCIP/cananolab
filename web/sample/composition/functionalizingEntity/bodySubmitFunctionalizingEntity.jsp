@@ -14,22 +14,6 @@
 	src='/caNanoLab/dwr/interface/FunctionalizingEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-
-<script type="text/javascript">
-<!--//
-function confirmDeletion()
-{
-	answer = confirm("Are you sure you want to delete the functionalizing entity?")
-	if (answer !=0)
-	{
-		this.document.forms[0].dispatch.value="delete";
-		this.document.forms[0].page.value="1";
-		this.document.forms[0].submit();
-		return true;
-	}
-}
-//-->
-</script>
 <html:form action="/functionalizingEntity" enctype="multipart/form-data">
 	<table width="100%" align="center">
 		<tr>
@@ -185,7 +169,7 @@ function confirmDeletion()
 							<td class="cellLabel">
 								Function&nbsp;&nbsp;&nbsp;&nbsp;
 								<a style="" id="addFunction"
-									href="javascript:clearFunction(true);show('newFunction');"><img align="top"
+									href="javascript:clearFunction();show('newFunction');"><img align="top"
 										src="images/btn_add.gif" border="0" /> </a>
 							</td>
 						</tr>
