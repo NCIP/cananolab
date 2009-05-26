@@ -19,7 +19,7 @@ import java.util.List;
  *
  */
 public class ExperimentConfigBean {
-	private ExperimentConfig domain;
+	private ExperimentConfig domain = new ExperimentConfig();
 	private List<Instrument> instruments = new ArrayList<Instrument>(20);
 
 	public ExperimentConfigBean() {
@@ -46,8 +46,10 @@ public class ExperimentConfigBean {
 
 	public String getTechniqueDisplayName() {
 		String techniqueDisplayName = "";
-		if (domain.getTechnique() != null
-				&& domain.getTechnique().getAbbreviation() != null
+		if (domain.getTechnique() == null) {
+			return techniqueDisplayName;
+		}
+		if (domain.getTechnique().getAbbreviation() != null
 				&& domain.getTechnique().getAbbreviation().trim().length() > 0) {
 			techniqueDisplayName = domain.getTechnique().getType() + "("
 					+ domain.getTechnique().getAbbreviation() + ")";
@@ -58,10 +60,14 @@ public class ExperimentConfigBean {
 	}
 
 	public void addInstrument(Instrument instrument) {
-		if (instruments.contains(instrument)) {
+		int index = instruments.indexOf(instrument);
+		if (index != -1) {
 			instruments.remove(instrument);
+			// retain the original order
+			instruments.add(index, instrument);
+		} else {
+			instruments.add(instrument);
 		}
-		instruments.add(instrument);
 	}
 
 	public void removeInstrument(Instrument instrument) {
