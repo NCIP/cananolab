@@ -298,17 +298,14 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+	public ActionForward saveFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		int theFileIndex = entity.getTheFileIndex();
-		// create a new copy before adding to functionalizing entity
 		FileBean theFile = entity.getTheFile();
-		FileBean newFile = theFile.copy();
-		entity.addFile(newFile, theFileIndex);
+		entity.addFile(theFile);
 		// save the functionalizing entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
@@ -321,9 +318,8 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
-		int theFileIndex = entity.getTheFileIndex();
-		entity.removeFile(theFileIndex);
-		entity.setTheFile(new FileBean());
+		FileBean theFile = entity.getTheFile();
+		entity.removeFile(theFile);
 		request.setAttribute("anchor", "file");
 		// save the functionalizing entity
 		saveEntity(request, theForm, entity);

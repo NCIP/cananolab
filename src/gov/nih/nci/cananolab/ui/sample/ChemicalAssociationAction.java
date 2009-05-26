@@ -378,17 +378,14 @@ public class ChemicalAssociationAction extends CompositionAction {
 		return mapping.findForward("setup");
 	}
 
-	public ActionForward addFile(ActionMapping mapping, ActionForm form,
+	public ActionForward saveFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assoc = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		int theFileIndex = assoc.getTheFileIndex();
-		// create a new copy before adding to finding
 		FileBean theFile = assoc.getTheFile();
-		FileBean newFile = theFile.copy();
-		assoc.addFile(newFile, theFileIndex);
+		assoc.addFile(theFile);
 		// save the association
 		saveAssociation(request, theForm, assoc);
 		request.setAttribute("anchor", "file");
@@ -401,8 +398,8 @@ public class ChemicalAssociationAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assoc = (ChemicalAssociationBean) theForm
 				.get("assoc");
-		int theFileIndex = assoc.getTheFileIndex();
-		assoc.removeFile(theFileIndex);
+		FileBean theFile = assoc.getTheFile();
+		assoc.removeFile(theFile);
 		assoc.setTheFile(new FileBean());
 		request.setAttribute("anchor", "file");
 		// save the association
