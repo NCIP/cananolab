@@ -475,9 +475,11 @@ function populateFile(file) {
 			dwr.util.setValue("hiddenFileUri", file.domainFile.uri);
 			if (file.domainFile.uriExternal == 0) {
 				dwr.util.setValue("uploadedUri", file.domainFile.uri);
+				dwr.util.setValue("externalUrl", "");
 				show("uploadedUri");
 			} else {
 				dwr.util.setValue("uploadedUri", "");
+				dwr.util.setValue("externalUrl", file.domainFile.uri);
 			}
 		} else {
 			dwr.util.setValue("uploadedUri", "");
