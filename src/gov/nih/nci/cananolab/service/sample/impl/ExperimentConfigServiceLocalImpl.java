@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.service.sample.ExperimentConfigService;
+import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -18,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
@@ -28,6 +28,7 @@ public class ExperimentConfigServiceLocalImpl implements
 		ExperimentConfigService {
 	private static Logger logger = Logger
 			.getLogger(ExperimentConfigServiceLocalImpl.class);
+	private static CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 
 	public void saveExperimentConfig(ExperimentConfig config)
 			throws ExperimentConfigException {
@@ -36,7 +37,7 @@ public class ExperimentConfigServiceLocalImpl implements
 					.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				ExperimentConfig dbConfig = findExperimentConfigById(config
+				ExperimentConfig dbConfig = helper.findExperimentConfigById(config
 						.getId().toString());
 				if (dbConfig != null) {
 					config.setCreatedBy(dbConfig.getCreatedBy());
@@ -90,7 +91,7 @@ public class ExperimentConfigServiceLocalImpl implements
 					.getApplicationService();
 			// get existing createdDate and createdBy
 			if (config.getId() != null) {
-				ExperimentConfig dbConfig = findExperimentConfigById(config
+				ExperimentConfig dbConfig = helper.findExperimentConfigById(config
 						.getId().toString());
 				if (dbConfig != null) {
 					config.setCreatedBy(dbConfig.getCreatedBy());
@@ -157,8 +158,7 @@ public class ExperimentConfigServiceLocalImpl implements
 				Technique technique = (Technique) obj;
 				techniques.add(technique);
 			}
-			Collections.sort(techniques,
-					new Comparators.TechniqueComparator());
+			Collections.sort(techniques, new Comparators.TechniqueComparator());
 		} catch (Exception e) {
 			String err = "Problem to retrieve all techniques.";
 			logger.error(err, e);
@@ -191,29 +191,6 @@ public class ExperimentConfigServiceLocalImpl implements
 			throw new ExperimentConfigException(err);
 		}
 		return manufacturers;
-	}
-
-	public ExperimentConfig findExperimentConfigById(String id)
-			throws ExperimentConfigException {
-		ExperimentConfig config = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					ExperimentConfig.class).add(
-					Property.forName("id").eq(new Long(id)));
-			crit.setFetchMode("technique", FetchMode.JOIN);
-			crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				config = (ExperimentConfig) obj;
-			}
-		} catch (Exception e) {
-			String err = "Problem to retrieve all manufacturers.";
-			logger.error(err, e);
-			throw new ExperimentConfigException(err);
-		}
-		return config;
 	}
 
 	public Technique findTechniqueByType(String type)
