@@ -310,11 +310,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		int theFileIndex = entity.getTheFileIndex();
-		// create a new copy before adding to nanomaterial entity
 		FileBean theFile = entity.getTheFile();
-		FileBean newFile = theFile.copy();
-		entity.addFile(newFile, theFileIndex);
+		entity.addFile(theFile);
 		// save nanomaterial entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
@@ -328,8 +325,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		int theFileIndex = entity.getTheFileIndex();
-		entity.removeFile(theFileIndex);
+		FileBean theFile = entity.getTheFile();
+		entity.removeFile(theFile);
 		entity.setTheFile(new FileBean());
 		// save nanomaterial entity
 		saveEntity(request, theForm, entity);
