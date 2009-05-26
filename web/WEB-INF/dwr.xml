@@ -38,7 +38,7 @@
 			<include method="deleteInstrument" />
 			<include method="getTechniqueAbbreviation" />
 			<include method="getInstrumentTypesByTechniqueType" />
-			<include method="findInstrumentTypesByConfigId" />
+			<include method="getInstrumentTypesByConfigId" />
 			<include method="getAllManufacturers" />
 		</create>
 		<create creator="new" javascript="FindingManager"

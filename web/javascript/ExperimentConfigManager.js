@@ -26,16 +26,13 @@ function setManufacturerOptions(manufacturerTypes) {
 	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex, manufacturerTypes);
 	dwr.util.addOptions("instrumentManufacturer" + instrumentManufacturerIndex, ["[Other]"]);
 }
-
 function setTheExperimentConfig(configId) {
 	numberOfInstruments = 0;
-	ExperimentConfigManager.findInstrumentTypesByConfigId(configId, updateInstrumentDropDown);
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
 	show("newExperimentConfig");
 	hide("newInstrument");
 	show("deleteExperimentConfig");
 }
-
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
 		currentExperimentConfig = experimentConfig;
@@ -43,6 +40,7 @@ function populateExperimentConfig(experimentConfig) {
 			dwr.util.setValue("techniqueType", experimentConfig.domain.technique.type);
 			dwr.util.setValue("techniqueAbbr", experimentConfig.domain.technique.abbreviation);
 		}
+		ExperimentConfigManager.getInstrumentTypesByConfigId(experimentConfig.domain.id, updateInstrumentDropDown);
 		dwr.util.setValue("configDescription", experimentConfig.domain.description);
 		dwr.util.setValue("configId", experimentConfig.domain.id);
 		//clear the cache for each new experimentConfig

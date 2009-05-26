@@ -71,7 +71,7 @@ public class DWRExperimentConfigManager {
 		}
 	}
 
-	public String[] findInstrumentTypesByConfigId(String configId)
+	public String[] getInstrumentTypesByConfigId(String configId)
 			throws ExperimentConfigException, BaseException {
 		String techniqueType = null;
 		SortedSet<String> types = null;
