@@ -169,7 +169,7 @@
 		<td align="right">
 			<div align="right">
 				<input type="reset" value="Cancel"
-					onclick="javascript:resetTheExperimentConfig(false);">
+					onclick="javascript:clearExperimentConfig();hide('newExperimentConfig')">
 				<input type="button" value="Save"
 					onclick="javascript:validateSaveConfig('characterization');">
 			</div>
