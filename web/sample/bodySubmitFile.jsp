@@ -23,13 +23,13 @@
 			<td class="cellLabel">
 				<html:radio styleId="external0"
 					property="${fileParent}.theFile.domainFile.uriExternal"
-					value="false" onclick="show('load');hide('link');" />
+					value="false" onclick="displayFileRadioButton();" />
 				Upload
 			</td>
 			<td class="cellLabel">
 				<html:radio styleId="external1"
 					property="${fileParent}.theFile.domainFile.uriExternal"
-					value="true" onclick="hide('load');show('link');" />
+					value="true" onclick="displayFileRadioButton();" />
 				Enter File URL
 			</td>
 		</tr>
@@ -107,12 +107,14 @@
 					selected)</i>
 			</td>
 		</tr>
-		<html:hidden property="${fileParent}.theFile.domainFile.id"
-			styleId="hiddenFileId" />
-		<html:hidden property="${fileParent}.theFile.domainFile.uri"
-			styleId="hiddenFileUri" />
-		<html:hidden property="${fileParent}.theFileIndex"
-			styleId="hiddenFileIndex" value="-1" />
+		<c:if test="${actionName eq 'characterization'}">
+			<html:hidden property="${fileParent}.theFile.domainFile.id"
+				styleId="hiddenFileId" />
+			<html:hidden property="${fileParent}.theFile.domainFile.uri"
+				styleId="hiddenFileUri" />
+			<html:hidden property="${fileParent}.theFileIndex"
+				styleId="hiddenFileIndex" value="-1" />
+		</c:if>
 		<tr>
 			<td>
 				<input class="promptButton" type="button" value="Remove"
