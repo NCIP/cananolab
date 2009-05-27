@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
@@ -27,7 +28,7 @@ import org.directwebremoting.WebContextFactory;
  *
  */
 public class DWRCompositionManager {
-	private FileServiceHelper helper=new FileServiceHelper();
+	private FileServiceHelper helper = new FileServiceHelper();
 
 	public DWRCompositionManager() {
 	}
@@ -47,23 +48,27 @@ public class DWRCompositionManager {
 	}
 
 	public FileBean getFileById(String type, String id) throws Exception {
-		File file=helper.findFileById(id);
-		FileBean fileBean=new FileBean(file);
-		FileService service=new FileServiceLocalImpl();
+		File file = helper.findFileById(id);
+		FileBean fileBean = new FileBean(file);
+		FileService service = new FileServiceLocalImpl();
 		WebContext wctx = WebContextFactory.get();
-		UserBean user=(UserBean)wctx.getSession().getAttribute("user");
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		service.retrieveVisibility(fileBean, user);
 
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
-		if (type.equals("nanomaterial entity")) {
+		if (type.equals("nanomaterialEntity")) {
 			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 					.get("nanomaterialEntity");
 			entity.setTheFile(fileBean);
-		} else if (type.equals("functionalizing entity")) {
+		} else if (type.equals("functionalizingEntity")) {
 			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 					.get("functionalizingEntity");
 			entity.setTheFile(fileBean);
+		} else if (type.equals("comp")) {
+			CompositionBean comp = (CompositionBean) compositionForm
+					.get("comp");
+			comp.setTheFile(fileBean);
 		} else {
 			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
 					.get("assoc");
@@ -84,6 +89,10 @@ public class DWRCompositionManager {
 			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 					.get("functionalizingEntity");
 			entity.setTheFile(fileBean);
+		} else if (type.equals("comp")) {
+			CompositionBean comp = (CompositionBean) compositionForm
+					.get("comp");
+			comp.setTheFile(fileBean);
 		} else {
 			ChemicalAssociationBean assoc = (ChemicalAssociationBean) compositionForm
 					.get("assoc");
