@@ -8,7 +8,7 @@
 		path="/layout/mainLayoutNoContentSpace.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="cananoHeader" value="/html/cananoHeader.html" />
+		<put name="cananoHeader" value="/layout/cananoHeader.jsp" />
 		<put name="cananoSidemenu" value="/html/cananoBaseSidemenu.html" />
 		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
 		<put name="cananoContent" value="/bodyLogin.jsp" />
@@ -27,7 +27,7 @@
 	<definition name="canano.home" path="/layout/mainLayout.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="cananoHeader" value="/html/cananoHeader.html" />
+		<put name="cananoHeader" value="/layout/cananoHeader.jsp" />
 		<put name="cananoSidemenu" value="/html/cananoBaseSidemenu.html" />
 		<put name="cananoMainmenu" value="/cananoMainmenu.jsp" />
 		<put name="cananoFooter" value="/html/cananoFooter.html" />
@@ -69,7 +69,7 @@
 		path="/layout/disclaimerLayout.jsp">
 		<put name="title" value="caNanoLab Home" />
 		<put name="nciHeader" value="/html/nciHeader.html" />
-		<put name="cananoHeader" value="/html/cananoHeader.html" />
+		<put name="cananoHeader" value="/layout/cananoHeader.jsp" />
 		<put name="cananoContent" value="/bodyDisclaimer.jsp" />
 		<put name="cananoFooter" value="/bodyMessage.jsp" />
 		<put name="nciFooter" value="/html/nciFooter.html" />

@@ -182,5 +182,15 @@ public class Constants {
 	// String for local search.
 	public static final String LOCAL = "local";
 	
+	// String for file repository entry in property file.
 	public static final String FILE_REPOSITORY_DIR = "fileRepositoryDir";
+	
+	// String for site name entry in property file.
+	public static final String SITE_LOGO_FILENAME = "siteLogo.gif";
+	
+	// String for site name entry in property file.
+	public static final String SITE_NAME = "siteName";
+	
+	// Maximum file size of site logo.
+	public static final int MAX_LOGO_SIZE = 32768;
 }

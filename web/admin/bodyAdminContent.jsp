@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="gov.nih.nci.cananolab.util.Constants"%>
 
 <table summary="" cellpadding="0" cellspacing="0" border="0"
 	width="100%" height="100%">
@@ -37,7 +38,7 @@
 								</tr>
 								<tr>
 									<td class="sidebarContent">
-										<a href="admin.do?dispatch=setup">
+										<a href="admin.do?dispatch=sitePreference">
 											Site Preference
 										</a>
 										<br>
