@@ -155,7 +155,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			pointOfContact.setOrganization(organization);
 			/**
-			 * Removed as cascade="save-update" was added in POC Hibernate mapping file. 
+			 * Removed as cascade="save-update" was added in POC Hibernate mapping file.
 			 */
 			//appService.saveOrUpdate(organization);
 		}
@@ -271,7 +271,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	}
 
 	// retrieve point of contact accessibility
-	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
+	public void retrieveVisibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException {
 		try {
 			if (pocBean != null) {
