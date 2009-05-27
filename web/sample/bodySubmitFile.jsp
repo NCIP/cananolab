@@ -3,11 +3,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<%-- different styles for different file submission forms --%>
 <c:set var="submissionViewStyle" value="subSubmissionView" />
+<c:set var="tableWidth" value="85%" />
 <c:if test="${actionName eq 'characterization'}">
 	<c:set var="submissionViewStyle" value="promptbox" />
 </c:if>
-<table class="${submissionViewStyle}" }" width="85%" align="center">
+<c:if test="${actionName eq 'compositionFile'}">
+	<c:set var="submissionViewStyle" value="submissionView" />
+	<c:set var="tableWidth" value="100%" />
+</c:if>
+<table class="${submissionViewStyle}" width="${tableWidth}"
+	align="center">
 	<tbody>
 		<c:choose>
 			<c:when test="${theFile.domainFile.uriExternal eq 'true' }">
@@ -38,7 +45,11 @@
 				<span id="load" style="${loadStyle }"> <html:file
 						property="${fileParent}.theFile.uploadedFile" size="60"
 						styleId="uploadedFile" /> &nbsp;&nbsp;</span>
-				<span id="uploadedUri" style="display:none"></span>
+				<c:set var="uploadedUriStyle" value="display:none"/>
+				<c:if test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
+					<c:set var="uploadedUriStyle" value="display:block"/>
+				</c:if>
+				<span id="uploadedUri" style="${uploadedUriStyle}">${theFile.domainFile.uri }</span>
 				<span id="link" style="${linkStyle }"><html:text
 						property="${fileParent}.theFile.externalUrl" size="60"
 						styleId="externalUrl" /> </span>&nbsp;
@@ -115,19 +126,21 @@
 			<html:hidden property="${fileParent}.theFileIndex"
 				styleId="hiddenFileIndex" value="-1" />
 		</c:if>
-		<tr>
-			<td>
-				<input class="promptButton" type="button" value="Remove"
-					onclick="removeFile('${actionName}', ${fileForm})" id="deleteFile"
-					style="display: none;" />
-			</td>
-			<td>
-				<div align="right">
-					<input class="promptButton" type="button" value="Add"
-						onclick="addFile('${actionName}', ${fileForm});" />
-					<input class="promptButton" type="button" value="Cancel"
-						onclick="clearFile('${fileParent }');hide('newFile');" />
-				</div>
-			</td>
-		</tr>
+		<c:if test="${actionName ne 'compositionFile'}">
+			<tr>
+				<td>
+					<input class="promptButton" type="button" value="Remove"
+						onclick="removeFile('${actionName}', ${fileForm})" id="deleteFile"
+						style="display: none;" />
+				</td>
+				<td>
+					<div align="right">
+						<input class="promptButton" type="button" value="Add"
+							onclick="addFile('${actionName}', ${fileForm});" />
+						<input class="promptButton" type="button" value="Cancel"
+							onclick="clearFile('${fileParent }');hide('newFile');" />
+					</div>
+				</td>
+			</tr>
+		</c:if>
 </table>
