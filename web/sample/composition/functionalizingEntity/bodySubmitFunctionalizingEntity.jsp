@@ -199,6 +199,7 @@
 	</table>
 	<br>
 	<%--Functionalizing Entity File Information --%>
+	<c:set var="fileParent" value="functionalizingEntity" />
 	<a name="file">
 		<table width="100%" align="center" class="submissionView">
 			<tbody>
@@ -210,7 +211,7 @@
 				<tr>
 					<td class="cellLabel">
 						File&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="javascript:clearFile(); show('newFile');"><img
+						<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
 								align="top" src="images/btn_add.gif" border="0" /> </a>
 					</td>
 				</tr>
@@ -234,7 +235,7 @@
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
 						<div style="${newFileStyle}" id="newFile">
-							<c:set var="fileParent" value="functionalizingEntity" />
+
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"
 								value="${compositionForm.map.functionalizingEntity.theFile}" />
