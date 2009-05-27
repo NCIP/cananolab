@@ -76,11 +76,11 @@ public class DWRCompositionManager {
 		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("compositionForm"));
 		FileBean fileBean = new FileBean();
-		if (type.equals("nanomaterial entity")) {
+		if (type.equals("nanomaterialEntity")) {
 			NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 					.get("nanomaterialEntity");
 			entity.setTheFile(fileBean);
-		} else if (type.equals("functionalizing entity")) {
+		} else if (type.equals("functionalizingEntity")) {
 			FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 					.get("functionalizingEntity");
 			entity.setTheFile(fileBean);
