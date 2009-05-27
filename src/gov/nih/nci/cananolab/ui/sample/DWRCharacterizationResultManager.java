@@ -69,6 +69,16 @@ public class DWRCharacterizationResultManager {
 		return theFile;
 	}
 
+	public FileBean resetTheFile() {
+		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
+				.get().getSession().getAttribute("characterizationForm"));
+		CharacterizationBean charBean = (CharacterizationBean) (charForm
+				.get("achar"));
+		FileBean fileBean = new FileBean();
+		charBean.getTheFinding().setTheFile(fileBean);
+		return fileBean;
+	}
+
 	public String addColumnHeader(ColumnHeader header) {
 		return header.getDisplayName();
 	}
