@@ -58,7 +58,7 @@ function setColumnValueUnit(columnNumber) {
 		dwr.util.addOptions("valueUnit" + columnNumber, ["[Other]"]);
 	});
 }
-function resetTheFinding(form, isShow) {
+function resetTheFinding(form) {
 	form.action = "characterization.do?dispatch=resetFinding&page=0";
 	form.submit();
 }
@@ -70,16 +70,12 @@ function saveFinding(form) {
 	form.action = "characterization.do?dispatch=saveFinding&page=0";
 	form.submit();
 }
-function deleteFinding(form) {
+function deleteTheFinding(form) {
 	var answer = confirmDelete("finding");
 	if (answer != 0) {
 		form.action = "characterization.do?dispatch=deleteFinding&page=0";
 		form.submit();
 	}
-}
-function setTheFile(index) {
-	FindingManager.getFileFromList(index, populateFile);
-	dwr.util.setValue("hiddenFileIndex", index);
 }
 function updateMatrix(form) {
 	var colNum = dwr.util.getValue("colNum");
@@ -152,4 +148,20 @@ function addColumnHeader(columnNumber) {
 	});
 	hide("newColumn" + columnNumber);
 }
+/* set submit file form */
+function clearFile() {
+	//go to server and clean form bean
+	FindingManager.resetTheFile(populateFile);
+	hide("deleteFile");
+	show("load");
+	hide("link");
+	dwr.util.setValue("uploadedFile", "");
+	dwr.util.setValue("externalUrl", "");
+}
+function setTheFile(index) {
+	FindingManager.getFileFromList(index, populateFile);
+	dwr.util.setValue("hiddenFileIndex", index);
+	show("newFile");
+}
+/* end of set submit file form */
 
