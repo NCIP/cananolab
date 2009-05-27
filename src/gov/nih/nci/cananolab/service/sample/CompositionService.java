@@ -38,7 +38,7 @@ public interface CompositionService {
 			ChemicalAssociation assoc) throws CompositionException;
 
 	public void saveCompositionFile(Sample particleSample,
-			File file, byte[] fileData) throws CompositionException;
+			File file) throws CompositionException;
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
 			String entityId) throws CompositionException;

@@ -71,14 +71,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setSample(particleSample);
-//				particleSample.getSampleComposition()
-//						.setNanomaterialEntityCollection(
-//								new HashSet<NanomaterialEntity>());
+				// particleSample.getSampleComposition()
+				// .setNanomaterialEntityCollection(
+				// new HashSet<NanomaterialEntity>());
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
-//			particleSample.getSampleComposition()
-//					.getNanomaterialEntityCollection().add(entity);
+			// particleSample.getSampleComposition()
+			// .getNanomaterialEntityCollection().add(entity);
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = entity.getFileCollection();
 			if (Files != null) {
@@ -135,14 +135,14 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			if (particleSample.getSampleComposition() == null) {
 				particleSample.setSampleComposition(new SampleComposition());
 				particleSample.getSampleComposition().setSample(particleSample);
-//				particleSample.getSampleComposition()
-//						.setFunctionalizingEntityCollection(
-//								new HashSet<FunctionalizingEntity>());
+				// particleSample.getSampleComposition()
+				// .setFunctionalizingEntityCollection(
+				// new HashSet<FunctionalizingEntity>());
 
 			}
 			entity.setSampleComposition(particleSample.getSampleComposition());
-//			particleSample.getSampleComposition()
-//					.getFunctionalizingEntityCollection().add(entity);
+			// particleSample.getSampleComposition()
+			// .getFunctionalizingEntityCollection().add(entity);
 
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = entity.getFileCollection();
@@ -201,8 +201,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		}
 	}
 
-	public void saveCompositionFile(Sample particleSample, File file,
-			byte[] fileData) throws CompositionException {
+	public void saveCompositionFile(Sample particleSample, File file)
+			throws CompositionException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(file);
@@ -224,9 +224,6 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			} else {
 				appService.saveOrUpdate(file);
 			}
-			// save to the file system fileData is not empty
-			fileService.writeFile(file, fileData);
-
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";
 			logger.error(err, e);
