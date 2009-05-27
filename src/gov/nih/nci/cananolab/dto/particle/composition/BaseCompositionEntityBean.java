@@ -23,8 +23,6 @@ public class BaseCompositionEntityBean {
 
 	protected List<FileBean> files = new ArrayList<FileBean>();
 
-	protected int theFileIndex=-1;
-
 	public BaseCompositionEntityBean() {
 	}
 
@@ -42,21 +40,6 @@ public class BaseCompositionEntityBean {
 
 	public void removeFile(FileBean file) {
 		files.remove(file);
-	}
-
-	public void addFile(FileBean file, int index) {
-		if (index == -1) {
-			files.add(file);
-			return;
-		}
-		if (!files.isEmpty()) {
-			files.remove(index);
-		}
-		files.add(index, file);
-	}
-
-	public void removeFile(int index) {
-		files.remove(index);
 	}
 
 	public String getType() {
@@ -97,13 +80,5 @@ public class BaseCompositionEntityBean {
 
 	public void setClassName(String className) {
 		this.className = className;
-	}
-
-	public int getTheFileIndex() {
-		return theFileIndex;
-	}
-
-	public void setTheFileIndex(int theFileIndex) {
-		this.theFileIndex = theFileIndex;
 	}
 }
