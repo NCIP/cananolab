@@ -10,6 +10,7 @@
 			<form-property name="file"
 				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
+			<form-property name="sampleId" type="java.lang.String" />
 		</form-bean>
 
 		<form-bean name="searchPublicationForm"
@@ -68,7 +69,7 @@
 			<forward name="sampleDetailView" path="sample.detailViewPublication" />
 			<forward name="publicationDetailView" path="publication.detailViewPublication" />
 			<forward name="summaryView" path="sample.publication.summaryView" />
-			<forward name="summaryPrint" 
+			<forward name="summaryPrint"
 				path="/publication/bodySamplePublicationSummaryPrintView.jsp" />
 			<forward name="summaryEdit" path="sample.publication.summaryEdit" />
 			<forward name="publicationSubmitPublication"

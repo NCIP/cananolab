@@ -9,6 +9,7 @@
 				initial="0" />
 			<form-property name="sampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
+			<form-property name="sampleId" type="java.lang.String" />
 		</form-bean>
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
