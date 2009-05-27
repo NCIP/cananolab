@@ -658,7 +658,7 @@ public class SampleServiceLocalImpl implements
 				}
 				// set POC accessibility
 				PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-				pocService.retrieveAccessibility(particle.getPocBean(), user);
+				pocService.retrieveVisibility(particle.getPocBean(), user);
 			}
 			return filtered;
 		} catch (Exception e) {
