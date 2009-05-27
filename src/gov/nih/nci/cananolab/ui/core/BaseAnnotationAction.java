@@ -3,7 +3,6 @@ package gov.nih.nci.cananolab.ui.core;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
@@ -52,17 +51,20 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * And then check user's access privilege, throws Exception if user doesn't have privilege.
 	 * Otherwise, set visibility of Primary POC of sample based on user's privilege.
 	 * Lastly, set the SampleBean in request object.
-	 * 
+	 *
 	 * @param theForm
 	 * @param request
 	 * @param location
-	 * @return SampleBean 
+	 * @return SampleBean
 	 * @throws Exception if user in session is not allowed to access this sample particle.
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
 		String sampleId = request.getParameter("sampleId");
-		if (sampleId == null) {
+		if (sampleId!=null) {
+			theForm.set("sampleId", sampleId);
+		}
+		else {
 			sampleId = (String) request.getAttribute("sampleId");
 			if (sampleId == null) {
 				sampleId = theForm.getString("sampleId");
@@ -90,14 +92,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					request.getSession().removeAttribute("user");
 				}
 				throw new NoAccessException(
-						"You don't have the required privileges to access this particle");
-			} else {
-				PointOfContactBean pointOfContactBean = sampleBean.getPocBean();
-				if (auth.isUserAllowed(pointOfContactBean.getDomain().getId().toString(), user)) {
-					pointOfContactBean.setHidden(false);
-				} else {
-					pointOfContactBean.setHidden(true);
-				}
+						"You don't have the required privileges to access this sample");
 			}
 		}
 		sampleBean.setLocation(location);
@@ -107,9 +102,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	protected void saveFilesToFileSystem(List<FileBean> files) throws Exception {
 		// save file data to file system and set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-
 		FileService fileService = new FileServiceLocalImpl();
 		for (FileBean fileBean : files) {
 			fileService.writeFile(fileBean.getDomainFile(), fileBean
@@ -122,18 +114,15 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return false;
 	}
 
-	public boolean canUserExecute(UserBean user)
-			throws SecurityException {
+	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PARTICLE);
 	}
 
 	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
-			SampleBean sampleBean, HttpServletRequest request)
-			throws Exception {
+			SampleBean sampleBean, HttpServletRequest request) throws Exception {
 		request.setAttribute("updateDataTree", "true");
-		return InitSampleSetup.getInstance().getDataTree(sampleBean,
-				request);
+		return InitSampleSetup.getInstance().getDataTree(sampleBean, request);
 	}
 
 	public ActionForward setupDeleteAll(ActionMapping mapping, ActionForm form,
@@ -209,8 +198,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		else {
 			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
 					location);
-			//TODO model change
-			//fileService = new FileServiceRemoteImpl(serviceUrl);
+			// TODO model change
+			// fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
 		fileBean = fileService.findFileById(fileId, user);
 		if (fileBean != null) {
@@ -277,8 +266,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		SampleService sampleService = new SampleServiceLocalImpl();
 		int i = 0;
 		for (String other : otherSamples) {
-			Sample sample = sampleService
-					.findSampleByName(other);
+			Sample sample = sampleService.findSampleByName(other);
 			samples[i] = sample;
 			i++;
 		}
