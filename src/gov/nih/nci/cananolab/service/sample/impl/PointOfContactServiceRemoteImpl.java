@@ -54,7 +54,7 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 		return null;
 	}
 
-	public void retrieveAccessibility(PointOfContactBean pocBean, UserBean user)
+	public void retrieveVisibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
