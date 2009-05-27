@@ -449,26 +449,23 @@ function showSummary(layer_ref, totalLayers) {
 function addFile(actionName, form) {
 	//for characterization form, files are saved to the session per finding, not directly
 	//to the database
-	if (actionName=="characterization") {
-	  dispatch="addFile";
+	if (actionName == "characterization") {
+		dispatch = "addFile";
+	} else {
+		dispatch = "saveFile";
 	}
-	else {
-	  dispatch="saveFile";
-	}
-	form.action = actionName + ".do?dispatch="+dispatch+"&page=0";
+	form.action = actionName + ".do?dispatch=" + dispatch + "&page=0";
 	form.submit();
 }
-<!--//
-function confirmDelete(type)
-{
-	answer = confirm("Are you sure you want to delete the "+type+"?")
+function confirmDelete(type) {
+	answer = confirm("Are you sure you want to delete the " + type + "?");
 	return answer;
 }
 function removeFile(actionName, form, index) {
-	var answer=confirmDelete("file");
-	if (answer!=0) {
-	  form.action = actionName + ".do?dispatch=removeFile&page=0";
-	  form.submit();
+	var answer = confirmDelete("file");
+	if (answer != 0) {
+		form.action = actionName + ".do?dispatch=removeFile&page=0";
+		form.submit();
 	}
 }
 function populateFile(file) {
