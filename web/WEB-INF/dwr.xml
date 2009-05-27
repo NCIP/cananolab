@@ -52,6 +52,7 @@
 			<include method="getConditionPropertyOptions" />
 			<include method="getDatumNameOptions" />
 			<include method="getColumnValueUnitOptions" />
+			<include method="resetTheFile"/>
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">
