@@ -13,18 +13,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class CompositionBean {
-	
+
 	public static final String NANOMATERIAL_SELECTION = "Nanomaterial Entity";
 	public static final String FUNCTIONALIZING_SELECTION = "Functionalizing Entity";
 	public static final String CHEMICAL_SELECTION = "Chemical Association";
 	public static final String FILE_SELECTION = "Composition File";
-	
+
 	private List<NanomaterialEntityBean> nanomaterialEntities = new ArrayList<NanomaterialEntityBean>();
 	private List<FunctionalizingEntityBean> functionalizingEntities = new ArrayList<FunctionalizingEntityBean>();
 	private List<ChemicalAssociationBean> chemicalAssociations = new ArrayList<ChemicalAssociationBean>();
 	private List<FileBean> files = new ArrayList<FileBean>();
 	private SampleComposition domain;
 	private List<String> compositionSections = new ArrayList<String>();
+	protected FileBean theFile = new FileBean();
 
 	public CompositionBean() {
 
@@ -118,5 +119,13 @@ public class CompositionBean {
 			compositionSections.add(FILE_SELECTION);
 		}
 		return compositionSections;
+	}
+
+	public FileBean getTheFile() {
+		return theFile;
+	}
+
+	public void setTheFile(FileBean theFile) {
+		this.theFile = theFile;
 	}
 }
