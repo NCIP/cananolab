@@ -126,7 +126,7 @@
 					<input class="promptButton" type="button" value="Add"
 						onclick="addFile('${actionName}', ${fileForm});" />
 					<input class="promptButton" type="button" value="Cancel"
-						onclick="clearFile();hide('newFile');" />
+						onclick="clearFile('${fileParent }');hide('newFile');" />
 				</div>
 			</td>
 		</tr>
