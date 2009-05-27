@@ -13,7 +13,7 @@
 		<td class="cellLabel">
 			Finding&nbsp;&nbsp;
 			<a id="addFinding"
-				href="javascript:resetTheFinding(characterizationForm, true);"><img
+				href="javascript:resetTheFinding(characterizationForm);show('newFinding');"><img
 					align="top" src="images/btn_add.gif" border="0" /></a>
 		</td>
 	</tr>
