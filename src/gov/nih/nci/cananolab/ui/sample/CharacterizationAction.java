@@ -238,7 +238,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (charBean.getClassName() == null) {
+		if (charBean.getClassName() == null || charBean.getClassName().length()==0) {
 			String className = InitSetup.getInstance().getClassName(
 					charBean.getCharacterizationName(),
 					request.getSession().getServletContext());
@@ -606,12 +606,12 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 
-		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) 
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean)
 			request.getAttribute("characterizationSummaryView");
-		SortedMap<String, List<CharacterizationBean>> charBeanMap = 
+		SortedMap<String, List<CharacterizationBean>> charBeanMap =
 			charSummaryBean.getType2Characterizations();
 		List<CharacterizationBean> charBeans = null;
-		
+
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
 		String location = request.getParameter("location");
@@ -622,23 +622,23 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				charBeanMap.put(type, charBeans);
 			}
 		}
-		
+
 		// Get sample name for constructing file name.
 		charBeans = charBeanMap.get(charBeanMap.firstKey());
 		CharacterizationBean charBean = (CharacterizationBean) charBeans.get(0);
-		
-		String fileName = 
-			this.getExportFileName(charBean.getDomainChar().getSample().getName(), 
+
+		String fileName =
+			this.getExportFileName(charBean.getDomainChar().getSample().getName(),
 					"summaryView", charBean.getClassName());
 		ExportUtils.prepareReponseForExport(response, fileName);
 		CharacterizationService service = null;
 		if (Constants.LOCAL.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
 		} else {
-			// TODO: Implement remote service. 
+			// TODO: Implement remote service.
 		}
 		service.exportSummary(charSummaryBean, request, response.getOutputStream());
-		
+
 		return null;
 	}
 
