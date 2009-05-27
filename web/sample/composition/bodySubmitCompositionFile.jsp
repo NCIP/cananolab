@@ -3,52 +3,80 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<a name="Composition File"></a>
-<c:url var="entityAddUrl" value="nanomaterialEntity.do">
-	<c:param name="page" value="0" />
-	<c:param name="dispatch" value="setup" />
-	<c:param name="location" value="local" />
-	<c:param name="sampleId" value="${sampleId}" />
-	<c:param name="submitType" value="Nanomaterial Entity" />
-</c:url>
-<table id="summarySection4" style="display: block;" class="smalltable3" cellpadding="0" cellspacing="0" border="0"
-	width="100%">
-	<tr>
-		<th colspan="4" align="left">
-			Composition File &nbsp;&nbsp;&nbsp;
-			<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-					src="images/btn_add.gif" border="0" /></a> &nbsp;&nbsp;&nbsp;
-			<c:if test="${!empty compositionForm.map.comp.nanomaterialEntities}">
-				<a href="${entityAddUrl}" class="addlink"><img align="absmiddle"
-						src="images/btn_delete.gif" border="0" />
-				</a>
-			</c:if>
-		</th>
-	</tr>
-	<tr>
-		<td colspan="4" align="left">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-		</td>
-	</tr>
 
-
-	<tr>
-		<td>
-			<div class="indented4">
-				<table class="summarytable" border="0" width="90%">
+<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
+<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
+<script type="text/javascript" src="javascript/CompositionManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+<c:set var="fileParent" value="comp" />
+<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
+<html:form action="/compositionFile" enctype="multipart/form-data">
+	<table width="100%" align="center">
+		<tr>
+			<td>
+				<h4>
+					${sampleName} Sample Composition - Composition File
+				</h4>
+			</td>
+			<td align="right" width="15%">
+				<jsp:include page="/helpGlossary.jsp">
+					<jsp:param name="topic" value="function_entity_help" />
+					<jsp:param name="glossaryTopic" value="glossary_help" />
+				</jsp:include>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+			</td>
+		</tr>
+	</table>
+	<c:set var="fileForm" value="compositionForm" />
+	<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
+	<c:set var="actionName" value="compositionFile" />
+	<%@include file="../bodySubmitFile.jsp"%>
+	<br>
+	<table width="100%" border="0" align="center" cellpadding="3"
+		cellspacing="0">
+		<tr>
+			<td width="30%">
+				<c:choose>
+					<c:when
+						test="${!empty compositionForm.map.comp.theFile.domainFile.id && canDelete eq 'true'}">
+						<table height="32" border="0" align="left" cellpadding="4"
+							cellspacing="0">
+							<tr>
+								<td height="32">
+									<div align="left">
+										<input type="button" value="Delete"
+											onclick="deleteCompositionFile()">
+									</div>
+								</td>
+							</tr>
+						</table>
+					</c:when>
+				</c:choose>
+				<table width="498" height="32" border="0" align="right"
+					cellpadding="4" cellspacing="0">
 					<tr>
-						<td>
-							&nbsp;No data available&nbsp;&nbsp;
+						<td width="490" height="32">
+							<div align="right">
+								<div align="right">
+									<input type="reset" value="Reset"
+										onclick="javascript:window.location.href='${origUrl}'">
+									<input type="hidden" name="dispatch" value="create">
+									<input type="hidden" name="page" value="2">
+									<html:hidden property="sampleId" value="${sampleId}" />
+									<html:submit/>
+								</div>
+							</div>
 						</td>
 					</tr>
 				</table>
-				&nbsp;
-			</div>
-			&nbsp;
-		</td>
-	</tr>
-</table>
-<div id="summarySeparator4"><br></div>
-
-
-
+			</td>
+		</tr>
+	</table>
+</html:form>
