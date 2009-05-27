@@ -39,44 +39,9 @@
 	<c:set var="actionName" value="compositionFile" />
 	<%@include file="../bodySubmitFile.jsp"%>
 	<br>
-	<table width="100%" border="0" align="center" cellpadding="3"
-		cellspacing="0">
-		<tr>
-			<td width="30%">
-				<c:choose>
-					<c:when
-						test="${!empty compositionForm.map.comp.theFile.domainFile.id && canDelete eq 'true'}">
-						<table height="32" border="0" align="left" cellpadding="4"
-							cellspacing="0">
-							<tr>
-								<td height="32">
-									<div align="left">
-										<input type="button" value="Delete"
-											onclick="deleteCompositionFile()">
-									</div>
-								</td>
-							</tr>
-						</table>
-					</c:when>
-				</c:choose>
-				<table width="498" height="32" border="0" align="right"
-					cellpadding="4" cellspacing="0">
-					<tr>
-						<td width="490" height="32">
-							<div align="right">
-								<div align="right">
-									<input type="reset" value="Reset"
-										onclick="javascript:window.location.href='${origUrl}'">
-									<input type="hidden" name="dispatch" value="create">
-									<input type="hidden" name="page" value="2">
-									<html:hidden property="sampleId" value="${sampleId}" />
-									<html:submit/>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
+	<c:set var="type" value="composition file" />
+	<c:set var="actionName" value="compositionFile" />
+	<c:set var="dataId"
+		value="${compositionForm.map.comp.theFile.domainFile.id}" />
+	<%@include file="bodyCompositionSubmit.jsp"%>
 </html:form>
