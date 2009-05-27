@@ -64,6 +64,7 @@ function clearFile(type) {
 }
 function setTheFile(type, id) {
 	CompositionManager.getFileById(type, id, populateFile);
+	show("newFile");
 	show("deleteFile");
 }
 /* end of set submit file form */
