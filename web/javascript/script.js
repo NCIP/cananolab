@@ -447,7 +447,15 @@ function showSummary(layer_ref, totalLayers) {
 	exportLink.href = exportUrl.href;
 }
 function addFile(actionName, form) {
-	form.action = actionName + ".do?dispatch=saveFile&page=0";
+	//for characterization form, files are saved to the session per finding, not directly
+	//to the database
+	if (actionName=="characterization") {
+	  dispatch="addFile";
+	}
+	else {
+	  dispatch="saveFile";
+	}
+	form.action = actionName + ".do?dispatch="+dispatch+"&page=0";
 	form.submit();
 }
 <!--//
@@ -501,7 +509,6 @@ function populateFile(file) {
 			hide("link");
 		}
 	}
-	show("newFile");
 }
 function displayFileRadioButton() {
 	var external0 = dwr.util.getValue("external0");
