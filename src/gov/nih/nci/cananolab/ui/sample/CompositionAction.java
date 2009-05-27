@@ -1,10 +1,13 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -172,6 +175,11 @@ public class CompositionAction extends BaseAnnotationAction {
 					.getClassNameToDisplayNameLookup(
 							session.getServletContext()));
 			compService.retrieveVisibility(assocBean, user);
+		}
+		FileService fileService=new FileServiceLocalImpl();
+		for (FileBean fileBean : compositionBean
+				.getFiles()) {
+			fileService.retrieveVisibility(fileBean, user);
 		}
 	}
 
