@@ -9,7 +9,8 @@
 <script type="text/javascript" src="javascript/CompositionManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/CompositionManager.js'></script>
-<script type="text/javascript" src="javascript/FunctionalizingEntityManager.js"></script>
+<script type="text/javascript"
+	src="javascript/FunctionalizingEntityManager.js"></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/FunctionalizingEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
@@ -169,8 +170,8 @@
 							<td class="cellLabel">
 								Function&nbsp;&nbsp;&nbsp;&nbsp;
 								<a style="" id="addFunction"
-									href="javascript:clearFunction();show('newFunction');"><img align="top"
-										src="images/btn_add.gif" border="0" /> </a>
+									href="javascript:clearFunction();show('newFunction');"><img
+										align="top" src="images/btn_add.gif" border="0" /> </a>
 							</td>
 						</tr>
 						<tr>
@@ -187,7 +188,7 @@
 						<tr>
 							<td>
 								<div id="newFunction" style="display: none;">
-									<%@ include file="bodySubmitFunction.jsp" %>
+									<%@ include file="bodySubmitFunction.jsp"%>
 								</div>
 								&nbsp;
 							</td>
@@ -222,7 +223,6 @@
 							<c:set var="files"
 								value="${compositionForm.map.functionalizingEntity.files}" />
 							<c:set var="edit" value="true" />
-							<c:set var="entityType" value="functionalizing entity" />
 							<%@ include file="../bodyFileView.jsp"%>
 						</c:if>
 					</td>
@@ -235,10 +235,10 @@
 							<c:set var="newFileStyle" value="display:none" />
 						</c:if>
 						<div style="${newFileStyle}" id="newFile">
-
 							<c:set var="fileForm" value="compositionForm" />
 							<c:set var="theFile"
 								value="${compositionForm.map.functionalizingEntity.theFile}" />
+							<c:set var="actionName" value="functionalizingEntity" />
 							<%@include file="../../bodySubmitFile.jsp"%>
 							&nbsp;
 						</div>
