@@ -523,11 +523,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	protected void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String sampleId = request.getParameter("sampleId");
-		//get sampleId from request attribute when coming to summary view from saving characterization
-		if (sampleId==null) {
-			sampleId=(String)request.getAttribute("sampleId");
-		}
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String sampleId = theForm.getString("sampleId");
 		String location = request.getParameter("location");
 		if (location==null) {
 			location=(String)request.getAttribute("location");
