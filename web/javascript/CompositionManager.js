@@ -1,3 +1,4 @@
+
 /* set the entity properties section */
 function setEntityInclude(selectEleId, pagePath) {
 	var entityType = document.getElementById(selectEleId).value;
@@ -14,19 +15,19 @@ function populatePage(pageData) {
 	}
 }
 /* end of set the entity properties section */
-
 /* set submit chemical association form */
-function getEntityDisplayNameOptions(elementNumber) {
+function getAssociatedElementOptions(elementNumber) {
 	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
-	if (compositionType == "Nanomaterial Entity") {
-		show("materialEntitySelect" + elementNumber);
-		hide("functionalizingEntitySelect" + elementNumber);
-	} else {
-		if (compositionType == "Functionalizing Entity") {
-			show("functionalizingEntitySelect" + elementNumber);
-			hide("materialEntitySelect" + elementNumber);
+	CompositionManager.getAssociatedElementOptions(compositionType, function (entities) {
+		if (entities != null) {
+			dwr.util.removeAllOptions("entityId" + elementNumber);
+			dwr.util.addOptions("entityId" + elementNumber, [""]);
+			//requires getters for domainId and displayName in BaseCompositionEntityBean
+			dwr.util.addOptions("entityId" + elementNumber, entities, "domainId", "displayName");
 		}
-	}
+	});
+	show("entitySelect" + elementNumber);
+	hide("composingElementSelect"+elementNumber);
 }
 function displayBondType() {
 	var type = document.getElementById("assoType").value;
@@ -34,7 +35,7 @@ function displayBondType() {
 		show("bondTypeLabel");
 		show("bondTypePrompt");
 	} else {
-		hide("bondType");
+		hide("bondTypeLabel");
 		hide("bondTypePrompt");
 	}
 }
@@ -45,19 +46,35 @@ function setCompositionType(entityTypeId, displayNameEleId) {
 	// alert(document.getElementById(displayNameEleId).value);
 }
 function setEntityDisplayName(entityTypeId, displayNameEleId) {
-	var selectEle = document.getElementById(entityTypeId);
-	var selectedName = selectEle.options[selectEle.options.selectedIndex].text;
-	document.getElementById(displayNameEleId).value = selectedName;
-	// alert(document.getElementById(displayNameEleId).value);
+	var selectedName = dwr.util.getText(entityTypeId);
+	dwr.util.setValue(displayNameEleId, selectedName);
+	//alert(selectedName);
+}
+function getComposingElementOptions(elementNumber) {
+	var compositionType = dwr.util.getValue("compositionType" + elementNumber);
+	if (compositionType == "Nanomaterial Entity") {
+		var entityId = dwr.util.getValue("entityId" + elementNumber);
+		CompositionManager.getComposingElementsByNanomaterialEntityId(entityId, function (composingElements) {
+			if (composingElements != null) {
+				dwr.util.removeAllOptions("composingElementId" + elementNumber);
+				dwr.util.addOptions("composingElementId" + elementNumber, [""]);
+			//requires getters for domainId and displayName in ComposingElementBean
+				dwr.util.addOptions("composingElementId" + elementNumber, composingElements, "domainId", "displayName");
+			}
+		});
+		show("composingElementSelect" + elementNumber);
+	}
+	else {
+	    hide("composingElementSelect"+elementNumber);
+	}
 }
 /* end of set submit chemical association form */
-
 /* set submit file form */
 function clearFile(type) {
 	//go to server and clean form bean
 	CompositionManager.resetTheFile(type, populateFile);
 	hide("deleteFile");
-    show("load");
+	show("load");
 	hide("link");
 	dwr.util.setValue("uploadedFile", "");
 	dwr.util.setValue("externalUrl", "");
@@ -67,12 +84,12 @@ function setTheFile(type, id) {
 	show("newFile");
 	show("deleteFile");
 }
-
 function deleteCompositionData(type, actionName) {
-var answer = confirmDelete(type);
+	var answer = confirmDelete(type);
 	if (answer != 0) {
 		form.action = actionName + ".do?dispatch=delete&page=0";
 		form.submit();
 	}
 }
 /* end of set submit file form */
+
