@@ -130,11 +130,12 @@ public class CompositionAction extends BaseAnnotationAction {
 	protected void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String sampleId = theForm.getString("sampleId");
 		String location = request.getParameter("location");
-		if (location == null) {
-			location = (String) request.getAttribute("location");
+		if (location==null) {
+			location=(String)request.getAttribute("location");
 		}
-		String sampleId = request.getParameter("sampleId");
 		HttpSession session = request.getSession();
 		CompositionService compService = null;
 		if (Constants.LOCAL.equals(location)) {
@@ -150,8 +151,6 @@ public class CompositionAction extends BaseAnnotationAction {
 		if (compService.findCompositionBySampleId(sampleId) != null) {
 			compositionBean = compService.findCompositionBySampleId(sampleId);
 		}
-
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("comp", compositionBean);
 		// set entity type and association type and retrieve visibility
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
