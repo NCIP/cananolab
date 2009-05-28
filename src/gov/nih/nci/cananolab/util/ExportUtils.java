@@ -19,7 +19,8 @@ public class ExportUtils {
 	/**
 	 * Constant for setting response header. 
 	 */
-	public static final String CONTENT_TYPE = "application/vnd.ms-execel";
+	public static final String IMAGE_CONTENT_TYPE = "application/octet-stream";
+	public static final String EXCEL_CONTENT_TYPE = "application/vnd.ms-execel";
 	public static final String CACHE_CONTROL = "cache-control";
 	public static final String PRIVATE = "Private";
 	public static final String CONTENT_DISPOSITION = "Content-disposition";
@@ -32,11 +33,11 @@ public class ExportUtils {
 	 * @param response HttpServletResponse
 	 * @param fileName String
 	 */
-	public static void prepareReponseForExport(HttpServletResponse response, String fileName) {
+	public static void prepareReponseForExcell(HttpServletResponse response, String fileName) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(ATTACHMENT).append(fileName).append(EXCELL_EXTENTION);
 		
-		response.setContentType(CONTENT_TYPE);
+		response.setContentType(EXCEL_CONTENT_TYPE);
 		response.setHeader(CACHE_CONTROL, PRIVATE);
 		response.setHeader(CONTENT_DISPOSITION, sb.toString());
 	}

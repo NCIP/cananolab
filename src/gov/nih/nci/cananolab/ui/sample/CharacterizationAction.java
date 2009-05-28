@@ -627,7 +627,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String fileName =
 			this.getExportFileName(charBean.getDomainChar().getSample().getName(),
 					"summaryView", charBean.getClassName());
-		ExportUtils.prepareReponseForExport(response, fileName);
+		ExportUtils.prepareReponseForExcell(response, fileName);
 		CharacterizationService service = null;
 		if (Constants.LOCAL.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();

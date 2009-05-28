@@ -602,7 +602,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		SampleBean sampleBean = sampleService.findSampleById(sampleId);
 		String fileName = 
 			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
-		ExportUtils.prepareReponseForExport(response, fileName);
+		ExportUtils.prepareReponseForExcell(response, fileName);
 		service.exportSummary(summaryBean, response.getOutputStream());
 		
 		return null;
@@ -804,7 +804,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 		
 		String fileName = this.getExportFileName(title, "detailView");
-		ExportUtils.prepareReponseForExport(response, fileName);
+		ExportUtils.prepareReponseForExcell(response, fileName);
 		publicationService.exportDetail(pubBean, response.getOutputStream());
 		
 		return null;
