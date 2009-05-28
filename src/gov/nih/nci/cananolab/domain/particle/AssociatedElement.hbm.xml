@@ -39,7 +39,7 @@
 				<key column="functionalizing_entity_pk_id" />
 				<many-to-many class="gov.nih.nci.cananolab.domain.common.File" column="file_pk_id" />
 			</set>
-			<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.SampleComposition" column="composition_pk_id" lazy="proxy" />
+			<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.SampleComposition" column="composition_pk_id" lazy="proxy"  cascade="save-update"/>
 			<many-to-one name="activationMethod" class="gov.nih.nci.cananolab.domain.particle.ActivationMethod" column="activation_method_pk_id" unique="true" lazy="proxy" />
 			<set name="functionCollection" lazy="true" cascade="all-delete-orphan">
 				<cache usage="read-write" />

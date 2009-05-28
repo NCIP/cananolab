@@ -15,7 +15,7 @@
 		<property name="createdDate" type="java.util.Date" column="created_date"/>
 		<property name="description" type="string" column="description"/>
 		<!-- Associations mapping for the ChemicalAssociation class -->
-		<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.SampleComposition" column="composition_pk_id" lazy="proxy" />
+		<many-to-one name="sampleComposition" class="gov.nih.nci.cananolab.domain.particle.SampleComposition" column="composition_pk_id" lazy="proxy"  cascade="save-update"/>
 		<many-to-one name="associatedElementA" class="gov.nih.nci.cananolab.domain.particle.AssociatedElement" column="associated_element_a_pk_id" lazy="proxy" />
 		<set name="fileCollection" table="chemical_association_file" lazy="true" cascade="all-delete-orphan">
 			<cache usage="read-write" />
