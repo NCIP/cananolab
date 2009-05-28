@@ -13,8 +13,7 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 
 <c:choose>
-	<c:when
-		test="${chemicalAssociationForm.map.assoc.type eq 'attachment'}">
+	<c:when test="${compositionForm.map.assoc.type eq 'attachment'}">
 		<c:set var="style" value="display:inline" />
 	</c:when>
 	<c:otherwise>
@@ -91,10 +90,10 @@
 				<c:set var="bondTypeStyle" value="display:block" />
 			</c:if>
 			<td class="cellLabel">
-				<span id="bondTypeLabel" style="">Bond Type*</span>
+				<span id="bondTypeLabel" style="${bondTypeStyle}">Bond Type*</span>
 			</td>
 			<td>
-				<div id="bondTypePrompt" style="">
+				<div id="bondTypePrompt" style="${bondTypeStyle}">
 					<html:select styleId="bondType"
 						property="assoc.attachment.bondType"
 						onchange="javascript:callPrompt('Bond Type', 'bondType', 'bondTypePrompt');">
@@ -119,106 +118,27 @@
 	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<th colspan="4">
+			<th colspan="3">
 				Associated Elements Information
 			</th>
 		</tr>
 		<tr>
 			<td>
-				<table>
-					<tr>
-						<td class="cellLabel" width="40%">
-							Element*
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<html:select styleId="compositionTypeA"
-								property="assoc.associatedElementA.compositionType"
-								onchange="getEntityDisplayNameOptions('A');">
-								<option value=""></option>
-								<html:options name="associationCompositionTypes" />
-							</html:select>
-							<c:set var="materialEntitySelectAStyle" value="display:none" />
-							<c:set var="functionalizingEntitySelectAStyle"
-								value="display:none" />
-							<c:if
-								test="${compositionForm.map.assoc.associatedElementA.compositionType eq 'Nanomaterial Entity'}">
-								<c:set var="materialEntitySelectAStyle" value="display:block" />
-							</c:if>
-							<c:if
-								test="${compositionForm.map.assoc.associatedElementA.compositionType eq 'Functionalizing Entity'}">
-								<c:set var="functionalizingEntitySelectAStyle"
-									value="display:block" />
-							</c:if>
-							<div id="materialEntitySelectA" style="">
-								<br>
-								<html:select styleId="compositionTypeA"
-									property="assoc.associatedElementA.entityDisplayName"
-									onchange="">
-									<option value=""></option>
-									<html:options collection="sampleMaterialEntities"
-										property="type" labelProperty="type" />
-								</html:select>
-							</div>
-							<div id="functionalizingEntitySelectA" style="">
-								<br>
-								<html:select styleId="compositionTypeA"
-									property="assoc.associatedElementA.entityDisplayName"
-									onchange="">
-									<option value=""></option>
-									<html:options collection="sampleFunctionalizingEntities"
-										property="displayName" labelProperty="displayName" />
-								</html:select>
-							</div>
-						</td>
-					</tr>
-				</table>
+				<c:set var="elementNumber" value="A" />
+				<c:set var="entitySelectStyle" value="display:none" />
+				<c:set var="composingElementSelectStyle" value="display:none" />
+				<%@include file="bodySubmitAssociatedElement.jsp"%>
 			</td>
-			<td width="20%">
+			<td>
 				<img src="images/arrow_left_right_gray.gif" id="assocImg" />
 				<br>
 				associated with
 			</td>
-			<td width="40%">
-				<table>
-					<tr>
-						<td class="cellLabel">
-							Element*
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<html:select styleId="compositionTypeB"
-								property="assoc.associatedElementB.compositionType"
-								onchange="getEntityDisplayNameOptions('B');">
-								<option value=""></option>
-								<html:options name="associationCompositionTypes" />
-							</html:select>
-							<c:set var="materialEntityBStyle" value="display:none" />
-							<div id="materialEntitySelectB" style="">
-								<br>
-								<html:select styleId="compositionTypeB"
-									property="assoc.associatedElementB.entityDisplayName"
-									onchange="">
-									<option value=""></option>
-									<html:options collection="sampleMaterialEntities"
-										property="type" labelProperty="type" />
-								</html:select>
-							</div>
-							<div id="functionalizingEntitySelectB" style="display: none">
-								<br>
-								<html:select styleId="compositionTypeB"
-									property="assoc.associatedElementB.entityDisplayName"
-									onchange="">
-									<option value=""></option>
-									<html:options collection="sampleFunctionalizingEntities"
-										property="displayName" labelProperty="displayName" />
-								</html:select>
-							</div>
-						</td>
-					</tr>
-				</table>
+			<td>
+				<c:set var="elementNumber" value="B" />
+				<c:set var="entitySelectStyle" value="display:none" />
+				<c:set var="composingElementSelectStyle" value="display:none" />
+				<%@include file="bodySubmitAssociatedElement.jsp"%>
 			</td>
 		</tr>
 	</table>
@@ -227,38 +147,38 @@
 	<c:set var="fileParent" value="assoc" />
 	<a name="file">
 		<table width="100%" align="center" class="submissionView">
-			<tbody>
-				<tr>
-					<th colspan="2">
-						Chemical Association File
-					</th>
-				</tr>
-				<tr>
-					<td class="cellLabel" colspan="2">
-						File&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
-								align="top" src="images/btn_add.gif" border="0" /> </a>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<c:if test="${! empty compositionForm.map.assoc.files }">
-							<c:set var="files" value="${compositionForm.map.assoc.files}" />
-							<c:set var="edit" value="true" />
-							<%@ include file="bodyFileView.jsp"%>
-						</c:if>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<div style="display:none" id="newFile">
-							<c:set var="fileForm" value="compositionForm" />
-							<c:set var="theFile" value="${compositionForm.map.assoc.theFile}" />
-							<%@include file="../bodySubmitFile.jsp"%>
-							&nbsp;
-						</div>
-					</td>
-				</tr>
+			<tr>
+				<th colspan="2">
+					Chemical Association File
+				</th>
+			</tr>
+			<tr>
+				<td class="cellLabel" colspan="2">
+					File&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="javascript:clearFile('${fileParent }'); show('newFile');"><img
+							align="top" src="images/btn_add.gif" border="0" /> </a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<c:if test="${! empty compositionForm.map.assoc.files }">
+						<c:set var="files" value="${compositionForm.map.assoc.files}" />
+						<c:set var="edit" value="true" />
+						<%@ include file="bodyFileView.jsp"%>
+					</c:if>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					&nbsp;&nbsp;
+					<div style="display: none" id="newFile">
+						<c:set var="fileForm" value="compositionForm" />
+						<c:set var="theFile" value="${compositionForm.map.assoc.theFile}" />
+						<%@include file="../bodySubmitFile.jsp"%>
+						&nbsp;
+					</div>
+				</td>
+			</tr>
 		</table> </a>
 	<br>
 	<c:set var="type" value="chemical association" />
@@ -266,4 +186,5 @@
 	<c:set var="dataId"
 		value="${compositionForm.map.assoc.domainAssociation.id}" />
 	<%@include file="bodyCompositionSubmit.jsp"%>
+
 </html:form>
