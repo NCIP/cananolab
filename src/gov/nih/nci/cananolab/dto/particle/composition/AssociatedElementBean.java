@@ -67,7 +67,7 @@ public class AssociatedElementBean {
 			} else {
 				clazz = ClassUtils.getFullClass("functionalization."
 						+ className);
-			}			
+			}
 			try {
 				domainElement = (AssociatedElement) clazz.newInstance();
 			}catch (ClassCastException ex) {
@@ -75,7 +75,6 @@ public class AssociatedElementBean {
 				this.setCompositionType(null);
 				throw new ClassCastException(tmpType);
 			}
-			
 			domainElement.setId(new Long(entityId));
 		} else {
 			domainElement = composingElement;

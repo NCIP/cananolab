@@ -23,6 +23,8 @@ public class BaseCompositionEntityBean {
 
 	protected List<FileBean> files = new ArrayList<FileBean>();
 
+	protected String domainId, displayName; //used for DWR ajax in bodySubmitChemicalAssociation.jsp
+
 	public BaseCompositionEntityBean() {
 	}
 
@@ -80,5 +82,13 @@ public class BaseCompositionEntityBean {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public String getDomainId() {
+		return domainId;
+	}
+
+	public String getDisplayName() {
+		return displayName;
 	}
 }

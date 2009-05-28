@@ -305,4 +305,14 @@ public class NanomaterialEntityBean extends BaseCompositionEntityBean {
 	public void setTheComposingElement(ComposingElementBean theComposingElement) {
 		this.theComposingElement = theComposingElement;
 	}
+
+	//used for DWR ajax in bodySubmitChemicalAssociation.jsp
+	public String getDomainId() {
+		return domainEntity.getId().toString();
+	}
+
+	//used for DWR ajax
+	public String getDisplayName() {
+		return type;
+	}
 }

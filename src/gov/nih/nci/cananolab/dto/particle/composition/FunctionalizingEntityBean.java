@@ -412,4 +412,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		functions.remove(function);
 	}
 
+	//used for DWR ajax in bodySubmitChemicalAssociation.jsp
+	public String getDomainId() {
+		return domainEntity.getId().toString();
+	}
 }

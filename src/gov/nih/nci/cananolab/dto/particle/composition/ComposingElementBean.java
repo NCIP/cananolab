@@ -107,7 +107,7 @@ public class ComposingElementBean {
 		return displayNames.toArray(new String[displayNames.size()]);
 	}
 
-	// for dwr ajax in bodyChemicalAssociation.jsp
+	// for dwr ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {
 		return getDomain().getId().toString();
 	}
