@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
@@ -53,49 +53,20 @@ public class ChemicalAssociationAction extends CompositionAction {
 		}
 
 		ActionMessages msgs = new ActionMessages();
-		boolean noErrors = true;
-		// validate if composing element is null
-		if (assocBean.getAssociatedElementA().getDomainElement() instanceof ComposingElement
-				&& assocBean.getAssociatedElementA().getDomainElement().getId() == null) {
-			ActionMessage msg = new ActionMessage(
-					"error.nullComposingElementAInAssociation");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			noErrors = false;
-		}
-		if (assocBean.getAssociatedElementB().getDomainElement() instanceof ComposingElement
-				&& assocBean.getAssociatedElementB().getDomainElement().getId() == null) {
-			ActionMessage msg = new ActionMessage(
-					"error.nullComposingElementBInAssociation");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			noErrors = false;
-		}
-		if (!noErrors) {
-			return mapping.getInputForward();
-		}
-		// validate if the same associated elements are chosen on both sides
-		if (assocBean.getAssociatedElementA().getDomainElement().getId()
-				.equals(
-						assocBean.getAssociatedElementB().getDomainElement()
-								.getId())) {
+		if (!validateAssociatedElements(assocBean)) {
 			ActionMessage msg = new ActionMessage(
 					"error.duplicateAssociatedElementsInAssociation");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			saveErrors(request, msgs);
-			noErrors = false;
-		}
-		if (noErrors) {
-			saveAssociation(request, theForm, assocBean);
-			ActionMessage msg = new ActionMessage(
-					"message.addChemicalAssociation");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
-			ActionForward forward = mapping.findForward("success");
-			return forward;
-		} else {
 			return mapping.getInputForward();
 		}
+
+		saveAssociation(request, theForm, assocBean);
+		ActionMessage msg = new ActionMessage("message.addChemicalAssociation");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		saveMessages(request, msgs);
+		request.setAttribute("location", "local");
+		return summaryEdit(mapping, form, request, response);
 	}
 
 	private boolean validateAssociationFile(HttpServletRequest request,
@@ -107,6 +78,44 @@ public class ChemicalAssociationAction extends CompositionAction {
 			}
 		}
 		return true;
+	}
+
+	private boolean validateAssociatedElements(ChemicalAssociationBean assocBean)
+			throws Exception {
+		// validate if composing element is null
+		// if (assocBean.getAssociatedElementA().getComposingElement().getId()
+		// == null) {
+		// ActionMessage msg = new ActionMessage(
+		// "error.nullComposingElementAInAssociation");
+		// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		// saveErrors(request, msgs);
+		// noErrors = false;
+		// }
+		// if (assocBean.getAssociatedElementB().getDomainElement() instanceof
+		// ComposingElement
+		// && assocBean.getAssociatedElementB().getDomainElement().getId() ==
+		// null) {
+		// ActionMessage msg = new ActionMessage(
+		// "error.nullComposingElementBInAssociation");
+		// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		// saveErrors(request, msgs);
+		// noErrors = false;
+		// }
+		// if (!noErrors) {
+		// return mapping.getInputForward();
+		// }
+		// validate if the same associated elements are chosen on both sides
+		boolean noErrors = true;
+		String entityTypeA = assocBean.getAssociatedElementA()
+				.getEntityDisplayName();
+		String entityIdA = assocBean.getAssociatedElementA().getEntityId();
+		String entityTypeB = assocBean.getAssociatedElementB()
+				.getEntityDisplayName();
+		String entityIdB = assocBean.getAssociatedElementB().getEntityId();
+		if (entityTypeA.equals(entityTypeB) && entityIdA.equals(entityIdB)) {
+			noErrors = false;
+		}
+		return noErrors;
 	}
 
 	public void saveAssociation(HttpServletRequest request,
@@ -234,13 +243,19 @@ public class ChemicalAssociationAction extends CompositionAction {
 		// check whether nanomaterial entities has composing elements
 		// store those that have composing elements
 		int numberOfCE = 0;
-		List<NanomaterialEntityBean> materialEntities = new ArrayList<NanomaterialEntityBean>();
+		// use BaseCompositionEntityBean for DWR ajax
+		List<BaseCompositionEntityBean> materialEntities = new ArrayList<BaseCompositionEntityBean>();
 		for (NanomaterialEntityBean entityBean : compositionBean
 				.getNanomaterialEntities()) {
 			if (!entityBean.getComposingElements().isEmpty()) {
 				numberOfCE += entityBean.getComposingElements().size();
 				materialEntities.add(entityBean);
 			}
+		}
+		List<BaseCompositionEntityBean> functionalizingEntities = new ArrayList<BaseCompositionEntityBean>();
+		for (FunctionalizingEntityBean entityBean : compositionBean
+				.getFunctionalizingEntities()) {
+			functionalizingEntities.add(entityBean);
 		}
 		if (numberOfCE == 0) {
 			ActionMessage msg = new ActionMessage(
@@ -265,7 +280,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 		request.getSession().setAttribute("sampleMaterialEntities",
 				materialEntities);
 		request.getSession().setAttribute("sampleFunctionalizingEntities",
-				compositionBean.getFunctionalizingEntities());
+				functionalizingEntities);
 		request.getSession().setAttribute("hasFunctionalizingEntity",
 				hasFunctionalizingEntity);
 		InitSampleSetup.getInstance().setSharedDropdowns(request);
