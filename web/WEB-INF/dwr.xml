@@ -9,6 +9,8 @@
 			<include method="getEntityIncludePage" />
 			<include method="getFileById" />
 			<include method="resetTheFile"/>
+			<include method="getAssociatedElementOptions"/>
+			<include method="getComposingElementsByNanomaterialEntityId"/>
 		</create>
 		<create creator="new" javascript="NanomaterialEntityManager"
 			scope="session">
@@ -88,12 +90,12 @@
 			<include method="getPublicationStatuses" />
 		</create>
 		<convert converter="bean"
-			match="gov.nih.nci.cananolab.util.DataLinkBean">
-			<param name="include" value="dataId, dataDisplayType" />
+			match="gov.nih.nci.cananolab.dto.particle.composition.BaseCompositionEntityBean">
+			<param name="include" value="displayName, domainId" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
-			<param name="include" value="domain, inherentFunctions" />
+			<param name="include" value="domain, inherentFunctions, displayName, domainId" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
