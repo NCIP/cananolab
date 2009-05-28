@@ -174,11 +174,16 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					throw new CompositionException(err, e);
 				}
 			}
-			SampleComposition composition = particleSample
-					.getSampleComposition();
+			if (particleSample.getSampleComposition() == null) {
+				particleSample.setSampleComposition(new SampleComposition());
+				particleSample.getSampleComposition().setSample(particleSample);
+				// particleSample.getSampleComposition()
+				// .setFunctionalizingEntityCollection(
+				// new HashSet<FunctionalizingEntity>());
 
-			composition.getChemicalAssociationCollection().add(assoc);
-
+			}
+			// composition.getChemicalAssociationCollection().add(assoc);
+			assoc.setSampleComposition(particleSample.getSampleComposition() );
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = assoc.getFileCollection();
 			if (Files != null) {
@@ -187,13 +192,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				}
 			}
 
-			if (assoc.getId() == null) { // because of unidirectional
-				// relationship between composition
-				// and chemical associations
-				appService.saveOrUpdate(composition);
-			} else {
-				appService.saveOrUpdate(assoc);
-			}
+			appService.saveOrUpdate(assoc);
+
 		} catch (Exception e) {
 			String err = "Problem saving the chemical assocation.";
 			logger.error(err, e);
