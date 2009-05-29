@@ -131,12 +131,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String submitType = request.getParameter("submitType");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request, "local");
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				sampleBean, request);
-		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
-		request.getSession().setAttribute("actionName",
-				dataToDelete.first().getDataLink());
-		request.getSession().setAttribute("dataToDelete", dataToDelete);
+		//TODO add implementation detail
 		return mapping.findForward("annotationDeleteView");
 	}
 
