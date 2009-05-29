@@ -42,7 +42,7 @@
 			<form-property name="assoc"
 				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String" initial="local"/>
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
@@ -56,7 +56,7 @@
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String" initial="local"/>
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
