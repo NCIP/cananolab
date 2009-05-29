@@ -525,10 +525,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleId = theForm.getString("sampleId");
-		String location = request.getParameter("location");
-		if (location==null) {
-			location=(String)request.getAttribute("location");
-		}
+		String location = theForm.getString("location");
 		CharacterizationService service = null;
 		if (Constants.LOCAL.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();

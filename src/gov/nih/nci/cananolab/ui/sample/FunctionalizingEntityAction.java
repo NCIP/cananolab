@@ -60,7 +60,6 @@ public class FunctionalizingEntityAction extends CompositionAction {
 				"message.addFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
-		request.setAttribute("location", "local");
 		return summaryEdit(mapping, form, request, response);
 	}
 

@@ -132,10 +132,7 @@ public class CompositionAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String sampleId = theForm.getString("sampleId");
-		String location = request.getParameter("location");
-		if (location==null) {
-			location=(String)request.getAttribute("location");
-		}
+		String location = theForm.getString("location");
 		HttpSession session = request.getSession();
 		CompositionService compService = null;
 		if (Constants.LOCAL.equals(location)) {
