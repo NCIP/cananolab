@@ -29,7 +29,6 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
@@ -65,8 +63,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
 		String[] researchAreas = publicationBean.getResearchAreas();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		publicationBean.setupDomainFile(Constants.FOLDER_PUBLICATION,
-				user.getLoginName(), 0);
+		publicationBean.setupDomainFile(Constants.FOLDER_PUBLICATION, user
+				.getLoginName(), 0);
 		String researchAreasStr = null;
 		if (researchAreas != null && researchAreas.length > 0) {
 			researchAreasStr = StringUtils.join(researchAreas, ";");
@@ -85,9 +83,8 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 		}
 		PublicationService service = new PublicationServiceLocalImpl();
-		service.savePublication(publication,
-				publicationBean.getSampleNames(), publicationBean
-						.getNewFileData(), publicationBean.getAuthors());
+		service.savePublication(publication, publicationBean.getSampleNames(),
+				publicationBean.getNewFileData(), publicationBean.getAuthors());
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
@@ -142,10 +139,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		// }
 		if (sampleId != null && sampleId.length() > 0) {
 			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService
-					.findSampleById(sampleId);
+			SampleBean sampleBean = sampleService.findSampleById(sampleId);
 			sampleBean.setLocation("local");
-			setupDataTree(sampleBean, request);
 			forward = mapping.findForward("sampleSuccess");
 		}
 		// session.removeAttribute("sampleId");
@@ -163,8 +158,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitSampleSetup.getInstance().getAllSampleNames(request);
 		if (sampleId != null && sampleId.trim().length() > 0
 				&& session.getAttribute("otherSampleNames") == null) {
-			InitSampleSetup.getInstance().getOtherSampleNames(request,
-					sampleId);
+			InitSampleSetup.getInstance()
+					.getOtherSampleNames(request, sampleId);
 		}
 		ActionForward forward = mapping.getInputForward();
 
@@ -268,11 +263,9 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 			theForm.set("file", pbean);
 			if (sampleId != null && sampleId.length() > 0) {
-				forward = mapping
-						.findForward("sampleSubmitPubmedPublication");
+				forward = mapping.findForward("sampleSubmitPubmedPublication");
 			} else {
-				forward = mapping
-						.findForward("publicationSubmitPublication");
+				forward = mapping.findForward("publicationSubmitPublication");
 			}
 		} else {
 			publication.setPubMedId(null);
@@ -291,8 +284,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			session.setAttribute("docSampleId", sampleId);
 			// set up other particles with the same primary point of contact
-			InitSampleSetup.getInstance().getOtherSampleNames(request,
-					sampleId);
+			InitSampleSetup.getInstance()
+					.getOtherSampleNames(request, sampleId);
 		} else {
 			session.removeAttribute("docSampleId");
 		}
@@ -318,8 +311,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		ActionForward forward = null;
 		if (sampleId != null && sampleId.trim().length() > 0) {
 			if (pubMedId != null && pubMedId > 0) {
-				forward = mapping
-						.findForward("sampleSubmitPubmedPublication");
+				forward = mapping.findForward("sampleSubmitPubmedPublication");
 			} else {
 				forward = mapping.findForward("sampleSubmitPublication");
 			}
@@ -376,16 +368,16 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		Sample particle = (Sample) appService
-				.getObject(Sample.class, "id", new Long(sampleId));
+		Sample particle = (Sample) appService.getObject(Sample.class, "id",
+				new Long(sampleId));
 
 		ActionMessages msgs = new ActionMessages();
 		for (String id : dataIds) {
 			if (!checkDelete(request, msgs, id)) {
 				return mapping.findForward("annotationDeleteView");
 			}
-			publicationService.removePublicationFromSample(particle,
-					new Long(id));
+			publicationService.removePublicationFromSample(particle, new Long(
+					id));
 		}
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		setupDataTree(sampleBean, request);
@@ -415,18 +407,18 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
-		
+
 		// Marker that indicates page is for printing (hide tabs, links, etc).
 		request.setAttribute("printView", Boolean.TRUE);
 
-		PublicationSummaryViewBean summaryBean = 
-			(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
-		
+		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
+				.getAttribute("publicationSummaryView");
+
 		// Filter out categories that not selected.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
-			SortedMap<String, List<PublicationBean>> categories = 
-				summaryBean.getCategory2Publications();
+			SortedMap<String, List<PublicationBean>> categories = summaryBean
+					.getCategory2Publications();
 			List<PublicationBean> pubs = categories.get(type);
 			if (pubs != null) {
 				categories.clear();
@@ -434,10 +426,10 @@ public class PublicationAction extends BaseAnnotationAction {
 				summaryBean.setPublicationCategories(categories.keySet());
 			}
 		}
-		
+
 		return mapping.findForward("summaryPrint");
 	}
-	
+
 	/**
 	 * Handle summary report view request.
 	 *
@@ -453,10 +445,10 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
-		
+
 		// "actionName" is for constructing the Print/Export URL.
 		request.setAttribute("actionName", request.getRequestURL().toString());
-		
+
 		// TODO fill in detail
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -510,10 +502,10 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		this.prepareSummary(mapping, form, request, response);
-		
+
 		// "actionName" is for constructing the Print/Export URL.
 		request.setAttribute("actionName", request.getRequestURL().toString());
-		
+
 		// TODO fill in detail
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
@@ -568,15 +560,15 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
-		
-		PublicationSummaryViewBean summaryBean = 
-			(PublicationSummaryViewBean) request.getAttribute("publicationSummaryView");
-		
+
+		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
+				.getAttribute("publicationSummaryView");
+
 		// Filter out categories that not selected.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
-			SortedMap<String, List<PublicationBean>> categories = 
-				summaryBean.getCategory2Publications();
+			SortedMap<String, List<PublicationBean>> categories = summaryBean
+					.getCategory2Publications();
 			List<PublicationBean> pubs = categories.get(type);
 			if (pubs != null) {
 				categories.clear();
@@ -584,7 +576,7 @@ public class PublicationAction extends BaseAnnotationAction {
 				summaryBean.setPublicationCategories(categories.keySet());
 			}
 		}
-		
+
 		// Get sample name for constructing file name.
 		SampleService sampleService = null;
 		PublicationService service = null;
@@ -594,22 +586,23 @@ public class PublicationAction extends BaseAnnotationAction {
 			sampleService = new SampleServiceLocalImpl();
 			service = new PublicationServiceLocalImpl();
 		} else {
-			// TODO: Implement remote service. 
+			// TODO: Implement remote service.
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
 		SampleBean sampleBean = sampleService.findSampleById(sampleId);
-		String fileName = 
-			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
+		String fileName = this.getExportFileName(sampleBean.getDomain()
+				.getName(), "summaryView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
 		service.exportSummary(summaryBean, response.getOutputStream());
-		
+
 		return null;
 	}
-	
+
 	/**
-	 * Shared function for summaryView(), summaryEdit(), summaryExport() and summaryPrint().
+	 * Shared function for summaryView(), summaryEdit(), summaryExport() and
+	 * summaryPrint().
 	 *
 	 * @param mapping
 	 * @param form
@@ -621,18 +614,20 @@ public class PublicationAction extends BaseAnnotationAction {
 	protected void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		PublicationForm theForm = (PublicationForm) form;
+		String sampleId = theForm.getString("sampleId");
+		String location = theForm.getString("location");
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
 		PublicationService publicationService = new PublicationServiceLocalImpl();
-		String sampleId = request.getParameter("sampleId");
-		List<PublicationBean> publications = 
-			publicationService.findPublicationsBySampleId(sampleId);
-		PublicationSummaryViewBean summaryView = 
-			new PublicationSummaryViewBean(publications);
+		List<PublicationBean> publications = publicationService
+				.findPublicationsBySampleId(sampleId);
+		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
+				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
 	}
-	
+
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -756,8 +751,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		return true;
 	}
 
-	public boolean canUserExecute(UserBean user)
-			throws SecurityException {
+	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
 				Constants.CSM_PG_PUBLICATION);
 	}
@@ -802,11 +796,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (title != null && title.length() > 10) {
 			title = title.substring(0, 10);
 		}
-		
+
 		String fileName = this.getExportFileName(title, "detailView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
 		publicationService.exportDetail(pubBean, response.getOutputStream());
-		
+
 		return null;
 	}
 
@@ -815,7 +809,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		nameParts.add(titleName);
 		nameParts.add("Publication");
 		nameParts.add(viewType);
-		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
+				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
@@ -826,20 +821,4 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (pub.getYear() != null && pub.getYear() == 0)
 			pub.setYear(null);
 	}
-
-	public ActionForward setupDeleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String submitType = request.getParameter("submitType");
-		PublicationForm theForm = (PublicationForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		Map<String, SortedSet<DataLinkBean>> dataTree = setupDataTree(
-				sampleBean, request);
-		SortedSet<DataLinkBean> dataToDelete = dataTree.get(submitType);
-		request.getSession().setAttribute("actionName",
-				dataToDelete.first().getDataLink());
-		request.getSession().setAttribute("dataToDelete", dataToDelete);
-		return mapping.findForward("annotationDeleteView");
-	}
-
 }
