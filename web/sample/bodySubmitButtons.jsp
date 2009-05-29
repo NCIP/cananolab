@@ -17,7 +17,7 @@
 							<td height="32">
 								<div align="left">
 									<input type="button" value="Delete"
-										onclick="deleteData('${type}', ${formName} '${actionName}')">
+										onclick="deleteData('${type}', ${formName}, '${actionName}')">
 								</div>
 							</td>
 						</tr>
