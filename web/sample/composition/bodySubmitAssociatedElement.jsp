@@ -32,6 +32,10 @@
 					property="assoc.associatedElement${elementNumber}.entityId"
 					onchange="getComposingElementOptions('${elementNumber}');setEntityDisplayName('functionalizingEntityId${elementNumber}', 'entityDisplay${elementNumber}');">
 					<option value=""></option>
+					<c:if test="${!empty entityList}">
+						<html:options collection="entityList" property="domainId"
+							labelProperty="displayName" />
+					</c:if>
 				</html:select>
 			</div>
 			<div id="composingElementSelect${elementNumber}" style="${composingElementSelectStyle}">
@@ -39,6 +43,10 @@
 				<html:select styleId="composingElementId${elementNumber}"
 					property="assoc.associatedElement${elementNumber}.composingElement.id">
 					<option value="" />
+						<c:if test="${!empty ceList }">
+							<html:options collection="ceList" property="domainId"
+								labelProperty="displayName" />
+						</c:if>
 				</html:select>
 				<html:hidden styleId="entityDisplay${elementNumber}"
 					property="assoc.associatedElement${elementNumber}.entityDisplayName" />
