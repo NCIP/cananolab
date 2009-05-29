@@ -147,6 +147,8 @@ public class AdministrationAction extends AbstractDispatchAction {
 		// Set error message in request if it is not empty.
 		if (messages.size() > 0) {
 			saveMessages(request, messages);
+		} else {
+			
 		}
 		
 		return mapping.findForward("success");
