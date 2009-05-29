@@ -11,11 +11,6 @@
 			Functionalizing Entity
 		</th>
 	</tr>
-	<tr>
-		<td align="left">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-		</td>
-	</tr>
 	<logic:iterate name="compositionForm"
 		property="comp.functionalizingEntities" id="functionalizingEntity"
 		indexId="ind">

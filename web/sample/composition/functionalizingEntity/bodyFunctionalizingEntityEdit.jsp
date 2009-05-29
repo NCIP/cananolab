@@ -22,11 +22,6 @@
 			</c:if>
 		</th>
 	</tr>
-	<tr>
-		<td align="left">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-		</td>
-	</tr>
 	<c:choose>
 		<c:when
 			test="${!empty compositionForm.map.comp.functionalizingEntities}">
