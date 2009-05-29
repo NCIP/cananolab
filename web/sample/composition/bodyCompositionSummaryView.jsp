@@ -73,7 +73,7 @@
 		<tr>
 			<td>
 				<jsp:include
-					page="nanomaterialEntity/bodyNanomaterialEntityView.jsp">
+					page="nanomaterialEntity/bodyNanomaterialEntitySummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
 				</jsp:include>
 			</td>
@@ -83,7 +83,7 @@
 		<tr>
 			<td>
 				<jsp:include
-					page="functionalizingEntity/bodyFunctionalizingEntityView.jsp">
+					page="functionalizingEntity/bodyFunctionalizingEntitySummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
 				</jsp:include>
 			</td>
@@ -92,7 +92,7 @@
 	<c:if test="${!empty compositionForm.map.comp.chemicalAssociations}">
 		<tr>
 			<td>
-				<jsp:include page="bodyChemicalAssociationView.jsp">
+				<jsp:include page="bodyChemicalAssociationSummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
 				</jsp:include>
 			</td>
@@ -101,7 +101,7 @@
 	<c:if test="${!empty compositionForm.map.comp.files}">
 		<tr>
 			<td>
-				<jsp:include page="bodyCompositionFileView.jsp">
+				<jsp:include page="bodyCompositionFileSummaryView.jsp">
 					<jsp:param name="sampleId" value="${param.sampleId}" />
 				</jsp:include>
 			</td>

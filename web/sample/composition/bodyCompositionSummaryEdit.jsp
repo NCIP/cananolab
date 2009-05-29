@@ -77,17 +77,17 @@
 	</tr>
 	<tr>
 		<td>
-			<jsp:include page="nanomaterialEntity/bodyNanomaterialEntityEdit.jsp">
+			<jsp:include page="nanomaterialEntity/bodyNanomaterialEntitySummaryEdit.jsp">
 				<jsp:param name="sampleId" value="${param.sampleId}" />
 			</jsp:include>
 			<jsp:include
-				page="functionalizingEntity/bodyFunctionalizingEntityEdit.jsp">
+				page="functionalizingEntity/bodyFunctionalizingEntitySummaryEdit.jsp">
 				<jsp:param name="sampleId" value="${param.sampleId}" />
 			</jsp:include>
-			<jsp:include page="bodyChemicalAssociationEdit.jsp">
+			<jsp:include page="bodyChemicalAssociationSummaryEdit.jsp">
 				<jsp:param name="sampleId" value="${param.sampleId}" />
 			</jsp:include>
-			<jsp:include page="bodyCompositionFileEdit.jsp">
+			<jsp:include page="bodyCompositionFileSummaryEdit.jsp">
 				<jsp:param name="sampleId" value="${param.sampleId}" />
 			</jsp:include>
 		</td>
