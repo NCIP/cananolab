@@ -41,7 +41,8 @@
 	<br>
 	<c:set var="type" value="composition file" />
 	<c:set var="actionName" value="compositionFile" />
+	<c:set var="formName" value="compositionForm" />
 	<c:set var="dataId"
 		value="${compositionForm.map.comp.theFile.domainFile.id}" />
-	<%@include file="bodyCompositionSubmit.jsp"%>
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>
