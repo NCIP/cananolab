@@ -168,6 +168,7 @@
 	<br>
 	<c:set var="type" value="nanomaterial entity" />
 	<c:set var="actionName" value="nanomaterialEntity" />
+	<c:set var="formName" value="compositionForm" />
 	<c:set var="dataId"
 		value="${compositionForm.map.nanomaterialEntity.domainEntity.id}" />
 	<%@include file="../../bodySubmitButtons.jsp" %>
