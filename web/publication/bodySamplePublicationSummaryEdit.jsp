@@ -7,7 +7,8 @@
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>
 		<li class="selected">
-			<a	href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
+			<a
+				href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
 				title="All"><span>All</span> </a>
 			<c:url var="printUrl" value="${actionName}">
 				<c:param name="dispatch" value="summaryPrint" />
@@ -19,15 +20,20 @@
 				<c:param name="sampleId" value="${sampleId}" />
 				<c:param name="location" value="${location}" />
 			</c:url>
-			<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
+			<a href="javascript:printPage('${printUrl}')" id="printUrlAll"
+				style="display: none;"></a>
 			<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
 		</li>
 		<li>
-			<c:forEach var="type" items="${publicationCategories}" varStatus="ind">
-				<a	href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
+			<c:forEach var="type" items="${publicationCategories}"
+				varStatus="ind">
+				<a
+					href="javascript:showSummary('${ind.count}', ${fn:length(publicationCategories)})"
 					title="${type}"><span>${type}</span> </a>
-				<a href="javascript:printPage('${printUrl}&type=${type}')" id="printUrl${ind.count}" style="display: none;"></a>
-				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}" style="display: none;"></a>
+				<a href="javascript:printPage('${printUrl}&type=${type}')"
+					id="printUrl${ind.count}" style="display: none;"></a>
+				<a href="${exportUrl}&type=${type}" id="exportUrl${ind.count}"
+					style="display: none;"></a>
 			</c:forEach>
 		</li>
 		<li>
@@ -41,8 +47,9 @@
 		style="display: none;">
 		<ul>
 			<li>
-				<a href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})" title="All"><span>All</span>
-				</a>
+				<a
+					href="javascript:showSummary('ALL', ${fn:length(publicationCategories)})"
+					title="All"><span>All</span> </a>
 			</li>
 			<c:forEach var="type" items="${publicationCategories}"
 				varStatus="ind2">
@@ -55,8 +62,9 @@
 					</c:otherwise>
 				</c:choose>
 				<li class="${selectedClass}">
-					<a href="javascript:showSummary('${ind2.count}', ${fn:length(publicationCategories)})" title="${type}"><span>${type}</span>
-					</a>
+					<a
+						href="javascript:showSummary('${ind2.count}', ${fn:length(publicationCategories)})"
+						title="${type}"><span>${type}</span> </a>
 				</li>
 			</c:forEach>
 			<li>
@@ -77,17 +85,21 @@
 	</c:if>
 	<tr>
 		<td>
-			<c:forEach var="type" items="${publicationCategories}" varStatus="ind">
+			<c:forEach var="type" items="${publicationCategories}"
+				varStatus="ind">
 				<table id="summarySection${ind.count}" class="smalltable3"
 					cellpadding="0" cellspacing="0" border="0" width="100%">
 					<tr>
 						<th align="left">
-							<a name="${type}" id="${type}">${type}</a>
-							&nbsp;&nbsp;&nbsp;
-							<a href="#" class="addlink"><img align="middle"
-									src="images/btn_add.gif" border="0" /></a>&nbsp;&nbsp;
-							<a><img align="middle" src="images/btn_delete.gif" border="0" />
-							</a>
+							<a name="${type}" id="${type}">${type}</a> &nbsp;&nbsp;&nbsp;
+							<a
+								href="publication.do?dispatch=setupNew&sampleId=${sampleId}&type=${type}"
+								class="addlink"><img align="middle" src="images/btn_add.gif"
+									border="0" /></a>&nbsp;&nbsp;
+							<c:if test="${! empty publicationSummaryView.category2Publications[type]}">
+								<a><img align="middle" src="images/btn_delete.gif"
+										border="0" /> </a>
+							</c:if>
 						</th>
 					</tr>
 					<tr>
@@ -164,7 +176,10 @@
 														&nbsp;
 													</td>
 													<td valign="top">
-														<c:out value="${fn:replace(pubObj.researchArea, ';', '<br>')}" escapeXml="false"/>&nbsp;
+														<c:out
+															value="${fn:replace(pubObj.researchArea, ';', '<br>')}"
+															escapeXml="false" />
+														&nbsp;
 													</td>
 													<td valign="top">
 														${pubBean.createdDateStr}&nbsp;
