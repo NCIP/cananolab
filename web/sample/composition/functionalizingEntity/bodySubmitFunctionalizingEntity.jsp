@@ -244,6 +244,6 @@
 	<c:set var="actionName" value="functionalizingEntity" />
 	<c:set var="dataId"
 		value="${compositionForm.map.functionalizingEntity.domainEntity.id}" />
-	<%@include file="../bodyCompositionSubmit.jsp"%>
+	<%@include file="../../bodySubmitButtons.jsp" %>
 
 </html:form>

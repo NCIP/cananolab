@@ -90,10 +90,10 @@
 				<c:set var="bondTypeStyle" value="display:block" />
 			</c:if>
 			<td class="cellLabel">
-				<span id="bondTypeLabel" style="${bondTypeStyle}">Bond Type*</span>
+				<span id="bondTypeLabel" style="">Bond Type*</span>
 			</td>
 			<td>
-				<div id="bondTypePrompt" style="${bondTypeStyle}">
+				<div id="bondTypePrompt" style="">
 					<html:select styleId="bondType"
 						property="assoc.attachment.bondType"
 						onchange="javascript:callPrompt('Bond Type', 'bondType', 'bondTypePrompt');">
@@ -127,6 +127,20 @@
 				<c:set var="elementNumber" value="A" />
 				<c:set var="entitySelectStyle" value="display:none" />
 				<c:set var="composingElementSelectStyle" value="display:none" />
+				<c:if test="${!empty entityListA }">
+					<c:set var="entityList" value="entityListA" />
+				</c:if>
+				<c:if test="${!empty ceListA }">
+					<c:set var="ceList" value="ceListA" />
+				</c:if>
+				<c:if
+					test="${! empty compositionForm.map.assoc.associatedElementA.entityId}">
+					<c:set var="entitySelectStyle" value="display:block" />
+				</c:if>
+				<c:if
+					test="${compositionForm.map.assoc.associatedElementA.compositionType eq 'Nanomaterial Entity'}">
+					<c:set var="composingElementSelectStyle" value="display:block" />
+				</c:if>
 				<%@include file="bodySubmitAssociatedElement.jsp"%>
 			</td>
 			<td>
@@ -138,6 +152,20 @@
 				<c:set var="elementNumber" value="B" />
 				<c:set var="entitySelectStyle" value="display:none" />
 				<c:set var="composingElementSelectStyle" value="display:none" />
+				<c:if test="${!empty entityListB }">
+					<c:set var="entityList" value="entityListB" />
+				</c:if>
+				<c:if test="${!empty ceListB }">
+					<c:set var="ceList" value="ceListB" />
+				</c:if>
+				<c:if
+					test="${! empty compositionForm.map.assoc.associatedElementA.entityId}">
+					<c:set var="entitySelectStyle" value="display:block" />
+				</c:if>
+				<c:if
+					test="${compositionForm.map.assoc.associatedElementB.compositionType eq 'Nanomaterial Entity'}">
+					<c:set var="composingElementSelectStyle" value="display:block" />
+				</c:if>
 				<%@include file="bodySubmitAssociatedElement.jsp"%>
 			</td>
 		</tr>
@@ -185,6 +213,6 @@
 	<c:set var="actionName" value="chemicalAssociation" />
 	<c:set var="dataId"
 		value="${compositionForm.map.assoc.domainAssociation.id}" />
-	<%@include file="bodyCompositionSubmit.jsp"%>
+	<%@include file="../bodySubmitButtons.jsp" %>
 
 </html:form>

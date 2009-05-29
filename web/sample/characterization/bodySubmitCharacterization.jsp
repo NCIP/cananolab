@@ -92,7 +92,11 @@
 				<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
 				<jsp:include
 					page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
-				<jsp:include page="shared/bodyCharacterizationSubmit.jsp" />
+				<c:set var="type" value="characterization" />
+				<c:set var="actionName" value="characterization" />
+				<c:set var="dataId"
+					value="${characterizationForm.map.achar.domainChar.id}" />
+				<%@include file="../bodySubmitButtons.jsp" %>
 			</td>
 		</tr>
 	</table>
