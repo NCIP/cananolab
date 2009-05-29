@@ -6,8 +6,10 @@
 <%-- different styles for different file submission forms --%>
 <c:set var="submissionViewStyle" value="subSubmissionView" />
 <c:set var="tableWidth" value="85%" />
+<c:set var="buttonStyle" value=""/>
 <c:if test="${actionName eq 'characterization'}">
 	<c:set var="submissionViewStyle" value="promptbox" />
+	<c:set var="buttonStyle" value="promptButton" />
 </c:if>
 <c:if test="${actionName eq 'compositionFile'}">
 	<c:set var="submissionViewStyle" value="submissionView" />
@@ -129,15 +131,15 @@
 		<c:if test="${actionName ne 'compositionFile'}">
 			<tr>
 				<td>
-					<input class="promptButton" type="button" value="Remove"
+					<input class="${buttonStyle}" type="button" value="Remove"
 						onclick="removeFile('${actionName}', ${fileForm})" id="deleteFile"
 						style="display: none;" />
 				</td>
 				<td>
 					<div align="right">
-						<input class="promptButton" type="button" value="Add"
+						<input class="${buttonStyle}" type="button" value="Add"
 							onclick="addFile('${actionName}', ${fileForm});" />
-						<input class="promptButton" type="button" value="Cancel"
+						<input class="${buttonStyle}" type="button" value="Cancel"
 							onclick="clearFile('${fileParent }');hide('newFile');" />
 					</div>
 				</td>
