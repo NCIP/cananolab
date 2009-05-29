@@ -519,4 +519,11 @@ function displayFileRadioButton() {
 		hide("uploadedUri");
 	}
 }
+function deleteData(type, form, actionName) {
+	var answer = confirmDelete(type);
+	if (answer) {
+		form.action = actionName + ".do?dispatch=delete&page=0";
+		form.submit();
+	}
+}
 

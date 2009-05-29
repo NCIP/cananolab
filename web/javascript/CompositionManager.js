@@ -84,12 +84,6 @@ function setTheFile(type, id) {
 	show("newFile");
 	show("deleteFile");
 }
-function deleteCompositionData(type, form, actionName) {
-	var answer = confirmDelete(type);
-	if (answer) {
-		form.action = actionName + ".do?dispatch=delete&page=0";
-		form.submit();
-	}
-}
+
 /* end of set submit file form */
 
