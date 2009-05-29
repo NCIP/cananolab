@@ -16,7 +16,7 @@
 							<td height="32">
 								<div align="left">
 									<input type="button" value="Delete"
-										onclick="deleteCompositionData('${type}', '${actionName}')">
+										onclick="deleteCompositionData('${type}', compositionForm, '${actionName}')">
 								</div>
 							</td>
 						</tr>
