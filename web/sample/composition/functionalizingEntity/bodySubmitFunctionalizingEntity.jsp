@@ -242,6 +242,7 @@
 	<br>
 	<c:set var="type" value="functionalizing entity" />
 	<c:set var="actionName" value="functionalizingEntity" />
+	<c:set var="formName" value="compositionForm" />
 	<c:set var="dataId"
 		value="${compositionForm.map.functionalizingEntity.domainEntity.id}" />
 	<%@include file="../../bodySubmitButtons.jsp" %>
