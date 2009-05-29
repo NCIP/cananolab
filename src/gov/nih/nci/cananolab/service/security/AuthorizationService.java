@@ -26,20 +26,19 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 
 /**
  * This class takes care of authentication and authorization of a user and group
- * 
+ *
  * @author Pansu
- * 
+ *
  */
 public class AuthorizationService {
 	private Logger logger = Logger.getLogger(AuthorizationService.class);
@@ -80,7 +79,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user is the admin of the application.
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 */
@@ -92,7 +91,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether the given user belongs to the given group.
-	 * 
+	 *
 	 * @param user
 	 * @param groupName
 	 * @return
@@ -119,7 +118,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has the given privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @param privilege
@@ -152,7 +151,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has execute privilege on the given
 	 * protection element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -167,7 +166,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has read privilege on the given protection
 	 * element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -190,8 +189,8 @@ public class AuthorizationService {
 				for (Object obj : ctxs) {
 					ProtectionGroupRoleContext ctx = (ProtectionGroupRoleContext) obj;
 					for (Object r : ctx.getRoles()) {
-						if (((Role) r).getName().equals(
-								Constants.CSM_READ_ROLE)) {
+						if (((Role) r).getName()
+								.equals(Constants.CSM_READ_ROLE)) {
 							publicData.add(ctx.getProtectionGroup()
 									.getProtectionGroupName());
 							break;
@@ -212,7 +211,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether the given user has delete privilege on the given protection
 	 * element
-	 * 
+	 *
 	 * @param user
 	 * @param protectionElementObjectId
 	 * @return
@@ -226,7 +225,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get all user groups in the application
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
@@ -269,23 +268,29 @@ public class AuthorizationService {
 	/**
 	 * Get all user visiblity groups in the application (filtering out all
 	 * groups starting with APP_OWNER).
-	 * 
+	 *
 	 * @return
 	 * @throws SecurityException
 	 */
-	public SortedSet<String> getAllVisibilityGroups()
-			throws SecurityException {
+	public List<String> getAllVisibilityGroups() throws SecurityException {
 		List<String> groups = getAllGroups();
+		List<String> filteredGroups = new ArrayList<String>();
 		// filter out the ones starting with APP_OWNER
-		SortedSet<String> filteredGroups = new TreeSet<String>();
-		List<String> notShownGroups = Arrays
-				.asList(Constants.VISIBLE_GROUPS);
+		List<String> notShownGroups = Arrays.asList(Constants.VISIBLE_GROUPS);
 		for (String groupName : groups) {
 			if (!notShownGroups.contains(groupName)
 					&& !groupName.equals(Constants.CSM_ADMIN)) {
-				filteredGroups.add(groupName);
+				if (!filteredGroups.contains(groupName)) {
+					filteredGroups.add(groupName);
+				}
 			}
 		}
+		Collections.sort(filteredGroups);
+		// put Public group in the beginning
+		if (groups.contains(Constants.CSM_PUBLIC_GROUP)) {
+			groups.remove(Constants.CSM_PUBLIC_GROUP);
+		}
+		filteredGroups.add(0, Constants.CSM_PUBLIC_GROUP);
 		return filteredGroups;
 	}
 
@@ -307,7 +312,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Group object for the given groupName.
-	 * 
+	 *
 	 * @param groupName
 	 * @return
 	 */
@@ -326,12 +331,11 @@ public class AuthorizationService {
 
 	/**
 	 * Create a user group in the CSM database if it's not already created
-	 * 
+	 *
 	 * @param groupName
 	 * @throws SecurityException
 	 */
-	public void createAGroup(String groupName)
-			throws SecurityException {
+	public void createAGroup(String groupName) throws SecurityException {
 		try {
 			Group doGroup = getGroup(groupName);
 			if (doGroup == null) {
@@ -347,7 +351,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a Role object for the given roleName.
-	 * 
+	 *
 	 * @param roleName
 	 * @return
 	 */
@@ -366,7 +370,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionElement object for the given objectId.
-	 * 
+	 *
 	 * @param objectId
 	 * @return
 	 * @throws SecurityException
@@ -398,7 +402,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get a ProtectionGroup object for the given protectionGroupName.
-	 * 
+	 *
 	 * @param protectionGroupName
 	 * @return
 	 * @throws SecurityException
@@ -429,7 +433,7 @@ public class AuthorizationService {
 
 	/**
 	 * Assign a ProtectionElement to a ProtectionGroup if not already assigned.
-	 * 
+	 *
 	 * @param pe
 	 * @param pg
 	 * @throws SecurityException
@@ -467,7 +471,7 @@ public class AuthorizationService {
 	/**
 	 * Direct CSM schema query to improve performance. Get the existing role IDs
 	 * from database
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -502,7 +506,7 @@ public class AuthorizationService {
 
 	/**
 	 * Get the existing role IDs from database
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @return
@@ -539,7 +543,7 @@ public class AuthorizationService {
 	/**
 	 * Assign the given objectName to the given groupName with the given
 	 * roleName. Add to existing roles the object has for the group.
-	 * 
+	 *
 	 * @param objectName
 	 * @param groupName
 	 * @param roleName
@@ -592,8 +596,9 @@ public class AuthorizationService {
 		try {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
 					Constants.CSM_READ_PRIVILEGE);
-			for (Object group : groups) {
-				groupNames.add(((Group) group).getGroupName());
+			for (Object obj : groups) {
+				Group group = (Group) obj;
+				groupNames.add(group.getGroupName());
 			}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
@@ -632,30 +637,26 @@ public class AuthorizationService {
 		}
 	}
 
-	public void assignVisibility(String dataToProtect, String[] visibleGroups, String owningGroup)
-			throws SecurityException {
+	public void assignVisibility(String dataToProtect, String[] visibleGroups,
+			String owningGroup) throws SecurityException {
 		try {
-			removeExistingVisibleGroups(dataToProtect,
-					Constants.CSM_READ_ROLE);
+			removeExistingVisibleGroups(dataToProtect, Constants.CSM_READ_ROLE);
 
 			if (Arrays.asList(visibleGroups).contains(
 					Constants.CSM_PUBLIC_GROUP)) {
 				// only need to assign public visibilities
-				secureObject(dataToProtect,
-						Constants.CSM_PUBLIC_GROUP,
+				secureObject(dataToProtect, Constants.CSM_PUBLIC_GROUP,
 						Constants.CSM_READ_ROLE);
 			} else {
 				// set new visibilities
 				for (String group : visibleGroups) {
-					secureObject(dataToProtect, group,
-							Constants.CSM_READ_ROLE);
+					secureObject(dataToProtect, group, Constants.CSM_READ_ROLE);
 				}
 				// set default visibilities
 				for (String group : Constants.VISIBLE_GROUPS) {
-					secureObject(dataToProtect, group,
-							Constants.CSM_READ_ROLE);
+					secureObject(dataToProtect, group, Constants.CSM_READ_ROLE);
 				}
-				if (owningGroup!=null) {
+				if (owningGroup != null) {
 					secureObject(dataToProtect, owningGroup,
 							Constants.CSM_READ_ROLE);
 				}
@@ -669,8 +670,7 @@ public class AuthorizationService {
 	public void assignPublicVisibility(String dataToProtect)
 			throws SecurityException {
 		try {
-			removeExistingVisibleGroups(dataToProtect,
-					Constants.CSM_READ_ROLE);
+			removeExistingVisibleGroups(dataToProtect, Constants.CSM_READ_ROLE);
 			// set public visibilities
 			secureObject(dataToProtect, Constants.CSM_PUBLIC_GROUP,
 					Constants.CSM_READ_ROLE);
@@ -701,7 +701,7 @@ public class AuthorizationService {
 
 	/**
 	 * Check whether user has read access to the data
-	 * 
+	 *
 	 * @param data
 	 * @param user
 	 * @return
@@ -722,7 +722,7 @@ public class AuthorizationService {
 	/**
 	 * Check whether user is allowed to at least one data in the collection of
 	 * data.
-	 * 
+	 *
 	 * @param auth
 	 * @param dataCollection
 	 * @param user
