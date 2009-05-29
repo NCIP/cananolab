@@ -183,7 +183,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 
 			}
 			// composition.getChemicalAssociationCollection().add(assoc);
-			assoc.setSampleComposition(particleSample.getSampleComposition() );
+			assoc.setSampleComposition(particleSample.getSampleComposition());
 			FileService service = new FileServiceLocalImpl();
 			Collection<File> Files = assoc.getFileCollection();
 			if (Files != null) {
@@ -492,6 +492,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
 			crit.setFetchMode("chemicalAssociationCollection.fileCollection",
 					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"chemicalAssociationCollection.fileCollection.keywordCollection",
+							FetchMode.JOIN);
 			crit.setFetchMode(
 					"chemicalAssociationCollection.associatedElementA",
 					FetchMode.JOIN);
