@@ -73,6 +73,7 @@ public class CompositionServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				FunctionalizingEntity.class).add(
 				Property.forName("id").eq(new Long(entityId)));
+		crit.setFetchMode("activationMethod", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("fileCollection.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("functionCollection", FetchMode.JOIN);
