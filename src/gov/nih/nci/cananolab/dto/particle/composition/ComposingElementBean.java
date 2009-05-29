@@ -109,7 +109,12 @@ public class ComposingElementBean {
 
 	// for dwr ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {
-		return getDomain().getId().toString();
+		if (getDomain().getId() != null) {
+			return getDomain().getId().toString();
+		}
+		else {
+			return null;
+		}
 	}
 
 	public void setupDomain(Map<String, String> typeToClass, String createdBy,
