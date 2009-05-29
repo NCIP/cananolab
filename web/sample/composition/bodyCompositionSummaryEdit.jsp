@@ -21,13 +21,13 @@
 				title="All"><span>All</span> </a>
 				<c:url var="printUrl" value="${actionName}">
 					<c:param name="dispatch" value="summaryPrint" />
-					<c:param name="sampleId" value="${param.sampleId}" />
-					<c:param name="location" value="${param.location}" />
+					<c:param name="sampleId" value="${sampleId}" />
+					<c:param name="location" value="${location}" />
 				</c:url>
 				<c:url var="exportUrl" value="${actionName}">
 					<c:param name="dispatch" value="summaryExport" />
-					<c:param name="sampleId" value="${param.sampleId}" />
-					<c:param name="location" value="${param.location}" />
+					<c:param name="sampleId" value="${sampleId}" />
+					<c:param name="location" value="${location}" />
 				</c:url>
 				<a href="javascript:printPage('${printUrl}')" id="printUrlAll" style="display: none;"></a>
 				<a href="${exportUrl}" id="exportUrlAll" style="display: none;"></a>
