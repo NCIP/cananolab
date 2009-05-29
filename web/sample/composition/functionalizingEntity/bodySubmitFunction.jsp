@@ -184,15 +184,15 @@
 	</tr>
 	<tr>
 		<td>
-			<input class="promptButton" type="button" value="Remove"
+			<input type="button" value="Remove"
 				onclick="removeFunction('functionalizingEntity');clearFunction()"
 				id="deleteFunction" style="display: none;" />
 		</td>
 		<td colspan="3">
 			<div align="right">
-				<input class="promptButton" type="button" value="Add"
+				<input type="button" value="Add"
 					onclick="addFunction('functionalizingEntity');show('targetTable');hide('newFunction');" />
-				<input class="promptButton" type="button" value="Cancel"
+				<input type="button" value="Cancel"
 					onclick="clearFunction();hide('newFunction');" />
 			</div>
 		</td>
