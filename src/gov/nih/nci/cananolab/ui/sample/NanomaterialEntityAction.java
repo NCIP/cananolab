@@ -203,8 +203,6 @@ public class NanomaterialEntityAction extends CompositionAction {
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		theForm.set("sampleId", sampleId);
 		setLookups(request);
 		return mapping.getInputForward();
 	}
