@@ -489,6 +489,9 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			crit.setFetchMode(
 					"functionalizingEntityCollection.functionCollection",
 					FetchMode.JOIN);
+			crit.setFetchMode(
+					"functionalizingEntityCollection.activationMethod",
+					FetchMode.JOIN);
 			crit.setFetchMode("chemicalAssociationCollection", FetchMode.JOIN);
 			crit.setFetchMode("chemicalAssociationCollection.fileCollection",
 					FetchMode.JOIN);
