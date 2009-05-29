@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.util.Constants;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,18 +59,18 @@ public class InitSecuritySetup {
 		return status;
 	}
 
-	public SortedSet<String> getAllVisibilityGroups(HttpServletRequest request)
+	public List<String> getAllVisibilityGroups(HttpServletRequest request)
 			throws SecurityException {
-		SortedSet<String> groupNames = authorizationService
+		List<String> groupNames = authorizationService
 				.getAllVisibilityGroups();
 		request.getSession().setAttribute("allVisibilityGroups", groupNames);
 		return groupNames;
 	}
 
-	public SortedSet<String> getAllVisibilityGroupsWithoutOrg(
+	public List<String> getAllVisibilityGroupsWithoutOrg(
 			HttpServletRequest request, String sampleOrg)
 			throws SecurityException {
-		SortedSet<String> groupNames = getAllVisibilityGroups(request);
+		List<String> groupNames = getAllVisibilityGroups(request);
 		if (sampleOrg != null)
 			groupNames.remove(sampleOrg);
 		request.getSession().setAttribute("allVisibilityGroupsNoOrg",

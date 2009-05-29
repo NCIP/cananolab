@@ -5,6 +5,7 @@ import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
+import java.util.List;
 import java.util.SortedSet;
 
 import javax.servlet.ServletContext;
@@ -29,7 +30,7 @@ public class DWRSampleManager {
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		try {
-			SortedSet<String> visibilityGroup = InitSecuritySetup.getInstance()
+			List<String> visibilityGroup = InitSecuritySetup.getInstance()
 					.getAllVisibilityGroups(request);
 			if (!pocId.equalsIgnoreCase("other")) {
 				String sampleOrg = pocService.findPointOfContactById(pocId)
@@ -53,7 +54,7 @@ public class DWRSampleManager {
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		try {
-			SortedSet<String> visibilityGroup = InitSecuritySetup.getInstance()
+			List<String> visibilityGroup = InitSecuritySetup.getInstance()
 					.getAllVisibilityGroups(request);
 			if (!orgName.equalsIgnoreCase("other")) {
 				visibilityGroup.remove(orgName);
