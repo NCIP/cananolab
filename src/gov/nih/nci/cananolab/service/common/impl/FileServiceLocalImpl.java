@@ -12,7 +12,7 @@ import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.PropertyReader;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.FileInputStream;
@@ -157,7 +157,7 @@ public class FileServiceLocalImpl implements FileService {
 			if (fileBean.getDomainFile().getUri().startsWith("http")) {
 				return null;
 			}
-			String fileRoot = PropertyReader.getProperty(
+			String fileRoot = PropertyUtils.getProperty(
 					Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 
 			java.io.File fileObj = new java.io.File(fileRoot
@@ -226,7 +226,7 @@ public class FileServiceLocalImpl implements FileService {
 		try {
 			if (fileData != null) {
 				FileServiceLocalImpl fileService = new FileServiceLocalImpl();
-				String rootPath = PropertyReader.getProperty(
+				String rootPath = PropertyUtils.getProperty(
 						Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 				String fullFileName = rootPath + "/" + file.getUri();
 				fileService.writeFile(fileData, fullFileName);
