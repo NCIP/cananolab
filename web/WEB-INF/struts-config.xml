@@ -111,6 +111,8 @@
 	</controller>
 	<message-resources
 		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
+	<message-resources key="admin"
+		parameter="gov.nih.nci.cananolab.resources.admin" null="false" />
 	<message-resources key="sample"
 		parameter="gov.nih.nci.cananolab.resources.sample" null="false" />
 	<message-resources key="pointOfContact"
