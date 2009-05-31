@@ -56,6 +56,8 @@
 												<input type="reset" value="Reset"
 													onclick="javascript:location.href='admin.do?dispatch=sitePreference'">
 												<input type="hidden" name="dispatch" value="update">
+												<input type="button" value="Clear All"
+													onclick="javascript:location.href='admin.do?dispatch=clearAll'">
 												<html:submit />
 											</div>
 										</div>
