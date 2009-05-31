@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DataLinkBean;
-import gov.nih.nci.cananolab.util.PropertyReader;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 import java.io.FileInputStream;
 import java.net.URL;
@@ -220,7 +220,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			return null;
 		}
 
-		String fileRoot = PropertyReader.getProperty(
+		String fileRoot = PropertyUtils.getProperty(
 				Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
 		java.io.File dFile = new java.io.File(fileRoot + java.io.File.separator
 				+ fileBean.getDomainFile().getUri());
