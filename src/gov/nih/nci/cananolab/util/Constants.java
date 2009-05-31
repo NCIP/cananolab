@@ -42,7 +42,7 @@ public class Constants {
 	public static final String VIEW_CLASSNAME_DELIMITER = "!!!";
 
 	static {
-		String appOwner = PropertyReader.getProperty(CANANOLAB_PROPERTY,
+		String appOwner = PropertyUtils.getProperty(CANANOLAB_PROPERTY,
 				"applicationOwner").trim();
 		if (appOwner == null || appOwner.length() == 0)
 			appOwner = DEFAULT_APP_OWNER;
@@ -51,7 +51,7 @@ public class Constants {
 
 	public static final String SAMPLE_PREFIX;
 	static {
-		String samplePrefix = PropertyReader.getProperty(CANANOLAB_PROPERTY,
+		String samplePrefix = PropertyUtils.getProperty(CANANOLAB_PROPERTY,
 				"samplePrefix");
 		if (samplePrefix == null || samplePrefix.length() == 0)
 			samplePrefix = DEFAULT_SAMPLE_PREFIX;
@@ -60,7 +60,7 @@ public class Constants {
 
 	public static final String GRID_INDEX_SERVICE_URL;
 	static {
-		String gridIndexServiceURL = PropertyReader.getProperty(
+		String gridIndexServiceURL = PropertyUtils.getProperty(
 				CANANOLAB_PROPERTY, "gridIndexServiceURL").trim();
 		GRID_INDEX_SERVICE_URL = gridIndexServiceURL;
 	}
@@ -161,8 +161,8 @@ public class Constants {
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
 
-	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
-			"setupUpdate", "setupDeleteAll", "add", "remove" };
+	public static final String[] PRIVATE_DISPATCHES = {"create", "delete",
+			"setupUpdate", "setupDeleteAll", "add", "remove"};
 
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
@@ -186,10 +186,13 @@ public class Constants {
 	public static final String FILE_REPOSITORY_DIR = "fileRepositoryDir";
 	
 	// String for site name entry in property file.
-	public static final String SITE_LOGO_FILENAME = "siteLogo.gif";
-	
-	// String for site name entry in property file.
 	public static final String SITE_NAME = "siteName";
+	
+	// String for site logo entry in property file.
+	public static final String SITE_LOGO = "siteLogo";
+	
+	// File name of site logo.
+	public static final String SITE_LOGO_FILENAME = "siteLogo.gif";
 	
 	// Maximum file size of site logo.
 	public static final int MAX_LOGO_SIZE = 32768;

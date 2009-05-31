@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
-import gov.nih.nci.cananolab.util.PropertyReader;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,8 +44,6 @@ import org.apache.struts.upload.FormFile;
 
 public class AdministrationAction extends AbstractDispatchAction {
 	
-	public static final String SITE_LOGO = "siteLogo";
-	
 	private static Logger logger = 
 		Logger.getLogger(AdministrationAction.class);
 
@@ -60,12 +57,47 @@ public class AdministrationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaActionForm theForm = (DynaActionForm) form;
-		String siteName = PropertyReader.getProperty(
+		String siteName = PropertyUtils.getProperty(
 				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME);
+		String siteLogo = PropertyUtils.getProperty(
+				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_LOGO);
 		theForm.set(Constants.SITE_NAME, siteName);
+		theForm.set(Constants.SITE_LOGO, siteLogo);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("siteName = " + siteName);
+		}
+		
+		return mapping.findForward("sitePreference");
+	}
+
+	/**
+	 * Action to clear site preferences: remove site and site logo.
+	 *
+	 * @param
+	 * @return
+	 */
+	public ActionForward clearAll(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		ActionMessages messages = new ActionMessages();
+		saveMessages(request, messages);
+		
+		// Remove site name, set failure message if failed.
+		this.setSiteName(null, messages);
+		
+		// Remove site logo, set failure message if failed.
+		this.setSiteLogo(null, messages);
+		
+		File logoFile = new File(getLogoFileName());
+		if (logoFile.exists()) {
+			logoFile.delete();
+		}
+		
+		// Set success message in request if everything is fine now.
+		if (messages.size() == 0) {
+			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
 		
 		return mapping.findForward("sitePreference");
@@ -83,72 +115,62 @@ public class AdministrationAction extends AbstractDispatchAction {
 		DynaActionForm theForm = (DynaActionForm) form;
 		String siteName = (String) theForm.getString(Constants.SITE_NAME);
 		ActionMessages messages = new ActionMessages();
-		InputStream in = null;
+		saveMessages(request, messages);
 		OutputStream out = null;
-		try {
-			Properties props = new Properties();
-			in = Thread.currentThread().getContextClassLoader()
-				.getResourceAsStream(Constants.FILEUPLOAD_PROPERTY);
-			props.load(in);
-			
-			out = new BufferedOutputStream(new FileOutputStream(this.getPropertyFileName()));
-			props.setProperty(Constants.SITE_NAME, siteName);
-			props.store(out, null);
-		} catch (Exception e) {
-			String errorMsg = "Property file cannot be updated: " + e.toString();
-			this.saveErrorMsg(messages, e, errorMsg);
-		} finally {
-			try {
-				if (in != null) {
-					in.close();
-				}
-				if (out != null) {
-					out.flush();
-					out.close();
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
 		
-		FormFile file = (FormFile) theForm.get(SITE_LOGO);
-		File siteLogo = new File(this.getSiteLogoName());
+		// Save site name, if fail, set failure message;
+		this.setSiteName(siteName, messages);
+		
+		// Save site logo, if fail, set failure message;
+		FormFile file = (FormFile) theForm.get(Constants.SITE_LOGO);
+		File siteLogo = new File(getLogoFileName());
+		String logoFilename = null;
 		byte[] data = null;
 		if (file != null) {
 			data = file.getFileData();
+			logoFilename = file.getFileName();
 		}
+		
+		// If user doesn't upload a file, remove current logo file.
 		if (data == null || data.length == 0) {
-			siteLogo.delete();
+			this.setSiteLogo(null, messages);
+			if (siteLogo.exists()) {
+				siteLogo.delete();
+			}
 		} else {
+			// If the new logo file is too large, set error msg to warn user.
 			if (data.length > Constants.MAX_LOGO_SIZE) {
-				String errorMsg = "Size of site logo file cannot be larger than "
-						+ Constants.MAX_LOGO_SIZE + " bytes.";
-				this.saveErrorMsg(messages, null, errorMsg);
+				ActionMessage msg = 
+					new ActionMessage("admin.sitePreference.error.logoOversize", Constants.MAX_LOGO_SIZE);
+				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			} else {
-		        try {
-					out = new BufferedOutputStream(new FileOutputStream(siteLogo));
-		            out.write(data);
-		        } catch (Exception e) {
-					String errorMsg = "Site logo file cannot be saved: " + e.toString();
-					this.saveErrorMsg(messages, e, errorMsg);
-		        } finally {
-		            //Close the BufferedOutputStream
-		            try {
+				// Save the uploaded logo file name in property.
+				if (this.setSiteLogo(logoFilename, messages)) {
+			        try {
+						out = new BufferedOutputStream(new FileOutputStream(siteLogo));
+			            out.write(data);
+			        } catch (Exception e) {
+						ActionMessage msg = 
+							new ActionMessage("admin.sitePreference.error.siteLogo");
+						messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			        } finally {
+			            //Close the BufferedOutputStream
 		                if (out != null) {
-		                    out.flush();
-		                    out.close();
+				            try {
+			                    out.flush();
+			                    out.close();
+				            } catch (IOException e) {
+				            }
 		                }
-		            } catch (IOException e) {
-		            }
-		        }		
+			        }		
+				}
 			}
 		}
 		
-		// Set error message in request if it is not empty.
-		if (messages.size() > 0) {
-			saveMessages(request, messages);
-		} else {
-			
+		// Set success message in request if everything is fine now.
+		if (messages.size() == 0) {
+			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
 		
 		return mapping.findForward("success");
@@ -160,10 +182,10 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 * @param
 	 * @return
 	 */
-	public ActionForward siteLogo(ActionMapping mapping, ActionForm form,
+	public ActionForward getSiteLogo(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		File siteLogo = new File(this.getSiteLogoName());
+		File siteLogo = new File(getLogoFileName());
 		if (siteLogo.exists() && siteLogo.length() > 0) {
 			response.setContentType(ExportUtils.IMAGE_CONTENT_TYPE);
 			response.setHeader(ExportUtils.CONTENT_DISPOSITION, ExportUtils.ATTACHMENT
@@ -190,13 +212,13 @@ public class AdministrationAction extends AbstractDispatchAction {
 	}
 
 	/**
-	 * Get the file name of site log.
+	 * Get the file name of site logo.
 	 *
 	 * @return file name of site logo.
 	 */
-	private String getSiteLogoName() {
+	public static String getLogoFileName() {
 		StringBuilder sb = new StringBuilder();
-		String fileRoot = PropertyReader.getProperty(
+		String fileRoot = PropertyUtils.getProperty(
 				Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 		sb.append(fileRoot).append(File.separator).append(Constants.SITE_LOGO_FILENAME);
 		
@@ -204,33 +226,39 @@ public class AdministrationAction extends AbstractDispatchAction {
 	}
 	
 	/**
-	 * Get the file name of caNanolab property file.
-	 *
-	 * @return file name of caNanolab property file.
+	 * Set site name in property, set failure message if failed.
+	 * 
+	 * @param siteName
+	 * @param messages
 	 */
-	private String getPropertyFileName() {
-		StringBuilder sb = new StringBuilder();
-		String path = Thread.currentThread().getContextClassLoader().getResource(
-					Constants.FILEUPLOAD_PROPERTY).getPath();
-		sb.append(path);
-		sb.deleteCharAt(0);  // First char is a forward slash, remove it.
+	private boolean setSiteName(String siteName, ActionMessages messages) {
+		boolean success = PropertyUtils.setProperty(
+				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME, siteName);
 		
-		return sb.toString();
+		if (!success) {
+			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteName");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		}
+		
+		return success;
 	}
 	
 	/**
-	 * Save error message and log exception.
-	 *
+	 * Set site logo in property, set failure message if failed.
+	 * 
+	 * @param siteName
 	 * @param messages
-	 * @param e
-	 * @param errorMsg
 	 */
-	private void saveErrorMsg(ActionMessages messages, Throwable e, String errorMsg) {
-		if (logger.isInfoEnabled()) {
-			logger.info(errorMsg, e);
+	private boolean setSiteLogo(String siteLogo, ActionMessages messages) {
+		boolean success = PropertyUtils.setProperty(
+				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME, siteLogo);
+		
+		if (!success) {
+			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteLogo");
+			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
-		ActionMessage msg = new ActionMessage(errorMsg);
-		messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		
+		return success;
 	}
 	
 	public boolean loginRequired() {
