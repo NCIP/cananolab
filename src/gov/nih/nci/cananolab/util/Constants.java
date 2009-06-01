@@ -195,5 +195,5 @@ public class Constants {
 	public static final String SITE_LOGO_FILENAME = "siteLogo.gif";
 	
 	// Maximum file size of site logo.
-	public static final int MAX_LOGO_SIZE = 32768;
+	public static final int MAX_LOGO_SIZE = 65536;
 }
