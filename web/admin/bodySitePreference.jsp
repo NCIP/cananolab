@@ -53,9 +53,9 @@
 									<td width="490" height="15">
 										<div align="right">
 											<div align="right">
+												<input type="hidden" name="dispatch" value="update">
 												<input type="reset" value="Reset"
 													onclick="javascript:location.href='admin.do?dispatch=sitePreference'">
-												<input type="hidden" name="dispatch" value="update">
 												<input type="button" value="Clear All"
 													onclick="javascript:location.href='admin.do?dispatch=clearAll'">
 												<html:submit />

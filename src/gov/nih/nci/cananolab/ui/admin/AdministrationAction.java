@@ -59,16 +59,58 @@ public class AdministrationAction extends AbstractDispatchAction {
 		DynaActionForm theForm = (DynaActionForm) form;
 		String siteName = PropertyUtils.getProperty(
 				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME);
-		String siteLogo = PropertyUtils.getProperty(
-				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_LOGO);
 		theForm.set(Constants.SITE_NAME, siteName);
-		theForm.set(Constants.SITE_LOGO, siteLogo);
+		theForm.set(Constants.SITE_LOGO, null);
 		
 		if (logger.isInfoEnabled()) {
 			logger.info("siteName = " + siteName);
 		}
 		
 		return mapping.findForward("sitePreference");
+	}
+
+	/**
+	 * Action to handle site logo file downloading.
+	 *
+	 * @param
+	 * @return
+	 */
+	public ActionForward getSiteLogo(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		File siteLogo = new File(this.getLogoFileName());
+		if (siteLogo.exists() && siteLogo.length() > 0) {
+			response.setContentType(ExportUtils.IMAGE_CONTENT_TYPE);
+			response.setHeader(ExportUtils.CONTENT_DISPOSITION, ExportUtils.ATTACHMENT
+					+ Constants.SITE_LOGO_FILENAME + "\"");
+			response.setHeader(ExportUtils.CACHE_CONTROL, ExportUtils.PRIVATE);
+
+			int numRead = 0;
+			InputStream in = null;
+			OutputStream out = null;
+			byte[] bytes = new byte[Constants.MAX_LOGO_SIZE];
+			try {
+				in = new BufferedInputStream(new FileInputStream(siteLogo));
+				out = response.getOutputStream();
+				while ((numRead = in.read(bytes)) > 0) {
+					out.write(bytes, 0, numRead);
+				}
+			} finally {
+	            try {
+		            //Close the InputStream
+	                if (in != null) {
+	                    in.close();
+	                }
+		            //Close the OutputStream
+	                if (out != null) {
+	                    out.flush();
+	                    out.close();
+	                }
+	            } catch (IOException e) {
+	            }
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -81,23 +123,25 @@ public class AdministrationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionMessages messages = new ActionMessages();
-		saveMessages(request, messages);
 		
 		// Remove site name, set failure message if failed.
 		this.setSiteName(null, messages);
 		
 		// Remove site logo, set failure message if failed.
-		this.setSiteLogo(null, messages);
-		
-		File logoFile = new File(getLogoFileName());
-		if (logoFile.exists()) {
-			logoFile.delete();
+		if (this.setSiteLogo(null, messages)) {
+			File logoFile = new File(this.getLogoFileName());
+			if (logoFile.exists()) {
+				logoFile.delete();
+			}
 		}
 		
 		// Set success message in request if everything is fine now.
 		if (messages.size() == 0) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		} else {
+			saveErrors(request, messages);
 		}
 		
 		return mapping.findForward("sitePreference");
@@ -115,15 +159,13 @@ public class AdministrationAction extends AbstractDispatchAction {
 		DynaActionForm theForm = (DynaActionForm) form;
 		String siteName = (String) theForm.getString(Constants.SITE_NAME);
 		ActionMessages messages = new ActionMessages();
-		saveMessages(request, messages);
-		OutputStream out = null;
 		
 		// Save site name, if fail, set failure message;
 		this.setSiteName(siteName, messages);
 		
 		// Save site logo, if fail, set failure message;
 		FormFile file = (FormFile) theForm.get(Constants.SITE_LOGO);
-		File siteLogo = new File(getLogoFileName());
+		File siteLogo = new File(this.getLogoFileName());
 		String logoFilename = null;
 		byte[] data = null;
 		if (file != null) {
@@ -133,19 +175,19 @@ public class AdministrationAction extends AbstractDispatchAction {
 		
 		// If user doesn't upload a file, remove current logo file.
 		if (data == null || data.length == 0) {
-			this.setSiteLogo(null, messages);
-			if (siteLogo.exists()) {
+			if (this.setSiteLogo(null, messages) && siteLogo.exists()) {
 				siteLogo.delete();
 			}
 		} else {
 			// If the new logo file is too large, set error msg to warn user.
 			if (data.length > Constants.MAX_LOGO_SIZE) {
 				ActionMessage msg = 
-					new ActionMessage("admin.sitePreference.error.logoOversize", Constants.MAX_LOGO_SIZE);
+					new ActionMessage("admin.sitePreference.error.logoTooLarge", Constants.MAX_LOGO_SIZE);
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			} else {
 				// Save the uploaded logo file name in property.
 				if (this.setSiteLogo(logoFilename, messages)) {
+					OutputStream out = null;
 			        try {
 						out = new BufferedOutputStream(new FileOutputStream(siteLogo));
 			            out.write(data);
@@ -171,44 +213,12 @@ public class AdministrationAction extends AbstractDispatchAction {
 		if (messages.size() == 0) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
+			saveMessages(request, messages);
+		} else {
+			saveErrors(request, messages);
 		}
 		
 		return mapping.findForward("success");
-	}
-
-	/**
-	 * Download action to handle file downloading and viewing
-	 *
-	 * @param
-	 * @return
-	 */
-	public ActionForward getSiteLogo(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		File siteLogo = new File(getLogoFileName());
-		if (siteLogo.exists() && siteLogo.length() > 0) {
-			response.setContentType(ExportUtils.IMAGE_CONTENT_TYPE);
-			response.setHeader(ExportUtils.CONTENT_DISPOSITION, ExportUtils.ATTACHMENT
-					+ Constants.SITE_LOGO_FILENAME + "\"");
-			response.setHeader(ExportUtils.CACHE_CONTROL, ExportUtils.PRIVATE);
-
-			InputStream in = new BufferedInputStream(new FileInputStream(siteLogo));
-			OutputStream out = response.getOutputStream();
-
-			byte[] bytes = new byte[Constants.MAX_LOGO_SIZE];
-			int numRead = 0;
-			try {
-				while ((numRead = in.read(bytes)) > 0) {
-					out.write(bytes, 0, numRead);
-				}
-			} finally {
-				try {
-					out.close();
-				} catch (Exception e) {
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -216,7 +226,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 *
 	 * @return file name of site logo.
 	 */
-	public static String getLogoFileName() {
+	private String getLogoFileName() {
 		StringBuilder sb = new StringBuilder();
 		String fileRoot = PropertyUtils.getProperty(
 				Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
@@ -234,12 +244,10 @@ public class AdministrationAction extends AbstractDispatchAction {
 	private boolean setSiteName(String siteName, ActionMessages messages) {
 		boolean success = PropertyUtils.setProperty(
 				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME, siteName);
-		
 		if (!success) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteName");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
-		
 		return success;
 	}
 	
@@ -251,13 +259,11 @@ public class AdministrationAction extends AbstractDispatchAction {
 	 */
 	private boolean setSiteLogo(String siteLogo, ActionMessages messages) {
 		boolean success = PropertyUtils.setProperty(
-				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME, siteLogo);
-		
+				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_LOGO, siteLogo);
 		if (!success) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.error.siteLogo");
 			messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		}
-		
 		return success;
 	}
 	

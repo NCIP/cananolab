@@ -1,28 +1,23 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page import="gov.nih.nci.cananolab.util.Constants"%>
 <%@page import="gov.nih.nci.cananolab.util.PropertyUtils"%>
-<%@page import="gov.nih.nci.cananolab.ui.admin.AdministrationAction"%>
-<%@page import="java.io.File"%>
-
 <%
 	/**
 	 * Because this page is used by 3 tiles, "canano.login", "canano.home" & "canano.disclaimer".
-	 * And there is no one generic action for all pages, so implement the logic here.
+	 * And there is no one generic action class for all pages, so implement the logic here.
 	 */
-	try {
-		// Get site name from property.
-		String siteName = 
-			PropertyUtils.getProperty(Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME);
-		if (siteName != null && siteName.length() > 0) {
-			pageContext.setAttribute(Constants.SITE_NAME, siteName);
-		}
-		
-		// Construct site logo file name.
-		File logo = new File(AdministrationAction.getLogoFileName());
-		if (logo.exists()) {
-			pageContext.setAttribute("hasSiteLogo", Boolean.TRUE);
-		}
-	} catch (Exception exp) {
+	// Get site name from property.
+	String siteName = 
+		PropertyUtils.getProperty(Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME);
+	if (siteName != null && siteName.length() > 0) {
+		pageContext.setAttribute(Constants.SITE_NAME, siteName);
+	}
+	
+	// Get site logo from property.
+	String siteLogo = 
+		PropertyUtils.getProperty(Constants.FILEUPLOAD_PROPERTY, Constants.SITE_LOGO);
+	if (siteLogo != null && siteLogo.length() > 0) {
+		pageContext.setAttribute("hasSiteLogo", Boolean.TRUE);
 	}
 %>
 <table class="subhdrBG" cellspacing="0" cellpadding="0" width="100%" border="0">
@@ -50,4 +45,3 @@
 		</tr>
 	</tbody>
 </table>
-
