@@ -19,7 +19,7 @@ import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
-import gov.nih.nci.cananolab.util.PropertyReader;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
@@ -89,7 +89,7 @@ public class CharacterizationServiceHelper {
 	public static final String SURFACE = "Surface";
 	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
 
-	private static String fileRoot = PropertyReader.getProperty(
+	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 
 	private static Logger logger = Logger
