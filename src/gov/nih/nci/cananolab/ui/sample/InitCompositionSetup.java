@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.nanomaterial.Emulsion;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -10,8 +9,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.service.common.LookupService;
-import gov.nih.nci.cananolab.service.sample.CompositionService;
-import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 
@@ -30,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class InitCompositionSetup {
 
-	private CompositionService compService = new CompositionServiceLocalImpl();
+	//private CompositionService compService = new CompositionServiceLocalImpl();
 
 	public static InitCompositionSetup getInstance() {
 		return new InitCompositionSetup();
