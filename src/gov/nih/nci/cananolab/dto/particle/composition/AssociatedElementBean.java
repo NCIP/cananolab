@@ -65,7 +65,7 @@ public class AssociatedElementBean {
 			if (className == null) {
 				clazz = OtherFunctionalizingEntity.class;
 			} else {
-				clazz = ClassUtils.getFullClass("functionalization."
+				clazz = ClassUtils.getFullClass("agentmaterial."
 						+ className);
 			}
 			try {
