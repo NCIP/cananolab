@@ -231,6 +231,10 @@ INSERT INTO common_lookup(name,attribute,value) values('dimension', 'unit', ' nm
 DELETE FROM common_lookup
 where name='SampleContainer';
 
+DELETE FROM common_lookup
+where name='Cytotoxicity'
+and attribute='cellLine';
+
 update common_lookup
 set name='File'
 where name='LabFile';
