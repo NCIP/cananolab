@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
 <c:forEach var="composingElement" items="${entity.composingElements}">
 	<table class="summaryViewLayer4" width="95%" align="center">
@@ -22,6 +23,29 @@
 				</c:otherwise>
 			</c:choose>
 		</tr>
+		<c:choose>
+			<c:when test="${!empty composingElement.domain.pubChemId}">
+				<tr>
+					<td>
+						<c:set var="pubChemId" value="${composingElement.domain.pubChemId}"/>
+						<c:set var="pubChemDS" value="${composingElement.domain.pubChemDataSourceName}"/>
+						PubChem: ${pubChemDS}&nbsp;
+						<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>'>${pubChemId}</a>
+					</td>
+					<td></td>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:if test="${param.dispatch ne 'summaryView'}">
+					<tr>
+						<td>
+							PubChem: N/A
+						</td>
+						<td></td>
+					</tr>
+				</c:if>
+			</c:otherwise>
+		</c:choose>
 		<c:choose>
 			<c:when test="${!empty composingElement.molecularFormulaDisplayName}">
 				<tr>

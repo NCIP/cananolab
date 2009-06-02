@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
+import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -177,5 +178,28 @@ public class CompositionServiceHelper {
 			ce = (ComposingElement) result.get(0);
 		}
 		return ce;
+	}
+	
+	/**
+	 * Get PubChem URL in format of http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
+	 *  
+	 * @param pubChemDS
+	 * @param pubChemId
+	 * @return PubChem URL
+	 */
+	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
+		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
+		
+		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
+			sb.append(SampleConstants.BIOASSAY_ID);
+		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
+			sb.append(SampleConstants.COMPOUND_ID);
+		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
+			sb.append(SampleConstants.SUBSTANCE_ID);
+		}
+		
+		sb.append('=').append(pubChemId);
+		
+		return sb.toString();
 	}
 }

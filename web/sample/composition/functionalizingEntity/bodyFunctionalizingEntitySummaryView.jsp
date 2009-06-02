@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper"%>
 
 <table id="summarySection2" width="95%" align="center"
 	style="display: block" class="summaryViewLayer2">
@@ -32,6 +33,19 @@
 									</td>
 									<td>
 										${functionalizingEntity.name}
+									</td>
+								</tr>
+							</c:if>
+							<c:if test="${!empty functionalizingEntity.domainEntity.pubChemId}">
+								<tr>
+									<td class="cellLabel">
+										PubChem
+									</td>
+									<td>
+										<c:set var="pubChemId" value="${functionalizingEntity.domainEntity.pubChemId}"/>
+										<c:set var="pubChemDS" value="${functionalizingEntity.domainEntity.pubChemDataSourceName}"/>
+										${pubChemDS}&nbsp;
+										<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>'>${pubChemId}</a>
 									</td>
 								</tr>
 							</c:if>
