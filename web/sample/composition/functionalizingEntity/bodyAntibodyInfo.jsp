@@ -68,7 +68,7 @@
 						</select>
 					</div>
 				</td>
-				<td>
+				<td class="cellLabel">
 					Isotype
 				</td>
 				<td>
@@ -98,7 +98,7 @@
 						</select>
 					</div>
 				</td>
-				<td>
+				<td class="cellLabel">
 					Species
 				</td>
 				<td>
