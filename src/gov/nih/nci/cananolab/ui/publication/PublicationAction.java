@@ -380,7 +380,6 @@ public class PublicationAction extends BaseAnnotationAction {
 					id));
 		}
 		SampleBean sampleBean = setupSample(theForm, request, "local");
-		setupDataTree(sampleBean, request);
 		ActionMessage msg = new ActionMessage("message.deletePublications",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

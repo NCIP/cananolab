@@ -379,7 +379,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		String sampleId = theForm.getString("sampleId");
 		SampleService sampleService = new SampleServiceLocalImpl();
 		SampleBean sampleBean = sampleService.findSampleById(sampleId);
-		InitSampleSetup.getInstance().getDataTree(sampleBean, request);
 		return forward;
 	}
 

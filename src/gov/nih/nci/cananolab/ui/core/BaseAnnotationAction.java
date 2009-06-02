@@ -14,18 +14,14 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DataLinkBean;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 
 import java.io.FileInputStream;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -119,12 +115,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				Constants.CSM_PG_PARTICLE);
 	}
 
-	public Map<String, SortedSet<DataLinkBean>> setupDataTree(
-			SampleBean sampleBean, HttpServletRequest request) throws Exception {
-		request.setAttribute("updateDataTree", "true");
-		return InitSampleSetup.getInstance().getDataTree(sampleBean, request);
-	}
-
 	public ActionForward setupDeleteAll(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -161,7 +151,6 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			sampleService.deleteAnnotationById(fullClassName, new Long(id));
 		}
 		SampleBean sampleBean = setupSample(theForm, request, "local");
-		setupDataTree(sampleBean, request);
 		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
 				submitType);
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);

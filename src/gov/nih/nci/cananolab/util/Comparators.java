@@ -182,18 +182,6 @@ public class Comparators {
 		}
 	}
 
-	public static class DataLinkTypeDateComparator implements
-			Comparator<DataLinkBean> {
-		public int compare(DataLinkBean link1, DataLinkBean link2) {
-			if (link1.getDataDisplayType().equals(link2.getDataDisplayType())) {
-				return link1.getCreatedDate().compareTo(link2.getCreatedDate());
-			} else {
-				return link1.getDataDisplayType().compareTo(
-						link2.getDataDisplayType());
-			}
-		}
-	}
-
 	public static class NanomaterialEntityBeanTypeDateComparator implements
 			Comparator<NanomaterialEntityBean> {
 		public int compare(NanomaterialEntityBean entity1,
