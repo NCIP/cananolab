@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -39,7 +40,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class FunctionalizingEntityAction extends CompositionAction {
+public class FunctionalizingEntityAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -59,8 +60,9 @@ public class FunctionalizingEntityAction extends CompositionAction {
 		ActionMessage msg = new ActionMessage(
 				"message.addFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		return summaryEdit(mapping, form, request, response);
+		//save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 
 	private boolean validateTargets(HttpServletRequest request,
@@ -375,7 +377,8 @@ public class FunctionalizingEntityAction extends CompositionAction {
 			ActionMessage msg = new ActionMessage(
 					"message.deleteFunctionalizingEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+			//save action messages in the session so composition.do know about them
+			request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(

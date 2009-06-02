@@ -67,8 +67,9 @@ public class NanomaterialEntityAction extends CompositionAction {
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		return summaryEdit(mapping, form, request, response);
+		//save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 
 	private void saveEntity(HttpServletRequest request,
@@ -381,7 +382,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 			ActionMessage msg = new ActionMessage(
 					"message.deleteNanomaterialEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveMessages(request, msgs);
+			//save action messages in the session so composition.do know about them
+			request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(

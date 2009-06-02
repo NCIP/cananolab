@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -36,7 +37,7 @@ import org.apache.struts.validator.DynaValidatorForm;
  *
  * @author pansu
  */
-public class ChemicalAssociationAction extends CompositionAction {
+public class ChemicalAssociationAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -61,8 +62,9 @@ public class ChemicalAssociationAction extends CompositionAction {
 		saveAssociation(request, theForm, assocBean);
 		ActionMessage msg = new ActionMessage("message.addChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		return summaryEdit(mapping, form, request, response);
+		//save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 
 	private boolean validateAssociationFile(HttpServletRequest request,
@@ -191,7 +193,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 		// if composition doesn't have required information, return to summary
 		// view page
 		if (!validateComposition(compositionBean, request)) {
-			return summaryEdit(mapping, form, request, response);
+			return mapping.findForward("success");
 		}
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request, compositionBean);
@@ -438,7 +440,7 @@ public class ChemicalAssociationAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		ChemicalAssociationBean assocBean = (ChemicalAssociationBean) theForm
 				.get("assoc");
-	
+
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
@@ -459,8 +461,8 @@ public class ChemicalAssociationAction extends CompositionAction {
 		ActionMessage msg = new ActionMessage(
 				"message.deleteChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		return forward;
+		//save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 }

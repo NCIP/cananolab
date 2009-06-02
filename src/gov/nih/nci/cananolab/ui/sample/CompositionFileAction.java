@@ -72,9 +72,9 @@ public class CompositionFileAction extends CompositionAction {
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		request.setAttribute("location", "local");
-		return summaryEdit(mapping, form, request, response);
+		//save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 
 	private void setLookups(HttpServletRequest request) throws Exception {
@@ -146,9 +146,9 @@ public class CompositionFileAction extends CompositionAction {
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		return forward;
+		//save action messages in the session so composition.do know about them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 
 	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,

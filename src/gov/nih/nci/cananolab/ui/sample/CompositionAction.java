@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 public class CompositionAction extends BaseAnnotationAction {
@@ -172,11 +173,15 @@ public class CompositionAction extends BaseAnnotationAction {
 							session.getServletContext()));
 			compService.retrieveVisibility(assocBean, user);
 		}
-		FileService fileService=new FileServiceLocalImpl();
-		for (FileBean fileBean : compositionBean
-				.getFiles()) {
+		FileService fileService = new FileServiceLocalImpl();
+		for (FileBean fileBean : compositionBean.getFiles()) {
 			fileService.retrieveVisibility(fileBean, user);
 		}
+		//retain action messages from send redirects
+		ActionMessages msgs = (ActionMessages) session
+				.getAttribute(ActionMessages.GLOBAL_MESSAGE);
+		saveMessages(request, msgs);
+		session.removeAttribute(ActionMessages.GLOBAL_MESSAGE);
 	}
 
 	/**
