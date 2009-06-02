@@ -165,11 +165,7 @@
 			input="input">
 			<forward name="input"
 				path="sample.composition.nanomaterialEntity" />
-			<forward name="success" path="sample.annotationMessage" />
-			<forward name="summaryView"
-				path="sample.composition.summaryView" />
-			<forward name="summaryEdit"
-				path="sample.composition.summaryEdit" />
+			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/functionalizingEntity"
@@ -177,11 +173,7 @@
 			input="input">
 			<forward name="input"
 				path="sample.composition.functionalizingEntity" />
-			<forward name="success" path="sample.annotationMessage" />
-			<forward name="summaryView"
-				path="sample.composition.summaryView" />
-			<forward name="summaryEdit"
-				path="sample.composition.summaryEdit" />
+			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/chemicalAssociation"
@@ -191,11 +183,7 @@
 				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="sample.composition.chemicalAssociation" />
-			<forward name="success" path="sample.annotationMessage" />
-			<forward name="summaryView"
-				path="sample.composition.summaryView" />
-			<forward name="summaryEdit"
-				path="sample.composition.summaryEdit" />
+			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/compositionFile"
@@ -203,11 +191,7 @@
 			input="input">
 			<forward name="input"
 				path="sample.composition.compositionFile" />
-			<forward name="success" path="sample.annotationMessage" />
-			<forward name="summaryView"
-				path="sample.composition.summaryView" />
-			<forward name="summaryEdit"
-				path="sample.composition.summaryEdit" />
+			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
 		</action>
 		<action name="characterizationForm" parameter="dispatch"
 			path="/characterization"
