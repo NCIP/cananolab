@@ -61,9 +61,6 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	private FunctionBean theFunction = new FunctionBean();
 
-	public FunctionalizingEntityBean() {
-	}
-
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
 		description = functionalizingEntity.getDescription();
 		name = functionalizingEntity.getName();
