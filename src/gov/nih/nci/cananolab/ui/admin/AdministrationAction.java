@@ -66,7 +66,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			logger.info("siteName = " + siteName);
 		}
 		
-		return mapping.findForward("sitePreference");
+		return mapping.getInputForward();
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			saveErrors(request, messages);
 		}
 		
-		return mapping.findForward("sitePreference");
+		return mapping.getInputForward();
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			saveErrors(request, messages);
 		}
 		
-		return mapping.findForward("success");
+		return mapping.getInputForward();
 	}
 
 	/**
