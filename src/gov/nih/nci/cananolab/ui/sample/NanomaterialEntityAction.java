@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -39,7 +40,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
-public class NanomaterialEntityAction extends CompositionAction {
+public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 	/**
 	 * Add or update the data to database
@@ -67,7 +68,7 @@ public class NanomaterialEntityAction extends CompositionAction {
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//save action messages in the session so composition.do know about them
+		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
@@ -215,8 +216,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String entityId = request.getParameter("dataId");
-		if (entityId==null) {
-			entityId=(String)request.getAttribute("dataId");
+		if (entityId == null) {
+			entityId = (String) request.getAttribute("dataId");
 		}
 		String sampleId = theForm.getString("sampleId");
 		// set up other particles with the same primary point of contact
@@ -277,14 +278,16 @@ public class NanomaterialEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		ComposingElementBean composingElement=entity.getTheComposingElement();
+		ComposingElementBean composingElement = entity.getTheComposingElement();
 		entity.addComposingElement(composingElement);
 		// save nanomaterial entity
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entity);
-		//return to setupUpdate to retrieve the correct entity from database after saving to database.
-		request.setAttribute("dataId", entity.getDomainEntity().getId().toString());
+		// return to setupUpdate to retrieve the correct entity from database
+		// after saving to database.
+		request.setAttribute("dataId", entity.getDomainEntity().getId()
+				.toString());
 		return setupUpdate(mapping, form, request, response);
 	}
 
@@ -294,7 +297,7 @@ public class NanomaterialEntityAction extends CompositionAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
-		ComposingElementBean element=entity.getTheComposingElement();
+		ComposingElementBean element = entity.getTheComposingElement();
 		entity.removeComposingElement(element);
 		saveEntity(request, theForm, entity);
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
@@ -313,7 +316,8 @@ public class NanomaterialEntityAction extends CompositionAction {
 		// save nanomaterial entity
 		saveEntity(request, theForm, entity);
 		request.setAttribute("anchor", "file");
-		request.setAttribute("dataId", entity.getDomainEntity().getId().toString());
+		request.setAttribute("dataId", entity.getDomainEntity().getId()
+				.toString());
 		return setupUpdate(mapping, form, request, response);
 	}
 
@@ -382,8 +386,10 @@ public class NanomaterialEntityAction extends CompositionAction {
 			ActionMessage msg = new ActionMessage(
 					"message.deleteNanomaterialEntity");
 			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//save action messages in the session so composition.do know about them
-			request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+			// save action messages in the session so composition.do know about
+			// them
+			request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE,
+					msgs);
 			return mapping.findForward("success");
 		} else {
 			ActionMessage msg = new ActionMessage(

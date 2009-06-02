@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -33,18 +34,19 @@ import org.apache.struts.validator.DynaValidatorForm;
  *
  * @author pansu
  */
-public class CompositionFileAction extends CompositionAction {
+public class CompositionFileAction extends BaseAnnotationAction {
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
-		SampleService sampleService=new SampleServiceLocalImpl();
-		String sampleId=theForm.getString("sampleId");
-		//need to load the full sample to save composition because of unidirectional relationship
-		//between composition and file
-		SampleBean sampleBean=sampleService.findFullSampleById(sampleId);
+		SampleService sampleService = new SampleServiceLocalImpl();
+		String sampleId = theForm.getString("sampleId");
+		// need to load the full sample to save composition because of
+		// unidirectional relationship
+		// between composition and file
+		SampleBean sampleBean = sampleService.findFullSampleById(sampleId);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -72,7 +74,7 @@ public class CompositionFileAction extends CompositionAction {
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//save action messages in the session so composition.do know about them
+		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
@@ -101,7 +103,7 @@ public class CompositionFileAction extends CompositionAction {
 		FileService fileService = new FileServiceLocalImpl();
 		FileBean fileBean = fileService.findFileById(fileId);
 		fileService.retrieveVisibility(fileBean, user);
-		CompositionBean compBean=(CompositionBean)theForm.get("comp");
+		CompositionBean compBean = (CompositionBean) theForm.get("comp");
 		compBean.setTheFile(fileBean);
 		setLookups(request);
 		setupSample(theForm, request, "local");
@@ -146,7 +148,7 @@ public class CompositionFileAction extends CompositionAction {
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//save action messages in the session so composition.do know about them
+		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
