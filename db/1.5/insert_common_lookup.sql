@@ -9,9 +9,6 @@ insert into common_lookup(name,attribute,value) values ('Attachment','bondType',
 insert into common_lookup(name,attribute,value) values ('Attachment','bondType','ionic');
 insert into common_lookup(name,attribute,value) values ('Attachment','bondType','van der Waals');
 
-insert into common_lookup(name,attribute,value) values ('Cytotoxicity','cellLine','human hepatocarinoma');
-insert into common_lookup(name,attribute,value) values ('Cytotoxicity','cellLine','porcine renal tubule');
-
 insert into common_lookup(name,attribute,value) values ('Emulsion','composingElementType','bulk phase');
 insert into common_lookup(name,attribute,value) values ('Emulsion','composingElementType','dispersed phase');
 insert into common_lookup(name,attribute,value) values ('Emulsion','composingElementType','emulsifier');
@@ -416,9 +413,6 @@ insert into common_lookup(name,attribute,value) values ('Sterility','displayName
 insert into common_lookup(name,attribute,value) values ('Targeting','displayName','Targeting');
 insert into common_lookup(name,attribute,value) values ('MetabolicStability','displayName','Metabolic Stability');
 
-insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Endotoxin');
-insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Bacterial/Yeast/Mold');
-insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Mycoplasma');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Plasma Protein Binding');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Hemolysis');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Platelet Aggregation');
