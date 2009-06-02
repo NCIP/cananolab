@@ -62,7 +62,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		saveAssociation(request, theForm, assocBean);
 		ActionMessage msg = new ActionMessage("message.addChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//save action messages in the session so composition.do know about them
+		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
@@ -361,9 +361,15 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		HttpSession session = request.getSession();
+		//set up compositionBean required to set up drop-down
+		String sampleId = theForm.getString("sampleId");
+		CompositionService compService = new CompositionServiceLocalImpl();
+		CompositionBean compositionBean = compService
+				.findCompositionBySampleId(sampleId);
+		setLookups(request, compositionBean);
+
 		UserBean user = (UserBean) session.getAttribute("user");
 		String assocId = request.getParameter("dataId");
-		CompositionService compService = new CompositionServiceLocalImpl();
 		ChemicalAssociationBean assocBean = compService
 				.findChemicalAssociationById(assocId);
 		compService.retrieveVisibility(assocBean, user);
@@ -371,6 +377,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		prepareEntityLists(assocBean, request);
 		theForm.set("assoc", assocBean);
+
+
 		return mapping.getInputForward();
 	}
 
@@ -461,7 +469,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		ActionMessage msg = new ActionMessage(
 				"message.deleteChemicalAssociation");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//save action messages in the session so composition.do know about them
+		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
