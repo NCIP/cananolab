@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.sample;
 
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -149,10 +150,15 @@ public class InitCharacterizationSetup {
 	public void setCharacterizationType(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
 		Characterization domainChar = charBean.getDomainChar();
-		String charType = InitSetup.getInstance().getDisplayName(
-				ClassUtils.getShortClassName(domainChar.getClass()
-						.getSuperclass().getName()),
-				request.getSession().getServletContext());
+		String charType = null;
+		if (domainChar instanceof OtherCharacterization) {
+			charType = ((OtherCharacterization) domainChar).getAssayCategory();
+		} else {
+			charType = InitSetup.getInstance().getDisplayName(
+					ClassUtils.getShortClassName(domainChar.getClass()
+							.getSuperclass().getName()),
+					request.getSession().getServletContext());
+		}
 		charBean.setCharacterizationType(charType);
 	}
 
@@ -165,9 +171,15 @@ public class InitCharacterizationSetup {
 	 */
 	public void setCharacterizationName(HttpServletRequest request,
 			CharacterizationBean charBean) throws Exception {
-		String charName = InitSetup.getInstance().getDisplayName(
-				charBean.getClassName(),
-				request.getSession().getServletContext());
+		Characterization domainChar = charBean.getDomainChar();
+		String charName = null;
+		if (domainChar instanceof OtherCharacterization) {
+			charName = ((OtherCharacterization) domainChar).getName();
+		} else {
+			charName = InitSetup.getInstance().getDisplayName(
+					charBean.getClassName(),
+					request.getSession().getServletContext());
+		}
 		charBean.setCharacterizationName(charName);
 	}
 
@@ -249,9 +261,11 @@ public class InitCharacterizationSetup {
 		String shortClassName = ClassUtils.getShortClassName(domain.getClass()
 				.getName());
 		if (domain instanceof PhysicoChemicalCharacterization) {
-			includePage = "/sample/characterization/physical/body" + shortClassName + "Info.jsp";
+			includePage = "/sample/characterization/physical/body"
+					+ shortClassName + "Info.jsp";
 		} else if (domain instanceof InvitroCharacterization) {
-			includePage = "/sample/characterization/invitro/body" + shortClassName + "Info.jsp";
+			includePage = "/sample/characterization/invitro/body"
+					+ shortClassName + "Info.jsp";
 		}
 		return includePage;
 	}
