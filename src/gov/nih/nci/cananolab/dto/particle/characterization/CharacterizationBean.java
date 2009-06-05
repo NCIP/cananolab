@@ -1,5 +1,7 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
+import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;
@@ -17,6 +19,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -26,6 +29,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -204,14 +208,20 @@ public class CharacterizationBean {
 	}
 
 	public void setupDomain(String createdBy) throws Exception {
-		// take care of characterizations that don't have any special
-		// properties shown in the form, e.g. Size
+		Class clazz = null;
+		if (className == null || className == "") {
+			clazz = OtherCharacterization.class;
+		} else {
+			clazz = ClassUtils.getFullClass(className);
+		}
 		if (domainChar == null) {
-			Class clazz = ClassUtils.getFullClass(className);
 			domainChar = (Characterization) clazz.newInstance();
 		}
-
-		if (domainChar instanceof Shape) {
+		if (domainChar instanceof OtherCharacterization) {
+			((OtherCharacterization) domainChar).setName(characterizationName);
+			((OtherCharacterization) domainChar)
+					.setAssayCategory(characterizationType);
+		} else if (domainChar instanceof Shape) {
 			domainChar = shape;
 		} else if (domainChar instanceof Solubility) {
 			domainChar = solubility;
@@ -226,7 +236,6 @@ public class CharacterizationBean {
 		} else if (domainChar instanceof Transfection) {
 			domainChar = transfection;
 		}
-
 		if (domainChar.getId() == null
 				|| domainChar.getCreatedBy() != null
 				&& domainChar.getCreatedBy().equals(
