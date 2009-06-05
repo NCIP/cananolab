@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle.characterization;
 
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
+import gov.nih.nci.cananolab.domain.characterization.invitro.Transfection;
 import gov.nih.nci.cananolab.domain.characterization.physical.PhysicalState;
 import gov.nih.nci.cananolab.domain.characterization.physical.Shape;
 import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
@@ -78,6 +79,8 @@ public class CharacterizationBean {
 
 	private boolean withProperties = false;
 
+	private Transfection transfection = new Transfection();
+
 	public CharacterizationBean() {
 	}
 
@@ -128,6 +131,9 @@ public class CharacterizationBean {
 			withProperties = true;
 		} else if (chara instanceof EnzymeInduction) {
 			enzymeInduction = (EnzymeInduction) chara;
+			withProperties = true;
+		} else if (chara instanceof Transfection) {
+			transfection = (Transfection) chara;
 			withProperties = true;
 		} else {
 			withProperties = false;
@@ -197,8 +203,7 @@ public class CharacterizationBean {
 		return copy;
 	}
 
-	public void setupDomain(String createdBy)
-			throws Exception {
+	public void setupDomain(String createdBy) throws Exception {
 		// take care of characterizations that don't have any special
 		// properties shown in the form, e.g. Size
 		if (domainChar == null) {
@@ -218,6 +223,8 @@ public class CharacterizationBean {
 			domainChar = cytotoxicity;
 		} else if (domainChar instanceof EnzymeInduction) {
 			domainChar = enzymeInduction;
+		} else if (domainChar instanceof Transfection) {
+			domainChar = transfection;
 		}
 
 		if (domainChar.getId() == null
@@ -249,7 +256,7 @@ public class CharacterizationBean {
 			domainChar.getExperimentConfigCollection().add(config.getDomain());
 		}
 
-		if (protocolBean != null&& protocolBean.getDomain().getName()!=null) {
+		if (protocolBean != null && protocolBean.getDomain().getName() != null) {
 			domainChar.setProtocol(protocolBean.getDomain());
 		} else {
 			domainChar.setProtocol(null);
@@ -464,5 +471,13 @@ public class CharacterizationBean {
 
 	public boolean isWithProperties() {
 		return withProperties;
+	}
+
+	public Transfection getTransfection() {
+		return transfection;
+	}
+
+	public void setTransfection(Transfection transfection) {
+		this.transfection = transfection;
 	}
 }
