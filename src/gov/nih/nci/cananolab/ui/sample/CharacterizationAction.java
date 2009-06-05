@@ -167,7 +167,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		Characterization chara = charService.findCharacterizationById(charId,
 				charClass);
 		CharacterizationBean charBean = new CharacterizationBean(chara);
-		//retrieve visibility
+		// retrieve visibility
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		charService.retrieveVisiblity(charBean, user);
 		// setup correct display for characterization name and characterization
@@ -204,9 +204,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				|| charBean.getClassName().equals("Surface")) {
 			includePage = "physical/body" + charBean.getClassName()
 					+ "Info.jsp";
-		} else if (charBean.getClassName().equals("Cytotoxicity")) {
-			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
-		} else if (charBean.getClassName().equals("EnzymeInduction")) {
+		} else if (charBean.getClassName().equals("Cytotoxicity")
+				|| charBean.getClassName().equals("EnzymeInduction")
+				|| charBean.getClassName().equals("Transfection")) {
 			includePage = "invitro/body" + charBean.getClassName() + "Info.jsp";
 		}
 		return includePage;
@@ -238,7 +238,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (charBean.getClassName() == null || charBean.getClassName().length()==0) {
+		if (charBean.getClassName() == null
+				|| charBean.getClassName().length() == 0) {
 			String className = InitSetup.getInstance().getClassName(
 					charBean.getCharacterizationName(),
 					request.getSession().getServletContext());
@@ -443,7 +444,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -465,7 +467,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -488,7 +491,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	public ActionForward summaryPrint(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -500,8 +504,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
-			List<String> characterizationTypes =
-				(List<String>) request.getAttribute("characterizationTypes");
+			List<String> characterizationTypes = (List<String>) request
+					.getAttribute("characterizationTypes");
 			characterizationTypes.clear();
 			characterizationTypes.add(type);
 		}
@@ -517,7 +521,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	protected void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -531,7 +536,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else {
 			// TODO model change
 			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-			//		request, location);
+			// request, location);
 			// service = new CharacterizationServiceRemoteImpl(
 			// serviceUrl);
 		}
@@ -546,28 +551,29 @@ public class CharacterizationAction extends BaseAnnotationAction {
 					request, charBean);
 			service.retrieveVisiblity(charBean, user);
 		}
-		CharacterizationSummaryViewBean summaryView =
-			new CharacterizationSummaryViewBean(charBeans);
+		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
+				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
 	}
 
 	/**
-	 * Shared function for summaryView() and summaryPrint().
-	 * Keep submitted characterization types in the correct display order.
-	 * Should be called after calling prepareSummary().
+	 * Shared function for summaryView() and summaryPrint(). Keep submitted
+	 * characterization types in the correct display order. Should be called
+	 * after calling prepareSummary().
 	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
-	protected void prepareCharacterizationTypes(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean)
-			request.getAttribute("characterizationSummaryView");
+	protected void prepareCharacterizationTypes(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean) request
+				.getAttribute("characterizationSummaryView");
 
 		// Keep submitted characterization types in the correct display order
 		List<String> allCharacterizationTypes = new ArrayList<String>(
@@ -575,8 +581,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 						"characterizationTypes"));
 		List<String> characterizationTypes = new ArrayList<String>();
 		for (String charType : allCharacterizationTypes) {
-			if (summaryView.getCharacterizationTypes().contains(charType) &&
-				!characterizationTypes.contains(charType)) {
+			if (summaryView.getCharacterizationTypes().contains(charType)
+					&& !characterizationTypes.contains(charType)) {
 				characterizationTypes.add(charType);
 			}
 		}
@@ -584,14 +590,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * summaryExport() handles Export request for Characterization Summary report.
+	 * summaryExport() handles Export request for Characterization Summary
+	 * report.
 	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
-	 * @throws Exception if error occurred.
+	 * @throws Exception
+	 *             if error occurred.
 	 */
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -599,10 +607,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 
-		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean)
-			request.getAttribute("characterizationSummaryView");
-		SortedMap<String, List<CharacterizationBean>> charBeanMap =
-			charSummaryBean.getType2Characterizations();
+		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) request
+				.getAttribute("characterizationSummaryView");
+		SortedMap<String, List<CharacterizationBean>> charBeanMap = charSummaryBean
+				.getType2Characterizations();
 		List<CharacterizationBean> charBeans = null;
 
 		// Filter out un-selected types.
@@ -620,9 +628,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		charBeans = charBeanMap.get(charBeanMap.firstKey());
 		CharacterizationBean charBean = (CharacterizationBean) charBeans.get(0);
 
-		String fileName =
-			this.getExportFileName(charBean.getDomainChar().getSample().getName(),
-					"summaryView", charBean.getClassName());
+		String fileName = this.getExportFileName(charBean.getDomainChar()
+				.getSample().getName(), "summaryView", charBean.getClassName());
 		ExportUtils.prepareReponseForExcell(response, fileName);
 		CharacterizationService service = null;
 		if (Constants.LOCAL.equals(location)) {
@@ -630,7 +637,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else {
 			// TODO: Implement remote service.
 		}
-		service.exportSummary(charSummaryBean, request, response.getOutputStream());
+		service.exportSummary(charSummaryBean, request, response
+				.getOutputStream());
 
 		return null;
 	}
@@ -641,7 +649,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		nameParts.add(sampleName);
 		nameParts.add(charClass);
 		nameParts.add(viewType);
-		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
+				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}
@@ -675,10 +684,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationResultService service = new CharacterizationResultServiceLocalImpl();
 		Finding finding = service.findFindingById(theFindingId);
 		FindingBean findingBean = new FindingBean(finding);
-		//retrieve file visibility
-		FileService fileService=new FileServiceLocalImpl();
+		// retrieve file visibility
+		FileService fileService = new FileServiceLocalImpl();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		for(FileBean fileBean: findingBean.getFiles()) {
+		for (FileBean fileBean : findingBean.getFiles()) {
 			fileService.retrieveVisibility(fileBean, user);
 		}
 		CharacterizationBean achar = (CharacterizationBean) theForm
@@ -734,9 +743,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
 		FileBean theFile = findingBean.getTheFile();
-		int theFileIndex=findingBean.getTheFileIndex();
-		//create a new copy before adding to finding
-		FileBean newFile=theFile.copy();
+		int theFileIndex = findingBean.getTheFileIndex();
+		// create a new copy before adding to finding
+		FileBean newFile = theFile.copy();
 		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -759,7 +768,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationBean achar = (CharacterizationBean) theForm
 				.get("achar");
 		FindingBean findingBean = achar.getTheFinding();
-		int theFileIndex=findingBean.getTheFileIndex();
+		int theFileIndex = findingBean.getTheFileIndex();
 		findingBean.removeFile(theFileIndex);
 		findingBean.setTheFile(new FileBean());
 		request.setAttribute("anchor", "submitFinding");
