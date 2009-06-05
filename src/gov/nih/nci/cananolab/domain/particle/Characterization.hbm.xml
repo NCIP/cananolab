@@ -66,7 +66,10 @@
 			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.BloodContact" discriminator-value="BloodContact">
 
 			</subclass>
-
+			<subclass name="gov.nih.nci.cananolab.domain.characterization.invitro.Transfection" discriminator-value="Transfection">
+				<!-- Attributes mapping for the Transfection class -->
+				<property name="cellLine" type="string" column="transfection_cell_line"/>
+			</subclass>
 		</subclass>
 		<subclass name="gov.nih.nci.cananolab.domain.characterization.invivo.InvivoCharacterization" discriminator-value="InvivoCharacterization">
 			<subclass name="gov.nih.nci.cananolab.domain.characterization.invivo.Pharmacokinetics" discriminator-value="Pharmacokinetics">
