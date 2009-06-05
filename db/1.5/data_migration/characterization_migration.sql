@@ -6,6 +6,8 @@ where description is null and identifier_name is not null;
 ALTER TABLE characterization change description design_method_description TEXT;
 ALTER TABLE characterization DROP COLUMN cytotoxicity_cell_death_method;
 ALTER TABLE characterization DROP COLUMN identifier_name;
+ALTER TABLE characterization MODIFY COLUMN cytotoxicity_cell_line TEXT;
+ALTER TABLE characterization ADD COLUMN transfection_cell_line TEXT;
 ALTER TABLE characterization ADD COLUMN analysis_conclusion TEXT;
 ALTER TABLE characterization ADD COLUMN enzyme_induction_enzyme VARCHAR(200);
 ALTER TABLE characterization ADD COLUMN other_char_assay_category VARCHAR(200);
@@ -26,6 +28,7 @@ insert into common_lookup(name,attribute,value) values ('Sterility','displayName
 insert into common_lookup(name,attribute,value) values ('Targeting','displayName','Targeting');
 insert into common_lookup(name,attribute,value) values ('MetabolicStability','displayName','Metabolic Stability');
 insert into common_lookup(name,attribute,value) values ('Entrapment','displayName','Entrapment');
+insert into common_lookup(name,attribute,value) values ('Transfection','displayName','Transfection');
 insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Endotoxin');
 insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Bacterial/Yeast/Mold');
 insert into common_lookup(name,attribute,value) values('Sterility', 'assayType', 'Mycoplasma');
@@ -52,6 +55,7 @@ insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayTyp
 insert into common_lookup(name,attribute,value) values('Cytotoxicity', 'assayType', 'Gene Expression');
 insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Cell Binding/Internalization');
 insert into common_lookup(name,attribute,value) values('Targeting', 'assayType', 'Gene Expression');
+
 
 delete from common_lookup
 where name in ('CFU_GM', 'Hemolysis', 'PlateletAggregation', 'CellViability', 'Toxicity', 'Caspase3Activation', 'Chemotaxis', 'Coagulation', 'ComplementActivation', 'CytokineInduction', 'Immunotoxicity', 'LeukocyteProliferation', 'NKCellCytotoxicActivity', 'OxidativeBurst', 'LabFile', 'Phagocytosis', 'PlasmaProteinBinding')

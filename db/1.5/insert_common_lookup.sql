@@ -412,6 +412,7 @@ insert into common_lookup(name,attribute,value) values ('Relaxivity','displayNam
 insert into common_lookup(name,attribute,value) values ('Sterility','displayName','Sterility');
 insert into common_lookup(name,attribute,value) values ('Targeting','displayName','Targeting');
 insert into common_lookup(name,attribute,value) values ('MetabolicStability','displayName','Metabolic Stability');
+insert into common_lookup(name,attribute,value) values ('Transfection','displayName','Transfection');
 
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Plasma Protein Binding');
 insert into common_lookup(name,attribute,value) values('BloodContact', 'assayType', 'Hemolysis');
