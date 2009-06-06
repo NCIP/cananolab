@@ -30,19 +30,21 @@
 								<tr>
 									<td class="sidebarContent">
 										<a href="javascript:openHelpWindow('/upt')">
-											User Provisioning Tool
+											Create User Accounts and Assign Privileges
 										</a>
 										<br>
-										Click to open the user provisioning tool.
+										Click to launch the NCI User Provisioning Tool (UPT) which
+										will assist in creating Users and Groups and associating
+										privileges and roles.
 									</td>
 								</tr>
 								<tr>
 									<td class="sidebarContent">
 										<a href="admin.do?dispatch=sitePreference">
-											Site Preference
+											Configure Site Preferences
 										</a>
 										<br>
-										Setup site preference.
+										Click to configure site preferences including custom logos and site banners.
 									</td>
 								</tr>
 							</table>

@@ -23,16 +23,18 @@
 	</tr>
 	<tr>
 		<td class="welcomeContent" valign="top">
-			Welcome to the cancer Nanotechnology Laboratory (caNanoLab) portal.
-			caNanoLab is a data sharing portal designed to facilitate information
-			sharing in the biomedical nanotechnology research community to
-			expedite and validate the use of nanotechnology in biomedicine.
-			caNanoLab allows researchers to share information on nanosamples
-			including the composition of the sample, the functions (e.g.
-			therapeutic, targeting, diagnostic imaging) of the sample, the
-			characterizations of the sample from physical (e.g. size, molecular
-			weight) and in vitro (e.g. cytotoxicity, immunotoxicity) sample
-			assays, and the protocols of these characterization. The diagram
+			Welcome to the
+			<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
+			portal. caNanoLab is a data sharing portal designed to facilitate
+			information sharing in the biomedical nanotechnology research
+			community to expedite and validate the use of nanotechnology in
+			biomedicine. caNanoLab allows researchers to share information on
+			nanoparticles including the composition of the particle, the
+			functions (e.g. therapeutic, targeting, diagnostic imaging) of the
+			particle, the characterizations of the particle from
+			physico-chemical (e.g. size, molecular weight, surface) and in
+			vitro (e.g. cytotoxicity, blood contact) nanoparticle assays, and
+			the protocols of these characterization. The diagram
 			below illustrates the caNanoLab functionality and workflow. Active
 			links are provided on the diagram to allow a user to directly
 			navigate to the appropriate function based on the authorization level
@@ -42,7 +44,7 @@
 			<br>
 			<map name="funcMap" id="funcMap">
 				<c:if test="${isAdmin eq 'true' }">
-					<area href="javascript:openHelpWindow('/upt')" shape="rect"
+					<area href="admin.do?dispatch=sitePreference" shape="rect"
 						coords="70,70,170,110" alt="rectangle" />
 				</c:if>
 				<area href="login.jsp" shape="rect" coords="75,130,170,170"

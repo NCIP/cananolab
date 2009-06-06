@@ -30,7 +30,7 @@
 						</td>
 						<td colspan="3">
 							<html:file property="siteLogo" />&nbsp;&nbsp;
-							(Recommended image dimension: 299 * 80, maximum image size: <%=Constants.MAX_LOGO_SIZE%> bytes.)
+							(Recommended image dimension: 304 x 83 pixels, maximum image size: <%=Constants.MAX_LOGO_SIZE%> bytes.)
 						</td>
 					</tr>
 					<tr>
@@ -56,7 +56,7 @@
 												<input type="hidden" name="dispatch" value="update">
 												<input type="reset" value="Reset"
 													onclick="javascript:location.href='admin.do?dispatch=sitePreference'">
-												<input type="button" value="Clear All"
+												<input type="button" value="Delete"
 													onclick="javascript:location.href='admin.do?dispatch=clearAll'">
 												<html:submit />
 											</div>

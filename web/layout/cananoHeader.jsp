@@ -38,7 +38,7 @@
 			<c:if test="${hasSiteLogo}">
 				<td class="subhdrBG" align="left" width="543" background="images/background.gif" >
 					<div align="right">
-						<img width="299" height="80" src="admin.do?dispatch=getSiteLogo">
+						<img src="admin.do?dispatch=getSiteLogo">
 					</div>
 				</td>
 			</c:if>

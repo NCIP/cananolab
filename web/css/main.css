@@ -805,7 +805,7 @@ div.logindiv {
 }
 
 .gridtable {
-	width: 400px;
+	width: 556px;
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
@@ -837,6 +837,20 @@ tr.gridTableHeader {
 	font-weight: normal;
 }
 
+.gridtableNoBorder {
+	border-width: 0px;
+	border-style: none;
+	border-collapse: collapse;
+}
+
+.gridtableNoBorder td {
+	font-family: verdana, arial, helvetica, sans-serif;
+	font-size: 0.7em;
+	padding: 1px 0 1px 1px;
+	border-width: 0px;
+	border-style: none;
+	vertical-align: middle;
+}
 
 .smalltable {
 	width: 400px;

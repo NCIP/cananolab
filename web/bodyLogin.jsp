@@ -19,15 +19,15 @@
 						Welcome to the
 						<strong>cancer Nanotechnology Laboratory (caNanoLab)</strong>
 						portal. caNanoLab is a data sharing portal designed to facilitate
-						information sharing in the biomedical nanotechnology research community
-						to expedite and validate the use of nanotechnology in biomedicine.
-						caNanoLab allows researchers to share information on nanoparticles
-						including the composition of the particle, the functions (e.g. therapeutic,
-						targeting, diagnostic imaging) of the particle, the characterizations of
-						the particle from physical (e.g. size, molecular weight) and in vitro
-						(e.g. cytotoxicity, immunotoxicity) nanoparticle assays, and the protocols
-						of these characterization.
-
+						information sharing in the biomedical nanotechnology research
+						community to expedite and validate the use of nanotechnology in
+						biomedicine. caNanoLab allows researchers to share information on
+						nanoparticles including the composition of the particle, the
+						functions (e.g. therapeutic, targeting, diagnostic imaging) of the
+						particle, the characterizations of the particle from
+						physico-chemical (e.g. size, molecular weight, surface) and in
+						vitro (e.g. cytotoxicity, blood contact) nanoparticle assays, and
+						the protocols of these characterization.
 						<div class="message">
 							<jsp:include page="/bodyMessage.jsp" />
 						</div>
@@ -52,7 +52,7 @@
 										<td rowspan="3">
 											<select name="searchLocations" id="location" multiple="true"
 												size="4" onchange="getAllGridCounts(this);">
-												<option value="local" selected>
+												<option value="local" selected="selected">
 													Local
 												</option>
 												<c:forEach var="location" items="${allGridNodes}">
@@ -63,9 +63,24 @@
 											</select>
 										</td>
 										<td>
-											<img src="images/icon_protocol_48x.jpg" width="15%" />
-											&nbsp;Protocols&nbsp;(
-											<a href="#" onclick="gotoProtocols('setup')">search</a> )
+											<table class="gridtableNoBorder">
+												<tr>
+													<td>
+														<a href="#" onclick="gotoProtocols('setup')">
+															<img src="images/icon_protocol_48x.jpg" style="border-style: none;" alt="Search Protocals"/>
+														</a>
+													</td>
+													<td>
+														<b>Protocols</b>&nbsp;( <a href="#" onclick="gotoProtocols('setup')">search</a> )
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2">
+														Search for nanotechnology protocols leveraged in performing
+														nanoparticle characterization assays.
+													</td>
+												</tr>
+											</table>
 										</td>
 										<td class="counts">
 											<a href="#" onclick="gotoProtocols('search')" id="protocolCount"
@@ -74,9 +89,26 @@
 									</tr>
 									<tr class="alt">
 										<td>
-											<img src="images/icon_nanoparticle_48x.jpg" width="15%" />
-											&nbsp;Samples&nbsp;(
-											<a href="#" onclick="gotoSamples('setup');">search</a> )
+											<table class="gridtableNoBorder">
+												<tr>
+													<td>
+														<a href="#" onclick="gotoSamples('setup')">
+															<img src="images/icon_nanoparticle_48x.jpg" style="border-style: none;" alt="Search Samples"/>
+														</a>
+													</td>
+													<td>
+														<b>Samples</b>&nbsp;( <a href="#" onclick="gotoSamples('setup')">search</a> )
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2">
+														Search for information on nanoparticle formulations including
+														the composition of the particle, results of nanoparticle
+														physico-chemical, in vitro, and other characterizations, and
+														associated publications.
+													</td>
+												</tr>
+											</table>
 										</td>
 										<td class="counts">
 											<a href="#" onclick="gotoSamples('search');" id="sampleCount"
@@ -85,9 +117,25 @@
 									</tr>
 									<tr>
 										<td>
-											<img src="images/icon_report_48x.gif" width="15%" />
-											&nbsp;Publications&nbsp;(
-											<a href="#" onclick="gotoPublications('setup');">search</a> )
+											<table class="gridtableNoBorder">
+												<tr>
+													<td>
+														<a href="#" onclick="gotoPublications('setup')">
+															<img src="images/icon_report_48x.gif" style="border-style: none;" alt="Search Publications"/>
+														</a>
+													</td>
+													<td>
+														<b>Publications</b>&nbsp;( <a href="#" onclick="gotoPublications('setup')">search</a> )
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2">
+														Search for information on nanotechnology publications
+														including peer reviewed articles, reviews, and other types of
+														reports related to the use of nanotechnology in biomedicine.
+													</td>
+												</tr>
+											</table>
 										</td>
 										<td class="counts">
 											<a href="#" onclick="gotoPublications('search')" id="publicationCount"
@@ -186,41 +234,60 @@
 							</tr>
 							<tr>
 								<td class="sidebarContent">
-									<strong>caNanoLab 1.4.1 is now available!</strong>
+									<strong>caNanoLab 1.5 is now available!</strong>
 									<br>
 									<br>
-									caNanoLab 1.4.1 contains the following primary features:
+									caNanoLab 1.5 contains the following primary features:
 									<br>
 									<ul>
 										<li>
-											Support for publications associated with nanoparticle characterizations
+											Support for the creation of custom assay characterizations
+										</li>
+										<li>
+											Enhanced Source Metadata including support for investigators and manufacturers associated with a nanoparticle characterization
+										</li>
+										<li>
+											Support for conditions (temperature, time, media solvent, etc.) associated with characterizations
+										</li>
+										<li>
+											Curated techniques and instruments used in characterization assays
+										</li>
+										<li>
+											Enhanced summary views for particle composition, characterizations, and publications
+										</li>
+										<li>
+											Cross-references to PubChem for chemical names associated with material components
+										</li>
+										<li>
+											Inclusion of particle relaxivity as a physico-chemical characterization
+										</li>
+										<li>
+											Administrative functions supporting site preferences (site name, logo)
+										</li>
+										<li>
+											Upgrade to the latest version of the NCI Common Security Module (CSM) which provides support for user authentication and authorization
 										</li>
 									</ul>
-									caNanoLab 1.4.1 expands upon existing caNanoLab functionality
-									including:
+									caNanoLab 1.5 expands upon existing caNanoLab functionality	including:
 									<br>
 									<ul>
 										<li>
-											Support for the composition and structure of nanoparticles including nanoparticle entities, functionalizing entities, and chemical associations
+											Support for the composition and structure of nanoparticles including material entities, functionalizing entities, and chemical associations 
 										</li>
 										<li>
-											Support for nanoparticle protocols, characterizations, and reports
+											Support for nanoparticle protocols, characterizations, and publications 
 										</li>
 										<li>
-											Support for physical and in vitro nanoparticle characterizations
+											Support for physico-chemical and in vitro nanoparticle characterizations 
 										</li>
 										<li>
-											Summary views of nanoparticle characterizations with print and export feature
+											Summary views of nanoparticle characterizations with print, export, and delete features 
 										</li>
 										<li>
-											Basic local and caBIG
-											<sup>
-												TM
-											</sup>
-											grid (caGrid) remote search functionality
+											Basic local and caBIG <sup>TM</sup> grid (caGrid) remote search functionality
 										</li>
 										<li>
-											Role-based security supporting user authentication and authorization
+											Role-based security supporting user authentication and authorization 
 										</li>
 										<li>
 											Product upgrades to the caCORE SDK 4.0, caGrid 1.2, and MySQL 5.0.x Database
