@@ -74,6 +74,30 @@
 		</tr>
 		<tr>
 			<td class="cellLabel">
+				PubChem DataSource
+			</td>
+			<td>
+				<div id="pubChemDataSourcePrompt">
+					<html:select styleId="pubChemDataSource"
+						property="functionalizingEntity.domainEntity.pubChemDataSourceName"
+						onchange="javascript:callPrompt('PubChem DataSource', 'pubChemDataSource', 'pubChemDataSourcePrompt');">
+						<option value="" />
+						<html:options name="pubChemDataSources" />
+					</html:select>
+				</div>
+			</td>
+			<td class="cellLabel">
+				PubChem Id
+			</td>
+			<td>
+				<html:text
+					property="functionalizingEntity.domainEntity.pubChemId"
+					onkeydown="return filterInteger(event)" size="30"
+					styleId="pubChemId" />
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
 				Amount
 			</td>
 			<td>

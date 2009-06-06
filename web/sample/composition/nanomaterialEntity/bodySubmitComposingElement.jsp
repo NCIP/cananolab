@@ -43,28 +43,26 @@
 	</tr>
 	<tr>
 		<td class="cellLabel">
-			Molecular Formula Type
+			PubChem DataSource
 		</td>
 		<td>
-			<div id="molFormulaTypePrompt">
-				<html:select styleId="molFormulaType"
-					property="nanomaterialEntity.theComposingElement.domain.molecularFormulaType"
-					onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType', 'molFormulaTypePrompt');">
+			<div id="pubChemDataSourcePrompt">
+				<html:select styleId="pubChemDataSource"
+					property="nanomaterialEntity.theComposingElement.domain.pubChemDataSourceName"
+					onchange="javascript:callPrompt('PubChem DataSource', 'pubChemDataSource', 'pubChemDataSourcePrompt');">
 					<option value="" />
-						<html:options name="ceMolecularFormulaTypes" />
-					<option value="other">
-						[Other]
-					</option>
+					<html:options name="pubChemDataSources" />
 				</html:select>
 			</div>
 		</td>
 		<td class="cellLabel">
-			Molecular Formula
+			PubChem Id
 		</td>
 		<td>
-			<html:textarea
-				property="nanomaterialEntity.theComposingElement.domain.molecularFormula"
-				rows="2" cols="40" styleId="molFormula" />
+			<html:text
+				property="nanomaterialEntity.theComposingElement.domain.pubChemId"
+				onkeydown="return filterInteger(event)" size="30"
+				styleId="pubChemId" />
 		</td>
 	</tr>
 	<tr>
@@ -92,6 +90,32 @@
 					</option>
 				</html:select>
 			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Molecular Formula Type
+		</td>
+		<td>
+			<div id="molFormulaTypePrompt">
+				<html:select styleId="molFormulaType"
+					property="nanomaterialEntity.theComposingElement.domain.molecularFormulaType"
+					onchange="javascript:callPrompt('Molecular Formula Type', 'molFormulaType', 'molFormulaTypePrompt');">
+					<option value="" />
+						<html:options name="ceMolecularFormulaTypes" />
+					<option value="other">
+						[Other]
+					</option>
+				</html:select>
+			</div>
+		</td>
+		<td class="cellLabel">
+			Molecular Formula
+		</td>
+		<td>
+			<html:textarea
+				property="nanomaterialEntity.theComposingElement.domain.molecularFormula"
+				rows="2" cols="40" styleId="molFormula" />
 		</td>
 	</tr>
 	<tr>

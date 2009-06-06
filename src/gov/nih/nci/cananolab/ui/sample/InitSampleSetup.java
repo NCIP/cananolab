@@ -1,37 +1,18 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.characterization.invitro.InvitroCharacterization;
-import gov.nih.nci.cananolab.domain.characterization.physical.PhysicoChemicalCharacterization;
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.linkage.OtherChemicalAssociation;
-import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.PointOfContactService;
+import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -158,5 +139,8 @@ public class InitSampleSetup {
 		appContext.setAttribute("booleanChoices", booleanBeans);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "File", "type", "otherType", true);
+
+		// For PubChem data sources drop-down list.
+		appContext.setAttribute("pubChemDataSources", SampleConstants.PUBCHEM_DS_LIST);
 	}
 }

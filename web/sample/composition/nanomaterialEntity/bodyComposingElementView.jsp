@@ -29,8 +29,9 @@
 					<td>
 						<c:set var="pubChemId" value="${composingElement.domain.pubChemId}"/>
 						<c:set var="pubChemDS" value="${composingElement.domain.pubChemDataSourceName}"/>
-						PubChem: ${pubChemDS}&nbsp;
-						<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>'>${pubChemId}</a>
+						PubChem ID: 
+						<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>' target="caNanoLab - View PubChem">${pubChemId}</a>
+						&nbsp;(${pubChemDS})
 					</td>
 					<td></td>
 				</tr>

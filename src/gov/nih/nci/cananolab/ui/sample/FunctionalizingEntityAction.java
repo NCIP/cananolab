@@ -199,7 +199,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		setLookups(request);
+		this.setLookups(request);
 		return mapping.getInputForward();
 	}
 
@@ -230,7 +230,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("functionalizingEntity", entityBean);
-		setLookups(request);
+		this.setLookups(request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
 		return mapping.getInputForward();

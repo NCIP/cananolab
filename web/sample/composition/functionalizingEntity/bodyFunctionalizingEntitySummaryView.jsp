@@ -39,13 +39,13 @@
 							<c:if test="${!empty functionalizingEntity.domainEntity.pubChemId}">
 								<tr>
 									<td class="cellLabel">
-										PubChem
+										PubChem ID
 									</td>
 									<td>
 										<c:set var="pubChemId" value="${functionalizingEntity.domainEntity.pubChemId}"/>
 										<c:set var="pubChemDS" value="${functionalizingEntity.domainEntity.pubChemDataSourceName}"/>
-										${pubChemDS}&nbsp;
-										<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>'>${pubChemId}</a>
+										<a href='<%=CompositionServiceHelper.getPubChemURL((String)pageContext.getAttribute("pubChemDS"), (Long)pageContext.getAttribute("pubChemId"))%>' target="caNanoLab - View PubChem">${pubChemId}</a>
+										&nbsp;(${pubChemDS})
 									</td>
 								</tr>
 							</c:if>

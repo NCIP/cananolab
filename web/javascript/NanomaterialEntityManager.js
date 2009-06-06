@@ -98,6 +98,8 @@ function populateComposingElement(element) {
 		dwr.util.setValue("elementDescription", element.domain.description);
 		dwr.util.setValue("molFormulaType", element.domain.molecularFormulaType);
 		dwr.util.setValue("molFormula", element.domain.molecularFormula);
+		dwr.util.setValue("pubChemDataSource", element.domain.pubChemDataSourceName);
+		dwr.util.setValue("pubChemId", element.domain.pubChemId);
 		if (element.domain.type != null) {
 			show("deleteComposingElement");
 		}

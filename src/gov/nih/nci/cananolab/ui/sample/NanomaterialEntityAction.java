@@ -64,7 +64,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		if (!validateEntityFile(request, entityBean)) {
 			return mapping.getInputForward();
 		}
-		saveEntity(request, theForm, entityBean);
+		this.saveEntity(request, theForm, entityBean);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addNanomaterialEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
@@ -80,9 +80,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
+				+ '/'
 				+ sampleBean.getDomain().getName()
-				+ "/"
+				+ '/'
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
 		try {
@@ -205,7 +205,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		// set up other particles with the same primary point of contact
 		InitSampleSetup.getInstance().getOtherSampleNames(request, sampleId);
-		setLookups(request);
+		this.setLookups(request);
 		return mapping.getInputForward();
 	}
 
@@ -230,7 +230,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("nanomaterialEntity", entityBean);
-		setLookups(request);
+		this.setLookups(request);
 		theForm.set("otherSamples", new String[0]);
 		String detailPage = null;
 		if (entityBean.isWithProperties()) {
@@ -367,9 +367,9 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request, "local");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
-				+ "/"
+				+ '/'
 				+ sampleBean.getDomain().getName()
-				+ "/"
+				+ '/'
 				+ StringUtils
 						.getOneWordLowerCaseFirstLetter("Nanomaterial Entity");
 		entityBean.setupDomainEntity(InitSetup.getInstance()
