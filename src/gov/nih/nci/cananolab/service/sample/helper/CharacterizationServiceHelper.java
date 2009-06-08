@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
-import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
+import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.dto.common.ColumnHeader;
@@ -15,7 +15,6 @@ import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
-import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -133,22 +132,6 @@ public class CharacterizationServiceHelper {
 		return achar;
 	}
 
-	// use in dwr ajax
-	public String[] getDerivedDatumValueUnits(String derivedDatumName) {
-		try {
-			SortedSet<String> units = LookupService.findLookupValues(
-					derivedDatumName, "unit");
-			SortedSet<String> otherUnits = LookupService.findLookupValues(
-					derivedDatumName, "otherUnit");
-			units.addAll(otherUnits);
-			return units.toArray(new String[0]);
-		} catch (Exception e) {
-			String err = "Error getting value unit for " + derivedDatumName;
-			logger.error(err, e);
-			return null;
-		}
-	}
-
 	public List<Characterization> findSampleCharacterizationsByClass(
 			String sampleName, String className) throws Exception {
 		List<Characterization> charas = new ArrayList<Characterization>();
@@ -212,21 +195,38 @@ public class CharacterizationServiceHelper {
 		return protocol;
 	}
 
-	public List<Datum> findDataByCharacterizationId(String charId)
+	public List<Finding> findFindingsByCharacterizationId(String charId)
 			throws Exception {
-		List<Datum> datumCollection = new ArrayList<Datum>();
+		List<Finding> findingCollection = new ArrayList<Finding>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
-				"select achar.datumCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
+				"select achar.findingCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
 						+ charId);
 		List results = appService.query(crit);
 		for (Object obj : results) {
-			Datum datum = (Datum) obj;
-			datumCollection.add(datum);
+			Finding finding = (Finding) obj;
+			findingCollection.add(finding);
 		}
-		return datumCollection;
+		return findingCollection;
+	}
+
+	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(String charId)
+			throws Exception {
+		List<ExperimentConfig> configCollection = new ArrayList<ExperimentConfig>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select achar.experimentConfigCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
+						+ charId);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			ExperimentConfig config = (ExperimentConfig) obj;
+			configCollection.add(config);
+		}
+		return configCollection;
 	}
 
 	public List<File> findFilesByCharacterizationId(String charId)
@@ -287,11 +287,11 @@ public class CharacterizationServiceHelper {
 		headerStyle.setFont(headerFont);
 
 		int charCount = 1;
-		SortedMap<String, List<CharacterizationBean>> pubs = summaryBean
+		Map<String, SortedSet<CharacterizationBean>> pubs = summaryBean
 				.getType2Characterizations();
 		for (String type : summaryBean.getCharacterizationTypes()) {
 			// Output data of report
-			List<CharacterizationBean> charBeans = pubs.get(type);
+			SortedSet<CharacterizationBean> charBeans = pubs.get(type);
 			for (CharacterizationBean charBean : charBeans) {
 				short rowIndex = 0;
 
