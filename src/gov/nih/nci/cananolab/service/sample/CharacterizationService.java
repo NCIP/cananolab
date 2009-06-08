@@ -4,7 +4,6 @@ import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -33,10 +32,6 @@ public interface CharacterizationService {
 			String className) throws CharacterizationException;
 
 	public SortedSet<String> findAllCharacterizationSources()
-			throws CharacterizationException;
-
-	public CharacterizationSummaryBean getSampleCharacterizationSummaryByClass(
-			String sampleName, String className, UserBean user)
 			throws CharacterizationException;
 
 	// set lab file visibility of a characterization
