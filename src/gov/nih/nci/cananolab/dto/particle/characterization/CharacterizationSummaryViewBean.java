@@ -1,23 +1,27 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import java.util.ArrayList;
+import gov.nih.nci.cananolab.util.Comparators;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class CharacterizationSummaryViewBean {
 	private Set<String> characterizationTypes;
-	private SortedMap<String, List<CharacterizationBean>> type2Characterizations = new TreeMap<String, List<CharacterizationBean>>();
+	private Map<String, SortedSet<CharacterizationBean>> type2Characterizations = new HashMap<String, SortedSet<CharacterizationBean>>();
 
 	public CharacterizationSummaryViewBean(List<CharacterizationBean> chars) {
-		List<CharacterizationBean> typeChars = null;
+		SortedSet<CharacterizationBean> typeChars = null;
 		for (CharacterizationBean achar : chars) {
 			String type = achar.getCharacterizationType();
 			if (type2Characterizations.get(type) != null) {
 				typeChars = type2Characterizations.get(type);
 			} else {
-				typeChars = new ArrayList<CharacterizationBean>();
+				typeChars = new TreeSet<CharacterizationBean>(
+						new Comparators.CharacterizationBeanNameDateComparator());
 				type2Characterizations.put(type, typeChars);
 			}
 			typeChars.add(achar);
@@ -29,7 +33,7 @@ public class CharacterizationSummaryViewBean {
 		return characterizationTypes;
 	}
 
-	public SortedMap<String, List<CharacterizationBean>> getType2Characterizations() {
+	public Map<String, SortedSet<CharacterizationBean>> getType2Characterizations() {
 		return type2Characterizations;
 	}
 }
