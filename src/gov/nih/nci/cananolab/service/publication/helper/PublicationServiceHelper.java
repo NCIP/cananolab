@@ -545,13 +545,10 @@ public class PublicationServiceHelper {
 			throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			try {
-				this.setSummarySheet(summaryBean, wb);
-				wb.write(out);
-				out.flush();
-			} finally {
-				out.close();
-			}
+			this.setSummarySheet(summaryBean, wb);
+			wb.write(out);
+			out.flush();
+			out.close();
 		}
 	}
 
