@@ -506,7 +506,7 @@ public class SampleServiceHelper {
 		return particleSample;
 	}
 
-	public List<Keyword> findKeywordsForSampleId(String sampleId)
+	public List<Keyword> findKeywordsBySampleId(String sampleId)
 			throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
