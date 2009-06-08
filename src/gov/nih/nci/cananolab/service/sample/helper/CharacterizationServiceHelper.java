@@ -260,13 +260,10 @@ public class CharacterizationServiceHelper {
 			HttpServletRequest request, OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			try {
-				this.outputSummarySheet(summaryBean, request, wb);
-				wb.write(out);
-				out.flush();
-			} finally {
-				out.close();
-			}
+			this.outputSummarySheet(summaryBean, request, wb);
+			wb.write(out);
+			out.flush();
+			out.close();
 		}
 	}
 
