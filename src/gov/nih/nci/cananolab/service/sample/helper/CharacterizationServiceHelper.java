@@ -289,7 +289,7 @@ public class CharacterizationServiceHelper {
 		int charCount = 1;
 		SortedMap<String, List<CharacterizationBean>> pubs = summaryBean
 				.getType2Characterizations();
-		for (String type : pubs.keySet()) {
+		for (String type : summaryBean.getCharacterizationTypes()) {
 			// Output data of report
 			List<CharacterizationBean> charBeans = pubs.get(type);
 			for (CharacterizationBean charBean : charBeans) {
