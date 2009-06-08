@@ -151,7 +151,7 @@ public class LookupService {
 	}
 
 	public static SortedSet<String> getAllOtherObjectTypes(String fullClassName)
-			throws CompositionException {
+			throws BaseException {
 		SortedSet<String> types = new TreeSet<String>();
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -170,7 +170,7 @@ public class LookupService {
 				} else if (obj instanceof OtherChemicalAssociation) {
 					types.add(((OtherChemicalAssociation) obj).getType());
 				} else if (obj instanceof OtherCharacterization) {
-					types.add(((OtherCharacterization) obj).getName());
+					types.add(((OtherCharacterization) obj).getAssayCategory());
 				} else if (obj instanceof OtherFunction) {
 					types.add(((OtherFunction) obj).getType());
 				} else if (obj instanceof OtherTarget) {
