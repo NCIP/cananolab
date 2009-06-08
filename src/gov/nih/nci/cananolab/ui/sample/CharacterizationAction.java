@@ -33,7 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -554,6 +554,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
+		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
+				request, sampleId);
 	}
 
 	/**
@@ -569,7 +571,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @throws Exception
 	 *             if error occurred.
 	 */
-	protected void prepareCharacterizationTypes(ActionMapping mapping,
+	private void prepareCharacterizationTypes(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		CharacterizationSummaryViewBean summaryView = (CharacterizationSummaryViewBean) request
@@ -606,16 +608,17 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
-
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		String location = theForm.getString("location");
+		SampleBean sampleBean = setupSample(theForm, request, location);
 		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) request
 				.getAttribute("characterizationSummaryView");
-		SortedMap<String, List<CharacterizationBean>> charBeanMap = charSummaryBean
+		Map<String, SortedSet<CharacterizationBean>> charBeanMap = charSummaryBean
 				.getType2Characterizations();
-		List<CharacterizationBean> charBeans = null;
+		SortedSet<CharacterizationBean> charBeans = null;
 
 		// Filter out un-selected types.
 		String type = request.getParameter("type");
-		String location = request.getParameter("location");
 		if (!StringUtils.isEmpty(type)) {
 			charBeans = charBeanMap.get(type);
 			if (charBeans != null) {
@@ -624,12 +627,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 
-		// Get sample name for constructing file name.
-		charBeans = charBeanMap.get(charBeanMap.firstKey());
-		CharacterizationBean charBean = (CharacterizationBean) charBeans.get(0);
-
-		String fileName = this.getExportFileName(charBean.getDomainChar()
-				.getSample().getName(), "summaryView", charBean.getClassName());
+		String fileName = this.getExportFileName(sampleBean.getDomain()
+				.getName(), "CharacterizationSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
 		CharacterizationService service = null;
 		if (Constants.LOCAL.equals(location)) {
@@ -644,11 +643,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	private String getExportFileName(String sampleName, String viewType,
-			String charClass) {
+			String subType) {
 		List<String> nameParts = new ArrayList<String>();
 		nameParts.add(sampleName);
-		nameParts.add(charClass);
 		nameParts.add(viewType);
+		if (!StringUtils.isEmpty(subType)) {
+			nameParts.add(StringUtils.getOneWordUpperCaseFirstLetter(subType));
+		}
 		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
 				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
