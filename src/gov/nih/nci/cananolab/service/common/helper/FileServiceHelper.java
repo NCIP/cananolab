@@ -47,24 +47,6 @@ public class FileServiceHelper {
 		return file;
 	}
 
-	public List<File> findFilesByCompositionInfoId(String id, String className)
-			throws Exception {
-		List<File> fileCollection = new ArrayList<File>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		String hql = "select anEntity.fileCollection from " + className
-				+ " anEntity where anEntity.id = " + id;
-
-		HQLCriteria crit = new HQLCriteria(hql);
-		List results = appService.query(crit);
-		for (Object obj : results) {
-			File File = (File) obj;
-			fileCollection.add(File);
-		}
-		return fileCollection;
-	}
-
 	public List<Keyword> findKeywordsByFileId(String FileId) throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
 

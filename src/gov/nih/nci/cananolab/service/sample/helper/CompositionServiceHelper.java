@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
@@ -9,7 +10,9 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
+import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.FetchMode;
@@ -149,8 +152,7 @@ public class CompositionServiceHelper {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				Function.class).add(
+		DetachedCriteria crit = DetachedCriteria.forClass(Function.class).add(
 				Property.forName("id").eq(new Long(funcId)));
 		crit.setFetchMode("targetCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
@@ -162,7 +164,8 @@ public class CompositionServiceHelper {
 		return func;
 	}
 
-	public ComposingElement findComposingElementById(String ceId) throws Exception {
+	public ComposingElement findComposingElementById(String ceId)
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -170,7 +173,8 @@ public class CompositionServiceHelper {
 				ComposingElement.class).add(
 				Property.forName("id").eq(new Long(ceId)));
 		crit.setFetchMode("inherentFunctionCollection", FetchMode.JOIN);
-		crit.setFetchMode("inherentFunctionCollection.targetCollection", FetchMode.JOIN);
+		crit.setFetchMode("inherentFunctionCollection.targetCollection",
+				FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List result = appService.query(crit);
 		ComposingElement ce = null;
@@ -179,17 +183,18 @@ public class CompositionServiceHelper {
 		}
 		return ce;
 	}
-	
+
 	/**
-	 * Get PubChem URL in format of http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
-	 *  
+	 * Get PubChem URL in format of
+	 * http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?pubChemDS=pubchemId
+	 *
 	 * @param pubChemDS
 	 * @param pubChemId
 	 * @return PubChem URL
 	 */
 	public static String getPubChemURL(String pubChemDS, Long pubChemId) {
 		StringBuffer sb = new StringBuffer(SampleConstants.PUBCHEM_URL);
-		
+
 		if (SampleConstants.BIOASSAY.equals(pubChemDS)) {
 			sb.append(SampleConstants.BIOASSAY_ID);
 		} else if (SampleConstants.COMPOUND.equals(pubChemDS)) {
@@ -197,9 +202,27 @@ public class CompositionServiceHelper {
 		} else if (SampleConstants.SUBSTANCE.equals(pubChemDS)) {
 			sb.append(SampleConstants.SUBSTANCE_ID);
 		}
-		
+
 		sb.append('=').append(pubChemId);
-		
+
 		return sb.toString();
+	}
+
+	public List<File> findFilesByCompositionInfoId(String id, String className)
+			throws Exception {
+		List<File> fileCollection = new ArrayList<File>();
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		String hql = "select anEntity.fileCollection from " + className
+				+ " anEntity where anEntity.id = " + id;
+
+		HQLCriteria crit = new HQLCriteria(hql);
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			File File = (File) obj;
+			fileCollection.add(File);
+		}
+		return fileCollection;
 	}
 }
