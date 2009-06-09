@@ -59,7 +59,7 @@
 								<c:choose>
 									<c:when
 										test="${type eq compositionForm.map.nanomaterialEntity.biopolymer.type}">
-										<option value="${type}" selected>
+										<option value="${type}" selected="selected">
 											${type}
 										</option>
 									</c:when>
