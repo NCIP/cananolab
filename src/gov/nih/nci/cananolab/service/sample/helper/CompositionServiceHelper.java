@@ -49,6 +49,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
@@ -61,6 +62,12 @@ import org.hibernate.criterion.Property;
  *
  */
 public class CompositionServiceHelper {
+	
+	// Partial URL for downloading composition report file.
+	public static final String COMPOSITION_URL = "composition.do?dispatch=download&fileId=";
+	
+	// LOCATION for constructing composition down load URL.
+	public static final String LOCATION = "location";
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
@@ -305,17 +312,24 @@ public class CompositionServiceHelper {
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
 
+	    HSSFCellStyle hlinkStyle = wb.createCellStyle();
+	    HSSFFont hlinkFont = wb.createFont();
+	    hlinkFont.setUnderline(HSSFFont.U_SINGLE);
+	    hlinkFont.setColor(HSSFColor.BLUE.index);
+	    hlinkStyle.setFont(hlinkFont);
+		
 		int entityCount = 1;
-		entityCount =
-			this.outputNanomaterialEntities(compBean, wb, headerStyle, entityCount, request);
+		entityCount = this.outputNanomaterialEntities(compBean, wb,
+				headerStyle, hlinkStyle, entityCount, request);
 
-		entityCount =
-			this.outputFunctionalEntities(compBean, wb, headerStyle, entityCount, request);
+		entityCount = this.outputFunctionalEntities(compBean, wb, headerStyle,
+				hlinkStyle, entityCount, request);
 
-		entityCount =
-			this.outputChemicalEntities(compBean, wb, headerStyle, entityCount, request);
+		entityCount = this.outputChemicalEntities(compBean, wb, headerStyle,
+				hlinkStyle, entityCount, request);
 
-		this.outputFilesEntities(compBean, wb, headerStyle, entityCount, request);
+		this.outputFilesEntities(compBean, wb, headerStyle, hlinkStyle,
+				entityCount, request);
 	}
 
 	/**
@@ -327,7 +341,8 @@ public class CompositionServiceHelper {
 	 * @param entityCount
 	 */
 	private int outputNanomaterialEntities(CompositionBean compBean,
-			HSSFWorkbook wb, HSSFCellStyle headerStyle, int entityCount,
+			HSSFWorkbook wb, HSSFCellStyle headerStyle,
+			HSSFCellStyle hlinkStyle, int entityCount,
 			HttpServletRequest request) {
 		List<NanomaterialEntityBean> nanoList = compBean.getNanomaterialEntities();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -349,7 +364,7 @@ public class CompositionServiceHelper {
 					String description = nanoEntity.getEmulsion().getDescription();
 					if (!StringUtils.isEmpty(description)) {
 						HSSFRow row = sheet.createRow(rowIndex++);
-						ExportUtils.createCell(row, 0, "Description");
+						ExportUtils.createCell(row, 0, headerStyle, "Description");
 						ExportUtils.createCell(row, 1, description);
 					}
 
@@ -395,24 +410,36 @@ public class CompositionServiceHelper {
 
 						row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Type");
-						ExportUtils.createCell(row, 1, headerStyle, "Name");
-						ExportUtils.createCell(row, 2, headerStyle, "Amount");
-						ExportUtils.createCell(row, 3, headerStyle, "Molecular Formula");
-						ExportUtils.createCell(row, 4, headerStyle, "Function");
-						ExportUtils.createCell(row, 5, headerStyle, "Description");
+						ExportUtils.createCell(row, 1, headerStyle, "PubChem ID");
+						ExportUtils.createCell(row, 2, headerStyle, "Name");
+						ExportUtils.createCell(row, 3, headerStyle, "Amount");
+						ExportUtils.createCell(row, 4, headerStyle, "Molecular Formula");
+						ExportUtils.createCell(row, 5, headerStyle, "Function");
+						ExportUtils.createCell(row, 6, headerStyle, "Description");
 						for (ComposingElementBean compElementBean : compElementBeans) {
 							row = sheet.createRow(rowIndex++);
 							ComposingElement compElement = compElementBean.getDomain();
 							ExportUtils.createCell(row, 0, compElement.getType());
-							ExportUtils.createCell(row, 1, compElement.getName());
+							
+							if (compElement.getPubChemId() != null) {
+								Long pubChemId = compElement.getPubChemId();
+								String pubChemDs = compElement.getPubChemDataSourceName();
+								sb.setLength(0);
+								sb.append(pubChemId).append(' ');
+								sb.append('(').append(pubChemDs).append(')');
+								ExportUtils.createCell(row, 1, hlinkStyle, sb.toString(),
+										getPubChemURL(pubChemDs, pubChemId));
+							}
+							
+							ExportUtils.createCell(row, 2, compElement.getName());
 
 							sb.setLength(0);
 							sb.append(compElement.getValue()).append(' ');
 							sb.append(compElement.getValueUnit());
-							ExportUtils.createCell(row, 2, sb.toString());
+							ExportUtils.createCell(row, 3, sb.toString());
 
 							if (!StringUtils.isEmpty(compElementBean.getMolecularFormulaDisplayName())) {
-								ExportUtils.createCell(row, 3,
+								ExportUtils.createCell(row, 4,
 										compElementBean.getMolecularFormulaDisplayName());
 							}
 
@@ -422,11 +449,11 @@ public class CompositionServiceHelper {
 								for (String funcName : funcNames) {
 									sb.append(',').append(' ').append(funcName);
 								}
-								ExportUtils.createCell(row, 4, sb.substring(2));
+								ExportUtils.createCell(row, 5, sb.substring(2));
 							}
 
 							if (!StringUtils.isEmpty(compElement.getDescription())) {
-								ExportUtils.createCell(row, 5, compElement.getDescription());
+								ExportUtils.createCell(row, 6, compElement.getDescription());
 							}
 						}
 						rowIndex++; // Create one empty line as separator.
@@ -438,8 +465,8 @@ public class CompositionServiceHelper {
 						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
-
-						this.outputFiles(fileBeans, request, wb, sheet, headerStyle, rowIndex);
+						this.outputFiles(fileBeans, request, wb, sheet,
+								headerStyle, hlinkStyle, rowIndex);
 					}
 				}
 			} // End of iterating nanoList.
@@ -457,7 +484,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 */
 	private int outputFunctionalEntities(CompositionBean compBean,
-			HSSFWorkbook wb, HSSFCellStyle headerStyle, int entityCount,
+			HSSFWorkbook wb, HSSFCellStyle headerStyle,
+			HSSFCellStyle hlinkStyle, int entityCount,
 			HttpServletRequest request) {
 		List<FunctionalizingEntityBean> nanoList = compBean.getFunctionalizingEntities();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -482,7 +510,7 @@ public class CompositionServiceHelper {
 						ExportUtils.createCell(row, 1, nanoEntity.getName());
 					}
 
-					// 3. Output PubChem ID.
+					// 3. Output PubChem.
 					if (nanoEntity.getDomainEntity().getPubChemId() != null) {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "PubChem ID");
@@ -491,7 +519,7 @@ public class CompositionServiceHelper {
 						sb.setLength(0);
 						sb.append(pubChemId).append(' ');
 						sb.append('(').append(pubChemDs).append(')');
-						ExportUtils.createCell(row, 1, sb.toString(),
+						ExportUtils.createCell(row, 1, hlinkStyle, sb.toString(),
 								getPubChemURL(pubChemDs, pubChemId));
 					}
 
@@ -604,8 +632,8 @@ public class CompositionServiceHelper {
 						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
-
-						this.outputFiles(fileBeans, request, wb, sheet, headerStyle, rowIndex);
+						this.outputFiles(fileBeans, request, wb, sheet,
+								headerStyle, hlinkStyle, rowIndex);
 					}
 				}
 			} // End of iterating nanoList.
@@ -622,7 +650,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 */
 	private int outputChemicalEntities(CompositionBean compBean,
-			HSSFWorkbook wb, HSSFCellStyle headerStyle, int entityCount,
+			HSSFWorkbook wb, HSSFCellStyle headerStyle,
+			HSSFCellStyle hlinkStyle, int entityCount,
 			HttpServletRequest request) {
 		List<ChemicalAssociationBean> nanoList = compBean.getChemicalAssociations();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -708,8 +737,8 @@ public class CompositionServiceHelper {
 						rowIndex++; // Create one empty line as separator.
 						row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
-
-						this.outputFiles(fileBeans, request, wb, sheet, headerStyle, rowIndex);
+						this.outputFiles(fileBeans, request, wb, sheet,
+								headerStyle, hlinkStyle, rowIndex);
 					}
 				}
 			}
@@ -726,8 +755,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 */
 	private int outputFilesEntities(CompositionBean compBean, HSSFWorkbook wb,
-			HSSFCellStyle headerStyle, int entityCount,
-			HttpServletRequest request) {
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
+			int entityCount, HttpServletRequest request) {
 		List<FileBean> nanoList = compBean.getFiles();
 		if (nanoList != null && !nanoList.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
@@ -737,7 +766,7 @@ public class CompositionServiceHelper {
 					sb.setLength(0);
 					sb.append(entityCount++).append('.').append(nanoEntity.getDomainFile().getType());
 
-					// Create one work sheet for each Composition.
+					// Create one work sheet for each Composition File.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 
 					// 1. Output Composition type at (0, 0).
@@ -745,10 +774,9 @@ public class CompositionServiceHelper {
 					ExportUtils.createCell(row, 0, headerStyle, CompositionBean.FILE_SELECTION);
 					rowIndex++; // Create one empty line as separator.
 
-					// 2. Output Files.
-					List<FileBean> fileBean = new ArrayList<FileBean>(1);
-					fileBean.add(nanoEntity);
-					this.outputFiles(fileBean, request, wb, sheet, headerStyle, rowIndex);
+					// 2. Output File info, one File per sheet.
+					this.outputFile(nanoEntity, request, wb, sheet, headerStyle,
+							hlinkStyle, rowIndex);
 				}
 			}
 		}
@@ -1066,7 +1094,7 @@ public class CompositionServiceHelper {
 	 */
 	private int outputFiles(List<FileBean> fileBeans,
 			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex) {
 		StringBuilder sb = new StringBuilder();
 		// Output file table Header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -1088,11 +1116,11 @@ public class CompositionServiceHelper {
 					// Construct the URL for downloading the file.
 					sb.setLength(0);
 					sb.append(request.getRequestURL().toString());
-					sb.append("composition.do?dispatch=download&fileId=");
-					sb.append(file.getId()).append("&location=");
-					sb.append(request.getParameter("location"));
+					sb.append(COMPOSITION_URL);
+					sb.append(file.getId()).append('&').append(LOCATION).append('=');
+					sb.append(request.getParameter(LOCATION));
 					if (file.getUriExternal().booleanValue()) {
-						ExportUtils.createCell(row, 1, file.getUri(), sb.toString());
+						ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb.toString());
 					} else if (fileBean.isImage()) {
 						sb.setLength(0);
 						sb.append(fileRoot).append(java.io.File.separator);
@@ -1102,7 +1130,7 @@ public class CompositionServiceHelper {
 						if (imgFile.exists()) {
 							try {
 								rowIndex = ExportUtils.createImage(
-										rowIndex, filePath, wb, sheet);
+										rowIndex, (short) 1, filePath, wb, sheet);
 							}
 							catch (Exception e) {
 								logger.error("Error exporting Composition image data.", e);
@@ -1111,7 +1139,7 @@ public class CompositionServiceHelper {
 							logger.error("Composition image file not exists: " + filePath);
 						}
 					} else {
-						ExportUtils.createCell(row, 1, file.getTitle(), sb.toString());
+						ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb.toString());
 					}
 				}
 
@@ -1130,6 +1158,84 @@ public class CompositionServiceHelper {
 					ExportUtils.createCell(row, 3, file.getDescription());
 				}
 			}
+		}
+		return rowIndex;
+	}
+	
+	/**
+	 * Output Composition File info => bodyCompositionFileSummaryView.jsp
+	 *
+	 * @param fileBeans
+	 * @param sheet
+	 * @param headerStyle
+	 * @param rowIndex
+	 * @return
+	 */
+	private int outputFile(FileBean fileBean,
+			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex) {
+		StringBuilder sb = new StringBuilder();
+		File file = fileBean.getDomainFile();
+		
+		// 1. output File Type.
+		HSSFRow row = sheet.createRow(rowIndex++);
+		ExportUtils.createCell(row, 0, headerStyle, file.getType());
+		rowIndex++; // Create one empty line as separator.
+		
+		// 2. output Title and Download Link.
+		row = sheet.createRow(rowIndex++);
+		ExportUtils.createCell(row, 0, headerStyle, "Title and Download Link");
+		if (fileBean.isHidden()) {
+			ExportUtils.createCell(row, 1, "Private File");
+		} else {
+			// Construct the URL for downloading the file.
+			sb.setLength(0);
+			sb.append(request.getRequestURL().toString());
+			sb.append(COMPOSITION_URL);
+			sb.append(file.getId()).append('&').append(LOCATION).append('=');
+			sb.append(request.getParameter(LOCATION));
+			if (file.getUriExternal().booleanValue()) {
+				ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb.toString());
+			} else if (fileBean.isImage()) {
+				sb.setLength(0);
+				sb.append(fileRoot).append(java.io.File.separator);
+				sb.append(file.getUri());
+				String filePath = sb.toString();
+				java.io.File imgFile = new java.io.File(filePath);
+				if (imgFile.exists()) {
+					try {
+						rowIndex = ExportUtils.createImage(
+								rowIndex, (short) 1, filePath, wb, sheet);
+					}
+					catch (Exception e) {
+						logger.error("Error exporting Composition image data.", e);
+					}
+				} else {
+					ExportUtils.createCell(row, 1, file.getTitle());
+					logger.error("Composition image file not exists: " + filePath);
+				}
+			} else {
+				ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb.toString());
+			}
+		}
+
+		// 3. output Keywords.
+		Collection<Keyword> keywords = file.getKeywordCollection();
+		if (keywords != null && !keywords.isEmpty()) {
+			sb.setLength(0);
+			for (Keyword keyword : keywords) {
+				sb.append(',').append(' ').append(keyword.getName());
+			}
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, 0, headerStyle, "Keywords");
+			ExportUtils.createCell(row, 1, sb.substring(2));
+		}
+
+		// 4. output Description.
+		if (!StringUtils.isEmpty(file.getDescription())) {
+			row = sheet.createRow(rowIndex++);
+			ExportUtils.createCell(row, 0, headerStyle, "Description");
+			ExportUtils.createCell(row, 1, file.getDescription());
 		}
 
 		return rowIndex;

@@ -270,11 +270,8 @@ public class CharacterizationServiceHelper {
 	 * Export sample characterization summary report as Excel spread sheet.
 	 *
 	 * @param summaryBean
-	 *            CharacterizationSummaryViewBean
 	 * @param out
-	 *            OutputStream
 	 * @throws IOException
-	 *             if error occurred.
 	 */
 	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
 			HttpServletRequest request, OutputStream out) throws IOException {
@@ -288,12 +285,12 @@ public class CharacterizationServiceHelper {
 	}
 
 	/**
-	 * Output Excel report for sample Characterization Summary report.
+	 * Output Sample Characterization Summary report 
+	 * (==> bodyCharacterizationSummaryPrintViewTable.jsp)
 	 *
 	 * @param summaryBean
-	 *            CharacterizationSummaryViewBean
 	 * @param wb
-	 *            HSSFWorkbook
+	 * @throws IOException
 	 */
 	private void outputSummarySheet(
 			CharacterizationSummaryViewBean summaryBean,
@@ -304,8 +301,8 @@ public class CharacterizationServiceHelper {
 		headerStyle.setFont(headerFont);
 
 		int charCount = 1;
-		Map<String, SortedSet<CharacterizationBean>> pubs = summaryBean
-				.getType2Characterizations();
+		Map<String, SortedSet<CharacterizationBean>> pubs = 
+			summaryBean.getType2Characterizations();
 		for (String type : summaryBean.getCharacterizationTypes()) {
 			// Output data of report
 			SortedSet<CharacterizationBean> charBeans = pubs.get(type);
@@ -363,13 +360,9 @@ public class CharacterizationServiceHelper {
 	 * Output header for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputHeader(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
@@ -392,13 +385,9 @@ public class CharacterizationServiceHelper {
 	 * Output AssayType for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputAssayType(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -426,13 +415,9 @@ public class CharacterizationServiceHelper {
 	 * Output POC for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputPOC(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
@@ -450,13 +435,9 @@ public class CharacterizationServiceHelper {
 	 * Output Characterization Date for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputCharDate(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -473,13 +454,9 @@ public class CharacterizationServiceHelper {
 	 * Output Protocol for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputProtocol(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -497,13 +474,9 @@ public class CharacterizationServiceHelper {
 	 * Output Properties for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputProperties(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -542,16 +515,12 @@ public class CharacterizationServiceHelper {
 	}
 
 	/**
-	 * Output Cytotoxicity Info for work sheet.
+	 * Output Cytotoxicity Info, => bodyCytotoxicityInfo.jsp
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputCytotoxicity(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -567,16 +536,12 @@ public class CharacterizationServiceHelper {
 	}
 
 	/**
-	 * Output EnzymeInduction Info for work sheet.
+	 * Output EnzymeInduction Info, => bodyEnzymeInductionInfo.jsp
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputEnzymeInduction(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -595,13 +560,9 @@ public class CharacterizationServiceHelper {
 	 * Output PhysicalState Info for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputPhysicalState(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -610,8 +571,8 @@ public class CharacterizationServiceHelper {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TYPE);
 			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, charBean.getPhysicalState()
-					.getType());
+			ExportUtils.createCell(row, 0, 
+					charBean.getPhysicalState().getType());
 		}
 		return rowIndex;
 	}
@@ -620,13 +581,9 @@ public class CharacterizationServiceHelper {
 	 * Output Shape Info for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputShape(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
@@ -663,13 +620,9 @@ public class CharacterizationServiceHelper {
 	 * Output Solubility Info for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputSolubility(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -699,13 +652,9 @@ public class CharacterizationServiceHelper {
 	 * Output Surface Info for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputSurface(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
@@ -724,13 +673,9 @@ public class CharacterizationServiceHelper {
 	 * Output Design Description for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputDesignDescription(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -752,13 +697,9 @@ public class CharacterizationServiceHelper {
 	 * Output Technique and Instruments for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputTechInstruments(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
@@ -803,13 +744,9 @@ public class CharacterizationServiceHelper {
 	 * Output Characterization Results for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 * @throws IOException
 	 */
 	private int outputCharResults(CharacterizationBean charBean,
@@ -840,18 +777,12 @@ public class CharacterizationServiceHelper {
 	/**
 	 * Output Files in Characterization Results for work sheet.
 	 *
-	 * @param charBean
-	 *            CharacterizationBean
+	 * @param findingBean
 	 * @param request
-	 *            HttpServletRequest
 	 * @param wb
-	 *            HSSFWorkbook
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 * @throws IOException
 	 */
 	private int outputFileResult(FindingBean findingBean,
@@ -889,7 +820,7 @@ public class CharacterizationServiceHelper {
 						if (imgFile.exists()) {
 							try {
 								rowIndex = 
-									ExportUtils.createImage(rowIndex, filePath, wb, sheet);
+									ExportUtils.createImage(rowIndex, (short) 0, filePath, wb, sheet);
 							}
 							catch (Exception e) {
 								logger.error(
@@ -909,13 +840,9 @@ public class CharacterizationServiceHelper {
 	 * Output Datums in Characterization Results for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputDatumResult(FindingBean findingBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
@@ -954,13 +881,9 @@ public class CharacterizationServiceHelper {
 	 * Output Analysis and Conclusion for work sheet.
 	 *
 	 * @param charBean
-	 *            CharacterizationBean
 	 * @param sheet
-	 *            HSSFSheet
 	 * @param headerStyle
-	 *            HSSFCellStyle
 	 * @param rowIndex
-	 *            rowIndex
 	 */
 	private int outputConclusion(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {

@@ -82,10 +82,10 @@ public class ExportUtils {
 	 * @param wb
 	 * @param sheet
 	 */
-	public static int createImage(int rowIndex, String filePath,
+	public static int createImage(int rowIndex, short colIndex, String filePath,
 			HSSFWorkbook wb, HSSFSheet sheet) throws IOException {
-		short topLeftCell = 0;
-		short bottomRightCell = 7;
+		short topLeftCell = colIndex;
+		short bottomRightCell = (short) (colIndex + 7);
 		int topLeftRow = rowIndex + 1;
 		int bottomRightRow = rowIndex + 22;
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
@@ -136,12 +136,15 @@ public class ExportUtils {
 	 * @param url String
 	 * @return HSSFCell
 	 */
-	public static HSSFCell createCell(HSSFRow row, int index, String value, String url) {
+	public static HSSFCell createCell(HSSFRow row, int index,
+			HSSFCellStyle cellStyle, String value, String url) {
 		HSSFCell cell = createCell(row, index, value);
 		
 	    HSSFHyperlink link = new HSSFHyperlink(HSSFHyperlink.LINK_URL);
 	    link.setAddress(url);
 	    cell.setHyperlink(link);
+		
+		cell.setCellStyle(cellStyle);
 		
 		return cell;
 	}
