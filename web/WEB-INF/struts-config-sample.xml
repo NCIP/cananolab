@@ -10,6 +10,8 @@
 			<form-property name="sampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
 			<form-property name="sampleId" type="java.lang.String" />
+			<form-property name="location" type="java.lang.String"
+				initial="local" />
 		</form-bean>
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -42,7 +44,8 @@
 			<form-property name="assoc"
 				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" initial="local"/>
+			<form-property name="location" type="java.lang.String"
+				initial="local" />
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
@@ -56,7 +59,8 @@
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" initial="local"/>
+			<form-property name="location" type="java.lang.String"
+				initial="local" />
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
@@ -165,7 +169,9 @@
 			input="input">
 			<forward name="input"
 				path="sample.composition.nanomaterialEntity" />
-			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0"
+				redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/functionalizingEntity"
@@ -173,7 +179,9 @@
 			input="input">
 			<forward name="input"
 				path="sample.composition.functionalizingEntity" />
-			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0"
+				redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/chemicalAssociation"
@@ -183,7 +191,9 @@
 				path="/chemicalAssociation.do?dispatch=input&amp;page=0" />
 			<forward name="setup"
 				path="sample.composition.chemicalAssociation" />
-			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0"
+				redirect="true" />
 		</action>
 		<action name="compositionForm" parameter="dispatch"
 			path="/compositionFile"
@@ -191,7 +201,9 @@
 			input="input">
 			<forward name="input"
 				path="sample.composition.compositionFile" />
-			<forward name="success" path="/composition.do?dispatch=summaryEdit&amp;page=0" redirect="true" />
+			<forward name="success"
+				path="/composition.do?dispatch=summaryEdit&amp;page=0"
+				redirect="true" />
 		</action>
 		<action name="characterizationForm" parameter="dispatch"
 			path="/characterization"
