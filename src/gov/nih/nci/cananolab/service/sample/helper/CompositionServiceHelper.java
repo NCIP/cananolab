@@ -340,7 +340,7 @@ public class CompositionServiceHelper {
 							nanoEntity.getType(), sheet, headerStyle, rowIndex);
 					
 					// 2. Output Composition Description at (4, 0).
-					String description = nanoEntity.getEmulsion().getDescription().trim();
+					String description = nanoEntity.getEmulsion().getDescription();
 					if (!StringUtils.isEmpty(description)) {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, "Description");
@@ -349,7 +349,9 @@ public class CompositionServiceHelper {
 	
 					// 3. Output Composition Properties: 7x) "nanomaterialEntity/*.jsp"
 					if (nanoEntity.isWithProperties()) {
-						rowIndex++; // Create one empty line as separator.
+						if (!StringUtils.isEmpty(description)) {
+							rowIndex++; // Create one empty line as separator.
+						}
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Properties");
 						
@@ -427,6 +429,7 @@ public class CompositionServiceHelper {
 					//  Output Files: bodyFileView.jsp
 					List<FileBean> fileBeans = nanoEntity.getFiles();
 					if (fileBeans != null && !fileBeans.isEmpty()) {
+						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
 						
@@ -469,14 +472,14 @@ public class CompositionServiceHelper {
 					// 2. Output Name.
 					if (!StringUtils.isEmpty(nanoEntity.getName())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
-						ExportUtils.createCell(row, 0, "Name");
+						ExportUtils.createCell(row, 0, headerStyle, "Name");
 						ExportUtils.createCell(row, 1, nanoEntity.getName());
 					}
 					
 					// 3. Output PubChem ID.
 					if (nanoEntity.getDomainEntity().getPubChemId() != null) {
 						HSSFRow row = sheet.createRow(rowIndex++);
-						ExportUtils.createCell(row, 0, "PubChem ID");
+						ExportUtils.createCell(row, 0, headerStyle, "PubChem ID");
 						Long pubChemId = nanoEntity.getDomainEntity().getPubChemId();
 						String pubChemDs = nanoEntity.getDomainEntity().getPubChemDataSourceName();
 						sb.setLength(0);
@@ -489,7 +492,7 @@ public class CompositionServiceHelper {
 					//  Output Amount.
 					if (nanoEntity.getValue() != null) {
 						HSSFRow row = sheet.createRow(rowIndex++);
-						ExportUtils.createCell(row, 0, "Amount");
+						ExportUtils.createCell(row, 0, headerStyle, "Amount");
 						sb.setLength(0);
 						sb.append(nanoEntity.getValue()).append(' ');
 						sb.append(nanoEntity.getValueUnit());
@@ -499,7 +502,7 @@ public class CompositionServiceHelper {
 					// 5. Output Molecular Formula.
 					if (!StringUtils.isEmpty(nanoEntity.getMolecularFormulaDisplayName())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
-						ExportUtils.createCell(row, 0, "Molecular Formula");
+						ExportUtils.createCell(row, 0, headerStyle, "Molecular Formula");
 						ExportUtils.createCell(row, 1, nanoEntity.getMolecularFormulaDisplayName());
 					}
 	
@@ -529,7 +532,9 @@ public class CompositionServiceHelper {
 					// 7. Output Functions: bodyFunctionView.jsp
 					List<FunctionBean> functions = nanoEntity.getFunctions();
 					if (functions != null && !functions.isEmpty()) {
-						rowIndex++; // Create one empty line as separator.
+						if (!nanoEntity.isWithProperties()) {
+							rowIndex++; // Create one empty line as separator.
+						}
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Function(s)");
 						
@@ -570,6 +575,7 @@ public class CompositionServiceHelper {
 							}
 							ExportUtils.createCell(row, colIndex, function.getDescription());
 						}
+						rowIndex++; // Create one empty line as separator.
 					}// 7. End of Output Functions: bodyFunctionView.jsp
 					
 					// 8. Output Activation Method.
@@ -580,15 +586,16 @@ public class CompositionServiceHelper {
 					}
 					
 					// 9. Output Description.
-					if (!StringUtils.isEmpty(nanoEntity.getDescription().trim())) {
+					if (!StringUtils.isEmpty(nanoEntity.getDescription())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Description");
-						ExportUtils.createCell(row, 1, nanoEntity.getDescription().trim());
+						ExportUtils.createCell(row, 1, nanoEntity.getDescription());
 					}
 					
 					// 10. Output Files: bodyFileView.jsp
 					List<FileBean> fileBeans = nanoEntity.getFiles();
 					if (fileBeans != null && !fileBeans.isEmpty()) {
+						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
 						
@@ -636,13 +643,14 @@ public class CompositionServiceHelper {
 					}
 					
 					// 3. Output Description.
-					if (!StringUtils.isEmpty(nanoEntity.getDescription().trim())) {
+					if (!StringUtils.isEmpty(nanoEntity.getDescription())) {
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Description");
-						ExportUtils.createCell(row, 1, nanoEntity.getDescription().trim());
+						ExportUtils.createCell(row, 1, nanoEntity.getDescription());
 					}
 					
 					//  Output Associated Elements.
+					rowIndex++; // Create an empty line as seperator.
 					HSSFRow row = sheet.createRow(rowIndex++);
 					ExportUtils.createCell(row, 0, headerStyle, "Associated Elements");
 					
@@ -664,9 +672,9 @@ public class CompositionServiceHelper {
 						sb.append(nanoEntity.getAssociatedElementA().getDomainElement().getName());
 						sb.append(')');
 					}
-					ExportUtils.createCell(row, 0, headerStyle, sb.toString());
+					ExportUtils.createCell(row, 0, sb.toString());
 					
-					ExportUtils.createCell(row, 1, headerStyle, "associated with");
+					ExportUtils.createCell(row, 1, "associated with");
 					
 					// 4b. Output Associated Element B.
 					sb.setLength(0);
@@ -685,11 +693,13 @@ public class CompositionServiceHelper {
 						sb.append(nanoEntity.getAssociatedElementB().getDomainElement().getName());
 						sb.append(')');
 					}
-					ExportUtils.createCell(row, 2, headerStyle, sb.toString());
-					
+					ExportUtils.createCell(row, 2, sb.toString());
+					rowIndex++; // Create an empty line as seperator.
+	
 					// 5. Output Files: bodyFileView.jsp
 					List<FileBean> fileBeans = nanoEntity.getFiles();
 					if (fileBeans != null && !fileBeans.isEmpty()) {
+						rowIndex++; // Create one empty line as separator.
 						row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
 						
