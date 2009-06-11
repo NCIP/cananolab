@@ -411,7 +411,7 @@ public class ClassUtils {
 			}
 		}
 		if (method != null) {
-			Object result = method.invoke(obj, new String[0]);
+			Object result = method.invoke(obj, new Object[0]);
 			return result.toString();
 		} else {
 			return null;
