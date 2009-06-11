@@ -15,6 +15,10 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 
+import java.io.OutputStream;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Service methods involving composition.
  *
@@ -125,4 +129,15 @@ public interface CompositionService {
 
 	public void assignPublicVisibility(AuthorizationService authService,
 			SampleComposition composition) throws Exception;
+
+	/**
+	 * Export sample composition summary report as Excel spread sheet.
+	 *
+	 * @param summaryBean CompositionBean
+	 * @param out OutputStream
+	 * @throws CompositionException if error occurred.
+	 */
+	public void exportSummary(CompositionBean summaryBean,
+			HttpServletRequest request, OutputStream out)
+			throws CompositionException;
 }

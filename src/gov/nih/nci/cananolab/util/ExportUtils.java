@@ -10,9 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
+import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFHyperlink;
 
 public class ExportUtils {
 	
@@ -54,12 +58,13 @@ public class ExportUtils {
 			fis = new FileInputStream(path);
 		}
 		try {			
-			bos = new ByteArrayOutputStream();
 			int c;
-			while ((c = fis.read()) != -1)
+			bos = new ByteArrayOutputStream();
+			while ((c = fis.read()) != -1) {
 				bos.write(c);
-			pictureIndex = wb.addPicture(bos.toByteArray(),
-					HSSFWorkbook.PICTURE_TYPE_PNG);
+			}
+			pictureIndex = 
+				wb.addPicture(bos.toByteArray(), HSSFWorkbook.PICTURE_TYPE_PNG);
 		} finally {
 			if (fis != null)
 				fis.close();
@@ -70,29 +75,74 @@ public class ExportUtils {
 	}
 
 	/**
-	 * Create a HSSFCell in row with specified index and value.
+	 * Output Datums in Characterization Results for work sheet.
+	 *
+	 * @param rowIndex
+	 * @param filePath
+	 * @param wb
+	 * @param sheet
+	 */
+	public static int createImage(int rowIndex, String filePath,
+			HSSFWorkbook wb, HSSFSheet sheet) throws IOException {
+		short topLeftCell = 0;
+		short bottomRightCell = 7;
+		int topLeftRow = rowIndex + 1;
+		int bottomRightRow = rowIndex + 22;
+		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
+		HSSFClientAnchor anchor = new HSSFClientAnchor(0, 0, 0, 255,
+				topLeftCell, topLeftRow, bottomRightCell, bottomRightRow);
+		anchor.setAnchorType(2); // 2 = Move but don't size with cells
+		patriarch.createPicture(anchor, loadPicture(filePath, wb));
+		rowIndex = bottomRightRow + 3;
+		
+		return rowIndex;
+	}
+
+	/**
+	 * Create a HSSFCell in row with index and value.
 	 *
 	 * @param row HSSFRow
-	 * @param index short
+	 * @param index int
 	 * @param value String
+	 * @return HSSFCell
 	 */
-	public static HSSFCell createCell(HSSFRow row, short index, String value) {
+	public static HSSFCell createCell(HSSFRow row, int index, String value) {
 		HSSFCell cell = row.createCell(index);
 		cell.setCellValue(new HSSFRichTextString(value));
 		return cell;
 	}
 
 	/**
-	 * Create a HSSFCell in row with specified cellStyle, index and value.
+	 * Create a HSSFCell in row with cellStyle, index and value.
 	 *
 	 * @param row HSSFRow
-	 * @param index short
+	 * @param index int
 	 * @param cellStyle HSSFCellStyle
 	 * @param value String
+	 * @return HSSFCell
 	 */
-	public static HSSFCell createCell(HSSFRow row, short index, HSSFCellStyle cellStyle, String value) {
+	public static HSSFCell createCell(HSSFRow row, int index, HSSFCellStyle cellStyle, String value) {
 		HSSFCell cell = createCell(row, index, value);
 		cell.setCellStyle(cellStyle);
+		return cell;
+	}
+
+	/**
+	 * Create a HSSFCell in row with hyperlink, index and value.
+	 *
+	 * @param row HSSFRow
+	 * @param index int
+	 * @param value String
+	 * @param url String
+	 * @return HSSFCell
+	 */
+	public static HSSFCell createCell(HSSFRow row, int index, String value, String url) {
+		HSSFCell cell = createCell(row, index, value);
+		
+	    HSSFHyperlink link = new HSSFHyperlink(HSSFHyperlink.LINK_URL);
+	    link.setAddress(url);
+	    cell.setHyperlink(link);
+		
 		return cell;
 	}
 }

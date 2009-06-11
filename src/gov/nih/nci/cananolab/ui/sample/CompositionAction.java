@@ -13,9 +13,14 @@ import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +43,6 @@ public class CompositionAction extends BaseAnnotationAction {
 	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
-	 *             if error occurred.
 	 */
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -53,14 +57,13 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary View request.
-	 *
+	 * 
 	 * @param mapping
 	 * @param form
 	 * @param request
 	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
-	 *             if error occurred.
 	 */
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -98,23 +101,77 @@ public class CompositionAction extends BaseAnnotationAction {
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			CompositionBean compositionBean = (CompositionBean) theForm
-					.get("comp");
+			CompositionBean compBean = 
+				(CompositionBean) theForm.get("comp");
 			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
-				compositionBean.setChemicalAssociations(Collections.EMPTY_LIST);
+				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
 			}
 			if (!type.equals(CompositionBean.FILE_SELECTION)) {
-				compositionBean.setFiles(Collections.EMPTY_LIST);
+				compBean.setFiles(Collections.EMPTY_LIST);
 			}
 			if (!type.equals(CompositionBean.FUNCTIONALIZING_SELECTION)) {
-				compositionBean
+				compBean
 						.setFunctionalizingEntities(Collections.EMPTY_LIST);
 			}
 			if (!type.equals(CompositionBean.NANOMATERIAL_SELECTION)) {
-				compositionBean.setNanomaterialEntities(Collections.EMPTY_LIST);
+				compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
 			}
 		}
 		return mapping.findForward("summaryPrint");
+	}
+
+	/**
+	 * Handle Composition Summary Export request.
+	 *
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return ActionForward
+	 * @throws Exception
+	 */
+	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		// Prepare CompositionBean for viewing and printing.
+		this.prepareSummary(mapping, form, request, response);
+
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		CompositionBean compBean = (CompositionBean) theForm.get("comp");
+		
+		// Show only the selected type.
+		String type = request.getParameter("type");
+		String location = request.getParameter("location");
+		if (!StringUtils.isEmpty(type)) {
+			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
+				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
+			}
+			if (!type.equals(CompositionBean.FILE_SELECTION)) {
+				compBean.setFiles(Collections.EMPTY_LIST);
+			}
+			if (!type.equals(CompositionBean.FUNCTIONALIZING_SELECTION)) {
+				compBean.setFunctionalizingEntities(Collections.EMPTY_LIST);
+			}
+			if (!type.equals(CompositionBean.NANOMATERIAL_SELECTION)) {
+				compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
+			}
+		}
+		
+		// Get sample name for constructing file name.
+		String fileName =
+			this.getExportFileName(compBean.getDomain().getSample().getName(),
+					"CompositionSummaryView");
+		ExportUtils.prepareReponseForExcell(response, fileName);
+		CompositionService service = null;
+		if (Constants.LOCAL.equals(location)) {
+			service = new CompositionServiceLocalImpl();
+		} else {
+			// TODO: Implement remote service.
+		}
+		service.exportSummary(compBean, request, response.getOutputStream());
+
+		return null;
 	}
 
 	/**
@@ -145,28 +202,28 @@ public class CompositionAction extends BaseAnnotationAction {
 			// compService = new CompositionServiceRemoteImpl(
 			// serviceUrl);
 		}
-		CompositionBean compositionBean = new CompositionBean();
+		CompositionBean compBean = new CompositionBean();
 		if (compService.findCompositionBySampleId(sampleId) != null) {
-			compositionBean = compService.findCompositionBySampleId(sampleId);
+			compBean = compService.findCompositionBySampleId(sampleId);
 		}
-		theForm.set("comp", compositionBean);
+		theForm.set("comp", compBean);
 		// set entity type and association type and retrieve visibility
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		for (NanomaterialEntityBean entityBean : compositionBean
+		for (NanomaterialEntityBean entityBean : compBean
 				.getNanomaterialEntities()) {
 			entityBean.updateType(InitSetup.getInstance()
 					.getClassNameToDisplayNameLookup(
 							session.getServletContext()));
 			compService.retrieveVisibility(entityBean, user);
 		}
-		for (FunctionalizingEntityBean entityBean : compositionBean
+		for (FunctionalizingEntityBean entityBean : compBean
 				.getFunctionalizingEntities()) {
 			entityBean.updateType(InitSetup.getInstance()
 					.getClassNameToDisplayNameLookup(
 							session.getServletContext()));
 			compService.retrieveVisibility(entityBean, user);
 		}
-		for (ChemicalAssociationBean assocBean : compositionBean
+		for (ChemicalAssociationBean assocBean : compBean
 				.getChemicalAssociations()) {
 			assocBean.updateType(InitSetup.getInstance()
 					.getClassNameToDisplayNameLookup(
@@ -174,7 +231,7 @@ public class CompositionAction extends BaseAnnotationAction {
 			compService.retrieveVisibility(assocBean, user);
 		}
 		FileService fileService = new FileServiceLocalImpl();
-		for (FileBean fileBean : compositionBean.getFiles()) {
+		for (FileBean fileBean : compBean.getFiles()) {
 			fileService.retrieveVisibility(fileBean, user);
 		}
 		//retain action messages from send redirects
@@ -185,18 +242,19 @@ public class CompositionAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * Handle Composition Summary Export request.
-	 *
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return ActionForward
-	 * @throws Exception
+	 * Get file name for exporting report as an Excell file.
+	 * 
+	 * @param sampleName
+	 * @param viewType
+	 * @param charClass
+	 * @return
 	 */
-	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return mapping.findForward("summaryEdit");
+	private String getExportFileName(String sampleName, String viewType) {
+		List<String> nameParts = new ArrayList<String>();
+		nameParts.add(sampleName);
+		nameParts.add(viewType);
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		return exportFileName;
 	}
 }

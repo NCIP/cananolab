@@ -27,9 +27,12 @@ import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationServ
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
@@ -771,6 +774,25 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				removeChemicalAssociationPublicVisibility(authService,
 						chemicalAssociation);
 			}
+		}
+	}
+
+	/**
+	 * Export sample composition summary report as Excel spread sheet.
+	 *
+	 * @param summaryBean CompositionBean
+	 * @param out OutputStream
+	 * @throws CompositionException if error occurred.
+	 */
+	public void exportSummary(CompositionBean summaryBean,
+			HttpServletRequest request, OutputStream out)
+			throws CompositionException {
+		try {
+			helper.exportSummary(summaryBean, request, out);
+		} catch (Exception e) {
+			String err = "Error exporting Sample Composition Summary Excell report.";
+			logger.error(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 }
