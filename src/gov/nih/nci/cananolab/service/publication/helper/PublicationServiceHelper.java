@@ -227,6 +227,7 @@ public class PublicationServiceHelper {
 		List<Publication> publications = new ArrayList<Publication>();
 		for (Object obj : filteredResults) {
 			Publication publication = findPublicationById(obj.toString());
+			publications.add(publication);
 		}
 		return publications;
 	}
