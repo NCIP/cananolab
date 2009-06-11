@@ -360,7 +360,7 @@ public class PublicationServiceHelper {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFSheet sheet = wb.createSheet("detailSheet");
 		HSSFPatriarch patriarch = sheet.createDrawingPatriarch();
-		short startRow = 0;
+		int startRow = 0;
 		setDetailSheet(aPub, wb, sheet, patriarch, startRow);
 		wb.write(out);
 		if (out != null) {
@@ -369,8 +369,8 @@ public class PublicationServiceHelper {
 		}
 	}
 
-	public short setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
-			HSSFSheet sheet, HSSFPatriarch patriarch, short rowIndex) {
+	public int setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
+			HSSFSheet sheet, HSSFPatriarch patriarch, int rowIndex) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -383,7 +383,7 @@ public class PublicationServiceHelper {
 		// PubMedID
 		Long pubMedId = publication.getPubMedId();
 		row = sheet.createRow(rowIndex++);
-		short cellIndex = 0;
+		int cellIndex = 0;
 		cell = row.createCell(cellIndex++);
 		cell.setCellStyle(headerStyle);
 		cell.setCellValue(new HSSFRichTextString("Publication Identifier"));
@@ -569,8 +569,8 @@ public class PublicationServiceHelper {
 		
 		SortedMap<String, List<PublicationBean>> pubs = summaryBean.getCategory2Publications();
 		for (String category : pubs.keySet()) {
-			short rowIndex = 0;
-			short cellIndex = 0;
+			int rowIndex = 0;
+			int cellIndex = 0;
 			
 			// Create one work sheet for each category. 
 			HSSFSheet sheet = wb.createSheet(category);
