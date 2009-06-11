@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -20,10 +21,11 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -71,9 +73,54 @@ public class PublicationServiceHelper {
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes, Boolean filterPublic)
-			throws Exception {
-		List<Publication> publications = new ArrayList<Publication>();
+			String[] functionClassNames, String[] otherFunctionTypes,
+			Boolean filterPublic) throws Exception {
+		AuthorizationService authService;
+		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
+
+		Set<String> samplePublicationIds = new HashSet<String>();
+		Set<String> compositionPublicationIds = new HashSet<String>();
+		Set<String> otherPublicationIds = new HashSet<String>();
+		Set<String> allPublicationIds = new HashSet<String>();
+
+		// check if sample is public and whether to filter public data
+		if (sampleName != null && filterPublic) {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+			Boolean isPublic = authService.isPublic(sampleName);
+			if (!isPublic) {
+				return null;
+			} else {
+				Sample sample = sampleServiceHelper
+						.findSampleByName(sampleName);
+				for (Publication publication : sample
+						.getPublicationCollection())
+					samplePublicationIds.add(publication.getId().toString());
+			}
+			allPublicationIds.addAll(samplePublicationIds);
+		}
+
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
+				|| functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0) {
+			List<Sample> samples = sampleServiceHelper.findSamplesBy(null,
+					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
+					functionalizingEntityClassNames,
+					otherFunctionalizingEntityTypes, functionClassNames,
+					otherFunctionTypes, null, null, null, filterPublic);
+			for (Sample sample : samples) {
+				for (Publication publication : sample
+						.getPublicationCollection()) {
+					compositionPublicationIds.add(publication.getId()
+							.toString());
+				}
+			}
+			allPublicationIds.addAll(compositionPublicationIds);
+		}
+
 		// can't query for the entire Publication object due to limitations in
 		// pagination in SDK
 		DetachedCriteria crit = DetachedCriteria.forClass(Publication.class)
@@ -142,8 +189,8 @@ public class PublicationServiceHelper {
 				Criterion crit1 = Restrictions.ilike("author.lastName", author,
 						MatchMode.ANYWHERE);
 				disjunction.add(crit1);
-				Criterion crit2 = Restrictions.ilike("author.firstName", author,
-						MatchMode.ANYWHERE);
+				Criterion crit2 = Restrictions.ilike("author.firstName",
+						author, MatchMode.ANYWHERE);
 				disjunction.add(crit2);
 				Criterion crit3 = Restrictions.ilike("author.initial", author,
 						MatchMode.ANYWHERE);
@@ -152,171 +199,36 @@ public class PublicationServiceHelper {
 			crit.add(disjunction);
 		}
 
-		// join sample
-		if (sampleName != null && sampleName.length() > 0
-				|| nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0
-				|| functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0) {
-			crit.createAlias("sampleCollection", "sample");
-		}
-		// sample
-		if (sampleName != null && sampleName.length() > 0) {
-			TextMatchMode particleMatchMode = new TextMatchMode(sampleName);
-			Disjunction disjunction = Restrictions.disjunction();
-
-			Criterion keywordCrit1 = Restrictions.like("sample.name",
-					particleMatchMode.getUpdatedText(), particleMatchMode
-							.getMatchMode());
-			disjunction.add(keywordCrit1);
-			crit.add(disjunction);
-		}
-
-		// join composition and nanomaterial entity
-		if (nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0
-				|| functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias("sample.sampleComposition", "comp");
-			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity");
-		}
-
-		// nanomaterial entity
-		if (nanomaterialEntityClassNames != null
-				&& nanomaterialEntityClassNames.length > 0
-				|| otherNanomaterialEntityTypes != null
-				&& otherNanomaterialEntityTypes.length > 0) {
-
-			Disjunction disjunction = Restrictions.disjunction();
-			if (nanomaterialEntityClassNames != null
-					&& nanomaterialEntityClassNames.length > 0) {
-				Criterion nanoEntityCrit = Restrictions.in("nanoEntity.class",
-						nanomaterialEntityClassNames);
-				disjunction.add(nanoEntityCrit);
-			}
-			if (otherNanomaterialEntityTypes != null
-					&& otherNanomaterialEntityTypes.length > 0) {
-				Criterion otherNanoCrit1 = Restrictions.eq("nanoEntity.class",
-						"OtherNanomaterialEntity");
-				Criterion otherNanoCrit2 = Restrictions.in("nanoEntity.type",
-						otherNanomaterialEntityTypes);
-				Criterion otherNanoCrit = Restrictions.and(otherNanoCrit1,
-						otherNanoCrit2);
-				disjunction.add(otherNanoCrit);
-			}
-			crit.add(disjunction);
-		}
-
-		// function
-		if (functionClassNames != null && functionClassNames.length > 0
-				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias("nanoEntity.composingElementCollection",
-					"compElement").createAlias(
-					"compElement.inherentFunctionCollection", "inFunc",
-					CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("comp.functionalizingEntityCollection",
-					"funcEntity");
-			crit.createAlias("funcEntity.functionCollection", "func",
-					CriteriaSpecification.LEFT_JOIN);
-			if (functionClassNames != null && functionClassNames.length > 0) {
-				Criterion funcCrit1 = Restrictions.in("inFunc.class",
-						functionClassNames);
-				Criterion funcCrit2 = Restrictions.in("func.class",
-						functionClassNames);
-				disjunction.add(funcCrit1).add(funcCrit2);
-				disjunction.add(funcCrit2);
-			}
-			if (otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-				Criterion otherFuncCrit1 = Restrictions.and(Restrictions.eq(
-						"inFunc.class", "OtherFunction"), Restrictions.in(
-						"inFunc.type", otherFunctionTypes));
-				Criterion otherFuncCrit2 = Restrictions.and(Restrictions.eq(
-						"func.class", "OtherFunction"), Restrictions.in(
-						"func.type", otherFunctionTypes));
-				disjunction.add(otherFuncCrit1).add(otherFuncCrit2);
-				disjunction.add(otherFuncCrit2);
-			}
-			crit.add(disjunction);
-		}
-
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
+		for (Object obj : results) {
+			otherPublicationIds.add(obj.toString());
+		}
+		allPublicationIds.addAll(otherPublicationIds);
 
-		// don't need this if Hibernate would've allowed for functionalizing
-		// entities in the where clause
-		List<String> functionalizingEntityTypes = null;
-		if (functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0) {
-			functionalizingEntityTypes = new ArrayList<String>(Arrays
-					.asList(functionalizingEntityClassNames));
-			functionalizingEntityTypes.addAll(Arrays
-					.asList(otherFunctionalizingEntityTypes));
+		// find the union of all publication Ids
+		if (!samplePublicationIds.isEmpty()) {
+			allPublicationIds.retainAll(samplePublicationIds);
+		}
+		if (!compositionPublicationIds.isEmpty()) {
+			allPublicationIds.retainAll(compositionPublicationIds);
+		}
+		if (!otherPublicationIds.isEmpty()) {
+			allPublicationIds.retainAll(otherPublicationIds);
 		}
 
-		List filteredResults=new ArrayList(results);
+		List filteredResults = new ArrayList(allPublicationIds);
 		if (filterPublic) {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults = authService
+					.getPublicObjects((List) allPublicationIds);
 		}
+		List<Publication> publications = new ArrayList<Publication>();
 		for (Object obj : filteredResults) {
 			Publication publication = findPublicationById(obj.toString());
-			// don't need this if Hibernate would've allowed for functionalizing
-			// entities in the where clause
-			boolean matching = hasMatchingFunctionalizingEntities(publication,
-					functionalizingEntityTypes);
-			if (matching) {
-				publications.add(publication);
-			}
 		}
 		return publications;
-	}
-
-	// workaround to filter out publications that don't have matching
-	// functionalizing entities due to bug in hibernate in handling having
-	// .class in
-	// where clause in multi-level inheritance
-	private boolean hasMatchingFunctionalizingEntities(Publication publication,
-			List<String> functionalizingEntityTypes) throws Exception {
-		if (functionalizingEntityTypes == null) {
-			return true;
-		}
-		boolean status = false;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(FunctionalizingEntity.class);
-		crit.createAlias("sampleComposition", "comp");
-		crit.createAlias("comp.sample", "sample");
-		crit.createAlias("sample.publicationCollection", "pub");
-		crit.add(Restrictions.eq("pub.id", publication.getId()));
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			FunctionalizingEntity entity = (FunctionalizingEntity) result
-					.get(0);
-			String entityName;
-			if (entity instanceof OtherFunctionalizingEntity) {
-				entityName = ((OtherFunctionalizingEntity) entity).getType();
-			} else {
-				entityName = ClassUtils.getShortClassName(entity.getClass()
-						.getName());
-			}
-			if (functionalizingEntityTypes.contains(entityName)) {
-				return true;
-			}
-		}
-		return status;
 	}
 
 	public Publication findPublicationById(String publicationId)
