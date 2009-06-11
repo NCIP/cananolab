@@ -13,6 +13,7 @@ import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -69,16 +70,15 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		SampleService service = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL)) {
 			service = new SampleServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
-			//TODO model change
-			//service = new SampleServiceRemoteImpl(serviceUrl);
+			service = new SampleServiceRemoteImpl(serviceUrl);
 		}
 		SampleBean sampleBean = service.findSampleById(sampleId);
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL)) {
 			// check access privilege
 			AuthorizationService auth = new AuthorizationService(Constants.CSM_APP_NAME);
 			boolean access = auth.isUserAllowed(sampleBean

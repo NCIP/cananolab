@@ -396,4 +396,25 @@ public class ClassUtils {
 			return obj;
 		}
 	}
+
+	public static String getIdString(Object obj) throws Exception {
+		if (obj instanceof String) {
+			return obj.toString();
+		}
+		Class clazz = obj.getClass();
+		Method[] allMethods = clazz.getMethods();
+		Method method = null;
+		for (Method m : allMethods) {
+			if (m.getName().equals("getId")) {
+				method = m;
+				break;
+			}
+		}
+		if (method != null) {
+			Object result = method.invoke(obj, new String[0]);
+			return result.toString();
+		} else {
+			return null;
+		}
+	}
 }

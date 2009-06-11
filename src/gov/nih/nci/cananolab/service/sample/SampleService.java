@@ -18,15 +18,14 @@ import java.util.SortedSet;
  */
 public interface SampleService {
 	/**
-	 * Persist a new sample or update an existing nanoparticle
-	 * sample
+	 * Persist a new sample or update an existing sample
 	 *
 	 * @param sample
 	 * @throws SampleException,
 	 *             DuplicateEntriesException
 	 */
-	public void saveSample(Sample sample)
-			throws SampleException, DuplicateEntriesException;
+	public void saveSample(Sample sample) throws SampleException,
+			DuplicateEntriesException;
 
 	/**
 	 *
@@ -42,24 +41,21 @@ public interface SampleService {
 	 * @return
 	 * @throws SampleException
 	 */
-	public List<SampleBean> findSamplesBy(
-			String samplePointOfContact,
+	public List<SampleBean> findSamplesBy(String samplePointOfContact,
 			String[] nanomaterialEntityClassNames,
-			String[] otherNanoparticleTypes,
+			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList)
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList)
 			throws SampleException;
 
-	public SampleBean findSampleById(String sampleId)
-			throws SampleException;
+	public SampleBean findSampleById(String sampleId) throws SampleException;
 
-	public SampleBean findFullSampleById(String sampleId)
-			throws Exception;
+	public SampleBean findFullSampleById(String sampleId) throws Exception;
 
-	public Sample findSampleByName(String sampleName)
-			throws SampleException;
+	public Sample findSampleByName(String sampleName) throws SampleException;
 
 	public void retrieveVisibility(SampleBean sampleBean, UserBean user)
 			throws SampleException;
@@ -72,15 +68,10 @@ public interface SampleService {
 
 	public int getNumberOfPublicSamples() throws SampleException;
 
-	public void assignVisibility(SampleBean sampleBean)
-			throws Exception;
+	public void assignVisibility(SampleBean sampleBean) throws Exception;
 
 	public List<SampleBean> getUserAccessibleSamples(
-			List<SampleBean> particles, UserBean user)
-			throws SampleException;
-
-	public SortedSet<String> findSampleNamesByPublicationId(
-			String publicationId) throws SampleException;
+			List<SampleBean> particles, UserBean user) throws SampleException;
 
 	public SortedSet<String> findAllSampleNames() throws SampleException;
 

@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.dto.common.TableCell;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
@@ -178,7 +179,7 @@ public class CharacterizationServiceHelper {
 	}
 
 	public Protocol findProtocolByCharacterizationId(
-			java.lang.String characterizationId) throws Exception {
+			java.lang.String characterizationId, Boolean filterPublic) throws Exception {
 		Protocol protocol = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -187,13 +188,18 @@ public class CharacterizationServiceHelper {
 				+ characterizationId;
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
-		for (Object obj : results) {
+		List filteredResults=new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults=authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			protocol = (Protocol) obj;
 		}
 		return protocol;
 	}
 
-	public List<Finding> findFindingsByCharacterizationId(String charId)
+	public List<Finding> findFindingsByCharacterizationId(String charId, Boolean filterPublic)
 			throws Exception {
 		List<Finding> findingCollection = new ArrayList<Finding>();
 
@@ -203,14 +209,19 @@ public class CharacterizationServiceHelper {
 				"select achar.findingCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
 						+ charId);
 		List results = appService.query(crit);
-		for (Object obj : results) {
+		List filteredResults=new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults=authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			Finding finding = (Finding) obj;
 			findingCollection.add(finding);
 		}
 		return findingCollection;
 	}
 
-	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(String charId)
+	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(String charId, Boolean filterPublic)
 			throws Exception {
 		List<ExperimentConfig> configCollection = new ArrayList<ExperimentConfig>();
 
@@ -219,15 +230,21 @@ public class CharacterizationServiceHelper {
 		HQLCriteria crit = new HQLCriteria(
 				"select achar.experimentConfigCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
 						+ charId);
+
 		List results = appService.query(crit);
-		for (Object obj : results) {
+		List filteredResults=new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults=authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			ExperimentConfig config = (ExperimentConfig) obj;
 			configCollection.add(config);
 		}
 		return configCollection;
 	}
 
-	public List<File> findFilesByCharacterizationId(String charId)
+	public List<File> findFilesByCharacterizationId(String charId, Boolean filterPublic)
 			throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
 
@@ -237,7 +254,12 @@ public class CharacterizationServiceHelper {
 				"select achar.fileCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
 						+ charId);
 		List results = appService.query(crit);
-		for (Object obj : results) {
+		List filteredResults=new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults=authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			File file = (File) obj;
 			fileCollection.add(file);
 		}

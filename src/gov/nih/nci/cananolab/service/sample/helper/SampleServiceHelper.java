@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
@@ -10,6 +11,8 @@ import gov.nih.nci.cananolab.domain.particle.Function;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
@@ -48,8 +51,9 @@ public class SampleServiceHelper {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			String[] characterizationClassNames, String[] wordList)
-			throws Exception {
+			String[] characterizationClassNames,
+			String[] otherCharacterizationTypes, String[] wordList,
+			Boolean filterPublic) throws Exception {
 		List<Sample> particles = new ArrayList<Sample>();
 
 		// can't query for the entire Sample object due to
@@ -174,12 +178,12 @@ public class SampleServiceHelper {
 							keyword, MatchMode.ANYWHERE);
 					disjunction.add(keywordCrit1);
 				}
-				crit.createAlias("chara.findingCollection",
-						"finding", CriteriaSpecification.LEFT_JOIN)
-						.createAlias("finding.fileCollection", "charFile",
-								CriteriaSpecification.LEFT_JOIN).createAlias(
-								"charFile.keywordCollection", "keyword2",
-								CriteriaSpecification.LEFT_JOIN);
+				crit.createAlias("chara.findingCollection", "finding",
+						CriteriaSpecification.LEFT_JOIN).createAlias(
+						"finding.fileCollection", "charFile",
+						CriteriaSpecification.LEFT_JOIN).createAlias(
+						"charFile.keywordCollection", "keyword2",
+						CriteriaSpecification.LEFT_JOIN);
 				;
 				for (String keyword : upperKeywords) {
 					Criterion keywordCrit2 = Restrictions.like("keyword2.name",
@@ -188,7 +192,8 @@ public class SampleServiceHelper {
 				}
 				for (String word : wordList) {
 					Criterion summaryCrit1 = Restrictions.ilike(
-							"chara.designMethodsDescription", word, MatchMode.ANYWHERE);
+							"chara.designMethodsDescription", word,
+							MatchMode.ANYWHERE);
 					Criterion summaryCrit2 = Restrictions.ilike(
 							"charFile.description", word, MatchMode.ANYWHERE);
 					Criterion summaryCrit = Restrictions.or(summaryCrit1,
@@ -226,7 +231,13 @@ public class SampleServiceHelper {
 			functionalizingEntityTypes.addAll(Arrays
 					.asList(otherFunctionalizingEntityTypes));
 		}
-		for (Object obj : results) {
+		List filteredResults = new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			filteredResults = authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			Sample particle = loadSample(obj.toString());
 			// don't need this if Hibernate would've allowed for functionalizing
 			// entities in the where clause
@@ -506,8 +517,8 @@ public class SampleServiceHelper {
 		return particleSample;
 	}
 
-	public List<Keyword> findKeywordsBySampleId(String sampleId)
-			throws Exception {
+	public List<Keyword> findKeywordsBySampleId(String sampleId,
+			Boolean filterPublic) throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -516,11 +527,64 @@ public class SampleServiceHelper {
 				"select aSample.keywordCollection from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
 						+ sampleId);
 		List results = appService.query(crit);
-		for (Object obj : results) {
+		List filteredResults = new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			filteredResults = authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			Keyword keyword = (Keyword) obj;
 			keywords.add(keyword);
 		}
 		return keywords;
+	}
+
+	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId,
+			Boolean filterPublic) throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select aSample.primaryPointOfContact from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
+						+ sampleId);
+		List results = appService.query(crit);
+		PointOfContact poc=null;
+		for (Object obj : results) {
+			poc = (PointOfContact) obj;
+			if (filterPublic) {
+				AuthorizationService authService = new AuthorizationService(
+						Constants.CSM_APP_NAME);
+				if (authService.isPublic(poc.getId().toString())) {
+					return poc;
+				}
+				else {
+					return null;
+				}
+			}
+		}
+		return poc;
+	}
+
+	public List<PointOfContact> findOtherPointOfContactBySampleId(
+			String sampleId, Boolean filterPublic) throws Exception {
+		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		HQLCriteria crit = new HQLCriteria(
+				"select aSample.otherPointOfContactCollection from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
+						+ sampleId);
+		List results = appService.query(crit);
+		List filteredResults = new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			filteredResults = authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
+			PointOfContact poc = (PointOfContact) obj;
+			pocs.add(poc);
+		}
+		return pocs;
 	}
 
 	public int getNumberOfPublicSamples() throws Exception {
@@ -638,56 +702,35 @@ public class SampleServiceHelper {
 		return classNames;
 	}
 
-	public String[] getSampleViewStrs(List<Sample> particleSamples) {
-		List<String> particleStrings = new ArrayList<String>(particleSamples
-				.size());
-		// 6 columns
+	public String[] getSampleViewStrs(List<Sample> samples) {
+		List<String> sampleStrings = new ArrayList<String>(samples.size());
+
 		List<String> columns = new ArrayList<String>(7);
-		for (Sample particleSample : particleSamples) {
+		for (Sample sample : samples) {
 			columns.clear();
-			columns.add(particleSample.getId().toString());
-			columns.add(particleSample.getName());
-			columns.add(particleSample.getPrimaryPointOfContact()
-					.getFirstName());
-			columns
-					.add(particleSample.getPrimaryPointOfContact()
-							.getLastName());
+			columns.add(sample.getId().toString());
+			columns.add(sample.getName());
+			PointOfContactBean primaryPOC = new PointOfContactBean(sample
+					.getPrimaryPointOfContact());
+			columns.add(primaryPOC.getDomain().getFirstName());
+			columns.add(primaryPOC.getDomain().getLastName());
+			columns.add(primaryPOC.getOrganization().getName());
 			// nanoparticle entities and functionalizing entities are in one
 			// column.
 			SortedSet<String> entities = new TreeSet<String>();
-			entities
-					.addAll(getStoredNanomaterialEntityClassNames(particleSample));
-			entities
-					.addAll(getStoredFunctionalizingEntityClassNames(particleSample));
+			entities.addAll(getStoredNanomaterialEntityClassNames(sample));
+			entities.addAll(getStoredFunctionalizingEntityClassNames(sample));
 			columns.add(StringUtils.join(entities,
 					Constants.VIEW_CLASSNAME_DELIMITER));
-			columns.add(StringUtils.join(
-					getStoredFunctionClassNames(particleSample),
+			columns.add(StringUtils.join(getStoredFunctionClassNames(sample),
 					Constants.VIEW_CLASSNAME_DELIMITER));
 			columns.add(StringUtils.join(
-					getStoredCharacterizationClassNames(particleSample),
+					getStoredCharacterizationClassNames(sample),
 					Constants.VIEW_CLASSNAME_DELIMITER));
 
-			particleStrings.add(StringUtils.joinEmptyItemIncluded(columns,
+			sampleStrings.add(StringUtils.joinEmptyItemIncluded(columns,
 					Constants.VIEW_COL_DELIMITER));
 		}
-		String[] particleStrArray = new String[particleStrings.size()];
-		return particleStrings.toArray(particleStrArray);
-	}
-
-	public SortedSet<String> findSampleNamesByPublicationId(
-			String publicationId) throws Exception {
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
-		crit.createAlias("publicationCollection", "pub").add(
-				Property.forName("pub.id").eq(new Long(publicationId)));
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		SortedSet<String> names = new TreeSet<String>();
-		for (Object obj : results) {
-			Sample particleSample = (Sample) obj;
-			names.add(particleSample.getName());
-		}
-		return names;
+		return sampleStrings.toArray(new String[0]);
 	}
 }

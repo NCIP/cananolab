@@ -1,8 +1,10 @@
 package gov.nih.nci.cananolab.service.security;
 
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.security.AuthenticationManager;
@@ -23,6 +25,7 @@ import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -772,6 +775,64 @@ public class AuthorizationService {
 		} catch (Exception e) {
 			logger
 					.error("Can't update database connections for CSM applications");
+		}
+	}
+
+	/**
+	 * Return only the public data
+	 *
+	 * @param rawObjects
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Object> getPublicObjects(List<Object> rawObjects) throws RemoteException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			List<String> publicDataIds = appService.getPublicData();
+			List filtered = new ArrayList();
+			if (publicDataIds.isEmpty()) {
+				return filtered;
+			}
+			if (rawObjects == null || rawObjects.isEmpty()) {
+				return filtered;
+			}
+			for (Object obj : rawObjects) {
+				String data = null;
+				if (obj instanceof Sample) {
+					data = ((Sample) obj).getName();
+					if (data != null
+							&& StringUtils.containsIgnoreCase(publicDataIds,
+									data)) {
+						filtered.add(obj);
+					}
+				} else {
+					data = ClassUtils.getIdString(obj);
+					if (data != null
+							&& StringUtils.containsIgnoreCase(publicDataIds,
+									data)) {
+						filtered.add(obj);
+					}
+				}
+			}
+			return filtered;
+		} catch (Exception e) {
+			throw new RemoteException("Can't find public data.", e);
+		}
+	}
+
+	public boolean isPublic(String dataId) throws RemoteException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			List<String> publicDataIds = appService.getPublicData();
+			if (StringUtils.containsIgnoreCase(publicDataIds, dataId)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			throw new RemoteException("Can't test whether test is public.", e);
 		}
 	}
 

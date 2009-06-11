@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -339,11 +338,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
+//		else {
+//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//					request, location);
+//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+//		}
 		PublicationBean publicationBean = publicationService
 				.findPublicationById(publicationId);
 		this.checkVisibility(request, location, user, publicationBean);
@@ -584,12 +584,13 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (Constants.LOCAL.equals(location)) {
 			sampleService = new SampleServiceLocalImpl();
 			service = new PublicationServiceLocalImpl();
-		} else {
-			// TODO: Implement remote service.
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
+//		else {
+//			// TODO: Implement remote service.
+//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//					request, location);
+//			service = new PublicationServiceRemoteImpl(serviceUrl);
+//		}
 		SampleBean sampleBean = sampleService.findSampleById(sampleId);
 		String fileName = this.getExportFileName(sampleBean.getDomain()
 				.getName(), "summaryView");
@@ -635,11 +636,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
+//		else {
+//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//					request, location);
+//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+//		}
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);
@@ -706,11 +708,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
+//		else {
+//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//					request, location);
+//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+//		}
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);
@@ -780,11 +783,12 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationService publicationService = null;
 		if (location.equals("local")) {
 			publicationService = new PublicationServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
+//		else {
+//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//					request, location);
+//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+//		}
 		String publicationId = request.getParameter("publicationId");
 		PublicationBean pubBean = publicationService
 				.findPublicationById(publicationId);

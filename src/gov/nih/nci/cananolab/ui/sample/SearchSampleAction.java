@@ -114,11 +114,19 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			}
 		}
 
-		// convert characterization display names into short class names
-		String[] charaClassNames = new String[characterizations.length];
+		// convert characterization display names into short class names and
+		// other types
+		List<String> charaClassNames = new ArrayList<String>();
+		List<String> otherCharacterizationTypes = new ArrayList<String>();
 		for (int i = 0; i < characterizations.length; i++) {
-			charaClassNames[i] = InitSetup.getInstance().getClassName(
+			String className = InitSetup.getInstance().getClassName(
 					characterizations[i], session.getServletContext());
+			if (className.length() == 0) {
+				className = "OtherCharacterization";
+				otherCharacterizationTypes.add(characterizations[i]);
+			} else {
+				charaClassNames.add(className);
+			}
 		}
 
 		List<String> wordList = StringUtils.parseToWords(texts);
@@ -137,27 +145,27 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
-				//TODO update grid service
-//				service = new SampleServiceRemoteImpl(serviceUrl);
+				// TODO update grid service
+				// service = new SampleServiceRemoteImpl(serviceUrl);
 			}
-			particles = service.findSamplesBy(
-					samplePointOfContact, nanomaterialEntityClassNames
-							.toArray(new String[0]),
+			particles = service.findSamplesBy(samplePointOfContact,
+					nanomaterialEntityClassNames.toArray(new String[0]),
 					otherNanomaterialEntityTypes.toArray(new String[0]),
 					functionalizingEntityClassNames.toArray(new String[0]),
 					otherFunctionalizingTypes.toArray(new String[0]),
 					functionClassNames.toArray(new String[0]),
-					otherFunctionTypes.toArray(new String[0]), charaClassNames,
-					words);
+					otherFunctionTypes.toArray(new String[0]), charaClassNames
+							.toArray(new String[0]), otherCharacterizationTypes
+							.toArray(new String[0]), words);
 			for (SampleBean particle : particles) {
 				particle.setLocation(location);
 			}
-			Boolean canCreateSample=(Boolean)session.getAttribute("canCreateSample");
-			//don't need to filter if is curator and doing local search
+			Boolean canCreateSample = (Boolean) session
+					.getAttribute("canCreateSample");
+			// don't need to filter if is curator and doing local search
 			if (canCreateSample && location.equals("local")) {
 				foundSamples.addAll(particles);
-			}
-			else if (location.equals("local")) {
+			} else if (location.equals("local")) {
 				// get user accessible particles
 				List<SampleBean> filteredSamples = service
 						.getUserAccessibleSamples(particles, user);
@@ -198,11 +206,9 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 		if ("local".equals(selectedLocations[0])
 				&& selectedLocations.length == 1) {
-			InitSampleSetup.getInstance()
-					.setLocalSearchDropdowns(request);
+			InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
 		} else {
-			InitSampleSetup.getInstance().setRemoteSearchDropdowns(
-					request);
+			InitSampleSetup.getInstance().setRemoteSearchDropdowns(request);
 		}
 		return mapping.getInputForward();
 	}
@@ -211,8 +217,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		return false;
 	}
 
-	public boolean canUserExecute(UserBean user)
-			throws SecurityException {
+	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return true;
 	}
 }

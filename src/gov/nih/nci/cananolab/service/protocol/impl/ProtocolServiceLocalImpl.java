@@ -114,7 +114,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
-					protocolName, protocolAbbreviation, fileTitle);
+					protocolName, protocolAbbreviation, fileTitle, false);
 
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);

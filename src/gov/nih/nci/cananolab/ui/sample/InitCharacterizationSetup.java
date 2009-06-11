@@ -39,7 +39,22 @@ public class InitCharacterizationSetup {
 
 	public List<String> getCharacterizationTypes(HttpServletRequest request)
 			throws Exception {
-		// keep the types in the specified order
+		List<String> types = getDefaultCharacterizationTypes(request);
+		SortedSet<String> otherTypes = LookupService
+				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
+		for (String type : otherTypes) {
+			if (!types.contains(type))
+				types.add(type);
+		}
+		request.getSession().setAttribute("characterizationTypes", types);
+		return types;
+	}
+
+	public List<String> getDefaultCharacterizationTypes(
+			HttpServletRequest request) throws Exception {
+		// need to keep the types in the specified order; otherwise could have
+		// used
+		// reflection
 		ServletContext appContext = request.getSession().getServletContext();
 		List<String> types = new ArrayList<String>();
 		types.add(InitSetup.getInstance().getDisplayName(
@@ -48,13 +63,6 @@ public class InitCharacterizationSetup {
 				"InvitroCharacterization", appContext));
 		types.add(InitSetup.getInstance().getDisplayName(
 				"InvivoCharacterization", appContext));
-		SortedSet<String> otherTypes = LookupService
-				.getAllOtherObjectTypes("gov.nih.nci.cananolab.domain.characterization.OtherCharacterization");
-		for (String type : otherTypes) {
-			if (!types.contains(type))
-				types.add(type);
-		}
-		request.getSession().setAttribute("characterizationTypes", types);
 		return types;
 	}
 

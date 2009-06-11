@@ -7,14 +7,12 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -121,11 +119,12 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		FileService fileService = null;
 		if (location.equals("local")) {
 			fileService = new FileServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
+//		} else {
+//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//					request, location);
+//			fileService = new FileServiceRemoteImpl(serviceUrl);
+//		}
 		FileBean fileBean = fileService.findFileById(fileId);
 		if (location.equals("local")) {
 			fileService.retrieveVisibility(fileBean, user);

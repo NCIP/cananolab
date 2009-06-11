@@ -6,11 +6,13 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Interface defining methods invovled in submiting and searching publications.
@@ -36,8 +38,8 @@ public interface PublicationService {
 
 	public List<PublicationBean> findPublicationsBy(String publicationTitle,
 			String publicationCategory, String sampleName,
-			String[] researchArea, String keywordsStr, String pubMedId,
-			String digitalObjectId, String authorsStr,
+			String[] researchAreas, String[] keywords, String pubMedId,
+			String digitalObjectId, String[] authors,
 			String[] nanomaterialEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
@@ -64,4 +66,9 @@ public interface PublicationService {
 
 	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
 			throws PublicationException;
+
+	public SortedSet<String> findSampleNamesByPublicationId(
+			String publicationId) throws SampleException;
+
+
 }

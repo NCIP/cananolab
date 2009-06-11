@@ -78,7 +78,7 @@ public class InitSampleSetup {
 				appContext, "defaultFunctionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function");
 
-		InitCharacterizationSetup.getInstance().getCharacterizationTypes(
+		InitCharacterizationSetup.getInstance().getDefaultCharacterizationTypes(
 				request);
 	}
 

@@ -1,7 +1,9 @@
 package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.TextMatchMode;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -43,7 +45,7 @@ public class ProtocolServiceHelper {
 	}
 
 	public List<Protocol> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle)
+			String protocolName, String protocolAbbreviation, String fileTitle, Boolean filterPublic)
 			throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -74,7 +76,12 @@ public class ProtocolServiceHelper {
 		}
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
-		for (Object obj : results) {
+		List filteredResults=new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults=authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			Protocol protocol = (Protocol) obj;
 			protocols.add(protocol);
 		}

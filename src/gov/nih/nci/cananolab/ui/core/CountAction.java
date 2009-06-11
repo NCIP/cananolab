@@ -5,7 +5,6 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 
@@ -123,12 +122,14 @@ public class CountAction extends AbstractDispatchAction {
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
 				publicationService = new PublicationServiceLocalImpl();
-			} else {
-				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-						request, location);
-				publicationService = new PublicationServiceRemoteImpl(
-						serviceUrl);
 			}
+			//TODO grid service
+//				else {
+//				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+//						request, location);
+//				publicationService = new PublicationServiceRemoteImpl(
+//						serviceUrl);
+//			}
 			try {
 				publicationCount += publicationService
 						.getNumberOfPublicPublications();

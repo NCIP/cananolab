@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.PublicationException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
@@ -51,13 +52,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * Persist a new publication or update an existing publication
 	 *
 	 * @param publication,
-	 * @param sampleNames, 
-	 * @param fileData, 
+	 * @param sampleNames,
+	 * @param fileData,
 	 * @param authors
 	 * @throws Exception
 	 */
-	public void savePublication(Publication publication,
-			String[] sampleNames, byte[] fileData, Collection<Author> authors)
+	public void savePublication(Publication publication, String[] sampleNames,
+			byte[] fileData, Collection<Author> authors)
 			throws PublicationException {
 		try {
 			FileService fileService = new FileServiceLocalImpl();
@@ -66,8 +67,7 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			Set<Sample> particleSamples = new HashSet<Sample>();
 			if (sampleNames != null && sampleNames.length > 0) {
 				for (String name : sampleNames) {
-					Sample sample = sampleService
-							.findSampleByName(name);
+					Sample sample = sampleService.findSampleByName(name);
 					particleSamples.add(sample);
 				}
 			}
@@ -109,9 +109,9 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	}
 
 	public List<PublicationBean> findPublicationsBy(String title,
-			String category, String sampleName, String[] researchArea,
-			String keywordsStr, String pubMedId, String digitalObjectId,
-			String authorsStr, String[] nanomaterialEntityClassNames,
+			String category, String sampleName, String[] researchAreas,
+			String[] keywords, String pubMedId, String digitalObjectId,
+			String[] authors, String[] nanomaterialEntityClassNames,
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
@@ -120,29 +120,24 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		List<PublicationBean> publicationBeans = new ArrayList<PublicationBean>();
 		try {
 			List<Publication> publications = helper.findPublicationsBy(title,
-					category, sampleName, researchArea, keywordsStr,
-					pubMedId, digitalObjectId, authorsStr,
-					nanomaterialEntityClassNames, otherNanoparticleTypes,
-					functionalizingEntityClassNames,
+					category, sampleName, researchAreas, keywords, pubMedId,
+					digitalObjectId, authors, nanomaterialEntityClassNames,
+					otherNanoparticleTypes, functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes);
+					otherFunctionTypes, false);
 			if (publications != null) {
 				SampleService sampleService = new SampleServiceLocalImpl();
 				for (Publication publication : publications) {
 					// retrieve sampleNames
-					SortedSet<String> sampleNames = sampleService
-							.findSampleNamesByPublicationId(publication
-									.getId().toString());
+					SortedSet<String> sampleNames = findSampleNamesByPublicationId(publication
+							.getId().toString());
 					PublicationBean pubBean = new PublicationBean(publication,
-							sampleNames.toArray(new String[sampleNames
-									.size()]));
+							sampleNames.toArray(new String[sampleNames.size()]));
 					publicationBeans.add(pubBean);
 				}
 			}
-			Collections
-					.sort(
-							publicationBeans,
-							new Comparators.PublicationBeanCategoryTitleComparator());
+			Collections.sort(publicationBeans,
+					new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 
 		} catch (Exception e) {
@@ -152,14 +147,13 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public List<PublicationBean> findPublicationsBySampleId(
-			String sampleId) throws PublicationException {
+	public List<PublicationBean> findPublicationsBySampleId(String sampleId)
+			throws PublicationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Sample.class).add(
-					Property.forName("id").eq(new Long(sampleId)));
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+					.add(Property.forName("id").eq(new Long(sampleId)));
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection.authorCollection",
 					FetchMode.JOIN);
@@ -175,10 +169,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					publications.add(new PublicationBean(pub));
 				}
 			}
-			Collections
-					.sort(
-							publications,
-							new Comparators.PublicationBeanCategoryTitleComparator());
+			Collections.sort(publications,
+					new Comparators.PublicationBeanCategoryTitleComparator());
 			return publications;
 		} catch (Exception e) {
 			String err = "Problem finding publication collections with the given sample ID.";
@@ -242,8 +234,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	// throw new DocumentException("Not implemented for local search");
 	// }
 
-	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
-			throws PublicationException {
+	public void exportSummary(PublicationSummaryViewBean summaryBean,
+			OutputStream out) throws PublicationException {
 		try {
 			helper.exportSummary(summaryBean, out);
 		} catch (Exception e) {
@@ -269,8 +261,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 	 * nanoparticle_sample_publication otherwise, remove publicVisibility and
 	 * delete publication
 	 */
-	public void removePublicationFromSample(Sample particle,
-			Long dataId) throws PublicationException {
+	public void removePublicationFromSample(Sample particle, Long dataId)
+			throws PublicationException {
 		try {
 			PublicationService publicationService = new PublicationServiceLocalImpl();
 			AuthorizationService authService = new AuthorizationService(
@@ -283,19 +275,16 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			/*
 			 * if (publicationObject != null) { Publication publication =
 			 * publicationService .findDomainPublicationById(dataId.toString());
-			 * Collection<Sample> sampleCollection =
-			 * publication .getSampleCollection(); if
-			 * (sampleCollection == null ||
-			 * sampleCollection.size() == 0) { // something wrong
-			 * throw new PublicationException(); } else if
-			 * (sampleCollection.size() == 1) { // delete
-			 * authService.removePublicGroup(dataId.toString()); if
+			 * Collection<Sample> sampleCollection = publication
+			 * .getSampleCollection(); if (sampleCollection == null ||
+			 * sampleCollection.size() == 0) { // something wrong throw new
+			 * PublicationException(); } else if (sampleCollection.size() == 1) { //
+			 * delete authService.removePublicGroup(dataId.toString()); if
 			 * (publication.getAuthorCollection() != null) { for (Author author :
 			 * publication.getAuthorCollection()) {
 			 * authService.removePublicGroup(author.getId() .toString()); } }
 			 * appService.delete(publication); } else {// size>1 // remove
-			 * sample association
-			 * sampleCollection.remove(particle);
+			 * sample association sampleCollection.remove(particle);
 			 * appService.saveOrUpdate(publication); } }
 			 */
 		} catch (Exception e) {
@@ -303,6 +292,17 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
+	}
 
+	public SortedSet<String> findSampleNamesByPublicationId(String publicationId)
+			throws SampleException {
+		try {
+			return helper.findSampleNamesByPublicationId(publicationId);
+		} catch (Exception e) {
+			String err = "Error in retrieving particle names for publication: "
+					+ publicationId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
 	}
 }

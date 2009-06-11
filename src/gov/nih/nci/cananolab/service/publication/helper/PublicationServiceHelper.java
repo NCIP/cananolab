@@ -4,10 +4,13 @@ import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.cananolab.util.TextMatchMode;
@@ -22,6 +25,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -50,7 +55,7 @@ import org.hibernate.criterion.Restrictions;
 public class PublicationServiceHelper {
 	/**
 	 * Constants for generating Excel report for summary view.
-	 */ 
+	 */
 	public static final String TITLE = "Title";
 	public static final String AUTHORS = "Author(s)";
 	public static final String BIBLIOBRAPHY_INFO = "Bibliography Info";
@@ -58,15 +63,15 @@ public class PublicationServiceHelper {
 	public static final String RESEARCH_CATEGORY = "Research Category";
 	public static final String CREATED_DATE = "Created Date";
 	public static final String PMID = "PMID: ";
-	
+
 	public List<Publication> findPublicationsBy(String title, String category,
-			String sampleName, String[] researchArea, String keywordsStr,
-			String pubMedId, String digitalObjectId, String authorsStr,
+			String sampleName, String[] researchArea, String[] keywords,
+			String pubMedId, String digitalObjectId, String[] authors,
 			String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
+			String[] functionClassNames, String[] otherFunctionTypes, Boolean filterPublic)
 			throws Exception {
 		List<Publication> publications = new ArrayList<Publication>();
 		// can't query for the entire Publication object due to limitations in
@@ -118,42 +123,33 @@ public class PublicationServiceHelper {
 		}
 
 		// keywords
-		if (keywordsStr != null && keywordsStr.length() > 0) {
-			// turn into upper case before parsing to words
-			List<String> keywordsList = StringUtils.parseToWords(keywordsStr
-					.toUpperCase());
-			if (keywordsList != null) {
-				Disjunction disjunction = Restrictions.disjunction();
-				crit.createCriteria("keywordCollection", "keyword");
-				for (String keyword : keywordsList) {
-					Criterion keywordCrit1 = Restrictions.like("keyword.name",
-							keyword, MatchMode.ANYWHERE);
-					disjunction.add(keywordCrit1);
-				}
-				crit.add(disjunction);
+		if (keywords != null && keywords.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createCriteria("keywordCollection", "keyword");
+			for (String keyword : keywords) {
+				Criterion keywordCrit1 = Restrictions.ilike("keyword.name",
+						keyword, MatchMode.ANYWHERE);
+				disjunction.add(keywordCrit1);
 			}
+			crit.add(disjunction);
 		}
 
 		// authors
-		if (authorsStr != null && authorsStr.length() > 0) {
-			List<String> authorsList = StringUtils.parseToWords(authorsStr
-					.toUpperCase());
-			if (authorsList != null) {
-				Disjunction disjunction = Restrictions.disjunction();
-				crit.createAlias("authorCollection", "author");
-				for (String author : authorsList) {
-					Criterion crit1 = Restrictions.like("author.lastName",
-							author, MatchMode.ANYWHERE);
-					disjunction.add(crit1);
-					Criterion crit2 = Restrictions.like("author.firstName",
-							author, MatchMode.ANYWHERE);
-					disjunction.add(crit2);
-					Criterion crit3 = Restrictions.like("author.initial",
-							author, MatchMode.ANYWHERE);
-					disjunction.add(crit3);
-				}
-				crit.add(disjunction);
+		if (authors != null && authors.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			crit.createAlias("authorCollection", "author");
+			for (String author : authors) {
+				Criterion crit1 = Restrictions.ilike("author.lastName", author,
+						MatchMode.ANYWHERE);
+				disjunction.add(crit1);
+				Criterion crit2 = Restrictions.ilike("author.firstName", author,
+						MatchMode.ANYWHERE);
+				disjunction.add(crit2);
+				Criterion crit3 = Restrictions.ilike("author.initial", author,
+						MatchMode.ANYWHERE);
+				disjunction.add(crit3);
 			}
+			crit.add(disjunction);
 		}
 
 		// join sample
@@ -172,8 +168,7 @@ public class PublicationServiceHelper {
 		}
 		// sample
 		if (sampleName != null && sampleName.length() > 0) {
-			TextMatchMode particleMatchMode = new TextMatchMode(
-					sampleName);
+			TextMatchMode particleMatchMode = new TextMatchMode(sampleName);
 			Disjunction disjunction = Restrictions.disjunction();
 
 			Criterion keywordCrit1 = Restrictions.like("sample.name",
@@ -270,7 +265,12 @@ public class PublicationServiceHelper {
 					.asList(otherFunctionalizingEntityTypes));
 		}
 
-		for (Object obj : results) {
+		List filteredResults=new ArrayList(results);
+		if (filterPublic) {
+			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
+			filteredResults=authService.getPublicObjects(results);
+		}
+		for (Object obj : filteredResults) {
 			Publication publication = findPublicationById(obj.toString());
 			// don't need this if Hibernate would've allowed for functionalizing
 			// entities in the where clause
@@ -537,12 +537,15 @@ public class PublicationServiceHelper {
 	/**
 	 * Export sample publication summary report as Excel spread sheet.
 	 *
-	 * @param summaryBean CharacterizationSummaryViewBean
-	 * @param out OutputStream
-	 * @throws IOException if error occurred.
+	 * @param summaryBean
+	 *            CharacterizationSummaryViewBean
+	 * @param out
+	 *            OutputStream
+	 * @throws IOException
+	 *             if error occurred.
 	 */
-	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
-			throws IOException {
+	public void exportSummary(PublicationSummaryViewBean summaryBean,
+			OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
 			this.setSummarySheet(summaryBean, wb);
@@ -555,61 +558,70 @@ public class PublicationServiceHelper {
 	/**
 	 * Generate Excel report for sample publication summary report.
 	 *
-	 * @param summaryBean CharacterizationSummaryViewBean
-	 * @param wb HSSFWorkbook
+	 * @param summaryBean
+	 *            CharacterizationSummaryViewBean
+	 * @param wb
+	 *            HSSFWorkbook
 	 */
-	private void setSummarySheet(PublicationSummaryViewBean summaryBean, HSSFWorkbook wb) {
+	private void setSummarySheet(PublicationSummaryViewBean summaryBean,
+			HSSFWorkbook wb) {
 		HSSFRow row = null;
-		//HSSFRow rowAuthor = null;
+		// HSSFRow rowAuthor = null;
 		StringBuilder sb = new StringBuilder();
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
-		
-		SortedMap<String, List<PublicationBean>> pubs = summaryBean.getCategory2Publications();
+
+		SortedMap<String, List<PublicationBean>> pubs = summaryBean
+				.getCategory2Publications();
 		for (String category : pubs.keySet()) {
 			int rowIndex = 0;
 			int cellIndex = 0;
-			
-			// Create one work sheet for each category. 
+
+			// Create one work sheet for each category.
 			HSSFSheet sheet = wb.createSheet(category);
 			row = sheet.createRow(rowIndex++);
 
 			// Generate header of report
 			ExportUtils.createCell(row, cellIndex++, headerStyle, TITLE);
 			ExportUtils.createCell(row, cellIndex++, headerStyle, AUTHORS);
-			ExportUtils.createCell(row, cellIndex++, headerStyle, BIBLIOBRAPHY_INFO);
+			ExportUtils.createCell(row, cellIndex++, headerStyle,
+					BIBLIOBRAPHY_INFO);
 			ExportUtils.createCell(row, cellIndex++, headerStyle, ABSTRACT);
-			ExportUtils.createCell(row, cellIndex++, headerStyle, RESEARCH_CATEGORY);
+			ExportUtils.createCell(row, cellIndex++, headerStyle,
+					RESEARCH_CATEGORY);
 			ExportUtils.createCell(row, cellIndex++, headerStyle, CREATED_DATE);
-			
+
 			// Generate data of report
 			List<PublicationBean> pubBeans = pubs.get(category);
 			for (PublicationBean pubBean : pubBeans) {
 				Publication pub = (Publication) pubBean.getDomainFile();
 				row = sheet.createRow(rowIndex++);
 				cellIndex = 0;
-				
+
 				// Title: cell index = 0.
 				ExportUtils.createCell(row, cellIndex++, pub.getTitle());
-				
-				// Author(s): cell index = 1, put all authors in one cell for sorting.
+
+				// Author(s): cell index = 1, put all authors in one cell for
+				// sorting.
 				List<Author> authors = pubBean.getAuthors();
 				sb.setLength(0);
 				if (authors != null && !authors.isEmpty()) {
 					for (Author author : authors) {
 						sb.append(author.getLastName()).append(',').append(' ');
-						sb.append(author.getFirstName()).append(' ').append(author.getInitial());
+						sb.append(author.getFirstName()).append(' ').append(
+								author.getInitial());
 						sb.append(';').append(' '); // use ; as delimiter.
 					}
 					sb.deleteCharAt(sb.length() - 1);
 				}
 				ExportUtils.createCell(row, cellIndex++, sb.toString());
-				
+
 				// Bibliography Info: cell index = 2.
-				ExportUtils.createCell(row, cellIndex++, pubBean.getBibliographyInfo());
-				
+				ExportUtils.createCell(row, cellIndex++, pubBean
+						.getBibliographyInfo());
+
 				// Abstract/Download Link: cell index = 3.
 				sb.setLength(0);
 				if (pub.getPubMedId() != null) {
@@ -623,14 +635,30 @@ public class PublicationServiceHelper {
 						ExportUtils.createCell(row, cellIndex++, sb.toString());
 					}
 				}
-				
+
 				// Research Category: cell index = 4.
 				ExportUtils.createCell(row, cellIndex++, pub.getResearchArea());
-				
-				
+
 				// Created Date: cell index = 5.
-				ExportUtils.createCell(row, cellIndex++, pubBean.getCreatedDateStr());
+				ExportUtils.createCell(row, cellIndex++, pubBean
+						.getCreatedDateStr());
 			}
 		}
+	}
+
+	public SortedSet<String> findSampleNamesByPublicationId(String publicationId)
+			throws Exception {
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+		crit.createAlias("publicationCollection", "pub").add(
+				Property.forName("pub.id").eq(new Long(publicationId)));
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		List results = appService.query(crit);
+		SortedSet<String> names = new TreeSet<String>();
+		for (Object obj : results) {
+			Sample particleSample = (Sample) obj;
+			names.add(particleSample.getName());
+		}
+		return names;
 	}
 }
