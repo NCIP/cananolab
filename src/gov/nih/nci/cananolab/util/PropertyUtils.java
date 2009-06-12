@@ -123,7 +123,7 @@ public class PropertyUtils {
 		String path = Thread.currentThread().getContextClassLoader().
 					getResource(propertyFileName).getPath();
 		sb.append(path);
-		sb.deleteCharAt(0);// Windows OS: 1st char is a forward slash, remove it.
+		//sb.deleteCharAt(0);// Windows OS: 1st char is a forward slash, remove it.
 		
 		return sb.toString();
 	}
