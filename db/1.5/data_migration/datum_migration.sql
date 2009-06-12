@@ -159,7 +159,7 @@ insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumNam
 insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumName',	'Activated Partial Thromboplastin Time (APTT)');
 insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumName',	'Thrombin Time');
 insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumName',	'Reptilase Time');
-insert into common_lookup(name,attribute,value) values ('Complement Activation', 'datumName', 'is complement activation induced');
+insert into common_lookup(name,attribute,value) values ('Complement Activation', 'datumName', 'is complement activation induced?');
 insert into common_lookup(name,attribute,value) values ('Cytokine Induction', 'datumName','IL10');
 insert into common_lookup(name,attribute,value) values ('Cytokine Induction', 'datumName','IL1 Beta');
 insert into common_lookup(name,attribute,value) values ('Cytokine Induction', 'datumName','IL8');
@@ -169,7 +169,7 @@ insert into common_lookup(name,attribute,value) values ('EnzymeInduction', 'datu
 insert into common_lookup(name,attribute,value) values ('Gene Expression', 'datumName', 'cellular fluorescence');
 insert into common_lookup(name,attribute,value) values ('Gene Expression', 'datumName', 'fluorescence ratio');
 insert into common_lookup(name,attribute,value) values ('GSH Homeostasis', 'datumName', '% of control');
-insert into common_lookup(name,attribute,value) values ('Hemolysis','datumName','is hemolytic');
+insert into common_lookup(name,attribute,value) values ('Hemolysis','datumName','is hemolytic?');
 insert into common_lookup(name,attribute,value) values ('Leukocyte Proliferation','datumName','% of control');
 insert into common_lookup(name,attribute,value) values ('Lipid Peroxidation', 'datumName', '% of control');
 insert into common_lookup(name,attribute,value) values ('Mitochondrial Function', 'datumName', 'luminescence');
@@ -178,7 +178,7 @@ insert into common_lookup(name,attribute,value) values ('Mitochondrial Membrane 
 insert into common_lookup(name,attribute,value) values ('Oxidative Burst', 'datumName', '% of control');
 insert into common_lookup(name,attribute,value) values ('Cytotoxic Activity of NK Cells', 'datumName','% of control');
 insert into common_lookup(name,attribute,value) values ('Phagocytosis','datumName','Fold Change vs. control');
-insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','is above threshold');
+insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','is above threshold?');
 insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','% of aggregation vs. control');
 insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','% of collagen induced aggregation vs. control');
 insert into common_lookup(name,attribute,value) values ('Proliferation', 'datumName', 'ratio of cell line1 to cell line 2');
