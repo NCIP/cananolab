@@ -29,34 +29,30 @@ function populateProtocols(protocols) {
 		dwr.util.addOptions("protocolVersion", ["[Other]"]);
 	}
 }
-
 function retrieveProtocol() {
 	var protocolType = document.getElementById("protocolType").value;
 	var protocolName = document.getElementById("protocolName").value;
 	var protocolVersion = document.getElementById("protocolVersion").value;
 	ProtocolManager.getProtocol(protocolType, protocolName, protocolVersion, populateProtocol);
 }
-
 function populateProtocol(protocol) {
-	if (protocol==null) {
-	  writeLink(null);
-	  dwr.util.setValue("fileTitle", "");
-	  dwr.util.setValue("fileDescription", "");
-	  dwr.util.setValue("visibility", [""]);
-	  dwr.util.setValue("protocolAbbreviation", "");
-	  return;
+	if (protocol == null) {
+		writeLink(null);
+		dwr.util.setValue("fileTitle", "");
+		dwr.util.setValue("fileDescription", "");
+		dwr.util.setValue("visibility", [""]);
+		dwr.util.setValue("protocolAbbreviation", "");
+		return;
 	}
-	writeLink(protocol);
 	dwr.util.setValue("protocolId", protocol.domain.id);
 	dwr.util.setValue("protocolAbbreviation", protocol.domain.abbreviation);
 	dwr.util.setValue("visibility", protocol.visibilityGroups);
-
-	if (protocol.fileBean!=null) {
+	if (protocol.fileBean != null) {
 		dwr.util.setValue("fileTitle", protocol.fileBean.domainFile.title);
 		dwr.util.setValue("fileDescription", protocol.fileBean.domainFile.description);
+		writeLink(protocol);
 	}
 }
-
 function writeLink(protocol) {
 	if (protocol == null) {
 		document.getElementById("protocolFileLink").innerHTML = "";
