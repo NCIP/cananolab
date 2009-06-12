@@ -290,8 +290,8 @@ public class AuthorizationService {
 		}
 		Collections.sort(filteredGroups);
 		// put Public group in the beginning
-		if (groups.contains(Constants.CSM_PUBLIC_GROUP)) {
-			groups.remove(Constants.CSM_PUBLIC_GROUP);
+		if (filteredGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
+			filteredGroups.remove(Constants.CSM_PUBLIC_GROUP);
 		}
 		filteredGroups.add(0, Constants.CSM_PUBLIC_GROUP);
 		return filteredGroups;
