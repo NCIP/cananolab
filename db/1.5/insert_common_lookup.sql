@@ -251,11 +251,10 @@ insert into common_lookup (name, attribute, value) values ('Technique', 'type', 
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Imaging');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Mass Quantitation');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Matrix Assisted Laser Desorption Ionisation - Time Of Flight');
-insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Microplate Analysis');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Particle Quantitation');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Polymerase Chain Reaction');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Powder Diffraction');
-insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Radiation Quantiation');
+insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Radioactivity Quantiation');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Refractometry');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Scanning Auger Spectrometry');
 insert into common_lookup (name, attribute, value) values ('Technique', 'type', 'Scanning Electron Microscopy');
@@ -289,6 +288,7 @@ insert into common_lookup (name, attribute, value) values ('Transmission Electro
 insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','abbreviation','XPS');
 insert into common_lookup (name, attribute, value) values ('Gel Filtration Chromatography','abbreviation','GFC');
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','abbreviation','FPLC');
+insert into common_lookup (name, attribute, value) values ('Multi-Angle Laser Light Scattering','abbreviation','MALLS');
 
 insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Photometer');
 insert into common_lookup (name, attribute, value) values ('Asymmetrical Flow Field-Flow Fractionation with Multi-Angle Laser Light Scattering','instrument','Refractometer');
@@ -320,7 +320,7 @@ insert into common_lookup (name, attribute, value) values ('Particle Quantitatio
 insert into common_lookup (name, attribute, value) values ('Particle Quantitation','instrument','Coulter Counter');
 insert into common_lookup (name, attribute, value) values ('Polymerase Chain Reaction','instrument','Thermal Cycler');
 insert into common_lookup (name, attribute, value) values ('Powder Diffraction','instrument','Powder Diffractometer');
-insert into common_lookup (name, attribute, value) values ('Radiation Quantiation','instrument','Scintillation Counter');
+insert into common_lookup (name, attribute, value) values ('Radioactivity Quantiation','instrument','Scintillation Counter');
 insert into common_lookup (name, attribute, value) values ('Refractometry','instrument','Refractometer');
 insert into common_lookup (name, attribute, value) values ('Scanning Auger Spectrometry','instrument','Scanning Auger Spectrometer');
 insert into common_lookup (name, attribute, value) values ('Scanning Electron Microscopy','instrument','Scanning Electron Microscope');
@@ -334,7 +334,6 @@ insert into common_lookup (name, attribute, value) values ('Size Exclusion Chrom
 insert into common_lookup (name, attribute, value) values ('Spectrophotometry','instrument','Spectrophotometer');
 insert into common_lookup (name, attribute, value) values ('Transmission Electron Microscopy','instrument','Transmission Electron Microscope');
 insert into common_lookup (name, attribute, value) values ('X-Ray Photoelectron Spectroscopy','instrument','X-Ray Photoelectron Spectrometer');
-insert into common_lookup (name, attribute, value) values ('Microplate Analysis','instrument','Microplate Reader');
 insert into common_lookup (name, attribute, value) values ('Matrix Assisted Laser Desorption Ionisation - Time Of Flight','instrument','MALDI-TOF Mass Spectrometer');
 insert into common_lookup (name, attribute, value) values ('Confocal Laser Scanning Microscopy','instrument','Confocal Microscope System');
 insert into common_lookup (name, attribute, value) values ('Zeta Potential Analysis','instrument','Zeta Potential Analyzer');
@@ -344,6 +343,8 @@ insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid 
 insert into common_lookup (name, attribute, value) values ('Fast Protein Liquid Chromatography','instrument','Fraction Collector');
 insert into common_lookup (name, attribute, value) values ('Mass Quantitation','instrument','Analytical Balance');
 insert into common_lookup (name, attribute, value) values ('Gel Filtration Chromatography','instrument','Gel Filtration Column');
+insert into common_lookup (name, attribute, value) values ('Multi-Angle Laser Light Scattering','instrument','Refractometer');
+insert into common_lookup (name, attribute, value) values ('Multi-Angle Laser Light Scattering','instrument','Spectrophotometer');
 
 insert into common_lookup (name, attribute, value) values ('Instrument', 'manufacturer', 'Agilent');
 insert into common_lookup (name, attribute, value) values ('Instrument', 'manufacturer', 'Amersham');
@@ -465,7 +466,7 @@ insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumNam
 insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumName',	'Activated Partial Thromboplastin Time (APTT)');
 insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumName',	'Thrombin Time');
 insert into common_lookup(name,attribute,value) values ('Coagulation', 'datumName',	'Reptilase Time');
-insert into common_lookup(name,attribute,value) values ('Complement Activation', 'datumName', 'is complement activation induced');
+insert into common_lookup(name,attribute,value) values ('Complement Activation', 'datumName', 'is complement activation induced?');
 insert into common_lookup(name,attribute,value) values ('Cytokine Induction', 'datumName','IL10');
 insert into common_lookup(name,attribute,value) values ('Cytokine Induction', 'datumName','IL1 Beta');
 insert into common_lookup(name,attribute,value) values ('Cytokine Induction', 'datumName','IL8');
@@ -475,7 +476,7 @@ insert into common_lookup(name,attribute,value) values ('EnzymeInduction', 'datu
 insert into common_lookup(name,attribute,value) values ('Gene Expression', 'datumName', 'cellular fluorescence');
 insert into common_lookup(name,attribute,value) values ('Gene Expression', 'datumName', 'fluorescence ratio');
 insert into common_lookup(name,attribute,value) values ('GSH Homeostasis', 'datumName', '% of control');
-insert into common_lookup(name,attribute,value) values ('Hemolysis','datumName','is hemolytic');
+insert into common_lookup(name,attribute,value) values ('Hemolysis','datumName','is hemolytic?');
 insert into common_lookup(name,attribute,value) values ('Leukocyte Proliferation','datumName','% of control');
 insert into common_lookup(name,attribute,value) values ('Lipid Peroxidation', 'datumName', '% of control');
 insert into common_lookup(name,attribute,value) values ('Mitochondrial Function', 'datumName', 'luminescence');
@@ -484,7 +485,7 @@ insert into common_lookup(name,attribute,value) values ('Mitochondrial Membrane 
 insert into common_lookup(name,attribute,value) values ('Oxidative Burst', 'datumName', '% of control');
 insert into common_lookup(name,attribute,value) values ('Cytotoxic Activity of NK Cells', 'datumName','% of control');
 insert into common_lookup(name,attribute,value) values ('Phagocytosis','datumName','Fold Change vs. control');
-insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','is above threshold');
+insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','is above threshold?');
 insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','% of aggregation vs. control');
 insert into common_lookup(name,attribute,value) values ('Platelet Aggregation','datumName','% of collagen induced aggregation vs. control');
 insert into common_lookup(name,attribute,value) values ('Proliferation', 'datumName', 'ratio of cell line1 to cell line 2');
