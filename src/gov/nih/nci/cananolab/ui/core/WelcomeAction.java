@@ -23,7 +23,6 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -36,14 +35,6 @@ public class WelcomeAction extends ForwardAction {
 			throws Exception {
 		saveToken(request); // save token to avoid back and refresh on the login
 		// page.
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
-			session.setAttribute("canCreateSample", false);
-			session.setAttribute("canCreateProtocol", false);
-			session.setAttribute("canCreatePublication", false);
-			session.setAttribute("canDelete", false);
-		}
 		InitSetup.getInstance().getGridNodesInContext(request);
 		return super.execute(mapping, form, request, response);
 	}
