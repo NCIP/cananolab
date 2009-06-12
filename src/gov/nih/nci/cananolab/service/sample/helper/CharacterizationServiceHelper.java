@@ -107,8 +107,8 @@ public class CharacterizationServiceHelper {
 		// fully load characterization
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("protocolFile", FetchMode.JOIN);
-		crit.setFetchMode("protocolFile.protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
@@ -142,7 +142,8 @@ public class CharacterizationServiceHelper {
 		crit.add(Restrictions.eq("sample.name", sampleName));
 		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("protocolFile", FetchMode.JOIN);
+		crit.setFetchMode("protocol", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
@@ -285,7 +286,7 @@ public class CharacterizationServiceHelper {
 	}
 
 	/**
-	 * Output Sample Characterization Summary report 
+	 * Output Sample Characterization Summary report
 	 * (==> bodyCharacterizationSummaryPrintViewTable.jsp)
 	 *
 	 * @param summaryBean
@@ -301,7 +302,7 @@ public class CharacterizationServiceHelper {
 		headerStyle.setFont(headerFont);
 
 		int charCount = 1;
-		Map<String, SortedSet<CharacterizationBean>> pubs = 
+		Map<String, SortedSet<CharacterizationBean>> pubs =
 			summaryBean.getType2Characterizations();
 		for (String type : summaryBean.getCharacterizationTypes()) {
 			// Output data of report
@@ -571,7 +572,7 @@ public class CharacterizationServiceHelper {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TYPE);
 			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, 
+			ExportUtils.createCell(row, 0,
 					charBean.getPhysicalState().getType());
 		}
 		return rowIndex;
@@ -819,7 +820,7 @@ public class CharacterizationServiceHelper {
 						java.io.File imgFile = new java.io.File(filePath);
 						if (imgFile.exists()) {
 							try {
-								rowIndex = 
+								rowIndex =
 									ExportUtils.createImage(rowIndex, (short) 0, filePath, wb, sheet);
 							}
 							catch (Exception e) {

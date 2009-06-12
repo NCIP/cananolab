@@ -232,8 +232,8 @@ public class CharacterizationServiceLocalImpl extends
 			// fully load characterization
 			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-			crit.setFetchMode("protocolFile", FetchMode.JOIN);
-			crit.setFetchMode("protocolFile.protocol", FetchMode.JOIN);
+			crit.setFetchMode("protocol", FetchMode.JOIN);
+			crit.setFetchMode("protocol.file", FetchMode.JOIN);
 			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 			crit.setFetchMode("experimentConfigCollection.technique",
 					FetchMode.JOIN);

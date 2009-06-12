@@ -21,7 +21,7 @@ public interface ProtocolService {
 	/**
 	 * Persist a new protocol or update an existing protocol
 	 *
-	 * @param protocolFile
+	 * @param protocol
 	 * @throws Exception
 	 */
 	public void saveProtocol(Protocol protocol, byte[] fileData)
