@@ -61,6 +61,9 @@ public class ProtocolBean {
 			throws Exception {
 		domain.setFile(fileBean.getDomainFile());
 		fileBean.setupDomainFile(internalUriPath, createdBy, 0);
+		if (domain.getId()==0) {
+			domain.setId(null);
+		}
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
