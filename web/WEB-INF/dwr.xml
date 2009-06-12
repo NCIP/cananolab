@@ -134,7 +134,7 @@
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.common.File">
 			<param name="include"
-				value="title, type, uriExternal, uri, description" />
+				value="id, title, type, uriExternal, uri, description" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ExperimentConfigBean">
