@@ -160,10 +160,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			for (SampleBean particle : particles) {
 				particle.setLocation(location);
 			}
-			Boolean canCreateSample = (Boolean) session
-					.getAttribute("canCreateSample");
 			// don't need to filter if is curator and doing local search
-			if (canCreateSample && location.equals("local")) {
+			if (user!=null && user.isCurator() && location.equals("local")) {
 				foundSamples.addAll(particles);
 			} else if (location.equals("local")) {
 				// get user accessible particles
