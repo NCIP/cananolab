@@ -467,6 +467,7 @@ public class SampleServiceHelper {
 				.setFetchMode(
 						"sampleComposition.functionalizingEntityCollection.functionCollection",
 						FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
