@@ -34,7 +34,7 @@
 	</global-forwards>
 	<action-mappings>
 		<action path="/manageProtocol"
-			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			type="org.apache.struts.actions.ForwardAction"
 			parameter="protocol.manageProtocol" scope="request" />
 		<action name="submitProtocolForm" parameter="dispatch"
 			path="/submitProtocol"
