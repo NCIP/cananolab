@@ -16,7 +16,7 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${canCreateSample eq 'true' && location eq 'local'}">
+	<c:when test="${!empty user && user.curator && location eq 'local'}">
 		<c:set var="dispatch" value="summaryEdit" />
 	</c:when>
 	<c:otherwise>

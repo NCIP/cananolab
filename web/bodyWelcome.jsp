@@ -43,7 +43,7 @@
 			<br>
 			<br>
 			<map name="funcMap" id="funcMap">
-				<c:if test="${isAdmin eq 'true' }">
+				<c:if test="${!empty user && user.admin }">
 					<area href="admin.do?dispatch=sitePreference" shape="rect"
 						coords="70,70,170,110" alt="rectangle" />
 				</c:if>
@@ -56,20 +56,20 @@
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
 					coords="70,325,165,365" alt="rectangle" />
 
-				<c:if test="${canCreateProtocol eq 'true'}">
+				<c:if test="${!empty user && user.curator}">
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
 						coords="265,60,360,95" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreateSample eq 'true'}">
+				<c:if test="${!empty user && user.curator}">
 					<area
 						href="sample.do?dispatch=setupNew&page=0&location=${location}"
 						shape="rect" coords="265,100,360,160" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreatePublication eq 'true'}">
+				<c:if test="${!empty user && user.curator}">
 					<area href="managePublication.do" shape="rect"
 						coords="360,445,445,480" alt="rectangle" />
 				</c:if>
-				<c:if test="${canCreateSample eq 'true'}">
+				<c:if test="${!empty user && user.curator}">
 					<area href="sample.do?dispatch=setupNew&page=0"
 						shape="rect" coords="355,175,450,220" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"

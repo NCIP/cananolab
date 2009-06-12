@@ -22,8 +22,7 @@
 	<tr>
 		<td colspan="2">
 			<c:choose>
-<%--				<c:when test="${canCreateSample eq 'true' && location eq 'local'}">--%>
-					<c:when test="${canCreateSample eq 'true'}">
+					<c:when test="${!empty user && user.curator}">
 					<c:set var="sampleURL" value="editSampleURL" />
 				</c:when>
 				<c:otherwise>

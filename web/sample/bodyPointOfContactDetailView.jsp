@@ -20,7 +20,7 @@
 				</jsp:include>
 
 				<c:choose>
-					<c:when test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
+					<c:when test="${!empty user && user.curator && param.location eq 'local'}">
 						<c:url var="url" value="submitPointOfContact.do">
 							<c:param name="page" value="0" />
 							<c:if test="${!empty param.sampleId}">
@@ -75,7 +75,7 @@
 										</c:url>
 
 										<c:if
-											test="${canCreateNanoparticle eq 'true' && param.location eq 'local'}">
+											test="${!empty user && user.curator && param.location eq 'local'}">
 											<td>
 												<a href="${url}"><img src="images/icon_edit_23x.gif"
 														alt="edit organization" title="edit point of contact"

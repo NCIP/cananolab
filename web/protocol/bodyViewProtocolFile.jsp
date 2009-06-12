@@ -63,7 +63,7 @@
 							</td>
 						</tr>
 						<c:choose>
-							<c:when test="${canCreateProtocol eq 'true'}">
+							<c:when test="${!empty user && user.curator}">
 								<tr>
 									<td class="leftLabel">
 										<strong>Protocol File</strong>
@@ -169,7 +169,7 @@
 		</tr>
 	</table>
 	<c:choose>
-		<c:when test="${canCreateProtocol eq 'true'}">
+		<c:when test="${!empty user && user.curator}">
 			<br>
 			<table width="100%" border="0" align="center" cellpadding="3"
 				cellspacing="0" class="topBorderOnly" summary="">

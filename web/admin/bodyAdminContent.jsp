@@ -19,7 +19,7 @@
 				</tr>
 				<tr>
 					<td valign="top">
-						<c:if test="${sessionScope.isAdmin && sessionScope.user != null}">
+						<c:if test="${!empty user && user.admin}">
 							<table summary="" cellpadding="0" cellspacing="0" border="0"
 								width="100%" height="100%" class="sidebarSection">
 								<tr>

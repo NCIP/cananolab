@@ -24,7 +24,7 @@
 		<td colspan="2">
 			<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
 			<c:choose>
-				<c:when test="${canCreateProtocol eq 'true'}">
+				<c:when test="${!empty user && user.curator}">
 					<c:set var="link" value="editURL" />
 				</c:when>
 				<c:otherwise>
