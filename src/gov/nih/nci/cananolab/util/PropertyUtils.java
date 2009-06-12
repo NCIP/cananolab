@@ -9,14 +9,15 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 /**
- * This class is caLab Util class. It will read user property file, and fetch
+ * This class is caNanoLab Util class. It will read user property file, and fetch
  * property value by property name.
  * 
  * @author houyh
  * 
  */
 public class PropertyUtils {
-	protected static org.apache.log4j.Logger logger = org.apache.log4j.Logger
+	
+	private static org.apache.log4j.Logger logger = org.apache.log4j.Logger
 			.getLogger(PropertyUtils.class);
 
 	private static Properties properties = null;
@@ -119,12 +120,9 @@ public class PropertyUtils {
 	 * @return file name of caNanolab property file.
 	 */
 	private static String getPropertyFileName(String propertyFileName) {
-		StringBuilder sb = new StringBuilder();
-		String path = Thread.currentThread().getContextClassLoader().
+		String fileName = Thread.currentThread().getContextClassLoader().
 					getResource(propertyFileName).getPath();
-		sb.append(path);
-		//sb.deleteCharAt(0);// Windows OS: 1st char is a forward slash, remove it.
 		
-		return sb.toString();
+		return fileName;
 	}
 }
