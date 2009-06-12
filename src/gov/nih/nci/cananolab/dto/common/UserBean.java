@@ -5,9 +5,9 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 /**
  * This class represents properties of a user object to be shown in the view
  * page.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class UserBean {
 
@@ -59,6 +59,10 @@ public class UserBean {
 	 * Email id for this user.
 	 */
 	private String emailId;
+
+	private boolean admin;
+
+	private boolean curator;
 
 	public UserBean(String loginName) {
 		this.loginName=loginName;
@@ -122,4 +126,19 @@ public class UserBean {
 		this.fullName = this.firstName + " " + this.lastName;
 	}
 
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	public boolean isCurator() {
+		return curator;
+	}
+
+	public void setCurator(boolean curator) {
+		this.curator = curator;
+	}
 }
