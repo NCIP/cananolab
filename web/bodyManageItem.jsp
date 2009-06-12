@@ -31,29 +31,15 @@
 									LINKS
 								</td>
 							</tr>
-							<bean:define id="canCreate" name="canCreate${item}" />
 							<c:choose>
-								<c:when test="${canCreate eq 'true'}">
+								<c:when test="${!empty user && user.curator}">
 									<tr>
 										<td class="sidebarContent">
-											<a href="${createLink}"> <c:choose>
-													<c:when test="${item eq 'Nanoparticle'}">
-												Submit a New <c:out value="${item}" /> Sample
-											</c:when>
-													<c:otherwise>
-												Submit a New <c:out value="${item}" />
-													</c:otherwise>
-												</c:choose> </a>
+											<a href="${createLink}"> Submit a New <c:out
+													value="${item}" /> </a>
 											<br>
-											Click to
-											<c:choose>
-												<c:when test="${item eq 'Nanoparticle'}">
-												submit a new <c:out value="${fn:toLowerCase(item)}" /> sample.
-											</c:when>
-												<c:otherwise>
-												submit a new <c:out value="${fn:toLowerCase(item)}" />.
-								        </c:otherwise>
-											</c:choose>
+											Click to submit a new
+											<c:out value="${fn:toLowerCase(item)}" />
 										</td>
 									</tr>
 								</c:when>
@@ -64,8 +50,8 @@
 											value="${item}" />s </a>
 									<br>
 									Enter search criteria to obtain information on
-									<c:out value="${fn:toLowerCase(item)}" />s
-									of interest.
+									<c:out value="${fn:toLowerCase(item)}" />
+									s of interest.
 								</td>
 							</tr>
 						</table>
