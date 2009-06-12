@@ -77,20 +77,16 @@ public class LoginAction extends Action {
 		boolean isCurator = authorizationService.isUserInGroup(user,
 				Constants.CSM_DATA_CURATOR);
 		if (isCurator) {
-			session.setAttribute("canCreateSample", true);
-			session.setAttribute("canCreateProtocol", true);
-			session.setAttribute("canCreatePublication", true);
+			user.setCurator(true);
 		} else {
-			session.setAttribute("canCreateSample", false);
-			session.setAttribute("canCreateProtocol", false);
-			session.setAttribute("canCreatePublication", false);
+			user.setCurator(false);
 		}
 		boolean isAdmin = authorizationService.isAdmin(user.getLoginName());
-		session.setAttribute("isAdmin", isAdmin);
-		if (isCurator && isAdmin) {
-			session.setAttribute("canDelete", "true");
-		} else {
-			session.setAttribute("canDelete", "false");
+		if (isAdmin) {
+			user.setAdmin(true);
+		}
+		else {
+			user.setAdmin(false);
 		}
 	}
 }
