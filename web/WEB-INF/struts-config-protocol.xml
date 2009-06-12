@@ -54,7 +54,7 @@
 				path="protocol.searchProtocolResult" />
 		</action>
 		<action path="/protocolResults"
-			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			type="org.apache.struts.actions.ForwardAction"
 			parameter="protocol.searchProtocolResult" scope="request" />
 	</action-mappings>
 </struts-config>

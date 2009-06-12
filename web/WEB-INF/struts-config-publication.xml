@@ -102,13 +102,13 @@
 			<forward name="publicationView" path="sample.publicationInfo" />
 		</action>
 		<action path="/managePublication"
-			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			type="org.apache.struts.actions.ForwardAction"
 			parameter="publication.managePublication" scope="request" />
 		<action path="/choosePublication"
-			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			type="org.apache.struts.actions.ForwardAction"
 			parameter="publication.choosePublication" scope="request" />
 		<action path="/chooseSamplePublication"
-			type="gov.nih.nci.cananolab.ui.core.BaseForwardAction"
+			type="org.apache.struts.actions.ForwardAction"
 			parameter="sample.choosePublication" scope="request" />
 	</action-mappings>
 </struts-config>
