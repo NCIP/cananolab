@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 
@@ -35,7 +34,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			.getLogger(ProtocolServiceLocalImpl.class);
 	private ProtocolServiceHelper helper = new ProtocolServiceHelper();
 
-	public ProtocolBean findProtocolById(String protocolId)
+	public ProtocolBean findProtocolById(String protocolId, UserBean user)
 			throws ProtocolException {
 		ProtocolBean protocolBean = null;
 		try {
@@ -51,6 +50,10 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			if (!result.isEmpty()) {
 				protocol = (Protocol) result.get(0);
 				protocolBean = new ProtocolBean(protocol);
+				retrieveVisibility(protocolBean, user);
+				if (protocolBean.isHidden()) {
+					return null;
+				}
 			}
 		} catch (Exception e) {
 			String err = "Problem finding the protocol by id: " + protocolId;
@@ -63,29 +66,51 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	/**
 	 * Persist a new protocol file or update an existing protocol file
 	 *
-	 * @param protocol
+	 * @param protocolBean
 	 * @throws Exception
 	 */
-	public void saveProtocol(Protocol protocol, byte[] fileData)
+	public void saveProtocol(ProtocolBean protocolBean, UserBean user)
 			throws ProtocolException {
+		if (user == null) {
+			throw new ProtocolException(
+					"Session expired.  Please log in again.");
+		}
+		if (!user.isCurator()) {
+			throw new ProtocolException(
+					"User doesn't have privilege to save a protocol.");
+		}
 		try {
 			FileService fileService = new FileServiceLocalImpl();
-			fileService.prepareSaveFile(protocol.getFile());
+			fileService.prepareSaveFile(protocolBean.getFileBean()
+					.getDomainFile());
 
-			Protocol dbProtocol = findProtocolBy(protocol.getType(), protocol
-					.getName(), protocol.getVersion());
+			Protocol dbProtocol = helper.findProtocolBy(protocolBean
+					.getDomain().getType(), protocolBean.getDomain().getName(),
+					protocolBean.getDomain().getVersion());
 			if (dbProtocol != null) {
-				protocol.setCreatedBy(dbProtocol.getCreatedBy());
-				protocol.setCreatedDate(dbProtocol.getCreatedDate());
+				protocolBean.getDomain()
+						.setCreatedBy(dbProtocol.getCreatedBy());
+				protocolBean.getDomain().setCreatedDate(
+						dbProtocol.getCreatedDate());
 			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
-			appService.saveOrUpdate(protocol);
+			appService.saveOrUpdate(protocolBean.getDomain());
 
 			// save to the file system fileData is not empty
-			fileService.writeFile(protocol.getFile(), fileData);
+			fileService.writeFile(protocolBean.getFileBean().getDomainFile(),
+					protocolBean.getFileBean().getNewFileData());
 
+			// set visibility
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			authService.assignVisibility(protocolBean.getDomain().getId()
+					.toString(), protocolBean.getVisibilityGroups(), null);
+			// set file visibility as well
+			authService.assignVisibility(protocolBean.getFileBean()
+					.getDomainFile().getId().toString(), protocolBean
+					.getVisibilityGroups(), null);
 		} catch (Exception e) {
 			String err = "Error in saving the protocol file.";
 			logger.error(err, e);
@@ -93,25 +118,22 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	public Protocol findProtocolBy(String protocolType, String protocolName,
-			String protocolVersion) throws ProtocolException {
+	public ProtocolBean findProtocolBy(String protocolType,
+			String protocolName, String protocolVersion, UserBean user)
+			throws ProtocolException {
 		try {
-			Protocol protocol = null;
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
-					.add(Property.forName("type").eq(protocolType)).add(
-							Property.forName("name").eq(protocolName)).add(
-							Property.forName("version").eq(protocolVersion));
-			crit.setFetchMode("file", FetchMode.JOIN);
-			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				protocol = (Protocol) obj;
+			Protocol protocol = helper.findProtocolBy(protocolType,
+					protocolName, protocolVersion);
+			if (protocol != null) {
+				ProtocolBean protocolBean = new ProtocolBean(protocol);
+				retrieveVisibility(protocolBean, user);
+				if (protocolBean.isHidden()) {
+					return null;
+				}
+				return protocolBean;
+			} else {
+				return null;
 			}
-			return protocol;
 		} catch (Exception e) {
 			String err = "Problem finding protocol by name and type.";
 			logger.error(err, e);
@@ -120,8 +142,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 	}
 
 	public List<ProtocolBean> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle)
-			throws ProtocolException {
+			String protocolName, String protocolAbbreviation, String fileTitle,
+			UserBean user) throws ProtocolException {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
@@ -129,7 +151,10 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
-				protocolBeans.add(protocolBean);
+				retrieveVisibility(protocolBean, user);
+				if (!protocolBean.isHidden()) {
+					protocolBeans.add(protocolBean);
+				}
 			}
 			return protocolBeans;
 		} catch (Exception e) {
@@ -162,7 +187,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		}
 	}
 
-	public void retrieveVisibility(ProtocolBean protocolBean, UserBean user)
+	private void retrieveVisibility(ProtocolBean protocolBean, UserBean user)
 			throws ProtocolException {
 		try {
 			if (protocolBean != null) {

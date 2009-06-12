@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -14,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -28,8 +30,8 @@ public class ProtocolServiceHelper {
 			.getLogger(ProtocolServiceHelper.class);
 
 	public List<Protocol> findProtocolsBy(String protocolType,
-			String protocolName, String protocolAbbreviation, String fileTitle, Boolean filterPublic)
-			throws Exception {
+			String protocolName, String protocolAbbreviation, String fileTitle,
+			Boolean filterPublic) throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -59,10 +61,11 @@ public class ProtocolServiceHelper {
 		}
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
-		List filteredResults=new ArrayList(results);
+		List filteredResults = new ArrayList(results);
 		if (filterPublic) {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			filteredResults = authService.getPublicObjects(results);
 		}
 		for (Object obj : filteredResults) {
 			Protocol protocol = (Protocol) obj;
@@ -70,4 +73,31 @@ public class ProtocolServiceHelper {
 		}
 		return protocols;
 	}
+
+	public Protocol findProtocolBy(String protocolType, String protocolName,
+			String protocolVersion) throws ProtocolException {
+		try {
+			Protocol protocol = null;
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+					.add(Property.forName("type").eq(protocolType)).add(
+							Property.forName("name").eq(protocolName)).add(
+							Property.forName("version").eq(protocolVersion));
+			crit.setFetchMode("file", FetchMode.JOIN);
+			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				protocol = (Protocol) obj;
+			}
+			return protocol;
+		} catch (Exception e) {
+			String err = "Problem finding protocol by name and type.";
+			logger.error(err, e);
+			throw new ProtocolException(err, e);
+		}
+	}
+
 }

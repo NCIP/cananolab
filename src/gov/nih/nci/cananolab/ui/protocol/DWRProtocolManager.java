@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
-import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
@@ -66,14 +65,12 @@ public class DWRProtocolManager {
 			return null;
 		}
 		try {
-			Protocol protocol = service.findProtocolBy(protocolType,
-					protocolName, protocolVersion);
-			ProtocolBean protocolBean = new ProtocolBean(protocol);
 			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 			org.directwebremoting.WebContext webContext = dwcb.get();
 			UserBean user = (UserBean) webContext.getHttpServletRequest()
 					.getSession().getAttribute("user");
-			service.retrieveVisibility(protocolBean, user);
+			ProtocolBean protocolBean = service.findProtocolBy(protocolType,
+					protocolName, protocolVersion, user);
 			return protocolBean;
 		} catch (Exception e) {
 			return null;
@@ -85,8 +82,12 @@ public class DWRProtocolManager {
 			if (protocolType == null || protocolType.length() == 0) {
 				return null;
 			}
+			DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
+			org.directwebremoting.WebContext webContext = dwcb.get();
+			UserBean user = (UserBean) webContext.getHttpServletRequest()
+					.getSession().getAttribute("user");
 			List<ProtocolBean> protocols = service.findProtocolsBy(
-					protocolType, null, null, null);
+					protocolType, null, null, null, user);
 			return protocols;
 		} catch (Exception e) {
 			return null;

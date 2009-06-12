@@ -42,29 +42,7 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		protocolBean
 				.setupDomain(Constants.FOLDER_PROTOCOL, user.getLoginName());
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		service.saveProtocol(protocolBean.getDomain(), protocolBean
-				.getFileBean().getNewFileData());
-		// set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		authService.assignVisibility(protocolBean.getDomain().getId()
-				.toString(), protocolBean.getVisibilityGroups(), null);
-
-		// remove protocol visibility
-		ProtocolServiceLocalImpl localService = new ProtocolServiceLocalImpl();
-		Protocol dbProtocol = localService.findProtocolBy(protocolBean
-				.getDomain().getType(), protocolBean.getDomain().getName(),
-				protocolBean.getDomain().getVersion());
-		// assign protocol visibility
-		if (protocolBean.getVisibilityGroups() != null) {
-			authService.assignVisibility(dbProtocol.getId().toString(),
-					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
-			Arrays.asList(protocolBean.getVisibilityGroups()).contains(
-					Constants.CSM_PUBLIC_GROUP);
-			authService.assignVisibility(dbProtocol.getId().toString(),
-					new String[] { Constants.CSM_PUBLIC_GROUP }, null);
-		}
-
+		service.saveProtocol(protocolBean, user);
 		InitProtocolSetup.getInstance().persistProtocolDropdowns(request,
 				protocolBean);
 		ActionMessages msgs = new ActionMessages();
@@ -85,8 +63,9 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		ProtocolBean protocolBean = ((ProtocolBean) theForm.get("protocol"));
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		ProtocolService service = new ProtocolServiceLocalImpl();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		List<ProtocolBean> protocols = service.findProtocolsBy(
-				selectedProtocolType, null, null, null);
+				selectedProtocolType, null, null, null, user);
 		request.getSession().setAttribute("protocolsByType", protocols);
 
 		return mapping.findForward("inputPage");
@@ -107,15 +86,13 @@ public class SubmitProtocolAction extends AbstractDispatchAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String protocolId = request.getParameter("protocolId");
 		ProtocolService service = new ProtocolServiceLocalImpl();
-		ProtocolBean protocolBean = service.findProtocolById(protocolId);
+		ProtocolBean protocolBean = service.findProtocolById(protocolId, user);
 		theForm.set("protocol", protocolBean);
 		String selectedProtocolType = protocolBean.getDomain().getType();
 		List<ProtocolBean> protocols = service.findProtocolsBy(
-				selectedProtocolType, null, null, null);
+				selectedProtocolType, null, null, null, user);
 		request.getSession().setAttribute("protocolsByType", protocols);
-
 		ProtocolService protocolService = new ProtocolServiceLocalImpl();
-		protocolService.retrieveVisibility(protocolBean, user);
 		return mapping.findForward("inputPage");
 	}
 

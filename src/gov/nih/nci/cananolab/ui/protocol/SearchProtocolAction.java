@@ -52,7 +52,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 				&& gridNodeHostStr.trim().length() > 0) {
 			searchLocations = gridNodeHostStr.split("~");
 		}
-		List<ProtocolBean> foundProtocols = new ArrayList<ProtocolBean>();
+		List<ProtocolBean> protocols = new ArrayList<ProtocolBean>();
 		ProtocolService service = null;
 		for (String location : searchLocations) {
 			if (location.equals("local")) {
@@ -64,34 +64,20 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			// service = new ProtocolServiceRemoteImpl(serviceUrl);
 			// }
 
-			List<ProtocolBean> protocols = service
-					.findProtocolsBy(protocolType, protocolName,
-							protocolAbbreviation, fileTitle);
+			protocols = service.findProtocolsBy(protocolType, protocolName,
+					protocolAbbreviation, fileTitle, user);
 			for (ProtocolBean protocol : protocols) {
 				protocol.setLocation(location);
 				protocol.getFileBean().setLocation(location);
 			}
-			if (location.equals("local")) {
-				List<ProtocolBean> filteredProtocols = new ArrayList<ProtocolBean>();
-				// retrieve accessibility
-				for (ProtocolBean protocol : protocols) {
-					service.retrieveVisibility(protocol, user);
-					if (!protocol.isHidden()) {
-						filteredProtocols.add(protocol);
-					}
-				}
-				foundProtocols.addAll(filteredProtocols);
-			} else {
-				foundProtocols.addAll(protocols);
-			}
 		}
-		if (foundProtocols != null && !foundProtocols.isEmpty()) {
+		if (protocols != null && !protocols.isEmpty()) {
 			// Collections
 			// .sort(
 			// foundProtocols,
 			// new
 			// Comparators.ProtocolBeanNameVersionComparator());
-			request.getSession().setAttribute("protocols", foundProtocols);
+			request.getSession().setAttribute("protocols", protocols);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();

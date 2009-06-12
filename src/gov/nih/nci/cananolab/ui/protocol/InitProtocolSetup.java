@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.protocol;
 
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class sets up session level or servlet context level variables to be
@@ -47,10 +49,10 @@ public class InitProtocolSetup {
 		} else {
 			protocolType = null; // update if in vivo is implemented
 		}
-
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		ProtocolService service = new ProtocolServiceLocalImpl();
 		List<ProtocolBean> protocols = service.findProtocolsBy(protocolType,
-				null, null, null);
+				null, null, null, user);
 		request.getSession().setAttribute("characterizationProtocols",
 				protocols);
 		return protocols;
