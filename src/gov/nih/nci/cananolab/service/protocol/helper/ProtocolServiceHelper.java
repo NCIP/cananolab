@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -27,22 +26,6 @@ import org.hibernate.criterion.Restrictions;
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceHelper.class);
-
-	public Protocol findProtocolById(String protocolId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
-				Property.forName("id").eq(new Long(protocolId)));
-		crit.setFetchMode("file", FetchMode.JOIN);
-		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
-		List result = appService.query(crit);
-		Protocol protocol = null;
-		if (!result.isEmpty()) {
-			protocol = (Protocol) result.get(0);
-		}
-		return protocol;
-	}
 
 	public List<Protocol> findProtocolsBy(String protocolType,
 			String protocolName, String protocolAbbreviation, String fileTitle, Boolean filterPublic)

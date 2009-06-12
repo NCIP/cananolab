@@ -39,14 +39,25 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			throws ProtocolException {
 		ProtocolBean protocolBean = null;
 		try {
-			Protocol pf = helper.findProtocolById(protocolId);
-			protocolBean = new ProtocolBean(pf);
-			return protocolBean;
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
+					.add(Property.forName("id").eq(new Long(protocolId)));
+			crit.setFetchMode("file", FetchMode.JOIN);
+			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+			List result = appService.query(crit);
+			Protocol protocol = null;
+			if (!result.isEmpty()) {
+				protocol = (Protocol) result.get(0);
+				protocolBean = new ProtocolBean(protocol);
+			}
 		} catch (Exception e) {
 			String err = "Problem finding the protocol by id: " + protocolId;
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
+		return protocolBean;
 	}
 
 	/**
