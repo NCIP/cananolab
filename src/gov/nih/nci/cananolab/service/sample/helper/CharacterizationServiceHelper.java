@@ -109,6 +109,7 @@ public class CharacterizationServiceHelper {
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("protocol", FetchMode.JOIN);
 		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
@@ -144,6 +145,7 @@ public class CharacterizationServiceHelper {
 		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("protocol", FetchMode.JOIN);
 		crit.setFetchMode("protocol.file", FetchMode.JOIN);
+		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
