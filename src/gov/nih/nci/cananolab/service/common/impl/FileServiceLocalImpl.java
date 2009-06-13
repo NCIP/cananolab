@@ -76,8 +76,8 @@ public class FileServiceLocalImpl implements FileService {
 			fileBean = findFileById(fileId);
 			AuthorizationService auth = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			if (auth.isUserAllowed(fileBean.getDomainFile().getId().toString(),
-					user)) {
+			if (auth.checkReadPermission(user, fileBean.getDomainFile().getId()
+					.toString())) {
 				return fileBean;
 			} else {
 				throw new NoAccessException();
@@ -289,8 +289,8 @@ public class FileServiceLocalImpl implements FileService {
 				AuthorizationService auth = new AuthorizationService(
 						Constants.CSM_APP_NAME);
 				if (fileBean.getDomainFile().getId() != null
-						&& auth.isUserAllowed(fileBean.getDomainFile().getId()
-								.toString(), user)) {
+						&& auth.checkReadPermission(user, fileBean
+								.getDomainFile().getId().toString())) {
 					fileBean.setHidden(false);
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(

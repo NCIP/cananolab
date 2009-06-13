@@ -1,8 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 /**
- * This class submits PointOfContact and assigns visibility  
- *  
+ * This class submits PointOfContact and assigns visibility
+ *
  * @author tanq, pansu
  */
 
@@ -60,15 +60,14 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		primaryPointOfContact.getDomain().setCreatedBy(user.getLoginName());
-		String[] primaryVisibilityGroups = primaryPointOfContact.getVisibilityGroups();
+		String[] primaryVisibilityGroups = primaryPointOfContact
+				.getVisibilityGroups();
 		Collection<PointOfContact> otherPointOfContactCollection = null;
 		if (otherPointOfContactBeanCollection != null) {
 			otherPointOfContactCollection = new HashSet<PointOfContact>();
 			for (PointOfContactBean otherPocBean : otherPointOfContactBeanCollection) {
-				otherPocBean.getDomain()
-						.setCreatedBy(user.getLoginName());
-				otherPointOfContactCollection.add(otherPocBean
-						.getDomain());
+				otherPocBean.getDomain().setCreatedBy(user.getLoginName());
+				otherPointOfContactCollection.add(otherPocBean.getDomain());
 			}
 		}
 		// created_date set in service
@@ -79,8 +78,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		authService.assignVisibility(primaryPointOfContact.getDomain().getId()
-				.toString(), primaryVisibilityGroups,
-				primaryPointOfContact.getOrganization().getName());
+				.toString(), primaryVisibilityGroups, primaryPointOfContact
+				.getOrganization().getName());
 
 		if (otherPointOfContactCollection != null) {
 			for (PointOfContactBean pointOfContactBean : otherPointOfContactBeanCollection) {
@@ -92,28 +91,29 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			}
 		}
 		InitPOCSetup.getInstance().persistPOCDropdowns(request,
-				primaryPointOfContact.getDomain(), otherPointOfContactCollection);
+				primaryPointOfContact.getDomain(),
+				otherPointOfContactCollection);
 
 		/**
 		 * Prepare for sample form
-		 * 
+		 *
 		 */
-		SampleBean sampleBean = (SampleBean) request.getSession()
-				.getAttribute("pocSample");
+		SampleBean sampleBean = (SampleBean) request.getSession().getAttribute(
+				"pocSample");
 		sampleBean.setPocBean(primaryPointOfContact);
-		sampleBean.getDomain().setOtherPointOfContactCollection(otherPointOfContactCollection);
-		
-		//remove blue warning message
-//		ActionMessages msgs = new ActionMessages();
-//		ActionMessage msg = new ActionMessage(
-//				"pointOfContact.updateOtherPOC");
-//		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-//		saveMessages(request, msgs);
-		
+		sampleBean.getDomain().setOtherPointOfContactCollection(
+				otherPointOfContactCollection);
+
+		// remove blue warning message
+		// ActionMessages msgs = new ActionMessages();
+		// ActionMessage msg = new ActionMessage(
+		// "pointOfContact.updateOtherPOC");
+		// msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		// saveMessages(request, msgs);
+
 		String sampleId = getSampleId(request);
 		if (sampleId != null) {
-			SampleServiceLocalImpl particleService = 
-				new SampleServiceLocalImpl();
+			SampleServiceLocalImpl particleService = new SampleServiceLocalImpl();
 			particleService.saveOtherPOCs(sampleBean.getDomain());
 			request.setAttribute("sampleId", sampleId);
 			return mapping.findForward("update");
@@ -141,7 +141,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		return forward;
 	}
 
-		
 	/**
 	 * update pointOfContact form *
 	 */
@@ -149,8 +148,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		PointOfContactService pointOfContactService = 
-			new PointOfContactServiceLocalImpl();		
+		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
 		String sampleId = getSampleId(request);
 		String pocId = getPOCId(request);
 		PointOfContactBean primaryPointOfContact = pointOfContactService
@@ -173,35 +171,33 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				.setOtherPointOfContacts(otherPointOfContactCollection);
 		theForm.set("otherPoc", otherPointOfContactsBean);
 		InitPOCSetup.getInstance().setPOCDropdowns(request);
-		
-		SampleBean sessionSampleSampleBean = (SampleBean) request
-		.getSession().getAttribute("pocSample");
+
+		SampleBean sessionSampleSampleBean = (SampleBean) request.getSession()
+				.getAttribute("pocSample");
 		String sessionSampleId = null;
 		if (sessionSampleSampleBean.getDomain().getId() != null) {
-			sessionSampleId = sessionSampleSampleBean
-					.getDomain().getId().toString();
+			sessionSampleId = sessionSampleSampleBean.getDomain().getId()
+					.toString();
 		}
-		if (sampleId != null
-				&& !sampleId.equals(sessionSampleId)) {
+		if (sampleId != null && !sampleId.equals(sessionSampleId)) {
 			request.getSession().removeAttribute("pocSample");
 		}
 		ActionForward forward = null;
-		if(sampleId == null || sampleId.trim().length() == 0) {
+		if (sampleId == null || sampleId.trim().length() == 0) {
 			forward = mapping.findForward("submitPointOfContact");
 		} else {
 			forward = mapping.findForward("sampleSubmitPointOfContact");
 		}
-		return forward;		
+		return forward;
 	}
 
 	private String getSampleId(HttpServletRequest request) {
 		String sampleId = null;
 		if (request.getSession().getAttribute("pocSample") != null) {
-			SampleBean sampleBean = (SampleBean) request
-					.getSession().getAttribute("pocSample");
+			SampleBean sampleBean = (SampleBean) request.getSession()
+					.getAttribute("pocSample");
 			sampleId = (sampleBean.getDomain().getId() == null) ? null
-					: sampleBean.getDomain().getId()
-							.toString();
+					: sampleBean.getDomain().getId().toString();
 		} else {
 			sampleId = request.getParameter("sampleId");
 		}
@@ -211,10 +207,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 	private String getPOCId(HttpServletRequest request) {
 		String pocId = null;
 		if (request.getSession().getAttribute("pocSample") != null) {
-			SampleBean sampleBean = (SampleBean) request
-					.getSession().getAttribute("pocSample");
-			pocId = sampleBean.getPocBean().getDomain().getId()
-					.toString();
+			SampleBean sampleBean = (SampleBean) request.getSession()
+					.getAttribute("pocSample");
+			pocId = sampleBean.getPocBean().getDomain().getId().toString();
 		} else {
 			pocId = request.getParameter("pocId");
 		}
@@ -262,9 +257,9 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 				+ "?page=0&dispatch=printDetailView&sampleId=" + sampleId
 				+ "&submitType=" + submitType + "&location=" + location;
 		request.getSession().setAttribute("printDetailViewLinkURL",
-				printLinkURL);		
+				printLinkURL);
 		ActionForward forward = null;
-		if(sampleId == null || sampleId.length() == 0) {
+		if (sampleId == null || sampleId.length() == 0) {
 			forward = mapping.findForward("detailView");
 		} else {
 			forward = mapping.findForward("samplePOCDetailView");
@@ -296,7 +291,6 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		return mapping.findForward("pointOfContactDetailPrintView");
 	}
 
-	
 	public boolean loginRequired() {
 		return true;
 	}
@@ -307,8 +301,8 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			if (auth.isUserAllowed(pointOfContactBean.getDomain().getId()
-					.toString(), user)) {
+			if (auth.checkReadPermission(user, pointOfContactBean.getDomain()
+					.getId().toString())) {
 				pointOfContactBean.setHidden(false);
 				if (setVisibilityGroups) {
 					// get assigned visible groups
@@ -342,7 +336,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		OtherPointOfContactsBean otherPocsBean = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
 		otherPocsBean.setPointOfContact(pocIndex, pocBean);
-		theForm.set("otherPoc", otherPocsBean);		
+		theForm.set("otherPoc", otherPocsBean);
 		ActionForward forward = mapping.getInputForward();
 		String sampleId = getSampleId(request);
 		if (sampleId != null && !sampleId.equals("null")
@@ -360,7 +354,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
 		entity.addPointOfContact();
-		persisOtherTypes(theForm, request);		
+		persisOtherTypes(theForm, request);
 		return mapping.getInputForward();
 	}
 
@@ -373,16 +367,16 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
 		entity.removePointOfContact(ind);
-				
+
 		ActionForward forward = mapping.getInputForward();
 		String sampleId = getSampleId(request);
 		if (sampleId != null && !sampleId.equals("null")
 				&& sampleId.trim().length() > 0) {
 			forward = mapping.findForward("submitPointOfContact");
-		}	
+		}
 		persisOtherTypes(theForm, request);
 		return forward;
-		//return mapping.getInputForward();
+		// return mapping.getInputForward();
 	}
 
 	public ActionForward getOrganization(ActionMapping mapping,
@@ -415,7 +409,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		}
 		persisOtherTypes(theForm, request);
 		return forward;
-		//return mapping.getInputForward();
+		// return mapping.getInputForward();
 	}
 
 	public ActionForward cancel(ActionMapping mapping, ActionForm form,
@@ -430,29 +424,28 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 			return mapping.findForward("submitSample");
 		}
 	}
-	
-	private void persisOtherTypes(DynaValidatorForm theForm, HttpServletRequest request) 
-		throws Exception{
+
+	private void persisOtherTypes(DynaValidatorForm theForm,
+			HttpServletRequest request) throws Exception {
 		PointOfContactBean primaryPointOfContactBean = (PointOfContactBean) theForm
-			.get("poc");
+				.get("poc");
 		OtherPointOfContactsBean entity = (OtherPointOfContactsBean) theForm
 				.get("otherPoc");
 		PointOfContact primaryPointOfContact = null;
-		if (primaryPointOfContactBean!=null) {
+		if (primaryPointOfContactBean != null) {
 			primaryPointOfContact = primaryPointOfContactBean.getDomain();
 		}
 		Collection<PointOfContact> otherPointOfContactCollection = new ArrayList<PointOfContact>();
-		if (entity!=null) {
-			List<PointOfContactBean> otherPOCList = entity.getOtherPointOfContacts();
-			if (otherPOCList!=null) {
-				for (PointOfContactBean otherPOCBean: otherPOCList) {
+		if (entity != null) {
+			List<PointOfContactBean> otherPOCList = entity
+					.getOtherPointOfContacts();
+			if (otherPOCList != null) {
+				for (PointOfContactBean otherPOCBean : otherPOCList) {
 					otherPointOfContactCollection.add(otherPOCBean.getDomain());
 				}
 			}
 		}
-		InitPOCSetup.getInstance().persistPOCDropdowns(request, 
+		InitPOCSetup.getInstance().persistPOCDropdowns(request,
 				primaryPointOfContact, otherPointOfContactCollection);
-	}	
+	}
 }
-
-

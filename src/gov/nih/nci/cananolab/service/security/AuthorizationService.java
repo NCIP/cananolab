@@ -23,6 +23,7 @@ import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
+import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.rmi.RemoteException;
@@ -177,6 +178,12 @@ public class AuthorizationService {
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws Exception {
+		if (protectionElementObjectId==null) {
+			return false;
+		}
+		if (user==null) {
+			return isPublic(protectionElementObjectId);
+		}
 		return checkPermission(user, protectionElementObjectId,
 				Constants.CSM_READ_PRIVILEGE);
 	}
@@ -702,57 +709,6 @@ public class AuthorizationService {
 		}
 	}
 
-	/**
-	 * Check whether user has read access to the data
-	 *
-	 * @param data
-	 * @param user
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean isUserAllowed(String data, UserBean user) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List<String> publicData = appService.getPublicData();
-		if (data != null && StringUtils.containsIgnoreCase(publicData, data)) {
-			return true;
-		} else if (user != null && checkReadPermission(user, data)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Check whether user is allowed to at least one data in the collection of
-	 * data.
-	 *
-	 * @param auth
-	 * @param dataCollection
-	 * @param user
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean isAllowedAtLeastOne(AuthorizationService auth,
-			Collection<String> dataCollection, UserBean user) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List<String> publicData = appService.getPublicData();
-		for (String data : publicData) {
-			if (StringUtils.containsIgnoreCase(dataCollection, data)) {
-				return true;
-			}
-		}
-
-		if (user != null) {
-			for (String data : dataCollection) {
-				if (auth.checkReadPermission(user, data)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public void updateDatabaseConnectionForCSMApplications(String dbDialect,
 			String dbDriver, String dbURL, String dbUserName, String dbPassword) {
 		try {
@@ -785,11 +741,12 @@ public class AuthorizationService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<Object> getPublicObjects(List<Object> rawObjects) throws RemoteException {
+	public List<Object> filterNonPublic(List<Object> rawObjects)
+			throws SecurityException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			List<String> publicDataIds = appService.getPublicData();
+			List<String> publicDataIds = appService.getAllPublicData();
 			List filtered = new ArrayList();
 			if (publicDataIds.isEmpty()) {
 				return filtered;
@@ -801,38 +758,47 @@ public class AuthorizationService {
 				String data = null;
 				if (obj instanceof Sample) {
 					data = ((Sample) obj).getName();
-					if (data != null
-							&& StringUtils.containsIgnoreCase(publicDataIds,
-									data)) {
-						filtered.add(obj);
-					}
+				} else if (obj instanceof String) {
+					data = (String) obj;
 				} else {
 					data = ClassUtils.getIdString(obj);
-					if (data != null
-							&& StringUtils.containsIgnoreCase(publicDataIds,
-									data)) {
-						filtered.add(obj);
-					}
+				}
+				if (data != null
+						&& StringUtils.containsIgnoreCase(publicDataIds, data)) {
+					filtered.add(obj);
 				}
 			}
 			return filtered;
 		} catch (Exception e) {
-			throw new RemoteException("Can't find public data.", e);
+			throw new SecurityException("Can't filter public data.", e);
 		}
 	}
 
-	public boolean isPublic(String dataId) throws RemoteException {
+	public boolean isPublic(String dataId) throws Exception {
+		boolean status = false;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			List<String> publicDataIds = appService.getPublicData();
-			if (StringUtils.containsIgnoreCase(publicDataIds, dataId)) {
-				return true;
-			} else {
+			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
+					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
+					+ "d.group_name='"
+					+ Constants.CSM_PUBLIC_GROUP
+					+ "' and b.role_name='"
+					+ Constants.CSM_READ_ROLE
+					+ "'"
+					+ " and protection_group_name='" + dataId + "'";
+			String[] columns = new String[] { "protection_group_name" };
+			Object[] columnTypes = new Object[] { Hibernate.STRING };
+			List results = appService.directSQL(query, columns, columnTypes);
+			if (results.isEmpty()) {
 				return false;
+			} else {
+				return true;
 			}
 		} catch (Exception e) {
-			throw new RemoteException("Can't test whether test is public.", e);
+			String err = "Could not execute direct sql query to check whether data is public.";
+			logger.error(err);
+			throw new SecurityException(err, e);
 		}
 	}
 

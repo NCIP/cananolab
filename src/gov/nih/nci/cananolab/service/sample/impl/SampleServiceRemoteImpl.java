@@ -384,7 +384,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
-				if (auth.isUserAllowed(name, user)) {
+				if (auth.checkReadPermission(user, name)) {
 					names.add(name);
 				}
 			}

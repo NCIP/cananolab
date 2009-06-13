@@ -270,7 +270,7 @@ public class CompositionServiceHelper {
 		List filteredResults=new ArrayList(results);
 		if (filterPublic) {
 			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			filteredResults=authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			File File = (File) obj;

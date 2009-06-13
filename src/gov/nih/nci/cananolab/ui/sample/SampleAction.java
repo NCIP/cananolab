@@ -110,12 +110,12 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location=theForm.getString("location");
+		String location = theForm.getString("location");
 		// "setupSample()" will get the SampleBean
 		SampleBean sampleBean = setupSample(theForm, request, location);
 		theForm.set("sampleBean", sampleBean);
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		SampleService service=null;
+		SampleService service = null;
 		if (location.equals("local")) {
 			service = new SampleServiceLocalImpl();
 		} else {
@@ -125,10 +125,10 @@ public class SampleAction extends BaseAnnotationAction {
 		}
 		// "retrieveVisibility()" will set visibility of the SampleBean
 		service.retrieveVisibility(sampleBean, user);
-		//set visibility of the POCBean
+		// set visibility of the POCBean
 		// If Primary POC is not hidden set it in request object.
 		PointOfContactBean primaryPoc = sampleBean.getPocBean();
-		PointOfContactService pocService=new PointOfContactServiceLocalImpl();
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		pocService.retrieveVisibility(primaryPoc, user);
 		if (!primaryPoc.isHidden()) {
 			request.setAttribute("primaryPoc", primaryPoc);
@@ -146,8 +146,8 @@ public class SampleAction extends BaseAnnotationAction {
 				AuthorizationService auth = new AuthorizationService(
 						Constants.CSM_APP_NAME);
 				for (PointOfContactBean pocBean : otherPointOfContactCollection) {
-					if (auth.isUserAllowed(pocBean.getDomain().getId()
-							.toString(), user)) {
+					if (auth.checkReadPermission(user, pocBean.getDomain()
+							.getId().toString())) {
 						pocBean.setHidden(false);
 					} else {
 						otherPointOfContactCollection.remove(pocBean);
@@ -179,7 +179,7 @@ public class SampleAction extends BaseAnnotationAction {
 		// set visibility
 		SampleService service = new SampleServiceLocalImpl();
 		service.retrieveVisibility(sampleBean, user);
-		PointOfContactService pocService=new PointOfContactServiceLocalImpl();
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		pocService.retrieveVisibility(sampleBean.getPocBean(), user);
 		theForm.set("sampleBean", sampleBean);
 		setupLookups(request, sampleBean.getDomain().getPrimaryPointOfContact()
@@ -188,7 +188,7 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryEdit");
 	}
 
-	//TODO validate whether this method is needed
+	// TODO validate whether this method is needed
 	public ActionForward setupView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

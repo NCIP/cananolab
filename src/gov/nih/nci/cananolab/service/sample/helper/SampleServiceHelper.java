@@ -235,7 +235,7 @@ public class SampleServiceHelper {
 		if (filterPublic) {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			filteredResults = authService.getPublicObjects(results);
+			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			Sample particle = loadSample(obj.toString());
@@ -532,7 +532,7 @@ public class SampleServiceHelper {
 		if (filterPublic) {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			filteredResults = authService.getPublicObjects(results);
+			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			Keyword keyword = (Keyword) obj;
@@ -579,7 +579,7 @@ public class SampleServiceHelper {
 		if (filterPublic) {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			filteredResults = authService.getPublicObjects(results);
+			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			PointOfContact poc = (PointOfContact) obj;
@@ -591,7 +591,7 @@ public class SampleServiceHelper {
 	public int getNumberOfPublicSamples() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List<String> publicData = appService.getPublicData();
+		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
 				"select name from gov.nih.nci.cananolab.domain.particle.Sample");
 		List results = appService.query(crit);

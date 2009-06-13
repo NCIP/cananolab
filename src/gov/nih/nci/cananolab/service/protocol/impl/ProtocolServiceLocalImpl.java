@@ -46,13 +46,15 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			crit.setFetchMode("file", FetchMode.JOIN);
 			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
 			List result = appService.query(crit);
-			Protocol protocol = null;
 			if (!result.isEmpty()) {
-				protocol = (Protocol) result.get(0);
-				protocolBean = new ProtocolBean(protocol);
-				retrieveVisibility(protocolBean, user);
-				if (protocolBean.isHidden()) {
-					return null;
+				Protocol protocol = (Protocol) result.get(0);
+				AuthorizationService authService = new AuthorizationService(
+						Constants.CSM_APP_NAME);
+				if (authService.checkReadPermission(user, protocol.getId()
+						.toString())) {
+					protocolBean = new ProtocolBean(protocol);
+					retrieveVisibility(protocolBean, user);
+					return protocolBean;
 				}
 			}
 		} catch (Exception e) {
@@ -86,7 +88,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 			Protocol dbProtocol = helper.findProtocolBy(protocolBean
 					.getDomain().getType(), protocolBean.getDomain().getName(),
-					protocolBean.getDomain().getVersion());
+					protocolBean.getDomain().getVersion(), user);
 			if (dbProtocol != null) {
 				protocolBean.getDomain()
 						.setCreatedBy(dbProtocol.getCreatedBy());
@@ -123,13 +125,10 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			throws ProtocolException {
 		try {
 			Protocol protocol = helper.findProtocolBy(protocolType,
-					protocolName, protocolVersion);
+					protocolName, protocolVersion, user);
 			if (protocol != null) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				retrieveVisibility(protocolBean, user);
-				if (protocolBean.isHidden()) {
-					return null;
-				}
 				return protocolBean;
 			} else {
 				return null;
@@ -147,14 +146,12 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		List<ProtocolBean> protocolBeans = new ArrayList<ProtocolBean>();
 		try {
 			List<Protocol> protocols = helper.findProtocolsBy(protocolType,
-					protocolName, protocolAbbreviation, fileTitle, false);
+					protocolName, protocolAbbreviation, fileTitle, user);
 
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
 				retrieveVisibility(protocolBean, user);
-				if (!protocolBean.isHidden()) {
-					protocolBeans.add(protocolBean);
-				}
+				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;
 		} catch (Exception e) {
@@ -168,7 +165,7 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			List<String> publicData = appService.getPublicData();
+			List<String> publicData = appService.getAllPublicData();
 			HQLCriteria crit = new HQLCriteria(
 					"select id from gov.nih.nci.cananolab.domain.common.Protocol");
 			List results = appService.query(crit);
@@ -193,20 +190,13 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			if (protocolBean != null) {
 				AuthorizationService auth = new AuthorizationService(
 						Constants.CSM_APP_NAME);
-				if (protocolBean.getDomain().getId() != null
-						&& auth.isUserAllowed(protocolBean.getDomain().getId()
-								.toString(), user)) {
-					protocolBean.setHidden(false);
-					// get assigned visible groups
-					List<String> accessibleGroups = auth.getAccessibleGroups(
-							protocolBean.getDomain().getId().toString(),
-							Constants.CSM_READ_PRIVILEGE);
-					String[] visibilityGroups = accessibleGroups
-							.toArray(new String[0]);
-					protocolBean.setVisibilityGroups(visibilityGroups);
-				} else {
-					protocolBean.setHidden(true);
-				}
+				// get assigned visible groups
+				List<String> accessibleGroups = auth.getAccessibleGroups(
+						protocolBean.getDomain().getId().toString(),
+						Constants.CSM_READ_PRIVILEGE);
+				String[] visibilityGroups = accessibleGroups
+						.toArray(new String[0]);
+				protocolBean.setVisibilityGroups(visibilityGroups);
 			}
 		} catch (Exception e) {
 			String err = "Error in setting file visibility for "
@@ -215,5 +205,4 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 			throw new ProtocolException(err, e);
 		}
 	}
-
 }

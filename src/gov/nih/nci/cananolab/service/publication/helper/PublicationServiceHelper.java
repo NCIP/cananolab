@@ -222,7 +222,7 @@ public class PublicationServiceHelper {
 		if (filterPublic) {
 			authService = new AuthorizationService(Constants.CSM_APP_NAME);
 			filteredResults = authService
-					.getPublicObjects((List) allPublicationIds);
+					.filterNonPublic((List) allPublicationIds);
 		}
 		List<Publication> publications = new ArrayList<Publication>();
 		for (Object obj : filteredResults) {
@@ -253,7 +253,7 @@ public class PublicationServiceHelper {
 	public int getNumberOfPublicPublications() throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		List<String> publicData = appService.getPublicData();
+		List<String> publicData = appService.getAllPublicData();
 		HQLCriteria crit = new HQLCriteria(
 				"select id from gov.nih.nci.cananolab.domain.common.Publication");
 		List results = appService.query(crit);

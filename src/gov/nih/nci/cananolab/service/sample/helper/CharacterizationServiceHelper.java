@@ -194,7 +194,7 @@ public class CharacterizationServiceHelper {
 		List filteredResults=new ArrayList(results);
 		if (filterPublic) {
 			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			filteredResults=authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			protocol = (Protocol) obj;
@@ -215,7 +215,7 @@ public class CharacterizationServiceHelper {
 		List filteredResults=new ArrayList(results);
 		if (filterPublic) {
 			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			filteredResults=authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			Finding finding = (Finding) obj;
@@ -238,7 +238,7 @@ public class CharacterizationServiceHelper {
 		List filteredResults=new ArrayList(results);
 		if (filterPublic) {
 			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			filteredResults=authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			ExperimentConfig config = (ExperimentConfig) obj;
@@ -260,7 +260,7 @@ public class CharacterizationServiceHelper {
 		List filteredResults=new ArrayList(results);
 		if (filterPublic) {
 			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.getPublicObjects(results);
+			filteredResults=authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			File file = (File) obj;

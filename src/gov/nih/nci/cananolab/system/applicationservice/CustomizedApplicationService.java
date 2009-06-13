@@ -8,9 +8,9 @@ import java.util.List;
 
 /**
  * Customized to contain more CRUD operations.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public interface CustomizedApplicationService extends ApplicationService {
 
@@ -35,5 +35,5 @@ public interface CustomizedApplicationService extends ApplicationService {
 	public List directSQL(String directSQL, String[] columns,
 			Object[] columnTypes) throws ApplicationException;
 
-	public List<String> getPublicData() throws ApplicationException;
+	public List<String> getAllPublicData() throws ApplicationException;
 }

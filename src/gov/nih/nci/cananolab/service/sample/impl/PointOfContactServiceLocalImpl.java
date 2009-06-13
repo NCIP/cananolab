@@ -155,9 +155,10 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			}
 			pointOfContact.setOrganization(organization);
 			/**
-			 * Removed as cascade="save-update" was added in POC Hibernate mapping file.
+			 * Removed as cascade="save-update" was added in POC Hibernate
+			 * mapping file.
 			 */
-			//appService.saveOrUpdate(organization);
+			// appService.saveOrUpdate(organization);
 		}
 		appService.saveOrUpdate(pointOfContact);
 	}
@@ -278,8 +279,8 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 				AuthorizationService auth = new AuthorizationService(
 						Constants.CSM_APP_NAME);
 				if (pocBean.getDomain().getId() != null
-						&& auth.isUserAllowed(pocBean.getDomain().getId()
-								.toString(), user)) {
+						&& auth.checkReadPermission(user, pocBean.getDomain()
+								.getId().toString())) {
 					pocBean.setHidden(false);
 					// get assigned visible groups
 					List<String> accessibleGroups = auth.getAccessibleGroups(
@@ -351,13 +352,14 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					Sample.class).add(
-					Property.forName("id").eq(new Long(sampleId)));
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+					.add(Property.forName("id").eq(new Long(sampleId)));
 			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact.organization",
+					FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+			crit.setFetchMode("otherPointOfContactCollection.organization",
+					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);

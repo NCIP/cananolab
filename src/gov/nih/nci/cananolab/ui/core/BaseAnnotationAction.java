@@ -44,24 +44,26 @@ import org.apache.struts.validator.DynaValidatorForm;
 public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 	/**
-	 * setupSample() will retrieve a SampleBean based on the sampleId which is in request/form.
-	 * And then check user's access privilege, throws Exception if user doesn't have privilege.
-	 * Otherwise, set visibility of Primary POC of sample based on user's privilege.
-	 * Lastly, set the SampleBean in request object.
+	 * setupSample() will retrieve a SampleBean based on the sampleId which is
+	 * in request/form. And then check user's access privilege, throws Exception
+	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
+	 * of sample based on user's privilege. Lastly, set the SampleBean in
+	 * request object.
 	 *
 	 * @param theForm
 	 * @param request
 	 * @param location
 	 * @return SampleBean
-	 * @throws Exception if user in session is not allowed to access this sample particle.
+	 * @throws Exception
+	 *             if user in session is not allowed to access this sample
+	 *             particle.
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location) throws Exception {
 		String sampleId = request.getParameter("sampleId");
-		if (sampleId!=null) {
+		if (sampleId != null) {
 			theForm.set("sampleId", sampleId);
-		}
-		else {
+		} else {
 			sampleId = (String) request.getAttribute("sampleId");
 			if (sampleId == null) {
 				sampleId = theForm.getString("sampleId");
@@ -80,9 +82,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		SampleBean sampleBean = service.findSampleById(sampleId);
 		if (location.equals(Constants.LOCAL)) {
 			// check access privilege
-			AuthorizationService auth = new AuthorizationService(Constants.CSM_APP_NAME);
-			boolean access = auth.isUserAllowed(sampleBean
-					.getDomain().getName(), user);
+			AuthorizationService auth = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			boolean access = auth.checkReadPermission(user, sampleBean
+					.getDomain().getName());
 			if (!access) {
 				if (user != null) {
 					request.getSession().removeAttribute("user");
@@ -121,7 +124,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String submitType = request.getParameter("submitType");
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request, "local");
-		//TODO add implementation detail
+		// TODO add implementation detail
 		return mapping.findForward("annotationDeleteView");
 	}
 

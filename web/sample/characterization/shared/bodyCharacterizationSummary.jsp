@@ -81,13 +81,13 @@
 			property="achar.protocolBean.fileBean.domainFile.uri" />
 		<td colspan="3">
 			<c:choose>
-				<c:when test="${!empty characterizationProtocolFiles}">
-					<html:select styleId="protocolFileId"
-						property="achar.protocolBean.fileBean.domainFile.id"
+				<c:when test="${!empty characterizationProtocols}">
+					<html:select styleId="protocolId"
+						property="achar.protocolBean.domain.id"
 						onchange="retrieveProtocolFile()">
 						<option />
-							<html:options collection="characterizationProtocolFiles"
-								property="domainFile.id" labelProperty="displayName" />
+							<html:options collection="characterizationProtocols"
+								property="domain.id" labelProperty="displayName" />
 					</html:select> &nbsp;<span id="protocolFileLink"><a
 						href="searchProtocol.do?dispatch=download&amp;fileId=${characterizationForm.map.achar.protocolBean.fileBean.domainFile.id}&amp;location=${location}">${characterizationForm.map.achar.protocolBean.fileBean.domainFile.uri}</a>
 					</span>

@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
+import gov.nih.nci.cananolab.dto.common.ProtocolBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.ProtocolException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -31,7 +33,7 @@ public class ProtocolServiceHelper {
 
 	public List<Protocol> findProtocolsBy(String protocolType,
 			String protocolName, String protocolAbbreviation, String fileTitle,
-			Boolean filterPublic) throws Exception {
+			UserBean user) throws Exception {
 		List<Protocol> protocols = new ArrayList<Protocol>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -62,20 +64,25 @@ public class ProtocolServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		List filteredResults = new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			filteredResults = authService.getPublicObjects(results);
+		AuthorizationService authService = new AuthorizationService(
+				Constants.CSM_APP_NAME);
+		// get public data
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
 		}
+		// get user allowed data
 		for (Object obj : filteredResults) {
 			Protocol protocol = (Protocol) obj;
-			protocols.add(protocol);
+			if (authService.checkReadPermission(user, protocol.getId()
+					.toString())) {
+				protocols.add(protocol);
+			}
 		}
 		return protocols;
 	}
 
 	public Protocol findProtocolBy(String protocolType, String protocolName,
-			String protocolVersion) throws ProtocolException {
+			String protocolVersion, UserBean user) throws ProtocolException {
 		try {
 			Protocol protocol = null;
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -89,15 +96,23 @@ public class ProtocolServiceHelper {
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List results = appService.query(crit);
-			for (Object obj : results) {
-				protocol = (Protocol) obj;
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			// get user allowed data
+			if (results.isEmpty()) {
+				return null;
 			}
-			return protocol;
+			protocol = (Protocol) results.get(0);
+			if (authService.checkReadPermission(user, protocol.getId()
+					.toString())) {
+				return protocol;
+			} else {
+				return null;
+			}
 		} catch (Exception e) {
 			String err = "Problem finding protocol by name and type.";
 			logger.error(err, e);
 			throw new ProtocolException(err, e);
 		}
 	}
-
 }

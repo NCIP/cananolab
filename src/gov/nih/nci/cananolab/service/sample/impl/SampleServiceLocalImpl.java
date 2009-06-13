@@ -293,7 +293,8 @@ public class SampleServiceLocalImpl implements SampleService {
 		try {
 			AuthorizationService auth = new AuthorizationService(
 					Constants.CSM_APP_NAME);
-			if (auth.isUserAllowed(sampleBean.getDomain().getName(), user)) {
+			if (auth
+					.checkReadPermission(user, sampleBean.getDomain().getName())) {
 				sampleBean.setHidden(false);
 				// get assigned visible groups
 				List<String> accessibleGroups = auth.getAccessibleGroups(
@@ -371,7 +372,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
-				if (auth.isUserAllowed(name, user)) {
+				if (auth.checkReadPermission(user, name)) {
 					names.add(name);
 				}
 			}
@@ -576,7 +577,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			List<SampleBean> filtered = new ArrayList<SampleBean>();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			List<String> publicData = appService.getPublicData();
+			List<String> publicData = appService.getAllPublicData();
 			for (SampleBean particle : particles) {
 				String sampleName = particle.getDomain().getName();
 				if (StringUtils.containsIgnoreCase(publicData, sampleName)) {

@@ -18,7 +18,6 @@ public class ProtocolBean {
 	private Protocol domain = new Protocol();
 	private String[] visibilityGroups = new String[0];
 	private String location;
-	private boolean hidden = false;
 
 	public ProtocolBean() {
 		if (fileBean.getDomainFile() != null)
@@ -37,7 +36,7 @@ public class ProtocolBean {
 			if (domain.getAbbreviation() != null) {
 				displayName += " (" + domain.getAbbreviation() + ")";
 			}
-			displayName += "-" + domain.getVersion();
+			displayName += ", version " + domain.getVersion();
 		}
 		return displayName;
 	}
@@ -92,13 +91,5 @@ public class ProtocolBean {
 
 	public void setVisibilityGroups(String[] visibilityGroups) {
 		this.visibilityGroups = visibilityGroups;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
 	}
 }

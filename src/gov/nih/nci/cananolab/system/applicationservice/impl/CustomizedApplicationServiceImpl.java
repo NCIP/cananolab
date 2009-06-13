@@ -20,9 +20,9 @@ import org.springframework.aop.framework.Advised;
 
 /**
  * Customized to contain more CRUD operations.
- * 
+ *
  * @author pansu
- * 
+ *
  */
 public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 		implements CustomizedApplicationService {
@@ -159,26 +159,24 @@ public class CustomizedApplicationServiceImpl extends ApplicationServiceImpl
 	/**
 	 * Return a list of data (csm protected_group_name) marked public in the
 	 * database
-	 * 
+	 *
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> getPublicData() throws ApplicationException {
+	public List<String> getAllPublicData() throws ApplicationException {
 		List<String> publicData = new ArrayList<String>();
 		try {
 			String query = "select a.protection_group_name protection_group_name from csm_protection_group a, csm_role b, csm_user_group_role_pg c, csm_group d	"
 					+ "where a.protection_group_id=c.protection_group_id and b.role_id=c.role_id and c.group_id=d.group_id and "
 					+ "d.group_name='"
 					+ Constants.CSM_PUBLIC_GROUP
-					+ "' and b.role_name='"
-					+ Constants.CSM_READ_ROLE
-					+ "'";
+					+ "' and b.role_name='" + Constants.CSM_READ_ROLE + "'";
 
 			String[] columns = new String[] { "protection_group_name" };
 			Object[] columnTypes = new Object[] { Hibernate.STRING };
 			List results = directSQL(query, columns, columnTypes);
 			for (Object obj : results) {
-				if (obj!=null) {
+				if (obj != null) {
 					publicData.add(((String) obj));
 				}
 			}
