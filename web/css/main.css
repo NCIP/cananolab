@@ -828,7 +828,7 @@ div.logindiv {
 	border-width: 1px;
 	border-color: #cccccc;
 	border-style: solid;
-	vertical-align: middle;
+	vertical-align: top;
 }
 
 tr.gridTableHeader {
