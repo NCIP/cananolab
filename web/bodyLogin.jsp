@@ -48,7 +48,7 @@
 											Public Results
 										</th>
 									</tr>
-									<tr>
+									<tr align="left">
 										<td rowspan="3">
 											<select name="searchLocations" id="location" multiple="true"
 												size="4" onchange="getAllGridCounts(this);">
@@ -65,17 +65,17 @@
 										<td>
 											<table class="gridtableNoBorder">
 												<tr>
-													<td>
+													<td rowspan="2">
 														<a href="#" onclick="gotoProtocols('setup')">
 															<img src="images/icon_protocol_48x.jpg" style="border-style: none;" alt="Search Protocals"/>
 														</a>
 													</td>
 													<td>
-														<b>Protocols</b>&nbsp;( <a href="#" onclick="gotoProtocols('setup')">search</a> )
+														<a href="#" onclick="gotoProtocols('setup')"><b>Search Protocols</b></a>
 													</td>
 												</tr>
 												<tr>
-													<td colspan="2">
+													<td>
 														Search for nanotechnology protocols leveraged in performing
 														nanoparticle characterization assays.
 													</td>
@@ -91,17 +91,17 @@
 										<td>
 											<table class="gridtableNoBorder">
 												<tr>
-													<td>
+													<td rowspan="2">
 														<a href="#" onclick="gotoSamples('setup')">
 															<img src="images/icon_nanoparticle_48x.jpg" style="border-style: none;" alt="Search Samples"/>
 														</a>
 													</td>
 													<td>
-														<b>Samples</b>&nbsp;( <a href="#" onclick="gotoSamples('setup')">search</a> )
+														<a href="#" onclick="gotoSamples('setup')"><b>Search Samples</b></a>
 													</td>
 												</tr>
 												<tr>
-													<td colspan="2">
+													<td>
 														Search for information on nanoparticle formulations including
 														the composition of the particle, results of nanoparticle
 														physico-chemical, in vitro, and other characterizations, and
@@ -119,17 +119,17 @@
 										<td>
 											<table class="gridtableNoBorder">
 												<tr>
-													<td>
+													<td rowspan="2">
 														<a href="#" onclick="gotoPublications('setup')">
 															<img src="images/icon_report_48x.gif" style="border-style: none;" alt="Search Publications"/>
 														</a>
 													</td>
 													<td>
-														<b>Publications</b>&nbsp;( <a href="#" onclick="gotoPublications('setup')">search</a> )
+														<a href="#" onclick="gotoPublications('setup')"><b>Search Publications</b></a>
 													</td>
 												</tr>
 												<tr>
-													<td colspan="2">
+													<td>
 														Search for information on nanotechnology publications
 														including peer reviewed articles, reviews, and other types of
 														reports related to the use of nanotechnology in biomedicine.
