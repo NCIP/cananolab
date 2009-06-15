@@ -210,7 +210,7 @@
 			type="gov.nih.nci.cananolab.ui.sample.CharacterizationAction"
 			input="input" validate="true">
 			<forward name="input" path="sample.submitCharacterization" />
-			<forward name="success" path="sample.annotationMessage" />
+			<forward name="success" path="/characterization.do?dispatch=summaryEdit&amp;page=0" />
 			<forward name="summaryView"
 				path="sample.characterization.summaryView" />
 			<forward name="summaryEdit"

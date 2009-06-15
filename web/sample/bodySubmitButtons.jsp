@@ -9,8 +9,7 @@
 	<tr>
 		<td width="30%">
 			<c:choose>
-				<c:when
-					test="${!empty dataId && canDelete eq 'true'}">
+				<c:when	test="${!empty dataId && !empty user && user.admin && user.curator}">
 					<table height="32" border="0" align="left" cellpadding="4"
 						cellspacing="0">
 						<tr>
