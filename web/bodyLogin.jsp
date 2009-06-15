@@ -39,7 +39,7 @@
 								<table class="gridtable">
 									<tr class="gridTableHeader">
 										<th>
-											Location
+											Site
 										</th>
 										<th>
 											Data Type
@@ -284,7 +284,7 @@
 											Summary views of nanoparticle characterizations with print, export, and delete features 
 										</li>
 										<li>
-											Basic local and caBIG <sup>TM</sup> grid (caGrid) remote search functionality
+											Basic local and caBIG&reg; grid (caGrid) remote search functionality
 										</li>
 										<li>
 											Role-based security supporting user authentication and authorization 
