@@ -41,6 +41,10 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	private String valueUnit;
 
+	private String pubChemDataSourceName;
+
+	private String pubChemId;
+
 	private SmallMolecule smallMolecule = new SmallMolecule();
 
 	private Antibody antibody = new Antibody();
@@ -61,6 +65,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	private FunctionBean theFunction = new FunctionBean();
 
+	public FunctionalizingEntityBean() {
+	}
+
 	public FunctionalizingEntityBean(FunctionalizingEntity functionalizingEntity) {
 		description = functionalizingEntity.getDescription();
 		name = functionalizingEntity.getName();
@@ -68,6 +75,11 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		molecularFormulaType = functionalizingEntity.getMolecularFormulaType();
 		value = functionalizingEntity.getValue();
 		valueUnit = functionalizingEntity.getValueUnit();
+		pubChemDataSourceName = functionalizingEntity
+				.getPubChemDataSourceName();
+		if (functionalizingEntity.getPubChemId() != null) {
+			pubChemId = functionalizingEntity.getPubChemId().toString();
+		}
 		domainEntity = functionalizingEntity;
 		if (functionalizingEntity instanceof Antibody) {
 			antibody = (Antibody) functionalizingEntity;
@@ -257,7 +269,8 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		domainEntity.setName(name);
 		domainEntity.setValue(value);
 		domainEntity.setValueUnit(valueUnit);
-
+		domainEntity.setPubChemDataSourceName(pubChemDataSourceName);
+		domainEntity.setPubChemId(new Long(pubChemId));
 		if (activationMethod != null
 				&& ((activationMethod.getActivationEffect() != null && activationMethod
 						.getActivationEffect().trim().length() > 0) || (activationMethod
@@ -409,13 +422,20 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		functions.remove(function);
 	}
 
-	//used for DWR ajax in bodySubmitChemicalAssociation.jsp
+	// used for DWR ajax in bodySubmitChemicalAssociation.jsp
 	public String getDomainId() {
 		if (getDomainEntity().getId() != null) {
 			return getDomainEntity().getId().toString();
-		}
-		else {
+		} else {
 			return null;
 		}
+	}
+
+	public String getPubChemDataSourceName() {
+		return pubChemDataSourceName;
+	}
+
+	public String getPubChemId() {
+		return pubChemId;
 	}
 }
