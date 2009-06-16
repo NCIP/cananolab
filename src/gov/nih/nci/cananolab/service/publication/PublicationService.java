@@ -1,16 +1,14 @@
 package gov.nih.nci.cananolab.service.publication;
 
-import gov.nih.nci.cananolab.domain.common.Author;
-import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 
 import java.io.OutputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 
@@ -32,9 +30,8 @@ public interface PublicationService {
 	 *
 	 * @throws Exception
 	 */
-	public void savePublication(Publication publication,
-			String[] sampleNames, byte[] fileData, Collection<Author> authors)
-			throws PublicationException;
+	public void savePublication(PublicationBean publicationBean, UserBean user)
+			throws PublicationException, NoAccessException;
 
 	public List<PublicationBean> findPublicationsBy(String publicationTitle,
 			String publicationCategory, String sampleName,
@@ -44,31 +41,27 @@ public interface PublicationService {
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes)
-			throws PublicationException, SecurityException;
-
-	public PublicationBean findPublicationById(String publicationId)
+			String[] functionClassNames, String[] otherFunctionTypes, UserBean user)
 			throws PublicationException;
 
-	public Publication findDomainPublicationById(String publicationId)
-			throws PublicationException;
+	public PublicationBean findPublicationById(String publicationId,
+			UserBean user) throws PublicationException, NoAccessException;
 
 	public void exportDetail(PublicationBean aPub, OutputStream out)
 			throws PublicationException;
 
-	public List<PublicationBean> findPublicationsBySampleId(
-			String sampleId) throws PublicationException;
+	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
+			UserBean user) throws PublicationException;
 
 	public int getNumberOfPublicPublications() throws PublicationException;
 
-	public void removePublicationFromSample(Sample particle,
-			Long dataId) throws PublicationException;
+	public void removePublicationFromSample(Sample particle, Long dataId)
+			throws PublicationException, NoAccessException;
 
-	public void exportSummary(PublicationSummaryViewBean summaryBean, OutputStream out)
-			throws PublicationException;
+	public void exportSummary(PublicationSummaryViewBean summaryBean,
+			OutputStream out) throws PublicationException;
 
 	public SortedSet<String> findSampleNamesByPublicationId(
-			String publicationId) throws SampleException;
-
+			String publicationId, UserBean user) throws PublicationException;
 
 }

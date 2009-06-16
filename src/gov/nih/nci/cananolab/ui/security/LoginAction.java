@@ -2,7 +2,6 @@ package gov.nih.nci.cananolab.ui.security;
 
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.InvalidSessionException;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -19,9 +18,9 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
- * The LoginAction authenticates a user into the caLAB system.
+ * The LoginAction authenticates a user into the system.
  *
- * @author doswellj, pansu
+ * @author pansu
  */
 
 public class LoginAction extends Action {
@@ -41,8 +40,8 @@ public class LoginAction extends Action {
 
 		// Call CSM to authenticate the user.
 		LoginService loginservice = new LoginService(Constants.CSM_APP_NAME);
-		Boolean blnAuthenticated = loginservice.login(strLoginId, strPassword);
-		if (blnAuthenticated == true) {
+		UserBean user = loginservice.login(strLoginId, strPassword);
+		if (user != null) {
 			// check if the password is the initial password
 			// redirect to change password page
 			if (strLoginId.equals(strPassword)) {
@@ -52,41 +51,15 @@ public class LoginAction extends Action {
 				saveMessages(request, msgs);
 				return mapping.findForward("changePassword");
 			}
-			// Invalide the current session and create a new one
+			// Invalidate the current session and create a new one
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				session.invalidate();
 			}
-			session = request.getSession(true);
-
-			setUserSessionInfo(session, strLoginId);
-
+			request.getSession().setAttribute("user", user);
 			forward = mapping.findForward("success");
 			resetToken(request);
 		}
 		return forward;
-	}
-
-	private void setUserSessionInfo(HttpSession session, String loginName)
-			throws Exception {
-		AuthorizationService authorizationService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		UserBean user = authorizationService.getUserBean(loginName);
-		session.setAttribute("user", user);
-		session.setAttribute("userService", authorizationService);
-		boolean isCurator = authorizationService.isUserInGroup(user,
-				Constants.CSM_DATA_CURATOR);
-		if (isCurator) {
-			user.setCurator(true);
-		} else {
-			user.setCurator(false);
-		}
-		boolean isAdmin = authorizationService.isAdmin(user.getLoginName());
-		if (isAdmin) {
-			user.setAdmin(true);
-		}
-		else {
-			user.setAdmin(false);
-		}
 	}
 }

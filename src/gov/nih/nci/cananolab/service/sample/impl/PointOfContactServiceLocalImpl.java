@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
+import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.helper.PointOfContactServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -382,4 +383,31 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			throw new PointOfContactException(err, e);
 		}
 	}
+
+	/**
+	 * Persist a new sample or update an existing canano sample
+	 *
+	 * @param sample
+	 * @throws SampleException,
+	 *             DuplicateEntriesException
+	 */
+	public void saveOtherPOCs(Sample sample) throws PointOfContactException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			Sample dbSample = (Sample) appService.getObject(Sample.class,
+					"name", sample.getName());
+			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
+				throw new DuplicateEntriesException();
+			}
+			dbSample.setOtherPointOfContactCollection(sample
+					.getOtherPointOfContactCollection());
+			appService.saveOrUpdate(dbSample);
+		} catch (Exception e) {
+			String err = "Error in saving OtherPOCs.";
+			logger.error(err, e);
+			throw new PointOfContactException(err, e);
+		}
+	}
+
 }

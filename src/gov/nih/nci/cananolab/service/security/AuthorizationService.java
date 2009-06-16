@@ -17,19 +17,15 @@ import gov.nih.nci.security.authorization.domainobjects.ProtectionElement;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroup;
 import gov.nih.nci.security.authorization.domainobjects.ProtectionGroupRoleContext;
 import gov.nih.nci.security.authorization.domainobjects.Role;
-import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionElementSearchCriteria;
 import gov.nih.nci.security.dao.ProtectionGroupSearchCriteria;
 import gov.nih.nci.security.dao.RoleSearchCriteria;
 import gov.nih.nci.security.dao.SearchCriteria;
-import gov.nih.nci.system.applicationservice.ApplicationException;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -75,21 +71,15 @@ public class AuthorizationService {
 		}
 	}
 
-	public UserBean getUserBean(String userLogin) {
-		User user = this.authorizationManager.getUser(userLogin);
-		return new UserBean(user); // or
-		// userManger.getUser(userLoginId);
-	}
-
 	/**
 	 * Check whether the given user is the admin of the application.
 	 *
 	 * @param user
 	 * @return
 	 */
-	public boolean isAdmin(String user) {
-		boolean adminStatus = this.authorizationManager.checkOwnership(user,
-				this.applicationName);
+	public boolean isAdmin(UserBean user) {
+		boolean adminStatus = this.authorizationManager.checkOwnership(user
+				.getUserId(), this.applicationName);
 		return adminStatus;
 	}
 
@@ -178,10 +168,10 @@ public class AuthorizationService {
 	 */
 	public boolean checkReadPermission(UserBean user,
 			String protectionElementObjectId) throws Exception {
-		if (protectionElementObjectId==null) {
+		if (protectionElementObjectId == null) {
 			return false;
 		}
-		if (user==null) {
+		if (user == null) {
 			return isPublic(protectionElementObjectId);
 		}
 		return checkPermission(user, protectionElementObjectId,

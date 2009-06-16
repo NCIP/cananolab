@@ -1,16 +1,15 @@
 package gov.nih.nci.cananolab.service.publication.helper;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -30,6 +29,7 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -65,6 +65,16 @@ public class PublicationServiceHelper {
 	public static final String RESEARCH_CATEGORY = "Research Category";
 	public static final String CREATED_DATE = "Created Date";
 	public static final String PMID = "PMID: ";
+	private AuthorizationService authService;
+	private Logger logger = Logger.getLogger(PublicationServiceHelper.class);
+
+	public PublicationServiceHelper() {
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
 
 	public List<Publication> findPublicationsBy(String title, String category,
 			String sampleName, String[] researchArea, String[] keywords,
@@ -74,8 +84,8 @@ public class PublicationServiceHelper {
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
-			Boolean filterPublic) throws Exception {
-		AuthorizationService authService;
+			UserBean user) throws Exception {
+
 		SampleServiceHelper sampleServiceHelper = new SampleServiceHelper();
 
 		Set<String> samplePublicationIds = new HashSet<String>();
@@ -83,20 +93,17 @@ public class PublicationServiceHelper {
 		Set<String> otherPublicationIds = new HashSet<String>();
 		Set<String> allPublicationIds = new HashSet<String>();
 
-		// check if sample is public and whether to filter public data
-		if (sampleName != null && filterPublic) {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-			Boolean isPublic = authService.isPublic(sampleName);
-			if (!isPublic) {
-				return null;
-			} else {
-				Sample sample = sampleServiceHelper
-						.findSampleByName(sampleName);
+		// check if sample is accessible
+		if (sampleName != null) {
+			Sample sample = sampleServiceHelper.findSampleByName(sampleName,
+					user);
+			if (sample != null) {
 				for (Publication publication : sample
-						.getPublicationCollection())
+						.getPublicationCollection()) {
 					samplePublicationIds.add(publication.getId().toString());
+				}
+				allPublicationIds.addAll(samplePublicationIds);
 			}
-			allPublicationIds.addAll(samplePublicationIds);
 		}
 
 		if (nanomaterialEntityClassNames != null
@@ -110,7 +117,7 @@ public class PublicationServiceHelper {
 					nanomaterialEntityClassNames, otherNanomaterialEntityTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
-					otherFunctionTypes, null, null, null, filterPublic);
+					otherFunctionTypes, null, null, null, user);
 			for (Sample sample : samples) {
 				for (Publication publication : sample
 						.getPublicationCollection()) {
@@ -219,20 +226,21 @@ public class PublicationServiceHelper {
 		}
 
 		List filteredResults = new ArrayList(allPublicationIds);
-		if (filterPublic) {
-			authService = new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults = authService
-					.filterNonPublic((List) allPublicationIds);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(new ArrayList(
+					allPublicationIds));
 		}
 		List<Publication> publications = new ArrayList<Publication>();
 		for (Object obj : filteredResults) {
-			Publication publication = findPublicationById(obj.toString());
-			publications.add(publication);
+			Publication publication = findPublicationById(obj.toString(), user);
+			if (publication != null) {
+				publications.add(publication);
+			}
 		}
 		return publications;
 	}
 
-	public Publication findPublicationById(String publicationId)
+	public Publication findPublicationById(String publicationId, UserBean user)
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -246,6 +254,12 @@ public class PublicationServiceHelper {
 		Publication publication = null;
 		if (!result.isEmpty()) {
 			publication = (Publication) result.get(0);
+			if (authService.checkReadPermission(user, publication.getId()
+					.toString())) {
+				return publication;
+			} else {
+				throw new NoAccessException();
+			}
 		}
 		return publication;
 	}
@@ -559,8 +573,8 @@ public class PublicationServiceHelper {
 		}
 	}
 
-	public SortedSet<String> findSampleNamesByPublicationId(String publicationId)
-			throws Exception {
+	public SortedSet<String> findSampleNamesByPublicationId(
+			String publicationId, UserBean user) throws Exception {
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
 		crit.createAlias("publicationCollection", "pub").add(
 				Property.forName("pub.id").eq(new Long(publicationId)));
@@ -569,9 +583,50 @@ public class PublicationServiceHelper {
 		List results = appService.query(crit);
 		SortedSet<String> names = new TreeSet<String>();
 		for (Object obj : results) {
-			Sample particleSample = (Sample) obj;
-			names.add(particleSample.getName());
+			Sample sample = (Sample) obj;
+			if (authService.checkReadPermission(user, sample.getName())) {
+				names.add(sample.getName());
+			}
 		}
 		return names;
+	}
+
+	public List<Publication> findPublicationsBySampleId(String sampleId,
+			UserBean user) throws Exception {
+		List<Publication> publications = new ArrayList<Publication>();
+		Sample sample = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.authorCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("publicationCollection.keywordCollection",
+				FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+		}
+		List filteredResults = new ArrayList(new ArrayList(sample
+				.getPublicationCollection()));
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(new ArrayList(sample
+					.getPublicationCollection()));
+		}
+		for (Object obj : filteredResults) {
+			Publication pub = (Publication) obj;
+			if (user == null
+					|| authService.checkReadPermission(user, pub.getId()
+							.toString())) {
+				publications.add(pub);
+			}
+		}
+		return publications;
+	}
+
+	public AuthorizationService getAuthService() {
+		return authService;
 	}
 }

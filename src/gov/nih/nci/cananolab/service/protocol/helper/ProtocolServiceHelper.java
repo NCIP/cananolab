@@ -1,9 +1,8 @@
 package gov.nih.nci.cananolab.service.protocol.helper;
 
 import gov.nih.nci.cananolab.domain.common.Protocol;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.exception.ProtocolException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -30,6 +29,15 @@ import org.hibernate.criterion.Restrictions;
 public class ProtocolServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(ProtocolServiceHelper.class);
+	private AuthorizationService authService;
+
+	public ProtocolServiceHelper() {
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
 
 	public List<Protocol> findProtocolsBy(String protocolType,
 			String protocolName, String protocolAbbreviation, String fileTitle,
@@ -64,8 +72,6 @@ public class ProtocolServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 		List results = appService.query(crit);
 		List filteredResults = new ArrayList(results);
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
 		// get public data
 		if (user == null) {
 			filteredResults = authService.filterNonPublic(results);
@@ -73,8 +79,9 @@ public class ProtocolServiceHelper {
 		// get user allowed data
 		for (Object obj : filteredResults) {
 			Protocol protocol = (Protocol) obj;
-			if (authService.checkReadPermission(user, protocol.getId()
-					.toString())) {
+			if (user == null
+					|| authService.checkReadPermission(user, protocol.getId()
+							.toString())) {
 				protocols.add(protocol);
 			}
 		}
@@ -82,37 +89,32 @@ public class ProtocolServiceHelper {
 	}
 
 	public Protocol findProtocolBy(String protocolType, String protocolName,
-			String protocolVersion, UserBean user) throws ProtocolException {
-		try {
-			Protocol protocol = null;
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class)
-					.add(Property.forName("type").eq(protocolType)).add(
-							Property.forName("name").eq(protocolName)).add(
-							Property.forName("version").eq(protocolVersion));
-			crit.setFetchMode("file", FetchMode.JOIN);
-			crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-			List results = appService.query(crit);
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			// get user allowed data
-			if (results.isEmpty()) {
-				return null;
-			}
-			protocol = (Protocol) results.get(0);
-			if (authService.checkReadPermission(user, protocol.getId()
-					.toString())) {
-				return protocol;
-			} else {
-				return null;
-			}
-		} catch (Exception e) {
-			String err = "Problem finding protocol by name and type.";
-			logger.error(err, e);
-			throw new ProtocolException(err, e);
+			String protocolVersion, UserBean user) throws Exception {
+
+		Protocol protocol = null;
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Protocol.class).add(
+				Property.forName("type").eq(protocolType)).add(
+				Property.forName("name").eq(protocolName)).add(
+				Property.forName("version").eq(protocolVersion));
+		crit.setFetchMode("file", FetchMode.JOIN);
+		crit.setFetchMode("file.keywordCollection", FetchMode.JOIN);
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		List results = appService.query(crit);
+		// get user allowed data
+		if (results.isEmpty()) {
+			return null;
 		}
+		protocol = (Protocol) results.get(0);
+		if (authService.checkReadPermission(user, protocol.getId().toString())) {
+			return protocol;
+		} else {
+			throw new NoAccessException();
+		}
+	}
+
+	public AuthorizationService getAuthService() {
+		return authService;
 	}
 }

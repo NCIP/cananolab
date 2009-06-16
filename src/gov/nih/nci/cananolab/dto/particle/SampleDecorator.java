@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.dto.particle;
 
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 import gov.nih.nci.cananolab.util.StringUtils;
 
@@ -20,7 +21,7 @@ import org.displaytag.decorator.TableDecorator;
 public class SampleDecorator extends TableDecorator {
 	public SortableName getEditSampleURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
-		if (!sample.getLocation().equals("local")){
+		if (!sample.getLocation().equals(Constants.LOCAL_SITE)){
 			return getViewSampleURL();
 		}
 		String sampleId = sample.getDomain().getId()

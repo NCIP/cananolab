@@ -8,10 +8,7 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
-import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -39,12 +36,10 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
-		SampleService sampleService = new SampleServiceLocalImpl();
-		String sampleId = theForm.getString("sampleId");
+		String location = theForm.getString("location");
 		// need to load the full sample to save composition because of
-		// unidirectional relationship
-		// between composition and file
-		SampleBean sampleBean = sampleService.findFullSampleById(sampleId);
+		// unidirectional relationship between composition and file
+		SampleBean sampleBean = setupSample(theForm, request, location, true);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -55,19 +50,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		CompositionService service = new CompositionServiceLocalImpl();
-		service.saveCompositionFile(sampleBean.getDomain(), theFile
-				.getDomainFile());
-		// save to the file system
-		FileService fileService = new FileServiceLocalImpl();
-		fileService
-				.writeFile(theFile.getDomainFile(), theFile.getNewFileData());
-		// set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		authService.assignVisibility(
-				theFile.getDomainFile().getId().toString(), theFile
-						.getVisibilityGroups(), null);
-
+		service.saveCompositionFile(sampleBean.getDomain(), theFile, user);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
@@ -88,7 +71,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("compositionForm");
 		setLookups(request);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		setupSample(theForm, request, "local");
+		setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		return mapping.getInputForward();
 	}
 
@@ -99,38 +82,11 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		String fileId = request.getParameter("dataId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		FileService fileService = new FileServiceLocalImpl();
-		FileBean fileBean = fileService.findFileById(fileId);
-		fileService.retrieveVisibility(fileBean, user);
+		FileBean fileBean = fileService.findFileById(fileId, user);
 		CompositionBean compBean = (CompositionBean) theForm.get("comp");
 		compBean.setTheFile(fileBean);
 		setLookups(request);
-		setupSample(theForm, request, "local");
-		ActionForward forward = mapping.getInputForward();
-		return forward;
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		String fileId = request.getParameter("dataId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		FileService fileService = null;
-		if (location.equals("local")) {
-			fileService = new FileServiceLocalImpl();
-		}
-//		} else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			fileService = new FileServiceRemoteImpl(serviceUrl);
-//		}
-		FileBean fileBean = fileService.findFileById(fileId);
-		if (location.equals("local")) {
-			fileService.retrieveVisibility(fileBean, user);
-		}
-		theForm.set("compFile", fileBean);
-		setupSample(theForm, request, location);
+		setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		ActionForward forward = mapping.getInputForward();
 		return forward;
 	}
@@ -140,39 +96,17 @@ public class CompositionFileAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FileBean fileBean = (FileBean) theForm.get("compFile");
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteCompositionFile(sampleBean.getDomain(), fileBean
-				.getDomainFile());
+				.getDomainFile(), user);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.deleteCompositionFile");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
-	}
-
-	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String submitType = request.getParameter("submitType");
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		CompositionService compService = new CompositionServiceLocalImpl();
-		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		FileService fileService = new FileServiceLocalImpl();
-		for (String id : dataIds) {
-			FileBean fileBean = fileService.findFileById(id);
-			compService.deleteCompositionFile(sampleBean.getDomain(), fileBean
-					.getDomainFile());
-		}
-		ActionMessages msgs = new ActionMessages();
-		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
-				submitType);
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		ActionForward forward = mapping.findForward("success");
-		return forward;
 	}
 
 	public boolean loginRequired() {

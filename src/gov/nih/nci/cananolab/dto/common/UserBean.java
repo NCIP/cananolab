@@ -64,8 +64,23 @@ public class UserBean {
 
 	private boolean curator;
 
-	public UserBean(String loginName) {
-		this.loginName=loginName;
+	public UserBean(String loginName, String password) {
+		this.loginName = loginName;
+		this.password=password;
+	}
+
+	public UserBean(User user) {
+		this.department = user.getDepartment();
+		this.emailId = user.getEmailId();
+		this.firstName = user.getFirstName();
+		this.lastName = user.getLastName();
+		this.loginName = user.getLoginName();
+		this.organization = user.getOrganization();
+		this.password = user.getPassword();
+		this.phoneNumber = user.getPhoneNumber();
+		this.title = user.getTitle();
+		this.userId = user.getUserId().toString();
+		this.fullName = this.firstName + " " + this.lastName;
 	}
 
 	public String getDepartment() {
@@ -110,20 +125,6 @@ public class UserBean {
 
 	public String getFullName() {
 		return this.fullName;
-	}
-
-	public UserBean(User user) {
-		this.department = user.getDepartment();
-		this.emailId = user.getEmailId();
-		this.firstName = user.getFirstName();
-		this.lastName = user.getLastName();
-		this.loginName = user.getLoginName();
-		this.organization = user.getOrganization();
-		this.password = user.getPassword();
-		this.phoneNumber = user.getPhoneNumber();
-		this.title = user.getTitle();
-		this.userId = user.getUserId().toString();
-		this.fullName = this.firstName + " " + this.lastName;
 	}
 
 	public boolean isAdmin() {

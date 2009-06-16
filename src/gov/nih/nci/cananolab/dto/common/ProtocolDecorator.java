@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.dto.common;
 
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.io.UnsupportedEncodingException;
@@ -17,7 +18,7 @@ public class ProtocolDecorator extends TableDecorator {
 	public SortableName getEditURL() {
 		ProtocolBean protocol = (ProtocolBean) getCurrentRowObject();
 		FileBean file = protocol.getFileBean();
-		if (!file.getLocation().equals("local")) {
+		if (!file.getLocation().equals(Constants.LOCAL_SITE)) {
 			return getViewName();
 		}
 		// replace space with special char

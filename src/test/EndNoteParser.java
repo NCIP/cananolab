@@ -1,9 +1,12 @@
 /**
- * 
+ *
  */
 package test;
 
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.publication.EndNoteXMLHandler;
+import gov.nih.nci.cananolab.service.security.LoginService;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,71 +19,85 @@ import java.io.PrintStream;
 
 /**
  * @author tanq
- * 
+ *
  */
 public class EndNoteParser {
 	static boolean DEBUG = true;
-	
+
 	public static void main(String[] args) {
-		
-		//DEBUG
-//		System.setProperty("gov.nih.nci.security.configFile", "C:/project/java/workspace/caNanoLab/build/ApplicationSecurityConfig.xml");
-//		String inputFileName = "C:\\temp\\publication\\ShorterAllianceNoStyle.xml";
-//		String outputFileName = "C:\\temp\\publication\\AllianceOutput.txt";
-//		args = new String[2];
-//		args[0] = inputFileName;
-//		args[1] = outputFileName;			
-		//END OF DEBUG
-		
+
+		// DEBUG
+		// System.setProperty("gov.nih.nci.security.configFile",
+		// "C:/project/java/workspace/caNanoLab/build/ApplicationSecurityConfig.xml");
+		// String inputFileName =
+		// "C:\\temp\\publication\\ShorterAllianceNoStyle.xml";
+		// String outputFileName = "C:\\temp\\publication\\AllianceOutput.txt";
+		// args = new String[2];
+		// args[0] = inputFileName;
+		// args[1] = outputFileName;
+		// END OF DEBUG
+
 		String inputFileName = null;
 		String outputFileName = null;
-		PrintStream p = System.out; 
-		if (args != null){
-			if (args.length == 1) {
-				inputFileName = args[0];
-			}else if (args.length == 2) {
-				inputFileName = args[0];
-				outputFileName = args[1];
+		PrintStream p = System.out;
+		UserBean user = null;
+		if (args != null) {
+			String userLoginName = args[0];
+			String userPassword = args[1];
+			// Call CSM to authenticate the user.
+			try {
+				LoginService loginservice = new LoginService(
+						Constants.CSM_APP_NAME);
+				user = loginservice.login(userLoginName, userPassword);
+			} catch (Exception e) {
+				System.out.println("Can't log in the user");
+				e.printStackTrace();
+			}
+			if (args.length == 3) {
+				inputFileName = args[2];
+			} else if (args.length == 4) {
+				inputFileName = args[2];
+				outputFileName = args[3];
 				try {
 					p = new PrintStream(outputFileName);
-				}catch (IOException ex) {
+				} catch (IOException ex) {
 					System.out.println("Output File IO Exception!");
 					ex.printStackTrace();
 					return;
 				}
-			}else {
+			} else {
 				printHelpPage();
 				return;
 			}
 		} else {
-			printHelpPage();			
+			printHelpPage();
 			return;
-		}		
+		}
 		boolean isSuccess = false;
 		EndNoteXMLHandler endNotehandler = null;
-		try {			
+		try {
 			File dFile = new File(inputFileName);
 			InputStream inputStream = new FileInputStream(dFile);
 			endNotehandler = new EndNoteXMLHandler(inputStream, p);
-			isSuccess = endNotehandler.parsePublicationXML();
+			isSuccess = endNotehandler.parsePublicationXML(user);
 		} catch (Exception ex) {
 			isSuccess = false;
 			ex.printStackTrace();
-		}finally {
-			if (p!=null && outputFileName!=null) {
+		} finally {
+			if (p != null && outputFileName != null) {
 				p.close();
 			}
-		}			
+		}
 		System.exit(0);
 	}
-	
+
 	private static void printHelpPage() {
 		System.out.println("Invalid argument!");
 		System.out.println("java EndnoteParser <inputFileName> [outputLog]");
-		System.out.println("Optional: outputLog");	
+		System.out.println("Optional: outputLog");
 	}
 
-	//NOT IN USED
+	// NOT IN USED
 	public static void replaceTokens(String filePath)
 			throws java.io.IOException {
 		StringBuffer fileData = new StringBuffer(1000);

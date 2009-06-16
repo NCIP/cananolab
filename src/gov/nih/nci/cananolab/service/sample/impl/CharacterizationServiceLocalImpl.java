@@ -1,21 +1,32 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
+import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.Finding;
+import gov.nih.nci.cananolab.domain.common.Instrument;
+import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
-import gov.nih.nci.cananolab.exception.SecurityException;
+import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.common.FileService;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
@@ -23,7 +34,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -34,7 +48,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving local characterizations
@@ -42,18 +58,23 @@ import org.hibernate.criterion.Property;
  * @author tanq, pansu
  *
  */
-public class CharacterizationServiceLocalImpl extends
-		CharacterizationServiceBaseImpl implements CharacterizationService {
+public class CharacterizationServiceLocalImpl implements
+		CharacterizationService {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceLocalImpl.class);
+	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
 
 	public CharacterizationServiceLocalImpl() {
-		fileService = new FileServiceLocalImpl();
 	}
 
-	public void saveCharacterization(Sample sample, Characterization achar)
-			throws Exception {
+	public void saveCharacterization(Sample sample,
+			CharacterizationBean charBean, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
 		try {
+			Characterization achar = charBean.getDomainChar();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			if (achar.getId() != null) {
@@ -73,9 +94,26 @@ public class CharacterizationServiceLocalImpl extends
 			// }
 			achar.setSample(sample);
 			// sample.getCharacterizationCollection().add(achar);
+
+			// save file data to file system and assign visibility
+			FileService fileService = new FileServiceLocalImpl();
+			for (FindingBean findingBean : charBean.getFindings()) {
+				for (FileBean fileBean : findingBean.getFiles()) {
+					fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+					fileService.writeFile(fileBean, user);
+				}
+			}
 			appService.saveOrUpdate(achar);
-		} catch (DuplicateEntriesException e) {
-			throw e;
+
+			// set public visibility
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			List<String> accessibleGroups = authService.getAccessibleGroups(
+					sample.getName(), Constants.CSM_READ_PRIVILEGE);
+			if (accessibleGroups != null
+					&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
+				helper.assignPublicVisibility(charBean.getDomainChar());
+			}
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
 			logger.error(err, e);
@@ -83,21 +121,62 @@ public class CharacterizationServiceLocalImpl extends
 		}
 	}
 
-	public Characterization findCharacterizationById(String charId)
-			throws CharacterizationException {
+	public CharacterizationBean findCharacterizationById(String charId,
+			UserBean user) throws CharacterizationException {
 		try {
-			Characterization achar = helper.findCharacterizationById(charId);
-			return achar;
+			Characterization achar = null;
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(
+					Characterization.class).add(
+					Property.forName("id").eq(new Long(charId)));
+			// fully load characterization
+			crit.setFetchMode("sample", FetchMode.JOIN);
+			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
+			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
+			crit.setFetchMode("protocol", FetchMode.JOIN);
+			crit.setFetchMode("protocol.file", FetchMode.JOIN);
+			crit
+					.setFetchMode("protocol.file.keywordCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+			crit.setFetchMode("experimentConfigCollection.technique",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"experimentConfigCollection.instrumentCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("findingCollection", FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.datumCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.datumCollection.conditionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("findingCollection.fileCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"findingCollection.fileCollection.keywordCollection",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			List result = appService.query(crit);
+			CharacterizationBean charBean = null;
+			if (!result.isEmpty()) {
+				achar = (Characterization) result.get(0);
+				// if (helper.getAuthService().checkReadPermission(user,
+				// achar.getSample().getName())) {
+				// charBean = new CharacterizationBean(achar);
+				// }
+				// else {
+				throw new NoAccessException();
+				// }
+			}
+			return charBean;
 		} catch (Exception e) {
 			logger.error("Problem finding the characterization by id: "
 					+ charId, e);
 			throw new CharacterizationException();
 		}
-	}
-
-	public Characterization findCharacterizationById(String charId,
-			String className) throws CharacterizationException {
-		return findCharacterizationById(charId);
 	}
 
 	// private Boolean checkRedundantViewTitle(Sample
@@ -137,7 +216,7 @@ public class CharacterizationServiceLocalImpl extends
 	// }
 	// }
 
-	public SortedSet<String> findAllCharacterizationSources()
+	public SortedSet<String> findAllCharacterizationSources(UserBean user)
 			throws CharacterizationException {
 		SortedSet<String> sources = new TreeSet<String>();
 
@@ -165,53 +244,27 @@ public class CharacterizationServiceLocalImpl extends
 		return sources;
 	}
 
-	protected List<Characterization> findSampleCharacterizationsByClass(
-			String particleName, String className)
-			throws CharacterizationException {
-
+	private void retrieveFilesVisibilities(Collection<FileBean> fileBeans,
+			UserBean user) throws CompositionException {
 		try {
-			List<Characterization> charList = helper
-					.findSampleCharacterizationsByClass(particleName, className);
-			Collections.sort(charList,
-					new Comparators.CharacterizationDateComparator());
-			return charList;
-		} catch (Exception e) {
-			String err = "Error getting " + particleName
-					+ " characterizations of type " + className;
-			logger.error(err, e);
-			throw new CharacterizationException(err, e);
-		}
-	}
-
-	// set lab file visibility of a characterization
-	public void retrieveVisiblity(CharacterizationBean charBean, UserBean user)
-			throws CharacterizationException {
-		try {
-			for (FindingBean finding : charBean.getFindings()) {
-				for (FileBean file : finding.getFiles()) {
-					fileService.retrieveVisibility(file,
-							user);
-				}
+			FileServiceHelper fileServiceHelper = new FileServiceHelper();
+			for (FileBean fileBean : fileBeans) {
+				fileServiceHelper.retrieveVisibility(fileBean, user);
 			}
-			fileService.retrieveVisibility(charBean.getProtocolBean()
-					.getFileBean(), user);
 		} catch (Exception e) {
-			String err = "Error setting visiblity for characterization "
-					+ charBean.getDomainChar().getId();
+			String err = "Error setting visiblity for files ";
 			logger.error(err, e);
-			throw new CharacterizationException(err, e);
+			throw new CompositionException(err, e);
 		}
 	}
 
-	public void deleteCharacterization(Characterization chara)
-			throws CharacterizationException {
+	public void deleteCharacterization(Characterization chara, UserBean user)
+			throws CharacterizationException, NoAccessException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			removePublicVisibility(authService, chara);
 			appService.delete(chara);
+			helper.removePublicVisibility(chara);
 
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
@@ -220,8 +273,8 @@ public class CharacterizationServiceLocalImpl extends
 		}
 	}
 
-	public List<CharacterizationBean> findCharsBySampleId(String sampleId)
-			throws CharacterizationException {
+	public List<CharacterizationBean> findCharsBySampleId(String sampleId,
+			UserBean user) throws CharacterizationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -234,7 +287,9 @@ public class CharacterizationServiceLocalImpl extends
 			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 			crit.setFetchMode("protocol", FetchMode.JOIN);
 			crit.setFetchMode("protocol.file", FetchMode.JOIN);
-			crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
+			crit
+					.setFetchMode("protocol.file.keywordCollection",
+							FetchMode.JOIN);
 			crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 			crit.setFetchMode("experimentConfigCollection.technique",
 					FetchMode.JOIN);
@@ -269,103 +324,302 @@ public class CharacterizationServiceLocalImpl extends
 		}
 	}
 
-	public void assignPublicVisibility(AuthorizationService authService,
-			Characterization aChar) throws SecurityException {
-		// characterization
-		if (aChar != null) {
-			authService.assignPublicVisibility(aChar.getId().toString());
-			// char.derivedBioAssayDataCollection
-			// Collection<DerivedBioAssayData> derivedBioAssayDataCollection =
-			// aChar
-			// .getDerivedBioAssayDataCollection();
-			// if (derivedBioAssayDataCollection != null) {
-			// for (DerivedBioAssayData aDerived :
-			// derivedBioAssayDataCollection) {
-			// if (aDerived != null) {
-			// authService.assignPublicVisibility(aDerived.getId()
-			// .toString());
-			// }
-			// // derived.derivedDatum
-			// Collection<DerivedDatum> derivedDatumCollection = aDerived
-			// .getDerivedDatumCollection();
-			// if (derivedDatumCollection != null) {
-			// for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
-			// if (aDerivedDatum != null) {
-			// authService
-			// .assignPublicVisibility(aDerivedDatum
-			// .getId().toString());
-			// }
-			// }
-			// }
-			// }
-			// }
-
-			// TODO visiblity for instrument and technique
-			// // InstrumentConfiguration
-			// if (aChar.getInstrumentConfiguration() != null) {
-			// authService.assignPublicVisibility(aChar
-			// .getInstrumentConfiguration().getId().toString());
-			// // InstrumentConfiguration.Instrument
-			// if (aChar.getInstrumentConfiguration().getInstrument() != null) {
-			// authService.assignPublicVisibility(aChar
-			// .getInstrumentConfiguration().getInstrument()
-			// .getId().toString());
-			// }
-			// }
+	public FindingBean findFindingById(String findingId, UserBean user)
+			throws CharacterizationException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Finding.class)
+					.add(Property.forName("id").eq(new Long(findingId)));
+			crit.setFetchMode("datumCollection", FetchMode.JOIN);
+			crit.setFetchMode("datumCollection.conditionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("fileCollection", FetchMode.JOIN);
+			crit.setFetchMode("fileCollection.keywordCollection",
+					FetchMode.JOIN);
+			List result = appService.query(crit);
+			Finding finding = null;
+			FindingBean findingBean = null;
+			if (!result.isEmpty()) {
+				finding = (Finding) result.get(0);
+				findingBean = new FindingBean(finding);
+			}
+			return findingBean;
+		} catch (Exception e) {
+			String err = "Error getting finding of ID " + findingId;
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
 		}
 	}
 
-	public void removePublicVisibility(AuthorizationService authService,
-			Characterization aChar) throws SecurityException {
-		if (aChar != null) {
-			authService.removePublicVisibility(aChar.getId().toString());
-			// char.derivedBioAssayDataCollection
-			// Collection<DerivedBioAssayData> derivedBioAssayDataCollection =
-			// aChar
-			// .getDerivedBioAssayDataCollection();
-			// if (derivedBioAssayDataCollection != null) {
-			// for (DerivedBioAssayData aDerived :
-			// derivedBioAssayDataCollection) {
-			// if (aDerived != null) {
-			// authService.removePublicGroup(aDerived.getId()
-			// .toString());
-			// }
-			// // derived.derivedDatum
-			// Collection<DerivedDatum> derivedDatumCollection = aDerived
-			// .getDerivedDatumCollection();
-			// if (derivedDatumCollection != null) {
-			// for (DerivedDatum aDerivedDatum : derivedDatumCollection) {
-			// if (aDerivedDatum != null) {
-			// authService.removePublicGroup(aDerivedDatum
-			// .getId().toString());
-			// }
-			// }
-			// }
-			// }
-			// }
-			// TODO remove visibility for instrument and technique
-			// InstrumentConfiguration
-			// InstrumentConfiguration instrumentConfiguration = aChar
-			// .getInstrumentConfiguration();
-			// if (instrumentConfiguration != null) {
-			// authService.removePublicGroup(instrumentConfiguration.getId()
-			// .toString());
-			// // InstrumentConfiguration.Instrument
-			// if (instrumentConfiguration.getInstrument() != null) {
-			// authService.removePublicGroup(aChar
-			// .getInstrumentConfiguration().getInstrument()
-			// .getId().toString());
-			// }
-			// }
+	public void saveFinding(FindingBean finding, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
 		}
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// save file data to file system and assign visibility
+			FileService fileService = new FileServiceLocalImpl();
+			for (FileBean fileBean : finding.getFiles()) {
+				fileService.prepareSaveFile(fileBean.getDomainFile(), user);
+				fileService.writeFile(fileBean, user);
+			}
+			appService.saveOrUpdate(finding);
+			// TODO assign visibility
+
+		} catch (Exception e) {
+			String err = "Error saving characterization result finding. ";
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
+		}
+	}
+
+	public void deleteFinding(Finding finding, UserBean user)
+			throws CharacterizationException, NoAccessException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			AuthorizationService authService = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			authService.removePublicVisibility(finding.getId().toString());
+			appService.delete(finding);
+
+		} catch (Exception e) {
+			String err = "Error deleting finding " + finding.getId();
+			logger.error(err, e);
+			throw new CharacterizationException(err, e);
+		}
+	}
+
+	public void saveExperimentConfig(ExperimentConfigBean configBean,
+			UserBean user) throws ExperimentConfigException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
+		try {
+			ExperimentConfig config = configBean.getDomain();
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// get existing createdDate and createdBy
+			if (config.getId() != null) {
+				ExperimentConfig dbConfig = helper.findExperimentConfigById(
+						config.getId().toString(), user);
+				if (dbConfig != null) {
+					config.setCreatedBy(dbConfig.getCreatedBy());
+					config.setCreatedDate(dbConfig.getCreatedDate());
+				}
+			}
+			Technique technique = config.getTechnique();
+			// check if technique already exists;
+			Technique dbTechnique = findTechniqueByType(technique.getType());
+			if (dbTechnique != null) {
+				technique.setId(dbTechnique.getId());
+				technique.setCreatedBy(dbTechnique.getCreatedBy());
+				technique.setCreatedDate(dbTechnique.getCreatedDate());
+			} else {
+				technique.setCreatedBy(config.getCreatedBy());
+				technique.setCreatedDate(new Date());
+			}
+			// check if instrument already exists;
+			if (config.getInstrumentCollection() != null) {
+				Collection<Instrument> instruments = new HashSet<Instrument>(
+						config.getInstrumentCollection());
+				config.setInstrumentCollection(new HashSet<Instrument>());
+				int i = 0;
+				for (Instrument instrument : instruments) {
+					Instrument dbInstrument = findInstrumentBy(instrument
+							.getType(), instrument.getManufacturer(),
+							instrument.getModelName());
+					if (dbInstrument != null) {
+						instrument.setId(dbInstrument.getId());
+						instrument.setCreatedBy(dbInstrument.getCreatedBy());
+						instrument
+								.setCreatedDate(dbInstrument.getCreatedDate());
+					} else {
+						instrument.setId(null);
+					}
+					config.getInstrumentCollection().add(instrument);
+				}
+			}
+			appService.saveOrUpdate(config);
+
+			// TODO assign visibility
+
+		} catch (Exception e) {
+			String err = "Error in saving the technique and associated instruments.";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err, e);
+		}
+	}
+
+	public void deleteExperimentConfig(ExperimentConfig config, UserBean user)
+			throws ExperimentConfigException, NoAccessException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			// get existing createdDate and createdBy
+			if (config.getId() != null) {
+				ExperimentConfig dbConfig = helper.findExperimentConfigById(
+						config.getId().toString(), user);
+				if (dbConfig != null) {
+					config.setCreatedBy(dbConfig.getCreatedBy());
+					config.setCreatedDate(dbConfig.getCreatedDate());
+				}
+			}
+			Technique technique = config.getTechnique();
+			// check if technique already exists;
+			Technique dbTechnique = findTechniqueByType(technique.getType());
+			if (dbTechnique != null) {
+				technique.setId(dbTechnique.getId());
+				technique.setCreatedBy(dbTechnique.getCreatedBy());
+				technique.setCreatedDate(dbTechnique.getCreatedDate());
+			} else {
+				technique.setCreatedBy(config.getCreatedBy());
+				technique.setCreatedDate(new Date());
+				// need to save the transient object before deleting the
+				// experiment config
+				appService.saveOrUpdate(technique);
+			}
+			// check if instrument already exists;
+			if (config.getInstrumentCollection() != null) {
+				Collection<Instrument> instruments = new HashSet<Instrument>(
+						config.getInstrumentCollection());
+				config.getInstrumentCollection().clear();
+				int i = 0;
+				for (Instrument instrument : instruments) {
+					Instrument dbInstrument = findInstrumentBy(instrument
+							.getType(), instrument.getManufacturer(),
+							instrument.getModelName());
+					if (dbInstrument != null) {
+						instrument.setId(dbInstrument.getId());
+						instrument.setCreatedBy(dbInstrument.getCreatedBy());
+						instrument
+								.setCreatedDate(dbInstrument.getCreatedDate());
+					} else {
+						instrument.setCreatedBy(config.getCreatedBy());
+						instrument.setCreatedDate(DateUtils
+								.addSecondsToCurrentDate(i));
+						// need to save the transient object before deleting the
+						// experiment config
+						appService.saveOrUpdate(instrument);
+					}
+					config.getInstrumentCollection().add(instrument);
+				}
+			}
+
+			appService.delete(config);
+		} catch (Exception e) {
+			String err = "Error in deleting the technique and associated instruments";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err, e);
+		}
+	}
+
+	public List<Technique> findAllTechniques() throws ExperimentConfigException {
+		List<Technique> techniques = new ArrayList<Technique>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class);
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				Technique technique = (Technique) obj;
+				techniques.add(technique);
+			}
+			Collections.sort(techniques, new Comparators.TechniqueComparator());
+		} catch (Exception e) {
+			String err = "Problem to retrieve all techniques.";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err);
+		}
+		return techniques;
+	}
+
+	public List<String> getAllManufacturers() throws ExperimentConfigException {
+		List<String> manufacturers = new ArrayList<String>();
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
+					.setProjection(
+							Projections.distinct(Property
+									.forName("manufacturer")));
+			;
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				String manufacturer = (String) obj;
+				if (manufacturer != null && manufacturer.trim().length() > 0) {
+					manufacturers.add(manufacturer);
+				}
+			}
+			Collections.sort(manufacturers);
+		} catch (Exception e) {
+			String err = "Problem to retrieve all manufacturers.";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err);
+		}
+		return manufacturers;
+	}
+
+	public Technique findTechniqueByType(String type)
+			throws ExperimentConfigException {
+		Technique technique = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class)
+					.add(Property.forName("type").eq(new String(type)));
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				technique = (Technique) obj;
+			}
+		} catch (Exception e) {
+			String err = "Problem to retrieve technique by type.";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err);
+		}
+		return technique;
+	}
+
+	public Instrument findInstrumentBy(String type, String manufacturer,
+			String modelName) throws ExperimentConfigException {
+		Instrument instrument = null;
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class);
+			if (type != null && type.length() > 0) {
+				crit.add(Restrictions.eq("type", type));
+			}
+			if (manufacturer != null && manufacturer.length() > 0) {
+				crit.add(Restrictions.eq("manufacturer", manufacturer));
+			}
+			if (modelName != null && modelName.length() > 0) {
+				crit.add(Restrictions.eq("modelName", modelName));
+			}
+			List results = appService.query(crit);
+			for (Object obj : results) {
+				instrument = (Instrument) obj;
+			}
+		} catch (Exception e) {
+			String err = "Problem to retrieve instrument by type, manufacturer, and model name.";
+			logger.error(err, e);
+			throw new ExperimentConfigException(err);
+		}
+		return instrument;
 	}
 
 	/**
 	 * Export sample characterization summary report as Excel spread sheet.
 	 *
-	 * @param summaryBean CharacterizationSummaryViewBean
-	 * @param out OutputStream
-	 * @throws IOException if error occurred.
+	 * @param summaryBean
+	 *            CharacterizationSummaryViewBean
+	 * @param out
+	 *            OutputStream
+	 * @throws IOException
+	 *             if error occurred.
 	 */
 	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
 			HttpServletRequest request, OutputStream out)

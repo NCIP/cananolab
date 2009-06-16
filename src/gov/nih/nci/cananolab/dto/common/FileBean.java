@@ -242,4 +242,8 @@ public class FileBean {
 		}
 		return eq;
 	}
+
+	public void setNewFileData(byte[] newFileData) {
+		this.newFileData = newFileData;
+	}
 }

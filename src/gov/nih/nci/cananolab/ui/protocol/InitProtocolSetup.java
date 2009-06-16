@@ -13,7 +13,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 /**
  * This class sets up session level or servlet context level variables to be

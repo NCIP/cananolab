@@ -110,15 +110,17 @@ public class InitSampleSetup {
 
 	public SortedSet<String> getAllSampleNames(HttpServletRequest request)
 			throws Exception {
-		SortedSet<String> sampleNames = sampleService.findAllSampleNames();
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		SortedSet<String> sampleNames = sampleService.findAllSampleNames(user);
 		request.getSession().setAttribute("allSampleNames", sampleNames);
 		return sampleNames;
 	}
 
 	public SortedSet<SortableName> getOtherSampleNames(
 			HttpServletRequest request, String sampleId) throws Exception {
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		SortedSet<SortableName> names = sampleService
-				.findOtherSamplesFromSamePointOfContact(sampleId);
+				.findOtherSamplesFromSamePointOfContact(sampleId, user);
 		request.getSession().setAttribute("otherSampleNames", names);
 		return names;
 	}

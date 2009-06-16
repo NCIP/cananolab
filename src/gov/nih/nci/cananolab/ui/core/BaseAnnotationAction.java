@@ -6,17 +6,13 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.FileException;
-import gov.nih.nci.cananolab.exception.InvalidSessionException;
-import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
-import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 
@@ -59,7 +55,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 *             particle.
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
-			HttpServletRequest request, String location) throws Exception {
+			HttpServletRequest request, String location, Boolean fullSample)
+			throws Exception {
 		String sampleId = request.getParameter("sampleId");
 		if (sampleId != null) {
 			theForm.set("sampleId", sampleId);
@@ -72,40 +69,32 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		SampleService service = null;
-		if (location.equals(Constants.LOCAL)) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			service = new SampleServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 					request, location);
 			service = new SampleServiceRemoteImpl(serviceUrl);
 		}
-		SampleBean sampleBean = service.findSampleById(sampleId);
-		if (location.equals(Constants.LOCAL)) {
-			// check access privilege
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			boolean access = auth.checkReadPermission(user, sampleBean
-					.getDomain().getName());
-			if (!access) {
-				if (user != null) {
-					request.getSession().removeAttribute("user");
-				}
-				throw new NoAccessException(
-						"You don't have the required privileges to access this sample");
-			}
+		SampleBean sampleBean = null;
+		if (fullSample) {
+			sampleBean = service.findFullSampleById(sampleId, user);
+		} else {
+			sampleBean = service.findSampleById(sampleId, user);
 		}
-		sampleBean.setLocation(location);
+		if (sampleBean != null) {
+			sampleBean.setLocation(location);
+		}
 		request.setAttribute("theSample", sampleBean);
 		return sampleBean;
 	}
 
-	protected void saveFilesToFileSystem(List<FileBean> files) throws Exception {
+	protected void saveFilesToFileSystem(List<FileBean> files, UserBean user)
+			throws Exception {
 		// save file data to file system and set visibility
 		FileService fileService = new FileServiceLocalImpl();
 		for (FileBean fileBean : files) {
-			fileService.writeFile(fileBean.getDomainFile(), fileBean
-					.getNewFileData());
-			fileService.assignVisibility(fileBean);
+			fileService.writeFile(fileBean, user);
 		}
 	}
 
@@ -118,47 +107,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				Constants.CSM_PG_PARTICLE);
 	}
 
-	public ActionForward setupDeleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String submitType = request.getParameter("submitType");
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		// TODO add implementation detail
-		return mapping.findForward("annotationDeleteView");
-	}
-
 	// check for cases where delete can't happen
 	protected boolean checkDelete(HttpServletRequest request,
 			ActionMessages msgs, String id) throws Exception {
 		return true;
-	}
-
-	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String submitType = request.getParameter("submitType");
-		String className = InitSetup.getInstance().getClassName(submitType,
-				request.getSession().getServletContext());
-		String fullClassName = ClassUtils.getFullClass(className)
-				.getCanonicalName();
-
-		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		SampleService sampleService = new SampleServiceLocalImpl();
-		ActionMessages msgs = new ActionMessages();
-		for (String id : dataIds) {
-			if (!checkDelete(request, msgs, id)) {
-				return mapping.findForward("annotationDeleteView");
-			}
-			sampleService.deleteAnnotationById(fullClassName, new Long(id));
-		}
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		ActionMessage msg = new ActionMessage("message.deleteAnnotations",
-				submitType);
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		return mapping.findForward("success");
 	}
 
 	/**
@@ -178,7 +130,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String remoteServerHostUrl = "";
 		FileBean fileBean = null;
 		String serviceUrl = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			fileService = new FileServiceLocalImpl();
 		}
 		// CQL2HQL filters out subclasses, disabled the filter
@@ -195,7 +147,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				return null;
 			}
 		}
-		if (!location.equals("local")) {
+		if (!location.equals(Constants.LOCAL_SITE)) {
 			// assume grid service is located on the same server and port as
 			// webapp
 			URL localURL = new URL(request.getRequestURL().toString());
@@ -252,9 +204,10 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		Sample[] samples = new Sample[otherSamples.length];
 		SampleService sampleService = new SampleServiceLocalImpl();
 		int i = 0;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (String other : otherSamples) {
-			Sample sample = sampleService.findSampleByName(other);
-			samples[i] = sample;
+			SampleBean sampleBean = sampleService.findSampleByName(other, user);
+			samples[i] = sampleBean.getDomain();
 			i++;
 		}
 		return samples;
@@ -320,21 +273,5 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			}
 		}
 		return noErrors;
-	}
-
-	public void checkVisibility(HttpServletRequest request, String location,
-			UserBean user, FileBean fileBean) throws Exception {
-		if (location.equals("local")) {
-			FileService fileService = new FileServiceLocalImpl();
-			fileService.retrieveVisibility(fileBean, user);
-			if (fileBean.isHidden()) {
-				if (user != null) {
-					request.getSession().removeAttribute("user");
-					throw new NoAccessException();
-				} else {
-					throw new InvalidSessionException();
-				}
-			}
-		}
 	}
 }

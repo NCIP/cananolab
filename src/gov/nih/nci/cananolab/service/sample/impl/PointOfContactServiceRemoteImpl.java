@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.sample.impl;
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
@@ -76,6 +77,10 @@ public class PointOfContactServiceRemoteImpl implements PointOfContactService {
 
 	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId)
 			throws PointOfContactException {
+		throw new PointOfContactException("not implemented for grid service.");
+	}
+
+	public void saveOtherPOCs(Sample sample) throws PointOfContactException {
 		throw new PointOfContactException("not implemented for grid service.");
 	}
 }

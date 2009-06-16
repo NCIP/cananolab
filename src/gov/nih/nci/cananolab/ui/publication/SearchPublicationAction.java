@@ -1,13 +1,10 @@
 package gov.nih.nci.cananolab.ui.publication;
 
-import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -117,7 +114,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		if (invokeMethod != null && invokeMethod.equals("back")) {
 			title = (String) session.getAttribute("docTitle");
 			category = (String) session.getAttribute("docCategory");
-			String keywordsStr = (String) session.getAttribute("docKeywordsStr");
+			String keywordsStr = (String) session
+					.getAttribute("docKeywordsStr");
 			pubMedId = (String) session.getAttribute("docPubMedId");
 			digitalObjectId = (String) session
 					.getAttribute("docDigitalObjectId");
@@ -187,59 +185,35 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 		}
 
-		List<FileBean> foundPublications = new ArrayList<FileBean>();
+		List<PublicationBean> publications = null;
 
 		// Publication
 		PublicationService publicationService = null;
 		for (String location : searchLocations) {
-			if (location.equals("local")) {
+			if (location.equals(Constants.LOCAL_SITE)) {
 				publicationService = new PublicationServiceLocalImpl();
 			}
-//			else {
-//				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//						request, location);
-//				publicationService = new PublicationServiceRemoteImpl(
-//						serviceUrl);
-//			}
-			List<PublicationBean> publications = publicationService
-					.findPublicationsBy(
-							title,
-							category,
-							sampleName,
-							researchAreas,
-							keywords,
-							pubMedId,
-							digitalObjectId,
-							authors,
-							nanomaterialEntityClassNames.toArray(new String[0]),
-							otherNanomaterialEntityTypes.toArray(new String[0]),
-							functionalizingEntityClassNames
-									.toArray(new String[0]),
-							otherFunctionalizingTypes.toArray(new String[0]),
-							functionClassNames.toArray(new String[0]),
-							otherFunctionTypes.toArray(new String[0]));
+			// else {
+			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+			// request, location);
+			// publicationService = new PublicationServiceRemoteImpl(
+			// serviceUrl);
+			// }
+			publications = publicationService.findPublicationsBy(title,
+					category, sampleName, researchAreas, keywords, pubMedId,
+					digitalObjectId, authors, nanomaterialEntityClassNames
+							.toArray(new String[0]),
+					otherNanomaterialEntityTypes.toArray(new String[0]),
+					functionalizingEntityClassNames.toArray(new String[0]),
+					otherFunctionalizingTypes.toArray(new String[0]),
+					functionClassNames.toArray(new String[0]),
+					otherFunctionTypes.toArray(new String[0]), user);
 			for (PublicationBean publication : publications) {
 				publication.setLocation(location);
 			}
-
-			if (location.equals("local")) {
-				List<FileBean> filteredPublications = new ArrayList<FileBean>();
-				// retrieve visibility
-				FileService fileService = new FileServiceLocalImpl();
-				for (PublicationBean publication : publications) {
-					fileService.retrieveVisibility(publication, user);
-					if (!publication.isHidden()) {
-						filteredPublications.add((PublicationBean) publication);
-					}
-				}
-				foundPublications.addAll(filteredPublications);
-			} else {
-				foundPublications.addAll(publications);
-			}
 		}
-		if (foundPublications != null && !foundPublications.isEmpty()) {
-			request.getSession()
-					.setAttribute("publications", foundPublications);
+		if (publications != null && !publications.isEmpty()) {
+			request.getSession().setAttribute("publications", publications);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -259,14 +233,14 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		InitSetup.getInstance().getGridNodesInContext(request);
 		;
 
-		String[] selectedLocations = new String[] { "local" };
+		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
 			selectedLocations = gridNodeHostStr.split("~");
 		}
 
-		if ("local".equals(selectedLocations[0])
+		if (Constants.LOCAL_SITE.equals(selectedLocations[0])
 				&& selectedLocations.length == 1) {
 			InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
 		} else {
@@ -296,34 +270,35 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		String fileId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			return super.download(mapping, form, request, response);
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			PublicationService publicationService = new PublicationServiceRemoteImpl(
-//					serviceUrl);
-//			PublicationBean fileBean = publicationService
-//					.findPublicationById(fileId);
-//			checkVisibility(request, location, user, fileBean);
-//			if (fileBean.getDomainFile().getUriExternal()) {
-//				response.sendRedirect(fileBean.getDomainFile().getUri());
-//				return null;
-//			}
-//			// assume grid service is located on the same server and port as
-//			// webapp
-//			URL url = new URL(serviceUrl);
-//			String remoteServerHostUrl = url.getProtocol() + "://"
-//					+ url.getHost() + ":" + url.getPort();
-//			String remoteDownloadUrl = remoteServerHostUrl + "/"
-//					+ Constants.CSM_APP_NAME
-//					+ "/searchPublication.do?dispatch=download" + "&fileId="
-//					+ fileId + "&location=local";
-//
-//			response.sendRedirect(remoteDownloadUrl);
-//			return null;
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// PublicationService publicationService = new
+		// PublicationServiceRemoteImpl(
+		// serviceUrl);
+		// PublicationBean fileBean = publicationService
+		// .findPublicationById(fileId);
+		// checkVisibility(request, location, user, fileBean);
+		// if (fileBean.getDomainFile().getUriExternal()) {
+		// response.sendRedirect(fileBean.getDomainFile().getUri());
+		// return null;
+		// }
+		// // assume grid service is located on the same server and port as
+		// // webapp
+		// URL url = new URL(serviceUrl);
+		// String remoteServerHostUrl = url.getProtocol() + "://"
+		// + url.getHost() + ":" + url.getPort();
+		// String remoteDownloadUrl = remoteServerHostUrl + "/"
+		// + Constants.CSM_APP_NAME
+		// + "/searchPublication.do?dispatch=download" + "&fileId="
+		// + fileId + "&location=local";
+		//
+		// response.sendRedirect(remoteDownloadUrl);
+		// return null;
+		// }
 		return null;
 	}
 
@@ -333,8 +308,8 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String location = request.getParameter("location");
-		SampleBean sampleBean = setupSample(theForm, request, location);
-		// setOtherSamplesFromTheSameSource("local", request, sampleBean,
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		// setOtherSamplesFromTheSameSource(Constants.LOCAL_SITE, request, sampleBean,
 		// user);
 		String fileName = getExportFileName(sampleBean.getDomain().getName(),
 				"summaryView");
@@ -344,18 +319,19 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 				+ fileName + ".xls\"");
 
 		PublicationService service = null;
-		if (Constants.LOCAL.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			service = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// service = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
 
 		String sampleId = request.getParameter("sampleId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		List<PublicationBean> publications = service
-				.findPublicationsBySampleId(sampleId);
+				.findPublicationsBySampleId(sampleId, user);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 
@@ -381,35 +357,20 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		String sampleId = request.getParameter("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService service = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			service = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			service = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// service = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
 
-		List<PublicationBean> publicationCollection = service
-				.findPublicationsBySampleId(sampleId);
-		List<PublicationBean> foundPublications = new ArrayList<PublicationBean>();
-		if (location.equals("local")) {
-			List<PublicationBean> filteredPublications = new ArrayList<PublicationBean>();
-			// retrieve visibility
-			FileService fileService = new FileServiceLocalImpl();
-			for (PublicationBean publication : publicationCollection) {
-				fileService.retrieveVisibility(publication, user);
-				if (!publication.isHidden()) {
-					filteredPublications.add((PublicationBean) publication);
-				}
-			}
-			foundPublications.addAll(filteredPublications);
-		} else {
-			foundPublications.addAll(publicationCollection);
-		}
+		List<PublicationBean> publications = service
+				.findPublicationsBySampleId(sampleId, user);
 
 		HttpSession session = request.getSession();
-		session.setAttribute("publicationCollection", foundPublications);
+		session.setAttribute("publicationCollection", publications);
 		String requestUrl = request.getRequestURL().toString();
 		String printLinkURL = requestUrl + "?page=0&sampleId=" + sampleId
 				+ "&dispatch=printSummaryView" + "&location=" + location;

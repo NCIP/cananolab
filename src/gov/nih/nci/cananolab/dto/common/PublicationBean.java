@@ -5,6 +5,8 @@ package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
+import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +17,7 @@ import java.util.List;
 /**
  * Publication view bean
  *
- * @author tanq
+ * @author tanq, pansu
  *
  */
 public class PublicationBean extends FileBean {
@@ -162,5 +164,37 @@ public class PublicationBean extends FileBean {
 		}
 
 		return bibliographyInfo;
+	}
+
+	public void setupDomain(String internalUriPath, String createdBy, int index)
+			throws Exception {
+		super.setupDomainFile(internalUriPath, createdBy, 0);
+		Publication domain = (Publication) domainFile;
+		if (domain.getPubMedId() != null && domain.getPubMedId() == 0) {
+			domain.setPubMedId(null);
+		}
+		if (domain.getYear() != null && domain.getYear() == 0) {
+			domain.setYear(null);
+		}
+		if (researchAreas != null && researchAreas.length > 0) {
+			String researchAreasStr = StringUtils.join(researchAreas, ";");
+			domain.setResearchArea(researchAreasStr);
+		}
+
+		for (Author author : authors) {
+			if (!StringUtils.isEmpty(author.getFirstName())
+					|| !StringUtils.isEmpty(author.getLastName())
+					|| !StringUtils.isEmpty(author.getInitial())) {
+				if (author.getCreatedDate() == null) {
+					author.setCreatedDate(DateUtils.addSecondsToCurrentDate(1));
+				}
+				if (author.getCreatedBy() == null
+						|| author.getCreatedBy().trim().length() == 0) {
+					author.setCreatedBy(createdBy);
+				}
+			} else {
+				author = null;
+			}
+		}
 	}
 }

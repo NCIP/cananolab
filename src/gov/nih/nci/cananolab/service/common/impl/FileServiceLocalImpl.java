@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -15,18 +14,13 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of FileService
@@ -48,161 +42,22 @@ public class FileServiceLocalImpl implements FileService {
 	 * @param fileId
 	 * @return
 	 */
-	public FileBean findFileById(String fileId) throws FileException {
+	public FileBean findFileById(String fileId, UserBean user)
+			throws FileException, NoAccessException {
 		FileBean fileBean = null;
 		try {
-			File file = helper.findFileById(fileId);
+			File file = helper.findFileById(fileId, user);
 			if (file != null) {
 				fileBean = new FileBean(file);
+				helper.retrieveVisibility(fileBean, user);
+				return fileBean;
 			}
 			return fileBean;
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("Problem finding the file by id: " + fileId, e);
 			throw new FileException();
-		}
-	}
-
-	/**
-	 * Load the file for the given fileId from the database. Also check whether
-	 * user can do it.
-	 *
-	 * @param fileId
-	 * @return
-	 */
-	public FileBean findFileById(String fileId, UserBean user)
-			throws FileException, SecurityException {
-		FileBean fileBean = null;
-		try {
-			fileBean = findFileById(fileId);
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			if (auth.checkReadPermission(user, fileBean.getDomainFile().getId()
-					.toString())) {
-				return fileBean;
-			} else {
-				throw new NoAccessException();
-			}
-		} catch (Exception e) {
-			logger.error("Problem finding the file by id: " + fileId, e);
-			throw new FileException();
-		}
-	}
-
-	public void saveCopiedFileAndSetVisibility(File copy, UserBean user,
-			String oldSampleName, String newSampleName) throws FileException {
-		try {
-			// the copied file has been persisted with the same URI but
-			// createdBy is
-			// COPY
-			File file = findFileByUri(copy.getUri());
-			copy.setUri(copy.getUri()
-					.replaceFirst(oldSampleName, newSampleName));
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			appService.saveOrUpdate(copy);
-			if (file != null) {
-				byte[] content = this.getFileContent(file.getId());
-				writeFile(copy, content);
-
-				AuthorizationService auth = new AuthorizationService(
-						Constants.CSM_APP_NAME);
-				FileBean fileBean = new FileBean(file);
-				this.retrieveVisibility(fileBean, user);
-				auth.assignVisibility(copy.getId().toString(), fileBean
-						.getVisibilityGroups(), null);
-			}
-		} catch (Exception e) {
-			String err = "Error in saving copied file to the file system and setting visibility of the copied file.";
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-
-	private File findFileByUri(String uri) throws FileException {
-		File file = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
-			DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
-					Property.forName("uri").eq(uri)).add(
-					Property.forName("createdBy").ne(
-							Constants.AUTO_COPY_ANNOTATION_PREFIX));
-			List results = appService.query(crit);
-			if (!results.isEmpty()) {
-				file = (File) results.get(0);
-			}
-			return file;
-		} catch (Exception e) {
-			String err = "Could not find the file by uri";
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-
-	/**
-	 * Get the content of the file into a byte array.
-	 *
-	 * @param fileId
-	 * @return
-	 * @throws FileException
-	 */
-	private byte[] getFileContent(Long fileId) throws FileException {
-		try {
-			FileBean fileBean = findFileById(fileId.toString());
-			if (fileBean == null || fileBean.getDomainFile().getUri() == null) {
-				return null;
-			}
-			// check if the file is external link
-			if (fileBean.getDomainFile().getUri().startsWith("http")) {
-				return null;
-			}
-			String fileRoot = PropertyUtils.getProperty(
-					Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-
-			java.io.File fileObj = new java.io.File(fileRoot
-					+ java.io.File.separator
-					+ fileBean.getDomainFile().getUri());
-			long fileLength = fileObj.length();
-
-			// You cannot create an array using a long type.
-			// It needs to be an int type.
-			// Before converting to an int type, check
-			// to ensure that file is not larger than Integer.MAX_VALUE.
-			if (fileLength > Integer.MAX_VALUE) {
-				logger
-						.error("The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
-				throw new FileException(
-						"The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
-			}
-
-			// Create the byte array to hold the data
-			byte[] fileData = new byte[(int) fileLength];
-
-			// Read in the bytes
-			InputStream is = new FileInputStream(fileObj);
-			int offset = 0;
-			int numRead = 0;
-			while (offset < fileData.length
-					&& (numRead = is.read(fileData, offset, fileData.length
-							- offset)) >= 0) {
-				offset += numRead;
-			}
-
-			// Ensure all the bytes have been read in
-			if (offset < fileData.length) {
-				throw new FileException("Could not completely read file "
-						+ fileObj.getName());
-			}
-
-			// Close the input stream and return bytes
-			is.close();
-
-			return fileData;
-		} catch (IOException e) {
-			String err = "Error getting file content from the file system and writing to the output stream.";
-			this.logger.error(err, e);
-			throw new FileException(err, e);
 		}
 	}
 
@@ -222,17 +77,23 @@ public class FileServiceLocalImpl implements FileService {
 	}
 
 	// save to the file system fileData is not empty
-	public void writeFile(File file, byte[] fileData) throws FileException {
+	public void writeFile(FileBean fileBean, UserBean user)
+			throws FileException, NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
 		try {
-			if (fileData != null) {
-				FileServiceLocalImpl fileService = new FileServiceLocalImpl();
+			if (fileBean.getNewFileData() != null) {
 				String rootPath = PropertyUtils.getProperty(
 						Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
-				String fullFileName = rootPath + "/" + file.getUri();
-				fileService.writeFile(fileData, fullFileName);
+				String fullFileName = rootPath + "/"
+						+ fileBean.getDomainFile().getUri();
+				writeFile(fileBean.getNewFileData(), fullFileName);
+				assignVisibility(fileBean);
 			}
 		} catch (Exception e) {
-			logger.error("Problem writing file " + file.getUri()
+			logger.error("Problem writing file "
+					+ fileBean.getDomainFile().getUri()
 					+ " to the file system.");
 			throw new FileException();
 		}
@@ -244,7 +105,11 @@ public class FileServiceLocalImpl implements FileService {
 	 * @param file
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(File file) throws FileException {
+	public void prepareSaveFile(File file, UserBean user) throws FileException,
+			NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -281,72 +146,12 @@ public class FileServiceLocalImpl implements FileService {
 		}
 	}
 
-	// retrieve file visibility
-	public void retrieveVisibility(FileBean fileBean, UserBean user)
-			throws FileException {
-		try {
-			if (fileBean != null) {
-				AuthorizationService auth = new AuthorizationService(
-						Constants.CSM_APP_NAME);
-				if (fileBean.getDomainFile().getId() != null
-						&& auth.checkReadPermission(user, fileBean
-								.getDomainFile().getId().toString())) {
-					fileBean.setHidden(false);
-					// get assigned visible groups
-					List<String> accessibleGroups = auth.getAccessibleGroups(
-							fileBean.getDomainFile().getId().toString(),
-							Constants.CSM_READ_PRIVILEGE);
-					String[] visibilityGroups = accessibleGroups
-							.toArray(new String[0]);
-					fileBean.setVisibilityGroups(visibilityGroups);
-				} else {
-					fileBean.setHidden(true);
-				}
-			}
-		} catch (Exception e) {
-			String err = "Error in setting file visibility for "
-					+ fileBean.getDisplayName();
-			logger.error(err, e);
-			throw new FileException(err, e);
-		}
-	}
-
-	public List<File> findFilesByCompositionInfoId(String id, String className)
-			throws FileException {
-		throw new FileException("Not implemented for local service");
-	}
-
-	public void assignVisibility(FileBean fileBean) throws FileException {
+	private void assignVisibility(FileBean fileBean) throws FileException {
 		try {
 			AuthorizationService authService = new AuthorizationService(
 					Constants.CSM_APP_NAME);
 			authService.assignVisibility(fileBean.getDomainFile().getId()
 					.toString(), fileBean.getVisibilityGroups(), null);
-
-			// keywords
-			Collection<Keyword> keywordCollection = fileBean.getDomainFile()
-					.getKeywordCollection();
-			// if containing public group, assign associated public visibility
-			// otherwise remove associated public visibility
-			if (Arrays.asList(fileBean.getVisibilityGroups()).contains(
-					Constants.CSM_PUBLIC_GROUP)) {
-				if (keywordCollection != null) {
-					for (Keyword keyword : keywordCollection) {
-						if (keyword != null) {
-							authService.assignPublicVisibility(keyword.getId()
-									.toString());
-						}
-					}
-				}
-			} else {
-				// remove associated public visibility
-				if (keywordCollection != null) {
-					for (Keyword keyword : keywordCollection) {
-						authService.removePublicVisibility(keyword.getId()
-								.toString());
-					}
-				}
-			}
 		} catch (Exception e) {
 			String err = "Error in setting file visibility for "
 					+ fileBean.getDisplayName();

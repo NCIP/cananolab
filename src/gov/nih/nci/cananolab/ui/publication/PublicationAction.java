@@ -8,21 +8,17 @@ package gov.nih.nci.cananolab.ui.publication;
 
 import gov.nih.nci.cananolab.domain.common.Author;
 import gov.nih.nci.cananolab.domain.common.Publication;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
 import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
@@ -31,7 +27,6 @@ import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,55 +53,18 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		ActionForward forward = null;
 		PublicationForm theForm = (PublicationForm) form;
-
 		PublicationBean publicationBean = (PublicationBean) theForm.get("file");
-		String[] researchAreas = publicationBean.getResearchAreas();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		publicationBean.setupDomainFile(Constants.FOLDER_PUBLICATION, user
+		publicationBean.setupDomain(Constants.FOLDER_PUBLICATION, user
 				.getLoginName(), 0);
-		String researchAreasStr = null;
-		if (researchAreas != null && researchAreas.length > 0) {
-			researchAreasStr = StringUtils.join(researchAreas, ";");
-		}
-		Publication publication = (Publication) publicationBean.getDomainFile();
-		change0ToNull(publication);
-		publication.setResearchArea(researchAreasStr);
-
-		if (publicationBean.getAuthors() != null
-				&& publicationBean.getAuthors().size() > 0) {
-			for (Author author : publicationBean.getAuthors()) {
-				if (author.getCreatedBy() == null
-						|| author.getCreatedBy().trim().length() == 0) {
-					author.setCreatedBy(user.getLoginName());
-				}
-			}
-		}
 		PublicationService service = new PublicationServiceLocalImpl();
-		service.savePublication(publication, publicationBean.getSampleNames(),
-				publicationBean.getNewFileData(), publicationBean.getAuthors());
+		service.savePublication(publicationBean, user);
 		// set visibility
 		AuthorizationService authService = new AuthorizationService(
 				Constants.CSM_APP_NAME);
 		authService.assignVisibility(publicationBean.getDomainFile().getId()
 				.toString(), publicationBean.getVisibilityGroups(), null);
 
-		// set author visibility
-		if (publicationBean.getVisibilityGroups() != null
-				&& Arrays.asList(publicationBean.getVisibilityGroups())
-						.contains(Constants.CSM_PUBLIC_GROUP)) {
-			if (publication.getAuthorCollection() != null) {
-				for (Author author : publication.getAuthorCollection()) {
-					if (author != null) {
-						if (author.getId() != null
-								&& author.getId().toString().trim().length() > 0) {
-							authService.assignPublicVisibility(author.getId()
-									.toString());
-						}
-
-					}
-				}
-			}
-		}
 		InitPublicationSetup.getInstance().persistPublicationDropdowns(request,
 				publicationBean);
 		ActionMessages msgs = new ActionMessages();
@@ -138,8 +96,9 @@ public class PublicationAction extends BaseAnnotationAction {
 		// }
 		if (sampleId != null && sampleId.length() > 0) {
 			SampleService sampleService = new SampleServiceLocalImpl();
-			SampleBean sampleBean = sampleService.findSampleById(sampleId);
-			sampleBean.setLocation("local");
+			SampleBean sampleBean = sampleService
+					.findSampleById(sampleId, user);
+			sampleBean.setLocation(Constants.LOCAL_SITE);
 			forward = mapping.findForward("sampleSuccess");
 		}
 		// session.removeAttribute("sampleId");
@@ -257,8 +216,6 @@ public class PublicationAction extends BaseAnnotationAction {
 				msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 				saveMessages(request, msgs);
 				return forward;
-			} else {
-				change0ToNull(publication);
 			}
 			theForm.set("file", pbean);
 			if (sampleId != null && sampleId.length() > 0) {
@@ -292,9 +249,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		PublicationBean publicationBean = publicationService
-				.findPublicationById(publicationId);
-		FileService fileService = new FileServiceLocalImpl();
-		fileService.retrieveVisibility(publicationBean, user);
+				.findPublicationById(publicationId, user);
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if sampleId is available direct to particle specific page
@@ -336,17 +291,16 @@ public class PublicationAction extends BaseAnnotationAction {
 		String publicationId = request.getParameter("fileId");
 		String location = request.getParameter("location");
 		PublicationService publicationService = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			publicationService = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
 		PublicationBean publicationBean = publicationService
-				.findPublicationById(publicationId);
-		this.checkVisibility(request, location, user, publicationBean);
+				.findPublicationById(publicationId, user);
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if sampleId is available direct to particle specific page
@@ -356,39 +310,6 @@ public class PublicationAction extends BaseAnnotationAction {
 			forward = mapping.findForward("sampleViewPublication");
 		}
 		return forward;
-	}
-
-	public ActionForward deleteAll(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		PublicationForm theForm = (PublicationForm) form;
-		String sampleId = request.getParameter("sampleId");
-		String submitType = request.getParameter("submitType");
-		String[] dataIds = (String[]) theForm.get("idsToDelete");
-		PublicationService publicationService = new PublicationServiceLocalImpl();
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		Sample particle = (Sample) appService.getObject(Sample.class, "id",
-				new Long(sampleId));
-
-		ActionMessages msgs = new ActionMessages();
-		for (String id : dataIds) {
-			if (!checkDelete(request, msgs, id)) {
-				return mapping.findForward("annotationDeleteView");
-			}
-			publicationService.removePublicationFromSample(particle, new Long(
-					id));
-		}
-		SampleBean sampleBean = setupSample(theForm, request, "local");
-		ActionMessage msg = new ActionMessage("message.deletePublications",
-				submitType);
-		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		saveMessages(request, msgs);
-		if (sampleId != null) {
-			return mapping.findForward("sampleSuccess");
-		} else {
-			return mapping.findForward("success");
-		}
 	}
 
 	/**
@@ -452,7 +373,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// PublicationService publicationService = null;
-		// if (location.equals("local")) {
+		// if (location.equals(Constants.LOCAL_SITE)) {
 		// publicationService = new PublicationServiceLocalImpl();
 		// } else {
 		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -509,7 +430,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		// String location = request.getParameter("location");
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// PublicationService publicationService = null;
-		// if (location.equals("local")) {
+		// if (location.equals(Constants.LOCAL_SITE)) {
 		// publicationService = new PublicationServiceLocalImpl();
 		// } else {
 		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -558,7 +479,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		// Prepare data.
-		this.prepareSummary(mapping, form, request, response);
+		prepareSummary(mapping, form, request, response);
 
 		PublicationSummaryViewBean summaryBean = (PublicationSummaryViewBean) request
 				.getAttribute("publicationSummaryView");
@@ -577,21 +498,25 @@ public class PublicationAction extends BaseAnnotationAction {
 		}
 
 		// Get sample name for constructing file name.
+		PublicationForm theForm = (PublicationForm) form;
+		String location = request.getParameter("location");
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
+
 		SampleService sampleService = null;
 		PublicationService service = null;
 		String sampleId = request.getParameter("sampleId");
-		String location = request.getParameter("location");
-		if (Constants.LOCAL.equals(location)) {
+
+		if (Constants.LOCAL_SITE.equals(location)) {
 			sampleService = new SampleServiceLocalImpl();
 			service = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			// TODO: Implement remote service.
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			service = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
-		SampleBean sampleBean = sampleService.findSampleById(sampleId);
+		// else {
+		// // TODO: Implement remote service.
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// service = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
+
 		String fileName = this.getExportFileName(sampleBean.getDomain()
 				.getName(), "summaryView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
@@ -611,7 +536,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	protected void prepareSummary(ActionMapping mapping, ActionForm form,
+	private void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
@@ -620,9 +545,10 @@ public class PublicationAction extends BaseAnnotationAction {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = new PublicationServiceLocalImpl();
 		List<PublicationBean> publications = publicationService
-				.findPublicationsBySampleId(sampleId);
+				.findPublicationsBySampleId(sampleId, user);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
@@ -634,18 +560,17 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			publicationService = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
 		String publicationId = request.getParameter("publicationId");
-		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId);
-		checkVisibility(request, location, user, pubBean);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, user);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("file", pubBean);
 		return mapping.findForward("publicationDetailPrintView");
@@ -687,8 +612,6 @@ public class PublicationAction extends BaseAnnotationAction {
 			}
 		}
 		Publication pub = (Publication) publicationBean.getDomainFile();
-		// remove 0
-		change0ToNull(pub);
 		theForm.set("file", publicationBean);
 
 		// if pubMedId is available, the related fields should be set to read
@@ -706,18 +629,17 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			publicationService = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
 		String publicationId = request.getParameter("publicationId");
-		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId);
-		checkVisibility(request, location, user, pubBean);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, user);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("file", pubBean);
 
@@ -781,18 +703,17 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			publicationService = new PublicationServiceLocalImpl();
 		}
-//		else {
-//			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-//					request, location);
-//			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-//		}
+		// else {
+		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+		// request, location);
+		// publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		// }
 		String publicationId = request.getParameter("publicationId");
-		PublicationBean pubBean = publicationService
-				.findPublicationById(publicationId);
-		checkVisibility(request, location, user, pubBean);
+		PublicationBean pubBean = publicationService.findPublicationById(
+				publicationId, user);
 		PublicationForm theForm = (PublicationForm) form;
 		theForm.set("file", pubBean);
 		String title = pubBean.getDomainFile().getTitle();
@@ -816,12 +737,5 @@ public class PublicationAction extends BaseAnnotationAction {
 				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
-	}
-
-	private void change0ToNull(Publication pub) {
-		if (pub.getPubMedId() != null && pub.getPubMedId() == 0)
-			pub.setPubMedId(null);
-		if (pub.getYear() != null && pub.getYear() == 0)
-			pub.setYear(null);
 	}
 }

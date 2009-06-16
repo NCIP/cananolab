@@ -12,6 +12,11 @@ import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.sample.PointOfContactService;
+import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -23,10 +28,12 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -45,6 +52,17 @@ import org.hibernate.criterion.Restrictions;
  *
  */
 public class SampleServiceHelper {
+	private AuthorizationService authService;
+	private static Logger logger = Logger.getLogger(SampleServiceHelper.class);
+
+	public SampleServiceHelper() {
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
+	}
+
 	public List<Sample> findSamplesBy(String samplePointOfContact,
 			String[] nanomaterialEntityClassNames,
 			String[] otherNanomaterialEntityTypes,
@@ -53,13 +71,13 @@ public class SampleServiceHelper {
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
 			String[] otherCharacterizationTypes, String[] wordList,
-			Boolean filterPublic) throws Exception {
-		List<Sample> particles = new ArrayList<Sample>();
+			UserBean user) throws Exception {
+		List<Sample> samples = new ArrayList<Sample>();
 
 		// can't query for the entire Sample object due to
 		// limitations in pagination in SDK
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
-				.setProjection(Projections.distinct(Property.forName("id")));
+				.setProjection(Projections.distinct(Property.forName("name")));
 
 		if (samplePointOfContact != null && samplePointOfContact.length() > 0) {
 			TextMatchMode pocMatchMode = new TextMatchMode(samplePointOfContact);
@@ -232,22 +250,25 @@ public class SampleServiceHelper {
 					.asList(otherFunctionalizingEntityTypes));
 		}
 		List filteredResults = new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
+		// get public data
+		if (user == null) {
 			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
-			Sample particle = loadSample(obj.toString());
-			// don't need this if Hibernate would've allowed for functionalizing
-			// entities in the where clause
-			boolean matching = hasMatchingFunctionalizingEntities(particle,
-					functionalizingEntityTypes);
-			if (matching) {
-				particles.add(particle);
+			String sampleName = obj.toString();
+			Sample sample = findSampleByName(sampleName, user);
+			if (sample != null) {
+				// don't need this if Hibernate would've allowed for
+				// functionalizing
+				// entities in the where clause
+				boolean matching = hasMatchingFunctionalizingEntities(sample,
+						functionalizingEntityTypes);
+				if (matching) {
+					samples.add(sample);
+				}
 			}
 		}
-		return particles;
+		return samples;
 	}
 
 	// workaround to filter out publications that don't have matching
@@ -415,34 +436,14 @@ public class SampleServiceHelper {
 		return storedChars;
 	}
 
-	public Sample findSampleById(String sampleId) throws Exception {
+	public Sample findSampleByName(String sampleName, UserBean user)
+			throws Exception {
+		Sample sample = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
 		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
-
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-		crit.setFetchMode("otherPointOfContactCollection.organization",
-				FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		Sample particleSample = null;
-		if (!result.isEmpty()) {
-			particleSample = (Sample) result.get(0);
-		}
-		return particleSample;
-	}
-
-	private Sample loadSample(String sampleId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
+				Property.forName("name").eq(sampleName));
 		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
 		crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
 		crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
@@ -471,51 +472,15 @@ public class SampleServiceHelper {
 		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		List result = appService.query(crit);
-		Sample particleSample = null;
 		if (!result.isEmpty()) {
-			particleSample = (Sample) result.get(0);
+			sample = (Sample) result.get(0);
+			if (authService.checkReadPermission(user, sample.getName())) {
+				return sample;
+			} else {
+				throw new NoAccessException();
+			}
 		}
-		return particleSample;
-	}
-
-	public Sample findSampleByName(String sampleName) throws Exception {
-		Sample particleSample = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("name").eq(sampleName));
-
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN); // eager
-		// load not
-		// set in
-		// caDSR
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementA",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementB",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection.authorCollection",
-				FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			particleSample = (Sample) result.get(0);
-		}
-		return particleSample;
+		return sample;
 	}
 
 	public List<Keyword> findKeywordsBySampleId(String sampleId,
@@ -530,8 +495,6 @@ public class SampleServiceHelper {
 		List results = appService.query(crit);
 		List filteredResults = new ArrayList(results);
 		if (filterPublic) {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
 			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
@@ -549,16 +512,13 @@ public class SampleServiceHelper {
 				"select aSample.primaryPointOfContact from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
 						+ sampleId);
 		List results = appService.query(crit);
-		PointOfContact poc=null;
+		PointOfContact poc = null;
 		for (Object obj : results) {
 			poc = (PointOfContact) obj;
 			if (filterPublic) {
-				AuthorizationService authService = new AuthorizationService(
-						Constants.CSM_APP_NAME);
 				if (authService.isPublic(poc.getId().toString())) {
 					return poc;
-				}
-				else {
+				} else {
 					return null;
 				}
 			}
@@ -567,7 +527,7 @@ public class SampleServiceHelper {
 	}
 
 	public List<PointOfContact> findOtherPointOfContactBySampleId(
-			String sampleId, Boolean filterPublic) throws Exception {
+			String sampleId, UserBean user) throws Exception {
 		List<PointOfContact> pocs = new ArrayList<PointOfContact>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -576,14 +536,16 @@ public class SampleServiceHelper {
 						+ sampleId);
 		List results = appService.query(crit);
 		List filteredResults = new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
+		if (user == null) {
 			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			PointOfContact poc = (PointOfContact) obj;
-			pocs.add(poc);
+			if (user == null
+					|| authService.checkReadPermission(user, poc.getId()
+							.toString())) {
+				pocs.add(poc);
+			}
 		}
 		return pocs;
 	}
@@ -733,5 +695,55 @@ public class SampleServiceHelper {
 					Constants.VIEW_COL_DELIMITER));
 		}
 		return sampleStrings.toArray(new String[0]);
+	}
+
+	public AuthorizationService getAuthService() {
+		return authService;
+	}
+
+	public void assignVisibility(SampleBean sampleBean) throws Exception {
+		// // assign visibility for sample
+		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+		String orgName = pocService.findPointOfContactById(
+				sampleBean.getPocBean().getDomain().getId().toString())
+				.getOrganization().getName();
+		authService.assignVisibility(sampleBean.getDomain().getName(),
+				sampleBean.getVisibilityGroups(), orgName);
+
+		// assign associated public visibility
+		Sample sample = sampleBean.getDomain();
+		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
+		CompositionServiceHelper compHelper = new CompositionServiceHelper();
+		Collection<Characterization> characterizationCollection = sample
+				.getCharacterizationCollection();
+		String[] visibleGroups = sampleBean.getVisibilityGroups();
+
+		// if containing public group, assign associated public visibility
+		// otherwise remove associated public visibility
+		if (Arrays.asList(visibleGroups).contains(Constants.CSM_PUBLIC_GROUP)) {
+			// characterizations
+			if (characterizationCollection != null) {
+
+				for (Characterization aChar : characterizationCollection) {
+					charHelper.assignPublicVisibility(aChar);
+				}
+			}
+			// sampleComposition
+			if (sample.getSampleComposition() != null) {
+				compHelper
+						.assignPublicVisibility(sample.getSampleComposition());
+			}
+		} else {
+			// remove associated public visibility
+			if (characterizationCollection != null) {
+				for (Characterization aChar : characterizationCollection) {
+					charHelper.removePublicVisibility(aChar);
+				}
+			}
+			if (sample.getSampleComposition() != null) {
+				compHelper
+						.removePublicVisibility(sample.getSampleComposition());
+			}
+		}
 	}
 }

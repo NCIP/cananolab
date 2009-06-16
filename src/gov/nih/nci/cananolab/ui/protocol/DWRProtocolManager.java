@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -35,7 +36,7 @@ public class DWRProtocolManager {
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		try {
 			boolean isLocal = false;
-			if ("local".equals(searchLocations)) {
+			if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
 			}
 			SortedSet<String> types = null;

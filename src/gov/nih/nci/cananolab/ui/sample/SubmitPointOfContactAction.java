@@ -16,7 +16,6 @@ import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceRemoteImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -113,8 +112,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 
 		String sampleId = getSampleId(request);
 		if (sampleId != null) {
-			SampleServiceLocalImpl particleService = new SampleServiceLocalImpl();
-			particleService.saveOtherPOCs(sampleBean.getDomain());
+			service.saveOtherPOCs(sampleBean.getDomain());
 			request.setAttribute("sampleId", sampleId);
 			return mapping.findForward("update");
 		} else {
@@ -222,7 +220,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PointOfContactService pointOfContactService = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			pointOfContactService = new PointOfContactServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -274,7 +272,7 @@ public class SubmitPointOfContactAction extends BaseAnnotationAction {
 		String location = request.getParameter("location");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PointOfContactService pointOfContactService = null;
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			pointOfContactService = new PointOfContactServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(

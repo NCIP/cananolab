@@ -2,33 +2,24 @@ package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
-import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.SampleException;
-import gov.nih.nci.cananolab.service.sample.CharacterizationService;
-import gov.nih.nci.cananolab.service.sample.CompositionService;
-import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
-import gov.nih.nci.cananolab.util.StringUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -59,12 +50,20 @@ public class SampleServiceLocalImpl implements SampleService {
 	 * @throws SampleException,
 	 *             DuplicateEntriesException
 	 */
-	public void saveSample(Sample sample) throws SampleException,
-			DuplicateEntriesException {
+	public void saveSample(SampleBean sampleBean, UserBean user)
+			throws SampleException, DuplicateEntriesException,
+			NoAccessException {
+		if (user == null || !user.isCurator()) {
+			throw new NoAccessException();
+		}
+		Boolean newSample = true;
+		if (sampleBean.getDomain().getId() != null) {
+			newSample = false;
+		}
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-
+			Sample sample = sampleBean.getDomain();
 			Sample dbSample = (Sample) appService.getObject(Sample.class,
 					"name", sample.getName());
 			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
@@ -104,34 +103,22 @@ public class SampleServiceLocalImpl implements SampleService {
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
-	}
 
-	/**
-	 * Persist a new sample or update an existing canano sample
-	 *
-	 * @param sample
-	 * @throws SampleException,
-	 *             DuplicateEntriesException
-	 */
-	public void saveOtherPOCs(Sample sample) throws SampleException,
-			DuplicateEntriesException {
+		// assign CSM visibility and associated public visibility
+		// requires fully loaded sample if it's an existing sample)
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			Sample dbSample = (Sample) appService.getObject(Sample.class,
-					"name", sample.getName());
-			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
-				throw new DuplicateEntriesException();
+			if (!newSample) {
+				String[] visibilityGroups = sampleBean.getVisibilityGroups();
+				SampleBean fullyLoadedSampleBean = findFullSampleById(
+						sampleBean.getDomain().getId().toString(), user);
+				fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
+				helper.assignVisibility(fullyLoadedSampleBean);
+			} else {
+				helper.assignVisibility(sampleBean);
 			}
-			dbSample.setOtherPointOfContactCollection(sample
-					.getOtherPointOfContactCollection());
-			appService.saveOrUpdate(dbSample);
-		} catch (DuplicateEntriesException e) {
-			throw e;
 		} catch (Exception e) {
-			String err = "Error in saving OtherPOCs.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
+			throw new SampleException(
+					"Error assigning visibility for the sample", e);
 		}
 	}
 
@@ -156,31 +143,25 @@ public class SampleServiceLocalImpl implements SampleService {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList)
-			throws SampleException {
-		List<SampleBean> particles = new ArrayList<SampleBean>();
+			String[] otherCharacterizationTypes, String[] wordList,
+			UserBean user) throws SampleException {
+		List<SampleBean> sampleBeans = new ArrayList<SampleBean>();
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			// HQLCriteria crit=new HQLCriteria("select sample,
-			// sample.primaryPointOfContact, sample.keywordCollection,
-			// sample.sampleComposition comp, comp.from
-			// gov.nih.nci.cananolab.domain.particle.Sample sample");
-			// List results=appService.query(crit);
-			// List<Sample>samples=new ArrayList<Sample>();
-			// for (Object obj : results) {
-			// samples.add((Sample)obj);
-			// }
+			Boolean filterPublic = false;
+			if (user == null) {
+				filterPublic = true;
+			}
 			List<Sample> samples = helper.findSamplesBy(samplePointOfContact,
 					nanomaterialEntityClassNames, otherNanoparticleTypes,
 					functionalizingEntityClassNames,
 					otherFunctionalizingEntityTypes, functionClassNames,
 					otherFunctionTypes, characterizationClassNames,
-					otherCharacterizationTypes, wordList, false);
-			Collections.sort(samples, new Comparators.SampleComparator());
+					otherCharacterizationTypes, wordList, user);
 			for (Sample sample : samples) {
 				SampleBean sampleBean = new SampleBean(sample);
-				particles.add(sampleBean);
+				if (user != null) {
+					retrieveVisibility(sampleBean, user);
+				}
 				// load summary information
 				sampleBean.setCharacterizationClassNames(helper
 						.getStoredCharacterizationClassNames(sample).toArray(
@@ -194,8 +175,9 @@ public class SampleServiceLocalImpl implements SampleService {
 				sampleBean.setFunctionClassNames(helper
 						.getStoredFunctionClassNames(sample).toArray(
 								new String[0]));
+				sampleBeans.add(sampleBean);
 			}
-			return particles;
+			return sampleBeans;
 		} catch (Exception e) {
 			String err = "Problem finding particles with the given search parameters.";
 			logger.error(err, e);
@@ -203,166 +185,190 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findSampleById(String sampleId) throws SampleException {
+	public SampleBean findSampleById(String sampleId, UserBean user)
+			throws SampleException, NoAccessException {
 		try {
-			Sample sample = helper.findSampleById(sampleId);
-			SampleBean sampleBean = new SampleBean(sample);
-			return sampleBean;
-		} catch (Exception e) {
-			String err = "Problem finding the particle by id: " + sampleId;
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
-	public SampleBean findFullSampleById(String sampleId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
-		// characterization
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"characterizationCollection.derivedBioAssayDataCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode(
-				"characterizationCollection.experimentConfigCollection",
-				FetchMode.JOIN);
-		// sampleComposition
-		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection."
-				+ "composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementA",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementB",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.functionalizingEntityCollection.functionCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.createAlias("otherPointOfContactCollection", "otherPoc",
-				CriteriaSpecification.LEFT_JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		Sample sample = null;
-		SampleBean sampleBean = null;
-		if (!result.isEmpty()) {
-			sample = (Sample) result.get(0);
-			sampleBean = new SampleBean(sample);
-		}
-		return sampleBean;
-	}
-
-	public Sample findSampleByName(String sampleName) throws SampleException {
-		try {
-			return helper.findSampleByName(sampleName);
-		} catch (Exception e) {
-			String err = "Problem finding the particle by name: " + sampleName;
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
-	public void retrieveVisibility(SampleBean sampleBean, UserBean user)
-			throws SampleException {
-		try {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			if (auth
-					.checkReadPermission(user, sampleBean.getDomain().getName())) {
-				sampleBean.setHidden(false);
-				// get assigned visible groups
-				List<String> accessibleGroups = auth.getAccessibleGroups(
-						sampleBean.getDomain().getName(),
-						Constants.CSM_READ_PRIVILEGE);
-				String[] visibilityGroups = accessibleGroups
-						.toArray(new String[0]);
-				sampleBean.setVisibilityGroups(visibilityGroups);
-			} else {
-				sampleBean.setHidden(true);
-			}
-		} catch (Exception e) {
-			String err = "Error in setting visibility groups for particle sample "
-					+ sampleBean.getDomain().getName();
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
-	public void deleteAnnotationById(String className, Long dataId)
-			throws SampleException {
-		try {
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			if (className == null) {
-			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.characterization")) {
-				CharacterizationService service = new CharacterizationServiceLocalImpl();
-				service.removePublicVisibility(authService,
-						findFullCharacterizationById(dataId.toString()));
-			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.linkage")) {
-				CompositionService service = new CompositionServiceLocalImpl();
-				ChemicalAssociation chemicalAssociation = service
-						.findChemicalAssociationById(dataId.toString())
-						.getDomainAssociation();
-				service.removeChemicalAssociationPublicVisibility(authService,
-						chemicalAssociation);
-			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.agentmaterial")) {
-				CompositionService service = new CompositionServiceLocalImpl();
-				service.removeFunctionalizingEntityPublicVisibility(
-						authService, this
-								.findFullFunctionalizingEntityById(dataId
-										.toString()));
-			} else if (className
-					.startsWith("gov.nih.nci.cananolab.domain.nanomaterial")) {
-				CompositionService service = new CompositionServiceLocalImpl();
-				service.removeNanomaterialEntityPublicVisibility(authService,
-						this.findFullNanomaterialEntityById(dataId.toString()));
-			}
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			appService.deleteById(Class.forName(className), dataId);
+
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+					.add(Property.forName("id").eq(new Long(sampleId)));
+
+			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact.organization",
+					FetchMode.JOIN);
+			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
+			crit.setFetchMode("otherPointOfContactCollection.organization",
+					FetchMode.JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+			List result = appService.query(crit);
+			Sample sample = null;
+			SampleBean sampleBean = null;
+			if (!result.isEmpty()) {
+				sample = (Sample) result.get(0);
+				if (helper.getAuthService().checkReadPermission(user,
+						sample.getName())) {
+					sampleBean = new SampleBean(sample);
+					if (user != null) {
+						retrieveVisibility(sampleBean, user);
+					}
+				} else {
+					throw new NoAccessException();
+				}
+			}
+			return sampleBean;
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
-			String err = "Error deleting annotation of class " + className
-					+ " by ID " + dataId;
+			String err = "Problem finding the sample by id: " + sampleId;
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
+	}
+
+	public SampleBean findFullSampleById(String sampleId, UserBean user)
+			throws SampleException, NoAccessException {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class)
+					.add(Property.forName("id").eq(new Long(sampleId)));
+			// characterization
+			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+			crit.setFetchMode(
+					"characterizationCollection.derivedBioAssayDataCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode(
+					"characterizationCollection.experimentConfigCollection",
+					FetchMode.JOIN);
+			// sampleComposition
+			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.nanomaterialEntityCollection."
+					+ "composingElementCollection.inherentFunctionCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition.fileCollection",
+					FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.chemicalAssociationCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementA",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.chemicalAssociationCollection.associatedElementB",
+							FetchMode.JOIN);
+			crit.setFetchMode(
+					"sampleComposition.functionalizingEntityCollection",
+					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.functionalizingEntityCollection.functionCollection",
+							FetchMode.JOIN);
+			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
+			crit.createAlias("otherPointOfContactCollection", "otherPoc",
+					CriteriaSpecification.LEFT_JOIN);
+			crit
+					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+			List result = appService.query(crit);
+			Sample sample = null;
+			SampleBean sampleBean = null;
+			if (!result.isEmpty()) {
+				sample = (Sample) result.get(0);
+				if (helper.getAuthService().checkReadPermission(user,
+						sample.getName())) {
+					sampleBean = new SampleBean(sample);
+					if (user != null) {
+						retrieveVisibility(sampleBean, user);
+					}
+				} else {
+					throw new NoAccessException();
+				}
+			}
+			return sampleBean;
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding the full sample by id: " + sampleId;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	public SampleBean findSampleByName(String sampleName, UserBean user)
+			throws SampleException, NoAccessException {
+		try {
+			Sample sample = helper.findSampleByName(sampleName, user);
+			SampleBean sampleBean = null;
+			if (sample != null) {
+				sampleBean = new SampleBean(sample);
+				retrieveVisibility(sampleBean, user);
+			}
+			return sampleBean;
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String err = "Problem finding the sample by name: " + sampleName;
+			logger.error(err, e);
+			throw new SampleException(err, e);
+		}
+	}
+
+	private void retrieveVisibility(SampleBean sampleBean, UserBean user)
+			throws Exception {
+		// get assigned visible groups
+		List<String> accessibleGroups = helper.getAuthService()
+				.getAccessibleGroups(sampleBean.getDomain().getName(),
+						Constants.CSM_READ_PRIVILEGE);
+		String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+		sampleBean.setVisibilityGroups(visibilityGroups);
+
+		// retrieve visibility for point of contact information
+		PointOfContactBean primaryPocBean = sampleBean.getPocBean();
+		if (primaryPocBean.getDomain().getId() != null) {
+			// get assigned visible groups
+			List<String> pocAccessibleGroups = helper.getAuthService()
+					.getAccessibleGroups(
+							primaryPocBean.getDomain().getId().toString(),
+							Constants.CSM_READ_PRIVILEGE);
+			String[] pocVisibilityGroups = pocAccessibleGroups
+					.toArray(new String[0]);
+			primaryPocBean.setVisibilityGroups(pocVisibilityGroups);
+		}
+		// for (PointOfContactBean pocBean : sampleBean.getOtherPocBeans())
+		// {
+		// if (pocBean.getDomain().getId() != null) {
+		// // get assigned visible groups
+		// List<String> pocAccessibleGroups = auth.getAccessibleGroups(
+		// pocBean.getDomain().getId().toString(),
+		// Constants.CSM_READ_PRIVILEGE);
+		// String[] pocVisibilityGroups = accessibleGroups
+		// .toArray(new String[0]);
+		// pocBean.setVisibilityGroups(pocVisibilityGroups);
+		// }
+		// }
 	}
 
 	public SortedSet<String> findAllSampleNames(UserBean user)
 			throws SampleException {
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-
 			SortedSet<String> names = new TreeSet<String>(
 					new Comparators.SortableNameComparator());
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -372,7 +378,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String name = ((String) obj).trim();
-				if (auth.checkReadPermission(user, name)) {
+				if (helper.getAuthService().checkReadPermission(user, name)) {
 					names.add(name);
 				}
 			}
@@ -396,233 +402,10 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public void assignVisibility(SampleBean sampleBean) throws Exception {
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		// assign visibility for particle
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		String orgName = pocService.findPointOfContactById(
-				sampleBean.getPocBean().getDomain().getId().toString())
-				.getOrganization().getName();
-		authService.assignVisibility(sampleBean.getDomain().getName(),
-				sampleBean.getVisibilityGroups(), orgName);
-
-		// assign or remove associated public visibility
-		Sample sample = sampleBean.getDomain();
-		CharacterizationService charService = new CharacterizationServiceLocalImpl();
-		// characterization
-		Collection<Characterization> characterizationCollection = sample
-				.getCharacterizationCollection();
-		CompositionService compService = new CompositionServiceLocalImpl();
-		String[] visibleGroups = sampleBean.getVisibilityGroups();
-
-		// if containing public group, assign associated public visibility
-		// otherwise remove associated public visibility
-		if (Arrays.asList(visibleGroups).contains(Constants.CSM_PUBLIC_GROUP)) {
-			// keywords
-			Collection<Keyword> keywordCollection = sample
-					.getKeywordCollection();
-			if (keywordCollection != null) {
-				for (Keyword keyword : keywordCollection) {
-					if (keyword != null) {
-						authService.assignPublicVisibility(keyword.getId()
-								.toString());
-					}
-				}
-			}
-			// characterizations
-			if (characterizationCollection != null) {
-				for (Characterization aChar : characterizationCollection) {
-					charService.assignPublicVisibility(authService, aChar);
-				}
-			}
-			// sampleComposition
-			if (sample.getSampleComposition() != null) {
-				compService.assignPublicVisibility(authService, sample
-						.getSampleComposition());
-			}
-		} else {
-			// remove associated public visibility
-			if (characterizationCollection != null) {
-				for (Characterization aChar : characterizationCollection) {
-					charService.removePublicVisibility(authService, aChar);
-				}
-			}
-			if (sample.getSampleComposition() != null) {
-				compService.removePublicVisibility(authService, sample
-						.getSampleComposition());
-			}
-		}
-	}
-
-	public void removeAssociatedPublicVisibility(
-			AuthorizationService authService, SampleBean sampleBean,
-			CharacterizationService charService,
-			CompositionService compositionService) throws Exception {
-		// remove public group in all associated records
-		Sample sample = sampleBean.getDomain();
-
-		// characterization
-		Collection<Characterization> characterizationCollection = sample
-				.getCharacterizationCollection();
-		if (characterizationCollection != null) {
-			for (Characterization aChar : characterizationCollection) {
-				charService.removePublicVisibility(authService, aChar);
-			}
-		}
-		// sampleComposition
-		if (sample.getSampleComposition() != null) {
-			authService.removePublicVisibility(sample.getSampleComposition()
-					.getId().toString());
-			// sampleComposition.nanomaterialEntityCollection,
-			Collection<NanomaterialEntity> nanomaterialEntityCollection = sample
-					.getSampleComposition().getNanomaterialEntityCollection();
-			if (nanomaterialEntityCollection != null) {
-				for (NanomaterialEntity nanomaterialEntity : nanomaterialEntityCollection) {
-					compositionService
-							.removeNanomaterialEntityPublicVisibility(
-									authService, nanomaterialEntity);
-				}
-			}
-			// sampleComposition.functionalizingEntityCollection,
-			Collection<FunctionalizingEntity> functionalizingEntityCollection = sample
-					.getSampleComposition()
-					.getFunctionalizingEntityCollection();
-			if (functionalizingEntityCollection != null) {
-				for (FunctionalizingEntity functionalizingEntity : functionalizingEntityCollection) {
-					compositionService
-							.removeFunctionalizingEntityPublicVisibility(
-									authService, functionalizingEntity);
-				}
-			}
-			// sampleComposition.chemicalAssociationCollection
-			Collection<ChemicalAssociation> chemicalAssociationCollection = sample
-					.getSampleComposition().getChemicalAssociationCollection();
-			if (functionalizingEntityCollection != null) {
-				for (ChemicalAssociation chemicalAssociation : chemicalAssociationCollection) {
-					compositionService
-							.removeChemicalAssociationPublicVisibility(
-									authService, chemicalAssociation);
-				}
-			}
-		}
-	}
-
-	private Characterization findFullCharacterizationById(String charId)
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				Characterization.class).add(
-				Property.forName("id").eq(new Long(charId)));
-		// characterization
-		crit.setFetchMode("derivedBioAssayDataCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"derivedBioAssayDataCollection.derivedDatumCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-
-		List result = appService.query(crit);
-		Characterization achar = null;
-		if (!result.isEmpty()) {
-			achar = (Characterization) result.get(0);
-		}
-		return achar;
-	}
-
-	private NanomaterialEntity findFullNanomaterialEntityById(String id)
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				NanomaterialEntity.class).add(
-				Property.forName("id").eq(new Long(id)));
-		// sampleComposition.NanomaterialEntity
-		crit.setFetchMode("composingElementCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);
-
-		List result = appService.query(crit);
-		NanomaterialEntity entity = null;
-		if (!result.isEmpty()) {
-			entity = (NanomaterialEntity) result.get(0);
-		}
-		return entity;
-	}
-
-	private FunctionalizingEntity findFullFunctionalizingEntityById(String id)
-			throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				FunctionalizingEntity.class).add(
-				Property.forName("id").eq(new Long(id)));
-		// sampleComposition.FunctionalizingEntity
-		crit.setFetchMode("functionCollection", FetchMode.JOIN);
-
-		List result = appService.query(crit);
-		FunctionalizingEntity entity = null;
-		if (!result.isEmpty()) {
-			entity = (FunctionalizingEntity) result.get(0);
-		}
-		return entity;
-	}
-
-	public List<SampleBean> getUserAccessibleSamples(
-			List<SampleBean> particles, UserBean user) throws SampleException {
-		try {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			List<SampleBean> filtered = new ArrayList<SampleBean>();
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			List<String> publicData = appService.getAllPublicData();
-			for (SampleBean particle : particles) {
-				String sampleName = particle.getDomain().getName();
-				if (StringUtils.containsIgnoreCase(publicData, sampleName)) {
-					filtered.add(particle);
-				} else if (user != null
-						&& auth.checkReadPermission(user, sampleName)) {
-					filtered.add(particle);
-				}
-				// set POC accessibility
-				PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-				pocService.retrieveVisibility(particle.getPocBean(), user);
-			}
-			return filtered;
-		} catch (Exception e) {
-			String err = "Error in retrieving accessible particles for user.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
-	public SortedSet<String> findAllSampleNames() throws SampleException {
-		try {
-			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			List results = appService.query(crit);
-			SortedSet<String> names = new TreeSet<String>();
-			for (Object obj : results) {
-				Sample sample = (Sample) obj;
-				names.add(sample.getName());
-			}
-			return names;
-		} catch (Exception e) {
-			String err = "Error in retrieving all particle names.";
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
 	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
-			String sampleId) throws SampleException {
+			String sampleId, UserBean user) throws SampleException {
 		SortedSet<SortableName> otherSamples = new TreeSet<SortableName>();
 		try {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			HQLCriteria crit = new HQLCriteria(
@@ -634,7 +417,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			List results = appService.query(crit);
 			for (Object obj : results) {
 				String name = (String) obj.toString();
-				otherSamples.add(new SortableName(name));
+				if (helper.getAuthService().checkReadPermission(user, name)) {
+					otherSamples.add(new SortableName(name));
+				}
 			}
 			return otherSamples;
 		} catch (Exception e) {

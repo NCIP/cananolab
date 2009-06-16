@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.dto.particle.characterization;
 
-import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
 import gov.nih.nci.cananolab.domain.characterization.invitro.Cytotoxicity;
 import gov.nih.nci.cananolab.domain.characterization.invitro.EnzymeInduction;
@@ -11,6 +10,7 @@ import gov.nih.nci.cananolab.domain.characterization.physical.Solubility;
 import gov.nih.nci.cananolab.domain.characterization.physical.Surface;
 import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
+import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
@@ -29,7 +28,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class represents shared characterization properties to be shown in
@@ -144,7 +142,7 @@ public class CharacterizationBean {
 		}
 	}
 
-	public Characterization getDomainCopy(boolean copyDerivedDatum) {
+	public Characterization getDomainCopy(boolean copyDatum) {
 		Characterization copy = (Characterization) ClassUtils
 				.deepCopy(domainChar);
 		// clear Ids, reset createdBy and createdDate, add prefix to
@@ -154,53 +152,45 @@ public class CharacterizationBean {
 		if (copy.getExperimentConfigCollection().isEmpty()) {
 			copy.setExperimentConfigCollection(null);
 		} else {
-			Collection<ExperimentConfig> configs = copy
-					.getExperimentConfigCollection();
-			copy.setExperimentConfigCollection(new HashSet<ExperimentConfig>());
-			copy.getExperimentConfigCollection().addAll(configs);
+			// Collection<ExperimentConfig> configs = copy
+			// .getExperimentConfigCollection();
+			// copy.setExperimentConfigCollection(new
+			// HashSet<ExperimentConfig>());
+			// copy.getExperimentConfigCollection().addAll(configs);
 			for (ExperimentConfig config : copy.getExperimentConfigCollection()) {
 				config.setId(null);
 				config.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
 				config.setCreatedDate(new Date());
 			}
 		}
-
 		if (copy.getFindingCollection().isEmpty()) {
 			copy.setFindingCollection(null);
 		} else {
-			Collection<Finding> findings = copy.getFindingCollection();
-			copy.setFindingCollection(new HashSet<Finding>());
-			copy.getFindingCollection().addAll(findings);
+			// Collection<Finding> findings = copy.getFindingCollection();
+			// copy.setFindingCollection(new HashSet<Finding>());
+			// copy.getFindingCollection().addAll(findings);
 			for (Finding finding : copy.getFindingCollection()) {
-				for (Datum datum : finding.getDatumCollection()) {
-					datum.setId(null);
-					datum.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-					datum.setCreatedDate(new Date());
-					// TODO::
-					// if (bioassay.getFile() != null) {
-					//
-					// bioassay.getFile().setId(null);
-					// bioassay.getFile().setCreatedBy(
-					// Constants.AUTO_COPY_ANNOTATION_PREFIX);
-					// bioassay.getFile().setCreatedDate(new Date());
-					// }
-					// if (bioassay.getDerivedDatumCollection().isEmpty()
-					// || !copyDerivedDatum) {
-					// bioassay.setDerivedDatumCollection(null);
-					// } else {
-					// Collection<DerivedDatum> data = bioassay
-					// .getDerivedDatumCollection();
-					// bioassay
-					// .setDerivedDatumCollection(new HashSet<DerivedDatum>());
-					// bioassay.getDerivedDatumCollection().addAll(data);
-					// for (DerivedDatum datum : bioassay
-					// .getDerivedDatumCollection()) {
-					// datum.setId(null);
-					// datum
-					// .setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
-					// datum.setCreatedDate(new Date());
-					// }
-					// }
+				Collection<Datum> data = finding.getDatumCollection();
+				Collection<File> files = finding.getFileCollection();
+				if (data.isEmpty()) {
+					finding.setDatumCollection(null);
+				} else {
+					for (Datum datum : finding.getDatumCollection()) {
+						datum.setId(null);
+						datum
+								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+						datum.setCreatedDate(new Date());
+					}
+				}
+				if (files.isEmpty()) {
+					finding.setFileCollection(null);
+				} else {
+					for (File file : finding.getFileCollection()) {
+						file.setId(null);
+						file
+								.setCreatedBy(Constants.AUTO_COPY_ANNOTATION_PREFIX);
+						file.setCreatedDate(new Date());
+					}
 				}
 			}
 		}

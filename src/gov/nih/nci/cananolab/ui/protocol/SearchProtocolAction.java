@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.service.protocol.ProtocolService;
 import gov.nih.nci.cananolab.service.protocol.impl.ProtocolServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 		List<ProtocolBean> protocols = new ArrayList<ProtocolBean>();
 		ProtocolService service = null;
 		for (String location : searchLocations) {
-			if (location.equals("local")) {
+			if (location.equals(Constants.LOCAL_SITE)) {
 				service = new ProtocolServiceLocalImpl();
 			}
 			// else {
@@ -95,7 +96,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		InitProtocolSetup.getInstance().setProtocolDropdowns(request);
 		InitSetup.getInstance().getGridNodesInContext(request);
-		String[] selectedLocations = new String[] { "local" };
+		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
@@ -119,7 +120,7 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 			throws Exception {
 		String location = request.getParameter("location");
 		String fileId = request.getParameter("fileId");
-		if (location.equals("local")) {
+		if (location.equals(Constants.LOCAL_SITE)) {
 			return super.download(mapping, form, request, response);
 		}
 		// TODO grid service

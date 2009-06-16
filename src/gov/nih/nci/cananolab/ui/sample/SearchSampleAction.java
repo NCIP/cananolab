@@ -13,8 +13,10 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.AbstractDispatchAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -136,19 +138,18 @@ public class SearchSampleAction extends AbstractDispatchAction {
 			wordList.toArray(words);
 		}
 
-		List<SampleBean> foundSamples = new ArrayList<SampleBean>();
+		List<SampleBean> samples = new ArrayList<SampleBean>();
 		for (String location : searchLocations) {
-			List<SampleBean> particles = null;
+
 			SampleService service = null;
-			if (location.equals("local")) {
+			if (location.equals(Constants.LOCAL_SITE)) {
 				service = new SampleServiceLocalImpl();
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
 						request, location);
-				// TODO update grid service
-				// service = new SampleServiceRemoteImpl(serviceUrl);
+				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
-			particles = service.findSamplesBy(samplePointOfContact,
+			samples = service.findSamplesBy(samplePointOfContact,
 					nanomaterialEntityClassNames.toArray(new String[0]),
 					otherNanomaterialEntityTypes.toArray(new String[0]),
 					functionalizingEntityClassNames.toArray(new String[0]),
@@ -156,24 +157,13 @@ public class SearchSampleAction extends AbstractDispatchAction {
 					functionClassNames.toArray(new String[0]),
 					otherFunctionTypes.toArray(new String[0]), charaClassNames
 							.toArray(new String[0]), otherCharacterizationTypes
-							.toArray(new String[0]), words);
-			for (SampleBean particle : particles) {
-				particle.setLocation(location);
-			}
-			// don't need to filter if is curator and doing local search
-			if (user!=null && user.isCurator() && location.equals("local")) {
-				foundSamples.addAll(particles);
-			} else if (location.equals("local")) {
-				// get user accessible particles
-				List<SampleBean> filteredSamples = service
-						.getUserAccessibleSamples(particles, user);
-				foundSamples.addAll(filteredSamples);
-			} else {
-				foundSamples.addAll(particles);
+							.toArray(new String[0]), words, user);
+			for (SampleBean sample : samples) {
+				sample.setLocation(location);
 			}
 		}
-		if (foundSamples != null && !foundSamples.isEmpty()) {
-			request.setAttribute("samples", foundSamples);
+		if (samples != null && !samples.isEmpty()) {
+			request.setAttribute("samples", samples);
 			forward = mapping.findForward("success");
 		} else {
 			ActionMessages msgs = new ActionMessages();
@@ -193,7 +183,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 
 		InitSetup.getInstance().getGridNodesInContext(request);
 
-		String[] selectedLocations = new String[] { "local" };
+		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
 				.getParameter("searchLocations");
 		if (gridNodeHostStr != null && gridNodeHostStr.length() > 0) {
@@ -202,7 +192,7 @@ public class SearchSampleAction extends AbstractDispatchAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		theForm.set("searchLocations", selectedLocations);
 
-		if ("local".equals(selectedLocations[0])
+		if (Constants.LOCAL_SITE.equals(selectedLocations[0])
 				&& selectedLocations.length == 1) {
 			InitSampleSetup.getInstance().setLocalSearchDropdowns(request);
 		} else {

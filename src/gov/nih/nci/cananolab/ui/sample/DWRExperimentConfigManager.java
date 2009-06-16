@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -12,6 +13,7 @@ import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper
 import java.util.SortedSet;
 
 import org.apache.struts.validator.DynaValidatorForm;
+import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
 /**
@@ -35,7 +37,9 @@ public class DWRExperimentConfigManager {
 
 	public ExperimentConfigBean getExperimentConfigById(String id)
 			throws ExperimentConfigException {
-		ExperimentConfig config = helper.findExperimentConfigById(id);
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		ExperimentConfig config = helper.findExperimentConfigById(id, user);
 		DynaValidatorForm charForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("characterizationForm"));
 		CharacterizationBean charBean = (CharacterizationBean) (charForm

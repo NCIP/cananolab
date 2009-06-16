@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
@@ -52,4 +53,6 @@ public interface PointOfContactService {
 
 	public List<PointOfContactBean> findPointOfContactsBySampleId(String sampleId)
 			throws PointOfContactException;
+
+	public void saveOtherPOCs(Sample sample) throws PointOfContactException;
 }

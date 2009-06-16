@@ -1,13 +1,10 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
@@ -57,7 +54,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Handle Composition Summary View request.
-	 * 
+	 *
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -101,8 +98,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		String type = request.getParameter("type");
 		if (!StringUtils.isEmpty(type)) {
 			DynaValidatorForm theForm = (DynaValidatorForm) form;
-			CompositionBean compBean = 
-				(CompositionBean) theForm.get("comp");
+			CompositionBean compBean = (CompositionBean) theForm.get("comp");
 			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
 				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
 			}
@@ -110,8 +106,7 @@ public class CompositionAction extends BaseAnnotationAction {
 				compBean.setFiles(Collections.EMPTY_LIST);
 			}
 			if (!type.equals(CompositionBean.FUNCTIONALIZING_SELECTION)) {
-				compBean
-						.setFunctionalizingEntities(Collections.EMPTY_LIST);
+				compBean.setFunctionalizingEntities(Collections.EMPTY_LIST);
 			}
 			if (!type.equals(CompositionBean.NANOMATERIAL_SELECTION)) {
 				compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
@@ -139,7 +134,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean compBean = (CompositionBean) theForm.get("comp");
-		
+
 		// Show only the selected type.
 		String type = request.getParameter("type");
 		String location = request.getParameter("location");
@@ -157,14 +152,13 @@ public class CompositionAction extends BaseAnnotationAction {
 				compBean.setNanomaterialEntities(Collections.EMPTY_LIST);
 			}
 		}
-		
+
 		// Get sample name for constructing file name.
-		String fileName =
-			this.getExportFileName(compBean.getDomain().getSample().getName(),
-					"CompositionSummaryView");
+		String fileName = this.getExportFileName(compBean.getDomain()
+				.getSample().getName(), "CompositionSummaryView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
 		CompositionService service = null;
-		if (Constants.LOCAL.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new CompositionServiceLocalImpl();
 		} else {
 			// TODO: Implement remote service.
@@ -185,15 +179,16 @@ public class CompositionAction extends BaseAnnotationAction {
 	 * @return ActionForward
 	 * @throws Exception
 	 */
-	protected void prepareSummary(ActionMapping mapping, ActionForm form,
+	private void prepareSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString("location");
 		HttpSession session = request.getSession();
 		CompositionService compService = null;
-		if (Constants.LOCAL.equals(location)) {
+		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
 			// TODO update grid service
@@ -202,39 +197,31 @@ public class CompositionAction extends BaseAnnotationAction {
 			// compService = new CompositionServiceRemoteImpl(
 			// serviceUrl);
 		}
-		CompositionBean compBean = new CompositionBean();
-		if (compService.findCompositionBySampleId(sampleId) != null) {
-			compBean = compService.findCompositionBySampleId(sampleId);
-		}
+		CompositionBean compBean = compService.findCompositionBySampleId(
+				sampleId, user);
 		theForm.set("comp", compBean);
 		// set entity type and association type and retrieve visibility
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
+
 		for (NanomaterialEntityBean entityBean : compBean
 				.getNanomaterialEntities()) {
 			entityBean.updateType(InitSetup.getInstance()
 					.getClassNameToDisplayNameLookup(
 							session.getServletContext()));
-			compService.retrieveVisibility(entityBean, user);
 		}
 		for (FunctionalizingEntityBean entityBean : compBean
 				.getFunctionalizingEntities()) {
 			entityBean.updateType(InitSetup.getInstance()
 					.getClassNameToDisplayNameLookup(
 							session.getServletContext()));
-			compService.retrieveVisibility(entityBean, user);
 		}
 		for (ChemicalAssociationBean assocBean : compBean
 				.getChemicalAssociations()) {
 			assocBean.updateType(InitSetup.getInstance()
 					.getClassNameToDisplayNameLookup(
 							session.getServletContext()));
-			compService.retrieveVisibility(assocBean, user);
 		}
-		FileService fileService = new FileServiceLocalImpl();
-		for (FileBean fileBean : compBean.getFiles()) {
-			fileService.retrieveVisibility(fileBean, user);
-		}
-		//retain action messages from send redirects
+
+		// retain action messages from send redirects
 		ActionMessages msgs = (ActionMessages) session
 				.getAttribute(ActionMessages.GLOBAL_MESSAGE);
 		saveMessages(request, msgs);
@@ -243,7 +230,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 	/**
 	 * Get file name for exporting report as an Excell file.
-	 * 
+	 *
 	 * @param sampleName
 	 * @param viewType
 	 * @param charClass
@@ -253,7 +240,8 @@ public class CompositionAction extends BaseAnnotationAction {
 		List<String> nameParts = new ArrayList<String>();
 		nameParts.add(sampleName);
 		nameParts.add(viewType);
-		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance().getTime()));
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
+				.getTime()));
 		String exportFileName = StringUtils.join(nameParts, "_");
 		return exportFileName;
 	}

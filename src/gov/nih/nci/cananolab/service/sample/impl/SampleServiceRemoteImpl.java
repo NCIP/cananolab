@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
-import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
@@ -18,13 +17,9 @@ import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SortableName;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -34,13 +29,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
@@ -52,12 +42,14 @@ public class SampleServiceRemoteImpl implements SampleService {
 	private static Logger logger = Logger
 			.getLogger(SampleServiceRemoteImpl.class);
 	private CaNanoLabServiceClient gridClient;
-	private String serviceUrl;
 	private SampleServiceHelper helper = new SampleServiceHelper();
 
-	public SampleServiceRemoteImpl(String serviceUrl) throws Exception {
-		this.serviceUrl = serviceUrl;
-		gridClient = new CaNanoLabServiceClient(serviceUrl);
+	public SampleServiceRemoteImpl(String serviceUrl) throws SampleException {
+		try {
+			gridClient = new CaNanoLabServiceClient(serviceUrl);
+		} catch (Exception e) {
+			throw new SampleException("Can't create grid client succesfully.");
+		}
 	}
 
 	/**
@@ -67,8 +59,8 @@ public class SampleServiceRemoteImpl implements SampleService {
 	 * @throws SampleException,
 	 *             DuplicateEntriesException
 	 */
-	public void saveSample(Sample sample) throws SampleException,
-			DuplicateEntriesException {
+	public void saveSample(SampleBean sample, UserBean user)
+			throws SampleException, DuplicateEntriesException {
 		throw new SampleException("Not implemented for grid service");
 	}
 
@@ -93,8 +85,8 @@ public class SampleServiceRemoteImpl implements SampleService {
 			String[] otherFunctionalizingEntityTypes,
 			String[] functionClassNames, String[] otherFunctionTypes,
 			String[] characterizationClassNames,
-			String[] otherCharacterizationTypes, String[] wordList)
-			throws SampleException {
+			String[] otherCharacterizationTypes, String[] wordList,
+			UserBean user) throws SampleException {
 		try {
 			String[] sampleViewStrs = gridClient.getSampleViewStrs(
 					samplePointOfContact, nanomaterialEntityClassNames,
@@ -175,7 +167,8 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findSampleById(String sampleId) throws SampleException {
+	public SampleBean findSampleById(String sampleId, UserBean user)
+			throws SampleException {
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -286,122 +279,48 @@ public class SampleServiceRemoteImpl implements SampleService {
 		}
 	}
 
-	public SampleBean findFullSampleById(String sampleId) throws Exception {
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
-				Property.forName("id").eq(new Long(sampleId)));
-		// characterization
-		crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"characterizationCollection.derivedBioAssayDataCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode(
-				"characterizationCollection.experimentConfigCollection",
-				FetchMode.JOIN);
-		// sampleComposition
-		crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.nanomaterialEntityCollection."
-				+ "composingElementCollection.inherentFunctionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.chemicalAssociationCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementA",
-						FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.chemicalAssociationCollection.associatedElementB",
-						FetchMode.JOIN);
-		crit.setFetchMode("sampleComposition.functionalizingEntityCollection",
-				FetchMode.JOIN);
-		crit
-				.setFetchMode(
-						"sampleComposition.functionalizingEntityCollection.functionCollection",
-						FetchMode.JOIN);
-		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("publicationCollection", FetchMode.JOIN);
-		crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-		crit.createAlias("otherPointOfContactCollection", "otherPoc",
-				CriteriaSpecification.LEFT_JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		Sample sample = null;
-		SampleBean sampleBean = null;
-		if (!result.isEmpty()) {
-			sample = (Sample) result.get(0);
-			sampleBean = new SampleBean(sample);
-		}
-		return sampleBean;
+	public SampleBean findFullSampleById(String sampleId, UserBean user)
+			throws SampleException {
+		throw new SampleException("Not implemented for grid service");
 	}
 
-	public Sample findSampleByName(String sampleName) throws SampleException {
+	public SampleBean findSampleByName(String sampleName, UserBean user)
+			throws SampleException {
 		try {
-			return helper.findSampleByName(sampleName);
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(sampleName);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Sample");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+			Sample sample = null;
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				sample = (Sample) obj;
+				loadSamplesAssociations(sample);
+			}
+			SampleBean sampleBean = new SampleBean(sample);
+			return sampleBean;
+		} catch (RemoteException e) {
+			logger.error(Constants.NODE_UNAVAILABLE, e);
+			throw new SampleException(Constants.NODE_UNAVAILABLE, e);
 		} catch (Exception e) {
-			String err = "Problem finding the particle by name: " + sampleName;
+			String err = "Problem finding the remote sample by name: "
+					+ sampleName;
 			logger.error(err, e);
 			throw new SampleException(err, e);
 		}
-	}
-
-	public void retrieveVisibility(SampleBean sampleBean, UserBean user)
-			throws SampleException {
-		throw new SampleException("Not implemented for grid service");
-	}
-
-	public void deleteAnnotationById(String className, Long dataId)
-			throws SampleException {
-		throw new SampleException("Not implemented for grid service");
 	}
 
 	public SortedSet<String> findAllSampleNames(UserBean user)
 			throws SampleException {
-		try {
-			AuthorizationService auth = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-
-			SortedSet<String> names = new TreeSet<String>(
-					new Comparators.SortableNameComparator());
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select sample.name from gov.nih.nci.cananolab.domain.particle.Sample sample");
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				String name = ((String) obj).trim();
-				if (auth.checkReadPermission(user, name)) {
-					names.add(name);
-				}
-			}
-			return names;
-		} catch (Exception e) {
-			String err = "Error finding samples for " + user.getLoginName();
-			logger.error(err, e);
-			throw new SampleException(err, e);
-		}
-	}
-
-	public void assignVisibility(SampleBean sampleBean) throws Exception {
-		throw new SampleException("Not implemented for grid service");
-	}
-
-	public List<SampleBean> getUserAccessibleSamples(
-			List<SampleBean> particles, UserBean user) throws SampleException {
 		throw new SampleException("Not implemented for grid service");
 	}
 
@@ -410,7 +329,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 	}
 
 	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
-			String sampleId) throws SampleException {
+			String sampleId, UserBean user) throws SampleException {
 		throw new SampleException("Not implemented for grid service");
 	}
 }

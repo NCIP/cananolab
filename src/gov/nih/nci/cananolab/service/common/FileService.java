@@ -4,9 +4,7 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.FileException;
-import gov.nih.nci.cananolab.exception.SecurityException;
-
-import java.util.List;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 
 /**
  * Interface defining methods for file retrieving and writing.
@@ -16,14 +14,6 @@ import java.util.List;
  */
 public interface FileService {
 	/**
-	 * Load the file for the given fileId from the database
-	 *
-	 * @param fileId
-	 * @return
-	 */
-	public FileBean findFileById(String fileId) throws FileException;
-
-	/**
 	 * Load the file for the given fileId from the database. Also check whether
 	 * user can do it.
 	 *
@@ -31,15 +21,10 @@ public interface FileService {
 	 * @return
 	 */
 	public FileBean findFileById(String fileId, UserBean user)
-			throws FileException, SecurityException;
+			throws FileException, NoAccessException;
 
-	public List<File> findFilesByCompositionInfoId(String id,
-			String className) throws FileException;
-
-	public void saveCopiedFileAndSetVisibility(File copy, UserBean user,
-			String oldSampleName, String newSampleName) throws FileException;
-
-	public void writeFile(File file, byte[] fileData) throws FileException;
+	public void writeFile(FileBean fileBean, UserBean user)
+			throws FileException, NoAccessException;
 
 	/**
 	 * Preparing keywords and other information prior to saving a file
@@ -47,11 +32,5 @@ public interface FileService {
 	 * @param file
 	 * @throws FileException
 	 */
-	public void prepareSaveFile(File file) throws FileException;
-
-	// retrieve file visibility
-	public void retrieveVisibility(FileBean fileBean, UserBean user)
-			throws FileException;
-
-	public void assignVisibility(FileBean fileBean) throws FileException;
+	public void prepareSaveFile(File file, UserBean user) throws FileException, NoAccessException;
 }

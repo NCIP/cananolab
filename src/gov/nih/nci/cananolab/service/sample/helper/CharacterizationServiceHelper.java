@@ -1,6 +1,8 @@
 package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.characterization.OtherCharacterization;
+import gov.nih.nci.cananolab.domain.common.Condition;
+import gov.nih.nci.cananolab.domain.common.Datum;
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Finding;
@@ -12,9 +14,11 @@ import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.Row;
 import gov.nih.nci.cananolab.dto.common.TableCell;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -93,43 +97,14 @@ public class CharacterizationServiceHelper {
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceHelper.class);
 
+	private AuthorizationService authService;
+
 	public CharacterizationServiceHelper() {
-	}
-
-	public Characterization findCharacterizationById(String charId)
-			throws Exception {
-		Characterization achar = null;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(
-				Characterization.class).add(
-				Property.forName("id").eq(new Long(charId)));
-		// fully load characterization
-		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("protocol", FetchMode.JOIN);
-		crit.setFetchMode("protocol.file", FetchMode.JOIN);
-		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.technique",
-				FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("findingCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"findingCollection.datumCollection.conditionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
-				FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			achar = (Characterization) result.get(0);
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
 		}
-		return achar;
 	}
 
 	public List<Characterization> findSampleCharacterizationsByClass(
@@ -182,7 +157,8 @@ public class CharacterizationServiceHelper {
 	}
 
 	public Protocol findProtocolByCharacterizationId(
-			java.lang.String characterizationId, Boolean filterPublic) throws Exception {
+			java.lang.String characterizationId, UserBean user)
+			throws Exception {
 		Protocol protocol = null;
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -191,19 +167,20 @@ public class CharacterizationServiceHelper {
 				+ characterizationId;
 		HQLCriteria crit = new HQLCriteria(hql);
 		List results = appService.query(crit);
-		List filteredResults=new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
+		for (Object obj : results) {
 			protocol = (Protocol) obj;
+			if (authService.checkReadPermission(user, protocol.getId()
+					.toString())) {
+				return protocol;
+			} else {
+				throw new NoAccessException();
+			}
 		}
 		return protocol;
 	}
 
-	public List<Finding> findFindingsByCharacterizationId(String charId, Boolean filterPublic)
-			throws Exception {
+	public List<Finding> findFindingsByCharacterizationId(String charId,
+			UserBean user) throws Exception {
 		List<Finding> findingCollection = new ArrayList<Finding>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -212,10 +189,9 @@ public class CharacterizationServiceHelper {
 				"select achar.findingCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
 						+ charId);
 		List results = appService.query(crit);
-		List filteredResults=new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.filterNonPublic(results);
+		List filteredResults = new ArrayList(results);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			Finding finding = (Finding) obj;
@@ -224,8 +200,8 @@ public class CharacterizationServiceHelper {
 		return findingCollection;
 	}
 
-	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(String charId, Boolean filterPublic)
-			throws Exception {
+	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(
+			String charId, UserBean user) throws Exception {
 		List<ExperimentConfig> configCollection = new ArrayList<ExperimentConfig>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -235,10 +211,9 @@ public class CharacterizationServiceHelper {
 						+ charId);
 
 		List results = appService.query(crit);
-		List filteredResults=new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.filterNonPublic(results);
+		List filteredResults = new ArrayList(results);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			ExperimentConfig config = (ExperimentConfig) obj;
@@ -247,7 +222,7 @@ public class CharacterizationServiceHelper {
 		return configCollection;
 	}
 
-	public List<File> findFilesByCharacterizationId(String charId, Boolean filterPublic)
+	public List<File> findFilesByCharacterizationId(String charId, UserBean user)
 			throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
 
@@ -257,10 +232,9 @@ public class CharacterizationServiceHelper {
 				"select achar.fileCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
 						+ charId);
 		List results = appService.query(crit);
-		List filteredResults=new ArrayList(results);
-		if (filterPublic) {
-			AuthorizationService authService=new AuthorizationService(Constants.CSM_APP_NAME);
-			filteredResults=authService.filterNonPublic(results);
+		List filteredResults = new ArrayList(results);
+		if (user == null) {
+			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
 			File file = (File) obj;
@@ -288,8 +262,8 @@ public class CharacterizationServiceHelper {
 	}
 
 	/**
-	 * Output Sample Characterization Summary report
-	 * (==> bodyCharacterizationSummaryPrintViewTable.jsp)
+	 * Output Sample Characterization Summary report (==>
+	 * bodyCharacterizationSummaryPrintViewTable.jsp)
 	 *
 	 * @param summaryBean
 	 * @param wb
@@ -304,8 +278,8 @@ public class CharacterizationServiceHelper {
 		headerStyle.setFont(headerFont);
 
 		int charCount = 1;
-		Map<String, SortedSet<CharacterizationBean>> pubs =
-			summaryBean.getType2Characterizations();
+		Map<String, SortedSet<CharacterizationBean>> pubs = summaryBean
+				.getType2Characterizations();
 		for (String type : summaryBean.getCharacterizationTypes()) {
 			// Output data of report
 			SortedSet<CharacterizationBean> charBeans = pubs.get(type);
@@ -392,8 +366,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputAssayType(CharacterizationBean charBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+	private int outputAssayType(CharacterizationBean charBean, HSSFSheet sheet,
+			HSSFCellStyle headerStyle, int rowIndex) {
 		Characterization charactization = (Characterization) charBean
 				.getDomainChar();
 
@@ -442,8 +416,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputCharDate(CharacterizationBean charBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+	private int outputCharDate(CharacterizationBean charBean, HSSFSheet sheet,
+			HSSFCellStyle headerStyle, int rowIndex) {
 		// 5. Output Characterization Date at (4, 0).
 		if (!StringUtils.isEmpty(charBean.getDateString())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -461,8 +435,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputProtocol(CharacterizationBean charBean,
-			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
+	private int outputProtocol(CharacterizationBean charBean, HSSFSheet sheet,
+			HSSFCellStyle headerStyle, int rowIndex) {
 		// 6. Output Protocol at (6, 0).
 		if (!StringUtils.isEmpty(charBean.getProtocolBean().getDisplayName())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -553,8 +527,8 @@ public class CharacterizationServiceHelper {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, ENZYME_NAME);
 			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, charBean
-					.getEnzymeInduction().getEnzyme());
+			ExportUtils.createCell(row, 0, charBean.getEnzymeInduction()
+					.getEnzyme());
 		}
 		return rowIndex;
 	}
@@ -574,8 +548,8 @@ public class CharacterizationServiceHelper {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TYPE);
 			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0,
-					charBean.getPhysicalState().getType());
+			ExportUtils.createCell(row, 0, charBean.getPhysicalState()
+					.getType());
 		}
 		return rowIndex;
 	}
@@ -595,16 +569,13 @@ public class CharacterizationServiceHelper {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TYPE);
 			ExportUtils.createCell(row, 1, headerStyle, ASPECT_RATIO);
-			ExportUtils.createCell(row, 2, headerStyle,
-					MINIMUM_DIMENSION);
-			ExportUtils.createCell(row, 3, headerStyle,
-					MAXIMUM_DIMENSION);
+			ExportUtils.createCell(row, 2, headerStyle, MINIMUM_DIMENSION);
+			ExportUtils.createCell(row, 3, headerStyle, MAXIMUM_DIMENSION);
 
 			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, charBean.getShape()
-					.getType());
-			ExportUtils.createCell(row, 1, String.valueOf(charBean
-					.getShape().getAspectRatio()));
+			ExportUtils.createCell(row, 0, charBean.getShape().getType());
+			ExportUtils.createCell(row, 1, String.valueOf(charBean.getShape()
+					.getAspectRatio()));
 
 			StringBuilder sb = new StringBuilder();
 			sb.append(charBean.getShape().getMinDimension()).append(' ');
@@ -666,8 +637,8 @@ public class CharacterizationServiceHelper {
 			HSSFRow row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, IS_HYDROPHOBIC);
 			row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, String.valueOf(charBean
-					.getSurface().getIsHydrophobic()));
+			ExportUtils.createCell(row, 0, String.valueOf(charBean.getSurface()
+					.getIsHydrophobic()));
 		}
 		return rowIndex;
 	}
@@ -688,8 +659,7 @@ public class CharacterizationServiceHelper {
 		// 7. Output Design Description at (6, 0).
 		if (!StringUtils.isEmpty(charactization.getDesignMethodsDescription())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle,
-					DESIGN_DESCRIPTION);
+			ExportUtils.createCell(row, 0, headerStyle, DESIGN_DESCRIPTION);
 			ExportUtils.createCell(row, 1, charactization
 					.getDesignMethodsDescription());
 		}
@@ -712,8 +682,7 @@ public class CharacterizationServiceHelper {
 			rowIndex++; // Leave one empty line as separator.
 			StringBuilder sb = new StringBuilder();
 			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle,
-					TECH_INSTRUMENTS);
+			ExportUtils.createCell(row, 0, headerStyle, TECH_INSTRUMENTS);
 
 			row = sheet.createRow(rowIndex++);
 			ExportUtils.createCell(row, 0, headerStyle, TECHNIQUE);
@@ -721,8 +690,8 @@ public class CharacterizationServiceHelper {
 			ExportUtils.createCell(row, 2, headerStyle, DESCRIPTION);
 			for (ExperimentConfigBean config : configList) {
 				row = sheet.createRow(rowIndex++);
-				ExportUtils.createCell(row, 0, config
-						.getTechniqueDisplayName());
+				ExportUtils
+						.createCell(row, 0, config.getTechniqueDisplayName());
 
 				String[] names = config.getInstrumentDisplayNames();
 				if (names != null && names.length > 0) {
@@ -762,8 +731,8 @@ public class CharacterizationServiceHelper {
 			for (FindingBean findingBean : findings) {
 				rowIndex++; // Create one empty line as separator.
 				HSSFRow row = sheet.createRow(rowIndex++);
-				ExportUtils.createCell(row, 0, headerStyle, CHAR_RESULT
-						+ count);
+				ExportUtils
+						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
 
 				// 9a. Output Characterization File Results.
 				this.outputFileResult(findingBean, request, wb, sheet,
@@ -799,7 +768,8 @@ public class CharacterizationServiceHelper {
 			for (FileBean fileBean : files) {
 				row = sheet.createRow(rowIndex++);
 				if (fileBean.getDomainFile().getUriExternal().booleanValue()) {
-					ExportUtils.createCell(row, 0, fileBean.getDomainFile().getUri());
+					ExportUtils.createCell(row, 0, fileBean.getDomainFile()
+							.getUri());
 					/**
 					 * sb.append(request.getRequestURL().toString());
 					 * sb.append("?dispatch=download&fileId=");
@@ -811,8 +781,8 @@ public class CharacterizationServiceHelper {
 				} else if (fileBean.isHidden()) {
 					ExportUtils.createCell(row, 0, PRIVATE_FILE);
 				} else {
-					ExportUtils.createCell(row, 0, fileBean
-							.getDomainFile().getTitle());
+					ExportUtils.createCell(row, 0, fileBean.getDomainFile()
+							.getTitle());
 
 					StringBuilder sb = new StringBuilder();
 					if (fileBean.isImage()) {
@@ -822,15 +792,18 @@ public class CharacterizationServiceHelper {
 						java.io.File imgFile = new java.io.File(filePath);
 						if (imgFile.exists()) {
 							try {
-								rowIndex =
-									ExportUtils.createImage(rowIndex, (short) 0, filePath, wb, sheet);
-							}
-							catch (Exception e) {
-								logger.error(
-										"Error exporting Characterization image data.", e);
+								rowIndex = ExportUtils.createImage(rowIndex,
+										(short) 0, filePath, wb, sheet);
+							} catch (Exception e) {
+								logger
+										.error(
+												"Error exporting Characterization image data.",
+												e);
 							}
 						} else {
-							logger.error("Characterization image file not exists: " + filePath);
+							logger
+									.error("Characterization image file not exists: "
+											+ filePath);
 						}
 					}
 				}
@@ -855,8 +828,7 @@ public class CharacterizationServiceHelper {
 		if (rows != null && !rows.isEmpty()) {
 			// Output general header "Data and Conditions".
 			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils
-					.createCell(row, 0, headerStyle, DATA_CONDITIONS);
+			ExportUtils.createCell(row, 0, headerStyle, DATA_CONDITIONS);
 
 			// Output header of each column.
 			int cellIndex = 0;
@@ -893,14 +865,13 @@ public class CharacterizationServiceHelper {
 		// 9. Output Analysis and Conclusion at last.
 		if (!StringUtils.isEmpty(charBean.getConclusion())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
-			ExportUtils.createCell(row, 0, headerStyle,
-					ANALYSIS_CONCLUSION);
+			ExportUtils.createCell(row, 0, headerStyle, ANALYSIS_CONCLUSION);
 			ExportUtils.createCell(row, 1, charBean.getConclusion());
 		}
 		return rowIndex;
 	}
 
-	public ExperimentConfig findExperimentConfigById(String id)
+	public ExperimentConfig findExperimentConfigById(String id, UserBean user)
 			throws ExperimentConfigException {
 		ExperimentConfig config = null;
 		try {
@@ -923,4 +894,67 @@ public class CharacterizationServiceHelper {
 		return config;
 	}
 
+	public AuthorizationService getAuthService() {
+		return authService;
+	}
+
+	public void assignPublicVisibility(Characterization aChar) throws Exception {
+		// characterization
+		if (aChar != null) {
+			authService.assignPublicVisibility(aChar.getId().toString());
+			for (Finding finding : aChar.getFindingCollection()) {
+				if (finding != null) {
+					authService.assignPublicVisibility(finding.getId()
+							.toString());
+				}
+				// datum
+				for (Datum datum : finding.getDatumCollection()) {
+					if (datum != null) {
+						authService.assignPublicVisibility(datum.getId()
+								.toString());
+					}
+					for (Condition condition : datum.getConditionCollection()) {
+						authService.assignPublicVisibility(datum.getId()
+								.toString());
+					}
+				}
+			}
+
+			// ExperimentConfiguration
+			for (ExperimentConfig config : aChar
+					.getExperimentConfigCollection()) {
+				authService.assignPublicVisibility(config.getId().toString());
+			}
+		}
+	}
+
+	public void removePublicVisibility(Characterization aChar) throws Exception {
+		// characterization
+		if (aChar != null) {
+			authService.removePublicVisibility(aChar.getId().toString());
+			for (Finding finding : aChar.getFindingCollection()) {
+				if (finding != null) {
+					authService.removePublicVisibility(finding.getId()
+							.toString());
+				}
+				// datum
+				for (Datum datum : finding.getDatumCollection()) {
+					if (datum != null) {
+						authService.removePublicVisibility(datum.getId()
+								.toString());
+					}
+					for (Condition condition : datum.getConditionCollection()) {
+						authService.removePublicVisibility(datum.getId()
+								.toString());
+					}
+				}
+			}
+
+			// ExperimentConfiguration
+			for (ExperimentConfig config : aChar
+					.getExperimentConfigCollection()) {
+				authService.removePublicVisibility(config.getId().toString());
+			}
+		}
+	}
 }

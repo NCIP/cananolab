@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -17,17 +16,13 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +55,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		ActionMessage msg = new ActionMessage(
 				"message.addFunctionalizingEntity");
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-		//save action messages in the session so composition.do know about them
+		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
@@ -113,7 +108,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, FunctionalizingEntityBean entityBean)
 			throws Exception {
 		CompositionService compositionService = new CompositionServiceLocalImpl();
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -144,40 +139,31 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		}
 
 		compositionService.saveFunctionalizingEntity(sampleBean.getDomain(),
-				entityBean.getDomainEntity());
-
-		// set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
-		if (accessibleGroups != null
-				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
-			// set composition public
-			authService.assignPublicVisibility(sampleBean.getDomain()
-					.getSampleComposition().getId().toString());
-			compositionService.assignFunctionalizingEntityPublicVisibility(
-					authService, entityBean.getDomainEntity());
-		}
-		// save file data to file system and set visibility
-		saveFilesToFileSystem(entityBean.getFiles());
-
+				entityBean, user);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
+
 		// save to other particles
-		FileService service = new FileServiceLocalImpl();
+		FileServiceHelper fileHelper = new FileServiceHelper();
 		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			FunctionalizingEntity copy = entityBean.getDomainCopy();
+			FunctionalizingEntityBean copyBean = new FunctionalizingEntityBean(
+					copy);
+			// copy file visibility and file content
+			for (FileBean fileBean : copyBean.getFiles()) {
+				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
+						user);
+			}
+
 			for (Sample sample : otherSamples) {
-				compositionService.saveFunctionalizingEntity(sample, copy);
-				if (copy.getFileCollection() != null) {
-					for (File file : copy.getFileCollection()) {
-						service.saveCopiedFileAndSetVisibility(file, user,
-								sampleBean.getDomain().getName(), sample
-										.getName());
-					}
+				// replace file URI with new sample name
+				for (FileBean fileBean : copyBean.getFiles()) {
+					fileBean.getDomainFile().getUri().replace(
+							sampleBean.getDomain().getName(), sample.getName());
 				}
+				compositionService.saveFunctionalizingEntity(sample, copyBean,
+						user);
 			}
 		}
 	}
@@ -222,48 +208,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		if (entityId == null) {
 			entityId = (String) request.getAttribute("dataId");
 		}
+
+		UserBean user = (UserBean) session.getAttribute("user");
 		CompositionService compService = new CompositionServiceLocalImpl();
 		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId);
-		UserBean user = (UserBean) session.getAttribute("user");
-		compService.retrieveVisibility(entityBean, user);
+				.findFunctionalizingEntityById(entityId, user);
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("functionalizingEntity", entityBean);
 		this.setLookups(request);
 		// clear copy to otherSamples
 		theForm.set("otherSamples", new String[0]);
-		return mapping.getInputForward();
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		setupSample(theForm, request, location);
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		String entityId = request.getParameter("dataId");
-		String entityClassName = request.getParameter("dataClassName");
-		CompositionService compService = null;
-		if (location.equals("local")) {
-			compService = new CompositionServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			// TODO update grid service
-			// compService = new CompositionServiceRemoteImpl(
-			// serviceUrl);
-		}
-		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(entityId, entityClassName);
-		if (location.equals("local")) {
-			compService.retrieveVisibility(entityBean, user);
-		}
-		entityBean.updateType(InitSetup.getInstance()
-				.getClassNameToDisplayNameLookup(session.getServletContext()));
-		theForm.set("functionalizingEntity", entityBean);
 		return mapping.getInputForward();
 	}
 
@@ -280,7 +235,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.persistFunctionalizingEntityDropdowns(request, entity);
 		request.setAttribute("dataId", entity.getDomainEntity().getId()
 				.toString());
-		//return to setupUpdate to get the correct entity from database
+		// return to setupUpdate to get the correct entity from database
 		return setupUpdate(mapping, form, request, response);
 	}
 
@@ -355,7 +310,7 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -367,42 +322,16 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
-		boolean canDelete = compositionService
-				.checkChemicalAssociationBeforeDelete(entityBean);
 		ActionMessages msgs = new ActionMessages();
-		if (canDelete) {
-			compositionService.deleteFunctionalizingEntity(entityBean
-					.getDomainEntity());
-			sampleBean = setupSample(theForm, request, "local");
-			ActionMessage msg = new ActionMessage(
-					"message.deleteFunctionalizingEntity");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			//save action messages in the session so composition.do know about them
-			request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
-			return mapping.findForward("success");
-		} else {
-			ActionMessage msg = new ActionMessage(
-					"error.deleteFunctionalizingEntityWithChemicalAssociation",
-					entityBean.getClassName());
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			return mapping.getInputForward();
-		}
-	}
-
-	protected boolean checkDelete(HttpServletRequest request,
-			ActionMessages msgs, String id) throws Exception {
-		CompositionService compService = new CompositionServiceLocalImpl();
-		FunctionalizingEntityBean entityBean = compService
-				.findFunctionalizingEntityById(id);
-		if (!compService.checkChemicalAssociationBeforeDelete(entityBean)) {
-			ActionMessage msg = new ActionMessage(
-					"error.deleteFunctionalizingEntityWithChemicalAssociation",
-					entityBean.getClassName());
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			return false;
-		}
-		return true;
+		compositionService.deleteFunctionalizingEntity(entityBean
+				.getDomainEntity(), user);
+		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		ActionMessage msg = new ActionMessage(
+				"message.deleteFunctionalizingEntity");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		// save action messages in the session so composition.do know about
+		// them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 }

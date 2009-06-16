@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.io.PrintWriter;
 
@@ -41,7 +42,7 @@ public class CountAction extends AbstractDispatchAction {
 		int protocolCount = 0;
 		ProtocolService protocolService = null;
 		for (String location : searchLocations) {
-			if (location.equals("local")) {
+			if (location.equals(Constants.LOCAL_SITE)) {
 				protocolService = new ProtocolServiceLocalImpl();
 			}
 			//TODO grid service
@@ -82,7 +83,7 @@ public class CountAction extends AbstractDispatchAction {
 		int sampleCount = 0;
 		SampleService service = null;
 		for (String location : searchLocations) {
-			if (location.equals("local")) {
+			if (location.equals(Constants.LOCAL_SITE)) {
 				service = new SampleServiceLocalImpl();
 			} else {
 				String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
@@ -120,7 +121,7 @@ public class CountAction extends AbstractDispatchAction {
 		int publicationCount = 0;
 		PublicationService publicationService = null;
 		for (String location : searchLocations) {
-			if (location.equals("local")) {
+			if (location.equals(Constants.LOCAL_SITE)) {
 				publicationService = new PublicationServiceLocalImpl();
 			}
 			//TODO grid service

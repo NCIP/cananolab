@@ -1,12 +1,18 @@
 package gov.nih.nci.cananolab.service.common.helper;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.FileException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.PropertyUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
-import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -21,9 +27,15 @@ import org.hibernate.criterion.Property;
  *
  */
 public class FileServiceHelper {
-	Logger logger = Logger.getLogger(FileServiceHelper.class);
+	private Logger logger = Logger.getLogger(FileServiceHelper.class);
+	private AuthorizationService authService;
 
 	public FileServiceHelper() {
+		try {
+			authService = new AuthorizationService(Constants.CSM_APP_NAME);
+		} catch (Exception e) {
+			logger.error("Can't create authorization service: " + e);
+		}
 	}
 
 	/**
@@ -32,7 +44,7 @@ public class FileServiceHelper {
 	 * @param fileId
 	 * @return
 	 */
-	public File findFileById(String fileId) throws Exception {
+	public File findFileById(String fileId, UserBean user) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -43,23 +55,121 @@ public class FileServiceHelper {
 		File file = null;
 		if (!result.isEmpty()) {
 			file = (File) result.get(0);
+			if (authService.checkReadPermission(user, file.getId().toString())) {
+				return file;
+			} else {
+				throw new NoAccessException();
+			}
 		}
 		return file;
 	}
 
-	public List<Keyword> findKeywordsByFileId(String FileId) throws Exception {
-		List<Keyword> keywords = new ArrayList<Keyword>();
+	public AuthorizationService getAuthService() {
+		return authService;
+	}
 
+	// retrieve file visibility
+	public void retrieveVisibility(FileBean fileBean, UserBean user)
+			throws Exception {
+		if (fileBean != null) {
+			AuthorizationService auth = new AuthorizationService(
+					Constants.CSM_APP_NAME);
+			// get assigned visible groups
+			List<String> accessibleGroups = auth.getAccessibleGroups(fileBean
+					.getDomainFile().getId().toString(),
+					Constants.CSM_READ_PRIVILEGE);
+			String[] visibilityGroups = accessibleGroups.toArray(new String[0]);
+			fileBean.setVisibilityGroups(visibilityGroups);
+		}
+	}
+
+	public void retrieveVisibilityAndContentForCopiedFile(FileBean copy,
+			UserBean user) throws Exception {
+
+		// the copied file has been persisted with the same URI but
+		// createdBy is COPY
+		File file = findFileByUri(copy.getDomainFile().getUri());
+		List<String> accessibleGroups = authService.getAccessibleGroups(file
+				.getId().toString(), Constants.CSM_READ_ROLE);
+		copy.setVisibilityGroups(accessibleGroups.toArray(new String[0]));
+		if (file != null) {
+			byte[] content = this.getFileContent(file.getId(), user);
+			copy.setNewFileData(content);
+		}
+	}
+
+	private File findFileByUri(String uri) throws Exception {
+		File file = null;
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select File.keywordCollection from gov.nih.nci.cananolab.domain.common.File File where File.id = "
-						+ FileId);
+
+		DetachedCriteria crit = DetachedCriteria.forClass(File.class).add(
+				Property.forName("uri").eq(uri)).add(
+				Property.forName("createdBy").ne(
+						Constants.AUTO_COPY_ANNOTATION_PREFIX));
 		List results = appService.query(crit);
-		for (Object obj : results) {
-			Keyword keyword = (Keyword) obj;
-			keywords.add(keyword);
+		if (!results.isEmpty()) {
+			file = (File) results.get(0);
 		}
-		return keywords;
+		return file;
+	}
+
+	/**
+	 * Get the content of the file into a byte array.
+	 *
+	 * @param fileId
+	 * @return
+	 * @throws FileException
+	 */
+	private byte[] getFileContent(Long fileId, UserBean user) throws Exception {
+		File file = findFileById(fileId.toString(), user);
+		if (file == null || file.getUri() == null) {
+			return null;
+		}
+		// check if the file is external link
+		if (file.getUri().startsWith("http")) {
+			return null;
+		}
+		String fileRoot = PropertyUtils.getProperty(
+				Constants.FILEUPLOAD_PROPERTY, "fileRepositoryDir");
+
+		java.io.File fileObj = new java.io.File(fileRoot
+				+ java.io.File.separator + file.getUri());
+		long fileLength = fileObj.length();
+
+		// You cannot create an array using a long type.
+		// It needs to be an int type.
+		// Before converting to an int type, check
+		// to ensure that file is not larger than Integer.MAX_VALUE.
+		if (fileLength > Integer.MAX_VALUE) {
+			logger
+					.error("The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
+			throw new FileException(
+					"The file is too big. Byte array can't be longer than Java Integer MAX_VALUE");
+		}
+
+		// Create the byte array to hold the data
+		byte[] fileData = new byte[(int) fileLength];
+
+		// Read in the bytes
+		InputStream is = new FileInputStream(fileObj);
+		int offset = 0;
+		int numRead = 0;
+		while (offset < fileData.length
+				&& (numRead = is.read(fileData, offset, fileData.length
+						- offset)) >= 0) {
+			offset += numRead;
+		}
+
+		// Ensure all the bytes have been read in
+		if (offset < fileData.length) {
+			throw new FileException("Could not completely read file "
+					+ fileObj.getName());
+		}
+
+		// Close the input stream and return bytes
+		is.close();
+
+		return fileData;
 	}
 }

@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -17,17 +16,13 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.service.common.FileService;
-import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,7 +71,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 	private void saveEntity(HttpServletRequest request,
 			DynaValidatorForm theForm, NanomaterialEntityBean entityBean)
 			throws Exception {
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -106,46 +101,35 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			this.saveErrors(request, msgs);
 			entityBean.setType(null);
 		}
-
 		CompositionService compositionService = new CompositionServiceLocalImpl();
 		compositionService.saveNanomaterialEntity(sampleBean.getDomain(),
-				entityBean.getDomainEntity());
-		// save file data to file system and set visibility
-		saveFilesToFileSystem(entityBean.getFiles());
-		// set visibility
-		AuthorizationService authService = new AuthorizationService(
-				Constants.CSM_APP_NAME);
-		List<String> accessibleGroups = authService.getAccessibleGroups(
-				sampleBean.getDomain().getName(), Constants.CSM_READ_PRIVILEGE);
-		if (accessibleGroups != null
-				&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
-			// set composition public
-			authService.assignPublicVisibility(sampleBean.getDomain()
-					.getSampleComposition().getId().toString());
-			compositionService.assignNanomaterialEntityPublicVisibility(
-					authService, entityBean.getDomainEntity());
-		}
+				entityBean, user);
 
 		// save to other particles
-		FileService service = new FileServiceLocalImpl();
+		FileServiceHelper fileHelper = new FileServiceHelper();
 		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			NanomaterialEntity copy = entityBean.getDomainCopy();
+			NanomaterialEntityBean copyBean = new NanomaterialEntityBean(copy);
+			// copy file visibility and file content
+			for (FileBean fileBean : copyBean.getFiles()) {
+				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
+						user);
+			}
+
 			for (Sample sample : otherSamples) {
-				compositionService.saveNanomaterialEntity(sample, copy);
-				// update copied filename and save content and set visibility
-				if (copy.getFileCollection() != null) {
-					for (File file : copy.getFileCollection()) {
-						service.saveCopiedFileAndSetVisibility(file, user,
-								sampleBean.getDomain().getName(), sample
-										.getName());
-					}
+				// replace file URI with new sample name
+				for (FileBean fileBean : copyBean.getFiles()) {
+					fileBean.getDomainFile().getUri().replace(
+							sampleBean.getDomain().getName(), sample.getName());
 				}
+				compositionService.saveNanomaterialEntity(sample, copyBean,
+						user);
 			}
 		}
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
-		request.setAttribute("location", "local");
+		request.setAttribute("location", Constants.LOCAL_SITE);
 	}
 
 	private boolean validateInherentFunctionType(HttpServletRequest request,
@@ -225,8 +209,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 
 		CompositionService compService = new CompositionServiceLocalImpl();
 		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(entityId);
-		compService.retrieveVisibility(entityBean, user);
+				.findNanomaterialEntityById(entityId, user);
 		entityBean.updateType(InitSetup.getInstance()
 				.getClassNameToDisplayNameLookup(session.getServletContext()));
 		theForm.set("nanomaterialEntity", entityBean);
@@ -238,37 +221,6 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 					entityBean.getClassName(), "nanomaterialEntity");
 		}
 		request.setAttribute("entityDetailPage", detailPage);
-		return mapping.getInputForward();
-	}
-
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		setupSample(theForm, request, location);
-		HttpSession session = request.getSession();
-		UserBean user = (UserBean) session.getAttribute("user");
-		String entityId = request.getParameter("dataId");
-		CompositionService compService = null;
-		if (location.equals("local")) {
-			compService = new CompositionServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			// TODO update grid service
-			// compService = new CompositionServiceRemoteImpl(
-			// serviceUrl);
-		}
-		String entityClassName = request.getParameter("dataClassName");
-		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(entityId, entityClassName);
-		if (location.equals("local")) {
-			compService.retrieveVisibility(entityBean, user);
-		}
-		entityBean.updateType(InitSetup.getInstance()
-				.getClassNameToDisplayNameLookup(session.getServletContext()));
-		theForm.set("nanomaterialEntity", entityBean);
 		return mapping.getInputForward();
 	}
 
@@ -364,7 +316,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'
@@ -376,44 +328,16 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 				.getDisplayNameToClassNameLookup(
 						request.getSession().getServletContext()), user
 				.getLoginName(), internalUriPath);
-		boolean canDelete = compositionService
-				.checkChemicalAssociationBeforeDelete(entityBean);
+		compositionService.deleteNanomaterialEntity(entityBean
+				.getDomainEntity(), user);
+		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		ActionMessages msgs = new ActionMessages();
-		if (canDelete) {
-			compositionService.deleteNanomaterialEntity(entityBean
-					.getDomainEntity());
-			sampleBean = setupSample(theForm, request, "local");
-			ActionMessage msg = new ActionMessage(
-					"message.deleteNanomaterialEntity");
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			// save action messages in the session so composition.do know about
-			// them
-			request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE,
-					msgs);
-			return mapping.findForward("success");
-		} else {
-			ActionMessage msg = new ActionMessage(
-					"error.deleteNanomaterialEntityWithChemicalAssociation",
-					entityBean.getClassName());
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			return mapping.getInputForward();
-		}
-	}
-
-	protected boolean checkDelete(HttpServletRequest request,
-			ActionMessages msgs, String id) throws Exception {
-		CompositionService compService = new CompositionServiceLocalImpl();
-		NanomaterialEntityBean entityBean = compService
-				.findNanomaterialEntityById(id);
-		if (!compService.checkChemicalAssociationBeforeDelete(entityBean)) {
-			ActionMessage msg = new ActionMessage(
-					"error.deleteNanomaterialEntityWithChemicalAssociation",
-					entityBean.getClassName());
-			msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
-			saveErrors(request, msgs);
-			return false;
-		}
-		return true;
+		ActionMessage msg = new ActionMessage(
+				"message.deleteNanomaterialEntity");
+		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
+		// save action messages in the session so composition.do know about
+		// them
+		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		return mapping.findForward("success");
 	}
 }

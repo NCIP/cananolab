@@ -20,10 +20,8 @@ import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -80,19 +78,8 @@ public class SampleAction extends BaseAnnotationAction {
 		sampleBean.setupDomain();
 		// persist in the database
 		SampleService service = new SampleServiceLocalImpl();
-		service.saveSample(sampleBean.getDomain());
-		// assign CSM visibility and associated public visibility
-		// requires fully loaded sample if sample Id is not null)
-		if (sampleId != null) {
-			String[] visibilityGroups = sampleBean.getVisibilityGroups();
-			SampleBean fullyLoadedSampleBean = service
-					.findFullSampleById(sampleBean.getDomain().getId()
-							.toString());
-			fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
-			service.assignVisibility(fullyLoadedSampleBean);
-		} else {
-			service.assignVisibility(sampleBean);
-		}
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		service.saveSample(sampleBean, user);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId()
 				.toString());
 		request.getSession().removeAttribute("submitPOCProcessing");
@@ -112,19 +99,9 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = theForm.getString("location");
 		// "setupSample()" will get the SampleBean
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		SampleService service = null;
-		if (location.equals("local")) {
-			service = new SampleServiceLocalImpl();
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-			service = new SampleServiceRemoteImpl(serviceUrl);
-		}
-		// "retrieveVisibility()" will set visibility of the SampleBean
-		service.retrieveVisibility(sampleBean, user);
 		// set visibility of the POCBean
 		// If Primary POC is not hidden set it in request object.
 		PointOfContactBean primaryPoc = sampleBean.getPocBean();
@@ -174,11 +151,8 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, "local");
+		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		// set visibility
-		SampleService service = new SampleServiceLocalImpl();
-		service.retrieveVisibility(sampleBean, user);
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		pocService.retrieveVisibility(sampleBean.getPocBean(), user);
 		theForm.set("sampleBean", sampleBean);
@@ -194,7 +168,7 @@ public class SampleAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = request.getParameter("location");
-		SampleBean sampleBean = setupSample(theForm, request, location);
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("theSample", sampleBean);
 		return mapping.findForward("view");

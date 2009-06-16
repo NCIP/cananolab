@@ -31,6 +31,8 @@ public class LoginService {
 
 	private AuthorizationManager authorizationManager = null;
 
+	private AuthorizationService authService = null;
+
 	/**
 	 * LoginService Constructor
 	 *
@@ -45,6 +47,7 @@ public class LoginService {
 					.getAuthenticationManager(this.applicationName);
 			authorizationManager = SecurityServiceProvider
 					.getAuthorizationManager(applicationName);
+			authService = new AuthorizationService(applicationName);
 		} catch (Exception e) {
 			logger.error(e);
 			throw new SecurityException();
@@ -53,23 +56,33 @@ public class LoginService {
 	}
 
 	/**
-	 * The login method uses CSM to authenticated the user with LoginId and
-	 * Password credentials
-	 *
-	 * @param strusername
-	 *            LoginId of the user
-	 * @param strpassword
-	 *            Encrypted password of the user
-	 * @return boolean indicating whether the user successfully authenticated
+	 * Uses CSM to authenticate the given user and password.  If
+	 * user is authenticated, check if the user is an admin or is a curator.
+	 * @param userName
+	 * @param password
+	 * @return
+	 * @throws SecurityException
 	 */
-	public boolean login(String strUsername, String strPassword)
+	public UserBean login(String userName, String password)
 			throws SecurityException {
+		UserBean userBean = null;
 		try {
-			return authenticationManager.login(strUsername, strPassword);
+			boolean authenticated = authenticationManager.login(userName,
+					password);
+			if (authenticated) {
+				User user = authorizationManager.getUser(userName);
+				userBean = new UserBean(user);
+				// check if user is curator and if user is admin
+				userBean.setAdmin(authService.isAdmin(userBean));
+				userBean.setCurator(authService.isUserInGroup(userBean,
+						Constants.CSM_DATA_CURATOR));
+				return userBean;
+			}
 		} catch (Exception e) {
 			logger.error(e);
 			throw new SecurityException("Invalid Credentials");
 		}
+		return userBean;
 	}
 
 	/**

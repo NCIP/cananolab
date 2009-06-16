@@ -1,9 +1,9 @@
 package gov.nih.nci.cananolab.dto.particle.composition;
 
+import gov.nih.nci.cananolab.dto.common.FileBean;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import gov.nih.nci.cananolab.dto.common.FileBean;
 
 /**
  * Base class for NanomaterialEntityBean, FunctionalizingEntityBean and

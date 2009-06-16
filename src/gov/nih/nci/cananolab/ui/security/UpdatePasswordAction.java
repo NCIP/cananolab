@@ -1,5 +1,6 @@
 package gov.nih.nci.cananolab.ui.security;
 
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.util.Constants;
 
@@ -16,7 +17,7 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 /**
  * This class allow users to update their passwords.
- * 
+ *
  * @author pansu
  */
 
@@ -32,9 +33,8 @@ public class UpdatePasswordAction extends Action {
 
 		LoginService loginservice = new LoginService(
 				Constants.CSM_APP_NAME);
-		Boolean isAuthenticated = loginservice.login(loginId, password);
-
-		if (isAuthenticated) {
+		UserBean user = loginservice.login(loginId, password);
+		if (user!=null) {
 			LoginService loginService = new LoginService(
 					Constants.CSM_APP_NAME);
 			loginService.updatePassword(loginId, newPassword);

@@ -4,6 +4,7 @@ import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
+import gov.nih.nci.cananolab.util.Constants;
 
 import java.util.List;
 import java.util.SortedSet;
@@ -76,7 +77,7 @@ public class DWRSampleManager {
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
-			if ("local".equals(searchLocations)) {
+			if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
 			}
 			SortedSet<String> types = null;
@@ -114,7 +115,7 @@ public class DWRSampleManager {
 		ServletContext appContext = request.getSession().getServletContext();
 		try {
 			boolean isLocal = false;
-			if ("local".equals(searchLocations)) {
+			if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
 			}
 			SortedSet<String> types = null;
@@ -153,7 +154,7 @@ public class DWRSampleManager {
 
 		try {
 			boolean isLocal = false;
-			if ("local".equals(searchLocations)) {
+			if (Constants.LOCAL_SITE.equals(searchLocations)) {
 				isLocal = true;
 			}
 			SortedSet<String> types = null;

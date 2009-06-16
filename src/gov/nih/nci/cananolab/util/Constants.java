@@ -178,22 +178,22 @@ public class Constants {
 
 	// Default date format for exported file name.
 	public static final String EXPORT_FILE_DATE_FORMAT = "yyyyMMdd_HH-mm-ss-SSS";
-	
+
 	// String for local search.
-	public static final String LOCAL = "local";
-	
+	public static final String LOCAL_SITE = APP_OWNER;
+
 	// String for file repository entry in property file.
 	public static final String FILE_REPOSITORY_DIR = "fileRepositoryDir";
-	
+
 	// String for site name entry in property file.
 	public static final String SITE_NAME = "siteName";
-	
+
 	// String for site logo entry in property file.
 	public static final String SITE_LOGO = "siteLogo";
-	
+
 	// File name of site logo.
 	public static final String SITE_LOGO_FILENAME = "siteLogo.gif";
-	
+
 	// Maximum file size of site logo.
 	public static final int MAX_LOGO_SIZE = 65536;
 }
