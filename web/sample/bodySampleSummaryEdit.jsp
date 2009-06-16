@@ -136,7 +136,7 @@
 										<div align="right">
 											<div align="right">
 												<c:set var="origUrl"
-													value="anoparticleSample.do?page=0&sampleId=${sampleId}&dispatch=${param.dispatch}&location=local" />
+													value="anoparticleSample.do?page=0&sampleId=${sampleId}&dispatch=${param.dispatch}&location=${applicationOwner}" />
 												<input type="reset" value="Reset"
 													onclick="javascript:window.location.href='${origUrl}'">
 												<input type="hidden" name="dispatch" value="create">

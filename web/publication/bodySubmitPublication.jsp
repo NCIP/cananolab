@@ -40,7 +40,7 @@
 					<td colspan="2">
 						<font color="blue" size="-1"><b>MESSAGE: </b>There are no
 							samples in the database. Please make sure to <html:link
-								page="/sample.do?dispatch=setupNew&page=0&location=local"
+								page="/sample.do?dispatch=setupNew&page=0&location=${applicationOwner}"
 								scope="page">create
 							a new sample</html:link> first. </font>
 					</td>
@@ -346,9 +346,9 @@
 						 				${publicationForm.map.file.domainFile.title}<br>
 												<br>
 												<a href="#"
-													onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=local',
+													onclick="popImage(event, 'compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}',
 														${publicationForm.map.file.domainFile.id}, 100, 100)"><img
-														src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=local"
+														src="compositionFile.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
 														border="0" width="150"> </a>
 											</c:when>
 											<c:otherwise>
@@ -457,7 +457,7 @@
 															value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupNew&location=local" />
 														<c:if test="${!empty dataId}">
 															<c:set var="origUrl"
-																value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupUpdate&location=local&fileId=${dataId }" />
+																value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupUpdate&location=${applicationOwner}&fileId=${dataId }" />
 														</c:if>
 														<input type="reset" value="Reset"
 															onclick="javascript:window.location.href='${origUrl}'">
@@ -465,7 +465,7 @@
 														<input type="hidden" name="submitType"
 															value="publications">
 														<input type="hidden" name="page" value="2">
-														<input type="hidden" name="location" value="local">
+														<input type="hidden" name="location" value="${applicationOwner}">
 														<input type="hidden" name="sampleId"
 															value="${docSampleId}">
 														<html:submit />

@@ -45,7 +45,7 @@
 					property="functionStr" />
 				<display:column title="Characterizations"
 					property="characterizationStr" />
-				<display:column title="Location" property="location" sortable="true" />
+				<display:column title="Site" property="location" sortable="true" />
 			</display:table>
 		</td>
 	</tr>

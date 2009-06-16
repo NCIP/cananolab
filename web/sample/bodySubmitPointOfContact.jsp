@@ -25,10 +25,10 @@
 						<c:param name="sampleId" value="${param.sampleId}" />
 					</c:if>
 					<c:param name="pocId" value="${pocId}" />
-					<c:param name="dispatch" value="cancel" />					
+					<c:param name="dispatch" value="cancel" />
 				</c:url>
 				<a href="${cancelUrl}" class="helpText">Back</a>
-			</td>			
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -62,7 +62,7 @@
 												</jsp:include>
 												<br>
 												<c:if test="${!empty submitPointOfContactForm.map.otherPoc &&
-					 								!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts}">	
+					 								!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts}">
 												<logic:iterate name="submitPointOfContactForm"
 													property="otherPoc.otherPointOfContacts" id="pocs" indexId="orgaIndex">
 
@@ -101,10 +101,10 @@
 												<c:set var="dataId"
 													value="${submitOrganizationForm.map.orga.domain.id}" />
 												<c:set var="origUrl"
-													value="submitPointOfContact.do?page=0&sampleId=${sampleId }&dispatch=setup&location=local" />
+													value="submitPointOfContact.do?page=0&sampleId=${sampleId }&dispatch=setup&location=${applicationOwner}" />
 												<c:if test="${!empty pocId}">
 													<c:set var="origUrl"
-														value="submitPointOfContact.do?page=0&sampleId=${sampleId }&dispatch=setupUpdate&location=local&pocId=${pocId}" />
+														value="submitPointOfContact.do?page=0&sampleId=${sampleId }&dispatch=setupUpdate&location=${applicationOwner}&pocId=${pocId}" />
 												</c:if>
 												<input type="button" value="Cancel"
 													onclick="javascript:window.location.href='${cancelUrl}'">
@@ -113,7 +113,7 @@
 												<input type="hidden" name="dispatch" value="create">
 												<input type="hidden" name="submitType" value="organization">
 												<input type="hidden" name="page" value="2">
-												<input type="hidden" name="location" value="local">
+												<input type="hidden" name="location" value="${applicationOwner}">
 												<html:submit />
 											</div>
 										</div>

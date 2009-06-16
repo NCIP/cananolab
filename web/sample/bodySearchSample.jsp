@@ -36,14 +36,14 @@
 				<table width="100%" align="center" class="submissionView">
 					<tr>
 						<td class="cellLabel" width="20%">
-							Search Location
+							Search Site
 						</td>
 						<td>
 							<html:select property="searchLocations" styleId="searchLocations"
 								multiple="true" size="4"
 								onchange="javascript:setSampleDropdowns();">
-								<html:option value="local">
-										Local
+								<html:option value="${applicationOwner}">
+										${applicationOwner}
 									</html:option>
 								<c:if test="${! empty allGridNodes}">
 									<html:options collection="allGridNodes" property="hostName"

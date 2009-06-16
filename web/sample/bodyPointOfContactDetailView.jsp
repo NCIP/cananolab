@@ -20,7 +20,7 @@
 				</jsp:include>
 
 				<c:choose>
-					<c:when test="${!empty user && user.curator && param.location eq 'local'}">
+					<c:when test="${!empty user && user.curator && param.location eq '${applicationOwner}'}">
 						<c:url var="url" value="submitPointOfContact.do">
 							<c:param name="page" value="0" />
 							<c:if test="${!empty param.sampleId}">

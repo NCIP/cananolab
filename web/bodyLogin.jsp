@@ -52,8 +52,8 @@
 										<td rowspan="3">
 											<select name="searchLocations" id="location" multiple="true"
 												size="4" onchange="getAllGridCounts(this);">
-												<option value="local" selected="selected">
-													Local
+												<option value="${applicationOwner}" selected="selected">
+													${applicationOwner}
 												</option>
 												<c:forEach var="location" items="${allGridNodes}">
 													<option value="${location.hostName}">
@@ -272,22 +272,22 @@
 									<br>
 									<ul>
 										<li>
-											Support for the composition and structure of nanoparticles including material entities, functionalizing entities, and chemical associations 
+											Support for the composition and structure of nanoparticles including material entities, functionalizing entities, and chemical associations
 										</li>
 										<li>
-											Support for nanoparticle protocols, characterizations, and publications 
+											Support for nanoparticle protocols, characterizations, and publications
 										</li>
 										<li>
-											Support for physico-chemical and in vitro nanoparticle characterizations 
+											Support for physico-chemical and in vitro nanoparticle characterizations
 										</li>
 										<li>
-											Summary views of nanoparticle characterizations with print, export, and delete features 
+											Summary views of nanoparticle characterizations with print, export, and delete features
 										</li>
 										<li>
 											Basic local and caBIG&reg; grid (caGrid) remote search functionality
 										</li>
 										<li>
-											Role-based security supporting user authentication and authorization 
+											Role-based security supporting user authentication and authorization
 										</li>
 										<li>
 											Product upgrades to the caCORE SDK 4.0, caGrid 1.2, and MySQL 5.0.x Database
