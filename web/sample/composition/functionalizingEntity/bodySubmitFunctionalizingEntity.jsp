@@ -79,7 +79,7 @@
 			<td>
 				<div id="pubChemDataSourcePrompt">
 					<html:select styleId="pubChemDataSource"
-						property="functionalizingEntity.domainEntity.pubChemDataSourceName"
+						property="functionalizingEntity.pubChemDataSourceName"
 						onchange="javascript:callPrompt('PubChem DataSource', 'pubChemDataSource', 'pubChemDataSourcePrompt');">
 						<option value="" />
 						<html:options name="pubChemDataSources" />
@@ -91,7 +91,7 @@
 			</td>
 			<td>
 				<html:text
-					property="functionalizingEntity.domainEntity.pubChemId"
+					property="functionalizingEntity.pubChemId"
 					onkeydown="return filterInteger(event)" size="30"
 					styleId="pubChemId" />
 			</td>
