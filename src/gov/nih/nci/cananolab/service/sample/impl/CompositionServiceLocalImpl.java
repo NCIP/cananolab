@@ -492,6 +492,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			crit.setFetchMode(
 					"functionalizingEntityCollection.functionCollection",
 					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"functionalizingEntityCollection.functionCollection.targetCollection",
+							FetchMode.JOIN);
 			crit.setFetchMode(
 					"functionalizingEntityCollection.activationMethod",
 					FetchMode.JOIN);
@@ -520,12 +524,11 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						.get(0);
 				loadTargetsForTargetingFunction(composition);
 				comp = new CompositionBean(composition);
-
 			}
 			return comp;
 		} catch (Exception e) {
-			throw new CompositionException(
-					"Error finding composition by sample ID: " + sampleId);
+			String err = "Error finding composition by sample ID: " + sampleId;
+			throw new CompositionException(err, e);
 		}
 	}
 
@@ -780,9 +783,12 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	/**
 	 * Export sample composition summary report as Excel spread sheet.
 	 *
-	 * @param summaryBean CompositionBean
-	 * @param out OutputStream
-	 * @throws CompositionException if error occurred.
+	 * @param summaryBean
+	 *            CompositionBean
+	 * @param out
+	 *            OutputStream
+	 * @throws CompositionException
+	 *             if error occurred.
 	 */
 	public void exportSummary(CompositionBean summaryBean,
 			HttpServletRequest request, OutputStream out)
