@@ -151,7 +151,7 @@ public class CompositionServiceHelper {
 	}
 
 	public List<File> findFilesByCompositionInfoId(String id, String className,
-			Boolean filterPublic, UserBean user) throws Exception {
+			UserBean user) throws Exception {
 		List<File> fileCollection = new ArrayList<File>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
