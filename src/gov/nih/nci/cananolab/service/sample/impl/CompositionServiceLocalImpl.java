@@ -159,7 +159,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					entityBean = new NanomaterialEntityBean(entity);
 					retrieveFilesVisibilities(entityBean.getFiles(), user);
 				} else {
-					throw new NoAccessException();
+					throw new NoAccessException(
+							"User doesn't have access to the sample");
 				}
 			}
 			return entityBean;
@@ -370,7 +371,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 					entityBean = new FunctionalizingEntityBean(entity);
 					retrieveFilesVisibilities(entityBean.getFiles(), user);
 				} else {
-					throw new NoAccessException();
+					throw new NoAccessException(
+							"User doesn't have access to the sample");
 				}
 			}
 			return entityBean;
@@ -640,7 +642,21 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						composition.getSample().getName())) {
 					comp = new CompositionBean(composition);
 					retrieveFilesVisibilities(comp.getFiles(), user);
-					// TODO retrieve entity visibilities.
+					for (NanomaterialEntityBean entity : comp
+							.getNanomaterialEntities()) {
+						retrieveFilesVisibilities(entity.getFiles(), user);
+					}
+					for (FunctionalizingEntityBean entity : comp
+							.getFunctionalizingEntities()) {
+						retrieveFilesVisibilities(entity.getFiles(), user);
+					}
+					for (ChemicalAssociationBean assoc : comp
+							.getChemicalAssociations()) {
+						retrieveFilesVisibilities(assoc.getFiles(), user);
+					}
+				} else {
+					throw new NoAccessException(
+							"User doesn't have access to the sample");
 				}
 			}
 			return comp;

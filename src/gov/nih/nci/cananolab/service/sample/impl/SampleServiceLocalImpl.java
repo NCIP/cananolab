@@ -33,9 +33,9 @@ import org.hibernate.criterion.Property;
 
 /**
  * Service methods involving samples
- *
+ * 
  * @author pansu
- *
+ * 
  */
 public class SampleServiceLocalImpl implements SampleService {
 	private static Logger logger = Logger
@@ -45,7 +45,7 @@ public class SampleServiceLocalImpl implements SampleService {
 
 	/**
 	 * Persist a new sample or update an existing canano sample
-	 *
+	 * 
 	 * @param sample
 	 * @throws SampleException,
 	 *             DuplicateEntriesException
@@ -123,7 +123,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param samplePointOfContacts
 	 * @param nanomaterialEntityClassNames
 	 * @param otherNanoparticleTypes
@@ -376,10 +376,20 @@ public class SampleServiceLocalImpl implements SampleService {
 			HQLCriteria crit = new HQLCriteria(
 					"select sample.name from gov.nih.nci.cananolab.domain.particle.Sample sample");
 			List results = appService.query(crit);
-			for (Object obj : results) {
+			List filteredResults = new ArrayList(results);
+			if (user == null) {
+				filteredResults = helper.getAuthService().filterNonPublic(
+						results);
+			}
+			for (Object obj : filteredResults) {
 				String name = ((String) obj).trim();
-				if (helper.getAuthService().checkReadPermission(user, name)) {
+				if (user == null
+						|| helper.getAuthService().checkReadPermission(user,
+								name)) {
 					names.add(name);
+				} else {
+					logger.debug("User doesn't have access to sample of name: "
+							+ name);
 				}
 			}
 			return names;
@@ -415,10 +425,20 @@ public class SampleServiceLocalImpl implements SampleService {
 							+ "where sample.primaryPointOfContact=other.primaryPointOfContact and sample.id="
 							+ sampleId + " and other.name!=sample.name)");
 			List results = appService.query(crit);
-			for (Object obj : results) {
+			List filteredResults = new ArrayList(results);
+			if (user == null) {
+				filteredResults = helper.getAuthService().filterNonPublic(
+						results);
+			}
+			for (Object obj : filteredResults) {
 				String name = (String) obj.toString();
-				if (helper.getAuthService().checkReadPermission(user, name)) {
+				if (user == null
+						|| helper.getAuthService().checkReadPermission(user,
+								name)) {
 					otherSamples.add(new SortableName(name));
+				} else {
+					logger.debug("User doesn't have access to sample of name: "
+							+ name);
 				}
 			}
 			return otherSamples;

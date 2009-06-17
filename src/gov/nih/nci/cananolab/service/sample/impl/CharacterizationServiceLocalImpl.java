@@ -162,13 +162,12 @@ public class CharacterizationServiceLocalImpl implements
 			CharacterizationBean charBean = null;
 			if (!result.isEmpty()) {
 				achar = (Characterization) result.get(0);
-				// if (helper.getAuthService().checkReadPermission(user,
-				// achar.getSample().getName())) {
-				// charBean = new CharacterizationBean(achar);
-				// }
-				// else {
-				throw new NoAccessException();
-				// }
+				if (helper.getAuthService().checkReadPermission(user,
+						achar.getSample().getName())) {
+					charBean = new CharacterizationBean(achar);
+				} else {
+					throw new NoAccessException("User doesn't have access to the sample");
+				}
 			}
 			return charBean;
 		} catch (Exception e) {

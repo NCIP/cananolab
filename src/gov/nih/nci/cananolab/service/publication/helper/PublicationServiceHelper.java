@@ -580,20 +580,30 @@ public class PublicationServiceHelper {
 
 	public SortedSet<String> findSampleNamesByPublicationId(
 			String publicationId, UserBean user) throws Exception {
-		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
-		crit.createAlias("publicationCollection", "pub").add(
-				Property.forName("pub.id").eq(new Long(publicationId)));
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		List results = appService.query(crit);
-		SortedSet<String> names = new TreeSet<String>();
-		for (Object obj : results) {
-			Sample sample = (Sample) obj;
-			if (authService.checkReadPermission(user, sample.getName())) {
-				names.add(sample.getName());
+		// check if user have access to publication first
+		if (authService.checkReadPermission(user, publicationId)) {
+			DetachedCriteria crit = DetachedCriteria.forClass(Sample.class);
+			crit.createAlias("publicationCollection", "pub").add(
+					Property.forName("pub.id").eq(new Long(publicationId)));
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			List results = appService.query(crit);
+			SortedSet<String> names = new TreeSet<String>();
+			for (Object obj : results) {
+				Sample sample = (Sample) obj;
+				if (authService.checkReadPermission(user, sample.getName())) {
+					names.add(sample.getName());
+				} else {
+					logger.debug("User doesn't have access to sample "
+							+ sample.getName());
+				}
 			}
+			return names;
+		} else {
+			throw new NoAccessException(
+					"User doesn't have acess to the publication of id: "
+							+ publicationId);
 		}
-		return names;
 	}
 
 	public List<Publication> findPublicationsBySampleId(String sampleId,

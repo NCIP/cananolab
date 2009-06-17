@@ -860,7 +860,13 @@ public class CharacterizationServiceHelper {
 	}
 
 	public ExperimentConfig findExperimentConfigById(String id, UserBean user)
-			throws ExperimentConfigException {
+			throws ExperimentConfigException, NoAccessException {
+		// check if user has access to the sample first
+		boolean accessSample = canUserAccessSample(id, user);
+		if (!accessSample) {
+			throw new NoAccessException("User can't access the sample");
+		}
+
 		ExperimentConfig config = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -902,7 +908,7 @@ public class CharacterizationServiceHelper {
 								.toString());
 					}
 					for (Condition condition : datum.getConditionCollection()) {
-						authService.assignPublicVisibility(datum.getId()
+						authService.assignPublicVisibility(condition.getId()
 								.toString());
 					}
 				}
@@ -944,5 +950,28 @@ public class CharacterizationServiceHelper {
 				authService.removePublicVisibility(config.getId().toString());
 			}
 		}
+	}
+
+	private boolean canUserAccessSample(String experimentConfigId, UserBean user) {
+		try {
+			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+					.getApplicationService();
+			String hql = "select sample.name from sample sample where sample.characterizationCollection ";
+			HQLCriteria crit = new HQLCriteria(hql);
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				String sampleName = (String) result.get(0);
+				if (authService.checkReadPermission(user, sampleName)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			// if no sample, return true
+			return true;
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return false;
 	}
 }

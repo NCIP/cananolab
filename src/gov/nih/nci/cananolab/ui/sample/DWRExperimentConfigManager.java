@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.BaseException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 
@@ -36,7 +37,7 @@ public class DWRExperimentConfigManager {
 	}
 
 	public ExperimentConfigBean getExperimentConfigById(String id)
-			throws ExperimentConfigException {
+			throws ExperimentConfigException, NoAccessException {
 		WebContext wctx = WebContextFactory.get();
 		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
 		ExperimentConfig config = helper.findExperimentConfigById(id, user);
