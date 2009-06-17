@@ -83,6 +83,9 @@ public class ProtocolServiceHelper {
 					|| authService.checkReadPermission(user, protocol.getId()
 							.toString())) {
 				protocols.add(protocol);
+			} else {
+				logger.debug("User doesn't have access ot protocol with id "
+						+ protocol.getId());
 			}
 		}
 		return protocols;

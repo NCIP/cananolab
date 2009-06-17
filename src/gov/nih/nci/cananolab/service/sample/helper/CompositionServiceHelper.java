@@ -166,8 +166,16 @@ public class CompositionServiceHelper {
 			filteredResults = authService.filterNonPublic(results);
 		}
 		for (Object obj : filteredResults) {
-			File File = (File) obj;
-			fileCollection.add(File);
+			File file = (File) obj;
+			if (user == null
+					|| authService.checkReadPermission(user,
+							file.getId().toString())) {
+				fileCollection.add(file);
+			} else {
+				logger.debug("User doesn't have access to file of id:"
+						+ file.getId());
+			}
+
 		}
 		return fileCollection;
 	}

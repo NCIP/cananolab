@@ -256,8 +256,8 @@ public class SampleServiceHelper {
 		}
 		for (Object obj : filteredResults) {
 			String sampleName = obj.toString();
-			Sample sample = findSampleByName(sampleName, user);
-			if (sample != null) {
+			try {
+				Sample sample = findSampleByName(sampleName, user);
 				// don't need this if Hibernate would've allowed for
 				// functionalizing
 				// entities in the where clause
@@ -266,6 +266,10 @@ public class SampleServiceHelper {
 				if (matching) {
 					samples.add(sample);
 				}
+			} catch (NoAccessException e) {
+				// ignore no access exception
+				logger.debug("User doesn't have access to sample with name "
+						+ sampleName);
 			}
 		}
 		return samples;
@@ -483,44 +487,45 @@ public class SampleServiceHelper {
 		return sample;
 	}
 
-	public List<Keyword> findKeywordsBySampleId(String sampleId,
-			Boolean filterPublic) throws Exception {
+	public List<Keyword> findKeywordsBySampleId(String sampleId, UserBean user)
+			throws Exception {
 		List<Keyword> keywords = new ArrayList<Keyword>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select aSample.keywordCollection from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
-						+ sampleId);
-		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (filterPublic) {
-			filteredResults = authService.filterNonPublic(results);
-		}
-		for (Object obj : filteredResults) {
-			Keyword keyword = (Keyword) obj;
-			keywords.add(keyword);
+		DetachedCriteria crit = DetachedCriteria.forClass(Sample.class).add(
+				Property.forName("id").eq(new Long(sampleId)));
+		crit.setFetchMode("keywordCollection", FetchMode.JOIN);
+		List result = appService.query(crit);
+		Sample sample = null;
+		if (!result.isEmpty()) {
+			sample = (Sample) result.get(0);
+			// check whether user has access to the sample
+			if (authService.checkReadPermission(user, sample.getName())) {
+				keywords.addAll(sample.getKeywordCollection());
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the sample.");
+			}
 		}
 		return keywords;
 	}
 
 	public PointOfContact findPrimaryPointOfContactBySampleId(String sampleId,
-			Boolean filterPublic) throws Exception {
+			UserBean user) throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		HQLCriteria crit = new HQLCriteria(
 				"select aSample.primaryPointOfContact from gov.nih.nci.cananolab.domain.particle.Sample aSample where aSample.id = "
 						+ sampleId);
-		List results = appService.query(crit);
+		List result = appService.query(crit);
 		PointOfContact poc = null;
-		for (Object obj : results) {
-			poc = (PointOfContact) obj;
-			if (filterPublic) {
-				if (authService.isPublic(poc.getId().toString())) {
-					return poc;
-				} else {
-					return null;
-				}
+		if (!result.isEmpty()) {
+			poc = (PointOfContact) result.get(0);
+			if (authService.checkReadPermission(user, poc.getId().toString())) {
+				return poc;
+			} else {
+				throw new NoAccessException();
 			}
 		}
 		return poc;
@@ -545,6 +550,10 @@ public class SampleServiceHelper {
 					|| authService.checkReadPermission(user, poc.getId()
 							.toString())) {
 				pocs.add(poc);
+			} else {
+				logger
+						.debug("User doesn't have access to point of contact of id: "
+								+ poc.getId());
 			}
 		}
 		return pocs;

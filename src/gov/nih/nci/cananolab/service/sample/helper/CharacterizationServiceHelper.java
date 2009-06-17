@@ -44,10 +44,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * Service methods involving characterizations
@@ -107,40 +105,6 @@ public class CharacterizationServiceHelper {
 		}
 	}
 
-	public List<Characterization> findSampleCharacterizationsByClass(
-			String sampleName, String className) throws Exception {
-		List<Characterization> charas = new ArrayList<Characterization>();
-
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria.forClass(Class
-				.forName(className));
-		crit.add(Restrictions.eq("sample.name", sampleName));
-		crit.setFetchMode("pointOfContact", FetchMode.JOIN);
-		crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
-		crit.setFetchMode("protocol", FetchMode.JOIN);
-		crit.setFetchMode("protocol.file", FetchMode.JOIN);
-		crit.setFetchMode("protocol.file.keywordCollection", FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
-		crit.setFetchMode("experimentConfigCollection.technique",
-				FetchMode.JOIN);
-		crit.setFetchMode("findingCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
-		crit.setFetchMode(
-				"findingCollection.datumCollection.conditionCollection",
-				FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
-		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
-				FetchMode.JOIN);
-		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-		List result = appService.query(crit);
-		for (Object obj : result) {
-			charas.add((Characterization) obj);
-		}
-		return charas;
-	}
-
 	public List<String> findOtherCharacterizationByAssayCategory(
 			String assayCategory) throws Exception {
 		List<String> charNames = new ArrayList<String>();
@@ -181,45 +145,64 @@ public class CharacterizationServiceHelper {
 
 	public List<Finding> findFindingsByCharacterizationId(String charId,
 			UserBean user) throws Exception {
-		List<Finding> findingCollection = new ArrayList<Finding>();
+		List<Finding> findings = new ArrayList<Finding>();
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select achar.findingCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
-						+ charId);
-		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).add(
+				Property.forName("id").eq(new Long(charId)));
+		crit.setFetchMode("sample", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
+				FetchMode.JOIN);
+		crit.setFetchMode("findingCollection.datumCollection", FetchMode.JOIN);
+		crit.setFetchMode(
+				"findingCollection.datumCollection.conditionCollection",
+				FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			Characterization achar = (Characterization) result.get(0);
+			// check whether user has access to the sample
+			if (authService.checkReadPermission(user, achar.getSample()
+					.getName())) {
+				findings.addAll(achar.getFindingCollection());
+				return findings;
+			} else {
+				logger.debug("USer doesn't have access to the sample");
+			}
 		}
-		for (Object obj : filteredResults) {
-			Finding finding = (Finding) obj;
-			findingCollection.add(finding);
-		}
-		return findingCollection;
+		return findings;
 	}
 
 	public List<ExperimentConfig> findExperimentConfigsByCharacterizationId(
 			String charId, UserBean user) throws Exception {
-		List<ExperimentConfig> configCollection = new ArrayList<ExperimentConfig>();
-
+		List<ExperimentConfig> configs = new ArrayList<ExperimentConfig>();
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
-		HQLCriteria crit = new HQLCriteria(
-				"select achar.experimentConfigCollection from gov.nih.nci.cananolab.domain.particle.Characterization achar where achar.id = "
-						+ charId);
-
-		List results = appService.query(crit);
-		List filteredResults = new ArrayList(results);
-		if (user == null) {
-			filteredResults = authService.filterNonPublic(results);
+		DetachedCriteria crit = DetachedCriteria.forClass(
+				Characterization.class).add(
+				Property.forName("id").eq(new Long(charId)));
+		crit.setFetchMode("sample", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.technique",
+				FetchMode.JOIN);
+		crit.setFetchMode("experimentConfigCollection.instrumentCollection",
+				FetchMode.JOIN);
+		List result = appService.query(crit);
+		if (!result.isEmpty()) {
+			Characterization achar = (Characterization) result.get(0);
+			// check whether user has access to the sample
+			if (authService.checkReadPermission(user, achar.getSample()
+					.getName())) {
+				configs.addAll(achar.getExperimentConfigCollection());
+				return configs;
+			} else {
+				logger.debug("USer doesn't have access to the sample");
+			}
 		}
-		for (Object obj : filteredResults) {
-			ExperimentConfig config = (ExperimentConfig) obj;
-			configCollection.add(config);
-		}
-		return configCollection;
+		return configs;
 	}
 
 	public List<File> findFilesByCharacterizationId(String charId, UserBean user)
@@ -238,7 +221,14 @@ public class CharacterizationServiceHelper {
 		}
 		for (Object obj : filteredResults) {
 			File file = (File) obj;
-			fileCollection.add(file);
+			if (user == null
+					|| authService.checkReadPermission(user, file.getId()
+							.toString())) {
+				fileCollection.add(file);
+			} else {
+				logger.debug("USer doesn't have access to file of id: "
+						+ file.getId());
+			}
 		}
 		return fileCollection;
 	}

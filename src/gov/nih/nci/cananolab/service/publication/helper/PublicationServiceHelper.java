@@ -232,9 +232,14 @@ public class PublicationServiceHelper {
 		}
 		List<Publication> publications = new ArrayList<Publication>();
 		for (Object obj : filteredResults) {
-			Publication publication = findPublicationById(obj.toString(), user);
-			if (publication != null) {
+			try {
+				Publication publication = findPublicationById(obj.toString(),
+						user);
 				publications.add(publication);
+			} catch (NoAccessException e) {
+				// ignore no access exception
+				logger.debug("User doesn't have access to publication with id "
+						+ obj.toString());
 			}
 		}
 		return publications;
@@ -621,6 +626,9 @@ public class PublicationServiceHelper {
 					|| authService.checkReadPermission(user, pub.getId()
 							.toString())) {
 				publications.add(pub);
+			} else {
+				logger.debug("User doesn't have access ot publication with id "
+						+ pub.getId());
 			}
 		}
 		return publications;
