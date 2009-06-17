@@ -199,28 +199,29 @@ public class CompositionAction extends BaseAnnotationAction {
 		}
 		CompositionBean compBean = compService.findCompositionBySampleId(
 				sampleId, user);
-		theForm.set("comp", compBean);
-		// set entity type and association type and retrieve visibility
+		if (compBean != null) {
+			theForm.set("comp", compBean);
+			// set entity type and association type and retrieve visibility
 
-		for (NanomaterialEntityBean entityBean : compBean
-				.getNanomaterialEntities()) {
-			entityBean.updateType(InitSetup.getInstance()
-					.getClassNameToDisplayNameLookup(
-							session.getServletContext()));
+			for (NanomaterialEntityBean entityBean : compBean
+					.getNanomaterialEntities()) {
+				entityBean.updateType(InitSetup.getInstance()
+						.getClassNameToDisplayNameLookup(
+								session.getServletContext()));
+			}
+			for (FunctionalizingEntityBean entityBean : compBean
+					.getFunctionalizingEntities()) {
+				entityBean.updateType(InitSetup.getInstance()
+						.getClassNameToDisplayNameLookup(
+								session.getServletContext()));
+			}
+			for (ChemicalAssociationBean assocBean : compBean
+					.getChemicalAssociations()) {
+				assocBean.updateType(InitSetup.getInstance()
+						.getClassNameToDisplayNameLookup(
+								session.getServletContext()));
+			}
 		}
-		for (FunctionalizingEntityBean entityBean : compBean
-				.getFunctionalizingEntities()) {
-			entityBean.updateType(InitSetup.getInstance()
-					.getClassNameToDisplayNameLookup(
-							session.getServletContext()));
-		}
-		for (ChemicalAssociationBean assocBean : compBean
-				.getChemicalAssociations()) {
-			assocBean.updateType(InitSetup.getInstance()
-					.getClassNameToDisplayNameLookup(
-							session.getServletContext()));
-		}
-
 		// retain action messages from send redirects
 		ActionMessages msgs = (ActionMessages) session
 				.getAttribute(ActionMessages.GLOBAL_MESSAGE);
