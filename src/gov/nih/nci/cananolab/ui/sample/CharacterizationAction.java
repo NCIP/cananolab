@@ -8,7 +8,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;

@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;

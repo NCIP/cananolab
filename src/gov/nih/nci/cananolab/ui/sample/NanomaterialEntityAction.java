@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -16,7 +15,6 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;

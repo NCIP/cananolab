@@ -10,11 +10,9 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
-import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;
@@ -28,19 +26,15 @@ import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
-import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 

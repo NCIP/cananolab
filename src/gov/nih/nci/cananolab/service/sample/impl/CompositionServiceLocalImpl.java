@@ -12,7 +12,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
-import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
