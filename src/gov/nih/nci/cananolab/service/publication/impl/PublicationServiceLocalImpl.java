@@ -134,7 +134,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					PublicationBean pubBean = new PublicationBean(publication,
 							sampleNames.toArray(new String[sampleNames.size()]));
 					// retrieve visibility
-					retrieveVisibility(pubBean, user);
+					if (user != null)
+						retrieveVisibility(pubBean, user);
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -187,7 +188,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					PublicationBean pubBean = new PublicationBean(publication,
 							sampleNames.toArray(new String[sampleNames.size()]));
 					// retrieve visibility
-					retrieveVisibility(pubBean, user);
+					if (user != null)
+						retrieveVisibility(pubBean, user);
 					publicationBeans.add(pubBean);
 				}
 			}
@@ -207,7 +209,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			Publication publication = helper.findPublicationById(publcationId,
 					user);
 			PublicationBean publicationBean = new PublicationBean(publication);
-			retrieveVisibility(publicationBean, user);
+			if (user != null)
+				retrieveVisibility(publicationBean, user);
 			return publicationBean;
 		} catch (NoAccessException e) {
 			throw e;

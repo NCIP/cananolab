@@ -50,7 +50,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 				if (helper.getAuthService().checkReadPermission(user,
 						protocol.getId().toString())) {
 					protocolBean = new ProtocolBean(protocol);
-					retrieveVisibility(protocolBean, user);
+					if (user != null)
+						retrieveVisibility(protocolBean, user);
 					return protocolBean;
 				} else {
 					throw new NoAccessException();
@@ -123,11 +124,14 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 					protocolName, protocolVersion, user);
 			if (protocol != null) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
-				retrieveVisibility(protocolBean, user);
+				if (user != null)
+					retrieveVisibility(protocolBean, user);
 				return protocolBean;
 			} else {
 				return null;
 			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Problem finding protocol by name and type.";
 			logger.error(err, e);
@@ -145,7 +149,8 @@ public class ProtocolServiceLocalImpl implements ProtocolService {
 
 			for (Protocol protocol : protocols) {
 				ProtocolBean protocolBean = new ProtocolBean(protocol);
-				retrieveVisibility(protocolBean, user);
+				if (user != null)
+					retrieveVisibility(protocolBean, user);
 				protocolBeans.add(protocolBean);
 			}
 			return protocolBeans;

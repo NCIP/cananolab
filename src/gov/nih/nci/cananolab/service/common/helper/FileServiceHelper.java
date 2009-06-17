@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.common.helper;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -13,6 +14,7 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -171,5 +173,40 @@ public class FileServiceHelper {
 		is.close();
 
 		return fileData;
+	}
+
+	/**
+	 * Check if file is accessible first. If so, retrieve visibility for files.
+	 * If no, remove the file from the list.
+	 *
+	 * @param fileBeans
+	 * @param user
+	 * @throws CompositionException
+	 */
+	public void checkReadPermissionAndRetrieveVisibility(
+			List<FileBean> fileBeans, UserBean user)
+			throws CompositionException {
+		try {
+			List<FileBean> copiedFileBeans = new ArrayList<FileBean>(fileBeans);
+			int i = 0;
+			for (FileBean fileBean : copiedFileBeans) {
+				// check whether user can access the file, if no remove from the
+				// list
+				if (authService.checkReadPermission(user, fileBean
+						.getDomainFile().getId().toString())) {
+					if (user != null)
+						retrieveVisibility(fileBean, user);
+				} else {
+					fileBeans.remove(i);
+					logger.debug("User can't access file of id:"
+							+ fileBean.getDomainFile().getId());
+				}
+				i++;
+			}
+		} catch (Exception e) {
+			String err = "Error setting visiblity for files ";
+			logger.error(err, e);
+			throw new CompositionException(err, e);
+		}
 	}
 }

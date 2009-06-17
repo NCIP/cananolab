@@ -48,7 +48,9 @@ public class FileServiceLocalImpl implements FileService {
 			File file = helper.findFileById(fileId, user);
 			if (file != null) {
 				fileBean = new FileBean(file);
-				helper.retrieveVisibility(fileBean, user);
+				if (user != null) {
+					helper.retrieveVisibility(fileBean, user);
+				}
 				return fileBean;
 			}
 			return fileBean;
