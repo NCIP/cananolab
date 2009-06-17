@@ -402,7 +402,7 @@
 												<td class="rightLabel">
 													<html:select property="file.sampleNames" multiple="true"
 														size="5">
-														<html:options collection="otherParticleNames"
+														<html:options collection="otherSampleNames"
 															property="name" labelProperty="name" />
 													</html:select>
 												</td>
