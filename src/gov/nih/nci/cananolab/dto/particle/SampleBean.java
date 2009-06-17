@@ -27,8 +27,6 @@ public class SampleBean {
 
 	private String createdBy;
 
-	private boolean hidden;
-
 	private SortedSet<String> keywordSet = new TreeSet<String>();
 
 	private String location; // e.g. local, caNanoLab-WashU, etc
@@ -112,14 +110,6 @@ public class SampleBean {
 
 	public void setKeywordsStr(String keywordsStr) {
 		this.keywordsStr = keywordsStr;
-	}
-
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
 	}
 
 	public SortedSet<String> getKeywordSet() {

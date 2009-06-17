@@ -26,8 +26,6 @@ public class FileBean {
 
 	private String visibilityStr;
 
-	private boolean hidden = false;
-
 	private boolean image = false;
 
 	private String keywordsStr;
@@ -84,14 +82,6 @@ public class FileBean {
 
 	public void setVisibilityStr(String visibilityStr) {
 		this.visibilityStr = visibilityStr;
-	}
-
-	public boolean isHidden() {
-		return this.hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
 	}
 
 	public boolean isImage() {

@@ -778,8 +778,6 @@ public class CharacterizationServiceHelper {
 					 * rowIndex = this.outputPicture(rowIndex, sb.toString(),
 					 * wb, sheet);
 					 */
-				} else if (fileBean.isHidden()) {
-					ExportUtils.createCell(row, 0, PRIVATE_FILE);
 				} else {
 					ExportUtils.createCell(row, 0, fileBean.getDomainFile()
 							.getTitle());

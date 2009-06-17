@@ -1091,43 +1091,39 @@ public class CompositionServiceHelper {
 				ExportUtils.createCell(row, 0, file.getType());
 
 				// 2. output Title and Download Link.
-				if (fileBean.isHidden()) {
-					ExportUtils.createCell(row, 1, "Private File");
-				} else {
-					// Construct the URL for downloading the file.
+
+				// Construct the URL for downloading the file.
+				sb.setLength(0);
+				sb.append(request.getRequestURL().toString());
+				sb.append(COMPOSITION_URL);
+				sb.append(file.getId()).append('&').append(LOCATION)
+						.append('=');
+				sb.append(request.getParameter(LOCATION));
+				if (file.getUriExternal().booleanValue()) {
+					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
+							sb.toString());
+				} else if (fileBean.isImage()) {
 					sb.setLength(0);
-					sb.append(request.getRequestURL().toString());
-					sb.append(COMPOSITION_URL);
-					sb.append(file.getId()).append('&').append(LOCATION)
-							.append('=');
-					sb.append(request.getParameter(LOCATION));
-					if (file.getUriExternal().booleanValue()) {
-						ExportUtils.createCell(row, 1, hlinkStyle, file
-								.getUri(), sb.toString());
-					} else if (fileBean.isImage()) {
-						sb.setLength(0);
-						sb.append(fileRoot).append(java.io.File.separator);
-						sb.append(file.getUri());
-						String filePath = sb.toString();
-						java.io.File imgFile = new java.io.File(filePath);
-						if (imgFile.exists()) {
-							try {
-								rowIndex = ExportUtils.createImage(rowIndex,
-										(short) 1, filePath, wb, sheet);
-							} catch (Exception e) {
-								logger
-										.error(
-												"Error exporting Composition image data.",
-												e);
-							}
-						} else {
-							logger.error("Composition image file not exists: "
-									+ filePath);
+					sb.append(fileRoot).append(java.io.File.separator);
+					sb.append(file.getUri());
+					String filePath = sb.toString();
+					java.io.File imgFile = new java.io.File(filePath);
+					if (imgFile.exists()) {
+						try {
+							rowIndex = ExportUtils.createImage(rowIndex,
+									(short) 1, filePath, wb, sheet);
+						} catch (Exception e) {
+							logger.error(
+									"Error exporting Composition image data.",
+									e);
 						}
 					} else {
-						ExportUtils.createCell(row, 1, hlinkStyle, file
-								.getTitle(), sb.toString());
+						logger.error("Composition image file not exists: "
+								+ filePath);
 					}
+				} else {
+					ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(),
+							sb.toString());
 				}
 
 				// 3. output Keywords.
@@ -1172,41 +1168,36 @@ public class CompositionServiceHelper {
 		// 2. output Title and Download Link.
 		row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "Title and Download Link");
-		if (fileBean.isHidden()) {
-			ExportUtils.createCell(row, 1, "Private File");
-		} else {
-			// Construct the URL for downloading the file.
+
+		// Construct the URL for downloading the file.
+		sb.setLength(0);
+		sb.append(request.getRequestURL().toString());
+		sb.append(COMPOSITION_URL);
+		sb.append(file.getId()).append('&').append(LOCATION).append('=');
+		sb.append(request.getParameter(LOCATION));
+		if (file.getUriExternal().booleanValue()) {
+			ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb
+					.toString());
+		} else if (fileBean.isImage()) {
 			sb.setLength(0);
-			sb.append(request.getRequestURL().toString());
-			sb.append(COMPOSITION_URL);
-			sb.append(file.getId()).append('&').append(LOCATION).append('=');
-			sb.append(request.getParameter(LOCATION));
-			if (file.getUriExternal().booleanValue()) {
-				ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb
-						.toString());
-			} else if (fileBean.isImage()) {
-				sb.setLength(0);
-				sb.append(fileRoot).append(java.io.File.separator);
-				sb.append(file.getUri());
-				String filePath = sb.toString();
-				java.io.File imgFile = new java.io.File(filePath);
-				if (imgFile.exists()) {
-					try {
-						rowIndex = ExportUtils.createImage(rowIndex, (short) 1,
-								filePath, wb, sheet);
-					} catch (Exception e) {
-						logger.error("Error exporting Composition image data.",
-								e);
-					}
-				} else {
-					ExportUtils.createCell(row, 1, file.getTitle());
-					logger.error("Composition image file not exists: "
-							+ filePath);
+			sb.append(fileRoot).append(java.io.File.separator);
+			sb.append(file.getUri());
+			String filePath = sb.toString();
+			java.io.File imgFile = new java.io.File(filePath);
+			if (imgFile.exists()) {
+				try {
+					rowIndex = ExportUtils.createImage(rowIndex, (short) 1,
+							filePath, wb, sheet);
+				} catch (Exception e) {
+					logger.error("Error exporting Composition image data.", e);
 				}
 			} else {
-				ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb
-						.toString());
+				ExportUtils.createCell(row, 1, file.getTitle());
+				logger.error("Composition image file not exists: " + filePath);
 			}
+		} else {
+			ExportUtils.createCell(row, 1, hlinkStyle, file.getTitle(), sb
+					.toString());
 		}
 
 		// 3. output Keywords.
