@@ -29,11 +29,11 @@
 			information sharing in the biomedical nanotechnology research
 			community to expedite and validate the use of nanotechnology in
 			biomedicine. caNanoLab allows researchers to share information on
-			nanoparticles including the composition of the particle, the
-			functions (e.g. therapeutic, targeting, diagnostic imaging) of the
-			particle, the characterizations of the particle from
-			physico-chemical (e.g. size, molecular weight, surface) and in
-			vitro (e.g. cytotoxicity, blood contact) nanoparticle assays, and
+			nanoparticles including the composition of the particle,the
+			functions (e.g. therapeutic,targeting,diagnostic imaging) of the
+			particle,the characterizations of the particle from
+			physico-chemical (e.g. size,molecular weight,surface) and in
+			vitro (e.g. cytotoxicity,blood contact) nanoparticle assays,and
 			the protocols of these characterization. The diagram
 			below illustrates the caNanoLab functionality and workflow. Active
 			links are provided on the diagram to allow a user to directly
@@ -43,41 +43,60 @@
 			<br>
 			<br>
 			<map name="funcMap" id="funcMap">
+				<%-- Create User Account --%>
+				<c:if test="${!empty user && user.admin }">
+					<area href="javascript:openHelpWindow('/upt')" shape="rect"
+						coords="78,73,208,121" alt="rectangle" />
+				</c:if>
+
+				<%-- Login --%>
+				<area href="login.jsp" shape="rect" coords="78,140,208,190"
+					alt="rectangle" />
+
+				<%-- Site Preference --%>
 				<c:if test="${!empty user && user.admin }">
 					<area href="admin.do?dispatch=sitePreference" shape="rect"
-						coords="70,70,170,110" alt="rectangle" />
+						coords="78,207,208,258" alt="rectangle" />
 				</c:if>
-				<area href="login.jsp" shape="rect" coords="75,130,170,170"
-					alt="rectangle" />
+				
+				<%-- Search Protocols --%>
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
-					coords="70,230,165,265" alt="rectangle" />
+					coords="78,343,208,394" alt="rectangle" />
+					
+				<%-- Search Sample --%>
 				<area href="searchSample.do?dispatch=setup" shape="rect"
-					coords="70,275,165,315" alt="rectangle" />
+					coords="78,411,208,482" alt="rectangle" />
+					
+				<%-- Search Publication --%>
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
-					coords="70,325,165,365" alt="rectangle" />
-
+					coords="78,498,208,550" alt="rectangle" />
+					
 				<c:if test="${!empty user && user.curator}">
+					<%-- Submit Protocols --%>
 					<area href="submitProtocol.do?dispatch=setup&page=0" shape="rect"
-						coords="265,60,360,95" alt="rectangle" />
-				</c:if>
-				<c:if test="${!empty user && user.curator}">
-					<area
-						href="sample.do?dispatch=setupNew&page=0&location=${location}"
-						shape="rect" coords="265,100,360,160" alt="rectangle" />
-				</c:if>
-				<c:if test="${!empty user && user.curator}">
-					<area href="managePublication.do" shape="rect"
-						coords="360,445,445,480" alt="rectangle" />
-				</c:if>
-				<c:if test="${!empty user && user.curator}">
+						coords="360,47,490,100" alt="rectangle" />
+						
+					<%-- Submit Samples --%>
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="355,175,450,220" alt="rectangle" />
+						shape="rect" coords="360,115,490,186" alt="rectangle" />
+						
+					<%-- Submit Publication --%>
+					<area href="publication.do?dispatch=setupNew&page=0" shape="rect"
+						coords="440,546,570,597" alt="rectangle" />
+						
+					<%-- Submit Samples (Others) --%>
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="355,280,450,315" alt="rectangle" />
+						shape="rect" coords="440,201,570,253" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="360,370,455,420" alt="rectangle" />
+						shape="rect" coords="440,441,570,493" alt="rectangle" />
 					<area href="sample.do?dispatch=setupNew&page=0"
-						shape="rect" coords="475,155,620,420" alt="rectangle" />
+						shape="rect" coords="440,546,570,597" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0"
+						shape="rect" coords="609,323,735,403" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0"
+						shape="rect" coords="609,487,735,540" alt="rectangle" />
+					<area href="sample.do?dispatch=setupNew&page=0"
+						shape="rect" coords="609,597,735,650" alt="rectangle" />
 				</c:if>
 			</map>
 			<img align="middle" src="images/Home_Page_Workflow.gif"
