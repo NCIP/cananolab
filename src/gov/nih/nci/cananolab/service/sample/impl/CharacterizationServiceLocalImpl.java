@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
-import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.common.FileService;

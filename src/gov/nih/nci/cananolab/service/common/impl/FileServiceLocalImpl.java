@@ -16,7 +16,6 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 

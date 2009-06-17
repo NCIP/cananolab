@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
-import gov.nih.nci.cananolab.exception.SecurityException;
 
 import java.io.OutputStream;
 import java.util.List;
