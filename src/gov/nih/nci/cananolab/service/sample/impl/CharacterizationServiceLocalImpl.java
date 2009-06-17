@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
@@ -62,6 +63,7 @@ public class CharacterizationServiceLocalImpl implements
 	private static Logger logger = Logger
 			.getLogger(CharacterizationServiceLocalImpl.class);
 	private CharacterizationServiceHelper helper = new CharacterizationServiceHelper();
+	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	public CharacterizationServiceLocalImpl() {
 	}
@@ -165,8 +167,16 @@ public class CharacterizationServiceLocalImpl implements
 				if (helper.getAuthService().checkReadPermission(user,
 						achar.getSample().getName())) {
 					charBean = new CharacterizationBean(achar);
+					if (user != null) {
+						for (FindingBean finding : charBean.getFindings()) {
+							fileHelper
+									.checkReadPermissionAndRetrieveVisibility(
+											finding.getFiles(), user);
+						}
+					}
 				} else {
-					throw new NoAccessException("User doesn't have access to the sample");
+					throw new NoAccessException(
+							"User doesn't have access to the sample");
 				}
 			}
 			return charBean;
@@ -213,48 +223,6 @@ public class CharacterizationServiceLocalImpl implements
 	// throw new CharacterizationException();
 	// }
 	// }
-
-	public SortedSet<String> findAllCharacterizationSources(UserBean user)
-			throws CharacterizationException {
-		SortedSet<String> sources = new TreeSet<String>();
-
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			HQLCriteria crit = new HQLCriteria(
-					"select distinct achar.source from gov.nih.nci.cananolab.domain.particle.characterization.Characterization achar where achar.source is not null");
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				String source = (String) obj;
-				sources.add(source);
-			}
-		} catch (Exception e) {
-			logger
-					.error(
-							"Problem to retrieve all Characterization PrimaryOrganizations.",
-							e);
-			throw new CharacterizationException(
-					"Problem to retrieve all Characterization Sources ");
-		}
-		sources.addAll(Arrays
-				.asList(Constants.DEFAULT_CHARACTERIZATION_SOURCES));
-
-		return sources;
-	}
-
-	private void retrieveFilesVisibilities(Collection<FileBean> fileBeans,
-			UserBean user) throws CompositionException {
-		try {
-			FileServiceHelper fileServiceHelper = new FileServiceHelper();
-			for (FileBean fileBean : fileBeans) {
-				fileServiceHelper.retrieveVisibility(fileBean, user);
-			}
-		} catch (Exception e) {
-			String err = "Error setting visiblity for files ";
-			logger.error(err, e);
-			throw new CompositionException(err, e);
-		}
-	}
 
 	public void deleteCharacterization(Characterization chara, UserBean user)
 			throws CharacterizationException, NoAccessException {
@@ -628,6 +596,45 @@ public class CharacterizationServiceLocalImpl implements
 			String err = "Error exporting Characterization Summary View report.";
 			logger.error(err, e);
 			throw new CharacterizationException(err, e);
+		}
+	}
+
+	public void copyAndSaveCharacterization(CharacterizationBean charBean,
+			Sample oldSample, Sample[] newSamples, boolean copyData,
+			UserBean user) throws CharacterizationException, NoAccessException {
+		CharacterizationBean copyBean = null;
+		try {
+			// create a deep copy
+			Characterization copy = charBean.getDomainCopy(copyData);
+			copyBean = new CharacterizationBean(copy);
+			// copy file visibility
+			for (FindingBean findingBean : copyBean.getFindings()) {
+				for (FileBean fileBean : findingBean.getFiles()) {
+					fileHelper.retrieveVisibilityAndContentForCopiedFile(
+							fileBean, user);
+				}
+			}
+		} catch (Exception e) {
+			String error = "Error in copying the characterization.";
+			throw new CharacterizationException(error, e);
+		}
+		try {
+			for (Sample sample : newSamples) {
+				// replace file URI with new sample name
+				for (FindingBean findingBean : copyBean.getFindings()) {
+					for (FileBean fileBean : findingBean.getFiles()) {
+						fileBean.getDomainFile().getUri().replace(
+								oldSample.getName(), sample.getName());
+					}
+				}
+				if (copyBean != null)
+					saveCharacterization(sample, copyBean, user);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in copying the characterization.";
+			throw new CharacterizationException(error, e);
 		}
 	}
 }

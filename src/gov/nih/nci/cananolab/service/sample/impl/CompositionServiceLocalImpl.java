@@ -12,6 +12,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -47,6 +48,7 @@ public class CompositionServiceLocalImpl implements CompositionService {
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceLocalImpl.class);
 	private CompositionServiceHelper helper = new CompositionServiceHelper();
+	private FileServiceHelper fileHelper = new FileServiceHelper();
 
 	public CompositionServiceLocalImpl() {
 	}
@@ -157,7 +159,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 						entity.getSampleComposition().getSample().getName()
 								.toString())) {
 					entityBean = new NanomaterialEntityBean(entity);
-					retrieveFilesVisibilities(entityBean.getFiles(), user);
+					fileHelper.checkReadPermissionAndRetrieveVisibility(
+							entityBean.getFiles(), user);
 				} else {
 					throw new NoAccessException(
 							"User doesn't have access to the sample");
@@ -369,7 +372,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (helper.getAuthService().checkReadPermission(user,
 						entity.getSampleComposition().getSample().getName())) {
 					entityBean = new FunctionalizingEntityBean(entity);
-					retrieveFilesVisibilities(entityBean.getFiles(), user);
+					fileHelper.checkReadPermissionAndRetrieveVisibility(
+							entityBean.getFiles(), user);
 				} else {
 					throw new NoAccessException(
 							"User doesn't have access to the sample");
@@ -417,7 +421,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (helper.getAuthService().checkReadPermission(user,
 						assoc.getSampleComposition().getSample().getName())) {
 					assocBean = new ChemicalAssociationBean(assoc);
-					retrieveFilesVisibilities(assocBean.getFiles(), user);
+					fileHelper.checkReadPermissionAndRetrieveVisibility(
+							assocBean.getFiles(), user);
 				} else {
 					throw new NoAccessException();
 				}
@@ -428,20 +433,6 @@ public class CompositionServiceLocalImpl implements CompositionService {
 		} catch (Exception e) {
 			String err = "Problem finding the chemical association by id: "
 					+ assocId;
-			logger.error(err, e);
-			throw new CompositionException(err, e);
-		}
-	}
-
-	private void retrieveFilesVisibilities(Collection<FileBean> fileBeans,
-			UserBean user) throws CompositionException {
-		try {
-			FileServiceHelper fileServiceHelper = new FileServiceHelper();
-			for (FileBean fileBean : fileBeans) {
-				fileServiceHelper.retrieveVisibility(fileBean, user);
-			}
-		} catch (Exception e) {
-			String err = "Error setting visiblity for files ";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
 		}
@@ -641,18 +632,22 @@ public class CompositionServiceLocalImpl implements CompositionService {
 				if (helper.getAuthService().checkReadPermission(user,
 						composition.getSample().getName())) {
 					comp = new CompositionBean(composition);
-					retrieveFilesVisibilities(comp.getFiles(), user);
+					fileHelper.checkReadPermissionAndRetrieveVisibility(comp
+							.getFiles(), user);
 					for (NanomaterialEntityBean entity : comp
 							.getNanomaterialEntities()) {
-						retrieveFilesVisibilities(entity.getFiles(), user);
+						fileHelper.checkReadPermissionAndRetrieveVisibility(
+								entity.getFiles(), user);
 					}
 					for (FunctionalizingEntityBean entity : comp
 							.getFunctionalizingEntities()) {
-						retrieveFilesVisibilities(entity.getFiles(), user);
+						fileHelper.checkReadPermissionAndRetrieveVisibility(
+								entity.getFiles(), user);
 					}
 					for (ChemicalAssociationBean assoc : comp
 							.getChemicalAssociations()) {
-						retrieveFilesVisibilities(assoc.getFiles(), user);
+						fileHelper.checkReadPermissionAndRetrieveVisibility(
+								assoc.getFiles(), user);
 					}
 				} else {
 					throw new NoAccessException(
@@ -685,6 +680,76 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			String err = "Error exporting Sample Composition Summary Excell report.";
 			logger.error(err, e);
 			throw new CompositionException(err, e);
+		}
+	}
+
+	public void copyAndSaveNanomaterialEntity(
+			NanomaterialEntityBean entityBean, Sample oldSample,
+			Sample[] newSamples, UserBean user) throws CompositionException,
+			NoAccessException {
+		NanomaterialEntityBean copyBean = null;
+		try {
+			NanomaterialEntity copy = entityBean.getDomainCopy();
+			copyBean = new NanomaterialEntityBean(copy);
+			// copy file visibility and file content
+			for (FileBean fileBean : copyBean.getFiles()) {
+				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
+						user);
+			}
+		} catch (Exception e) {
+			String error = "Error in copying the nanomaterial entity.";
+			throw new CompositionException(error, e);
+		}
+		try {
+			for (Sample sample : newSamples) {
+				// replace file URI with new sample name
+				for (FileBean fileBean : copyBean.getFiles()) {
+					fileBean.getDomainFile().getUri().replace(
+							oldSample.getName(), sample.getName());
+				}
+				if (copyBean != null)
+					saveNanomaterialEntity(sample, copyBean, user);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in copying the characterization.";
+			throw new CompositionException(error, e);
+		}
+	}
+
+	public void copyAndSaveFunctionalizingEntity(
+			FunctionalizingEntityBean entityBean, Sample oldSample,
+			Sample[] newSamples, UserBean user) throws CompositionException,
+			NoAccessException {
+		FunctionalizingEntityBean copyBean = null;
+		try {
+			FunctionalizingEntity copy = entityBean.getDomainCopy();
+			copyBean = new FunctionalizingEntityBean(copy);
+			// copy file visibility and file content
+			for (FileBean fileBean : copyBean.getFiles()) {
+				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
+						user);
+			}
+		} catch (Exception e) {
+			String error = "Error in copying the functionalizing entity.";
+			throw new CompositionException(error, e);
+		}
+		try {
+			for (Sample sample : newSamples) {
+				// replace file URI with new sample name
+				for (FileBean fileBean : copyBean.getFiles()) {
+					fileBean.getDomainFile().getUri().replace(
+							oldSample.getName(), sample.getName());
+				}
+				if (copyBean != null)
+					saveFunctionalizingEntity(sample, copyBean, user);
+			}
+		} catch (NoAccessException e) {
+			throw e;
+		} catch (Exception e) {
+			String error = "Error in copying the characterization.";
+			throw new CompositionException(error, e);
 		}
 	}
 }

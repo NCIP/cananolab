@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
@@ -17,7 +18,6 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 
 import java.io.OutputStream;
 import java.util.List;
-import java.util.SortedSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,9 +34,6 @@ public interface CharacterizationService {
 
 	public CharacterizationBean findCharacterizationById(String charId,
 			UserBean user) throws CharacterizationException, NoAccessException;
-
-	public SortedSet<String> findAllCharacterizationSources(UserBean user)
-			throws CharacterizationException, NoAccessException;
 
 	public void deleteCharacterization(Characterization chara, UserBean user)
 			throws CharacterizationException, NoAccessException;
@@ -82,4 +79,19 @@ public interface CharacterizationService {
 	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
 			HttpServletRequest request, OutputStream out)
 			throws CharacterizationException;
+
+	/**
+	 * Copy and save a characterization from one sample to other samples
+	 *
+	 * @param charBean
+	 * @param oldSample
+	 * @param newSamples
+	 * @param copyData
+	 * @param user
+	 * @throws CharacterizationException
+	 * @throws NoAccessException
+	 */
+	public void copyAndSaveCharacterization(CharacterizationBean charBean,
+			Sample oldSample, Sample[] newSamples, boolean copyData,
+			UserBean user) throws CharacterizationException, NoAccessException;
 }

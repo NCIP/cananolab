@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
@@ -306,8 +305,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
 
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE,
-				false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
@@ -315,30 +314,11 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				.saveCharacterization(sampleBean.getDomain(), charBean, user);
 
 		// save to other samples
-		FileServiceHelper fileHelper = new FileServiceHelper();
 		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
 			Boolean copyData = (Boolean) theForm.get("copyData");
-			Characterization copy = charBean.getDomainCopy(copyData);
-			CharacterizationBean copyBean = new CharacterizationBean(copy);
-			// copy file visibility
-			for (FindingBean findingBean : copyBean.getFindings()) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileHelper.retrieveVisibilityAndContentForCopiedFile(
-							fileBean, user);
-				}
-			}
-			for (Sample sample : otherSamples) {
-				// replace file URI with new sample name
-				for (FindingBean findingBean : copyBean.getFindings()) {
-					for (FileBean fileBean : findingBean.getFiles()) {
-						fileBean.getDomainFile().getUri().replace(
-								sampleBean.getDomain().getName(),
-								sample.getName());
-					}
-				}
-				charService.saveCharacterization(sample, copyBean, user);
-			}
+			charService.copyAndSaveCharacterization(charBean, sampleBean
+					.getDomain(), otherSamples, copyData, user);
 		}
 		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId());
@@ -726,8 +706,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		int theFileIndex = findingBean.getTheFileIndex();
 		// create a new copy before adding to finding
 		FileBean newFile = theFile.copy();
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE,
-				false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"

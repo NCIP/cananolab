@@ -7,10 +7,12 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
+import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
@@ -82,4 +84,34 @@ public interface CompositionService {
 	public void exportSummary(CompositionBean summaryBean,
 			HttpServletRequest request, OutputStream out)
 			throws CompositionException;
+
+	/**
+	 * Copy and save a nanomaterial entity from one sample to other samples
+	 *
+	 * @param entityBean
+	 * @param oldSample
+	 * @param newSamples
+	 * @param user
+	 * @throws CompositionException
+	 * @throws NoAccessException
+	 */
+	public void copyAndSaveNanomaterialEntity(
+			NanomaterialEntityBean entityBean, Sample oldSample,
+			Sample[] newSamples, UserBean user) throws CompositionException,
+			NoAccessException;
+
+	/**
+	 * Copy and save a functionalizing entity from one sample to other samples
+	 *
+	 * @param entityBean
+	 * @param oldSample
+	 * @param newSamples
+	 * @param user
+	 * @throws CompositionException
+	 * @throws NoAccessException
+	 */
+	public void copyAndSaveFunctionalizingEntity(
+			FunctionalizingEntityBean entityBean, Sample oldSample,
+			Sample[] newSamples, UserBean user) throws CompositionException,
+			NoAccessException;
 }

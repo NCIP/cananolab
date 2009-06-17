@@ -71,7 +71,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 	private void saveEntity(HttpServletRequest request,
 			DynaValidatorForm theForm, NanomaterialEntityBean entityBean)
 			throws Exception {
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -105,27 +106,11 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		compositionService.saveNanomaterialEntity(sampleBean.getDomain(),
 				entityBean, user);
 
-		// save to other particles
-		FileServiceHelper fileHelper = new FileServiceHelper();
+		// save to other samples
 		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
-			NanomaterialEntity copy = entityBean.getDomainCopy();
-			NanomaterialEntityBean copyBean = new NanomaterialEntityBean(copy);
-			// copy file visibility and file content
-			for (FileBean fileBean : copyBean.getFiles()) {
-				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
-						user);
-			}
-
-			for (Sample sample : otherSamples) {
-				// replace file URI with new sample name
-				for (FileBean fileBean : copyBean.getFiles()) {
-					fileBean.getDomainFile().getUri().replace(
-							sampleBean.getDomain().getName(), sample.getName());
-				}
-				compositionService.saveNanomaterialEntity(sample, copyBean,
-						user);
-			}
+			compositionService.copyAndSaveNanomaterialEntity(entityBean,
+					sampleBean.getDomain(), otherSamples, user);
 		}
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
@@ -316,7 +301,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		NanomaterialEntityBean entityBean = (NanomaterialEntityBean) theForm
 				.get("nanomaterialEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ '/'

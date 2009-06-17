@@ -108,7 +108,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, FunctionalizingEntityBean entityBean)
 			throws Exception {
 		CompositionService compositionService = new CompositionServiceLocalImpl();
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
@@ -143,28 +144,11 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
-		// save to other particles
-		FileServiceHelper fileHelper = new FileServiceHelper();
+		// save to other samples
 		Sample[] otherSamples = prepareCopy(request, theForm);
 		if (otherSamples != null) {
-			FunctionalizingEntity copy = entityBean.getDomainCopy();
-			FunctionalizingEntityBean copyBean = new FunctionalizingEntityBean(
-					copy);
-			// copy file visibility and file content
-			for (FileBean fileBean : copyBean.getFiles()) {
-				fileHelper.retrieveVisibilityAndContentForCopiedFile(fileBean,
-						user);
-			}
-
-			for (Sample sample : otherSamples) {
-				// replace file URI with new sample name
-				for (FileBean fileBean : copyBean.getFiles()) {
-					fileBean.getDomainFile().getUri().replace(
-							sampleBean.getDomain().getName(), sample.getName());
-				}
-				compositionService.saveFunctionalizingEntity(sample, copyBean,
-						user);
-			}
+			compositionService.copyAndSaveFunctionalizingEntity(entityBean,
+					sampleBean.getDomain(), otherSamples, user);
 		}
 	}
 
@@ -310,7 +294,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		FunctionalizingEntityBean entityBean = (FunctionalizingEntityBean) theForm
 				.get("functionalizingEntity");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
