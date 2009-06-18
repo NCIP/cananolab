@@ -15,10 +15,6 @@ import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 
-import java.io.OutputStream;
-
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Service methods involving composition.
  *
@@ -68,20 +64,6 @@ public interface CompositionService {
 
 	public CompositionBean findCompositionBySampleId(String sampleId,
 			UserBean user) throws CompositionException, NoAccessException;
-
-	/**
-	 * Export sample composition summary report as Excel spread sheet.
-	 *
-	 * @param summaryBean
-	 *            CompositionBean
-	 * @param out
-	 *            OutputStream
-	 * @throws CompositionException
-	 *             if error occurred.
-	 */
-	public void exportSummary(CompositionBean summaryBean,
-			HttpServletRequest request, OutputStream out)
-			throws CompositionException;
 
 	/**
 	 * Copy and save a nanomaterial entity from one sample to other samples

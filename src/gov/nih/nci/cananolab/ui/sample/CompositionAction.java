@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -163,7 +164,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		} else {
 			// TODO: Implement remote service.
 		}
-		service.exportSummary(compBean, request, response.getOutputStream());
+		CompositionServiceHelper.exportSummary(compBean, request, response.getOutputStream());
 
 		return null;
 	}

@@ -2,14 +2,11 @@ package gov.nih.nci.cananolab.service.publication;
 
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.common.PublicationSummaryViewBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 
-import java.io.OutputStream;
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * Interface defining methods invovled in submiting and searching publications.

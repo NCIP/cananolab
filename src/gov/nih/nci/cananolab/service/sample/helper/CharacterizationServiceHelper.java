@@ -240,11 +240,11 @@ public class CharacterizationServiceHelper {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
+	public static void exportSummary(CharacterizationSummaryViewBean summaryBean,
 			HttpServletRequest request, OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			this.outputSummarySheet(summaryBean, request, wb);
+			outputSummarySheet(summaryBean, request, wb);
 			wb.write(out);
 			out.flush();
 			out.close();
@@ -259,7 +259,7 @@ public class CharacterizationServiceHelper {
 	 * @param wb
 	 * @throws IOException
 	 */
-	private void outputSummarySheet(
+	private static void outputSummarySheet(
 			CharacterizationSummaryViewBean summaryBean,
 			HttpServletRequest request, HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
@@ -281,43 +281,43 @@ public class CharacterizationServiceHelper {
 						+ charBean.getCharacterizationName());
 
 				// 1. Output Characterization type at (0, 0).
-				rowIndex = this.outputHeader(charBean, sheet, headerStyle,
+				rowIndex = outputHeader(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 2. Output Assay Type (2, 0).
-				rowIndex = this.outputAssayType(charBean, sheet, headerStyle,
+				rowIndex = outputAssayType(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 3. Output POC at (3, 0).
-				rowIndex = this.outputPOC(charBean, sheet, headerStyle,
+				rowIndex = outputPOC(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 4. Output Characterization Date at (4, 0).
-				rowIndex = this.outputCharDate(charBean, sheet, headerStyle,
+				rowIndex = outputCharDate(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 5. Output Protocol at (5, 0).
-				rowIndex = this.outputProtocol(charBean, sheet, headerStyle,
+				rowIndex = outputProtocol(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 6. Output Properties at (6, 0).
-				rowIndex = this.outputProperties(charBean, sheet, headerStyle,
+				rowIndex = outputProperties(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 7. Output Design Description at (7, 0).
-				rowIndex = this.outputDesignDescription(charBean, sheet,
+				rowIndex = outputDesignDescription(charBean, sheet,
 						headerStyle, rowIndex);
 
 				// 8. Output Technique and Instruments at (8, 0).
-				rowIndex = this.outputTechInstruments(charBean, sheet,
+				rowIndex = outputTechInstruments(charBean, sheet,
 						headerStyle, rowIndex);
 
 				// 9. Output Characterization Results at (9, 0).
-				rowIndex = this.outputCharResults(charBean, request, wb, sheet,
+				rowIndex = outputCharResults(charBean, request, wb, sheet,
 						headerStyle, rowIndex);
 
 				// 10.Output Analysis and Conclusion at (10, 0).
-				rowIndex = this.outputConclusion(charBean, sheet, headerStyle,
+				rowIndex = outputConclusion(charBean, sheet, headerStyle,
 						rowIndex);
 			}
 		}
@@ -331,7 +331,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputHeader(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputHeader(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		// 1. Output Characterization type at (0, 0).
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -356,7 +356,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputAssayType(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputAssayType(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		Characterization charactization = (Characterization) charBean
 				.getDomainChar();
@@ -386,7 +386,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputPOC(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputPOC(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		// 4. Output POC at (3, 0).
 		if (!StringUtils.isEmpty(charBean.getPocBean().getDisplayName())) {
@@ -406,7 +406,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputCharDate(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputCharDate(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		// 5. Output Characterization Date at (4, 0).
 		if (!StringUtils.isEmpty(charBean.getDateString())) {
@@ -425,7 +425,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputProtocol(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputProtocol(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		// 6. Output Protocol at (6, 0).
 		if (!StringUtils.isEmpty(charBean.getProtocolBean().getDisplayName())) {
@@ -445,7 +445,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputProperties(CharacterizationBean charBean,
+	private static int outputProperties(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7. Output Properties at (7, 0).
 		if (charBean.isWithProperties()) {
@@ -457,22 +457,22 @@ public class CharacterizationServiceHelper {
 					.getInstance().getDetailPage(charBean.getDomainChar());
 			if (!StringUtils.isEmpty(detailPage)) {
 				if (detailPage.indexOf(CYTOTOXICITY) != -1) {
-					rowIndex = this.outputCytotoxicity(charBean, sheet,
+					rowIndex = outputCytotoxicity(charBean, sheet,
 							headerStyle, rowIndex);
 				} else if (detailPage.indexOf(ENZYMEINDUCTION) != -1) {
-					rowIndex = this.outputEnzymeInduction(charBean, sheet,
+					rowIndex = outputEnzymeInduction(charBean, sheet,
 							headerStyle, rowIndex);
 				} else if (detailPage.indexOf(PHYSICALSTATE) != -1) {
-					rowIndex = this.outputPhysicalState(charBean, sheet,
+					rowIndex = outputPhysicalState(charBean, sheet,
 							headerStyle, rowIndex);
 				} else if (detailPage.indexOf(SHAPE) != -1) {
-					rowIndex = this.outputShape(charBean, sheet, headerStyle,
+					rowIndex = outputShape(charBean, sheet, headerStyle,
 							rowIndex);
 				} else if (detailPage.indexOf(SOLUBILITY) != -1) {
-					rowIndex = this.outputSolubility(charBean, sheet,
+					rowIndex = outputSolubility(charBean, sheet,
 							headerStyle, rowIndex);
 				} else if (detailPage.indexOf(SURFACE) != -1) {
-					rowIndex = this.outputSurface(charBean, sheet, headerStyle,
+					rowIndex = outputSurface(charBean, sheet, headerStyle,
 							rowIndex);
 				}
 			}
@@ -489,7 +489,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputCytotoxicity(CharacterizationBean charBean,
+	private static int outputCytotoxicity(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7a. Output Cytotoxicity Info.
 		if (!StringUtils.isEmpty(charBean.getCytotoxicity().getCellLine())) {
@@ -510,7 +510,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputEnzymeInduction(CharacterizationBean charBean,
+	private static int outputEnzymeInduction(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7b. Output EnzymeInduction Info.
 		if (!StringUtils.isEmpty(charBean.getEnzymeInduction().getEnzyme())) {
@@ -531,7 +531,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputPhysicalState(CharacterizationBean charBean,
+	private static int outputPhysicalState(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7c. Output PhysicalState Info.
 		if (!StringUtils.isEmpty(charBean.getPhysicalState().getType())) {
@@ -552,7 +552,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputShape(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputShape(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		// 7d. Output Shape Info.
 		if (!StringUtils.isEmpty(charBean.getShape().getType())) {
@@ -588,7 +588,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputSolubility(CharacterizationBean charBean,
+	private static int outputSolubility(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7e. Output Solubility Info.
 		if (!StringUtils.isEmpty(charBean.getSolubility().getSolvent())) {
@@ -620,7 +620,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputSurface(CharacterizationBean charBean, HSSFSheet sheet,
+	private static int outputSurface(CharacterizationBean charBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 		// 7f. Output Solubility Info.
 		if (charBean.getSurface().getIsHydrophobic() != null) {
@@ -641,7 +641,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputDesignDescription(CharacterizationBean charBean,
+	private static int outputDesignDescription(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		Characterization charactization = (Characterization) charBean
 				.getDomainChar();
@@ -664,7 +664,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputTechInstruments(CharacterizationBean charBean,
+	private static int outputTechInstruments(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 8. Output Technique and Instruments at (7, 0).
 		List<ExperimentConfigBean> configList = charBean.getExperimentConfigs();
@@ -711,7 +711,7 @@ public class CharacterizationServiceHelper {
 	 * @param rowIndex
 	 * @throws IOException
 	 */
-	private int outputCharResults(CharacterizationBean charBean,
+	private static int outputCharResults(CharacterizationBean charBean,
 			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) throws IOException {
 		// 9. Output Characterization Results at (8, 0).
@@ -725,11 +725,11 @@ public class CharacterizationServiceHelper {
 						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
 
 				// 9a. Output Characterization File Results.
-				this.outputFileResult(findingBean, request, wb, sheet,
+				outputFileResult(findingBean, request, wb, sheet,
 						headerStyle, rowIndex);
 
 				// 9b. Output Characterization Datum Results.
-				this.outputDatumResult(findingBean, sheet, headerStyle,
+				outputDatumResult(findingBean, sheet, headerStyle,
 						rowIndex);
 			}
 		}
@@ -747,7 +747,7 @@ public class CharacterizationServiceHelper {
 	 * @param rowIndex
 	 * @throws IOException
 	 */
-	private int outputFileResult(FindingBean findingBean,
+	private static int outputFileResult(FindingBean findingBean,
 			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) throws IOException {
 		// Get list of FileBeans from findingBean.
@@ -808,7 +808,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputDatumResult(FindingBean findingBean, HSSFSheet sheet,
+	private static int outputDatumResult(FindingBean findingBean, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, int rowIndex) {
 
 		// Get list of Rows from findingBean.
@@ -848,7 +848,7 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private int outputConclusion(CharacterizationBean charBean,
+	private static int outputConclusion(CharacterizationBean charBean,
 			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 9. Output Analysis and Conclusion at last.
 		if (!StringUtils.isEmpty(charBean.getConclusion())) {

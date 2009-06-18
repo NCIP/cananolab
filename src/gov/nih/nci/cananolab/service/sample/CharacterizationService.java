@@ -10,15 +10,11 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
-import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 
-import java.io.OutputStream;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Interface defining service methods involving characterizations
@@ -64,20 +60,6 @@ public interface CharacterizationService {
 
 	public Instrument findInstrumentBy(String type, String manufacturer,
 			String modelName) throws ExperimentConfigException;
-
-	/**
-	 * Export sample characterization summary report as Excel spread sheet.
-	 *
-	 * @param summaryBean
-	 *            CharacterizationSummaryViewBean
-	 * @param out
-	 *            OutputStream
-	 * @throws CharacterizationException
-	 *             if error occurred.
-	 */
-	public void exportSummary(CharacterizationSummaryViewBean summaryBean,
-			HttpServletRequest request, OutputStream out)
-			throws CharacterizationException;
 
 	/**
 	 * Copy and save a characterization from one sample to other samples

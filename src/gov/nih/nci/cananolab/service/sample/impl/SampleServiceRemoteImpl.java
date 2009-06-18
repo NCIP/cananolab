@@ -101,7 +101,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			// Weight:Oxidative Stress",
 			// };
 			List<SampleBean> samples = new ArrayList<SampleBean>();
-			if (sampleViewStrs != null) {
+			if (sampleViewStrs != null && sampleViewStrs.length>0) {
 				String[] columns = null;
 				for (String sampleStr : sampleViewStrs) {
 					columns = sampleStr.split(Constants.VIEW_COL_DELIMITER);
