@@ -201,6 +201,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection.organization",
 					FetchMode.JOIN);
+			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
+			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
+			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 			List result = appService.query(crit);
