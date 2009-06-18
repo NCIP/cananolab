@@ -29,7 +29,7 @@
 				</div>
 			</td>
 			<td class="cellLabel">
-				Characterization*
+				Characterization Name *
 			</td>
 			<td>
 				<div id="charNamePrompt">

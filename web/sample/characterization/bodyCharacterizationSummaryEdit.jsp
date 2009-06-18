@@ -97,7 +97,7 @@
 								href="characterization.do?dispatch=setupNew&sampleId=${sampleId}&charType=${type}"
 								class="addlink"><img align="middle" src="images/btn_add.gif"
 									border="0" /></a>&nbsp;&nbsp;
-							<%-- 
+							<%--
 							<c:if
 								test="${!empty characterizationSummaryView.type2Characterizations[type]}">
 								<a><img align="middle" src="images/btn_delete.gif"
@@ -243,7 +243,7 @@
 												</tr>
 												<tr>
 													<td class="cellLabel">
-														Characterizaiton Results
+														Characterization Results
 													</td>
 													<td>
 														<c:choose>
