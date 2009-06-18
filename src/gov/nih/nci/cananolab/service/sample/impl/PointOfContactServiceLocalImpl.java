@@ -203,9 +203,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(Organization.class);
 			crit.add(Restrictions.eq("name", orgName));
-			crit.createAlias("pointOfContactCollection", "poc",
-					CriteriaSpecification.LEFT_JOIN);
-			;
+			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -230,8 +228,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 			DetachedCriteria crit = DetachedCriteria
 					.forClass(PointOfContact.class);
 			crit.add(Restrictions.eq("id", poc.getId()));
-			crit.createAlias(sampleCollection, "otherSamples",
-					CriteriaSpecification.LEFT_JOIN);
+			crit.setFetchMode(sampleCollection, FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 

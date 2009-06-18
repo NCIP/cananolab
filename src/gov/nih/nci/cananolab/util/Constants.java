@@ -135,21 +135,20 @@ public class Constants {
 
 	public static final short CHARACTERIZATION_ROOT_DISPLAY_ORDER = 0;
 
-	public static final Map<String, Integer> CHARACTERIZATION_ORDER_MAP = new HashMap<String, Integer>();
+	// This is a hack to querying based on .class to work in case of multi-level
+	// inheritance with joined-subclass
+	// TODO check the order generated in the hibernate mapping file for each
+	// release
+	public static final Map<String, Integer> FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP = new HashMap<String, Integer>();
 	static {
-		CHARACTERIZATION_ORDER_MAP.put(new String("Physical Characterization"),
-				new Integer(0));
-		CHARACTERIZATION_ORDER_MAP.put(new String("In Vitro Characterization"),
+		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
+				"OtherFunctionalizingEntity"), new Integer(0));
+		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String("Biopolymer"),
 				new Integer(1));
-		CHARACTERIZATION_ORDER_MAP.put(new String("Toxicity"), new Integer(2));
-		CHARACTERIZATION_ORDER_MAP.put(new String("Cytotoxicity"), new Integer(
-				3));
-		CHARACTERIZATION_ORDER_MAP.put(new String("Immunotoxicity"),
-				new Integer(4));
-		CHARACTERIZATION_ORDER_MAP.put(new String("Blood Contact"),
-				new Integer(5));
-		CHARACTERIZATION_ORDER_MAP.put(new String("Immune Cell Function"),
-				new Integer(6));
+		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String("Antibody"),
+				new Integer(2));
+		FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP.put(new String(
+				"SmallMolecule"), new Integer(3));
 	}
 
 	/* image file name extension */
@@ -161,8 +160,8 @@ public class Constants {
 			"YUV", "CGM", "DXF", "EMF", "EPS", "MET", "MVG", "ODG", "OTG",
 			"STD", "SVG", "SXD", "WMF" };
 
-	public static final String[] PRIVATE_DISPATCHES = {"create", "delete",
-			"setupUpdate", "setupDeleteAll", "add", "remove"};
+	public static final String[] PRIVATE_DISPATCHES = { "create", "delete",
+			"setupUpdate", "setupDeleteAll", "add", "remove" };
 
 	public static final String PHYSICOCHEMICAL_ASSAY_PROTOCOL = "physico-chemical assay";
 	public static final String INVITRO_ASSAY_PROTOCOL = "in vitro assay";
@@ -196,4 +195,5 @@ public class Constants {
 
 	// Maximum file size of site logo.
 	public static final int MAX_LOGO_SIZE = 65536;
+
 }

@@ -100,15 +100,38 @@ public class SampleServiceHelper {
 			crit.add(disjunction);
 		}
 
-		// join composition and nanomaterial entity
+		// join composition
+		if (nanomaterialEntityClassNames != null
+				&& nanomaterialEntityClassNames.length > 0
+				|| otherNanomaterialEntityTypes != null
+				&& otherNanomaterialEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0
+				|| functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| otherFunctionalizingEntityTypes != null
+				&& otherFunctionalizingEntityTypes.length > 0) {
+			crit.createAlias("sampleComposition", "comp");
+		}
+		// join nanomaterial entity
 		if (nanomaterialEntityClassNames != null
 				&& nanomaterialEntityClassNames.length > 0
 				|| otherNanomaterialEntityTypes != null
 				&& otherNanomaterialEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias("sampleComposition", "comp");
 			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity");
+		}
+
+		// join functionalizing entity
+		if (functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| otherFunctionalizingEntityTypes != null
+				&& otherFunctionalizingEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			crit.createAlias("comp.functionalizingEntityCollection",
+					"funcEntity");
 		}
 
 		// nanomaterial entity
@@ -138,19 +161,47 @@ public class SampleServiceHelper {
 			crit.add(disjunction);
 		}
 
+		// functionalizing entity
+		// need to turn class names into integers in order for the .class
+		// clause to work
+		if (functionalizingEntityClassNames != null
+				&& functionalizingEntityClassNames.length > 0
+				|| otherFunctionalizingEntityTypes != null
+				&& otherFunctionalizingEntityTypes.length > 0
+				|| functionClassNames != null && functionClassNames.length > 0
+				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
+			Disjunction disjunction = Restrictions.disjunction();
+			if (functionalizingEntityClassNames != null
+					&& functionalizingEntityClassNames.length > 0) {
+				Integer[] functionalizingEntityClassNameIntegers = this
+						.convertToFunctionalizingEntityClassOrderNumber(functionalizingEntityClassNames);
+				Criterion funcEntityCrit = Restrictions.in("funcEntity.class",
+						functionalizingEntityClassNameIntegers);
+				disjunction.add(funcEntityCrit);
+			}
+			if (otherFunctionalizingEntityTypes != null
+					&& otherFunctionalizingEntityTypes.length > 0) {
+				Integer classOrderNumber = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+						.get("otherFunctionalizingEntity");
+				Criterion otherFuncCrit1 = Restrictions.eq("funcEntity.class",
+						classOrderNumber);
+				Criterion otherFuncCrit2 = Restrictions.in("funcEntity.type",
+						otherNanomaterialEntityTypes);
+				Criterion otherFuncCrit = Restrictions.and(otherFuncCrit1,
+						otherFuncCrit2);
+				disjunction.add(otherFuncCrit);
+			}
+			crit.add(disjunction);
+		}
+
 		// function
 		if (functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
-			crit.createAlias(
-					"sampleComposition.functionalizingEntityCollection",
-					"funcEntity", CriteriaSpecification.LEFT_JOIN);
 			crit.createAlias("nanoEntity.composingElementCollection",
-					"compElement", CriteriaSpecification.LEFT_JOIN)
-					.createAlias("compElement.inherentFunctionCollection",
-							"inFunc", CriteriaSpecification.LEFT_JOIN);
-			crit.createAlias("funcEntity.functionCollection", "func",
-					CriteriaSpecification.LEFT_JOIN);
+					"compElement").createAlias(
+					"compElement.inherentFunctionCollection", "inFunc");
+			crit.createAlias("funcEntity.functionCollection", "func");
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
 						functionClassNames);
@@ -170,85 +221,72 @@ public class SampleServiceHelper {
 			crit.add(disjunction);
 		}
 
-		// characterization and text
+		// join characterization
 		if (characterizationClassNames != null
 				&& characterizationClassNames.length > 0 || wordList != null
 				&& wordList.length > 0) {
-			crit.createAlias("characterizationCollection", "chara",
+			crit.createAlias("characterizationCollection", "chara");
+		}
+
+		// characterization
+		if (characterizationClassNames != null
+				&& characterizationClassNames.length > 0) {
+			crit
+					.add(Restrictions.in("chara.class",
+							characterizationClassNames));
+		}
+
+		// join keyword, finding, publication
+		if (wordList != null && wordList.length > 0) {
+			crit.createAlias("keywordCollection", "keyword1");
+			crit.createAlias("chara.findingCollection", "finding",
+					CriteriaSpecification.LEFT_JOIN).createAlias(
+					"finding.fileCollection", "charFile",
+					CriteriaSpecification.LEFT_JOIN).createAlias(
+					"charFile.keywordCollection", "keyword2",
 					CriteriaSpecification.LEFT_JOIN);
-			if (characterizationClassNames != null
-					&& characterizationClassNames.length > 0) {
-				crit.add(Restrictions.in("chara.class",
-						characterizationClassNames));
-			}
+			// publication keywords
+			crit.createAlias("publicationCollection", "pub1",
+					CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("pub1.keywordCollection", "keyword3",
+					CriteriaSpecification.LEFT_JOIN);
+		}
 
-			if (wordList != null && wordList.length > 0) {
-				// turn words into upper case before searching keywords
-				String[] upperKeywords = new String[wordList.length];
-				for (int i = 0; i < wordList.length; i++) {
-					upperKeywords[i] = wordList[i].toUpperCase();
-				}
-				Disjunction disjunction = Restrictions.disjunction();
-				crit.createAlias("keywordCollection", "keyword1",
-						CriteriaSpecification.LEFT_JOIN);
-				for (String keyword : upperKeywords) {
-					Criterion keywordCrit1 = Restrictions.like("keyword1.name",
-							keyword, MatchMode.ANYWHERE);
-					disjunction.add(keywordCrit1);
-				}
-				crit.createAlias("chara.findingCollection", "finding",
-						CriteriaSpecification.LEFT_JOIN).createAlias(
-						"finding.fileCollection", "charFile",
-						CriteriaSpecification.LEFT_JOIN).createAlias(
-						"charFile.keywordCollection", "keyword2",
-						CriteriaSpecification.LEFT_JOIN);
-				;
-				for (String keyword : upperKeywords) {
-					Criterion keywordCrit2 = Restrictions.like("keyword2.name",
-							keyword, MatchMode.ANYWHERE);
-					disjunction.add(keywordCrit2);
-				}
-				for (String word : wordList) {
-					Criterion summaryCrit1 = Restrictions.ilike(
-							"chara.designMethodsDescription", word,
-							MatchMode.ANYWHERE);
-					Criterion summaryCrit2 = Restrictions.ilike(
-							"charFile.description", word, MatchMode.ANYWHERE);
-					Criterion summaryCrit = Restrictions.or(summaryCrit1,
-							summaryCrit2);
-					disjunction.add(summaryCrit);
-				}
-
-				// publication keywords
-				crit.createAlias("publicationCollection", "pub1",
-						CriteriaSpecification.LEFT_JOIN);
-				crit.createAlias("pub1.keywordCollection", "keyword3",
-						CriteriaSpecification.LEFT_JOIN);
-				for (String keyword : upperKeywords) {
-					Criterion keywordCrit3 = Restrictions.like("keyword3.name",
-							keyword, MatchMode.ANYWHERE);
-					disjunction.add(keywordCrit3);
-				}
-				crit.add(disjunction);
+		// keyword
+		if (wordList != null && wordList.length > 0) {
+			// turn words into upper case before searching keywords
+			String[] upperKeywords = new String[wordList.length];
+			for (int i = 0; i < wordList.length; i++) {
+				upperKeywords[i] = wordList[i].toUpperCase();
 			}
+			Disjunction disjunction = Restrictions.disjunction();
+			for (String keyword : upperKeywords) {
+				Criterion keywordCrit1 = Restrictions.like("keyword1.name",
+						keyword, MatchMode.ANYWHERE);
+				Criterion keywordCrit2 = Restrictions.like("keyword2.name",
+						keyword, MatchMode.ANYWHERE);
+				Criterion keywordCrit3 = Restrictions.like("keyword3.name",
+						keyword, MatchMode.ANYWHERE);
+				disjunction.add(keywordCrit1);
+				disjunction.add(keywordCrit2);
+				disjunction.add(keywordCrit3);
+			}
+			for (String word : wordList) {
+				Criterion summaryCrit1 = Restrictions.ilike(
+						"chara.designMethodsDescription", word,
+						MatchMode.ANYWHERE);
+				Criterion summaryCrit2 = Restrictions.ilike(
+						"charFile.description", word, MatchMode.ANYWHERE);
+				Criterion summaryCrit = Restrictions.or(summaryCrit1,
+						summaryCrit2);
+				disjunction.add(summaryCrit);
+			}
+			crit.add(disjunction);
 		}
 
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 		List results = appService.query(crit);
-
-		// don't need this if Hibernate would've allowed for functionalizing
-		// entities in the where clause
-		List<String> functionalizingEntityTypes = null;
-		if (functionalizingEntityClassNames != null
-				&& functionalizingEntityClassNames.length > 0
-				|| otherFunctionalizingEntityTypes != null
-				&& otherFunctionalizingEntityTypes.length > 0) {
-			functionalizingEntityTypes = new ArrayList<String>(Arrays
-					.asList(functionalizingEntityClassNames));
-			functionalizingEntityTypes.addAll(Arrays
-					.asList(otherFunctionalizingEntityTypes));
-		}
 		List filteredResults = new ArrayList(results);
 		// get public data
 		if (user == null) {
@@ -258,14 +296,7 @@ public class SampleServiceHelper {
 			String sampleName = obj.toString();
 			try {
 				Sample sample = findSampleByName(sampleName, user);
-				// don't need this if Hibernate would've allowed for
-				// functionalizing
-				// entities in the where clause
-				boolean matching = hasMatchingFunctionalizingEntities(sample,
-						functionalizingEntityTypes);
-				if (matching) {
-					samples.add(sample);
-				}
+				samples.add(sample);
 			} catch (NoAccessException e) {
 				// ignore no access exception
 				logger.debug("User doesn't have access to sample with name "
@@ -273,41 +304,6 @@ public class SampleServiceHelper {
 			}
 		}
 		return samples;
-	}
-
-	// workaround to filter out publications that don't have matching
-	// functionalizing entities due to bug in hibernate in handling having
-	// .class in
-	// where clause in multi-level inheritance
-	private boolean hasMatchingFunctionalizingEntities(Sample particle,
-			List<String> functionalizingEntityTypes) throws Exception {
-		if (functionalizingEntityTypes == null) {
-			return true;
-		}
-		boolean status = false;
-		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-				.getApplicationService();
-		DetachedCriteria crit = DetachedCriteria
-				.forClass(FunctionalizingEntity.class);
-		crit.createAlias("sampleComposition", "comp");
-		crit.createAlias("comp.sample", "sample");
-		crit.add(Restrictions.eq("sample.id", particle.getId()));
-		List result = appService.query(crit);
-		if (!result.isEmpty()) {
-			FunctionalizingEntity entity = (FunctionalizingEntity) result
-					.get(0);
-			String entityName;
-			if (entity instanceof OtherFunctionalizingEntity) {
-				entityName = ((OtherFunctionalizingEntity) entity).getType();
-			} else {
-				entityName = ClassUtils.getShortClassName(entity.getClass()
-						.getName());
-			}
-			if (functionalizingEntityTypes.contains(entityName)) {
-				return true;
-			}
-		}
-		return status;
 	}
 
 	/**
@@ -754,5 +750,17 @@ public class SampleServiceHelper {
 						.removePublicVisibility(sample.getSampleComposition());
 			}
 		}
+	}
+
+	public Integer[] convertToFunctionalizingEntityClassOrderNumber(
+			String[] classNames) {
+		Integer[] orderNumbers = new Integer[classNames.length];
+		int i = 0;
+		for (String name : classNames) {
+			orderNumbers[i] = Constants.FUNCTIONALIZING_ENTITY_SUBCLASS_ORDER_MAP
+					.get(name);
+			i++;
+		}
+		return orderNumbers;
 	}
 }

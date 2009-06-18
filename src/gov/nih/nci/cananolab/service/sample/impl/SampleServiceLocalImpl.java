@@ -282,8 +282,7 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-			crit.createAlias("otherPointOfContactCollection", "otherPoc",
-					CriteriaSpecification.LEFT_JOIN);
+			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
