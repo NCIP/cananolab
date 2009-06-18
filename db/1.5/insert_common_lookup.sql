@@ -164,7 +164,7 @@ insert into common_lookup(name,attribute,value) values ('Shape','type','2D-diamo
 insert into common_lookup(name,attribute,value) values ('Shape','type','2D-ellipse');
 insert into common_lookup(name,attribute,value) values ('Shape','type','2D-parallelogram');
 insert into common_lookup(name,attribute,value) values ('Shape','type','2D-polygon');
-insert into common_lookup(name,attribute,value) values ('Shape','type','2D-retangle');
+insert into common_lookup(name,attribute,value) values ('Shape','type','2D-rectangle');
 insert into common_lookup(name,attribute,value) values ('Shape','type','2D-square');
 insert into common_lookup(name,attribute,value) values ('Shape','type','2D-trapezoid');
 insert into common_lookup(name,attribute,value) values ('Shape','type','2D-triangle');
