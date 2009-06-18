@@ -20,7 +20,7 @@
 					<c:choose>
 						<c:when
 							test="${item.value eq 'LOGOUT' && sessionScope.user == null ||							        
-							        item.value eq 'ADMINISTRATION' && (sessionScope.isAdmin eq 'false' || sessionScope.user==null)}">
+							        item.value eq 'ADMINISTRATION' && (sessionScope.user==null || !sessionScope.user.admin)}">
 							<td></td>
 						</c:when>
 						<c:otherwise>
