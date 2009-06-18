@@ -28,14 +28,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 
 import org.apache.log4j.Logger;
 
 /**
  * Local implementation of PublicationService
  *
- * @author tanq
+ * @author tanq, pansu
  *
  */
 public class PublicationServiceLocalImpl implements PublicationService {
@@ -129,10 +128,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				SampleService sampleService = new SampleServiceLocalImpl();
 				for (Publication publication : publications) {
 					// retrieve sampleNames
-					SortedSet<String> sampleNames = findSampleNamesByPublicationId(
-							publication.getId().toString(), user);
+					String[] sampleNames = helper
+							.findSampleNamesByPublicationId(publication.getId()
+									.toString(), user);
 					PublicationBean pubBean = new PublicationBean(publication,
-							sampleNames.toArray(new String[sampleNames.size()]));
+							sampleNames);
 					// retrieve visibility
 					if (user != null)
 						retrieveVisibility(pubBean, user);
@@ -183,10 +183,11 @@ public class PublicationServiceLocalImpl implements PublicationService {
 				SampleService sampleService = new SampleServiceLocalImpl();
 				for (Publication publication : publications) {
 					// retrieve sampleNames
-					SortedSet<String> sampleNames = findSampleNamesByPublicationId(
-							publication.getId().toString(), user);
+					String[] sampleNames = helper
+							.findSampleNamesByPublicationId(publication.getId()
+									.toString(), user);
 					PublicationBean pubBean = new PublicationBean(publication,
-							sampleNames.toArray(new String[sampleNames.size()]));
+							sampleNames);
 					// retrieve visibility
 					if (user != null)
 						retrieveVisibility(pubBean, user);
@@ -203,48 +204,23 @@ public class PublicationServiceLocalImpl implements PublicationService {
 		}
 	}
 
-	public PublicationBean findPublicationById(String publcationId,
+	public PublicationBean findPublicationById(String publicationId,
 			UserBean user) throws PublicationException, NoAccessException {
 		try {
-			Publication publication = helper.findPublicationById(publcationId,
+			Publication publication = helper.findPublicationById(publicationId,
 					user);
-			PublicationBean publicationBean = new PublicationBean(publication);
+			String[] sampleNames = helper.findSampleNamesByPublicationId(
+					publicationId, user);
+			PublicationBean publicationBean = new PublicationBean(publication,
+					sampleNames);
 			if (user != null)
 				retrieveVisibility(publicationBean, user);
 			return publicationBean;
 		} catch (NoAccessException e) {
 			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the publcation by id: "
-					+ publcationId;
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-	}
-
-	public void exportDetail(PublicationBean aPub, OutputStream out)
-			throws PublicationException {
-		try {
-			helper.exportDetail(aPub, out);
-		} catch (Exception e) {
-			String err = "error exporting detail view for "
-					+ aPub.getDomainFile().getTitle();
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-	}
-
-	// public Publication[] findDocumentsBySampleId(String sampleId)
-	// throws DocumentException {
-	// throw new DocumentException("Not implemented for local search");
-	// }
-
-	public void exportSummary(PublicationSummaryViewBean summaryBean,
-			OutputStream out) throws PublicationException {
-		try {
-			helper.exportSummary(summaryBean, out);
-		} catch (Exception e) {
-			String err = "Error exporting publication summary view.";
+			String err = "Problem finding the publication by id: "
+					+ publicationId;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
@@ -294,18 +270,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			 */
 		} catch (Exception e) {
 			String err = "Error deleting publication by ID " + dataId;
-			logger.error(err, e);
-			throw new PublicationException(err, e);
-		}
-	}
-
-	public SortedSet<String> findSampleNamesByPublicationId(
-			String publicationId, UserBean user) throws PublicationException {
-		try {
-			return helper.findSampleNamesByPublicationId(publicationId, user);
-		} catch (Exception e) {
-			String err = "Error in retrieving sample names for publication: "
-					+ publicationId;
 			logger.error(err, e);
 			throw new PublicationException(err, e);
 		}
