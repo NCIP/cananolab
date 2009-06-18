@@ -498,6 +498,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString("location");
+		setupSample(theForm, request, location, false);
 		CharacterizationService service = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
