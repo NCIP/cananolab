@@ -162,18 +162,6 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.findForward("summaryEdit");
 	}
 
-	// TODO validate whether this method is needed
-	public ActionForward setupView(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = request.getParameter("location");
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
-		theForm.set("sampleBean", sampleBean);
-		request.getSession().setAttribute("theSample", sampleBean);
-		return mapping.findForward("view");
-	}
-
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
