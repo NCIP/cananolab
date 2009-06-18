@@ -15,6 +15,7 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
@@ -520,7 +521,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		String fileName = this.getExportFileName(sampleBean.getDomain()
 				.getName(), "summaryView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		service.exportSummary(summaryBean, response.getOutputStream());
+		PublicationServiceHelper.exportSummary(summaryBean, response.getOutputStream());
 
 		return null;
 	}
@@ -723,7 +724,7 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		String fileName = this.getExportFileName(title, "detailView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		publicationService.exportDetail(pubBean, response.getOutputStream());
+		PublicationServiceHelper.exportDetail(pubBean, response.getOutputStream());
 
 		return null;
 	}

@@ -6,6 +6,7 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
+import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
@@ -335,7 +336,7 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 
-		service.exportSummary(summaryView, response.getOutputStream());
+		PublicationServiceHelper.exportSummary(summaryView, response.getOutputStream());
 		return null;
 	}
 
