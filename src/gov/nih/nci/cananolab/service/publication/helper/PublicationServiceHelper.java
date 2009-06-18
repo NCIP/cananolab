@@ -286,7 +286,7 @@ public class PublicationServiceHelper {
 		return count;
 	}
 
-	public void exportDetail(PublicationBean aPub, OutputStream out)
+	public static void exportDetail(PublicationBean aPub, OutputStream out)
 			throws Exception {
 
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -301,7 +301,7 @@ public class PublicationServiceHelper {
 		}
 	}
 
-	public int setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
+	private static int setDetailSheet(PublicationBean aPub, HSSFWorkbook wb,
 			HSSFSheet sheet, HSSFPatriarch patriarch, int rowIndex) {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
@@ -476,11 +476,11 @@ public class PublicationServiceHelper {
 	 * @throws IOException
 	 *             if error occurred.
 	 */
-	public void exportSummary(PublicationSummaryViewBean summaryBean,
+	public static void exportSummary(PublicationSummaryViewBean summaryBean,
 			OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			this.setSummarySheet(summaryBean, wb);
+			setSummarySheet(summaryBean, wb);
 			wb.write(out);
 			out.flush();
 			out.close();
@@ -495,7 +495,7 @@ public class PublicationServiceHelper {
 	 * @param wb
 	 *            HSSFWorkbook
 	 */
-	private void setSummarySheet(PublicationSummaryViewBean summaryBean,
+	private static void setSummarySheet(PublicationSummaryViewBean summaryBean,
 			HSSFWorkbook wb) {
 		HSSFRow row = null;
 		// HSSFRow rowAuthor = null;
@@ -578,7 +578,7 @@ public class PublicationServiceHelper {
 		}
 	}
 
-	public SortedSet<String> findSampleNamesByPublicationId(
+	public String[] findSampleNamesByPublicationId(
 			String publicationId, UserBean user) throws Exception {
 		// check if user have access to publication first
 		if (authService.checkReadPermission(user, publicationId)) {
@@ -598,7 +598,7 @@ public class PublicationServiceHelper {
 							+ sample.getName());
 				}
 			}
-			return names;
+			return names.toArray(new String[0]);
 		} else {
 			throw new NoAccessException(
 					"User doesn't have acess to the publication of id: "

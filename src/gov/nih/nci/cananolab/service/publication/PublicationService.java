@@ -40,14 +40,11 @@ public interface PublicationService {
 			String[] otherNanoparticleTypes,
 			String[] functionalizingEntityClassNames,
 			String[] otherFunctionalizingEntityTypes,
-			String[] functionClassNames, String[] otherFunctionTypes, UserBean user)
-			throws PublicationException;
+			String[] functionClassNames, String[] otherFunctionTypes,
+			UserBean user) throws PublicationException;
 
 	public PublicationBean findPublicationById(String publicationId,
 			UserBean user) throws PublicationException, NoAccessException;
-
-	public void exportDetail(PublicationBean aPub, OutputStream out)
-			throws PublicationException;
 
 	public List<PublicationBean> findPublicationsBySampleId(String sampleId,
 			UserBean user) throws PublicationException;
@@ -56,11 +53,4 @@ public interface PublicationService {
 
 	public void removePublicationFromSample(Sample particle, Long dataId)
 			throws PublicationException, NoAccessException;
-
-	public void exportSummary(PublicationSummaryViewBean summaryBean,
-			OutputStream out) throws PublicationException;
-
-	public SortedSet<String> findSampleNamesByPublicationId(
-			String publicationId, UserBean user) throws PublicationException;
-
 }
