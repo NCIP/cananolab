@@ -240,6 +240,10 @@ set name='File'
 where name='LabFile';
 
 update common_lookup
+set value='2D-rectangle'
+where value='2D-retangle';
+
+update common_lookup
 set name='NanomaterialEntity', value='Nanomaterial Entity'
 where name='NanoparticleEntity'
 and attribute='displayName';
