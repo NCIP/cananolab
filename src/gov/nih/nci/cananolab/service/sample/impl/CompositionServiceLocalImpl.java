@@ -299,9 +299,6 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			File file = fileBean.getDomainFile();
 			FileService fileService = new FileServiceLocalImpl();
 			fileService.prepareSaveFile(file, user);
-			// write file to file system and assign visibility
-			fileService.writeFile(fileBean, user);
-
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 
@@ -319,6 +316,8 @@ public class CompositionServiceLocalImpl implements CompositionService {
 			} else {
 				appService.saveOrUpdate(file);
 			}
+			// write file to file system and assign visibility
+			fileService.writeFile(fileBean, user);
 		} catch (Exception e) {
 			String err = "Error in saving the composition file.";
 			logger.error(err, e);
