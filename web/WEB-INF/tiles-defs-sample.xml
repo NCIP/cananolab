@@ -166,13 +166,11 @@
 		extends="sample.annotationHome">
 		<put name="cananoContent"
 			value="/publication/bodySubmitPublication.jsp" />
-		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 	<definition name="sample.submitPublicationPubmed"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
 			value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
-		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 
 	<definition name="sample.detailViewPublication"

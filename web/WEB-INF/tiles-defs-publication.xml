@@ -28,20 +28,17 @@
 		<put name="cananoContent"
 			value="/publication/bodySubmitPublication.jsp" />
 		<put name="menu" value="publications" />
-		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 	<definition name="publication.submitPublicationPubmed"
 		extends="canano.home">
 		<put name="cananoContent"
 			value="/publication/bodySubmitPublicationPubmedReadOnly.jsp" />
 		<put name="menu" value="publications" />
-		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 	<definition name="publication.submitReport" extends="canano.home">
 		<put name="cananoContent"
 			value="/publication/bodySubmitReport.jsp" />
 		<put name="menu" value="reports" />
-		<put name="onloadJavascript" value="radLinkOrUpload()" />
 	</definition>
 
 	<!-- definition for the search publication page -->
