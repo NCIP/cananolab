@@ -21,21 +21,22 @@ import org.displaytag.decorator.TableDecorator;
 public class SampleDecorator extends TableDecorator {
 	public SortableName getEditSampleURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
-		if (!sample.getLocation().equals(Constants.LOCAL_SITE)){
+		if (!sample.getLocation().equals(Constants.LOCAL_SITE)) {
 			return getViewSampleURL();
 		}
-		String sampleId = sample.getDomain().getId()
-				.toString();
+		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
-//		String editSampleURL = "submitSample.do?dispatch=setupUpdate&sampleId="
-//				+ sampleId+"&location=local";
-//		String link = "<a href=" + editSampleURL + ">" + sampleName
-//				+ "</a>";
+		// String editSampleURL =
+		// "submitSample.do?dispatch=setupUpdate&sampleId="
+		// + sampleId+"&location=local";
+		// String link = "<a href=" + editSampleURL + ">" + sampleName
+		// + "</a>";
 
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryEdit&sampleId=");
 		sb.append(sampleId);
-		sb.append("&location="+Constants.LOCAL_SITE+">");
+		sb.append("&location=");
+		sb.append(sample.getLocation());
 		sb.append(sampleName);
 		sb.append("</a>");
 		String link = sb.toString();
@@ -46,14 +47,13 @@ public class SampleDecorator extends TableDecorator {
 
 	public SortableName getViewSampleURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
-		String sampleId = sample.getDomain().getId()
-				.toString();
+		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
-//		String viewSampleURL = "submitSample.do?dispatch=setupView&sampleId="
-//				+ sampleId + "&location=" + sample.getLocation();
-//		;
-//		String link = "<a href=" + viewSampleURL + ">" + sampleName
-//				+ "</a>";
+		// String viewSampleURL = "submitSample.do?dispatch=setupView&sampleId="
+		// + sampleId + "&location=" + sample.getLocation();
+		// ;
+		// String link = "<a href=" + viewSampleURL + ">" + sampleName
+		// + "</a>";
 
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryView&sampleId=");
