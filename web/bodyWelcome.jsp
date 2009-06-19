@@ -46,30 +46,30 @@
 				<%-- Create User Account --%>
 				<c:if test="${!empty user && user.admin }">
 					<area href="javascript:openHelpWindow('/upt')" shape="rect"
-						coords="78,73,208,121" alt="rectangle" />
+						coords="80,73,208,121" alt="rectangle" />
 				</c:if>
 
 				<%-- Login --%>
-				<area href="login.jsp" shape="rect" coords="78,140,208,190"
+				<area href="login.jsp" shape="rect" coords="80,140,208,190"
 					alt="rectangle" />
 
 				<%-- Site Preference --%>
 				<c:if test="${!empty user && user.admin }">
 					<area href="admin.do?dispatch=sitePreference" shape="rect"
-						coords="78,207,208,258" alt="rectangle" />
+						coords="80,207,208,258" alt="rectangle" />
 				</c:if>
 				
 				<%-- Search Protocols --%>
 				<area href="searchProtocol.do?dispatch=setup" shape="rect"
-					coords="78,343,208,394" alt="rectangle" />
+					coords="80,343,208,394" alt="rectangle" />
 					
 				<%-- Search Sample --%>
 				<area href="searchSample.do?dispatch=setup" shape="rect"
-					coords="78,411,208,482" alt="rectangle" />
+					coords="80,411,208,482" alt="rectangle" />
 					
 				<%-- Search Publication --%>
 				<area href="searchPublication.do?dispatch=setup" shape="rect"
-					coords="78,498,208,550" alt="rectangle" />
+					coords="80,498,208,550" alt="rectangle" />
 					
 				<c:if test="${!empty user && user.curator}">
 					<%-- Submit Protocols --%>
@@ -99,7 +99,7 @@
 						shape="rect" coords="609,597,735,650" alt="rectangle" />
 				</c:if>
 			</map>
-			<img align="middle" src="images/Home_Page_Workflow.gif"
+			<img align="middle" src="images/Home_Page_Workflow.png"
 				alt="caNanoLab flowchart" usemap="#funcMap" border="0">
 			<br>
 			<br>
