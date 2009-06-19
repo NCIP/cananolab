@@ -22,6 +22,7 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
+import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -103,6 +104,20 @@ public class PublicationAction extends BaseAnnotationAction {
 			forward = mapping.findForward("sampleSuccess");
 		}
 		// session.removeAttribute("sampleId");
+		// to preselect the same characterization type after returning to the
+		// summary page
+		SortedSet<String> publicationCategories = InitSetup.getInstance()
+				.getDefaultAndOtherLookupTypes(request,
+						"publicationCategories", "Publication", "category",
+						"otherCategory", true);
+		List<String> allPublicationTypes = new ArrayList<String>(
+				publicationCategories);
+		int ind = allPublicationTypes.indexOf(((Publication) publicationBean
+				.getDomainFile()).getCategory()) + 1;
+		request.getSession().setAttribute(
+				"onloadJavascript",
+				"showSummary('" + ind + "', " + allPublicationTypes.size()
+						+ ")");
 		return forward;
 	}
 
@@ -521,7 +536,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String fileName = this.getExportFileName(sampleBean.getDomain()
 				.getName(), "summaryView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		PublicationServiceHelper.exportSummary(summaryBean, response.getOutputStream());
+		PublicationServiceHelper.exportSummary(summaryBean, response
+				.getOutputStream());
 
 		return null;
 	}
@@ -554,6 +570,10 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 		request.setAttribute("publicationSummaryView", summaryView);
+		if (request.getParameter("clearTab") != null
+				&& request.getParameter("clearTab").equals("true")) {
+			request.getSession().removeAttribute("onloadJavascript");
+		}
 	}
 
 	public ActionForward printDetailView(ActionMapping mapping,
@@ -725,7 +745,8 @@ public class PublicationAction extends BaseAnnotationAction {
 
 		String fileName = this.getExportFileName(title, "detailView");
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		PublicationServiceHelper.exportDetail(pubBean, response.getOutputStream());
+		PublicationServiceHelper.exportDetail(pubBean, response
+				.getOutputStream());
 
 		return null;
 	}

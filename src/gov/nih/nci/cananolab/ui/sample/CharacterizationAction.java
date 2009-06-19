@@ -76,6 +76,16 @@ public class CharacterizationAction extends BaseAnnotationAction {
 				charBean.getCharacterizationName());
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		saveMessages(request, msgs);
+		// to preselect the same characterization type after returning to the
+		// summary page
+		List<String> allCharacterizationTypes = InitCharacterizationSetup
+				.getInstance().getCharacterizationTypes(request);
+		int ind = allCharacterizationTypes.indexOf(charBean
+				.getCharacterizationType()) + 1;
+		request.getSession().setAttribute(
+				"onloadJavascript",
+				"showSummary('" + ind + "', " + allCharacterizationTypes.size()
+						+ ")");
 		return summaryEdit(mapping, form, request, response);
 	}
 
@@ -523,6 +533,10 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		request.setAttribute("characterizationSummaryView", summaryView);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
+		if (request.getParameter("clearTab") != null
+				&& request.getParameter("clearTab").equals("true")) {
+			request.getSession().removeAttribute("onloadJavascript");
+		}
 	}
 
 	/**
@@ -603,8 +617,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		} else {
 			// TODO: Implement remote service.
 		}
-		CharacterizationServiceHelper.exportSummary(charSummaryBean, request, response
-				.getOutputStream());
+		CharacterizationServiceHelper.exportSummary(charSummaryBean, request,
+				response.getOutputStream());
 
 		return null;
 	}

@@ -55,6 +55,8 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		// to preselect functionalizing entity after returning to the summary page
+		request.getSession().setAttribute("onloadJavascript", "showSummary('2', 4)");
 		return mapping.findForward("success");
 	}
 

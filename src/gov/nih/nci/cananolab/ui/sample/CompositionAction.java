@@ -229,6 +229,10 @@ public class CompositionAction extends BaseAnnotationAction {
 				.getAttribute(ActionMessages.GLOBAL_MESSAGE);
 		saveMessages(request, msgs);
 		session.removeAttribute(ActionMessages.GLOBAL_MESSAGE);
+		if (request.getParameter("clearTab") != null
+				&& request.getParameter("clearTab").equals("true")) {
+			request.getSession().removeAttribute("onloadJavascript");
+		}
 	}
 
 	/**

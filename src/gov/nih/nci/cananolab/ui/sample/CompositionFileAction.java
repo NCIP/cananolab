@@ -57,6 +57,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
+		// to preselect composition file after returning to the summary page
+		request.getSession().setAttribute("onloadJavascript", "showSummary('4', 4)");
 		return mapping.findForward("success");
 	}
 
