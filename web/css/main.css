@@ -163,6 +163,16 @@ td.subMenuSecondaryTitleOver { /* for the over state of the cell for the element
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 }
 
+td.subMenuSecondaryTitleSelected { /* for the over state of the cell for the elements (usually common among pages) below the primary items */
+	font-size: 0.6em;
+	font-weight: bold;
+	padding-left: 0.8em;
+	background-color: #FFFFFF; /* white */
+	color: #5C5C5C; /* constant: dark gray */
+	border-bottom: 1px solid #cccccc; /* constant: medium gray */
+	border-right: 1px solid #FFFFFF; /* constant: medium gray */
+}
+
 td.subMenuFill { /* for the empty cell below the sub-menu items */
 	border-right: 1px solid #cccccc; /* constant: medium gray */
 	background-color: #6A8989;
@@ -244,10 +254,12 @@ a:link.subMenuSecondary,a:visited.subMenuSecondary,a:active.subMenuSecondary { /
 	color: #ffffff; /* constant: white */
 	text-decoration: none;
 	white-space: nowrap;
+	background-color: #98B7B7; /* lighter */
 }
 
 a:hover.subMenuSecondary {
 	color: #ffffff; /* constant: white */
+	background-color: #98B7B7; /* lighter */
 }
 
 a:link.mainMenuLink,a:visited.mainMenuLink,a:active.mainMenuLink { /* for the text links in the main menu */
