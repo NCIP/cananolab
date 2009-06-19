@@ -270,7 +270,9 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 		domainEntity.setValue(value);
 		domainEntity.setValueUnit(valueUnit);
 		domainEntity.setPubChemDataSourceName(pubChemDataSourceName);
-		domainEntity.setPubChemId(new Long(pubChemId));
+		if (pubChemId.length() > 0) {
+			domainEntity.setPubChemId(new Long(pubChemId));
+		}
 		if (activationMethod != null
 				&& ((activationMethod.getActivationEffect() != null && activationMethod
 						.getActivationEffect().trim().length() > 0) || (activationMethod
@@ -437,5 +439,13 @@ public class FunctionalizingEntityBean extends BaseCompositionEntityBean {
 
 	public String getPubChemId() {
 		return pubChemId;
+	}
+
+	public void setPubChemDataSourceName(String pubChemDataSourceName) {
+		this.pubChemDataSourceName = pubChemDataSourceName;
+	}
+
+	public void setPubChemId(String pubChemId) {
+		this.pubChemId = pubChemId;
 	}
 }
