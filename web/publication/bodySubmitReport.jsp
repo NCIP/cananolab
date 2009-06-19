@@ -104,14 +104,14 @@
 									<td class="leftLabel">
 										<html:radio styleId="external0"
 											property="file.domainFile.uriExternal" value="false"
-											onclick="radLinkOrUpload()" />
+											onclick="displayFileRadioButton()" />
 										<strong>Upload Report File</strong>
 										<br>
 										&nbsp;&nbsp;or
 										<br>
 										<html:radio styleId="external1"
 											property="file.domainFile.uriExternal" value="true"
-											onclick="radLinkOrUpload()" />
+											onclick="displayFileRadioButton()" />
 										<strong>Enter Report URL</strong>
 									</td>
 									<td class="rightLabel" colspan="3">

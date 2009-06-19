@@ -319,14 +319,14 @@
 								<td class="cellLabel">
 									<html:radio styleId="external0"
 										property="file.domainFile.uriExternal" value="false"
-										onclick="radLinkOrUpload()" />
+										onclick="displayFileRadioButton()" />
 									Upload File
 									<br>
 									&nbsp;&nbsp;or
 									<br>
 									<html:radio styleId="external1"
 										property="file.domainFile.uriExternal" value="true"
-										onclick="radLinkOrUpload()" />
+										onclick="displayFileRadioButton()" />
 									Enter File URL
 								</td>
 								<td colspan="2">
