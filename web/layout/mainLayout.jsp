@@ -26,7 +26,7 @@
 		<script type="text/javascript" src="javascript/script.js"></script>
 	</head>
 	<tiles:importAttribute scope="session" />
-	<tiles:importAttribute name="onloadJavascript" />
+	<%--<tiles:importAttribute name="onloadJavascript" />--%>
 	<c:choose>
 		<c:when test="${! empty onloadJavascript}">
 			<body style="cursor: default" onload="${onloadJavascript};location.href='#${anchor}'">
@@ -138,5 +138,4 @@
 			</tr>
 		</tbody>
 	</table>
-	</body>
 </html>
