@@ -60,6 +60,7 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
+					<c:param name="clearTab" value="true"/>
 				</c:url>
 				<c:choose>
 					<c:when
@@ -97,6 +98,7 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
+					<c:param name="clearTab" value="true"/>
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/characterization.do'}">
@@ -133,6 +135,7 @@
 					<c:param name="sampleId" value="${sampleId}" />
 					<c:param name="location" value="${location}" />
 					<c:param name="page" value="0" />
+					<c:param name="clearTab" value="true"/>
 				</c:url>
 				<c:choose>
 					<c:when test="${actionPath eq '/publication.do'}">
