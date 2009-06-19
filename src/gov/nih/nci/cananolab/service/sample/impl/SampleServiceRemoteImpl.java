@@ -117,6 +117,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 					primaryPOC.setLastName(columns[3]);
 					org.setName(columns[4]);
 					primaryPOC.setOrganization(org);
+					sample.setPrimaryPointOfContact(primaryPOC);
 
 					SampleBean sampleBean = new SampleBean(sample);
 					// composition, set all compositions as NanoparticleEntity
