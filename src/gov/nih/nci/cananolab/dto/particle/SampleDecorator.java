@@ -35,7 +35,7 @@ public class SampleDecorator extends TableDecorator {
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryEdit&sampleId=");
 		sb.append(sampleId);
-		sb.append("&location=local>");
+		sb.append("&location="+Constants.LOCAL_SITE+">");
 		sb.append(sampleName);
 		sb.append("</a>");
 		String link = sb.toString();
