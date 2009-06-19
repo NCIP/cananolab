@@ -33,8 +33,8 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="leftLabel">
-							<strong>Sample Name </strong>
+						<td class="leftLabel" width="23%">
+							<strong>Sample Name</strong>
 						</td>
 						<td class="rightLabel">
 							<bean:write name="sampleForm"
@@ -44,18 +44,53 @@
 					</tr>
 					<c:if test="${!empty primaryPoc}">
 						<tr>
-							<td class="leftLabel" valign="top">
+							<td class="leftLabel" valign="top" width="23%">
 								<strong>Primary<br>Point of Contact</strong>
 							</td>
 							<td class="rightLabel">
-								<table class="smalltable" border="0" width="100%">
-									<c:if test="${!empty primaryPoc.domain.firstName ||
-										!empty primaryPoc.domain.middleInitial ||
-										!empty primaryPoc.domain.lastName}">
-										<tr class="smallTableHeader">
-											<td width="4">
+								<c:set var="showName"
+									value="${!empty primaryPoc.domain.firstName ||
+											!empty primaryPoc.domain.middleInitial ||
+											!empty primaryPoc.domain.lastName}" />
+								<c:set var="showEmail" value="${!empty primaryPoc.domain.email}" />
+								<c:set var="showPhone" value="${!empty primaryPoc.domain.phone}" />
+								<c:set var="showAddress"
+									value="${!empty primaryPoc.domain.organization.name &&
+											!empty primaryPoc.domain.organization.streetAddress1}" />
+								<c:set var="showRole" value="${!empty primaryPoc.domain.role}" />
+								<table class="summarytable" border="0" width="100%">
+									<tr>
+										<c:if test="${showName}">
+											<td>
 												<strong>Name</strong>
 											</td>
+										</c:if>
+										<c:if test="${showEmail}">
+											<td>
+												<strong>Email</strong>
+											</td>
+										</c:if>
+										<c:if test="${showPhone}">
+											<td>
+												<strong>Phone</strong>
+											</td>
+										</c:if>
+										<td>
+											<strong>Organization</strong>
+										</td>
+										<c:if test="${showAddress}">
+											<td>
+												<strong>Address</strong>
+											</td>
+										</c:if>
+										<c:if test="${showRole}">
+											<td>
+												<strong>Role</strong>
+											</td>
+										</c:if>
+									</tr>
+									<tr>
+										<c:if test="${showName}">
 											<td>
 												${primaryPoc.domain.firstName}&nbsp;
 												<c:if test="${!empty primaryPoc.domain.middleInitial}">
@@ -63,43 +98,22 @@
 												</c:if>
 												${primaryPoc.domain.lastName}&nbsp;
 											</td>
-										</tr>
-									</c:if>
-									<c:if test="${!empty primaryPoc.domain.email}">
-										<tr class="smallTableHeader">
+										</c:if>
+										<c:if test="${showEmail}">
 											<td>
-												<strong>Email</strong>
-											</td>
-											<td colspan="3">
 												${primaryPoc.domain.email}&nbsp;
 											</td>
-										</tr>
-									</c:if>
-									<c:if test="${!empty primaryPoc.domain.phone}">
-										<tr class="smallTableHeader">
+										</c:if>
+										<c:if test="${showPhone}">
 											<td>
-												<strong>Phone</strong>
-											</td>
-											<td colspan="3">
 												${primaryPoc.domain.phone}&nbsp;
 											</td>
-										</tr>
-									</c:if>
-									<tr class="smallTableHeader">
+										</c:if>
 										<td>
-											<strong>Organization</strong>
-										</td>
-										<td colspan="3">
 											${primaryPoc.domain.organization.name}&nbsp;
 										</td>
-									</tr>
-									<c:if test="${!empty primaryPoc.domain.organization.name &&
-										!empty primaryPoc.domain.organization.streetAddress1}">
-										<tr class="smallTableHeader">
+										<c:if test="${showAddress}">
 											<td>
-												<strong>&nbsp;</strong>
-											</td>
-											<td colspan="3">
 												${primaryPoc.domain.organization.streetAddress1}&nbsp;
 												<br>
 												${primaryPoc.domain.organization.streetAddress2}&nbsp;
@@ -109,18 +123,13 @@
 												${primaryPoc.domain.organization.postalCode}&nbsp;
 												${primaryPoc.domain.organization.country}&nbsp;
 											</td>
-										</tr>
-									</c:if>
-									<c:if test="${!empty primaryPoc.domain.role}">
-										<tr class="smallTableHeader">
-											<td>
-												<strong>Role</strong>
-											</td>
+										</c:if>
+										<c:if test="${showRole}">
 											<td>
 												${primaryPoc.domain.role}&nbsp;
 											</td>
-										</tr>
-									</c:if>
+										</c:if>
+									</tr>
 								</table>
 							</td>
 						</tr>
@@ -128,18 +137,53 @@
 					<c:if test="${!empty otherPoc}">
 						<logic:iterate name="otherPoc" property="otherPointOfContacts" id="otherPOC" indexId="pocInd">
 							<tr>
-								<td class="leftLabel" valign="top">
+								<td class="leftLabel" valign="top" width="23%">
 									<strong>Secondary<br>Point of Contact #${pocInd+1}</strong>
 								</td>
 								<td class="rightLabel">
-									<table class="smalltable" border="0" width="100%">
-										<c:if test="${!empty otherPoc.otherPointOfContacts[pocInd].domain.firstName ||
-											!empty otherPoc.otherPointOfContacts[pocInd].domain.middleInitial ||
-											!empty otherPoc.otherPointOfContacts[pocInd].domain.lastName}">
-											<tr class="smallTableHeader">
-												<td width="4">
+									<c:set var="showName"
+										value="${!empty otherPoc.otherPointOfContacts[pocInd].domain.firstName ||
+										!empty otherPoc.otherPointOfContacts[pocInd].domain.middleInitial ||
+										!empty otherPoc.otherPointOfContacts[pocInd].domain.lastName}" />
+									<c:set var="showEmail" value="${!empty otherPoc.otherPointOfContacts[pocInd].domain.email}" />
+									<c:set var="showPhone" value="${!empty otherPoc.otherPointOfContacts[pocInd].domain.phone}" />
+									<c:set var="showAddress"
+										value="${!empty otherPoc.otherPointOfContacts[pocInd].domain.organization.name &&
+										!empty otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress1}" />
+									<c:set var="showRole" value="${!empty otherPoc.otherPointOfContacts[pocInd].domain.role}" />
+									<table class="summarytable" border="0" width="100%">
+										<tr>
+											<c:if test="${showName}">
+												<td>
 													<strong>Name</strong>
 												</td>
+											</c:if>
+											<c:if test="${showEmail}">
+												<td>
+													<strong>Email</strong>
+												</td>
+											</c:if>
+											<c:if test="${showPhone}">
+												<td>
+													<strong>Phone</strong>
+												</td>
+											</c:if>
+											<td>
+												<strong>Organization</strong>
+											</td>
+											<c:if test="${showAddress}">
+												<td>
+													<strong>Address</strong>
+												</td>
+											</c:if>
+											<c:if test="${showRole}">
+												<td>
+													<strong>Role</strong>
+												</td>
+											</c:if>
+										</tr>
+										<tr>
+											<c:if test="${showName}">
 												<td>
 													${otherPoc.otherPointOfContacts[pocInd].domain.firstName}&nbsp;
 													<c:if
@@ -148,23 +192,22 @@
 													</c:if>
 													${otherPoc.otherPointOfContacts[pocInd].domain.lastName}&nbsp;
 												</td>
-											</tr>
-										</c:if>
-										<tr class="smallTableHeader">
+											</c:if>
+											<c:if test="${showEmail}">
+												<td>
+													${otherPoc.otherPointOfContacts[pocInd].domain.email}&nbsp;
+												</td>
+											</c:if>
+											<c:if test="${showPhone}">
+												<td>
+													${otherPoc.otherPointOfContacts[pocInd].domain.phone}&nbsp;
+												</td>
+											</c:if>
 											<td>
-												<strong>Organization</strong>
-											</td>
-											<td colspan="3">
 												${otherPoc.otherPointOfContacts[pocInd].domain.organization.name}&nbsp;
 											</td>
-										</tr>
-										<c:if test="${!empty otherPoc.otherPointOfContacts[pocInd].domain.organization.name &&
-											!empty otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress1}">
-											<tr class="smallTableHeader">
+											<c:if test="${showAddress}">
 												<td>
-													<strong>&nbsp;</strong>
-												</td>
-												<td colspan="3">
 													${otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress1}&nbsp;
 													<br>
 													${otherPoc.otherPointOfContacts[pocInd].domain.organization.streetAddress2}&nbsp;
@@ -174,45 +217,20 @@
 													${otherPoc.otherPointOfContacts[pocInd].domain.organization.postalCode}&nbsp;
 													${otherPoc.otherPointOfContacts[pocInd].domain.organization.country}&nbsp;
 												</td>
-											</tr>
-										</c:if>
-										<c:if test="${!empty otherPoc.otherPointOfContacts[pocInd].domain.role}">
-											<tr class="smallTableHeader">
-												<td>
-													<strong>Role</strong>
-												</td>
+											</c:if>
+											<c:if test="${showRole}">
 												<td>
 													${otherPoc.otherPointOfContacts[pocInd].domain.role}&nbsp;
 												</td>
-											</tr>
-										</c:if>
-										<c:if test="${!empty otherPoc.otherPointOfContacts[pocInd].domain.email}">
-											<tr class="smallTableHeader">
-												<td>
-													<strong>Email</strong>
-												</td>
-												<td colspan="3">
-													${otherPoc.otherPointOfContacts[pocInd].domain.email}&nbsp;
-												</td>
-											</tr>
-										</c:if>
-										<c:if test="${!empty otherPoc.otherPointOfContacts[pocInd].domain.phone}">
-											<tr class="smallTableHeader">
-												<td>
-													<strong>Phone</strong>
-												</td>
-												<td colspan="3">
-													${otherPoc.otherPointOfContacts[pocInd].domain.phone}&nbsp;
-												</td>
-											</tr>
-										</c:if>
+											</c:if>
+										</tr>
 									</table>
 								</td>
 							</tr>
 						</logic:iterate>
 					</c:if>
 					<tr>
-						<td class="leftLabel" valign="top">
+						<td class="leftLabel" valign="top" width="23%">
 							<strong>Keywords</strong> <i>(one keyword per line)</i>
 						</td>
 						<td class="rightLabel">
