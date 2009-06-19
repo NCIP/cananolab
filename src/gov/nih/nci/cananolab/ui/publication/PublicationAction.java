@@ -543,6 +543,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString("location");
+		setupSample(theForm, request, location, false);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);

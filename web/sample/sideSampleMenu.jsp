@@ -11,7 +11,6 @@
 			scope="session" />
 		<c:set var="sampleId" value="${theSample.domain.id}" scope="session" />
 		<c:set var="location" value="${theSample.location}" scope="session" />
-		<c:set var="theSample" value="${theSample}" scope="session"/>
 	</c:when>
 </c:choose>
 
@@ -51,7 +50,8 @@
 	</tr>
 	<tr>
 		<c:choose>
-			<c:when test="${!empty theSample.domain.sampleComposition.id}">
+			<c:when
+				test="${!empty theSample.domain.sampleComposition.id || !empty user && user.curator}">
 				<c:url var="compUrl" value="composition.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -61,12 +61,13 @@
 				<td class="subMenuSecondaryTitle"
 					onmouseover="changeMenuStyle(this,'subMenuSecondaryTitleOver'), showCursor()"
 					onmouseout="changeMenuStyle(this,'subMenuSecondaryTitle'), hideCursor()"
-					onclick="gotoPage('${compUrl}')" height="20">
+					onclick="gotoPage('${compUrl}'), changeMenuStyle(this,'subMenuSecondaryTitleOver')"
+					height="20">
 					<a class="subMenuSecondary">COMPOSITION</a>
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle">
+				<td class="subMenuSecondaryTitle" height="20">
 					<i>COMPOSITION</i>
 				</td>
 			</c:otherwise>
@@ -74,7 +75,8 @@
 	</tr>
 	<tr>
 		<c:choose>
-			<c:when test="${!empty theSample.domain.characterizationCollection}">
+			<c:when
+				test="${!empty theSample.domain.characterizationCollection || !empty user && user.curator}">
 				<c:url var="charUrl" value="characterization.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -89,7 +91,7 @@
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle">
+				<td class="subMenuSecondaryTitle" height="20">
 					<i>CHARACTERIZATION</i>
 				</td>
 			</c:otherwise>
@@ -97,7 +99,7 @@
 	</tr>
 	<tr>
 		<c:choose>
-			<c:when test="${!empty theSample.domain.publicationCollection}">
+			<c:when test="${!empty theSample.domain.publicationCollection || !empty user && user.curator}">
 				<c:url var="pubUrl" value="publication.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -112,7 +114,7 @@
 				</td>
 			</c:when>
 			<c:otherwise>
-				<td class="subMenuSecondaryTitle">
+				<td class="subMenuSecondaryTitle" height="20">
 					<i>PUBLICATION</i>
 				</td>
 			</c:otherwise>
