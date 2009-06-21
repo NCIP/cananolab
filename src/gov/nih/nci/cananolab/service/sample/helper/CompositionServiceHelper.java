@@ -44,8 +44,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -66,11 +64,8 @@ import org.hibernate.criterion.Property;
  */
 public class CompositionServiceHelper {
 
-	// Partial URL for downloading composition report file.
-	public static final String COMPOSITION_URL = "composition.do?dispatch=download&fileId=";
-
-	// LOCATION for constructing composition down load URL.
-	public static final String LOCATION = "location";
+	// FILE_ID for constructing composition down load URL.
+	public static final String FILE_ID = "fileId";
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
@@ -184,17 +179,14 @@ public class CompositionServiceHelper {
 	 * Export sample composition summary report as Excel spread sheet.
 	 *
 	 * @param compBean
-	 *            CompositionBean
 	 * @param out
-	 *            OutputStream
 	 * @throws CompositionException
-	 *             if error occurred.
 	 */
 	public static void exportSummary(CompositionBean compBean,
-			HttpServletRequest request, OutputStream out) throws IOException {
+			String downloadURL, OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			outputSummarySheet(compBean, request, wb);
+			outputSummarySheet(compBean, downloadURL, wb);
 			wb.write(out);
 			out.flush();
 			out.close();
@@ -209,7 +201,7 @@ public class CompositionServiceHelper {
 	 * @param wb
 	 */
 	private static void outputSummarySheet(CompositionBean compBean,
-			HttpServletRequest request, HSSFWorkbook wb) throws IOException {
+			String downloadURL, HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -223,16 +215,16 @@ public class CompositionServiceHelper {
 
 		int entityCount = 1;
 		entityCount = outputNanomaterialEntities(compBean, wb,
-				headerStyle, hlinkStyle, entityCount, request);
+				headerStyle, hlinkStyle, entityCount, downloadURL);
 
 		entityCount = outputFunctionalEntities(compBean, wb, headerStyle,
-				hlinkStyle, entityCount, request);
+				hlinkStyle, entityCount, downloadURL);
 
 		entityCount = outputChemicalEntities(compBean, wb, headerStyle,
-				hlinkStyle, entityCount, request);
+				hlinkStyle, entityCount, downloadURL);
 
 		outputFilesEntities(compBean, wb, headerStyle, hlinkStyle,
-				entityCount, request);
+				entityCount, downloadURL);
 	}
 
 	/**
@@ -246,9 +238,9 @@ public class CompositionServiceHelper {
 	private static int outputNanomaterialEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int entityCount,
-			HttpServletRequest request) {
-		List<NanomaterialEntityBean> nanoList = compBean
-				.getNanomaterialEntities();
+			String downloadURL) {
+		List<NanomaterialEntityBean> nanoList = 
+			compBean.getNanomaterialEntities();
 		if (nanoList != null && !nanoList.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			for (NanomaterialEntityBean nanoEntity : nanoList) {
@@ -258,8 +250,7 @@ public class CompositionServiceHelper {
 					sb.append(entityCount++).append('.').append(
 							nanoEntity.getType());
 
-					// Create one work sheet for each Composition Nanomaterial
-					// Entity.
+					// Create one work sheet for each Nanomaterial Entity.
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 
 					// 1. Output Header: NanoMaterial at (0, 0), Composition
@@ -400,7 +391,7 @@ public class CompositionServiceHelper {
 						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
-						outputFiles(fileBeans, request, wb, sheet,
+						outputFiles(fileBeans, downloadURL, wb, sheet,
 								headerStyle, hlinkStyle, rowIndex);
 					}
 				}
@@ -422,7 +413,7 @@ public class CompositionServiceHelper {
 	private static int outputFunctionalEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int entityCount,
-			HttpServletRequest request) {
+			String downloadURL) {
 		List<FunctionalizingEntityBean> nanoList = compBean
 				.getFunctionalizingEntities();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -597,7 +588,7 @@ public class CompositionServiceHelper {
 						rowIndex++; // Create one empty line as separator.
 						HSSFRow row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
-						outputFiles(fileBeans, request, wb, sheet,
+						outputFiles(fileBeans, downloadURL, wb, sheet,
 								headerStyle, hlinkStyle, rowIndex);
 					}
 				}
@@ -618,7 +609,7 @@ public class CompositionServiceHelper {
 	private static int outputChemicalEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int entityCount,
-			HttpServletRequest request) {
+			String downloadURL) {
 		List<ChemicalAssociationBean> nanoList = compBean
 				.getChemicalAssociations();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -724,7 +715,7 @@ public class CompositionServiceHelper {
 						rowIndex++; // Create one empty line as separator.
 						row = sheet.createRow(rowIndex++);
 						ExportUtils.createCell(row, 0, headerStyle, "Files");
-						outputFiles(fileBeans, request, wb, sheet,
+						outputFiles(fileBeans, downloadURL, wb, sheet,
 								headerStyle, hlinkStyle, rowIndex);
 					}
 				}
@@ -743,7 +734,7 @@ public class CompositionServiceHelper {
 	 */
 	private static int outputFilesEntities(CompositionBean compBean, HSSFWorkbook wb,
 			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
-			int entityCount, HttpServletRequest request) {
+			int entityCount, String downloadURL) {
 		List<FileBean> nanoList = compBean.getFiles();
 		if (nanoList != null && !nanoList.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
@@ -764,7 +755,7 @@ public class CompositionServiceHelper {
 					rowIndex++; // Create one empty line as separator.
 
 					// 2. Output File info, one File per sheet.
-					outputFile(nanoEntity, request, wb, sheet,
+					outputFile(nanoEntity, downloadURL, wb, sheet,
 							headerStyle, hlinkStyle, rowIndex);
 				}
 			}
@@ -1081,9 +1072,8 @@ public class CompositionServiceHelper {
 	 * @return
 	 */
 	private static int outputFiles(List<FileBean> fileBeans,
-			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
+			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
 			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex) {
-		StringBuilder sb = new StringBuilder();
 		// Output file table Header.
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, "File Type");
@@ -1097,15 +1087,11 @@ public class CompositionServiceHelper {
 				row = sheet.createRow(rowIndex++);
 				ExportUtils.createCell(row, 0, file.getType());
 
-				// 2. output Title and Download Link.
-
-				// Construct the URL for downloading the file.
-				sb.setLength(0);
-				sb.append(request.getRequestURL().toString());
-				sb.append(COMPOSITION_URL);
-				sb.append(file.getId()).append('&').append(LOCATION)
-						.append('=');
-				sb.append(request.getParameter(LOCATION));
+				/* 2. output Title and Download Link.
+				 * Construct the URL for downloading the file. 
+				 */
+				StringBuilder sb = new StringBuilder(downloadURL);
+				sb.append('&').append(FILE_ID).append('=').append(file.getId());
 				if (file.getUriExternal().booleanValue()) {
 					ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(),
 							sb.toString());
@@ -1161,10 +1147,9 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputFile(FileBean fileBean, HttpServletRequest request,
+	private static int outputFile(FileBean fileBean, String downloadURL,
 			HSSFWorkbook wb, HSSFSheet sheet, HSSFCellStyle headerStyle,
 			HSSFCellStyle hlinkStyle, int rowIndex) {
-		StringBuilder sb = new StringBuilder();
 		File file = fileBean.getDomainFile();
 
 		// 1. output File Type.
@@ -1177,11 +1162,8 @@ public class CompositionServiceHelper {
 		ExportUtils.createCell(row, 0, headerStyle, "Title and Download Link");
 
 		// Construct the URL for downloading the file.
-		sb.setLength(0);
-		sb.append(request.getRequestURL().toString());
-		sb.append(COMPOSITION_URL);
-		sb.append(file.getId()).append('&').append(LOCATION).append('=');
-		sb.append(request.getParameter(LOCATION));
+		StringBuilder sb = new StringBuilder(downloadURL);
+		sb.append('&').append(FILE_ID).append('=').append(file.getId());
 		if (file.getUriExternal().booleanValue()) {
 			ExportUtils.createCell(row, 1, hlinkStyle, file.getUri(), sb
 					.toString());

@@ -32,6 +32,12 @@ import org.apache.struts.validator.DynaValidatorForm;
 
 public class CompositionAction extends BaseAnnotationAction {
 
+	// Partial URL for downloading composition report file.
+	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
+
+	// LOCATION for constructing composition down load URL.
+	public static final String LOCATION = "location";
+
 	/**
 	 * Handle Composition Summary Edit request.
 	 *
@@ -164,7 +170,13 @@ public class CompositionAction extends BaseAnnotationAction {
 		} else {
 			// TODO: Implement remote service.
 		}
-		CompositionServiceHelper.exportSummary(compBean, request, response.getOutputStream());
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(request.getRequestURL().toString());
+		sb.append(DOWNLOAD_URL);
+		sb.append(request.getParameter(LOCATION));
+		
+		CompositionServiceHelper.exportSummary(compBean, sb.toString(), response.getOutputStream());
 
 		return null;
 	}
