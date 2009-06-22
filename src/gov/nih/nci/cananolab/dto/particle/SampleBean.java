@@ -12,8 +12,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * This class represents shared properties of samples to be shown
- * in the view pages.
+ * This class represents shared properties of samples to be shown in the view
+ * pages.
  *
  * @author pansu
  *
@@ -41,6 +41,12 @@ public class SampleBean {
 
 	private PointOfContactBean pocBean;
 
+	private Boolean hasComposition = false;
+
+	private Boolean hasCharacterizations = false;
+
+	private Boolean hasPublications = false;
+
 	public SampleBean() {
 		pocBean = new PointOfContactBean();
 	}
@@ -55,9 +61,20 @@ public class SampleBean {
 		}
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
 		if (domain != null) {
-			PointOfContact primaryPOC = domain
-					.getPrimaryPointOfContact();
+			PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
 			pocBean = new PointOfContactBean(primaryPOC);
+		}
+		if (sample.getSampleComposition() != null
+				&& sample.getSampleComposition().getId() != null) {
+			hasComposition = true;
+		}
+		if (sample.getCharacterizationCollection() != null
+				&& !sample.getCharacterizationCollection().isEmpty()) {
+			hasCharacterizations = true;
+		}
+		if (sample.getPublicationCollection() != null
+				&& !sample.getPublicationCollection().isEmpty()) {
+			hasPublications = true;
 		}
 	}
 
@@ -170,5 +187,29 @@ public class SampleBean {
 	public void setPocBean(PointOfContactBean pocBean) {
 		this.pocBean = pocBean;
 		this.domain.setPrimaryPointOfContact(pocBean.getDomain());
+	}
+
+	public Boolean getHasComposition() {
+		return hasComposition;
+	}
+
+	public void setHasComposition(Boolean hasComposition) {
+		this.hasComposition = hasComposition;
+	}
+
+	public Boolean getHasCharacterizations() {
+		return hasCharacterizations;
+	}
+
+	public void setHasCharacterizations(Boolean hasCharacterizations) {
+		this.hasCharacterizations = hasCharacterizations;
+	}
+
+	public Boolean getHasPublications() {
+		return hasPublications;
+	}
+
+	public void setHasPublications(Boolean hasPublications) {
+		this.hasPublications = hasPublications;
 	}
 }
