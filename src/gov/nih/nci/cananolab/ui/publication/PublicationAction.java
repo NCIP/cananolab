@@ -22,7 +22,6 @@ import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.ui.sample.InitCharacterizationSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
