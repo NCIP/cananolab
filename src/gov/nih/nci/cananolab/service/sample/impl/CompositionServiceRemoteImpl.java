@@ -66,37 +66,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 
 	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
 			UserBean user) throws CompositionException, NoAccessException {
-		NanomaterialEntityBean entityBean = null;
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(entityId);
-			target.setAttribute(attribute);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			NanomaterialEntity entity = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				entity = (NanomaterialEntity) obj;
-			}
-			if (entity != null)
-				loadNanomaterialEntityAssociations(entity);
-			entityBean = new NanomaterialEntityBean(entity);
-			return entityBean;
-		} catch (Exception e) {
-			String err = "Problem finding the nanoparticle entity by id: "
-					+ entityId;
-			logger.error(err, e);
-			throw new CompositionException(err, e);
-		}
+		throw new CompositionException("Not implemented for grid service");
 	}
 
 	private void loadNanomaterialEntityAssociations(NanomaterialEntity entity)
@@ -213,37 +183,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
 			String entityId, UserBean user) throws CompositionException,
 			NoAccessException {
-		FunctionalizingEntityBean entityBean = null;
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(entityId);
-			target.setAttribute(attribute);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			FunctionalizingEntity entity = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				entity = (FunctionalizingEntity) obj;
-			}
-			if (entity != null)
-				loadFunctionalizingEntityAssociations(entity);
-			entityBean = new FunctionalizingEntityBean(entity);
-			return entityBean;
-		} catch (Exception e) {
-			String err = "Problem finding the functionalizing entity by id: "
-					+ entityId;
-			logger.error(err, e);
-			throw new CompositionException(err, e);
-		}
+		throw new CompositionException("Not implemented for grid service");
 	}
 
 	private void loadFunctionalizingEntityAssociations(
@@ -329,37 +269,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 
 	public ChemicalAssociationBean findChemicalAssociationById(String assocId,
 			UserBean user) throws CompositionException, NoAccessException {
-		ChemicalAssociationBean assocBean = null;
-		try {
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target
-					.setName("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(assocId);
-			target.setAttribute(attribute);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results
-					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			ChemicalAssociation assoc = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				assoc = (ChemicalAssociation) obj;
-			}
-			if (assoc != null)
-				loadChemicalAssociationAssociations(assoc);
-			assocBean = new ChemicalAssociationBean(assoc);
-			return assocBean;
-		} catch (Exception e) {
-			String err = "Problem finding the remote chemical association by id: "
-					+ assocId;
-			logger.error(err, e);
-			throw new CompositionException(err, e);
-		}
+		throw new CompositionException("Not implemented for grid service");
 	}
 
 	public void deleteNanomaterialEntity(NanomaterialEntity entity,
