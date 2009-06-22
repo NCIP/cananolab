@@ -19,7 +19,6 @@ import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -480,7 +479,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			// service = new CharacterizationServiceRemoteImpl(
 			// serviceUrl);
 		}
-		List<CharacterizationBean> charBeans = service.findCharsBySampleId(
+		List<CharacterizationBean> charBeans = service.findCharacterizationsBySampleId(
 				sampleId, user);
 		// set characterization types and retrieve visibility
 		for (CharacterizationBean charBean : charBeans) {
