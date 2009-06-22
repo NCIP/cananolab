@@ -144,7 +144,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		// Show only the selected type.
 		String type = request.getParameter("type");
-		String location = request.getParameter("location");
+		String location = request.getParameter(LOCATION);
 		if (!StringUtils.isEmpty(type)) {
 			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
 				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
@@ -174,7 +174,7 @@ public class CompositionAction extends BaseAnnotationAction {
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getRequestURL().toString());
 		sb.append(DOWNLOAD_URL);
-		sb.append(request.getParameter(LOCATION));
+		sb.append(request.getParameter(location));
 		
 		CompositionServiceHelper.exportSummary(compBean, sb.toString(), response.getOutputStream());
 
