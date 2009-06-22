@@ -28,9 +28,9 @@ import org.apache.log4j.Logger;
  *
  */
 public class FileServiceLocalImpl implements FileService {
-	Logger logger = Logger.getLogger(FileServiceLocalImpl.class);
+	private static Logger logger = Logger.getLogger(FileServiceLocalImpl.class);
 
-	FileServiceHelper helper = new FileServiceHelper();
+	private FileServiceHelper helper = new FileServiceHelper();
 
 	public FileServiceLocalImpl() {
 	}

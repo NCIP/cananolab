@@ -10,6 +10,7 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.function.Target;
 import gov.nih.nci.cananolab.domain.function.TargetingFunction;
+import gov.nih.nci.cananolab.domain.particle.AssociatedElement;
 import gov.nih.nci.cananolab.domain.particle.ChemicalAssociation;
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
 import gov.nih.nci.cananolab.domain.particle.Function;
@@ -26,22 +27,13 @@ import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.ChemicalAssociationViolationException;
 import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
-import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
-import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.ClassUtils;
-import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.FetchMode;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
 
 /**
  * Local implementation of CompositionService.
@@ -52,14 +44,13 @@ import org.hibernate.criterion.Property;
 public class CompositionServiceRemoteImpl implements CompositionService {
 	private static Logger logger = Logger
 			.getLogger(CompositionServiceRemoteImpl.class);
-	private CompositionServiceHelper helper = new CompositionServiceHelper();
-	private FileServiceHelper fileHelper = new FileServiceHelper();
-
 	private CaNanoLabServiceClient gridClient;
+	private String serviceUrl;
 
 	public CompositionServiceRemoteImpl(String serviceUrl)
 			throws CompositionException {
 		try {
+			this.serviceUrl = serviceUrl;
 			gridClient = new CaNanoLabServiceClient(serviceUrl);
 		} catch (Exception e) {
 			throw new CompositionException(
@@ -112,10 +103,19 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			throws Exception {
 		File[] files = gridClient.getFilesByCompositionInfoId(entity.getId()
 				.toString(), NanomaterialEntity.class.getCanonicalName());
+		loadKeywordsForFiles(files);
 		if (files != null && files.length > 0) {
 			entity.setFileCollection(new HashSet<File>(Arrays.asList(files)));
 		}
 		loadComposingElementForNanomaterialEntity(entity);
+	}
+
+	private void loadKeywordsForFiles(File[] files) throws Exception {
+		FileServiceRemoteImpl fileService = new FileServiceRemoteImpl(
+				serviceUrl);
+		for (File file : files) {
+			fileService.loadKeywordsForFile(file);
+		}
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		while (iter.hasNext()) {
 			java.lang.Object obj = iter.next();
 			composingElement = (ComposingElement) obj;
-			loadInherentFunctionForComposingElement(composingElement);
+			loadInherentFunctionsForComposingElement(composingElement);
 			entity.getComposingElementCollection().add(composingElement);
 		}
 	}
@@ -162,7 +162,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 	/**
 	 * load all InherentFunction for an associated ComposingElement
 	 */
-	private void loadInherentFunctionForComposingElement(
+	private void loadInherentFunctionsForComposingElement(
 			ComposingElement composingElement) throws Exception {
 		CQLQuery query = new CQLQuery();
 
@@ -246,55 +246,11 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		}
 	}
 
-	/**
-	 * load all FunctionalizingEntity Collection with an associated Composition
-	 */
-	private void loadFunctionalizingEntityForComposition(
-			SampleComposition composition, String[] entityClassNames)
-			throws Exception {
-
-		composition
-				.setFunctionalizingEntityCollection(new HashSet<FunctionalizingEntity>());
-		for (String name : entityClassNames) {
-			String fullClassName = ClassUtils.getFullClass(
-					"functionalization." + name).getCanonicalName();
-			if (fullClassName.equals("java.lang.Object")) {
-				fullClassName = "gov.nih.nci.cananolab.domain.particle.samplecomposition.functionalization.OtherFunctionalizingEntity";
-			}
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName(fullClassName);
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
-			association.setRoleName("sampleComposition");
-
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(composition.getId().toString());
-			association.setAttribute(attribute);
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results.setTargetClassname(fullClassName);
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			FunctionalizingEntity functionalizingEntity = null;
-
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				functionalizingEntity = (FunctionalizingEntity) obj;
-				// loadFunctionsForFunctionalizingEntity(functionalizingEntity);
-				composition.getFunctionalizingEntityCollection().add(
-						functionalizingEntity);
-			}
-		}
-	}
-
 	private void loadFunctionalizingEntityAssociations(
 			FunctionalizingEntity entity) throws Exception {
 		File[] files = gridClient.getFilesByCompositionInfoId(entity.getId()
 				.toString(), FunctionalizingEntity.class.getCanonicalName());
+		loadKeywordsForFiles(files);
 		if (files != null && files.length > 0) {
 			entity.setFileCollection(new HashSet<File>(Arrays.asList(files)));
 		}
@@ -375,44 +331,31 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			UserBean user) throws CompositionException, NoAccessException {
 		ChemicalAssociationBean assocBean = null;
 		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-
-			DetachedCriteria crit = DetachedCriteria.forClass(
-					ChemicalAssociation.class).add(
-					Property.forName("id").eq(new Long(assocId)));
-			crit.setFetchMode("sampleComposition", FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition.sample", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection", FetchMode.JOIN);
-			crit.setFetchMode("fileCollection.keywordCollection",
-					FetchMode.JOIN);
-			crit.setFetchMode("associatedElementA", FetchMode.JOIN);
-			crit.setFetchMode("associatedElementA.nanomaterialEntity",
-					FetchMode.JOIN);
-			crit.setFetchMode("associatedElementB", FetchMode.JOIN);
-			crit.setFetchMode("associatedElementB.nanomaterialEntity",
-					FetchMode.JOIN);
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List result = appService.query(crit);
+			CQLQuery query = new CQLQuery();
+			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+			target
+					.setName("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+			Attribute attribute = new Attribute();
+			attribute.setName("id");
+			attribute.setPredicate(Predicate.EQUAL_TO);
+			attribute.setValue(assocId);
+			target.setAttribute(attribute);
+			query.setTarget(target);
+			CQLQueryResults results = gridClient.query(query);
+			results
+					.setTargetClassname("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
 			ChemicalAssociation assoc = null;
-			if (!result.isEmpty()) {
-				assoc = (ChemicalAssociation) result.get(0);
-				if (helper.getAuthService().checkReadPermission(user,
-						assoc.getSampleComposition().getSample().getName())) {
-					assocBean = new ChemicalAssociationBean(assoc);
-					fileHelper.checkReadPermissionAndRetrieveVisibility(
-							assocBean.getFiles(), user);
-				} else {
-					throw new NoAccessException();
-				}
+			while (iter.hasNext()) {
+				java.lang.Object obj = iter.next();
+				assoc = (ChemicalAssociation) obj;
 			}
+			if (assoc != null)
+				loadChemicalAssociationAssociations(assoc);
+			assocBean = new ChemicalAssociationBean(assoc);
 			return assocBean;
-		} catch (NoAccessException e) {
-			throw e;
 		} catch (Exception e) {
-			String err = "Problem finding the chemical association by id: "
+			String err = "Problem finding the remote chemical association by id: "
 					+ assocId;
 			logger.error(err, e);
 			throw new CompositionException(err, e);
@@ -443,7 +386,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 
 	public CompositionBean findCompositionBySampleId(String sampleId,
 			UserBean user) throws CompositionException {
-		CompositionBean compositionBean=null;
+		CompositionBean compositionBean = null;
 		try {
 			CQLQuery query = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
@@ -471,7 +414,7 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 				java.lang.Object obj = iter.next();
 				sampleComposition = (SampleComposition) obj;
 				loadCompositionAssociations(sampleComposition);
-				compositionBean=new CompositionBean(sampleComposition);
+				compositionBean = new CompositionBean(sampleComposition);
 			}
 		} catch (Exception e) {
 			String err = "Problem finding the remote sampleComposition by sample id: "
@@ -482,68 +425,155 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		return compositionBean;
 	}
 
-	private void loadCompositionAssociations(SampleComposition composition) throws Exception {
+	private void loadCompositionAssociations(SampleComposition composition)
+			throws Exception {
 		loadNanomaterialEntitiesForComposition(composition);
 		loadFunctionalizingEntitiesForComposition(composition);
 		loadChemicalAssociationsForComposition(composition);
-		File[] files = gridClient.getFilesByCompositionInfoId(composition.getId()
-				.toString(), SampleComposition.class.getCanonicalName());
+		File[] files = gridClient
+				.getFilesByCompositionInfoId(composition.getId().toString(),
+						SampleComposition.class.getCanonicalName());
+		loadKeywordsForFiles(files);
 		if (files != null && files.length > 0) {
-			composition.setFileCollection(new HashSet<File>(Arrays.asList(files)));
+			composition.setFileCollection(new HashSet<File>(Arrays
+					.asList(files)));
 		}
 	}
 
-	private void loadNanomaterialEntitiesForComposition(SampleComposition composition) throws Exception {
+	private void loadNanomaterialEntitiesForComposition(
+			SampleComposition composition) throws Exception {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+		association.setRoleName("sampleComposition");
 
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(composition.getId().toString());
+		association.setAttribute(attribute);
+
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.NanomaterialEntity");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		NanomaterialEntity nanoEntity = null;
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			nanoEntity = (NanomaterialEntity) obj;
+			loadNanomaterialEntityAssociations(nanoEntity);
+			composition.getNanomaterialEntityCollection().add(nanoEntity);
+		}
 	}
 
-	private void loadFunctionalizingEntitiesForComposition(SampleComposition composition) throws Exception {
+	private void loadFunctionalizingEntitiesForComposition(
+			SampleComposition composition) throws Exception {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+		association.setRoleName("sampleComposition");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(composition.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.FunctionalizingEntity");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		FunctionalizingEntity funcEntity = null;
 
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			funcEntity = (FunctionalizingEntity) obj;
+			loadFunctionalizingEntityAssociations(funcEntity);
+			composition.getFunctionalizingEntityCollection().add(funcEntity);
+		}
 	}
 
-	private void loadChemicalAssociationsForComposition(SampleComposition composition) throws Exception {
+	private void loadChemicalAssociationsForComposition(
+			SampleComposition composition) throws Exception {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
+		association.setRoleName("sampleComposition");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(composition.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		ChemicalAssociation assoc = null;
 
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			assoc = (ChemicalAssociation) obj;
+			loadChemicalAssociationAssociations(assoc);
+			composition.getChemicalAssociationCollection().add(assoc);
+		}
 	}
-	/**
-	 * load all NanomaterialEntity Collection for an associated Composition
-	 *
-	 */
-	private void loadNanomaterialEntityForComposition(
-			SampleComposition composition, String[] entityClassNames)
+
+	private void loadChemicalAssociationAssociations(ChemicalAssociation assoc)
 			throws Exception {
-		composition
-				.setNanomaterialEntityCollection(new HashSet<NanomaterialEntity>());
-		for (String className : entityClassNames) {
-			String fullClassName = ClassUtils.getFullClass(className)
-					.getCanonicalName();
-			if (fullClassName.equals("java.lang.Object")) {
-				fullClassName = "gov.nih.nci.cananolab.domain.particle.samplecomposition.base.OtherNanomaterialEntity";
-			}
-			CQLQuery query = new CQLQuery();
-			gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
-			target.setName(fullClassName);
-			Association association = new Association();
-			association
-					.setName("gov.nih.nci.cananolab.domain.particle.samplecomposition.SampleComposition");
-			association.setRoleName("sampleComposition");
+		File[] files = gridClient.getFilesByCompositionInfoId(assoc.getId()
+				.toString(), ChemicalAssociation.class.getCanonicalName());
+		if (files != null && files.length > 0) {
+			assoc.setFileCollection(new HashSet<File>(Arrays.asList(files)));
+		}
+		loadAssociatedElementsForChemicalAssociation(assoc);
+	}
 
-			Attribute attribute = new Attribute();
-			attribute.setName("id");
-			attribute.setPredicate(Predicate.EQUAL_TO);
-			attribute.setValue(composition.getId().toString());
-			association.setAttribute(attribute);
-
-			target.setAssociation(association);
-			query.setTarget(target);
-			CQLQueryResults results = gridClient.query(query);
-			results.setTargetClassname(fullClassName);
-			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
-			NanomaterialEntity nanoEntity = null;
-			while (iter.hasNext()) {
-				java.lang.Object obj = iter.next();
-				nanoEntity = (NanomaterialEntity) obj;
-				composition.getNanomaterialEntityCollection().add(nanoEntity);
+	private void loadAssociatedElementsForChemicalAssociation(
+			ChemicalAssociation assoc) throws Exception {
+		CQLQuery query = new CQLQuery();
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.AssociatedElement");
+		Association association = new Association();
+		association
+				.setName("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
+		association.setRoleName("chemicalAssociationCollection");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(assoc.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.AssociatedElement");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			AssociatedElement element = (AssociatedElement) obj;
+			if (element instanceof ComposingElement) {
+				loadInherentFunctionsForComposingElement((ComposingElement) element);
+			} else if (element instanceof FunctionalizingEntity) {
+				loadFunctionalizingEntityAssociations((FunctionalizingEntity) element);
 			}
+			assoc.setAssociatedElementA(element);
 		}
 	}
 
