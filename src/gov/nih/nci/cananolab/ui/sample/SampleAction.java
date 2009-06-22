@@ -150,15 +150,18 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
+		//if session is expired or the url is clicked on directly
+		if (user==null) {
+			return summaryView(mapping, form, request, response);
+		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
 		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
 		pocService.retrieveVisibility(sampleBean.getPocBean(), user);
 		theForm.set("sampleBean", sampleBean);
 		setupLookups(request, sampleBean.getDomain().getPrimaryPointOfContact()
 				.getOrganization().getName());
-		// setupDataTree(sampleBean, request);
 		return mapping.findForward("summaryEdit");
 	}
 
