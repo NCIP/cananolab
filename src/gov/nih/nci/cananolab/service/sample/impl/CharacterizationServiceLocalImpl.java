@@ -21,14 +21,12 @@ import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +35,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
@@ -228,7 +225,7 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public List<CharacterizationBean> findCharsBySampleId(String sampleId,
+	public List<CharacterizationBean> findCharacterizationsBySampleId(String sampleId,
 			UserBean user) throws CharacterizationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -472,53 +469,7 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public List<Technique> findAllTechniques() throws ExperimentConfigException {
-		List<Technique> techniques = new ArrayList<Technique>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Technique.class);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				Technique technique = (Technique) obj;
-				techniques.add(technique);
-			}
-			Collections.sort(techniques, new Comparators.TechniqueComparator());
-		} catch (Exception e) {
-			String err = "Problem to retrieve all techniques.";
-			logger.error(err, e);
-			throw new ExperimentConfigException(err);
-		}
-		return techniques;
-	}
-
-	public List<String> getAllManufacturers() throws ExperimentConfigException {
-		List<String> manufacturers = new ArrayList<String>();
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria.forClass(Instrument.class)
-					.setProjection(
-							Projections.distinct(Property
-									.forName("manufacturer")));
-			;
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				String manufacturer = (String) obj;
-				if (manufacturer != null && manufacturer.trim().length() > 0) {
-					manufacturers.add(manufacturer);
-				}
-			}
-			Collections.sort(manufacturers);
-		} catch (Exception e) {
-			String err = "Problem to retrieve all manufacturers.";
-			logger.error(err, e);
-			throw new ExperimentConfigException(err);
-		}
-		return manufacturers;
-	}
-
-	public Technique findTechniqueByType(String type)
+	private Technique findTechniqueByType(String type)
 			throws ExperimentConfigException {
 		Technique technique = null;
 		try {
@@ -538,7 +489,7 @@ public class CharacterizationServiceLocalImpl implements
 		return technique;
 	}
 
-	public Instrument findInstrumentBy(String type, String manufacturer,
+	private Instrument findInstrumentBy(String type, String manufacturer,
 			String modelName) throws ExperimentConfigException {
 		Instrument instrument = null;
 		try {
