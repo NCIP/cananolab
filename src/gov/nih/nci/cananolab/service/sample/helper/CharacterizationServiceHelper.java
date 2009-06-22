@@ -881,7 +881,7 @@ public class CharacterizationServiceHelper {
 				config = (ExperimentConfig) obj;
 			}
 		} catch (Exception e) {
-			String err = "Problem to retrieve all manufacturers.";
+			String err = "Problem to retrieve experiment config by id.";
 			logger.error(err, e);
 			throw new ExperimentConfigException(err);
 		}
