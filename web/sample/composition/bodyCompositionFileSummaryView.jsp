@@ -21,12 +21,8 @@
 						<div class="indented4">
 							<table class="summaryViewLayer3" width="95%" align="center">
 								<tr>
-									<th valign="top" align="left" width="1000px">
+									<th valign="top" align="left" width="1000px" colspan="2">
 										${fileType}
-									</th>
-									<th valign="top" align="right">
-										<a
-											href="compositionFile.do?dispatch=setupUpdate&sampleId=${sampleId}&dataId=${file.domainFile.id}">Edit</a>
 									</th>
 								</tr>
 								<tr>
