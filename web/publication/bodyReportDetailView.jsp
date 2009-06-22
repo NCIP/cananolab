@@ -60,7 +60,7 @@
 										<c:param name="location" value="${param.location}" />
 									</c:url>
 									<c:if
-										test="${!empty user && user.curator && param.location eq '${applicationOwner}'}">
+										test="${!empty user && user.curator}">
 										<td>
 											<a href="${url}"><img src="images/icon_edit_23x.gif"
 													alt="edit report"
