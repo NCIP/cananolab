@@ -19,7 +19,7 @@ import org.displaytag.decorator.TableDecorator;
  *
  */
 public class SampleDecorator extends TableDecorator {
-	
+
 	public SortableName getEditSampleURL() {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		if (!Constants.LOCAL_SITE.equals(sample.getLocation())) {
@@ -27,12 +27,6 @@ public class SampleDecorator extends TableDecorator {
 		}
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
-		// String editSampleURL =
-		// "submitSample.do?dispatch=setupUpdate&sampleId="
-		// + sampleId+"&location=local";
-		// String link = "<a href=" + editSampleURL + ">" + sampleName
-		// + "</a>";
-
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryEdit&sampleId=");
 		sb.append(sampleId).append("&location=");
@@ -48,19 +42,13 @@ public class SampleDecorator extends TableDecorator {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
-		// String viewSampleURL = "submitSample.do?dispatch=setupView&sampleId="
-		// + sampleId + "&location=" + sample.getLocation();
-		// ;
-		// String link = "<a href=" + viewSampleURL + ">" + sampleName
-		// + "</a>";
-
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("sample.do?dispatch=summaryView&sampleId=");
 		sb.append(sampleId).append("&location=");
 		sb.append(sample.getLocation()).append('>');
 		sb.append(sampleName).append("</a>");
 		String link = sb.toString();
-		
+
 		SortableName sortableLink = new SortableName(sampleName, link);
 		return sortableLink;
 	}
