@@ -156,7 +156,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + actionPath
 					+ "?dispatch=download" + "&fileId=" + fileId
-					+ "&location=local";
+					+ "&location="+Constants.LOCAL_SITE;
 			// remote URL
 			response.sendRedirect(remoteDownloadUrl);
 			return null;
