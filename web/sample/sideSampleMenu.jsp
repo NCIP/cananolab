@@ -54,7 +54,7 @@
 	<tr>
 		<c:choose>
 			<c:when
-				test="${!empty theSample.domain.sampleComposition.id || !empty user && user.curator}">
+				test="${theSample.hasComposition|| !empty user && user.curator}">
 				<c:url var="compUrl" value="composition.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -92,7 +92,7 @@
 	<tr>
 		<c:choose>
 			<c:when
-				test="${!empty theSample.domain.characterizationCollection || !empty user && user.curator}">
+				test="${theSample.hasCharacterizations || !empty user && user.curator}">
 				<c:url var="charUrl" value="characterization.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
@@ -129,7 +129,7 @@
 	<tr>
 		<c:choose>
 			<c:when
-				test="${!empty theSample.domain.publicationCollection || !empty user && user.curator}">
+				test="${theSample.hasPublications || !empty user && user.curator}">
 				<c:url var="pubUrl" value="publication.do">
 					<c:param name="dispatch" value="${dispatch}" />
 					<c:param name="sampleId" value="${sampleId}" />
