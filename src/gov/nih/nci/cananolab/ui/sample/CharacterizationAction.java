@@ -369,50 +369,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 	}
 
-	private void setCharacterizationFileFullPath(HttpServletRequest request,
-			CharacterizationBean charBean, String location) throws Exception {
-		if (location.equals(Constants.LOCAL_SITE)) {
-			// TODO::
-			// set file full path
-			// for (DerivedBioAssayDataBean bioassayBean : charBean
-			// .getDerivedBioAssayDataList()) {
-			// if (bioassayBean.getFileBean() != null) {
-			// FileBean fileBean = bioassayBean.getFileBean();
-			// if (!fileBean.getDomainFile().getUriExternal()) {
-			// String fileRoot = PropertyReader.getProperty(
-			// Constants.FILEUPLOAD_PROPERTY,
-			// "fileRepositoryDir");
-			// fileBean.setFullPath(fileRoot + File.separator
-			// + fileBean.getDomainFile().getUri());
-			// } else {
-			// fileBean.setFullPath(fileBean.getDomainFile().getUri());
-			// }
-			// }
-			// }
-		} else {
-			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-					request, location);
-
-			URL localURL = new URL(request.getRequestURL().toString());
-			String actionPath = localURL.getPath();
-			URL remoteUrl = new URL(serviceUrl);
-			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
-					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
-			String remoteDownloadUrlBase = remoteServerHostUrl + actionPath
-					+ "?dispatch=download&location=local&fileId=";
-			// TODO::
-			// for (DerivedBioAssayDataBean bioassayBean : charBean
-			// .getDerivedBioAssayDataList()) {
-			// if (bioassayBean.getFileBean() != null) {
-			// FileBean fileBean = bioassayBean.getFileBean();
-			// String remoteDownloadUrl = remoteDownloadUrlBase
-			// + fileBean.getDomainFile().getId().toString();
-			// fileBean.setFullPath(remoteDownloadUrl);
-			// }
-			// }
-		}
-	}
-
 	/**
 	 * summaryEdit() handles Edit request for Characterization Summary view.
 	 *
