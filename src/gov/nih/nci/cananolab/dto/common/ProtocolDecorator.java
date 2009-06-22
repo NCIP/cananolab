@@ -34,7 +34,8 @@ public class ProtocolDecorator extends TableDecorator {
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("submitProtocol.do?dispatch=setupUpdate&protocolId=");
 		sb.append(protocol.getDomain().getId());
-		sb.append("&location=local>");
+		sb.append("&location=");
+		sb.append(file.getLocation()).append('>');
 		sb.append(protocol.getDomain().getName());
 		sb.append("</a>");
 		String link = sb.toString();
