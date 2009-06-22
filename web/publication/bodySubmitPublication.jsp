@@ -354,7 +354,7 @@
 											<c:otherwise>
 											Submitted Publication &nbsp;&nbsp;
 										<a
-													href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=local"
+													href="publication.do?dispatch=download&amp;fileId=${publicationForm.map.file.domainFile.id}&amp;location=${applicationOwner}"
 													target="${publicationForm.map.file.urlTarget}">
 													${publicationForm.map.file.domainFile.uri}</a>
 
@@ -454,7 +454,7 @@
 														<c:set var="dataId"
 															value="${publicationForm.map.file.domainFile.id}" />
 														<c:set var="origUrl"
-															value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupNew&location=local" />
+															value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupNew&location=${applicationOwner }" />
 														<c:if test="${!empty dataId}">
 															<c:set var="origUrl"
 																value="publication.do?page=0&sampleId=${docSampleId }&dispatch=setupUpdate&location=${applicationOwner}&fileId=${dataId }" />
