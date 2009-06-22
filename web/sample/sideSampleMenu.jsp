@@ -19,7 +19,7 @@
 </c:choose>
 
 <c:choose>
-	<c:when test="${!empty user && user.curator}">
+	<c:when test="${!empty user && user.curator && location eq applicationOwner}">
 		<c:set var="dispatch" value="summaryEdit" />
 	</c:when>
 	<c:otherwise>
