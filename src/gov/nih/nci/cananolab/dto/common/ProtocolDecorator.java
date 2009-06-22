@@ -21,16 +21,6 @@ public class ProtocolDecorator extends TableDecorator {
 		if (!file.getLocation().equals(Constants.LOCAL_SITE)) {
 			return getViewName();
 		}
-		// replace space with special char
-		String fileId = file.getDomainFile().getId().toString();
-		// String editProtocolURL =
-		// "submitProtocol.do?dispatch=setupUpdate&fileId="
-		// + fileId+"&location=local";
-		// String link = "<a href="
-		// + editProtocolURL
-		// + ">"
-		// + ((ProtocolFile) (file.getDomainFile())).getProtocol()
-		// .getName() + "</a>";
 		StringBuilder sb = new StringBuilder("<a href=");
 		sb.append("submitProtocol.do?dispatch=setupUpdate&protocolId=");
 		sb.append(protocol.getDomain().getId());
