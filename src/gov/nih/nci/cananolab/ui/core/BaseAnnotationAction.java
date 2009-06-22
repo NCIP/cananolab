@@ -43,16 +43,14 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * setupSample() will retrieve a SampleBean based on the sampleId which is
 	 * in request/form. And then check user's access privilege, throws Exception
 	 * if user doesn't have privilege. Otherwise, set visibility of Primary POC
-	 * of sample based on user's privilege. Lastly, set the SampleBean in
+	 * of sample based on user's privilege. Finally, set the SampleBean in
 	 * request object.
 	 *
 	 * @param theForm
 	 * @param request
 	 * @param location
 	 * @return SampleBean
-	 * @throws Exception
-	 *             if user in session is not allowed to access this sample
-	 *             particle.
+	 * @throws Exception if user is not allowed to access the sample
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location, Boolean fullSample)
@@ -69,7 +67,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		SampleService service = null;
-		if (location.equals(Constants.LOCAL_SITE)) {
+		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new SampleServiceLocalImpl();
 		} else {
 			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
