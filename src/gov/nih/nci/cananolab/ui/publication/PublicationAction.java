@@ -437,6 +437,11 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		//if session is expired or the url is clicked on directly
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user==null) {
+			return summaryView(mapping, form, request, response);
+		}
 		this.prepareSummary(mapping, form, request, response);
 
 		// "actionName" is for constructing the Print/Export URL.
