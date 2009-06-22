@@ -2,8 +2,6 @@ package gov.nih.nci.cananolab.service.sample;
 
 import gov.nih.nci.cananolab.domain.common.ExperimentConfig;
 import gov.nih.nci.cananolab.domain.common.Finding;
-import gov.nih.nci.cananolab.domain.common.Instrument;
-import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
@@ -33,7 +31,7 @@ public interface CharacterizationService {
 	public void deleteCharacterization(Characterization chara, UserBean user)
 			throws CharacterizationException, NoAccessException;
 
-	public List<CharacterizationBean> findCharsBySampleId(String sampleId,
+	public List<CharacterizationBean> findCharacterizationsBySampleId(String sampleId,
 			UserBean user) throws CharacterizationException, NoAccessException;
 
 	public void saveFinding(FindingBean findingBean, UserBean user)
@@ -50,16 +48,6 @@ public interface CharacterizationService {
 
 	public void deleteExperimentConfig(ExperimentConfig experimentConfig,
 			UserBean user) throws ExperimentConfigException, NoAccessException;
-
-	public List<Technique> findAllTechniques() throws ExperimentConfigException;
-
-	public List<String> getAllManufacturers() throws ExperimentConfigException;
-
-	public Technique findTechniqueByType(String type)
-			throws ExperimentConfigException;
-
-	public Instrument findInstrumentBy(String type, String manufacturer,
-			String modelName) throws ExperimentConfigException;
 
 	/**
 	 * Copy and save a characterization from one sample to other samples
