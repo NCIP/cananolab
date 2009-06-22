@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.service.sample.impl;
 
 import gov.nih.nci.cagrid.cananolab.client.CaNanoLabServiceClient;
+import gov.nih.nci.cagrid.cqlquery.Association;
 import gov.nih.nci.cagrid.cqlquery.Attribute;
 import gov.nih.nci.cagrid.cqlquery.CQLQuery;
 import gov.nih.nci.cagrid.cqlquery.Predicate;
@@ -10,9 +11,13 @@ import gov.nih.nci.cagrid.data.utilities.CQLQueryResultsIterator;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.domain.particle.SampleComposition;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
+import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
+import gov.nih.nci.cananolab.exception.CompositionException;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
@@ -101,7 +106,7 @@ public class SampleServiceRemoteImpl implements SampleService {
 			// Weight:Oxidative Stress",
 			// };
 			List<SampleBean> samples = new ArrayList<SampleBean>();
-			if (sampleViewStrs != null && sampleViewStrs.length>0) {
+			if (sampleViewStrs != null && sampleViewStrs.length > 0) {
 				String[] columns = null;
 				for (String sampleStr : sampleViewStrs) {
 					columns = sampleStr.split(Constants.VIEW_COL_DELIMITER);
@@ -191,6 +196,15 @@ public class SampleServiceRemoteImpl implements SampleService {
 				loadSamplesAssociations(sample);
 			}
 			SampleBean sampleBean = new SampleBean(sample);
+			if (checkCompositionForSample(sample)) {
+				sampleBean.setHasComposition(true);
+			}
+			if (checkCharacterizationsForSample(sample)) {
+				sampleBean.setHasCharacterizations(true);
+			}
+			if (checkPublicationsForSample(sample)) {
+				sampleBean.setHasPublications(true);
+			}
 			return sampleBean;
 		} catch (RemoteException e) {
 			logger.error(Constants.NODE_UNAVAILABLE, e);
@@ -209,7 +223,6 @@ public class SampleServiceRemoteImpl implements SampleService {
 	 * @throws Exception
 	 */
 	private void loadSamplesAssociations(Sample sample) throws Exception {
-		String particleId = sample.getId().toString();
 		// source
 		loadPointOfContactsForSample(sample);
 		// keyword
@@ -250,6 +263,85 @@ public class SampleServiceRemoteImpl implements SampleService {
 		if (keywords != null && keywords.length > 0) {
 			sample.setKeywordCollection(new HashSet<Keyword>(Arrays
 					.asList(keywords)));
+		}
+	}
+
+	private Boolean checkCompositionForSample(Sample sample) throws Exception {
+		CQLQuery query = new CQLQuery();
+		QueryModifier modifier = new QueryModifier();
+		modifier.setCountOnly(true);
+		query.setQueryModifier(modifier);
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+		association.setRoleName("sample");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(sample.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.SampleComposition");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		int count = 0;
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			count = ((Long) obj).intValue();
+		}
+		if (count > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private Boolean checkCharacterizationsForSample(Sample sample)
+			throws Exception {
+		CQLQuery query = new CQLQuery();
+		QueryModifier modifier = new QueryModifier();
+		modifier.setCountOnly(true);
+		query.setQueryModifier(modifier);
+		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
+		target
+				.setName("gov.nih.nci.cananolab.domain.particle.Characterization");
+		Association association = new Association();
+		association.setName("gov.nih.nci.cananolab.domain.particle.Sample");
+		association.setRoleName("sample");
+		Attribute attribute = new Attribute();
+		attribute.setName("id");
+		attribute.setPredicate(Predicate.EQUAL_TO);
+		attribute.setValue(sample.getId().toString());
+		association.setAttribute(attribute);
+		target.setAssociation(association);
+		query.setTarget(target);
+		CQLQueryResults results = gridClient.query(query);
+		results
+				.setTargetClassname("gov.nih.nci.cananolab.domain.particle.Characterization");
+		CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results);
+		int count = 0;
+		while (iter.hasNext()) {
+			java.lang.Object obj = iter.next();
+			count = ((Long) obj).intValue();
+		}
+		if (count > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private Boolean checkPublicationsForSample(Sample sample) throws Exception {
+		Publication[] publications = gridClient
+				.getPublicationsBySampleId(sample.getId().toString());
+		if (publications.length > 0) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
