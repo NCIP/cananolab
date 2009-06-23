@@ -8,9 +8,10 @@
 				value="gov.nih.nci.cananolab.ui.sample.DWRCompositionManager" />
 			<include method="getEntityIncludePage" />
 			<include method="getFileById" />
-			<include method="resetTheFile"/>
-			<include method="getAssociatedElementOptions"/>
-			<include method="getComposingElementsByNanomaterialEntityId"/>
+			<include method="resetTheFile" />
+			<include method="getAssociatedElementOptions" />
+			<include
+				method="getComposingElementsByNanomaterialEntityId" />
 		</create>
 		<create creator="new" javascript="NanomaterialEntityManager"
 			scope="session">
@@ -54,7 +55,7 @@
 			<include method="getConditionPropertyOptions" />
 			<include method="getDatumNameOptions" />
 			<include method="getColumnValueUnitOptions" />
-			<include method="resetTheFile"/>
+			<include method="resetTheFile" />
 		</create>
 		<create creator="new" javascript="CharacterizationManager"
 			scope="session">
@@ -73,6 +74,14 @@
 			<include method="getNanomaterialEntityTypes" />
 			<include method="getFunctionalizingEntityTypes" />
 			<include method="getFunctionTypes" />
+		</create>
+		<create creator="new" javascript="POCManager" scope="session">
+			<param name="class"
+				value="gov.nih.nci.cananolab.ui.sample.DWRPointOfContactManager" />
+			<include method="removeOrgVisibility" />
+			<include method="removeOrgNameVisibility" />
+			<include method="getPointOfContactById" />
+			<include method="resetThePointOfContact" />
 		</create>
 		<create creator="new" javascript="ProtocolManager"
 			scope="session">
@@ -95,7 +104,8 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean">
-			<param name="include" value="domain, inherentFunctions, displayName, domainId" />
+			<param name="include"
+				value="domain, inherentFunctions, displayName, domainId" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.particle.ComposingElement">
@@ -118,7 +128,20 @@
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.domain.function.Antigen">
-			<param name="include" value="species"/>
+			<param name="include" value="species" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.dto.common.PointOfContactBean">
+			<param name="include"
+				value="domain, primaryStatus, visibilityGroups" />
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.PointOfContact">
+		</convert>
+		<convert converter="bean"
+			match="gov.nih.nci.cananolab.domain.common.Organization">
+			<param name="exclude"
+				value="pointOfContactCollection" />
 		</convert>
 		<convert converter="bean"
 			match="gov.nih.nci.cananolab.dto.common.ProtocolBean">
