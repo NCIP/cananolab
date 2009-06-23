@@ -3,10 +3,8 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
@@ -78,14 +76,13 @@ public class InitSampleSetup {
 				appContext, "defaultFunctionTypes",
 				"gov.nih.nci.cananolab.domain.particle.Function");
 
-		InitCharacterizationSetup.getInstance().getDefaultCharacterizationTypes(
-				request);
+		InitCharacterizationSetup.getInstance()
+				.getDefaultCharacterizationTypes(request);
 	}
 
 	public SortedSet<PointOfContactBean> getAllPointOfContacts(
 			HttpServletRequest request) throws Exception {
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		SortedSet<PointOfContact> pointOfContacts = pocService
+		SortedSet<PointOfContact> pointOfContacts = sampleService
 				.findAllPointOfContacts();
 		SortedSet<PointOfContactBean> pointOfContactBeans = null;
 		if (pointOfContacts != null && pointOfContacts.size() > 0) {
@@ -100,10 +97,9 @@ public class InitSampleSetup {
 		return pointOfContactBeans;
 	}
 
-	public SortedSet<String> getAllSampleNames(
-			HttpServletRequest request, UserBean user) throws Exception {
-		SortedSet<String> sampleNames = sampleService
-				.findAllSampleNames(user);
+	public SortedSet<String> getAllSampleNames(HttpServletRequest request,
+			UserBean user) throws Exception {
+		SortedSet<String> sampleNames = sampleService.findAllSampleNames(user);
 		request.getSession().setAttribute("allUserSampleNames", sampleNames);
 		return sampleNames;
 	}
@@ -143,6 +139,7 @@ public class InitSampleSetup {
 				"fileTypes", "File", "type", "otherType", true);
 
 		// For PubChem data sources drop-down list.
-		appContext.setAttribute("pubChemDataSources", SampleConstants.PUBCHEM_DS_LIST);
+		appContext.setAttribute("pubChemDataSources",
+				SampleConstants.PUBCHEM_DS_LIST);
 	}
 }

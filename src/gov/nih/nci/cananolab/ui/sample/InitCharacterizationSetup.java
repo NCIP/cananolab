@@ -8,10 +8,10 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.service.common.LookupService;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
-import gov.nih.nci.cananolab.service.sample.PointOfContactService;
+import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
-import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -73,8 +73,8 @@ public class InitCharacterizationSetup {
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"fileTypes", "File", "type", "otherType", true);
 		// set point of contacts
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		List<PointOfContactBean> pocs = pocService
+		SampleService service = new SampleServiceLocalImpl();
+		List<PointOfContactBean> pocs = service
 				.findPointOfContactsBySampleId(sampleId);
 		request.getSession().setAttribute("samplePointOfContacts", pocs);
 		InitSecuritySetup.getInstance().getAllVisibilityGroups(request);

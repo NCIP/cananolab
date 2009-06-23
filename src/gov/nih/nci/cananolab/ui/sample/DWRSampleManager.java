@@ -1,7 +1,8 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.service.sample.PointOfContactService;
-import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
+import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
@@ -17,25 +18,24 @@ import org.directwebremoting.impl.DefaultWebContextBuilder;
 
 public class DWRSampleManager {
 
-	Logger logger = Logger.getLogger(DWRSampleManager.class);
+	private Logger logger = Logger.getLogger(DWRSampleManager.class);
+	private SampleService service = new SampleServiceLocalImpl();
 
 	public DWRSampleManager() {
 	}
 
 	/* remove organization associated with the POC from the visiblity group */
 	public String[] removeOrgVisibility(String pocId) {
-
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		try {
 			List<String> visibilityGroup = InitSecuritySetup.getInstance()
 					.getAllVisibilityGroups(request);
 			if (!pocId.equalsIgnoreCase("other")) {
-				String sampleOrg = pocService.findPointOfContactById(pocId)
-						.getOrganization().getName();
+				String sampleOrg = service.findPointOfContactById(pocId, user)
+						.getDomain().getOrganization().getName();
 				visibilityGroup.remove(sampleOrg);
 			}
 			String[] eleArray = new String[visibilityGroup.size()];
