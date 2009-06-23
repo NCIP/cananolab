@@ -9,18 +9,18 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
+import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -39,10 +39,12 @@ import org.apache.struts.validator.DynaValidatorForm;
  * Base action for characterization actions
  *
  * @author pansu
- *
  */
 public class CharacterizationAction extends BaseAnnotationAction {
 
+	// Partial URL for downloading characterization report file.
+	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
+	
 	/**
 	 * Add or update the data to database
 	 *
@@ -466,21 +468,20 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String sampleId = theForm.getString("sampleId");
-		String location = theForm.getString("location");
+		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
+		String location = theForm.getString(Constants.LOCATION);
 		setupSample(theForm, request, location, false);
 		CharacterizationService service = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
 		} else {
-			// TODO model change
-			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-			// request, location);
-			// service = new CharacterizationServiceRemoteImpl(
-			// serviceUrl);
+			String serviceUrl = 
+				InitSetup.getInstance().getGridServiceUrl(request, location);
+			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
-		List<CharacterizationBean> charBeans = service.findCharacterizationsBySampleId(
-				sampleId, user);
+		List<CharacterizationBean> charBeans = 
+			service.findCharacterizationsBySampleId(sampleId, user);
+		
 		// set characterization types and retrieve visibility
 		for (CharacterizationBean charBean : charBeans) {
 			InitCharacterizationSetup.getInstance().setCharacterizationType(
@@ -488,8 +489,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			InitCharacterizationSetup.getInstance().setCharacterizationName(
 					request, charBean);
 		}
-		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
-				charBeans);
+		CharacterizationSummaryViewBean summaryView = 
+			new CharacterizationSummaryViewBean(charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
@@ -533,8 +534,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	}
 
 	/**
-	 * summaryExport() handles Export request for Characterization Summary
-	 * report.
+	 * Export Characterization Summary report.
 	 *
 	 * @param mapping
 	 * @param form
@@ -542,7 +542,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	 * @param response
 	 * @return ActionForward
 	 * @throws Exception
-	 *             if error occurred.
 	 */
 	public ActionForward summaryExport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -550,7 +549,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		// Prepare data.
 		this.prepareSummary(mapping, form, request, response);
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = theForm.getString("location");
+		String location = theForm.getString(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		CharacterizationSummaryViewBean charSummaryBean = (CharacterizationSummaryViewBean) request
 				.getAttribute("characterizationSummaryView");
@@ -568,33 +567,19 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 
-		String fileName = this.getExportFileName(sampleBean.getDomain()
-				.getName(), "CharacterizationSummaryView", type);
+		String fileName = ExportUtils.getExportFileName(
+			sampleBean.getDomain().getName(), "CharacterizationSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		CharacterizationService service = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
-			service = new CharacterizationServiceLocalImpl();
-		} else {
-			// TODO: Implement remote service.
-		}
-		CharacterizationServiceHelper.exportSummary(charSummaryBean, request,
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(request.getRequestURL().toString());
+		sb.append(DOWNLOAD_URL);
+		sb.append(request.getParameter(location));
+
+		CharacterizationServiceHelper.exportSummary(charSummaryBean, sb.toString(),
 				response.getOutputStream());
 
 		return null;
-	}
-
-	private String getExportFileName(String sampleName, String viewType,
-			String subType) {
-		List<String> nameParts = new ArrayList<String>();
-		nameParts.add(sampleName);
-		nameParts.add(viewType);
-		if (!StringUtils.isEmpty(subType)) {
-			nameParts.add(StringUtils.getOneWordUpperCaseFirstLetter(subType));
-		}
-		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
-				.getTime()));
-		String exportFileName = StringUtils.join(nameParts, "_");
-		return exportFileName;
 	}
 
 	public ActionForward saveExperimentConfig(ActionMapping mapping,

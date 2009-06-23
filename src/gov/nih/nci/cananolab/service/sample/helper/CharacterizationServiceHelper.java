@@ -43,6 +43,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.hibernate.FetchMode;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
@@ -88,6 +89,9 @@ public class CharacterizationServiceHelper {
 	public static final String CONCENTRATION = "Critical Concentration";
 	public static final String SURFACE = "Surface";
 	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
+	
+	// FILE_ID for constructing file down load URL.
+	public static final String FILE_ID = "fileId";
 
 	private static String fileRoot = PropertyUtils.getProperty(
 			Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
@@ -241,10 +245,10 @@ public class CharacterizationServiceHelper {
 	 * @throws IOException
 	 */
 	public static void exportSummary(CharacterizationSummaryViewBean summaryBean,
-			HttpServletRequest request, OutputStream out) throws IOException {
+			String downloadURL, OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
-			outputSummarySheet(summaryBean, request, wb);
+			outputSummarySheet(summaryBean, downloadURL, wb);
 			wb.write(out);
 			out.flush();
 			out.close();
@@ -261,11 +265,17 @@ public class CharacterizationServiceHelper {
 	 */
 	private static void outputSummarySheet(
 			CharacterizationSummaryViewBean summaryBean,
-			HttpServletRequest request, HSSFWorkbook wb) throws IOException {
+			String downloadURL, HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		headerStyle.setFont(headerFont);
+
+		HSSFCellStyle hlinkStyle = wb.createCellStyle();
+		HSSFFont hlinkFont = wb.createFont();
+		hlinkFont.setUnderline(HSSFFont.U_SINGLE);
+		hlinkFont.setColor(HSSFColor.BLUE.index);
+		hlinkStyle.setFont(hlinkFont);
 
 		int charCount = 1;
 		Map<String, SortedSet<CharacterizationBean>> pubs = summaryBean
@@ -313,8 +323,8 @@ public class CharacterizationServiceHelper {
 						headerStyle, rowIndex);
 
 				// 9. Output Characterization Results at (9, 0).
-				rowIndex = outputCharResults(charBean, request, wb, sheet,
-						headerStyle, rowIndex);
+				rowIndex = outputCharResults(charBean, downloadURL, wb, sheet,
+						headerStyle, hlinkStyle, rowIndex);
 
 				// 10.Output Analysis and Conclusion at (10, 0).
 				rowIndex = outputConclusion(charBean, sheet, headerStyle,
@@ -712,8 +722,9 @@ public class CharacterizationServiceHelper {
 	 * @throws IOException
 	 */
 	private static int outputCharResults(CharacterizationBean charBean,
-			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) throws IOException {
+			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex)
+			throws IOException {
 		// 9. Output Characterization Results at (8, 0).
 		List<FindingBean> findings = charBean.getFindings();
 		if (findings != null && !findings.isEmpty()) {
@@ -725,8 +736,8 @@ public class CharacterizationServiceHelper {
 						.createCell(row, 0, headerStyle, CHAR_RESULT + count);
 
 				// 9a. Output Characterization File Results.
-				outputFileResult(findingBean, request, wb, sheet,
-						headerStyle, rowIndex);
+				outputFileResult(findingBean, downloadURL, wb, sheet,
+						headerStyle, hlinkStyle, rowIndex);
 
 				// 9b. Output Characterization Datum Results.
 				outputDatumResult(findingBean, sheet, headerStyle,
@@ -737,7 +748,7 @@ public class CharacterizationServiceHelper {
 	}
 
 	/**
-	 * Output Files in Characterization Results for work sheet.
+	 * Output Files Results for report (=> bodyFindingView.jsp).
 	 *
 	 * @param findingBean
 	 * @param request
@@ -748,8 +759,9 @@ public class CharacterizationServiceHelper {
 	 * @throws IOException
 	 */
 	private static int outputFileResult(FindingBean findingBean,
-			HttpServletRequest request, HSSFWorkbook wb, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) throws IOException {
+			String downloadURL, HSSFWorkbook wb, HSSFSheet sheet,
+			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle, int rowIndex)
+			throws IOException {
 		// Get list of FileBeans from findingBean.
 		List<FileBean> files = findingBean.getFiles();
 		if (files != null && !files.isEmpty()) {
@@ -757,43 +769,35 @@ public class CharacterizationServiceHelper {
 			ExportUtils.createCell(row, 0, headerStyle, FILES);
 			for (FileBean fileBean : files) {
 				row = sheet.createRow(rowIndex++);
+				
+				// Construct the URL for downloading the file.
+				StringBuilder sb = new StringBuilder(downloadURL);
+				sb.append('&').append(FILE_ID).append('=');
+				sb.append(fileBean.getDomainFile().getId());
 				if (fileBean.getDomainFile().getUriExternal().booleanValue()) {
-					ExportUtils.createCell(row, 0, fileBean.getDomainFile()
-							.getUri());
-					/**
-					 * sb.append(request.getRequestURL().toString());
-					 * sb.append("?dispatch=download&fileId=");
-					 * sb.append(fileBean.getDomainFile().getId());
-					 * sb.append("&location=").append(request.getParameter("location"));
-					 * rowIndex = this.outputPicture(rowIndex, sb.toString(),
-					 * wb, sheet);
-					 */
-				} else {
-					ExportUtils.createCell(row, 0, fileBean.getDomainFile()
-							.getTitle());
-
-					StringBuilder sb = new StringBuilder();
-					if (fileBean.isImage()) {
-						sb.append(fileRoot).append(java.io.File.separator);
-						sb.append(fileBean.getDomainFile().getUri());
-						String filePath = sb.toString();
-						java.io.File imgFile = new java.io.File(filePath);
-						if (imgFile.exists()) {
-							try {
-								rowIndex = ExportUtils.createImage(rowIndex,
-										(short) 0, filePath, wb, sheet);
-							} catch (Exception e) {
-								logger
-										.error(
-												"Error exporting Characterization image data.",
-												e);
-							}
-						} else {
-							logger
-									.error("Characterization image file not exists: "
-											+ filePath);
+					ExportUtils.createCell(row, 0, hlinkStyle, 
+							fileBean.getDomainFile().getUri(), sb.toString());
+				} else if (fileBean.isImage()) {
+					sb.setLength(0);
+					sb.append(fileRoot).append(java.io.File.separator);
+					sb.append(fileBean.getDomainFile().getUri());
+					String filePath = sb.toString();
+					java.io.File imgFile = new java.io.File(filePath);
+					if (imgFile.exists()) {
+						try {
+							rowIndex = ExportUtils.createImage(rowIndex,
+									(short) 0, filePath, wb, sheet);
+						} catch (Exception e) {
+							logger.error(
+									"Error exporting Characterization image data.", e);
 						}
+					} else {
+						logger.error("Characterization image file not exists: "
+								+ filePath);
 					}
+				} else {
+					ExportUtils.createCell(row, 0, hlinkStyle, fileBean.getDomainFile().getTitle(),
+							sb.toString());
 				}
 			}
 		}
