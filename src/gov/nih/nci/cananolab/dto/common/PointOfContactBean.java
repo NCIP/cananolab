@@ -1,37 +1,36 @@
 /**
- * 
+ *
  */
 package gov.nih.nci.cananolab.dto.common;
 
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * PointOfContact view bean
- * 
+ *
  * @author tanq, cais
- * 
+ *
  */
 
 public class PointOfContactBean {
-	private PointOfContact domain;
-	private String displayName;
-	private Organization organization;
+	private PointOfContact domain = new PointOfContact();
+	private String displayName = "";
 	private String[] visibilityGroups = new String[0];
-	private boolean hidden = false;
 	private String pocId;
-	
+	private Boolean primaryStatus = false;
+
 	public PointOfContactBean() {
-		super();
-		domain = new PointOfContact();
-		organization = new Organization();
-		domain.setOrganization(organization);
-		displayName = "";
+		domain.setOrganization(new Organization());
 	}
 
 	public PointOfContactBean(PointOfContact pointOfContact) {
 		domain = pointOfContact;
-		organization = pointOfContact.getOrganization();
 	}
 
 	/**
@@ -65,22 +64,6 @@ public class PointOfContactBean {
 	}
 
 	/**
-	 * @return the pocs
-	 */
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	/**
-	 * @param pocs
-	 *            the pocs to set
-	 */
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-		domain.setOrganization(organization);
-	}
-
-	/**
 	 * @return the visibilityGroups
 	 */
 	public String[] getVisibilityGroups() {
@@ -96,27 +79,9 @@ public class PointOfContactBean {
 	}
 
 	/**
-	 * @return the hidden
-	 */
-	public boolean isHidden() {
-		return hidden;
-	}
-
-	/**
-	 * @param hidden
-	 *            the hidden to set
-	 */
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
-	}
-
-	/**
 	 * @return the displayName
 	 */
 	public String getDisplayName() {
-		if (hidden) {
-			return "private";
-		}
 		String firstName = domain.getFirstName();
 		displayName = "";
 		if (firstName != null) {
@@ -128,11 +93,10 @@ public class PointOfContactBean {
 		}
 		if (domain.getOrganization() != null) {
 			String orgName = domain.getOrganization().getName();
-			if (orgName!=null && displayName.trim().length()>0) {
+			if (orgName != null && displayName.trim().length() > 0) {
 				displayName += " (" + orgName + ")";
-			}
-			else {
-				displayName=orgName;
+			} else {
+				displayName = orgName;
 			}
 		}
 		return displayName;
@@ -146,4 +110,63 @@ public class PointOfContactBean {
 		displayName = name;
 	}
 
+	public void setupDomain(String createdBy) {
+		// always update createdBy and createdDate
+		if (domain.getId() == null) {
+			domain.setCreatedBy(createdBy);
+			domain.setCreatedDate(new Date());
+		}
+		if (domain.getOrganization().getId() == null) {
+			domain.getOrganization().setCreatedBy(createdBy);
+			domain.setCreatedDate(new Date());
+		}
+	}
+
+	public Boolean getPrimaryStatus() {
+		return primaryStatus;
+	}
+
+	public void setPrimaryStatus(Boolean primaryStatus) {
+		this.primaryStatus = primaryStatus;
+	}
+
+	public boolean equals(Object obj) {
+		boolean eq = false;
+		if (obj instanceof PointOfContactBean) {
+			PointOfContactBean p = (PointOfContactBean) obj;
+			Long thisId = this.getDomain().getId();
+			if (thisId != null && thisId.equals(p.getDomain().getId())) {
+				eq = true;
+			}
+		}
+		return eq;
+	}
+
+	public String getPersonDisplayName() {
+		List<String> nameStrs = new ArrayList<String>();
+		nameStrs.add(domain.getFirstName());
+		nameStrs.add(domain.getMiddleInitial());
+		nameStrs.add(domain.getLastName());
+		String name = StringUtils.join(nameStrs, " ");
+		nameStrs = new ArrayList<String>();
+		nameStrs.add(name);
+		nameStrs.add(domain.getEmail());
+		nameStrs.add(domain.getPhone());
+		return StringUtils.join(nameStrs, "<br>");
+	}
+
+	public String getOrganizationDisplayName() {
+		List<String> orgStrs = new ArrayList<String>();
+		orgStrs.add(domain.getOrganization().getName());
+		orgStrs.add(domain.getOrganization().getStreetAddress1());
+		orgStrs.add(domain.getOrganization().getStreetAddress2());
+
+		List<String> addressStrs = new ArrayList<String>();
+		addressStrs.add(domain.getOrganization().getCity());
+		addressStrs.add(domain.getOrganization().getState());
+		addressStrs.add(domain.getOrganization().getPostalCode());
+
+		orgStrs.add(StringUtils.join(addressStrs, " "));
+		return StringUtils.join(orgStrs, "<br>");
+	}
 }
