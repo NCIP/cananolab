@@ -32,7 +32,7 @@
 
 		<tr>
 			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=sample" />
+				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 				<table width="100%" align="center" class="submissionView">
 					<tr>
 						<td class="cellLabel" width="20%">
