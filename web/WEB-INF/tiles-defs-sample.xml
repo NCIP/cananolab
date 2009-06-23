@@ -50,7 +50,7 @@
 	<definition name="sample.summaryEdit"
 		extends="sample.annotationHome">
 		<put name="cananoContent"
-			value="/sample/bodySampleSummaryEdit.jsp" />
+			value="/sample/bodySubmitSample.jsp" />
 		<put name="menu" value="samples" />
 	</definition>
 
