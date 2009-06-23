@@ -13,9 +13,12 @@ import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
@@ -421,5 +424,31 @@ public class SampleServiceRemoteImpl implements SampleService {
 	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
 			String sampleId, UserBean user) throws SampleException {
 		throw new SampleException("Not implemented for grid service");
+	}
+
+	public void savePointOfContact(PointOfContactBean pointOfContactBean,
+			UserBean User) throws PointOfContactException,
+			DuplicateEntriesException, NoAccessException {
+		throw new PointOfContactException("Not implemented for grid service");
+	}
+
+	public PointOfContactBean findPointOfContactById(String pocId, UserBean user)
+			throws PointOfContactException, NoAccessException {
+		throw new PointOfContactException("Not implemented for grid service");
+	}
+
+	public SortedSet<PointOfContact> findAllPointOfContacts()
+			throws PointOfContactException {
+		throw new PointOfContactException("Not implemented for grid service");
+	}
+
+	public List<PointOfContactBean> findPointOfContactsBySampleId(
+			String sampleId) throws PointOfContactException {
+		throw new PointOfContactException("Not implemented for grid service");
+	}
+
+	public SortedSet<String> getAllOrganizationNames(UserBean user)
+			throws PointOfContactException {
+		throw new PointOfContactException("Not implemented for grid service");
 	}
 }

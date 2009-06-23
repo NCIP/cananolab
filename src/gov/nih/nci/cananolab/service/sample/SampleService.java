@@ -1,9 +1,13 @@
 package gov.nih.nci.cananolab.service.sample;
 
+import gov.nih.nci.cananolab.domain.common.Organization;
+import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.DuplicateEntriesException;
 import gov.nih.nci.cananolab.exception.NoAccessException;
+import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.util.SortableName;
 
@@ -67,5 +71,22 @@ public interface SampleService {
 	public int getNumberOfPublicSamples() throws SampleException;
 
 	public SortedSet<SortableName> findOtherSamplesFromSamePointOfContact(
-			String sampleId, UserBean user) throws SampleException, NoAccessException;
+			String sampleId, UserBean user) throws SampleException,
+			NoAccessException;
+
+	public void savePointOfContact(PointOfContactBean pointOfContactBean,
+			UserBean User) throws PointOfContactException,
+			DuplicateEntriesException, NoAccessException;
+
+	public PointOfContactBean findPointOfContactById(String pocId, UserBean user)
+			throws PointOfContactException, NoAccessException;
+
+	public SortedSet<PointOfContact> findAllPointOfContacts()
+			throws PointOfContactException;
+
+	public List<PointOfContactBean> findPointOfContactsBySampleId(
+			String sampleId) throws PointOfContactException;
+
+	public SortedSet<String> getAllOrganizationNames(UserBean user)
+			throws PointOfContactException;
 }

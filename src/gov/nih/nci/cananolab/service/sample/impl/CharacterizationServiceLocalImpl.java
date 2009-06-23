@@ -109,7 +109,7 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	public CharacterizationBean findCharacterizationById(String charId,
-			UserBean user) throws CharacterizationException {
+			UserBean user) throws CharacterizationException, NoAccessException {
 		try {
 			Characterization achar = null;
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -166,6 +166,8 @@ public class CharacterizationServiceLocalImpl implements
 				}
 			}
 			return charBean;
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			logger.error("Problem finding the characterization by id: "
 					+ charId, e);
@@ -225,8 +227,8 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public List<CharacterizationBean> findCharacterizationsBySampleId(String sampleId,
-			UserBean user) throws CharacterizationException {
+	public List<CharacterizationBean> findCharacterizationsBySampleId(
+			String sampleId, UserBean user) throws CharacterizationException {
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
