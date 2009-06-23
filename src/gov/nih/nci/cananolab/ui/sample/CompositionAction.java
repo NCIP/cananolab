@@ -6,19 +6,17 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
+import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
+import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
-import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,9 +33,6 @@ public class CompositionAction extends BaseAnnotationAction {
 	// Partial URL for downloading composition report file.
 	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
 
-	// LOCATION for constructing composition down load URL.
-	public static final String LOCATION = "location";
-
 	/**
 	 * Handle Composition Summary Edit request.
 	 *
@@ -53,7 +48,7 @@ public class CompositionAction extends BaseAnnotationAction {
 			throws Exception {
 		//if session is expired or the url is clicked on directly
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user==null) {
+		if (user == null) {
 			return summaryView(mapping, form, request, response);
 		}
 		this.prepareSummary(mapping, form, request, response);
@@ -149,7 +144,7 @@ public class CompositionAction extends BaseAnnotationAction {
 
 		// Show only the selected type.
 		String type = request.getParameter("type");
-		String location = request.getParameter(LOCATION);
+		String location = request.getParameter(Constants.LOCATION);
 		if (!StringUtils.isEmpty(type)) {
 			if (!type.equals(CompositionBean.CHEMICAL_SELECTION)) {
 				compBean.setChemicalAssociations(Collections.EMPTY_LIST);
@@ -166,15 +161,9 @@ public class CompositionAction extends BaseAnnotationAction {
 		}
 
 		// Get sample name for constructing file name.
-		String fileName = this.getExportFileName(compBean.getDomain()
-				.getSample().getName(), "CompositionSummaryView");
+		String fileName = ExportUtils.getExportFileName(
+			compBean.getDomain().getSample().getName(), "CompositionSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		CompositionService service = null;
-		if (Constants.LOCAL_SITE.equals(location)) {
-			service = new CompositionServiceLocalImpl();
-		} else {
-			// TODO: Implement remote service.
-		}
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getRequestURL().toString());
@@ -202,22 +191,20 @@ public class CompositionAction extends BaseAnnotationAction {
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String sampleId = theForm.getString("sampleId");
-		String location = theForm.getString("location");
+		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
+		String location = theForm.getString(Constants.LOCATION);
 		setupSample(theForm, request, location, false);
 		HttpSession session = request.getSession();
 		CompositionService compService = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
-			// TODO update grid service
-			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-			// request, location);
-			// compService = new CompositionServiceRemoteImpl(
-			// serviceUrl);
+			 String serviceUrl = 
+				 InitSetup.getInstance().getGridServiceUrl(request, location);
+			 compService = new CompositionServiceRemoteImpl(serviceUrl);
 		}
-		CompositionBean compBean = compService.findCompositionBySampleId(
-				sampleId, user);
+		CompositionBean compBean = 
+			compService.findCompositionBySampleId(sampleId, user);
 		if (compBean != null) {
 			theForm.set("comp", compBean);
 			// set entity type and association type and retrieve visibility
@@ -252,21 +239,4 @@ public class CompositionAction extends BaseAnnotationAction {
 		}
 	}
 
-	/**
-	 * Get file name for exporting report as an Excell file.
-	 *
-	 * @param sampleName
-	 * @param viewType
-	 * @param charClass
-	 * @return
-	 */
-	private String getExportFileName(String sampleName, String viewType) {
-		List<String> nameParts = new ArrayList<String>();
-		nameParts.add(sampleName);
-		nameParts.add(viewType);
-		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
-				.getTime()));
-		String exportFileName = StringUtils.join(nameParts, "_");
-		return exportFileName;
-	}
 }
