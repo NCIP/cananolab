@@ -69,16 +69,6 @@
 			<form-property name="page" type="java.lang.Integer"
 				initial="0" />
 		</form-bean>
-		<form-bean name="submitPointOfContactForm"
-			type="org.apache.struts.validator.DynaValidatorForm">
-			<form-property name="dispatch" type="java.lang.String" />
-			<form-property name="page" type="java.lang.Integer"
-				initial="0" />
-			<form-property name="poc"
-				type="gov.nih.nci.cananolab.dto.common.PointOfContactBean" />
-			<form-property name="otherPoc"
-				type="gov.nih.nci.cananolab.dto.common.OtherPointOfContactsBean" />
-		</form-bean>
 	</form-beans>
 	<global-exceptions>
 		<exception
@@ -129,8 +119,7 @@
 			type="org.apache.struts.actions.ForwardAction"
 			parameter="sample.manageSample" scope="request" />
 		<action name="sampleForm" parameter="dispatch" path="/sample"
-			type="gov.nih.nci.cananolab.ui.sample.SampleAction" input="input"
-			scope="request">
+			type="gov.nih.nci.cananolab.ui.sample.SampleAction" input="input">
 			<exception
 				handler="gov.nih.nci.cananolab.ui.core.BaseExceptionHandler"
 				key="error.duplicateSample" path="sample.submitSample"
@@ -210,34 +199,14 @@
 			type="gov.nih.nci.cananolab.ui.sample.CharacterizationAction"
 			input="input" validate="true">
 			<forward name="input" path="sample.submitCharacterization" />
-			<forward name="success" path="/characterization.do?dispatch=summaryEdit&amp;page=0" />
+			<forward name="success"
+				path="/characterization.do?dispatch=summaryEdit&amp;page=0" />
 			<forward name="summaryView"
 				path="sample.characterization.summaryView" />
 			<forward name="summaryEdit"
 				path="sample.characterization.summaryEdit" />
 			<forward name="saveExperimentConfig"
 				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
-		</action>
-		<action name="submitPointOfContactForm" parameter="dispatch"
-			path="/submitPointOfContact"
-			type="gov.nih.nci.cananolab.ui.sample.SubmitPointOfContactAction"
-			input="input">
-			<forward name="success" path="sample.submitPointOfContact" />
-			<forward name="input" path="sample.submitPointOfContact" />
-			<forward name="update"
-				path="/sample.do?dispatch=setupUpdate&amp;page=0" />
-			<forward name="submitSample"
-				path="/sample.do?dispatch=fromPOC&amp;page=0" />
-			<forward name="pointOfContactDetailView"
-				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
-			<forward name="detailView"
-				path="sample.pointOfContactDetailView" />
-			<forward name="samplePOCDetailView"
-				path="sample.pointOfContactDetailView" />
-			<forward name="submitPointOfContact"
-				path="sample.submitPointOfContact" />
-			<forward name="sampleSubmitPointOfContact"
-				path="sample.submitPointOfContact" />
 		</action>
 	</action-mappings>
 </struts-config>
