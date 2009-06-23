@@ -522,8 +522,8 @@ public class PublicationAction extends BaseAnnotationAction {
 		String location = request.getParameter(Constants.LOCATION);
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 
-		String fileName = 
-			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
+		String fileName = ExportUtils.getExportFileName(
+				sampleBean.getDomain().getName(), "PublicationSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
 		PublicationServiceHelper.exportSummary(summaryBean, response
 				.getOutputStream());
