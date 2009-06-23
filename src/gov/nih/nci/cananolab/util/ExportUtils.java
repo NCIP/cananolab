@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,6 +34,29 @@ public class ExportUtils {
 	public static final String ATTACHMENT = "attachment;filename=\"";
 	public static final String EXCELL_EXTENTION = ".xls\"";
 	
+	/**
+	 * Get file name for exporting report as an Excell file.
+	 *
+	 * @param sampleName
+	 * @param viewType
+	 * @param subType
+	 * @return
+	 */
+	public static String getExportFileName(String sampleName, String viewType,
+			String subType) {
+		List<String> nameParts = new ArrayList<String>(4);
+		nameParts.add(sampleName);
+		nameParts.add(viewType);
+		if (!StringUtils.isEmpty(subType)) {
+			nameParts.add(StringUtils.getOneWordUpperCaseFirstLetter(subType));
+		}
+		nameParts.add(DateUtils.convertDateToString(Calendar.getInstance()
+				.getTime()));
+		String exportFileName = StringUtils.join(nameParts, "_");
+		
+		return exportFileName;
+	}
+
 	/**
 	 * Set content type and header in response for exporting.
 	 *
