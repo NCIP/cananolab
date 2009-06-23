@@ -25,6 +25,10 @@ public class SampleDecorator extends TableDecorator {
 		if (!Constants.LOCAL_SITE.equals(sample.getLocation())) {
 			return this.getViewSampleURL();
 		}
+		//TODO remove this
+//		if (sample.getLocation().equals("WUSTL")) {
+//			return this.getViewSampleURL();
+//		}
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
@@ -120,6 +124,6 @@ public class SampleDecorator extends TableDecorator {
 
 	public String getPointOfContactName() throws BaseException {
 		SampleBean sample = (SampleBean) getCurrentRowObject();
-		return sample.getPocBean().getDisplayName();
+		return sample.getPrimaryPOCBean().getDisplayName();
 	}
 }
