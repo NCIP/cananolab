@@ -4,10 +4,14 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
+import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -25,8 +29,6 @@ public class SampleBean {
 
 	private Sample domain = new Sample();
 
-	private String createdBy;
-
 	private SortedSet<String> keywordSet = new TreeSet<String>();
 
 	private String location; // e.g. local, caNanoLab-WashU, etc
@@ -39,7 +41,9 @@ public class SampleBean {
 
 	private String[] characterizationClassNames = new String[0];
 
-	private PointOfContactBean pocBean;
+	private PointOfContactBean primaryPOCBean = new PointOfContactBean();
+
+	private List<PointOfContactBean> otherPOCBeans = new ArrayList<PointOfContactBean>();
 
 	private Boolean hasComposition = false;
 
@@ -47,8 +51,9 @@ public class SampleBean {
 
 	private Boolean hasPublications = false;
 
+	private PointOfContactBean thePOC = new PointOfContactBean();
+
 	public SampleBean() {
-		pocBean = new PointOfContactBean();
 	}
 
 	public SampleBean(Sample sample) {
@@ -62,7 +67,11 @@ public class SampleBean {
 		keywordsStr = StringUtils.join(keywordSet, "\r\n");
 		if (domain != null) {
 			PointOfContact primaryPOC = domain.getPrimaryPointOfContact();
-			pocBean = new PointOfContactBean(primaryPOC);
+			primaryPOCBean = new PointOfContactBean(primaryPOC);
+			// TODO sort other pocs
+			for (PointOfContact poc : domain.getOtherPointOfContactCollection()) {
+				otherPOCBeans.add(new PointOfContactBean(poc));
+			}
 		}
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition().getId() != null) {
@@ -94,18 +103,12 @@ public class SampleBean {
 		return domain;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public void setupDomain() {
+	public void setupDomain(String createdBy) {
 		// always update createdBy and createdDate
-		domain.setCreatedBy(createdBy);
-		domain.setCreatedDate(new Date());
+		if (domain.getId() == null) {
+			domain.setCreatedBy(createdBy);
+			domain.setCreatedDate(new Date());
+		}
 		if (domain.getKeywordCollection() != null) {
 			domain.getKeywordCollection().clear();
 		} else {
@@ -120,8 +123,19 @@ public class SampleBean {
 				domain.getKeywordCollection().add(keyword);
 			}
 		}
-		if (pocBean != null) {
-			domain.setPrimaryPointOfContact(pocBean.getDomain());
+		if (primaryPOCBean != null) {
+			primaryPOCBean.setupDomain(createdBy);
+			domain.setPrimaryPointOfContact(primaryPOCBean.getDomain());
+		}
+		if (domain.getOtherPointOfContactCollection() != null) {
+			domain.getOtherPointOfContactCollection().clear();
+		} else {
+			domain
+					.setOtherPointOfContactCollection(new HashSet<PointOfContact>());
+		}
+		for (PointOfContactBean pocBean : otherPOCBeans) {
+			pocBean.setupDomain(createdBy);
+			domain.getOtherPointOfContactCollection().add(pocBean.getDomain());
 		}
 	}
 
@@ -180,13 +194,20 @@ public class SampleBean {
 		this.characterizationClassNames = characterizationClassNames;
 	}
 
-	public PointOfContactBean getPocBean() {
-		return pocBean;
+	public PointOfContactBean getPrimaryPOCBean() {
+		return primaryPOCBean;
 	}
 
-	public void setPocBean(PointOfContactBean pocBean) {
-		this.pocBean = pocBean;
-		this.domain.setPrimaryPointOfContact(pocBean.getDomain());
+	public void setPrimaryPOCBean(PointOfContactBean primaryPOCBean) {
+		this.primaryPOCBean = primaryPOCBean;
+	}
+
+	public List<PointOfContactBean> getOtherPOCBeans() {
+		return otherPOCBeans;
+	}
+
+	public void setOtherPOCBeans(List<PointOfContactBean> otherPOCBeans) {
+		this.otherPOCBeans = otherPOCBeans;
 	}
 
 	public Boolean getHasComposition() {
@@ -212,4 +233,33 @@ public class SampleBean {
 	public void setHasPublications(Boolean hasPublications) {
 		this.hasPublications = hasPublications;
 	}
+
+	public PointOfContactBean getThePOC() {
+		return thePOC;
+	}
+
+	public void setThePOC(PointOfContactBean thePOC) {
+		this.thePOC = thePOC;
+	}
+
+	public void addPointOfContact(PointOfContactBean poc) {
+		if (poc.getPrimaryStatus()) {
+			primaryPOCBean = poc;
+		} else {
+			// if an old one exists, remove it first
+			int index = otherPOCBeans.indexOf(poc);
+			if (index != -1) {
+				otherPOCBeans.remove(poc);
+				// retain the original order
+				otherPOCBeans.add(index, poc);
+			} else {
+				otherPOCBeans.add(poc);
+			}
+		}
+	}
+
+	public void removePointOfContact(PointOfContactBean poc) {
+		otherPOCBeans.remove(poc);
+	}
+
 }
