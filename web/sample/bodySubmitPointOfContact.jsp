@@ -2,128 +2,186 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<link rel="StyleSheet" type="text/css" href="css/promptBox.css">
-<script type="text/javascript" src="javascript/addDropDownOptions.js"></script>
-<script type="text/javascript" src="javascript/POCManager.js"></script>
+<script type='text/javascript' src='javascript/POCManager.js'></script>
+<script type='text/javascript'
+	'src='/caNanoLab/dwr/interface/POCManager.js'></script>
+<script type="text/javascript" src="javascript/script.js"></script>
+<script type="text/javascript" src="javascript/SampleManager.js"></script>
+<script type='text/javascript'
+	src='/caNanoLab/dwr/interface/SampleManager.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
+<script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
-<html:form action="/submitPointOfContact">
-	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h3>
-					Point of Contact
-				</h3>
-			</td>
-			<td align="right" width="40%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="submit_publication_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-				<c:url var="cancelUrl" value="submitPointOfContact.do">
-					<c:param name="page" value="0" />
-					<c:if test="${!empty param.sampleId}">
-						<c:param name="sampleId" value="${param.sampleId}" />
-					</c:if>
-					<c:param name="pocId" value="${pocId}" />
-					<c:param name="dispatch" value="cancel" />
-				</c:url>
-				<a href="${cancelUrl}" class="helpText">Back</a>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=pointOfContact" />
-
-				<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-					width="100%" align="center" summary="" border="0" id="pubTable">
-					<tbody>
-						<tr class="topBorder">
-							<td class="formTitle" colspan="4">
-								<div align="justify">
-									Organization and Point of Contact
-								</div>
-							</td>
-						</tr>
-
-						<tr>
-							<td class="completeLabel" colspan="4">
-								<table border="0" width="100%">
-									<tbody>
-										<tr>
-											<td valign="bottom">
-												<a href="#"
-													onclick="javascript:addComponent(submitPointOfContactForm, 'submitPointOfContact', 'addPointOfContact'); return false;">
-													<span class="addLink">Add Secondary<br>Point of Contact</span> </a>
-											</td>
-											<td id="compEleTd">
-												<jsp:include page="/sample/bodyPointOfContact.jsp" >
-													<jsp:param name="pocTitle" value="Primary Point of Contact" />
-													<jsp:param name="pocBean" value="poc" />
-												</jsp:include>
-												<br>
-												<c:if test="${!empty submitPointOfContactForm.map.otherPoc &&
-					 								!empty submitPointOfContactForm.map.otherPoc.otherPointOfContacts}">
-												<logic:iterate name="submitPointOfContactForm"
-													property="otherPoc.otherPointOfContacts" id="pocs" indexId="orgaIndex">
-
-													<jsp:include page="/sample/bodyPointOfContact.jsp" >
-														<jsp:param name="pocIndex" value="${orgaIndex}" />
-														<jsp:param name="pocTitle" value="Secondary Point of Contact #${orgaIndex + 1}" />
-														<jsp:param name="pocBean" value="otherPoc.otherPointOfContacts[${orgaIndex}]" />
-													</jsp:include>
-													<br>
-												</logic:iterate>
-												</c:if>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
-					<tr>
-						<td width="30%">
-							<span class="formMessage"> </span>
-							<br>
-							<table width="498" height="32" border="0" align="right"
-								cellpadding="4" cellspacing="0">
-								<tr>
-									<td width="490" height="32">
-										<div align="right">
-											<div align="right">
-												<c:set var="dataId"
-													value="${submitOrganizationForm.map.orga.domain.id}" />
-												<c:set var="origUrl"
-													value="submitPointOfContact.do?page=0&sampleId=${sampleId }&dispatch=setup&location=${applicationOwner}" />
-												<c:if test="${!empty pocId}">
-													<c:set var="origUrl"
-														value="submitPointOfContact.do?page=0&sampleId=${sampleId }&dispatch=setupUpdate&location=${applicationOwner}&pocId=${pocId}" />
-												</c:if>
-												<input type="button" value="Cancel"
-													onclick="javascript:window.location.href='${cancelUrl}'">
-												<input type="reset" value="Reset"
-													onclick="javascript:window.location.href='${origUrl}'">
-												<input type="hidden" name="dispatch" value="create">
-												<input type="hidden" name="submitType" value="organization">
-												<input type="hidden" name="page" value="2">
-												<input type="hidden" name="location" value="${applicationOwner}">
-												<html:submit />
-											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</html:form>
+<table class="subSubmissionView" width="85%" align="center">
+	<tr>
+		<th colspan="6">
+			Point of Contact Information
+		</th>
+	<tr>
+		<td class="cellLabel" valign="top">
+			<strong>First Name</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.firstName" size="15" />
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Middle Initial</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.middleInitial" size="5" />
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Last Name</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.lastName" size="15" />
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel" valign="top">
+			<strong>Phone Number</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.phone" size="30" />
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Email</strong>
+		</td>
+		<td valign="top" colspan="4">
+			<html:text property="sampleBean.thePOC.domain.email" size="30"
+				styleId="emailText" />
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>Organization Name*</strong>
+		</td>
+		<td>
+			<div id="orgNamePrompt">
+				<html:select property="sampleBean.thePOC.domain.organization.name"
+					styleId="orgName"
+					onchange="javascript:removeOrgVisibilityByName('orgName', 'sampleBean.thePOC.visibilityGroup');setOrganization(submitPointOfContactForm, 'orgName');callPrompt('Organization Name', 'orgName', 'orgNamePrompt');">
+					<option value="" />
+						<html:options name="allOrganizationNames" />
+					<option value="other">
+						[Other]
+					</option>
+				</html:select>
+			</div>
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Role</strong>
+		</td>
+		<td valign="top" colspan="4">
+			<div id="rolePrompt">
+				<html:select styleId="role" property="sampleBean.thePOC.domain.role"
+					onchange="javascript:callPrompt('Contact Role', 'role', 'rolePrompt');">
+					<option />
+						<html:options name="contactRoles" />
+					<option value="other">
+						[Other]
+					</option>
+				</html:select>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>Address Line1</strong>
+		</td>
+		<td colspan="5">
+			<html:text
+				property="sampleBean.thePOC.domain.organization.streetAddress1"
+				size="50" />
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>Address Line2</strong>
+		</td>
+		<td colspan="5">
+			<html:text
+				property="sampleBean.thePOC.domain.organization.streetAddress2"
+				size="50" />
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>City</strong>
+		</td>
+		<td>
+			<html:text property="sampleBean.thePOC.domain.organization.city"
+				size="20" />
+			&nbsp;
+		</td>
+		<td class="cellLabel">
+			<strong>State/Province</strong>
+		</td>
+		<td>
+			<html:text property="sampleBean.thePOC.domain.organization.state"
+				size="15" />
+			&nbsp;
+		</td>
+		<td class="cellLabel">
+			<strong>Zip/Postal Code</strong>
+		</td>
+		<td>
+			<html:text
+				property="sampleBean.thePOC.domain.organization.postalCode"
+				size="10" />
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>Country</strong>
+		</td>
+		<td colspan="5">
+			<html:text property="sampleBean.thePOC.domain.organization.country"
+				size="30" />
+			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>Visibility</strong>
+		</td>
+		<td colspan="5">
+			<html:select styleId="sampleBean.thePOC.visibilityGroup"
+				property="sampleBean.thePOC.visibilityGroups" multiple="true"
+				size="6">
+				<html:options name="allVisibilityGroups" />
+			</html:select>
+			<br>
+			<i>(${applicationOwner}_Researcher and
+				${applicationOwner}_DataCurator are always selected by default.)</i>
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			<strong>Is Primary Point of Contact ?</strong>
+		</td>
+		<td colspan="5">
+			<html:checkbox styleId="primaryStatus"
+				property="sampleBean.thePOC.primaryStatus">
+			</html:checkbox>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="button" value="Remove"
+				onclick="removePointOfContact('sample');clearPointOfContact()"
+				id="deletePointOfContact" style="display: none;" />
+		</td>
+		<td colspan="5">
+			<div align="right">
+				<input type="button" value="Add"
+					onclick="addPointOfContact('sample')" />
+				<input type="button" value="Cancel"
+					onclick="clearPointOfContact();hide('newPointOfContact');" />
+			</div>
+		</td>
+	</tr>
+</table>
