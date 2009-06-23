@@ -10,17 +10,6 @@
 				<arg position="0" key="sampleForm.sampleName"
 					bundle="particle" />
 			</field>
-			<field property="sampleBean.pocBean.domain.id" page="1"
-				depends="validwhen">
-				<arg position="0" key="sampleForm.pointOfContact"
-					bundle="particle" />
-				<var>
-					<var-name>test</var-name>
-					<var-value>
-						((*this* != null) and (*this* > 0))
-					</var-value>
-				</var>
-			</field>
 		</form>
 		<form name="/chemicalAssociation">
 			<field property="assoc.type" page="2" depends="required">
