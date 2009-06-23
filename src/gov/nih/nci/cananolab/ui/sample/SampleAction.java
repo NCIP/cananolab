@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.PointOfContactService;
 import gov.nih.nci.cananolab.service.sample.SampleService;
-import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -25,6 +24,7 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -43,8 +43,18 @@ public class SampleAction extends BaseAnnotationAction {
 	private static Logger logger = Logger.getLogger(SampleAction.class);
 
 	// SampleServiceHelper
-	SampleServiceHelper helper = new SampleServiceHelper();
+	// SampleServiceHelper helper = new SampleServiceHelper();
 
+	/**
+	 * Save or update POC data.
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward create(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -52,27 +62,27 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		Long sampleId = sampleBean.getDomain().getId();
 		if (sampleId != null && sampleId > 0) {
-			PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
-			List<PointOfContactBean> otherPointOfContactBeanList = pointOfContactService
+			PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+			List<PointOfContactBean> otherPointOfContactBeanList = pocService
 					.findOtherPointOfContactCollection(sampleId.toString());
 			if (otherPointOfContactBeanList != null
 					&& otherPointOfContactBeanList.size() > 0) {
-				Collection<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>();
+				Collection<PointOfContact> otherPocs = new HashSet<PointOfContact>();
 				for (PointOfContactBean pocBean : otherPointOfContactBeanList) {
-					otherPointOfContactCollection.add(pocBean.getDomain());
+					otherPocs.add(pocBean.getDomain());
 				}
 				sampleBean.getDomain().setOtherPointOfContactCollection(
-						otherPointOfContactCollection);
+						otherPocs);
 			}
 		}
 
 		SampleBean pocSampleBean = (SampleBean) request.getSession()
 				.getAttribute("pocSample");
 		if (pocSampleBean != null && pocSampleBean.getDomain() != null) {
-			Collection<PointOfContact> otherPointOfContactCollection = pocSampleBean
+			Collection<PointOfContact> otherPocs = pocSampleBean
 					.getDomain().getOtherPointOfContactCollection();
 			sampleBean.getDomain().setOtherPointOfContactCollection(
-					otherPointOfContactCollection);
+					otherPocs);
 		}
 
 		sampleBean.setupDomain();
@@ -86,49 +96,56 @@ public class SampleAction extends BaseAnnotationAction {
 		return summaryEdit(mapping, form, request, response);
 	}
 
-	private void setupLookups(HttpServletRequest request, String sampleOrg)
-			throws Exception {
-		InitSampleSetup.getInstance().getAllPointOfContacts(request);
-		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
-				request, sampleOrg);
-	}
-
+	/**
+	 * Handle view sample request on sample search result page (read-only view).
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = theForm.getString("location");
-		// "setupSample()" will get the SampleBean
+		String location = 
+			(String) getValueFromRequest(request, Constants.LOCATION);
+		
+		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		// set visibility of the POCBean
-		// If Primary POC is not hidden set it in request object.
+		
+		// Create POC service for setting visibility of the POCBean.
 		PointOfContactBean primaryPoc = sampleBean.getPocBean();
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		pocService.retrieveVisibility(primaryPoc, user);
+		PointOfContactService pocService = null;
+		if (Constants.LOCAL_SITE.equals(location)) {
+			pocService = new PointOfContactServiceLocalImpl();
+		} else {
+			//TODO: implement remote PointOfContactService.
+			pocService = new PointOfContactServiceLocalImpl();
+		}
+		pocService.setVisibility(primaryPoc, user);
+		
+		// If Primary POC is not hidden set it in request.
 		if (!primaryPoc.isHidden()) {
 			request.setAttribute("primaryPoc", primaryPoc);
 		}
 
-		// Set visibility of Other POC, set them in request only when as least
-		// one is visible.
-		String sampleId = sampleBean.getDomain().getId().toString();
-		PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
-		List<PointOfContactBean> otherPointOfContactCollection = pointOfContactService
-				.findOtherPointOfContactCollection(sampleId);
-		if (otherPointOfContactCollection != null
-				&& !otherPointOfContactCollection.isEmpty()) {
+		// Set visibility of Other POCs and set them in request.
+		Collection<PointOfContact> otherPocs = 
+			sampleBean.getDomain().getOtherPointOfContactCollection();
+		if (otherPocs != null && !otherPocs.isEmpty()) {
+			List<PointOfContactBean> otherPocBeans = 
+				new ArrayList<PointOfContactBean>(otherPocs.size()); 
 			try {
-				AuthorizationService auth = new AuthorizationService(
-						Constants.CSM_APP_NAME);
-				for (PointOfContactBean pocBean : otherPointOfContactCollection) {
-					if (auth.checkReadPermission(user, pocBean.getDomain()
-							.getId().toString())) {
-						pocBean.setHidden(false);
-					} else {
-						otherPointOfContactCollection.remove(pocBean);
-						pocBean.setHidden(true);
+				AuthorizationService auth = 
+					new AuthorizationService(Constants.CSM_APP_NAME);
+				for (PointOfContact otherPoc : otherPocs) {
+					if (auth.checkReadPermission(user, otherPoc.getId().toString())) {
+						otherPocBeans.add(new PointOfContactBean(otherPoc));
 					}
 				}
 			} catch (Exception e) {
@@ -136,35 +153,75 @@ public class SampleAction extends BaseAnnotationAction {
 				logger.error(err, e);
 				throw new PointOfContactException(err, e);
 			}
-			if (!otherPointOfContactCollection.isEmpty()) {
+			if (!otherPocBeans.isEmpty()) {
 				OtherPointOfContactsBean otherPointOfContactsBean = new OtherPointOfContactsBean();
-				otherPointOfContactsBean
-						.setOtherPointOfContacts(otherPointOfContactCollection);
+				otherPointOfContactsBean.setOtherPointOfContacts(otherPocBeans);
 				request.setAttribute("otherPoc", otherPointOfContactsBean);
 			}
 		}
-
+		
 		return mapping.findForward("summaryView");
 	}
 
+	/**
+	 * Handle edit sample request on sample search result page (curator view).
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
+		//if session is expired or the url is clicked on directly.
 		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		//if session is expired or the url is clicked on directly
-		if (user==null) {
+		if (user == null) {
 			return summaryView(mapping, form, request, response);
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		pocService.retrieveVisibility(sampleBean.getPocBean(), user);
+		String location = 
+			(String) getValueFromRequest(request, Constants.LOCATION);
+		
+		// "setupSample()" will retrieve and return the SampleBean.
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
-		setupLookups(request, sampleBean.getDomain().getPrimaryPointOfContact()
-				.getOrganization().getName());
+		
+		// Create POC service for setting visibility of the POCBean.
+		PointOfContactBean primaryPoc = sampleBean.getPocBean();
+		PointOfContactService pocService = null;
+		if (Constants.LOCAL_SITE.equals(location)) {
+			pocService = new PointOfContactServiceLocalImpl();
+		} else {
+			//TODO: implement remote PointOfContactService.
+			pocService = new PointOfContactServiceLocalImpl();
+		}
+		pocService.setVisibility(primaryPoc, user);
+
+		// Setup Organization drop-down box.
+		this.setupLookups(request, primaryPoc.getDomain().getOrganization().getName());
+		
+		/**
+		 * Save sampleBean in session for later use.
+		 */
+		if (sampleBean != null) {
+			request.getSession().setAttribute("pocSample", sampleBean);
+		}
+		
 		return mapping.findForward("summaryEdit");
 	}
 
+	/**
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward setupNew(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -173,15 +230,34 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public boolean loginRequired() {
-		return true;
+	/**
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	public ActionForward newPointOfContact(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		DynaValidatorForm theForm = (DynaValidatorForm) form;
+		SampleBean sampleBean = (SampleBean) (theForm.get("sampleBean"));
+		request.getSession().setAttribute("pocSample", sampleBean);
+		return mapping.findForward("newPointOfContact");
 	}
 
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PARTICLE);
-	}
-
+	/**
+	 * Go back to the first sample edit page.
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward fromPOC(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -195,15 +271,17 @@ public class SampleAction extends BaseAnnotationAction {
 		return mapping.getInputForward();
 	}
 
-	public ActionForward newPointOfContact(ActionMapping mapping,
-			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		SampleBean sampleBean = (SampleBean) (theForm.get("sampleBean"));
-		request.getSession().setAttribute("pocSample", sampleBean);
-		return mapping.findForward("newPointOfContact");
-	}
-
+	/**
+	 * Retrieve other POCs for POC detail page (after clicking "View Detail"). 
+	 *
+	 * @deprecated
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	public ActionForward pointOfContactDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -211,20 +289,43 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) (theForm.get("sampleBean"));
 		Long sampleId = sampleBean.getDomain().getId();
 		if (sampleId != null && sampleId > 0) {
-			PointOfContactService pointOfContactService = new PointOfContactServiceLocalImpl();
-			List<PointOfContactBean> otherPointOfContactBeanList = pointOfContactService
+			PointOfContactService pocService = new PointOfContactServiceLocalImpl();
+			List<PointOfContactBean> otherPointOfContactBeanList = pocService
 					.findOtherPointOfContactCollection(sampleId.toString());
 			if (otherPointOfContactBeanList != null
 					&& otherPointOfContactBeanList.size() > 0) {
-				Collection<PointOfContact> otherPointOfContactCollection = new HashSet<PointOfContact>();
+				Collection<PointOfContact> otherPocs = new HashSet<PointOfContact>();
 				for (PointOfContactBean pocBean : otherPointOfContactBeanList) {
-					otherPointOfContactCollection.add(pocBean.getDomain());
+					otherPocs.add(pocBean.getDomain());
 				}
 				sampleBean.getDomain().setOtherPointOfContactCollection(
-						otherPointOfContactCollection);
+						otherPocs);
 			}
 		}
 		request.getSession().setAttribute("pocSample", sampleBean);
 		return mapping.findForward("pointOfContactDetailView");
+	}
+
+	public boolean loginRequired() {
+		return true;
+	}
+
+	public boolean canUserExecute(UserBean user) throws SecurityException {
+		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
+				Constants.CSM_PG_PARTICLE);
+	}
+
+	/**
+	 * Retrieve all POCs and Groups for POC drop-down on sample edit page.  
+	 *  
+	 * @param request
+	 * @param sampleOrg
+	 * @throws Exception
+	 */
+	private void setupLookups(HttpServletRequest request, String sampleOrg)
+			throws Exception {
+		InitSampleSetup.getInstance().getAllPointOfContacts(request);
+		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
+				request, sampleOrg);
 	}
 }

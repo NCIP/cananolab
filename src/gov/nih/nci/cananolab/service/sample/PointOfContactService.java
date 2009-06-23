@@ -39,7 +39,7 @@ public interface PointOfContactService {
 	public PointOfContactBean findPointOfContactById(String pocId)
 			throws PointOfContactException;
 
-	public void retrieveVisibility(PointOfContactBean pocBean, UserBean user)
+	public void setVisibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException;
 
 	public PointOfContact loadPOCSample(PointOfContact poc,

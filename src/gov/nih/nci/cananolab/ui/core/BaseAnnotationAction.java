@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -271,5 +272,21 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			}
 		}
 		return noErrors;
+	}
+	
+	/**
+	 * Retrieve a value from request by name in the order of 
+	 * Parameter - Request Attribute
+	 * 
+	 * @param request
+	 * @param name
+	 * @return
+	 */
+	protected Object getValueFromRequest(HttpServletRequest request, String name) {
+		Object value = request.getParameter(name);
+		if (value == null) {
+			value = request.getAttribute(name);
+		}
+		return value;
 	}
 }

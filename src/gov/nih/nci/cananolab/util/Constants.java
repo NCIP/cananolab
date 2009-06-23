@@ -196,4 +196,7 @@ public class Constants {
 	// Maximum file size of site logo.
 	public static final int MAX_LOGO_SIZE = 65536;
 
+	// LOCATION
+	public static final String LOCATION = "location";
+
 }

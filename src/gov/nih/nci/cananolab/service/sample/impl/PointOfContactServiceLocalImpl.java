@@ -270,7 +270,7 @@ public class PointOfContactServiceLocalImpl implements PointOfContactService {
 	}
 
 	// retrieve point of contact accessibility
-	public void retrieveVisibility(PointOfContactBean pocBean, UserBean user)
+	public void setVisibility(PointOfContactBean pocBean, UserBean user)
 			throws PointOfContactException {
 		try {
 			if (pocBean != null) {

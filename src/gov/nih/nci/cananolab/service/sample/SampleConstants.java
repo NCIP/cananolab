@@ -26,4 +26,9 @@ public class SampleConstants {
 	// PubChem URL.
 	public static final String PUBCHEM_URL = "http://pubchem.ncbi.nlm.nih.gov/summary/summary.cgi?";
 
+	// SAMPLE_ID
+	public static final String SAMPLE_ID = "sampleId";
+	
+	// POC_ID
+	public static final String POC_ID = "pocId";
 }
