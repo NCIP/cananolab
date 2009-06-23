@@ -85,7 +85,7 @@ function clearExperimentConfig() {
 function deleteTheExperimentConfig() {
 	var answer = confirmDelete("experiment config");
 	if (answer != 0) {
-		submitAction(document.forms[0], "characterization", "deleteExperimentConfig");
+		submitAction(document.forms[0], "characterization", "deleteExperimentConfig", 0);
 	}
 }
 function validateSaveConfig(actionName) {
@@ -94,7 +94,7 @@ function validateSaveConfig(actionName) {
 		alert("Please select a technique");
 		return false;
 	}
-	submitAction(document.forms[0], actionName, "saveExperimentConfig");
+	submitAction(document.forms[0], actionName, "saveExperimentConfig", 0);
 }
 function addInstrument() {
 	var instrument = {id:null, manufacturer:null, modelName:null, type:null};

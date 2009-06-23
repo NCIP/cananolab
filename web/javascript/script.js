@@ -221,8 +221,9 @@ function clearMultibox(selection) {
 		selection.options[i].value = "";
 	}
 }
-function submitAction(form, actionName, dispatchName) {
-	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=0";
+
+function submitAction(form, actionName, dispatchName, page) {
+	form.action = actionName + ".do?dispatch=" + dispatchName + "&page="+page;
 	form.submit();
 }
 function addComponent(form, actionName, dispatchName) {
@@ -233,22 +234,7 @@ function removeComponent(form, actionName, compInd, dispatchName) {
 	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
 	form.submit();
 }
-function addChildComponent(form, actionName, compInd, dispatchName) {
-	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd;
-	form.submit();
-}
-function removeChildComponent(form, actionName, compInd, childCompInd, dispatchName) {
-	form.action = actionName + ".do?dispatch=" + dispatchName + "&page=1&compInd=" + compInd + "&childCompInd=" + childCompInd;
-	form.submit();
-}
-function loadFile(form, actionName, fileNumber) {
-	form.action = actionName + ".do?dispatch=loadFile&page=0&fileNumber=" + fileNumber;
-	form.submit();
-}
-function refreshManufacturers(form, action) {
-	form.dispatch.value = action;
-	form.submit();
-}
+
 /* form has "." in the property names */
 function doubleDropdownWithNestedProperties(form, elementName1, elementName2, value1ToValue2) {
 	var select1, select2;
