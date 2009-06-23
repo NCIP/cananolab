@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.sample;
 
-import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
