@@ -15,8 +15,6 @@ import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
-import gov.nih.nci.cananolab.service.sample.PointOfContactService;
-import gov.nih.nci.cananolab.service.sample.impl.PointOfContactServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.ClassUtils;
@@ -682,7 +680,7 @@ public class SampleServiceHelper {
 					.getPrimaryPointOfContact());
 			columns.add(primaryPOC.getDomain().getFirstName());
 			columns.add(primaryPOC.getDomain().getLastName());
-			columns.add(primaryPOC.getOrganization().getName());
+			columns.add(primaryPOC.getDomain().getOrganization().getName());
 			// nanoparticle entities and functionalizing entities are in one
 			// column.
 			SortedSet<String> entities = new TreeSet<String>();
@@ -707,14 +705,23 @@ public class SampleServiceHelper {
 	}
 
 	public void assignVisibility(SampleBean sampleBean) throws Exception {
-		// // assign visibility for sample
-		PointOfContactService pocService = new PointOfContactServiceLocalImpl();
-		String orgName = pocService.findPointOfContactById(
-				sampleBean.getPocBean().getDomain().getId().toString())
+		// assign visibility for sample
+		String orgName = sampleBean.getPrimaryPOCBean().getDomain()
 				.getOrganization().getName();
 		authService.assignVisibility(sampleBean.getDomain().getName(),
 				sampleBean.getVisibilityGroups(), orgName);
-
+		// assign visibility for primary POC
+		authService.assignVisibility(sampleBean.getPrimaryPOCBean().getDomain()
+				.getId().toString(), sampleBean.getPrimaryPOCBean()
+				.getVisibilityGroups(), orgName);
+		// assign visibility for other POCs
+		for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+			String org = pocBean.getDomain().getOrganization().getName();
+			// assign visibility for primary POC
+			authService.assignVisibility(
+					pocBean.getDomain().getId().toString(), sampleBean
+							.getPrimaryPOCBean().getVisibilityGroups(), org);
+		}
 		// assign associated public visibility
 		Sample sample = sampleBean.getDomain();
 		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
