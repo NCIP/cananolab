@@ -596,10 +596,11 @@ public class AuthorizationService {
 		try {
 			List groups = authorizationManager.getAccessibleGroups(objectName,
 					Constants.CSM_READ_PRIVILEGE);
-			for (Object obj : groups) {
-				Group group = (Group) obj;
-				groupNames.add(group.getGroupName());
-			}
+			if (groups != null)
+				for (Object obj : groups) {
+					Group group = (Group) obj;
+					groupNames.add(group.getGroupName());
+				}
 		} catch (Exception e) {
 			logger.error("Error in getting accessible groups", e);
 			throw new SecurityException();
