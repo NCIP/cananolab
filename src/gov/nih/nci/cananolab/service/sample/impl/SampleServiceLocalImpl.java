@@ -74,9 +74,9 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
 				throw new DuplicateEntriesException();
 			}
-			checkForExistingPointOfContact(sample.getPrimaryPointOfContact());
+			checkForExistingPointOfContact(sample.getPrimaryPointOfContact(), user);
 			for (PointOfContact poc : sample.getOtherPointOfContactCollection()) {
-				checkForExistingPointOfContact(poc);
+				checkForExistingPointOfContact(poc, user);
 			}
 
 			if (sample.getKeywordCollection() != null) {
@@ -122,13 +122,13 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void checkForExistingPointOfContact(PointOfContact poc)
+	private void checkForExistingPointOfContact(PointOfContact poc, UserBean user)
 			throws Exception {
 		Organization org = poc.getOrganization();
 		if (poc.getId() != null) {
 			// check if POC already exists in the database
-			PointOfContact dbPointOfContact = findPointOfContactBy(poc
-					.getFirstName(), poc.getLastName(), org.getName());
+			PointOfContact dbPointOfContact = helper.findPointOfContactByNameAndOrg(poc
+					.getFirstName(), poc.getLastName(), org.getName(), user);
 			if (dbPointOfContact != null) {
 				poc.setId(dbPointOfContact.getId());
 				poc.setCreatedBy(dbPointOfContact.getCreatedBy());
@@ -136,66 +136,11 @@ public class SampleServiceLocalImpl implements SampleService {
 			}
 		}
 		// check if organization already exists in the database
-		Organization dbOrganization = findOrganizationByName(org.getName());
+		Organization dbOrganization = helper.findOrganizationByName(org.getName(), user);
 		if (dbOrganization != null) {
 			org.setId(dbOrganization.getId());
 			org.setCreatedBy(dbOrganization.getCreatedBy());
 			org.setCreatedDate(dbOrganization.getCreatedDate());
-		}
-	}
-
-	private PointOfContact findPointOfContactBy(String firstName,
-			String lastName, String orgName) throws PointOfContactException {
-		PointOfContact dbPointOfContact = null;
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(PointOfContact.class);
-			crit.createAlias("organization", "organization");
-			if (lastName != null && lastName.length() > 0)
-				crit.add(Restrictions.eq("lastName", lastName));
-			if (firstName != null && firstName.length() > 0)
-				crit.add(Restrictions.eq("firstName", firstName));
-			if (orgName != null && orgName.length() > 0)
-				crit.add(Restrictions.eq("organization.name", orgName));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				dbPointOfContact = (PointOfContact) obj;
-			}
-			return dbPointOfContact;
-		} catch (Exception e) {
-			String err = "Problem finding point of contact for the given lastName, firstName and organization name.";
-			logger.error(err, e);
-			throw new PointOfContactException(err, e);
-		}
-	}
-
-	private Organization findOrganizationByName(String orgName)
-			throws PointOfContactException {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(Organization.class);
-			crit.add(Restrictions.eq("name", orgName));
-			crit
-					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-
-			List results = appService.query(crit);
-			Organization org = null;
-			for (Object obj : results) {
-				org = (Organization) obj;
-			}
-			return org;
-		} catch (Exception e) {
-			String err = "Problem finding organization with the given name "
-					+ orgName;
-			logger.error(err, e);
-			throw new PointOfContactException(err, e);
 		}
 	}
 
@@ -546,17 +491,17 @@ public class SampleServiceLocalImpl implements SampleService {
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
 			// check if POC already exists in the database
-			PointOfContact dbPointOfContact = findPointOfContactBy(domainPOC
+			PointOfContact dbPointOfContact = helper.findPointOfContactByNameAndOrg(domainPOC
 					.getFirstName(), domainPOC.getLastName(), domainPOC
-					.getOrganization().getName());
+					.getOrganization().getName(), user);
 			if (dbPointOfContact != null
 					&& !dbPointOfContact.getId().equals(domainPOC.getId())) {
 				throw new DuplicateEntriesException();
 			}
 
 			// check if organization already exists in the database
-			Organization dbOrganization = findOrganizationByName(domainOrg
-					.getName());
+			Organization dbOrganization = helper.findOrganizationByName(domainOrg
+					.getName(), user);
 			if (dbOrganization != null) {
 				domainOrg.setId(dbOrganization.getId());
 			}
@@ -634,16 +579,16 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	public void saveOrganization(Organization organization, String user)
+	public void saveOrganization(Organization organization, UserBean user)
 			throws Exception {
 		if (organization != null && organization.getName() != null) {
-			Organization dbOrganization = findOrganizationByName(organization
-					.getName());
+			Organization dbOrganization = helper.findOrganizationByName(organization
+					.getName(), user);
 			if (dbOrganization == null) {
 				organization.setId(null);
 				organization
 						.setPointOfContactCollection(new HashSet<PointOfContact>());
-				organization.setCreatedBy(user);
+				organization.setCreatedBy(user.getLoginName());
 				organization.setCreatedDate(new Date());
 				CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 						.getApplicationService();
