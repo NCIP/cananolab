@@ -3,12 +3,12 @@ package gov.nih.nci.cananolab.ui.sample;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.SortedSet;

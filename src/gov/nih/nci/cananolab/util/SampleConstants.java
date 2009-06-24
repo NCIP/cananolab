@@ -1,4 +1,4 @@
-package gov.nih.nci.cananolab.service.sample;
+package gov.nih.nci.cananolab.util;
 
 
 public class SampleConstants {

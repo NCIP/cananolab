@@ -9,7 +9,6 @@ import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationSummaryViewBean;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
-import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CharacterizationServiceRemoteImpl;
@@ -18,6 +17,7 @@ import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.protocol.InitProtocolSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
+import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;

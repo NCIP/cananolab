@@ -6,7 +6,6 @@ import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.service.sample.CompositionService;
-import gov.nih.nci.cananolab.service.sample.SampleConstants;
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.CompositionServiceRemoteImpl;
@@ -14,6 +13,7 @@ import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
+import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.Collections;
