@@ -10,13 +10,16 @@
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
 <link rel="StyleSheet" type="text/css" href="css/promptBox.css">
-
+<c:set var="title" value="Submit A New" />
+<c:if test="${!empty updateSample}">
+	<c:set var="title" value="Update" />
+</c:if>
 <html:form action="/sample">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h3>
-					Submit A New Sample
+					${title} Sample
 				</h3>
 			</td>
 			<td align="right" width="20%">
