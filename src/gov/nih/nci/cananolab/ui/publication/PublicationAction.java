@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.service.publication.PubMedXMLHandler;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
@@ -304,23 +305,22 @@ public class PublicationAction extends BaseAnnotationAction {
 		HttpSession session = request.getSession();
 		UserBean user = (UserBean) session.getAttribute("user");
 		String publicationId = request.getParameter("fileId");
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
 		PublicationService publicationService = null;
-		if (location.equals(Constants.LOCAL_SITE)) {
+		if (Constants.LOCAL_SITE.equals(location)) {
 			publicationService = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = 
+				InitSetup.getInstance().getGridServiceUrl(request, location);
+			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		// else {
-		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-		// request, location);
-		// publicationService = new PublicationServiceRemoteImpl(serviceUrl);
-		// }
-		PublicationBean publicationBean = publicationService
-				.findPublicationById(publicationId, user);
+		PublicationBean publicationBean = 
+			publicationService.findPublicationById(publicationId, user);
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		// if sampleId is available direct to particle specific page
-		String sampleId = request.getParameter("sampleId");
 		ActionForward forward = mapping.findForward("view");
+		String sampleId = request.getParameter("sampleId");
 		if (sampleId != null) {
 			forward = mapping.findForward("sampleViewPublication");
 		}
@@ -385,7 +385,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		request.setAttribute("actionName", request.getRequestURL().toString());
 
 		// TODO fill in detail
-		// String location = request.getParameter("location");
+		// String location = request.getParameter(Constants.LOCATION);
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// PublicationService publicationService = null;
 		// if (location.equals(Constants.LOCAL_SITE)) {
@@ -447,7 +447,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		request.setAttribute("actionName", request.getRequestURL().toString());
 
 		// TODO fill in detail
-		// String location = request.getParameter("location");
+		// String location = request.getParameter(Constants.LOCATION);
 		// UserBean user = (UserBean) request.getSession().getAttribute("user");
 		// PublicationService publicationService = null;
 		// if (location.equals(Constants.LOCAL_SITE)) {
@@ -547,7 +547,7 @@ public class PublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
-		String location = theForm.getString("location");
+		String location = theForm.getString(Constants.LOCATION);
 		setupSample(theForm, request, location, false);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
@@ -568,7 +568,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward printDetailView(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
 		if (location.equals(Constants.LOCAL_SITE)) {
@@ -637,7 +637,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward detailView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
 		if (location.equals(Constants.LOCAL_SITE)) {
@@ -711,7 +711,7 @@ public class PublicationAction extends BaseAnnotationAction {
 	public ActionForward exportDetail(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService publicationService = null;
 		if (location.equals(Constants.LOCAL_SITE)) {
