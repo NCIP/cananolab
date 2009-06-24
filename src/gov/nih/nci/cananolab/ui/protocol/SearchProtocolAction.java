@@ -114,39 +114,4 @@ public class SearchProtocolAction extends BaseAnnotationAction {
 	public boolean canUserExecute(UserBean user) throws SecurityException {
 		return true;
 	}
-
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String location = request.getParameter("location");
-		String fileId = request.getParameter("fileId");
-		if (location.equals(Constants.LOCAL_SITE)) {
-			return super.download(mapping, form, request, response);
-		}
-		// TODO grid service
-		// else {
-		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-		// request, location);
-		// ProtocolService protocolService = new ProtocolServiceRemoteImpl(
-		// serviceUrl);
-		// ProtocolBean fileBean = protocolService.findProtocolById(fileId);
-		// if (fileBean.getDomainFile().getUriExternal()) {
-		// response.sendRedirect(fileBean.getDomainFile().getUri());
-		// return null;
-		// }
-		//
-		// // assume grid service is located on the same server and port as
-		// // webapp
-		// URL url = new URL(serviceUrl);
-		// String remoteServerHostUrl = url.getProtocol() + "://"
-		// + url.getHost() + ":" + url.getPort();
-		// String remoteDownloadUrl = remoteServerHostUrl + "/"
-		// + Constants.CSM_APP_NAME
-		// + "/searchProtocol.do?dispatch=download" + "&fileId="
-		// + fileId + "&location=local";
-		// response.sendRedirect(remoteDownloadUrl);
-		// return null;
-		// }
-		return null;
-	}
 }
