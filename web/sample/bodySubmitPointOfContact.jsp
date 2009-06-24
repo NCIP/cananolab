@@ -22,19 +22,19 @@
 			<strong>First Name</strong>
 		</td>
 		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.firstName" size="15" />
+			<html:text property="sampleBean.thePOC.domain.firstName" size="15" styleId="domain.firstName"/>
 		</td>
 		<td class="cellLabel" valign="top">
 			<strong>Middle Initial</strong>
 		</td>
 		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.middleInitial" size="5" />
+			<html:text property="sampleBean.thePOC.domain.middleInitial" size="5" styleId="domain.middleInitial" />
 		</td>
 		<td class="cellLabel" valign="top">
 			<strong>Last Name</strong>
 		</td>
 		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.lastName" size="15" />
+			<html:text property="sampleBean.thePOC.domain.lastName" size="15" styleId="domain.lastName" />
 		</td>
 	</tr>
 	<tr>
@@ -42,14 +42,14 @@
 			<strong>Phone Number</strong>
 		</td>
 		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.phone" size="30" />
+			<html:text property="sampleBean.thePOC.domain.phone" size="30" styleId="domain.phone"/>
 		</td>
 		<td class="cellLabel" valign="top">
 			<strong>Email</strong>
 		</td>
 		<td valign="top" colspan="4">
 			<html:text property="sampleBean.thePOC.domain.email" size="30"
-				styleId="emailText" />
+				 styleId="domain.email"/>
 		</td>
 	</tr>
 	<tr>
@@ -59,8 +59,8 @@
 		<td>
 			<div id="orgNamePrompt">
 				<html:select property="sampleBean.thePOC.domain.organization.name"
-					styleId="orgName"
-					onchange="javascript:removeOrgVisibilityByName('orgName', 'sampleBean.thePOC.visibilityGroup');setOrganization(submitPointOfContactForm, 'orgName');callPrompt('Organization Name', 'orgName', 'orgNamePrompt');">
+					styleId="domain.organization.name"
+					onchange="javascript:removeOrgVisibilityByName('domain.organization.name', 'sampleBean.thePOC.visibilityGroup');setOrganization(submitPointOfContactForm, 'domain.organization.name');callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');">
 					<option value="" />
 						<html:options name="allOrganizationNames" />
 					<option value="other">
@@ -74,8 +74,8 @@
 		</td>
 		<td valign="top" colspan="4">
 			<div id="rolePrompt">
-				<html:select styleId="role" property="sampleBean.thePOC.domain.role"
-					onchange="javascript:callPrompt('Contact Role', 'role', 'rolePrompt');">
+				<html:select styleId="domain.role" property="sampleBean.thePOC.domain.role"
+					onchange="javascript:callPrompt('Contact Role', 'domain.role', 'rolePrompt');">
 					<option />
 						<html:options name="contactRoles" />
 					<option value="other">
@@ -92,7 +92,7 @@
 		<td colspan="5">
 			<html:text
 				property="sampleBean.thePOC.domain.organization.streetAddress1"
-				size="50" />
+				size="50" styleId="domain.organization.streetAddress1"/>
 			&nbsp;
 		</td>
 	</tr>
@@ -103,7 +103,7 @@
 		<td colspan="5">
 			<html:text
 				property="sampleBean.thePOC.domain.organization.streetAddress2"
-				size="50" />
+				size="50" styleId="domain.organization.streetAddress2"/>
 			&nbsp;
 		</td>
 	</tr>
@@ -113,7 +113,7 @@
 		</td>
 		<td>
 			<html:text property="sampleBean.thePOC.domain.organization.city"
-				size="20" />
+				size="20" styleId="domain.organization.city"/>
 			&nbsp;
 		</td>
 		<td class="cellLabel">
@@ -121,7 +121,7 @@
 		</td>
 		<td>
 			<html:text property="sampleBean.thePOC.domain.organization.state"
-				size="15" />
+				size="15" styleId="domain.organization.state"/>
 			&nbsp;
 		</td>
 		<td class="cellLabel">
@@ -130,7 +130,7 @@
 		<td>
 			<html:text
 				property="sampleBean.thePOC.domain.organization.postalCode"
-				size="10" />
+				size="10" styleId="domain.organization.postalCode"/>
 			&nbsp;
 		</td>
 	</tr>
@@ -140,7 +140,7 @@
 		</td>
 		<td colspan="5">
 			<html:text property="sampleBean.thePOC.domain.organization.country"
-				size="30" />
+				size="30" styleId="domain.organization.country"/>
 			&nbsp;
 		</td>
 	</tr>
@@ -149,7 +149,7 @@
 			<strong>Visibility</strong>
 		</td>
 		<td colspan="5">
-			<html:select styleId="sampleBean.thePOC.visibilityGroup"
+			<html:select styleId="visibilityGroups"
 				property="sampleBean.thePOC.visibilityGroups" multiple="true"
 				size="6">
 				<html:options name="allVisibilityGroups" />
