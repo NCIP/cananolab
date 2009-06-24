@@ -583,6 +583,10 @@ public class CompositionServiceLocalImpl implements CompositionService {
 							"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
 							FetchMode.JOIN);
 			crit
+					.setFetchMode(
+							"nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+							FetchMode.JOIN);
+			crit
 					.setFetchMode("functionalizingEntityCollection",
 							FetchMode.JOIN);
 			crit.setFetchMode("functionalizingEntityCollection.fileCollection",
