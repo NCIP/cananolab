@@ -15,7 +15,9 @@
 <table class="subSubmissionView" width="85%" align="center">
 	<tr>
 		<th colspan="6">
-			Point of Contact Information
+			<span id="primaryTitle" style="display: none">Primary</span><span
+				id="secondaryTitle" style="display: none">Secondary</span> Point of
+			Contact Information
 		</th>
 	</tr>
 	<tr>
@@ -163,16 +165,6 @@
 			<br>
 			<i>(${applicationOwner}_Researcher and
 				${applicationOwner}_DataCurator are always selected by default.)</i>
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel">
-			<strong>Is Primary Point of Contact ?</strong>
-		</td>
-		<td colspan="5">
-			<html:checkbox styleId="primaryStatus"
-				property="sampleBean.thePOC.primaryStatus">
-			</html:checkbox>
 		</td>
 	</tr>
 	<tr>

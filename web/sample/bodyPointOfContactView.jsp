@@ -38,7 +38,7 @@
 			</td>
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
-					<a href="javascript:setThePointOfContact(${primaryPOC.domain.id});">Edit</a>&nbsp;
+					<a href="javascript:setThePointOfContact(${primaryPOC.domain.id}, true);">Edit</a>&nbsp;
 				</td>
 			</c:if>
 		</tr>
@@ -62,7 +62,7 @@
 				<c:if test="${edit eq 'true'}">
 					<td align="right">
 						<a
-							href="javascript:setThePointOfContact(${poc.domain.id});">Edit</a>&nbsp;
+							href="javascript:setThePointOfContact(${poc.domain.id}, false);">Edit</a>&nbsp;
 					</td>
 				</c:if>
 			</tr>
