@@ -113,18 +113,16 @@
 		parameter="gov.nih.nci.cananolab.resources.application" null="false" />
 	<message-resources key="admin"
 		parameter="gov.nih.nci.cananolab.resources.admin" null="false" />
-	<message-resources key="sample"
-		parameter="gov.nih.nci.cananolab.resources.sample" null="false" />
 	<message-resources key="pointOfContact"
 		parameter="gov.nih.nci.cananolab.resources.pointOfContact" null="false" />
 	<message-resources key="protocol"
 		parameter="gov.nih.nci.cananolab.resources.protocol" null="false" />
 	<message-resources key="particle"
 		parameter="gov.nih.nci.cananolab.resources.particle" null="false" />
-	<message-resources key="report"
-		parameter="gov.nih.nci.cananolab.resources.report" null="false" />
 	<message-resources key="publication"
 		parameter="gov.nih.nci.cananolab.resources.publication" null="false" />
+	<message-resources key="sample"
+		parameter="gov.nih.nci.cananolab.resources.sample" null="false" />
 
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">
 		<set-property property="definitions-config"
