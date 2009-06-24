@@ -111,6 +111,7 @@ public class SampleAction extends BaseAnnotationAction {
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
+		request.getSession().setAttribute("updateSample", "true");
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -127,6 +128,7 @@ public class SampleAction extends BaseAnnotationAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		request.getSession().removeAttribute("sampleForm");
+		request.getSession().removeAttribute("updateSample");
 		setupLookups(request, null);
 		return mapping.getInputForward();
 	}
@@ -165,14 +167,16 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sample = (SampleBean) theForm.get("sampleBean");
 		PointOfContactBean thePOC = sample.getThePOC();
 		sample.addPointOfContact(thePOC);
+		// save sample
+		saveSample(request, sample);
 		ActionForward forward = null;
-		if (sample.getDomain().getId() == null) {
+		String updateSample = (String) request.getSession().getAttribute(
+				"updateSample");
+		if (updateSample == null) {
 			forward = mapping.getInputForward();
 		} else {
 			forward = summaryEdit(mapping, form, request, response);
 		}
-		// save sample
-		saveSample(request, sample);
 		return forward;
 	}
 
