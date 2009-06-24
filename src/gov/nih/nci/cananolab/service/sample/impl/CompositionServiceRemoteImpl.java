@@ -451,11 +451,12 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		if (files != null && files.length > 0) {
 			assoc.setFileCollection(new HashSet<File>(Arrays.asList(files)));
 		}
-		loadAssociatedElementsForChemicalAssociation(assoc);
+		loadAssociatedElementsForChemicalAssociation(assoc, "A");
+		loadAssociatedElementsForChemicalAssociation(assoc, "B");
 	}
 
 	private void loadAssociatedElementsForChemicalAssociation(
-			ChemicalAssociation assoc) throws Exception {
+			ChemicalAssociation assoc, String elementNumber) throws Exception {
 		CQLQuery query = new CQLQuery();
 		gov.nih.nci.cagrid.cqlquery.Object target = new gov.nih.nci.cagrid.cqlquery.Object();
 		target
@@ -463,7 +464,8 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 		Association association = new Association();
 		association
 				.setName("gov.nih.nci.cananolab.domain.particle.ChemicalAssociation");
-		association.setRoleName("chemicalAssociationCollection");
+		String roleName = "chemicalAssociation" + elementNumber + "Collection";
+		association.setRoleName(roleName);
 		Attribute attribute = new Attribute();
 		attribute.setName("id");
 		attribute.setPredicate(Predicate.EQUAL_TO);
@@ -483,7 +485,11 @@ public class CompositionServiceRemoteImpl implements CompositionService {
 			} else if (element instanceof FunctionalizingEntity) {
 				loadFunctionalizingEntityAssociations((FunctionalizingEntity) element);
 			}
-			assoc.setAssociatedElementA(element);
+			if (elementNumber.equals("A")) {
+				assoc.setAssociatedElementA(element);
+			} else if (elementNumber.equals("B")) {
+				assoc.setAssociatedElementB(element);
+			}
 		}
 	}
 
