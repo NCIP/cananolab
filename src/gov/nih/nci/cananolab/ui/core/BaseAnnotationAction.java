@@ -9,6 +9,7 @@ import gov.nih.nci.cananolab.exception.FileException;
 import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.common.FileService;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
+import gov.nih.nci.cananolab.service.common.impl.FileServiceRemoteImpl;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceRemoteImpl;
@@ -29,7 +30,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.validator.DynaValidatorForm;
 
 /**
@@ -124,20 +124,18 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 
 		String fileId = request.getParameter("fileId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
 		FileService fileService = null;
-		String remoteServerHostUrl = "";
 		FileBean fileBean = null;
 		String serviceUrl = null;
 		if (location.equals(Constants.LOCAL_SITE)) {
 			fileService = new FileServiceLocalImpl();
 		}
-		// CQL2HQL filters out subclasses, disabled the filter
 		else {
+			// CQL2HQL filters out subclasses, disabled the filter
 			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
 					location);
-			// TODO model change
-			// fileService = new FileServiceRemoteImpl(serviceUrl);
+			fileService = new FileServiceRemoteImpl(serviceUrl);
 		}
 		fileBean = fileService.findFileById(fileId, user);
 		if (fileBean != null) {
@@ -146,14 +144,14 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 				return null;
 			}
 		}
-		if (!location.equals(Constants.LOCAL_SITE)) {
+		if (!Constants.LOCAL_SITE.equals(location)) {
 			// assume grid service is located on the same server and port as
 			// webapp
 			URL localURL = new URL(request.getRequestURL().toString());
 			String actionPath = localURL.getPath();
 
 			URL remoteUrl = new URL(serviceUrl);
-			remoteServerHostUrl = remoteUrl.getProtocol() + "://"
+			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
 					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + actionPath
 					+ "?dispatch=download" + "&fileId=" + fileId

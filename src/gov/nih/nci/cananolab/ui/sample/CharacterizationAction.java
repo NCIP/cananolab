@@ -333,7 +333,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		}
 		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId());
-		request.setAttribute("location", Constants.LOCAL_SITE);
+		request.setAttribute(Constants.LOCATION, Constants.LOCAL_SITE);
 	}
 
 	private void deleteCharacterization(HttpServletRequest request,

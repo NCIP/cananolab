@@ -36,7 +36,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		CompositionBean comp = (CompositionBean) theForm.get("comp");
 		FileBean theFile = comp.getTheFile();
-		String location = theForm.getString("location");
+		String location = theForm.getString(Constants.LOCATION);
 		// need to load the full sample to save composition because of
 		// unidirectional relationship between composition and file
 		SampleBean sampleBean = setupSample(theForm, request, location, true);

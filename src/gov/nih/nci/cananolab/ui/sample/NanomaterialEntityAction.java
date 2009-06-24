@@ -114,7 +114,7 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		}
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);
-		request.setAttribute("location", Constants.LOCAL_SITE);
+		request.setAttribute(Constants.LOCATION, Constants.LOCAL_SITE);
 	}
 
 	private boolean validateInherentFunctionType(HttpServletRequest request,
