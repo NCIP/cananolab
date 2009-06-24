@@ -49,16 +49,6 @@
 					</tr>
 					<tr>
 						<td class="cellLabel">
-							Keywords
-							<i>(one keyword per line)</i>
-						</td>
-						<td>
-							<html:textarea property="sampleBean.keywordsStr" rows="6"
-								cols="80" />
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
 							Point of Contact *
 						</td>
 						<td
@@ -68,13 +58,14 @@
 
 							> </a></td>
 					</tr>
-					<c:if test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans }">
-					<tr>
-						<td colspan="2">
+					<c:if
+						test="${!empty sampleForm.map.sampleBean.primaryPOCBean.domain.id || ! empty sampleForm.map.sampleBean.otherPOCBeans }">
+						<tr>
+							<td colspan="2">
 								<c:set var="edit" value="true" />
 								<%@ include file="bodyPointOfContactView.jsp"%>
-						</td>
-					</tr>
+							</td>
+						</tr>
 					</c:if>
 					<tr>
 						<td colspan="2">
@@ -85,10 +76,20 @@
 								<c:set var="newPOCStyle" value="display:block" />
 							</c:if>
 							--%>
-							<div style="display:none" id="newPointOfContact">
+							<div style="display: none" id="newPointOfContact">
 								<a name="submitPointOfContact"><%@ include
 										file="bodySubmitPointOfContact.jsp"%></a>
 							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="cellLabel">
+							Keywords
+							<i>(one keyword per line)</i>
+						</td>
+						<td>
+							<html:textarea property="sampleBean.keywordsStr" rows="6"
+								cols="80" />
 						</td>
 					</tr>
 					<tr>
