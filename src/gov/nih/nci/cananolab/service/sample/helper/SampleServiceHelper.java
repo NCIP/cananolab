@@ -2,6 +2,7 @@ package gov.nih.nci.cananolab.service.sample.helper;
 
 import gov.nih.nci.cananolab.domain.agentmaterial.OtherFunctionalizingEntity;
 import gov.nih.nci.cananolab.domain.common.Keyword;
+import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.function.OtherFunction;
 import gov.nih.nci.cananolab.domain.nanomaterial.OtherNanomaterialEntity;
@@ -540,15 +541,7 @@ public class SampleServiceHelper {
 		}
 		for (Object obj : filteredResults) {
 			PointOfContact poc = (PointOfContact) obj;
-			if (user == null
-					|| authService.checkReadPermission(user, poc.getId()
-							.toString())) {
-				pocs.add(poc);
-			} else {
-				logger
-						.debug("User doesn't have access to point of contact of id: "
-								+ poc.getId());
-			}
+
 		}
 		return pocs;
 	}
@@ -769,5 +762,54 @@ public class SampleServiceHelper {
 			i++;
 		}
 		return orderNumbers;
+	}
+
+	public Organization findOrganizationByName(String orgName, UserBean user)
+			throws Exception {
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(Organization.class);
+		crit.add(Restrictions.eq("name", orgName));
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List results = appService.query(crit);
+		Organization org = null;
+		for (Object obj : results) {
+			org = (Organization) obj;
+			if (authService.checkReadPermission(user, org.getId().toString())) {
+				return org;
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return org;
+	}
+
+	public PointOfContact findPointOfContactByNameAndOrg(String firstName,
+			String lastName, String orgName, UserBean user) throws Exception {
+		PointOfContact poc = null;
+
+		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
+				.getApplicationService();
+		DetachedCriteria crit = DetachedCriteria.forClass(PointOfContact.class);
+		crit.createAlias("organization", "organization");
+		if (lastName != null && lastName.length() > 0)
+			crit.add(Restrictions.eq("lastName", lastName));
+		if (firstName != null && firstName.length() > 0)
+			crit.add(Restrictions.eq("firstName", firstName));
+		if (orgName != null && orgName.length() > 0)
+			crit.add(Restrictions.eq("organization.name", orgName));
+		crit.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List results = appService.query(crit);
+		for (Object obj : results) {
+			poc = (PointOfContact) obj;
+			if (authService.checkReadPermission(user, poc.getId().toString())) {
+				return poc;
+			} else {
+				throw new NoAccessException();
+			}
+		}
+		return poc;
 	}
 }
