@@ -10,8 +10,7 @@
 			<form-property name="sampleBean"
 				type="gov.nih.nci.cananolab.dto.particle.SampleBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String"
-				initial="local" />
+			<form-property name="location" type="java.lang.String"/>
 		</form-bean>
 		<form-bean name="searchSampleForm"
 			type="org.apache.struts.validator.DynaValidatorForm">
@@ -44,8 +43,7 @@
 			<form-property name="assoc"
 				type="gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String"
-				initial="local" />
+			<form-property name="location" type="java.lang.String"/>
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
@@ -59,8 +57,7 @@
 			<form-property name="achar"
 				type="gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String"
-				initial="local" />
+			<form-property name="location" type="java.lang.String"/>
 			<form-property name="otherSamples"
 				type="java.lang.String[]" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
@@ -127,11 +124,6 @@
 			<forward name="summaryView" path="sample.summaryView" />
 			<forward name="summaryEdit" path="sample.summaryEdit" />
 			<forward name="input" path="sample.submitSample" />
-			<forward name="pointOfContactDetailView"
-				path="/submitPointOfContact.do?dispatch=detailView&amp;location=local" />
-			<forward name="newPointOfContact"
-				path="/submitPointOfContact.do?dispatch=setup&amp;location=local&amp;page=0" />
-
 		</action>
 		<action input="input" name="searchSampleForm"
 			parameter="dispatch" path="/searchSample"
@@ -206,7 +198,7 @@
 			<forward name="summaryEdit"
 				path="sample.characterization.summaryEdit" />
 			<forward name="saveExperimentConfig"
-				path="/submitExperimentConfig.do?dispatch=create&amp;location=local&amp;page=1" />
+				path="/submitExperimentConfig.do?dispatch=create&amp;page=1" />
 		</action>
 	</action-mappings>
 </struts-config>
