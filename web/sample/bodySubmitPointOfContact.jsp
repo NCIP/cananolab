@@ -17,40 +17,6 @@
 		<th colspan="6">
 			Point of Contact Information
 		</th>
-	<tr>
-		<td class="cellLabel" valign="top">
-			<strong>First Name</strong>
-		</td>
-		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.firstName" size="15" styleId="domain.firstName"/>
-		</td>
-		<td class="cellLabel" valign="top">
-			<strong>Middle Initial</strong>
-		</td>
-		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.middleInitial" size="5" styleId="domain.middleInitial" />
-		</td>
-		<td class="cellLabel" valign="top">
-			<strong>Last Name</strong>
-		</td>
-		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.lastName" size="15" styleId="domain.lastName" />
-		</td>
-	</tr>
-	<tr>
-		<td class="cellLabel" valign="top">
-			<strong>Phone Number</strong>
-		</td>
-		<td valign="top">
-			<html:text property="sampleBean.thePOC.domain.phone" size="30" styleId="domain.phone"/>
-		</td>
-		<td class="cellLabel" valign="top">
-			<strong>Email</strong>
-		</td>
-		<td valign="top" colspan="4">
-			<html:text property="sampleBean.thePOC.domain.email" size="30"
-				 styleId="domain.email"/>
-		</td>
 	</tr>
 	<tr>
 		<td class="cellLabel">
@@ -60,7 +26,7 @@
 			<div id="orgNamePrompt">
 				<html:select property="sampleBean.thePOC.domain.organization.name"
 					styleId="domain.organization.name"
-					onchange="javascript:removeOrgVisibilityByName('domain.organization.name', 'sampleBean.thePOC.visibilityGroup');setOrganization(submitPointOfContactForm, 'domain.organization.name');callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');">
+					onchange="javascript:callPrompt('Organization Name', 'domain.organization.name', 'orgNamePrompt');updateOrganizationInfo()">
 					<option value="" />
 						<html:options name="allOrganizationNames" />
 					<option value="other">
@@ -74,7 +40,8 @@
 		</td>
 		<td valign="top" colspan="4">
 			<div id="rolePrompt">
-				<html:select styleId="domain.role" property="sampleBean.thePOC.domain.role"
+				<html:select styleId="domain.role"
+					property="sampleBean.thePOC.domain.role"
 					onchange="javascript:callPrompt('Contact Role', 'domain.role', 'rolePrompt');">
 					<option />
 						<html:options name="contactRoles" />
@@ -92,7 +59,7 @@
 		<td colspan="5">
 			<html:text
 				property="sampleBean.thePOC.domain.organization.streetAddress1"
-				size="50" styleId="domain.organization.streetAddress1"/>
+				size="50" styleId="domain.organization.streetAddress1" />
 			&nbsp;
 		</td>
 	</tr>
@@ -103,7 +70,7 @@
 		<td colspan="5">
 			<html:text
 				property="sampleBean.thePOC.domain.organization.streetAddress2"
-				size="50" styleId="domain.organization.streetAddress2"/>
+				size="50" styleId="domain.organization.streetAddress2" />
 			&nbsp;
 		</td>
 	</tr>
@@ -113,7 +80,7 @@
 		</td>
 		<td>
 			<html:text property="sampleBean.thePOC.domain.organization.city"
-				size="20" styleId="domain.organization.city"/>
+				size="20" styleId="domain.organization.city" />
 			&nbsp;
 		</td>
 		<td class="cellLabel">
@@ -121,7 +88,7 @@
 		</td>
 		<td>
 			<html:text property="sampleBean.thePOC.domain.organization.state"
-				size="15" styleId="domain.organization.state"/>
+				size="15" styleId="domain.organization.state" />
 			&nbsp;
 		</td>
 		<td class="cellLabel">
@@ -130,7 +97,7 @@
 		<td>
 			<html:text
 				property="sampleBean.thePOC.domain.organization.postalCode"
-				size="10" styleId="domain.organization.postalCode"/>
+				size="10" styleId="domain.organization.postalCode" />
 			&nbsp;
 		</td>
 	</tr>
@@ -140,8 +107,47 @@
 		</td>
 		<td colspan="5">
 			<html:text property="sampleBean.thePOC.domain.organization.country"
-				size="30" styleId="domain.organization.country"/>
+				size="30" styleId="domain.organization.country" />
 			&nbsp;
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel" valign="top">
+			<strong>First Name</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.firstName" size="15"
+				styleId="domain.firstName" />
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Middle Initial</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.middleInitial" size="5"
+				styleId="domain.middleInitial" />
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Last Name</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.lastName" size="15"
+				styleId="domain.lastName" />
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel" valign="top">
+			<strong>Phone Number</strong>
+		</td>
+		<td valign="top">
+			<html:text property="sampleBean.thePOC.domain.phone" size="30"
+				styleId="domain.phone" />
+		</td>
+		<td class="cellLabel" valign="top">
+			<strong>Email</strong>
+		</td>
+		<td valign="top" colspan="4">
+			<html:text property="sampleBean.thePOC.domain.email" size="30"
+				styleId="domain.email" />
 		</td>
 	</tr>
 	<tr>
