@@ -157,16 +157,20 @@ public class PointOfContactBean {
 
 	public String getOrganizationDisplayName() {
 		List<String> orgStrs = new ArrayList<String>();
-		orgStrs.add(domain.getOrganization().getName());
-		orgStrs.add(domain.getOrganization().getStreetAddress1());
-		orgStrs.add(domain.getOrganization().getStreetAddress2());
+		if (domain.getOrganization() != null) {
+			orgStrs.add(domain.getOrganization().getName());
+			orgStrs.add(domain.getOrganization().getStreetAddress1());
+			orgStrs.add(domain.getOrganization().getStreetAddress2());
 
-		List<String> addressStrs = new ArrayList<String>();
-		addressStrs.add(domain.getOrganization().getCity());
-		addressStrs.add(domain.getOrganization().getState());
-		addressStrs.add(domain.getOrganization().getPostalCode());
+			List<String> addressStrs = new ArrayList<String>();
+			addressStrs.add(domain.getOrganization().getCity());
+			addressStrs.add(domain.getOrganization().getState());
+			addressStrs.add(domain.getOrganization().getPostalCode());
 
-		orgStrs.add(StringUtils.join(addressStrs, " "));
-		return StringUtils.join(orgStrs, "<br>");
+			orgStrs.add(StringUtils.join(addressStrs, " "));
+			return StringUtils.join(orgStrs, "<br>");
+		} else {
+			return "";
+		}
 	}
 }
