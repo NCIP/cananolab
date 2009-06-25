@@ -8,11 +8,13 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
 import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceLocalImpl;
+import gov.nih.nci.cananolab.service.publication.impl.PublicationServiceRemoteImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.sample.InitSampleSetup;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
+import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
@@ -186,29 +188,25 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			}
 		}
 
-		List<PublicationBean> publications = null;
-
 		// Publication
+		List<PublicationBean> publications = null;
 		PublicationService publicationService = null;
 		for (String location : searchLocations) {
-			if (location.equals(Constants.LOCAL_SITE)) {
+			if (Constants.LOCAL_SITE.equals(location)) {
 				publicationService = new PublicationServiceLocalImpl();
+			} else {
+				String serviceUrl = 
+					InitSetup.getInstance().getGridServiceUrl(request, location);
+				publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 			}
-			// else {
-			// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-			// request, location);
-			// publicationService = new PublicationServiceRemoteImpl(
-			// serviceUrl);
-			// }
 			publications = publicationService.findPublicationsBy(title,
-					category, sampleName, researchAreas, keywords, pubMedId,
-					digitalObjectId, authors, nanomaterialEntityClassNames
-							.toArray(new String[0]),
-					otherNanomaterialEntityTypes.toArray(new String[0]),
-					functionalizingEntityClassNames.toArray(new String[0]),
-					otherFunctionalizingTypes.toArray(new String[0]),
-					functionClassNames.toArray(new String[0]),
-					otherFunctionTypes.toArray(new String[0]), user);
+				category, sampleName, researchAreas, keywords, pubMedId,
+				digitalObjectId, authors, nanomaterialEntityClassNames.toArray(new String[0]),
+				otherNanomaterialEntityTypes.toArray(new String[0]),
+				functionalizingEntityClassNames.toArray(new String[0]),
+				otherFunctionalizingTypes.toArray(new String[0]),
+				functionClassNames.toArray(new String[0]),
+				otherFunctionTypes.toArray(new String[0]), user);
 			for (PublicationBean publication : publications) {
 				publication.setLocation(location);
 			}
@@ -232,7 +230,6 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 			throws Exception {
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
 		InitSetup.getInstance().getGridNodesInContext(request);
-		;
 
 		String[] selectedLocations = new String[] { Constants.LOCAL_SITE };
 		String gridNodeHostStr = (String) request
@@ -265,78 +262,34 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 		return true;
 	}
 
-	public ActionForward download(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		String location = request.getParameter("location");
-		String fileId = request.getParameter("fileId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (location.equals(Constants.LOCAL_SITE)) {
-			return super.download(mapping, form, request, response);
-		}
-		// else {
-		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-		// request, location);
-		// PublicationService publicationService = new
-		// PublicationServiceRemoteImpl(
-		// serviceUrl);
-		// PublicationBean fileBean = publicationService
-		// .findPublicationById(fileId);
-		// checkVisibility(request, location, user, fileBean);
-		// if (fileBean.getDomainFile().getUriExternal()) {
-		// response.sendRedirect(fileBean.getDomainFile().getUri());
-		// return null;
-		// }
-		// // assume grid service is located on the same server and port as
-		// // webapp
-		// URL url = new URL(serviceUrl);
-		// String remoteServerHostUrl = url.getProtocol() + "://"
-		// + url.getHost() + ":" + url.getPort();
-		// String remoteDownloadUrl = remoteServerHostUrl + "/"
-		// + Constants.CSM_APP_NAME
-		// + "/searchPublication.do?dispatch=download" + "&fileId="
-		// + fileId + "&location=local";
-		//
-		// response.sendRedirect(remoteDownloadUrl);
-		// return null;
-		// }
-		return null;
-	}
-
 	public ActionForward exportSummary(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		// UserBean user = (UserBean) request.getSession().getAttribute("user");
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
+		String sampleId = request.getParameter("sampleId");
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
-		// setOtherSamplesFromTheSameSource(Constants.LOCAL_SITE, request, sampleBean,
-		// user);
-		String fileName = getExportFileName(sampleBean.getDomain().getName(),
-				"summaryView");
-		response.setContentType("application/vnd.ms-execel");
-		response.setHeader("cache-control", "Private");
-		response.setHeader("Content-disposition", "attachment;filename=\""
-				+ fileName + ".xls\"");
-
+		String fileName = 
+			this.getExportFileName(sampleBean.getDomain().getName(), "summaryView");
+		ExportUtils.prepareReponseForExcell(response, fileName);
+		
 		PublicationService service = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = 
+				InitSetup.getInstance().getGridServiceUrl(request, location);
+			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		// else {
-		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-		// request, location);
-		// service = new PublicationServiceRemoteImpl(serviceUrl);
-		// }
 
-		String sampleId = request.getParameter("sampleId");
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		List<PublicationBean> publications = service
-				.findPublicationsBySampleId(sampleId, user);
+		List<PublicationBean> publications = 
+			service.findPublicationsBySampleId(sampleId, user);
 		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
 				publications);
 
 		PublicationServiceHelper.exportSummary(summaryView, response.getOutputStream());
+		
 		return null;
 	}
 
@@ -354,21 +307,20 @@ public class SearchPublicationAction extends BaseAnnotationAction {
 	public ActionForward summaryView(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String location = request.getParameter("location");
+		String location = request.getParameter(Constants.LOCATION);
 		String sampleId = request.getParameter("sampleId");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		PublicationService service = null;
 		if (location.equals(Constants.LOCAL_SITE)) {
 			service = new PublicationServiceLocalImpl();
+		} else {
+			String serviceUrl = 
+				InitSetup.getInstance().getGridServiceUrl(request, location);
+			service = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		// else {
-		// String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
-		// request, location);
-		// service = new PublicationServiceRemoteImpl(serviceUrl);
-		// }
 
-		List<PublicationBean> publications = service
-				.findPublicationsBySampleId(sampleId, user);
+		List<PublicationBean> publications = 
+			service.findPublicationsBySampleId(sampleId, user);
 
 		HttpSession session = request.getSession();
 		session.setAttribute("publicationCollection", publications);
