@@ -15,27 +15,26 @@
 	src='/caNanoLab/dwr/interface/NanomaterialEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-
-<html:form action="/nanomaterialEntity" enctype="multipart/form-data">
-	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					${sampleName} Sample Composition - Nanomaterial Entity
-					<c:if
-						test="${!empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
+<table width="100%" align="center">
+	<tr>
+		<td>
+			<h4>
+				${sampleName} Sample Composition - Nanomaterial Entity
+				<c:if
+					test="${!empty compositionForm.map.nanomaterialEntity.domainEntity.id}">
 						- ${compositionForm.map.nanomaterialEntity.type}
 				</c:if>
-				</h4>
-			</td>
-			<td align="right" width="20%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="nano_entity_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
-	</table>
+			</h4>
+		</td>
+		<td align="right" width="20%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="nano_entity_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
+<html:form action="/nanomaterialEntity" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -171,5 +170,5 @@
 	<c:set var="formName" value="compositionForm" />
 	<c:set var="dataId"
 		value="${compositionForm.map.nanomaterialEntity.domainEntity.id}" />
-	<%@include file="../../bodySubmitButtons.jsp" %>
+	<%@include file="../../bodySubmitButtons.jsp"%>
 </html:form>

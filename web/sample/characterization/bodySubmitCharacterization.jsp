@@ -23,81 +23,70 @@
 	src='/caNanoLab/dwr/interface/ProtocolManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-<html:form action="/characterization" enctype="multipart/form-data">
-	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					${fn:toUpperCase(param.location)} ${sampleName}
-					<c:choose>
-						<c:when
-							test="${!empty characterizationForm.map.achar.domainChar.id}">
+<table width="100%" align="center">
+	<tr>
+		<td>
+			<h4>
+				${fn:toUpperCase(param.location)} ${sampleName}
+				<c:choose>
+					<c:when
+						test="${!empty characterizationForm.map.achar.domainChar.id}">
 						${characterizationForm.map.achar.characterizationType} -
 						${characterizationForm.map.achar.characterizationName}
 				</c:when>
-						<c:otherwise>
+					<c:otherwise>
 				Characterization
 				</c:otherwise>
-					</c:choose>
-				</h4>
-			</td>
-			<c_rt:set var='dispatch'
-				value='<%=request.getParameter("dispatch")%>' />
-			<c:choose>
-				<c:when test="${'setup' eq param.dispatch }">
-					<c:remove var="dataId" scope="session" />
-				</c:when>
-				<c:when test="${'setupUpdate' eq param.dispatch }">
-					<c:set var="dataId" value="${param.dataId}" scope="session" />
-				</c:when>
-			</c:choose>
-			<c:set var="helpTopic" value="char_details_help" />
-			<c:choose>
-				<c:when
-					test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
-					<c:set var="helpTopic" value="add_physical_char_help" />
-				</c:when>
-				<c:when
-					test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
-					<c:set var="helpTopic" value="add_in_vitro_char_help" />
-				</c:when>
-			</c:choose>
-			<td align="right" width="20%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="${helpTopic}" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<h5 align="center">
-					${param.submitType}
-				</h5>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-				<jsp:include
-					page="/sample/characterization/shared/bodyCharacterizationSummary.jsp" />
-				<c:if test="${!empty characterizationDetailPage}">
-					<jsp:include page="${characterizationDetailPage}" />
-				</c:if>
-				<div id="characterizationDetail"></div>
-				<a name="designAndMethod"> <jsp:include
-						page="shared/bodyCharacterizationDesignMethods.jsp" /></a>
-				<a name="result"> <jsp:include
-						page="shared/bodyCharacterizationResults.jsp" /></a>
-				<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
-				<jsp:include
-					page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
-				<c:set var="type" value="characterization" />
-				<c:set var="actionName" value="characterization" />
-				<c:set var="dataId"
-					value="${characterizationForm.map.achar.domainChar.id}" />
-				<%@include file="../bodySubmitButtons.jsp" %>
-			</td>
-		</tr>
-	</table>
+				</c:choose>
+			</h4>
+		</td>
+		<c_rt:set var='dispatch' value='<%=request.getParameter("dispatch")%>' />
+		<c:choose>
+			<c:when test="${'setup' eq param.dispatch }">
+				<c:remove var="dataId" scope="session" />
+			</c:when>
+			<c:when test="${'setupUpdate' eq param.dispatch }">
+				<c:set var="dataId" value="${param.dataId}" scope="session" />
+			</c:when>
+		</c:choose>
+		<c:set var="helpTopic" value="char_details_help" />
+		<c:choose>
+			<c:when
+				test='${"Physical Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
+				<c:set var="helpTopic" value="add_physical_char_help" />
+			</c:when>
+			<c:when
+				test='${"In Vitro Characterization" eq pageTitle && ("setup" eq dispatch || empty dataId)}'>
+				<c:set var="helpTopic" value="add_in_vitro_char_help" />
+			</c:when>
+		</c:choose>
+		<td align="right" width="20%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="${helpTopic}" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
+
+<html:form action="/characterization" enctype="multipart/form-data">
+	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<jsp:include
+		page="/sample/characterization/shared/bodyCharacterizationSummary.jsp" />
+	<c:if test="${!empty characterizationDetailPage}">
+		<jsp:include page="${characterizationDetailPage}" />
+	</c:if>
+	<div id="characterizationDetail"></div>
+	<a name="designAndMethod"> <jsp:include
+			page="shared/bodyCharacterizationDesignMethods.jsp" /></a>
+	<a name="result"> <jsp:include
+			page="shared/bodyCharacterizationResults.jsp" /></a>
+	<jsp:include page="shared/bodyCharacterizationConclusion.jsp" />
+	<jsp:include
+		page="/sample/bodyAnnotationCopy.jsp?annotation=characterization" />
+	<c:set var="type" value="characterization" />
+	<c:set var="actionName" value="characterization" />
+	<c:set var="dataId"
+		value="${characterizationForm.map.achar.domainChar.id}" />
+	<%@include file="../bodySubmitButtons.jsp"%>
 </html:form>

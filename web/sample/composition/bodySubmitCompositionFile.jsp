@@ -13,27 +13,23 @@
 <script type='text/javascript' src='dwr/util.js'></script>
 <c:set var="fileParent" value="comp" />
 <c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
+<table width="100%" align="center">
+	<tr>
+		<td>
+			<h4>
+				${sampleName} Sample Composition - Composition File
+			</h4>
+		</td>
+		<td align="right" width="15%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="function_entity_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
 <html:form action="/compositionFile" enctype="multipart/form-data">
-	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					${sampleName} Sample Composition - Composition File
-				</h4>
-			</td>
-			<td align="right" width="15%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="function_entity_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			</td>
-		</tr>
-	</table>
+	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 	<c:set var="fileForm" value="compositionForm" />
 	<c:set var="theFile" value="${compositionForm.map.comp.theFile}" />
 	<c:set var="actionName" value="compositionFile" />

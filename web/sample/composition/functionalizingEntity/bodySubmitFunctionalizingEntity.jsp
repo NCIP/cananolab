@@ -15,28 +15,27 @@
 	src='/caNanoLab/dwr/interface/FunctionalizingEntityManager.js'></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/util.js'></script>
-<html:form action="/functionalizingEntity" enctype="multipart/form-data">
-	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					${sampleName} Sample Composition - Functionalizing Entity
-					<c:if
-						test="${!empty compositionForm.map.functionalizingEntity.domainEntity.id}">
+<table width="100%" align="center">
+	<tr>
+		<td>
+			<h4>
+				${sampleName} Sample Composition - Functionalizing Entity
+				<c:if
+					test="${!empty compositionForm.map.functionalizingEntity.domainEntity.id}">
 						- ${compositionForm.map.functionalizingEntity.type}
 						</c:if>
-				</h4>
-			</td>
-			<td align="right" width="15%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="function_entity_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
-	</table>
+			</h4>
+		</td>
+		<td align="right" width="15%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="function_entity_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
+<html:form action="/functionalizingEntity" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-	<br>
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<th colspan="4">
@@ -82,7 +81,7 @@
 						property="functionalizingEntity.pubChemDataSourceName"
 						onchange="javascript:callPrompt('PubChem DataSource', 'pubChemDataSource', 'pubChemDataSourcePrompt');">
 						<option value="" />
-						<html:options name="pubChemDataSources" />
+							<html:options name="pubChemDataSources" />
 					</html:select>
 				</div>
 			</td>
@@ -90,8 +89,7 @@
 				PubChem Id
 			</td>
 			<td>
-				<html:text
-					property="functionalizingEntity.pubChemId"
+				<html:text property="functionalizingEntity.pubChemId"
 					onkeydown="return filterInteger(event)" size="30"
 					styleId="pubChemId" />
 			</td>
@@ -269,6 +267,6 @@
 	<c:set var="formName" value="compositionForm" />
 	<c:set var="dataId"
 		value="${compositionForm.map.functionalizingEntity.domainEntity.id}" />
-	<%@include file="../../bodySubmitButtons.jsp" %>
+	<%@include file="../../bodySubmitButtons.jsp"%>
 
 </html:form>

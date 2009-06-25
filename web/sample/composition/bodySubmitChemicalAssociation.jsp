@@ -37,26 +37,27 @@
 		<c:set var="ceStyleB" value="display:none" />
 	</c:otherwise>
 </c:choose>
-<html:form action="/chemicalAssociation" enctype="multipart/form-data">
-	<table width="100%" align="center">
-		<tr>
-			<td>
-				<h4>
-					${sampleName} Sample Composition - Chemical Association
-					<c:if
-						test="${!empty compositionForm.map.assoc.domainAssociation.id}">
+
+<table width="100%" align="center">
+	<tr>
+		<td>
+			<h4>
+				${sampleName} Sample Composition - Chemical Association
+				<c:if
+					test="${!empty compositionForm.map.assoc.domainAssociation.id}">
 						- ${compositionForm.map.assoc.type}
 				</c:if>
-				</h4>
-			</td>
-			<td align="right" width="20%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="nano_entity_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
-	</table>
+			</h4>
+		</td>
+		<td align="right" width="20%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="nano_entity_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
+<html:form action="/chemicalAssociation" enctype="multipart/form-data">
 	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
 	<table width="100%" align="center" class="submissionView">
 		<tr>
@@ -90,10 +91,10 @@
 				<c:set var="bondTypeStyle" value="display:block" />
 			</c:if>
 			<td class="cellLabel">
-				<span id="bondTypeLabel" style="${bondTypeStyle}">Bond Type*</span>
+				<span id="bondTypeLabel" style="">Bond Type*</span>
 			</td>
 			<td>
-				<div id="bondTypePrompt" style="${bondTypeStyle}">
+				<div id="bondTypePrompt" style="">
 					<html:select styleId="bondType"
 						property="assoc.attachment.bondType"
 						onchange="javascript:callPrompt('Bond Type', 'bondType', 'bondTypePrompt');">
@@ -214,6 +215,6 @@
 	<c:set var="formName" value="compositionForm" />
 	<c:set var="dataId"
 		value="${compositionForm.map.assoc.domainAssociation.id}" />
-	<%@include file="../bodySubmitButtons.jsp" %>
+	<%@include file="../bodySubmitButtons.jsp"%>
 
 </html:form>
