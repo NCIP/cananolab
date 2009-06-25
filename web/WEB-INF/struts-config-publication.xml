@@ -11,7 +11,7 @@
 				type="gov.nih.nci.cananolab.dto.common.PublicationBean" />
 			<form-property name="idsToDelete" type="java.lang.String[]" />
 			<form-property name="sampleId" type="java.lang.String" />
-			<form-property name="location" type="java.lang.String" initial="local"/>
+			<form-property name="location" type="java.lang.String" />
 		</form-bean>
 
 		<form-bean name="searchPublicationForm"
