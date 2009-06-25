@@ -39,12 +39,19 @@ function updateOrganizationInfo() {
 }
 function populateOrganization(organization) {
 	if (organization != null) {
-		dwr.util.setValue("domain.organization.address1", organization.address1);
-		dwr.util.setValue("domain.organization.address2", organization.address2);
+		dwr.util.setValue("domain.organization.streetAddress1", organization.streetAddress1);
+		dwr.util.setValue("domain.organization.streetAddress2", organization.streetAddress2);
 		dwr.util.setValue("domain.organization.city", organization.city);
 		dwr.util.setValue("domain.organization.state", organization.state);
 		dwr.util.setValue("domain.organization.postalCode", organization.postalCode);
 		dwr.util.setValue("domain.organization.country", organization.country);
+	} else {
+		dwr.util.setValue("domain.organization.streetAddress1", "");
+		dwr.util.setValue("domain.organization.streetAddress2", "");
+		dwr.util.setValue("domain.organization.city", "");
+		dwr.util.setValue("domain.organization.state", "");
+		dwr.util.setValue("domain.organization.postalCode", "");
+		dwr.util.setValue("domain.organization.country", "");
 	}
 }
 /* end of submit point of contact form */
