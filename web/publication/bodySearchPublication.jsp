@@ -135,7 +135,7 @@
 	<table width="100%" align="center" class="submissionView">
 		<tr>
 			<td class="cellLabel">
-				Nanoparticle Name
+				Sample Name
 			</td>
 			<td colspan="5" valign="top">
 				<html:text property="sampleName" size="80" />
