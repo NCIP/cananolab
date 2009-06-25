@@ -704,7 +704,7 @@ td.leftBorderedFormFieldWhite {
 }
 
 h3,.h3 { /* for title of page */
-	font-family: arial, helvetica, verdana, sans-serif;
+	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 1.3em;
 	font-weight: bold;
 	color: #5c5c5c; /* constant: dark gray */
@@ -712,7 +712,7 @@ h3,.h3 { /* for title of page */
 }
 
 h4,.h4 { /* for title of page */
-	font-family: arial, helvetica, verdana, sans-serif;
+	font-family: verdana, arial, helvetica, sans-serif;
 	font-size: 1.1em;
 	font-weight: bold;
 	color: #5c5c5c; /* constant: dark gray */

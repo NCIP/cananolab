@@ -8,113 +8,109 @@
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/util.js'></script>
 
+
+<table align="center" width="100%">
+	<tr>
+		<td>
+			<h4>
+				Search Protocols
+			</h4>
+		</td>
+		<td align="right" width="25%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="search_protocol_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
 <html:form action="searchProtocol">
-	<table align="center" width="100%">
+	<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
+	<table width="100%" align="center" class="submissionView">
 		<tr>
-			<td>
-				<h3>
-					<br>
-					Search Protocols
-				</h3>
+			<td class="cellLabel" width="20%">
+				Search Site
 			</td>
-			<td align="right" width="25%">
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="search_protocol_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
+			<td>
+				<html:select styleId="searchLocations" property="searchLocations"
+					onchange="javascript:setProtocolNameDropdown()" multiple="true"
+					size="4">
+					<html:option value="${applicationOwner}">
+										${applicationOwner}
+									</html:option>
+					<c:if test="${! empty allGridNodes}">
+						<html:options collection="allGridNodes" property="hostName"
+							labelProperty="hostName" />
+					</c:if>
+				</html:select>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" align="center" class="submissionView">
+		<tr>
+			<td class="cellLabel">
+				Protocol Type
+			</td>
+			<td>
+				<html:select styleId="protocolType" property="protocolType">
+					<option />
+						<html:options name="protocolTypes" />
+				</html:select>
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=protocol" />
-				<table width="100%" align="center" class="submissionView">
-					<tr>
-						<td class="cellLabel" width="20%">
-							Search Site
-						</td>
-						<td>
-							<html:select styleId="searchLocations" property="searchLocations"
-								onchange="javascript:setProtocolNameDropdown()" multiple="true"
-								size="4">
-								<html:option value="${applicationOwner}">
-										${applicationOwner}
-									</html:option>
-								<c:if test="${! empty allGridNodes}">
-									<html:options collection="allGridNodes" property="hostName"
-										labelProperty="hostName" />
-								</c:if>
-							</html:select>
-						</td>
-					</tr>
-				</table>
+			<td class="cellLabel">
+				Protocol Name
+			</td>
+			<td>
+				<html:text property="protocolName" size="100" />
 				<br>
-				<table width="100%" align="center" class="submissionView">
-					<tr>
-						<td class="cellLabel">
-							Protocol Type
-						</td>
-						<td>
-							<html:select styleId="protocolType" property="protocolType">
-								<option />
-									<html:options name="protocolTypes" />
-							</html:select>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Protocol Name
-						</td>
-						<td>
-							<html:text property="protocolName" size="100" />
-							<br>
-							<em>* for wildcard search</em>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Protocol Abbreviation
-						</td>
-						<td>
-							<html:text property="protocolAbbreviation" size="100" />
-							<br>
-							<em>* for wildcard search</em>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Protocol File Title
-						</td>
-						<td>
-							<html:text property="fileTitle" size="100" />
-							<br>
-							<em>* for wildcard search</em>
-						</td>
-					</tr>
-				</table>
+				<em>* for wildcard search</em>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Protocol Abbreviation
+			</td>
+			<td>
+				<html:text property="protocolAbbreviation" size="100" />
 				<br>
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0" class="topBorderOnly" summary="">
+				<em>* for wildcard search</em>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Protocol File Title
+			</td>
+			<td>
+				<html:text property="fileTitle" size="100" />
+				<br>
+				<em>* for wildcard search</em>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" border="0" align="center" cellpadding="3"
+		cellspacing="0" class="topBorderOnly" summary="">
+		<tr>
+			<td>
+				<span class="formMessage"> </span>
+				<br>
+				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
-							<span class="formMessage"> </span>
-							<br>
-							<table border="0" align="right" cellpadding="4" cellspacing="0">
-								<tr>
-									<td>
-										<div align="right">
-											<input type="reset" value="Reset"
-												onclick="javascript:location.href='searchProtocol.do?dispatch=setup&page=0'">
-											<input type="hidden" name="dispatch" value="search">
-											<input type="hidden" name="page" value="1">
-											<html:submit value="Search" />
-										</div>
-									</td>
-								</tr>
-							</table>
-							<div align="right"></div>
+							<div align="right">
+								<input type="reset" value="Reset"
+									onclick="javascript:location.href='searchProtocol.do?dispatch=setup&page=0'">
+								<input type="hidden" name="dispatch" value="search">
+								<input type="hidden" name="page" value="1">
+								<html:submit value="Search" />
+							</div>
 						</td>
 					</tr>
 				</table>
+				<div align="right"></div>
 			</td>
 		</tr>
 	</table>

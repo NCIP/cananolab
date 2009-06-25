@@ -12,165 +12,160 @@
 <script type="text/javascript"
 	src="/caNanoLab/dwr/interface/CharacterizationManager.js"></script>
 
+<table align="center" width="100%">
+	<tr>
+		<td>
+			<h4>
+				Search Samples
+			</h4>
+		</td>
+		<td align="right" width="30%">
+			<%--<a href="advancedSampleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="search_nano_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
+
 <html:form action="searchSample">
-	<table align="center" width="100%">
+	<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+	<table width="100%" align="center" class="submissionView">
 		<tr>
+			<td class="cellLabel" width="20%">
+				Search Site
+			</td>
 			<td>
-				<h3>
-					Search Samples
-				</h3>
-			</td>
-			<td align="right" width="30%">
-				<%--<a href="advancedSampleSearch.do" class="helpText">Advanced Search</a> &nbsp; &nbsp; --%>
-
-				<jsp:include page="/helpGlossary.jsp">
-					<jsp:param name="topic" value="search_nano_help" />
-					<jsp:param name="glossaryTopic" value="glossary_help" />
-				</jsp:include>
-			</td>
-		</tr>
-
-		<tr>
-			<td colspan="2">
-				<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-				<table width="100%" align="center" class="submissionView">
-					<tr>
-						<td class="cellLabel" width="20%">
-							Search Site
-						</td>
-						<td>
-							<html:select property="searchLocations" styleId="searchLocations"
-								multiple="true" size="4"
-								onchange="javascript:setSampleDropdowns();">
-								<html:option value="${applicationOwner}">
+				<html:select property="searchLocations" styleId="searchLocations"
+					multiple="true" size="4"
+					onchange="javascript:setSampleDropdowns();">
+					<html:option value="${applicationOwner}">
 										${applicationOwner}
 									</html:option>
-								<c:if test="${! empty allGridNodes}">
-									<html:options collection="allGridNodes" property="hostName"
-										labelProperty="hostName" />
-								</c:if>
-							</html:select>
-						</td>
-					</tr>
-				</table>
+					<c:if test="${! empty allGridNodes}">
+						<html:options collection="allGridNodes" property="hostName"
+							labelProperty="hostName" />
+					</c:if>
+				</html:select>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" align="center" class="submissionView">
+		<tr>
+			<td class="cellLabel" width="20%">
+				Keywords
+			</td>
+			<td>
+				<html:textarea property="text" rows="3" cols="60" />
 				<br>
-				<table width="100%" align="center" class="submissionView">
-					<tr>
-						<td class="cellLabel" width="20%">
-							Keywords
-						</td>
-						<td>
-							<html:textarea property="text" rows="3" cols="60" />
-							<br>
-							<em>case insensitive, words in quotes are searched together</em>
-							<br>
-							<em>searching characterization keywords, publication
-								keywords and text in characterization descriptions</em>
-							<br>
-						</td>
-					</tr>
-				</table>
+				<em>case insensitive, words in quotes are searched together</em>
 				<br>
-				<table width="100%" align="center" class="submissionView">
-					<tr>
-						<td class="cellLabel" width="20%">
-							Sample
-							<br>
-							Point of Contact
-						</td>
-						<td colspan="5">
-							<br>
-							<html:text property="samplePointOfContact" size="60" />
-							<br>
-							<em>case insensitive, * for wildcard search</em>
-							<br>
-							<em>searching organization name or first name or last name
-								of a person </em>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Composition
-							<br>
-							Nanomaterial Entity
-						</td>
-						<td>
-							<html:select styleId="nanomaterialEntityTypes"
-								property="nanomaterialEntityTypes" multiple="true" size="4">
-								<html:options name="nanomaterialEntityTypes" />
-							</html:select>
-						</td>
-						<td class="cellLabel">
-							Composition
-							<br>
-							Functionalizing Entity
-						</td>
-						<td>
-							<html:select styleId="functionalizingEntityTypes"
-								property="functionalizingEntityTypes" multiple="true" size="3">
-								<html:options name="functionalizingEntityTypes" />
-							</html:select>
-						</td>
-						<td class="cellLabel">
-							Function
-						</td>
-						<td>
-							<html:select styleId="functionTypes" property="functionTypes"
-								multiple="true" size="3">
-								<html:options name="functionTypes" />
-							</html:select>
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Characterization Type
-							<html:hidden styleId="characterizationType"
-								property="characterizationType" />
-						</td>
-						<td>
-							<html:select property="characterizationType" styleId="charType"
-								onchange="javascript:setCharacterizationOptionsByCharType()">
-								<option value="" />
-									<html:options name="characterizationTypes" />
-							</html:select>
-						</td>
-						<td class="cellLabel">
-							Characterization
-						</td>
-						<td colspan="3">
-							<html:select property="characterizations" styleId="charName"
-								multiple="true" size="4">
-								<%--<c:forEach var="achar"
+				<em>searching characterization keywords, publication keywords
+					and text in characterization descriptions</em>
+				<br>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" align="center" class="submissionView">
+		<tr>
+			<td class="cellLabel" width="20%">
+				Sample
+				<br>
+				Point of Contact
+			</td>
+			<td colspan="5">
+				<br>
+				<html:text property="samplePointOfContact" size="60" />
+				<br>
+				<em>case insensitive, * for wildcard search</em>
+				<br>
+				<em>searching organization name or first name or last name of a
+					person </em>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Composition
+				<br>
+				Nanomaterial Entity
+			</td>
+			<td>
+				<html:select styleId="nanomaterialEntityTypes"
+					property="nanomaterialEntityTypes" multiple="true" size="4">
+					<html:options name="nanomaterialEntityTypes" />
+				</html:select>
+			</td>
+			<td class="cellLabel">
+				Composition
+				<br>
+				Functionalizing Entity
+			</td>
+			<td>
+				<html:select styleId="functionalizingEntityTypes"
+					property="functionalizingEntityTypes" multiple="true" size="3">
+					<html:options name="functionalizingEntityTypes" />
+				</html:select>
+			</td>
+			<td class="cellLabel">
+				Function
+			</td>
+			<td>
+				<html:select styleId="functionTypes" property="functionTypes"
+					multiple="true" size="3">
+					<html:options name="functionTypes" />
+				</html:select>
+			</td>
+		</tr>
+		<tr>
+			<td class="cellLabel">
+				Characterization Type
+				<html:hidden styleId="characterizationType"
+					property="characterizationType" />
+			</td>
+			<td>
+				<html:select property="characterizationType" styleId="charType"
+					onchange="javascript:setCharacterizationOptionsByCharType()">
+					<option value="" />
+						<html:options name="characterizationTypes" />
+				</html:select>
+			</td>
+			<td class="cellLabel">
+				Characterization
+			</td>
+			<td colspan="3">
+				<html:select property="characterizations" styleId="charName"
+					multiple="true" size="4">
+					<%--<c:forEach var="achar"
 										items="${searchSampleForm.map.characterizations}">
 										<html:option value="${achar}">${achar}</html:option>
 									</c:forEach>--%>
-							</html:select>
-						</td>
-					</tr>
-				</table>
-				<br>
+				</html:select>
+			</td>
+		</tr>
+	</table>
+	<br>
 
-				<table width="100%" border="0" align="center" cellpadding="3"
-					cellspacing="0">
+	<table width="100%" border="0" align="center" cellpadding="3"
+		cellspacing="0">
+		<tr>
+			<td>
+				<table border="0" align="right" cellpadding="4" cellspacing="0">
 					<tr>
 						<td>
-							<table border="0" align="right" cellpadding="4" cellspacing="0">
-								<tr>
-									<td>
-										<div align="right">
-											<input type="reset" value="Reset"
-												onclick="javascript:location.href='searchSample.do?dispatch=setup&page=0'">
-											<input type="hidden" name="dispatch" value="search">
-											<input type="hidden" name="page" value="1">
-											<html:submit value="Search" />
-										</div>
-									</td>
-								</tr>
-							</table>
-							<div align="right"></div>
+							<div align="right">
+								<input type="reset" value="Reset"
+									onclick="javascript:location.href='searchSample.do?dispatch=setup&page=0'">
+								<input type="hidden" name="dispatch" value="search">
+								<input type="hidden" name="page" value="1">
+								<html:submit value="Search" />
+							</div>
 						</td>
 					</tr>
 				</table>
+				<div align="right"></div>
 			</td>
 		</tr>
 	</table>

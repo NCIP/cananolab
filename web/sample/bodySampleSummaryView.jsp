@@ -7,10 +7,10 @@
 <table width="100%" align="center">
 	<tr>
 		<td>
-			<h3>
-				${fn:toUpperCase(param.location)}
-				${sampleForm.map.sampleBean.domain.name} General Info
-			</h3>
+			<h4>
+				${fn:toUpperCase(location)} Sample
+				${sampleForm.map.sampleBean.domain.name}
+			</h4>
 		</td>
 		<td align="right" width="15%">
 			<jsp:include page="/helpGlossary.jsp">
@@ -19,53 +19,43 @@
 			</jsp:include>
 		</td>
 	</tr>
+</table>
+<jsp:include page="/bodyMessage.jsp?bundle=particle" />
+<table width="100%" align="center" class="summaryViewLayer3">
 	<tr>
-		<td colspan="2">
-			<jsp:include page="/bodyMessage.jsp?bundle=particle" />
-			<table class="topBorderOnly" cellspacing="0" cellpadding="3"
-				width="100%" align="center" summary="" border="0">
-				<tbody>
-					<tr class="topBorder">
-						<td class="formTitle" colspan="2">
-							<div align="justify">
-								Sample Information
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" width="23%">
-							<strong>Sample Name</strong>
-						</td>
-						<td class="rightLabel">
-							<bean:write name="sampleForm" property="sampleBean.domain.name" />
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td class="leftLabel" valign="top" width="23%">
-							<strong>Keywords</strong>
-							<i>(one keyword per line)</i>
-						</td>
-						<td class="rightLabel">
-							<c:forEach var="keyword"
-								items="${sampleForm.map.sampleBean.keywordSet}">
+		<th valign="top" align="left" colspan="2" width="1000px">
+			Sample Information
+		</th>
+	</tr>
+	<tr>
+		<td class="cellLabel" width="20%">
+			Sample Name
+		</td>
+		<td>
+			<bean:write name="sampleForm" property="sampleBean.domain.name" />
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Keywords
+			<br>
+			<i>(one keyword per line)</i>
+		</td>
+		<td>
+			<c:forEach var="keyword"
+				items="${sampleForm.map.sampleBean.keywordSet}">
 							${keyword}
 							<br>
-							</c:forEach>
-							&nbsp;
-						</td>
-					</tr>
-					<tr>
-						<td class="cellLabel">
-							Point of Contact *
-						</td>
-						<td>
-							<c:set var="edit" value="false" />
-							<%@ include file="bodyPointOfContactView.jsp"%>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			</c:forEach>
+		</td>
+	</tr>
+	<tr>
+		<td class="cellLabel">
+			Point of Contact
+		</td>
+		<td>
+			<c:set var="edit" value="false" />
+			<%@ include file="bodyPointOfContactView.jsp"%>
 		</td>
 	</tr>
 </table>
