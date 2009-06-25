@@ -23,7 +23,7 @@ public class PointOfContactBean {
 	private String displayName = "";
 	private String[] visibilityGroups = new String[0];
 	private String pocId;
-	private Boolean primaryStatus = false;
+	private Boolean primaryStatus = true;
 
 	public PointOfContactBean() {
 		domain.setOrganization(new Organization());
@@ -111,14 +111,13 @@ public class PointOfContactBean {
 	}
 
 	public void setupDomain(String createdBy) {
-		// always update createdBy and createdDate
 		if (domain.getId() == null) {
 			domain.setCreatedBy(createdBy);
 			domain.setCreatedDate(new Date());
 		}
 		if (domain.getOrganization().getId() == null) {
 			domain.getOrganization().setCreatedBy(createdBy);
-			domain.setCreatedDate(new Date());
+			domain.getOrganization().setCreatedDate(new Date());
 		}
 	}
 
