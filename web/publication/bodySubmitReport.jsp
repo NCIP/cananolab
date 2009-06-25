@@ -40,7 +40,7 @@
 			<c:otherwise>
 				<tr>
 					<td colspan="2">
-						<jsp:include page="/bodyMessage.jsp?bundle=report" />
+						<jsp:include page="/bodyMessage.jsp?bundle=publication" />
 						<table class="topBorderOnly" cellspacing="0" cellpadding="3"
 							width="100%" align="center" summary="" border="0">
 							<tbody>
