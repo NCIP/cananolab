@@ -17,7 +17,6 @@ import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PublicationException;
 import gov.nih.nci.cananolab.service.publication.PublicationService;
-import gov.nih.nci.cananolab.service.publication.helper.PublicationServiceHelper;
 import gov.nih.nci.cananolab.util.Comparators;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 /**
- * Local implementation of PublicationService
+ * Remote implementation of PublicationService
  *
  * @author tanq
  *
@@ -37,7 +36,6 @@ import org.apache.log4j.Logger;
 public class PublicationServiceRemoteImpl implements PublicationService {
 	private static Logger logger = Logger
 			.getLogger(PublicationServiceRemoteImpl.class);
-	private PublicationServiceHelper helper = new PublicationServiceHelper();
 
 	private CaNanoLabServiceClient gridClient;
 
