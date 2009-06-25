@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: NanomaterialEntityAction.java,v 1.54 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -64,7 +63,8 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect nanomaterial entity after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript", "showSummary('1', 4)");
+		request.getSession().setAttribute("onloadJavascript",
+				"showSummary('1', 4)");
 		return mapping.findForward("success");
 	}
 
@@ -103,14 +103,15 @@ public class NanomaterialEntityAction extends BaseAnnotationAction {
 			entityBean.setType(null);
 		}
 		CompositionService compositionService = new CompositionServiceLocalImpl();
-		compositionService.saveNanomaterialEntity(sampleBean.getDomain(),
-				entityBean, user);
+		compositionService.saveNanomaterialEntity(sampleBean, entityBean, user);
 
 		// save to other samples
-		Sample[] otherSamples = prepareCopy(request, theForm);
-		if (otherSamples != null) {
+		// save to other samples
+		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
+				sampleBean);
+		if (otherSampleBeans != null) {
 			compositionService.copyAndSaveNanomaterialEntity(entityBean,
-					sampleBean.getDomain(), otherSamples, user);
+					sampleBean, otherSampleBeans, user);
 		}
 		InitCompositionSetup.getInstance().persistNanomaterialEntityDropdowns(
 				request, entityBean);

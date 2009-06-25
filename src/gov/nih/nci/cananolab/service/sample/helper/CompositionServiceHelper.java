@@ -28,6 +28,7 @@ import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
 import gov.nih.nci.cananolab.exception.CompositionException;
+import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Constants;
@@ -84,7 +85,8 @@ public class CompositionServiceHelper {
 	}
 
 	// for DWR Ajax
-	public Function findFunctionById(String funcId) throws Exception {
+	public Function findFunctionById(String funcId, UserBean user)
+			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
 
@@ -96,12 +98,18 @@ public class CompositionServiceHelper {
 		Function func = null;
 		if (!result.isEmpty()) {
 			func = (Function) result.get(0);
+			if (authService.checkReadPermission(user, func.getId().toString())) {
+				return func;
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the function");
+			}
 		}
 		return func;
 	}
 
 	// for DWR Ajax
-	public ComposingElement findComposingElementById(String ceId)
+	public ComposingElement findComposingElementById(String ceId, UserBean user)
 			throws Exception {
 		CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 				.getApplicationService();
@@ -117,6 +125,12 @@ public class CompositionServiceHelper {
 		ComposingElement ce = null;
 		if (!result.isEmpty()) {
 			ce = (ComposingElement) result.get(0);
+			if (authService.checkReadPermission(user, ce.getId().toString())) {
+				return ce;
+			} else {
+				throw new NoAccessException(
+						"User doesn't have access to the composing element");
+			}
 		}
 		return ce;
 	}
@@ -163,8 +177,8 @@ public class CompositionServiceHelper {
 		for (Object obj : filteredResults) {
 			File file = (File) obj;
 			if (user == null
-					|| authService.checkReadPermission(user,
-							file.getId().toString())) {
+					|| authService.checkReadPermission(user, file.getId()
+							.toString())) {
 				fileCollection.add(file);
 			} else {
 				logger.debug("User doesn't have access to file of id:"
@@ -214,8 +228,8 @@ public class CompositionServiceHelper {
 		hlinkStyle.setFont(hlinkFont);
 
 		int entityCount = 1;
-		entityCount = outputNanomaterialEntities(compBean, wb,
-				headerStyle, hlinkStyle, entityCount, downloadURL);
+		entityCount = outputNanomaterialEntities(compBean, wb, headerStyle,
+				hlinkStyle, entityCount, downloadURL);
 
 		entityCount = outputFunctionalEntities(compBean, wb, headerStyle,
 				hlinkStyle, entityCount, downloadURL);
@@ -223,8 +237,8 @@ public class CompositionServiceHelper {
 		entityCount = outputChemicalEntities(compBean, wb, headerStyle,
 				hlinkStyle, entityCount, downloadURL);
 
-		outputFilesEntities(compBean, wb, headerStyle, hlinkStyle,
-				entityCount, downloadURL);
+		outputFilesEntities(compBean, wb, headerStyle, hlinkStyle, entityCount,
+				downloadURL);
 	}
 
 	/**
@@ -237,10 +251,9 @@ public class CompositionServiceHelper {
 	 */
 	private static int outputNanomaterialEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
-			HSSFCellStyle hlinkStyle, int entityCount,
-			String downloadURL) {
-		List<NanomaterialEntityBean> nanoList = 
-			compBean.getNanomaterialEntities();
+			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {
+		List<NanomaterialEntityBean> nanoList = compBean
+				.getNanomaterialEntities();
 		if (nanoList != null && !nanoList.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			for (NanomaterialEntityBean nanoEntity : nanoList) {
@@ -412,8 +425,7 @@ public class CompositionServiceHelper {
 	 */
 	private static int outputFunctionalEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
-			HSSFCellStyle hlinkStyle, int entityCount,
-			String downloadURL) {
+			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {
 		List<FunctionalizingEntityBean> nanoList = compBean
 				.getFunctionalizingEntities();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -497,8 +509,8 @@ public class CompositionServiceHelper {
 									headerStyle, rowIndex);
 						} else if (domainEntity instanceof gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) {
 							rowIndex = outputFuncProperties(
-											(gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) domainEntity,
-											sheet, headerStyle, rowIndex);
+									(gov.nih.nci.cananolab.domain.agentmaterial.Biopolymer) domainEntity,
+									sheet, headerStyle, rowIndex);
 						}
 						rowIndex++; // Create one empty line as separator.
 					}
@@ -608,8 +620,7 @@ public class CompositionServiceHelper {
 	 */
 	private static int outputChemicalEntities(CompositionBean compBean,
 			HSSFWorkbook wb, HSSFCellStyle headerStyle,
-			HSSFCellStyle hlinkStyle, int entityCount,
-			String downloadURL) {
+			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {
 		List<ChemicalAssociationBean> nanoList = compBean
 				.getChemicalAssociations();
 		if (nanoList != null && !nanoList.isEmpty()) {
@@ -625,9 +636,8 @@ public class CompositionServiceHelper {
 					HSSFSheet sheet = wb.createSheet(sb.toString());
 
 					// 1. Output Composition type at (0, 0).
-					rowIndex = outputHeader(
-							CompositionBean.CHEMICAL_SELECTION, nanoEntity
-									.getType(), sheet, headerStyle, rowIndex);
+					rowIndex = outputHeader(CompositionBean.CHEMICAL_SELECTION,
+							nanoEntity.getType(), sheet, headerStyle, rowIndex);
 
 					// 2. Output Bond Type.
 					if (nanoEntity.getAttachment().getId() != null
@@ -732,9 +742,9 @@ public class CompositionServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputFilesEntities(CompositionBean compBean, HSSFWorkbook wb,
-			HSSFCellStyle headerStyle, HSSFCellStyle hlinkStyle,
-			int entityCount, String downloadURL) {
+	private static int outputFilesEntities(CompositionBean compBean,
+			HSSFWorkbook wb, HSSFCellStyle headerStyle,
+			HSSFCellStyle hlinkStyle, int entityCount, String downloadURL) {
 		List<FileBean> nanoList = compBean.getFiles();
 		if (nanoList != null && !nanoList.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
@@ -755,8 +765,8 @@ public class CompositionServiceHelper {
 					rowIndex++; // Create one empty line as separator.
 
 					// 2. Output File info, one File per sheet.
-					outputFile(nanoEntity, downloadURL, wb, sheet,
-							headerStyle, hlinkStyle, rowIndex);
+					outputFile(nanoEntity, downloadURL, wb, sheet, headerStyle,
+							hlinkStyle, rowIndex);
 				}
 			}
 		}
@@ -796,8 +806,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Biopolymer entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputNanoProperties(Biopolymer entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -863,8 +873,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Dendrimer entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputNanoProperties(Dendrimer entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -889,8 +899,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Emulsion entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputNanoProperties(Emulsion entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -915,8 +925,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Fullerene entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputNanoProperties(Fullerene entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -943,8 +953,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Liposome entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputNanoProperties(Liposome entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -969,8 +979,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputNanoProperties(Polymer entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputNanoProperties(Polymer entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -998,8 +1008,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputFuncProperties(Antibody entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputFuncProperties(Antibody entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output table header.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -1025,8 +1035,8 @@ public class CompositionServiceHelper {
 	 * @param rowIndex
 	 * @return
 	 */
-	private static int outputFuncProperties(SmallMolecule entityBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputFuncProperties(SmallMolecule entityBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// 1. Output SmallMolecule Info.
 		HSSFRow row = sheet.createRow(rowIndex++);
@@ -1087,8 +1097,9 @@ public class CompositionServiceHelper {
 				row = sheet.createRow(rowIndex++);
 				ExportUtils.createCell(row, 0, file.getType());
 
-				/* 2. output Title and Download Link.
-				 * Construct the URL for downloading the file. 
+				/*
+				 * 2. output Title and Download Link. Construct the URL for
+				 * downloading the file.
 				 */
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append('&').append(FILE_ID).append('=').append(file.getId());
@@ -1215,19 +1226,19 @@ public class CompositionServiceHelper {
 		return authService;
 	}
 
-	public void assignPublicVisibility(NanomaterialEntity entity)
-			throws Exception {
-
+	public void assignVisibility(NanomaterialEntity entity,
+			String[] visibleGroups, String owningGroup) throws Exception {
 		if (entity != null) {
-			authService.assignPublicVisibility(entity.getId().toString());
+			authService.assignVisibility(entity.getId().toString(),
+					visibleGroups, owningGroup);
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService.assignPublicVisibility(composingElement
-								.getId().toString());
+						authService.assignVisibility(composingElement.getId()
+								.toString(), visibleGroups, owningGroup);
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -1235,8 +1246,10 @@ public class CompositionServiceHelper {
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService.assignPublicVisibility(function
-										.getId().toString());
+								authService
+										.assignVisibility(function.getId()
+												.toString(), visibleGroups,
+												owningGroup);
 							}
 						}
 					}
@@ -1245,24 +1258,26 @@ public class CompositionServiceHelper {
 		}
 	}
 
-	public void assignPublicVisibility(
-			FunctionalizingEntity functionalizingEntity) throws Exception {
+	public void assignVisibility(FunctionalizingEntity functionalizingEntity,
+			String[] visibleGroups, String owningGroup) throws Exception {
 		if (functionalizingEntity != null) {
-			authService.assignPublicVisibility(functionalizingEntity.getId()
-					.toString());
+			authService.assignVisibility(functionalizingEntity.getId()
+					.toString(), visibleGroups, owningGroup);
 			// functionalizingEntityCollection.functionCollection
 			Collection<Function> functionCollection = functionalizingEntity
 					.getFunctionCollection();
 			if (functionCollection != null) {
 				for (Function function : functionCollection) {
 					if (function != null) {
-						authService.assignPublicVisibility(function.getId()
-								.toString());
+						authService.assignVisibility(function.getId()
+								.toString(), visibleGroups, owningGroup);
 						if (function instanceof TargetingFunction) {
 							for (Target target : ((TargetingFunction) function)
 									.getTargetCollection()) {
-								authService.assignPublicVisibility(target
-										.getId().toString());
+								authService
+										.assignVisibility(target.getId()
+												.toString(), visibleGroups,
+												owningGroup);
 							}
 						}
 					}
@@ -1271,64 +1286,116 @@ public class CompositionServiceHelper {
 		}
 	}
 
-	public void assignPublicVisibility(SampleComposition comp) throws Exception {
+	public void assignVisibility(SampleComposition comp,
+			String[] visibleGroups, String owningGroup) throws Exception {
 		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			assignPublicVisibility(entity);
+			assignVisibility(entity, visibleGroups, owningGroup);
 		}
 		for (FunctionalizingEntity entity : comp
 				.getFunctionalizingEntityCollection()) {
-			assignPublicVisibility(entity);
+			assignVisibility(entity, visibleGroups, owningGroup);
 		}
 		for (ChemicalAssociation assoc : comp
 				.getChemicalAssociationCollection()) {
-			assignPublicVisibility(assoc);
+			assignVisibility(assoc, visibleGroups, owningGroup);
 		}
 	}
 
-	public void removePublicVisibility(SampleComposition comp) throws Exception {
-		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
-			removePublicVisibility(entity);
-		}
-		for (FunctionalizingEntity entity : comp
-				.getFunctionalizingEntityCollection()) {
-			removePublicVisibility(entity);
-		}
-		for (ChemicalAssociation assoc : comp
-				.getChemicalAssociationCollection()) {
-			removePublicVisibility(assoc);
-		}
-	}
-
-	public void assignPublicVisibility(ChemicalAssociation chemicalAssociation)
-			throws Exception {
+	public void assignVisibility(ChemicalAssociation chemicalAssociation,
+			String[] visibleGroups, String owningGroup) throws Exception {
 		if (chemicalAssociation != null) {
-			authService.assignPublicVisibility(chemicalAssociation.getId()
-					.toString());
+			authService.assignVisibility(
+					chemicalAssociation.getId().toString(), visibleGroups,
+					owningGroup);
 			// chemicalAssociation.associatedElementA
 			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.assignPublicVisibility(chemicalAssociation
-						.getAssociatedElementA().getId().toString());
+				authService.assignVisibility(chemicalAssociation
+						.getAssociatedElementA().getId().toString(),
+						visibleGroups, owningGroup);
 			}
 			// chemicalAssociation.associatedElementB
 			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.assignPublicVisibility(chemicalAssociation
-						.getAssociatedElementB().getId().toString());
+				authService.assignVisibility(chemicalAssociation
+						.getAssociatedElementB().getId().toString(),
+						visibleGroups, owningGroup);
 			}
 		}
 	}
 
-	public void removePublicVisibility(NanomaterialEntity entity)
+	public void removeVisibility(SampleComposition comp) throws Exception {
+		for (NanomaterialEntity entity : comp.getNanomaterialEntityCollection()) {
+			removeVisibility(entity);
+		}
+		for (FunctionalizingEntity entity : comp
+				.getFunctionalizingEntityCollection()) {
+			removeVisibility(entity);
+		}
+		for (ChemicalAssociation assoc : comp
+				.getChemicalAssociationCollection()) {
+			removeVisibility(assoc);
+		}
+	}
+
+	public void removeVisibility(ChemicalAssociation chemicalAssociation)
 			throws Exception {
+		if (chemicalAssociation != null) {
+			authService.removeExistingVisibleGroups(chemicalAssociation.getId()
+					.toString(), Constants.CSM_READ_ROLE);
+			// chemicalAssociation.associatedElementA
+			if (chemicalAssociation.getAssociatedElementA() != null) {
+				authService.removeExistingVisibleGroups(chemicalAssociation
+						.getAssociatedElementA().getId().toString(),
+						Constants.CSM_READ_ROLE);
+			}
+			// chemicalAssociation.associatedElementB
+			if (chemicalAssociation.getAssociatedElementB() != null) {
+				authService.removeExistingVisibleGroups(chemicalAssociation
+						.getAssociatedElementB().getId().toString(),
+						Constants.CSM_READ_ROLE);
+			}
+		}
+	}
+
+	public void removeVisibility(FunctionalizingEntity functionalizingEntity)
+			throws Exception {
+		if (functionalizingEntity != null) {
+			authService.removeExistingVisibleGroups(functionalizingEntity
+					.getId().toString(), Constants.CSM_READ_ROLE);
+			// functionalizingEntityCollection.functionCollection
+			Collection<Function> functionCollection = functionalizingEntity
+					.getFunctionCollection();
+			if (functionCollection != null) {
+				for (Function function : functionCollection) {
+					if (function != null) {
+						authService.removeExistingVisibleGroups(function
+								.getId().toString(), Constants.CSM_READ_ROLE);
+						if (function instanceof TargetingFunction) {
+							for (Target target : ((TargetingFunction) function)
+									.getTargetCollection()) {
+								authService.removeExistingVisibleGroups(target
+										.getId().toString(),
+										Constants.CSM_READ_ROLE);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void removeVisibility(NanomaterialEntity entity) throws Exception {
 		if (entity != null) {
-			authService.removePublicVisibility(entity.getId().toString());
+			authService.removeExistingVisibleGroups(entity.getId().toString(),
+					Constants.CSM_READ_ROLE);
 			// nanomaterialEntityCollection.composingElementCollection,
 			Collection<ComposingElement> composingElementCollection = entity
 					.getComposingElementCollection();
 			if (composingElementCollection != null) {
 				for (ComposingElement composingElement : composingElementCollection) {
 					if (composingElement != null) {
-						authService.removePublicVisibility(composingElement
-								.getId().toString());
+						authService.removeExistingVisibleGroups(
+								composingElement.getId().toString(),
+								Constants.CSM_READ_ROLE);
 					}
 					// composingElementCollection.inherentFucntionCollection
 					Collection<Function> inherentFunctionCollection = composingElement
@@ -1336,57 +1403,13 @@ public class CompositionServiceHelper {
 					if (inherentFunctionCollection != null) {
 						for (Function function : inherentFunctionCollection) {
 							if (function != null) {
-								authService.removePublicVisibility(function
-										.getId().toString());
+								authService.removeExistingVisibleGroups(
+										function.getId().toString(),
+										Constants.CSM_READ_ROLE);
 							}
 						}
 					}
 				}
-			}
-		}
-	}
-
-	public void removePublicVisibility(
-			FunctionalizingEntity functionalizingEntity) throws Exception {
-		if (functionalizingEntity != null) {
-			authService.removePublicVisibility(functionalizingEntity.getId()
-					.toString());
-			// functionalizingEntityCollection.functionCollection
-			Collection<Function> functionCollection = functionalizingEntity
-					.getFunctionCollection();
-			if (functionCollection != null) {
-				for (Function function : functionCollection) {
-					if (function != null) {
-						authService.removePublicVisibility(function.getId()
-								.toString());
-						if (function instanceof TargetingFunction) {
-							for (Target target : ((TargetingFunction) function)
-									.getTargetCollection()) {
-								authService.assignPublicVisibility(target
-										.getId().toString());
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public void removePublicVisibility(ChemicalAssociation chemicalAssociation)
-			throws Exception {
-
-		if (chemicalAssociation != null) {
-			authService.removePublicVisibility(chemicalAssociation.getId()
-					.toString());
-			// chemicalAssociation.associatedElementA
-			if (chemicalAssociation.getAssociatedElementA() != null) {
-				authService.removePublicVisibility(chemicalAssociation
-						.getAssociatedElementA().getId().toString());
-			}
-			// chemicalAssociation.associatedElementB
-			if (chemicalAssociation.getAssociatedElementB() != null) {
-				authService.removePublicVisibility(chemicalAssociation
-						.getAssociatedElementB().getId().toString());
 			}
 		}
 	}

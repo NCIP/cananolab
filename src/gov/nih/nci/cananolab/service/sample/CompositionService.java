@@ -7,6 +7,7 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.CompositionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
@@ -22,22 +23,22 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
  *
  */
 public interface CompositionService {
-	public void saveNanomaterialEntity(Sample particleSample,
+	public void saveNanomaterialEntity(SampleBean sampleBean,
 			NanomaterialEntityBean entityBean, UserBean user)
 			throws CompositionException, NoAccessException;
 
 	public NanomaterialEntityBean findNanomaterialEntityById(String entityId,
 			UserBean user) throws CompositionException, NoAccessException;
 
-	public void saveFunctionalizingEntity(Sample particleSample,
+	public void saveFunctionalizingEntity(SampleBean sampleBean,
 			FunctionalizingEntityBean entityBean, UserBean user)
 			throws CompositionException, NoAccessException;
 
-	public void saveChemicalAssociation(Sample particleSample,
+	public void saveChemicalAssociation(SampleBean sampleBean,
 			ChemicalAssociationBean assocBean, UserBean user)
 			throws CompositionException, NoAccessException;
 
-	public void saveCompositionFile(Sample particleSample, FileBean fileBean,
+	public void saveCompositionFile(SampleBean sampleBean, FileBean fileBean,
 			UserBean user) throws CompositionException, NoAccessException;
 
 	public FunctionalizingEntityBean findFunctionalizingEntityById(
@@ -69,29 +70,29 @@ public interface CompositionService {
 	 * Copy and save a nanomaterial entity from one sample to other samples
 	 *
 	 * @param entityBean
-	 * @param oldSample
-	 * @param newSamples
+	 * @param oldSampleBean
+	 * @param newSampleBeans
 	 * @param user
 	 * @throws CompositionException
 	 * @throws NoAccessException
 	 */
 	public void copyAndSaveNanomaterialEntity(
-			NanomaterialEntityBean entityBean, Sample oldSample,
-			Sample[] newSamples, UserBean user) throws CompositionException,
+			NanomaterialEntityBean entityBean, SampleBean oldSampleBean,
+			SampleBean[] newSampleBeans, UserBean user) throws CompositionException,
 			NoAccessException;
 
 	/**
 	 * Copy and save a functionalizing entity from one sample to other samples
 	 *
 	 * @param entityBean
-	 * @param oldSample
-	 * @param newSamples
+	 * @param oldSampleBean
+	 * @param newSampleBeans
 	 * @param user
 	 * @throws CompositionException
 	 * @throws NoAccessException
 	 */
 	public void copyAndSaveFunctionalizingEntity(
-			FunctionalizingEntityBean entityBean, Sample oldSample,
-			Sample[] newSamples, UserBean user) throws CompositionException,
+			FunctionalizingEntityBean entityBean, SampleBean oldSampleBean,
+			SampleBean[] newSampleBeans, UserBean user) throws CompositionException,
 			NoAccessException;
 }

@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.service.sample;
 
-import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -79,9 +78,6 @@ public interface SampleService {
 
 	public PointOfContactBean findPointOfContactById(String pocId, UserBean user)
 			throws PointOfContactException, NoAccessException;
-
-	public SortedSet<PointOfContact> findAllPointOfContacts()
-			throws PointOfContactException;
 
 	public List<PointOfContactBean> findPointOfContactsBySampleId(
 			String sampleId) throws PointOfContactException;

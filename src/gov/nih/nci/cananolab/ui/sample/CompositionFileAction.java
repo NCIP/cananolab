@@ -50,7 +50,7 @@ public class CompositionFileAction extends BaseAnnotationAction {
 
 		theFile.setupDomainFile(internalUriPath, user.getLoginName(), 0);
 		CompositionService service = new CompositionServiceLocalImpl();
-		service.saveCompositionFile(sampleBean.getDomain(), theFile, user);
+		service.saveCompositionFile(sampleBean, theFile, user);
 		ActionMessages msgs = new ActionMessages();
 		ActionMessage msg = new ActionMessage("message.addCompositionFile",
 				theFile.getDomainFile().getTitle());
@@ -58,7 +58,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect composition file after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript", "showSummary('4', 4)");
+		request.getSession().setAttribute("onloadJavascript",
+				"showSummary('4', 4)");
 		return mapping.findForward("success");
 	}
 
@@ -99,7 +100,8 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		FileBean fileBean = (FileBean) theForm.get("compFile");
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		CompositionService compService = new CompositionServiceLocalImpl();
 		compService.deleteCompositionFile(sampleBean.getDomain(), fileBean
 				.getDomainFile(), user);

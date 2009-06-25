@@ -68,7 +68,9 @@ public class SampleBean {
 			primaryPOCBean = new PointOfContactBean(primaryPOC);
 			// TODO sort other pocs
 			for (PointOfContact poc : domain.getOtherPointOfContactCollection()) {
-				otherPOCBeans.add(new PointOfContactBean(poc));
+				PointOfContactBean pocBean=new PointOfContactBean(poc);
+				pocBean.setPrimaryStatus(false);
+				otherPOCBeans.add(pocBean);
 			}
 		}
 		if (sample.getSampleComposition() != null

@@ -15,9 +15,9 @@ import gov.nih.nci.cananolab.exception.SecurityException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.BaseAnnotationAction;
-import gov.nih.nci.cananolab.ui.core.InitSetup;
 import gov.nih.nci.cananolab.ui.security.InitSecuritySetup;
 import gov.nih.nci.cananolab.util.Constants;
+import gov.nih.nci.cananolab.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +51,8 @@ public class SampleAction extends BaseAnnotationAction {
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		saveSample(request, sampleBean);
-		return summaryEdit(mapping, form, request, response);
+		request.getSession().setAttribute("updateSample", "true");
+		return mapping.findForward("summaryEdit");
 	}
 
 	private void saveSample(HttpServletRequest request, SampleBean sampleBean)
@@ -105,9 +106,10 @@ public class SampleAction extends BaseAnnotationAction {
 			return summaryView(mapping, form, request, response);
 		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
-		String location = (String) getValueFromRequest(request,
-				Constants.LOCATION);
-
+		String location = theForm.getString(Constants.LOCATION);
+		if (StringUtils.isEmpty(location)) {
+			location = Constants.LOCAL_SITE;
+		}
 		// "setupSample()" will retrieve and return the SampleBean.
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
@@ -151,13 +153,9 @@ public class SampleAction extends BaseAnnotationAction {
 	 */
 	private void setupLookups(HttpServletRequest request, String sampleOrg)
 			throws Exception {
-		InitSampleSetup.getInstance().getAllPointOfContacts(request);
 		InitSecuritySetup.getInstance().getAllVisibilityGroupsWithoutOrg(
 				request, sampleOrg);
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		InitPOCSetup.getInstance().getAllOrganizationNames(request, user);
-		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
-				"contactRoles", "PointOfContact", "role", "otherRole", true);
+		InitSampleSetup.getInstance().setPOCDropdowns(request);
 	}
 
 	public ActionForward savePointOfContact(ActionMapping mapping,
@@ -175,8 +173,11 @@ public class SampleAction extends BaseAnnotationAction {
 		if (updateSample == null) {
 			forward = mapping.getInputForward();
 		} else {
-			forward = summaryEdit(mapping, form, request, response);
+			// forward = summaryEdit(mapping, form, request, response);
+			forward = mapping.findForward("summaryEdit");
 		}
+		InitSampleSetup.getInstance().persistPOCDropdowns(request,
+				sample.getDomain());
 		return forward;
 	}
 

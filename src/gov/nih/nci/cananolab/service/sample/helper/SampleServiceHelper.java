@@ -14,7 +14,6 @@ import gov.nih.nci.cananolab.domain.particle.NanomaterialEntity;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -27,7 +26,6 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -695,61 +693,6 @@ public class SampleServiceHelper {
 
 	public AuthorizationService getAuthService() {
 		return authService;
-	}
-
-	public void assignVisibility(SampleBean sampleBean) throws Exception {
-		// assign visibility for sample
-		String orgName = sampleBean.getPrimaryPOCBean().getDomain()
-				.getOrganization().getName();
-		authService.assignVisibility(sampleBean.getDomain().getName(),
-				sampleBean.getVisibilityGroups(), orgName);
-		// assign visibility for primary POC
-		authService.assignVisibility(sampleBean.getPrimaryPOCBean().getDomain()
-				.getId().toString(), sampleBean.getPrimaryPOCBean()
-				.getVisibilityGroups(), orgName);
-		// assign visibility for other POCs
-		for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
-			String org = pocBean.getDomain().getOrganization().getName();
-			// assign visibility for primary POC
-			authService.assignVisibility(
-					pocBean.getDomain().getId().toString(), sampleBean
-							.getPrimaryPOCBean().getVisibilityGroups(), org);
-		}
-		// assign associated public visibility
-		Sample sample = sampleBean.getDomain();
-		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
-		CompositionServiceHelper compHelper = new CompositionServiceHelper();
-		Collection<Characterization> characterizationCollection = sample
-				.getCharacterizationCollection();
-		String[] visibleGroups = sampleBean.getVisibilityGroups();
-
-		// if containing public group, assign associated public visibility
-		// otherwise remove associated public visibility
-		if (Arrays.asList(visibleGroups).contains(Constants.CSM_PUBLIC_GROUP)) {
-			// characterizations
-			if (characterizationCollection != null) {
-
-				for (Characterization aChar : characterizationCollection) {
-					charHelper.assignPublicVisibility(aChar);
-				}
-			}
-			// sampleComposition
-			if (sample.getSampleComposition() != null) {
-				compHelper
-						.assignPublicVisibility(sample.getSampleComposition());
-			}
-		} else {
-			// remove associated public visibility
-			if (characterizationCollection != null) {
-				for (Characterization aChar : characterizationCollection) {
-					charHelper.removePublicVisibility(aChar);
-				}
-			}
-			if (sample.getSampleComposition() != null) {
-				compHelper
-						.removePublicVisibility(sample.getSampleComposition());
-			}
-		}
 	}
 
 	public Integer[] convertToFunctionalizingEntityClassOrderNumber(

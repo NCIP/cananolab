@@ -1,6 +1,5 @@
 package gov.nih.nci.cananolab.ui.sample;
 
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
@@ -44,7 +43,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 
 	// Partial URL for downloading characterization report file.
 	public static final String DOWNLOAD_URL = "?dispatch=download&location=";
-	
+
 	/**
 	 * Add or update the data to database
 	 *
@@ -210,22 +209,6 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		return includePage;
 	}
 
-	private void saveToOtherSamples(HttpServletRequest request,
-			CharacterizationBean copyBean, UserBean user, String sampleName,
-			Sample[] otherSamples) throws Exception {
-		CharacterizationService charService = new CharacterizationServiceLocalImpl();
-		for (Sample sample : otherSamples) {
-			// replace file URI with new sample name
-			for (FindingBean findingBean : copyBean.getFindings()) {
-				for (FileBean fileBean : findingBean.getFiles()) {
-					fileBean.getDomainFile().getUri().replace(sampleName,
-							sample.getName());
-				}
-			}
-			charService.saveCharacterization(sample, copyBean, user);
-		}
-	}
-
 	private void setupDomainChar(HttpServletRequest request,
 			DynaValidatorForm theForm, CharacterizationBean charBean)
 			throws Exception {
@@ -321,15 +304,15 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		setupDomainChar(request, theForm, charBean);
 		CharacterizationService charService = new CharacterizationServiceLocalImpl();
-		charService
-				.saveCharacterization(sampleBean.getDomain(), charBean, user);
+		charService.saveCharacterization(sampleBean, charBean, user);
 
 		// save to other samples
-		Sample[] otherSamples = prepareCopy(request, theForm);
-		if (otherSamples != null) {
+		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
+				sampleBean);
+		if (otherSampleBeans != null) {
 			Boolean copyData = (Boolean) theForm.get("copyData");
-			charService.copyAndSaveCharacterization(charBean, sampleBean
-					.getDomain(), otherSamples, copyData, user);
+			charService.copyAndSaveCharacterization(charBean, sampleBean,
+					otherSampleBeans, copyData, user);
 		}
 		sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
 		request.setAttribute("sampleId", sampleBean.getDomain().getId());
@@ -384,9 +367,9 @@ public class CharacterizationAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//if session is expired or the url is clicked on directly
+		// if session is expired or the url is clicked on directly
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user==null) {
+		if (user == null) {
 			return summaryView(mapping, form, request, response);
 		}
 		// Prepare data.
@@ -475,13 +458,13 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
 		} else {
-			String serviceUrl = 
-				InitSetup.getInstance().getGridServiceUrl(request, location);
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
 			service = new CharacterizationServiceRemoteImpl(serviceUrl);
 		}
-		List<CharacterizationBean> charBeans = 
-			service.findCharacterizationsBySampleId(sampleId, user);
-		
+		List<CharacterizationBean> charBeans = service
+				.findCharacterizationsBySampleId(sampleId, user);
+
 		// set characterization types and retrieve visibility
 		for (CharacterizationBean charBean : charBeans) {
 			InitCharacterizationSetup.getInstance().setCharacterizationType(
@@ -489,8 +472,8 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			InitCharacterizationSetup.getInstance().setCharacterizationName(
 					request, charBean);
 		}
-		CharacterizationSummaryViewBean summaryView = 
-			new CharacterizationSummaryViewBean(charBeans);
+		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
+				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
@@ -567,17 +550,17 @@ public class CharacterizationAction extends BaseAnnotationAction {
 			}
 		}
 
-		String fileName = ExportUtils.getExportFileName(
-			sampleBean.getDomain().getName(), "CharacterizationSummaryView", type);
+		String fileName = ExportUtils.getExportFileName(sampleBean.getDomain()
+				.getName(), "CharacterizationSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(request.getRequestURL().toString());
 		sb.append(DOWNLOAD_URL);
 		sb.append(request.getParameter(location));
 
-		CharacterizationServiceHelper.exportSummary(charSummaryBean, sb.toString(),
-				response.getOutputStream());
+		CharacterizationServiceHelper.exportSummary(charSummaryBean, sb
+				.toString(), response.getOutputStream());
 
 		return null;
 	}
@@ -592,7 +575,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		configBean.setupDomain(user.getLoginName());
 		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveExperimentConfig(configBean, user);
+		service.saveExperimentConfig(null, configBean, user);
 		achar.addExperimentConfig(configBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);
@@ -645,7 +628,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		findingBean.setupDomain(user.getLoginName());
 		CharacterizationService service = new CharacterizationServiceLocalImpl();
-		service.saveFinding(findingBean, user);
+		service.saveFinding(null, findingBean, user);
 		achar.addFinding(findingBean);
 		InitCharacterizationSetup.getInstance()
 				.persistCharacterizationDropdowns(request, achar);

@@ -437,11 +437,6 @@ public class SampleServiceRemoteImpl implements SampleService {
 		throw new PointOfContactException("Not implemented for grid service");
 	}
 
-	public SortedSet<PointOfContact> findAllPointOfContacts()
-			throws PointOfContactException {
-		throw new PointOfContactException("Not implemented for grid service");
-	}
-
 	public List<PointOfContactBean> findPointOfContactsBySampleId(
 			String sampleId) throws PointOfContactException {
 		throw new PointOfContactException("Not implemented for grid service");

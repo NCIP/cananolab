@@ -64,7 +64,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		// to preselect chemical association after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript", "showSummary('3', 4)");
+		request.getSession().setAttribute("onloadJavascript",
+				"showSummary('3', 4)");
 		return mapping.findForward("success");
 	}
 
@@ -121,7 +122,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			DynaValidatorForm theForm, ChemicalAssociationBean assocBean)
 			throws Exception {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"
@@ -150,8 +152,7 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 			this.saveErrors(request, msgs);
 		}
 		CompositionService compService = new CompositionServiceLocalImpl();
-		compService.saveChemicalAssociation(sampleBean.getDomain(), assocBean,
-				user);
+		compService.saveChemicalAssociation(sampleBean, assocBean, user);
 
 		Boolean hasFunctionalizingEntity = (Boolean) request.getSession()
 				.getAttribute("hasFunctionalizingEntity");
@@ -406,7 +407,8 @@ public class ChemicalAssociationAction extends BaseAnnotationAction {
 				.get("assoc");
 
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		SampleBean sampleBean = setupSample(theForm, request, Constants.LOCAL_SITE, false);
+		SampleBean sampleBean = setupSample(theForm, request,
+				Constants.LOCAL_SITE, false);
 		// setup domainFile uri for fileBeans
 		String internalUriPath = Constants.FOLDER_PARTICLE
 				+ "/"

@@ -87,7 +87,7 @@ public class CharacterizationServiceHelper {
 	public static final String CONCENTRATION = "Critical Concentration";
 	public static final String SURFACE = "Surface";
 	public static final String IS_HYDROPHOBIC = "Is Hydrophobic?";
-	
+
 	// FILE_ID for constructing file down load URL.
 	public static final String FILE_ID = "fileId";
 
@@ -154,7 +154,6 @@ public class CharacterizationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
-		crit.setFetchMode("sample", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection.fileCollection", FetchMode.JOIN);
 		crit.setFetchMode("findingCollection.fileCollection.keywordCollection",
@@ -166,9 +165,8 @@ public class CharacterizationServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			Characterization achar = (Characterization) result.get(0);
-			// check whether user has access to the sample
-			if (authService.checkReadPermission(user, achar.getSample()
-					.getName())) {
+			// check whether user has access to the characterization
+			if (authService.checkReadPermission(user, achar.getId().toString())) {
 				findings.addAll(achar.getFindingCollection());
 				return findings;
 			} else {
@@ -186,7 +184,6 @@ public class CharacterizationServiceHelper {
 		DetachedCriteria crit = DetachedCriteria.forClass(
 				Characterization.class).add(
 				Property.forName("id").eq(new Long(charId)));
-		crit.setFetchMode("sample", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection", FetchMode.JOIN);
 		crit.setFetchMode("experimentConfigCollection.technique",
 				FetchMode.JOIN);
@@ -195,9 +192,8 @@ public class CharacterizationServiceHelper {
 		List result = appService.query(crit);
 		if (!result.isEmpty()) {
 			Characterization achar = (Characterization) result.get(0);
-			// check whether user has access to the sample
-			if (authService.checkReadPermission(user, achar.getSample()
-					.getName())) {
+			// check whether user has access to the characterization
+			if (authService.checkReadPermission(user, achar.getId().toString())) {
 				configs.addAll(achar.getExperimentConfigCollection());
 				return configs;
 			} else {
@@ -242,8 +238,9 @@ public class CharacterizationServiceHelper {
 	 * @param out
 	 * @throws IOException
 	 */
-	public static void exportSummary(CharacterizationSummaryViewBean summaryBean,
-			String downloadURL, OutputStream out) throws IOException {
+	public static void exportSummary(
+			CharacterizationSummaryViewBean summaryBean, String downloadURL,
+			OutputStream out) throws IOException {
 		if (out != null) {
 			HSSFWorkbook wb = new HSSFWorkbook();
 			outputSummarySheet(summaryBean, downloadURL, wb);
@@ -262,8 +259,8 @@ public class CharacterizationServiceHelper {
 	 * @throws IOException
 	 */
 	private static void outputSummarySheet(
-			CharacterizationSummaryViewBean summaryBean,
-			String downloadURL, HSSFWorkbook wb) throws IOException {
+			CharacterizationSummaryViewBean summaryBean, String downloadURL,
+			HSSFWorkbook wb) throws IOException {
 		HSSFFont headerFont = wb.createFont();
 		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
 		HSSFCellStyle headerStyle = wb.createCellStyle();
@@ -289,16 +286,14 @@ public class CharacterizationServiceHelper {
 						+ charBean.getCharacterizationName());
 
 				// 1. Output Characterization type at (0, 0).
-				rowIndex = outputHeader(charBean, sheet, headerStyle,
-						rowIndex);
+				rowIndex = outputHeader(charBean, sheet, headerStyle, rowIndex);
 
 				// 2. Output Assay Type (2, 0).
 				rowIndex = outputAssayType(charBean, sheet, headerStyle,
 						rowIndex);
 
 				// 3. Output POC at (3, 0).
-				rowIndex = outputPOC(charBean, sheet, headerStyle,
-						rowIndex);
+				rowIndex = outputPOC(charBean, sheet, headerStyle, rowIndex);
 
 				// 4. Output Characterization Date at (4, 0).
 				rowIndex = outputCharDate(charBean, sheet, headerStyle,
@@ -317,8 +312,8 @@ public class CharacterizationServiceHelper {
 						headerStyle, rowIndex);
 
 				// 8. Output Technique and Instruments at (8, 0).
-				rowIndex = outputTechInstruments(charBean, sheet,
-						headerStyle, rowIndex);
+				rowIndex = outputTechInstruments(charBean, sheet, headerStyle,
+						rowIndex);
 
 				// 9. Output Characterization Results at (9, 0).
 				rowIndex = outputCharResults(charBean, downloadURL, wb, sheet,
@@ -339,8 +334,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputHeader(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputHeader(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 1. Output Characterization type at (0, 0).
 		HSSFRow row = sheet.createRow(rowIndex++);
 		ExportUtils.createCell(row, 0, headerStyle, charBean
@@ -364,8 +359,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputAssayType(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputAssayType(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		Characterization charactization = (Characterization) charBean
 				.getDomainChar();
 
@@ -394,8 +389,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputPOC(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputPOC(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 4. Output POC at (3, 0).
 		if (!StringUtils.isEmpty(charBean.getPocBean().getDisplayName())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -414,8 +409,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputCharDate(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputCharDate(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 5. Output Characterization Date at (4, 0).
 		if (!StringUtils.isEmpty(charBean.getDateString())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -433,8 +428,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputProtocol(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputProtocol(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 6. Output Protocol at (6, 0).
 		if (!StringUtils.isEmpty(charBean.getProtocolBean().getDisplayName())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -465,8 +460,8 @@ public class CharacterizationServiceHelper {
 					.getInstance().getDetailPage(charBean.getDomainChar());
 			if (!StringUtils.isEmpty(detailPage)) {
 				if (detailPage.indexOf(CYTOTOXICITY) != -1) {
-					rowIndex = outputCytotoxicity(charBean, sheet,
-							headerStyle, rowIndex);
+					rowIndex = outputCytotoxicity(charBean, sheet, headerStyle,
+							rowIndex);
 				} else if (detailPage.indexOf(ENZYMEINDUCTION) != -1) {
 					rowIndex = outputEnzymeInduction(charBean, sheet,
 							headerStyle, rowIndex);
@@ -477,8 +472,8 @@ public class CharacterizationServiceHelper {
 					rowIndex = outputShape(charBean, sheet, headerStyle,
 							rowIndex);
 				} else if (detailPage.indexOf(SOLUBILITY) != -1) {
-					rowIndex = outputSolubility(charBean, sheet,
-							headerStyle, rowIndex);
+					rowIndex = outputSolubility(charBean, sheet, headerStyle,
+							rowIndex);
 				} else if (detailPage.indexOf(SURFACE) != -1) {
 					rowIndex = outputSurface(charBean, sheet, headerStyle,
 							rowIndex);
@@ -560,8 +555,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputShape(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputShape(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7d. Output Shape Info.
 		if (!StringUtils.isEmpty(charBean.getShape().getType())) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -628,8 +623,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputSurface(CharacterizationBean charBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputSurface(CharacterizationBean charBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 		// 7f. Output Solubility Info.
 		if (charBean.getSurface().getIsHydrophobic() != null) {
 			HSSFRow row = sheet.createRow(rowIndex++);
@@ -738,8 +733,7 @@ public class CharacterizationServiceHelper {
 						headerStyle, hlinkStyle, rowIndex);
 
 				// 9b. Output Characterization Datum Results.
-				outputDatumResult(findingBean, sheet, headerStyle,
-						rowIndex);
+				outputDatumResult(findingBean, sheet, headerStyle, rowIndex);
 			}
 		}
 		return rowIndex;
@@ -767,14 +761,14 @@ public class CharacterizationServiceHelper {
 			ExportUtils.createCell(row, 0, headerStyle, FILES);
 			for (FileBean fileBean : files) {
 				row = sheet.createRow(rowIndex++);
-				
+
 				// Construct the URL for downloading the file.
 				StringBuilder sb = new StringBuilder(downloadURL);
 				sb.append('&').append(FILE_ID).append('=');
 				sb.append(fileBean.getDomainFile().getId());
 				if (fileBean.getDomainFile().getUriExternal().booleanValue()) {
-					ExportUtils.createCell(row, 0, hlinkStyle, 
-							fileBean.getDomainFile().getUri(), sb.toString());
+					ExportUtils.createCell(row, 0, hlinkStyle, fileBean
+							.getDomainFile().getUri(), sb.toString());
 				} else if (fileBean.isImage()) {
 					sb.setLength(0);
 					sb.append(fileRoot).append(java.io.File.separator);
@@ -786,16 +780,18 @@ public class CharacterizationServiceHelper {
 							rowIndex = ExportUtils.createImage(rowIndex,
 									(short) 0, filePath, wb, sheet);
 						} catch (Exception e) {
-							logger.error(
-									"Error exporting Characterization image data.", e);
+							logger
+									.error(
+											"Error exporting Characterization image data.",
+											e);
 						}
 					} else {
 						logger.error("Characterization image file not exists: "
 								+ filePath);
 					}
 				} else {
-					ExportUtils.createCell(row, 0, hlinkStyle, fileBean.getDomainFile().getTitle(),
-							sb.toString());
+					ExportUtils.createCell(row, 0, hlinkStyle, fileBean
+							.getDomainFile().getTitle(), sb.toString());
 				}
 			}
 		}
@@ -810,8 +806,8 @@ public class CharacterizationServiceHelper {
 	 * @param headerStyle
 	 * @param rowIndex
 	 */
-	private static int outputDatumResult(FindingBean findingBean, HSSFSheet sheet,
-			HSSFCellStyle headerStyle, int rowIndex) {
+	private static int outputDatumResult(FindingBean findingBean,
+			HSSFSheet sheet, HSSFCellStyle headerStyle, int rowIndex) {
 
 		// Get list of Rows from findingBean.
 		List<Row> rows = findingBean.getRows();
@@ -863,12 +859,6 @@ public class CharacterizationServiceHelper {
 
 	public ExperimentConfig findExperimentConfigById(String id, UserBean user)
 			throws ExperimentConfigException, NoAccessException {
-		// check if user has access to the sample first
-		boolean accessSample = canUserAccessSample(id, user);
-		if (!accessSample) {
-			throw new NoAccessException("User can't access the sample");
-		}
-
 		ExperimentConfig config = null;
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
@@ -878,10 +868,18 @@ public class CharacterizationServiceHelper {
 					Property.forName("id").eq(new Long(id)));
 			crit.setFetchMode("technique", FetchMode.JOIN);
 			crit.setFetchMode("instrumentCollection", FetchMode.JOIN);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				config = (ExperimentConfig) obj;
+			List result = appService.query(crit);
+			if (!result.isEmpty()) {
+				config = (ExperimentConfig) result.get(0);
+				if (authService.checkReadPermission(user, config.getId()
+						.toString())) {
+					return config;
+				} else {
+					throw new NoAccessException();
+				}
 			}
+		} catch (NoAccessException e) {
+			throw e;
 		} catch (Exception e) {
 			String err = "Problem to retrieve experiment config by id.";
 			logger.error(err, e);
@@ -894,24 +892,27 @@ public class CharacterizationServiceHelper {
 		return authService;
 	}
 
-	public void assignPublicVisibility(Characterization aChar) throws Exception {
+	public void assignVisibility(Characterization aChar,
+			String[] visibleGroups, String owningGroup) throws Exception {
 		// characterization
 		if (aChar != null) {
-			authService.assignPublicVisibility(aChar.getId().toString());
+			authService.assignVisibility(aChar.getId().toString(),
+					visibleGroups, owningGroup);
 			for (Finding finding : aChar.getFindingCollection()) {
 				if (finding != null) {
-					authService.assignPublicVisibility(finding.getId()
-							.toString());
+					authService.assignVisibility(finding.getId().toString(),
+							visibleGroups, owningGroup);
 				}
 				// datum
 				for (Datum datum : finding.getDatumCollection()) {
 					if (datum != null) {
-						authService.assignPublicVisibility(datum.getId()
-								.toString());
+						authService.assignVisibility(datum.getId().toString(),
+								visibleGroups, owningGroup);
 					}
+					// condition
 					for (Condition condition : datum.getConditionCollection()) {
-						authService.assignPublicVisibility(condition.getId()
-								.toString());
+						authService.assignVisibility(condition.getId()
+								.toString(), visibleGroups, owningGroup);
 					}
 				}
 			}
@@ -919,29 +920,31 @@ public class CharacterizationServiceHelper {
 			// ExperimentConfiguration
 			for (ExperimentConfig config : aChar
 					.getExperimentConfigCollection()) {
-				authService.assignPublicVisibility(config.getId().toString());
+				authService.assignVisibility(config.getId().toString(),
+						visibleGroups, owningGroup);
 			}
 		}
 	}
 
-	public void removePublicVisibility(Characterization aChar) throws Exception {
+	public void removeVisibility(Characterization aChar) throws Exception {
 		// characterization
 		if (aChar != null) {
-			authService.removePublicVisibility(aChar.getId().toString());
+			authService.removeExistingVisibleGroups(aChar.getId().toString(),
+					Constants.CSM_READ_ROLE);
 			for (Finding finding : aChar.getFindingCollection()) {
 				if (finding != null) {
-					authService.removePublicVisibility(finding.getId()
-							.toString());
+					authService.removeExistingVisibleGroups(finding.getId()
+							.toString(), Constants.CSM_READ_ROLE);
 				}
 				// datum
 				for (Datum datum : finding.getDatumCollection()) {
 					if (datum != null) {
-						authService.removePublicVisibility(datum.getId()
-								.toString());
+						authService.removeExistingVisibleGroups(datum.getId()
+								.toString(), Constants.CSM_READ_ROLE);
 					}
 					for (Condition condition : datum.getConditionCollection()) {
-						authService.removePublicVisibility(datum.getId()
-								.toString());
+						authService.removeExistingVisibleGroups(condition
+								.getId().toString(), Constants.CSM_READ_ROLE);
 					}
 				}
 			}
@@ -949,31 +952,26 @@ public class CharacterizationServiceHelper {
 			// ExperimentConfiguration
 			for (ExperimentConfig config : aChar
 					.getExperimentConfigCollection()) {
-				authService.removePublicVisibility(config.getId().toString());
+				authService.removeExistingVisibleGroups(config.getId()
+						.toString(), Constants.CSM_READ_ROLE);
 			}
 		}
 	}
 
-	private boolean canUserAccessSample(String experimentConfigId, UserBean user) {
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			String hql = "select sample.name from sample sample where sample.characterizationCollection ";
-			HQLCriteria crit = new HQLCriteria(hql);
-			List result = appService.query(crit);
-			if (!result.isEmpty()) {
-				String sampleName = (String) result.get(0);
-				if (authService.checkReadPermission(user, sampleName)) {
-					return true;
-				} else {
-					return false;
-				}
+	public void removeVisibility(Finding finding) throws Exception {
+		authService.removeExistingVisibleGroups(finding.getId().toString(),
+				Constants.CSM_READ_ROLE);
+
+		// datum
+		for (Datum datum : finding.getDatumCollection()) {
+			if (datum != null) {
+				authService.removeExistingVisibleGroups(datum.getId()
+						.toString(), Constants.CSM_READ_ROLE);
 			}
-			// if no sample, return true
-			return true;
-		} catch (Exception e) {
-			logger.error(e);
+			for (Condition condition : datum.getConditionCollection()) {
+				authService.removeExistingVisibleGroups(condition.getId()
+						.toString(), Constants.CSM_READ_ROLE);
+			}
 		}
-		return false;
 	}
 }

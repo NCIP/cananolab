@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -19,9 +20,7 @@ import gov.nih.nci.cananolab.service.common.helper.FileServiceHelper;
 import gov.nih.nci.cananolab.service.common.impl.FileServiceLocalImpl;
 import gov.nih.nci.cananolab.service.sample.CharacterizationService;
 import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
-import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
-import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 import gov.nih.nci.system.client.ApplicationServiceProvider;
 
@@ -54,13 +53,14 @@ public class CharacterizationServiceLocalImpl implements
 	public CharacterizationServiceLocalImpl() {
 	}
 
-	public void saveCharacterization(Sample sample,
+	public void saveCharacterization(SampleBean sampleBean,
 			CharacterizationBean charBean, UserBean user)
 			throws CharacterizationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
 		try {
+			Sample sample = sampleBean.getDomain();
 			Characterization achar = charBean.getDomainChar();
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
@@ -92,15 +92,12 @@ public class CharacterizationServiceLocalImpl implements
 			}
 			appService.saveOrUpdate(achar);
 
-			// set public visibility
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			List<String> accessibleGroups = authService.getAccessibleGroups(
-					sample.getName(), Constants.CSM_READ_PRIVILEGE);
-			if (accessibleGroups != null
-					&& accessibleGroups.contains(Constants.CSM_PUBLIC_GROUP)) {
-				helper.assignPublicVisibility(charBean.getDomainChar());
-			}
+			// set visibility
+			String[] visibleGroups = sampleBean.getVisibilityGroups();
+			String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
+					.getOrganization().getName();
+			helper.assignVisibility(charBean.getDomainChar(), visibleGroups,
+					owningGroup);
 		} catch (Exception e) {
 			String err = "Problem in saving the characterization.";
 			logger.error(err, e);
@@ -118,7 +115,6 @@ public class CharacterizationServiceLocalImpl implements
 					Characterization.class).add(
 					Property.forName("id").eq(new Long(charId)));
 			// fully load characterization
-			crit.setFetchMode("sample", FetchMode.JOIN);
 			crit.setFetchMode("pointOfContact", FetchMode.JOIN);
 			crit.setFetchMode("pointOfContact.organization", FetchMode.JOIN);
 			crit.setFetchMode("protocol", FetchMode.JOIN);
@@ -151,7 +147,7 @@ public class CharacterizationServiceLocalImpl implements
 			if (!result.isEmpty()) {
 				achar = (Characterization) result.get(0);
 				if (helper.getAuthService().checkReadPermission(user,
-						achar.getSample().getName())) {
+						achar.getId().toString())) {
 					charBean = new CharacterizationBean(achar);
 					if (user != null) {
 						for (FindingBean finding : charBean.getFindings()) {
@@ -218,7 +214,7 @@ public class CharacterizationServiceLocalImpl implements
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
 			appService.delete(chara);
-			helper.removePublicVisibility(chara);
+			helper.removeVisibility(chara);
 
 		} catch (Exception e) {
 			String err = "Error deleting characterization " + chara.getId();
@@ -306,8 +302,8 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void saveFinding(FindingBean finding, UserBean user)
-			throws CharacterizationException, NoAccessException {
+	public void saveFinding(SampleBean sampleBean, FindingBean finding,
+			UserBean user) throws CharacterizationException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
@@ -335,9 +331,7 @@ public class CharacterizationServiceLocalImpl implements
 		try {
 			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
 					.getApplicationService();
-			AuthorizationService authService = new AuthorizationService(
-					Constants.CSM_APP_NAME);
-			authService.removePublicVisibility(finding.getId().toString());
+			helper.removeVisibility(finding);
 			appService.delete(finding);
 
 		} catch (Exception e) {
@@ -347,8 +341,9 @@ public class CharacterizationServiceLocalImpl implements
 		}
 	}
 
-	public void saveExperimentConfig(ExperimentConfigBean configBean,
-			UserBean user) throws ExperimentConfigException, NoAccessException {
+	public void saveExperimentConfig(SampleBean sampleBean,
+			ExperimentConfigBean configBean, UserBean user)
+			throws ExperimentConfigException, NoAccessException {
 		if (user == null || !user.isCurator()) {
 			throw new NoAccessException();
 		}
@@ -520,8 +515,9 @@ public class CharacterizationServiceLocalImpl implements
 	}
 
 	public void copyAndSaveCharacterization(CharacterizationBean charBean,
-			Sample oldSample, Sample[] newSamples, boolean copyData,
-			UserBean user) throws CharacterizationException, NoAccessException {
+			SampleBean oldSampleBean, SampleBean[] newSampleBeans,
+			boolean copyData, UserBean user) throws CharacterizationException,
+			NoAccessException {
 		CharacterizationBean copyBean = null;
 		try {
 			// create a deep copy
@@ -539,16 +535,17 @@ public class CharacterizationServiceLocalImpl implements
 			throw new CharacterizationException(error, e);
 		}
 		try {
-			for (Sample sample : newSamples) {
+			for (SampleBean sampleBean : newSampleBeans) {
 				// replace file URI with new sample name
 				for (FindingBean findingBean : copyBean.getFindings()) {
 					for (FileBean fileBean : findingBean.getFiles()) {
 						fileBean.getDomainFile().getUri().replace(
-								oldSample.getName(), sample.getName());
+								oldSampleBean.getDomain().getName(),
+								sampleBean.getDomain().getName());
 					}
 				}
 				if (copyBean != null)
-					saveCharacterization(sample, copyBean, user);
+					saveCharacterization(sampleBean, copyBean, user);
 			}
 		} catch (NoAccessException e) {
 			throw e;

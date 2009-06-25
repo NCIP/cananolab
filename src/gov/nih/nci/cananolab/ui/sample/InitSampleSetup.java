@@ -1,18 +1,16 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
-import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.service.sample.SampleService;
 import gov.nih.nci.cananolab.service.sample.impl.SampleServiceLocalImpl;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
-import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.SampleConstants;
 import gov.nih.nci.cananolab.util.SortableName;
 
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -80,23 +78,6 @@ public class InitSampleSetup {
 				.getDefaultCharacterizationTypes(request);
 	}
 
-	public SortedSet<PointOfContactBean> getAllPointOfContacts(
-			HttpServletRequest request) throws Exception {
-		SortedSet<PointOfContact> pointOfContacts = sampleService
-				.findAllPointOfContacts();
-		SortedSet<PointOfContactBean> pointOfContactBeans = null;
-		if (pointOfContacts != null && pointOfContacts.size() > 0) {
-			pointOfContactBeans = new TreeSet<PointOfContactBean>(
-					new Comparators.SamplePointOfContactBeanComparator());
-			for (PointOfContact poc : pointOfContacts) {
-				pointOfContactBeans.add(new PointOfContactBean(poc));
-			}
-		}
-		request.getSession().setAttribute("allPointOfContacts",
-				pointOfContactBeans);
-		return pointOfContactBeans;
-	}
-
 	public SortedSet<String> getAllSampleNames(HttpServletRequest request,
 			UserBean user) throws Exception {
 		SortedSet<String> sampleNames = sampleService.findAllSampleNames(user);
@@ -141,5 +122,37 @@ public class InitSampleSetup {
 		// For PubChem data sources drop-down list.
 		appContext.setAttribute("pubChemDataSources",
 				SampleConstants.PUBCHEM_DS_LIST);
+	}
+
+	public SortedSet<String> getAllOrganizationNames(
+			HttpServletRequest request, UserBean user) throws Exception {
+		SortedSet<String> organizationNames = sampleService
+				.getAllOrganizationNames(user);
+		request.getSession().setAttribute("allOrganizationNames",
+				organizationNames);
+		return organizationNames;
+	}
+
+	public void setPOCDropdowns(HttpServletRequest request) throws Exception {
+		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
+				"contactRoles", "PointOfContact", "role", "otherRole", true);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		getAllOrganizationNames(request, user);
+	}
+
+	public void persistPOCDropdowns(HttpServletRequest request, Sample sample)
+			throws Exception {
+		InitSetup.getInstance().persistLookup(request, "PointOfContact",
+				"role", "otherRole",
+				sample.getPrimaryPointOfContact().getRole());
+		if (sample.getOtherPointOfContactCollection() != null) {
+			for (PointOfContact otherPoc : sample
+					.getOtherPointOfContactCollection()) {
+				InitSetup.getInstance().persistLookup(request,
+						"PointOfContact", "role", "otherRole",
+						(otherPoc.getRole()));
+			}
+		}
+		setPOCDropdowns(request);
 	}
 }

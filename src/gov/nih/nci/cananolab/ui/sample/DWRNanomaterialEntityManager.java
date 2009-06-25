@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.particle.ComposingElement;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.NanomaterialEntityBean;
@@ -8,6 +9,7 @@ import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import org.apache.struts.validator.DynaValidatorForm;
+import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
 
@@ -47,8 +49,9 @@ public class DWRNanomaterialEntityManager {
 				.get().getSession().getAttribute("compositionForm"));
 		NanomaterialEntityBean entity = (NanomaterialEntityBean) compositionForm
 				.get("nanomaterialEntity");
-
-		ComposingElement composingElement = helper.findComposingElementById(id);
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		ComposingElement composingElement = helper.findComposingElementById(id, user);
 		ComposingElementBean composingElementBean = new ComposingElementBean(
 				composingElement);
 		// update function type based mapping stored in session

@@ -16,10 +16,10 @@ import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
+import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.exception.CharacterizationException;
 import gov.nih.nci.cananolab.exception.ExperimentConfigException;
@@ -57,7 +57,7 @@ public class CharacterizationServiceRemoteImpl implements
 		}
 	}
 
-	public void saveCharacterization(Sample sample,
+	public void saveCharacterization(SampleBean sample,
 			CharacterizationBean charBean, UserBean user)
 			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
@@ -336,7 +336,7 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void saveFinding(FindingBean finding, UserBean user)
+	public void saveFinding(SampleBean sampleBean, FindingBean finding, UserBean user)
 			throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}
@@ -346,8 +346,8 @@ public class CharacterizationServiceRemoteImpl implements
 		throw new CharacterizationException("Not implemented for grid service");
 	}
 
-	public void saveExperimentConfig(ExperimentConfigBean configBean,
-			UserBean user) throws ExperimentConfigException, NoAccessException {
+	public void saveExperimentConfig(SampleBean sampleBean,
+			ExperimentConfigBean configBean, UserBean user) throws ExperimentConfigException, NoAccessException {
 		throw new ExperimentConfigException("Not implemented for grid service");
 	}
 
@@ -357,7 +357,7 @@ public class CharacterizationServiceRemoteImpl implements
 	}
 
 	public void copyAndSaveCharacterization(CharacterizationBean charBean,
-			Sample oldSample, Sample[] newSamples, boolean copyData,
+			SampleBean oldSampleBean, SampleBean[] newSampleBeans, boolean copyData,
 			UserBean user) throws CharacterizationException, NoAccessException {
 		throw new CharacterizationException("Not implemented for grid service");
 	}

@@ -92,8 +92,8 @@ public class PublicationServiceLocalImpl implements PublicationService {
 			if (publication.getAuthorCollection() != null) {
 				for (Author author : publication.getAuthorCollection()) {
 					if (author != null) {
-						authService.assignPublicVisibility(author.getId()
-								.toString());
+						authService.assignVisibility(author.getId().toString(),
+								publicationBean.getVisibilityGroups(), null);
 					}
 				}
 			}

@@ -624,20 +624,6 @@ public class AuthorizationService {
 		}
 	}
 
-	public void removePublicVisibility(String objectName)
-			throws SecurityException {
-		try {
-			Group group = getGroup(Constants.CSM_PUBLIC_GROUP);
-			Role role = getRole(Constants.CSM_READ_ROLE);
-			ProtectionGroup pg = getProtectionGroup(objectName);
-			userManager.removeGroupRoleFromProtectionGroup(pg
-					.getProtectionGroupId().toString(), group.getGroupId()
-					.toString(), new String[] { role.getId().toString() });
-		} catch (Exception e) {
-			throw new SecurityException();
-		}
-	}
-
 	public void assignVisibility(String dataToProtect, String[] visibleGroups,
 			String owningGroup) throws SecurityException {
 		try {
@@ -662,19 +648,6 @@ public class AuthorizationService {
 							Constants.CSM_READ_ROLE);
 				}
 			}
-		} catch (Exception e) {
-			logger.error("Error in setting visibility", e);
-			throw new SecurityException();
-		}
-	}
-
-	public void assignPublicVisibility(String dataToProtect)
-			throws SecurityException {
-		try {
-			removeExistingVisibleGroups(dataToProtect, Constants.CSM_READ_ROLE);
-			// set public visibilities
-			secureObject(dataToProtect, Constants.CSM_PUBLIC_GROUP,
-					Constants.CSM_READ_ROLE);
 		} catch (Exception e) {
 			logger.error("Error in setting visibility", e);
 			throw new SecurityException();

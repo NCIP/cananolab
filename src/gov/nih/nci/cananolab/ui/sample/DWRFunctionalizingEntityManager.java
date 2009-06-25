@@ -1,6 +1,7 @@
 package gov.nih.nci.cananolab.ui.sample;
 
 import gov.nih.nci.cananolab.domain.particle.Function;
+import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionBean;
 import gov.nih.nci.cananolab.dto.particle.composition.FunctionalizingEntityBean;
 import gov.nih.nci.cananolab.dto.particle.composition.TargetBean;
@@ -8,6 +9,7 @@ import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.ui.core.InitSetup;
 
 import org.apache.struts.validator.DynaValidatorForm;
+import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.impl.DefaultWebContextBuilder;
 
@@ -43,17 +45,21 @@ public class DWRFunctionalizingEntityManager {
 	}
 
 	public FunctionBean getFunctionById(String id) throws Exception {
-		DynaValidatorForm compositionForm = (DynaValidatorForm) (WebContextFactory
-				.get().getSession().getAttribute("compositionForm"));
+		WebContext wctx = WebContextFactory.get();
+		UserBean user = (UserBean) wctx.getSession().getAttribute("user");
+		DynaValidatorForm compositionForm = (DynaValidatorForm) (wctx
+				.getSession().getAttribute("compositionForm"));
 		FunctionalizingEntityBean entity = (FunctionalizingEntityBean) compositionForm
 				.get("functionalizingEntity");
-		Function function = helper.findFunctionById(id);
+		Function function = helper.findFunctionById(id, user);
 		FunctionBean functionBean = new FunctionBean(function);
-		//update function type based mapping stored in session
+		// update function type based mapping stored in session
 		DefaultWebContextBuilder dwcb = new DefaultWebContextBuilder();
 		org.directwebremoting.WebContext webContext = dwcb.get();
-		functionBean.updateType(InitSetup.getInstance()
-				.getClassNameToDisplayNameLookup(webContext.getServletContext()));
+		functionBean
+				.updateType(InitSetup.getInstance()
+						.getClassNameToDisplayNameLookup(
+								webContext.getServletContext()));
 		entity.setTheFunction(functionBean);
 		return functionBean;
 	}

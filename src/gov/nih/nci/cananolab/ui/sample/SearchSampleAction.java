@@ -149,6 +149,8 @@ public class SearchSampleAction extends AbstractDispatchAction {
 						request, location);
 				service = new SampleServiceRemoteImpl(serviceUrl);
 			}
+			//TODO remove this
+			//service = new SampleServiceRemoteImpl("http://localhost:8080/wsrf/services/cagrid/CaNanoLabService");
 			samples = service.findSamplesBy(samplePointOfContact,
 					nanomaterialEntityClassNames.toArray(new String[0]),
 					otherNanomaterialEntityTypes.toArray(new String[0]),

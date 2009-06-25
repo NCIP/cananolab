@@ -1,7 +1,6 @@
 package gov.nih.nci.cananolab.ui.core;
 
 import gov.nih.nci.cananolab.domain.common.File;
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -51,7 +50,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	 * @param request
 	 * @param location
 	 * @return SampleBean
-	 * @throws Exception if user is not allowed to access the sample
+	 * @throws Exception
+	 *             if user is not allowed to access the sample
 	 */
 	public SampleBean setupSample(DynaValidatorForm theForm,
 			HttpServletRequest request, String location, Boolean fullSample)
@@ -75,6 +75,9 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 					request, location);
 			service = new SampleServiceRemoteImpl(serviceUrl);
 		}
+		// TODO remove this
+		// service = new SampleServiceRemoteImpl(
+		// "http://localhost:8080/wsrf/services/cagrid/CaNanoLabService");
 		SampleBean sampleBean = null;
 		if (fullSample) {
 			sampleBean = service.findFullSampleById(sampleId, user);
@@ -130,8 +133,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		String serviceUrl = null;
 		if (location.equals(Constants.LOCAL_SITE)) {
 			fileService = new FileServiceLocalImpl();
-		}
-		else {
+		} else {
 			// CQL2HQL filters out subclasses, disabled the filter
 			serviceUrl = InitSetup.getInstance().getGridServiceUrl(request,
 					location);
@@ -154,8 +156,8 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 			String remoteServerHostUrl = remoteUrl.getProtocol() + "://"
 					+ remoteUrl.getHost() + ":" + remoteUrl.getPort();
 			String remoteDownloadUrl = remoteServerHostUrl + actionPath
-					+ "?dispatch=download" + "&fileId=" + fileId
-					+ "&location="+Constants.LOCAL_SITE;
+					+ "?dispatch=download" + "&fileId=" + fileId + "&location="
+					+ Constants.LOCAL_SITE;
 			// remote URL
 			response.sendRedirect(remoteDownloadUrl);
 			return null;
@@ -192,22 +194,23 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		return null;
 	}
 
-	protected Sample[] prepareCopy(HttpServletRequest request,
-			DynaValidatorForm theForm) throws Exception {
+	protected SampleBean[] prepareCopy(HttpServletRequest request,
+			DynaValidatorForm theForm, SampleBean oldSampleBean)
+			throws Exception {
 		String[] otherSamples = (String[]) theForm.get("otherSamples");
 		if (otherSamples.length == 0) {
 			return null;
 		}
-		Sample[] samples = new Sample[otherSamples.length];
+		SampleBean[] sampleBeans = new SampleBean[otherSamples.length];
 		SampleService sampleService = new SampleServiceLocalImpl();
 		int i = 0;
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		for (String other : otherSamples) {
 			SampleBean sampleBean = sampleService.findSampleByName(other, user);
-			samples[i] = sampleBean.getDomain();
+			sampleBean.setVisibilityGroups(oldSampleBean.getVisibilityGroups());
 			i++;
 		}
-		return samples;
+		return sampleBeans;
 	}
 
 	protected boolean validateFileBean(HttpServletRequest request,
@@ -271,11 +274,11 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 		}
 		return noErrors;
 	}
-	
+
 	/**
-	 * Retrieve a value from request by name in the order of 
-	 * Parameter - Request Attribute
-	 * 
+	 * Retrieve a value from request by name in the order of Parameter - Request
+	 * Attribute
+	 *
 	 * @param request
 	 * @param name
 	 * @return

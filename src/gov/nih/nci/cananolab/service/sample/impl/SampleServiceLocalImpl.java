@@ -3,6 +3,7 @@ package gov.nih.nci.cananolab.service.sample.impl;
 import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
@@ -12,6 +13,8 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.exception.PointOfContactException;
 import gov.nih.nci.cananolab.exception.SampleException;
 import gov.nih.nci.cananolab.service.sample.SampleService;
+import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper;
+import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
@@ -22,8 +25,8 @@ import gov.nih.nci.system.client.ApplicationServiceProvider;
 import gov.nih.nci.system.query.hibernate.HQLCriteria;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -74,7 +77,8 @@ public class SampleServiceLocalImpl implements SampleService {
 			if (dbSample != null && !dbSample.getId().equals(sample.getId())) {
 				throw new DuplicateEntriesException();
 			}
-			checkForExistingPointOfContact(sample.getPrimaryPointOfContact(), user);
+			checkForExistingPointOfContact(sample.getPrimaryPointOfContact(),
+					user);
 			for (PointOfContact poc : sample.getOtherPointOfContactCollection()) {
 				checkForExistingPointOfContact(poc, user);
 			}
@@ -112,9 +116,9 @@ public class SampleServiceLocalImpl implements SampleService {
 				SampleBean fullyLoadedSampleBean = findFullSampleById(
 						sampleBean.getDomain().getId().toString(), user);
 				fullyLoadedSampleBean.setVisibilityGroups(visibilityGroups);
-				helper.assignVisibility(fullyLoadedSampleBean);
+				assignVisibility(fullyLoadedSampleBean);
 			} else {
-				helper.assignVisibility(sampleBean);
+				assignVisibility(sampleBean);
 			}
 		} catch (Exception e) {
 			throw new SampleException(
@@ -122,13 +126,14 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
-	private void checkForExistingPointOfContact(PointOfContact poc, UserBean user)
-			throws Exception {
+	private void checkForExistingPointOfContact(PointOfContact poc,
+			UserBean user) throws Exception {
 		Organization org = poc.getOrganization();
 		if (poc.getId() != null) {
 			// check if POC already exists in the database
-			PointOfContact dbPointOfContact = helper.findPointOfContactByNameAndOrg(poc
-					.getFirstName(), poc.getLastName(), org.getName(), user);
+			PointOfContact dbPointOfContact = helper
+					.findPointOfContactByNameAndOrg(poc.getFirstName(), poc
+							.getLastName(), org.getName(), user);
 			if (dbPointOfContact != null) {
 				poc.setId(dbPointOfContact.getId());
 				poc.setCreatedBy(dbPointOfContact.getCreatedBy());
@@ -136,12 +141,64 @@ public class SampleServiceLocalImpl implements SampleService {
 			}
 		}
 		// check if organization already exists in the database
-		Organization dbOrganization = helper.findOrganizationByName(org.getName(), user);
+		Organization dbOrganization = helper.findOrganizationByName(org
+				.getName(), user);
 		if (dbOrganization != null) {
 			org.setId(dbOrganization.getId());
 			org.setCreatedBy(dbOrganization.getCreatedBy());
 			org.setCreatedDate(dbOrganization.getCreatedDate());
 		}
+	}
+
+	private void assignVisibility(SampleBean sampleBean) throws Exception {
+		String[] visibleGroups = sampleBean.getVisibilityGroups();
+		String owningGroup = sampleBean.getPrimaryPOCBean().getDomain()
+				.getOrganization().getName();
+		// assign visibility for sample
+		helper.getAuthService().assignVisibility(
+				sampleBean.getDomain().getName(), visibleGroups, owningGroup);
+
+		// Primary POC
+		assignVisibility(sampleBean.getPrimaryPOCBean());
+
+		// other POC
+		for (PointOfContactBean pocBean : sampleBean.getOtherPOCBeans()) {
+			assignVisibility(pocBean);
+		}
+
+		// assign associated visibilities
+		Sample sample = sampleBean.getDomain();
+		CharacterizationServiceHelper charHelper = new CharacterizationServiceHelper();
+		CompositionServiceHelper compHelper = new CompositionServiceHelper();
+		Collection<Characterization> characterizationCollection = sample
+				.getCharacterizationCollection();
+		if (Arrays.asList(visibleGroups).contains(Constants.CSM_PUBLIC_GROUP)) {
+			// characterizations
+			if (characterizationCollection != null) {
+				for (Characterization aChar : characterizationCollection) {
+					charHelper.assignVisibility(aChar, visibleGroups,
+							owningGroup);
+				}
+			}
+			// sampleComposition
+			if (sample.getSampleComposition() != null) {
+				compHelper.assignVisibility(sample.getSampleComposition(),
+						visibleGroups, owningGroup);
+			}
+		}
+	}
+
+	private void assignVisibility(PointOfContactBean pocBean) throws Exception {
+		String[] visibleGroups = pocBean.getVisibilityGroups();
+		String owningGroup = pocBean.getDomain().getOrganization().getName();
+		// poc
+		helper.getAuthService().assignVisibility(
+				pocBean.getDomain().getId().toString(), visibleGroups,
+				owningGroup);
+		// org
+		helper.getAuthService().assignVisibility(
+				pocBean.getDomain().getOrganization().getId().toString(),
+				visibleGroups, owningGroup);
 	}
 
 	/**
@@ -263,12 +320,15 @@ public class SampleServiceLocalImpl implements SampleService {
 					.add(Property.forName("id").eq(new Long(sampleId)));
 			// characterization
 			crit.setFetchMode("characterizationCollection", FetchMode.JOIN);
-			crit.setFetchMode(
-					"characterizationCollection.derivedBioAssayDataCollection",
+			crit.setFetchMode("characterizationCollection.findingCollection",
 					FetchMode.JOIN);
 			crit
 					.setFetchMode(
-							"characterizationCollection.derivedBioAssayDataCollection.derivedDatumCollection",
+							"characterizationCollection.findingCollection.datumCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"characterizationCollection.findingCollection.datumCollection.conditionCollection",
 							FetchMode.JOIN);
 			crit.setFetchMode(
 					"characterizationCollection.experimentConfigCollection",
@@ -307,9 +367,11 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
 			crit.setFetchMode("primaryPointOfContact", FetchMode.JOIN);
-			crit.setFetchMode("primaryPointOfContact.organization", FetchMode.JOIN);
+			crit.setFetchMode("primaryPointOfContact.organization",
+					FetchMode.JOIN);
 			crit.setFetchMode("otherPointOfContactCollection", FetchMode.JOIN);
-			crit.setFetchMode("otherPointOfContactCollection.organization", FetchMode.JOIN);
+			crit.setFetchMode("otherPointOfContactCollection.organization",
+					FetchMode.JOIN);
 			crit
 					.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
@@ -491,17 +553,18 @@ public class SampleServiceLocalImpl implements SampleService {
 			PointOfContact domainPOC = pocBean.getDomain();
 			Organization domainOrg = domainPOC.getOrganization();
 			// check if POC already exists in the database
-			PointOfContact dbPointOfContact = helper.findPointOfContactByNameAndOrg(domainPOC
-					.getFirstName(), domainPOC.getLastName(), domainPOC
-					.getOrganization().getName(), user);
+			PointOfContact dbPointOfContact = helper
+					.findPointOfContactByNameAndOrg(domainPOC.getFirstName(),
+							domainPOC.getLastName(), domainPOC
+									.getOrganization().getName(), user);
 			if (dbPointOfContact != null
 					&& !dbPointOfContact.getId().equals(domainPOC.getId())) {
 				throw new DuplicateEntriesException();
 			}
 
 			// check if organization already exists in the database
-			Organization dbOrganization = helper.findOrganizationByName(domainOrg
-					.getName(), user);
+			Organization dbOrganization = helper.findOrganizationByName(
+					domainOrg.getName(), user);
 			if (dbOrganization != null) {
 				domainOrg.setId(dbOrganization.getId());
 			}
@@ -574,52 +637,6 @@ public class SampleServiceLocalImpl implements SampleService {
 		} catch (Exception e) {
 			String err = "Error in retrieving point of contact accessibility for "
 					+ pocBean.getDisplayName();
-			logger.error(err, e);
-			throw new PointOfContactException(err, e);
-		}
-	}
-
-	public void saveOrganization(Organization organization, UserBean user)
-			throws Exception {
-		if (organization != null && organization.getName() != null) {
-			Organization dbOrganization = helper.findOrganizationByName(organization
-					.getName(), user);
-			if (dbOrganization == null) {
-				organization.setId(null);
-				organization
-						.setPointOfContactCollection(new HashSet<PointOfContact>());
-				organization.setCreatedBy(user.getLoginName());
-				organization.setCreatedDate(new Date());
-				CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-						.getApplicationService();
-				appService.saveOrUpdate(organization);
-			}
-		}
-	}
-
-	/**
-	 *
-	 * @return all PointOfContacts
-	 */
-	// TODO: verify if fetching sampleCollection is necessary on all
-	// calls
-	public SortedSet<PointOfContact> findAllPointOfContacts()
-			throws PointOfContactException {
-		SortedSet<PointOfContact> pointOfContacts = new TreeSet<PointOfContact>(
-				new Comparators.SamplePointOfContactComparator());
-		try {
-			CustomizedApplicationService appService = (CustomizedApplicationService) ApplicationServiceProvider
-					.getApplicationService();
-			DetachedCriteria crit = DetachedCriteria
-					.forClass(PointOfContact.class);
-			crit.setFetchMode("organization", FetchMode.JOIN);
-			List results = appService.query(crit);
-			for (Object obj : results) {
-				pointOfContacts.add((PointOfContact) obj);
-			}
-			return pointOfContacts;
-		} catch (Exception e) {
-			String err = "Error in retrieving all point of contacts";
 			logger.error(err, e);
 			throw new PointOfContactException(err, e);
 		}

@@ -126,8 +126,9 @@ public class EndNoteXMLHandler {
 							if (author.getId() != null
 									&& author.getId().toString().trim()
 											.length() > 0) {
-								authService.assignPublicVisibility(author
-										.getId().toString());
+								authService.assignVisibility(author.getId()
+										.toString(), pubBean
+										.getVisibilityGroups(), null);
 							}
 						}
 					}

@@ -8,7 +8,6 @@ package gov.nih.nci.cananolab.ui.sample;
 
 /* CVS $Id: FunctionalizingEntityAction.java,v 1.45 2008-09-12 20:09:52 tanq Exp $ */
 
-import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.FileBean;
 import gov.nih.nci.cananolab.dto.common.UserBean;
 import gov.nih.nci.cananolab.dto.particle.SampleBean;
@@ -55,8 +54,10 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 		msgs.add(ActionMessages.GLOBAL_MESSAGE, msg);
 		// save action messages in the session so composition.do know about them
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
-		// to preselect functionalizing entity after returning to the summary page
-		request.getSession().setAttribute("onloadJavascript", "showSummary('2', 4)");
+		// to preselect functionalizing entity after returning to the summary
+		// page
+		request.getSession().setAttribute("onloadJavascript",
+				"showSummary('2', 4)");
 		return mapping.findForward("success");
 	}
 
@@ -139,16 +140,17 @@ public class FunctionalizingEntityAction extends BaseAnnotationAction {
 			this.saveErrors(request, msgs);
 		}
 
-		compositionService.saveFunctionalizingEntity(sampleBean.getDomain(),
-				entityBean, user);
+		compositionService.saveFunctionalizingEntity(sampleBean, entityBean,
+				user);
 		InitCompositionSetup.getInstance()
 				.persistFunctionalizingEntityDropdowns(request, entityBean);
 
 		// save to other samples
-		Sample[] otherSamples = prepareCopy(request, theForm);
-		if (otherSamples != null) {
+		SampleBean[] otherSampleBeans = prepareCopy(request, theForm,
+				sampleBean);
+		if (otherSampleBeans != null) {
 			compositionService.copyAndSaveFunctionalizingEntity(entityBean,
-					sampleBean.getDomain(), otherSamples, user);
+					sampleBean, otherSampleBeans, user);
 		}
 	}
 
