@@ -31,6 +31,9 @@ a.file_pk_id=c.file_pk_id
 where a.protocol_pk_id=b.protocol_pk_id
 and b.protocol_file_pk_id=c.file_pk_id;
 
+--drop protocol_file
+DROP TABLE IF EXISTS protocol_file;
+
 -- update foreign key in characterization from protocol_file_pk_id  to protocol_pk_id
 ALTER TABLE canano.characterization
  DROP FOREIGN KEY FK_characterization_protocol_file,

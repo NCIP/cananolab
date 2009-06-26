@@ -40,7 +40,7 @@ CREATE TABLE document_author
 	middle_initial VARCHAR(10) NULL,
 	PRIMARY KEY (document_author_pk_id),
 	UNIQUE (document_author_pk_id)
-) 
+)
 ;
 
 DROP TABLE IF EXISTS author_publication;
@@ -50,19 +50,19 @@ CREATE TABLE author_publication
 	publication_pk_id BIGINT NOT NULL,
 	KEY (document_author_pk_id),
 	KEY (publication_pk_id)
-) 
+)
 ;
 
-ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication 
+ALTER TABLE nanoparticle_sample_publication ADD CONSTRAINT FK_nanoparticle_sample_publication_publication
 	FOREIGN KEY (file_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_document_author 
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_document_author
 	FOREIGN KEY (document_author_pk_id) REFERENCES document_author (document_author_pk_id)
 ;
 
-ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication 
+ALTER TABLE author_publication ADD CONSTRAINT FK_author_publication_publication
 	FOREIGN KEY (publication_pk_id) REFERENCES publication (publication_pk_id)
 ;
 
@@ -75,7 +75,7 @@ DELETE from csm_protection_element
 WHERE protection_element_name = 'sample';
 
 UPDATE csm_protection_group
-SET protection_group_name = 'document' 
+SET protection_group_name = 'document'
 WHERE  protection_group_name = 'report';
 
 DELETE from csm_protection_group
@@ -89,8 +89,8 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT(20) AUTO_INCREMENT NOT NULL;
- 
- 
+
+
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','peer review article');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','review article');
 insert into `common_lookup`(`name`,`attribute`,`value`) values ('Publication','category','book chapter');
@@ -117,13 +117,18 @@ ALTER TABLE canano.common_lookup
 -- increase the molecular_formula from VARCHAR(200) to VARCHAR(500)
 ALTER TABLE canano.associated_element
  CHANGE molecular_formula molecular_formula VARCHAR(2000);
- 
+
 ALTER TABLE canano.surface_chemistry
  CHANGE molecular_formula molecular_formula VARCHAR(2000);
 
 update csm_group
 set group_name = replace(group_name,'_PI','_DataCurator')
 where group_name like '%_PI';
- 
+
+ALTER TABLE canano.lab_file
+DROP COLUMN file_extension,
+DROP COLUMN comments,
+DROP COLUMN version;
+
 -- End of script
 
