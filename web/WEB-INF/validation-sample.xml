@@ -10,6 +10,19 @@
 				<arg position="0" key="sampleForm.sampleName"
 					bundle="particle" />
 			</field>
+			<field property="sampleBean.thePOC.domain.organization.name" page="1"
+				depends="required">
+				<arg position="0"
+					key="submitPointOfContactForm.organizationName"
+					bundle="pointOfContact" />
+			</field>
+			<field property="sampleBean.thePOC.domain.organization.name" page="1"
+				depends="required"
+				indexedListProperty="otherPoc.otherPointOfContacts">
+				<arg position="0"
+					key="submitPointOfContactForm.organizationName"
+					bundle="pointOfContact" />
+			</field>
 		</form>
 		<form name="/chemicalAssociation">
 			<field property="assoc.type" page="2" depends="required">
