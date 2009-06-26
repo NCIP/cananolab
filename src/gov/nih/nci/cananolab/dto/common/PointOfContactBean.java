@@ -82,22 +82,19 @@ public class PointOfContactBean {
 	 * @return the displayName
 	 */
 	public String getDisplayName() {
-		String firstName = domain.getFirstName();
-		displayName = "";
-		if (firstName != null) {
-			displayName = firstName + " ";
+		String orgName = "";
+		if (domain.getOrganization()!=null) {
+			orgName=domain.getOrganization().getName();
 		}
-		String lastName = domain.getLastName();
-		if (lastName != null) {
-			displayName += lastName;
-		}
-		if (domain.getOrganization() != null) {
-			String orgName = domain.getOrganization().getName();
-			if (orgName != null && displayName.trim().length() > 0) {
-				displayName += " (" + orgName + ")";
-			} else {
-				displayName = orgName;
-			}
+		List<String> nameStrs = new ArrayList<String>();
+		nameStrs.add(domain.getFirstName());
+		nameStrs.add(domain.getMiddleInitial());
+		nameStrs.add(domain.getLastName());
+		String personName = StringUtils.join(nameStrs, " ");
+		if (personName.length() > 0) {
+			displayName = orgName + " (" + personName + ")";
+		} else {
+			displayName = orgName;
 		}
 		return displayName;
 	}
@@ -165,6 +162,7 @@ public class PointOfContactBean {
 			addressStrs.add(domain.getOrganization().getCity());
 			addressStrs.add(domain.getOrganization().getState());
 			addressStrs.add(domain.getOrganization().getPostalCode());
+			addressStrs.add(domain.getOrganization().getCountry());
 
 			orgStrs.add(StringUtils.join(addressStrs, " "));
 			return StringUtils.join(orgStrs, "<br>");
