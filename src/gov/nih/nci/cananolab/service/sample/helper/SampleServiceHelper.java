@@ -108,7 +108,8 @@ public class SampleServiceHelper {
 				&& functionalizingEntityClassNames.length > 0
 				|| otherFunctionalizingEntityTypes != null
 				&& otherFunctionalizingEntityTypes.length > 0) {
-			crit.createAlias("sampleComposition", "comp");
+			crit.createAlias("sampleComposition", "comp",
+					CriteriaSpecification.LEFT_JOIN);
 		}
 		// join nanomaterial entity
 		if (nanomaterialEntityClassNames != null
@@ -117,7 +118,8 @@ public class SampleServiceHelper {
 				&& otherNanomaterialEntityTypes.length > 0
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
-			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity");
+			crit.createAlias("comp.nanomaterialEntityCollection", "nanoEntity",
+					CriteriaSpecification.LEFT_JOIN);
 		}
 
 		// join functionalizing entity
@@ -128,7 +130,7 @@ public class SampleServiceHelper {
 				|| functionClassNames != null && functionClassNames.length > 0
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			crit.createAlias("comp.functionalizingEntityCollection",
-					"funcEntity");
+					"funcEntity", CriteriaSpecification.LEFT_JOIN);
 		}
 
 		// nanomaterial entity
@@ -196,9 +198,11 @@ public class SampleServiceHelper {
 				|| otherFunctionTypes != null && otherFunctionTypes.length > 0) {
 			Disjunction disjunction = Restrictions.disjunction();
 			crit.createAlias("nanoEntity.composingElementCollection",
-					"compElement").createAlias(
-					"compElement.inherentFunctionCollection", "inFunc");
-			crit.createAlias("funcEntity.functionCollection", "func");
+					"compElement", CriteriaSpecification.LEFT_JOIN)
+					.createAlias("compElement.inherentFunctionCollection",
+							"inFunc", CriteriaSpecification.LEFT_JOIN);
+			crit.createAlias("funcEntity.functionCollection", "func",
+					CriteriaSpecification.LEFT_JOIN);
 			if (functionClassNames != null && functionClassNames.length > 0) {
 				Criterion funcCrit1 = Restrictions.in("inFunc.class",
 						functionClassNames);
@@ -222,7 +226,8 @@ public class SampleServiceHelper {
 		if (characterizationClassNames != null
 				&& characterizationClassNames.length > 0 || wordList != null
 				&& wordList.length > 0) {
-			crit.createAlias("characterizationCollection", "chara");
+			crit.createAlias("characterizationCollection", "chara",
+					CriteriaSpecification.LEFT_JOIN);
 		}
 
 		// characterization
