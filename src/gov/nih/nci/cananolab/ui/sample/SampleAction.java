@@ -52,6 +52,8 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = (SampleBean) theForm.get("sampleBean");
 		saveSample(request, sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
+		sampleBean.setLocation(Constants.LOCAL_SITE);
+		request.setAttribute("theSample", sampleBean);
 		return mapping.findForward("summaryEdit");
 	}
 
@@ -175,6 +177,8 @@ public class SampleAction extends BaseAnnotationAction {
 		} else {
 			// forward = summaryEdit(mapping, form, request, response);
 			forward = mapping.findForward("summaryEdit");
+			sample.setLocation(Constants.LOCAL_SITE);
+			request.setAttribute("theSample", sample);
 		}
 		InitSampleSetup.getInstance().persistPOCDropdowns(request,
 				sample.getDomain());
