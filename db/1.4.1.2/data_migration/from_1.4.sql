@@ -171,7 +171,6 @@ and (activation_effect = null or activation_effect = ' ' )
 
 ALTER TABLE canano.lab_file
 DROP COLUMN file_extension,
-DROP COLUMN comments,
-DROP COLUMN version;
+DROP COLUMN comments;
 
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

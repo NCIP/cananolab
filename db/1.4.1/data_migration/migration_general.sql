@@ -127,8 +127,7 @@ where group_name like '%_PI';
 
 ALTER TABLE canano.lab_file
 DROP COLUMN file_extension,
-DROP COLUMN comments,
-DROP COLUMN version;
+DROP COLUMN comments;
 
 -- End of script
 
