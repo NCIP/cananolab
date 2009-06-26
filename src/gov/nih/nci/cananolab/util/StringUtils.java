@@ -46,29 +46,8 @@ public class StringUtils {
 		if (stringArray == null || stringArray.length == 0) {
 			return joinedStr;
 		}
-		
-		StringBuilder sb = new StringBuilder();
-		String str = null;
-		for (int i = 0; i < stringArray.length; i++) {
-			str = stringArray[i];
-			if (str == null) {
-				str = "";
-			} else if (str.length() > 0) {
-				if (i < stringArray.length - 1) {
-					sb.append(str);
-					sb.append(delimiter);
-					// joinedStr += str + delimiter;
-				} else {
-					sb.append(str);
-					// joinedStr += str;
-				}
-			}
-		}
-		joinedStr = sb.toString();
-		if (joinedStr.endsWith(delimiter)) {
-			joinedStr = joinedStr.substring(0, joinedStr.length() - 1);
-		}
-		return joinedStr;
+		List<String> stringList = Arrays.asList(stringArray);
+		return join(stringList, delimiter);
 	}
 
 	public static String join(Collection<String> stringList, String delimiter) {
@@ -76,17 +55,22 @@ public class StringUtils {
 		if (stringList == null || stringList.isEmpty()) {
 			return joinedStr;
 		}
-		
+		// remove empty items
+		Collection<String> modList = new ArrayList<String>(stringList);
+		for (String str : modList) {
+			if (isEmpty(str)) {
+				stringList.remove(str);
+			}
+		}
+
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (String str : stringList) {
 			if (i < stringList.size() - 1) {
-				if (str != null && str.length() > 0)
-					sb.append(str);
+				sb.append(str);
 				sb.append(delimiter);
 			} else {
-				if (str != null && str.length() > 0)
-					sb.append(str);
+				sb.append(str);
 			}
 			i++;
 		}
@@ -330,7 +314,7 @@ public class StringUtils {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return true for Null or empty string, false otherwise.
 	 */
