@@ -10,7 +10,7 @@
 			<td>
 				<h4>
 					${fn:toUpperCase(location)} Sample
-					${theSample.domain.name}
+					${theSample.domain.name} Composition
 				</h4>
 			</td>
 			<td align="right" width="15%">
