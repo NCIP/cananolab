@@ -4,6 +4,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<c:if test="${not empty sampleBean}">
+	<table width="100%" align="center">
+		<tr>
+			<td>
+				<h4>
+					${fn:toUpperCase(location)} Sample
+					${sampleBean.domain.name}
+				</h4>
+			</td>
+			<td align="right" width="15%">
+				<jsp:include page="/helpGlossary.jsp">
+					<jsp:param name="topic" value="manage_nanoparticles_help" />
+					<jsp:param name="glossaryTopic" value="glossary_help" />
+				</jsp:include>
+			</td>
+		</tr>
+	</table>
+</c:if>
 <jsp:include page="/bodyMessage.jsp?bundle=particle" />
 <div class="animatedtabs" id="summaryTabALL">
 	<ul>

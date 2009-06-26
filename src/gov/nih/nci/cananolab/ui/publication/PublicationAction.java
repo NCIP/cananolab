@@ -548,17 +548,27 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString(Constants.LOCATION);
-		setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		PublicationService publicationService = new PublicationServiceLocalImpl();
-		List<PublicationBean> publications = publicationService
-				.findPublicationsBySampleId(sampleId, user);
-		PublicationSummaryViewBean summaryView = new PublicationSummaryViewBean(
-				publications);
+		
+		PublicationService publicationService = null;
+		if (Constants.LOCAL_SITE.equals(location)) {
+			publicationService = new PublicationServiceLocalImpl();
+		} else {
+			 String serviceUrl = 
+				 InitSetup.getInstance().getGridServiceUrl(request, location);
+			 publicationService = new PublicationServiceRemoteImpl(serviceUrl);
+		}
+		List<PublicationBean> publications = 
+			publicationService.findPublicationsBySampleId(sampleId, user);
+		PublicationSummaryViewBean summaryView = 
+			new PublicationSummaryViewBean(publications);
 		request.setAttribute("publicationSummaryView", summaryView);
+		request.setAttribute("sampleBean", sampleBean); //For displaying sample name.
+		
 		if (request.getParameter("clearTab") != null
 				&& request.getParameter("clearTab").equals("true")) {
 			request.getSession().removeAttribute("onloadJavascript");

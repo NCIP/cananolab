@@ -12,6 +12,22 @@
 			.setAttribute("compositionSections", compositionSections);
 %>
 
+<table width="100%" align="center">
+	<tr>
+		<td>
+			<h4>
+				${fn:toUpperCase(location)} Sample
+				${compositionForm.map.comp.domain.sample.name}
+			</h4>
+		</td>
+		<td align="right" width="15%">
+			<jsp:include page="/helpGlossary.jsp">
+				<jsp:param name="topic" value="manage_nanoparticles_help" />
+				<jsp:param name="glossaryTopic" value="glossary_help" />
+			</jsp:include>
+		</td>
+	</tr>
+</table>
 <c:set var="sectionTitles" value="" />
 <jsp:include page="/bodyMessage.jsp?bundle=particle" />
 <div class="animatedtabs" id="summaryTabALL">

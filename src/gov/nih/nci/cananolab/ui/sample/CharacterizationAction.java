@@ -453,7 +453,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
 		String sampleId = theForm.getString(SampleConstants.SAMPLE_ID);
 		String location = theForm.getString(Constants.LOCATION);
-		setupSample(theForm, request, location, false);
+		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		CharacterizationService service = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			service = new CharacterizationServiceLocalImpl();
@@ -475,6 +475,7 @@ public class CharacterizationAction extends BaseAnnotationAction {
 		CharacterizationSummaryViewBean summaryView = new CharacterizationSummaryViewBean(
 				charBeans);
 		request.setAttribute("characterizationSummaryView", summaryView);
+		request.setAttribute("sampleBean", sampleBean); //For displaying sample name.
 		InitCharacterizationSetup.getInstance().setCharactierizationDropDowns(
 				request, sampleId);
 		if (request.getParameter("clearTab") != null
