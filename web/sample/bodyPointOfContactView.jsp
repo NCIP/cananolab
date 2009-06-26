@@ -34,7 +34,7 @@
 				${primaryPOC.organizationDisplayName}
 			</td>
 			<td>
-				${primaryPoc.domain.role}
+				${primaryPOC.domain.role}
 			</td>
 			<c:if test="${edit eq 'true'}">
 				<td align="right">
