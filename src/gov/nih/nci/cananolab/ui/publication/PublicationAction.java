@@ -548,7 +548,7 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationForm theForm = (PublicationForm) form;
 		String sampleId = theForm.getString("sampleId");
 		String location = theForm.getString(Constants.LOCATION);
-		SampleBean sampleBean = setupSample(theForm, request, location, false);
+		setupSample(theForm, request, location, false);
 		InitSetup.getInstance().getDefaultAndOtherLookupTypes(request,
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
@@ -567,7 +567,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		PublicationSummaryViewBean summaryView = 
 			new PublicationSummaryViewBean(publications);
 		request.setAttribute("publicationSummaryView", summaryView);
-		request.setAttribute("sampleBean", sampleBean); //For displaying sample name.
 		
 		if (request.getParameter("clearTab") != null
 				&& request.getParameter("clearTab").equals("true")) {

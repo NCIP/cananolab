@@ -4,13 +4,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:if test="${not empty sampleBean}">
+<c:if test="${not empty theSample}">
 	<table width="100%" align="center">
 		<tr>
 			<td>
 				<h4>
 					${fn:toUpperCase(location)} Sample
-					${sampleBean.domain.name}
+					${theSample.domain.name}
 				</h4>
 			</td>
 			<td align="right" width="15%">

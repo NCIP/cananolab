@@ -4,22 +4,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table width="100%" align="center">
-	<tr>
-		<td>
-			<h4>
-				${fn:toUpperCase(location)} Sample
-				${compositionForm.map.comp.domain.sample.name}
-			</h4>
-		</td>
-		<td align="right" width="15%">
-			<jsp:include page="/helpGlossary.jsp">
-				<jsp:param name="topic" value="manage_nanoparticles_help" />
-				<jsp:param name="glossaryTopic" value="glossary_help" />
-			</jsp:include>
-		</td>
-	</tr>
-</table>
+<c:if test="${not empty theSample}">
+	<table width="100%" align="center">
+		<tr>
+			<td>
+				<h4>
+					${fn:toUpperCase(location)} Sample
+					${theSample.domain.name}
+				</h4>
+			</td>
+			<td align="right" width="15%">
+				<jsp:include page="/helpGlossary.jsp">
+					<jsp:param name="topic" value="manage_nanoparticles_help" />
+					<jsp:param name="glossaryTopic" value="glossary_help" />
+				</jsp:include>
+			</td>
+		</tr>
+	</table>
+</c:if>
 <c:set var="compositionSections"
 	value="${compositionForm.map.comp.compositionSections}" />
 <c:if test="${empty printView}">
