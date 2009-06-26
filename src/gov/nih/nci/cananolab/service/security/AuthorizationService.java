@@ -79,7 +79,7 @@ public class AuthorizationService {
 	 */
 	public boolean isAdmin(UserBean user) {
 		boolean adminStatus = this.authorizationManager.checkOwnership(user
-				.getUserId(), this.applicationName);
+				.getLoginName(), this.applicationName);
 		return adminStatus;
 	}
 
