@@ -116,6 +116,7 @@ public class SampleAction extends BaseAnnotationAction {
 		SampleBean sampleBean = setupSample(theForm, request, location, false);
 		theForm.set("sampleBean", sampleBean);
 		request.getSession().setAttribute("updateSample", "true");
+		setupLookups(request, null);
 		return mapping.findForward("summaryEdit");
 	}
 
