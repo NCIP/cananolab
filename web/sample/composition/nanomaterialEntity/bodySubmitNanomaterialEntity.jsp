@@ -111,7 +111,7 @@
 						test="${fn:length(compositionForm.map.nanomaterialEntity.composingElements)==0}">
 						<c:set var="newCEStyle" value="display:block" />
 					</c:if>
-					<div style="" id="newComposingElement">
+					<div style="${newCEStyle }" id="newComposingElement">
 						<c:set var="theComposingElement"
 							value="${compositionForm.map.nanomaterialEntity.theComposingElement}" />
 						<c:set var="actionName" value="nanomaterialEntity" />
