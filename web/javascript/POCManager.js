@@ -26,7 +26,7 @@ function populatePointOfContact(poc) {
 	}
 }
 function addPointOfContact(actionName) {
-	submitAction(document.forms[0], actionName, "savePointOfContact", 1);
+	submitAction(document.forms[0], actionName, "savePointOfContact", 2);
 }
 function removePointOfContact(actionName) {
 	submitAction(document.forms[0], actionName, "removePointOfContact", 1);
