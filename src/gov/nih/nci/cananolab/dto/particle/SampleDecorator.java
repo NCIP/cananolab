@@ -32,7 +32,7 @@ public class SampleDecorator extends TableDecorator {
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("sample.do?dispatch=summaryEdit&sampleId=");
+		sb.append("sample.do?dispatch=summaryEdit&page=0&sampleId=");
 		sb.append(sampleId).append("&location=");
 		sb.append(sample.getLocation()).append('>');
 		sb.append(sampleName).append("</a>");
@@ -47,7 +47,7 @@ public class SampleDecorator extends TableDecorator {
 		String sampleId = sample.getDomain().getId().toString();
 		String sampleName = sample.getDomain().getName();
 		StringBuilder sb = new StringBuilder("<a href=");
-		sb.append("sample.do?dispatch=summaryView&sampleId=");
+		sb.append("sample.do?dispatch=summaryView&page=0&sampleId=");
 		sb.append(sampleId).append("&location=");
 		sb.append(sample.getLocation()).append('>');
 		sb.append(sampleName).append("</a>");
