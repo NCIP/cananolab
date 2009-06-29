@@ -50,6 +50,12 @@ public class InitSecuritySetup {
 		return status;
 	}
 
+	public boolean userHasAdminPrivilege(UserBean user) throws SecurityException {
+		boolean status=false;
+		status=authorizationService.isAdmin(user);
+		return status;
+	}
+
 	public boolean userHasDeletePrivilege(UserBean user,
 			String protectionElementObjectId) throws SecurityException {
 		boolean status = false;
