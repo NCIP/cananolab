@@ -31,7 +31,7 @@ function setTheExperimentConfig(configId) {
 	ExperimentConfigManager.getExperimentConfigById(configId, populateExperimentConfig);
 	show("newExperimentConfig");
 	hide("newInstrument");
-	show("deleteExperimentConfig");
+	//show("deleteExperimentConfig");
 }
 function populateExperimentConfig(experimentConfig) {
 	if (experimentConfig != null) {
@@ -79,7 +79,8 @@ function populateInstruments() {
 function clearExperimentConfig() {
 	//go to server and clean form bean
 	ExperimentConfigManager.resetTheExperimentConfig(populateExperimentConfig);
-	hide("deleteExperimentConfig");
+	//hide("deleteExperimentConfig");
+	hide("newInstrument");
 	numberOfInstruments = 0;
 }
 function deleteTheExperimentConfig() {
