@@ -53,6 +53,7 @@ where name='Protocol' and attribute='type'
 and value='physical assay';
 
 -- change lab_file to file
+ALTER TABLE lab_file DROP COLUMN version;
 ALTER TABLE lab_file RENAME file;
 ALTER TABLE composition_lab_file RENAME composition_file;
 ALTER TABLE composition_file
