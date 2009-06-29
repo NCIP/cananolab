@@ -17,6 +17,7 @@ import gov.nih.nci.cananolab.service.sample.helper.CharacterizationServiceHelper
 import gov.nih.nci.cananolab.service.sample.helper.CompositionServiceHelper;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
+import gov.nih.nci.cananolab.service.security.LoginService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
 import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
@@ -341,9 +342,14 @@ public class SampleServiceLocalImpl implements SampleService {
 					.setFetchMode(
 							"sampleComposition.nanomaterialEntityCollection.composingElementCollection",
 							FetchMode.JOIN);
-			crit.setFetchMode("sampleComposition.nanomaterialEntityCollection."
-					+ "composingElementCollection.inherentFunctionCollection",
-					FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.nanomaterialEntityCollection.composingElementCollection.inherentFunctionCollection.targetCollection",
+							FetchMode.JOIN);
 			crit.setFetchMode("sampleComposition.fileCollection",
 					FetchMode.JOIN);
 			crit.setFetchMode(
@@ -363,6 +369,10 @@ public class SampleServiceLocalImpl implements SampleService {
 			crit
 					.setFetchMode(
 							"sampleComposition.functionalizingEntityCollection.functionCollection",
+							FetchMode.JOIN);
+			crit
+					.setFetchMode(
+							"sampleComposition.functionalizingEntityCollection.functionCollection.targetCollection",
 							FetchMode.JOIN);
 			crit.setFetchMode("keywordCollection", FetchMode.JOIN);
 			crit.setFetchMode("publicationCollection", FetchMode.JOIN);
@@ -703,4 +713,24 @@ public class SampleServiceLocalImpl implements SampleService {
 		}
 	}
 
+	public void updateAssociatedVisibility(UserBean user) throws Exception {
+		List<SampleBean> allSamples = findSamplesBy(null, null, null, null,
+				null, null, null, null, null, null, user);
+		for (SampleBean sampleBean : allSamples) {
+			saveSample(sampleBean, user);
+		}
+	}
+
+	public static void main(String[] args) {
+		String userName = args[0];
+		String password = args[1];
+		try {
+			LoginService loginService = new LoginService(Constants.CSM_APP_NAME);
+			UserBean user = loginService.login(userName, password);
+			SampleServiceLocalImpl service = new SampleServiceLocalImpl();
+			service.updateAssociatedVisibility(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
