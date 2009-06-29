@@ -64,24 +64,6 @@ and attribute='displayName';
 ALTER TABLE canano.common_lookup
  CHANGE common_lookup_pk_id common_lookup_pk_id BIGINT  NOT NULL;
 
-CREATE TABLE characterization_file
-(
-	characterization_pk_id BIGINT NOT NULL,
-	file_pk_id BIGINT NOT NULL,
-	PRIMARY KEY (characterization_pk_id, file_pk_id),
-	KEY (characterization_pk_id),
-	KEY (file_pk_id)
-) TYPE=InnoDB
-;
-
-ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_characterization
-	FOREIGN KEY (characterization_pk_id) REFERENCES characterization (characterization_pk_id)
-;
-
-ALTER TABLE characterization_file ADD CONSTRAINT FK_characterization_file_file
-	FOREIGN KEY (file_pk_id) REFERENCES file (file_pk_id)
-;
-
 -- in vitro data migration
 update characterization
 set discriminator='Cytotoxicity',
@@ -152,3 +134,5 @@ update characterization
 set discriminator='ImmuneCellFunction',
 assay_type='Cytotoxic Activity of NK Cells'
 where discriminator ='NKCellCytotoxicActivity';
+
+DROP TABLE IF EXISTS surface_chemistry;
