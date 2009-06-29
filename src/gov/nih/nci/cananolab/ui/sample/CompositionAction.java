@@ -46,12 +46,7 @@ public class CompositionAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		//if session is expired or the url is clicked on directly
-		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		if (user == null) {
-			return summaryView(mapping, form, request, response);
-		}
-		this.prepareSummary(mapping, form, request, response);
+		prepareSummary(mapping, form, request, response);
 
 		// "actionName" is for constructing the Print/Export URL.
 		request.setAttribute("actionName", request.getRequestURL().toString());
@@ -161,8 +156,8 @@ public class CompositionAction extends BaseAnnotationAction {
 		}
 
 		// Get sample name for constructing file name.
-		String fileName = ExportUtils.getExportFileName(
-			compBean.getDomain().getSample().getName(), "CompositionSummaryView", type);
+		String fileName = ExportUtils.getExportFileName(compBean.getDomain()
+				.getSample().getName(), "CompositionSummaryView", type);
 		ExportUtils.prepareReponseForExcell(response, fileName);
 
 		StringBuilder sb = new StringBuilder();
@@ -170,7 +165,8 @@ public class CompositionAction extends BaseAnnotationAction {
 		sb.append(DOWNLOAD_URL);
 		sb.append(request.getParameter(location));
 
-		CompositionServiceHelper.exportSummary(compBean, sb.toString(), response.getOutputStream());
+		CompositionServiceHelper.exportSummary(compBean, sb.toString(),
+				response.getOutputStream());
 
 		return null;
 	}
@@ -199,12 +195,12 @@ public class CompositionAction extends BaseAnnotationAction {
 		if (Constants.LOCAL_SITE.equals(location)) {
 			compService = new CompositionServiceLocalImpl();
 		} else {
-			 String serviceUrl = 
-				 InitSetup.getInstance().getGridServiceUrl(request, location);
-			 compService = new CompositionServiceRemoteImpl(serviceUrl);
+			String serviceUrl = InitSetup.getInstance().getGridServiceUrl(
+					request, location);
+			compService = new CompositionServiceRemoteImpl(serviceUrl);
 		}
-		CompositionBean compBean = 
-			compService.findCompositionBySampleId(sampleId, user);
+		CompositionBean compBean = compService.findCompositionBySampleId(
+				sampleId, user);
 		if (compBean != null) {
 			theForm.set("comp", compBean);
 			// set entity type and association type and retrieve visibility

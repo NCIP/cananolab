@@ -102,11 +102,6 @@ public class SampleAction extends BaseAnnotationAction {
 	public ActionForward summaryEdit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		// if session is expired or the url is clicked on directly.
-		UserBean user = (UserBean) (request.getSession().getAttribute("user"));
-		if (user == null) {
-			return summaryView(mapping, form, request, response);
-		}
 		DynaValidatorForm theForm = (DynaValidatorForm) form;
 		String location = theForm.getString(Constants.LOCATION);
 		if (StringUtils.isEmpty(location)) {
@@ -136,15 +131,6 @@ public class SampleAction extends BaseAnnotationAction {
 		request.getSession().removeAttribute("updateSample");
 		setupLookups(request, null);
 		return mapping.getInputForward();
-	}
-
-	public boolean loginRequired() {
-		return true;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PARTICLE);
 	}
 
 	/**

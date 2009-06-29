@@ -105,8 +105,7 @@ public abstract class BaseAnnotationAction extends AbstractDispatchAction {
 	}
 
 	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PARTICLE);
+		return true;
 	}
 
 	// check for cases where delete can't happen

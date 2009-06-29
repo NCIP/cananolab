@@ -310,11 +310,11 @@ public class PublicationAction extends BaseAnnotationAction {
 		if (Constants.LOCAL_SITE.equals(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		} else {
-			String serviceUrl = 
+			String serviceUrl =
 				InitSetup.getInstance().getGridServiceUrl(request, location);
 			publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		PublicationBean publicationBean = 
+		PublicationBean publicationBean =
 			publicationService.findPublicationById(publicationId, user);
 		theForm.set("file", publicationBean);
 		InitPublicationSetup.getInstance().setPublicationDropdowns(request);
@@ -553,21 +553,21 @@ public class PublicationAction extends BaseAnnotationAction {
 				"publicationCategories", "Publication", "category",
 				"otherCategory", true);
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		
+
 		PublicationService publicationService = null;
 		if (Constants.LOCAL_SITE.equals(location)) {
 			publicationService = new PublicationServiceLocalImpl();
 		} else {
-			 String serviceUrl = 
+			 String serviceUrl =
 				 InitSetup.getInstance().getGridServiceUrl(request, location);
 			 publicationService = new PublicationServiceRemoteImpl(serviceUrl);
 		}
-		List<PublicationBean> publications = 
+		List<PublicationBean> publications =
 			publicationService.findPublicationsBySampleId(sampleId, user);
-		PublicationSummaryViewBean summaryView = 
+		PublicationSummaryViewBean summaryView =
 			new PublicationSummaryViewBean(publications);
 		request.setAttribute("publicationSummaryView", summaryView);
-		
+
 		if (request.getParameter("clearTab") != null
 				&& request.getParameter("clearTab").equals("true")) {
 			request.getSession().removeAttribute("onloadJavascript");
@@ -689,15 +689,6 @@ public class PublicationAction extends BaseAnnotationAction {
 		pbean.addAuthor();
 
 		return mapping.getInputForward();
-	}
-
-	public boolean loginRequired() {
-		return true;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PUBLICATION);
 	}
 
 	protected boolean validateResearchAreas(HttpServletRequest request,

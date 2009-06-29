@@ -112,13 +112,4 @@ public class CompositionFileAction extends BaseAnnotationAction {
 		request.getSession().setAttribute(ActionMessages.GLOBAL_MESSAGE, msgs);
 		return mapping.findForward("success");
 	}
-
-	public boolean loginRequired() {
-		return true;
-	}
-
-	public boolean canUserExecute(UserBean user) throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PARTICLE);
-	}
 }
