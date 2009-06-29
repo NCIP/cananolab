@@ -22,11 +22,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 			throws Exception {
 		HttpSession session = request.getSession();
 		String dispatch = request.getParameter("dispatch");
-		if (dispatch == null && session.isNew()) {
-			throw new InvalidSessionException();
-		}
-		
-		// private dispatch
+		// private dispatch in public actions
 		boolean privateDispatch = false;
 		for (String theDispatch : Constants.PRIVATE_DISPATCHES) {
 			if (dispatch.startsWith(theDispatch)) {
@@ -34,21 +30,25 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 				break;
 			}
 		}
-		if (!loginRequired() || !privateDispatch) {
-			return super.execute(mapping, form, request, response);
-		}
-		UserBean user = (UserBean) session.getAttribute("user");
-		if (user != null) {
-			// check whether user have access to the class
-			boolean accessStatus = canUserExecute(user);
-			if (accessStatus) {
-				return super.execute(mapping, form, request, response);
-			} else {
-				request.getSession().removeAttribute("user");
-				throw new NoAccessException();
-			}
-		} else {
+		if (session.isNew() && (dispatch == null || privateDispatch)) {
 			throw new InvalidSessionException();
+		}
+		if (!loginRequired()) {
+			return super.execute(mapping, form, request, response);
+		} else {
+			UserBean user = (UserBean) session.getAttribute("user");
+			if (user != null) {
+				// check whether user have access to the class
+				boolean accessStatus = canUserExecute(user);
+				if (accessStatus) {
+					return super.execute(mapping, form, request, response);
+				} else {
+					request.getSession().removeAttribute("user");
+					throw new NoAccessException();
+				}
+			} else {
+				throw new InvalidSessionException();
+			}
 		}
 	}
 
@@ -56,7 +56,7 @@ public abstract class AbstractDispatchAction extends DispatchAction {
 
 	/**
 	 * Check whether the current user can execute the action
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 * @throws SecurityException
