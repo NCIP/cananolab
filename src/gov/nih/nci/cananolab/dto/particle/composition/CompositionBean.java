@@ -63,7 +63,7 @@ public class CompositionBean {
 				files.add(new FileBean(file));
 			}
 		}
-		Collections.sort(files, new Comparators.FileBeanTypeDateComparator());
+		Collections.sort(files, new Comparators.FileBeanDateComparator());
 	}
 
 	public List<NanomaterialEntityBean> getNanomaterialEntities() {

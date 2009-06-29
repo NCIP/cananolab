@@ -6,16 +6,16 @@ import gov.nih.nci.cananolab.domain.common.File;
 import gov.nih.nci.cananolab.domain.common.Instrument;
 import gov.nih.nci.cananolab.domain.common.Organization;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
+import gov.nih.nci.cananolab.domain.common.Protocol;
 import gov.nih.nci.cananolab.domain.common.Publication;
 import gov.nih.nci.cananolab.domain.common.Technique;
 import gov.nih.nci.cananolab.domain.particle.Characterization;
 import gov.nih.nci.cananolab.domain.particle.Sample;
+import gov.nih.nci.cananolab.dto.common.ExperimentConfigBean;
 import gov.nih.nci.cananolab.dto.common.FileBean;
+import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.GridNodeBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
-import gov.nih.nci.cananolab.dto.common.ProtocolBean;
-import gov.nih.nci.cananolab.dto.common.PublicationBean;
-import gov.nih.nci.cananolab.dto.particle.SampleBean;
 import gov.nih.nci.cananolab.dto.particle.characterization.CharacterizationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ChemicalAssociationBean;
 import gov.nih.nci.cananolab.dto.particle.composition.ComposingElementBean;
@@ -36,14 +36,7 @@ import java.util.Comparator;
 /* CVS $Id: Comparators.java,v 1.14 2008-09-23 21:53:45 tanq Exp $ */
 
 public class Comparators {
-
-	public static class TechniqueComparator implements Comparator<Technique> {
-		public int compare(Technique technique1, Technique technique2) {
-			return technique1.getType().compareTo(technique2.getType());
-		}
-	}
-
-	public static class InstrumentCreationDateComparator implements
+	public static class InstrumentDateComparator implements
 			Comparator<Instrument> {
 		public int compare(Instrument instrument1, Instrument instrument2) {
 			return instrument1.getCreatedDate().compareTo(
@@ -51,46 +44,16 @@ public class Comparators {
 		}
 	}
 
-	public static class SamplePointOfContactComparator implements
-			Comparator<PointOfContact> {
-		public int compare(PointOfContact poc1, PointOfContact poc2) {
-			int diff = new SortableNameComparator().compare(
-					poc1.getFirstName(), poc2.getFirstName());
-			if (diff == 0) {
-				diff = new SortableNameComparator().compare(poc1.getLastName(),
-						poc2.getLastName());
-				if (diff == 0) {
-					if (poc1.getOrganization() != null
-							&& poc2.getOrganization() != null) {
-						diff = new SortableNameComparator().compare(poc1
-								.getOrganization().getName(), poc2
-								.getOrganization().getName());
-					} else if (poc1.getOrganization() != null) {
-						diff = 1;
-					} else {
-						diff = -1;
-					}
-				}
-			}
-			return diff;
-		}
-	}
-
-	public static class SamplePointOfContactBeanComparator implements
+	public static class PointOfContactBeanNameOrgComparator implements
 			Comparator<PointOfContactBean> {
 		public int compare(PointOfContactBean poc1, PointOfContactBean poc2) {
-			int diff = new SortableNameComparator().compare(poc1
-					.getDisplayName(), poc2.getDisplayName());
-			return diff;
-		}
-	}
-
-	public static class OrganizationComparator implements
-			Comparator<Organization> {
-		public int compare(Organization org1, Organization org2) {
-			int diff = new SortableNameComparator().compare(org1.getName(),
-					org2.getName());
-			return diff;
+			if (poc1.getPersonDisplayName().equals(poc2.getPersonDisplayName())) {
+				return poc1.getOrganizationDisplayName().compareTo(
+						poc2.getOrganizationDisplayName());
+			} else {
+				return (poc1.getPersonDisplayName().compareTo(poc2
+						.getPersonDisplayName()));
+			}
 		}
 	}
 
@@ -165,14 +128,7 @@ public class Comparators {
 		}
 	}
 
-	public static class SampleBeanComparator implements Comparator<SampleBean> {
-		public int compare(SampleBean particle1, SampleBean particle2) {
-			return new SortableNameComparator().compare(particle1.getDomain()
-					.getName(), particle2.getDomain().getName());
-		}
-	}
-
-	public static class SampleComparator implements Comparator<Sample> {
+	public static class SampleNameComparator implements Comparator<Sample> {
 		public int compare(Sample particle1, Sample particle2) {
 			return new SortableNameComparator().compare(particle1.getName(),
 					particle2.getName());
@@ -228,22 +184,6 @@ public class Comparators {
 				return assoc1.getDomainAssociation().getClass()
 						.getCanonicalName().compareTo(
 								assoc2.getDomainAssociation().getClass()
-										.getCanonicalName());
-			}
-		}
-	}
-
-	public static class FileBeanTypeDateComparator implements
-			Comparator<FileBean> {
-		public int compare(FileBean file1, FileBean file2) {
-			if (file1.getDomainFile().getType().equals(
-					file2.getDomainFile().getType())) {
-				return file1.getDomainFile().getCreatedDate().compareTo(
-						file2.getDomainFile().getCreatedDate());
-			} else {
-				return file1.getDomainFile().getClass().getCanonicalName()
-						.compareTo(
-								file2.getDomainFile().getClass()
 										.getCanonicalName());
 			}
 		}
@@ -316,13 +256,6 @@ public class Comparators {
 		}
 	}
 
-	public static class CharacterizationDateComparator implements
-			Comparator<Characterization> {
-		public int compare(Characterization chara1, Characterization chara2) {
-			return chara1.getCreatedDate().compareTo(chara2.getCreatedDate());
-		}
-	}
-
 	public static class CharacterizationBeanNameDateComparator implements
 			Comparator<CharacterizationBean> {
 		public int compare(CharacterizationBean chara1,
@@ -332,22 +265,38 @@ public class Comparators {
 			if (name1.compareTo(name2) == 0) {
 				return chara1.getDomainChar().getCreatedDate().compareTo(
 						chara2.getDomainChar().getCreatedDate());
-			}
-			else {
+			} else {
 				return name1.compareTo(name2);
 			}
 		}
 	}
 
-	public static class ProtocolBeanNameVersionComparator implements
-			Comparator<ProtocolBean> {
-		public int compare(ProtocolBean protocol1, ProtocolBean protocol2) {
-			String name1 = protocol1.getDomain().getName();
-			String name2 = protocol2.getDomain().getName();
+	public static class ExperimentConfigBeanDateComparator implements
+			Comparator<ExperimentConfigBean> {
+		public int compare(ExperimentConfigBean config1,
+				ExperimentConfigBean config2) {
+			return config1.getDomain().getCreatedDate().compareTo(
+					config2.getDomain().getCreatedDate());
+		}
+	}
+
+	public static class FindingBeanDateComparator implements
+			Comparator<FindingBean> {
+		public int compare(FindingBean finding1, FindingBean finding2) {
+			return finding1.getDomain().getCreatedDate().compareTo(
+					finding2.getDomain().getCreatedDate());
+		}
+	}
+
+	public static class ProtocolNameVersionComparator implements
+			Comparator<Protocol> {
+		public int compare(Protocol protocol1, Protocol protocol2) {
+			String name1 = protocol1.getName();
+			String name2 = protocol2.getName();
 			int nameComp = new SortableNameComparator().compare(name1, name2);
 			if (nameComp == 0) {
-				String version1 = protocol1.getDomain().getVersion();
-				String version2 = protocol2.getDomain().getVersion();
+				String version1 = protocol1.getVersion();
+				String version2 = protocol2.getVersion();
 				if (version1 == null || version2 == null) {
 					return 0;
 				}
@@ -358,14 +307,11 @@ public class Comparators {
 		}
 	}
 
-	public static class PublicationBeanCategoryTitleComparator implements
-			Comparator<PublicationBean> {
-		public int compare(PublicationBean file1, PublicationBean file2) {
-			Publication pub1 = (Publication) (file1.getDomainFile());
-			Publication pub2 = (Publication) (file2.getDomainFile());
+	public static class PublicationCategoryTitleComparator implements
+			Comparator<Publication> {
+		public int compare(Publication pub1, Publication pub2) {
 			if (pub1.getCategory().equals(pub2.getCategory())) {
-				return file1.getDomainFile().getTitle().compareTo(
-						file2.getDomainFile().getTitle());
+				return pub1.getTitle().compareTo(pub2.getTitle());
 			} else {
 				return pub1.getCategory().compareTo(pub2.getCategory());
 			}

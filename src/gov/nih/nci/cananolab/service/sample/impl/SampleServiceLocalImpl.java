@@ -28,6 +28,7 @@ import gov.nih.nci.system.query.hibernate.HQLCriteria;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.SortedSet;
@@ -716,6 +717,7 @@ public class SampleServiceLocalImpl implements SampleService {
 	public void updateAssociatedVisibility(UserBean user) throws Exception {
 		List<SampleBean> allSamples = findSamplesBy(null, null, null, null,
 				null, null, null, null, null, null, user);
+		System.out.println("Number of samples: "+allSamples.size());
 		for (SampleBean sampleBean : allSamples) {
 			System.out.println("sample: "+sampleBean.getDomain().getName());
 			saveSample(sampleBean, user);

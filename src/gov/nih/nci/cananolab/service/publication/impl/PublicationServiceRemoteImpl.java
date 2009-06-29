@@ -84,8 +84,6 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 					publicationBeans.add(getPublicationBean(publication));
 				}
 			}
-			Collections.sort(publicationBeans,
-					new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 
 		} catch (Exception e) {
@@ -116,8 +114,6 @@ public class PublicationServiceRemoteImpl implements PublicationService {
 					publicationBeans.add(getPublicationBean(publication));
 				}
 			}
-			Collections.sort(publicationBeans,
-					new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 		} catch (Exception e) {
 			String err = "Problem finding remote publications by the given sample ID.";

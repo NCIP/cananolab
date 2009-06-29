@@ -159,8 +159,6 @@ public class SampleServiceRemoteImpl implements SampleService {
 					}
 					samples.add(sampleBean);
 				}
-				Collections.sort(samples,
-						new Comparators.SampleBeanComparator());
 			}
 			return samples;
 		} catch (RemoteException e) {

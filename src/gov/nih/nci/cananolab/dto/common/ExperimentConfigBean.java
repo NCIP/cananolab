@@ -33,7 +33,7 @@ public class ExperimentConfigBean {
 			instruments.add(instrument);
 		}
 		Collections.sort(instruments,
-				new Comparators.InstrumentCreationDateComparator());
+				new Comparators.InstrumentDateComparator());
 	}
 
 	public ExperimentConfig getDomain() {

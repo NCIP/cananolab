@@ -10,6 +10,7 @@ import gov.nih.nci.cananolab.exception.NoAccessException;
 import gov.nih.nci.cananolab.service.sample.helper.SampleServiceHelper;
 import gov.nih.nci.cananolab.service.security.AuthorizationService;
 import gov.nih.nci.cananolab.system.applicationservice.CustomizedApplicationService;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.ExportUtils;
 import gov.nih.nci.cananolab.util.StringUtils;
@@ -242,6 +243,7 @@ public class PublicationServiceHelper {
 						+ obj.toString());
 			}
 		}
+		Collections.sort(publications, new Comparators.PublicationCategoryTitleComparator());
 		return publications;
 	}
 
@@ -641,6 +643,7 @@ public class PublicationServiceHelper {
 						+ pub.getId());
 			}
 		}
+		Collections.sort(publications, new Comparators.PublicationCategoryTitleComparator());
 		return publications;
 	}
 

@@ -4,9 +4,11 @@ import gov.nih.nci.cananolab.domain.common.Keyword;
 import gov.nih.nci.cananolab.domain.common.PointOfContact;
 import gov.nih.nci.cananolab.domain.particle.Sample;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -68,10 +70,12 @@ public class SampleBean {
 			primaryPOCBean = new PointOfContactBean(primaryPOC);
 			// TODO sort other pocs
 			for (PointOfContact poc : domain.getOtherPointOfContactCollection()) {
-				PointOfContactBean pocBean=new PointOfContactBean(poc);
+				PointOfContactBean pocBean = new PointOfContactBean(poc);
 				pocBean.setPrimaryStatus(false);
 				otherPOCBeans.add(pocBean);
 			}
+			Collections.sort(otherPOCBeans,
+					new Comparators.PointOfContactBeanNameOrgComparator());
 		}
 		if (sample.getSampleComposition() != null
 				&& sample.getSampleComposition().getId() != null) {

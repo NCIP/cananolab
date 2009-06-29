@@ -20,11 +20,13 @@ import gov.nih.nci.cananolab.dto.common.FindingBean;
 import gov.nih.nci.cananolab.dto.common.PointOfContactBean;
 import gov.nih.nci.cananolab.dto.common.ProtocolBean;
 import gov.nih.nci.cananolab.util.ClassUtils;
+import gov.nih.nci.cananolab.util.Comparators;
 import gov.nih.nci.cananolab.util.Constants;
 import gov.nih.nci.cananolab.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -106,6 +108,7 @@ public class CharacterizationBean {
 				findings.add(new FindingBean(finding));
 			}
 		}
+		Collections.sort(findings, new Comparators.FindingBeanDateComparator());
 		if (chara.getProtocol() != null) {
 			protocolBean = new ProtocolBean(chara.getProtocol());
 		}
@@ -116,6 +119,8 @@ public class CharacterizationBean {
 				experimentConfigs.add(new ExperimentConfigBean(config));
 			}
 		}
+		Collections.sort(experimentConfigs,
+				new Comparators.ExperimentConfigBeanDateComparator());
 		if (chara instanceof Shape) {
 			shape = (Shape) chara;
 			withProperties = true;

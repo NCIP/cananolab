@@ -137,8 +137,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					publicationBeans.add(pubBean);
 				}
 			}
-			Collections.sort(publicationBeans,
-					new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 
 		} catch (Exception e) {
@@ -192,8 +190,6 @@ public class PublicationServiceLocalImpl implements PublicationService {
 					publicationBeans.add(pubBean);
 				}
 			}
-			Collections.sort(publicationBeans,
-					new Comparators.PublicationBeanCategoryTitleComparator());
 			return publicationBeans;
 		} catch (Exception e) {
 			String err = "Problem finding publication collections with the given sample ID.";
