@@ -4,6 +4,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script type='text/javascript' src='javascript/addDropDownOptions.js'></script>
 <script type="text/javascript" src="javascript/SampleManager.js"></script>
+<script type='text/javascript' src='javascript/POCManager.js'></script>
+<script type='text/javascript'
+	'src='/caNanoLab/dwr/interface/POCManager.js'></script>
 <script type='text/javascript'
 	src='/caNanoLab/dwr/interface/SampleManager.js'></script>
 <script type='text/javascript' src='/caNanoLab/dwr/engine.js'></script>

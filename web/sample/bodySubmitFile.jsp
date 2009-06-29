@@ -6,7 +6,7 @@
 <%-- different styles for different file submission forms --%>
 <c:set var="submissionViewStyle" value="subSubmissionView" />
 <c:set var="tableWidth" value="85%" />
-<c:set var="buttonStyle" value=""/>
+<c:set var="buttonStyle" value="" />
 <c:if test="${actionName eq 'characterization'}">
 	<c:set var="submissionViewStyle" value="promptbox" />
 	<c:set var="buttonStyle" value="promptButton" />
@@ -44,15 +44,16 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<span id="load" style="${loadStyle }"> <html:file
+				<span id="load" style=""> <html:file
 						property="${fileParent}.theFile.uploadedFile" size="60"
 						styleId="uploadedFile" /> &nbsp;&nbsp;</span>
-				<c:set var="uploadedUriStyle" value="display:none"/>
-				<c:if test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
-					<c:set var="uploadedUriStyle" value="display:block"/>
+				<c:set var="uploadedUriStyle" value="display:none" />
+				<c:if
+					test="${! empty theFile.domainFile.uri && theFile.domainFile.uriExternal eq false}">
+					<c:set var="uploadedUriStyle" value="display:block" />
 				</c:if>
-				<span id="uploadedUri" style="${uploadedUriStyle}">${theFile.domainFile.uri }</span>
-				<span id="link" style="${linkStyle }"><html:text
+				<span id="uploadedUri" style="">${theFile.domainFile.uri }</span>
+				<span id="link" style=""><html:text
 						property="${fileParent}.theFile.externalUrl" size="60"
 						styleId="externalUrl" /> </span>&nbsp;
 			</td>
@@ -131,9 +132,11 @@
 		<c:if test="${actionName ne 'compositionFile'}">
 			<tr>
 				<td>
-					<input class="${buttonStyle}" type="button" value="Remove"
-						onclick="removeFile('${actionName}', ${fileForm})" id="deleteFile"
-						style="display: none;" />
+					<c:if test="${!empty user && user.curator && user.admin}">
+						<input class="${buttonStyle}" type="button" value="Remove"
+							onclick="removeFile('${actionName}', ${fileForm})"
+							id="deleteFile" style="display: none;" />
+					</c:if>
 				</td>
 				<td>
 					<div align="right">

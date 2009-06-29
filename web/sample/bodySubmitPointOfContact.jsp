@@ -214,9 +214,11 @@
 			<table width="100%">
 				<tr>
 					<td>
-						<input type="button" value="Remove"
-							onclick="removePointOfContact('sample');clearPointOfContact()"
-							id="deletePointOfContact" style="display: none;" />
+						<c:if test="${!empty user && user.curator && user.admin}">
+							<input type="button" value="Remove"
+								onclick="removePointOfContact('sample');clearPointOfContact()"
+								id="deletePointOfContact" style="display: none;" />
+						</c:if>
 					</td>
 					<td>
 						<div align="right">
