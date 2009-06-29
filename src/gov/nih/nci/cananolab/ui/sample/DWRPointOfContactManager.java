@@ -39,17 +39,22 @@ public class DWRPointOfContactManager {
 		return poc;
 	}
 
-	public PointOfContactBean resetThePointOfContact() {
+	public PointOfContactBean resetThePointOfContact() throws Exception {
 		DynaValidatorForm sampleForm = (DynaValidatorForm) (WebContextFactory
 				.get().getSession().getAttribute("sampleForm"));
-		SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
-		PointOfContactBean poc = new PointOfContactBean();
-		sample.setThePOC(poc);
-		//if primary POC already exists, the POC is secondar
-		if (sample.getPrimaryPOCBean().getDomain().getId()!=null) {
-			poc.setPrimaryStatus(false);
+		if (sampleForm != null) {
+			SampleBean sample = (SampleBean) sampleForm.get("sampleBean");
+			PointOfContactBean poc = new PointOfContactBean();
+			sample.setThePOC(poc);
+			// if primary POC already exists, the POC is secondar
+			if (sample.getPrimaryPOCBean().getDomain().getId() != null) {
+				poc.setPrimaryStatus(false);
+			}
+			return poc;
 		}
-		return poc;
+		else {
+			return null;
+		}
 	}
 
 	public PointOfContactBean getPointOfContactByNameAndOrg(String firstName,
@@ -58,7 +63,8 @@ public class DWRPointOfContactManager {
 		org.directwebremoting.WebContext webContext = dwcb.get();
 		HttpServletRequest request = webContext.getHttpServletRequest();
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
-		PointOfContact poc=helper.findPointOfContactByNameAndOrg(firstName, lastName, orgName, user);
+		PointOfContact poc = helper.findPointOfContactByNameAndOrg(firstName,
+				lastName, orgName, user);
 		PointOfContactBean pocBean = new PointOfContactBean(poc);
 		return pocBean;
 	}
