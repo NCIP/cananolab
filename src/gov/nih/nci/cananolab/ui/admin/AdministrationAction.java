@@ -5,7 +5,7 @@
  * Cancer Institute, and so to the extent government employees are co-authors, any
  * rights in such works shall be subject to Title 17 of the United States Code,
  * section 105.
- * 
+ *
  */
 package gov.nih.nci.cananolab.ui.admin;
 
@@ -43,8 +43,8 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.upload.FormFile;
 
 public class AdministrationAction extends AbstractDispatchAction {
-	
-	private static Logger logger = 
+
+	private static Logger logger =
 		Logger.getLogger(AdministrationAction.class);
 
 	/**
@@ -61,11 +61,11 @@ public class AdministrationAction extends AbstractDispatchAction {
 				Constants.FILEUPLOAD_PROPERTY, Constants.SITE_NAME);
 		theForm.set(Constants.SITE_NAME, siteName);
 		theForm.set(Constants.SITE_LOGO, null);
-		
+
 		if (logger.isInfoEnabled()) {
 			logger.info("siteName = " + siteName);
 		}
-		
+
 		return mapping.getInputForward();
 	}
 
@@ -123,10 +123,10 @@ public class AdministrationAction extends AbstractDispatchAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		ActionMessages messages = new ActionMessages();
-		
+
 		// Remove site name, set failure message if failed.
 		this.setSiteName(null, messages);
-		
+
 		// Remove site logo, set failure message if failed.
 		if (this.setSiteLogo(null, messages)) {
 			File logoFile = new File(this.getLogoFileName());
@@ -134,7 +134,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 				logoFile.delete();
 			}
 		}
-		
+
 		// Set success message in request if everything is fine now.
 		if (messages.size() == 0) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
@@ -143,7 +143,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 		} else {
 			saveErrors(request, messages);
 		}
-		
+
 		return mapping.getInputForward();
 	}
 
@@ -159,10 +159,10 @@ public class AdministrationAction extends AbstractDispatchAction {
 		DynaActionForm theForm = (DynaActionForm) form;
 		String siteName = (String) theForm.getString(Constants.SITE_NAME);
 		ActionMessages messages = new ActionMessages();
-		
+
 		// Save site name, if fail, set failure message;
 		this.setSiteName(siteName, messages);
-		
+
 		// Save site logo, if fail, set failure message;
 		FormFile file = (FormFile) theForm.get(Constants.SITE_LOGO);
 		File siteLogo = new File(this.getLogoFileName());
@@ -172,7 +172,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 			data = file.getFileData();
 			logoFilename = file.getFileName();
 		}
-		
+
 		// If user doesn't upload a file, remove current logo file.
 		if (data == null || data.length == 0) {
 			if (this.setSiteLogo(null, messages) && siteLogo.exists()) {
@@ -181,7 +181,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 		} else {
 			// If the new logo file is too large, set error msg to warn user.
 			if (data.length > Constants.MAX_LOGO_SIZE) {
-				ActionMessage msg = 
+				ActionMessage msg =
 					new ActionMessage("admin.sitePreference.error.logoTooLarge", Constants.MAX_LOGO_SIZE);
 				messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			} else {
@@ -192,7 +192,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 						out = new BufferedOutputStream(new FileOutputStream(siteLogo));
 			            out.write(data);
 			        } catch (Exception e) {
-						ActionMessage msg = 
+						ActionMessage msg =
 							new ActionMessage("admin.sitePreference.error.siteLogo");
 						messages.add(ActionMessages.GLOBAL_MESSAGE, msg);
 			        } finally {
@@ -204,11 +204,11 @@ public class AdministrationAction extends AbstractDispatchAction {
 				            } catch (IOException e) {
 				            }
 		                }
-			        }		
+			        }
 				}
 			}
 		}
-		
+
 		// Set success message in request if everything is fine now.
 		if (messages.size() == 0) {
 			ActionMessage msg = new ActionMessage("admin.sitePreference.success");
@@ -217,7 +217,7 @@ public class AdministrationAction extends AbstractDispatchAction {
 		} else {
 			saveErrors(request, messages);
 		}
-		
+
 		return mapping.getInputForward();
 	}
 
@@ -231,13 +231,13 @@ public class AdministrationAction extends AbstractDispatchAction {
 		String fileRoot = PropertyUtils.getProperty(
 				Constants.FILEUPLOAD_PROPERTY, Constants.FILE_REPOSITORY_DIR);
 		sb.append(fileRoot).append(File.separator).append(Constants.SITE_LOGO_FILENAME);
-		
+
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Set site name in property, set failure message if failed.
-	 * 
+	 *
 	 * @param siteName
 	 * @param messages
 	 */
@@ -250,10 +250,10 @@ public class AdministrationAction extends AbstractDispatchAction {
 		}
 		return success;
 	}
-	
+
 	/**
 	 * Set site logo in property, set failure message if failed.
-	 * 
+	 *
 	 * @param siteName
 	 * @param messages
 	 */
@@ -266,15 +266,13 @@ public class AdministrationAction extends AbstractDispatchAction {
 		}
 		return success;
 	}
-	
+
 	public boolean loginRequired() {
 		return true;
 	}
 
 	public boolean canUserExecute(UserBean user)
 			throws SecurityException {
-		return InitSecuritySetup.getInstance().userHasCreatePrivilege(user,
-				Constants.CSM_PG_PARTICLE);
+		return InitSecuritySetup.getInstance().userHasAdminPrivilege(user);
 	}
-
 }
